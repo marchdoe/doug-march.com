@@ -1,0 +1,51 @@
+.wrap {
+  padding-top: 3rem;
+}
+
+.code {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.code::before {
+  content: '//';
+  color: var(--text-dim);
+}
+
+.heading {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.message {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  font-style: italic;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  transition: color 0.15s;
+}
+
+.back:hover {
+  color: var(--cyan);
+}

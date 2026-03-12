@@ -1,11 +1,13 @@
 import '../styles/global.css'
-import { createRootRoute, Outlet, HeadContent } from '@tanstack/react-router'
+import { createRootRoute, Link, Outlet, HeadContent } from '@tanstack/react-router'
+import { Layout } from '../components/Layout'
+import styles from './not-found.module.css'
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
     ],
     title: 'Doug March',
     links: [
@@ -17,6 +19,7 @@ export const Route = createRootRoute({
       },
     ],
   }),
+  notFoundComponent: NotFound,
   component: RootComponent,
 })
 
@@ -26,5 +29,20 @@ function RootComponent() {
       <HeadContent />
       <Outlet />
     </>
+  )
+}
+
+function NotFound() {
+  return (
+    <Layout>
+      <div className={styles.wrap}>
+        <div className={styles.code}>404</div>
+        <div className={styles.heading}>NOT FOUND</div>
+        <p className={styles.message}>
+          The page you're looking for doesn't exist or has been moved.
+        </p>
+        <Link to="/" className={styles.back}>← BACK TO WORK</Link>
+      </div>
+    </Layout>
   )
 }
