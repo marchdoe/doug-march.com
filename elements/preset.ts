@@ -2,6 +2,11 @@ import { definePreset } from '@pandacss/dev'
 
 export const elementsPreset = definePreset({
   name: 'elements',
+  conditions: {
+    extend: {
+      light: '.light &, [data-theme=light] &',
+    },
+  },
   theme: {
     tokens: {
       colors: {
