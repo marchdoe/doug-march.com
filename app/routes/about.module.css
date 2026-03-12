@@ -1,0 +1,113 @@
+.intro {
+  border-bottom: 1px solid var(--logo-blue-dim);
+  padding-bottom: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.introLabel {
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.introLabel::before { content: '//'; color: var(--cyan); }
+
+.introText {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  line-height: 2;
+  font-style: italic;
+  max-width: 560px;
+}
+.introText strong { color: var(--text); font-style: normal; }
+
+.tlItem {
+  display: grid;
+  grid-template-columns: 80px 1px 1fr;
+  gap: 0 1.5rem;
+}
+
+.tlYear {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  padding: 1rem 0;
+  text-align: right;
+}
+
+.tlLineWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tlDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--logo-blue-dim);
+  border: 1px solid var(--logo-blue);
+  margin-top: 1.1rem;
+  flex-shrink: 0;
+}
+
+.tlDotCurrent {
+  background: var(--logo-green);
+  border-color: var(--logo-green);
+  box-shadow: 0 0 8px var(--logo-green);
+}
+
+.tlRule {
+  flex: 1;
+  width: 1px;
+  background: var(--logo-blue-dim);
+}
+
+.tlContent {
+  padding: 0.85rem 0 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.tlRole {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+
+.tlCompany {
+  font-size: 0.6rem;
+  color: var(--cyan-dim);
+  margin-bottom: 0.4rem;
+}
+.tlCompanyCurrent { color: var(--logo-green); }
+
+.tlDesc {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.skillsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+}
+
+.skill {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: var(--text-dim);
+  background: var(--bg-card);
+  border: 1px solid var(--logo-blue-dim);
+  padding: 0.4rem 0.6rem;
+  text-transform: uppercase;
+}
