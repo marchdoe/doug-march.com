@@ -4,10 +4,53 @@ import { MissionCard } from '../components/MissionCard'
 import { ProjectRow } from '../components/ProjectRow'
 import { SectionHead } from '../components/SectionHead'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
-import styles from './index.module.css'
+import { styled } from '../../styled-system/jsx'
 
 export const Route = createFileRoute('/')({
   component: Home,
+})
+
+const Gap = styled('div', {
+  base: { marginTop: '10' },
+})
+
+const Footer = styled('div', {
+  base: {
+    marginTop: '12',
+    paddingTop: '5',
+    borderTopWidth: '1px',
+    borderTopStyle: 'solid',
+    borderTopColor: 'logo.blueDim',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+})
+
+const FooterText = styled('span', {
+  base: {
+    fontSize: 'xs',
+    color: 'text.dim',
+  },
+})
+
+const FooterLink = styled('a', {
+  base: {
+    fontSize: 'sm',
+    fontWeight: 'bold',
+    color: 'logo.green',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'logo.green',
+    paddingTop: '0.35rem',
+    paddingBottom: '0.35rem',
+    paddingLeft: '3',
+    paddingRight: '3',
+    transitionProperty: 'background',
+    transitionDuration: '0.2s',
+    transitionTimingFunction: 'default',
+    _hover: { background: 'logo.greenDim' },
+  },
 })
 
 function Home() {
@@ -20,19 +63,17 @@ function Home() {
         <ProjectRow key={p.slug} project={p} index={i} />
       ))}
 
-      <div className={styles.gap} />
+      <Gap />
 
       <SectionHead label="EXPERIMENTS &amp; SIDE PROJECTS" />
       {experiments.map((p, i) => (
         <ProjectRow key={p.slug} project={p} index={i} />
       ))}
 
-      <div className={styles.footer}>
-        <span className={styles.footerText}>© {new Date().getFullYear()} DOUG MARCH</span>
-        <a href="mailto:doug@doug-march.com" className={styles.footerLink}>
-          GET IN TOUCH →
-        </a>
-      </div>
+      <Footer>
+        <FooterText>© {new Date().getFullYear()} DOUG MARCH</FooterText>
+        <FooterLink href="mailto:doug@doug-march.com">GET IN TOUCH →</FooterLink>
+      </Footer>
     </Layout>
   )
 }
