@@ -3,6 +3,7 @@ import { Layout } from '../components/Layout'
 import { SectionHead } from '../components/SectionHead'
 import { MissionCard } from '../components/MissionCard'
 import { ProjectRow } from '../components/ProjectRow'
+import { MobileFooter } from '../components/MobileFooter'
 import type { Project } from '../content/types'
 import { styled } from '../../styled-system/jsx'
 
@@ -98,6 +99,69 @@ const SpacingRow = styled('div', {
 
 const SpacingBlock = styled('div', {
   base: { height: '12px', background: 'accent', opacity: '0.4' },
+})
+
+// ── MobileFooter preview wrapper — forces the inner footer visible on desktop ──
+// MobileFooter accepts no props, so override display via a CSS descendant selector.
+// '& > footer' targets FooterRoot; the descendant rule is unlayered so it beats @layer base.
+
+const MobileFooterPreview = styled('div', {
+  base: {
+    '& > footer': { display: 'flex' },
+  },
+})
+
+// ── NotFound preview components (duplicated from __root.tsx — not exported there) ──
+
+const NfWrap = styled('div', {
+  base: { paddingTop: '12' },
+})
+
+const NfCode = styled('div', {
+  base: {
+    fontSize: '0.55rem',
+    fontWeight: 'bold',
+    letterSpacing: 'widest',
+    color: 'text.dim',
+    marginBottom: '6',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '2',
+    _before: { content: '"//"', color: 'text.dim' },
+  },
+})
+
+const NfHeading = styled('div', {
+  base: {
+    fontSize: 'xl',
+    fontWeight: 'bold',
+    letterSpacing: 'tight',
+    color: 'text',
+    lineHeight: 'tight',
+    marginBottom: '3',
+  },
+})
+
+const NfMessage = styled('p', {
+  base: {
+    fontSize: 'base',
+    color: 'text.dim',
+    fontStyle: 'italic',
+    lineHeight: 'normal',
+    marginBottom: '8',
+  },
+})
+
+const NfBackLink = styled('span', {
+  base: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.4rem',
+    fontSize: 'sm',
+    fontWeight: 'bold',
+    color: 'text.dim',
+    letterSpacing: 'wide',
+  },
 })
 
 const semanticColors: { name: string; cssVar: string }[] = [
@@ -283,6 +347,19 @@ function Elements() {
 
         <SubHead>SECTIONHEAD</SubHead>
         <SectionHead label="EXAMPLE SECTION" />
+
+        <SubHead>MOBILEFOOTER (mobile-only — forced visible here)</SubHead>
+        <MobileFooterPreview>
+          <MobileFooter />
+        </MobileFooterPreview>
+
+        <SubHead>NOTFOUND COMPONENTS</SubHead>
+        <NfWrap>
+          <NfCode>404</NfCode>
+          <NfHeading>NOT FOUND</NfHeading>
+          <NfMessage>The page you're looking for doesn't exist or has been moved.</NfMessage>
+          <NfBackLink>← BACK TO WORK</NfBackLink>
+        </NfWrap>
       </Section>
     </Layout>
   )
