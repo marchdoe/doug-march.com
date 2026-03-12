@@ -13,6 +13,27 @@ export const Route = createFileRoute('/elements')({
 
 // ── Shared layout primitives ──────────────────────────────────────────────────
 
+const PageTitle = styled('div', {
+  base: {
+    fontSize: 'xl',
+    fontWeight: 'bold',
+    letterSpacing: 'tight',
+    color: 'text',
+    lineHeight: 'tight',
+    marginBottom: '3',
+  },
+})
+
+const PageDesc = styled('p', {
+  base: {
+    fontSize: 'base',
+    color: 'text.dim',
+    fontStyle: 'italic',
+    lineHeight: 'normal',
+    marginBottom: '12',
+  },
+})
+
 const Section = styled('div', {
   base: { marginBottom: '12' },
 })
@@ -269,6 +290,9 @@ const demoRowLight: Project = {
 function Elements() {
   return (
     <Layout>
+      <PageTitle>ELEMENTS</PageTitle>
+      <PageDesc>The building blocks of this site — design tokens and components from the elements/ preset.</PageDesc>
+
       {/* ── TOKENS ── */}
       <Section>
         <SectionHead label="TOKENS" />
