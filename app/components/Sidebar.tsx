@@ -219,6 +219,13 @@ export function Sidebar() {
         >
           spaceman.llc
         </NavLinkExternal>
+        <NavLinkInternal
+          to="/elements"
+          active={location.pathname === '/elements' ? true : undefined}
+          ext={true}
+        >
+          elements
+        </NavLinkInternal>
       </Nav>
 
       <Social>

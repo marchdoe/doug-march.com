@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ElementsRouteImport } from './routes/elements'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
 
+const ElementsRoute = ElementsRouteImport.update({
+  id: '/elements',
+  path: '/elements',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -32,35 +38,46 @@ const WorkSlugRoute = WorkSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/elements': typeof ElementsRoute
   '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/elements': typeof ElementsRoute
   '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/elements': typeof ElementsRoute
   '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/work/$slug'
+  fullPaths: '/' | '/about' | '/elements' | '/work/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/work/$slug'
-  id: '__root__' | '/' | '/about' | '/work/$slug'
+  to: '/' | '/about' | '/elements' | '/work/$slug'
+  id: '__root__' | '/' | '/about' | '/elements' | '/work/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ElementsRoute: typeof ElementsRoute
   WorkSlugRoute: typeof WorkSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/elements': {
+      id: '/elements'
+      path: '/elements'
+      fullPath: '/elements'
+      preLoaderRoute: typeof ElementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ElementsRoute: ElementsRoute,
   WorkSlugRoute: WorkSlugRoute,
 }
 export const routeTree = rootRouteImport
