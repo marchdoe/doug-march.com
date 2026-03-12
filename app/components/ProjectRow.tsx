@@ -23,7 +23,7 @@ export function ProjectRow({ project, index }: Props) {
   }
 
   return (
-    <Link to={`/work/${project.slug}` as any} className={rowClass}>
+    <Link to="/work/$slug" params={{ slug: project.slug }} className={rowClass}>
       <div className={styles.num}>{String(index + 1).padStart(2, '0')}</div>
       <div className={styles.name}>{project.title}</div>
       <div className={styles.tag}>{project.type.toUpperCase()}</div>
