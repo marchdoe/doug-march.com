@@ -68,6 +68,35 @@ const SwatchLabel = styled('div', {
   },
 })
 
+const TypeRow = styled('div', {
+  base: {
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: '4',
+    paddingTop: '2',
+    paddingBottom: '2',
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+    borderBottomColor: 'border',
+  },
+})
+
+const TypeSample = styled('div', {
+  base: { color: 'text', flex: '1' },
+})
+
+const TypeMeta = styled('div', {
+  base: { fontSize: '0.55rem', color: 'text.dim', letterSpacing: 'wide' },
+})
+
+const SpacingRow = styled('div', {
+  base: { display: 'flex', alignItems: 'center', gap: '4', marginBottom: '2' },
+})
+
+const SpacingBlock = styled('div', {
+  base: { height: '12px', background: 'accent', opacity: '0.4' },
+})
+
 const semanticColors: { name: string; cssVar: string }[] = [
   { name: 'bg',          cssVar: 'var(--colors-bg)'          },
   { name: 'bg.side',     cssVar: 'var(--colors-bg-side)'     },
@@ -108,6 +137,41 @@ const primitiveColors: { scale: string; steps: { key: string; hex: string }[] }[
   ]},
 ]
 
+const fontSizes: { name: string; value: string }[] = [
+  { name: '2xs', value: '0.48rem' },
+  { name: 'xs',  value: '0.52rem' },
+  { name: 'sm',  value: '0.6rem'  },
+  { name: 'base',value: '0.7rem'  },
+  { name: 'md',  value: '0.8rem'  },
+  { name: 'lg',  value: '1rem'    },
+  { name: 'xl',  value: '1.9rem'  },
+  { name: '2xl', value: '2.5rem'  },
+]
+
+const fontWeights: { name: string; value: string }[] = [
+  { name: 'regular', value: '400' },
+  { name: 'bold',    value: '700' },
+]
+
+const letterSpacings: { name: string; value: string }[] = [
+  { name: 'tight',  value: '-0.03em' },
+  { name: 'wide',   value: '0.06em'  },
+  { name: 'wider',  value: '0.1em'   },
+  { name: 'widest', value: '0.12em'  },
+]
+
+const spacingScale: { name: string; value: string }[] = [
+  { name: '1',  value: '0.25rem' },
+  { name: '2',  value: '0.5rem'  },
+  { name: '3',  value: '0.75rem' },
+  { name: '4',  value: '1rem'    },
+  { name: '5',  value: '1.25rem' },
+  { name: '6',  value: '1.5rem'  },
+  { name: '8',  value: '2rem'    },
+  { name: '10', value: '2.5rem'  },
+  { name: '12', value: '3rem'    },
+]
+
 function Elements() {
   return (
     <Layout>
@@ -139,6 +203,38 @@ function Elements() {
               ))}
             </SwatchGrid>
           </div>
+        ))}
+
+        <SubHead>TYPOGRAPHY — FONT SIZES</SubHead>
+        {fontSizes.map(({ name, value }) => (
+          <TypeRow key={name}>
+            <TypeSample style={{ fontSize: value }}>DOUG MARCH</TypeSample>
+            <TypeMeta>{name} / {value}</TypeMeta>
+          </TypeRow>
+        ))}
+
+        <SubHead>TYPOGRAPHY — FONT WEIGHTS</SubHead>
+        {fontWeights.map(({ name, value }) => (
+          <TypeRow key={name}>
+            <TypeSample style={{ fontWeight: value }}>DOUG MARCH</TypeSample>
+            <TypeMeta>{name} / {value}</TypeMeta>
+          </TypeRow>
+        ))}
+
+        <SubHead>TYPOGRAPHY — LETTER SPACING</SubHead>
+        {letterSpacings.map(({ name, value }) => (
+          <TypeRow key={name}>
+            <TypeSample style={{ letterSpacing: value }}>DOUG MARCH</TypeSample>
+            <TypeMeta>{name} / {value}</TypeMeta>
+          </TypeRow>
+        ))}
+
+        <SubHead>SPACING SCALE</SubHead>
+        {spacingScale.map(({ name, value }) => (
+          <SpacingRow key={name}>
+            <SpacingBlock style={{ width: value }} />
+            <TypeMeta>{name} / {value}</TypeMeta>
+          </SpacingRow>
         ))}
       </Section>
     </Layout>
