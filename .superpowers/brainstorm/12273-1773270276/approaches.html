@@ -1,0 +1,40 @@
+<h2>Three approaches to the rebuild</h2>
+<p class="subtitle">Different trade-offs depending on how much you want to grow the site vs. keep it lean.</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Astro — content-as-files</h3>
+      <p>Projects and writing live as Markdown/MDX files in the repo. Near-zero JS, instant load, deploy to Vercel/Netlify. Update the site the same way you update code — no CMS, no database. Simple mental model forever.</p>
+      <div class="pros-cons" style="margin-top: 0.75rem;">
+        <div class="pros"><h4>Pros</h4><ul><li>Fastest possible site</li><li>No moving parts</li><li>Easy to maintain long-term</li><li>Great SEO out of the box</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Adding content requires a code push</li><li>Less dynamic capability later</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>TanStack Start — full-stack React</h3>
+      <p>Modern React with server functions, type-safe routing, and SSR. More complex to set up but you get a real full-stack app — contact forms, dynamic project filtering, CMS integration, or any future feature without switching stacks.</p>
+      <div class="pros-cons" style="margin-top: 0.75rem;">
+        <div class="pros"><h4>Pros</h4><ul><li>Full-stack power from day one</li><li>Current, modern stack</li><li>Scales to anything you want to add</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>More infrastructure to manage</li><li>Heavier than a portfolio needs</li><li>TanStack Start is still maturing</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Astro + Islands (recommended)</h3>
+      <p>Static Astro as the foundation — but with React "islands" for any interactive pieces (filterable project grid, contact form, etc). Gets you 95% of TanStack's flexibility at Astro's performance. Best of both worlds for a portfolio that might grow.</p>
+      <div class="pros-cons" style="margin-top: 0.75rem;">
+        <div class="pros"><h4>Pros</h4><ul><li>Fast by default, interactive where needed</li><li>Can use React components you already know</li><li>Content-as-files simplicity</li><li>Grows gracefully</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Two mental models (Astro + React)</li><li>Not the same as a "real" React app if that matters to you</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>

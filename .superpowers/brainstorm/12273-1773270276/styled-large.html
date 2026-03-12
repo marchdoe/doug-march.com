@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Styled Directions — Large</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;700&family=Outfit:wght@400;600;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #111; font-family: system-ui, sans-serif; }
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: #000;
+    padding: 0 2rem;
+    border-bottom: 1px solid #222;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .tab {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #555;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-bottom: 2px solid transparent;
+    transition: color 0.1s;
+  }
+
+  .tab:hover { color: #aaa; }
+  .tab.active { color: #fff; border-bottom-color: #fff; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ===================== SHARED SITE STRUCTURE ===================== */
+  .site {
+    display: grid;
+    min-height: calc(100vh - 44px);
+  }
+
+  .site.split { grid-template-columns: 280px 1fr; }
+
+  /* ===================== OPTION A — STARK ===================== */
+  #panel-a .site { background: #fff; }
+
+  #panel-a .sidebar {
+    padding: 3rem 2rem;
+    border-right: 2px solid #000;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #panel-a .name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.5rem;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    color: #000;
+    margin-bottom: 0.6rem;
+  }
+
+  #panel-a .title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    color: #999;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 2.5rem;
+  }
+
+  #panel-a .nav { display: flex; flex-direction: column; gap: 0; }
+
+  #panel-a .nav a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #000;
+    text-decoration: none;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #panel-a .nav a .hint { color: #ccc; font-weight: 400; font-size: 0.75rem; }
+
+  #panel-a .social {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  #panel-a .social a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    color: #bbb;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  #panel-a .main { padding: 3rem 2.5rem; overflow-y: auto; }
+
+  #panel-a .featured {
+    background: #000;
+    color: #fff;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #panel-a .featured-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.03em;
+  }
+
+  #panel-a .featured-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    color: #666;
+    margin-top: 0.2rem;
+  }
+
+  #panel-a .featured-arrow { font-size: 1.5rem; color: #444; }
+
+  #panel-a .section-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #ccc;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  #panel-a .project {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid #f8f8f8;
+  }
+
+  #panel-a .project-left { display: flex; align-items: baseline; gap: 0.75rem; }
+
+  #panel-a .project-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
+    color: #000;
+  }
+
+  #panel-a .project-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #ccc;
+    background: #f5f5f5;
+    padding: 0.15rem 0.5rem;
+  }
+
+  #panel-a .project-year {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    color: #ccc;
+  }
+
+  /* ===================== OPTION B — WARM PUNCH ===================== */
+  #panel-b .site { background: #f5f0e8; }
+
+  #panel-b .sidebar {
+    padding: 3rem 2rem;
+    border-right: 2px solid #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    background: #f5f0e8;
+  }
+
+  #panel-b .name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 2.5rem;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+    color: #1a1a1a;
+    margin-bottom: 0.6rem;
+  }
+
+  #panel-b .title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    color: #999;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 2.5rem;
+  }
+
+  #panel-b .nav { display: flex; flex-direction: column; }
+
+  #panel-b .nav a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-decoration: none;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #e0d5c5;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #panel-b .nav a .hint { color: #c0b090; font-weight: 400; font-size: 0.75rem; }
+
+  #panel-b .social {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  #panel-b .social a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    color: #bbb;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  #panel-b .main { padding: 3rem 2.5rem; }
+
+  #panel-b .featured {
+    background: #d44d0a;
+    color: #fff;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #panel-b .featured-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: -0.03em;
+  }
+
+  #panel-b .featured-sub {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.2rem;
+  }
+
+  #panel-b .featured-arrow { font-size: 1.5rem; color: rgba(255,255,255,0.4); }
+
+  #panel-b .section-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #c0a880;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0d5c5;
+  }
+
+  #panel-b .project {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid #e8e0d0;
+  }
+
+  #panel-b .project-left { display: flex; align-items: baseline; gap: 0.75rem; }
+
+  #panel-b .project-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
+    color: #1a1a1a;
+  }
+
+  #panel-b .project-tag {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #c0a880;
+    background: #ece5d5;
+    padding: 0.15rem 0.5rem;
+  }
+
+  #panel-b .project-year {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    color: #c0a880;
+  }
+
+  /* ===================== OPTION C — SPACE/TECH ===================== */
+  #panel-c .site { background: #0c0c0f; }
+
+  #panel-c .sidebar {
+    padding: 3rem 2rem;
+    border-right: 1px solid #1e1e28;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #panel-c .name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    color: #fff;
+    margin-bottom: 0.6rem;
+  }
+
+  #panel-c .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem;
+    color: #555;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 2.5rem;
+  }
+
+  #panel-c .nav { display: flex; flex-direction: column; }
+
+  #panel-c .nav a {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ccc;
+    text-decoration: none;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #1a1a22;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #panel-c .nav a .hint { color: #333; font-weight: 400; font-size: 0.75rem; }
+
+  #panel-c .social {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  #panel-c .social a {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    color: #444;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  #panel-c .main { padding: 3rem 2.5rem; }
+
+  #panel-c .featured {
+    background: linear-gradient(135deg, #5c35e8, #9b50f0);
+    color: #fff;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #panel-c .featured-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: -0.03em;
+  }
+
+  #panel-c .featured-sub {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.2rem;
+  }
+
+  #panel-c .featured-arrow { font-size: 1.5rem; color: rgba(255,255,255,0.3); }
+
+  #panel-c .section-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #333;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #1a1a22;
+  }
+
+  #panel-c .project {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid #141418;
+  }
+
+  #panel-c .project-left { display: flex; align-items: baseline; gap: 0.75rem; }
+
+  #panel-c .project-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
+    color: #ddd;
+  }
+
+  #panel-c .project-tag {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #444;
+    background: #1a1a22;
+    padding: 0.15rem 0.5rem;
+  }
+
+  #panel-c .project-year {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    color: #444;
+  }
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" onclick="show('a')">A — Stark (Syne · B&W)</div>
+  <div class="tab" onclick="show('b')">B — Warm Punch (Outfit · Cream+Orange)</div>
+  <div class="tab" onclick="show('c')">C — Space/Tech (Space Grotesk · Dark+Purple)</div>
+</div>
+
+<!-- PANEL A -->
+<div id="panel-a" class="panel active">
+  <div class="site split">
+    <div class="sidebar">
+      <div class="name">Doug<br>March</div>
+      <div class="title">Designer & Developer</div>
+      <nav class="nav">
+        <a href="#">Work <span class="hint">selected projects</span></a>
+        <a href="#">About <span class="hint">background</span></a>
+        <a href="#" style="color:#aaa;">spaceman.llc <span class="hint">↗</span></a>
+      </nav>
+      <div class="social">
+        <a href="#">GitHub ↗</a>
+        <a href="#">Twitter / X ↗</a>
+        <a href="#">LinkedIn ↗</a>
+        <a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="main">
+      <div class="featured">
+        <div>
+          <div class="featured-name">Spaceman</div>
+          <div class="featured-sub">Current focus · spaceman.llc ↗</div>
+        </div>
+        <div class="featured-arrow">→</div>
+      </div>
+      <div class="section-label">Selected Work</div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Project Alpha</div><div class="project-tag">SaaS</div></div>
+        <div class="project-year">2023</div>
+      </div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Client Work</div><div class="project-tag">Design</div></div>
+        <div class="project-year">2023</div>
+      </div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Another Build</div><div class="project-tag">Product</div></div>
+        <div class="project-year">2022</div>
+      </div>
+      <div class="section-label" style="margin-top:1.5rem;">Experiments & Side Projects</div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Thing I Made</div><div class="project-tag">AI</div></div>
+        <div class="project-year">2024 ↗</div>
+      </div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Open Source Tool</div><div class="project-tag">OSS</div></div>
+        <div class="project-year">2023 ↗</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL B -->
+<div id="panel-b" class="panel">
+  <div class="site split">
+    <div class="sidebar">
+      <div class="name">Doug<br>March</div>
+      <div class="title">Designer & Developer</div>
+      <nav class="nav">
+        <a href="#">Work <span class="hint">selected projects</span></a>
+        <a href="#">About <span class="hint">background</span></a>
+        <a href="#" style="color:#aaa;">spaceman.llc <span class="hint">↗</span></a>
+      </nav>
+      <div class="social">
+        <a href="#">GitHub ↗</a>
+        <a href="#">Twitter / X ↗</a>
+        <a href="#">LinkedIn ↗</a>
+        <a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="main">
+      <div class="featured">
+        <div>
+          <div class="featured-name">Spaceman</div>
+          <div class="featured-sub">Current focus · spaceman.llc ↗</div>
+        </div>
+        <div class="featured-arrow">→</div>
+      </div>
+      <div class="section-label">Selected Work</div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Project Alpha</div><div class="project-tag">SaaS</div></div>
+        <div class="project-year">2023</div>
+      </div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Client Work</div><div class="project-tag">Design</div></div>
+        <div class="project-year">2023</div>
+      </div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Another Build</div><div class="project-tag">Product</div></div>
+        <div class="project-year">2022</div>
+      </div>
+      <div class="section-label" style="margin-top:1.5rem;">Experiments & Side Projects</div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Thing I Made</div><div class="project-tag">AI</div></div>
+        <div class="project-year">2024 ↗</div>
+      </div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Open Source Tool</div><div class="project-tag">OSS</div></div>
+        <div class="project-year">2023 ↗</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL C -->
+<div id="panel-c" class="panel">
+  <div class="site split">
+    <div class="sidebar">
+      <div class="name">Doug<br>March</div>
+      <div class="title">Designer & Developer</div>
+      <nav class="nav">
+        <a href="#">Work <span class="hint">selected projects</span></a>
+        <a href="#">About <span class="hint">background</span></a>
+        <a href="#" style="color:#333;">spaceman.llc <span class="hint">↗</span></a>
+      </nav>
+      <div class="social">
+        <a href="#">GitHub ↗</a>
+        <a href="#">Twitter / X ↗</a>
+        <a href="#">LinkedIn ↗</a>
+        <a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="main">
+      <div class="featured">
+        <div>
+          <div class="featured-name">Spaceman</div>
+          <div class="featured-sub">Current focus · spaceman.llc ↗</div>
+        </div>
+        <div class="featured-arrow">→</div>
+      </div>
+      <div class="section-label">Selected Work</div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Project Alpha</div><div class="project-tag">SaaS</div></div>
+        <div class="project-year">2023</div>
+      </div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Client Work</div><div class="project-tag">Design</div></div>
+        <div class="project-year">2023</div>
+      </div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Another Build</div><div class="project-tag">Product</div></div>
+        <div class="project-year">2022</div>
+      </div>
+      <div class="section-label" style="margin-top:1.5rem;">Experiments & Side Projects</div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Thing I Made</div><div class="project-tag">AI</div></div>
+        <div class="project-year">2024 ↗</div>
+      </div>
+      <div class="project">
+        <div class="project-left"><div class="project-name">Open Source Tool</div><div class="project-tag">OSS</div></div>
+        <div class="project-year">2023 ↗</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  document.querySelectorAll('.tab')[id.charCodeAt(0) - 97].classList.add('active');
+}
+</script>
+
+</body>
+</html>

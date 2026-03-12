@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 Directions — Doug March</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Instrument+Sans:wght@400;600;700&family=Bebas+Neue&family=Barlow:wght@400;700&family=Barlow+Condensed:wght@700;800&family=Bricolage+Grotesque:wght@400;600;800&family=Cormorant+Garamond:ital,wght@1,400;1,700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Unbounded:wght@700;900&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;600&family=Fraunces:ital,wght@1,700;1,900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #111; padding: 2rem; font-family: system-ui, sans-serif; }
+h1 { color: #555; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; margin-bottom: 2rem; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+
+.card-label {
+  background: #000;
+  color: #666;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+.card-label span { color: #333; }
+
+/* ─── SHARED SITE STRUCTURE ─── */
+.site {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  height: 380px;
+}
+
+.sb { padding: 1.5rem 1.25rem; display: flex; flex-direction: column; }
+.mn { padding: 1.5rem; overflow: hidden; }
+
+.name-block { margin-bottom: 0.5rem; }
+.sub-block { margin-bottom: 1.5rem; }
+.nav-block { display: flex; flex-direction: column; border-top-width: 1px; border-top-style: solid; }
+.nav-block a { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom-width: 1px; border-bottom-style: solid; text-decoration: none; font-size: 0.7rem; font-weight: 600; }
+.soc { margin-top: auto; display: flex; flex-direction: column; gap: 0.2rem; }
+.soc a { font-size: 0.6rem; text-decoration: none; }
+
+.feat { padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: flex-end; }
+.feat-name { font-size: 1.3rem; line-height: 1; }
+.feat-sub { font-size: 0.6rem; margin-top: 0.25rem; }
+.feat-link { font-size: 0.65rem; font-weight: 600; }
+
+.sec-head { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding-bottom: 0.35rem; border-bottom-width: 1px; border-bottom-style: solid; margin-bottom: 0.1rem; }
+.proj { display: flex; justify-content: space-between; align-items: center; padding: 0.45rem 0; border-bottom-width: 1px; border-bottom-style: solid; }
+.proj-name { font-size: 0.85rem; }
+.proj-tag { font-size: 0.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.1rem 0.35rem; }
+.proj-yr { font-size: 0.6rem; }
+.proj-l { display: flex; align-items: center; gap: 0.5rem; }
+
+
+/* ══════════════════════════════════
+   01 — WARM PAPER
+   Instrument Serif · Cream · Terracotta
+══════════════════════════════════ */
+.t1 { background: #F2EDE4; }
+.t1 .sb { background: #EAE3D7; border-right: 1px solid #D8CFBF; }
+.t1 .name-block { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.9rem; letter-spacing: -0.02em; line-height: 0.95; color: #1C1714; }
+.t1 .sub-block { font-family: 'Instrument Sans', sans-serif; font-size: 0.65rem; color: #9A8070; margin-top: 0.4rem; }
+.t1 .nav-block { border-top-color: #D8CFBF; }
+.t1 .nav-block a { border-bottom-color: #D8CFBF; color: #1C1714; font-family: 'Instrument Sans', sans-serif; }
+.t1 .nav-block a span { color: #C4B5A5; font-weight: 400; font-size: 0.6rem; }
+.t1 .soc a { color: #C4B5A5; font-family: 'Instrument Sans', sans-serif; }
+.t1 .feat { background: #1C1714; }
+.t1 .feat-name { font-family: 'Instrument Serif', serif; font-style: italic; color: #F2EDE4; letter-spacing: -0.02em; }
+.t1 .feat-sub { font-family: 'Instrument Sans', sans-serif; color: #5A4E44; }
+.t1 .feat-link { color: #C4521A; font-family: 'Instrument Sans', sans-serif; }
+.t1 .sec-head { color: #C4B5A5; border-bottom-color: #D8CFBF; font-family: 'Instrument Sans', sans-serif; }
+.t1 .proj { border-bottom-color: #E0D8CC; }
+.t1 .proj-name { font-family: 'Instrument Serif', serif; color: #1C1714; }
+.t1 .proj-tag { background: #EAE3D7; color: #9A8070; border: 1px solid #D8CFBF; font-family: 'Instrument Sans', sans-serif; }
+.t1 .proj-yr { color: #C4B5A5; font-family: 'Instrument Sans', sans-serif; }
+
+
+/* ══════════════════════════════════
+   02 — BRUTALIST PRINT
+   Bebas Neue · White · Hard Red
+══════════════════════════════════ */
+.t2 { background: #fff; }
+.t2 .sb { background: #fff; border-right: 3px solid #000; }
+.t2 .name-block { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; letter-spacing: 0.02em; line-height: 0.85; color: #000; }
+.t2 .sub-block { font-family: 'Barlow', sans-serif; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-top: 0.3rem; }
+.t2 .nav-block { border-top-color: #000; border-top-width: 2px; }
+.t2 .nav-block a { border-bottom-color: #e0e0e0; color: #000; font-family: 'Barlow', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.65rem; }
+.t2 .nav-block a span { color: #ccc; font-weight: 400; }
+.t2 .soc a { color: #bbb; font-family: 'Barlow', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.55rem; }
+.t2 .feat { background: #E01F1F; border-left: 6px solid #900; }
+.t2 .feat-name { font-family: 'Bebas Neue', sans-serif; color: #fff; letter-spacing: 0.02em; font-size: 1.6rem; }
+.t2 .feat-sub { font-family: 'Barlow', sans-serif; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em; }
+.t2 .feat-link { color: #fff; font-family: 'Barlow', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; }
+.t2 .sec-head { color: #000; border-bottom-color: #000; border-bottom-width: 2px; font-family: 'Barlow', sans-serif; }
+.t2 .proj { border-bottom-color: #f0f0f0; }
+.t2 .proj-name { font-family: 'Bebas Neue', sans-serif; color: #000; font-size: 1rem; letter-spacing: 0.02em; }
+.t2 .proj-tag { background: #f5f5f5; color: #999; font-family: 'Barlow', sans-serif; }
+.t2 .proj-yr { color: #ccc; font-family: 'Barlow', sans-serif; }
+
+
+/* ══════════════════════════════════
+   03 — MIDNIGHT AMBER
+   Bricolage Grotesque · Near-Black · Amber
+══════════════════════════════════ */
+.t3 { background: #0F0E0C; }
+.t3 .sb { background: #0A0906; border-right: 1px solid #1E1C18; }
+.t3 .name-block { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.8rem; letter-spacing: -0.04em; line-height: 0.9; color: #F0E8D8; }
+.t3 .sub-block { font-family: 'Bricolage Grotesque', sans-serif; font-size: 0.62rem; font-weight: 400; color: #4A4438; margin-top: 0.4rem; }
+.t3 .nav-block { border-top-color: #1E1C18; }
+.t3 .nav-block a { border-bottom-color: #1E1C18; color: #8A7E6A; font-family: 'Bricolage Grotesque', sans-serif; }
+.t3 .nav-block a span { color: #3A3830; font-weight: 400; }
+.t3 .soc a { color: #3A3830; font-family: 'Bricolage Grotesque', sans-serif; }
+.t3 .feat { background: #1E1C18; border-left: 3px solid #F59E0B; }
+.t3 .feat-name { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; color: #F0E8D8; letter-spacing: -0.03em; }
+.t3 .feat-sub { font-family: 'Bricolage Grotesque', sans-serif; color: #4A4438; }
+.t3 .feat-link { color: #F59E0B; font-family: 'Bricolage Grotesque', sans-serif; }
+.t3 .sec-head { color: #3A3830; border-bottom-color: #1E1C18; font-family: 'Bricolage Grotesque', sans-serif; }
+.t3 .proj { border-bottom-color: #1A1814; }
+.t3 .proj-name { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; color: #C8BEA8; }
+.t3 .proj-tag { background: #1E1C18; color: #4A4438; font-family: 'Bricolage Grotesque', sans-serif; }
+.t3 .proj-yr { color: #3A3830; font-family: 'Bricolage Grotesque', sans-serif; }
+
+
+/* ══════════════════════════════════
+   04 — GILT & PARCHMENT
+   Cormorant Garamond · Parchment · Gold
+══════════════════════════════════ */
+.t4 { background: #FAF7EF; }
+.t4 .sb { background: #F3EEE2; border-right: 1px solid #DDD0B0; }
+.t4 .name-block { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 700; font-size: 2.2rem; letter-spacing: -0.01em; line-height: 0.9; color: #2A2010; }
+.t4 .sub-block { font-family: 'DM Sans', sans-serif; font-size: 0.6rem; font-weight: 400; color: #9A8860; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 0.35rem; }
+.t4 .nav-block { border-top-color: #DDD0B0; }
+.t4 .nav-block a { border-bottom-color: #DDD0B0; color: #2A2010; font-family: 'DM Sans', sans-serif; font-size: 0.65rem; }
+.t4 .nav-block a span { color: #C0A870; font-weight: 400; }
+.t4 .soc a { color: #C0A870; font-family: 'DM Sans', sans-serif; }
+.t4 .feat { background: #2A2010; border-bottom: 2px solid #B8915A; }
+.t4 .feat-name { font-family: 'Cormorant Garamond', serif; font-style: italic; color: #F3EEE2; }
+.t4 .feat-sub { font-family: 'DM Sans', sans-serif; color: #6A5030; }
+.t4 .feat-link { color: #B8915A; font-family: 'DM Sans', sans-serif; }
+.t4 .sec-head { color: #C0A870; border-bottom-color: #DDD0B0; font-family: 'DM Sans', sans-serif; }
+.t4 .proj { border-bottom-color: #EAE0C8; }
+.t4 .proj-name { font-family: 'Cormorant Garamond', serif; font-style: italic; color: #2A2010; font-size: 1rem; }
+.t4 .proj-tag { background: #F3EEE2; color: #9A8860; border: 1px solid #DDD0B0; font-family: 'DM Sans', sans-serif; }
+.t4 .proj-yr { color: #C0A870; font-family: 'DM Sans', sans-serif; }
+
+
+/* ══════════════════════════════════
+   05 — BLUEPRINT
+   Space Mono · Deep Navy · Cyan
+══════════════════════════════════ */
+.t5 { background: #081729; }
+.t5 .sb { background: #060F1C; border-right: 1px solid #0D2440; }
+.t5 .name-block { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 1.2rem; letter-spacing: -0.02em; line-height: 1.1; color: #C8E0F4; }
+.t5 .sub-block { font-family: 'Space Mono', monospace; font-size: 0.55rem; color: #2A4A6A; margin-top: 0.35rem; }
+.t5 .nav-block { border-top-color: #0D2440; }
+.t5 .nav-block a { border-bottom-color: #0D2440; color: #5A8AAA; font-family: 'Space Mono', monospace; font-size: 0.6rem; }
+.t5 .nav-block a span { color: #1A3050; font-weight: 400; }
+.t5 .soc a { color: #1A3050; font-family: 'Space Mono', monospace; font-size: 0.55rem; }
+.t5 .feat { background: #0A1E34; border: 1px solid #00B4D8; }
+.t5 .feat-name { font-family: 'Space Mono', monospace; font-weight: 700; color: #00D4FF; font-size: 1.1rem; }
+.t5 .feat-sub { font-family: 'Space Mono', monospace; font-size: 0.55rem; color: #2A4A6A; }
+.t5 .feat-link { color: #00D4FF; font-family: 'Space Mono', monospace; font-size: 0.55rem; }
+.t5 .sec-head { color: #1A3050; border-bottom-color: #0D2440; font-family: 'Space Mono', monospace; font-size: 0.5rem; }
+.t5 .proj { border-bottom-color: #0A1828; }
+.t5 .proj-name { font-family: 'Space Mono', monospace; color: #8AAAC8; font-size: 0.75rem; }
+.t5 .proj-tag { background: #0A1E34; color: #2A4A6A; border: 1px solid #0D2440; font-family: 'Space Mono', monospace; font-size: 0.45rem; }
+.t5 .proj-yr { color: #1A3050; font-family: 'Space Mono', monospace; font-size: 0.55rem; }
+
+
+/* ══════════════════════════════════
+   06 — EDITORIAL RED
+   Playfair Display · White · Vivid Red
+══════════════════════════════════ */
+.t6 { background: #FEFEFE; }
+.t6 .sb { background: #FEFEFE; border-right: 4px solid #000; }
+.t6 .name-block { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.8rem; letter-spacing: -0.01em; line-height: 0.95; color: #000; }
+.t6 .sub-block { font-family: 'Barlow', sans-serif; font-size: 0.6rem; font-weight: 400; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.3rem; }
+.t6 .nav-block { border-top-color: #000; border-top-width: 2px; }
+.t6 .nav-block a { border-bottom-color: #eee; color: #000; font-family: 'Barlow', sans-serif; font-size: 0.68rem; }
+.t6 .nav-block a span { color: #ccc; font-weight: 400; }
+.t6 .soc a { color: #ccc; font-family: 'Barlow', sans-serif; }
+.t6 .feat { background: #D92B2B; }
+.t6 .feat-name { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; color: #fff; }
+.t6 .feat-sub { font-family: 'Barlow', sans-serif; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em; }
+.t6 .feat-link { color: rgba(255,255,255,0.8); font-family: 'Barlow', sans-serif; text-transform: uppercase; font-size: 0.6rem; letter-spacing: 0.05em; }
+.t6 .sec-head { color: #999; border-bottom-color: #000; border-bottom-width: 2px; font-family: 'Barlow', sans-serif; }
+.t6 .proj { border-bottom-color: #f0f0f0; }
+.t6 .proj-name { font-family: 'Playfair Display', serif; color: #000; font-size: 0.9rem; }
+.t6 .proj-tag { background: #f8f8f8; color: #bbb; font-family: 'Barlow', sans-serif; }
+.t6 .proj-yr { color: #ccc; font-family: 'Barlow', sans-serif; }
+
+
+/* ══════════════════════════════════
+   07 — ELECTRIC
+   Unbounded · White · Electric Blue
+══════════════════════════════════ */
+.t7 { background: #fff; }
+.t7 .sb { background: #fff; border-right: 1px solid #E8E8E8; }
+.t7 .name-block { font-family: 'Unbounded', sans-serif; font-weight: 900; font-size: 1.1rem; letter-spacing: -0.04em; line-height: 1.0; color: #000; }
+.t7 .sub-block { font-family: 'Unbounded', sans-serif; font-size: 0.45rem; font-weight: 700; color: #ccc; letter-spacing: 0.02em; margin-top: 0.35rem; text-transform: uppercase; }
+.t7 .nav-block { border-top-color: #E8E8E8; }
+.t7 .nav-block a { border-bottom-color: #f5f5f5; color: #000; font-family: 'Unbounded', sans-serif; font-size: 0.55rem; letter-spacing: -0.01em; }
+.t7 .nav-block a span { color: #ddd; font-weight: 700; font-size: 0.5rem; }
+.t7 .soc a { color: #ddd; font-family: 'Unbounded', sans-serif; font-size: 0.5rem; }
+.t7 .feat { background: #1A5AFF; }
+.t7 .feat-name { font-family: 'Unbounded', sans-serif; font-weight: 900; color: #fff; font-size: 1.1rem; letter-spacing: -0.03em; }
+.t7 .feat-sub { font-family: 'Unbounded', sans-serif; font-size: 0.45rem; color: rgba(255,255,255,0.3); }
+.t7 .feat-link { color: rgba(255,255,255,0.8); font-family: 'Unbounded', sans-serif; font-size: 0.5rem; }
+.t7 .sec-head { color: #bbb; border-bottom-color: #E8E8E8; font-family: 'Unbounded', sans-serif; font-size: 0.45rem; }
+.t7 .proj { border-bottom-color: #f5f5f5; }
+.t7 .proj-name { font-family: 'Unbounded', sans-serif; font-weight: 700; color: #000; font-size: 0.65rem; letter-spacing: -0.02em; }
+.t7 .proj-tag { background: #f5f5f5; color: #bbb; font-family: 'Unbounded', sans-serif; font-size: 0.4rem; }
+.t7 .proj-yr { color: #ddd; font-family: 'Unbounded', sans-serif; font-size: 0.55rem; }
+
+
+/* ══════════════════════════════════
+   08 — SAGE & SLATE
+   DM Serif Display · Slate Blue · Sage
+══════════════════════════════════ */
+.t8 { background: #272C3B; }
+.t8 .sb { background: #1E2330; border-right: 1px solid #32384A; }
+.t8 .name-block { font-family: 'DM Serif Display', serif; font-size: 1.9rem; letter-spacing: -0.01em; line-height: 0.95; color: #E8EAF0; }
+.t8 .sub-block { font-family: 'DM Sans', sans-serif; font-size: 0.62rem; font-weight: 400; color: #4A5268; margin-top: 0.35rem; }
+.t8 .nav-block { border-top-color: #32384A; }
+.t8 .nav-block a { border-bottom-color: #32384A; color: #8890A8; font-family: 'DM Sans', sans-serif; }
+.t8 .nav-block a span { color: #323848; font-weight: 400; }
+.t8 .soc a { color: #323848; font-family: 'DM Sans', sans-serif; }
+.t8 .feat { background: #1A1E2A; border-left: 3px solid #7BBFAA; }
+.t8 .feat-name { font-family: 'DM Serif Display', serif; font-style: italic; color: #E8EAF0; }
+.t8 .feat-sub { font-family: 'DM Sans', sans-serif; color: #4A5268; }
+.t8 .feat-link { color: #7BBFAA; font-family: 'DM Sans', sans-serif; }
+.t8 .sec-head { color: #32384A; border-bottom-color: #32384A; font-family: 'DM Sans', sans-serif; }
+.t8 .proj { border-bottom-color: #222634; }
+.t8 .proj-name { font-family: 'DM Serif Display', serif; color: #B8BECE; font-size: 0.9rem; }
+.t8 .proj-tag { background: #1E2330; color: #4A5268; border: 1px solid #32384A; font-family: 'DM Sans', sans-serif; }
+.t8 .proj-yr { color: #4A5268; font-family: 'DM Sans', sans-serif; }
+
+
+/* ══════════════════════════════════
+   09 — DEEP MOCHA
+   Fraunces · Chocolate · Flame Orange
+══════════════════════════════════ */
+.t9 { background: #180E06; }
+.t9 .sb { background: #120A03; border-right: 1px solid #2A1A0A; }
+.t9 .name-block { font-family: 'Fraunces', serif; font-style: italic; font-weight: 900; font-size: 2rem; letter-spacing: -0.03em; line-height: 0.9; color: #F5DEB3; }
+.t9 .sub-block { font-family: 'Instrument Sans', sans-serif; font-size: 0.6rem; font-weight: 400; color: #5A3820; margin-top: 0.4rem; }
+.t9 .nav-block { border-top-color: #2A1A0A; }
+.t9 .nav-block a { border-bottom-color: #2A1A0A; color: #8A5A30; font-family: 'Instrument Sans', sans-serif; }
+.t9 .nav-block a span { color: #3A2010; font-weight: 400; }
+.t9 .soc a { color: #3A2010; font-family: 'Instrument Sans', sans-serif; }
+.t9 .feat { background: #2A1A0A; border-bottom: 2px solid #FF6B2B; }
+.t9 .feat-name { font-family: 'Fraunces', serif; font-style: italic; font-weight: 900; color: #F5DEB3; }
+.t9 .feat-sub { font-family: 'Instrument Sans', sans-serif; color: #5A3820; }
+.t9 .feat-link { color: #FF6B2B; font-family: 'Instrument Sans', sans-serif; }
+.t9 .sec-head { color: #3A2010; border-bottom-color: #2A1A0A; font-family: 'Instrument Sans', sans-serif; }
+.t9 .proj { border-bottom-color: #200E04; }
+.t9 .proj-name { font-family: 'Fraunces', serif; font-style: italic; color: #C8A070; font-size: 0.95rem; }
+.t9 .proj-tag { background: #2A1A0A; color: #5A3820; font-family: 'Instrument Sans', sans-serif; }
+.t9 .proj-yr { color: #3A2010; font-family: 'Instrument Sans', sans-serif; }
+
+
+/* ══════════════════════════════════
+   10 — COOL CONCRETE
+   Syne · Concrete · Electric Green
+══════════════════════════════════ */
+.t10 { background: #ECEAE8; }
+.t10 .sb { background: #E4E1DE; border-right: 2px solid #C8C4BE; }
+.t10 .name-block { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; letter-spacing: -0.04em; line-height: 0.9; color: #141210; }
+.t10 .sub-block { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.65rem; color: #989390; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.3rem; }
+.t10 .nav-block { border-top-color: #C8C4BE; }
+.t10 .nav-block a { border-bottom-color: #D8D4CE; color: #141210; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.65rem; }
+.t10 .nav-block a span { color: #C0BCBA; font-weight: 400; text-transform: none; }
+.t10 .soc a { color: #C0BCBA; font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; font-size: 0.55rem; letter-spacing: 0.04em; }
+.t10 .feat { background: #141210; }
+.t10 .feat-name { font-family: 'Syne', sans-serif; font-weight: 800; color: #1ADB6D; font-size: 1.25rem; letter-spacing: -0.03em; }
+.t10 .feat-sub { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; color: #3A3830; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.55rem; }
+.t10 .feat-link { color: #1ADB6D; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.6rem; }
+.t10 .sec-head { color: #B0ACA8; border-bottom-color: #C8C4BE; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+.t10 .proj { border-bottom-color: #D8D4CE; }
+.t10 .proj-name { font-family: 'Syne', sans-serif; font-weight: 700; color: #141210; font-size: 0.85rem; letter-spacing: -0.02em; }
+.t10 .proj-tag { background: #E4E1DE; color: #A0A09A; border: 1px solid #C8C4BE; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+.t10 .proj-yr { color: #B0ACA8; font-family: 'Barlow Condensed', sans-serif; font-size: 0.55rem; }
+
+</style>
+</head>
+<body>
+<h1>10 Visual Directions — doug-march.com — Tell me what speaks to you</h1>
+
+<div class="grid">
+
+<!-- ── 01 ── -->
+<div class="card">
+  <div class="card-label">01 — Warm Paper <span>Instrument Serif · Cream · Terracotta</span></div>
+  <div class="site t1">
+    <div class="sb">
+      <div class="name-block">Doug<br>March</div>
+      <div class="sub-block">Designer & Developer</div>
+      <div class="nav-block">
+        <a href="#">Work <span>projects</span></a>
+        <a href="#">About <span>me</span></a>
+        <a href="#">spaceman.llc <span>↗</span></a>
+      </div>
+      <div class="soc">
+        <a href="#">GitHub ↗</a><a href="#">Twitter ↗</a><a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="mn t1">
+      <div class="feat t1">
+        <div><div class="feat-name t1">Spaceman</div><div class="feat-sub t1">Current focus</div></div>
+        <div class="feat-link t1">Visit ↗</div>
+      </div>
+      <div class="sec-head t1">Selected Work</div>
+      <div class="proj t1"><div class="proj-l"><div class="proj-name t1">Project Alpha</div><div class="proj-tag t1">SaaS</div></div><div class="proj-yr t1">2023</div></div>
+      <div class="proj t1"><div class="proj-l"><div class="proj-name t1">Client Work</div><div class="proj-tag t1">Design</div></div><div class="proj-yr t1">2022</div></div>
+      <div class="sec-head t1" style="margin-top:0.75rem">Experiments</div>
+      <div class="proj t1"><div class="proj-l"><div class="proj-name t1">Side Project</div><div class="proj-tag t1">AI</div></div><div class="proj-yr t1">2024 ↗</div></div>
+      <div class="proj t1"><div class="proj-l"><div class="proj-name t1">OSS Tool</div><div class="proj-tag t1">OSS</div></div><div class="proj-yr t1">2023 ↗</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 02 ── -->
+<div class="card">
+  <div class="card-label">02 — Brutalist Print <span>Bebas Neue · White · Hard Red</span></div>
+  <div class="site t2">
+    <div class="sb">
+      <div class="name-block">Doug<br>March</div>
+      <div class="sub-block">Designer & Developer</div>
+      <div class="nav-block">
+        <a href="#">Work <span>projects</span></a>
+        <a href="#">About <span>me</span></a>
+        <a href="#">spaceman.llc <span>↗</span></a>
+      </div>
+      <div class="soc">
+        <a href="#">GitHub ↗</a><a href="#">Twitter ↗</a><a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="mn t2">
+      <div class="feat t2">
+        <div><div class="feat-name t2">Spaceman</div><div class="feat-sub t2">Current focus</div></div>
+        <div class="feat-link t2">Visit ↗</div>
+      </div>
+      <div class="sec-head t2">Selected Work</div>
+      <div class="proj t2"><div class="proj-l"><div class="proj-name t2">Project Alpha</div><div class="proj-tag t2">SaaS</div></div><div class="proj-yr t2">2023</div></div>
+      <div class="proj t2"><div class="proj-l"><div class="proj-name t2">Client Work</div><div class="proj-tag t2">Design</div></div><div class="proj-yr t2">2022</div></div>
+      <div class="sec-head t2" style="margin-top:0.75rem">Experiments</div>
+      <div class="proj t2"><div class="proj-l"><div class="proj-name t2">Side Project</div><div class="proj-tag t2">AI</div></div><div class="proj-yr t2">2024 ↗</div></div>
+      <div class="proj t2"><div class="proj-l"><div class="proj-name t2">OSS Tool</div><div class="proj-tag t2">OSS</div></div><div class="proj-yr t2">2023 ↗</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 03 ── -->
+<div class="card">
+  <div class="card-label">03 — Midnight Amber <span>Bricolage Grotesque · Near-Black · Amber</span></div>
+  <div class="site t3">
+    <div class="sb">
+      <div class="name-block">Doug<br>March</div>
+      <div class="sub-block">Designer & Developer</div>
+      <div class="nav-block">
+        <a href="#">Work <span>projects</span></a>
+        <a href="#">About <span>me</span></a>
+        <a href="#">spaceman.llc <span>↗</span></a>
+      </div>
+      <div class="soc">
+        <a href="#">GitHub ↗</a><a href="#">Twitter ↗</a><a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="mn t3">
+      <div class="feat t3">
+        <div><div class="feat-name t3">Spaceman</div><div class="feat-sub t3">Current focus</div></div>
+        <div class="feat-link t3">Visit ↗</div>
+      </div>
+      <div class="sec-head t3">Selected Work</div>
+      <div class="proj t3"><div class="proj-l"><div class="proj-name t3">Project Alpha</div><div class="proj-tag t3">SaaS</div></div><div class="proj-yr t3">2023</div></div>
+      <div class="proj t3"><div class="proj-l"><div class="proj-name t3">Client Work</div><div class="proj-tag t3">Design</div></div><div class="proj-yr t3">2022</div></div>
+      <div class="sec-head t3" style="margin-top:0.75rem">Experiments</div>
+      <div class="proj t3"><div class="proj-l"><div class="proj-name t3">Side Project</div><div class="proj-tag t3">AI</div></div><div class="proj-yr t3">2024 ↗</div></div>
+      <div class="proj t3"><div class="proj-l"><div class="proj-name t3">OSS Tool</div><div class="proj-tag t3">OSS</div></div><div class="proj-yr t3">2023 ↗</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 04 ── -->
+<div class="card">
+  <div class="card-label">04 — Gilt & Parchment <span>Cormorant Garamond · Parchment · Gold</span></div>
+  <div class="site t4">
+    <div class="sb">
+      <div class="name-block">Doug<br>March</div>
+      <div class="sub-block">Designer & Developer</div>
+      <div class="nav-block">
+        <a href="#">Work <span>projects</span></a>
+        <a href="#">About <span>me</span></a>
+        <a href="#">spaceman.llc <span>↗</span></a>
+      </div>
+      <div class="soc">
+        <a href="#">GitHub ↗</a><a href="#">Twitter ↗</a><a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="mn t4">
+      <div class="feat t4">
+        <div><div class="feat-name t4">Spaceman</div><div class="feat-sub t4">Current focus</div></div>
+        <div class="feat-link t4">Visit ↗</div>
+      </div>
+      <div class="sec-head t4">Selected Work</div>
+      <div class="proj t4"><div class="proj-l"><div class="proj-name t4">Project Alpha</div><div class="proj-tag t4">SaaS</div></div><div class="proj-yr t4">2023</div></div>
+      <div class="proj t4"><div class="proj-l"><div class="proj-name t4">Client Work</div><div class="proj-tag t4">Design</div></div><div class="proj-yr t4">2022</div></div>
+      <div class="sec-head t4" style="margin-top:0.75rem">Experiments</div>
+      <div class="proj t4"><div class="proj-l"><div class="proj-name t4">Side Project</div><div class="proj-tag t4">AI</div></div><div class="proj-yr t4">2024 ↗</div></div>
+      <div class="proj t4"><div class="proj-l"><div class="proj-name t4">OSS Tool</div><div class="proj-tag t4">OSS</div></div><div class="proj-yr t4">2023 ↗</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 05 ── -->
+<div class="card">
+  <div class="card-label">05 — Blueprint <span>Space Mono · Deep Navy · Cyan</span></div>
+  <div class="site t5">
+    <div class="sb">
+      <div class="name-block">Doug<br>March</div>
+      <div class="sub-block">Designer & Developer</div>
+      <div class="nav-block">
+        <a href="#">Work <span>projects</span></a>
+        <a href="#">About <span>me</span></a>
+        <a href="#">spaceman.llc <span>↗</span></a>
+      </div>
+      <div class="soc">
+        <a href="#">GitHub ↗</a><a href="#">Twitter ↗</a><a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="mn t5">
+      <div class="feat t5">
+        <div><div class="feat-name t5">Spaceman</div><div class="feat-sub t5">Current focus</div></div>
+        <div class="feat-link t5">Visit ↗</div>
+      </div>
+      <div class="sec-head t5">Selected Work</div>
+      <div class="proj t5"><div class="proj-l"><div class="proj-name t5">Project Alpha</div><div class="proj-tag t5">SaaS</div></div><div class="proj-yr t5">2023</div></div>
+      <div class="proj t5"><div class="proj-l"><div class="proj-name t5">Client Work</div><div class="proj-tag t5">Design</div></div><div class="proj-yr t5">2022</div></div>
+      <div class="sec-head t5" style="margin-top:0.75rem">Experiments</div>
+      <div class="proj t5"><div class="proj-l"><div class="proj-name t5">Side Project</div><div class="proj-tag t5">AI</div></div><div class="proj-yr t5">2024 ↗</div></div>
+      <div class="proj t5"><div class="proj-l"><div class="proj-name t5">OSS Tool</div><div class="proj-tag t5">OSS</div></div><div class="proj-yr t5">2023 ↗</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 06 ── -->
+<div class="card">
+  <div class="card-label">06 — Editorial Red <span>Playfair Display · White · Vivid Red</span></div>
+  <div class="site t6">
+    <div class="sb">
+      <div class="name-block">Doug<br>March</div>
+      <div class="sub-block">Designer & Developer</div>
+      <div class="nav-block">
+        <a href="#">Work <span>projects</span></a>
+        <a href="#">About <span>me</span></a>
+        <a href="#">spaceman.llc <span>↗</span></a>
+      </div>
+      <div class="soc">
+        <a href="#">GitHub ↗</a><a href="#">Twitter ↗</a><a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="mn t6">
+      <div class="feat t6">
+        <div><div class="feat-name t6">Spaceman</div><div class="feat-sub t6">Current focus</div></div>
+        <div class="feat-link t6">Visit ↗</div>
+      </div>
+      <div class="sec-head t6">Selected Work</div>
+      <div class="proj t6"><div class="proj-l"><div class="proj-name t6">Project Alpha</div><div class="proj-tag t6">SaaS</div></div><div class="proj-yr t6">2023</div></div>
+      <div class="proj t6"><div class="proj-l"><div class="proj-name t6">Client Work</div><div class="proj-tag t6">Design</div></div><div class="proj-yr t6">2022</div></div>
+      <div class="sec-head t6" style="margin-top:0.75rem">Experiments</div>
+      <div class="proj t6"><div class="proj-l"><div class="proj-name t6">Side Project</div><div class="proj-tag t6">AI</div></div><div class="proj-yr t6">2024 ↗</div></div>
+      <div class="proj t6"><div class="proj-l"><div class="proj-name t6">OSS Tool</div><div class="proj-tag t6">OSS</div></div><div class="proj-yr t6">2023 ↗</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 07 ── -->
+<div class="card">
+  <div class="card-label">07 — Electric <span>Unbounded · White · Electric Blue</span></div>
+  <div class="site t7">
+    <div class="sb">
+      <div class="name-block">Doug<br>March</div>
+      <div class="sub-block">Designer & Developer</div>
+      <div class="nav-block">
+        <a href="#">Work <span>→</span></a>
+        <a href="#">About <span>→</span></a>
+        <a href="#">spaceman.llc <span>↗</span></a>
+      </div>
+      <div class="soc">
+        <a href="#">GitHub ↗</a><a href="#">Twitter ↗</a><a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="mn t7">
+      <div class="feat t7">
+        <div><div class="feat-name t7">Spaceman</div><div class="feat-sub t7">Current focus</div></div>
+        <div class="feat-link t7">Visit ↗</div>
+      </div>
+      <div class="sec-head t7">Selected Work</div>
+      <div class="proj t7"><div class="proj-l"><div class="proj-name t7">Project Alpha</div><div class="proj-tag t7">SaaS</div></div><div class="proj-yr t7">2023</div></div>
+      <div class="proj t7"><div class="proj-l"><div class="proj-name t7">Client Work</div><div class="proj-tag t7">Design</div></div><div class="proj-yr t7">2022</div></div>
+      <div class="sec-head t7" style="margin-top:0.75rem">Experiments</div>
+      <div class="proj t7"><div class="proj-l"><div class="proj-name t7">Side Project</div><div class="proj-tag t7">AI</div></div><div class="proj-yr t7">2024 ↗</div></div>
+      <div class="proj t7"><div class="proj-l"><div class="proj-name t7">OSS Tool</div><div class="proj-tag t7">OSS</div></div><div class="proj-yr t7">2023 ↗</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 08 ── -->
+<div class="card">
+  <div class="card-label">08 — Sage & Slate <span>DM Serif Display · Slate Blue · Sage</span></div>
+  <div class="site t8">
+    <div class="sb">
+      <div class="name-block">Doug<br>March</div>
+      <div class="sub-block">Designer & Developer</div>
+      <div class="nav-block">
+        <a href="#">Work <span>projects</span></a>
+        <a href="#">About <span>me</span></a>
+        <a href="#">spaceman.llc <span>↗</span></a>
+      </div>
+      <div class="soc">
+        <a href="#">GitHub ↗</a><a href="#">Twitter ↗</a><a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="mn t8">
+      <div class="feat t8">
+        <div><div class="feat-name t8">Spaceman</div><div class="feat-sub t8">Current focus</div></div>
+        <div class="feat-link t8">Visit ↗</div>
+      </div>
+      <div class="sec-head t8">Selected Work</div>
+      <div class="proj t8"><div class="proj-l"><div class="proj-name t8">Project Alpha</div><div class="proj-tag t8">SaaS</div></div><div class="proj-yr t8">2023</div></div>
+      <div class="proj t8"><div class="proj-l"><div class="proj-name t8">Client Work</div><div class="proj-tag t8">Design</div></div><div class="proj-yr t8">2022</div></div>
+      <div class="sec-head t8" style="margin-top:0.75rem">Experiments</div>
+      <div class="proj t8"><div class="proj-l"><div class="proj-name t8">Side Project</div><div class="proj-tag t8">AI</div></div><div class="proj-yr t8">2024 ↗</div></div>
+      <div class="proj t8"><div class="proj-l"><div class="proj-name t8">OSS Tool</div><div class="proj-tag t8">OSS</div></div><div class="proj-yr t8">2023 ↗</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 09 ── -->
+<div class="card">
+  <div class="card-label">09 — Deep Mocha <span>Fraunces · Chocolate · Flame Orange</span></div>
+  <div class="site t9">
+    <div class="sb">
+      <div class="name-block">Doug<br>March</div>
+      <div class="sub-block">Designer & Developer</div>
+      <div class="nav-block">
+        <a href="#">Work <span>projects</span></a>
+        <a href="#">About <span>me</span></a>
+        <a href="#">spaceman.llc <span>↗</span></a>
+      </div>
+      <div class="soc">
+        <a href="#">GitHub ↗</a><a href="#">Twitter ↗</a><a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="mn t9">
+      <div class="feat t9">
+        <div><div class="feat-name t9">Spaceman</div><div class="feat-sub t9">Current focus</div></div>
+        <div class="feat-link t9">Visit ↗</div>
+      </div>
+      <div class="sec-head t9">Selected Work</div>
+      <div class="proj t9"><div class="proj-l"><div class="proj-name t9">Project Alpha</div><div class="proj-tag t9">SaaS</div></div><div class="proj-yr t9">2023</div></div>
+      <div class="proj t9"><div class="proj-l"><div class="proj-name t9">Client Work</div><div class="proj-tag t9">Design</div></div><div class="proj-yr t9">2022</div></div>
+      <div class="sec-head t9" style="margin-top:0.75rem">Experiments</div>
+      <div class="proj t9"><div class="proj-l"><div class="proj-name t9">Side Project</div><div class="proj-tag t9">AI</div></div><div class="proj-yr t9">2024 ↗</div></div>
+      <div class="proj t9"><div class="proj-l"><div class="proj-name t9">OSS Tool</div><div class="proj-tag t9">OSS</div></div><div class="proj-yr t9">2023 ↗</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 10 ── -->
+<div class="card">
+  <div class="card-label">10 — Cool Concrete <span>Syne · Concrete Gray · Electric Green</span></div>
+  <div class="site t10">
+    <div class="sb">
+      <div class="name-block">Doug<br>March</div>
+      <div class="sub-block">Designer & Developer</div>
+      <div class="nav-block">
+        <a href="#">Work <span>projects</span></a>
+        <a href="#">About <span>me</span></a>
+        <a href="#">spaceman.llc <span>↗</span></a>
+      </div>
+      <div class="soc">
+        <a href="#">GitHub ↗</a><a href="#">Twitter ↗</a><a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="mn t10">
+      <div class="feat t10">
+        <div><div class="feat-name t10">Spaceman</div><div class="feat-sub t10">Current focus</div></div>
+        <div class="feat-link t10">Visit ↗</div>
+      </div>
+      <div class="sec-head t10">Selected Work</div>
+      <div class="proj t10"><div class="proj-l"><div class="proj-name t10">Project Alpha</div><div class="proj-tag t10">SaaS</div></div><div class="proj-yr t10">2023</div></div>
+      <div class="proj t10"><div class="proj-l"><div class="proj-name t10">Client Work</div><div class="proj-tag t10">Design</div></div><div class="proj-yr t10">2022</div></div>
+      <div class="sec-head t10" style="margin-top:0.75rem">Experiments</div>
+      <div class="proj t10"><div class="proj-l"><div class="proj-name t10">Side Project</div><div class="proj-tag t10">AI</div></div><div class="proj-yr t10">2024 ↗</div></div>
+      <div class="proj t10"><div class="proj-l"><div class="proj-name t10">OSS Tool</div><div class="proj-tag t10">OSS</div></div><div class="proj-yr t10">2023 ↗</div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /grid -->
+</body>
+</html>

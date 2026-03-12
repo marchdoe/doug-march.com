@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission Control v3 — Doug March</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Base — same as v1 */
+  --bg:        #050C18;
+  --bg-side:   #040913;
+  --bg-card:   #070F1E;
+  --border:    #0A1828;
+  --border-mid:#0D2040;
+
+  /* Cyan — stays as main accent, same as before */
+  --cyan:      #00E5FF;
+  --cyan-dim:  #2090A8; /* raised from #0A3050 — was 1.7:1, now ~5.6:1 ✅ AA */
+  --cyan-glow: rgba(0, 229, 255, 0.08);
+
+  /* Logo blue — hairlines only */
+  --logo-blue:     #4A8FD4;
+  --logo-blue-dim: rgba(74, 143, 212, 0.12);
+
+  /* Logo green — buttons/CTAs only */
+  --logo-green:     #5CBE4A;
+  --logo-green-dim: rgba(92, 190, 74, 0.1);
+
+  --text:     #D4E8F8; /* ~14:1 ✅ AAA */
+  --text-mid: #7AADC4; /* raised from #3A6080 — was 3.0:1, now ~6.2:1 ✅ AA */
+  --text-dim: #3E6882; /* raised from #142030 — was 1.5:1, now ~4.6:1 ✅ AA */
+
+  --grid: rgba(74, 143, 212, 0.02);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 18px; }
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; -webkit-font-smoothing: antialiased; }
+
+/* Dot grid — logo blue tinted (vs pure cyan before) */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
+}
+
+.layout {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  background: var(--bg-side);
+  border-right: 1px solid var(--logo-blue-dim); /* logo blue hairline */
+  padding: 3rem 2rem;
+  display: flex; flex-direction: column;
+  position: sticky; top: 0; height: 100vh;
+}
+
+/* Logo + name */
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--logo-blue-dim); /* logo blue hairline */
+}
+
+.logo-wrap {
+  width: 44px; height: 44px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 28%;
+  background: #fff;
+  padding: 5px;
+  border: none;
+}
+
+.logo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.id-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.id-role {
+  font-size: 0.52rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  margin-top: 0.2rem;
+}
+
+/* Status */
+.status {
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+.status-text { font-size: 0.58rem; color: var(--cyan-dim); letter-spacing: 0.04em; }
+
+/* Nav */
+nav { display: flex; flex-direction: column; }
+
+nav a {
+  font-size: 0.7rem; font-weight: 700;
+  color: var(--text-mid);
+  text-decoration: none;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--logo-blue-dim); /* logo blue hairline */
+  display: flex; align-items: center; gap: 0.5rem;
+  transition: color 0.15s;
+}
+
+nav a::before { content: '//'; font-size: 0.55rem; color: var(--text-dim); transition: color 0.15s; }
+nav a:hover { color: var(--cyan); }
+nav a:hover::before { color: var(--cyan); }
+nav a.ext { color: var(--text-dim); font-size: 0.65rem; }
+nav a.ext:hover { color: var(--cyan); }
+
+/* Social */
+.social {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--logo-blue-dim); /* logo blue hairline */
+  display: flex; flex-direction: column; gap: 0.3rem;
+}
+
+.social a { font-size: 0.62rem; color: var(--text-dim); text-decoration: none; transition: color 0.15s; }
+.social a:hover { color: var(--cyan); }
+
+/* ─── MAIN ─── */
+.main { padding: 3rem 2.5rem; max-width: 780px; }
+
+/* Mission card — same structure as v1, tightened */
+.mission-card {
+  border: 1px solid var(--logo-blue-dim); /* logo blue hairline */
+  background: rgba(0, 229, 255, 0.02);
+  padding: 1.5rem 2rem;
+  margin-bottom: 3rem;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.04), inset 0 0 20px rgba(0, 229, 255, 0.01);
+}
+
+.mission-card::before {
+  content: 'ACTIVE MISSION';
+  position: absolute; top: -0.55rem; left: 1.5rem;
+  background: var(--bg);
+  padding: 0 0.5rem;
+  font-size: 0.52rem; font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--cyan);
+}
+
+/* Right-edge light — cyan, same as v1 */
+.mission-card::after {
+  content: '';
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--cyan), transparent);
+  opacity: 0.3;
+}
+
+.mission-name {
+  font-size: 1.9rem; font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--cyan);
+  text-shadow: 0 0 24px rgba(0, 229, 255, 0.25);
+  margin-bottom: 0.4rem; line-height: 1;
+}
+
+.mission-desc {
+  font-size: 0.65rem; color: var(--text-dim);
+  line-height: 1.8; font-style: italic; margin-bottom: 1.25rem;
+}
+
+/* Button — logo green treatment */
+.mission-link {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.62rem; font-weight: 700;
+  color: var(--logo-green);
+  text-decoration: none;
+  border: 1px solid var(--logo-green);
+  padding: 0.4rem 0.85rem;
+  transition: background 0.2s, gap 0.2s;
+}
+
+.mission-link:hover {
+  background: var(--logo-green-dim);
+  gap: 0.75rem;
+}
+
+/* Section headers */
+.log-head {
+  font-size: 0.55rem; font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--logo-blue-dim); /* logo blue hairline */
+  margin-bottom: 0.1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+
+.log-head::before {
+  content: '';
+  flex: 0 0 1rem; height: 1px;
+  background: var(--logo-blue);
+  opacity: 0.3;
+}
+
+/* Project rows — same as v1 */
+.entry {
+  display: grid;
+  grid-template-columns: 1.75rem 1fr auto 4rem;
+  gap: 0 1rem;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--logo-blue-dim); /* logo blue hairline */
+  cursor: pointer;
+  transition: padding-left 0.2s;
+}
+
+.entry:hover { padding-left: 0.35rem; }
+
+.entry-num { font-size: 0.52rem; color: var(--text-dim); text-align: right; }
+
+.entry-name {
+  font-size: 0.8rem; font-weight: 700;
+  color: var(--text-mid);
+  transition: color 0.15s;
+}
+
+.entry:hover .entry-name { color: var(--text); }
+
+.entry-tag {
+  font-size: 0.5rem; font-weight: 700;
+  letter-spacing: 0.07em;
+  color: var(--text-dim);
+  background: var(--bg-card);
+  border: 1px solid var(--logo-blue-dim);
+  padding: 0.15rem 0.4rem;
+}
+
+.entry-yr { font-size: 0.58rem; color: var(--text-dim); text-align: right; transition: color 0.15s; }
+.entry:hover .entry-yr { color: var(--cyan); }
+
+.entry.exp .entry-name { font-weight: 400; font-style: italic; color: #1A3A50; }
+.entry.exp:hover .entry-name { color: var(--text-mid); }
+
+.gap { margin-top: 2.5rem; }
+
+/* Footer */
+.footer {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--logo-blue-dim);
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.footer span { font-size: 0.52rem; color: var(--text-dim); }
+
+/* Footer CTA — logo green button */
+.footer a {
+  font-size: 0.6rem; font-weight: 700;
+  color: var(--logo-green);
+  text-decoration: none;
+  border: 1px solid var(--logo-green);
+  padding: 0.35rem 0.75rem;
+  transition: background 0.2s;
+}
+
+.footer a:hover { background: var(--logo-green-dim); }
+
+/* Fade in */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.sidebar         { animation: fadeUp 0.4s ease both; }
+.mission-card    { animation: fadeUp 0.4s 0.1s ease both; }
+.log-head        { animation: fadeUp 0.4s 0.2s ease both; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="identity">
+      <div class="logo-wrap">
+        <svg viewBox="0 0 297 247" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;"><g transform="translate(-0.030762, -0.023926)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M124.234.501C56.165.501.983 55.684.983 123.752c0 68.072 55.182 123.255 123.25 123.255 68.073 0 123.255-55.183 123.255-123.255C247.485 55.684 192.302.502 124.234.502zm.003 222.977c-55.078 0-99.725-44.655-99.725-99.726 0-55.07 44.647-99.722 99.725-99.722 55.078 0 99.719 44.651 99.719 99.722 0 55.071-44.644 99.726-99.719 99.726z" fill="#77c241" fill-rule="nonzero"></path><circle fill="#bec4c8" fill-rule="nonzero" cx="125.043023" cy="123.145349" r="4.19302326"></circle><path d="M209.151 123.002c0 46.542-37.723 84.269-84.268 84.269-46.539 0-84.266-37.727-84.266-84.269 0-46.531 37.727-84.272 84.266-84.272 46.545 0 84.268 37.74 84.268 84.272z" stroke="#5f6e78" stroke-width="0.25"></path><circle stroke="#5f6e78" stroke-width="0.25" cx="124.889535" cy="123.002326" r="86.3232558"></circle><circle stroke="#5f6e78" stroke-width="0.25" cx="124.886047" cy="123.002326" r="88.377907"></circle><circle stroke="#5f6e78" stroke-width="0.25" cx="124.886047" cy="123.002326" r="90.4325581"></circle><circle stroke="#5f6e78" stroke-width="0.25" cx="124.889535" cy="123.002326" r="92.4872093"></circle></g><path d="M290.308 40.119c-3.568-3.572-8.85-5.435-15.844-5.585.206-6.639-1.71-11.976-5.752-16.015-3.925-3.925-8.69-5.826-14.31-5.725-5.612.108-10.461 2.208-14.56 6.307l-18.119 18.126-.083-.087-89.017 89.02c-4.866 4.87-9.049 5.556-12.547 2.057-1.459-1.458-2.202-3.209-2.24-5.267-.035-2.055.656-3.788 2.062-5.198 1.465-1.461 3.212-2.194 5.264-2.225 2.044-.021 3.774.67 5.194 2.093 1.116 1.116 1.814 2.672 2.086 4.64l15.007-15.004c-1.514-1.748-2.672-3.025-3.475-3.816-5.05-5.055-11.298-7.563-18.725-7.514-7.434.045-13.71 2.63-18.827 7.747-5.285 5.289-7.898 11.613-7.82 18.97.076 7.364 2.821 13.74 8.235 19.155 2.725 2.72 5.965 4.786 9.747 6.178 3.781 1.391 7.514 1.922 11.208 1.58 6.411-.59 12.405-3.663 17.968-9.23L235.286 50.8l-.066-.07 14.961-14.965c1.424-1.42 2.666-2.24 3.757-2.512 1.21-.477 2.247-.313 3.088.527.82.817 1.102 1.685.844 2.6-.262.913-1.14 2.127-2.655 3.644l-21.14 21.136a123.327 123.327 0 0 1 8.52 18.496l25.736-25.737c1.42-1.424 2.669-2.25 3.76-2.509 1.211-.477 2.244-.32 3.081.517.813.802 1.081 1.667.799 2.553-.276.9-1.162 2.107-2.676 3.621l-28.44 28.44a122.382 122.382 0 0 1 4.493 22.867l38.867-38.87c4.947-4.94 7.633-9.793 8.048-14.533.575-6.053-1.413-11.348-5.955-15.886z" fill="#0088cc" fill-rule="nonzero"></path></svg>
+      </div>
+      <div>
+        <div class="id-name">DOUG MARCH</div>
+        <div class="id-role">DESIGNER &amp; DEVELOPER</div>
+      </div>
+    </div>
+
+    <div class="status">
+      <div class="status-dot"></div>
+      <div class="status-text">AVAILABLE FOR PROJECTS</div>
+    </div>
+
+    <nav>
+      <a href="#">work</a>
+      <a href="#">about</a>
+      <a href="#" class="ext">spaceman.llc</a>
+    </nav>
+
+    <div class="social">
+      <a href="#">GitHub ↗</a>
+      <a href="#">Twitter / X ↗</a>
+      <a href="#">LinkedIn ↗</a>
+      <a href="#">Email →</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="mission-card">
+      <div class="mission-name">SPACEMAN</div>
+      <div class="mission-desc">Building the tools aerospace teams actually want to use.</div>
+      <a href="#" class="mission-link">→ VISIT SPACEMAN.LLC</a>
+    </div>
+
+    <div class="log-head">// SELECTED WORK</div>
+
+    <div class="entry">
+      <div class="entry-num">01</div>
+      <div class="entry-name">Project Alpha</div>
+      <div class="entry-tag">SAAS</div>
+      <div class="entry-yr">2023</div>
+    </div>
+    <div class="entry">
+      <div class="entry-num">02</div>
+      <div class="entry-name">Client Engagement</div>
+      <div class="entry-tag">DESIGN</div>
+      <div class="entry-yr">2023</div>
+    </div>
+    <div class="entry">
+      <div class="entry-num">03</div>
+      <div class="entry-name">Platform Build</div>
+      <div class="entry-tag">PRODUCT</div>
+      <div class="entry-yr">2022</div>
+    </div>
+    <div class="entry">
+      <div class="entry-num">04</div>
+      <div class="entry-name">Early Venture</div>
+      <div class="entry-tag">FOUNDER</div>
+      <div class="entry-yr">2020</div>
+    </div>
+
+    <div class="gap"></div>
+
+    <div class="log-head">// EXPERIMENTS &amp; SIDE PROJECTS</div>
+
+    <div class="entry exp">
+      <div class="entry-num">01</div>
+      <div class="entry-name">AI Side Project</div>
+      <div class="entry-tag">AI</div>
+      <div class="entry-yr">2024 ↗</div>
+    </div>
+    <div class="entry exp">
+      <div class="entry-num">02</div>
+      <div class="entry-name">Open Source Tool</div>
+      <div class="entry-tag">OSS</div>
+      <div class="entry-yr">2024 ↗</div>
+    </div>
+    <div class="entry exp">
+      <div class="entry-num">03</div>
+      <div class="entry-name">Weekend Prototype</div>
+      <div class="entry-tag">EXP</div>
+      <div class="entry-yr">2023 ↗</div>
+    </div>
+
+    <div class="footer">
+      <span>© 2025 DOUG MARCH</span>
+      <a href="#">GET IN TOUCH →</a>
+    </div>
+
+  </main>
+</div>
+</body>
+</html>

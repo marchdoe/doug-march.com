@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three Directions — Doug March</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,300;0,600;1,300;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+/* ─── TAB CHROME ─────────────────────────────── */
+.chrome {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: #000;
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.tab-btn {
+  padding: 0 2rem;
+  height: 44px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #444;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  font-family: system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.tab-btn .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.tab-btn:hover { color: #888; }
+.tab-btn.active { color: #fff; }
+
+.tab-btn[data-tab="a"] .dot { background: #F0A020; }
+.tab-btn[data-tab="b"] .dot { background: #00E5FF; }
+.tab-btn[data-tab="c"] .dot { background: #6DBFA4; }
+.tab-btn[data-tab="a"].active { border-bottom-color: #F0A020; }
+.tab-btn[data-tab="b"].active { border-bottom-color: #00E5FF; }
+.tab-btn[data-tab="c"].active { border-bottom-color: #6DBFA4; }
+
+.panels { position: fixed; inset: 44px 0 0; }
+.panel { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; overflow-y: auto; }
+.panel.active { opacity: 1; pointer-events: all; }
+
+
+/* ══════════════════════════════════════════════════
+   PANEL A — DARK STUDIO
+   Bricolage Grotesque · Near-Black · Amber
+   Spatial concept: massive name bleeds, sidebar is identity anchor
+══════════════════════════════════════════════════ */
+#a {
+  background: #0D0B09;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100%;
+  /* grain */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+#a .sb {
+  padding: 3.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #1E1A14;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 44px);
+}
+
+#a .wordmark {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 3.75rem;
+  letter-spacing: -0.05em;
+  line-height: 0.88;
+  color: #F0EAE0;
+  margin-bottom: 1rem;
+}
+
+#a .wordmark em {
+  font-style: normal;
+  color: #F0A020;
+}
+
+#a .role {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 200;
+  font-size: 0.8rem;
+  color: #4A3E2A;
+  letter-spacing: 0.03em;
+  margin-bottom: 3rem;
+  line-height: 1.5;
+}
+
+#a nav { display: flex; flex-direction: column; }
+
+#a nav a {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #5A4E3A;
+  text-decoration: none;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #1E1A14;
+  letter-spacing: 0.01em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+#a nav a:hover { color: #F0A020; }
+#a nav a .arrow { color: #2A2218; font-size: 0.75rem; }
+#a nav a:hover .arrow { color: #F0A020; }
+
+#a .social {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+#a .social a {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 400;
+  font-size: 0.7rem;
+  color: #2A2218;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+#a .social a:hover { color: #F0A020; }
+
+#a .main { padding: 3.5rem 3rem; }
+
+#a .now {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid #1E1A14;
+}
+
+#a .now-pulse {
+  width: 8px; height: 8px;
+  background: #F0A020;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(240, 160, 32, 0.4);
+  animation: amber-pulse 2s ease-in-out infinite;
+}
+
+@keyframes amber-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(240, 160, 32, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(240, 160, 32, 0); }
+}
+
+#a .now-label {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #4A3E2A;
+}
+
+#a .now-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 800;
+  font-size: 2.5rem;
+  letter-spacing: -0.04em;
+  color: #F0EAE0;
+  line-height: 1;
+  flex: 1;
+}
+
+#a .now-link {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #F0A020;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: letter-spacing 0.2s;
+}
+
+#a .now-link:hover { letter-spacing: 0.05em; }
+
+#a .sec-head {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #2A2218;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #1E1A14;
+}
+
+#a .proj {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid #161410;
+  cursor: pointer;
+  transition: padding-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#a .proj:hover { padding-left: 0.5rem; }
+
+#a .proj-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.025em;
+  color: #8A7A60;
+  transition: color 0.2s;
+}
+
+#a .proj:hover .proj-name { color: #F0EAE0; }
+
+#a .proj-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+#a .proj-tag {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 600;
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #3A3020;
+  background: #1A160E;
+  padding: 0.2rem 0.5rem;
+}
+
+#a .proj-yr {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: 400;
+  font-size: 0.7rem;
+  color: #2A2218;
+  min-width: 3rem;
+  text-align: right;
+}
+
+#a .proj:hover .proj-yr { color: #F0A020; }
+
+#a .sec-gap { margin-top: 2.5rem; }
+
+
+/* ══════════════════════════════════════════════════
+   PANEL B — MISSION CONTROL
+   Space Mono · Deep Navy · Cyan
+   Spatial concept: terminal aesthetic, grid structure, glow effects
+══════════════════════════════════════════════════ */
+#b {
+  background: #050C18;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100%;
+  background-image:
+    linear-gradient(rgba(0, 229, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+#b .sb {
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #0A1E36;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 44px);
+  background: rgba(3, 8, 16, 0.8);
+  backdrop-filter: blur(2px);
+}
+
+#b .wordmark {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: #C8E8F8;
+  margin-bottom: 0.5rem;
+}
+
+#b .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: #00E5FF;
+  vertical-align: text-bottom;
+  margin-left: 2px;
+  animation: blink 1.1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+#b .role {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: #0A3050;
+  margin-bottom: 2.5rem;
+  line-height: 1.8;
+}
+
+#b .role .prompt { color: #00E5FF; margin-right: 0.5rem; }
+
+#b nav { display: flex; flex-direction: column; }
+
+#b nav a {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: #1A4060;
+  text-decoration: none;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #081828;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.15s;
+}
+
+#b nav a::before { content: '//'; color: #0A2A40; font-size: 0.6rem; }
+#b nav a:hover { color: #00E5FF; }
+#b nav a:hover::before { color: #00E5FF; }
+
+#b .social {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+#b .social a {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: #0A2030;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+#b .social a:hover { color: #00E5FF; }
+
+#b .main { padding: 3rem 2.5rem; }
+
+#b .mission-card {
+  border: 1px solid #00E5FF22;
+  background: rgba(0, 229, 255, 0.02);
+  padding: 1.5rem 2rem;
+  margin-bottom: 3rem;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.05), inset 0 0 30px rgba(0, 229, 255, 0.02);
+}
+
+#b .mission-card::before {
+  content: 'ACTIVE MISSION';
+  position: absolute;
+  top: -0.55rem;
+  left: 1.5rem;
+  background: #050C18;
+  padding: 0 0.5rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  color: #00E5FF;
+  letter-spacing: 0.1em;
+}
+
+#b .mission-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, transparent, #00E5FF, transparent);
+  opacity: 0.4;
+}
+
+#b .mission-name {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #00E5FF;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+}
+
+#b .mission-desc {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: #1A4060;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+#b .mission-link {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: #00E5FF;
+  text-decoration: none;
+  border: 1px solid #00E5FF33;
+  padding: 0.35rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+#b .mission-link:hover { background: rgba(0, 229, 255, 0.05); border-color: #00E5FF88; }
+
+#b .log-head {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  color: #0A3050;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #081828;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#b .log-head::before { content: ''; flex: 0 0 1rem; height: 1px; background: #00E5FF33; }
+
+#b .entry {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr auto auto;
+  gap: 0 1rem;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #06101E;
+  cursor: pointer;
+}
+
+#b .entry-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  color: #0A2030;
+}
+
+#b .entry-name {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  color: #3A6080;
+  transition: color 0.15s;
+}
+
+#b .entry:hover .entry-name { color: #C8E8F8; }
+
+#b .entry-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5rem;
+  color: #0A2030;
+  background: #060F1C;
+  border: 1px solid #0A2040;
+  padding: 0.15rem 0.4rem;
+  letter-spacing: 0.05em;
+}
+
+#b .entry-yr {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  color: #0A2030;
+  text-align: right;
+}
+
+#b .entry:hover .entry-yr { color: #00E5FF; }
+
+#b .log-gap { margin-top: 2rem; }
+
+
+/* ══════════════════════════════════════════════════
+   PANEL C — REFINED SLATE
+   Spectral · Slate Blue-Gray · Sage
+   Spatial concept: elevated editorial, refined spacing, serif elegance
+══════════════════════════════════════════════════ */
+#c {
+  background: #1D2231;
+  display: grid;
+  grid-template-columns: 1fr 520px 1fr;
+  min-height: 100%;
+}
+
+#c .edge { background: #1D2231; }
+
+#c .content {
+  background: #1D2231;
+  padding: 4rem 0;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0 3rem;
+  align-items: start;
+}
+
+#c .sb {
+  position: sticky;
+  top: 2rem;
+}
+
+#c .wordmark {
+  font-family: 'Spectral', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 2.75rem;
+  letter-spacing: -0.02em;
+  line-height: 1.0;
+  color: #E2E6F0;
+  margin-bottom: 0.5rem;
+}
+
+#c .role {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 0.7rem;
+  color: #4A5570;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+}
+
+#c nav { display: flex; flex-direction: column; border-top: 1px solid #2A3348; }
+
+#c nav a {
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: #3A4560;
+  text-decoration: none;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #232A3A;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+}
+
+#c nav a:hover { color: #6DBFA4; }
+#c nav a .arr { color: #2A3448; font-size: 0.65rem; }
+#c nav a:hover .arr { color: #6DBFA4; }
+
+#c .availability {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+#c .avail-ring {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #6DBFA4;
+  box-shadow: 0 0 0 3px rgba(109, 191, 164, 0.15);
+}
+
+#c .avail-text {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  color: #4A5570;
+  font-weight: 400;
+}
+
+#c .social { display: flex; flex-direction: column; gap: 0.25rem; }
+
+#c .social a {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: #2A3448;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+#c .social a:hover { color: #6DBFA4; }
+
+/* Main right column */
+#c .main { }
+
+#c .current-block {
+  padding-bottom: 2.5rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid #2A3348;
+}
+
+#c .curr-label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 600;
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #6DBFA4;
+  margin-bottom: 0.75rem;
+}
+
+#c .curr-name {
+  font-family: 'Spectral', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 2.75rem;
+  letter-spacing: -0.025em;
+  line-height: 1.0;
+  color: #E2E6F0;
+  margin-bottom: 0.5rem;
+}
+
+#c .curr-desc {
+  font-family: 'Spectral', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.9rem;
+  color: #4A5570;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  max-width: 340px;
+}
+
+#c .curr-link {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #6DBFA4;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-bottom: 1px solid #6DBFA433;
+  padding-bottom: 0.1rem;
+  transition: border-color 0.2s, gap 0.2s;
+}
+
+#c .curr-link:hover { border-color: #6DBFA4; gap: 0.6rem; }
+
+#c .sec-label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 600;
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #2A3448;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #2A3348;
+}
+
+#c .proj {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1rem 0;
+  border-bottom: 1px solid #222838;
+  cursor: pointer;
+}
+
+#c .proj:hover .proj-name { color: #E2E6F0; }
+#c .proj:hover .proj-arrow { color: #6DBFA4; transform: translate(3px, -3px); }
+
+#c .proj-name {
+  font-family: 'Spectral', serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+  color: #6A7898;
+  transition: color 0.2s;
+}
+
+#c .proj-r {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+#c .proj-tag {
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #2A3448;
+}
+
+#c .proj-yr {
+  font-family: 'Spectral', serif;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: #2A3448;
+  min-width: 3rem;
+  text-align: right;
+}
+
+#c .proj-arrow {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  color: #2A3448;
+  transition: color 0.2s, transform 0.2s;
+}
+
+#c .sec-gap { margin-top: 2.5rem; }
+
+</style>
+</head>
+<body>
+
+<div class="chrome">
+  <button class="tab-btn active" data-tab="a" onclick="show('a')">
+    <span class="dot"></span> Dark Studio — Bricolage · Amber
+  </button>
+  <button class="tab-btn" data-tab="b" onclick="show('b')">
+    <span class="dot"></span> Mission Control — Space Mono · Cyan
+  </button>
+  <button class="tab-btn" data-tab="c" onclick="show('c')">
+    <span class="dot"></span> Refined Slate — Spectral · Sage
+  </button>
+</div>
+
+<div class="panels">
+
+  <!-- ═══ PANEL A ═══ -->
+  <div class="panel active" id="a">
+    <div class="sb">
+      <div class="wordmark">Doug<br><em>March</em></div>
+      <div class="role">Designer & Developer<br>Building products that matter</div>
+      <nav>
+        <a href="#">Work <span class="arrow">↗</span></a>
+        <a href="#">About <span class="arrow">→</span></a>
+        <a href="#" style="color:#3A3020;">spaceman.llc <span class="arrow">↗</span></a>
+      </nav>
+      <div class="social">
+        <a href="#">GitHub ↗</a>
+        <a href="#">Twitter / X ↗</a>
+        <a href="#">LinkedIn ↗</a>
+        <a href="#">Email →</a>
+      </div>
+    </div>
+    <div class="main">
+      <div class="now">
+        <div class="now-pulse"></div>
+        <div>
+          <div class="now-label">Currently building</div>
+          <div class="now-name">Spaceman</div>
+        </div>
+        <a href="#" class="now-link">spaceman.llc ↗</a>
+      </div>
+
+      <div class="sec-head">Selected Work</div>
+      <div class="proj">
+        <div><div class="proj-name">Project Alpha</div></div>
+        <div class="proj-meta"><div class="proj-tag">SaaS</div><div class="proj-yr">2023</div></div>
+      </div>
+      <div class="proj">
+        <div><div class="proj-name">Client Engagement</div></div>
+        <div class="proj-meta"><div class="proj-tag">Design</div><div class="proj-yr">2023</div></div>
+      </div>
+      <div class="proj">
+        <div><div class="proj-name">Platform Build</div></div>
+        <div class="proj-meta"><div class="proj-tag">Product</div><div class="proj-yr">2022</div></div>
+      </div>
+      <div class="proj">
+        <div><div class="proj-name">Early Venture</div></div>
+        <div class="proj-meta"><div class="proj-tag">Founder</div><div class="proj-yr">2020</div></div>
+      </div>
+
+      <div class="sec-gap"></div>
+      <div class="sec-head">Experiments</div>
+      <div class="proj">
+        <div><div class="proj-name">AI Side Project</div></div>
+        <div class="proj-meta"><div class="proj-tag">AI</div><div class="proj-yr">2024 ↗</div></div>
+      </div>
+      <div class="proj">
+        <div><div class="proj-name">Open Source Tool</div></div>
+        <div class="proj-meta"><div class="proj-tag">OSS</div><div class="proj-yr">2024 ↗</div></div>
+      </div>
+      <div class="proj">
+        <div><div class="proj-name">Weekend Prototype</div></div>
+        <div class="proj-meta"><div class="proj-tag">Experiment</div><div class="proj-yr">2023 ↗</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL B ═══ -->
+  <div class="panel" id="b">
+    <div class="sb">
+      <div class="wordmark">DOUG<br>MARCH<span class="cursor"></span></div>
+      <div class="role">
+        <span class="prompt">$</span>whoami<br>
+        designer + developer<br>
+        <span class="prompt">$</span>location<br>
+        —
+      </div>
+      <nav>
+        <a href="#">work</a>
+        <a href="#">about</a>
+        <a href="#" style="color:#0A2A40;">spaceman.llc</a>
+      </nav>
+      <div class="social">
+        <a href="#">github ↗</a>
+        <a href="#">twitter ↗</a>
+        <a href="#">linkedin ↗</a>
+        <a href="#">email →</a>
+      </div>
+    </div>
+    <div class="main">
+      <div class="mission-card">
+        <div class="mission-name">SPACEMAN</div>
+        <div class="mission-desc">
+          Building the tools aerospace teams actually want to use.<br>
+          Currently in active development.
+        </div>
+        <a href="#" class="mission-link">→ VISIT SPACEMAN.LLC</a>
+      </div>
+
+      <div class="log-head">// SELECTED WORK</div>
+      <div class="entry">
+        <div class="entry-num">01</div>
+        <div class="entry-name">Project Alpha</div>
+        <div class="entry-tag">SAAS</div>
+        <div class="entry-yr">2023</div>
+      </div>
+      <div class="entry">
+        <div class="entry-num">02</div>
+        <div class="entry-name">Client Engagement</div>
+        <div class="entry-tag">DESIGN</div>
+        <div class="entry-yr">2023</div>
+      </div>
+      <div class="entry">
+        <div class="entry-num">03</div>
+        <div class="entry-name">Platform Build</div>
+        <div class="entry-tag">PRODUCT</div>
+        <div class="entry-yr">2022</div>
+      </div>
+      <div class="entry">
+        <div class="entry-num">04</div>
+        <div class="entry-name">Early Venture</div>
+        <div class="entry-tag">FOUNDER</div>
+        <div class="entry-yr">2020</div>
+      </div>
+
+      <div class="log-gap"></div>
+      <div class="log-head">// EXPERIMENTS</div>
+      <div class="entry">
+        <div class="entry-num">01</div>
+        <div class="entry-name">AI Side Project</div>
+        <div class="entry-tag">AI</div>
+        <div class="entry-yr">2024 ↗</div>
+      </div>
+      <div class="entry">
+        <div class="entry-num">02</div>
+        <div class="entry-name">Open Source Tool</div>
+        <div class="entry-tag">OSS</div>
+        <div class="entry-yr">2024 ↗</div>
+      </div>
+      <div class="entry">
+        <div class="entry-num">03</div>
+        <div class="entry-name">Weekend Prototype</div>
+        <div class="entry-tag">EXP</div>
+        <div class="entry-yr">2023 ↗</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL C ═══ -->
+  <div class="panel" id="c">
+    <div class="edge"></div>
+    <div class="content">
+      <div class="sb">
+        <div class="wordmark">Doug<br>March</div>
+        <div class="role">Designer & Developer</div>
+        <nav>
+          <a href="#">Work <span class="arr">↗</span></a>
+          <a href="#">About <span class="arr">→</span></a>
+          <a href="#" style="color:#2A3448;">spaceman.llc <span class="arr">↗</span></a>
+        </nav>
+        <div class="availability">
+          <div class="avail-ring"></div>
+          <div class="avail-text">Open to projects</div>
+        </div>
+        <div class="social">
+          <a href="#">GitHub ↗</a>
+          <a href="#">Twitter ↗</a>
+          <a href="#">LinkedIn ↗</a>
+          <a href="#">Email →</a>
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="current-block">
+          <div class="curr-label">Currently building</div>
+          <div class="curr-name">Spaceman</div>
+          <div class="curr-desc">Building the tools aerospace teams actually want to use.</div>
+          <a href="#" class="curr-link">Visit spaceman.llc →</a>
+        </div>
+
+        <div class="sec-label">Selected Work</div>
+        <div class="proj">
+          <div class="proj-name">Project Alpha</div>
+          <div class="proj-r">
+            <div class="proj-tag">SaaS</div>
+            <div class="proj-yr">2023</div>
+            <div class="proj-arrow">↗</div>
+          </div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">Client Engagement</div>
+          <div class="proj-r">
+            <div class="proj-tag">Design</div>
+            <div class="proj-yr">2023</div>
+            <div class="proj-arrow">→</div>
+          </div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">Platform Build</div>
+          <div class="proj-r">
+            <div class="proj-tag">Product</div>
+            <div class="proj-yr">2022</div>
+            <div class="proj-arrow">→</div>
+          </div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">Early Venture</div>
+          <div class="proj-r">
+            <div class="proj-tag">Founder</div>
+            <div class="proj-yr">2020</div>
+            <div class="proj-arrow">→</div>
+          </div>
+        </div>
+
+        <div class="sec-gap"></div>
+        <div class="sec-label">Experiments & Side Projects</div>
+        <div class="proj">
+          <div class="proj-name">AI Side Project</div>
+          <div class="proj-r">
+            <div class="proj-tag">AI</div>
+            <div class="proj-yr">2024</div>
+            <div class="proj-arrow">↗</div>
+          </div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">Open Source Tool</div>
+          <div class="proj-r">
+            <div class="proj-tag">OSS</div>
+            <div class="proj-yr">2024</div>
+            <div class="proj-arrow">↗</div>
+          </div>
+        </div>
+        <div class="proj">
+          <div class="proj-name">Weekend Prototype</div>
+          <div class="proj-r">
+            <div class="proj-tag">Experiment</div>
+            <div class="proj-yr">2023</div>
+            <div class="proj-arrow">↗</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="edge"></div>
+  </div>
+
+</div><!-- /panels -->
+
+<script>
+function show(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector('[data-tab="' + id + '"]').classList.add('active');
+}
+</script>
+</body>
+</html>

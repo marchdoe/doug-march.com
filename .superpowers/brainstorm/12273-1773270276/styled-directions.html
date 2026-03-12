@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Styled Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&family=Outfit:wght@400;600;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a1a1a; padding: 2rem; font-family: system-ui, sans-serif; }
+
+  .meta { color: #666; font-size: 0.7rem; text-align: center; margin-bottom: 2rem; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .swatch {
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border: 3px solid transparent;
+  }
+
+  .swatch:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  .swatch.selected { border-color: #fff; }
+
+  .swatch-label {
+    background: #111;
+    color: #fff;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: system-ui, sans-serif;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .swatch-label span { color: #555; }
+
+  /* OPTION 1 — Stark / Sharp */
+  .opt1 {
+    background: #fff;
+    padding: 1.5rem;
+    min-height: 380px;
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 0;
+  }
+
+  .opt1 .left {
+    padding-right: 1rem;
+    border-right: 2px solid #000;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .opt1 .name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.03em;
+    line-height: 1.0;
+    color: #000;
+    margin-bottom: 0.35rem;
+  }
+
+  .opt1 .title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.6rem;
+    color: #888;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+  }
+
+  .opt1 .nav a {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #000;
+    text-decoration: none;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .opt1 .social {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .opt1 .social a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.55rem;
+    color: #bbb;
+    text-decoration: none;
+  }
+
+  .opt1 .right { padding-left: 1rem; }
+
+  .opt1 .featured {
+    background: #000;
+    color: #fff;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .opt1 .featured-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: -0.02em;
+  }
+
+  .opt1 .featured-tag {
+    font-size: 0.5rem;
+    color: #555;
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .opt1 .section-head {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #ccc;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .opt1 .project {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #f8f8f8;
+  }
+
+  .opt1 .project-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: -0.01em;
+  }
+
+  .opt1 .project-meta {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.5rem;
+    color: #bbb;
+  }
+
+  /* OPTION 2 — Warm Punch */
+  .opt2 {
+    background: #f7f3ee;
+    padding: 1.5rem;
+    min-height: 380px;
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 0;
+  }
+
+  .opt2 .left {
+    padding-right: 1rem;
+    border-right: 2px solid #1a1a1a;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .opt2 .name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: -0.04em;
+    line-height: 1.0;
+    color: #1a1a1a;
+    margin-bottom: 0.35rem;
+  }
+
+  .opt2 .title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.6rem;
+    color: #888;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+  }
+
+  .opt2 .nav a {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-decoration: none;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid #e8e0d6;
+  }
+
+  .opt2 .social {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .opt2 .social a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.55rem;
+    color: #bbb;
+    text-decoration: none;
+  }
+
+  .opt2 .right { padding-left: 1rem; }
+
+  .opt2 .featured {
+    background: #e8500a;
+    color: #fff;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .opt2 .featured-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 0.9rem;
+    letter-spacing: -0.02em;
+  }
+
+  .opt2 .featured-tag {
+    font-size: 0.5rem;
+    color: rgba(255,255,255,0.6);
+    font-family: 'Outfit', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .opt2 .section-head {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #c8b8a0;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #e8e0d6;
+  }
+
+  .opt2 .project {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #ede5d8;
+  }
+
+  .opt2 .project-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 0.7rem;
+    letter-spacing: -0.01em;
+    color: #1a1a1a;
+  }
+
+  .opt2 .project-meta {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.5rem;
+    color: #bbb;
+  }
+
+  /* OPTION 3 — Space / Tech */
+  .opt3 {
+    background: #0c0c0f;
+    padding: 1.5rem;
+    min-height: 380px;
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 0;
+  }
+
+  .opt3 .left {
+    padding-right: 1rem;
+    border-right: 1px solid #2a2a35;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .opt3 .name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: -0.03em;
+    line-height: 1.0;
+    color: #fff;
+    margin-bottom: 0.35rem;
+  }
+
+  .opt3 .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.6rem;
+    color: #555;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+  }
+
+  .opt3 .nav a {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #ccc;
+    text-decoration: none;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid #1a1a22;
+  }
+
+  .opt3 .social {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .opt3 .social a {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.55rem;
+    color: #444;
+    text-decoration: none;
+  }
+
+  .opt3 .right { padding-left: 1rem; }
+
+  .opt3 .featured {
+    background: linear-gradient(135deg, #6c47ff, #a855f7);
+    color: #fff;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .opt3 .featured-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: -0.02em;
+  }
+
+  .opt3 .featured-tag {
+    font-size: 0.5rem;
+    color: rgba(255,255,255,0.6);
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .opt3 .section-head {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #333;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #1a1a22;
+  }
+
+  .opt3 .project {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #141418;
+  }
+
+  .opt3 .project-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: -0.01em;
+    color: #ddd;
+  }
+
+  .opt3 .project-meta {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.5rem;
+    color: #444;
+  }
+
+  .choice-bar {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #555;
+    font-size: 0.7rem;
+    font-family: system-ui, sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<div class="meta">Visual Direction — Real Fonts & Color · doug-march.com</div>
+
+<div class="row">
+
+  <!-- OPTION 1 -->
+  <div>
+    <div class="swatch" onclick="this.classList.toggle('selected')">
+      <div class="swatch-label">A — Stark <span>Syne + DM Sans · Pure B&W</span></div>
+      <div class="opt1">
+        <div class="left">
+          <div class="name">Doug<br>March</div>
+          <div class="title">Designer &<br>Developer</div>
+          <div class="nav">
+            <a href="#">Work</a>
+            <a href="#">About</a>
+            <a href="#" style="color:#999;">spaceman.llc ↗</a>
+          </div>
+          <div class="social">
+            <a href="#">GitHub ↗</a>
+            <a href="#">Twitter ↗</a>
+            <a href="#">LinkedIn ↗</a>
+          </div>
+        </div>
+        <div class="right">
+          <div class="featured">
+            <div>
+              <div class="featured-name">Spaceman</div>
+              <div class="featured-tag">Current · spaceman.llc ↗</div>
+            </div>
+            <span style="color:#555">→</span>
+          </div>
+          <div class="section-head">Selected Work</div>
+          <div class="project">
+            <div class="project-name">Project Alpha</div>
+            <div class="project-meta">SaaS · 2023</div>
+          </div>
+          <div class="project">
+            <div class="project-name">Client Work</div>
+            <div class="project-meta">Design · 2023</div>
+          </div>
+          <div class="project" style="margin-top:0.5rem;">
+          </div>
+          <div class="section-head" style="margin-top:0.5rem;">Experiments</div>
+          <div class="project">
+            <div class="project-name">Side Thing</div>
+            <div class="project-meta">AI · 2024 ↗</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION 2 -->
+  <div>
+    <div class="swatch" onclick="this.classList.toggle('selected')">
+      <div class="swatch-label">B — Warm Punch <span>Outfit · Cream + Orange</span></div>
+      <div class="opt2">
+        <div class="left">
+          <div class="name">Doug<br>March</div>
+          <div class="title">Designer &<br>Developer</div>
+          <div class="nav">
+            <a href="#">Work</a>
+            <a href="#">About</a>
+            <a href="#" style="color:#aaa;">spaceman.llc ↗</a>
+          </div>
+          <div class="social">
+            <a href="#">GitHub ↗</a>
+            <a href="#">Twitter ↗</a>
+            <a href="#">LinkedIn ↗</a>
+          </div>
+        </div>
+        <div class="right">
+          <div class="featured">
+            <div>
+              <div class="featured-name">Spaceman</div>
+              <div class="featured-tag">Current · spaceman.llc ↗</div>
+            </div>
+            <span style="color:rgba(255,255,255,0.5)">→</span>
+          </div>
+          <div class="section-head">Selected Work</div>
+          <div class="project">
+            <div class="project-name">Project Alpha</div>
+            <div class="project-meta">SaaS · 2023</div>
+          </div>
+          <div class="project">
+            <div class="project-name">Client Work</div>
+            <div class="project-meta">Design · 2023</div>
+          </div>
+          <div class="section-head" style="margin-top:0.5rem;">Experiments</div>
+          <div class="project">
+            <div class="project-name">Side Thing</div>
+            <div class="project-meta">AI · 2024 ↗</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION 3 -->
+  <div>
+    <div class="swatch" onclick="this.classList.toggle('selected')">
+      <div class="swatch-label">C — Space/Tech <span>Space Grotesk · Dark + Purple</span></div>
+      <div class="opt3">
+        <div class="left">
+          <div class="name">Doug<br>March</div>
+          <div class="title">Designer &<br>Developer</div>
+          <div class="nav">
+            <a href="#">Work</a>
+            <a href="#">About</a>
+            <a href="#" style="color:#444;">spaceman.llc ↗</a>
+          </div>
+          <div class="social">
+            <a href="#">GitHub ↗</a>
+            <a href="#">Twitter ↗</a>
+            <a href="#">LinkedIn ↗</a>
+          </div>
+        </div>
+        <div class="right">
+          <div class="featured">
+            <div>
+              <div class="featured-name">Spaceman</div>
+              <div class="featured-tag">Current · spaceman.llc ↗</div>
+            </div>
+            <span>→</span>
+          </div>
+          <div class="section-head">Selected Work</div>
+          <div class="project">
+            <div class="project-name">Project Alpha</div>
+            <div class="project-meta">SaaS · 2023</div>
+          </div>
+          <div class="project">
+            <div class="project-name">Client Work</div>
+            <div class="project-meta">Design · 2023</div>
+          </div>
+          <div class="section-head" style="margin-top:0.5rem;">Experiments</div>
+          <div class="project">
+            <div class="project-name">Side Thing</div>
+            <div class="project-meta">AI · 2024 ↗</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="choice-bar">Click a direction to select it — or tell me what you like/dislike from each in the terminal</div>
+
+</body>
+</html>

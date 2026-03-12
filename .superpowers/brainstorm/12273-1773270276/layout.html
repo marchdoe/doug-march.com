@@ -1,0 +1,70 @@
+<h2>How should the site be structured?</h2>
+<p class="subtitle">Same bold/modern aesthetic — different ways to organize the content.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff;padding:1.25rem;font-family:system-ui,sans-serif;min-height:160px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:2px solid #000;padding-bottom:0.5rem;">
+        <div style="font-size:0.75rem;font-weight:800;letter-spacing:-0.02em;">DM</div>
+        <div style="font-size:0.55rem;color:#666;display:flex;gap:0.75rem;"><span>Work</span><span>About</span></div>
+      </div>
+      <div style="font-size:1.1rem;font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:0.75rem;">Designer<br>& Developer</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;">
+        <div style="background:#f5f5f5;padding:0.4rem;font-size:0.55rem;font-weight:600;">Spaceman →</div>
+        <div style="background:#f5f5f5;padding:0.4rem;font-size:0.55rem;font-weight:600;">Project B →</div>
+        <div style="background:#f5f5f5;padding:0.4rem;font-size:0.55rem;font-weight:600;">Project C →</div>
+        <div style="background:#f5f5f5;padding:0.4rem;font-size:0.55rem;font-weight:600;">Project D →</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Single Page — Hero + Grid</h3>
+      <p>Bold headline up top, project grid below. Everything on one page. Fast to scan, no navigation needed. Simple.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff;padding:1.25rem;font-family:system-ui,sans-serif;min-height:160px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:2px solid #000;padding-bottom:0.5rem;">
+        <div style="font-size:0.75rem;font-weight:800;letter-spacing:-0.02em;">DM</div>
+        <div style="font-size:0.55rem;color:#666;display:flex;gap:0.75rem;"><span>Work</span><span>About</span><span>spaceman.llc ↗</span></div>
+      </div>
+      <div style="display:flex;gap:0.75rem;">
+        <div style="width:35%;border-right:1px solid #eee;padding-right:0.75rem;">
+          <div style="font-size:0.75rem;font-weight:800;letter-spacing:-0.03em;line-height:1.2;margin-bottom:0.5rem;">Doug<br>March</div>
+          <div style="font-size:0.5rem;color:#666;line-height:1.5;">Designer<br>& Developer</div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:0.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#999;margin-bottom:0.4rem;">Selected Work</div>
+          <div style="font-size:0.6rem;font-weight:600;margin-bottom:0.3rem;border-bottom:1px solid #f0f0f0;padding-bottom:0.3rem;">Spaceman →</div>
+          <div style="font-size:0.6rem;font-weight:600;margin-bottom:0.3rem;border-bottom:1px solid #f0f0f0;padding-bottom:0.3rem;">Project B →</div>
+          <div style="font-size:0.6rem;font-weight:600;">Project C →</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Split Layout — Identity Left, Work Right</h3>
+      <p>Persistent identity column on the left, scrollable content on the right. More editorial. Feels like a designed artifact.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#fff;padding:1.25rem;font-family:system-ui,sans-serif;min-height:160px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;border-bottom:2px solid #000;padding-bottom:0.5rem;">
+        <div style="font-size:0.75rem;font-weight:800;letter-spacing:-0.02em;">DM</div>
+        <div style="font-size:0.55rem;color:#666;display:flex;gap:0.75rem;"><span>Work</span><span>About</span></div>
+      </div>
+      <div style="font-size:1.1rem;font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:0.75rem;">Designer<br>& Developer</div>
+      <div style="font-size:0.55rem;color:#555;line-height:1.6;">
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #f0f0f0;padding:0.2rem 0;"><span style="font-weight:600;">Spaceman</span><span style="color:#999;">2024 →</span></div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #f0f0f0;padding:0.2rem 0;"><span style="font-weight:600;">Project B</span><span style="color:#999;">2023 →</span></div>
+        <div style="display:flex;justify-content:space-between;padding:0.2rem 0;"><span style="font-weight:600;">Project C</span><span style="color:#999;">2022 →</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Single Page — Hero + List</h3>
+      <p>Like A, but projects as a clean list with dates rather than cards. More text-forward, closer to nathanherald.com energy but with the bold type.</p>
+    </div>
+  </div>
+
+</div>

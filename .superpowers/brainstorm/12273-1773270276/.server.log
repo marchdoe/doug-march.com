@@ -1,0 +1,34 @@
+{"type":"server-started","port":63319,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:63319","screen_dir":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/primary-goal.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/work-type.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/audience.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/identity.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/stack.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/approaches.html"}
+{"source":"user-event","type":"click","text":"B\n    \n      TanStack Start — full-stack React\n      Modern React with server functions, type-safe routing, and SSR. More complex to set up but you get a real full-stack app — contact forms, dynamic project filtering, CMS integration, or any future feature without switching stacks.\n      \n        ProsFull-stack power from day oneCurrent, modern stackScales to anything you want to add\n        ConsMore infrastructure to manageHeavier than a portfolio needsTanStack Start is still maturing","choice":"b","id":null,"timestamp":1773273024771}
+{"source":"user-event","type":"click","text":"A\n    \n      Astro — content-as-files\n      Projects and writing live as Markdown/MDX files in the repo. Near-zero JS, instant load, deploy to Vercel/Netlify. Update the site the same way you update code — no CMS, no database. Simple mental model forever.\n      \n        ProsFastest possible siteNo moving partsEasy to maintain long-termGreat SEO out of the box\n        ConsAdding content requires a code pushLess dynamic capability later","choice":"a","id":null,"timestamp":1773273027633}
+{"source":"user-event","type":"click","text":"B\n    \n      TanStack Start — full-stack React\n      Modern React with server functions, type-safe routing, and SSR. More complex to set up but you get a real full-stack app — contact forms, dynamic project filtering, CMS integration, or any future feature without switching stacks.\n      \n        ProsFull-stack power from day oneCurrent, modern stackScales to anything you want to add\n        ConsMore infrastructure to manageHeavier than a portfolio needsTanStack Start is still maturing","choice":"b","id":null,"timestamp":1773273028469}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/visual-direction.html"}
+{"source":"user-event","type":"click","text":"DM\n        Work · About · spaceman.llc\n      \n      Designer& Developer\n      Building products since —\n    \n    \n      Bold & Modern\n      Clean white, heavy weight typography, tight letter-spacing. Confident and contemporary. Feels like a design-forward studio.","choice":"c","id":null,"timestamp":1773273069522}
+{"source":"user-event","type":"click","text":"DM\n        Work · About · spaceman.llc\n      \n      Designer& Developer\n      Building products since —\n    \n    \n      Bold & Modern\n      Clean white, heavy weight typography, tight letter-spacing. Confident and contemporary. Feels like a design-forward studio.","choice":"c","id":null,"timestamp":1773273076930}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/layout.html"}
+{"source":"user-event","type":"click","text":"DM\n        WorkAboutspaceman.llc ↗\n      \n      \n        \n          DougMarch\n          Designer& Developer\n        \n        \n          Selected Work\n          Spaceman →\n          Project B →\n          Project C →\n        \n      \n    \n    \n      Split Layout — Identity Left, Work Right\n      Persistent identity column on the left, scrollable content on the right. More editorial. Feels like a designed artifact.","choice":"b","id":null,"timestamp":1773273133135}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/project-pages.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/design-homepage.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/styled-directions.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/styled-large.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/elevated-v1.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/gallery-10.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/three-directions.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/mission-v2.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/mission-v3.html"}
+{"type":"screen-updated","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/mission-v3.html"}
+{"type":"screen-updated","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/mission-v3.html"}
+{"type":"screen-updated","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/mission-v3.html"}
+{"type":"screen-added","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/inner-pages.html"}
+{"type":"screen-updated","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/mission-v3.html"}
+{"type":"screen-updated","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/inner-pages.html"}
+{"type":"screen-updated","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/mission-v3.html"}
+{"type":"screen-updated","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/inner-pages.html"}
+{"type":"screen-updated","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/mission-v3.html"}
+{"type":"screen-updated","file":"/Users/dougmarch/Projects/dougmarch/.superpowers/brainstorm/12273-1773270276/inner-pages.html"}

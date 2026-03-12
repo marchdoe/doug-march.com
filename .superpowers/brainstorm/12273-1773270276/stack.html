@@ -1,0 +1,33 @@
+<h2>What tech stack do you want to use?</h2>
+<p class="subtitle">The current site is a React SPA — JS-heavy, no server rendering. What direction feels right for the rebuild?</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Astro</h3>
+      <p>Static-first, ships near-zero JS by default. Blazing fast, great for portfolios. Supports React components where you need them. The modern answer to "I want a fast personal site."</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Next.js</h3>
+      <p>Full React, server rendering, edge deployment. More power than you probably need for a portfolio — but familiar if you're already in the React ecosystem.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Pure HTML + CSS (no framework)</h3>
+      <p>Maximum simplicity, maximum speed. No build step. Perfect for a truly minimal site — but less flexible as content grows.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="d" onclick="toggleSelect(this)">
+    <div class="letter">D</div>
+    <div class="content">
+      <h3>I have something specific in mind</h3>
+      <p>Tell me in the terminal — a specific framework, CMS, or deployment setup.</p>
+    </div>
+  </div>
+</div>
