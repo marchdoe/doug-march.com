@@ -1,6 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { SectionHead } from '../components/SectionHead'
+import { MissionCard } from '../components/MissionCard'
+import { ProjectRow } from '../components/ProjectRow'
+import type { Project } from '../content/types'
 import { styled } from '../../styled-system/jsx'
 
 export const Route = createFileRoute('/elements')({
@@ -172,6 +175,33 @@ const spacingScale: { name: string; value: string }[] = [
   { name: '12', value: '3rem'    },
 ]
 
+const demoFeatured: Project = {
+  slug: 'demo',
+  title: 'Spaceman',
+  type: 'SaaS',
+  year: 2024,
+  depth: 'full',
+  problem: 'Aerospace teams were stuck using generic tools that didn\'t fit their workflows.',
+  externalUrl: 'https://spaceman.llc',
+}
+
+const demoRowFull: Project = {
+  slug: 'demo-full',
+  title: 'Project Alpha',
+  type: 'SaaS',
+  year: 2023,
+  depth: 'full',
+}
+
+const demoRowLight: Project = {
+  slug: 'demo-light',
+  title: 'AI Side Project',
+  type: 'AI',
+  year: 2024,
+  depth: 'lightweight',
+  externalUrl: 'https://example.com',
+}
+
 function Elements() {
   return (
     <Layout>
@@ -236,6 +266,23 @@ function Elements() {
             <TypeMeta>{name} / {value}</TypeMeta>
           </SpacingRow>
         ))}
+      </Section>
+
+      {/* ── COMPONENTS ── */}
+      <Section>
+        <SectionHead label="COMPONENTS" />
+
+        <SubHead>MISSIONCARD</SubHead>
+        <MissionCard project={demoFeatured} />
+
+        <SubHead>PROJECTROW — FULL (internal link)</SubHead>
+        <ProjectRow project={demoRowFull} index={0} />
+
+        <SubHead>PROJECTROW — LIGHTWEIGHT (external link)</SubHead>
+        <ProjectRow project={demoRowLight} index={0} />
+
+        <SubHead>SECTIONHEAD</SubHead>
+        <SectionHead label="EXAMPLE SECTION" />
       </Section>
     </Layout>
   )
