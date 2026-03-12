@@ -1,0 +1,28 @@
+.gap { margin-top: 2.5rem; }
+
+.footer {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--logo-blue-dim);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footerText {
+  font-size: 0.52rem;
+  color: var(--text-dim);
+}
+
+.footerLink {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--logo-green);
+  border: 1px solid var(--logo-green);
+  padding: 0.35rem 0.75rem;
+  transition: background 0.2s;
+}
+
+.footerLink:hover {
+  background: var(--logo-green-dim);
+}
