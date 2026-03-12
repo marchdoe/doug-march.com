@@ -17,7 +17,7 @@ export function MissionCard({ project }: Props) {
           rel="noopener noreferrer"
           className={styles.link}
         >
-          → VISIT {project.externalUrl.replace('https://', '').toUpperCase()}
+          → VISIT {project.externalUrl.replace(/^https?:\/\//, '').toUpperCase()}
         </a>
       )}
     </div>

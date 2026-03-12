@@ -26,7 +26,7 @@ function About() {
 
       <div>
         {timeline.map((entry) => (
-          <div key={entry.company} className={styles.tlItem}>
+          <div key={entry.year} className={styles.tlItem}>
             <div className={styles.tlYear}>{entry.year}</div>
             <div className={styles.tlLineWrap}>
               <div className={`${styles.tlDot} ${entry.current ? styles.tlDotCurrent : ''}`} />
