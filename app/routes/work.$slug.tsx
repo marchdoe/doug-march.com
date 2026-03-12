@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { SectionHead } from '../components/SectionHead'
 import { projects } from '../content/projects'
-import styles from './work.$slug.module.css'
+import { styled } from '../../styled-system/jsx'
 
 export const Route = createFileRoute('/work/$slug')({
   loader: ({ params }) => {
@@ -13,43 +13,285 @@ export const Route = createFileRoute('/work/$slug')({
   component: ProjectPage,
 })
 
+const BackLink = styled(Link, {
+  base: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.4rem',
+    fontSize: 'sm',
+    fontWeight: 'bold',
+    color: 'text.dim',
+    letterSpacing: 'wide',
+    marginBottom: '8',
+    transitionProperty: 'color',
+    transitionDuration: 'fast',
+    transitionTimingFunction: 'default',
+    _hover: { color: 'accent' },
+  },
+})
+
+const Header = styled('div', {
+  base: {
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+    borderBottomColor: 'logo.blueDim',
+    paddingBottom: '8',
+    marginBottom: '8',
+  },
+})
+
+const TypeLabel = styled('div', {
+  base: {
+    fontSize: 'xs',
+    fontWeight: 'bold',
+    letterSpacing: 'widest',
+    color: 'text.dim',
+    marginBottom: '3',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '2',
+    _before: { content: '"//"', color: 'accent' },
+  },
+})
+
+const Title = styled('div', {
+  base: {
+    fontSize: '2xl',
+    fontWeight: 'bold',
+    letterSpacing: '-0.04em',
+    color: 'accent',
+    textShadow: '0 0 24px rgba(0, 229, 255, 0.2)',
+    lineHeight: 'tight',
+    marginBottom: '3',
+  },
+})
+
+const Meta = styled('div', {
+  base: {
+    display: 'flex',
+    gap: '6',
+    flexWrap: 'wrap',
+  },
+})
+
+const MetaItem = styled('div', {
+  base: { display: 'flex', flexDirection: 'column', gap: '0.2rem' },
+})
+
+const MetaLabel = styled('div', {
+  base: { fontSize: '2xs', letterSpacing: 'wider', color: 'text.dim' },
+})
+
+const MetaValue = styled('div', {
+  base: { fontSize: '0.65rem', fontWeight: 'bold', color: 'text.mid' },
+})
+
+const Section = styled('div', {
+  base: { marginBottom: '8' },
+})
+
+const SectionTitle = styled('div', {
+  base: {
+    fontSize: '0.55rem',
+    fontWeight: 'bold',
+    letterSpacing: 'widest',
+    color: 'accent.dim',
+    marginBottom: '0.6rem',
+  },
+})
+
+const Body = styled('div', {
+  base: {
+    fontSize: '0.72rem',
+    color: 'text.mid',
+    lineHeight: '1.9',
+    fontStyle: 'italic',
+  },
+})
+
+const Tags = styled('div', {
+  base: {
+    display: 'flex',
+    gap: '2',
+    flexWrap: 'wrap',
+    marginTop: '3',
+  },
+})
+
+const Tag = styled('div', {
+  base: {
+    fontSize: '0.5rem',
+    fontWeight: 'bold',
+    letterSpacing: '0.07em',
+    color: 'text.dim',
+    background: 'bg.card',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'logo.blueDim',
+    paddingTop: '0.2rem',
+    paddingBottom: '0.2rem',
+    paddingLeft: '2',
+    paddingRight: '2',
+  },
+})
+
+const Ctas = styled('div', {
+  base: { display: 'flex', gap: '3', marginTop: '8' },
+})
+
+const BtnGreen = styled('a', {
+  base: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '2',
+    fontSize: '0.62rem',
+    fontWeight: 'bold',
+    color: 'logo.green',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'logo.green',
+    paddingTop: '0.4rem',
+    paddingBottom: '0.4rem',
+    paddingLeft: '0.85rem',
+    paddingRight: '0.85rem',
+    transitionProperty: 'background, gap',
+    transitionDuration: '0.2s',
+    transitionTimingFunction: 'default',
+    _hover: { background: 'logo.greenDim', gap: '0.75rem' },
+  },
+})
+
+const BtnGhost = styled('a', {
+  base: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '2',
+    fontSize: '0.62rem',
+    fontWeight: 'bold',
+    color: 'text.mid',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'border.mid',
+    paddingTop: '0.4rem',
+    paddingBottom: '0.4rem',
+    paddingLeft: '0.85rem',
+    paddingRight: '0.85rem',
+    transitionProperty: 'color, border-color, gap',
+    transitionDuration: '0.2s',
+    transitionTimingFunction: 'default',
+    _hover: { color: 'accent', borderColor: 'accent.dim', gap: '0.75rem' },
+  },
+})
+
+const LightCard = styled('div', {
+  base: {
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'logo.blueDim',
+    background: 'bg.card',
+    paddingTop: '1.75rem',
+    paddingBottom: '1.75rem',
+    paddingLeft: '8',
+    paddingRight: '8',
+    marginBottom: '10',
+    position: 'relative',
+    _before: {
+      content: 'attr(data-label)',
+      position: 'absolute',
+      top: '-0.55rem',
+      left: '6',
+      background: 'bg',
+      paddingLeft: '2',
+      paddingRight: '2',
+      fontSize: 'xs',
+      fontWeight: 'bold',
+      letterSpacing: 'widest',
+      color: 'text.dim',
+    },
+  },
+})
+
+const LightTitle = styled('div', {
+  base: {
+    fontSize: 'xl',
+    fontWeight: 'bold',
+    letterSpacing: 'tight',
+    color: 'text',
+    lineHeight: 'tight',
+    marginBottom: '2',
+  },
+})
+
+const LightDesc = styled('div', {
+  base: {
+    fontSize: 'base',
+    color: 'text.mid',
+    lineHeight: '1.85',
+    fontStyle: 'italic',
+    marginBottom: '5',
+  },
+})
+
+const QuickFacts = styled('div', {
+  base: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: 'logo.blueDim',
+    marginBottom: '8',
+  },
+})
+
+const Fact = styled('div', {
+  base: {
+    paddingTop: '0.85rem',
+    paddingBottom: '0.85rem',
+    paddingLeft: '4',
+    paddingRight: '4',
+    borderRightWidth: '1px',
+    borderRightStyle: 'solid',
+    borderRightColor: 'logo.blueDim',
+    '&:last-child': { borderRightWidth: '0' },
+  },
+})
+
+const FactLabel = styled('div', {
+  base: { fontSize: '2xs', letterSpacing: 'wider', color: 'text.dim', marginBottom: '0.3rem' },
+})
+
+const FactValue = styled('div', {
+  base: { fontSize: '0.72rem', fontWeight: 'bold', color: 'text.mid' },
+})
+
 function ProjectPage() {
   const project = Route.useLoaderData()
 
   if (project.depth === 'lightweight') {
     return (
       <Layout>
-        <Link to="/" className={styles.back}>← BACK TO WORK</Link>
-        <div className={styles.lightCard} data-label={project.type.toUpperCase()}>
-          <div className={styles.lightTitle}>{project.title}</div>
-          <div className={styles.lightDesc}>{project.description}</div>
+        <BackLink to={'/' as any}>← BACK TO WORK</BackLink>
+        <LightCard data-label={project.type.toUpperCase()}>
+          <LightTitle>{project.title}</LightTitle>
+          <LightDesc>{project.description}</LightDesc>
           {project.externalUrl && (
-            <a href={project.externalUrl} target="_blank" rel="noopener noreferrer" className={styles.btnGreen}>
+            <BtnGreen href={project.externalUrl} target="_blank" rel="noopener noreferrer">
               VIEW PROJECT ↗
-            </a>
+            </BtnGreen>
           )}
-        </div>
+        </LightCard>
         <SectionHead label="QUICK FACTS" />
-        <div className={styles.quickFacts}>
-          <div className={styles.fact}>
-            <div className={styles.factLabel}>TYPE</div>
-            <div className={styles.factValue}>{project.type}</div>
-          </div>
-          <div className={styles.fact}>
-            <div className={styles.factLabel}>YEAR</div>
-            <div className={styles.factValue}>{project.year}</div>
-          </div>
-          <div className={styles.fact}>
-            <div className={styles.factLabel}>STATUS</div>
-            <div className={styles.factValue}>{project.status ?? 'Complete'}</div>
-          </div>
-        </div>
+        <QuickFacts>
+          <Fact><FactLabel>TYPE</FactLabel><FactValue>{project.type}</FactValue></Fact>
+          <Fact><FactLabel>YEAR</FactLabel><FactValue>{project.year}</FactValue></Fact>
+          <Fact><FactLabel>STATUS</FactLabel><FactValue>{project.status ?? 'Complete'}</FactValue></Fact>
+        </QuickFacts>
         {project.stack && (
           <>
             <SectionHead label="STACK" />
-            <div className={styles.tags} style={{ marginTop: '0.5rem' }}>
-              {project.stack.map((s) => <div key={s} className={styles.tag}>{s.toUpperCase()}</div>)}
-            </div>
+            <Tags style={{ marginTop: '0.5rem' }}>
+              {project.stack.map((s) => <Tag key={s}>{s.toUpperCase()}</Tag>)}
+            </Tags>
           </>
         )}
       </Layout>
@@ -58,75 +300,47 @@ function ProjectPage() {
 
   return (
     <Layout>
-      <Link to="/" className={styles.back}>← BACK TO WORK</Link>
-
-      <div className={styles.header}>
-        <div className={styles.typeLabel}>{project.type} · {project.year}</div>
-        <div className={styles.title}>{project.title}</div>
-        <div className={styles.meta}>
+      <BackLink to={'/' as any}>← BACK TO WORK</BackLink>
+      <Header>
+        <TypeLabel>{project.type} · {project.year}</TypeLabel>
+        <Title>{project.title}</Title>
+        <Meta>
           {project.role && (
-            <div className={styles.metaItem}>
-              <div className={styles.metaLabel}>ROLE</div>
-              <div className={styles.metaValue}>{project.role}</div>
-            </div>
+            <MetaItem><MetaLabel>ROLE</MetaLabel><MetaValue>{project.role}</MetaValue></MetaItem>
           )}
           {project.timeline && (
-            <div className={styles.metaItem}>
-              <div className={styles.metaLabel}>TIMELINE</div>
-              <div className={styles.metaValue}>{project.timeline}</div>
-            </div>
+            <MetaItem><MetaLabel>TIMELINE</MetaLabel><MetaValue>{project.timeline}</MetaValue></MetaItem>
           )}
           {project.status && (
-            <div className={styles.metaItem}>
-              <div className={styles.metaLabel}>STATUS</div>
-              <div className={styles.metaValue}>{project.status}</div>
-            </div>
+            <MetaItem><MetaLabel>STATUS</MetaLabel><MetaValue>{project.status}</MetaValue></MetaItem>
           )}
-        </div>
-      </div>
+        </Meta>
+      </Header>
 
       {project.problem && (
-        <div className={styles.section}>
-          <div className={styles.sectionTitle}>// PROBLEM</div>
-          <div className={styles.body}>{project.problem}</div>
-        </div>
+        <Section><SectionTitle>// PROBLEM</SectionTitle><Body>{project.problem}</Body></Section>
       )}
-
       {project.approach && (
-        <div className={styles.section}>
-          <div className={styles.sectionTitle}>// APPROACH</div>
-          <div className={styles.body}>{project.approach}</div>
-        </div>
+        <Section><SectionTitle>// APPROACH</SectionTitle><Body>{project.approach}</Body></Section>
       )}
-
       {project.outcome && (
-        <div className={styles.section}>
-          <div className={styles.sectionTitle}>// OUTCOME</div>
-          <div className={styles.body}>{project.outcome}</div>
-        </div>
+        <Section><SectionTitle>// OUTCOME</SectionTitle><Body>{project.outcome}</Body></Section>
       )}
-
       {project.stack && (
-        <div className={styles.section}>
-          <div className={styles.sectionTitle}>// STACK</div>
-          <div className={styles.tags}>
-            {project.stack.map((s) => <div key={s} className={styles.tag}>{s.toUpperCase()}</div>)}
-          </div>
-        </div>
+        <Section>
+          <SectionTitle>// STACK</SectionTitle>
+          <Tags>{project.stack.map((s) => <Tag key={s}>{s.toUpperCase()}</Tag>)}</Tags>
+        </Section>
       )}
 
-      <div className={styles.ctas}>
+      <Ctas>
         {project.liveUrl && (
-          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={styles.btnGreen}>
-            VIEW LIVE SITE →
-          </a>
+          <BtnGreen href={project.liveUrl} target="_blank" rel="noopener noreferrer">VIEW LIVE SITE →</BtnGreen>
         )}
         {project.githubUrl && (
-          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className={styles.btnGhost}>
-            VIEW ON GITHUB ↗
-          </a>
+          <BtnGhost href={project.githubUrl} target="_blank" rel="noopener noreferrer">VIEW ON GITHUB ↗</BtnGhost>
         )}
-      </div>
+      </Ctas>
     </Layout>
   )
 }
