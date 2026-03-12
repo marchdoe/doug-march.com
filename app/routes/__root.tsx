@@ -1,7 +1,14 @@
 import '../styles/global.css'
+import '../styles/panda.css'
 import { createRootRoute, Link, Outlet, HeadContent } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
-import styles from './not-found.module.css'
+import { styled } from '../../styled-system/jsx'
+
+const THEME_INIT_SCRIPT = `(function(){
+  var s=localStorage.getItem('theme');
+  var p=s||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  document.documentElement.classList.add(p);
+})();`
 
 export const Route = createRootRoute({
   head: () => ({
@@ -18,6 +25,9 @@ export const Route = createRootRoute({
         href: 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap',
       },
     ],
+    scripts: [
+      { children: THEME_INIT_SCRIPT },
+    ],
   }),
   notFoundComponent: NotFound,
   component: RootComponent,
@@ -32,17 +42,71 @@ function RootComponent() {
   )
 }
 
+// NotFound styled components — inline here since they're only used in this file
+const Wrap = styled('div', {
+  base: { paddingTop: '12' },
+})
+
+const Code = styled('div', {
+  base: {
+    fontSize: '0.55rem',
+    fontWeight: 'bold',
+    letterSpacing: 'widest',
+    color: 'text.dim',
+    marginBottom: '6',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '2',
+    _before: { content: '"//"', color: 'text.dim' },
+  },
+})
+
+const Heading = styled('div', {
+  base: {
+    fontSize: 'xl',
+    fontWeight: 'bold',
+    letterSpacing: 'tight',
+    color: 'text',
+    lineHeight: 'tight',
+    marginBottom: '3',
+  },
+})
+
+const Message = styled('p', {
+  base: {
+    fontSize: 'base',
+    color: 'text.dim',
+    fontStyle: 'italic',
+    lineHeight: 'normal',
+    marginBottom: '8',
+  },
+})
+
+const BackLink = styled(Link, {
+  base: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.4rem',
+    fontSize: 'sm',
+    fontWeight: 'bold',
+    color: 'text.dim',
+    letterSpacing: 'wide',
+    transitionProperty: 'color',
+    transitionDuration: 'fast',
+    transitionTimingFunction: 'default',
+    _hover: { color: 'accent' },
+  },
+})
+
 function NotFound() {
   return (
     <Layout>
-      <div className={styles.wrap}>
-        <div className={styles.code}>404</div>
-        <div className={styles.heading}>NOT FOUND</div>
-        <p className={styles.message}>
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <Link to="/" className={styles.back}>← BACK TO WORK</Link>
-      </div>
+      <Wrap>
+        <Code>404</Code>
+        <Heading>NOT FOUND</Heading>
+        <Message>The page you're looking for doesn't exist or has been moved.</Message>
+        <BackLink to={'/' as any}>← BACK TO WORK</BackLink>
+      </Wrap>
     </Layout>
   )
 }
