@@ -2,6 +2,27 @@ import { definePreset } from '@pandacss/dev'
 
 export const elementsPreset = definePreset({
   name: 'elements',
+  globalCss: {
+    '*, *::before, *::after': {
+      boxSizing: 'border-box',
+      margin: '0',
+      padding: '0',
+    },
+    html: {
+      fontSize: '18px',
+    },
+    body: {
+      fontFamily: 'mono',
+      background: 'bg',
+      color: 'text',
+      WebkitFontSmoothing: 'antialiased',
+      MozOsxFontSmoothing: 'grayscale',
+    },
+    a: {
+      color: 'inherit',
+      textDecoration: 'none',
+    },
+  },
   conditions: {
     extend: {
       light: '.light &, [data-theme=light] &',

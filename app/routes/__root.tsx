@@ -1,4 +1,3 @@
-import '../styles/global.css'
 import '../styles/panda.css'
 import { createRootRoute, Link, Outlet, HeadContent } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
