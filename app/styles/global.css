@@ -1,0 +1,33 @@
+:root {
+  --bg:             #050C18;
+  --bg-side:        #040913;
+  --bg-card:        #070F1E;
+  --border:         #0A1828;
+  --border-mid:     #0D2040;
+
+  --text:           #D4E8F8;
+  --text-mid:       #7AADC4;
+  --text-dim:       #3E6882;
+
+  --cyan:           #00E5FF;
+  --cyan-dim:       #2090A8;
+  --cyan-glow:      rgba(0, 229, 255, 0.08);
+
+  --logo-blue:      #4A8FD4;
+  --logo-blue-dim:  rgba(74, 143, 212, 0.12);
+  --logo-green:     #5CBE4A;
+  --logo-green-dim: rgba(92, 190, 74, 0.10);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 18px; }
+
+body {
+  font-family: 'Space Mono', monospace;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
