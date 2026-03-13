@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
-import { MissionCard } from '../components/MissionCard'
-import { ProjectRow } from '../components/ProjectRow'
+import { FeaturedProject } from '../components/FeaturedProject'
+import { SelectedWork } from '../components/SelectedWork'
+import { Experiments } from '../components/Experiments'
 import { SectionHead } from '../components/SectionHead'
-import { featuredProject, selectedWork, experiments } from '../content/projects'
 import { styled } from '../../styled-system/jsx'
 
 export const Route = createFileRoute('/')({
@@ -56,19 +56,15 @@ const FooterLink = styled('a', {
 function Home() {
   return (
     <Layout>
-      {featuredProject && <MissionCard project={featuredProject} />}
+      <FeaturedProject />
 
       <SectionHead label="SELECTED WORK" />
-      {selectedWork.map((p, i) => (
-        <ProjectRow key={p.slug} project={p} index={i} />
-      ))}
+      <SelectedWork />
 
       <Gap />
 
       <SectionHead label="EXPERIMENTS &amp; SIDE PROJECTS" />
-      {experiments.map((p, i) => (
-        <ProjectRow key={p.slug} project={p} index={i} />
-      ))}
+      <Experiments />
 
       <Footer>
         <FooterText>© {new Date().getFullYear()} DOUG MARCH</FooterText>
