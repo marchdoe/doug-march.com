@@ -1,0 +1,29 @@
+date: 2026-03-12
+weather:
+  location: Chicago
+  conditions: "Heavy snowstorm, 8 inches overnight, 22°F"
+  feel: "brutal, isolating"
+sports:
+  - team: "Chicago Bulls"
+    result: "Lost 89-102 to Celtics"
+    notes: "Third loss in a row"
+  - team: "Chicago Bears"
+    result: "Off season"
+    notes: "New QB signing rumored"
+golf:
+  - "Scottie Scheffler leads Masters by 4 strokes after round 2"
+  - "Rory McIlroy struggles with putting"
+github_trending:
+  - repo: "vercel/ai"
+    description: "AI SDK for building AI-powered applications with streaming"
+    stars: 45000
+    why_interesting: "New streaming UI primitives"
+  - repo: "microsoft/vscode-copilot-chat"
+    description: "GitHub Copilot Chat extension for VS Code"
+    stars: 12000
+    why_interesting: "Chat interface design patterns"
+news:
+  - "Federal Reserve holds interest rates steady amid inflation concerns"
+  - "SpaceX Starship completes successful orbital test"
+  - "Major blizzard hits Midwest, travel disruptions"
+mood_override: null  # Optional: "dark", "celebratory", "tense", "playful" — overrides Claude's interpretation
