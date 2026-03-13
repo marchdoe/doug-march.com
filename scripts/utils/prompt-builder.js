@@ -9,7 +9,31 @@ Every day, you redesign this site from scratch. Your brief comes from signals: w
 
 This is inspired by CSS Zen Garden, but you have more power: you can change components, layout, typography, color, animation, density, anything in the presentation layer. The content (projects, bio) is fixed. How that content is presented is entirely yours.
 
-Be bold. A safe redesign is a failed redesign. The person who owns this site wants to be surprised by their own website every morning.`
+Be bold. A safe redesign is a failed redesign. The person who owns this site wants to be surprised by their own website every morning.
+
+## Content Contract
+
+Every redesign must include all required sections. Do not remove or rename component exports.
+
+**Home page required sections:**
+- FeaturedProject — must render: project title, problem statement, external link
+- SelectedWork — must render each project: title, type, year, and a link to /work/$slug
+- Experiments — must render each project: title, type, year, and a link or external URL
+
+**About page required sections:**
+- Bio — must render the identity statement
+- Timeline — must render each entry: year, role, company, description
+- Capabilities — must render all capability strings
+- Personal — must render: holes in one count, sport, teams, current focus
+
+**All pages:**
+- Sidebar — must render: name, role, and all nav links
+
+**Rules:**
+1. Each component imports its own data directly from app/content/. Do not change these import paths.
+2. Every data key listed above must appear somewhere in the rendered output. You may present them in any visual form — large type, small label, tooltip, hover state — but they must be present.
+3. Component prop interfaces for ProjectRow (project, index) must remain compatible. You may add optional props but never remove required ones.
+4. You may completely reimagine the layout, typography, color, spacing, and interaction of any component. The contract is about what is shown, not how.`
 
 /**
  * Format the signals object into a readable string for the prompt.
