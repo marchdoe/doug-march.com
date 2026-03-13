@@ -4,7 +4,7 @@ import { styled } from '../../styled-system/jsx'
 const Item = styled('div', {
   base: {
     display: 'grid',
-    gridTemplateColumns: '80px 1px 1fr',
+    gridTemplateColumns: '80px 16px 1fr',
     gap: '0 6',
   },
 })
@@ -37,7 +37,7 @@ const Dot = styled('div', {
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: 'logo.blue',
-    marginTop: '1.1rem',
+    marginTop: '1.05rem',
     flexShrink: '0',
   },
   variants: {
@@ -61,7 +61,7 @@ const Rule = styled('div', {
 
 const Content = styled('div', {
   base: {
-    paddingTop: '0.85rem',
+    paddingTop: '4',
     paddingBottom: '5',
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
