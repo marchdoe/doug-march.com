@@ -4,7 +4,7 @@ import { styled } from '../../styled-system/jsx'
 const Item = styled('div', {
   base: {
     display: 'grid',
-    gridTemplateColumns: '80px 1px 1fr',
+    gridTemplateColumns: '80px 16px 1fr',
     gap: '0 6',
   },
 })
