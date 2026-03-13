@@ -12,10 +12,16 @@ export const MUTABLE_FILES = [
   'elements/preset.ts',
   'app/components/Layout.tsx',
   'app/components/Sidebar.tsx',
-  'app/components/MissionCard.tsx',
-  'app/components/ProjectRow.tsx',
   'app/components/SectionHead.tsx',
   'app/components/MobileFooter.tsx',
+  'app/components/ProjectRow.tsx',
+  'app/components/FeaturedProject.tsx',
+  'app/components/SelectedWork.tsx',
+  'app/components/Experiments.tsx',
+  'app/components/Bio.tsx',
+  'app/components/Timeline.tsx',
+  'app/components/Capabilities.tsx',
+  'app/components/Personal.tsx',
   'app/routes/__root.tsx',
   'app/routes/index.tsx',
   'app/routes/about.tsx',
@@ -29,6 +35,7 @@ export const MUTABLE_FILES = [
 const CONTENT_FILES_FOR_SUMMARY = [
   'app/content/projects.ts',
   'app/content/timeline.ts',
+  'app/content/about.ts',
 ]
 
 /**
@@ -65,7 +72,7 @@ async function buildContentSummary() {
   lines.push('')
   lines.push('## Timeline (from app/content/timeline.ts)')
   lines.push('Exports: `timeline` (array of career entries), `capabilities` (array of skill strings)')
-  lines.push('These are imported by app/routes/about.tsx — preserve those import statements.')
+  lines.push('These are imported by app/components/Timeline.tsx and app/components/Capabilities.tsx — preserve those import statements.')
 
   return lines.join('\n')
 }
