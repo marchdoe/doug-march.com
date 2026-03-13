@@ -5,7 +5,7 @@ const Item = styled('div', {
   base: {
     display: 'grid',
     gridTemplateColumns: '80px 16px 1fr',
-    gap: '0 6',
+    columnGap: '6',
   },
 })
 
@@ -37,7 +37,7 @@ const Dot = styled('div', {
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: 'logo.blue',
-    marginTop: '1.05rem',
+    marginTop: '1.3rem',
     flexShrink: '0',
   },
   variants: {
