@@ -37,7 +37,7 @@ const Dot = styled('div', {
     borderWidth: '1px',
     borderStyle: 'solid',
     borderColor: 'logo.blue',
-    marginTop: '1.3rem',
+    marginTop: '1.4rem',
     flexShrink: '0',
   },
   variants: {
