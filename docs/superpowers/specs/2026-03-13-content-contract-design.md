@@ -108,8 +108,8 @@ export function SelectedWork() { ... }
 | File | Renders |
 |---|---|
 | `app/components/Bio.tsx` | Identity statement from `about.ts` |
-| `app/components/Timeline.tsx` | Timeline entries from `about.ts` |
-| `app/components/Capabilities.tsx` | Capabilities list from `about.ts` |
+| `app/components/Timeline.tsx` | Timeline entries from `timeline.ts` (data stays where it lives) |
+| `app/components/Capabilities.tsx` | Capabilities list from `timeline.ts` (data stays where it lives) |
 | `app/components/Personal.tsx` | Personal facts from `about.ts` |
 
 `about.tsx` becomes a thin route that assembles these four components.
