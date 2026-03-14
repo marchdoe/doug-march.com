@@ -78,11 +78,12 @@ function formatSignalsMarkdown(signals) {
  * @param {string[]} changedFiles - list of relative file paths that were written
  */
 export async function archive(date, signals, rationale, designBrief, changedFiles) {
-  const dir = path.join(ROOT, 'archive', date)
+  const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : String(date)
+  const dir = path.join(ROOT, 'archive', dateStr)
   await mkdir(dir, { recursive: true })
 
   const content = [
-    `# ${date}`,
+    `# ${dateStr}`,
     '',
     `**Design Brief:** ${designBrief}`,
     '',
@@ -101,5 +102,5 @@ export async function archive(date, signals, rationale, designBrief, changedFile
 
   const briefPath = path.join(dir, 'brief.md')
   await writeFile(briefPath, content, 'utf8')
-  console.log(`  archived to archive/${date}/brief.md`)
+  console.log(`  archived to archive/${dateStr}/brief.md`)
 }
