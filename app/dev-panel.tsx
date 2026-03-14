@@ -78,9 +78,9 @@ const c = {
   border: '#0A1828',
   primary: '#D4E8F8',
   secondary: '#7AADC4',
-  dim: '#3E6882',
-  muted: '#2D5070',
-  ghost: '#0D2040',
+  dim: '#6A9DB5',
+  muted: '#4E7A94',
+  ghost: '#3A6080',
   cyan: '#00E5FF',
   green: '#5CBE4A',
   blue: '#4A8FD4',
@@ -337,11 +337,11 @@ export function DevPanel() {
 
   const isRunDisabled = pipelineStatus === 'running' || pipelineStatus === 'cooldown'
 
-  if (loading) return <div style={s.page}><p style={{ color: c.dim }}>Loading...</p></div>
-  if (!signals) return <div style={s.page}><p style={{ color: '#dc2626' }}>Failed to load signals</p></div>
+  if (loading) return <main style={s.page}><p style={{ color: c.dim }}>Loading...</p></main>
+  if (!signals) return <main style={s.page}><p style={{ color: '#ef4444' }}>Failed to load signals</p></main>
 
   return (
-    <div style={s.page}>
+    <main style={s.page}>
       <PulseStyle />
 
       {/* Zone 1: Signals Header */}
@@ -362,8 +362,8 @@ export function DevPanel() {
       {/* Overrides */}
       <div style={{ ...s.overridesRow, marginTop: '24px' }}>
         <div style={s.fieldGroup}>
-          <div style={s.fieldLabel}>Mood Override</div>
-          <select style={s.select} value={moodOverride} onChange={e => setMoodOverride(e.target.value)}>
+          <label htmlFor="mood-override" style={s.fieldLabel}>Mood Override</label>
+          <select id="mood-override" style={s.select} value={moodOverride} onChange={e => setMoodOverride(e.target.value)}>
             <option value="">-- none (Claude decides) --</option>
             <option value="dark">dark</option>
             <option value="celebratory">celebratory</option>
@@ -372,8 +372,8 @@ export function DevPanel() {
           </select>
         </div>
         <div style={s.fieldGroup}>
-          <div style={s.fieldLabel}>Notes for Claude</div>
-          <textarea style={s.textarea} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional extra context, e.g. 'I just got a hole in one'" />
+          <label htmlFor="notes-claude" style={s.fieldLabel}>Notes for Claude</label>
+          <textarea id="notes-claude" style={s.textarea} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional extra context, e.g. 'I just got a hole in one'" />
         </div>
         <button style={s.saveBtn} onClick={handleSaveOverrides} disabled={savingOverrides}>
           {savingOverrides ? 'Saving...' : 'Save overrides'}
@@ -405,7 +405,7 @@ export function DevPanel() {
         </label>
         {archive[0] && (
           <div style={{ marginLeft: 'auto', fontSize: '11px', color: c.muted, fontFamily: c.font }}>
-            Last run: <strong style={{ color: c.dim }}>{archive[0].date}</strong> · <em style={{ color: c.ghost }}>{archive[0].brief.slice(0, 50)}...</em>
+            Last run: <strong style={{ color: c.dim }}>{archive[0].date}</strong> · <em style={{ color: c.muted }}>{archive[0].brief.slice(0, 50)}...</em>
           </div>
         )}
       </div>
@@ -414,23 +414,27 @@ export function DevPanel() {
       {pipelineStatus === 'running' && (
         <ProgressSection phases={phases} logLines={logLines} attemptNum={attemptNum} logEndRef={logEndRef} elapsedMs={elapsedMs} />
       )}
-      {(pipelineStatus === 'success' || pipelineStatus === 'cooldown') && result && (
-        <SuccessSection
-          brief={result.brief ?? ''}
-          timestamp={result.timestamp ?? ''}
-          attemptNum={attemptNum}
-          archive={archive}
-          totalMs={result.totalMs ?? 0}
-          phases={phases}
-          onRunAgain={() => { startCooldown() }}
-          cooldownLeft={cooldownLeft}
-          isCooldown={pipelineStatus === 'cooldown'}
-        />
-      )}
-      {pipelineStatus === 'error' && result && (
-        <ErrorSection error={result.error ?? 'Unknown error'} totalMs={result.totalMs ?? 0} onRetry={handleRun} />
-      )}
-    </div>
+      <div role="status" aria-live="polite">
+        {(pipelineStatus === 'success' || pipelineStatus === 'cooldown') && result && (
+          <SuccessSection
+            brief={result.brief ?? ''}
+            timestamp={result.timestamp ?? ''}
+            attemptNum={attemptNum}
+            archive={archive}
+            totalMs={result.totalMs ?? 0}
+            phases={phases}
+            onRunAgain={() => { startCooldown() }}
+            cooldownLeft={cooldownLeft}
+            isCooldown={pipelineStatus === 'cooldown'}
+          />
+        )}
+      </div>
+      <div role="alert">
+        {pipelineStatus === 'error' && result && (
+          <ErrorSection error={result.error ?? 'Unknown error'} totalMs={result.totalMs ?? 0} onRetry={handleRun} />
+        )}
+      </div>
+    </main>
   )
 }
 
@@ -446,6 +450,13 @@ function PulseStyle() {
       @keyframes pulse {
         0%, 100% { opacity: 1; }
         50% { opacity: 0.4; }
+      }
+      button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible {
+        outline: 2px solid #00E5FF;
+        outline-offset: 2px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
       }
     `}</style>
   )
@@ -463,16 +474,17 @@ function SignalsHeader({ meta, date }: { meta: Meta | null; date: string }) {
       padding: '8px 0',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <span style={{
+        <h2 style={{
           fontSize: '10px',
           fontWeight: 700,
           textTransform: 'uppercase',
           letterSpacing: '.12em',
           color: c.dim,
           fontFamily: c.font,
+          margin: 0,
         }}>
           // SIGNALS
-        </span>
+        </h2>
 
         {meta && (
           <>
@@ -636,7 +648,7 @@ function AtmosphereStrip({ signals }: { signals: Signals }) {
             </div>
           </>
         ) : (
-          <div style={{ fontSize: '14px', fontWeight: 700, color: c.ghost, fontFamily: c.font }}>
+          <div style={{ fontSize: '14px', fontWeight: 700, color: c.muted, fontFamily: c.font }}>
             None nearby
           </div>
         )}
@@ -715,6 +727,7 @@ function LiveDataCards({ signals }: { signals: Signals }) {
     color: c.dim,
     fontFamily: c.font,
     marginBottom: '10px',
+    marginTop: 0,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -722,7 +735,7 @@ function LiveDataCards({ signals }: { signals: Signals }) {
 
   const metaStyle: React.CSSProperties = {
     fontSize: '9px',
-    color: c.ghost,
+    color: c.muted,
     fontFamily: c.font,
     fontWeight: 400,
     letterSpacing: '0',
@@ -762,10 +775,10 @@ function SportsCard({ signals, cardStyle, headerStyle, metaStyle }: {
 
   return (
     <div style={cardStyle}>
-      <div style={headerStyle}>
+      <h3 style={headerStyle}>
         <span>// SPORTS</span>
         <span style={metaStyle}>{teams.length} teams</span>
-      </div>
+      </h3>
       {teams.map((team, i) => {
         const isActive = team.result !== 'off season'
         const isWin = team.result?.toLowerCase() === 'w' || team.result?.toLowerCase() === 'win'
@@ -789,7 +802,7 @@ function SportsCard({ signals, cardStyle, headerStyle, metaStyle }: {
             <span style={{
               fontSize: '11px',
               fontWeight: isActive ? 700 : 400,
-              color: isActive ? c.primary : c.ghost,
+              color: isActive ? c.primary : c.muted,
               fontFamily: c.font,
               flex: 1,
             }}>
@@ -801,7 +814,7 @@ function SportsCard({ signals, cardStyle, headerStyle, metaStyle }: {
                   <span style={{
                     fontSize: '9px',
                     fontWeight: 700,
-                    background: isWin ? c.green : '#dc2626',
+                    background: isWin ? c.green : '#ef4444',
                     color: isWin ? c.pageBg : '#fff',
                     padding: '1px 6px',
                     borderRadius: '3px',
@@ -825,7 +838,7 @@ function SportsCard({ signals, cardStyle, headerStyle, metaStyle }: {
               <span style={{
                 fontSize: '10px',
                 fontStyle: 'italic',
-                color: c.ghost,
+                color: c.muted,
                 fontFamily: c.font,
               }}>
                 off season
@@ -835,7 +848,7 @@ function SportsCard({ signals, cardStyle, headerStyle, metaStyle }: {
         )
       })}
       {teams.length === 0 && (
-        <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No teams</div>
+        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No teams</div>
       )}
     </div>
   )
@@ -850,9 +863,9 @@ function GolfCard({ signals, cardStyle, headerStyle }: {
 
   return (
     <div style={cardStyle}>
-      <div style={headerStyle}>
+      <h3 style={headerStyle}>
         <span>// GOLF</span>
-      </div>
+      </h3>
       {golf?.tournament ? (
         <>
           <div style={{
@@ -907,11 +920,11 @@ function GolfCard({ signals, cardStyle, headerStyle }: {
             </div>
           ))}
           {(!golf.leaders || golf.leaders.length === 0) && (
-            <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No leaders yet</div>
+            <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No leaders yet</div>
           )}
         </>
       ) : (
-        <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No tournament</div>
+        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No tournament</div>
       )}
     </div>
   )
@@ -934,9 +947,9 @@ function GitHubCard({ signals, cardStyle, headerStyle }: {
 
   return (
     <div style={cardStyle}>
-      <div style={headerStyle}>
+      <h3 style={headerStyle}>
         <span>// GITHUB TRENDING</span>
-      </div>
+      </h3>
       {repos.map((repo, i) => (
         <div key={i} style={{
           display: 'flex',
@@ -976,7 +989,7 @@ function GitHubCard({ signals, cardStyle, headerStyle }: {
         </div>
       ))}
       {repos.length === 0 && (
-        <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No data</div>
+        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No data</div>
       )}
     </div>
   )
@@ -992,15 +1005,15 @@ function HackerNewsCard({ signals, cardStyle, headerStyle }: {
 
   return (
     <div style={cardStyle}>
-      <div style={headerStyle}>
+      <h3 style={headerStyle}>
         <span>
           <span style={{ color: c.orange, fontWeight: 700, marginRight: '4px' }}>Y</span>
           HACKER NEWS
         </span>
-      </div>
+      </h3>
       {stories.map((story, i) => {
         // Brighten scores for high values, fade for lower
-        const scoreOpacity = Math.min(1, 0.4 + (story.score / 500) * 0.6)
+        const scoreOpacity = Math.min(1, 0.7 + (story.score / 500) * 0.3)
         return (
           <div key={i} style={{
             display: 'flex',
@@ -1034,7 +1047,7 @@ function HackerNewsCard({ signals, cardStyle, headerStyle }: {
         )
       })}
       {stories.length === 0 && (
-        <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No stories</div>
+        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No stories</div>
       )}
     </div>
   )
@@ -1082,7 +1095,7 @@ function BottomRow({ signals, meta }: { signals: Signals; meta: Meta | null }) {
       <div style={{ display: 'flex', gap: '10px' }}>
         {/* Music */}
         <div style={halfCardStyle}>
-          <div style={labelStyle}>// MUSIC</div>
+          <h3 style={{ ...labelStyle, marginTop: 0 }}>// MUSIC</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
             {(music?.bands ?? []).map((band, i) => (
               <span key={i} style={{
@@ -1097,14 +1110,14 @@ function BottomRow({ signals, meta }: { signals: Signals; meta: Meta | null }) {
               </span>
             ))}
             {(!music?.bands || music.bands.length === 0) && (
-              <span style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No bands</span>
+              <span style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No bands</span>
             )}
           </div>
         </div>
 
         {/* Books */}
         <div style={halfCardStyle}>
-          <div style={labelStyle}>// BOOKS</div>
+          <h3 style={{ ...labelStyle, marginTop: 0 }}>// BOOKS</h3>
           {(books?.currently_reading ?? []).length > 0 ? (
             (books!.currently_reading!).map((book, i) => (
               <div key={i} style={{
@@ -1117,7 +1130,7 @@ function BottomRow({ signals, meta }: { signals: Signals; meta: Meta | null }) {
               </div>
             ))
           ) : (
-            <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font, fontStyle: 'italic' }}>
+            <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font, fontStyle: 'italic' }}>
               nothing currently
             </div>
           )}
@@ -1135,7 +1148,7 @@ function BottomRow({ signals, meta }: { signals: Signals; meta: Meta | null }) {
           fontWeight: 700,
           textTransform: 'uppercase',
           letterSpacing: '.12em',
-          color: c.ghost,
+          color: c.muted,
           fontFamily: c.font,
           marginBottom: '10px',
         }}>
@@ -1150,23 +1163,22 @@ function BottomRow({ signals, meta }: { signals: Signals; meta: Meta | null }) {
             }}>
               <span style={{
                 fontSize: '10px',
-                color: c.ghost,
+                color: c.muted,
                 fontFamily: c.font,
               }}>
                 {mp.name.replace(/_/g, ' ')}
               </span>
               <span style={{
                 fontSize: '9px',
-                color: c.ghost,
+                color: c.muted,
                 fontFamily: c.font,
-                opacity: 0.7,
               }}>
                 {mp.reason?.slice(0, 30) ?? 'unknown'}
               </span>
             </div>
           ))
         ) : (
-          <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font, fontStyle: 'italic' }}>
+          <div style={{ fontSize: '11px', color: c.dim, fontFamily: c.font, fontStyle: 'italic' }}>
             All signals healthy
           </div>
         )}
@@ -1241,7 +1253,7 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }:
                 fontSize: '10px',
                 flex: 1,
                 fontFamily: c.font,
-                color: p.status === 'pending' ? c.ghost : p.status === 'done' ? c.muted : c.primary,
+                color: p.status === 'pending' ? c.muted : p.status === 'done' ? c.muted : c.primary,
                 fontWeight: p.status === 'active' ? 700 : 400,
                 textDecoration: p.status === 'done' ? 'line-through' : 'none',
               }}>{p.label}</span>
@@ -1304,7 +1316,7 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }:
             <div key={i} style={{
               color: line.includes('===') || line.includes('calling claude') || line.includes('claude CLI')
                 ? c.cyan
-                : c.ghost,
+                : c.muted,
             }}>{line}</div>
           ))}
           <span style={{ color: c.cyan }}>_</span>
@@ -1324,7 +1336,7 @@ function PhaseDot({ status }: { status: 'pending' | 'active' | 'done' }) {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: '8px',
+    fontSize: '9px',
     fontFamily: c.font,
   } as React.CSSProperties
 
@@ -1437,7 +1449,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '8px',
+                fontSize: '9px',
                 color: i > 3 ? c.pageBg : c.green,
                 fontWeight: 700,
                 overflow: 'hidden',
@@ -1451,7 +1463,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
           {phases.map(p => (
-            <span key={p.label} style={{ fontSize: '7px', color: c.muted, fontFamily: c.font }}>{p.label.split(' ')[0]}</span>
+            <span key={p.label} style={{ fontSize: '9px', color: c.muted, fontFamily: c.font }}>{p.label.split(' ')[0]}</span>
           ))}
         </div>
       </div>
@@ -1533,24 +1545,24 @@ function ErrorSection({ error, totalMs, onRetry }: { error: string; totalMs: num
       alignItems: 'flex-start',
       gap: '12px',
     }}>
-      <div style={{ color: '#dc2626', fontSize: '16px', flexShrink: 0, fontFamily: c.font, fontWeight: 700 }}>X</div>
+      <div style={{ color: '#ef4444', fontSize: '16px', flexShrink: 0, fontFamily: c.font, fontWeight: 700 }}>X</div>
       <div style={{ flex: 1 }}>
         <div style={{
           fontSize: '12px',
           fontWeight: 700,
-          color: '#dc2626',
+          color: '#ef4444',
           marginBottom: '4px',
           fontFamily: c.font,
         }}>
           Pipeline failed
-          <span style={{ fontWeight: 400, fontSize: '10px', color: '#b91c1c', marginLeft: '6px' }}>
+          <span style={{ fontWeight: 400, fontSize: '10px', color: '#f87171', marginLeft: '6px' }}>
             ({fmtDuration(totalMs)})
           </span>
         </div>
-        <div style={{ fontSize: '10px', color: '#b91c1c', fontFamily: c.font }}>{error}</div>
+        <div style={{ fontSize: '10px', color: '#f87171', fontFamily: c.font }}>{error}</div>
       </div>
       <button onClick={onRetry} style={{
-        background: '#dc2626',
+        background: '#ef4444',
         color: '#fff',
         border: 'none',
         borderRadius: '4px',
