@@ -113,7 +113,12 @@ function formatSignals(signals) {
 function buildUserPrompt(context) {
   const sections = []
 
-  sections.push(formatSignals(context.signals))
+  // If an interpreted brief exists (from Stage 1), use it instead of raw signals
+  if (context.brief) {
+    sections.push(`## Creative Brief (${context.signals.date})\n\n${context.brief}`)
+  } else {
+    sections.push(formatSignals(context.signals))
+  }
 
   sections.push(`## Site Content Reference
 

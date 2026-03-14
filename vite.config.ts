@@ -27,7 +27,7 @@ function browserStorageContextStub() {
 // and streams stdout/stderr as SSE events. Only active in dev mode.
 function pipelineApiPlugin(): Plugin {
   config() // load .env
-  const scriptPath = resolve('scripts/daily-redesign.js')
+  const scriptPath = resolve('scripts/run-pipeline.js')
 
   return {
     name: 'pipeline-api',
@@ -67,8 +67,16 @@ function pipelineApiPlugin(): Plugin {
             }
           }
 
+          // Read signal collection meta if available
+          const metaPath = resolve('signals/today.meta.yml')
+          let meta = null
+          if (existsSync(metaPath)) {
+            const metaRaw = readFileSync(metaPath, 'utf8')
+            meta = yaml.load(metaRaw) as Record<string, unknown>
+          }
+
           res.writeHead(200, { 'Content-Type': 'application/json' })
-          res.end(JSON.stringify({ signals, archive }))
+          res.end(JSON.stringify({ signals, archive, meta }))
         } catch (err) {
           res.writeHead(500, { 'Content-Type': 'application/json' })
           res.end(JSON.stringify({ error: String(err) }))

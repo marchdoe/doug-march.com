@@ -290,6 +290,13 @@ async function main() {
   console.log(`  signals date: ${context.signals.date}`)
   console.log(`  mutable files found: ${context.currentFiles.length}`)
 
+  // Check for interpreted brief (Stage 1 output)
+  const briefPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../signals/today.brief.md')
+  if (existsSync(briefPath)) {
+    context.brief = await readFile(briefPath, 'utf8')
+    console.log(`  using interpreted brief (${context.brief.length} chars)`)
+  }
+
   // Step 2: Build initial messages
   console.log('[2/4] Building Claude prompt...')
   const { system, messages } = buildMessages(context)

@@ -15,8 +15,10 @@
     "test:e2e": "playwright test",
     "codegen": "panda codegen",
     "codegen:watch": "panda codegen --watch",
-    "pipeline": "MOCK_MODE=true node scripts/daily-redesign.js",
-    "pipeline:dry": "MOCK_MODE=true DRY_RUN=true node scripts/daily-redesign.js"
+    "pipeline": "MOCK_MODE=true node scripts/run-pipeline.js",
+    "pipeline:dry": "MOCK_MODE=true DRY_RUN=true node scripts/run-pipeline.js",
+    "pipeline:collect": "node scripts/collect-signals.js",
+    "pipeline:interpret": "MOCK_MODE=true node scripts/interpret-signals.js"
   },
   "dependencies": {
     "@tanstack/react-devtools": "latest",
