@@ -15,6 +15,11 @@
  *   1 - failure (all attempts exhausted or fatal error)
  */
 
+import { config } from 'dotenv'
+import { fileURLToPath } from 'url'
+import path from 'path'
+config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
+
 import Anthropic from '@anthropic-ai/sdk'
 import { execSync } from 'child_process'
 import { readContext } from './utils/site-context.js'
