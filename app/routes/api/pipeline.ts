@@ -1,7 +1,4 @@
-// @ts-ignore — @tanstack/react-start/api is resolved by the TanStack Start Vite plugin at build time
-// The createAPIFileRoute function lives in @tanstack/start-api-routes (transitively)
-// and is aliased to this path by the framework. The router generator also uses this path.
-import { createAPIFileRoute } from '@tanstack/react-start/api'
+import { createAPIFileRoute } from '@tanstack/start-api-routes'
 import { spawn } from 'child_process'
 import { resolve } from 'path'
 
