@@ -105,11 +105,14 @@ tokens: {
   },
 
   fontSizes: {
-    xs:   { value: '0.52rem' },  // copyright, fine print
-    sm:   { value: '0.6rem'  },  // nav links, labels, back links
-    base: { value: '0.7rem'  },  // body text, descriptions
-    lg:   { value: '1rem'    },  // subheadings
-    xl:   { value: '1.9rem'  },  // page headings (NOT FOUND, etc.)
+    '2xs': { value: '0.48rem' },  // metadata labels: TYPE, YEAR, TIMELINE
+    xs:    { value: '0.52rem' },  // copyright, badges, section heads
+    sm:    { value: '0.6rem'  },  // nav links, labels, back links
+    base:  { value: '0.7rem'  },  // body text, descriptions
+    md:    { value: '0.8rem'  },  // component names, sidebar identity name
+    lg:    { value: '1rem'    },  // subheadings
+    xl:    { value: '1.9rem'  },  // page headings (NOT FOUND, mission card)
+    '2xl': { value: '2.5rem'  },  // project detail page title
   },
 
   fontWeights: {
@@ -138,6 +141,7 @@ tokens: {
     5:  { value: '1.25rem' },
     6:  { value: '1.5rem'  },
     8:  { value: '2rem'    },
+    10: { value: '2.5rem'  },
     12: { value: '3rem'    },
   },
 
