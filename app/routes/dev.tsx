@@ -1,9 +1,15 @@
 // app/routes/dev.tsx
 import { createFileRoute } from '@tanstack/react-router'
+import { readSignals } from '../server/signals'
+import { readArchive } from '../server/archive'
 
 export const Route = createFileRoute('/dev')({
   loader: async () => {
-    return { signals: {}, archive: [] }
+    const [signals, archive] = await Promise.all([
+      readSignals(),
+      readArchive(),
+    ])
+    return { signals, archive }
   },
   component: DevPanel,
 })

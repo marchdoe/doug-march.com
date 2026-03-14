@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach } from 'vitest'
 import { mkdirSync, writeFileSync, rmSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
-import { _readArchiveHandler } from '../../app/server/archive.js'
+import { _readArchiveHandler } from '../../app/server/archive-impl.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const FIXTURES_DIR = resolve(__dirname, '../fixtures/archive')

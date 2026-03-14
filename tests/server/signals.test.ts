@@ -4,7 +4,7 @@ import { writeFileSync, unlinkSync, readFileSync, mkdirSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import yaml from 'js-yaml'
-import { _readSignalsHandler, _saveOverridesHandler } from '../../app/server/signals.js'
+import { _readSignalsHandler, _saveOverridesHandler } from '../../app/server/signals-impl.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const FIXTURES_DIR = resolve(__dirname, '../fixtures')
