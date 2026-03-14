@@ -1,6 +1,6 @@
 // app/routes/dev.tsx
 import { createFileRoute } from '@tanstack/react-router'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { readSignals, saveOverrides } from '../server/signals'
 import { readArchive, type ArchiveEntry } from '../server/archive'
 
@@ -81,10 +81,22 @@ function DevPanel() {
   const [phases, setPhases] = useState<Phase[]>(INITIAL_PHASES)
   const [logLines, setLogLines] = useState<string[]>([])
   const logAccumRef = useRef<string[]>([])
+  const esRef = useRef<EventSource | null>(null)
+  const logEndRef = useRef<HTMLDivElement>(null)
   const [attemptNum, setAttemptNum] = useState(1)
   const [result, setResult] = useState<{ brief?: string; timestamp?: string; error?: string } | null>(null)
 
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+
+  // ── EventSource cleanup on unmount ──────────────────────────────────────────
+  useEffect(() => {
+    return () => { esRef.current?.close() }
+  }, [])
+
+  // ── Auto-scroll log pane ────────────────────────────────────────────────────
+  useEffect(() => {
+    logEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [logLines])
 
   // ── Save overrides ──────────────────────────────────────────────────────────
   const handleSaveOverrides = async () => {
@@ -106,6 +118,7 @@ function DevPanel() {
     setResult(null)
 
     const es = new EventSource(`/api/pipeline?dryRun=${dryRun}`)
+    esRef.current = es
 
     es.onmessage = (e) => {
       const event = JSON.parse(e.data) as
@@ -316,6 +329,7 @@ function ProgressSection({ phases, logLines, attemptNum }: { phases: Phase[]; lo
             <div key={i} style={{ color: line.includes('===') || line.includes('calling Claude') ? '#fbbf24' : '#64748b' }}>{line}</div>
           ))}
           <span style={{ color: '#fbbf24' }}>▌</span>
+          <div ref={logEndRef} />
         </div>
       </div>
     </div>
