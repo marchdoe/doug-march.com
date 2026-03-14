@@ -10,6 +10,9 @@
     "build": "panda codegen && vite build",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:e2e:site": "playwright test --project=site-health",
+    "test:e2e:dev": "playwright test --project=dev-panel",
+    "test:e2e": "playwright test",
     "codegen": "panda codegen",
     "codegen:watch": "panda codegen --watch"
   },
@@ -27,6 +30,7 @@
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
     "@pandacss/dev": "^1.9.0",
+    "@playwright/test": "^1.58.2",
     "@tanstack/devtools-vite": "latest",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.0",

@@ -188,7 +188,11 @@ function DevPanel() {
       </div>
 
       {/* Signals */}
-      <div style={s.signalsGrid}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '10px' }}>
+        <div style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#94a3b8' }}>Signals</div>
+        <div style={{ fontSize: '11px', color: '#cbd5e1' }} data-testid="signals-date">{signals.date}</div>
+      </div>
+      <div style={s.signalsGrid} data-testid="signals-grid">
         <SignalCard label="Weather" icon="🌨️"
           main={signals.weather?.location ?? '—'}
           sub={signals.weather ? `${signals.weather.conditions} · ${signals.weather.feel}` : ''} />
@@ -210,7 +214,7 @@ function DevPanel() {
       <div style={s.overridesRow}>
         <div style={s.fieldGroup}>
           <div style={s.fieldLabel}>Mood Override</div>
-          <select style={s.select} value={moodOverride} onChange={e => setMoodOverride(e.target.value)}>
+          <select style={s.select} value={moodOverride} onChange={e => setMoodOverride(e.target.value)} data-testid="mood-override-input">
             <option value="">— none (Claude decides) —</option>
             <option value="dark">dark</option>
             <option value="celebratory">celebratory</option>
@@ -227,7 +231,7 @@ function DevPanel() {
             placeholder="Optional extra context, e.g. 'I just got a hole in one'"
           />
         </div>
-        <button style={s.saveBtn} onClick={handleSaveOverrides} disabled={savingOverrides}>
+        <button style={s.saveBtn} onClick={handleSaveOverrides} disabled={savingOverrides} data-testid="save-overrides-btn">
           {savingOverrides ? 'Saving...' : 'Save overrides'}
         </button>
       </div>
@@ -287,6 +291,7 @@ function RunSection({ pipelineStatus, dryRun, onDryRunChange, onRun, archive }: 
       <button
         onClick={onRun}
         disabled={pipelineStatus === 'running'}
+        data-testid="run-pipeline-btn"
         style={{ background: pipelineStatus === 'running' ? '#818cf8' : '#4f46e5', color: 'white', border: 'none', borderRadius: '8px', padding: '10px 24px', fontSize: '14px', fontWeight: 600, cursor: pipelineStatus === 'running' ? 'default' : 'pointer' }}
       >
         {pipelineStatus === 'running' ? '⏳ Running...' : '▶ Run Pipeline'}
