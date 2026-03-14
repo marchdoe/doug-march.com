@@ -6,9 +6,9 @@
     "#/*": "./app/*"
   },
   "scripts": {
-    "dev": "panda codegen && vinxi dev --port 3000",
-    "build": "panda codegen && vinxi build",
-    "preview": "vinxi preview",
+    "dev": "panda codegen && vite",
+    "build": "panda codegen && vite build",
+    "preview": "vite preview",
     "test": "vitest run",
     "codegen": "panda codegen",
     "codegen:watch": "panda codegen --watch"
@@ -17,12 +17,11 @@
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-router": "latest",
     "@tanstack/react-router-devtools": "latest",
-    "@tanstack/start": "latest",
+    "@tanstack/react-start": "latest",
     "js-yaml": "^4.1.1",
     "lucide-react": "^0.545.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "vinxi": "^0.5.11"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
