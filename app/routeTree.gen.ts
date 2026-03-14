@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ElementsRouteImport } from './routes/elements'
+import { Route as DevRouteImport } from './routes/dev'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
@@ -17,6 +18,11 @@ import { Route as WorkSlugRouteImport } from './routes/work.$slug'
 const ElementsRoute = ElementsRouteImport.update({
   id: '/elements',
   path: '/elements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevRoute = DevRouteImport.update({
+  id: '/dev',
+  path: '/dev',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -38,12 +44,14 @@ const WorkSlugRoute = WorkSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dev': typeof DevRoute
   '/elements': typeof ElementsRoute
   '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dev': typeof DevRoute
   '/elements': typeof ElementsRoute
   '/work/$slug': typeof WorkSlugRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/dev': typeof DevRoute
   '/elements': typeof ElementsRoute
   '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/elements' | '/work/$slug'
+  fullPaths: '/' | '/about' | '/dev' | '/elements' | '/work/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/elements' | '/work/$slug'
-  id: '__root__' | '/' | '/about' | '/elements' | '/work/$slug'
+  to: '/' | '/about' | '/dev' | '/elements' | '/work/$slug'
+  id: '__root__' | '/' | '/about' | '/dev' | '/elements' | '/work/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  DevRoute: typeof DevRoute
   ElementsRoute: typeof ElementsRoute
   WorkSlugRoute: typeof WorkSlugRoute
 }
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/elements'
       fullPath: '/elements'
       preLoaderRoute: typeof ElementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dev': {
+      id: '/dev'
+      path: '/dev'
+      fullPath: '/dev'
+      preLoaderRoute: typeof DevRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -105,6 +122,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  DevRoute: DevRoute,
   ElementsRoute: ElementsRoute,
   WorkSlugRoute: WorkSlugRoute,
 }
