@@ -21,10 +21,10 @@ export async function collect(_profile) {
   const status = event.status?.type?.description || 'Unknown'
   const competitors = event.competitions?.[0]?.competitors || []
 
-  const leaders = competitors.slice(0, 5).map((c) => ({
+  const leaders = competitors.slice(0, 5).map((c, i) => ({
     name: c.athlete?.displayName || 'Unknown',
-    position: c.status?.position?.displayName || '-',
-    score: c.score?.displayValue || 'E',
+    position: String(i + 1),
+    score: typeof c.score === 'string' ? c.score : (c.score?.displayValue || 'E'),
   }))
 
   return {
