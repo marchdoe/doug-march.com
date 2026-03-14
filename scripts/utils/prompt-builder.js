@@ -96,6 +96,12 @@ function formatSignals(signals) {
     lines.push('')
   }
 
+  if (signals.notes) {
+    lines.push('### Notes from site owner')
+    lines.push(signals.notes)
+    lines.push('')
+  }
+
   return lines.join('\n')
 }
 
