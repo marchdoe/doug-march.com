@@ -21,3 +21,7 @@ styled-system/
 .claude-prompt.tmp
 .claude-response.json
 .pipeline-trigger
+
+signals/today.yml
+signals/today.meta.yml
+signals/today.brief.md
