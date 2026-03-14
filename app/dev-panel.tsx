@@ -2,15 +2,28 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-interface Signals {
+// Signals is now a dynamic bag — each key is a provider name with arbitrary data
+type Signals = Record<string, unknown> & {
   date: string
-  weather?: { location: string; conditions: string; feel: string }
-  sports?: Array<{ team: string; result: string; notes?: string }>
-  golf?: string[]
-  github_trending?: Array<{ repo: string; description: string; stars?: number }>
-  news?: string[]
   mood_override?: string | null
   notes?: string | null
+}
+
+interface MetaSource {
+  status: 'ok' | 'error' | 'skipped'
+  source?: string
+  reason?: string
+  latency_ms: number
+  items?: number
+}
+
+interface Meta {
+  collected_at: string
+  duration_ms: number
+  providers_total: number
+  providers_ok: number
+  providers_failed: number
+  sources: Record<string, MetaSource>
 }
 
 interface ArchiveEntry {
@@ -33,11 +46,11 @@ const COOLDOWN_SECONDS = 10
 
 function makePhases(): Phase[] {
   return [
-    { label: 'Read signals',       pattern: '[1/4] Reading site context',    status: 'pending' },
-    { label: 'Build prompt',       pattern: '[2/4] Building Claude prompt',  status: 'pending' },
+    { label: 'Collect signals',    pattern: 'Stage 1: Collect',             status: 'pending' },
+    { label: 'Interpret signals',  pattern: 'Stage 2: Interpret',           status: 'pending' },
+    { label: 'Read context',       pattern: '[1/4] Reading site context',   status: 'pending' },
     { label: 'Claude designing',   pattern: 'calling claude CLI',           status: 'pending' },
-    { label: 'Write files',        pattern: 'writing files',                status: 'pending' },
-    { label: 'Build & validate',   pattern: 'running pnpm build',           status: 'pending' },
+    { label: 'Write & build',      pattern: 'writing files',                status: 'pending' },
     { label: 'Archive & done',     pattern: '=== Build passed!',            status: 'pending' },
   ]
 }
@@ -65,7 +78,7 @@ const s = {
   title: { fontSize: '18px', fontWeight: 700, color: '#0f172a', margin: 0 } as React.CSSProperties,
   meta: { fontSize: '12px', color: '#94a3b8', marginTop: '3px' } as React.CSSProperties,
   badge: { display: 'inline-flex', alignItems: 'center', gap: '5px', background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0', borderRadius: '20px', padding: '4px 10px', fontSize: '11px', fontWeight: 500 } as React.CSSProperties,
-  signalsGrid: { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px', marginBottom: '20px' } as React.CSSProperties,
+  signalsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(165px, 1fr))', gap: '8px', marginBottom: '20px' } as React.CSSProperties,
   signalCard: { background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '12px' } as React.CSSProperties,
   signalLabel: { fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#94a3b8', marginBottom: '6px' },
   signalMain: { fontSize: '12px', fontWeight: 500, color: '#1e293b', lineHeight: '1.4' } as React.CSSProperties,
@@ -82,6 +95,7 @@ const s = {
 
 export function DevPanel() {
   const [signals, setSignals] = useState<Signals | null>(null)
+  const [meta, setMeta] = useState<Meta | null>(null)
   const [archive, setArchive] = useState<ArchiveEntry[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -116,6 +130,7 @@ export function DevPanel() {
       .then(r => r.json())
       .then(data => {
         setSignals(data.signals)
+        setMeta(data.meta ?? null)
         setArchive(data.archive)
         setMoodOverride(data.signals?.mood_override ?? '')
         setNotes(data.signals?.notes ?? '')
@@ -279,16 +294,13 @@ export function DevPanel() {
 
       {/* Signals */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '10px' }}>
-        <div style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#94a3b8' }}>Signals</div>
+        <div style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#94a3b8' }}>
+          Signals
+          {meta && <span style={{ fontWeight: 400, marginLeft: '8px' }}>{meta.providers_ok}/{meta.providers_total} ok · {meta.duration_ms}ms</span>}
+        </div>
         <div style={{ fontSize: '11px', color: '#cbd5e1' }}>{signals.date}</div>
       </div>
-      <div style={s.signalsGrid}>
-        <SignalCard label="Weather" icon="🌨️" main={signals.weather?.location ?? '—'} sub={signals.weather ? `${signals.weather.conditions} · ${signals.weather.feel}` : ''} />
-        <SignalCard label="Sports" icon="🏀" main={signals.sports?.[0]?.team ?? '—'} sub={signals.sports?.[0]?.result ?? ''} />
-        <SignalCard label="Golf" icon="⛳" main={signals.golf?.[0]?.slice(0, 30) ?? '—'} sub={signals.golf?.[1] ?? ''} />
-        <SignalCard label="GitHub" icon="⭐" main={signals.github_trending?.[0]?.repo ?? '—'} sub={`${signals.github_trending?.[0]?.stars?.toLocaleString() ?? '?'} stars`} />
-        <SignalCard label="News" icon="📰" main={signals.news?.[0]?.slice(0, 40) ?? '—'} sub={signals.news?.[1]?.slice(0, 40) ?? ''} />
-      </div>
+      <SignalsGrid signals={signals} meta={meta} />
 
       {/* Overrides */}
       <div style={s.overridesRow}>
@@ -360,13 +372,156 @@ export function DevPanel() {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function SignalCard({ label, icon, main, sub }: { label: string; icon: string; main: string; sub: string }) {
+const PROVIDER_ICONS: Record<string, string> = {
+  weather: '🌤️', air_quality: '💨', season: '🍂', day_of_week: '📅',
+  sun: '☀️', lunar: '🌙', holidays: '🎉', music: '🎵', books: '📚',
+  quote: '💬', github: '⭐', hacker_news: '🟠', news: '📰',
+  sports: '🏈', golf: '⛳', market: '📈', product_hunt: '🚀',
+}
+
+const PROVIDER_ORDER = [
+  'season', 'day_of_week', 'sun', 'lunar', 'holidays',
+  'weather', 'air_quality',
+  'sports', 'golf',
+  'music', 'books', 'quote',
+  'github', 'hacker_news', 'news',
+  'market', 'product_hunt',
+]
+
+function formatProviderData(name: string, data: unknown): { main: string; sub: string } {
+  if (!data || typeof data !== 'object') return { main: '—', sub: '' }
+  const d = data as Record<string, unknown>
+
+  switch (name) {
+    case 'season':
+      return { main: `${d.season}`, sub: `${d.month_name} · day ${d.day_of_year}` }
+    case 'day_of_week':
+      return { main: `${d.day}`, sub: d.is_weekend ? 'Weekend' : 'Weekday' }
+    case 'sun':
+      return { main: `${d.sunrise} / ${d.sunset}`, sub: `${d.daylight_hours}h daylight` }
+    case 'lunar':
+      return { main: `${d.phase}`, sub: `${Math.round((d.illumination as number) * 100)}% illuminated` }
+    case 'holidays': {
+      const today = d.today as string | null
+      const upcoming = d.upcoming as Array<{ name: string; days_away: number }> | undefined
+      if (today) return { main: today, sub: 'Today!' }
+      if (upcoming?.length) return { main: upcoming[0].name, sub: `in ${upcoming[0].days_away} day${upcoming[0].days_away !== 1 ? 's' : ''}` }
+      return { main: 'None nearby', sub: '' }
+    }
+    case 'weather':
+      return { main: `${d.conditions}`, sub: `${d.temp_f}°F · ${d.humidity}% humidity` }
+    case 'air_quality':
+      return { main: `AQI: ${d.air_quality_label}`, sub: `UV index: ${d.uv_index}` }
+    case 'sports': {
+      const teams = d.teams as Array<{ name: string; result: string; score?: string }> | undefined
+      if (!teams?.length) return { main: 'No teams', sub: '' }
+      const active = teams.filter(t => t.result !== 'off season')
+      if (active.length) return { main: `${active[0].name}`, sub: `${active[0].result}${active[0].score ? ` ${active[0].score}` : ''}` }
+      return { main: `${teams[0].name}`, sub: 'Off season' }
+    }
+    case 'golf': {
+      if (!d.tournament) return { main: 'No tournament', sub: '' }
+      const leaders = d.leaders as Array<{ name: string; score: string }> | undefined
+      return { main: `${d.tournament}`, sub: leaders?.[0] ? `${leaders[0].name} (${leaders[0].score})` : `${d.status}` }
+    }
+    case 'music': {
+      const bands = d.bands as string[] | undefined
+      if (!bands?.length) return { main: 'No bands', sub: '' }
+      return { main: bands[0], sub: bands.slice(1).join(', ') }
+    }
+    case 'books': {
+      const reading = d.currently_reading as string[] | undefined
+      if (!reading?.length) return { main: 'Nothing yet', sub: '' }
+      return { main: reading[0], sub: reading.length > 1 ? `+${reading.length - 1} more` : '' }
+    }
+    case 'quote':
+      return { main: `"${(d.text as string)?.slice(0, 50)}${(d.text as string)?.length > 50 ? '...' : ''}"`, sub: `— ${d.author}` }
+    case 'github': {
+      const repos = d.repos as Array<{ name: string; description?: string; stars?: number }> | undefined
+      if (!repos?.length) return { main: 'No data', sub: '' }
+      return { main: repos[0].name?.split('/').slice(0, 2).join('/') ?? '—', sub: repos.length > 1 ? `+${repos.length - 1} more trending` : '' }
+    }
+    case 'hacker_news': {
+      const stories = d.stories as Array<{ title: string; score: number }> | undefined
+      if (!stories?.length) return { main: 'No stories', sub: '' }
+      return { main: stories[0].title.slice(0, 45) + (stories[0].title.length > 45 ? '...' : ''), sub: `${stories[0].score} pts · +${stories.length - 1} more` }
+    }
+    case 'news': {
+      const headlines = d.headlines as Array<{ title: string }> | undefined
+      if (!headlines?.length) return { main: 'No headlines', sub: '' }
+      return { main: headlines[0].title.slice(0, 45) + (headlines[0].title.length > 45 ? '...' : ''), sub: headlines.length > 1 ? `+${headlines.length - 1} more` : '' }
+    }
+    case 'market':
+      return { main: `${d.direction} ${d.change_percent}`, sub: `SPY $${d.price}` }
+    case 'product_hunt': {
+      const products = d.products as Array<{ name: string; votes: number }> | undefined
+      if (!products?.length) return { main: 'No products', sub: '' }
+      return { main: products[0].name, sub: `${products[0].votes} votes · +${products.length - 1} more` }
+    }
+    default:
+      return { main: JSON.stringify(data).slice(0, 40), sub: '' }
+  }
+}
+
+function SignalsGrid({ signals, meta }: { signals: Signals; meta: Meta | null }) {
+  // Get all provider keys from meta (includes failed ones) + signal data
+  const allProviders = new Set([
+    ...PROVIDER_ORDER,
+    ...Object.keys(meta?.sources ?? {}),
+    ...Object.keys(signals).filter(k => !['date', 'mood_override', 'notes'].includes(k)),
+  ])
+
+  // Sort by defined order, unknowns at end
+  const sorted = [...allProviders].sort((a, b) => {
+    const ai = PROVIDER_ORDER.indexOf(a)
+    const bi = PROVIDER_ORDER.indexOf(b)
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi)
+  })
+
   return (
-    <div style={s.signalCard}>
-      <div style={s.signalLabel}>{label}</div>
-      <div style={{ fontSize: '20px', marginBottom: '5px' }}>{icon}</div>
-      <div style={s.signalMain}>{main}</div>
-      {sub && <div style={s.signalSub}>{sub}</div>}
+    <div style={s.signalsGrid}>
+      {sorted.map(name => {
+        const source = meta?.sources?.[name]
+        const data = signals[name]
+        const isOk = source?.status === 'ok'
+        const isError = source?.status === 'error' || source?.status === 'skipped'
+        const { main, sub } = isOk && data ? formatProviderData(name, data) : { main: '—', sub: '' }
+        const icon = PROVIDER_ICONS[name] ?? '📦'
+        const label = name.replace(/_/g, ' ')
+
+        return (
+          <div key={name} style={{
+            ...s.signalCard,
+            opacity: isError ? 0.5 : 1,
+            borderColor: isError ? '#fecaca' : '#e2e8f0',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+              <div style={s.signalLabel}>{label}</div>
+              <span style={{ fontSize: '14px' }}>{icon}</span>
+            </div>
+            {isError ? (
+              <>
+                <div style={{ fontSize: '11px', color: '#dc2626', fontWeight: 500 }}>
+                  {source?.status === 'skipped' ? 'Skipped' : 'Error'}
+                </div>
+                <div style={{ fontSize: '10px', color: '#f87171', marginTop: '2px' }}>
+                  {source?.reason?.slice(0, 40)}
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={s.signalMain}>{main}</div>
+                {sub && <div style={s.signalSub}>{sub}</div>}
+              </>
+            )}
+            {source && (
+              <div style={{ fontSize: '9px', color: '#cbd5e1', marginTop: '4px' }}>
+                {source.latency_ms}ms{source.items != null ? ` · ${source.items} item${source.items !== 1 ? 's' : ''}` : ''}
+              </div>
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }
