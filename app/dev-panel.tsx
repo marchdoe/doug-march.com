@@ -70,25 +70,86 @@ function fmtElapsed(ms: number): string {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
+// ─── Dark Theme Styles ────────────────────────────────────────────────────────
+
+const c = {
+  pageBg: '#050C18',
+  cardBg: '#070F1E',
+  border: '#0A1828',
+  primary: '#D4E8F8',
+  secondary: '#7AADC4',
+  dim: '#3E6882',
+  muted: '#2D5070',
+  ghost: '#0D2040',
+  cyan: '#00E5FF',
+  green: '#5CBE4A',
+  blue: '#4A8FD4',
+  orange: '#f97316',
+  font: "'Space Mono', monospace",
+}
 
 const s = {
-  page: { padding: '28px 32px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontSize: '13px', color: '#1e293b', maxWidth: '960px', background: '#fff', minHeight: '100vh' } as React.CSSProperties,
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' } as React.CSSProperties,
-  title: { fontSize: '18px', fontWeight: 700, color: '#0f172a', margin: 0 } as React.CSSProperties,
-  meta: { fontSize: '12px', color: '#94a3b8', marginTop: '3px' } as React.CSSProperties,
-  badge: { display: 'inline-flex', alignItems: 'center', gap: '5px', background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0', borderRadius: '20px', padding: '4px 10px', fontSize: '11px', fontWeight: 500 } as React.CSSProperties,
-  signalsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(165px, 1fr))', gap: '8px', marginBottom: '20px' } as React.CSSProperties,
-  signalCard: { background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '12px' } as React.CSSProperties,
-  signalLabel: { fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#94a3b8', marginBottom: '6px' },
-  signalMain: { fontSize: '12px', fontWeight: 500, color: '#1e293b', lineHeight: '1.4' } as React.CSSProperties,
-  signalSub: { fontSize: '11px', color: '#64748b', marginTop: '2px', lineHeight: '1.3' } as React.CSSProperties,
-  overridesRow: { display: 'flex', gap: '12px', marginBottom: '20px', alignItems: 'flex-end' } as React.CSSProperties,
-  fieldGroup: { display: 'flex', flexDirection: 'column' as const, gap: '5px' },
-  fieldLabel: { fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#94a3b8' },
-  select: { border: '1px solid #e2e8f0', borderRadius: '6px', padding: '7px 10px', fontSize: '12px', color: '#1e293b', background: '#fff', fontFamily: 'inherit', minWidth: '160px' } as React.CSSProperties,
-  textarea: { border: '1px solid #e2e8f0', borderRadius: '6px', padding: '7px 10px', fontSize: '12px', color: '#1e293b', background: '#fff', fontFamily: 'inherit', resize: 'none' as const, height: '56px', width: '340px' } as React.CSSProperties,
-  saveBtn: { background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: '6px', padding: '7px 14px', fontSize: '12px', fontWeight: 500, color: '#475569', cursor: 'pointer', height: '34px' } as React.CSSProperties,
+  page: {
+    padding: '28px 32px',
+    fontFamily: c.font,
+    fontSize: '13px',
+    color: c.primary,
+    maxWidth: '960px',
+    background: c.pageBg,
+    minHeight: '100vh',
+  } as React.CSSProperties,
+  overridesRow: {
+    display: 'flex',
+    gap: '12px',
+    marginBottom: '20px',
+    alignItems: 'flex-end',
+  } as React.CSSProperties,
+  fieldGroup: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '5px',
+  },
+  fieldLabel: {
+    fontSize: '10px',
+    fontWeight: 700,
+    textTransform: 'uppercase' as const,
+    letterSpacing: '.1em',
+    color: c.dim,
+  },
+  select: {
+    border: `1px solid ${c.border}`,
+    borderRadius: '4px',
+    padding: '7px 10px',
+    fontSize: '12px',
+    color: c.primary,
+    background: c.cardBg,
+    fontFamily: c.font,
+    minWidth: '160px',
+  } as React.CSSProperties,
+  textarea: {
+    border: `1px solid ${c.border}`,
+    borderRadius: '4px',
+    padding: '7px 10px',
+    fontSize: '12px',
+    color: c.primary,
+    background: c.cardBg,
+    fontFamily: c.font,
+    resize: 'none' as const,
+    height: '56px',
+    width: '340px',
+  } as React.CSSProperties,
+  saveBtn: {
+    background: c.cardBg,
+    border: `1px solid ${c.border}`,
+    borderRadius: '4px',
+    padding: '7px 14px',
+    fontSize: '12px',
+    fontWeight: 700,
+    color: c.dim,
+    cursor: 'pointer',
+    height: '34px',
+    fontFamily: c.font,
+  } as React.CSSProperties,
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -121,8 +182,6 @@ export function DevPanel() {
   // Cooldown state
   const [cooldownLeft, setCooldownLeft] = useState(0)
   const cooldownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
-
-  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
   // ── Load initial data ──────────────────────────────────────────────────────
   useEffect(() => {
@@ -278,36 +337,34 @@ export function DevPanel() {
 
   const isRunDisabled = pipelineStatus === 'running' || pipelineStatus === 'cooldown'
 
-  if (loading) return <div style={s.page}><p style={{ color: '#94a3b8' }}>Loading...</p></div>
+  if (loading) return <div style={s.page}><p style={{ color: c.dim }}>Loading...</p></div>
   if (!signals) return <div style={s.page}><p style={{ color: '#dc2626' }}>Failed to load signals</p></div>
 
   return (
     <div style={s.page}>
-      {/* Header */}
-      <div style={s.header}>
-        <div>
-          <h1 style={s.title}>Daily Redesign</h1>
-          <div style={s.meta}>{today}</div>
-        </div>
-        <div style={s.badge}>dev server running</div>
-      </div>
+      <PulseStyle />
 
-      {/* Signals */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '10px' }}>
-        <div style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#94a3b8' }}>
-          Signals
-          {meta && <span style={{ fontWeight: 400, marginLeft: '8px' }}>{meta.providers_ok}/{meta.providers_total} ok · {meta.duration_ms}ms</span>}
-        </div>
-        <div style={{ fontSize: '11px', color: '#cbd5e1' }}>{signals.date}</div>
-      </div>
-      <SignalsGrid signals={signals} meta={meta} />
+      {/* Zone 1: Signals Header */}
+      <SignalsHeader meta={meta} date={signals.date} />
+
+      {/* Zone 2: Atmosphere Strip */}
+      <AtmosphereStrip signals={signals} />
+
+      {/* Zone 3: Quote Block */}
+      <QuoteBlock signals={signals} />
+
+      {/* Zone 4: Live Data Cards */}
+      <LiveDataCards signals={signals} />
+
+      {/* Zone 5: Bottom Row */}
+      <BottomRow signals={signals} meta={meta} />
 
       {/* Overrides */}
-      <div style={s.overridesRow}>
+      <div style={{ ...s.overridesRow, marginTop: '24px' }}>
         <div style={s.fieldGroup}>
           <div style={s.fieldLabel}>Mood Override</div>
           <select style={s.select} value={moodOverride} onChange={e => setMoodOverride(e.target.value)}>
-            <option value="">— none (Claude decides) —</option>
+            <option value="">-- none (Claude decides) --</option>
             <option value="dark">dark</option>
             <option value="celebratory">celebratory</option>
             <option value="tense">tense</option>
@@ -326,22 +383,29 @@ export function DevPanel() {
       {/* Run */}
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
         <button onClick={handleRun} disabled={isRunDisabled} style={{
-          background: pipelineStatus === 'running' ? '#818cf8' : pipelineStatus === 'cooldown' ? '#94a3b8' : '#4f46e5',
-          color: 'white', border: 'none', borderRadius: '8px', padding: '10px 24px',
-          fontSize: '14px', fontWeight: 600, cursor: isRunDisabled ? 'default' : 'pointer',
+          background: pipelineStatus === 'running' ? c.muted : pipelineStatus === 'cooldown' ? c.ghost : c.cyan,
+          color: pipelineStatus === 'running' || pipelineStatus === 'cooldown' ? c.dim : c.pageBg,
+          border: 'none',
+          borderRadius: '4px',
+          padding: '10px 24px',
+          fontSize: '13px',
+          fontWeight: 700,
+          fontFamily: c.font,
+          cursor: isRunDisabled ? 'default' : 'pointer',
           opacity: pipelineStatus === 'cooldown' ? 0.7 : 1,
+          letterSpacing: '.05em',
         }}>
-          {pipelineStatus === 'running' ? `⏳ Running... ${fmtElapsed(elapsedMs)}` :
-           pipelineStatus === 'cooldown' ? `⏳ Cooldown ${cooldownLeft}s` :
-           '▶ Run Pipeline'}
+          {pipelineStatus === 'running' ? `RUNNING... ${fmtElapsed(elapsedMs)}` :
+           pipelineStatus === 'cooldown' ? `COOLDOWN ${cooldownLeft}s` :
+           'RUN PIPELINE'}
         </button>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#64748b' }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: c.dim, fontFamily: c.font }}>
           <input type="checkbox" checked={dryRun} onChange={e => setDryRun(e.target.checked)} disabled={isRunDisabled} />
           Dry run (no commit)
         </label>
         {archive[0] && (
-          <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#94a3b8' }}>
-            Last run: <strong style={{ color: '#475569' }}>{archive[0].date}</strong> · <em>{archive[0].brief.slice(0, 50)}…</em>
+          <div style={{ marginLeft: 'auto', fontSize: '11px', color: c.muted, fontFamily: c.font }}>
+            Last run: <strong style={{ color: c.dim }}>{archive[0].date}</strong> · <em style={{ color: c.ghost }}>{archive[0].brief.slice(0, 50)}...</em>
           </div>
         )}
       </div>
@@ -370,234 +434,880 @@ export function DevPanel() {
   )
 }
 
-// ─── Sub-components ───────────────────────────────────────────────────────────
+// ─── Pulse Animation ──────────────────────────────────────────────────────────
 
-const PROVIDER_ICONS: Record<string, string> = {
-  weather: '🌤️', air_quality: '💨', season: '🍂', day_of_week: '📅',
-  sun: '☀️', lunar: '🌙', holidays: '🎉', music: '🎵', books: '📚',
-  quote: '💬', github: '⭐', hacker_news: '🟠', news: '📰',
-  sports: '🏈', golf: '⛳', market: '📈', product_hunt: '🚀',
+function PulseStyle() {
+  return (
+    <style>{`
+      @keyframes pulse-dot {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+      }
+    `}</style>
+  )
 }
 
-const PROVIDER_ORDER = [
-  'season', 'day_of_week', 'sun', 'lunar', 'holidays',
-  'weather', 'air_quality',
-  'sports', 'golf',
-  'music', 'books', 'quote',
-  'github', 'hacker_news', 'news',
-  'market', 'product_hunt',
-]
+// ─── Zone 1: Signals Header ──────────────────────────────────────────────────
 
-function formatProviderData(name: string, data: unknown): { main: string; sub: string } {
-  if (!data || typeof data !== 'object') return { main: '—', sub: '' }
-  const d = data as Record<string, unknown>
+function SignalsHeader({ meta, date }: { meta: Meta | null; date: string }) {
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '10px',
+      padding: '8px 0',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <span style={{
+          fontSize: '10px',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '.12em',
+          color: c.dim,
+          fontFamily: c.font,
+        }}>
+          // SIGNALS
+        </span>
 
-  switch (name) {
-    case 'season':
-      return { main: `${d.season}`, sub: `${d.month_name} · day ${d.day_of_year}` }
-    case 'day_of_week':
-      return { main: `${d.day}`, sub: d.is_weekend ? 'Weekend' : 'Weekday' }
-    case 'sun':
-      return { main: `${d.sunrise} / ${d.sunset}`, sub: `${d.daylight_hours}h daylight` }
-    case 'lunar':
-      return { main: `${d.phase}`, sub: `${Math.round((d.illumination as number) * 100)}% illuminated` }
-    case 'holidays': {
-      const today = d.today as string | null
-      const upcoming = d.upcoming as Array<{ name: string; days_away: number }> | undefined
-      if (today) return { main: today, sub: 'Today!' }
-      if (upcoming?.length) return { main: upcoming[0].name, sub: `in ${upcoming[0].days_away} day${upcoming[0].days_away !== 1 ? 's' : ''}` }
-      return { main: 'None nearby', sub: '' }
-    }
-    case 'weather':
-      return { main: `${d.conditions}`, sub: `${d.temp_f}°F · ${d.humidity}% humidity` }
-    case 'air_quality':
-      return { main: `AQI: ${d.air_quality_label}`, sub: `UV index: ${d.uv_index}` }
-    case 'sports': {
-      const teams = d.teams as Array<{ name: string; result: string; score?: string }> | undefined
-      if (!teams?.length) return { main: 'No teams', sub: '' }
-      const active = teams.filter(t => t.result !== 'off season')
-      if (active.length) return { main: `${active[0].name}`, sub: `${active[0].result}${active[0].score ? ` ${active[0].score}` : ''}` }
-      return { main: `${teams[0].name}`, sub: 'Off season' }
-    }
-    case 'golf': {
-      if (!d.tournament) return { main: 'No tournament', sub: '' }
-      const leaders = d.leaders as Array<{ name: string; score: string }> | undefined
-      return { main: `${d.tournament}`, sub: leaders?.[0] ? `${leaders[0].name} (${leaders[0].score})` : `${d.status}` }
-    }
-    case 'music': {
-      const bands = d.bands as string[] | undefined
-      if (!bands?.length) return { main: 'No bands', sub: '' }
-      return { main: bands[0], sub: bands.slice(1).join(', ') }
-    }
-    case 'books': {
-      const reading = d.currently_reading as string[] | undefined
-      if (!reading?.length) return { main: 'Nothing yet', sub: '' }
-      return { main: reading[0], sub: reading.length > 1 ? `+${reading.length - 1} more` : '' }
-    }
-    case 'quote':
-      return { main: `"${(d.text as string)?.slice(0, 50)}${(d.text as string)?.length > 50 ? '...' : ''}"`, sub: `— ${d.author}` }
-    case 'github': {
-      const repos = d.repos as Array<{ name: string; description?: string; stars?: number }> | undefined
-      if (!repos?.length) return { main: 'No data', sub: '' }
-      return { main: repos[0].name?.split('/').slice(0, 2).join('/') ?? '—', sub: repos.length > 1 ? `+${repos.length - 1} more trending` : '' }
-    }
-    case 'hacker_news': {
-      const stories = d.stories as Array<{ title: string; score: number }> | undefined
-      if (!stories?.length) return { main: 'No stories', sub: '' }
-      return { main: stories[0].title.slice(0, 45) + (stories[0].title.length > 45 ? '...' : ''), sub: `${stories[0].score} pts · +${stories.length - 1} more` }
-    }
-    case 'news': {
-      const headlines = d.headlines as Array<{ title: string }> | undefined
-      if (!headlines?.length) return { main: 'No headlines', sub: '' }
-      return { main: headlines[0].title.slice(0, 45) + (headlines[0].title.length > 45 ? '...' : ''), sub: headlines.length > 1 ? `+${headlines.length - 1} more` : '' }
-    }
-    case 'market':
-      return { main: `${d.direction} ${d.change_percent}`, sub: `SPY $${d.price}` }
-    case 'product_hunt': {
-      const products = d.products as Array<{ name: string; votes: number }> | undefined
-      if (!products?.length) return { main: 'No products', sub: '' }
-      return { main: products[0].name, sub: `${products[0].votes} votes · +${products.length - 1} more` }
-    }
-    default:
-      return { main: JSON.stringify(data).slice(0, 40), sub: '' }
+        {meta && (
+          <>
+            {/* Health capsule */}
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: 'rgba(92,190,74,0.08)',
+              border: `1px solid rgba(92,190,74,0.2)`,
+              borderRadius: '20px',
+              padding: '3px 10px',
+              fontSize: '11px',
+              fontWeight: 700,
+              color: c.green,
+              fontFamily: c.font,
+            }}>
+              <span style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: c.green,
+                animation: 'pulse-dot 2s ease-in-out infinite',
+              }} />
+              {meta.providers_ok} / {meta.providers_total}
+            </span>
+
+            {/* Latency */}
+            <span style={{
+              fontSize: '11px',
+              fontFamily: c.font,
+              color: c.muted,
+            }}>
+              {meta.duration_ms}ms
+            </span>
+          </>
+        )}
+      </div>
+
+      <span style={{
+        fontSize: '11px',
+        fontFamily: c.font,
+        color: c.muted,
+      }}>
+        {date}
+      </span>
+    </div>
+  )
+}
+
+// ─── Zone 2: Atmosphere Strip ────────────────────────────────────────────────
+
+function AtmosphereStrip({ signals }: { signals: Signals }) {
+  const season = signals.season as { season?: string; month_name?: string; day_of_year?: number } | undefined
+  const dayOfWeek = signals.day_of_week as { day?: string; is_weekend?: boolean } | undefined
+  const sun = signals.sun as { sunrise?: string; sunset?: string; daylight_hours?: number } | undefined
+  const lunar = signals.lunar as { phase?: string; illumination?: number } | undefined
+  const holidays = signals.holidays as { today?: string; upcoming?: Array<{ name: string; days_away: number }> } | undefined
+
+  const upcomingHoliday = holidays?.today
+    ? { name: holidays.today, sub: 'Today!' }
+    : holidays?.upcoming?.[0]
+      ? { name: holidays.upcoming[0].name, sub: `in ${holidays.upcoming[0].days_away} day${holidays.upcoming[0].days_away !== 1 ? 's' : ''}` }
+      : null
+
+  const cellStyle: React.CSSProperties = {
+    flex: 1,
+    padding: '12px 16px',
+    minWidth: 0,
   }
-}
 
-function SignalsGrid({ signals, meta }: { signals: Signals; meta: Meta | null }) {
-  // Get all provider keys from meta (includes failed ones) + signal data
-  const allProviders = new Set([
-    ...PROVIDER_ORDER,
-    ...Object.keys(meta?.sources ?? {}),
-    ...Object.keys(signals).filter(k => !['date', 'mood_override', 'notes'].includes(k)),
-  ])
+  const labelStyle: React.CSSProperties = {
+    fontSize: '9px',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '.12em',
+    color: c.muted,
+    marginBottom: '4px',
+    fontFamily: c.font,
+  }
 
-  // Sort by defined order, unknowns at end
-  const sorted = [...allProviders].sort((a, b) => {
-    const ai = PROVIDER_ORDER.indexOf(a)
-    const bi = PROVIDER_ORDER.indexOf(b)
-    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi)
-  })
+  const subStyle: React.CSSProperties = {
+    fontSize: '10px',
+    color: c.dim,
+    marginTop: '2px',
+    fontFamily: c.font,
+  }
 
   return (
-    <div style={s.signalsGrid}>
-      {sorted.map(name => {
-        const source = meta?.sources?.[name]
-        const data = signals[name]
-        const isOk = source?.status === 'ok'
-        const isError = source?.status === 'error' || source?.status === 'skipped'
-        const { main, sub } = isOk && data ? formatProviderData(name, data) : { main: '—', sub: '' }
-        const icon = PROVIDER_ICONS[name] ?? '📦'
-        const label = name.replace(/_/g, ' ')
+    <div style={{
+      display: 'flex',
+      background: c.cardBg,
+      border: `1px solid ${c.border}`,
+      borderRadius: '4px',
+      marginBottom: '12px',
+      overflow: 'hidden',
+    }}>
+      {/* Season */}
+      <div style={cellStyle}>
+        <div style={labelStyle}>SEASON</div>
+        <div style={{ fontSize: '16px', fontWeight: 700, color: c.green, fontFamily: c.font }}>
+          {season?.season ?? '--'}
+        </div>
+        <div style={subStyle}>
+          {season?.month_name ?? '--'} · Day {season?.day_of_year ?? '--'}
+        </div>
+      </div>
 
-        return (
-          <div key={name} style={{
-            ...s.signalCard,
-            opacity: isError ? 0.5 : 1,
-            borderColor: isError ? '#fecaca' : '#e2e8f0',
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-              <div style={s.signalLabel}>{label}</div>
-              <span style={{ fontSize: '14px' }}>{icon}</span>
+      <div style={{ width: '1px', background: c.border }} />
+
+      {/* Day */}
+      <div style={cellStyle}>
+        <div style={labelStyle}>DAY</div>
+        <div style={{ fontSize: '16px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
+          {dayOfWeek?.day ?? '--'}
+        </div>
+        <div style={{ ...subStyle, color: dayOfWeek?.is_weekend ? c.cyan : c.dim }}>
+          {dayOfWeek?.is_weekend ? 'Weekend' : 'Weekday'}
+        </div>
+      </div>
+
+      <div style={{ width: '1px', background: c.border }} />
+
+      {/* Sun */}
+      <div style={cellStyle}>
+        <div style={labelStyle}>SUN</div>
+        <div style={{ fontSize: '16px', fontWeight: 700, color: c.secondary, fontFamily: c.font }}>
+          {sun?.daylight_hours ?? '--'}h
+          <span style={{ fontSize: '11px', fontWeight: 400, color: c.dim, marginLeft: '4px' }}>daylight</span>
+        </div>
+        <div style={subStyle}>
+          {sun?.sunrise ?? '--'} ↑ {sun?.sunset ?? '--'} ↓
+        </div>
+      </div>
+
+      <div style={{ width: '1px', background: c.border }} />
+
+      {/* Lunar */}
+      <div style={cellStyle}>
+        <div style={labelStyle}>LUNAR</div>
+        <div style={{ fontSize: '14px', fontWeight: 700, color: c.blue, fontFamily: c.font }}>
+          {lunar?.phase ?? '--'}
+        </div>
+        <div style={{ ...subStyle, color: '#3A7FC4' }}>
+          {lunar?.illumination != null ? `${Math.round(lunar.illumination * 100)}% illuminated` : '--'}
+        </div>
+      </div>
+
+      <div style={{ width: '1px', background: c.border }} />
+
+      {/* Holidays */}
+      <div style={cellStyle}>
+        <div style={labelStyle}>UPCOMING</div>
+        {upcomingHoliday ? (
+          <>
+            <div style={{ fontSize: '14px', fontWeight: 700, color: c.green, fontFamily: c.font }}>
+              {upcomingHoliday.name}
             </div>
-            {isError ? (
+            <div style={{ ...subStyle, color: c.green }}>
+              {upcomingHoliday.sub}
+            </div>
+          </>
+        ) : (
+          <div style={{ fontSize: '14px', fontWeight: 700, color: c.ghost, fontFamily: c.font }}>
+            None nearby
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ─── Zone 3: Quote Block ─────────────────────────────────────────────────────
+
+function QuoteBlock({ signals }: { signals: Signals }) {
+  const quote = signals.quote as { text?: string; author?: string } | undefined
+
+  if (!quote?.text) return null
+
+  return (
+    <div style={{
+      position: 'relative',
+      borderLeft: `2px solid ${c.muted}`,
+      padding: '14px 18px',
+      marginBottom: '12px',
+      background: 'transparent',
+    }}>
+      <span style={{
+        position: 'absolute',
+        top: '6px',
+        right: '0',
+        fontSize: '9px',
+        fontWeight: 700,
+        textTransform: 'uppercase',
+        letterSpacing: '.12em',
+        color: c.ghost,
+        fontFamily: c.font,
+      }}>
+        DAILY QUOTE
+      </span>
+      <div style={{
+        fontSize: '13px',
+        fontStyle: 'italic',
+        color: c.secondary,
+        lineHeight: '1.6',
+        fontFamily: c.font,
+        marginBottom: '6px',
+        paddingRight: '80px',
+      }}>
+        "{quote.text}"
+      </div>
+      <div style={{
+        fontSize: '11px',
+        fontWeight: 700,
+        color: c.dim,
+        fontFamily: c.font,
+      }}>
+        -- {quote.author}
+      </div>
+    </div>
+  )
+}
+
+// ─── Zone 4: Live Data Cards ─────────────────────────────────────────────────
+
+function LiveDataCards({ signals }: { signals: Signals }) {
+  const cardStyle: React.CSSProperties = {
+    background: c.cardBg,
+    border: `1px solid ${c.border}`,
+    borderRadius: '4px',
+    padding: '14px',
+    overflow: 'hidden',
+  }
+
+  const headerStyle: React.CSSProperties = {
+    fontSize: '10px',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '.12em',
+    color: c.dim,
+    fontFamily: c.font,
+    marginBottom: '10px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }
+
+  const metaStyle: React.CSSProperties = {
+    fontSize: '9px',
+    color: c.ghost,
+    fontFamily: c.font,
+    fontWeight: 400,
+    letterSpacing: '0',
+    textTransform: 'none',
+  }
+
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '10px',
+      marginBottom: '12px',
+    }}>
+      {/* Sports Card */}
+      <SportsCard signals={signals} cardStyle={cardStyle} headerStyle={headerStyle} metaStyle={metaStyle} />
+
+      {/* Golf Card */}
+      <GolfCard signals={signals} cardStyle={cardStyle} headerStyle={headerStyle} />
+
+      {/* GitHub Card */}
+      <GitHubCard signals={signals} cardStyle={cardStyle} headerStyle={headerStyle} />
+
+      {/* Hacker News Card */}
+      <HackerNewsCard signals={signals} cardStyle={cardStyle} headerStyle={headerStyle} />
+    </div>
+  )
+}
+
+function SportsCard({ signals, cardStyle, headerStyle, metaStyle }: {
+  signals: Signals
+  cardStyle: React.CSSProperties
+  headerStyle: React.CSSProperties
+  metaStyle: React.CSSProperties
+}) {
+  const sports = signals.sports as { teams?: Array<{ name: string; league?: string; last_game?: string; result: string; score?: string }> } | undefined
+  const teams = sports?.teams ?? []
+
+  return (
+    <div style={cardStyle}>
+      <div style={headerStyle}>
+        <span>// SPORTS</span>
+        <span style={metaStyle}>{teams.length} teams</span>
+      </div>
+      {teams.map((team, i) => {
+        const isActive = team.result !== 'off season'
+        const isWin = team.result?.toLowerCase() === 'w' || team.result?.toLowerCase() === 'win'
+        return (
+          <div key={i} style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '5px 6px',
+            borderRadius: '3px',
+            background: isActive ? 'rgba(92,190,74,0.06)' : 'transparent',
+            marginBottom: '2px',
+          }}>
+            <span style={{
+              width: '5px',
+              height: '5px',
+              borderRadius: '50%',
+              background: isActive ? c.green : c.ghost,
+              flexShrink: 0,
+            }} />
+            <span style={{
+              fontSize: '11px',
+              fontWeight: isActive ? 700 : 400,
+              color: isActive ? c.primary : c.ghost,
+              fontFamily: c.font,
+              flex: 1,
+            }}>
+              {team.name}
+            </span>
+            {isActive ? (
               <>
-                <div style={{ fontSize: '11px', color: '#dc2626', fontWeight: 500 }}>
-                  {source?.status === 'skipped' ? 'Skipped' : 'Error'}
-                </div>
-                <div style={{ fontSize: '10px', color: '#f87171', marginTop: '2px' }}>
-                  {source?.reason?.slice(0, 40)}
-                </div>
+                {team.result && (
+                  <span style={{
+                    fontSize: '9px',
+                    fontWeight: 700,
+                    background: isWin ? c.green : '#dc2626',
+                    color: isWin ? c.pageBg : '#fff',
+                    padding: '1px 6px',
+                    borderRadius: '3px',
+                    fontFamily: c.font,
+                  }}>
+                    {team.result}
+                  </span>
+                )}
+                {team.score && (
+                  <span style={{
+                    fontSize: '11px',
+                    fontFamily: c.font,
+                    color: c.green,
+                    fontWeight: 700,
+                  }}>
+                    {team.score}
+                  </span>
+                )}
               </>
             ) : (
-              <>
-                <div style={s.signalMain}>{main}</div>
-                {sub && <div style={s.signalSub}>{sub}</div>}
-              </>
-            )}
-            {source && (
-              <div style={{ fontSize: '9px', color: '#cbd5e1', marginTop: '4px' }}>
-                {source.latency_ms}ms{source.items != null ? ` · ${source.items} item${source.items !== 1 ? 's' : ''}` : ''}
-              </div>
+              <span style={{
+                fontSize: '10px',
+                fontStyle: 'italic',
+                color: c.ghost,
+                fontFamily: c.font,
+              }}>
+                off season
+              </span>
             )}
           </div>
         )
       })}
+      {teams.length === 0 && (
+        <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No teams</div>
+      )}
     </div>
   )
 }
+
+function GolfCard({ signals, cardStyle, headerStyle }: {
+  signals: Signals
+  cardStyle: React.CSSProperties
+  headerStyle: React.CSSProperties
+}) {
+  const golf = signals.golf as { tournament?: string; status?: string; leaders?: Array<{ name: string; position?: string; score: string }> } | undefined
+
+  return (
+    <div style={cardStyle}>
+      <div style={headerStyle}>
+        <span>// GOLF</span>
+      </div>
+      {golf?.tournament ? (
+        <>
+          <div style={{
+            fontSize: '12px',
+            fontWeight: 700,
+            color: c.primary,
+            fontFamily: c.font,
+            marginBottom: '2px',
+          }}>
+            {golf.tournament}
+          </div>
+          <div style={{
+            fontSize: '10px',
+            color: c.cyan,
+            fontFamily: c.font,
+            marginBottom: '8px',
+          }}>
+            {golf.status}
+          </div>
+          {(golf.leaders ?? []).map((leader, i) => (
+            <div key={i} style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '3px 0',
+            }}>
+              <span style={{
+                fontSize: '10px',
+                fontWeight: 700,
+                color: i < 3 ? c.cyan : c.dim,
+                fontFamily: c.font,
+                minWidth: '20px',
+              }}>
+                {leader.position ?? (i + 1)}
+              </span>
+              <span style={{
+                fontSize: '11px',
+                color: c.primary,
+                fontFamily: c.font,
+                flex: 1,
+              }}>
+                {leader.name}
+              </span>
+              <span style={{
+                fontSize: '11px',
+                fontFamily: c.font,
+                color: c.green,
+                fontWeight: 700,
+              }}>
+                {leader.score}
+              </span>
+            </div>
+          ))}
+          {(!golf.leaders || golf.leaders.length === 0) && (
+            <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No leaders yet</div>
+          )}
+        </>
+      ) : (
+        <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No tournament</div>
+      )}
+    </div>
+  )
+}
+
+function GitHubCard({ signals, cardStyle, headerStyle }: {
+  signals: Signals
+  cardStyle: React.CSSProperties
+  headerStyle: React.CSSProperties
+}) {
+  const github = signals.github as { repos?: Array<{ name: string; description?: string; language?: string; stars?: number }> } | undefined
+  const repos = github?.repos ?? []
+
+  const langColors: Record<string, string> = {
+    JavaScript: '#f1e05a', TypeScript: '#3178c6', Python: '#3572A5',
+    Rust: '#dea584', Go: '#00ADD8', Java: '#b07219', Ruby: '#701516',
+    'C++': '#f34b7d', C: '#555555', Swift: '#F05138', Kotlin: '#A97BFF',
+    Dart: '#00B4AB', Shell: '#89e051', HTML: '#e34c26', CSS: '#563d7c',
+  }
+
+  return (
+    <div style={cardStyle}>
+      <div style={headerStyle}>
+        <span>// GITHUB TRENDING</span>
+      </div>
+      {repos.map((repo, i) => (
+        <div key={i} style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '3px 0',
+        }}>
+          {repo.language && (
+            <span style={{
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              background: langColors[repo.language] ?? c.dim,
+              flexShrink: 0,
+            }} />
+          )}
+          <span style={{
+            fontSize: '11px',
+            color: c.blue,
+            fontFamily: c.font,
+            flex: 1,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}>
+            {repo.name}
+          </span>
+          {repo.stars != null && (
+            <span style={{
+              fontSize: '9px',
+              color: c.dim,
+              fontFamily: c.font,
+            }}>
+              {repo.stars.toLocaleString()}
+            </span>
+          )}
+        </div>
+      ))}
+      {repos.length === 0 && (
+        <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No data</div>
+      )}
+    </div>
+  )
+}
+
+function HackerNewsCard({ signals, cardStyle, headerStyle }: {
+  signals: Signals
+  cardStyle: React.CSSProperties
+  headerStyle: React.CSSProperties
+}) {
+  const hn = signals.hacker_news as { stories?: Array<{ title: string; url?: string; score: number; by?: string }> } | undefined
+  const stories = hn?.stories ?? []
+
+  return (
+    <div style={cardStyle}>
+      <div style={headerStyle}>
+        <span>
+          <span style={{ color: c.orange, fontWeight: 700, marginRight: '4px' }}>Y</span>
+          HACKER NEWS
+        </span>
+      </div>
+      {stories.map((story, i) => {
+        // Brighten scores for high values, fade for lower
+        const scoreOpacity = Math.min(1, 0.4 + (story.score / 500) * 0.6)
+        return (
+          <div key={i} style={{
+            display: 'flex',
+            alignItems: 'baseline',
+            gap: '8px',
+            padding: '3px 0',
+          }}>
+            <span style={{
+              fontSize: '10px',
+              fontWeight: 700,
+              color: c.orange,
+              fontFamily: c.font,
+              minWidth: '32px',
+              textAlign: 'right',
+              opacity: scoreOpacity,
+            }}>
+              {story.score}
+            </span>
+            <span style={{
+              fontSize: '11px',
+              color: c.primary,
+              fontFamily: c.font,
+              flex: 1,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}>
+              {story.title}
+            </span>
+          </div>
+        )
+      })}
+      {stories.length === 0 && (
+        <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No stories</div>
+      )}
+    </div>
+  )
+}
+
+// ─── Zone 5: Bottom Row ──────────────────────────────────────────────────────
+
+function BottomRow({ signals, meta }: { signals: Signals; meta: Meta | null }) {
+  const music = signals.music as { bands?: string[] } | undefined
+  const books = signals.books as { currently_reading?: string[] } | undefined
+
+  // Compute missing signals from meta
+  const missingProviders = meta
+    ? Object.entries(meta.sources)
+        .filter(([, src]) => src.status === 'error' || src.status === 'skipped')
+        .map(([name, src]) => ({ name, reason: src.reason }))
+    : []
+
+  const halfCardStyle: React.CSSProperties = {
+    background: c.cardBg,
+    border: `1px solid ${c.border}`,
+    borderRadius: '4px',
+    padding: '14px',
+    flex: 1,
+  }
+
+  const labelStyle: React.CSSProperties = {
+    fontSize: '10px',
+    fontWeight: 700,
+    textTransform: 'uppercase',
+    letterSpacing: '.12em',
+    color: c.dim,
+    fontFamily: c.font,
+    marginBottom: '10px',
+  }
+
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '10px',
+      marginBottom: '24px',
+    }}>
+      {/* Left half: Music + Books */}
+      <div style={{ display: 'flex', gap: '10px' }}>
+        {/* Music */}
+        <div style={halfCardStyle}>
+          <div style={labelStyle}>// MUSIC</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+            {(music?.bands ?? []).map((band, i) => (
+              <span key={i} style={{
+                fontSize: '10px',
+                background: 'rgba(74,143,212,0.12)',
+                color: c.blue,
+                padding: '3px 8px',
+                borderRadius: '10px',
+                fontFamily: c.font,
+              }}>
+                {band}
+              </span>
+            ))}
+            {(!music?.bands || music.bands.length === 0) && (
+              <span style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font }}>No bands</span>
+            )}
+          </div>
+        </div>
+
+        {/* Books */}
+        <div style={halfCardStyle}>
+          <div style={labelStyle}>// BOOKS</div>
+          {(books?.currently_reading ?? []).length > 0 ? (
+            (books!.currently_reading!).map((book, i) => (
+              <div key={i} style={{
+                fontSize: '11px',
+                color: c.primary,
+                fontFamily: c.font,
+                padding: '2px 0',
+              }}>
+                {book}
+              </div>
+            ))
+          ) : (
+            <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font, fontStyle: 'italic' }}>
+              nothing currently
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Right half: Missing Signals */}
+      <div style={{
+        border: `1px dashed ${c.border}`,
+        borderRadius: '4px',
+        padding: '14px',
+      }}>
+        <div style={{
+          fontSize: '10px',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '.12em',
+          color: c.ghost,
+          fontFamily: c.font,
+          marginBottom: '10px',
+        }}>
+          MISSING SIGNALS
+        </div>
+        {missingProviders.length > 0 ? (
+          missingProviders.map((mp, i) => (
+            <div key={i} style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              padding: '2px 0',
+            }}>
+              <span style={{
+                fontSize: '10px',
+                color: c.ghost,
+                fontFamily: c.font,
+              }}>
+                {mp.name.replace(/_/g, ' ')}
+              </span>
+              <span style={{
+                fontSize: '9px',
+                color: c.ghost,
+                fontFamily: c.font,
+                opacity: 0.7,
+              }}>
+                {mp.reason?.slice(0, 30) ?? 'unknown'}
+              </span>
+            </div>
+          ))
+        ) : (
+          <div style={{ fontSize: '11px', color: c.ghost, fontFamily: c.font, fontStyle: 'italic' }}>
+            All signals healthy
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ─── Progress / Success / Error Sub-components ───────────────────────────────
 
 function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }: {
   phases: Phase[]; logLines: string[]; attemptNum: number;
   logEndRef: React.RefObject<HTMLDivElement | null>; elapsedMs: number
 }) {
-  // Estimate: Claude designing is ~60-90% of total time, ~2-5 min typical
   const activePhase = phases.find(p => p.status === 'active')
   const isClaudePhase = activePhase?.label === 'Claude designing'
   const claudeElapsed = isClaudePhase && activePhase.startedAt ? Date.now() - activePhase.startedAt : 0
-  const estimatedClaudeMs = 120000 // ~2 min estimate
+  const estimatedClaudeMs = 120000
   const claudeProgress = isClaudePhase ? Math.min(95, (claudeElapsed / estimatedClaudeMs) * 100) : 0
 
   return (
-    <div style={{ border: '1px solid #e2e8f0', borderRadius: '8px', overflow: 'hidden', marginBottom: '16px' }}>
-      <div style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '10px 14px', fontSize: '12px', fontWeight: 600, color: '#475569', display: 'flex', justifyContent: 'space-between' }}>
-        <span>Pipeline · Attempt {attemptNum} of 3</span>
+    <div style={{
+      border: `1px solid ${c.border}`,
+      borderRadius: '4px',
+      overflow: 'hidden',
+      marginBottom: '16px',
+    }}>
+      <div style={{
+        background: c.cardBg,
+        borderBottom: `1px solid ${c.border}`,
+        padding: '10px 14px',
+        fontSize: '11px',
+        fontWeight: 700,
+        color: c.dim,
+        display: 'flex',
+        justifyContent: 'space-between',
+        fontFamily: c.font,
+      }}>
+        <span>// PIPELINE · Attempt {attemptNum} of 3</span>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <span style={{ fontFamily: 'monospace', color: '#64748b', fontSize: '11px' }}>{fmtElapsed(elapsedMs)}</span>
-          <span style={{ color: '#f59e0b' }}>● running</span>
+          <span style={{ fontFamily: c.font, color: c.muted, fontSize: '11px' }}>{fmtElapsed(elapsedMs)}</span>
+          <span style={{ color: c.cyan }}>● running</span>
         </div>
       </div>
 
       {/* Progress bar for Claude phase */}
       {isClaudePhase && (
-        <div style={{ height: '3px', background: '#e2e8f0' }}>
+        <div style={{ height: '2px', background: c.border }}>
           <div style={{
-            height: '100%', background: 'linear-gradient(90deg, #f59e0b, #fbbf24)',
-            width: `${claudeProgress}%`, transition: 'width 0.5s ease',
+            height: '100%',
+            background: `linear-gradient(90deg, ${c.cyan}, ${c.blue})`,
+            width: `${claudeProgress}%`,
+            transition: 'width 0.5s ease',
           }} />
         </div>
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr' }}>
-        {/* Phase tracker with timings */}
-        <div style={{ padding: '14px', borderRight: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '9px' }}>
+        {/* Phase tracker */}
+        <div style={{
+          padding: '14px',
+          borderRight: `1px solid ${c.border}`,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '9px',
+          background: c.cardBg,
+        }}>
           {phases.map(p => (
             <div key={p.label} style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
               <PhaseDot status={p.status} />
               <span style={{
-                fontSize: '11px', flex: 1,
-                color: p.status === 'pending' ? '#cbd5e1' : p.status === 'done' ? '#94a3b8' : '#0f172a',
-                fontWeight: p.status === 'active' ? 600 : 400,
+                fontSize: '10px',
+                flex: 1,
+                fontFamily: c.font,
+                color: p.status === 'pending' ? c.ghost : p.status === 'done' ? c.muted : c.primary,
+                fontWeight: p.status === 'active' ? 700 : 400,
                 textDecoration: p.status === 'done' ? 'line-through' : 'none',
               }}>{p.label}</span>
-              {/* Duration badge */}
               {p.status === 'done' && p.durationMs != null && (
-                <span style={{ fontSize: '9px', fontFamily: 'monospace', color: '#94a3b8', background: '#f1f5f9', padding: '1px 5px', borderRadius: '3px' }}>
+                <span style={{
+                  fontSize: '9px',
+                  fontFamily: c.font,
+                  color: c.muted,
+                  background: c.border,
+                  padding: '1px 5px',
+                  borderRadius: '3px',
+                }}>
                   {fmtDuration(p.durationMs)}
                 </span>
               )}
-              {/* Live timer for active phase */}
               {p.status === 'active' && p.startedAt && (
-                <span style={{ fontSize: '9px', fontFamily: 'monospace', color: '#f59e0b', background: '#fffbeb', padding: '1px 5px', borderRadius: '3px' }}>
+                <span style={{
+                  fontSize: '9px',
+                  fontFamily: c.font,
+                  color: c.cyan,
+                  background: 'rgba(0,229,255,0.08)',
+                  padding: '1px 5px',
+                  borderRadius: '3px',
+                }}>
                   {fmtDuration(Date.now() - p.startedAt)}
                 </span>
               )}
             </div>
           ))}
 
-          {/* Estimated remaining */}
           {isClaudePhase && claudeElapsed > 5000 && (
-            <div style={{ marginTop: '6px', padding: '6px 8px', background: '#fffbeb', borderRadius: '4px', fontSize: '10px', color: '#92400e' }}>
+            <div style={{
+              marginTop: '6px',
+              padding: '6px 8px',
+              background: 'rgba(0,229,255,0.06)',
+              border: `1px solid rgba(0,229,255,0.12)`,
+              borderRadius: '4px',
+              fontSize: '9px',
+              color: c.cyan,
+              fontFamily: c.font,
+            }}>
               Est. remaining: ~{fmtDuration(Math.max(0, estimatedClaudeMs - claudeElapsed))}
             </div>
           )}
         </div>
 
         {/* Log pane */}
-        <div style={{ background: '#0f172a', padding: '14px', fontFamily: 'Courier New, monospace', fontSize: '11px', lineHeight: '1.7', color: '#94a3b8', minHeight: '180px', maxHeight: '220px', overflowY: 'auto' }}>
+        <div style={{
+          background: '#020810',
+          padding: '14px',
+          fontFamily: c.font,
+          fontSize: '10px',
+          lineHeight: '1.8',
+          color: c.muted,
+          minHeight: '180px',
+          maxHeight: '220px',
+          overflowY: 'auto',
+        }}>
           {logLines.map((line, i) => (
-            <div key={i} style={{ color: line.includes('===') || line.includes('calling claude') || line.includes('claude CLI') ? '#fbbf24' : '#64748b' }}>{line}</div>
+            <div key={i} style={{
+              color: line.includes('===') || line.includes('calling claude') || line.includes('claude CLI')
+                ? c.cyan
+                : c.ghost,
+            }}>{line}</div>
           ))}
-          <span style={{ color: '#fbbf24' }}>▌</span>
+          <span style={{ color: c.cyan }}>_</span>
           <div ref={logEndRef} />
         </div>
       </div>
@@ -606,12 +1316,27 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }:
 }
 
 function PhaseDot({ status }: { status: 'pending' | 'active' | 'done' }) {
-  const base = { width: '16px', height: '16px', borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '9px' } as React.CSSProperties
-  if (status === 'done') return <div style={{ ...base, background: '#22c55e', color: 'white' }}>✓</div>
-  if (status === 'active') return <div style={{ ...base, background: '#f59e0b', animation: 'pulse 1.5s ease-in-out infinite' }}>
-    <style>{`@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }`}</style>
-  </div>
-  return <div style={{ ...base, background: '#e2e8f0' }} />
+  const base = {
+    width: '14px',
+    height: '14px',
+    borderRadius: '50%',
+    flexShrink: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '8px',
+    fontFamily: c.font,
+  } as React.CSSProperties
+
+  if (status === 'done') return (
+    <div style={{ ...base, background: c.green, color: c.pageBg }}>
+      <span style={{ lineHeight: 1 }}>+</span>
+    </div>
+  )
+  if (status === 'active') return (
+    <div style={{ ...base, background: c.cyan, animation: 'pulse 1.5s ease-in-out infinite' }} />
+  )
+  return <div style={{ ...base, background: c.border, border: `1px solid ${c.ghost}` }} />
 }
 
 function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases, onRunAgain, cooldownLeft, isCooldown }: {
@@ -620,37 +1345,104 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
 }) {
   const today = new Date().toISOString().slice(0, 10)
   const siteUrl = window.location.origin
+
   return (
-    <div style={{ border: '1px solid #bbf7d0', borderRadius: '8px', background: '#f0fdf4', overflow: 'hidden' }}>
+    <div style={{
+      border: `1px solid rgba(92,190,74,0.3)`,
+      borderRadius: '4px',
+      background: 'rgba(92,190,74,0.04)',
+      overflow: 'hidden',
+    }}>
       {/* Header */}
-      <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #bbf7d0' }}>
-        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', flexShrink: 0 }}>✓</div>
+      <div style={{
+        padding: '14px 16px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        borderBottom: `1px solid rgba(92,190,74,0.15)`,
+      }}>
+        <div style={{
+          width: '22px',
+          height: '22px',
+          borderRadius: '50%',
+          background: c.green,
+          color: c.pageBg,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '11px',
+          fontWeight: 700,
+          flexShrink: 0,
+          fontFamily: c.font,
+        }}>+</div>
         <div>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: '#166534' }}>Build passed · committed</div>
-          <div style={{ fontSize: '12px', color: '#16a34a', fontStyle: 'italic' }}>"{brief}"</div>
+          <div style={{ fontSize: '12px', fontWeight: 700, color: c.green, fontFamily: c.font }}>
+            Build passed -- committed
+          </div>
+          <div style={{ fontSize: '11px', color: c.secondary, fontStyle: 'italic', fontFamily: c.font }}>
+            "{brief}"
+          </div>
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <div style={{ textAlign: 'right' as const }}>
-            <div style={{ fontSize: '11px', color: '#16a34a' }}>{timestamp}</div>
-            <div style={{ fontSize: '10px', color: '#86efac' }}>Total: {fmtDuration(totalMs)} · {attemptNum} attempt{attemptNum !== 1 ? 's' : ''}</div>
+            <div style={{ fontSize: '10px', color: c.green, fontFamily: c.font }}>{timestamp}</div>
+            <div style={{ fontSize: '9px', color: c.dim, fontFamily: c.font }}>
+              Total: {fmtDuration(totalMs)} · {attemptNum} attempt{attemptNum !== 1 ? 's' : ''}
+            </div>
           </div>
-          <button onClick={() => window.open(siteUrl, '_blank')} style={{ background: '#166534', color: 'white', border: 'none', borderRadius: '5px', padding: '5px 12px', fontSize: '11px', fontWeight: 500, cursor: 'pointer', flexShrink: 0 }}>Open site ↗</button>
+          <button onClick={() => window.open(siteUrl, '_blank')} style={{
+            background: c.green,
+            color: c.pageBg,
+            border: 'none',
+            borderRadius: '4px',
+            padding: '5px 12px',
+            fontSize: '10px',
+            fontWeight: 700,
+            cursor: 'pointer',
+            flexShrink: 0,
+            fontFamily: c.font,
+            letterSpacing: '.05em',
+          }}>OPEN SITE</button>
         </div>
       </div>
 
       {/* Phase breakdown */}
-      <div style={{ padding: '10px 16px', borderBottom: '1px solid #dcfce7' }}>
-        <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#86efac', marginBottom: '6px' }}>Step Timings</div>
-        <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+      <div style={{ padding: '10px 16px', borderBottom: `1px solid rgba(92,190,74,0.1)` }}>
+        <div style={{
+          fontSize: '9px',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '.12em',
+          color: c.dim,
+          marginBottom: '6px',
+          fontFamily: c.font,
+        }}>Step Timings</div>
+        <div style={{ display: 'flex', gap: '3px', alignItems: 'center' }}>
           {phases.map((p, i) => {
             const pct = p.durationMs && totalMs ? Math.max(3, (p.durationMs / totalMs) * 100) : 3
-            const colors = ['#bbf7d0', '#86efac', '#4ade80', '#22c55e', '#16a34a', '#166534']
+            const greens = [
+              'rgba(92,190,74,0.15)',
+              'rgba(92,190,74,0.25)',
+              'rgba(92,190,74,0.35)',
+              'rgba(92,190,74,0.50)',
+              'rgba(92,190,74,0.65)',
+              c.green,
+            ]
             return (
-              <div key={p.label} title={`${p.label}: ${p.durationMs ? fmtDuration(p.durationMs) : '—'}`} style={{
-                height: '20px', flex: `${pct} 0 0`, background: colors[i], borderRadius: '3px',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '8px', color: i > 3 ? 'white' : '#166534', fontWeight: 600,
-                overflow: 'hidden', whiteSpace: 'nowrap',
+              <div key={p.label} title={`${p.label}: ${p.durationMs ? fmtDuration(p.durationMs) : '--'}`} style={{
+                height: '18px',
+                flex: `${pct} 0 0`,
+                background: greens[i],
+                borderRadius: '2px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '8px',
+                color: i > 3 ? c.pageBg : c.green,
+                fontWeight: 700,
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                fontFamily: c.font,
               }}>
                 {pct > 8 ? (p.durationMs ? fmtDuration(p.durationMs) : '') : ''}
               </div>
@@ -659,7 +1451,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
           {phases.map(p => (
-            <span key={p.label} style={{ fontSize: '8px', color: '#86efac' }}>{p.label.split(' ')[0]}</span>
+            <span key={p.label} style={{ fontSize: '7px', color: c.muted, fontFamily: c.font }}>{p.label.split(' ')[0]}</span>
           ))}
         </div>
       </div>
@@ -667,25 +1459,61 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
       {/* Recent designs */}
       <div style={{ padding: '10px 16px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-          <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#86efac' }}>Recent designs</div>
+          <div style={{
+            fontSize: '9px',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '.12em',
+            color: c.dim,
+            fontFamily: c.font,
+          }}>Recent designs</div>
           <button
             onClick={onRunAgain}
             disabled={isCooldown}
             style={{
-              background: isCooldown ? '#86efac' : '#22c55e', color: 'white', border: 'none',
-              borderRadius: '4px', padding: '3px 10px', fontSize: '10px', fontWeight: 600,
-              cursor: isCooldown ? 'default' : 'pointer', opacity: isCooldown ? 0.6 : 1,
+              background: isCooldown ? c.muted : c.green,
+              color: c.pageBg,
+              border: 'none',
+              borderRadius: '4px',
+              padding: '3px 10px',
+              fontSize: '9px',
+              fontWeight: 700,
+              cursor: isCooldown ? 'default' : 'pointer',
+              opacity: isCooldown ? 0.6 : 1,
+              fontFamily: c.font,
+              letterSpacing: '.05em',
             }}
           >
-            {isCooldown ? `Run again in ${cooldownLeft}s` : 'Run again'}
+            {isCooldown ? `RUN AGAIN IN ${cooldownLeft}s` : 'RUN AGAIN'}
           </button>
         </div>
         {archive.map((entry, i) => {
           const isToday = entry.date === today
           return (
-            <div key={entry.date + i} style={{ display: 'flex', gap: '10px', padding: '6px 0', borderBottom: i < archive.length - 1 ? '1px solid #dcfce7' : 'none' }}>
-              <span style={{ fontSize: '11px', fontWeight: isToday ? 700 : 600, color: isToday ? '#166534' : '#16a34a', minWidth: '85px' }}>{entry.date}{isToday ? ' ✦' : ''}</span>
-              <span style={{ fontSize: '11px', color: isToday ? '#166534' : '#4ade80', fontStyle: 'italic', fontWeight: isToday ? 600 : 400 }}>{entry.brief}</span>
+            <div key={entry.date + i} style={{
+              display: 'flex',
+              gap: '10px',
+              padding: '5px 0',
+              borderBottom: i < archive.length - 1 ? `1px solid ${c.border}` : 'none',
+            }}>
+              <span style={{
+                fontSize: '10px',
+                fontWeight: isToday ? 700 : 400,
+                color: isToday ? c.green : c.dim,
+                minWidth: '85px',
+                fontFamily: c.font,
+              }}>
+                {entry.date}{isToday ? ' *' : ''}
+              </span>
+              <span style={{
+                fontSize: '10px',
+                color: isToday ? c.secondary : c.muted,
+                fontStyle: 'italic',
+                fontWeight: isToday ? 700 : 400,
+                fontFamily: c.font,
+              }}>
+                {entry.brief}
+              </span>
             </div>
           )
         })}
@@ -696,13 +1524,44 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
 
 function ErrorSection({ error, totalMs, onRetry }: { error: string; totalMs: number; onRetry: () => void }) {
   return (
-    <div style={{ border: '1px solid #fecaca', borderRadius: '8px', background: '#fef2f2', padding: '16px', display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-      <div style={{ color: '#dc2626', fontSize: '18px', flexShrink: 0 }}>✕</div>
+    <div style={{
+      border: `1px solid rgba(220,38,38,0.3)`,
+      borderRadius: '4px',
+      background: 'rgba(220,38,38,0.06)',
+      padding: '16px',
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: '12px',
+    }}>
+      <div style={{ color: '#dc2626', fontSize: '16px', flexShrink: 0, fontFamily: c.font, fontWeight: 700 }}>X</div>
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: '13px', fontWeight: 600, color: '#991b1b', marginBottom: '4px' }}>Pipeline failed <span style={{ fontWeight: 400, fontSize: '11px', color: '#b91c1c' }}>({fmtDuration(totalMs)})</span></div>
-        <div style={{ fontSize: '11px', color: '#b91c1c', fontFamily: 'monospace' }}>{error}</div>
+        <div style={{
+          fontSize: '12px',
+          fontWeight: 700,
+          color: '#dc2626',
+          marginBottom: '4px',
+          fontFamily: c.font,
+        }}>
+          Pipeline failed
+          <span style={{ fontWeight: 400, fontSize: '10px', color: '#b91c1c', marginLeft: '6px' }}>
+            ({fmtDuration(totalMs)})
+          </span>
+        </div>
+        <div style={{ fontSize: '10px', color: '#b91c1c', fontFamily: c.font }}>{error}</div>
       </div>
-      <button onClick={onRetry} style={{ background: '#dc2626', color: 'white', border: 'none', borderRadius: '6px', padding: '7px 14px', fontSize: '12px', fontWeight: 500, cursor: 'pointer', flexShrink: 0 }}>Retry</button>
+      <button onClick={onRetry} style={{
+        background: '#dc2626',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '4px',
+        padding: '7px 14px',
+        fontSize: '11px',
+        fontWeight: 700,
+        cursor: 'pointer',
+        flexShrink: 0,
+        fontFamily: c.font,
+        letterSpacing: '.05em',
+      }}>RETRY</button>
     </div>
   )
 }
