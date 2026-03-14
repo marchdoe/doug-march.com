@@ -20,8 +20,9 @@ import { fileURLToPath } from 'url'
 import path from 'path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
 
-import Anthropic from '@anthropic-ai/sdk'
 import { execSync } from 'child_process'
+import { readFile } from 'fs/promises'
+import { existsSync } from 'fs'
 import { readContext } from './utils/site-context.js'
 import { MUTABLE_FILES } from './utils/site-context.js'
 import { buildMessages } from './utils/prompt-builder.js'
@@ -31,13 +32,170 @@ import { archive } from './utils/archiver.js'
 
 const MAX_ATTEMPTS = 3
 const DRY_RUN = process.env.DRY_RUN === 'true'
+const MOCK_MODE = process.env.MOCK_MODE === 'true'
 
-if (!process.env.ANTHROPIC_API_KEY) {
+if (!MOCK_MODE && !process.env.ANTHROPIC_API_KEY) {
   console.error('Error: ANTHROPIC_API_KEY environment variable is not set.')
+  console.error('  Set ANTHROPIC_API_KEY in .env, or use MOCK_MODE=true to use local Claude Code CLI.')
   process.exit(1)
 }
 
-const client = new Anthropic()
+if (MOCK_MODE) {
+  // Verify claude CLI is available
+  try {
+    execSync('claude --version', { encoding: 'utf8', timeout: 5000 })
+  } catch {
+    console.error('Error: MOCK_MODE requires the `claude` CLI (Claude Code) to be installed.')
+    console.error('  Install: https://claude.ai/download')
+    process.exit(1)
+  }
+}
+
+// Only import Anthropic SDK when not in mock mode
+let client
+if (!MOCK_MODE) {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  client = new Anthropic()
+}
+
+/**
+ * Build a mock response from the canonical theme snapshot.
+ * Reads themes/canonical/ files and packages them as if Claude returned them.
+ */
+/**
+ * Call Claude Code CLI (Max plan) to generate a redesign.
+ * Uses the same prompt as production but routes through the local `claude` binary
+ * instead of the Anthropic API, so no API credits are needed.
+ *
+ * @param {string} system - system prompt
+ * @param {string} userPrompt - user prompt with signals + files
+ * @param {string} [buildError] - optional build error from a previous attempt
+ * @returns {{ rationale: string, design_brief: string, files: Array<{path: string, content: string}> }}
+ */
+async function callClaudeCLI(system, userPrompt, buildError) {
+  const { writeFile: writeFileAsync } = await import('fs/promises')
+  const { execSync: exec } = await import('child_process')
+
+  // Build the full prompt for claude CLI
+  let fullPrompt = userPrompt
+
+  if (buildError) {
+    fullPrompt += `\n\n---\n\nThe previous attempt failed with this build error:\n\n${buildError}\n\nPlease fix the issues and try again.`
+  }
+
+  fullPrompt += `\n\n---\n\nIMPORTANT: Respond with ONLY a valid JSON object matching this exact schema (no markdown, no code fences, no explanation before or after):
+{
+  "rationale": "1-2 paragraphs explaining your creative choices",
+  "design_brief": "One evocative sentence for the archive",
+  "files": [
+    { "path": "elements/preset.ts", "content": "...full file content..." },
+    { "path": "app/components/Layout.tsx", "content": "...full file content..." }
+  ]
+}
+
+You MUST include elements/preset.ts at minimum. Include complete file contents — not diffs.`
+
+  // Combine system + user into a single prompt (avoids shell escaping issues)
+  const combinedPrompt = `${system}\n\n---\n\n${fullPrompt}`
+
+  // Write prompt to temp file (it's too long for command line args)
+  const promptPath = path.join(ROOT, '.claude-prompt.tmp')
+  await writeFileAsync(promptPath, combinedPrompt, 'utf8')
+
+  console.log('  calling claude CLI (Max plan)...')
+  console.log(`  prompt written to .claude-prompt.tmp (${(combinedPrompt.length / 1024).toFixed(0)}KB)`)
+
+  // Call claude CLI in print mode, piping the prompt from the temp file.
+  // IMPORTANT: Strip ANTHROPIC_API_KEY from env so claude CLI uses the
+  // Max plan subscription auth instead of (possibly empty) API credits.
+  const cliEnv = { ...process.env }
+  delete cliEnv.ANTHROPIC_API_KEY
+
+  const { spawn: spawnProc } = await import('child_process')
+  const { createReadStream } = await import('fs')
+
+  const result = await new Promise((resolve, reject) => {
+    const child = spawnProc('claude', [
+      '-p',
+      '--output-format', 'json',
+      '--max-turns', '1',
+      '--tools', '',
+    ], {
+      cwd: ROOT,
+      env: cliEnv,
+    })
+
+    let stdout = ''
+    let stderr = ''
+
+    // Pipe the prompt file to stdin
+    const promptStream = createReadStream(promptPath)
+    promptStream.pipe(child.stdin)
+
+    child.stdout.on('data', (chunk) => {
+      stdout += chunk.toString()
+      // Print progress dots so the SSE stream shows activity
+      process.stdout.write('.')
+    })
+    child.stderr.on('data', (chunk) => { stderr += chunk.toString() })
+
+    const timeout = setTimeout(() => {
+      child.kill()
+      reject(new Error('Claude CLI timed out after 10 minutes'))
+    }, 600000) // 10 minute timeout
+
+    child.on('close', (code) => {
+      clearTimeout(timeout)
+      console.log('') // newline after progress dots
+      if (code !== 0 && !stdout.trim()) {
+        console.error(`  claude CLI stderr: ${stderr.slice(0, 500)}`)
+        reject(new Error(`claude CLI exited with code ${code}: ${stderr.slice(0, 500)}`))
+      } else {
+        resolve(stdout)
+      }
+    })
+
+    child.on('error', (err) => {
+      clearTimeout(timeout)
+      reject(err)
+    })
+  })
+
+  // Parse the JSON output wrapper
+  let parsed
+  try {
+    const wrapper = JSON.parse(result)
+    // claude CLI wraps response in { result: "..." } when using --output-format json
+    const responseText = wrapper.result || result
+    parsed = JSON.parse(responseText)
+  } catch {
+    // If the wrapper parse fails, try parsing the raw output directly
+    // Strip any markdown fences if Claude included them
+    const cleaned = result.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+    try {
+      const wrapper = JSON.parse(cleaned)
+      parsed = wrapper.result ? JSON.parse(wrapper.result) : wrapper
+    } catch (e2) {
+      throw new Error(`Failed to parse Claude CLI response as JSON: ${e2.message}\nFirst 500 chars: ${result.slice(0, 500)}`)
+    }
+  }
+
+  // Validate required fields
+  if (!parsed.rationale || !parsed.design_brief || !Array.isArray(parsed.files)) {
+    throw new Error(`Claude CLI response missing required fields. Got keys: ${Object.keys(parsed).join(', ')}`)
+  }
+
+  if (!parsed.files.find(f => f.path === 'elements/preset.ts')) {
+    throw new Error('Claude CLI response missing elements/preset.ts in files array')
+  }
+
+  console.log(`  claude CLI responded with ${parsed.files.length} files`)
+
+  // Clean up temp file
+  try { const { unlink } = await import('fs/promises'); await unlink(promptPath) } catch {}
+
+  return parsed
+}
 
 /**
  * The tool definition for submit_redesign.
@@ -122,6 +280,7 @@ function gitCommit(date, designBrief) {
 async function main() {
   console.log(`\n=== Daily Redesign Pipeline ===`)
   console.log(`DRY_RUN: ${DRY_RUN}`)
+  console.log(`MOCK_MODE: ${MOCK_MODE}`)
   console.log(`Max attempts: ${MAX_ATTEMPTS}`)
   console.log('')
 
@@ -148,35 +307,50 @@ async function main() {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     console.log(`\n--- Attempt ${attempt}/${MAX_ATTEMPTS} ---`)
 
-    // Call Claude
-    console.log('  calling Claude API (claude-opus-4-6)...')
-    let response
-    try {
-      response = await client.messages.create({
-        model: 'claude-opus-4-6',
-        max_tokens: 16384,
-        system,
-        messages,
-        tools: [SUBMIT_REDESIGN_TOOL],
-        tool_choice: { type: 'tool', name: 'submit_redesign' },
-      })
-    } catch (err) {
-      console.error(`  Claude API error: ${err.message}`)
-      lastError = `Claude API error: ${err.message}`
-      break
-    }
+    let input, toolUseId, response
 
-    console.log(`  stop_reason: ${response.stop_reason}`)
+    if (MOCK_MODE) {
+      console.log('  using Claude Code CLI (Max plan)...')
+      const userPrompt = messages[messages.length - 1]
+      const promptText = typeof userPrompt.content === 'string' ? userPrompt.content : userPrompt.content.map(b => b.text || b.content || '').join('\n')
+      const buildError = attempt > 1 ? messages[messages.length - 1]?.content?.find?.(b => b.type === 'tool_result')?.content : undefined
+      try {
+        input = await callClaudeCLI(system, promptText, typeof buildError === 'string' ? buildError : undefined)
+      } catch (err) {
+        console.error(`  Claude CLI error: ${err.message}`)
+        lastError = `Claude CLI error: ${err.message}`
+        break
+      }
+      toolUseId = 'cli-tool-use-id'
+      console.log(`  stop_reason: cli`)
+    } else {
+      // Call Claude
+      console.log('  calling Claude API (claude-opus-4-6)...')
+      try {
+        response = await client.messages.create({
+          model: 'claude-opus-4-6',
+          max_tokens: 16384,
+          system,
+          messages,
+          tools: [SUBMIT_REDESIGN_TOOL],
+          tool_choice: { type: 'tool', name: 'submit_redesign' },
+        })
+      } catch (err) {
+        console.error(`  Claude API error: ${err.message}`)
+        lastError = `Claude API error: ${err.message}`
+        break
+      }
 
-    // Extract tool use
-    let toolUseId, input
-    try {
-      ;({ toolUseId, input } = extractToolUse(response))
-    } catch (err) {
-      console.error(`  ${err.message}`)
-      lastError = err.message
-      // Not a build error — don't retry with conversation history, just break
-      break
+      console.log(`  stop_reason: ${response.stop_reason}`)
+
+      // Extract tool use
+      try {
+        ;({ toolUseId, input } = extractToolUse(response))
+      } catch (err) {
+        console.error(`  ${err.message}`)
+        lastError = err.message
+        break
+      }
     }
 
     console.log(`  design_brief: ${input.design_brief}`)
@@ -216,6 +390,9 @@ async function main() {
         // Restore originals so dry run is truly non-destructive
         console.log('Restoring originals (dry run)...')
         await restore(originalBackup)
+      } else if (MOCK_MODE) {
+        console.log('\nMOCK_MODE=true — files written to disk, skipping git commit.')
+        console.log('Reload the site to see the new design.')
       } else {
         gitCommit(context.signals.date, input.design_brief)
         console.log('\nDone. Committed successfully.')

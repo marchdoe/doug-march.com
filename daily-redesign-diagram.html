@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Redesign Pipeline — Architecture Diagram</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0f; color: #c8ccd4; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; min-height: 100vh; display: flex; }
+
+  /* Layout */
+  .sidebar { width: 280px; background: #111118; border-right: 1px solid #1e1e2a; padding: 20px; overflow-y: auto; flex-shrink: 0; }
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .preview { flex: 1; overflow: auto; padding: 32px; display: flex; justify-content: center; }
+  .prompt-bar { background: #111118; border-top: 1px solid #1e1e2a; padding: 14px 20px; display: flex; gap: 12px; align-items: flex-start; }
+  .prompt-text { flex: 1; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: #a0a4b0; line-height: 1.6; max-height: 80px; overflow-y: auto; white-space: pre-wrap; }
+  .copy-btn { background: #2a2a3a; border: 1px solid #3a3a4a; color: #c8ccd4; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 11px; white-space: nowrap; }
+  .copy-btn:hover { background: #3a3a4a; }
+
+  /* Sidebar */
+  .section-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 10px; margin-top: 18px; }
+  .section-title:first-child { margin-top: 0; }
+  h1 { font-size: 15px; font-weight: 700; color: #e0e0e8; margin-bottom: 4px; }
+  .subtitle { font-size: 11px; color: #666; margin-bottom: 20px; }
+
+  .preset-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .preset-btn { background: #1a1a24; border: 1px solid #2a2a3a; color: #888; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 10px; }
+  .preset-btn:hover { background: #2a2a3a; color: #c8ccd4; }
+  .preset-btn.active { background: #2a3a5a; border-color: #4a6a9a; color: #8ab4f8; }
+
+  .control-group { margin-bottom: 14px; }
+  .control-label { font-size: 10px; color: #666; margin-bottom: 5px; display: block; }
+  select, input[type="range"] { width: 100%; }
+  select { background: #1a1a24; border: 1px solid #2a2a3a; color: #c8ccd4; padding: 5px 8px; border-radius: 4px; font-size: 11px; }
+
+  .legend { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #888; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+  /* Diagram */
+  .diagram-container { position: relative; width: 900px; min-height: 1400px; }
+
+  .node {
+    position: absolute;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+    z-index: 2;
+  }
+  .node.highlight { filter: brightness(1.3); box-shadow: 0 0 20px rgba(255,255,255,0.1); transform: scale(1.05); }
+
+  /* Node types */
+  .node-ui { background: #1a2a4a; border: 1.5px solid #3a6aba; color: #8ab4f8; }
+  .node-step { background: #1a3a2a; border: 1.5px solid #3a8a5a; color: #6fcf97; }
+  .node-decision { background: #3a2a1a; border: 1.5px solid #ba7a3a; color: #f0b060; transform-origin: center; }
+  .node-decision .diamond { position: absolute; top: -6px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 10px; height: 10px; background: #ba7a3a; }
+  .node-error { background: #3a1a1a; border: 1.5px solid #ba3a3a; color: #f06060; }
+  .node-stream { background: #2a1a3a; border: 1.5px solid #7a3aba; color: #b080f0; }
+  .node-file { background: #1a2020; border: 1.5px solid #3a6060; color: #80b0b0; }
+
+  .node-title { font-weight: 700; font-size: 11px; margin-bottom: 2px; }
+  .node-desc { font-size: 9px; opacity: 0.7; font-weight: 400; }
+
+  /* SVG arrows */
+  svg.arrows { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+  .arrow-line { fill: none; stroke-width: 1.5; }
+  .arrow-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 9px; font-weight: 500; }
+
+  /* Animation */
+  .pulse { animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  .flow-dot { fill: #8ab4f8; }
+  @keyframes flowDown { 0% { offset-distance: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h1>Pipeline Diagram</h1>
+  <div class="subtitle">Daily Redesign Architecture</div>
+
+  <div class="section-title">View Preset</div>
+  <div class="preset-row">
+    <button class="preset-btn active" onclick="setPreset('full')">Full Pipeline</button>
+    <button class="preset-btn" onclick="setPreset('mock')">Mock Mode</button>
+    <button class="preset-btn" onclick="setPreset('real')">Real API</button>
+    <button class="preset-btn" onclick="setPreset('error')">Error Path</button>
+  </div>
+
+  <div class="section-title">Highlight Layer</div>
+  <div class="control-group">
+    <select id="highlightLayer" onchange="updateAll()">
+      <option value="none">None — show all</option>
+      <option value="ui">UI Layer (blue)</option>
+      <option value="pipeline">Pipeline Steps (green)</option>
+      <option value="decisions">Decision Points (orange)</option>
+      <option value="errors">Error Paths (red)</option>
+      <option value="streaming">SSE Streaming (purple)</option>
+      <option value="files">File System (teal)</option>
+    </select>
+  </div>
+
+  <div class="section-title">Mode</div>
+  <div class="control-group">
+    <select id="modeSelect" onchange="updateAll()">
+      <option value="both">Show Both Paths</option>
+      <option value="mock">Mock Mode Only</option>
+      <option value="real">Real API Only</option>
+    </select>
+  </div>
+
+  <div class="section-title">Legend</div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#3a6aba"></div> /dev Panel UI</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3a8a5a"></div> Pipeline Script Steps</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ba7a3a"></div> Decision Points</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ba3a3a"></div> Error / Retry Paths</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#7a3aba"></div> SSE Event Stream</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3a6060"></div> File System / Data</div>
+  </div>
+
+  <div class="section-title" style="margin-top: 24px">Key Files</div>
+  <div style="font-size: 10px; color: #555; line-height: 1.8; font-family: monospace;">
+    app/dev-panel.html<br>
+    app/dev-panel.tsx<br>
+    vite.config.ts (middleware)<br>
+    scripts/daily-redesign.js<br>
+    scripts/utils/random-signals.js<br>
+    signals/today.yml<br>
+    themes/mock-*/preset.ts<br>
+    elements/preset.ts<br>
+    archive/YYYY-MM-DD/brief.md
+  </div>
+</div>
+
+<div class="main">
+  <div class="preview">
+    <div class="diagram-container" id="diagram"></div>
+  </div>
+  <div class="prompt-bar">
+    <div class="prompt-text" id="promptOutput">Select a view preset or highlight layer to explore the pipeline architecture.</div>
+    <button class="copy-btn" onclick="copyPrompt()">Copy</button>
+  </div>
+</div>
+
+<script>
+const state = {
+  preset: 'full',
+  highlightLayer: 'none',
+  mode: 'both',
+};
+
+const NODES = [
+  // UI Layer
+  { id: 'dev-panel', type: 'ui', x: 350, y: 20, w: 200, title: '/dev Panel', desc: 'Standalone SPA at localhost:5173/dev', layer: 'ui' },
+  { id: 'signals-display', type: 'ui', x: 150, y: 90, w: 160, title: 'Signals Display', desc: 'Weather, Sports, Golf, GitHub, News', layer: 'ui' },
+  { id: 'overrides', type: 'ui', x: 390, y: 90, w: 160, title: 'Overrides', desc: 'Mood dropdown + Notes textarea', layer: 'ui' },
+  { id: 'run-btn', type: 'ui', x: 600, y: 90, w: 140, title: 'Run Pipeline', desc: 'Button triggers EventSource', layer: 'ui' },
+
+  // Vite middleware
+  { id: 'vite-mw', type: 'stream', x: 580, y: 180, w: 180, title: 'Vite Middleware', desc: '/api/pipeline SSE endpoint', layer: 'streaming' },
+  { id: 'spawn', type: 'stream', x: 580, y: 250, w: 180, title: 'spawn("node", [script])', desc: 'env: MOCK_MODE, DRY_RUN', layer: 'streaming' },
+
+  // Pipeline steps
+  { id: 'read-signals', type: 'step', x: 350, y: 340, w: 200, title: '1. Read Signals', desc: 'Parse signals/today.yml via js-yaml', layer: 'pipeline' },
+  { id: 'read-context', type: 'step', x: 350, y: 410, w: 200, title: '2. Read Site Context', desc: '17 mutable files + content summary', layer: 'pipeline' },
+  { id: 'build-prompt', type: 'step', x: 350, y: 480, w: 200, title: '3. Build Claude Prompt', desc: 'System + user prompt from signals', layer: 'pipeline' },
+  { id: 'backup', type: 'step', x: 350, y: 550, w: 200, title: '4. Backup Originals', desc: 'Map<path, content> of all mutable files', layer: 'pipeline' },
+
+  // Decision: mock vs real
+  { id: 'mode-check', type: 'decision', x: 350, y: 630, w: 200, title: 'MOCK_MODE?', desc: '', layer: 'decisions' },
+
+  // Mock path
+  { id: 'random-signals', type: 'step', x: 100, y: 710, w: 200, title: 'Pick Random Signal Set', desc: '4 sets: blizzard, sunny, tense, playful', layer: 'pipeline' },
+  { id: 'load-theme', type: 'file', x: 100, y: 780, w: 200, title: 'Load Matching Theme', desc: 'themes/mock-*/preset.ts + canonical components', layer: 'files' },
+
+  // Real path
+  { id: 'call-claude', type: 'step', x: 600, y: 710, w: 200, title: 'Call Claude API', desc: 'claude-opus-4-6 via tool_use', layer: 'pipeline' },
+  { id: 'extract-tool', type: 'step', x: 600, y: 780, w: 200, title: 'Extract Tool Response', desc: 'submit_redesign: files, brief, rationale', layer: 'pipeline' },
+
+  // Write + build
+  { id: 'write-files', type: 'step', x: 350, y: 870, w: 200, title: '5. Write Generated Files', desc: 'Protected file check, mkdir, writeFile', layer: 'pipeline' },
+  { id: 'build', type: 'step', x: 350, y: 940, w: 200, title: '6. pnpm build', desc: 'panda codegen + vite build', layer: 'pipeline' },
+
+  // Build result
+  { id: 'build-check', type: 'decision', x: 350, y: 1020, w: 200, title: 'Build Passed?', desc: '', layer: 'decisions' },
+
+  // Failure path
+  { id: 'restore-retry', type: 'error', x: 100, y: 1020, w: 180, title: 'Restore Originals', desc: 'Revert all files from backup', layer: 'errors' },
+  { id: 'retry-check', type: 'decision', x: 100, y: 1100, w: 180, title: 'Attempts < 3?', desc: '', layer: 'decisions' },
+  { id: 'append-error', type: 'error', x: 100, y: 1180, w: 180, title: 'Append Build Error', desc: 'Add to conversation history, retry', layer: 'errors' },
+  { id: 'fail-exit', type: 'error', x: 100, y: 1260, w: 180, title: 'Pipeline Failed', desc: 'Exit code 1, originals restored', layer: 'errors' },
+
+  // Success path
+  { id: 'archive', type: 'file', x: 550, y: 1020, w: 200, title: 'Archive Result', desc: 'archive/YYYY-MM-DD/brief.md', layer: 'files' },
+  { id: 'dry-check', type: 'decision', x: 550, y: 1100, w: 200, title: 'DRY_RUN?', desc: '', layer: 'decisions' },
+  { id: 'restore-dry', type: 'step', x: 720, y: 1180, w: 160, title: 'Restore Originals', desc: 'Dry run: no changes kept', layer: 'pipeline' },
+  { id: 'keep-files', type: 'step', x: 450, y: 1180, w: 180, title: 'Keep Files on Disk', desc: 'Site redesigned, skip git commit', layer: 'pipeline' },
+
+  // SSE done + UI result
+  { id: 'sse-done', type: 'stream', x: 350, y: 1270, w: 200, title: 'SSE: done event', desc: '{ type: "done", success: true/false }', layer: 'streaming' },
+  { id: 'success-ui', type: 'ui', x: 350, y: 1350, w: 200, title: 'Success Banner', desc: 'Green card + Open site button', layer: 'ui' },
+
+  // Files
+  { id: 'signals-file', type: 'file', x: 60, y: 370, w: 150, title: 'signals/today.yml', desc: 'YAML with date, weather, sports...', layer: 'files' },
+  { id: 'mutable-files', type: 'file', x: 60, y: 440, w: 150, title: '17 Mutable Files', desc: 'preset.ts, components, routes', layer: 'files' },
+
+  // SSE stream indicator
+  { id: 'sse-stream', type: 'stream', x: 750, y: 550, w: 140, title: 'SSE Log Events', desc: 'Real-time stdout/stderr', layer: 'streaming' },
+];
+
+const ARROWS = [
+  // UI to pipeline
+  { from: 'run-btn', to: 'vite-mw', color: '#7a3aba', label: 'click' },
+  { from: 'vite-mw', to: 'spawn', color: '#7a3aba', label: '' },
+  { from: 'spawn', to: 'read-signals', color: '#3a8a5a', label: 'start' },
+
+  // Pipeline flow
+  { from: 'read-signals', to: 'read-context', color: '#3a8a5a', label: '' },
+  { from: 'read-context', to: 'build-prompt', color: '#3a8a5a', label: '' },
+  { from: 'build-prompt', to: 'backup', color: '#3a8a5a', label: '' },
+  { from: 'backup', to: 'mode-check', color: '#3a8a5a', label: '' },
+
+  // Mock path
+  { from: 'mode-check', to: 'random-signals', color: '#ba7a3a', label: 'yes' },
+  { from: 'random-signals', to: 'load-theme', color: '#3a8a5a', label: '' },
+  { from: 'load-theme', to: 'write-files', color: '#3a8a5a', label: '' },
+
+  // Real path
+  { from: 'mode-check', to: 'call-claude', color: '#ba7a3a', label: 'no' },
+  { from: 'call-claude', to: 'extract-tool', color: '#3a8a5a', label: '' },
+  { from: 'extract-tool', to: 'write-files', color: '#3a8a5a', label: '' },
+
+  // Build
+  { from: 'write-files', to: 'build', color: '#3a8a5a', label: '' },
+  { from: 'build', to: 'build-check', color: '#3a8a5a', label: '' },
+
+  // Failure
+  { from: 'build-check', to: 'restore-retry', color: '#ba3a3a', label: 'no' },
+  { from: 'restore-retry', to: 'retry-check', color: '#ba3a3a', label: '' },
+  { from: 'retry-check', to: 'append-error', color: '#ba3a3a', label: 'yes' },
+  { from: 'append-error', to: 'mode-check', color: '#ba3a3a', label: 'retry', curved: true },
+  { from: 'retry-check', to: 'fail-exit', color: '#ba3a3a', label: 'no (3x)' },
+
+  // Success
+  { from: 'build-check', to: 'archive', color: '#3a8a5a', label: 'yes' },
+  { from: 'archive', to: 'dry-check', color: '#3a8a5a', label: '' },
+  { from: 'dry-check', to: 'restore-dry', color: '#ba7a3a', label: 'yes' },
+  { from: 'dry-check', to: 'keep-files', color: '#ba7a3a', label: 'no' },
+  { from: 'keep-files', to: 'sse-done', color: '#7a3aba', label: '' },
+  { from: 'restore-dry', to: 'sse-done', color: '#7a3aba', label: '' },
+  { from: 'fail-exit', to: 'sse-done', color: '#7a3aba', label: '' },
+  { from: 'sse-done', to: 'success-ui', color: '#3a6aba', label: '' },
+
+  // File reads
+  { from: 'signals-file', to: 'read-signals', color: '#3a6060', label: '' },
+  { from: 'mutable-files', to: 'read-context', color: '#3a6060', label: '' },
+
+  // SSE streaming
+  { from: 'sse-stream', to: 'vite-mw', color: '#7a3aba', label: 'pipe stdout', curved: true },
+
+  // Panel data
+  { from: 'dev-panel', to: 'signals-display', color: '#3a6aba', label: '' },
+  { from: 'dev-panel', to: 'overrides', color: '#3a6aba', label: '' },
+  { from: 'dev-panel', to: 'run-btn', color: '#3a6aba', label: '' },
+];
+
+function getNode(id) { return NODES.find(n => n.id === id); }
+
+function nodeCenter(n) {
+  return { x: n.x + n.w / 2, y: n.y + 20 };
+}
+
+function renderDiagram() {
+  const container = document.getElementById('diagram');
+  const highlight = state.highlightLayer;
+  const mode = state.mode;
+
+  // Filter nodes based on mode
+  const hiddenNodes = new Set();
+  if (mode === 'mock') {
+    hiddenNodes.add('call-claude');
+    hiddenNodes.add('extract-tool');
+  } else if (mode === 'real') {
+    hiddenNodes.add('random-signals');
+    hiddenNodes.add('load-theme');
+  }
+
+  // Build SVG arrows
+  let svgContent = '';
+  for (const arrow of ARROWS) {
+    const fromN = getNode(arrow.from);
+    const toN = getNode(arrow.to);
+    if (!fromN || !toN) continue;
+    if (hiddenNodes.has(arrow.from) || hiddenNodes.has(arrow.to)) continue;
+
+    const fromLayer = fromN.layer;
+    const toLayer = toN.layer;
+    const arrowVisible = highlight === 'none' || fromLayer === highlight || toLayer === highlight;
+
+    const x1 = fromN.x + fromN.w / 2;
+    const y1 = fromN.y + 40;
+    const x2 = toN.x + toN.w / 2;
+    const y2 = toN.y;
+
+    const opacity = arrowVisible ? 0.7 : 0.1;
+    const mid = (y1 + y2) / 2;
+
+    if (arrow.curved) {
+      const cx = Math.min(x1, x2) - 60;
+      svgContent += `<path class="arrow-line" d="M${x1},${y1} C${cx},${y1} ${cx},${y2} ${x2},${y2}" stroke="${arrow.color}" opacity="${opacity}" marker-end="url(#arrowhead-${arrow.color.slice(1)})"/>`;
+    } else {
+      svgContent += `<path class="arrow-line" d="M${x1},${y1} C${x1},${mid} ${x2},${mid} ${x2},${y2}" stroke="${arrow.color}" opacity="${opacity}" marker-end="url(#arrowhead-${arrow.color.slice(1)})"/>`;
+    }
+
+    if (arrow.label) {
+      const lx = (x1 + x2) / 2 + (x1 === x2 ? 14 : 0);
+      const ly = mid - 4;
+      svgContent += `<text class="arrow-label" x="${lx}" y="${ly}" fill="${arrow.color}" opacity="${opacity}" text-anchor="middle">${arrow.label}</text>`;
+    }
+  }
+
+  // Unique arrowhead markers
+  const colors = [...new Set(ARROWS.map(a => a.color))];
+  let markers = '';
+  for (const c of colors) {
+    markers += `<marker id="arrowhead-${c.slice(1)}" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="${c}"/></marker>`;
+  }
+
+  // Build nodes HTML
+  let nodesHtml = '';
+  for (const n of NODES) {
+    if (hiddenNodes.has(n.id)) continue;
+
+    const isHighlighted = highlight === 'none' || n.layer === highlight;
+    const opacity = isHighlighted ? 1 : 0.15;
+    const cls = `node node-${n.type} ${isHighlighted && highlight !== 'none' ? 'highlight' : ''}`;
+
+    nodesHtml += `<div class="${cls}" style="left:${n.x}px; top:${n.y}px; width:${n.w}px; opacity:${opacity}">`;
+    if (n.type === 'decision') nodesHtml += '<div class="diamond"></div>';
+    nodesHtml += `<div class="node-title">${n.title}</div>`;
+    if (n.desc) nodesHtml += `<div class="node-desc">${n.desc}</div>`;
+    nodesHtml += '</div>';
+  }
+
+  container.innerHTML = `
+    <svg class="arrows" viewBox="0 0 900 1400" preserveAspectRatio="xMidYMid meet">
+      <defs>${markers}</defs>
+      ${svgContent}
+    </svg>
+    ${nodesHtml}
+  `;
+}
+
+function updatePrompt() {
+  const el = document.getElementById('promptOutput');
+  const highlight = state.highlightLayer;
+  const mode = state.mode;
+
+  const descriptions = {
+    none: `The Daily Redesign pipeline has two entry points: the /dev panel (standalone SPA served by Vite middleware) and the GitHub Actions cron job. Both invoke scripts/daily-redesign.js.
+
+In MOCK_MODE (local dev), the script picks a random signal set from 4 presets (blizzard, sunny, tense, playful), loads the matching theme from themes/mock-*/preset.ts, writes files, runs pnpm build, and archives. No API call needed.
+
+In REAL MODE (production), it reads signals/today.yml, calls Claude API (claude-opus-4-6) via tool_use, writes the response files, validates the build, and retries up to 3 times on failure.
+
+The /dev panel connects via SSE (EventSource) to /api/pipeline, which spawns the script and pipes stdout/stderr as real-time log events.`,
+
+    ui: `UI LAYER: The /dev panel is a standalone SPA (app/dev-panel.html + app/dev-panel.tsx) served by Vite middleware — no SSR, no TanStack Start dependency. It fetches data via /api/dev-data (signals + archive) and /api/dev-overrides (mood/notes save). The Run Pipeline button opens an EventSource to /api/pipeline for real-time progress. On success, a green banner shows the design brief and an "Open site" button pointing to the current origin.`,
+
+    pipeline: `PIPELINE STEPS: The script (scripts/daily-redesign.js) runs 6 sequential steps: 1) Read signals YAML, 2) Read 17 mutable files as site context, 3) Build the Claude prompt (system + user), 4) Backup all originals to a Map, 5) Generate files (mock or API), 6) Run pnpm build (panda codegen + vite build). Each step logs to stdout which streams as SSE events to the /dev panel.`,
+
+    decisions: `DECISION POINTS: Three key branches — MOCK_MODE determines whether to use random local themes or call the Claude API. Build Passed determines success vs retry. DRY_RUN determines whether to keep generated files on disk or restore originals after verification. Attempts < 3 determines whether to retry with error context or fail permanently.`,
+
+    errors: `ERROR PATHS: On build failure, originals are restored from the backup Map, the build error (last 3000 chars) is appended to the conversation history, and Claude is called again with the full context of what failed. After 3 failed attempts, the script exits with code 1 and the /dev panel shows an error banner with a Retry button. Protected files (app/content/*, package.json, etc.) are enforced at write time — if Claude tries to write one, the script throws and restores.`,
+
+    streaming: `SSE STREAMING: The Vite middleware plugin (vite.config.ts) handles /api/pipeline as a Server-Sent Events endpoint. It spawns the pipeline script as a child process, captures stdout/stderr, and sends each line as a JSON SSE event: { type: "log", line: "..." }. On process exit, it sends { type: "done", success: true/false }. The /dev panel's EventSource parses these events to update the phase tracker and log pane in real time.`,
+
+    files: `FILE SYSTEM: signals/today.yml is the input (manually edited or overridden by the /dev panel). The 17 mutable files span elements/preset.ts, app/components/*.tsx, and app/routes/*.tsx. Mock themes live in themes/mock-*/preset.ts. Canonical baseline is in themes/canonical/. Archive entries are written to archive/YYYY-MM-DD/brief.md with the design brief, signals, rationale, and changed file list.`,
+  };
+
+  el.textContent = descriptions[highlight] || descriptions.none;
+}
+
+function updateAll() {
+  state.highlightLayer = document.getElementById('highlightLayer').value;
+  state.mode = document.getElementById('modeSelect').value;
+  renderDiagram();
+  updatePrompt();
+
+  // Update preset buttons
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+}
+
+function setPreset(preset) {
+  state.preset = preset;
+  const layerEl = document.getElementById('highlightLayer');
+  const modeEl = document.getElementById('modeSelect');
+
+  switch (preset) {
+    case 'full':
+      layerEl.value = 'none'; modeEl.value = 'both'; break;
+    case 'mock':
+      layerEl.value = 'none'; modeEl.value = 'mock'; break;
+    case 'real':
+      layerEl.value = 'none'; modeEl.value = 'real'; break;
+    case 'error':
+      layerEl.value = 'errors'; modeEl.value = 'both'; break;
+  }
+
+  document.querySelectorAll('.preset-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.toLowerCase().includes(preset));
+  });
+
+  updateAll();
+}
+
+function copyPrompt() {
+  const text = document.getElementById('promptOutput').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+}
+
+// Init
+updateAll();
+document.querySelector('.preset-btn').classList.add('active');
+</script>
+</body>
+</html>

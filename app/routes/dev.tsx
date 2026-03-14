@@ -117,7 +117,7 @@ function DevPanel() {
     setAttemptNum(1)
     setResult(null)
 
-    const es = new EventSource(`/api/pipeline?dryRun=${dryRun}`)
+    const es = new EventSource(`/api/pipeline?dryRun=${dryRun}&mock=true`)
     esRef.current = es
 
     es.onmessage = (e) => {
@@ -247,7 +247,7 @@ function DevPanel() {
 
       {/* Progress / Result */}
       {pipelineStatus === 'running' && (
-        <ProgressSection phases={phases} logLines={logLines} attemptNum={attemptNum} />
+        <ProgressSection phases={phases} logLines={logLines} attemptNum={attemptNum} logEndRef={logEndRef} />
       )}
       {pipelineStatus === 'success' && result && (
         <SuccessSection
@@ -309,7 +309,7 @@ function RunSection({ pipelineStatus, dryRun, onDryRunChange, onRun, archive }: 
   )
 }
 
-function ProgressSection({ phases, logLines, attemptNum }: { phases: Phase[]; logLines: string[]; attemptNum: number }) {
+function ProgressSection({ phases, logLines, attemptNum, logEndRef }: { phases: Phase[]; logLines: string[]; attemptNum: number; logEndRef: React.RefObject<HTMLDivElement | null> }) {
   return (
     <div style={{ border: '1px solid #e2e8f0', borderRadius: '8px', overflow: 'hidden', marginBottom: '16px' }}>
       <div style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '10px 14px', fontSize: '12px', fontWeight: 600, color: '#475569', display: 'flex', justifyContent: 'space-between' }}>

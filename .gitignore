@@ -17,3 +17,7 @@ styled-system/
 
 .redesign-prompt.txt
 .redesign-input.json
+.claude-prompt.txt
+.claude-prompt.tmp
+.claude-response.json
+.pipeline-trigger

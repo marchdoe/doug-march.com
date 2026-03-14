@@ -1,6 +1,6 @@
 # 2026-03-12
 
-**Design Brief:** Blizzard shuts Chicago down: whiteout white, charcoal dark, ice-blue authority, everything stripped to structure.
+**Design Brief:** A whiteout — content emerges ghostlike from blinding snow, crushed tight against itself, one warm ember visible through the storm.
 
 ## Signals
 
@@ -30,18 +30,20 @@
 
 ## Claude's Rationale
 
-The signals today were impossible to ignore: eight inches of snow overnight in Chicago, 22°F, brutal and isolating. The Bulls just dropped their third in a row. The Midwest is shut down. There's something clarifying about a blizzard — it strips everything back to essentials. Visibility: zero. What's left: structure, function, the hard edges of what matters.
-
-This redesign is Whiteout Protocol. Out goes the terminal-dark aesthetic with its cyan glow and void-blue backgrounds. In comes stark white (light mode) and charcoal (dark mode), separated by cold ice-blue instead of the current neon cyan. IBM Plex Mono replaces Space Mono — still monospaced, but with more engineered authority, less hacker terminal. Borders are harder (2px on structural elements), decorative overlays are gone, the sidebar loses its rounded logo container and goes direct. The FeaturedProject card loses its floating glow box in favor of a brutal left border bar — three pixels of accent color saying: this is what matters. SectionHead loses the `//` prefix and goes full caps, plain ruled line. Everything reads like an airport departures board during a weather hold: high contrast, maximum information density, nothing wasted.
+Chicago is buried under 8 inches of snow. 22°F. The Bulls can't win. The world outside is white, flat, and brutal. So this design IS the blizzard — a whiteout. Instead of the typical dark terminal aesthetic, everything inverts to near-blinding white. Text is ghostly pale gray that barely emerges from the background, like reading road signs through driving snow. The layout is claustrophobic: margins crushed tight, elements pressed against each other with almost no breathing room, sidebar narrowed to a frozen sliver. Accent color is a frigid ice-blue, the only color that survives the cold. Typography is condensed and dense — Space Mono at small sizes packed together like huddled bodies. The featured project card has a faint frost-glass effect. Section headers are nearly invisible. It's uncomfortable, disorienting, beautiful — like stepping outside into a Midwest blizzard and losing your sense of direction. The SpaceX success punctuates as a single bright element: the featured project link glows warm orange, a distant rocket exhaust seen through snow.
 
 ## Files Changed
 
 - elements/preset.ts
-- app/routes/__root.tsx
 - app/components/Layout.tsx
 - app/components/Sidebar.tsx
-- app/components/FeaturedProject.tsx
-- app/components/ProjectRow.tsx
 - app/components/SectionHead.tsx
-- app/routes/index.tsx
+- app/components/FeaturedProject.tsx
 - app/components/MobileFooter.tsx
+- app/components/ProjectRow.tsx
+- app/components/Bio.tsx
+- app/components/Timeline.tsx
+- app/components/Capabilities.tsx
+- app/components/Personal.tsx
+- app/routes/index.tsx
+- app/routes/__root.tsx

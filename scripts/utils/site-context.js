@@ -104,6 +104,11 @@ export async function readContext() {
   const signalsRaw = await readFile(signalsPath, 'utf8')
   const signals = yaml.load(signalsRaw)
 
+  // js-yaml parses bare YAML dates as Date objects — normalize to string
+  if (signals.date instanceof Date) {
+    signals.date = signals.date.toISOString().slice(0, 10)
+  }
+
   const contentSummary = await buildContentSummary()
   const currentFiles = await readCurrentFiles()
 
