@@ -354,7 +354,7 @@ export function DevPanel() {
       <QuoteBlock signals={signals} />
 
       {/* Zone 4: Live Data Cards */}
-      <LiveDataCards signals={signals} />
+      <LiveDataCards signals={signals} meta={meta} />
 
       {/* Zone 5: Bottom Row */}
       <BottomRow signals={signals} meta={meta} />
@@ -710,7 +710,7 @@ function QuoteBlock({ signals }: { signals: Signals }) {
 
 // ─── Zone 4: Live Data Cards ─────────────────────────────────────────────────
 
-function LiveDataCards({ signals }: { signals: Signals }) {
+function LiveDataCards({ signals, meta }: { signals: Signals; meta: Meta | null }) {
   const cardStyle: React.CSSProperties = {
     background: c.cardBg,
     border: `1px solid ${c.border}`,
@@ -760,6 +760,15 @@ function LiveDataCards({ signals }: { signals: Signals }) {
 
       {/* Hacker News Card */}
       <HackerNewsCard signals={signals} cardStyle={cardStyle} headerStyle={headerStyle} />
+
+      {/* Weather + Air Quality Card */}
+      <WeatherCard signals={signals} cardStyle={cardStyle} headerStyle={headerStyle} />
+
+      {/* News Card */}
+      <NewsCard signals={signals} cardStyle={cardStyle} headerStyle={headerStyle} />
+
+      {/* Market Card */}
+      <MarketCard signals={signals} cardStyle={cardStyle} headerStyle={headerStyle} />
     </div>
   )
 }
@@ -1049,6 +1058,147 @@ function HackerNewsCard({ signals, cardStyle, headerStyle }: {
       {stories.length === 0 && (
         <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No stories</div>
       )}
+    </div>
+  )
+}
+
+function WeatherCard({ signals, cardStyle, headerStyle }: {
+  signals: Signals
+  cardStyle: React.CSSProperties
+  headerStyle: React.CSSProperties
+}) {
+  const weather = signals.weather as { location?: string; conditions?: string; temp_f?: number; humidity?: number; wind_mph?: number; wind_dir?: string; feels_like_f?: number } | undefined
+  const aq = signals.air_quality as { aqi_index?: number; uv_index?: number; air_quality_label?: string } | undefined
+
+  if (!weather && !aq) return <CardError cardStyle={cardStyle} headerStyle={headerStyle} label="// WEATHER" reason="WEATHER_API_KEY not set" />
+
+  return (
+    <div style={cardStyle}>
+      <h3 style={headerStyle}><span>// WEATHER</span></h3>
+      {weather && (
+        <>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '6px' }}>
+            <span style={{ fontSize: '22px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
+              {Math.round(weather.temp_f ?? 0)}°F
+            </span>
+            <span style={{ fontSize: '11px', color: c.dim, fontFamily: c.font }}>
+              {weather.conditions}
+            </span>
+          </div>
+          <div style={{ fontSize: '10px', color: c.muted, fontFamily: c.font, lineHeight: '1.8' }}>
+            <div>Feels like {Math.round(weather.feels_like_f ?? 0)}°F · {weather.humidity}% humidity</div>
+            <div>Wind {weather.wind_mph} mph {weather.wind_dir}</div>
+            <div style={{ color: c.dim, marginTop: '2px' }}>{weather.location}</div>
+          </div>
+        </>
+      )}
+      {aq && (
+        <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: `1px solid ${c.border}` }}>
+          <div style={{ display: 'flex', gap: '12px', fontSize: '10px', fontFamily: c.font }}>
+            <span>
+              <span style={{ color: c.muted }}>AQI </span>
+              <span style={{ color: aq.aqi_index === 1 ? c.green : aq.aqi_index === 2 ? '#eab308' : '#ef4444', fontWeight: 700 }}>
+                {aq.air_quality_label}
+              </span>
+            </span>
+            <span>
+              <span style={{ color: c.muted }}>UV </span>
+              <span style={{ color: (aq.uv_index ?? 0) <= 2 ? c.green : (aq.uv_index ?? 0) <= 5 ? '#eab308' : '#ef4444', fontWeight: 700 }}>
+                {aq.uv_index}
+              </span>
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function NewsCard({ signals, cardStyle, headerStyle }: {
+  signals: Signals
+  cardStyle: React.CSSProperties
+  headerStyle: React.CSSProperties
+}) {
+  const news = signals.news as { headlines?: Array<{ title: string; source?: string }> } | undefined
+
+  if (!news) return <CardError cardStyle={cardStyle} headerStyle={headerStyle} label="// NEWS" reason="NEWS_API_KEY not set" />
+
+  const headlines = news.headlines ?? []
+
+  return (
+    <div style={cardStyle}>
+      <h3 style={headerStyle}><span>// NEWS</span></h3>
+      {headlines.map((h, i) => (
+        <div key={i} style={{
+          padding: '3px 0',
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: '8px',
+        }}>
+          <span style={{ fontSize: '11px', color: c.primary, fontFamily: c.font, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {h.title}
+          </span>
+          {h.source && (
+            <span style={{ fontSize: '9px', color: c.muted, fontFamily: c.font, flexShrink: 0 }}>
+              {h.source}
+            </span>
+          )}
+        </div>
+      ))}
+      {headlines.length === 0 && (
+        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No headlines</div>
+      )}
+    </div>
+  )
+}
+
+function MarketCard({ signals, cardStyle, headerStyle }: {
+  signals: Signals
+  cardStyle: React.CSSProperties
+  headerStyle: React.CSSProperties
+}) {
+  const market = signals.market as { symbol?: string; price?: string; change?: string; change_percent?: string; direction?: string } | undefined
+
+  if (!market) return <CardError cardStyle={cardStyle} headerStyle={headerStyle} label="// MARKET" reason="ALPHA_VANTAGE_API_KEY not set" />
+
+  const isUp = market.direction === 'up'
+  const isDown = market.direction === 'down'
+  const dirColor = isUp ? c.green : isDown ? '#ef4444' : c.dim
+  const arrow = isUp ? '▲' : isDown ? '▼' : '—'
+
+  return (
+    <div style={cardStyle}>
+      <h3 style={headerStyle}><span>// MARKET</span></h3>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '4px' }}>
+        <span style={{ fontSize: '9px', fontWeight: 700, color: c.muted, fontFamily: c.font }}>{market.symbol}</span>
+        <span style={{ fontSize: '20px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
+          ${parseFloat(market.price ?? '0').toFixed(2)}
+        </span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <span style={{ fontSize: '14px', color: dirColor }}>{arrow}</span>
+        <span style={{ fontSize: '13px', fontWeight: 700, color: dirColor, fontFamily: c.font }}>
+          {market.change} ({market.change_percent})
+        </span>
+      </div>
+    </div>
+  )
+}
+
+function CardError({ cardStyle, headerStyle, label, reason }: {
+  cardStyle: React.CSSProperties
+  headerStyle: React.CSSProperties
+  label: string
+  reason: string
+}) {
+  return (
+    <div style={{ ...cardStyle, borderColor: 'rgba(239,68,68,0.2)', opacity: 0.6 }}>
+      <h3 style={headerStyle}><span>{label}</span></h3>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ef4444', flexShrink: 0 }} />
+        <span style={{ fontSize: '11px', color: '#f87171', fontFamily: c.font, fontWeight: 700 }}>API unavailable</span>
+      </div>
+      <div style={{ fontSize: '9px', color: c.muted, fontFamily: c.font, marginTop: '4px' }}>{reason}</div>
     </div>
   )
 }
