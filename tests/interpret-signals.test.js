@@ -44,7 +44,22 @@ describe('buildInterpretPrompt', () => {
   it('frames the role as Product Manager, not designer', () => {
     const prompt = buildInterpretPrompt(sampleSignals)
     expect(prompt).toContain('Product Manager')
+    expect(prompt).toContain('NOT the designer')
     expect(prompt).not.toContain("designer's eye")
+  })
+
+  it('does not contain old format artifacts', () => {
+    const prompt = buildInterpretPrompt(sampleSignals)
+    expect(prompt).not.toContain('## Feel Tags')
+    expect(prompt).not.toContain('## Synthesis')
+    expect(prompt).not.toContain('per-signal feel')
+    expect(prompt).not.toContain('synthesis paragraph')
+  })
+
+  it('handles signals with only a date (no signal data)', () => {
+    const prompt = buildInterpretPrompt({ date: '2026-01-01' })
+    expect(prompt).toContain('2026-01-01')
+    expect(prompt).toContain('## Palette Direction')
   })
 
   it('includes the raw signal data so Claude can read it', () => {

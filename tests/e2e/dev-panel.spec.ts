@@ -8,7 +8,7 @@ test.describe('/dev panel', () => {
     await page.goto('/dev')
     await page.waitForLoadState('networkidle')
     // The panel renders a "Signals" section heading
-    await expect(page.locator('text=Signals')).toBeVisible()
+    await expect(page.locator('[data-testid="signals-heading"]')).toBeVisible()
     // Date field from today.yml should be rendered
     await expect(page.locator('[data-testid="signals-date"]')).toBeVisible()
   })

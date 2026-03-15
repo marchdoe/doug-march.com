@@ -339,7 +339,17 @@ export function DevPanel() {
   const isRunDisabled = pipelineStatus === 'running' || pipelineStatus === 'cooldown'
 
   if (loading) return <main style={s.page}><p style={{ color: c.dim }}>Loading...</p></main>
-  if (!signals) return <main style={s.page}><p style={{ color: '#ef4444' }}>Failed to load signals</p></main>
+  if (!signals) return (
+    <main style={s.page}>
+      <div style={{ padding: '2rem', maxWidth: 480 }}>
+        <p style={{ color: c.dim, marginBottom: '1rem' }}>No signals collected yet.</p>
+        <p style={{ color: c.dim, fontSize: '0.85rem', lineHeight: 1.6 }}>
+          Run <code style={{ background: c.card, padding: '2px 6px', borderRadius: 4 }}>node scripts/collect-signals.js</code> to
+          collect today's signals, then refresh this page.
+        </p>
+      </div>
+    </main>
+  )
 
   return (
     <main style={s.page}>
@@ -364,7 +374,7 @@ export function DevPanel() {
       <div style={{ ...s.overridesRow, marginTop: '24px' }}>
         <div style={s.fieldGroup}>
           <label htmlFor="mood-override" style={s.fieldLabel}>Mood Override</label>
-          <select id="mood-override" style={s.select} value={moodOverride} onChange={e => setMoodOverride(e.target.value)}>
+          <select id="mood-override" data-testid="mood-override-input" style={s.select} value={moodOverride} onChange={e => setMoodOverride(e.target.value)}>
             <option value="">-- none (Claude decides) --</option>
             <option value="dark">dark</option>
             <option value="celebratory">celebratory</option>
@@ -376,14 +386,14 @@ export function DevPanel() {
           <label htmlFor="notes-claude" style={s.fieldLabel}>Notes for Claude</label>
           <textarea id="notes-claude" style={s.textarea} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional extra context, e.g. 'I just got a hole in one'" />
         </div>
-        <button style={s.saveBtn} onClick={handleSaveOverrides} disabled={savingOverrides}>
+        <button data-testid="save-overrides-btn" style={s.saveBtn} onClick={handleSaveOverrides} disabled={savingOverrides}>
           {savingOverrides ? 'Saving...' : 'Save overrides'}
         </button>
       </div>
 
       {/* Run */}
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
-        <button onClick={handleRun} disabled={isRunDisabled} style={{
+        <button data-testid="run-pipeline-btn" onClick={handleRun} disabled={isRunDisabled} style={{
           background: pipelineStatus === 'running' ? c.muted : pipelineStatus === 'cooldown' ? c.ghost : c.cyan,
           color: pipelineStatus === 'running' || pipelineStatus === 'cooldown' ? c.dim : c.pageBg,
           border: 'none',
@@ -475,7 +485,7 @@ function SignalsHeader({ meta, date }: { meta: Meta | null; date: string }) {
       padding: '8px 0',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <h2 style={{
+        <h2 data-testid="signals-heading" style={{
           fontSize: '10px',
           fontWeight: 700,
           textTransform: 'uppercase',
@@ -525,7 +535,7 @@ function SignalsHeader({ meta, date }: { meta: Meta | null; date: string }) {
         )}
       </div>
 
-      <span style={{
+      <span data-testid="signals-date" style={{
         fontSize: '11px',
         fontFamily: c.font,
         color: c.muted,

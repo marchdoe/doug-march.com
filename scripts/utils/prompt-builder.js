@@ -90,6 +90,16 @@ function formatSignals(signals) {
     lines.push('')
   }
 
+  // Generic catch-all for any signal keys not handled above
+  const handled = new Set(['date', 'weather', 'sports', 'golf', 'github_trending', 'news', 'mood_override', 'notes'])
+  for (const [key, value] of Object.entries(signals)) {
+    if (!handled.has(key) && value != null) {
+      lines.push(`### ${key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}`)
+      lines.push(typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value))
+      lines.push('')
+    }
+  }
+
   if (signals.mood_override) {
     lines.push(`### Mood Override`)
     lines.push(`The site owner has requested a **${signals.mood_override}** mood today. This overrides your own interpretation of the signals.`)
@@ -114,7 +124,7 @@ function buildUserPrompt(context) {
   const sections = []
 
   // If an interpreted brief exists (from Stage 1), present it as structured design requirements
-  if (context.brief) {
+  if (context.brief && context.brief.trim()) {
     sections.push(`## Creative Brief — Design Requirements (${context.signals.date})
 
 The following brief was written by the Product Manager. It contains your design requirements. You have full creative freedom over HOW to execute — the brief tells you WHAT.

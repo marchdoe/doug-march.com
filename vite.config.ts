@@ -2,7 +2,7 @@ import { defineConfig, type Plugin } from 'vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { resolve } from 'path'
-import { spawn } from 'child_process'
+import { spawn, spawnSync } from 'child_process'
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'fs'
 import { config } from 'dotenv'
 import yaml from 'js-yaml'
@@ -47,10 +47,30 @@ function pipelineApiPlugin(): Plugin {
       server.middlewares.use('/api/dev-data', (_req, res) => {
         try {
           const signalsPath = resolve('signals/today.yml')
-          const raw = readFileSync(signalsPath, 'utf8')
-          const signals = yaml.load(raw) as Record<string, unknown>
-          if (signals.date instanceof Date) {
-            signals.date = (signals.date as Date).toISOString().slice(0, 10)
+
+          // Auto-collect signals if today.yml doesn't exist.
+          // Uses spawnSync (no shell) with a 15s timeout. This blocks the first
+          // /api/dev-data request (~1s typically) but only fires once — after that
+          // the file exists and this path is skipped.
+          if (!existsSync(signalsPath)) {
+            console.log('[dev-data] today.yml missing — auto-collecting signals...')
+            const result = spawnSync('node', [resolve('scripts/collect-signals.js')], {
+              cwd: resolve('.'),
+              timeout: 15000,
+              stdio: 'inherit',
+            })
+            if (result.status !== 0) {
+              console.error('[dev-data] auto-collect failed (exit code %d)', result.status)
+            }
+          }
+
+          let signals: Record<string, unknown> | null = null
+          if (existsSync(signalsPath)) {
+            const raw = readFileSync(signalsPath, 'utf8')
+            signals = yaml.load(raw) as Record<string, unknown>
+            if (signals.date instanceof Date) {
+              signals.date = (signals.date as Date).toISOString().slice(0, 10)
+            }
           }
 
           const archiveDir = resolve('archive')

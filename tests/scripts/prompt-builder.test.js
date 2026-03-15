@@ -77,4 +77,42 @@ describe('buildMessages — brief framing', () => {
     expect(prompt).toContain("Today's Signals")
     expect(prompt).toContain('Chicago')
   })
+
+  it('falls back to raw signals when brief is empty string', () => {
+    const context = { ...baseContext, brief: '' }
+    const { messages } = buildMessages(context)
+    const prompt = messages[0].content
+
+    // Empty brief should not trigger the brief framing
+    expect(prompt).not.toContain('How to read this brief')
+    expect(prompt).toContain("Today's Signals")
+  })
+
+  it('falls back to raw signals when brief is whitespace-only', () => {
+    const context = { ...baseContext, brief: '   \n  ' }
+    const { messages } = buildMessages(context)
+    const prompt = messages[0].content
+
+    expect(prompt).not.toContain('How to read this brief')
+    expect(prompt).toContain("Today's Signals")
+  })
+})
+
+describe('buildMessages — formatSignals catch-all', () => {
+  it('includes unhandled signal keys via generic catch-all', () => {
+    const context = {
+      ...baseContext,
+      signals: {
+        ...baseContext.signals,
+        lunar: { phase: 'full moon', illumination: 1.0 },
+        season: { season: 'winter' },
+      },
+    }
+    const { messages } = buildMessages(context)
+    const prompt = messages[0].content
+
+    // Generic catch-all should include lunar and season data
+    expect(prompt).toContain('full moon')
+    expect(prompt).toContain('winter')
+  })
 })
