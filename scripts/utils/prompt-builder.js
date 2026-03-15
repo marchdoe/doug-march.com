@@ -113,9 +113,24 @@ function formatSignals(signals) {
 function buildUserPrompt(context) {
   const sections = []
 
-  // If an interpreted brief exists (from Stage 1), use it instead of raw signals
+  // If an interpreted brief exists (from Stage 1), present it as structured design requirements
   if (context.brief) {
-    sections.push(`## Creative Brief (${context.signals.date})\n\n${context.brief}`)
+    sections.push(`## Creative Brief — Design Requirements (${context.signals.date})
+
+The following brief was written by the Product Manager. It contains your design requirements. You have full creative freedom over HOW to execute — the brief tells you WHAT.
+
+### How to read this brief:
+
+- **Palette Direction** → drives your color tokens in \`elements/preset.ts\` (semantic colors, backgrounds, accents)
+- **Layout Energy** → drives component spacing, grid structure, density in Layout.tsx and route files
+- **Tension** → make the tension visible in the design, do not paper over it
+- **Required Elements** → you MUST include these somewhere on the site. You decide placement, style, and visual treatment, but each required element must appear
+- **Accent Notes** → optional texture influences you can draw from or ignore
+- **Anchor Signal** → the overall vibe check. When someone lands on this site, THIS is what they should feel
+
+---
+
+${context.brief}`)
   } else {
     sections.push(formatSignals(context.signals))
   }
