@@ -357,7 +357,7 @@ export function DevPanel() {
       <LiveDataCards signals={signals} meta={meta} />
 
       {/* Zone 5: Bottom Row */}
-      <BottomRow signals={signals} meta={meta} />
+      <BottomRow signals={signals} />
 
       {/* Overrides */}
       <div style={{ ...s.overridesRow, marginTop: '24px' }}>
@@ -1237,16 +1237,9 @@ function CardError({ cardStyle, headerStyle, label, reason }: {
 
 // ─── Zone 5: Bottom Row ──────────────────────────────────────────────────────
 
-function BottomRow({ signals, meta }: { signals: Signals; meta: Meta | null }) {
+function BottomRow({ signals }: { signals: Signals }) {
   const music = signals.music as { bands?: string[] } | undefined
   const books = signals.books as { currently_reading?: string[] } | undefined
-
-  // Compute missing signals from meta
-  const missingProviders = meta
-    ? Object.entries(meta.sources)
-        .filter(([, src]) => src.status === 'error' || src.status === 'skipped')
-        .map(([name, src]) => ({ name, reason: src.reason }))
-    : []
 
   const halfCardStyle: React.CSSProperties = {
     background: c.cardBg,
@@ -1319,51 +1312,18 @@ function BottomRow({ signals, meta }: { signals: Signals; meta: Meta | null }) {
         </div>
       </div>
 
-      {/* Right half: Missing Signals */}
+      {/* Right half: Reserved for additional signals */}
       <div style={{
         border: `1px dashed ${c.border}`,
         borderRadius: '4px',
         padding: '14px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}>
-        <div style={{
-          fontSize: '10px',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '.12em',
-          color: c.muted,
-          fontFamily: c.font,
-          marginBottom: '10px',
-        }}>
-          MISSING SIGNALS
-        </div>
-        {missingProviders.length > 0 ? (
-          missingProviders.map((mp, i) => (
-            <div key={i} style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '2px 0',
-            }}>
-              <span style={{
-                fontSize: '10px',
-                color: c.muted,
-                fontFamily: c.font,
-              }}>
-                {mp.name.replace(/_/g, ' ')}
-              </span>
-              <span style={{
-                fontSize: '9px',
-                color: c.muted,
-                fontFamily: c.font,
-              }}>
-                {mp.reason?.slice(0, 30) ?? 'unknown'}
-              </span>
-            </div>
-          ))
-        ) : (
-          <div style={{ fontSize: '11px', color: c.dim, fontFamily: c.font, fontStyle: 'italic' }}>
-            All signals healthy
-          </div>
-        )}
+        <span style={{ fontSize: '10px', color: c.ghost, fontFamily: c.font, fontStyle: 'italic' }}>
+          + add signals
+        </span>
       </div>
     </div>
   )
