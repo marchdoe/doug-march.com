@@ -769,6 +769,9 @@ function LiveDataCards({ signals, meta }: { signals: Signals; meta: Meta | null 
 
       {/* Market Card */}
       <MarketCard signals={signals} cardStyle={cardStyle} headerStyle={headerStyle} />
+
+      {/* Product Hunt Card */}
+      <ProductHuntCard signals={signals} cardStyle={cardStyle} headerStyle={headerStyle} />
     </div>
   )
 }
@@ -1181,6 +1184,35 @@ function MarketCard({ signals, cardStyle, headerStyle }: {
           {market.change} ({market.change_percent})
         </span>
       </div>
+    </div>
+  )
+}
+
+function ProductHuntCard({ signals, cardStyle, headerStyle }: {
+  signals: Signals
+  cardStyle: React.CSSProperties
+  headerStyle: React.CSSProperties
+}) {
+  const ph = signals.product_hunt as { products?: Array<{ name: string; tagline?: string; votes?: number }> } | undefined
+
+  if (!ph) return <CardError cardStyle={cardStyle} headerStyle={headerStyle} label="// PRODUCT HUNT" reason="PRODUCT_HUNT_TOKEN not set" />
+
+  const products = ph.products ?? []
+
+  return (
+    <div style={cardStyle}>
+      <h3 style={headerStyle}><span>// PRODUCT HUNT</span></h3>
+      {products.map((p, i) => (
+        <div key={i} style={{ padding: '3px 0', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+          <span style={{ fontSize: '10px', fontWeight: 700, color: '#da552f', fontFamily: c.font, minWidth: '28px', textAlign: 'right' }}>
+            {p.votes}
+          </span>
+          <span style={{ fontSize: '11px', color: c.primary, fontFamily: c.font, flex: 1 }}>{p.name}</span>
+        </div>
+      ))}
+      {products.length === 0 && (
+        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No products</div>
+      )}
     </div>
   )
 }
