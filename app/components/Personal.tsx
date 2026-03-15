@@ -1,14 +1,13 @@
-// app/components/Personal.tsx
 import { personal } from '../content/about'
 import { styled } from '../../styled-system/jsx'
 
 const Wrap = styled('div', {
   base: {
-    marginTop: '10',
+    marginTop: '12',
     paddingTop: '8',
-    borderTopWidth: '1px',
+    borderTopWidth: '2px',
     borderTopStyle: 'solid',
-    borderTopColor: 'logo.blueDim',
+    borderTopColor: 'accent.glow',
   },
 })
 
@@ -16,24 +15,27 @@ const Facts = styled('div', {
   base: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '2',
-    marginTop: '4',
+    gap: '3',
   },
 })
 
 const Fact = styled('div', {
   base: {
-    fontSize: '0.65rem',
+    fontSize: 'sm',
     color: 'text.dim',
-    lineHeight: '1.6',
+    lineHeight: 'normal',
   },
 })
 
 const Label = styled('span', {
   base: {
-    color: 'text.mid',
+    fontFamily: 'mono',
+    fontSize: '2xs',
     fontWeight: 'bold',
-    marginRight: '2',
+    letterSpacing: 'wider',
+    color: 'accent',
+    opacity: '0.5',
+    marginRight: '3',
   },
 })
 
@@ -42,15 +44,15 @@ export function Personal() {
     <Wrap>
       <Facts>
         <Fact>
-          <Label>Sport:</Label>
+          <Label>SPORT</Label>
           {personal.sport} — {personal.holesInOne} holes in one
         </Fact>
         <Fact>
-          <Label>Teams:</Label>
+          <Label>TEAMS</Label>
           {personal.teams.join(', ')}
         </Fact>
         <Fact>
-          <Label>Currently:</Label>
+          <Label>CURRENTLY</Label>
           {personal.currentFocus}
         </Fact>
       </Facts>

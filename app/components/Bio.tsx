@@ -3,43 +3,29 @@ import { styled } from '../../styled-system/jsx'
 
 const Wrap = styled('div', {
   base: {
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'logo.blueDim',
-    paddingBottom: '8',
+    paddingBottom: '12',
     marginBottom: '10',
-  },
-})
-
-const Label = styled('div', {
-  base: {
-    fontSize: 'xs',
-    fontWeight: 'bold',
-    letterSpacing: 'widest',
-    color: 'text.dim',
-    marginBottom: '3',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '2',
-    _before: { content: '"//"', color: 'accent' },
+    borderBottomWidth: '2px',
+    borderBottomStyle: 'solid',
+    borderBottomColor: 'accent.glow',
   },
 })
 
 const Statement = styled('p', {
   base: {
-    fontSize: '0.75rem',
-    color: 'text.mid',
-    lineHeight: '2',
+    fontSize: 'xl',
+    color: 'text',
+    lineHeight: 'snug',
     fontStyle: 'italic',
-    maxWidth: '560px',
-    '& strong': { color: 'text', fontStyle: 'normal' },
+    maxWidth: '580px',
+    letterSpacing: 'tight',
+    '& strong': { color: 'accent', fontStyle: 'normal' },
   },
 })
 
 export function Bio() {
   return (
     <Wrap>
-      <Label>ABOUT</Label>
       <Statement>{identity.statement}</Statement>
     </Wrap>
   )

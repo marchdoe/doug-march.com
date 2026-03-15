@@ -3,62 +3,45 @@ import { styled } from '../../styled-system/jsx'
 
 const Card = styled('div', {
   base: {
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.blueDim',
-    background: 'bg.card',
-    paddingTop: '6',
-    paddingBottom: '6',
-    paddingLeft: '8',
-    paddingRight: '8',
     marginBottom: '12',
-    position: 'relative',
-    boxShadow: '0 0 30px rgba(0, 229, 255, 0.04), inset 0 0 20px rgba(0, 229, 255, 0.01)',
-    _before: {
-      content: '"ACTIVE MISSION"',
-      position: 'absolute',
-      top: '-0.55rem',
-      left: '6',
-      background: 'bg',
-      paddingLeft: '2',
-      paddingRight: '2',
-      fontSize: 'xs',
-      fontWeight: 'bold',
-      letterSpacing: 'widest',
-      color: 'accent',
-    },
-    _after: {
-      content: '""',
-      position: 'absolute',
-      top: '0',
-      right: '0',
-      bottom: '0',
-      width: '2px',
-      background: 'linear-gradient(to bottom, transparent, var(--colors-accent), transparent)',
-      opacity: '0.3',
-    },
+    paddingBottom: '12',
+    borderBottomWidth: '2px',
+    borderBottomStyle: 'solid',
+    borderBottomColor: 'accent.glow',
+  },
+})
+
+const Eyebrow = styled('div', {
+  base: {
+    fontSize: '2xs',
+    fontFamily: 'mono',
+    fontWeight: 'bold',
+    letterSpacing: 'widest',
+    color: 'accent',
+    opacity: '0.5',
+    marginBottom: '6',
   },
 })
 
 const CardName = styled('div', {
   base: {
-    fontSize: 'xl',
-    fontWeight: 'bold',
+    fontSize: '2xl',
+    fontWeight: 'regular',
     letterSpacing: 'tight',
-    color: 'accent',
-    textShadow: '0 0 24px rgba(0, 229, 255, 0.25)',
-    marginBottom: '0.4rem',
+    color: 'text',
     lineHeight: 'tight',
+    marginBottom: '5',
+    fontStyle: 'italic',
   },
 })
 
 const CardDesc = styled('div', {
   base: {
-    fontSize: '0.65rem',
+    fontSize: 'base',
     color: 'text.dim',
     lineHeight: 'normal',
-    fontStyle: 'italic',
-    marginBottom: '5',
+    maxWidth: '480px',
+    marginBottom: '8',
   },
 })
 
@@ -66,23 +49,17 @@ const CardLink = styled('a', {
   base: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '2',
-    fontSize: '0.62rem',
+    gap: '3',
+    fontSize: '2xs',
+    fontFamily: 'mono',
     fontWeight: 'bold',
-    color: 'logo.green',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.green',
-    paddingTop: '0.4rem',
-    paddingBottom: '0.4rem',
-    paddingLeft: '0.85rem',
-    paddingRight: '0.85rem',
-    transitionProperty: 'background, gap',
-    transitionDuration: '0.2s',
+    color: 'accent',
+    letterSpacing: 'wider',
+    transitionProperty: 'gap',
+    transitionDuration: '0.3s',
     transitionTimingFunction: 'default',
     _hover: {
-      background: 'logo.greenDim',
-      gap: '0.75rem',
+      gap: '1rem',
     },
   },
 })
@@ -92,7 +69,8 @@ export function FeaturedProject() {
 
   return (
     <Card>
-      <CardName>{featuredProject.title.toUpperCase()}</CardName>
+      <Eyebrow>CURRENT PROJECT</Eyebrow>
+      <CardName>{featuredProject.title}</CardName>
       {featuredProject.problem && <CardDesc>{featuredProject.problem}</CardDesc>}
       {featuredProject.externalUrl && (
         <CardLink
@@ -100,7 +78,7 @@ export function FeaturedProject() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          → VISIT {featuredProject.externalUrl.replace(/^https?:\/\//, '').toUpperCase()}
+          → {featuredProject.externalUrl.replace(/^https?:\/\//, '')}
         </CardLink>
       )}
     </Card>

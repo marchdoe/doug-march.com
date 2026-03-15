@@ -18,13 +18,14 @@ const BackLink = styled(Link, {
     display: 'inline-flex',
     alignItems: 'center',
     gap: '0.4rem',
-    fontSize: 'sm',
+    fontSize: '2xs',
+    fontFamily: 'mono',
     fontWeight: 'bold',
     color: 'text.dim',
-    letterSpacing: 'wide',
-    marginBottom: '8',
+    letterSpacing: 'wider',
+    marginBottom: '10',
     transitionProperty: 'color',
-    transitionDuration: 'fast',
+    transitionDuration: 'base',
     transitionTimingFunction: 'default',
     _hover: { color: 'accent' },
   },
@@ -32,80 +33,79 @@ const BackLink = styled(Link, {
 
 const Header = styled('div', {
   base: {
-    borderBottomWidth: '1px',
+    paddingBottom: '10',
+    marginBottom: '10',
+    borderBottomWidth: '2px',
     borderBottomStyle: 'solid',
-    borderBottomColor: 'logo.blueDim',
-    paddingBottom: '8',
-    marginBottom: '8',
+    borderBottomColor: 'accent.glow',
   },
 })
 
 const TypeLabel = styled('div', {
   base: {
-    fontSize: 'xs',
+    fontSize: '2xs',
+    fontFamily: 'mono',
     fontWeight: 'bold',
     letterSpacing: 'widest',
-    color: 'text.dim',
-    marginBottom: '3',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '2',
-    _before: { content: '"//"', color: 'accent' },
+    color: 'accent',
+    opacity: '0.4',
+    marginBottom: '5',
   },
 })
 
 const Title = styled('div', {
   base: {
     fontSize: '2xl',
-    fontWeight: 'bold',
-    letterSpacing: '-0.04em',
-    color: 'accent',
-    textShadow: '0 0 24px rgba(0, 229, 255, 0.2)',
+    fontWeight: 'regular',
+    fontStyle: 'italic',
+    letterSpacing: 'tight',
+    color: 'text',
     lineHeight: 'tight',
-    marginBottom: '3',
+    marginBottom: '6',
   },
 })
 
 const Meta = styled('div', {
   base: {
     display: 'flex',
-    gap: '6',
+    gap: '10',
     flexWrap: 'wrap',
   },
 })
 
 const MetaItem = styled('div', {
-  base: { display: 'flex', flexDirection: 'column', gap: '0.2rem' },
+  base: { display: 'flex', flexDirection: 'column', gap: '0.3rem' },
 })
 
 const MetaLabel = styled('div', {
-  base: { fontSize: '2xs', letterSpacing: 'wider', color: 'text.dim' },
+  base: { fontSize: '2xs', fontFamily: 'mono', fontWeight: 'bold', letterSpacing: 'widest', color: 'text.dim', opacity: '0.35' },
 })
 
 const MetaValue = styled('div', {
-  base: { fontSize: '0.65rem', fontWeight: 'bold', color: 'text.mid' },
+  base: { fontSize: 'sm', color: 'text.mid', fontStyle: 'italic' },
 })
 
 const Section = styled('div', {
-  base: { marginBottom: '8' },
+  base: { marginBottom: '10' },
 })
 
 const SectionTitle = styled('div', {
   base: {
-    fontSize: '0.55rem',
+    fontSize: '2xs',
+    fontFamily: 'mono',
     fontWeight: 'bold',
     letterSpacing: 'widest',
-    color: 'accent.dim',
-    marginBottom: '0.6rem',
+    color: 'accent',
+    opacity: '0.35',
+    marginBottom: '4',
   },
 })
 
 const Body = styled('div', {
   base: {
-    fontSize: '0.72rem',
+    fontSize: 'base',
     color: 'text.mid',
-    lineHeight: '1.9',
-    fontStyle: 'italic',
+    lineHeight: 'normal',
   },
 })
 
@@ -114,50 +114,47 @@ const Tags = styled('div', {
     display: 'flex',
     gap: '2',
     flexWrap: 'wrap',
-    marginTop: '3',
+    marginTop: '2',
   },
 })
 
 const Tag = styled('div', {
   base: {
-    fontSize: '0.5rem',
+    fontSize: '2xs',
+    fontFamily: 'mono',
     fontWeight: 'bold',
-    letterSpacing: '0.07em',
+    letterSpacing: 'wider',
     color: 'text.dim',
-    background: 'bg.card',
+    paddingTop: '0.4rem',
+    paddingBottom: '0.4rem',
+    paddingLeft: '0.7rem',
+    paddingRight: '0.7rem',
     borderWidth: '1px',
     borderStyle: 'solid',
-    borderColor: 'logo.blueDim',
-    paddingTop: '0.2rem',
-    paddingBottom: '0.2rem',
-    paddingLeft: '2',
-    paddingRight: '2',
+    borderColor: 'accent',
+    borderRadius: '0',
+    opacity: '0.4',
   },
 })
 
 const Ctas = styled('div', {
-  base: { display: 'flex', gap: '3', marginTop: '8' },
+  base: { display: 'flex', gap: '6', marginTop: '12' },
 })
 
 const BtnGreen = styled('a', {
   base: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '2',
-    fontSize: '0.62rem',
+    gap: '3',
+    fontSize: '2xs',
+    fontFamily: 'mono',
     fontWeight: 'bold',
-    color: 'logo.green',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.green',
-    paddingTop: '0.4rem',
-    paddingBottom: '0.4rem',
-    paddingLeft: '0.85rem',
-    paddingRight: '0.85rem',
-    transitionProperty: 'background, gap',
-    transitionDuration: '0.2s',
+    color: 'accent',
+    letterSpacing: 'wider',
+    transitionProperty: 'gap',
+    transitionDuration: '0.3s',
     transitionTimingFunction: 'default',
-    _hover: { background: 'logo.greenDim', gap: '0.75rem' },
+    _hover: { gap: '1rem' },
   },
 })
 
@@ -165,60 +162,34 @@ const BtnGhost = styled('a', {
   base: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '2',
-    fontSize: '0.62rem',
+    gap: '3',
+    fontSize: '2xs',
+    fontFamily: 'mono',
     fontWeight: 'bold',
-    color: 'text.mid',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'border.mid',
-    paddingTop: '0.4rem',
-    paddingBottom: '0.4rem',
-    paddingLeft: '0.85rem',
-    paddingRight: '0.85rem',
-    transitionProperty: 'color, border-color, gap',
-    transitionDuration: '0.2s',
+    color: 'text.dim',
+    letterSpacing: 'wider',
+    transitionProperty: 'color, gap',
+    transitionDuration: '0.3s',
     transitionTimingFunction: 'default',
-    _hover: { color: 'accent', borderColor: 'accent.dim', gap: '0.75rem' },
+    _hover: { color: 'accent', gap: '1rem' },
   },
 })
 
 const LightCard = styled('div', {
   base: {
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.blueDim',
-    background: 'bg.card',
-    paddingTop: '1.75rem',
-    paddingBottom: '1.75rem',
-    paddingLeft: '8',
-    paddingRight: '8',
     marginBottom: '10',
-    position: 'relative',
-    _before: {
-      content: 'attr(data-label)',
-      position: 'absolute',
-      top: '-0.55rem',
-      left: '6',
-      background: 'bg',
-      paddingLeft: '2',
-      paddingRight: '2',
-      fontSize: 'xs',
-      fontWeight: 'bold',
-      letterSpacing: 'widest',
-      color: 'text.dim',
-    },
   },
 })
 
 const LightTitle = styled('div', {
   base: {
     fontSize: 'xl',
-    fontWeight: 'bold',
+    fontWeight: 'regular',
+    fontStyle: 'italic',
     letterSpacing: 'tight',
     color: 'text',
     lineHeight: 'tight',
-    marginBottom: '2',
+    marginBottom: '4',
   },
 })
 
@@ -226,42 +197,29 @@ const LightDesc = styled('div', {
   base: {
     fontSize: 'base',
     color: 'text.mid',
-    lineHeight: '1.85',
-    fontStyle: 'italic',
-    marginBottom: '5',
+    lineHeight: 'normal',
+    marginBottom: '8',
   },
 })
 
 const QuickFacts = styled('div', {
   base: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.blueDim',
-    marginBottom: '8',
+    display: 'flex',
+    gap: '10',
+    marginBottom: '10',
   },
 })
 
 const Fact = styled('div', {
-  base: {
-    paddingTop: '0.85rem',
-    paddingBottom: '0.85rem',
-    paddingLeft: '4',
-    paddingRight: '4',
-    borderRightWidth: '1px',
-    borderRightStyle: 'solid',
-    borderRightColor: 'logo.blueDim',
-    '&:last-child': { borderRightWidth: '0' },
-  },
+  base: {},
 })
 
 const FactLabel = styled('div', {
-  base: { fontSize: '2xs', letterSpacing: 'wider', color: 'text.dim', marginBottom: '0.3rem' },
+  base: { fontSize: '2xs', fontFamily: 'mono', fontWeight: 'bold', letterSpacing: 'widest', color: 'text.dim', opacity: '0.35', marginBottom: '0.4rem' },
 })
 
 const FactValue = styled('div', {
-  base: { fontSize: '0.72rem', fontWeight: 'bold', color: 'text.mid' },
+  base: { fontSize: 'sm', color: 'text.mid', fontStyle: 'italic' },
 })
 
 function ProjectPage() {
@@ -270,8 +228,9 @@ function ProjectPage() {
   if (project.depth === 'lightweight') {
     return (
       <Layout>
-        <BackLink to={'/' as any}>← BACK TO WORK</BackLink>
-        <LightCard data-label={project.type.toUpperCase()}>
+        <BackLink to={'/' as any}>← BACK</BackLink>
+        <LightCard>
+          <TypeLabel>{project.type.toUpperCase()}</TypeLabel>
           <LightTitle>{project.title}</LightTitle>
           <LightDesc>{project.description}</LightDesc>
           {project.externalUrl && (
@@ -300,7 +259,7 @@ function ProjectPage() {
 
   return (
     <Layout>
-      <BackLink to={'/' as any}>← BACK TO WORK</BackLink>
+      <BackLink to={'/' as any}>← BACK</BackLink>
       <Header>
         <TypeLabel>{project.type} · {project.year}</TypeLabel>
         <Title>{project.title}</Title>
@@ -318,17 +277,17 @@ function ProjectPage() {
       </Header>
 
       {project.problem && (
-        <Section><SectionTitle>// PROBLEM</SectionTitle><Body>{project.problem}</Body></Section>
+        <Section><SectionTitle>PROBLEM</SectionTitle><Body>{project.problem}</Body></Section>
       )}
       {project.approach && (
-        <Section><SectionTitle>// APPROACH</SectionTitle><Body>{project.approach}</Body></Section>
+        <Section><SectionTitle>APPROACH</SectionTitle><Body>{project.approach}</Body></Section>
       )}
       {project.outcome && (
-        <Section><SectionTitle>// OUTCOME</SectionTitle><Body>{project.outcome}</Body></Section>
+        <Section><SectionTitle>OUTCOME</SectionTitle><Body>{project.outcome}</Body></Section>
       )}
       {project.stack && (
         <Section>
-          <SectionTitle>// STACK</SectionTitle>
+          <SectionTitle>STACK</SectionTitle>
           <Tags>{project.stack.map((s) => <Tag key={s}>{s.toUpperCase()}</Tag>)}</Tags>
         </Section>
       )}

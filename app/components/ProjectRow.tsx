@@ -4,67 +4,66 @@ import { styled } from '../../styled-system/jsx'
 
 const RowLink = styled(Link, {
   base: {
-    display: 'grid',
-    gridTemplateColumns: '1.75rem 1fr auto 4rem',
-    gap: '0 1rem',
-    alignItems: 'center',
-    paddingTop: '0.6rem',
-    paddingBottom: '0.6rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    paddingTop: '1.2rem',
+    paddingBottom: '1.2rem',
+    cursor: 'pointer',
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
-    borderBottomColor: 'logo.blueDim',
-    cursor: 'pointer',
-    transitionProperty: 'padding-left',
-    transitionDuration: '0.2s',
+    borderBottomColor: 'accent.glow',
+    transitionProperty: 'padding-left, background',
+    transitionDuration: '0.3s',
     transitionTimingFunction: 'default',
-    _hover: { paddingLeft: '0.35rem' },
+    _hover: { paddingLeft: '1rem', background: 'accent.glow' },
   },
 })
 
 const RowLinkExt = styled('a', {
   base: {
-    display: 'grid',
-    gridTemplateColumns: '1.75rem 1fr auto 4rem',
-    gap: '0 1rem',
-    alignItems: 'center',
-    paddingTop: '0.6rem',
-    paddingBottom: '0.6rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    paddingTop: '1.2rem',
+    paddingBottom: '1.2rem',
+    cursor: 'pointer',
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
-    borderBottomColor: 'logo.blueDim',
-    cursor: 'pointer',
-    transitionProperty: 'padding-left',
-    transitionDuration: '0.2s',
+    borderBottomColor: 'accent.glow',
+    transitionProperty: 'padding-left, background',
+    transitionDuration: '0.3s',
     transitionTimingFunction: 'default',
-    _hover: { paddingLeft: '0.35rem' },
+    _hover: { paddingLeft: '1rem', background: 'accent.glow' },
   },
 })
 
-const Num = styled('div', {
+const Left = styled('div', {
   base: {
-    fontSize: 'xs',
-    color: 'text.dim',
-    textAlign: 'right',
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: '4',
   },
 })
 
 const Name = styled('div', {
   base: {
     fontSize: 'md',
-    fontWeight: 'bold',
-    color: 'text.mid',
+    fontWeight: 'regular',
+    color: 'text',
+    fontStyle: 'italic',
     transitionProperty: 'color',
-    transitionDuration: 'fast',
+    transitionDuration: 'base',
     transitionTimingFunction: 'default',
-    _groupHover: { color: 'text' },
+    _groupHover: { color: 'accent' },
   },
   variants: {
     experiment: {
       true: {
         fontWeight: 'regular',
-        fontStyle: 'italic',
-        color: 'text.dim',
-        _groupHover: { color: 'text.mid' },
+        fontSize: 'base',
+        color: 'text.mid',
+        _groupHover: { color: 'accent' },
       },
     },
   },
@@ -72,30 +71,33 @@ const Name = styled('div', {
 
 const Tag = styled('div', {
   base: {
-    fontSize: '0.5rem',
-    fontWeight: 'bold',
-    letterSpacing: '0.07em',
+    fontSize: '2xs',
+    fontFamily: 'mono',
+    letterSpacing: 'wider',
     color: 'text.dim',
-    background: 'bg.card',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.blueDim',
-    paddingTop: '0.15rem',
-    paddingBottom: '0.15rem',
-    paddingLeft: '0.4rem',
-    paddingRight: '0.4rem',
+    opacity: '0.3',
+    fontWeight: 'bold',
+  },
+})
+
+const Right = styled('div', {
+  base: {
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: '3',
   },
 })
 
 const Year = styled('div', {
   base: {
-    fontSize: '0.58rem',
+    fontSize: 'xs',
+    fontFamily: 'mono',
     color: 'text.dim',
-    textAlign: 'right',
-    transitionProperty: 'color',
-    transitionDuration: 'fast',
+    opacity: '0.25',
+    transitionProperty: 'opacity, color',
+    transitionDuration: 'base',
     transitionTimingFunction: 'default',
-    _groupHover: { color: 'accent' },
+    _groupHover: { opacity: '1', color: 'accent' },
   },
 })
 
@@ -104,14 +106,16 @@ type Props = { project: Project; index: number }
 export function ProjectRow({ project, index }: Props) {
   const isExperiment = project.depth === 'lightweight'
   const yearLabel = project.externalUrl ? `${project.year} ↗` : `${project.year}`
-  const num = String(index + 1).padStart(2, '0')
 
   const inner = (
     <>
-      <Num>{num}</Num>
-      <Name experiment={isExperiment ? true : undefined}>{project.title}</Name>
-      <Tag>{project.type.toUpperCase()}</Tag>
-      <Year>{yearLabel}</Year>
+      <Left>
+        <Name experiment={isExperiment ? true : undefined}>{project.title}</Name>
+        <Tag>{project.type}</Tag>
+      </Left>
+      <Right>
+        <Year>{yearLabel}</Year>
+      </Right>
     </>
   )
 

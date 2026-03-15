@@ -1,4 +1,3 @@
-// app/routes/about.tsx
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { SectionHead } from '../components/SectionHead'

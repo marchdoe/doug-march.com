@@ -4,100 +4,65 @@ import { styled } from '../../styled-system/jsx'
 const Item = styled('div', {
   base: {
     display: 'grid',
-    gridTemplateColumns: '80px 16px 1fr',
-    columnGap: '6',
+    gridTemplateColumns: '60px 1fr',
+    columnGap: '8',
+    paddingTop: '6',
+    paddingBottom: '6',
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+    borderBottomColor: 'accent.glow',
   },
 })
 
 const Year = styled('div', {
   base: {
-    fontSize: 'sm',
+    fontSize: 'xs',
+    fontFamily: 'mono',
     fontWeight: 'bold',
     color: 'text.dim',
-    paddingTop: '4',
-    paddingBottom: '4',
+    paddingTop: '0.2rem',
     textAlign: 'right',
-  },
-})
-
-const LineWrap = styled('div', {
-  base: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-})
-
-const Dot = styled('div', {
-  base: {
-    width: '7px',
-    height: '7px',
-    borderRadius: '50%',
-    background: 'logo.blueDim',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.blue',
-    marginTop: '1.4rem',
-    flexShrink: '0',
-  },
-  variants: {
-    current: {
-      true: {
-        background: 'logo.green',
-        borderColor: 'logo.green',
-        boxShadow: '0 0 8px var(--colors-logo-green)',
-      },
-    },
-  },
-})
-
-const Rule = styled('div', {
-  base: {
-    flex: '1',
-    width: '1px',
-    background: 'logo.blueDim',
+    opacity: '0.35',
+    letterSpacing: 'wide',
   },
 })
 
 const Content = styled('div', {
-  base: {
-    paddingTop: '4',
-    paddingBottom: '5',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'border',
-  },
+  base: {},
 })
 
 const Role = styled('div', {
   base: {
-    fontSize: '0.75rem',
-    fontWeight: 'bold',
-    letterSpacing: '-0.01em',
+    fontSize: 'md',
+    fontWeight: 'regular',
+    fontStyle: 'italic',
     color: 'text',
-    marginBottom: '0.2rem',
+    marginBottom: '0.3rem',
   },
 })
 
 const Company = styled('div', {
   base: {
-    fontSize: 'sm',
-    color: 'accent.dim',
-    marginBottom: '0.4rem',
+    fontSize: '2xs',
+    fontFamily: 'mono',
+    fontWeight: 'bold',
+    color: 'text.dim',
+    letterSpacing: 'wider',
+    marginBottom: '0.5rem',
   },
   variants: {
     current: {
-      true: { color: 'logo.green' },
+      true: { color: 'accent' },
     },
   },
 })
 
 const Description = styled('div', {
   base: {
-    fontSize: '0.62rem',
+    fontSize: 'sm',
     color: 'text.dim',
-    lineHeight: '1.7',
-    fontStyle: 'italic',
+    lineHeight: 'normal',
+    opacity: '0.5',
   },
 })
 
@@ -107,10 +72,6 @@ export function Timeline() {
       {timeline.map((entry) => (
         <Item key={entry.year}>
           <Year>{entry.year}</Year>
-          <LineWrap>
-            <Dot current={entry.current ? true : undefined} />
-            <Rule />
-          </LineWrap>
           <Content>
             <Role>{entry.role}</Role>
             <Company current={entry.current ? true : undefined}>{entry.company}</Company>

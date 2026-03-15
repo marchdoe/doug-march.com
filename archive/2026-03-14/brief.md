@@ -1,50 +1,28 @@
 # 2026-03-14
 
-**Design Brief:** Whiteout protocol: stark ice-white backgrounds, desaturated blues, wide frozen typography
+**Design Brief:** A spare room at dawn — warm stone walls, one green shoot catching the first unhurried light of almost-spring.
 
 ## Signals
 
-### Weather
-**Location:** Chicago
-**Conditions:** Heavy snowstorm, 8 inches overnight, 22°F
-**Feel:** brutal, isolating
-
-### Sports
-- **Chicago Bulls:** Lost 89-102 to Celtics — Third loss in a row
-- **Chicago Bears:** Off season — New QB signing rumored
-
-### Golf
-- Scottie Scheffler leads Masters by 4 strokes after round 2
-- Rory McIlroy struggles with putting
-
-### GitHub Trending
-- **vercel/ai** — AI SDK for streaming
-  *New streaming UI primitives*
-
-### News
-- Federal Reserve holds interest rates steady
-- Major blizzard hits Midwest, travel disruptions
 
 ## Claude's Rationale
 
-The Chicago blizzard stripped everything to bone — 8 inches of snow, 22°F, brutal and isolating. Desaturated ice blues replace the dark void, everything goes light and stark like a frozen landscape. Wider letter-spacing creates that cold, sparse feeling. The Bulls lost again, the Bears are dormant — nothing moves, everything is frozen.
+Today's signals describe held stillness — a near-invisible moon, frozen leaderboards, spring three days away but not yet arrived. The design leans into this: vast warm whitespace like an empty room at dawn, muted earth tones (stone, clay, dried grass), and a single confident spring-green accent that catches the eye like morning sun hitting one object. The sidebar shrinks to a thin whisper — just a name and navigation, barely there. Borders dissolve into space. Typography breathes with generous line-heights and letter-spacing. The featured project isn't a glowing card anymore — it's a quiet statement with one green link, like a single brushstroke on bare canvas. Everything feels spare, ascetic, unhurried — Rockefeller's disdain for excess made visual. The wry undercurrent lives in tiny details: the section labels are whispered, the project rows use vast negative space instead of grid lines.
 
 ## Files Changed
 
 - elements/preset.ts
-- app/components/Bio.tsx
-- app/components/Capabilities.tsx
-- app/components/Experiments.tsx
-- app/components/FeaturedProject.tsx
 - app/components/Layout.tsx
-- app/components/MobileFooter.tsx
-- app/components/Personal.tsx
-- app/components/ProjectRow.tsx
-- app/components/SectionHead.tsx
-- app/components/SelectedWork.tsx
 - app/components/Sidebar.tsx
+- app/components/SectionHead.tsx
+- app/components/MobileFooter.tsx
+- app/components/ProjectRow.tsx
+- app/components/FeaturedProject.tsx
+- app/components/Bio.tsx
 - app/components/Timeline.tsx
-- app/routes/__root.tsx
-- app/routes/about.tsx
+- app/components/Capabilities.tsx
+- app/components/Personal.tsx
 - app/routes/index.tsx
+- app/routes/about.tsx
 - app/routes/work.$slug.tsx
+- app/routes/__root.tsx

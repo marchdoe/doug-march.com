@@ -21,7 +21,7 @@ export const Route = createRootRoute({
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap',
       },
     ],
     scripts: [
@@ -41,29 +41,26 @@ function RootComponent() {
   )
 }
 
-// NotFound styled components — inline here since they're only used in this file
 const Wrap = styled('div', {
   base: { paddingTop: '12' },
 })
 
 const Code = styled('div', {
   base: {
-    fontSize: '0.55rem',
-    fontWeight: 'bold',
+    fontSize: '2xs',
+    fontFamily: 'mono',
     letterSpacing: 'widest',
     color: 'text.dim',
-    marginBottom: '6',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '2',
-    _before: { content: '"//"', color: 'text.dim' },
+    opacity: '0.4',
+    marginBottom: '4',
   },
 })
 
 const Heading = styled('div', {
   base: {
     fontSize: 'xl',
-    fontWeight: 'bold',
+    fontWeight: 'regular',
+    fontStyle: 'italic',
     letterSpacing: 'tight',
     color: 'text',
     lineHeight: 'tight',
@@ -73,9 +70,8 @@ const Heading = styled('div', {
 
 const Message = styled('p', {
   base: {
-    fontSize: 'base',
+    fontSize: 'sm',
     color: 'text.dim',
-    fontStyle: 'italic',
     lineHeight: 'normal',
     marginBottom: '8',
   },
@@ -86,12 +82,12 @@ const BackLink = styled(Link, {
     display: 'inline-flex',
     alignItems: 'center',
     gap: '0.4rem',
-    fontSize: 'sm',
-    fontWeight: 'bold',
+    fontSize: 'xs',
+    fontFamily: 'mono',
     color: 'text.dim',
     letterSpacing: 'wide',
     transitionProperty: 'color',
-    transitionDuration: 'fast',
+    transitionDuration: 'base',
     transitionTimingFunction: 'default',
     _hover: { color: 'accent' },
   },
@@ -102,9 +98,9 @@ function NotFound() {
     <Layout>
       <Wrap>
         <Code>404</Code>
-        <Heading>NOT FOUND</Heading>
+        <Heading>Not Found</Heading>
         <Message>The page you're looking for doesn't exist or has been moved.</Message>
-        <BackLink to={'/' as any}>← BACK TO WORK</BackLink>
+        <BackLink to={'/' as any}>← back to work</BackLink>
       </Wrap>
     </Layout>
   )

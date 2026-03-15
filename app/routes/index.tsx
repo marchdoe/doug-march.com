@@ -11,45 +11,34 @@ export const Route = createFileRoute('/')({
 })
 
 const Gap = styled('div', {
-  base: { marginTop: '10' },
+  base: { marginTop: '12' },
 })
 
 const Footer = styled('div', {
   base: {
     marginTop: '12',
-    paddingTop: '5',
-    borderTopWidth: '1px',
+    paddingTop: '8',
+    borderTopWidth: '2px',
     borderTopStyle: 'solid',
-    borderTopColor: 'logo.blueDim',
+    borderTopColor: 'accent.glow',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-  },
-})
-
-const FooterText = styled('span', {
-  base: {
-    fontSize: 'xs',
-    color: 'text.dim',
   },
 })
 
 const FooterLink = styled('a', {
   base: {
-    fontSize: 'sm',
+    fontSize: '2xs',
+    fontFamily: 'mono',
     fontWeight: 'bold',
-    color: 'logo.green',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.green',
-    paddingTop: '0.35rem',
-    paddingBottom: '0.35rem',
-    paddingLeft: '3',
-    paddingRight: '3',
-    transitionProperty: 'background',
-    transitionDuration: '0.2s',
+    color: 'accent',
+    letterSpacing: 'widest',
+    transitionProperty: 'opacity',
+    transitionDuration: '0.3s',
     transitionTimingFunction: 'default',
-    _hover: { background: 'logo.greenDim' },
+    opacity: '0.5',
+    _hover: { opacity: '1' },
   },
 })
 
@@ -63,11 +52,10 @@ function Home() {
 
       <Gap />
 
-      <SectionHead label="EXPERIMENTS &amp; SIDE PROJECTS" />
+      <SectionHead label="EXPERIMENTS" />
       <Experiments />
 
       <Footer>
-        <FooterText>© {new Date().getFullYear()} DOUG MARCH</FooterText>
         <FooterLink href="mailto:doug@doug-march.com">GET IN TOUCH →</FooterLink>
       </Footer>
     </Layout>
