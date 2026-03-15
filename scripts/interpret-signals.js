@@ -33,33 +33,103 @@ const MOCK_MODE = process.env.MOCK_MODE === 'true'
  * @returns {string} the prompt text
  */
 export function buildInterpretPrompt(signals) {
-  const signalLines = Object.entries(signals)
+  const signalDump = Object.entries(signals)
     .filter(([key]) => key !== 'date')
-    .map(([key, value]) => `- ${key}: ${JSON.stringify(value)}`)
-    .join('\n')
+    .map(([key, value]) => `### ${key}\n${JSON.stringify(value, null, 2)}`)
+    .join('\n\n')
 
-  return `You are interpreting today's environmental signals for a personal website that redesigns itself daily.
+  return `You are the Product Manager for doug-march.com — a personal portfolio site that redesigns itself daily based on environmental signals.
 
-Today's signals:
-${signalLines}
+Your job is to read today's raw signals and write a structured creative brief. You are NOT the designer. You write requirements — opinionated, editorial, specific. The designer (a separate stage) will receive your brief and decide HOW to execute it visually.
 
-Date: ${signals.date || 'unknown'}
+## Today's Raw Signals (${signals.date || 'unknown'})
 
-Your task is to interpret these signals with a designer's eye. For each signal, identify its emotional or aesthetic quality — what does it suggest about mood, energy, tone, or visual feeling?
+${signalDump}
 
-Output exactly two sections:
+---
 
-## Feel Tags
-One line per signal (skip the date), in this format:
-- signal_name: [2-3 evocative adjectives or short phrases]
+## Signal Hierarchy
 
-Example:
-- weather: brutal, isolating
-- season: tender, new-growth
-- day_of_week: slow, unhurried
+Use this hierarchy to structure your brief. PRIMARY signals set the foundation. SECONDARY signals add editorial elements. ACCENT signals add texture.
 
-## Synthesis
-2-3 sentences tying the signals together into a unified per-signal feel and synthesis paragraph that describes the overall mood and aesthetic direction for today. Be specific and evocative — a designer should be able to translate this directly into visual choices.`
+### PRIMARY — Set the Foundation (Color Palette + Layout Energy)
+These are always present (derived, never fail). They establish the visual foundation.
+
+| Signal | Design Dimension | Example |
+|--------|-----------------|---------|
+| Weather | Color palette temperature | Blizzard → icy/stark; sunny 75°F → warm/golden |
+| Season | Color palette richness/saturation | Spring → fresh greens; winter → desaturated/stark |
+| Day of week | Layout energy and density | Weekend → spacious/relaxed; weekday → structured/dense |
+| Daylight hours (sun) | Light/dark balance | Short days → heavier darks; long days → airy/light |
+
+### SECONDARY — Add Editorial Elements + Flavor
+These add editorial commentary layered on the PRIMARY foundation. They have a point of view.
+
+| Signal | Design Dimension | Example |
+|--------|-----------------|---------|
+| Sports results | Editorial elements with POV | Win → celebratory badge; loss → dismissive callout |
+| Golf leaderboard | Editorial element if notable | Masters Sunday → leaderboard feature element |
+| Holidays | Thematic accents + elements | St. Patrick's Day → green accents, shamrock element |
+| Market direction | Subtle mood modifier | Down day → heavier/compressed feel |
+| News headlines | Possible editorial element | Major event → acknowledgment element |
+
+### ACCENT — Texture and Personality (Never Dominate)
+These add texture and personality. They should be felt, not seen.
+
+| Signal | Design Dimension | Example |
+|--------|-----------------|---------|
+| Music bands | Typography/personality hints | Radiohead → angular/precise; GBV → lo-fi/rough |
+| Lunar phase | Atmospheric subtlety | Full moon → contrast/drama; new moon → minimal |
+| Quote | Potential anchor if resonant | Chaos quote on chaotic day → feature prominently |
+| GitHub trending | Tech texture hints | AI repos → code-aesthetic elements |
+| Hacker News | Cultural temperature | Interesting HN day → tech-forward personality |
+| Books | Personality hint | Reading sci-fi → futuristic touches |
+| Air quality | Environmental overlay | Poor AQI → hazy/muted treatment |
+
+---
+
+## Conflict Resolution: Tension is the Feature
+
+When signals conflict, do NOT resolve the conflict by picking a winner. Instead, tension between signals becomes a design requirement.
+
+Examples:
+- Warm spring Saturday + Tigers loss → warm palette BUT dismissive editorial element about the loss
+- Sunny day + market crash → bright layout BUT compressed, anxious typography for market elements
+- Holiday approaching + bad weather → festive accents layered over a cold palette
+
+Call out tensions explicitly. Instruct the designer to hold them, not resolve them.
+
+---
+
+## Your Output
+
+Write a creative brief with exactly these six sections. Be opinionated and specific — you are a PM writing requirements, not a mood board.
+
+## Palette Direction
+[1-2 sentences on color temperature, saturation, mood — derived from PRIMARY signals (weather, season, daylight). Never prescribe specific hex colors — describe the feeling.]
+
+## Layout Energy
+[1-2 sentences on density, spacing, rhythm, visual weight — derived from day of week, season, daylight hours. Weekend = relaxed/spacious, weekday = structured/tight.]
+
+## Tension
+[1-2 sentences identifying contradictions between signals. What conflicts exist? Instruct the designer to hold the tension, not resolve it. If no tension, say so — some days are harmonious.]
+
+## Required Elements
+[Bulleted list of editorial design elements the designer MUST include. Each has a signal source, editorial direction, and tone. These are requirements, not suggestions.]
+
+Format:
+- [element description]: [editorial direction + tone] (source: [signal name])
+
+Only include elements for signals worth commenting on. "Off season" is not worth an element. A win or loss IS. An approaching holiday IS. A notable golf leaderboard IS.
+
+## Accent Notes
+[Bulleted list of subtle influences from ACCENT signals. These are suggestions, not requirements.]
+
+Format:
+- [signal name] ([key detail]): [how it might subtly influence texture, typography, or personality]
+
+## Anchor Signal
+[One sentence naming the single signal that should be FELT most strongly when someone lands on the site. This is your call as PM — what's the headline of today's design?]`
 }
 
 /**
@@ -144,7 +214,7 @@ async function callAnthropicAPI(prompt) {
 
   const response = await client.messages.create({
     model: 'claude-opus-4-6',
-    max_tokens: 1024,
+    max_tokens: 2048,
     messages: [{ role: 'user', content: prompt }],
   })
 
