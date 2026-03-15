@@ -10,6 +10,7 @@
  * Exports runCollector() for testing.
  */
 
+import { config } from 'dotenv'
 import { readFile, writeFile, readdir } from 'fs/promises'
 import { existsSync } from 'fs'
 import path from 'path'
@@ -18,6 +19,7 @@ import yaml from 'js-yaml'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
+config({ path: path.join(ROOT, '.env') })
 const SIGNALS_DIR = path.join(__dirname, 'signals')
 const PROFILE_PATH = path.join(ROOT, 'signals/profile.yml')
 
