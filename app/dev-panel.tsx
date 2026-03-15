@@ -92,9 +92,10 @@ const s = {
   page: {
     padding: '28px 32px',
     fontFamily: c.font,
-    fontSize: '13px',
+    fontSize: '15px',
     color: c.primary,
     maxWidth: '960px',
+    margin: '0 auto',
     background: c.pageBg,
     minHeight: '100vh',
   } as React.CSSProperties,
@@ -110,7 +111,7 @@ const s = {
     gap: '5px',
   },
   fieldLabel: {
-    fontSize: '10px',
+    fontSize: '18px',
     fontWeight: 700,
     textTransform: 'uppercase' as const,
     letterSpacing: '.1em',
@@ -120,7 +121,7 @@ const s = {
     border: `1px solid ${c.border}`,
     borderRadius: '4px',
     padding: '7px 10px',
-    fontSize: '12px',
+    fontSize: '18px',
     color: c.primary,
     background: c.cardBg,
     fontFamily: c.font,
@@ -130,7 +131,7 @@ const s = {
     border: `1px solid ${c.border}`,
     borderRadius: '4px',
     padding: '7px 10px',
-    fontSize: '12px',
+    fontSize: '18px',
     color: c.primary,
     background: c.cardBg,
     fontFamily: c.font,
@@ -143,7 +144,7 @@ const s = {
     border: `1px solid ${c.border}`,
     borderRadius: '4px',
     padding: '7px 14px',
-    fontSize: '12px',
+    fontSize: '18px',
     fontWeight: 700,
     color: c.dim,
     cursor: 'pointer',
@@ -388,7 +389,7 @@ export function DevPanel() {
           border: 'none',
           borderRadius: '4px',
           padding: '10px 24px',
-          fontSize: '13px',
+          fontSize: '15px',
           fontWeight: 700,
           fontFamily: c.font,
           cursor: isRunDisabled ? 'default' : 'pointer',
@@ -399,12 +400,12 @@ export function DevPanel() {
            pipelineStatus === 'cooldown' ? `COOLDOWN ${cooldownLeft}s` :
            'RUN PIPELINE'}
         </button>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: c.dim, fontFamily: c.font }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '15px', color: c.dim, fontFamily: c.font }}>
           <input type="checkbox" checked={dryRun} onChange={e => setDryRun(e.target.checked)} disabled={isRunDisabled} />
           Dry run (no commit)
         </label>
         {archive[0] && (
-          <div style={{ marginLeft: 'auto', fontSize: '11px', color: c.muted, fontFamily: c.font }}>
+          <div style={{ marginLeft: 'auto', fontSize: '15px', color: c.muted, fontFamily: c.font }}>
             Last run: <strong style={{ color: c.dim }}>{archive[0].date}</strong> · <em style={{ color: c.muted }}>{archive[0].brief.slice(0, 50)}...</em>
           </div>
         )}
@@ -475,7 +476,7 @@ function SignalsHeader({ meta, date }: { meta: Meta | null; date: string }) {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         <h2 style={{
-          fontSize: '10px',
+          fontSize: '18px',
           fontWeight: 700,
           textTransform: 'uppercase',
           letterSpacing: '.12em',
@@ -497,7 +498,7 @@ function SignalsHeader({ meta, date }: { meta: Meta | null; date: string }) {
               border: `1px solid rgba(92,190,74,0.2)`,
               borderRadius: '20px',
               padding: '3px 10px',
-              fontSize: '11px',
+              fontSize: '15px',
               fontWeight: 700,
               color: c.green,
               fontFamily: c.font,
@@ -514,7 +515,7 @@ function SignalsHeader({ meta, date }: { meta: Meta | null; date: string }) {
 
             {/* Latency */}
             <span style={{
-              fontSize: '11px',
+              fontSize: '15px',
               fontFamily: c.font,
               color: c.muted,
             }}>
@@ -525,7 +526,7 @@ function SignalsHeader({ meta, date }: { meta: Meta | null; date: string }) {
       </div>
 
       <span style={{
-        fontSize: '11px',
+        fontSize: '15px',
         fontFamily: c.font,
         color: c.muted,
       }}>
@@ -557,7 +558,7 @@ function AtmosphereStrip({ signals }: { signals: Signals }) {
   }
 
   const labelStyle: React.CSSProperties = {
-    fontSize: '9px',
+    fontSize: '15px',
     fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '.12em',
@@ -567,7 +568,7 @@ function AtmosphereStrip({ signals }: { signals: Signals }) {
   }
 
   const subStyle: React.CSSProperties = {
-    fontSize: '10px',
+    fontSize: '18px',
     color: c.dim,
     marginTop: '2px',
     fontFamily: c.font,
@@ -585,7 +586,7 @@ function AtmosphereStrip({ signals }: { signals: Signals }) {
       {/* Season */}
       <div style={cellStyle}>
         <div style={labelStyle}>SEASON</div>
-        <div style={{ fontSize: '16px', fontWeight: 700, color: c.green, fontFamily: c.font }}>
+        <div style={{ fontSize: '18px', fontWeight: 700, color: c.green, fontFamily: c.font }}>
           {season?.season ?? '--'}
         </div>
         <div style={subStyle}>
@@ -598,7 +599,7 @@ function AtmosphereStrip({ signals }: { signals: Signals }) {
       {/* Day */}
       <div style={cellStyle}>
         <div style={labelStyle}>DAY</div>
-        <div style={{ fontSize: '16px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
+        <div style={{ fontSize: '18px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
           {dayOfWeek?.day ?? '--'}
         </div>
         <div style={{ ...subStyle, color: dayOfWeek?.is_weekend ? c.cyan : c.dim }}>
@@ -611,9 +612,9 @@ function AtmosphereStrip({ signals }: { signals: Signals }) {
       {/* Sun */}
       <div style={cellStyle}>
         <div style={labelStyle}>SUN</div>
-        <div style={{ fontSize: '16px', fontWeight: 700, color: c.secondary, fontFamily: c.font }}>
+        <div style={{ fontSize: '18px', fontWeight: 700, color: c.secondary, fontFamily: c.font }}>
           {sun?.daylight_hours ?? '--'}h
-          <span style={{ fontSize: '11px', fontWeight: 400, color: c.dim, marginLeft: '4px' }}>daylight</span>
+          <span style={{ fontSize: '15px', fontWeight: 400, color: c.dim, marginLeft: '4px' }}>daylight</span>
         </div>
         <div style={subStyle}>
           {sun?.sunrise ?? '--'} ↑ {sun?.sunset ?? '--'} ↓
@@ -625,7 +626,7 @@ function AtmosphereStrip({ signals }: { signals: Signals }) {
       {/* Lunar */}
       <div style={cellStyle}>
         <div style={labelStyle}>LUNAR</div>
-        <div style={{ fontSize: '14px', fontWeight: 700, color: c.blue, fontFamily: c.font }}>
+        <div style={{ fontSize: '18px', fontWeight: 700, color: c.blue, fontFamily: c.font }}>
           {lunar?.phase ?? '--'}
         </div>
         <div style={{ ...subStyle, color: '#3A7FC4' }}>
@@ -640,7 +641,7 @@ function AtmosphereStrip({ signals }: { signals: Signals }) {
         <div style={labelStyle}>UPCOMING</div>
         {upcomingHoliday ? (
           <>
-            <div style={{ fontSize: '14px', fontWeight: 700, color: c.green, fontFamily: c.font }}>
+            <div style={{ fontSize: '18px', fontWeight: 700, color: c.green, fontFamily: c.font }}>
               {upcomingHoliday.name}
             </div>
             <div style={{ ...subStyle, color: c.green }}>
@@ -648,7 +649,7 @@ function AtmosphereStrip({ signals }: { signals: Signals }) {
             </div>
           </>
         ) : (
-          <div style={{ fontSize: '14px', fontWeight: 700, color: c.muted, fontFamily: c.font }}>
+          <div style={{ fontSize: '18px', fontWeight: 700, color: c.muted, fontFamily: c.font }}>
             None nearby
           </div>
         )}
@@ -676,7 +677,7 @@ function QuoteBlock({ signals }: { signals: Signals }) {
         position: 'absolute',
         top: '6px',
         right: '0',
-        fontSize: '9px',
+        fontSize: '15px',
         fontWeight: 700,
         textTransform: 'uppercase',
         letterSpacing: '.12em',
@@ -686,7 +687,7 @@ function QuoteBlock({ signals }: { signals: Signals }) {
         DAILY QUOTE
       </span>
       <div style={{
-        fontSize: '13px',
+        fontSize: '15px',
         fontStyle: 'italic',
         color: c.secondary,
         lineHeight: '1.6',
@@ -697,7 +698,7 @@ function QuoteBlock({ signals }: { signals: Signals }) {
         "{quote.text}"
       </div>
       <div style={{
-        fontSize: '11px',
+        fontSize: '15px',
         fontWeight: 700,
         color: c.dim,
         fontFamily: c.font,
@@ -720,7 +721,7 @@ function LiveDataCards({ signals, meta }: { signals: Signals; meta: Meta | null 
   }
 
   const headerStyle: React.CSSProperties = {
-    fontSize: '10px',
+    fontSize: '18px',
     fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '.12em',
@@ -734,7 +735,7 @@ function LiveDataCards({ signals, meta }: { signals: Signals; meta: Meta | null 
   }
 
   const metaStyle: React.CSSProperties = {
-    fontSize: '9px',
+    fontSize: '15px',
     color: c.muted,
     fontFamily: c.font,
     fontWeight: 400,
@@ -812,7 +813,7 @@ function SportsCard({ signals, cardStyle, headerStyle, metaStyle }: {
               flexShrink: 0,
             }} />
             <span style={{
-              fontSize: '11px',
+              fontSize: '15px',
               fontWeight: isActive ? 700 : 400,
               color: isActive ? c.primary : c.muted,
               fontFamily: c.font,
@@ -824,7 +825,7 @@ function SportsCard({ signals, cardStyle, headerStyle, metaStyle }: {
               <>
                 {team.result && (
                   <span style={{
-                    fontSize: '9px',
+                    fontSize: '15px',
                     fontWeight: 700,
                     background: isWin ? c.green : '#ef4444',
                     color: isWin ? c.pageBg : '#fff',
@@ -837,7 +838,7 @@ function SportsCard({ signals, cardStyle, headerStyle, metaStyle }: {
                 )}
                 {team.score && (
                   <span style={{
-                    fontSize: '11px',
+                    fontSize: '15px',
                     fontFamily: c.font,
                     color: c.green,
                     fontWeight: 700,
@@ -848,7 +849,7 @@ function SportsCard({ signals, cardStyle, headerStyle, metaStyle }: {
               </>
             ) : (
               <span style={{
-                fontSize: '10px',
+                fontSize: '18px',
                 fontStyle: 'italic',
                 color: c.muted,
                 fontFamily: c.font,
@@ -860,7 +861,7 @@ function SportsCard({ signals, cardStyle, headerStyle, metaStyle }: {
         )
       })}
       {teams.length === 0 && (
-        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No teams</div>
+        <div style={{ fontSize: '15px', color: c.muted, fontFamily: c.font }}>No teams</div>
       )}
     </div>
   )
@@ -881,7 +882,7 @@ function GolfCard({ signals, cardStyle, headerStyle }: {
       {golf?.tournament ? (
         <>
           <div style={{
-            fontSize: '12px',
+            fontSize: '18px',
             fontWeight: 700,
             color: c.primary,
             fontFamily: c.font,
@@ -890,7 +891,7 @@ function GolfCard({ signals, cardStyle, headerStyle }: {
             {golf.tournament}
           </div>
           <div style={{
-            fontSize: '10px',
+            fontSize: '18px',
             color: c.cyan,
             fontFamily: c.font,
             marginBottom: '8px',
@@ -905,7 +906,7 @@ function GolfCard({ signals, cardStyle, headerStyle }: {
               padding: '3px 0',
             }}>
               <span style={{
-                fontSize: '10px',
+                fontSize: '18px',
                 fontWeight: 700,
                 color: i < 3 ? c.cyan : c.dim,
                 fontFamily: c.font,
@@ -914,7 +915,7 @@ function GolfCard({ signals, cardStyle, headerStyle }: {
                 {leader.position ?? (i + 1)}
               </span>
               <span style={{
-                fontSize: '11px',
+                fontSize: '15px',
                 color: c.primary,
                 fontFamily: c.font,
                 flex: 1,
@@ -922,7 +923,7 @@ function GolfCard({ signals, cardStyle, headerStyle }: {
                 {leader.name}
               </span>
               <span style={{
-                fontSize: '11px',
+                fontSize: '15px',
                 fontFamily: c.font,
                 color: c.green,
                 fontWeight: 700,
@@ -932,11 +933,11 @@ function GolfCard({ signals, cardStyle, headerStyle }: {
             </div>
           ))}
           {(!golf.leaders || golf.leaders.length === 0) && (
-            <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No leaders yet</div>
+            <div style={{ fontSize: '15px', color: c.muted, fontFamily: c.font }}>No leaders yet</div>
           )}
         </>
       ) : (
-        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No tournament</div>
+        <div style={{ fontSize: '15px', color: c.muted, fontFamily: c.font }}>No tournament</div>
       )}
     </div>
   )
@@ -979,7 +980,7 @@ function GitHubCard({ signals, cardStyle, headerStyle }: {
             }} />
           )}
           <span style={{
-            fontSize: '11px',
+            fontSize: '15px',
             color: c.blue,
             fontFamily: c.font,
             flex: 1,
@@ -991,7 +992,7 @@ function GitHubCard({ signals, cardStyle, headerStyle }: {
           </span>
           {repo.stars != null && (
             <span style={{
-              fontSize: '9px',
+              fontSize: '15px',
               color: c.dim,
               fontFamily: c.font,
             }}>
@@ -1001,7 +1002,7 @@ function GitHubCard({ signals, cardStyle, headerStyle }: {
         </div>
       ))}
       {repos.length === 0 && (
-        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No data</div>
+        <div style={{ fontSize: '15px', color: c.muted, fontFamily: c.font }}>No data</div>
       )}
     </div>
   )
@@ -1034,7 +1035,7 @@ function HackerNewsCard({ signals, cardStyle, headerStyle }: {
             padding: '3px 0',
           }}>
             <span style={{
-              fontSize: '10px',
+              fontSize: '18px',
               fontWeight: 700,
               color: c.orange,
               fontFamily: c.font,
@@ -1045,7 +1046,7 @@ function HackerNewsCard({ signals, cardStyle, headerStyle }: {
               {story.score}
             </span>
             <span style={{
-              fontSize: '11px',
+              fontSize: '15px',
               color: c.primary,
               fontFamily: c.font,
               flex: 1,
@@ -1059,7 +1060,7 @@ function HackerNewsCard({ signals, cardStyle, headerStyle }: {
         )
       })}
       {stories.length === 0 && (
-        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No stories</div>
+        <div style={{ fontSize: '15px', color: c.muted, fontFamily: c.font }}>No stories</div>
       )}
     </div>
   )
@@ -1081,14 +1082,14 @@ function WeatherCard({ signals, cardStyle, headerStyle }: {
       {weather && (
         <>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '6px' }}>
-            <span style={{ fontSize: '22px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
+            <span style={{ fontSize: '24px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
               {Math.round(weather.temp_f ?? 0)}°F
             </span>
-            <span style={{ fontSize: '11px', color: c.dim, fontFamily: c.font }}>
+            <span style={{ fontSize: '15px', color: c.dim, fontFamily: c.font }}>
               {weather.conditions}
             </span>
           </div>
-          <div style={{ fontSize: '10px', color: c.muted, fontFamily: c.font, lineHeight: '1.8' }}>
+          <div style={{ fontSize: '18px', color: c.muted, fontFamily: c.font, lineHeight: '1.8' }}>
             <div>Feels like {Math.round(weather.feels_like_f ?? 0)}°F · {weather.humidity}% humidity</div>
             <div>Wind {weather.wind_mph} mph {weather.wind_dir}</div>
             <div style={{ color: c.dim, marginTop: '2px' }}>{weather.location}</div>
@@ -1097,7 +1098,7 @@ function WeatherCard({ signals, cardStyle, headerStyle }: {
       )}
       {aq && (
         <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: `1px solid ${c.border}` }}>
-          <div style={{ display: 'flex', gap: '12px', fontSize: '10px', fontFamily: c.font }}>
+          <div style={{ display: 'flex', gap: '12px', fontSize: '18px', fontFamily: c.font }}>
             <span>
               <span style={{ color: c.muted }}>AQI </span>
               <span style={{ color: aq.aqi_index === 1 ? c.green : aq.aqi_index === 2 ? '#eab308' : '#ef4444', fontWeight: 700 }}>
@@ -1138,18 +1139,18 @@ function NewsCard({ signals, cardStyle, headerStyle }: {
           alignItems: 'baseline',
           gap: '8px',
         }}>
-          <span style={{ fontSize: '11px', color: c.primary, fontFamily: c.font, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <span style={{ fontSize: '15px', color: c.primary, fontFamily: c.font, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {h.title}
           </span>
           {h.source && (
-            <span style={{ fontSize: '9px', color: c.muted, fontFamily: c.font, flexShrink: 0 }}>
+            <span style={{ fontSize: '15px', color: c.muted, fontFamily: c.font, flexShrink: 0 }}>
               {h.source}
             </span>
           )}
         </div>
       ))}
       {headlines.length === 0 && (
-        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No headlines</div>
+        <div style={{ fontSize: '15px', color: c.muted, fontFamily: c.font }}>No headlines</div>
       )}
     </div>
   )
@@ -1173,14 +1174,14 @@ function MarketCard({ signals, cardStyle, headerStyle }: {
     <div style={cardStyle}>
       <h3 style={headerStyle}><span>// MARKET</span></h3>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '4px' }}>
-        <span style={{ fontSize: '9px', fontWeight: 700, color: c.muted, fontFamily: c.font }}>{market.symbol}</span>
-        <span style={{ fontSize: '20px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
+        <span style={{ fontSize: '15px', fontWeight: 700, color: c.muted, fontFamily: c.font }}>{market.symbol}</span>
+        <span style={{ fontSize: '24px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
           ${parseFloat(market.price ?? '0').toFixed(2)}
         </span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-        <span style={{ fontSize: '14px', color: dirColor }}>{arrow}</span>
-        <span style={{ fontSize: '13px', fontWeight: 700, color: dirColor, fontFamily: c.font }}>
+        <span style={{ fontSize: '18px', color: dirColor }}>{arrow}</span>
+        <span style={{ fontSize: '15px', fontWeight: 700, color: dirColor, fontFamily: c.font }}>
           {market.change} ({market.change_percent})
         </span>
       </div>
@@ -1204,14 +1205,14 @@ function ProductHuntCard({ signals, cardStyle, headerStyle }: {
       <h3 style={headerStyle}><span>// PRODUCT HUNT</span></h3>
       {products.map((p, i) => (
         <div key={i} style={{ padding: '3px 0', display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-          <span style={{ fontSize: '10px', fontWeight: 700, color: '#da552f', fontFamily: c.font, minWidth: '28px', textAlign: 'right' }}>
+          <span style={{ fontSize: '18px', fontWeight: 700, color: '#da552f', fontFamily: c.font, minWidth: '28px', textAlign: 'right' }}>
             {p.votes}
           </span>
-          <span style={{ fontSize: '11px', color: c.primary, fontFamily: c.font, flex: 1 }}>{p.name}</span>
+          <span style={{ fontSize: '15px', color: c.primary, fontFamily: c.font, flex: 1 }}>{p.name}</span>
         </div>
       ))}
       {products.length === 0 && (
-        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No products</div>
+        <div style={{ fontSize: '15px', color: c.muted, fontFamily: c.font }}>No products</div>
       )}
     </div>
   )
@@ -1228,9 +1229,9 @@ function CardError({ cardStyle, headerStyle, label, reason }: {
       <h3 style={headerStyle}><span>{label}</span></h3>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
         <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#ef4444', flexShrink: 0 }} />
-        <span style={{ fontSize: '11px', color: '#f87171', fontFamily: c.font, fontWeight: 700 }}>API unavailable</span>
+        <span style={{ fontSize: '15px', color: '#f87171', fontFamily: c.font, fontWeight: 700 }}>API unavailable</span>
       </div>
-      <div style={{ fontSize: '9px', color: c.muted, fontFamily: c.font, marginTop: '4px' }}>{reason}</div>
+      <div style={{ fontSize: '15px', color: c.muted, fontFamily: c.font, marginTop: '4px' }}>{reason}</div>
     </div>
   )
 }
@@ -1250,7 +1251,7 @@ function BottomRow({ signals }: { signals: Signals }) {
   }
 
   const labelStyle: React.CSSProperties = {
-    fontSize: '10px',
+    fontSize: '18px',
     fontWeight: 700,
     textTransform: 'uppercase',
     letterSpacing: '.12em',
@@ -1274,7 +1275,7 @@ function BottomRow({ signals }: { signals: Signals }) {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
             {(music?.bands ?? []).map((band, i) => (
               <span key={i} style={{
-                fontSize: '10px',
+                fontSize: '18px',
                 background: 'rgba(74,143,212,0.12)',
                 color: c.blue,
                 padding: '3px 8px',
@@ -1285,7 +1286,7 @@ function BottomRow({ signals }: { signals: Signals }) {
               </span>
             ))}
             {(!music?.bands || music.bands.length === 0) && (
-              <span style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No bands</span>
+              <span style={{ fontSize: '15px', color: c.muted, fontFamily: c.font }}>No bands</span>
             )}
           </div>
         </div>
@@ -1296,7 +1297,7 @@ function BottomRow({ signals }: { signals: Signals }) {
           {(books?.currently_reading ?? []).length > 0 ? (
             (books!.currently_reading!).map((book, i) => (
               <div key={i} style={{
-                fontSize: '11px',
+                fontSize: '15px',
                 color: c.primary,
                 fontFamily: c.font,
                 padding: '2px 0',
@@ -1305,7 +1306,7 @@ function BottomRow({ signals }: { signals: Signals }) {
               </div>
             ))
           ) : (
-            <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font, fontStyle: 'italic' }}>
+            <div style={{ fontSize: '15px', color: c.muted, fontFamily: c.font, fontStyle: 'italic' }}>
               nothing currently
             </div>
           )}
@@ -1321,7 +1322,7 @@ function BottomRow({ signals }: { signals: Signals }) {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <span style={{ fontSize: '10px', color: c.ghost, fontFamily: c.font, fontStyle: 'italic' }}>
+        <span style={{ fontSize: '18px', color: c.ghost, fontFamily: c.font, fontStyle: 'italic' }}>
           + add signals
         </span>
       </div>
@@ -1352,7 +1353,7 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }:
         background: c.cardBg,
         borderBottom: `1px solid ${c.border}`,
         padding: '10px 14px',
-        fontSize: '11px',
+        fontSize: '15px',
         fontWeight: 700,
         color: c.dim,
         display: 'flex',
@@ -1361,7 +1362,7 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }:
       }}>
         <span>// PIPELINE · Attempt {attemptNum} of 3</span>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <span style={{ fontFamily: c.font, color: c.muted, fontSize: '11px' }}>{fmtElapsed(elapsedMs)}</span>
+          <span style={{ fontFamily: c.font, color: c.muted, fontSize: '15px' }}>{fmtElapsed(elapsedMs)}</span>
           <span style={{ color: c.cyan }}>● running</span>
         </div>
       </div>
@@ -1392,7 +1393,7 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }:
             <div key={p.label} style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
               <PhaseDot status={p.status} />
               <span style={{
-                fontSize: '10px',
+                fontSize: '18px',
                 flex: 1,
                 fontFamily: c.font,
                 color: p.status === 'pending' ? c.muted : p.status === 'done' ? c.muted : c.primary,
@@ -1401,7 +1402,7 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }:
               }}>{p.label}</span>
               {p.status === 'done' && p.durationMs != null && (
                 <span style={{
-                  fontSize: '9px',
+                  fontSize: '15px',
                   fontFamily: c.font,
                   color: c.muted,
                   background: c.border,
@@ -1413,7 +1414,7 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }:
               )}
               {p.status === 'active' && p.startedAt && (
                 <span style={{
-                  fontSize: '9px',
+                  fontSize: '15px',
                   fontFamily: c.font,
                   color: c.cyan,
                   background: 'rgba(0,229,255,0.08)',
@@ -1433,7 +1434,7 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }:
               background: 'rgba(0,229,255,0.06)',
               border: `1px solid rgba(0,229,255,0.12)`,
               borderRadius: '4px',
-              fontSize: '9px',
+              fontSize: '15px',
               color: c.cyan,
               fontFamily: c.font,
             }}>
@@ -1447,7 +1448,7 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }:
           background: '#020810',
           padding: '14px',
           fontFamily: c.font,
-          fontSize: '10px',
+          fontSize: '18px',
           lineHeight: '1.8',
           color: c.muted,
           minHeight: '180px',
@@ -1478,7 +1479,7 @@ function PhaseDot({ status }: { status: 'pending' | 'active' | 'done' }) {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: '9px',
+    fontSize: '15px',
     fontFamily: c.font,
   } as React.CSSProperties
 
@@ -1524,23 +1525,23 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '11px',
+          fontSize: '15px',
           fontWeight: 700,
           flexShrink: 0,
           fontFamily: c.font,
         }}>+</div>
         <div>
-          <div style={{ fontSize: '12px', fontWeight: 700, color: c.green, fontFamily: c.font }}>
+          <div style={{ fontSize: '18px', fontWeight: 700, color: c.green, fontFamily: c.font }}>
             Build passed -- committed
           </div>
-          <div style={{ fontSize: '11px', color: c.secondary, fontStyle: 'italic', fontFamily: c.font }}>
+          <div style={{ fontSize: '15px', color: c.secondary, fontStyle: 'italic', fontFamily: c.font }}>
             "{brief}"
           </div>
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <div style={{ textAlign: 'right' as const }}>
-            <div style={{ fontSize: '10px', color: c.green, fontFamily: c.font }}>{timestamp}</div>
-            <div style={{ fontSize: '9px', color: c.dim, fontFamily: c.font }}>
+            <div style={{ fontSize: '18px', color: c.green, fontFamily: c.font }}>{timestamp}</div>
+            <div style={{ fontSize: '15px', color: c.dim, fontFamily: c.font }}>
               Total: {fmtDuration(totalMs)} · {attemptNum} attempt{attemptNum !== 1 ? 's' : ''}
             </div>
           </div>
@@ -1550,7 +1551,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
             border: 'none',
             borderRadius: '4px',
             padding: '5px 12px',
-            fontSize: '10px',
+            fontSize: '18px',
             fontWeight: 700,
             cursor: 'pointer',
             flexShrink: 0,
@@ -1563,7 +1564,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
       {/* Phase breakdown */}
       <div style={{ padding: '10px 16px', borderBottom: `1px solid rgba(92,190,74,0.1)` }}>
         <div style={{
-          fontSize: '9px',
+          fontSize: '15px',
           fontWeight: 700,
           textTransform: 'uppercase',
           letterSpacing: '.12em',
@@ -1591,7 +1592,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '9px',
+                fontSize: '15px',
                 color: i > 3 ? c.pageBg : c.green,
                 fontWeight: 700,
                 overflow: 'hidden',
@@ -1605,7 +1606,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px' }}>
           {phases.map(p => (
-            <span key={p.label} style={{ fontSize: '9px', color: c.muted, fontFamily: c.font }}>{p.label.split(' ')[0]}</span>
+            <span key={p.label} style={{ fontSize: '15px', color: c.muted, fontFamily: c.font }}>{p.label.split(' ')[0]}</span>
           ))}
         </div>
       </div>
@@ -1614,7 +1615,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
       <div style={{ padding: '10px 16px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
           <div style={{
-            fontSize: '9px',
+            fontSize: '15px',
             fontWeight: 700,
             textTransform: 'uppercase',
             letterSpacing: '.12em',
@@ -1630,7 +1631,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
               border: 'none',
               borderRadius: '4px',
               padding: '3px 10px',
-              fontSize: '9px',
+              fontSize: '15px',
               fontWeight: 700,
               cursor: isCooldown ? 'default' : 'pointer',
               opacity: isCooldown ? 0.6 : 1,
@@ -1651,7 +1652,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
               borderBottom: i < archive.length - 1 ? `1px solid ${c.border}` : 'none',
             }}>
               <span style={{
-                fontSize: '10px',
+                fontSize: '18px',
                 fontWeight: isToday ? 700 : 400,
                 color: isToday ? c.green : c.dim,
                 minWidth: '85px',
@@ -1660,7 +1661,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
                 {entry.date}{isToday ? ' *' : ''}
               </span>
               <span style={{
-                fontSize: '10px',
+                fontSize: '18px',
                 color: isToday ? c.secondary : c.muted,
                 fontStyle: 'italic',
                 fontWeight: isToday ? 700 : 400,
@@ -1687,21 +1688,21 @@ function ErrorSection({ error, totalMs, onRetry }: { error: string; totalMs: num
       alignItems: 'flex-start',
       gap: '12px',
     }}>
-      <div style={{ color: '#ef4444', fontSize: '16px', flexShrink: 0, fontFamily: c.font, fontWeight: 700 }}>X</div>
+      <div style={{ color: '#ef4444', fontSize: '18px', flexShrink: 0, fontFamily: c.font, fontWeight: 700 }}>X</div>
       <div style={{ flex: 1 }}>
         <div style={{
-          fontSize: '12px',
+          fontSize: '18px',
           fontWeight: 700,
           color: '#ef4444',
           marginBottom: '4px',
           fontFamily: c.font,
         }}>
           Pipeline failed
-          <span style={{ fontWeight: 400, fontSize: '10px', color: '#f87171', marginLeft: '6px' }}>
+          <span style={{ fontWeight: 400, fontSize: '18px', color: '#f87171', marginLeft: '6px' }}>
             ({fmtDuration(totalMs)})
           </span>
         </div>
-        <div style={{ fontSize: '10px', color: '#f87171', fontFamily: c.font }}>{error}</div>
+        <div style={{ fontSize: '18px', color: '#f87171', fontFamily: c.font }}>{error}</div>
       </div>
       <button onClick={onRetry} style={{
         background: '#ef4444',
@@ -1709,7 +1710,7 @@ function ErrorSection({ error, totalMs, onRetry }: { error: string; totalMs: num
         border: 'none',
         borderRadius: '4px',
         padding: '7px 14px',
-        fontSize: '11px',
+        fontSize: '15px',
         fontWeight: 700,
         cursor: 'pointer',
         flexShrink: 0,
