@@ -94,7 +94,7 @@ const s = {
     fontFamily: c.font,
     fontSize: '15px',
     color: c.primary,
-    maxWidth: '960px',
+    maxWidth: '1220px',
     margin: '0 auto',
     background: c.pageBg,
     minHeight: '100vh',
