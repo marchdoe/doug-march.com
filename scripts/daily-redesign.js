@@ -34,29 +34,17 @@ const MAX_ATTEMPTS = 3
 const DRY_RUN = process.env.DRY_RUN === 'true'
 const MOCK_MODE = process.env.MOCK_MODE === 'true'
 
-if (!MOCK_MODE && !process.env.ANTHROPIC_API_KEY) {
-  console.error('Error: ANTHROPIC_API_KEY environment variable is not set.')
-  console.error('  Set ANTHROPIC_API_KEY in .env, or use MOCK_MODE=true to use local Claude Code CLI.')
-  process.exit(1)
-}
+/** CLI args for claude in stream-json mode. Exported for testing. */
+export const CLAUDE_CLI_ARGS = [
+  '-p',
+  '--verbose',
+  '--output-format', 'stream-json',
+  '--max-turns', '1',
+  '--tools', '',
+]
 
-if (MOCK_MODE) {
-  // Verify claude CLI is available
-  try {
-    execSync('claude --version', { encoding: 'utf8', timeout: 5000 })
-  } catch {
-    console.error('Error: MOCK_MODE requires the `claude` CLI (Claude Code) to be installed.')
-    console.error('  Install: https://claude.ai/download')
-    process.exit(1)
-  }
-}
-
-// Only import Anthropic SDK when not in mock mode
+// Validation and SDK init are deferred to main() so importing for tests doesn't trigger side effects
 let client
-if (!MOCK_MODE) {
-  const { default: Anthropic } = await import('@anthropic-ai/sdk')
-  client = new Anthropic()
-}
 
 /**
  * Build a mock response from the canonical theme snapshot.
@@ -115,27 +103,53 @@ You MUST include elements/preset.ts at minimum. Include complete file contents â
   const { createReadStream } = await import('fs')
 
   const result = await new Promise((resolve, reject) => {
-    const child = spawnProc('claude', [
-      '-p',
-      '--output-format', 'json',
-      '--max-turns', '1',
-      '--tools', '',
-    ], {
+    const child = spawnProc('claude', CLAUDE_CLI_ARGS, {
       cwd: ROOT,
       env: cliEnv,
     })
 
-    let stdout = ''
+    let fullText = ''  // Accumulated response text from content blocks
+    let finalResult = ''  // The result field from the final message
     let stderr = ''
+    let lineBuffer = ''  // Buffer for incomplete JSON lines
+    let charCount = 0  // Track characters received for progress
 
     // Pipe the prompt file to stdin
     const promptStream = createReadStream(promptPath)
     promptStream.pipe(child.stdin)
 
     child.stdout.on('data', (chunk) => {
-      stdout += chunk.toString()
-      // Print progress dots so the SSE stream shows activity
-      process.stdout.write('.')
+      lineBuffer += chunk.toString()
+      const lines = lineBuffer.split('\n')
+      // Keep the last incomplete line in the buffer
+      lineBuffer = lines.pop() || ''
+
+      for (const line of lines) {
+        if (!line.trim()) continue
+        try {
+          const event = JSON.parse(line)
+
+          if (event.type === 'assistant' && event.message?.content) {
+            // Content block with text â€” accumulate and show progress
+            for (const block of event.message.content) {
+              if (block.type === 'text' && block.text) {
+                fullText += block.text
+                const newChars = block.text.length
+                charCount += newChars
+                // Log progress every ~2000 chars so the SSE stream shows activity
+                if (charCount > 0 && charCount % 2000 < newChars) {
+                  console.log(`  ... designing (${(charCount / 1024).toFixed(0)}KB generated)`)
+                }
+              }
+            }
+          } else if (event.type === 'result') {
+            // Final result â€” this is the complete response
+            finalResult = event.result || ''
+          }
+        } catch {
+          // Not valid JSON â€” skip
+        }
+      }
     })
     child.stderr.on('data', (chunk) => { stderr += chunk.toString() })
 
@@ -146,12 +160,25 @@ You MUST include elements/preset.ts at minimum. Include complete file contents â
 
     child.on('close', (code) => {
       clearTimeout(timeout)
-      console.log('') // newline after progress dots
-      if (code !== 0 && !stdout.trim()) {
+      // Process any remaining data in the line buffer
+      if (lineBuffer.trim()) {
+        try {
+          const event = JSON.parse(lineBuffer)
+          if (event.type === 'result') finalResult = event.result || ''
+          if (event.type === 'assistant' && event.message?.content) {
+            for (const block of event.message.content) {
+              if (block.type === 'text') fullText += block.text
+            }
+          }
+        } catch {}
+      }
+      console.log(`  claude CLI finished (${(charCount / 1024).toFixed(0)}KB total)`)
+      if (code !== 0 && !finalResult && !fullText) {
         console.error(`  claude CLI stderr: ${stderr.slice(0, 500)}`)
         reject(new Error(`claude CLI exited with code ${code}: ${stderr.slice(0, 500)}`))
       } else {
-        resolve(stdout)
+        // Prefer finalResult (from result event), fall back to accumulated text
+        resolve(finalResult || fullText)
       }
     })
 
@@ -161,20 +188,15 @@ You MUST include elements/preset.ts at minimum. Include complete file contents â
     })
   })
 
-  // Parse the JSON output wrapper
+  // Parse the JSON response
   let parsed
   try {
-    const wrapper = JSON.parse(result)
-    // claude CLI wraps response in { result: "..." } when using --output-format json
-    const responseText = wrapper.result || result
-    parsed = JSON.parse(responseText)
+    parsed = JSON.parse(result)
   } catch {
-    // If the wrapper parse fails, try parsing the raw output directly
     // Strip any markdown fences if Claude included them
     const cleaned = result.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
     try {
-      const wrapper = JSON.parse(cleaned)
-      parsed = wrapper.result ? JSON.parse(wrapper.result) : wrapper
+      parsed = JSON.parse(cleaned)
     } catch (e2) {
       throw new Error(`Failed to parse Claude CLI response as JSON: ${e2.message}\nFirst 500 chars: ${result.slice(0, 500)}`)
     }
@@ -278,6 +300,28 @@ function gitCommit(date, designBrief) {
 }
 
 async function main() {
+  // Validate environment before starting
+  if (!MOCK_MODE && !process.env.ANTHROPIC_API_KEY) {
+    console.error('Error: ANTHROPIC_API_KEY environment variable is not set.')
+    console.error('  Set ANTHROPIC_API_KEY in .env, or use MOCK_MODE=true to use local Claude Code CLI.')
+    process.exit(1)
+  }
+
+  if (MOCK_MODE) {
+    try {
+      execSync('claude --version', { encoding: 'utf8', timeout: 5000 })
+    } catch {
+      console.error('Error: MOCK_MODE requires the `claude` CLI (Claude Code) to be installed.')
+      console.error('  Install: https://claude.ai/download')
+      process.exit(1)
+    }
+  }
+
+  if (!MOCK_MODE) {
+    const { default: Anthropic } = await import('@anthropic-ai/sdk')
+    client = new Anthropic()
+  }
+
   console.log(`\n=== Daily Redesign Pipeline ===`)
   console.log(`DRY_RUN: ${DRY_RUN}`)
   console.log(`MOCK_MODE: ${MOCK_MODE}`)
@@ -452,7 +496,10 @@ async function main() {
   process.exit(1)
 }
 
-main().catch((err) => {
-  console.error('Fatal error:', err)
-  process.exit(1)
-})
+// Run main only when executed directly (not when imported for testing)
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main().catch((err) => {
+    console.error('Fatal error:', err)
+    process.exit(1)
+  })
+}
