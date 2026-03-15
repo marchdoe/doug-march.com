@@ -39,3 +39,42 @@ describe('buildMessages — notes field', () => {
     expect(prompt).not.toContain('### Notes from site owner')
   })
 })
+
+describe('buildMessages — brief framing', () => {
+  it('frames the brief with per-section design instructions when brief is provided', () => {
+    const context = {
+      ...baseContext,
+      brief: `## Palette Direction\nWarm and golden.\n\n## Layout Energy\nSpacious and relaxed.\n\n## Tension\nNo tension today.\n\n## Required Elements\n- Tigers win badge: celebratory (source: sports)\n\n## Accent Notes\n- music (GBV): lo-fi texture\n\n## Anchor Signal\nSpring Saturday dominates.`,
+    }
+    const { messages } = buildMessages(context)
+    const prompt = messages[0].content
+
+    // Should frame the brief as design requirements
+    expect(prompt).toContain('Palette Direction')
+    expect(prompt).toContain('elements/preset.ts')
+    expect(prompt).toContain('Required Elements')
+    expect(prompt).toContain('MUST include')
+  })
+
+  it('includes design-dimension mapping when brief is provided', () => {
+    const context = {
+      ...baseContext,
+      brief: `## Palette Direction\nCold and stark.`,
+    }
+    const { messages } = buildMessages(context)
+    const prompt = messages[0].content
+
+    // Should explain what each brief section drives
+    expect(prompt).toContain('color tokens')
+    expect(prompt).toContain('Layout')
+  })
+
+  it('falls back to raw signals when no brief is provided', () => {
+    const { messages } = buildMessages(baseContext)
+    const prompt = messages[0].content
+
+    // Should use the old formatSignals path
+    expect(prompt).toContain("Today's Signals")
+    expect(prompt).toContain('Chicago')
+  })
+})
