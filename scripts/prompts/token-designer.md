@@ -32,6 +32,43 @@ You must also produce `rationale` and `design_brief` fields in your JSON respons
 - Include globalCss, conditions, theme.tokens, and theme.semanticTokens
 - `app/routes/__root.tsx` must keep its existing structure — only update the `links` array in `head()` for font loading. Keep the preconnect hints for fonts.googleapis.com and fonts.gstatic.com.
 
+### CRITICAL: globalCss token reference syntax
+
+In `globalCss`, reference tokens by NAME, NOT by CSS variable. PandaCSS generates the CSS variables — you provide token names.
+
+CORRECT:
+```typescript
+globalCss: {
+  body: {
+    fontFamily: 'serif',        // references fonts.serif token
+    background: 'bg',           // references semanticTokens.colors.bg
+    color: 'text',              // references semanticTokens.colors.text
+  },
+  a: { color: 'accent' },      // references semanticTokens.colors.accent
+}
+```
+
+WRONG (do NOT do this):
+```typescript
+globalCss: {
+  body: {
+    fontFamily: 'var(--fonts-body)',      // WRONG — raw CSS variable
+    backgroundColor: 'var(--colors-bg)', // WRONG — raw CSS variable
+    color: 'var(--colors-text)',          // WRONG — raw CSS variable
+  },
+}
+```
+
+The same applies in semantic tokens — reference base tokens with `{curly.brace.syntax}`:
+```typescript
+semanticTokens: {
+  colors: {
+    bg: { value: { base: '{colors.stone.800}', _light: '{colors.stone.50}' } },
+    text: { value: { base: '{colors.stone.100}', _light: '{colors.stone.700}' } },
+  },
+}
+```
+
 ## Response Format
 
 Respond using this exact delimiter format. Write the COMPLETE file contents after each ===FILE:path=== marker. No JSON wrapping, no code fences — just the delimiters and raw file content.
