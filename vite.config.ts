@@ -131,6 +131,23 @@ function pipelineApiPlugin(): Plugin {
         })
       })
 
+      // API: re-collect signals
+      server.middlewares.use('/api/collect-signals', (_req, res) => {
+        try {
+          console.log('[collect-signals] refreshing...')
+          spawnSync('node', [resolve('scripts/collect-signals.js')], {
+            cwd: resolve('.'),
+            timeout: 15000,
+            stdio: 'inherit',
+          })
+          res.writeHead(200, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ ok: true }))
+        } catch (err) {
+          res.writeHead(500, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ error: String(err) }))
+        }
+      })
+
       // SSE: run pipeline
       // In local mode (mock=true): uses `claude` CLI with Max plan subscription
       // In production mode: uses Anthropic API directly

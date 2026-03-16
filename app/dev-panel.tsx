@@ -222,6 +222,23 @@ export function DevPanel() {
       .catch(() => setLoading(false))
   }, [])
 
+  // ── Refresh signals ───────────────────────────────────────────────────────
+  const [refreshingSignals, setRefreshingSignals] = useState(false)
+  const handleRefreshSignals = useCallback(async () => {
+    setRefreshingSignals(true)
+    try {
+      await fetch('/api/collect-signals')
+      const resp = await fetch('/api/dev-data')
+      const data = await resp.json()
+      setSignals(data.signals)
+      setMeta(data.meta ?? null)
+      setMoodOverride(data.signals?.mood_override ?? '')
+      setNotes(data.signals?.notes ?? '')
+    } finally {
+      setRefreshingSignals(false)
+    }
+  }, [])
+
   // ── Cleanup ────────────────────────────────────────────────────────────────
   useEffect(() => {
     return () => {
@@ -384,11 +401,99 @@ export function DevPanel() {
       <div style={s.layout}>
         {/* Sidebar */}
         <nav style={s.sidebar}>
+          {/* Run Pipeline — prominent at top */}
+          <button
+            onClick={() => setActivePane('run')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              width: 'calc(100% - 16px)',
+              margin: '8px 8px 4px',
+              padding: '10px 12px',
+              background: activePane === 'run'
+                ? 'rgba(0,229,255,0.12)'
+                : `linear-gradient(135deg, rgba(0,229,255,0.08), rgba(74,143,212,0.06))`,
+              border: `1px solid ${activePane === 'run' ? c.cyan : 'rgba(0,229,255,0.15)'}`,
+              borderRadius: '6px',
+              color: activePane === 'run' ? c.cyan : c.secondary,
+              fontSize: '11px',
+              fontFamily: c.font,
+              fontWeight: 600,
+              cursor: 'pointer',
+              textAlign: 'left' as const,
+              letterSpacing: '.03em',
+              transition: 'all 0.15s ease',
+            }}
+          >
+            {pipelineStatus === 'running' ? (
+              <span style={{
+                width: '7px', height: '7px', borderRadius: '50%',
+                background: c.orange, flexShrink: 0,
+                animation: 'pulse-dot 1.5s ease-in-out infinite',
+              }} />
+            ) : (
+              <span style={{ fontSize: '10px' }}>&#9654;</span>
+            )}
+            <span>{pipelineStatus === 'running' ? 'Running...' : 'Run Pipeline'}</span>
+          </button>
+
+          <div style={{ borderBottom: `1px solid ${c.border}`, margin: '8px 14px' }} />
+
+          {/* Navigation */}
           <div style={{ flex: 1 }}>
             <SidebarItem
-              label="Pipeline"
+              label="Signals"
               active={activePane === 'pipeline'}
               onClick={() => setActivePane('pipeline')}
+              widget={
+                <span
+                  role="button"
+                  title="Refresh signals"
+                  onClick={(e) => { e.stopPropagation(); handleRefreshSignals() }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    background: refreshingSignals ? 'rgba(249,115,22,0.12)' : c.cardBg,
+                    border: `1px solid ${refreshingSignals ? 'rgba(249,115,22,0.3)' : c.border}`,
+                    borderRadius: '10px',
+                    padding: '1px 7px 1px 5px',
+                    cursor: 'pointer',
+                    fontSize: '9px',
+                    fontFamily: c.font,
+                    color: refreshingSignals ? c.orange : c.muted,
+                    lineHeight: '16px',
+                    transition: 'all 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!refreshingSignals) {
+                      const el = e.currentTarget
+                      el.style.borderColor = 'rgba(0,229,255,0.3)'
+                      el.style.color = c.cyan
+                      el.style.background = 'rgba(0,229,255,0.08)'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!refreshingSignals) {
+                      const el = e.currentTarget
+                      el.style.borderColor = c.border
+                      el.style.color = c.muted
+                      el.style.background = c.cardBg
+                    }
+                  }}
+                >
+                  <span style={{
+                    fontSize: '11px',
+                    lineHeight: 1,
+                    display: 'inline-block',
+                    animation: refreshingSignals ? 'spin 0.8s linear infinite' : 'none',
+                  }}>
+                    ↻
+                  </span>
+                  <span>{refreshingSignals ? '...' : meta ? `${meta.providers_ok}` : '–'}</span>
+                </span>
+              }
             />
             <SidebarItem
               label="Archive"
@@ -400,14 +505,6 @@ export function DevPanel() {
               label="Prompt Inspector"
               active={activePane === 'inspector'}
               onClick={() => setActivePane('inspector')}
-            />
-          </div>
-          <div style={{ borderTop: `1px solid ${c.border}`, padding: '8px 0' }}>
-            <SidebarItem
-              label="Run Pipeline"
-              active={activePane === 'run'}
-              onClick={() => setActivePane('run')}
-              icon={pipelineStatus === 'running' ? 'amber-dot' : 'play'}
             />
           </div>
         </nav>
@@ -547,12 +644,13 @@ function DevHeader({ meta, pipelineStatus }: { meta: Meta | null; pipelineStatus
 
 // ─── Sidebar Item ────────────────────────────────────────────────────────────
 
-function SidebarItem({ label, active, onClick, badge, icon }: {
+function SidebarItem({ label, active, onClick, badge, icon, widget }: {
   label: string
   active: boolean
   onClick: () => void
   badge?: string
   icon?: 'play' | 'amber-dot'
+  widget?: React.ReactNode
 }) {
   return (
     <button
@@ -586,6 +684,7 @@ function SidebarItem({ label, active, onClick, badge, icon }: {
         }} />
       )}
       <span style={{ flex: 1 }}>{label}</span>
+      {widget}
       {badge && (
         <span style={{
           fontSize: '9px',
@@ -1017,6 +1116,10 @@ function PulseStyle() {
       @keyframes pulse {
         0%, 100% { opacity: 1; }
         50% { opacity: 0.4; }
+      }
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
       }
       button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible {
         outline: 2px solid #00E5FF;
