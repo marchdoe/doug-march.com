@@ -3,11 +3,11 @@ import { styled } from '../../styled-system/jsx'
 
 const Wrap = styled('div', {
   base: {
-    paddingBottom: '12',
-    marginBottom: '10',
-    borderBottomWidth: '2px',
+    paddingBottom: '8',
+    marginBottom: '8',
+    borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
-    borderBottomColor: 'accent.glow',
+    borderBottomColor: 'border',
   },
 })
 
@@ -17,9 +17,9 @@ const Statement = styled('p', {
     color: 'text',
     lineHeight: 'snug',
     fontStyle: 'italic',
-    maxWidth: '580px',
+    maxWidth: '560px',
     letterSpacing: 'tight',
-    '& strong': { color: 'accent', fontStyle: 'normal' },
+    '& strong': { color: 'accent', fontStyle: 'normal', fontWeight: 'bold' },
   },
 })
 

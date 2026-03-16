@@ -2,48 +2,27 @@ import { Link } from '@tanstack/react-router'
 import type { Project } from '../content/types'
 import { styled } from '../../styled-system/jsx'
 
-const RowLink = styled(Link, {
-  base: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    paddingTop: '1.2rem',
-    paddingBottom: '1.2rem',
-    cursor: 'pointer',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'accent.glow',
-    transitionProperty: 'padding-left, background',
-    transitionDuration: '0.3s',
-    transitionTimingFunction: 'default',
-    _hover: { paddingLeft: '1rem', background: 'accent.glow' },
-  },
-})
+const rowBase = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  paddingTop: '0.9rem',
+  paddingBottom: '0.9rem',
+  cursor: 'pointer',
+  borderBottomWidth: '1px',
+  borderBottomStyle: 'solid',
+  borderBottomColor: 'border',
+  transitionProperty: 'padding-left, background',
+  transitionDuration: 'base',
+  transitionTimingFunction: 'default',
+  _hover: { paddingLeft: '0.75rem', background: 'accent.glow' },
+} as const
 
-const RowLinkExt = styled('a', {
-  base: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    paddingTop: '1.2rem',
-    paddingBottom: '1.2rem',
-    cursor: 'pointer',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'accent.glow',
-    transitionProperty: 'padding-left, background',
-    transitionDuration: '0.3s',
-    transitionTimingFunction: 'default',
-    _hover: { paddingLeft: '1rem', background: 'accent.glow' },
-  },
-})
+const RowLink = styled(Link, { base: rowBase })
+const RowLinkExt = styled('a', { base: rowBase })
 
 const Left = styled('div', {
-  base: {
-    display: 'flex',
-    alignItems: 'baseline',
-    gap: '4',
-  },
+  base: { display: 'flex', alignItems: 'baseline', gap: '3' },
 })
 
 const Name = styled('div', {
@@ -60,7 +39,6 @@ const Name = styled('div', {
   variants: {
     experiment: {
       true: {
-        fontWeight: 'regular',
         fontSize: 'base',
         color: 'text.mid',
         _groupHover: { color: 'accent' },
@@ -75,16 +53,7 @@ const Tag = styled('div', {
     fontFamily: 'mono',
     letterSpacing: 'wider',
     color: 'text.dim',
-    opacity: '0.3',
-    fontWeight: 'bold',
-  },
-})
-
-const Right = styled('div', {
-  base: {
-    display: 'flex',
-    alignItems: 'baseline',
-    gap: '3',
+    opacity: '0.4',
   },
 })
 
@@ -93,7 +62,7 @@ const Year = styled('div', {
     fontSize: 'xs',
     fontFamily: 'mono',
     color: 'text.dim',
-    opacity: '0.25',
+    opacity: '0.3',
     transitionProperty: 'opacity, color',
     transitionDuration: 'base',
     transitionTimingFunction: 'default',
@@ -106,19 +75,15 @@ type Props = { project: Project; index: number }
 export function ProjectRow({ project, index }: Props) {
   const isExperiment = project.depth === 'lightweight'
   const yearLabel = project.externalUrl ? `${project.year} ↗` : `${project.year}`
-
   const inner = (
     <>
       <Left>
         <Name experiment={isExperiment ? true : undefined}>{project.title}</Name>
         <Tag>{project.type}</Tag>
       </Left>
-      <Right>
-        <Year>{yearLabel}</Year>
-      </Right>
+      <Year>{yearLabel}</Year>
     </>
   )
-
   if (project.externalUrl && isExperiment) {
     return (
       <RowLinkExt href={project.externalUrl} target="_blank" rel="noopener noreferrer" data-group>
@@ -126,7 +91,6 @@ export function ProjectRow({ project, index }: Props) {
       </RowLinkExt>
     )
   }
-
   return (
     <RowLink to="/work/$slug" params={{ slug: project.slug } as any} data-group>
       {inner}

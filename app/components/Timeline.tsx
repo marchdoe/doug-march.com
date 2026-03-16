@@ -4,13 +4,13 @@ import { styled } from '../../styled-system/jsx'
 const Item = styled('div', {
   base: {
     display: 'grid',
-    gridTemplateColumns: '60px 1fr',
-    columnGap: '8',
-    paddingTop: '6',
-    paddingBottom: '6',
+    gridTemplateColumns: '52px 1fr',
+    columnGap: '6',
+    paddingTop: '5',
+    paddingBottom: '5',
     borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
-    borderBottomColor: 'accent.glow',
+    borderBottomColor: 'border',
   },
 })
 
@@ -22,14 +22,12 @@ const Year = styled('div', {
     color: 'text.dim',
     paddingTop: '0.2rem',
     textAlign: 'right',
-    opacity: '0.35',
+    opacity: '0.4',
     letterSpacing: 'wide',
   },
 })
 
-const Content = styled('div', {
-  base: {},
-})
+const Content = styled('div', { base: {} })
 
 const Role = styled('div', {
   base: {
@@ -37,7 +35,7 @@ const Role = styled('div', {
     fontWeight: 'regular',
     fontStyle: 'italic',
     color: 'text',
-    marginBottom: '0.3rem',
+    marginBottom: '0.25rem',
   },
 })
 
@@ -48,12 +46,10 @@ const Company = styled('div', {
     fontWeight: 'bold',
     color: 'text.dim',
     letterSpacing: 'wider',
-    marginBottom: '0.5rem',
+    marginBottom: '0.4rem',
   },
   variants: {
-    current: {
-      true: { color: 'accent' },
-    },
+    current: { true: { color: 'accent' } },
   },
 })
 

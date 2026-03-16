@@ -21,12 +21,10 @@ export const Route = createRootRoute({
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap',
       },
     ],
-    scripts: [
-      { children: THEME_INIT_SCRIPT },
-    ],
+    scripts: [{ children: THEME_INIT_SCRIPT }],
   }),
   notFoundComponent: NotFound,
   component: RootComponent,
@@ -41,9 +39,7 @@ function RootComponent() {
   )
 }
 
-const Wrap = styled('div', {
-  base: { paddingTop: '12' },
-})
+const Wrap = styled('div', { base: { paddingTop: '10' } })
 
 const Code = styled('div', {
   base: {
@@ -51,7 +47,7 @@ const Code = styled('div', {
     fontFamily: 'mono',
     letterSpacing: 'widest',
     color: 'text.dim',
-    opacity: '0.4',
+    opacity: '0.5',
     marginBottom: '4',
   },
 })
@@ -71,7 +67,7 @@ const Heading = styled('div', {
 const Message = styled('p', {
   base: {
     fontSize: 'sm',
-    color: 'text.dim',
+    color: 'text.mid',
     lineHeight: 'normal',
     marginBottom: '8',
   },
@@ -99,7 +95,7 @@ function NotFound() {
       <Wrap>
         <Code>404</Code>
         <Heading>Not Found</Heading>
-        <Message>The page you're looking for doesn't exist or has been moved.</Message>
+        <Message>The page you are looking for does not exist or has been moved.</Message>
         <BackLink to={'/' as any}>← back to work</BackLink>
       </Wrap>
     </Layout>

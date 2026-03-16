@@ -17,17 +17,22 @@ const BackLink = styled(Link, {
   base: {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: '0.4rem',
+    gap: '2',
     fontSize: '2xs',
     fontFamily: 'mono',
     fontWeight: 'bold',
     color: 'text.dim',
-    letterSpacing: 'wider',
+    letterSpacing: 'ruled',
     marginBottom: '10',
     transitionProperty: 'color',
     transitionDuration: 'base',
     transitionTimingFunction: 'default',
     _hover: { color: 'accent' },
+    _focusVisible: {
+      outline: '2px solid',
+      outlineColor: 'accent',
+      outlineOffset: '3px',
+    },
   },
 })
 
@@ -35,9 +40,9 @@ const Header = styled('div', {
   base: {
     paddingBottom: '10',
     marginBottom: '10',
-    borderBottomWidth: '2px',
+    borderBottomWidth: '1px',
     borderBottomStyle: 'solid',
-    borderBottomColor: 'accent.glow',
+    borderBottomColor: 'border',
   },
 })
 
@@ -46,9 +51,9 @@ const TypeLabel = styled('div', {
     fontSize: '2xs',
     fontFamily: 'mono',
     fontWeight: 'bold',
-    letterSpacing: 'widest',
+    letterSpacing: 'ruled',
     color: 'accent',
-    opacity: '0.4',
+    opacity: '0.45',
     marginBottom: '5',
   },
 })
@@ -68,17 +73,24 @@ const Title = styled('div', {
 const Meta = styled('div', {
   base: {
     display: 'flex',
-    gap: '10',
+    gap: '8',
     flexWrap: 'wrap',
   },
 })
 
 const MetaItem = styled('div', {
-  base: { display: 'flex', flexDirection: 'column', gap: '0.3rem' },
+  base: { display: 'flex', flexDirection: 'column', gap: '1' },
 })
 
 const MetaLabel = styled('div', {
-  base: { fontSize: '2xs', fontFamily: 'mono', fontWeight: 'bold', letterSpacing: 'widest', color: 'text.dim', opacity: '0.35' },
+  base: {
+    fontSize: '2xs',
+    fontFamily: 'mono',
+    fontWeight: 'bold',
+    letterSpacing: 'ruled',
+    color: 'text.dim',
+    opacity: '0.38',
+  },
 })
 
 const MetaValue = styled('div', {
@@ -94,9 +106,9 @@ const SectionTitle = styled('div', {
     fontSize: '2xs',
     fontFamily: 'mono',
     fontWeight: 'bold',
-    letterSpacing: 'widest',
+    letterSpacing: 'ruled',
     color: 'accent',
-    opacity: '0.35',
+    opacity: '0.38',
     marginBottom: '4',
   },
 })
@@ -106,6 +118,7 @@ const Body = styled('div', {
     fontSize: 'base',
     color: 'text.mid',
     lineHeight: 'normal',
+    maxWidth: '58ch',
   },
 })
 
@@ -125,20 +138,19 @@ const Tag = styled('div', {
     fontWeight: 'bold',
     letterSpacing: 'wider',
     color: 'text.dim',
-    paddingTop: '0.4rem',
-    paddingBottom: '0.4rem',
-    paddingLeft: '0.7rem',
-    paddingRight: '0.7rem',
+    paddingTop: '1',
+    paddingBottom: '1',
+    paddingLeft: '3',
+    paddingRight: '3',
     borderWidth: '1px',
     borderStyle: 'solid',
-    borderColor: 'accent',
-    borderRadius: '0',
-    opacity: '0.4',
+    borderColor: 'border.mid',
+    opacity: '0.55',
   },
 })
 
 const Ctas = styled('div', {
-  base: { display: 'flex', gap: '6', marginTop: '12' },
+  base: { display: 'flex', gap: '6', marginTop: '12', flexWrap: 'wrap' },
 })
 
 const BtnGreen = styled('a', {
@@ -152,9 +164,14 @@ const BtnGreen = styled('a', {
     color: 'accent',
     letterSpacing: 'wider',
     transitionProperty: 'gap',
-    transitionDuration: '0.3s',
+    transitionDuration: 'base',
     transitionTimingFunction: 'default',
-    _hover: { gap: '1rem' },
+    _hover: { gap: '5' },
+    _focusVisible: {
+      outline: '2px solid',
+      outlineColor: 'accent',
+      outlineOffset: '3px',
+    },
   },
 })
 
@@ -169,16 +186,19 @@ const BtnGhost = styled('a', {
     color: 'text.dim',
     letterSpacing: 'wider',
     transitionProperty: 'color, gap',
-    transitionDuration: '0.3s',
+    transitionDuration: 'base',
     transitionTimingFunction: 'default',
-    _hover: { color: 'accent', gap: '1rem' },
+    _hover: { color: 'accent', gap: '5' },
+    _focusVisible: {
+      outline: '2px solid',
+      outlineColor: 'accent',
+      outlineOffset: '3px',
+    },
   },
 })
 
 const LightCard = styled('div', {
-  base: {
-    marginBottom: '10',
-  },
+  base: { marginBottom: '10' },
 })
 
 const LightTitle = styled('div', {
@@ -198,6 +218,7 @@ const LightDesc = styled('div', {
     fontSize: 'base',
     color: 'text.mid',
     lineHeight: 'normal',
+    maxWidth: '58ch',
     marginBottom: '8',
   },
 })
@@ -205,17 +226,24 @@ const LightDesc = styled('div', {
 const QuickFacts = styled('div', {
   base: {
     display: 'flex',
-    gap: '10',
+    gap: '8',
     marginBottom: '10',
+    flexWrap: 'wrap',
   },
 })
 
-const Fact = styled('div', {
-  base: {},
-})
+const Fact = styled('div', { base: {} })
 
 const FactLabel = styled('div', {
-  base: { fontSize: '2xs', fontFamily: 'mono', fontWeight: 'bold', letterSpacing: 'widest', color: 'text.dim', opacity: '0.35', marginBottom: '0.4rem' },
+  base: {
+    fontSize: '2xs',
+    fontFamily: 'mono',
+    fontWeight: 'bold',
+    letterSpacing: 'ruled',
+    color: 'text.dim',
+    opacity: '0.38',
+    marginBottom: '1',
+  },
 })
 
 const FactValue = styled('div', {
@@ -249,7 +277,7 @@ function ProjectPage() {
           <>
             <SectionHead label="STACK" />
             <Tags style={{ marginTop: '0.5rem' }}>
-              {project.stack.map((s) => <Tag key={s}>{s.toUpperCase()}</Tag>)}
+              {project.stack.map((s: string) => <Tag key={s}>{s.toUpperCase()}</Tag>)}
             </Tags>
           </>
         )}
@@ -277,18 +305,27 @@ function ProjectPage() {
       </Header>
 
       {project.problem && (
-        <Section><SectionTitle>PROBLEM</SectionTitle><Body>{project.problem}</Body></Section>
+        <Section>
+          <SectionTitle>PROBLEM</SectionTitle>
+          <Body>{project.problem}</Body>
+        </Section>
       )}
       {project.approach && (
-        <Section><SectionTitle>APPROACH</SectionTitle><Body>{project.approach}</Body></Section>
+        <Section>
+          <SectionTitle>APPROACH</SectionTitle>
+          <Body>{project.approach}</Body>
+        </Section>
       )}
       {project.outcome && (
-        <Section><SectionTitle>OUTCOME</SectionTitle><Body>{project.outcome}</Body></Section>
+        <Section>
+          <SectionTitle>OUTCOME</SectionTitle>
+          <Body>{project.outcome}</Body>
+        </Section>
       )}
       {project.stack && (
         <Section>
           <SectionTitle>STACK</SectionTitle>
-          <Tags>{project.stack.map((s) => <Tag key={s}>{s.toUpperCase()}</Tag>)}</Tags>
+          <Tags>{project.stack.map((s: string) => <Tag key={s}>{s.toUpperCase()}</Tag>)}</Tags>
         </Section>
       )}
 

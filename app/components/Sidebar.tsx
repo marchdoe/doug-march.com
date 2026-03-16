@@ -4,68 +4,84 @@ import { styled } from '../../styled-system/jsx'
 
 const SidebarRoot = styled('aside', {
   base: {
+    width: '196px',
+    flexShrink: '0',
+    position: 'sticky',
+    top: '0',
+    height: '100vh',
+    overflowY: 'auto',
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: '6',
-    paddingBottom: '6',
-    paddingLeft: '8',
-    paddingRight: '8',
-    maxWidth: '960px',
-    width: '100%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    borderBottomWidth: '2px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'accent.glow',
+    flexDirection: 'column',
+    paddingTop: '8',
+    paddingLeft: '5',
+    paddingRight: '5',
+    paddingBottom: '8',
+    borderRightWidth: '1px',
+    borderRightStyle: 'solid',
+    borderRightColor: 'border',
+    background: 'bg.side',
     _mobile: {
-      paddingTop: '3',
-      paddingBottom: '3',
+      width: '100%',
+      height: 'auto',
+      position: 'static',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingTop: '4',
+      paddingBottom: '4',
       paddingLeft: '5',
       paddingRight: '5',
-      zIndex: '100',
+      borderRightWidth: '0',
+      borderBottomWidth: '1px',
+      borderBottomStyle: 'solid',
+      borderBottomColor: 'border',
+      overflowY: 'visible',
     },
   },
 })
 
 const Identity = styled('div', {
   base: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '4',
+    marginBottom: '8',
+    _mobile: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '3',
+      marginBottom: '0',
+    },
   },
 })
 
 const LogoWrap = styled('div', {
   base: {
-    width: '24px',
-    height: '24px',
+    width: '18px',
+    height: '18px',
     flexShrink: '0',
-    borderRadius: '0',
-    background: 'transparent',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    opacity: '0.4',
+    opacity: '0.22',
+    marginBottom: '5',
     '& img': { width: '100%', height: '100%' },
+    _mobile: {
+      marginBottom: '0',
+    },
   },
 })
 
-const IdText = styled('div', {
+const IdTextBlock = styled('div', {
   base: {
     display: 'flex',
     flexDirection: 'column',
+    gap: '1',
   },
 })
 
 const IdName = styled('div', {
   base: {
-    fontSize: '2xs',
+    fontSize: 'xs',
     fontFamily: 'mono',
     fontWeight: 'bold',
-    letterSpacing: 'widest',
+    letterSpacing: 'wider',
     color: 'text',
-    lineHeight: 'snug',
+    lineHeight: 'tight',
   },
 })
 
@@ -74,7 +90,8 @@ const IdRole = styled('div', {
     fontSize: '2xs',
     fontFamily: 'mono',
     color: 'text.dim',
-    letterSpacing: 'wider',
+    letterSpacing: 'wide',
+    opacity: '0.45',
     _mobile: { display: 'none' },
   },
 })
@@ -82,45 +99,46 @@ const IdRole = styled('div', {
 const Nav = styled('nav', {
   base: {
     display: 'flex',
-    alignItems: 'center',
-    gap: '6',
-    _mobile: {
-      gap: '4',
-    },
+    flexDirection: 'column',
+    gap: '1',
+    _mobile: { display: 'none' },
   },
 })
 
 const navLinkConfig = {
   base: {
+    display: 'block',
     fontSize: '2xs',
     fontFamily: 'mono',
     fontWeight: 'bold',
+    letterSpacing: 'ruled',
     color: 'text.dim',
-    display: 'flex',
-    alignItems: 'center',
-    letterSpacing: 'wider',
-    transitionProperty: 'color',
+    paddingTop: '2',
+    paddingBottom: '2',
+    paddingLeft: '3',
+    borderLeftWidth: '1px',
+    borderLeftStyle: 'solid',
+    borderLeftColor: 'border',
+    transitionProperty: 'color, border-color',
     transitionDuration: 'base',
     transitionTimingFunction: 'default',
-    _hover: {
-      color: 'accent',
-    },
-    _mobile: {
-      fontSize: '2xs',
+    _hover: { color: 'accent', borderLeftColor: 'accent.dim' },
+    _focusVisible: {
+      outline: '2px solid',
+      outlineColor: 'accent',
+      outlineOffset: '2px',
     },
   },
   variants: {
     active: {
       true: {
         color: 'accent',
+        borderLeftColor: 'accent',
       },
     },
     ext: {
       true: {
-        color: 'text.dim',
-        fontSize: '2xs',
-        opacity: '0.35',
-        _mobile: { display: 'none' },
+        opacity: '0.38',
       },
     },
   },
@@ -129,22 +147,55 @@ const navLinkConfig = {
 const NavLinkInternal = styled(Link, navLinkConfig)
 const NavLinkExternal = styled('a', navLinkConfig)
 
+const FlexSpacer = styled('div', { base: { flex: '1' } })
+
+const EveSignal = styled('div', {
+  base: {
+    paddingTop: '5',
+    borderTopWidth: '1px',
+    borderTopStyle: 'solid',
+    borderTopColor: 'border',
+    _mobile: { display: 'none' },
+  },
+})
+
+const EveDot = styled('div', {
+  base: {
+    width: '5px',
+    height: '5px',
+    borderRadius: '50%',
+    background: 'accent',
+    opacity: '0.45',
+    marginBottom: '3',
+  },
+})
+
+const EveLabel = styled('div', {
+  base: {
+    fontSize: '2xs',
+    fontFamily: 'mono',
+    color: 'accent',
+    opacity: '0.38',
+    letterSpacing: 'wide',
+    lineHeight: 'snug',
+  },
+})
+
 export function Sidebar() {
   const location = useLocation()
-
   return (
     <SidebarRoot>
       <Identity>
         <LogoWrap>
           <img src={logoUrl} alt="Doug March logo" />
         </LogoWrap>
-        <IdText>
+        <IdTextBlock>
           <IdName>DOUG MARCH</IdName>
-          <IdRole>DESIGNER & DEVELOPER</IdRole>
-        </IdText>
+          <IdRole>DESIGNER &amp; DEVELOPER</IdRole>
+        </IdTextBlock>
       </Identity>
 
-      <Nav>
+      <Nav aria-label="Primary navigation">
         <NavLinkInternal
           to="/"
           active={location.pathname === '/' ? true : undefined}
@@ -163,7 +214,7 @@ export function Sidebar() {
           rel="noopener noreferrer"
           ext={true}
         >
-          SPACEMAN.LLC
+          SPACEMAN.LLC ↗
         </NavLinkExternal>
         <NavLinkInternal
           to="/elements"
@@ -173,6 +224,13 @@ export function Sidebar() {
           ELEMENTS
         </NavLinkInternal>
       </Nav>
+
+      <FlexSpacer />
+
+      <EveSignal aria-hidden="true">
+        <EveDot />
+        <EveLabel>ST. PATRICK'S<br />EVE</EveLabel>
+      </EveSignal>
     </SidebarRoot>
   )
 }
