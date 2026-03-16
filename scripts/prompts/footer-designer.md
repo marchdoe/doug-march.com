@@ -26,7 +26,9 @@ The MobileFooter must render:
 
 ## Technical Requirements
 
-- Import from `'../../styled-system/jsx'` and `'../../styled-system/css'`
+- Import ONLY from `'../../styled-system/jsx'` and `'../../styled-system/css'` for styling
+- For routing links, use `<a href="/">` tags — do NOT import from `@tanstack/react-router`, `@remix-run/react`, `react-router`, or any routing library
+- Do NOT add any imports that are not already available in the project. The only available imports are: `react`, `../../styled-system/jsx`, `../../styled-system/css`
 - Export the component as `MobileFooter`
 - Use only semantic tokens and spacing values from preset.ts
 
