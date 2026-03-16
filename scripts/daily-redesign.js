@@ -29,18 +29,49 @@ import { buildMessages } from './utils/prompt-builder.js'
 import { backup, writeFiles, restore, ROOT } from './utils/file-manager.js'
 import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
+import { runAgentSwarm } from './design-agents.js'
 
 const MAX_ATTEMPTS = 3
 const DRY_RUN = process.env.DRY_RUN === 'true'
 const MOCK_MODE = process.env.MOCK_MODE === 'true'
 
 /** CLI args for claude in stream-json mode. Exported for testing. */
+/** Path to pipeline-specific settings that disables hooks (prevents superpowers
+ *  SessionStart hook from injecting skill-check instructions that cause tool-call loops). */
+const PIPELINE_SETTINGS = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  'pipeline-settings.json'
+)
+
+/** System prompt for the designer CLI call. This replaces Claude Code's default
+ *  system prompt so the model acts as a designer, not a coding assistant.
+ *  The design dimensions and guidance from prompt-builder.js SYSTEM_PROMPT are
+ *  included in the user message — this prompt establishes the role and response format. */
+const DESIGNER_SYSTEM_PROMPT = `You are an expert web designer working in an automated pipeline. You receive a creative brief and technical context, and you produce a complete site redesign as a JSON response.
+
+You have exceptional taste and deep knowledge of design fundamentals:
+- **Alignment and grid discipline** — Every element should feel intentionally placed. Use a consistent grid. Align elements to shared edges and baselines.
+- **Consistent spacing** — Use a spacing scale (4px, 8px, 16px, 24px, 32px, 48px, 64px). Never use arbitrary pixel values. Rhythm comes from repetition.
+- **Visual hierarchy** — Establish clear levels: one dominant element, supporting elements, and background elements. Not everything can be loud.
+- **Typographic hierarchy** — Headings, subheads, body, captions, and labels should have clear, distinct sizes and weights. Use 2-3 levels of contrast, not 7.
+- **Color restraint** — 2-3 colors maximum plus neutrals. A limited palette used well beats a rainbow. Let one accent color do the work.
+- **Whitespace as design** — Empty space is not wasted space. It creates breathing room, groups related elements, and directs attention.
+- **Contrast and readability** — Dark text on light backgrounds or light text on dark. Never put low-contrast text on a busy background. Body text must be effortlessly readable.
+- **Component consistency** — Cards should look like cards. Lists should look like lists. Borders, shadows, and radii should be consistent within a family.
+
+You respond with ONLY a JSON object. No tools, no file operations, no preamble, no explanation outside the JSON. Your entire response must be valid JSON.`
+
 export const CLAUDE_CLI_ARGS = [
   '-p',
   '--verbose',
   '--output-format', 'stream-json',
   '--max-turns', '1',
+  '--model', 'sonnet',
+  '--fallback-model', 'haiku',
   '--tools', '',
+  '--disable-slash-commands',
+  '--settings', PIPELINE_SETTINGS,
+  '--system-prompt', DESIGNER_SYSTEM_PROMPT,
 ]
 
 // Validation and SDK init are deferred to main() so importing for tests doesn't trigger side effects
@@ -83,7 +114,9 @@ async function callClaudeCLI(system, userPrompt, buildError) {
 
 You MUST include elements/preset.ts at minimum. Include complete file contents — not diffs.`
 
-  // Combine system + user into a single prompt (avoids shell escaping issues)
+  // Combine system + user into a single prompt for stdin.
+  // The --system-prompt flag overrides Claude Code's default system prompt,
+  // and --settings disables hooks, giving us a clean non-agentic context.
   const combinedPrompt = `${system}\n\n---\n\n${fullPrompt}`
 
   // Write prompt to temp file (it's too long for command line args)
@@ -114,8 +147,9 @@ You MUST include elements/preset.ts at minimum. Include complete file contents �
     let lineBuffer = ''  // Buffer for incomplete JSON lines
     let charCount = 0  // Track characters received for progress
 
-    // Pipe the prompt file to stdin
+    // Pipe the prompt file to stdin, ignoring EPIPE if the child exits early
     const promptStream = createReadStream(promptPath)
+    child.stdin.on('error', () => {}) // swallow EPIPE
     promptStream.pipe(child.stdin)
 
     child.stdout.on('data', (chunk) => {
@@ -153,10 +187,20 @@ You MUST include elements/preset.ts at minimum. Include complete file contents �
     })
     child.stderr.on('data', (chunk) => { stderr += chunk.toString() })
 
-    const timeout = setTimeout(() => {
+    const timeout = setTimeout(async () => {
       child.kill()
-      reject(new Error('Claude CLI timed out after 10 minutes'))
-    }, 600000) // 10 minute timeout
+      // Check for concurrent claude sessions that may be blocking throughput
+      let concurrencyWarning = ''
+      try {
+        const { execSync: execS } = await import('child_process')
+        const procs = execS("ps aux | grep '[c]laude' | grep -v grep | grep -v '.sh'", { encoding: 'utf8' }).trim().split('\n')
+        const interactive = procs.filter(p => !p.includes('-p') && !p.includes('ShipIt'))
+        if (interactive.length > 0) {
+          concurrencyWarning = `\n\n⚠ ${interactive.length} other Claude Code session(s) detected. The Max plan CLI shares a per-account connection pool — concurrent sessions may block pipeline throughput. Try closing idle sessions or running the pipeline when no interactive sessions are active.`
+        }
+      } catch {}
+      reject(new Error(`Claude CLI timed out after 20 minutes (generated ${(charCount / 1024).toFixed(0)}KB before timeout)${concurrencyWarning}`))
+    }, 1200000) // 20 minute timeout
 
     child.on('close', (code) => {
       clearTimeout(timeout)
@@ -188,17 +232,28 @@ You MUST include elements/preset.ts at minimum. Include complete file contents �
     })
   })
 
-  // Parse the JSON response
+  // Parse the JSON response — Claude may include preamble text or markdown fences
   let parsed
   try {
     parsed = JSON.parse(result)
   } catch {
-    // Strip any markdown fences if Claude included them
-    const cleaned = result.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+    // Try stripping markdown fences
+    let cleaned = result.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
     try {
       parsed = JSON.parse(cleaned)
-    } catch (e2) {
-      throw new Error(`Failed to parse Claude CLI response as JSON: ${e2.message}\nFirst 500 chars: ${result.slice(0, 500)}`)
+    } catch {
+      // Try extracting the first top-level JSON object from the response
+      const jsonStart = cleaned.indexOf('{')
+      if (jsonStart > 0) {
+        cleaned = cleaned.slice(jsonStart)
+        try {
+          parsed = JSON.parse(cleaned)
+        } catch (e3) {
+          throw new Error(`Failed to parse Claude CLI response as JSON: ${e3.message}\nFirst 500 chars: ${result.slice(0, 500)}`)
+        }
+      } else {
+        throw new Error(`Failed to parse Claude CLI response as JSON: no JSON object found\nFirst 500 chars: ${result.slice(0, 500)}`)
+      }
     }
   }
 
@@ -347,9 +402,27 @@ async function main() {
   // messages is a mutable array — we append to it on retries
 
   // Step 3: Backup current files
-  console.log('[3/4] Backing up current mutable files...')
-  const originalBackup = await backup(MUTABLE_FILES)
-  console.log(`  backed up ${originalBackup.size} files`)
+  let originalBackup
+  if (!MOCK_MODE) {
+    console.log('[3/4] Backing up current mutable files...')
+    originalBackup = await backup(MUTABLE_FILES)
+    console.log(`  backed up ${originalBackup.size} files`)
+  }
+
+  if (MOCK_MODE) {
+    // Agent swarm handles its own backup/restore/retry/archive
+    console.log('[4/4] Running agent swarm...')
+    try {
+      const result = await runAgentSwarm(context)
+      console.log(`\ndesign_brief: ${result.design_brief}`)
+      console.log('\nMOCK_MODE=true — files written to disk, skipping git commit.')
+      console.log('Reload the site to see the new design.')
+      process.exit(0)
+    } catch (err) {
+      console.error(`\nAgent swarm failed: ${err.message}`)
+      process.exit(1)
+    }
+  }
 
   // Step 4: Retry loop
   console.log('[4/4] Starting generation loop...')
@@ -360,48 +433,32 @@ async function main() {
 
     let input, toolUseId, response
 
-    if (MOCK_MODE) {
-      console.log('  using Claude Code CLI (Max plan)...')
-      const userPrompt = messages[messages.length - 1]
-      const promptText = typeof userPrompt.content === 'string' ? userPrompt.content : userPrompt.content.map(b => b.text || b.content || '').join('\n')
-      const buildError = attempt > 1 ? messages[messages.length - 1]?.content?.find?.(b => b.type === 'tool_result')?.content : undefined
-      try {
-        input = await callClaudeCLI(system, promptText, typeof buildError === 'string' ? buildError : undefined)
-      } catch (err) {
-        console.error(`  Claude CLI error: ${err.message}`)
-        lastError = `Claude CLI error: ${err.message}`
-        break
-      }
-      toolUseId = 'cli-tool-use-id'
-      console.log(`  stop_reason: cli`)
-    } else {
-      // Call Claude
-      console.log('  calling Claude API (claude-opus-4-6)...')
-      try {
-        response = await client.messages.create({
-          model: 'claude-opus-4-6',
-          max_tokens: 16384,
-          system,
-          messages,
-          tools: [SUBMIT_REDESIGN_TOOL],
-          tool_choice: { type: 'tool', name: 'submit_redesign' },
-        })
-      } catch (err) {
-        console.error(`  Claude API error: ${err.message}`)
-        lastError = `Claude API error: ${err.message}`
-        break
-      }
+    // Call Claude
+    console.log('  calling Claude API (claude-opus-4-6)...')
+    try {
+      response = await client.messages.create({
+        model: 'claude-opus-4-6',
+        max_tokens: 16384,
+        system,
+        messages,
+        tools: [SUBMIT_REDESIGN_TOOL],
+        tool_choice: { type: 'tool', name: 'submit_redesign' },
+      })
+    } catch (err) {
+      console.error(`  Claude API error: ${err.message}`)
+      lastError = `Claude API error: ${err.message}`
+      break
+    }
 
-      console.log(`  stop_reason: ${response.stop_reason}`)
+    console.log(`  stop_reason: ${response.stop_reason}`)
 
-      // Extract tool use
-      try {
-        ;({ toolUseId, input } = extractToolUse(response))
-      } catch (err) {
-        console.error(`  ${err.message}`)
-        lastError = err.message
-        break
-      }
+    // Extract tool use
+    try {
+      ;({ toolUseId, input } = extractToolUse(response))
+    } catch (err) {
+      console.error(`  ${err.message}`)
+      lastError = err.message
+      break
     }
 
     console.log(`  design_brief: ${input.design_brief}`)
