@@ -92,4 +92,33 @@ describe('buildAgentPrompt', () => {
     expect(prompt).toContain('Bio.tsx')
     expect(prompt).toContain('const Bio')
   })
+
+  it('includes anti-anchoring instructions when reference files are present', () => {
+    const prompt = buildAgentPrompt('structure-agent', {
+      brief: 'brief text',
+      referenceFiles: [{ path: 'app/components/Layout.tsx', content: 'export function Layout() {}' }],
+      tokenContext: 'tokens',
+    })
+    expect(prompt).toContain('Do NOT use these as a design starting point')
+    expect(prompt).toContain('entirely new')
+    expect(prompt).toContain('Technical Reference ONLY')
+  })
+
+  it('does not include anti-anchoring instructions when no reference files', () => {
+    const prompt = buildAgentPrompt('token-designer', {
+      brief: 'brief text',
+      referenceFiles: [],
+      tokenContext: null,
+    })
+    expect(prompt).not.toContain('Do NOT use these as a design starting point')
+  })
+})
+
+describe('agent prompt files include anti-anchoring language', () => {
+  it('structure-agent.md tells the model to ignore previous layout', async () => {
+    const { readFile } = await import('fs/promises')
+    const content = await readFile('scripts/prompts/structure-agent.md', 'utf8')
+    expect(content).toContain('ignore their structure entirely')
+    expect(content).toContain('blank canvas')
+  })
 })
