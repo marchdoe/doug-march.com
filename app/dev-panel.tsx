@@ -501,11 +501,12 @@ export function DevPanel() {
               onClick={() => setActivePane('archive')}
               badge={archive.length > 0 ? String(archive.length) : undefined}
             />
-            <SidebarItem
+            {/* Prompt Inspector — coming soon, see backlog */}
+            {/* <SidebarItem
               label="Prompt Inspector"
               active={activePane === 'inspector'}
               onClick={() => setActivePane('inspector')}
-            />
+            /> */}
           </div>
         </nav>
 
