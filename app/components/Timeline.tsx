@@ -1,80 +1,115 @@
-import { timeline } from '../content/timeline'
-import { styled } from '../../styled-system/jsx'
-
-const Item = styled('div', {
-  base: {
-    display: 'grid',
-    gridTemplateColumns: '52px 1fr',
-    columnGap: '6',
-    paddingTop: '5',
-    paddingBottom: '5',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'border',
-  },
-})
-
-const Year = styled('div', {
-  base: {
-    fontSize: 'xs',
-    fontFamily: 'mono',
-    fontWeight: 'bold',
-    color: 'text.dim',
-    paddingTop: '0.2rem',
-    textAlign: 'right',
-    opacity: '0.4',
-    letterSpacing: 'wide',
-  },
-})
-
-const Content = styled('div', { base: {} })
-
-const Role = styled('div', {
-  base: {
-    fontSize: 'md',
-    fontWeight: 'regular',
-    fontStyle: 'italic',
-    color: 'text',
-    marginBottom: '0.25rem',
-  },
-})
-
-const Company = styled('div', {
-  base: {
-    fontSize: '2xs',
-    fontFamily: 'mono',
-    fontWeight: 'bold',
-    color: 'text.dim',
-    letterSpacing: 'wider',
-    marginBottom: '0.4rem',
-  },
-  variants: {
-    current: { true: { color: 'accent' } },
-  },
-})
-
-const Description = styled('div', {
-  base: {
-    fontSize: 'sm',
-    color: 'text.dim',
-    lineHeight: 'normal',
-    opacity: '0.5',
-  },
-})
+import { css } from '../../styled-system/css'
+import { Box } from '../../styled-system/jsx'
+import { timeline, type TimelineEntry } from '../content/timeline'
+import { SectionHead } from './SectionHead'
 
 export function Timeline() {
   return (
-    <div>
-      {timeline.map((entry) => (
-        <Item key={entry.year}>
-          <Year>{entry.year}</Year>
-          <Content>
-            <Role>{entry.role}</Role>
-            <Company current={entry.current ? true : undefined}>{entry.company}</Company>
-            <Description>{entry.description}</Description>
-          </Content>
-        </Item>
-      ))}
-    </div>
+    <Box
+      className={css({
+        mb: '8',
+      })}
+    >
+      <SectionHead label="Timeline" />
+
+      <div
+        className={css({
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0',
+        })}
+      >
+        {timeline.map((entry: TimelineEntry, i: number) => (
+          <div
+            key={`${entry.year}-${entry.company}-${i}`}
+            className={css({
+              display: 'grid',
+              gridTemplateColumns: '3.5rem 1fr',
+              gap: '4',
+              py: '4',
+              borderBottom: '1px solid',
+              borderBottomColor: 'border.DEFAULT',
+              _first: {
+                borderTop: '1px solid',
+                borderTopColor: 'border.DEFAULT',
+              },
+            })}
+          >
+            {/* Year column */}
+            <div
+              className={css({
+                pt: '1',
+              })}
+            >
+              <span
+                className={css({
+                  fontFamily: 'mono',
+                  fontSize: 'xs',
+                  fontWeight: 'medium',
+                  color: 'accent.DEFAULT',
+                  display: 'block',
+                  letterSpacing: 'tight',
+                })}
+              >
+                {entry.year}
+              </span>
+            </div>
+
+            {/* Content column */}
+            <div
+              className={css({
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1',
+              })}
+            >
+              <div
+                className={css({
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  gap: '2',
+                  flexWrap: 'wrap',
+                })}
+              >
+                <span
+                  className={css({
+                    fontFamily: 'serif',
+                    fontSize: 'base',
+                    fontWeight: 'bold',
+                    lineHeight: 'snug',
+                    color: 'text',
+                  })}
+                >
+                  {entry.role}
+                </span>
+                <span
+                  className={css({
+                    fontFamily: 'mono',
+                    fontSize: 'xs',
+                    fontWeight: 'regular',
+                    color: 'text.mid',
+                    letterSpacing: 'normal',
+                  })}
+                >
+                  {entry.company}
+                </span>
+              </div>
+
+              <p
+                className={css({
+                  fontFamily: 'serif',
+                  fontSize: 'sm',
+                  fontWeight: 'regular',
+                  lineHeight: 'normal',
+                  color: 'text.mid',
+                })}
+              >
+                {entry.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </Box>
   )
 }

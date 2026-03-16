@@ -1,107 +1,114 @@
+import { css } from '../../styled-system/css'
+import { Box, Flex } from '../../styled-system/jsx'
 import { featuredProject } from '../content/projects'
-import { styled } from '../../styled-system/jsx'
-
-const Card = styled('div', {
-  base: {
-    marginBottom: '8',
-    paddingBottom: '8',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'border',
-  },
-})
-
-const Dateline = styled('div', {
-  base: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '3',
-    marginBottom: '5',
-  },
-})
-
-const DatelineLabel = styled('span', {
-  base: {
-    fontSize: '2xs',
-    fontFamily: 'mono',
-    fontWeight: 'bold',
-    letterSpacing: 'ruled',
-    color: 'accent',
-    opacity: '0.6',
-  },
-})
-
-const DatelineLine = styled('span', {
-  base: {
-    flex: '1',
-    height: '1px',
-    background: 'border',
-    display: 'block',
-  },
-})
-
-const CardName = styled('div', {
-  base: {
-    fontSize: '2xl',
-    fontWeight: 'regular',
-    letterSpacing: 'tight',
-    color: 'text',
-    lineHeight: 'tight',
-    marginBottom: '4',
-    fontStyle: 'italic',
-  },
-})
-
-const CardDesc = styled('div', {
-  base: {
-    fontSize: 'base',
-    color: 'text.mid',
-    lineHeight: 'normal',
-    maxWidth: '520px',
-    marginBottom: '6',
-  },
-})
-
-const CardLink = styled('a', {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '2',
-    fontSize: '2xs',
-    fontFamily: 'mono',
-    fontWeight: 'bold',
-    color: 'accent',
-    letterSpacing: 'wider',
-    paddingTop: '2',
-    paddingBottom: '2',
-    paddingLeft: '3',
-    paddingRight: '3',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'accent',
-    opacity: '0.7',
-    transitionProperty: 'opacity, gap',
-    transitionDuration: 'base',
-    transitionTimingFunction: 'default',
-    _hover: { opacity: '1', gap: '0.75rem' },
-  },
-})
 
 export function FeaturedProject() {
-  if (!featuredProject) return null
   return (
-    <Card>
-      <Dateline>
-        <DatelineLabel>CURRENT PROJECT</DatelineLabel>
-        <DatelineLine />
-      </Dateline>
-      <CardName>{featuredProject.title}</CardName>
-      {featuredProject.problem && <CardDesc>{featuredProject.problem}</CardDesc>}
-      {featuredProject.externalUrl && (
-        <CardLink href={featuredProject.externalUrl} target="_blank" rel="noopener noreferrer">
-          {featuredProject.externalUrl.replace(/^https?:\/\//, '')} ↗
-        </CardLink>
-      )}
-    </Card>
+    <Box
+      className={css({
+        bg: 'bg.card',
+        borderTop: '3px solid',
+        borderTopColor: 'border.accent',
+        borderBottom: '1px solid',
+        borderBottomColor: 'border.DEFAULT',
+        borderLeft: '1px solid',
+        borderLeftColor: 'border.DEFAULT',
+        borderRight: '1px solid',
+        borderRightColor: 'border.DEFAULT',
+        p: '6',
+        mb: '8',
+        position: 'relative',
+      })}
+    >
+      {/* Fern tint overlay */}
+      <Box
+        className={css({
+          position: 'absolute',
+          inset: '0',
+          bg: 'accent.glow',
+          pointerEvents: 'none',
+        })}
+      />
+
+      <Flex
+        className={css({
+          flexDirection: 'column',
+          gap: '4',
+          position: 'relative',
+        })}
+      >
+        {/* Label */}
+        <span
+          className={css({
+            fontFamily: 'mono',
+            fontSize: '2xs',
+            fontWeight: 'medium',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'accent.DEFAULT',
+          })}
+        >
+          Featured Project
+        </span>
+
+        {/* Title */}
+        <h2
+          className={css({
+            fontFamily: 'serif',
+            fontSize: 'lg',
+            fontWeight: 'bold',
+            letterSpacing: 'tight',
+            lineHeight: 'snug',
+            color: 'text',
+          })}
+        >
+          {featuredProject.title}
+        </h2>
+
+        {/* Problem Statement */}
+        <p
+          className={css({
+            fontFamily: 'serif',
+            fontSize: 'base',
+            fontWeight: 'regular',
+            lineHeight: 'normal',
+            color: 'text.mid',
+            maxWidth: '60ch',
+          })}
+        >
+          {featuredProject.problem}
+        </p>
+
+        {/* External Link */}
+        <a
+          href={featuredProject.link ?? featuredProject.externalUrl ?? featuredProject.url ?? '#'}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={css({
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '2',
+            fontFamily: 'mono',
+            fontSize: 'xs',
+            fontWeight: 'medium',
+            letterSpacing: 'wide',
+            textTransform: 'uppercase',
+            color: 'accent.DEFAULT',
+            borderBottom: '1px solid',
+            borderBottomColor: 'border.accent',
+            pb: '1',
+            width: 'fit-content',
+            transition: 'color 0.12s ease, border-color 0.12s ease',
+            _hover: {
+              color: 'text',
+              borderBottomColor: 'border.mid',
+            },
+          })}
+        >
+          View Project
+          <span aria-hidden="true">↗</span>
+        </a>
+      </Flex>
+    </Box>
   )
 }

@@ -59,9 +59,15 @@ Examples of what Layout.tsx might look like:
 ## Technical Requirements
 
 - Preserve route exports: `export const Route = createFileRoute('...')({ component: ... })`
-- Preserve content imports from `'../content/projects'` and `'../content/timeline'`
-- Components import from `'../../styled-system/jsx'` and `'../../styled-system/css'`
+- Content imports (in route files, relative to `app/routes/`):
+  - `'../content/projects'` — exports: `featuredProject`, `selectedWork`, `experiments`, `projects` (array), plus `Project` type
+  - `'../content/timeline'` — exports: `timeline`, `capabilities`
+  - `'../content/about'` — exports: `identity`, `personal` (NOT `bio` — there is no `bio` export)
+- Layout.tsx imports from `'../../styled-system/jsx'` and `'../../styled-system/css'`
 - Routes import components from `'../components/...'`
+- Routes import `createFileRoute` from `'@tanstack/react-router'` — ONLY in route files
+- Do NOT use `@tanstack/react-router` in component files (Layout.tsx). For links in components, use plain `<a href="/">` tags.
+- Do NOT import from `@remix-run/react`, `react-router-dom`, or `next/link` anywhere.
 - Use only the semantic tokens and spacing values defined in preset.ts
 - Component exports you can import: FeaturedProject, SelectedWork, Experiments, SectionHead, ProjectRow, Bio, Timeline, Capabilities, Personal, Sidebar, MobileFooter
 

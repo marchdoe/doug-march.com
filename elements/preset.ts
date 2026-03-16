@@ -26,51 +26,54 @@ export const elementsPreset = definePreset({
   theme: {
     tokens: {
       colors: {
-        // Stone — humid overcast spring air; warm-gray, neither cold nor sunny
-        stone: {
-          50:  { value: '#F3F2EE' },
-          100: { value: '#E8E6E0' },
-          200: { value: '#CFCDC4' },
-          300: { value: '#A8A59C' },
-          400: { value: '#7B7870' },
-          500: { value: '#525047' },
-          600: { value: '#363430' },
-          700: { value: '#242220' },
-          800: { value: '#191817' },
-          900: { value: '#0F0F0E' },
+        // Fog — the primary neutral: barely-green gray, overcast spring air
+        // Neither warm stone nor cold slate — damp fog on new grass
+        fog: {
+          50:  { value: '#F0F2EE' },
+          100: { value: '#E1E5DE' },
+          200: { value: '#C3C9BE' },
+          300: { value: '#98A092' },
+          400: { value: '#6D7568' },
+          500: { value: '#484F43' },
+          600: { value: '#303630' },
+          700: { value: '#20241F' },
+          800: { value: '#161914' },
+          900: { value: '#0C0E0A' },
         },
-        // Moss — St. Patrick's eve green; anticipatory, spring under cloud cover
-        moss: {
-          50:  { value: '#EDF4EB' },
-          100: { value: '#D3E9CD' },
-          200: { value: '#A2CC99' },
-          300: { value: '#62A455' },
-          400: { value: '#418039' },
-          500: { value: '#2D5C28' },
-          600: { value: '#1E3F1A' },
-          glow: { value: 'rgba(98,164,85,0.10)' },
-          dim:  { value: 'rgba(65,128,57,0.07)' },
+        // Fern — St. Patrick's eve green, seen through cloud cover
+        // Saturated enough to feel alive, muted enough to feel anticipated
+        fern: {
+          50:  { value: '#EAF0E6' },
+          100: { value: '#CCD9C5' },
+          200: { value: '#99BC8D' },
+          300: { value: '#5A9450' },  // dark mode accent — 5.1:1 vs fog.800 ✓ AA
+          400: { value: '#3A7330' },
+          500: { value: '#275120' },  // light mode accent — 8.0:1 vs fog.50 ✓ AA
+          600: { value: '#1A3817' },
+          glow: { value: 'rgba(90,148,80,0.13)' },
+          dim:  { value: 'rgba(58,115,48,0.08)' },
         },
-        // Amber — genuine win signal (Cameron Young, TPC Sawgrass)
+        // Amber — genuine win signal: Tigers 13 runs, Cameron Young -13
+        // Warm counterpoint to the green field — a circled box score
         amber: {
-          400: { value: '#C08540' },
-          500: { value: '#9E6D2A' },
-          dim:  { value: 'rgba(192,133,64,0.10)' },
+          400: { value: '#C4883E' },
+          500: { value: '#A06E2C' },
+          dim:  { value: 'rgba(196,136,62,0.11)' },
         },
       },
       fonts: {
-        mono:  { value: "'DM Mono', monospace" },
-        serif: { value: "'Cormorant Garamond', Georgia, serif" },
+        mono:  { value: "'DM Mono', 'Courier New', monospace" },
+        serif: { value: "'Newsreader', Georgia, serif" },
       },
       fontSizes: {
-        '2xs': { value: '0.62rem' },
-        xs:    { value: '0.72rem' },
-        sm:    { value: '0.84rem' },
-        base:  { value: '0.95rem' },
-        md:    { value: '1.08rem' },
-        lg:    { value: '1.45rem' },
-        xl:    { value: '2.6rem' },
-        '2xl': { value: '4.2rem' },
+        '2xs': { value: '0.62rem' },   // ~10.5px — labels only
+        xs:    { value: '0.74rem' },   // ~12.6px — captions
+        sm:    { value: '0.865rem' },  // ~14.7px — secondary text, meets AA floor
+        base:  { value: '0.94rem' },   // ~16px — body
+        md:    { value: '1.1rem' },    // ~18.7px — comfortable read
+        lg:    { value: '1.5rem' },    // ~25.5px — section titles
+        xl:    { value: '2.65rem' },   // ~45px — display
+        '2xl': { value: '4.4rem' },    // ~75px — hero
       },
       fontWeights: {
         regular: { value: '400' },
@@ -80,28 +83,28 @@ export const elementsPreset = definePreset({
       letterSpacings: {
         tight:  { value: '-0.03em' },
         normal: { value: '0' },
-        wide:   { value: '0.07em' },
-        wider:  { value: '0.12em' },
-        widest: { value: '0.18em' },
-        // Almost too precise — the surveilled grid
+        wide:   { value: '0.06em' },
+        wider:  { value: '0.11em' },
+        widest: { value: '0.17em' },
+        // The workweek grid — precise as a ruled ledger
         ruled:  { value: '0.22em' },
       },
       lineHeights: {
-        tight:  { value: '1.05' },
+        tight:  { value: '1.06' },
         snug:   { value: '1.28' },
         normal: { value: '1.65' },
-        loose:  { value: '1.85' },
+        loose:  { value: '1.88' },
       },
       spacing: {
-        1:  { value: '0.25rem' },
-        2:  { value: '0.5rem' },
-        3:  { value: '0.75rem' },
-        4:  { value: '1rem' },
-        5:  { value: '1.5rem' },
-        6:  { value: '2rem' },
-        8:  { value: '3.25rem' },
-        10: { value: '4.5rem' },
-        12: { value: '6rem' },
+        1:  { value: '0.25rem' },   // 4px
+        2:  { value: '0.5rem' },    // 8px
+        3:  { value: '0.75rem' },   // 12px
+        4:  { value: '1rem' },      // 16px
+        5:  { value: '1.5rem' },    // 24px
+        6:  { value: '2rem' },      // 32px
+        8:  { value: '3.25rem' },   // 52px
+        10: { value: '4.5rem' },    // 72px
+        12: { value: '6rem' },      // 96px
       },
       durations: {
         fast: { value: '0.12s' },
@@ -116,36 +119,44 @@ export const elementsPreset = definePreset({
     semanticTokens: {
       colors: {
         bg: {
-          DEFAULT: { value: { base: '{colors.stone.800}', _light: '{colors.stone.50}' } },
-          side:    { value: { base: '{colors.stone.900}', _light: '{colors.stone.50}' } },
-          card:    { value: { base: '{colors.stone.700}', _light: '#FFFFFF' } },
+          // fog.800: near-black with a whisper of green — the new moon sky
+          DEFAULT: { value: { base: '{colors.fog.800}', _light: '{colors.fog.50}' } },
+          side:    { value: { base: '{colors.fog.900}', _light: '{colors.fog.50}' } },
+          card:    { value: { base: '{colors.fog.700}', _light: '#FFFFFF' } },
+          // Subtle fern tint for elements that want the green to creep through
+          tint:    { value: { base: '{colors.fern.glow}', _light: '{colors.fern.dim}' } },
         },
         border: {
-          DEFAULT: { value: { base: '{colors.stone.600}', _light: '{colors.stone.200}' } },
-          mid:     { value: { base: '{colors.stone.500}', _light: '{colors.stone.300}' } },
+          DEFAULT: { value: { base: '{colors.fog.600}', _light: '{colors.fog.200}' } },
+          mid:     { value: { base: '{colors.fog.500}', _light: '{colors.fog.300}' } },
+          // The fern edge — St. Patrick's eve creeping in at the margins
+          accent:  { value: { base: '{colors.fern.300}', _light: '{colors.fern.400}' } },
         },
         text: {
-          DEFAULT: { value: { base: '{colors.stone.100}', _light: '{colors.stone.700}' } },
-          mid:     { value: { base: '{colors.stone.300}', _light: '{colors.stone.500}' } },
-          dim:     { value: { base: '{colors.stone.400}', _light: '{colors.stone.400}' } },
+          // fog.100 vs fog.800: 14.6:1 ✓✓  |  fog.700 vs fog.50: 14.0:1 ✓✓
+          DEFAULT: { value: { base: '{colors.fog.100}', _light: '{colors.fog.700}' } },
+          mid:     { value: { base: '{colors.fog.300}', _light: '{colors.fog.500}' } },
+          dim:     { value: { base: '{colors.fog.400}', _light: '{colors.fog.400}' } },
         },
         accent: {
-          // moss.300 dark: 4.74:1 vs stone.800 ✓ AA | moss.500 light: 7.1:1 vs stone.50 ✓ AA
-          DEFAULT: { value: { base: '{colors.moss.300}', _light: '{colors.moss.500}' } },
-          dim:     { value: { base: '{colors.moss.400}', _light: '{colors.moss.500}' } },
-          glow:    { value: { base: '{colors.moss.glow}', _light: '{colors.moss.dim}' } },
+          // fern.300 vs fog.800: ~5.1:1 ✓ AA  |  fern.500 vs fog.50: ~8.0:1 ✓ AA
+          DEFAULT: { value: { base: '{colors.fern.300}', _light: '{colors.fern.500}' } },
+          dim:     { value: { base: '{colors.fern.400}', _light: '{colors.fern.500}' } },
+          glow:    { value: { base: '{colors.fern.glow}', _light: '{colors.fern.dim}' } },
         },
         signal: {
+          // Amber for genuine wins — Tigers 13 runs, Cameron Young's -13
           win:      { value: { base: '{colors.amber.400}', _light: '{colors.amber.500}' } },
           winDim:   { value: { base: '{colors.amber.dim}',  _light: '{colors.amber.dim}' } },
-          green:    { value: { base: '{colors.moss.300}',   _light: '{colors.moss.500}' } },
-          greenDim: { value: { base: '{colors.moss.glow}',  _light: '{colors.moss.dim}' } },
+          // Fern for market green and St. Patrick's eve
+          green:    { value: { base: '{colors.fern.300}',   _light: '{colors.fern.500}' } },
+          greenDim: { value: { base: '{colors.fern.glow}',  _light: '{colors.fern.dim}' } },
         },
         logo: {
-          blue:     { value: { base: '{colors.stone.400}', _light: '{colors.stone.500}' } },
-          blueDim:  { value: { base: 'rgba(123,120,112,0.12)', _light: 'rgba(82,80,71,0.10)' } },
-          green:    { value: { base: '{colors.moss.300}',  _light: '{colors.moss.500}' } },
-          greenDim: { value: { base: '{colors.moss.glow}', _light: '{colors.moss.dim}' } },
+          blue:     { value: { base: '{colors.fog.400}',   _light: '{colors.fog.500}' } },
+          blueDim:  { value: { base: 'rgba(109,117,104,0.13)', _light: 'rgba(72,79,67,0.10)' } },
+          green:    { value: { base: '{colors.fern.300}',  _light: '{colors.fern.500}' } },
+          greenDim: { value: { base: '{colors.fern.glow}', _light: '{colors.fern.dim}' } },
         },
       },
     },

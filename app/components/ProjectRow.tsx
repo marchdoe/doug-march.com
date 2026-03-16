@@ -1,99 +1,103 @@
-import { Link } from '@tanstack/react-router'
-import type { Project } from '../content/types'
-import { styled } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
+import { type Project } from '../content/projects'
 
-const rowBase = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'baseline',
-  paddingTop: '0.9rem',
-  paddingBottom: '0.9rem',
-  cursor: 'pointer',
-  borderBottomWidth: '1px',
-  borderBottomStyle: 'solid',
-  borderBottomColor: 'border',
-  transitionProperty: 'padding-left, background',
-  transitionDuration: 'base',
-  transitionTimingFunction: 'default',
-  _hover: { paddingLeft: '0.75rem', background: 'accent.glow' },
-} as const
+interface ProjectRowProps {
+  project: Project
+  index: number
+}
 
-const RowLink = styled(Link, { base: rowBase })
-const RowLinkExt = styled('a', { base: rowBase })
+export function ProjectRow({ project, index }: ProjectRowProps) {
+  const href = project.slug
+    ? `/work/${project.slug}`
+    : (project.link ?? project.externalUrl ?? project.url ?? '#')
 
-const Left = styled('div', {
-  base: { display: 'flex', alignItems: 'baseline', gap: '3' },
-})
+  const isExternal = !project.slug
 
-const Name = styled('div', {
-  base: {
-    fontSize: 'md',
-    fontWeight: 'regular',
-    color: 'text',
-    fontStyle: 'italic',
-    transitionProperty: 'color',
-    transitionDuration: 'base',
-    transitionTimingFunction: 'default',
-    _groupHover: { color: 'accent' },
-  },
-  variants: {
-    experiment: {
-      true: {
-        fontSize: 'base',
-        color: 'text.mid',
-        _groupHover: { color: 'accent' },
-      },
-    },
-  },
-})
-
-const Tag = styled('div', {
-  base: {
-    fontSize: '2xs',
-    fontFamily: 'mono',
-    letterSpacing: 'wider',
-    color: 'text.dim',
-    opacity: '0.4',
-  },
-})
-
-const Year = styled('div', {
-  base: {
-    fontSize: 'xs',
-    fontFamily: 'mono',
-    color: 'text.dim',
-    opacity: '0.3',
-    transitionProperty: 'opacity, color',
-    transitionDuration: 'base',
-    transitionTimingFunction: 'default',
-    _groupHover: { opacity: '1', color: 'accent' },
-  },
-})
-
-type Props = { project: Project; index: number }
-
-export function ProjectRow({ project, index }: Props) {
-  const isExperiment = project.depth === 'lightweight'
-  const yearLabel = project.externalUrl ? `${project.year} ↗` : `${project.year}`
-  const inner = (
-    <>
-      <Left>
-        <Name experiment={isExperiment ? true : undefined}>{project.title}</Name>
-        <Tag>{project.type}</Tag>
-      </Left>
-      <Year>{yearLabel}</Year>
-    </>
-  )
-  if (project.externalUrl && isExperiment) {
-    return (
-      <RowLinkExt href={project.externalUrl} target="_blank" rel="noopener noreferrer" data-group>
-        {inner}
-      </RowLinkExt>
-    )
-  }
   return (
-    <RowLink to="/work/$slug" params={{ slug: project.slug } as any} data-group>
-      {inner}
-    </RowLink>
+    <a
+      href={href}
+      {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      className={css({
+        display: 'flex',
+        alignItems: 'baseline',
+        gap: '4',
+        py: '3',
+        px: '4',
+        borderBottom: '1px solid',
+        borderBottomColor: 'border.DEFAULT',
+        textDecoration: 'none',
+        transition: 'background 0.12s ease',
+        _hover: {
+          bg: 'bg.tint',
+          '& [data-title]': {
+            color: 'accent.DEFAULT',
+          },
+        },
+        _first: {
+          borderTop: '1px solid',
+          borderTopColor: 'border.DEFAULT',
+        },
+      })}
+    >
+      {/* Index */}
+      <span
+        className={css({
+          fontFamily: 'mono',
+          fontSize: '2xs',
+          fontWeight: 'regular',
+          color: 'text.dim',
+          minWidth: '1.5rem',
+          textAlign: 'right',
+          flexShrink: '0',
+        })}
+      >
+        {String(index + 1).padStart(2, '0')}
+      </span>
+
+      {/* Title */}
+      <span
+        data-title=""
+        className={css({
+          fontFamily: 'serif',
+          fontSize: 'base',
+          fontWeight: 'medium',
+          lineHeight: 'snug',
+          color: 'text',
+          flex: '1',
+          transition: 'color 0.12s ease',
+        })}
+      >
+        {project.title}
+      </span>
+
+      {/* Type */}
+      <span
+        className={css({
+          fontFamily: 'mono',
+          fontSize: 'xs',
+          fontWeight: 'regular',
+          color: 'text.mid',
+          letterSpacing: 'wide',
+          display: { base: 'none', sm: 'block' },
+        })}
+      >
+        {project.type}
+      </span>
+
+      {/* Year */}
+      <span
+        className={css({
+          fontFamily: 'mono',
+          fontSize: 'xs',
+          fontWeight: 'regular',
+          color: 'text.dim',
+          minWidth: '2.5rem',
+          textAlign: 'right',
+          flexShrink: '0',
+        })}
+      >
+        {project.year}
+      </span>
+    </a>
   )
 }

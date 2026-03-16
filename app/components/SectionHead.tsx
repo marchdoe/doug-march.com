@@ -1,22 +1,37 @@
-import { styled } from '../../styled-system/jsx'
+interface SectionHeadProps {
+  label: string
+}
 
-const Head = styled('div', {
-  base: {
-    fontSize: '2xs',
-    fontFamily: 'mono',
-    fontWeight: 'bold',
-    letterSpacing: 'ruled',
-    color: 'text.dim',
-    marginBottom: '4',
-    marginTop: '2',
-    paddingBottom: '3',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'border',
-    opacity: '0.65',
-  },
-})
-
-export function SectionHead({ label }: { label: string }) {
-  return <Head>{label}</Head>
+export function SectionHead({ label }: SectionHeadProps) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.75rem',
+        marginBottom: '1.5rem',
+      }}
+    >
+      <span
+        style={{
+          fontFamily: "'DM Mono', 'Courier New', monospace",
+          fontSize: '0.74rem',
+          fontWeight: '500',
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase' as const,
+          color: 'var(--colors-accent-default, var(--colors-accent))',
+          whiteSpace: 'nowrap' as const,
+        }}
+      >
+        {label}
+      </span>
+      <div
+        style={{
+          flex: 1,
+          height: '1px',
+          backgroundColor: 'var(--colors-border-default, var(--colors-border))',
+        }}
+      />
+    </div>
+  )
 }

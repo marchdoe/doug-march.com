@@ -1,236 +1,151 @@
-import { Link, useLocation } from '@tanstack/react-router'
-import logoUrl from '../assets/logo.svg'
-import { styled } from '../../styled-system/jsx'
+import React from 'react'
+import { Box, Flex, VStack } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
 
-const SidebarRoot = styled('aside', {
-  base: {
-    width: '196px',
-    flexShrink: '0',
-    position: 'sticky',
-    top: '0',
-    height: '100vh',
-    overflowY: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    paddingTop: '8',
-    paddingLeft: '5',
-    paddingRight: '5',
-    paddingBottom: '8',
-    borderRightWidth: '1px',
-    borderRightStyle: 'solid',
-    borderRightColor: 'border',
-    background: 'bg.side',
-    _mobile: {
-      width: '100%',
-      height: 'auto',
-      position: 'static',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingTop: '4',
-      paddingBottom: '4',
-      paddingLeft: '5',
-      paddingRight: '5',
-      borderRightWidth: '0',
-      borderBottomWidth: '1px',
-      borderBottomStyle: 'solid',
-      borderBottomColor: 'border',
-      overflowY: 'visible',
-    },
-  },
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+]
+
+const nameStyles = css({
+  fontFamily: 'serif',
+  fontSize: 'md',
+  fontWeight: 'bold',
+  letterSpacing: 'tight',
+  lineHeight: 'snug',
+  color: 'text',
 })
 
-const Identity = styled('div', {
-  base: {
-    marginBottom: '8',
-    _mobile: {
-      display: 'flex',
-      alignItems: 'center',
-      gap: '3',
-      marginBottom: '0',
-    },
-  },
+const roleStyles = css({
+  fontFamily: 'mono',
+  fontSize: '2xs',
+  fontWeight: 'regular',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
+  color: 'text.mid',
+  lineHeight: 'normal',
+  marginTop: '1',
 })
 
-const LogoWrap = styled('div', {
-  base: {
-    width: '18px',
-    height: '18px',
-    flexShrink: '0',
-    opacity: '0.22',
-    marginBottom: '5',
-    '& img': { width: '100%', height: '100%' },
-    _mobile: {
-      marginBottom: '0',
-    },
-  },
-})
-
-const IdTextBlock = styled('div', {
-  base: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1',
-  },
-})
-
-const IdName = styled('div', {
-  base: {
-    fontSize: 'xs',
-    fontFamily: 'mono',
-    fontWeight: 'bold',
-    letterSpacing: 'wider',
-    color: 'text',
-    lineHeight: 'tight',
-  },
-})
-
-const IdRole = styled('div', {
-  base: {
-    fontSize: '2xs',
-    fontFamily: 'mono',
-    color: 'text.dim',
-    letterSpacing: 'wide',
-    opacity: '0.45',
-    _mobile: { display: 'none' },
-  },
-})
-
-const Nav = styled('nav', {
-  base: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1',
-    _mobile: { display: 'none' },
-  },
-})
-
-const navLinkConfig = {
-  base: {
-    display: 'block',
-    fontSize: '2xs',
-    fontFamily: 'mono',
-    fontWeight: 'bold',
-    letterSpacing: 'ruled',
-    color: 'text.dim',
-    paddingTop: '2',
-    paddingBottom: '2',
-    paddingLeft: '3',
-    borderLeftWidth: '1px',
-    borderLeftStyle: 'solid',
-    borderLeftColor: 'border',
-    transitionProperty: 'color, border-color',
-    transitionDuration: 'base',
-    transitionTimingFunction: 'default',
-    _hover: { color: 'accent', borderLeftColor: 'accent.dim' },
-    _focusVisible: {
-      outline: '2px solid',
-      outlineColor: 'accent',
-      outlineOffset: '2px',
-    },
-  },
-  variants: {
-    active: {
-      true: {
-        color: 'accent',
-        borderLeftColor: 'accent',
-      },
-    },
-    ext: {
-      true: {
-        opacity: '0.38',
-      },
-    },
-  },
-} as const
-
-const NavLinkInternal = styled(Link, navLinkConfig)
-const NavLinkExternal = styled('a', navLinkConfig)
-
-const FlexSpacer = styled('div', { base: { flex: '1' } })
-
-const EveSignal = styled('div', {
-  base: {
-    paddingTop: '5',
-    borderTopWidth: '1px',
-    borderTopStyle: 'solid',
-    borderTopColor: 'border',
-    _mobile: { display: 'none' },
-  },
-})
-
-const EveDot = styled('div', {
-  base: {
-    width: '5px',
-    height: '5px',
-    borderRadius: '50%',
-    background: 'accent',
-    opacity: '0.45',
-    marginBottom: '3',
-  },
-})
-
-const EveLabel = styled('div', {
-  base: {
-    fontSize: '2xs',
-    fontFamily: 'mono',
+const navLinkStyles = css({
+  fontFamily: 'mono',
+  fontSize: 'xs',
+  fontWeight: 'medium',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
+  color: 'text.mid',
+  display: 'block',
+  paddingY: '2',
+  paddingX: '3',
+  borderRadius: '2px',
+  transition: 'color 0.12s ease, background 0.12s ease',
+  outline: 'none',
+  _hover: {
     color: 'accent',
-    opacity: '0.38',
-    letterSpacing: 'wide',
-    lineHeight: 'snug',
+    bg: 'accent.glow',
   },
+  _focus: {
+    color: 'accent',
+    bg: 'accent.glow',
+    boxShadow: '0 0 0 2px token(colors.border.accent)',
+  },
+  _focusVisible: {
+    color: 'accent',
+    bg: 'accent.glow',
+    boxShadow: '0 0 0 2px token(colors.border.accent)',
+  },
+})
+
+const activeLinkStyles = css({
+  color: 'accent',
+  bg: 'accent.glow',
+  fontWeight: 'bold',
+})
+
+const dividerStyles = css({
+  width: '100%',
+  height: '1px',
+  bg: 'border',
+  my: '5',
 })
 
 export function Sidebar() {
-  const location = useLocation()
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/'
+
   return (
-    <SidebarRoot>
-      <Identity>
-        <LogoWrap>
-          <img src={logoUrl} alt="Doug March logo" />
-        </LogoWrap>
-        <IdTextBlock>
-          <IdName>DOUG MARCH</IdName>
-          <IdRole>DESIGNER &amp; DEVELOPER</IdRole>
-        </IdTextBlock>
-      </Identity>
+    <Box
+      as="nav"
+      aria-label="Site navigation"
+      px="5"
+      pt={{ base: '5', lg: '8' }}
+      pb={{ base: '5', lg: '0' }}
+      height={{ base: 'auto', lg: '100%' }}
+    >
+      {/* Identity block */}
+      <Box mb={{ base: '0', lg: '0' }}>
+        <a href="/" className={css({ display: 'block' })} aria-label="Doug March — home">
+          <Box
+            className={css({
+              display: 'inline-block',
+              borderLeftWidth: '2px',
+              borderStyle: 'solid',
+              borderColor: 'border.accent',
+              paddingLeft: '3',
+              paddingY: '1',
+            })}
+          >
+            <Box className={nameStyles}>Doug March</Box>
+            <Box className={roleStyles}>Product Designer<br />& Developer</Box>
+          </Box>
+        </a>
+      </Box>
 
-      <Nav aria-label="Primary navigation">
-        <NavLinkInternal
-          to="/"
-          active={location.pathname === '/' ? true : undefined}
-        >
-          WORK
-        </NavLinkInternal>
-        <NavLinkInternal
-          to="/about"
-          active={location.pathname === '/about' ? true : undefined}
-        >
-          ABOUT
-        </NavLinkInternal>
-        <NavLinkExternal
-          href="https://spaceman.llc"
-          target="_blank"
-          rel="noopener noreferrer"
-          ext={true}
-        >
-          SPACEMAN.LLC ↗
-        </NavLinkExternal>
-        <NavLinkInternal
-          to="/elements"
-          active={location.pathname === '/elements' ? true : undefined}
-          ext={true}
-        >
-          ELEMENTS
-        </NavLinkInternal>
-      </Nav>
+      <Box className={dividerStyles} />
 
-      <FlexSpacer />
+      {/* Nav links */}
+      <Flex
+        as="ul"
+        flexDirection={{ base: 'row', lg: 'column' }}
+        gap={{ base: '1', lg: '1' }}
+        flexWrap="wrap"
+        style={{ listStyle: 'none', margin: 0, padding: 0 }}
+      >
+        {navLinks.map(({ label, href }) => {
+          const isActive = currentPath === href
+          return (
+            <Box as="li" key={href}>
+              <a
+                href={href}
+                className={`${navLinkStyles}${isActive ? ` ${activeLinkStyles}` : ''}`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {label}
+              </a>
+            </Box>
+          )
+        })}
+      </Flex>
 
-      <EveSignal aria-hidden="true">
-        <EveDot />
-        <EveLabel>ST. PATRICK'S<br />EVE</EveLabel>
-      </EveSignal>
-    </SidebarRoot>
+      {/* New moon negative space — let emptiness breathe on desktop */}
+      <Box
+        display={{ base: 'none', lg: 'block' }}
+        mt="10"
+        px="3"
+      >
+        <Box
+          className={css({
+            width: '18px',
+            height: '18px',
+            borderRadius: '50%',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: 'border',
+            opacity: '0.35',
+          })}
+          title="New moon — 1.2% illumination"
+          aria-hidden="true"
+        />
+      </Box>
+    </Box>
   )
 }

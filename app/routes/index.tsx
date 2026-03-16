@@ -1,164 +1,300 @@
+import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
+import { css } from '../../styled-system/css'
+import { Box, Grid, Flex } from '../../styled-system/jsx'
 import { Layout } from '../components/Layout'
 import { FeaturedProject } from '../components/FeaturedProject'
 import { SelectedWork } from '../components/SelectedWork'
 import { Experiments } from '../components/Experiments'
 import { SectionHead } from '../components/SectionHead'
-import { styled } from '../../styled-system/jsx'
+import { featuredProject, selectedWork, experiments } from '../content/projects'
 
-export const Route = createFileRoute('/')({ component: Home })
+// ─── Signal styles ────────────────────────────────────────────────────────────
 
-// Signal strip — four cells, four frequencies
-const Strip = styled('div', {
-  base: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    borderTopWidth: '1px',
-    borderTopStyle: 'solid',
-    borderTopColor: 'border',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'border',
-    marginBottom: '8',
-    _mobile: { gridTemplateColumns: 'repeat(2, 1fr)' },
-  },
+const signalsGrid = css({
+  display: 'grid',
+  gridTemplateColumns: { base: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr 1fr' },
+  gap: '3',
+  my: '8',
 })
 
-const Cell = styled('div', {
-  base: {
-    paddingTop: '3',
-    paddingBottom: '3',
-    paddingLeft: '4',
-    paddingRight: '4',
-    borderRightWidth: '1px',
-    borderRightStyle: 'solid',
-    borderRightColor: 'border',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1',
-  },
-  variants: {
-    last: { true: { borderRightWidth: '0' } },
-    tint: {
-      green: { background: 'accent.glow' },
-      amber: { background: 'signal.winDim' },
-    },
-  },
+const signalCard = css({
+  bg: 'bg.card',
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  borderColor: 'border.DEFAULT',
+  borderRadius: '2px',
+  p: '4',
+  position: 'relative',
+  overflow: 'hidden',
 })
 
-const CellLabel = styled('div', {
-  base: {
-    fontSize: '2xs',
-    fontFamily: 'mono',
-    fontWeight: 'bold',
-    letterSpacing: 'ruled',
+const signalLabel = css({
+  fontFamily: 'mono',
+  fontSize: '2xs',
+  fontWeight: 'bold',
+  letterSpacing: 'ruled',
+  textTransform: 'uppercase',
+  color: 'text.dim',
+  mb: '2',
+})
+
+const signalValue = css({
+  fontFamily: 'serif',
+  fontSize: 'lg',
+  fontWeight: 'bold',
+  lineHeight: 'tight',
+  letterSpacing: 'tight',
+})
+
+const signalNote = css({
+  fontFamily: 'mono',
+  fontSize: 'xs',
+  color: 'text.mid',
+  mt: '2',
+  lineHeight: 'snug',
+})
+
+// Tigers: loud amber — circled with a Sharpie
+const tigersCard = css({
+  bg: 'signal.winDim',
+  borderColor: 'signal.win',
+})
+
+const tigersScore = css({
+  color: 'signal.win',
+  fontSize: 'xl',
+  fontFamily: 'mono',
+  fontWeight: 'bold',
+  letterSpacing: 'tight',
+  lineHeight: 'tight',
+})
+
+const tigersDetail = css({
+  fontFamily: 'mono',
+  fontSize: 'sm',
+  color: 'text.mid',
+  mt: '1',
+})
+
+// Golf: understated prestige — clean leaderboard energy
+const golfCard = css({
+  borderColor: 'border.mid',
+})
+
+const golfLeader = css({
+  fontFamily: 'serif',
+  fontSize: 'md',
+  fontWeight: 'bold',
+  color: 'text.DEFAULT',
+  lineHeight: 'snug',
+})
+
+const golfScore = css({
+  fontFamily: 'mono',
+  fontSize: 'sm',
+  color: 'signal.win',
+  fontWeight: 'bold',
+  mt: '1',
+})
+
+const golfEvent = css({
+  fontFamily: 'mono',
+  fontSize: '2xs',
+  color: 'text.dim',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
+  mt: '2',
+})
+
+// Market: small green — check once and move on
+const marketCard = css({
+  bg: 'signal.greenDim',
+  borderColor: 'accent.DEFAULT',
+})
+
+const marketValue = css({
+  color: 'signal.green',
+  fontFamily: 'mono',
+  fontSize: 'lg',
+  fontWeight: 'bold',
+})
+
+// St. Patrick's eve: tomorrow's green arriving today
+const stPatrickCard = css({
+  bg: 'accent.glow',
+  borderColor: 'border.accent',
+  borderWidth: '2px',
+})
+
+const stPatrickText = css({
+  color: 'accent.DEFAULT',
+  fontFamily: 'serif',
+  fontSize: 'md',
+  fontWeight: 'bold',
+  lineHeight: 'snug',
+})
+
+// ─── Quote styles ─────────────────────────────────────────────────────────────
+
+const quoteSection = css({
+  my: '12',
+  px: { base: '0', md: '6' },
+  // New moon darkness: generous negative space around the quote
+})
+
+const quoteText = css({
+  fontFamily: 'serif',
+  fontSize: 'md',
+  fontStyle: 'italic',
+  lineHeight: 'loose',
+  color: 'text.mid',
+  maxWidth: '52ch',
+  // Slight left border echo of the sidebar's fern accent
+  borderLeft: '2px solid',
+  borderColor: 'border.accent',
+  paddingLeft: '5',
+})
+
+const quoteAttrib = css({
+  fontFamily: 'mono',
+  fontSize: 'xs',
+  color: 'text.dim',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
+  mt: '4',
+  paddingLeft: '5',
+})
+
+// ─── Music signal ─────────────────────────────────────────────────────────────
+
+const musicLine = css({
+  fontFamily: 'mono',
+  fontSize: 'xs',
+  color: 'text.dim',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
+  borderTop: '1px solid',
+  borderColor: 'border.DEFAULT',
+  pt: '4',
+  mt: '8',
+  mb: '8',
+  display: 'flex',
+  gap: '6',
+  flexWrap: 'wrap',
+})
+
+const musicItem = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '2',
+  _before: {
+    content: '"♪"',
     color: 'text.dim',
-    opacity: '0.55',
+    fontFamily: 'serif',
   },
 })
 
-const CellValue = styled('div', {
-  base: {
-    fontSize: 'xs',
-    fontFamily: 'mono',
-    color: 'text',
-    lineHeight: 'snug',
-    fontWeight: 'medium',
-  },
-  variants: {
-    tone: {
-      green: { color: 'accent' },
-      amber: { color: 'signal.win' },
-      dim:   { color: 'text.dim', opacity: '0.45' },
-    },
-  },
+// ─── Small web note ───────────────────────────────────────────────────────────
+
+const smallWebNote = css({
+  fontFamily: 'mono',
+  fontSize: 'xs',
+  color: 'text.dim',
+  borderTop: '1px solid',
+  borderColor: 'border.DEFAULT',
+  pt: '4',
+  mt: '8',
+  lineHeight: 'normal',
+  maxWidth: '60ch',
 })
 
-const CellNote = styled('div', {
-  base: {
-    fontSize: '2xs',
-    fontFamily: 'mono',
-    color: 'text.dim',
-    opacity: '0.4',
-    letterSpacing: 'wide',
-  },
+const smallWebLink = css({
+  color: 'accent.DEFAULT',
+  textDecoration: 'none',
+  _hover: { textDecoration: 'underline' },
 })
 
-const Spacer = styled('div', { base: { marginTop: '8' } })
+// ─── Page component ───────────────────────────────────────────────────────────
 
-const Footer = styled('div', {
-  base: {
-    marginTop: '10',
-    paddingTop: '6',
-    borderTopWidth: '1px',
-    borderTopStyle: 'solid',
-    borderTopColor: 'border',
-    display: 'flex',
-    justifyContent: 'flex-start',
-  },
-})
-
-const FooterLink = styled('a', {
-  base: {
-    fontSize: '2xs',
-    fontFamily: 'mono',
-    fontWeight: 'bold',
-    color: 'accent',
-    letterSpacing: 'widest',
-    opacity: '0.5',
-    transitionProperty: 'opacity',
-    transitionDuration: 'base',
-    transitionTimingFunction: 'default',
-    _hover: { opacity: '1' },
-    _focusVisible: {
-      outline: '2px solid',
-      outlineColor: 'accent',
-      outlineOffset: '3px',
-      opacity: '1',
-    },
-  },
-})
-
-function Home() {
+function HomePage() {
   return (
     <Layout>
-      {/* Signal strip — four readings, monday morning */}
-      <Strip>
-        <Cell tint="green">
-          <CellLabel>TOMORROW</CellLabel>
-          <CellValue tone="green">St. Patrick's Day</CellValue>
-          <CellNote>🍀 the eve of it</CellNote>
-        </Cell>
-        <Cell tint="amber">
-          <CellLabel>THE PLAYERS</CellLabel>
-          <CellValue tone="amber">Cameron Young</CellValue>
-          <CellNote>−13 · first win · Sawgrass</CellNote>
-        </Cell>
-        <Cell>
-          <CellLabel>MARKET</CellLabel>
-          <CellValue tone="dim">SPY −0.57%</CellValue>
-          <CellNote>monday drag</CellNote>
-        </Cell>
-        <Cell last={true}>
-          <CellLabel>TONIGHT</CellLabel>
-          <CellValue tone="dim">New Moon</CellValue>
-          <CellNote>1.8% illuminated</CellNote>
-        </Cell>
-      </Strip>
+      {/* ── Featured Project ─────────────────────────── */}
+      <FeaturedProject project={featuredProject} />
 
-      <FeaturedProject />
+      {/* ── Today's Signals ──────────────────────────── */}
+      {/* Integrated with the portfolio — this site redesigns itself daily.
+          These signals are today's context, not decoration. */}
+      <div className={signalsGrid}>
 
-      <SectionHead label="SELECTED WORK" />
-      <SelectedWork />
+        {/* Tigers — loud, almost garish. 13 runs. */}
+        <div className={`${signalCard} ${tigersCard}`}>
+          <div className={signalLabel}>Tigers</div>
+          <div className={tigersScore}>13–6</div>
+          <div className={tigersDetail}>DET defeats OPP</div>
+          <div className={signalNote}>13 runs. Someone circled this in the paper.</div>
+        </div>
 
-      <Spacer />
+        {/* Cameron Young — understated prestige */}
+        <div className={`${signalCard} ${golfCard}`}>
+          <div className={signalLabel}>THE PLAYERS Championship</div>
+          <div className={golfLeader}>Cameron Young</div>
+          <div className={golfScore}>−13</div>
+          <div className={golfEvent}>TPC Sawgrass · Winner</div>
+        </div>
 
-      <SectionHead label="EXPERIMENTS" />
-      <Experiments />
+        {/* Market — small, genuine, move on */}
+        <div className={`${signalCard} ${marketCard}`}>
+          <div className={signalLabel}>Market</div>
+          <div className={marketValue}>+1.0%</div>
+          <div className={signalNote}>Genuine green. Check once and move on.</div>
+        </div>
 
-      <Footer>
-        <FooterLink href="mailto:doug@doug-march.com">GET IN TOUCH →</FooterLink>
-      </Footer>
+        {/* St. Patrick's eve — green arriving at the margin */}
+        <div className={`${signalCard} ${stPatrickCard}`}>
+          <div className={signalLabel}>Tomorrow</div>
+          <div className={stPatrickText}>St. Patrick's Day</div>
+          <div className={signalNote}>The green is arriving. Not here yet. Close.</div>
+        </div>
+      </div>
+
+      {/* ── Selected Work ─────────────────────────────── */}
+      <SelectedWork projects={selectedWork} />
+
+      {/* ── Lao Tzu quote — alone in the new moon darkness ── */}
+      <div className={quoteSection}>
+        <blockquote className={quoteText}>
+          "Do you have the patience to wait until your mud settles and the water is clear?"
+        </blockquote>
+        <div className={quoteAttrib}>— Lao Tzu &nbsp;·&nbsp; Mon 2026-03-16</div>
+      </div>
+
+      {/* ── Experiments ───────────────────────────────── */}
+      <Experiments projects={experiments} />
+
+      {/* ── Music thread — rough, warm, hand-touched ──── */}
+      <div className={musicLine}>
+        <span className={musicItem}>My Morning Jacket</span>
+        <span className={musicItem}>Guided by Voices</span>
+      </div>
+
+      {/* ── Small web meta-note ───────────────────────── */}
+      <div className={smallWebNote}>
+        This portfolio redesigns itself daily from weather, sports, and signals.
+        {' '}<a
+          href="https://news.ycombinator.com/item?id=0"
+          className={smallWebLink}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          The small web is bigger than you might think.
+        </a>
+      </div>
     </Layout>
   )
 }
+
+export const Route = createFileRoute('/')({
+  component: HomePage,
+})

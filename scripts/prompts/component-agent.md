@@ -40,7 +40,13 @@ Each component imports its own data directly from app/content/. Do not change im
 ## Technical Requirements
 
 - Components import from `'../../styled-system/jsx'` and `'../../styled-system/css'`
-- Content imports from `'../../content/projects'`, `'../../content/timeline'`, `'../../content/about'`
+- Content imports use paths relative to `app/components/`:
+  - `'../content/projects'` — exports: `featuredProject`, `selectedWork`, `experiments`, `projects` (array), plus `Project` type
+  - `'../content/timeline'` — exports: `timeline` (array), `capabilities` (string array), plus `TimelineEntry` type
+  - `'../content/about'` — exports: `identity` (has name, role, statement), `personal` (has holesInOne, sport, teams, currentFocus), plus `Identity` and `Personal` types
+- IMPORTANT: There is NO `bio` export — use `identity` from `'../content/about'` for the Bio component
+- Do NOT import from `@tanstack/react-router`, `@remix-run/react`, `react-router-dom`, `next/link`, or any routing library. For links, use plain `<a href="/">` tags.
+- Do NOT use any React hooks (useState, useEffect, etc.) — these are pure display components
 - ProjectRow prop interface `(project, index)` must remain compatible — you may add optional props but never remove required ones
 - Use only the semantic tokens and spacing values defined in preset.ts
 - Every data key listed in the content contract must appear somewhere in the rendered output
