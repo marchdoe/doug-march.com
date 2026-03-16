@@ -144,9 +144,11 @@ async function callClaudeCLI(prompt) {
   const { writeFile: writeFileAsync } = await import('fs/promises')
   const { createReadStream } = await import('fs')
 
+  const fullPrompt = prompt
+
   // Write prompt to temp file
   const promptPath = path.join(ROOT, '.interpret-prompt.tmp')
-  await writeFileAsync(promptPath, prompt, 'utf8')
+  await writeFileAsync(promptPath, fullPrompt, 'utf8')
 
   console.log('  calling claude CLI (Max plan)...')
   console.log(`  prompt length: ${prompt.length} chars`)
@@ -156,7 +158,12 @@ async function callClaudeCLI(prompt) {
   delete cliEnv.ANTHROPIC_API_KEY
 
   const result = await new Promise((resolve, reject) => {
-    const child = spawn('claude', ['-p', '--max-turns', '1'], {
+    const pipelineSettings = path.join(ROOT, 'scripts', 'pipeline-settings.json')
+    const child = spawn('claude', [
+      '-p', '--max-turns', '1', '--tools', '', '--disable-slash-commands',
+      '--settings', pipelineSettings,
+      '--system-prompt', 'You are a creative brief writer. Respond with only the requested text. Do not use tools.',
+    ], {
       cwd: ROOT,
       env: cliEnv,
     })
@@ -165,6 +172,7 @@ async function callClaudeCLI(prompt) {
     let stderr = ''
 
     const promptStream = createReadStream(promptPath)
+    child.stdin.on('error', () => {}) // swallow EPIPE
     promptStream.pipe(child.stdin)
 
     child.stdout.on('data', (chunk) => { stdout += chunk.toString() })

@@ -116,3 +116,76 @@ describe('buildMessages — formatSignals catch-all', () => {
     expect(prompt).toContain('winter')
   })
 })
+
+describe('buildMessages — system prompt (designer prompt rewrite)', () => {
+  it('establishes designer role receiving a brief from PM', () => {
+    const { system } = buildMessages(baseContext)
+    expect(system).toContain('You are a designer')
+    expect(system).toContain('Product Manager')
+    expect(system).toContain('complete reimagination')
+  })
+
+  it('includes all six design dimensions', () => {
+    const { system } = buildMessages(baseContext)
+    expect(system).toContain('Layout structure')
+    expect(system).toContain('Visual hierarchy')
+    expect(system).toContain('Density')
+    expect(system).toContain('Typography scale')
+    expect(system).toContain('Color approach')
+    expect(system).toContain('Element character')
+  })
+
+  it('includes structural creativity examples', () => {
+    const { system } = buildMessages(baseContext)
+    expect(system).toContain('nav is at the bottom')
+    expect(system).toContain('fills the entire viewport')
+    expect(system).toContain('persistent left sidebar')
+    expect(system).toContain('asymmetrically split')
+  })
+
+  it('unlocks Google Fonts typography', () => {
+    const { system } = buildMessages(baseContext)
+    expect(system).toContain('ANY font from Google Fonts')
+    expect(system).toContain('links')
+    expect(system).toContain('__root.tsx')
+    expect(system).toContain('font tokens')
+  })
+
+  it('includes accessibility floors', () => {
+    const { system } = buildMessages(baseContext)
+    expect(system).toContain('WCAG AA')
+    expect(system).toContain('4.5:1')
+    expect(system).toContain('14px')
+    expect(system).toContain('75 characters')
+    expect(system).toContain('keyboard-accessible')
+  })
+
+  it('does not contain old conservative prompt language', () => {
+    const { system } = buildMessages(baseContext)
+    expect(system).not.toContain('CSS Zen Garden')
+    expect(system).not.toContain('Be bold')
+    expect(system).not.toContain('A safe redesign is a failed redesign')
+  })
+})
+
+describe('buildMessages — user prompt (reframed file contents)', () => {
+  it('frames current files as technical reference, not starting point', () => {
+    const context = {
+      ...baseContext,
+      currentFiles: [{ path: 'elements/preset.ts', content: 'const x = 1' }],
+    }
+    const { messages } = buildMessages(context)
+    const prompt = messages[0].content
+    expect(prompt).toContain('Technical Reference')
+    expect(prompt).toContain('Do NOT use these as a layout starting point')
+    expect(prompt).toContain('design from scratch')
+  })
+
+  it('does not include the old generic design prompt with blizzard example', () => {
+    const { messages } = buildMessages(baseContext)
+    const prompt = messages[0].content
+    expect(prompt).not.toContain('blizzard')
+    expect(prompt).not.toContain('Safe is wrong')
+    expect(prompt).not.toContain('The signals are your palette')
+  })
+})
