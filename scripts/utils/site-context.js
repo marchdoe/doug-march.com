@@ -28,6 +28,35 @@ export const MUTABLE_FILES = [
   'app/routes/work.$slug.tsx',
 ]
 
+/** Files owned by the Token Designer agent. */
+export const TOKEN_FILES = [
+  'elements/preset.ts',
+  'app/routes/__root.tsx',
+]
+
+/** Files owned by the Structure Agent. */
+export const STRUCTURE_FILES = [
+  'app/components/Layout.tsx',
+  'app/components/Sidebar.tsx',
+  'app/components/MobileFooter.tsx',
+  'app/routes/index.tsx',
+  'app/routes/about.tsx',
+  'app/routes/work.$slug.tsx',
+]
+
+/** Files owned by the Component Agent. */
+export const COMPONENT_FILES = [
+  'app/components/FeaturedProject.tsx',
+  'app/components/ProjectRow.tsx',
+  'app/components/SectionHead.tsx',
+  'app/components/SelectedWork.tsx',
+  'app/components/Experiments.tsx',
+  'app/components/Bio.tsx',
+  'app/components/Timeline.tsx',
+  'app/components/Capabilities.tsx',
+  'app/components/Personal.tsx',
+]
+
 /**
  * Content files Claude gets a summary of (titles + types only, no full descriptions).
  * These are read-only context, not included in mutable files.
@@ -85,6 +114,23 @@ async function buildContentSummary() {
 async function readCurrentFiles() {
   const files = []
   for (const relPath of MUTABLE_FILES) {
+    const absPath = path.join(ROOT, relPath)
+    if (existsSync(absPath)) {
+      const content = await readFile(absPath, 'utf8')
+      files.push({ path: relPath, content })
+    }
+  }
+  return files
+}
+
+/**
+ * Read a subset of mutable files from disk.
+ * @param {string[]} filePaths - relative paths to read
+ * @returns {Promise<Array<{path: string, content: string}>>}
+ */
+export async function readFileGroup(filePaths) {
+  const files = []
+  for (const relPath of filePaths) {
     const absPath = path.join(ROOT, relPath)
     if (existsSync(absPath)) {
       const content = await readFile(absPath, 'utf8')
