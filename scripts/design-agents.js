@@ -242,12 +242,15 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError) {
     })
   })
 
-  // Parse response — supports both delimiter format and JSON
-  // Delimiter format: ===FILE:path=== followed by file content, repeated per file
-  // Also extracts ===RATIONALE=== and ===DESIGN_BRIEF=== for Token Designer
+  // Parse response — supports delimiter format, visual spec format, and JSON
   let parsed
 
-  if (result.includes('===FILE:')) {
+  if (result.includes('===VISUAL_SPEC===')) {
+    // Design Director response — the entire content after the delimiter is the spec
+    const specMatch = result.match(/===VISUAL_SPEC===([\s\S]*)/)
+    const spec = specMatch ? specMatch[1].trim() : result.trim()
+    parsed = { files: [], rationale: spec, design_brief: '', _rawResponse: spec }
+  } else if (result.includes('===FILE:')) {
     // Delimiter-based format (preferred — avoids JSON escaping issues)
     const files = []
     const filePattern = /===FILE:([^=]+)===([\s\S]*?)(?====FILE:|===RATIONALE===|===DESIGN_BRIEF===|$)/g
@@ -296,12 +299,13 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError) {
     }
   }
 
-  // Validate files array
+  // Validate files array (Design Director may have no files — that's OK)
+  if (!parsed.files) parsed.files = []
   if (!Array.isArray(parsed.files)) {
     throw new Error(`[${agentName}] response missing files array. Got keys: ${Object.keys(parsed).join(', ')}`)
   }
 
-  console.log(`  [${agentName}] responded with ${parsed.files.length} files`)
+  console.log(`  [${agentName}] responded with ${parsed.files.length} files${parsed._rawResponse ? ' + visual spec' : ''}`)
 
   // Clean up temp file
   try { await unlink(promptPath) } catch {}
@@ -356,28 +360,33 @@ function validateCodegen() {
 export async function runAgentSwarm(context) {
   const { signals, brief, contentSummary } = context
 
-  // Read system prompts + shared design system reference
+  // Read all prompts and libraries
   const promptDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'prompts')
-  const [tokenPromptRaw, layoutPromptRaw, sidebarPromptRaw, footerPromptRaw, componentPromptRaw, designSystemRef] = await Promise.all([
+  const [
+    directorPromptRaw,
+    tokenPromptRaw, layoutPromptRaw, sidebarPromptRaw, footerPromptRaw, componentPromptRaw,
+    designSystemRef, libTypography, libColor, libLayout, libComponents,
+  ] = await Promise.all([
+    readFile(path.join(promptDir, 'design-director.md'), 'utf8'),
     readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'structure-agent.md'), 'utf8'),
     readFile(path.join(promptDir, 'sidebar-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'footer-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'component-agent.md'), 'utf8'),
     readFile(path.join(promptDir, 'design-system-reference.md'), 'utf8'),
+    readFile(path.join(promptDir, 'library-typography.md'), 'utf8'),
+    readFile(path.join(promptDir, 'library-color.md'), 'utf8'),
+    readFile(path.join(promptDir, 'library-layout.md'), 'utf8'),
+    readFile(path.join(promptDir, 'library-components.md'), 'utf8'),
   ])
 
-  // Append the design system reference to each agent's system prompt
-  // Token Designer gets only the preset structure section (not component API)
-  const tokenSystemPrompt = tokenPromptRaw
-  const layoutSystemPrompt = `${layoutPromptRaw}\n\n${designSystemRef}`
+  // Build system prompts with relevant libraries appended
+  const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}`
+  const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libTypography}\n\n${libColor}`
+  const layoutSystemPrompt = `${layoutPromptRaw}\n\n${libLayout}\n\n${designSystemRef}`
   const sidebarSystemPrompt = `${sidebarPromptRaw}\n\n${designSystemRef}`
   const footerSystemPrompt = `${footerPromptRaw}\n\n${designSystemRef}`
-  const componentSystemPrompt = `${componentPromptRaw}\n\n${designSystemRef}`
-
-  // No agent receives previous file contents — they all design from scratch.
-  // The technical contracts (imports, exports, structure) are defined in the system prompts.
-  // Sending previous files causes color/layout anchoring.
+  const componentSystemPrompt = `${componentPromptRaw}\n\n${libComponents}\n\n${designSystemRef}`
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')
@@ -385,12 +394,37 @@ export async function runAgentSwarm(context) {
   console.log(`  backed up ${originalBackup.size} files`)
 
   // -----------------------------------------------------------------------
-  // Phase 1: Token Designer
+  // Phase 0: Design Director — produces a visual specification
+  // -----------------------------------------------------------------------
+  console.log('\n[phase-0] Design Director')
+
+  const directorUserPrompt = buildAgentPrompt('design-director', {
+    brief,
+    referenceFiles: [],
+    tokenContext: null,
+  })
+
+  let visualSpec = ''
+  try {
+    const directorResult = await callAgent('design-director', directorSystemPrompt, directorUserPrompt)
+    visualSpec = directorResult._rawResponse || directorResult.rationale || ''
+    console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB`)
+  } catch (err) {
+    console.warn(`  Design Director failed (non-blocking): ${err.message}`)
+    console.warn('  Proceeding without visual spec — agents will use brief directly')
+  }
+
+  // -----------------------------------------------------------------------
+  // Phase 1: Token Designer — uses visual spec if available
   // -----------------------------------------------------------------------
   console.log('\n[phase-1] Token Designer')
 
+  const tokenBrief = visualSpec
+    ? `## Visual Specification (from Design Director)\n\n${visualSpec}\n\n---\n\n## Original Creative Brief\n\n${brief}`
+    : brief
+
   const tokenUserPrompt = buildAgentPrompt('token-designer', {
-    brief,
+    brief: tokenBrief,
     referenceFiles: [],
     tokenContext: null,
   })
@@ -450,9 +484,14 @@ export async function runAgentSwarm(context) {
 
   console.log('\n[phase-2] Layout Architect')
 
+  // All downstream agents get the visual spec prepended to their brief
+  const enrichedBrief = visualSpec
+    ? `## Visual Specification (from Design Director)\n\n${visualSpec}\n\n---\n\n## Original Creative Brief\n\n${brief}`
+    : brief
+
   let layoutResult = null
   const layoutUserPrompt = buildAgentPrompt('layout-architect', {
-    brief,
+    brief: enrichedBrief,
     referenceFiles: [],
     tokenContext,
   })
@@ -489,7 +528,7 @@ export async function runAgentSwarm(context) {
   // Sidebar Designer
   console.log('\n  --- Sidebar Designer ---')
   const sidebarUserPrompt = buildAgentPrompt('sidebar-designer', {
-    brief,
+    brief: enrichedBrief,
     referenceFiles: layoutRef,
     tokenContext,
   })
@@ -503,7 +542,7 @@ export async function runAgentSwarm(context) {
   // Footer Designer
   console.log('\n  --- Footer Designer ---')
   const footerUserPrompt = buildAgentPrompt('footer-designer', {
-    brief,
+    brief: enrichedBrief,
     referenceFiles: layoutRef,
     tokenContext,
   })
@@ -517,7 +556,7 @@ export async function runAgentSwarm(context) {
   // Component Agent
   console.log('\n  --- Component Agent ---')
   const componentUserPrompt = buildAgentPrompt('component-agent', {
-    brief,
+    brief: enrichedBrief,
     referenceFiles: [],
     tokenContext,
   })
@@ -574,11 +613,11 @@ export async function runAgentSwarm(context) {
 
   // Build agent lookup for retry
   const agentConfig = {
-    'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief, referenceFiles: [], tokenContext: null }) },
-    'layout-architect': { prompt: layoutSystemPrompt, user: () => buildAgentPrompt('layout-architect', { brief, referenceFiles: [], tokenContext }) },
-    'sidebar-designer': { prompt: sidebarSystemPrompt, user: () => buildAgentPrompt('sidebar-designer', { brief, referenceFiles: layoutRef, tokenContext }) },
-    'footer-designer': { prompt: footerSystemPrompt, user: () => buildAgentPrompt('footer-designer', { brief, referenceFiles: layoutRef, tokenContext }) },
-    'component-agent': { prompt: componentSystemPrompt, user: () => buildAgentPrompt('component-agent', { brief, referenceFiles: [], tokenContext }) },
+    'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) },
+    'layout-architect': { prompt: layoutSystemPrompt, user: () => buildAgentPrompt('layout-architect', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
+    'sidebar-designer': { prompt: sidebarSystemPrompt, user: () => buildAgentPrompt('sidebar-designer', { brief: enrichedBrief, referenceFiles: layoutRef, tokenContext }) },
+    'footer-designer': { prompt: footerSystemPrompt, user: () => buildAgentPrompt('footer-designer', { brief: enrichedBrief, referenceFiles: layoutRef, tokenContext }) },
+    'component-agent': { prompt: componentSystemPrompt, user: () => buildAgentPrompt('component-agent', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
   }
 
   const retryAgents = failingAgent === 'both'
