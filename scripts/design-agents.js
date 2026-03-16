@@ -356,15 +356,24 @@ function validateCodegen() {
 export async function runAgentSwarm(context) {
   const { signals, brief, contentSummary } = context
 
-  // Read system prompts
+  // Read system prompts + shared design system reference
   const promptDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'prompts')
-  const [tokenSystemPrompt, layoutSystemPrompt, sidebarSystemPrompt, footerSystemPrompt, componentSystemPrompt] = await Promise.all([
+  const [tokenPromptRaw, layoutPromptRaw, sidebarPromptRaw, footerPromptRaw, componentPromptRaw, designSystemRef] = await Promise.all([
     readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'structure-agent.md'), 'utf8'),
     readFile(path.join(promptDir, 'sidebar-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'footer-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'component-agent.md'), 'utf8'),
+    readFile(path.join(promptDir, 'design-system-reference.md'), 'utf8'),
   ])
+
+  // Append the design system reference to each agent's system prompt
+  // Token Designer gets only the preset structure section (not component API)
+  const tokenSystemPrompt = tokenPromptRaw
+  const layoutSystemPrompt = `${layoutPromptRaw}\n\n${designSystemRef}`
+  const sidebarSystemPrompt = `${sidebarPromptRaw}\n\n${designSystemRef}`
+  const footerSystemPrompt = `${footerPromptRaw}\n\n${designSystemRef}`
+  const componentSystemPrompt = `${componentPromptRaw}\n\n${designSystemRef}`
 
   // No agent receives previous file contents — they all design from scratch.
   // The technical contracts (imports, exports, structure) are defined in the system prompts.
