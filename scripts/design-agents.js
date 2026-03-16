@@ -74,12 +74,16 @@ export function buildAgentPrompt(agentName, { brief, referenceFiles, tokenContex
     )
   }
 
-  // Section 3: Reference Files
+  // Section 3: Reference Files — with explicit anti-anchoring instruction
   if (referenceFiles && referenceFiles.length > 0) {
     const fileBlocks = referenceFiles.map(
       f => `### ${f.path}\n\n\`\`\`typescript\n${f.content}\n\`\`\``
     )
-    sections.push(`## Reference Files\n\n${fileBlocks.join('\n\n')}`)
+    sections.push(`## Reference Files — Technical Reference ONLY
+
+These are the CURRENT files on disk. They show you the component API, TypeScript interfaces, import paths, and export names you must preserve. Do NOT use these as a design starting point. Your layout, structure, styling, and spatial organization should be entirely new — as if you have never seen these files before. The only thing to preserve is the technical contract (imports, exports, prop interfaces).
+
+${fileBlocks.join('\n\n')}`)
   }
 
   return sections.join('\n\n')
