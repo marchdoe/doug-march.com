@@ -204,8 +204,15 @@ export function DevPanel() {
   const [cooldownLeft, setCooldownLeft] = useState(0)
   const cooldownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // Pane navigation
-  const [activePane, setActivePane] = useState<PaneName>('pipeline')
+  // Pane navigation — persisted in sessionStorage so HMR reloads don't reset it
+  const [activePane, setActivePaneRaw] = useState<PaneName>(() => {
+    try { return (sessionStorage.getItem('dev-panel-pane') as PaneName) || 'pipeline' }
+    catch { return 'pipeline' }
+  })
+  const setActivePane = (pane: PaneName) => {
+    setActivePaneRaw(pane)
+    try { sessionStorage.setItem('dev-panel-pane', pane) } catch {}
+  }
 
   // ── Load initial data ──────────────────────────────────────────────────────
   useEffect(() => {
