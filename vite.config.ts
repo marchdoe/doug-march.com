@@ -184,6 +184,28 @@ function pipelineApiPlugin(): Plugin {
           child.kill()
         })
       })
+
+      // Serve archived site snapshots for the preview viewer
+      server.middlewares.use('/api/archive-preview', (req, res, next) => {
+        // URL format: /api/archive-preview/2026-03-16/index.html
+        const match = req.url?.match(/^\/(\d{4}-\d{2}-\d{2})\/(.+)$/)
+        if (!match) { res.writeHead(404); res.end('Not found'); return }
+
+        const [, date, filePath] = match
+        const fullPath = resolve('archive', date, 'site', filePath)
+
+        if (!existsSync(fullPath)) {
+          res.writeHead(404)
+          res.end('Snapshot not found')
+          return
+        }
+
+        const content = readFileSync(fullPath, 'utf8')
+        const ext = filePath.split('.').pop()
+        const contentType = ext === 'html' ? 'text/html' : ext === 'css' ? 'text/css' : 'application/octet-stream'
+        res.writeHead(200, { 'Content-Type': contentType })
+        res.end(content)
+      })
     },
   }
 }

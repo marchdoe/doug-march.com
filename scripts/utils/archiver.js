@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'fs/promises'
 import path from 'path'
 import { ROOT } from './file-manager.js'
+import { captureSnapshot } from './snapshot.js'
 
 /**
  * Format a signals object as readable markdown sections.
@@ -103,4 +104,11 @@ export async function archive(date, signals, rationale, designBrief, changedFile
   const briefPath = path.join(dir, 'brief.md')
   await writeFile(briefPath, content, 'utf8')
   console.log(`  archived to archive/${dateStr}/brief.md`)
+
+  // Capture static HTML snapshot (non-blocking — brief.md is already saved)
+  try {
+    await captureSnapshot(dateStr)
+  } catch (err) {
+    console.warn(`  snapshot failed (non-blocking): ${err.message}`)
+  }
 }
