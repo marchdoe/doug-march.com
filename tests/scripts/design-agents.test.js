@@ -1,0 +1,95 @@
+import { describe, it, expect } from 'vitest'
+import {
+  FILE_OWNERSHIP,
+  buildAgentPrompt,
+  identifyFailingAgent,
+} from '../../scripts/design-agents.js'
+
+describe('FILE_OWNERSHIP', () => {
+  it('maps every file to exactly one agent', () => {
+    const allFiles = Object.values(FILE_OWNERSHIP)
+    expect(new Set(allFiles).size).toBeLessThanOrEqual(3)
+    expect(Object.keys(FILE_OWNERSHIP)).toHaveLength(17)
+  })
+
+  it('maps preset.ts and __root.tsx to token-designer', () => {
+    expect(FILE_OWNERSHIP['elements/preset.ts']).toBe('token-designer')
+    expect(FILE_OWNERSHIP['app/routes/__root.tsx']).toBe('token-designer')
+  })
+
+  it('maps layout files to structure-agent', () => {
+    expect(FILE_OWNERSHIP['app/components/Layout.tsx']).toBe('structure-agent')
+    expect(FILE_OWNERSHIP['app/routes/index.tsx']).toBe('structure-agent')
+  })
+
+  it('maps component files to component-agent', () => {
+    expect(FILE_OWNERSHIP['app/components/Bio.tsx']).toBe('component-agent')
+    expect(FILE_OWNERSHIP['app/components/FeaturedProject.tsx']).toBe('component-agent')
+  })
+})
+
+describe('identifyFailingAgent', () => {
+  it('identifies structure-agent from a build error mentioning Layout.tsx', () => {
+    const error = "app/components/Layout.tsx(15,7): error TS2322"
+    expect(identifyFailingAgent(error)).toBe('structure-agent')
+  })
+
+  it('identifies component-agent from a build error mentioning Bio.tsx', () => {
+    const error = "app/components/Bio.tsx(8,3): error TS2304"
+    expect(identifyFailingAgent(error)).toBe('component-agent')
+  })
+
+  it('identifies token-designer from error mentioning preset', () => {
+    const error = "Error in elements/preset.ts: invalid token"
+    expect(identifyFailingAgent(error)).toBe('token-designer')
+  })
+
+  it('returns "both" when errors span multiple agents', () => {
+    const error = "app/components/Layout.tsx(15,7): error\napp/components/Bio.tsx(8,3): error"
+    expect(identifyFailingAgent(error)).toBe('both')
+  })
+
+  it('returns "both" when no file can be identified', () => {
+    const error = "Unknown build error"
+    expect(identifyFailingAgent(error)).toBe('both')
+  })
+})
+
+describe('buildAgentPrompt', () => {
+  it('includes the brief in the prompt', () => {
+    const prompt = buildAgentPrompt('token-designer', {
+      brief: '## Palette Direction\nWarm and golden.',
+      referenceFiles: [],
+      tokenContext: null,
+    })
+    expect(prompt).toContain('Warm and golden')
+  })
+
+  it('includes token context for structure-agent', () => {
+    const prompt = buildAgentPrompt('structure-agent', {
+      brief: 'brief text',
+      referenceFiles: [],
+      tokenContext: 'export const elementsPreset = ...',
+    })
+    expect(prompt).toContain('elementsPreset')
+  })
+
+  it('does not include token context for token-designer', () => {
+    const prompt = buildAgentPrompt('token-designer', {
+      brief: 'brief text',
+      referenceFiles: [],
+      tokenContext: null,
+    })
+    expect(prompt).not.toContain('## Design Tokens')
+  })
+
+  it('includes reference files', () => {
+    const prompt = buildAgentPrompt('component-agent', {
+      brief: 'brief text',
+      referenceFiles: [{ path: 'app/components/Bio.tsx', content: 'const Bio = ...' }],
+      tokenContext: 'tokens',
+    })
+    expect(prompt).toContain('Bio.tsx')
+    expect(prompt).toContain('const Bio')
+  })
+})
