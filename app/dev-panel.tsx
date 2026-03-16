@@ -668,6 +668,8 @@ function PipelinePane({ signals, meta, archive, moodOverride, setMoodOverride, n
 function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
   const today = new Date().toISOString().slice(0, 10)
   const [expandedDate, setExpandedDate] = useState<string | null>(null)
+  const [previewDate, setPreviewDate] = useState<string | null>(null)
+  const [previewPage, setPreviewPage] = useState<string>('index.html')
 
   return (
     <>
@@ -719,6 +721,22 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
                 {entry.brief}
               </span>
               <button
+                onClick={() => { setPreviewDate(entry.date); setPreviewPage('index.html') }}
+                style={{
+                  background: 'rgba(34,211,238,0.1)',
+                  border: '1px solid rgba(34,211,238,0.2)',
+                  borderRadius: '3px',
+                  padding: '3px 8px',
+                  fontSize: '9px',
+                  color: '#22d3ee',
+                  cursor: 'pointer',
+                  fontFamily: c.font,
+                  flexShrink: 0,
+                }}
+              >
+                Preview
+              </button>
+              <button
                 onClick={() => setExpandedDate(isExpanded ? null : entry.date)}
                 style={{
                   background: 'transparent',
@@ -751,6 +769,67 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
           </div>
         )
       })}
+
+      {previewDate && (
+        <div style={{ marginTop: '16px' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '8px',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.07em', color: c.dim, fontFamily: c.font }}>
+                // PREVIEW &middot; {previewDate}
+              </span>
+              {['index.html', 'about.html'].map(page => (
+                <button
+                  key={page}
+                  onClick={() => setPreviewPage(page)}
+                  style={{
+                    background: previewPage === page ? 'rgba(34,211,238,0.15)' : 'transparent',
+                    border: '1px solid ' + (previewPage === page ? '#22d3ee' : c.border),
+                    borderRadius: '4px',
+                    padding: '3px 10px',
+                    fontSize: '11px',
+                    fontFamily: c.font,
+                    color: previewPage === page ? '#22d3ee' : c.dim,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {page === 'index.html' ? 'Home' : page.replace('.html', '')}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setPreviewDate(null)}
+              style={{
+                background: 'transparent',
+                border: `1px solid ${c.border}`,
+                borderRadius: '4px',
+                padding: '3px 10px',
+                fontSize: '11px',
+                fontFamily: c.font,
+                color: c.dim,
+                cursor: 'pointer',
+              }}
+            >
+              Close
+            </button>
+          </div>
+          <iframe
+            src={`/api/archive-preview/${previewDate}/${previewPage}`}
+            style={{
+              width: '100%',
+              height: '600px',
+              border: `1px solid ${c.border}`,
+              borderRadius: '6px',
+              background: '#fff',
+            }}
+            title={`Preview ${previewDate}`}
+          />
+        </div>
+      )}
     </>
   )
 }
