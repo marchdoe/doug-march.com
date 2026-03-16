@@ -42,6 +42,8 @@ interface Phase {
   durationMs?: number
 }
 
+type PaneName = 'pipeline' | 'archive' | 'inspector' | 'run'
+
 const COOLDOWN_SECONDS = 10
 
 function makePhases(): Phase[] {
@@ -90,14 +92,32 @@ const c = {
 
 const s = {
   page: {
-    padding: '28px 32px',
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column' as const,
+    overflow: 'hidden',
+    background: c.pageBg,
+    color: c.primary,
     fontFamily: c.font,
     fontSize: '13px',
-    color: c.primary,
-    maxWidth: '1220px',
-    margin: '0 auto',
+  } as React.CSSProperties,
+  layout: {
+    display: 'grid',
+    gridTemplateColumns: '190px 1fr',
+    flex: 1,
+    overflow: 'hidden',
+  } as React.CSSProperties,
+  sidebar: {
     background: c.pageBg,
-    minHeight: '100vh',
+    borderRight: `1px solid ${c.border}`,
+    display: 'flex',
+    flexDirection: 'column' as const,
+    paddingTop: '8px',
+    overflow: 'hidden',
+  } as React.CSSProperties,
+  contentArea: {
+    overflow: 'auto',
+    padding: '24px 28px',
   } as React.CSSProperties,
   overridesRow: {
     display: 'flex',
@@ -183,6 +203,9 @@ export function DevPanel() {
   // Cooldown state
   const [cooldownLeft, setCooldownLeft] = useState(0)
   const cooldownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Pane navigation
+  const [activePane, setActivePane] = useState<PaneName>('pipeline')
 
   // ── Load initial data ──────────────────────────────────────────────────────
   useEffect(() => {
@@ -338,13 +361,13 @@ export function DevPanel() {
 
   const isRunDisabled = pipelineStatus === 'running' || pipelineStatus === 'cooldown'
 
-  if (loading) return <main style={s.page}><p style={{ color: c.dim }}>Loading...</p></main>
+  if (loading) return <main style={s.page}><p style={{ color: c.dim, padding: '28px 32px' }}>Loading...</p></main>
   if (!signals) return (
     <main style={s.page}>
-      <div style={{ padding: '2rem', maxWidth: 480 }}>
+      <div style={{ padding: '2rem 28px 2rem 32px', maxWidth: 480 }}>
         <p style={{ color: c.dim, marginBottom: '1rem' }}>No signals collected yet.</p>
         <p style={{ color: c.dim, fontSize: '0.85rem', lineHeight: 1.6 }}>
-          Run <code style={{ background: c.card, padding: '2px 6px', borderRadius: 4 }}>node scripts/collect-signals.js</code> to
+          Run <code style={{ background: c.cardBg, padding: '2px 6px', borderRadius: 4 }}>node scripts/collect-signals.js</code> to
           collect today's signals, then refresh this page.
         </p>
       </div>
@@ -352,9 +375,248 @@ export function DevPanel() {
   )
 
   return (
-    <main style={s.page}>
+    <div style={s.page}>
       <PulseStyle />
 
+      {/* Header */}
+      <DevHeader meta={meta} pipelineStatus={pipelineStatus} />
+
+      <div style={s.layout}>
+        {/* Sidebar */}
+        <nav style={s.sidebar}>
+          <div style={{ flex: 1 }}>
+            <SidebarItem
+              label="Pipeline"
+              active={activePane === 'pipeline'}
+              onClick={() => setActivePane('pipeline')}
+            />
+            <SidebarItem
+              label="Archive"
+              active={activePane === 'archive'}
+              onClick={() => setActivePane('archive')}
+              badge={archive.length > 0 ? String(archive.length) : undefined}
+            />
+            <SidebarItem
+              label="Prompt Inspector"
+              active={activePane === 'inspector'}
+              onClick={() => setActivePane('inspector')}
+            />
+          </div>
+          <div style={{ borderTop: `1px solid ${c.border}`, padding: '8px 0' }}>
+            <SidebarItem
+              label="Run Pipeline"
+              active={activePane === 'run'}
+              onClick={() => setActivePane('run')}
+              icon={pipelineStatus === 'running' ? 'amber-dot' : 'play'}
+            />
+          </div>
+        </nav>
+
+        {/* Content area */}
+        <div style={s.contentArea}>
+          {activePane === 'pipeline' && (
+            <PipelinePane
+              signals={signals}
+              meta={meta}
+              archive={archive}
+              moodOverride={moodOverride}
+              setMoodOverride={setMoodOverride}
+              notes={notes}
+              setNotes={setNotes}
+              savingOverrides={savingOverrides}
+              handleSaveOverrides={handleSaveOverrides}
+            />
+          )}
+          {activePane === 'archive' && (
+            <ArchivePane archive={archive} />
+          )}
+          {activePane === 'inspector' && (
+            <InspectorPane />
+          )}
+          {activePane === 'run' && (
+            <RunPane
+              pipelineStatus={pipelineStatus}
+              dryRun={dryRun}
+              setDryRun={setDryRun}
+              isRunDisabled={isRunDisabled}
+              handleRun={handleRun}
+              phases={phases}
+              logLines={logLines}
+              attemptNum={attemptNum}
+              logEndRef={logEndRef}
+              elapsedMs={elapsedMs}
+              result={result}
+              archive={archive}
+              startCooldown={startCooldown}
+              cooldownLeft={cooldownLeft}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── Dev Header ──────────────────────────────────────────────────────────────
+
+function DevHeader({ meta, pipelineStatus }: { meta: Meta | null; pipelineStatus: PipelineStatus }) {
+  const siteUrl = window.location.origin
+  return (
+    <header style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '10px 20px',
+      borderBottom: `1px solid ${c.border}`,
+      background: c.pageBg,
+      flexShrink: 0,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
+        <span style={{ fontSize: '13px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
+          doug-march.com
+        </span>
+        <span style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>
+          Daily Redesign &middot; Dev Panel
+        </span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {meta && (
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            background: 'rgba(92,190,74,0.08)',
+            border: `1px solid rgba(92,190,74,0.2)`,
+            borderRadius: '20px',
+            padding: '3px 10px',
+            fontSize: '11px',
+            fontWeight: 700,
+            color: c.green,
+            fontFamily: c.font,
+          }}>
+            <span style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: c.green,
+              animation: 'pulse-dot 2s ease-in-out infinite',
+            }} />
+            {meta.providers_ok} / {meta.providers_total}
+          </span>
+        )}
+        {pipelineStatus === 'running' && (
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '11px',
+            fontWeight: 700,
+            color: c.cyan,
+            fontFamily: c.font,
+            animation: 'pulse 1.5s ease-in-out infinite',
+          }}>
+            <span style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: c.cyan,
+            }} />
+            Running
+          </span>
+        )}
+        <a
+          href={siteUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontSize: '11px',
+            color: c.dim,
+            fontFamily: c.font,
+            textDecoration: 'none',
+            padding: '4px 10px',
+            border: `1px solid ${c.border}`,
+            borderRadius: '4px',
+          }}
+        >
+          Open Site &#8599;
+        </a>
+      </div>
+    </header>
+  )
+}
+
+// ─── Sidebar Item ────────────────────────────────────────────────────────────
+
+function SidebarItem({ label, active, onClick, badge, icon }: {
+  label: string
+  active: boolean
+  onClick: () => void
+  badge?: string
+  icon?: 'play' | 'amber-dot'
+}) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        width: '100%',
+        padding: '9px 14px',
+        background: active ? 'rgba(0,229,255,0.06)' : 'transparent',
+        border: 'none',
+        borderLeft: active ? `2px solid ${c.cyan}` : '2px solid transparent',
+        color: active ? c.primary : c.muted,
+        fontSize: '11px',
+        fontFamily: c.font,
+        cursor: 'pointer',
+        textAlign: 'left',
+        letterSpacing: '.02em',
+      }}
+    >
+      {icon === 'play' && <span style={{ fontSize: '10px' }}>&#9654;</span>}
+      {icon === 'amber-dot' && (
+        <span style={{
+          width: '6px',
+          height: '6px',
+          borderRadius: '50%',
+          background: c.orange,
+          animation: 'pulse-dot 1.5s ease-in-out infinite',
+          flexShrink: 0,
+        }} />
+      )}
+      <span style={{ flex: 1 }}>{label}</span>
+      {badge && (
+        <span style={{
+          fontSize: '9px',
+          color: c.muted,
+          background: c.cardBg,
+          padding: '1px 6px',
+          borderRadius: '8px',
+          border: `1px solid ${c.border}`,
+        }}>
+          {badge}
+        </span>
+      )}
+    </button>
+  )
+}
+
+// ─── Pipeline Pane ───────────────────────────────────────────────────────────
+
+function PipelinePane({ signals, meta, archive, moodOverride, setMoodOverride, notes, setNotes, savingOverrides, handleSaveOverrides }: {
+  signals: Signals
+  meta: Meta | null
+  archive: ArchiveEntry[]
+  moodOverride: string
+  setMoodOverride: (v: string) => void
+  notes: string
+  setNotes: (v: string) => void
+  savingOverrides: boolean
+  handleSaveOverrides: () => void
+}) {
+  return (
+    <>
       {/* Zone 1: Signals Header */}
       <SignalsHeader meta={meta} date={signals.date} />
 
@@ -391,7 +653,169 @@ export function DevPanel() {
         </button>
       </div>
 
-      {/* Run */}
+      {/* Last run info */}
+      {archive[0] && (
+        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font, marginTop: '8px' }}>
+          Last run: <strong style={{ color: c.dim }}>{archive[0].date}</strong> &middot; <em style={{ color: c.muted }}>{archive[0].brief.slice(0, 50)}...</em>
+        </div>
+      )}
+    </>
+  )
+}
+
+// ─── Archive Pane ────────────────────────────────────────────────────────────
+
+function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
+  const today = new Date().toISOString().slice(0, 10)
+  const [expandedDate, setExpandedDate] = useState<string | null>(null)
+
+  return (
+    <>
+      <h2 style={{
+        fontSize: '10px',
+        fontWeight: 700,
+        textTransform: 'uppercase',
+        letterSpacing: '.12em',
+        color: c.dim,
+        fontFamily: c.font,
+        margin: '0 0 16px 0',
+      }}>
+        // ARCHIVE <span style={{ color: c.muted, fontWeight: 400 }}>({archive.length})</span>
+      </h2>
+
+      {archive.length === 0 && (
+        <div style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>No archive entries yet.</div>
+      )}
+
+      {archive.map((entry, i) => {
+        const isToday = entry.date === today
+        const isExpanded = expandedDate === entry.date
+        return (
+          <div key={entry.date + i} style={{
+            padding: '10px 12px',
+            marginBottom: '6px',
+            background: isToday ? 'rgba(0,229,255,0.04)' : c.cardBg,
+            border: `1px solid ${isToday ? 'rgba(0,229,255,0.15)' : c.border}`,
+            borderRadius: '4px',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{
+                fontSize: '12px',
+                fontWeight: 700,
+                color: isToday ? c.cyan : c.primary,
+                fontFamily: c.font,
+                minWidth: '90px',
+              }}>
+                {entry.date}
+                {isToday && <span style={{ fontSize: '9px', color: c.cyan, marginLeft: '6px' }}>TODAY</span>}
+              </span>
+              <span style={{
+                fontSize: '11px',
+                color: c.secondary,
+                fontStyle: 'italic',
+                fontFamily: c.font,
+                flex: 1,
+              }}>
+                {entry.brief}
+              </span>
+              <button
+                onClick={() => setExpandedDate(isExpanded ? null : entry.date)}
+                style={{
+                  background: 'transparent',
+                  border: `1px solid ${c.border}`,
+                  borderRadius: '3px',
+                  padding: '3px 8px',
+                  fontSize: '9px',
+                  color: c.dim,
+                  cursor: 'pointer',
+                  fontFamily: c.font,
+                  flexShrink: 0,
+                }}
+              >
+                {isExpanded ? 'Hide' : 'View Brief'}
+              </button>
+            </div>
+            {isExpanded && (
+              <div style={{
+                marginTop: '8px',
+                paddingTop: '8px',
+                borderTop: `1px solid ${c.border}`,
+                fontSize: '11px',
+                color: c.muted,
+                fontFamily: c.font,
+                lineHeight: '1.6',
+              }}>
+                {entry.brief}
+              </div>
+            )}
+          </div>
+        )
+      })}
+    </>
+  )
+}
+
+// ─── Inspector Pane ──────────────────────────────────────────────────────────
+
+function InspectorPane() {
+  return (
+    <>
+      <h2 style={{
+        fontSize: '10px',
+        fontWeight: 700,
+        textTransform: 'uppercase',
+        letterSpacing: '.12em',
+        color: c.dim,
+        fontFamily: c.font,
+        margin: '0 0 16px 0',
+      }}>
+        // PROMPT INSPECTOR
+      </h2>
+      <p style={{
+        fontSize: '11px',
+        color: c.muted,
+        fontFamily: c.font,
+        lineHeight: '1.6',
+      }}>
+        Available when agent swarm is active.
+      </p>
+    </>
+  )
+}
+
+// ─── Run Pane ────────────────────────────────────────────────────────────────
+
+function RunPane({ pipelineStatus, dryRun, setDryRun, isRunDisabled, handleRun, phases, logLines, attemptNum, logEndRef, elapsedMs, result, archive, startCooldown, cooldownLeft }: {
+  pipelineStatus: PipelineStatus
+  dryRun: boolean
+  setDryRun: (v: boolean) => void
+  isRunDisabled: boolean
+  handleRun: () => void
+  phases: Phase[]
+  logLines: string[]
+  attemptNum: number
+  logEndRef: React.RefObject<HTMLDivElement | null>
+  elapsedMs: number
+  result: { brief?: string; timestamp?: string; error?: string; totalMs?: number } | null
+  archive: ArchiveEntry[]
+  startCooldown: () => void
+  cooldownLeft: number
+}) {
+  return (
+    <>
+      <h2 style={{
+        fontSize: '10px',
+        fontWeight: 700,
+        textTransform: 'uppercase',
+        letterSpacing: '.12em',
+        color: c.dim,
+        fontFamily: c.font,
+        margin: '0 0 16px 0',
+      }}>
+        // RUN PIPELINE
+      </h2>
+
+      {/* Run controls */}
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
         <button data-testid="run-pipeline-btn" onClick={handleRun} disabled={isRunDisabled} style={{
           background: pipelineStatus === 'running' ? c.muted : pipelineStatus === 'cooldown' ? c.ghost : c.cyan,
@@ -414,17 +838,70 @@ export function DevPanel() {
           <input type="checkbox" checked={dryRun} onChange={e => setDryRun(e.target.checked)} disabled={isRunDisabled} />
           Dry run (no commit)
         </label>
-        {archive[0] && (
-          <div style={{ marginLeft: 'auto', fontSize: '11px', color: c.muted, fontFamily: c.font }}>
-            Last run: <strong style={{ color: c.dim }}>{archive[0].date}</strong> · <em style={{ color: c.muted }}>{archive[0].brief.slice(0, 50)}...</em>
-          </div>
-        )}
       </div>
 
       {/* Progress */}
       {pipelineStatus === 'running' && (
         <ProgressSection phases={phases} logLines={logLines} attemptNum={attemptNum} logEndRef={logEndRef} elapsedMs={elapsedMs} />
       )}
+
+      {/* Idle state: empty phases + empty log */}
+      {pipelineStatus === 'idle' && (
+        <div style={{
+          border: `1px solid ${c.border}`,
+          borderRadius: '4px',
+          overflow: 'hidden',
+        }}>
+          <div style={{
+            background: c.cardBg,
+            borderBottom: `1px solid ${c.border}`,
+            padding: '10px 14px',
+            fontSize: '11px',
+            fontWeight: 700,
+            color: c.muted,
+            fontFamily: c.font,
+          }}>
+            // PIPELINE · Idle
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr' }}>
+            <div style={{
+              padding: '14px',
+              borderRight: `1px solid ${c.border}`,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '9px',
+              background: c.cardBg,
+            }}>
+              {phases.map(p => (
+                <div key={p.label} style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
+                  <PhaseDot status="pending" />
+                  <span style={{
+                    fontSize: '10px',
+                    fontFamily: c.font,
+                    color: c.muted,
+                    fontWeight: 400,
+                  }}>{p.label}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{
+              background: '#020810',
+              padding: '14px',
+              fontFamily: c.font,
+              fontSize: '10px',
+              lineHeight: '1.8',
+              color: c.ghost,
+              minHeight: '180px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              Waiting for pipeline start...
+            </div>
+          </div>
+        </div>
+      )}
+
       <div role="status" aria-live="polite">
         {(pipelineStatus === 'success' || pipelineStatus === 'cooldown') && result && (
           <SuccessSection
@@ -445,7 +922,7 @@ export function DevPanel() {
           <ErrorSection error={result.error ?? 'Unknown error'} totalMs={result.totalMs ?? 0} onRetry={handleRun} />
         )}
       </div>
-    </main>
+    </>
   )
 }
 
@@ -627,7 +1104,7 @@ function AtmosphereStrip({ signals }: { signals: Signals }) {
           <span style={{ fontSize: '11px', fontWeight: 400, color: c.dim, marginLeft: '4px' }}>daylight</span>
         </div>
         <div style={subStyle}>
-          {sun?.sunrise ?? '--'} ↑ {sun?.sunset ?? '--'} ↓
+          {sun?.sunrise ?? '--'} &#8593; {sun?.sunset ?? '--'} &#8595;
         </div>
       </div>
 
@@ -705,7 +1182,7 @@ function QuoteBlock({ signals }: { signals: Signals }) {
         marginBottom: '6px',
         paddingRight: '80px',
       }}>
-        "{quote.text}"
+        &ldquo;{quote.text}&rdquo;
       </div>
       <div style={{
         fontSize: '11px',
@@ -1093,14 +1570,14 @@ function WeatherCard({ signals, cardStyle, headerStyle }: {
         <>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '6px' }}>
             <span style={{ fontSize: '22px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
-              {Math.round(weather.temp_f ?? 0)}°F
+              {Math.round(weather.temp_f ?? 0)}&deg;F
             </span>
             <span style={{ fontSize: '11px', color: c.dim, fontFamily: c.font }}>
               {weather.conditions}
             </span>
           </div>
           <div style={{ fontSize: '10px', color: c.muted, fontFamily: c.font, lineHeight: '1.8' }}>
-            <div>Feels like {Math.round(weather.feels_like_f ?? 0)}°F · {weather.humidity}% humidity</div>
+            <div>Feels like {Math.round(weather.feels_like_f ?? 0)}&deg;F &middot; {weather.humidity}% humidity</div>
             <div>Wind {weather.wind_mph} mph {weather.wind_dir}</div>
             <div style={{ color: c.dim, marginTop: '2px' }}>{weather.location}</div>
           </div>
@@ -1178,7 +1655,7 @@ function MarketCard({ signals, cardStyle, headerStyle }: {
   const isUp = market.direction === 'up'
   const isDown = market.direction === 'down'
   const dirColor = isUp ? c.green : isDown ? '#ef4444' : c.dim
-  const arrow = isUp ? '▲' : isDown ? '▼' : '—'
+  const arrow = isUp ? '\u25B2' : isDown ? '\u25BC' : '\u2014'
 
   return (
     <div style={cardStyle}>
@@ -1370,10 +1847,10 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef, elapsedMs }:
         justifyContent: 'space-between',
         fontFamily: c.font,
       }}>
-        <span>// PIPELINE · Attempt {attemptNum} of 3</span>
+        <span>// PIPELINE &middot; Attempt {attemptNum} of 3</span>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <span style={{ fontFamily: c.font, color: c.muted, fontSize: '11px' }}>{fmtElapsed(elapsedMs)}</span>
-          <span style={{ color: c.cyan }}>● running</span>
+          <span style={{ color: c.cyan }}>&#9679; running</span>
         </div>
       </div>
 
@@ -1545,14 +2022,14 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
             Build passed -- committed
           </div>
           <div style={{ fontSize: '11px', color: c.secondary, fontStyle: 'italic', fontFamily: c.font }}>
-            "{brief}"
+            &ldquo;{brief}&rdquo;
           </div>
         </div>
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <div style={{ textAlign: 'right' as const }}>
             <div style={{ fontSize: '10px', color: c.green, fontFamily: c.font }}>{timestamp}</div>
             <div style={{ fontSize: '9px', color: c.dim, fontFamily: c.font }}>
-              Total: {fmtDuration(totalMs)} · {attemptNum} attempt{attemptNum !== 1 ? 's' : ''}
+              Total: {fmtDuration(totalMs)} &middot; {attemptNum} attempt{attemptNum !== 1 ? 's' : ''}
             </div>
           </div>
           <button onClick={() => window.open(siteUrl, '_blank')} style={{
