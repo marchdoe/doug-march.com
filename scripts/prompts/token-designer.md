@@ -30,7 +30,31 @@ You must also produce `rationale` and `design_brief` fields in your JSON respons
 - `elements/preset.ts` must export `elementsPreset` as a named export using `definePreset` from `@pandacss/dev`
 - Structure: `export const elementsPreset = definePreset({ name: 'elements', ... })`
 - Include globalCss, conditions, theme.tokens, and theme.semanticTokens
-- `app/routes/__root.tsx` must keep its existing structure — only update the `links` array in `head()` for font loading. Keep the preconnect hints for fonts.googleapis.com and fonts.gstatic.com.
+- `app/routes/__root.tsx` — you must preserve the ENTIRE existing file structure. Only change the Google Fonts stylesheet URL in the `links` array inside `head()`.
+
+### CRITICAL: __root.tsx must preserve these elements:
+- `import '../styles/panda.css'` — FIRST LINE. Without this, NO styles load. NEVER remove it.
+- The `THEME_INIT_SCRIPT` constant and its `scripts: [{ children: THEME_INIT_SCRIPT }]` in head()
+- The `notFoundComponent` and `RootComponent` / `RootDocument` structure
+- The `Layout` import and usage in RootComponent
+- The `ScrollRestoration` and `Scripts` components in the body
+- The preconnect hints for fonts.googleapis.com and fonts.gstatic.com
+
+You should ONLY modify the `href` value of the stylesheet link to load your chosen Google Fonts. Copy the rest of the file exactly as-is from the reference below:
+
+```typescript
+import '../styles/panda.css'
+import { createRootRoute, Link, Outlet, HeadContent } from '@tanstack/react-router'
+import { Layout } from '../components/Layout'
+import { styled } from '../../styled-system/jsx'
+
+const THEME_INIT_SCRIPT = `(function(){
+  var s=localStorage.getItem('theme');
+  var p=s||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  document.documentElement.classList.add(p);
+})();`
+```
+This MUST be the top of your __root.tsx file. Only change the Google Fonts URL.
 
 ### CRITICAL: globalCss token reference syntax
 
