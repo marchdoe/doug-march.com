@@ -34,14 +34,29 @@ export const TOKEN_FILES = [
   'app/routes/__root.tsx',
 ]
 
-/** Files owned by the Structure Agent. */
-export const STRUCTURE_FILES = [
+/** Files owned by the Layout Architect agent. */
+export const LAYOUT_FILES = [
   'app/components/Layout.tsx',
-  'app/components/Sidebar.tsx',
-  'app/components/MobileFooter.tsx',
   'app/routes/index.tsx',
   'app/routes/about.tsx',
   'app/routes/work.$slug.tsx',
+]
+
+/** Files owned by the Sidebar Designer agent. */
+export const SIDEBAR_FILES = [
+  'app/components/Sidebar.tsx',
+]
+
+/** Files owned by the Footer Designer agent. */
+export const FOOTER_FILES = [
+  'app/components/MobileFooter.tsx',
+]
+
+/** All structure files (Layout + Sidebar + Footer) for backwards compat. */
+export const STRUCTURE_FILES = [
+  ...LAYOUT_FILES,
+  ...SIDEBAR_FILES,
+  ...FOOTER_FILES,
 ]
 
 /** Files owned by the Component Agent. */

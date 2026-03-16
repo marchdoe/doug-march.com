@@ -25,6 +25,9 @@ import { spawnSync } from 'child_process'
 import {
   MUTABLE_FILES,
   TOKEN_FILES,
+  LAYOUT_FILES,
+  SIDEBAR_FILES,
+  FOOTER_FILES,
   STRUCTURE_FILES,
   COMPONENT_FILES,
   readFileGroup,
@@ -46,7 +49,9 @@ const PIPELINE_SETTINGS = path.join(
 /** Maps every mutable file to exactly one agent name. */
 export const FILE_OWNERSHIP = Object.fromEntries([
   ...TOKEN_FILES.map(f => [f, 'token-designer']),
-  ...STRUCTURE_FILES.map(f => [f, 'structure-agent']),
+  ...LAYOUT_FILES.map(f => [f, 'layout-architect']),
+  ...SIDEBAR_FILES.map(f => [f, 'sidebar-designer']),
+  ...FOOTER_FILES.map(f => [f, 'footer-designer']),
   ...COMPONENT_FILES.map(f => [f, 'component-agent']),
 ])
 
@@ -308,7 +313,11 @@ function validateCodegen() {
 // ---------------------------------------------------------------------------
 
 /**
- * Run the 3-agent design swarm.
+ * Run the 5-agent design swarm.
+ *
+ * Phase 1: Token Designer (preset.ts + __root.tsx)
+ * Phase 2: Layout Architect (Layout.tsx + 3 routes) — reads tokens from disk
+ * Phase 3: Sidebar Designer + Footer Designer + Component Agent (parallel) — read Layout.tsx + tokens
  *
  * @param {{ signals: object, brief: string, contentSummary: string }} context
  * @returns {Promise<{ rationale: string, design_brief: string, files: Array<{path: string, content: string}> }>}
@@ -318,9 +327,11 @@ export async function runAgentSwarm(context) {
 
   // Read system prompts
   const promptDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'prompts')
-  const [tokenSystemPrompt, structureSystemPrompt, componentSystemPrompt] = await Promise.all([
+  const [tokenSystemPrompt, layoutSystemPrompt, sidebarSystemPrompt, footerSystemPrompt, componentSystemPrompt] = await Promise.all([
     readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'structure-agent.md'), 'utf8'),
+    readFile(path.join(promptDir, 'sidebar-designer.md'), 'utf8'),
+    readFile(path.join(promptDir, 'footer-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'component-agent.md'), 'utf8'),
   ])
 
@@ -394,32 +405,75 @@ export async function runAgentSwarm(context) {
   }
 
   // -----------------------------------------------------------------------
-  // Phase 2: Read token context, run Structure + Component agents
+  // Phase 2: Layout Architect (reads tokens from disk)
   // -----------------------------------------------------------------------
   const presetPath = path.join(ROOT, 'elements/preset.ts')
   const tokenContext = await readFile(presetPath, 'utf8')
 
-  console.log('\n[phase-2] Structure Agent + Component Agent')
+  console.log('\n[phase-2] Layout Architect')
 
-  let structureResult = null
-  let componentResult = null
-  let structureError = null
-  let componentError = null
-
-  // Structure Agent
-  console.log('\n  --- Structure Agent ---')
-  const structureUserPrompt = buildAgentPrompt('structure-agent', {
+  let layoutResult = null
+  const layoutUserPrompt = buildAgentPrompt('layout-architect', {
     brief,
     referenceFiles: [],
     tokenContext,
   })
 
   try {
-    structureResult = await callAgent('structure-agent', structureSystemPrompt, structureUserPrompt)
-    await writeFiles(structureResult.files)
+    layoutResult = await callAgent('layout-architect', layoutSystemPrompt, layoutUserPrompt)
+    await writeFiles(layoutResult.files)
   } catch (err) {
-    structureError = err.message
-    console.error(`  Structure Agent failed: ${err.message}`)
+    console.error(`  Layout Architect failed: ${err.message}`)
+    await restore(originalBackup)
+    throw new Error(`Layout Architect failed: ${err.message}`)
+  }
+
+  // Verify Layout.tsx was written (downstream agents depend on it)
+  const layoutPath = path.join(ROOT, 'app/components/Layout.tsx')
+  if (!existsSync(layoutPath)) {
+    await restore(originalBackup)
+    throw new Error('Layout Architect did not produce Layout.tsx — downstream agents cannot proceed')
+  }
+
+  // -----------------------------------------------------------------------
+  // Phase 3: Sidebar + Footer + Components (read Layout.tsx + tokens)
+  // -----------------------------------------------------------------------
+  console.log('\n[phase-3] Sidebar Designer + Footer Designer + Component Agent')
+
+  // Read Layout.tsx so Sidebar/Footer designers can see the structure
+  const layoutContent = await readFile(layoutPath, 'utf8')
+  const layoutRef = [{ path: 'app/components/Layout.tsx', content: layoutContent }]
+
+  let sidebarResult = null
+  let footerResult = null
+  let componentResult = null
+
+  // Sidebar Designer
+  console.log('\n  --- Sidebar Designer ---')
+  const sidebarUserPrompt = buildAgentPrompt('sidebar-designer', {
+    brief,
+    referenceFiles: layoutRef,
+    tokenContext,
+  })
+  try {
+    sidebarResult = await callAgent('sidebar-designer', sidebarSystemPrompt, sidebarUserPrompt)
+    await writeFiles(sidebarResult.files)
+  } catch (err) {
+    console.error(`  Sidebar Designer failed: ${err.message}`)
+  }
+
+  // Footer Designer
+  console.log('\n  --- Footer Designer ---')
+  const footerUserPrompt = buildAgentPrompt('footer-designer', {
+    brief,
+    referenceFiles: layoutRef,
+    tokenContext,
+  })
+  try {
+    footerResult = await callAgent('footer-designer', footerSystemPrompt, footerUserPrompt)
+    await writeFiles(footerResult.files)
+  } catch (err) {
+    console.error(`  Footer Designer failed: ${err.message}`)
   }
 
   // Component Agent
@@ -429,34 +483,27 @@ export async function runAgentSwarm(context) {
     referenceFiles: [],
     tokenContext,
   })
-
   try {
     componentResult = await callAgent('component-agent', componentSystemPrompt, componentUserPrompt)
     await writeFiles(componentResult.files)
   } catch (err) {
-    componentError = err.message
     console.error(`  Component Agent failed: ${err.message}`)
   }
 
-  // If both Phase 2 agents failed, restore and throw
-  if (structureError && componentError) {
-    await restore(originalBackup)
-    throw new Error(`Both Phase 2 agents failed.\nStructure: ${structureError}\nComponent: ${componentError}`)
-  }
-
   // -----------------------------------------------------------------------
-  // Phase 3: Build validation
+  // Phase 4: Build validation
   // -----------------------------------------------------------------------
-  console.log('\n[phase-3] Build validation')
+  console.log('\n[phase-4] Build validation')
   const buildResult = validateBuild()
 
   if (buildResult.success) {
     console.log('\n=== Build passed! ===')
 
-    // Collect all files written
     const allFiles = [
       ...tokenResult.files,
-      ...(structureResult?.files ?? []),
+      ...layoutResult.files,
+      ...(sidebarResult?.files ?? []),
+      ...(footerResult?.files ?? []),
       ...(componentResult?.files ?? []),
     ]
     const changedPaths = allFiles.map(f => f.path)
@@ -470,9 +517,9 @@ export async function runAgentSwarm(context) {
   }
 
   // -----------------------------------------------------------------------
-  // Phase 4: Build failed — identify failing agent and retry
+  // Phase 5: Build failed — identify failing agent and retry
   // -----------------------------------------------------------------------
-  console.log('\n[phase-4] Build failed — retrying failing agent(s)')
+  console.log('\n[phase-5] Build failed — retrying failing agent(s)')
 
   const failingAgent = identifyFailingAgent(buildResult.error)
   console.log(`  identified failing agent: ${failingAgent}`)
@@ -487,27 +534,26 @@ export async function runAgentSwarm(context) {
   }
   await restore(filesToRestore)
 
-  // Retry the failing agent(s)
+  // Build agent lookup for retry
+  const agentConfig = {
+    'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief, referenceFiles: tokenRefFiles, tokenContext: null }) },
+    'layout-architect': { prompt: layoutSystemPrompt, user: () => buildAgentPrompt('layout-architect', { brief, referenceFiles: [], tokenContext }) },
+    'sidebar-designer': { prompt: sidebarSystemPrompt, user: () => buildAgentPrompt('sidebar-designer', { brief, referenceFiles: layoutRef, tokenContext }) },
+    'footer-designer': { prompt: footerSystemPrompt, user: () => buildAgentPrompt('footer-designer', { brief, referenceFiles: layoutRef, tokenContext }) },
+    'component-agent': { prompt: componentSystemPrompt, user: () => buildAgentPrompt('component-agent', { brief, referenceFiles: [], tokenContext }) },
+  }
+
   const retryAgents = failingAgent === 'both'
-    ? ['structure-agent', 'component-agent']
+    ? ['layout-architect', 'sidebar-designer', 'footer-designer', 'component-agent']
     : [failingAgent]
 
   for (const agent of retryAgents) {
-    let sysPrompt, userPrompt
-    if (agent === 'token-designer') {
-      sysPrompt = tokenSystemPrompt
-      userPrompt = buildAgentPrompt('token-designer', { brief, referenceFiles: tokenRefFiles, tokenContext: null })
-    } else if (agent === 'structure-agent') {
-      sysPrompt = structureSystemPrompt
-      userPrompt = buildAgentPrompt('structure-agent', { brief, referenceFiles: [], tokenContext })
-    } else {
-      sysPrompt = componentSystemPrompt
-      userPrompt = buildAgentPrompt('component-agent', { brief, referenceFiles: [], tokenContext })
-    }
+    const config = agentConfig[agent]
+    if (!config) continue
 
     console.log(`\n  retrying ${agent} with build error context...`)
     try {
-      const retryResult = await callAgent(agent, sysPrompt, userPrompt, buildResult.error)
+      const retryResult = await callAgent(agent, config.prompt, config.user(), buildResult.error)
       await writeFiles(retryResult.files)
     } catch (err) {
       console.error(`  ${agent} retry failed: ${err.message}`)
@@ -521,7 +567,9 @@ export async function runAgentSwarm(context) {
 
     const allFiles = [
       ...tokenResult.files,
-      ...(structureResult?.files ?? []),
+      ...(layoutResult?.files ?? []),
+      ...(sidebarResult?.files ?? []),
+      ...(footerResult?.files ?? []),
       ...(componentResult?.files ?? []),
     ]
     const changedPaths = allFiles.map(f => f.path)

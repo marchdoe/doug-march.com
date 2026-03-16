@@ -8,7 +8,7 @@ import {
 describe('FILE_OWNERSHIP', () => {
   it('maps every file to exactly one agent', () => {
     const allFiles = Object.values(FILE_OWNERSHIP)
-    expect(new Set(allFiles).size).toBeLessThanOrEqual(3)
+    expect(new Set(allFiles).size).toBeLessThanOrEqual(5)
     expect(Object.keys(FILE_OWNERSHIP)).toHaveLength(17)
   })
 
@@ -17,9 +17,17 @@ describe('FILE_OWNERSHIP', () => {
     expect(FILE_OWNERSHIP['app/routes/__root.tsx']).toBe('token-designer')
   })
 
-  it('maps layout files to structure-agent', () => {
-    expect(FILE_OWNERSHIP['app/components/Layout.tsx']).toBe('structure-agent')
-    expect(FILE_OWNERSHIP['app/routes/index.tsx']).toBe('structure-agent')
+  it('maps layout and route files to layout-architect', () => {
+    expect(FILE_OWNERSHIP['app/components/Layout.tsx']).toBe('layout-architect')
+    expect(FILE_OWNERSHIP['app/routes/index.tsx']).toBe('layout-architect')
+  })
+
+  it('maps Sidebar.tsx to sidebar-designer', () => {
+    expect(FILE_OWNERSHIP['app/components/Sidebar.tsx']).toBe('sidebar-designer')
+  })
+
+  it('maps MobileFooter.tsx to footer-designer', () => {
+    expect(FILE_OWNERSHIP['app/components/MobileFooter.tsx']).toBe('footer-designer')
   })
 
   it('maps component files to component-agent', () => {
@@ -29,9 +37,9 @@ describe('FILE_OWNERSHIP', () => {
 })
 
 describe('identifyFailingAgent', () => {
-  it('identifies structure-agent from a build error mentioning Layout.tsx', () => {
+  it('identifies layout-architect from a build error mentioning Layout.tsx', () => {
     const error = "app/components/Layout.tsx(15,7): error TS2322"
-    expect(identifyFailingAgent(error)).toBe('structure-agent')
+    expect(identifyFailingAgent(error)).toBe('layout-architect')
   })
 
   it('identifies component-agent from a build error mentioning Bio.tsx', () => {
@@ -115,10 +123,10 @@ describe('buildAgentPrompt', () => {
 })
 
 describe('agent prompt files include anti-anchoring language', () => {
-  it('structure-agent.md tells the model to ignore previous layout', async () => {
+  it('structure-agent.md tells the model to design from scratch', async () => {
     const { readFile } = await import('fs/promises')
     const content = await readFile('scripts/prompts/structure-agent.md', 'utf8')
-    expect(content).toContain('ignore their structure entirely')
+    expect(content).toContain('complete reimagination')
     expect(content).toContain('blank canvas')
   })
 })

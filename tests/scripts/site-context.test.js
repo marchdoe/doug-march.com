@@ -3,6 +3,9 @@ import { describe, it, expect } from 'vitest'
 import {
   MUTABLE_FILES,
   TOKEN_FILES,
+  LAYOUT_FILES,
+  SIDEBAR_FILES,
+  FOOTER_FILES,
   STRUCTURE_FILES,
   COMPONENT_FILES,
   readFileGroup,
@@ -16,18 +19,28 @@ describe('file group constants', () => {
     ])
   })
 
-  it('STRUCTURE_FILES contains layout and route files', () => {
-    expect(STRUCTURE_FILES).toEqual([
+  it('LAYOUT_FILES contains Layout.tsx and 3 route files', () => {
+    expect(LAYOUT_FILES).toEqual([
       'app/components/Layout.tsx',
-      'app/components/Sidebar.tsx',
-      'app/components/MobileFooter.tsx',
       'app/routes/index.tsx',
       'app/routes/about.tsx',
       'app/routes/work.$slug.tsx',
     ])
   })
 
-  it('COMPONENT_FILES contains all component files', () => {
+  it('SIDEBAR_FILES contains only Sidebar.tsx', () => {
+    expect(SIDEBAR_FILES).toEqual(['app/components/Sidebar.tsx'])
+  })
+
+  it('FOOTER_FILES contains only MobileFooter.tsx', () => {
+    expect(FOOTER_FILES).toEqual(['app/components/MobileFooter.tsx'])
+  })
+
+  it('STRUCTURE_FILES equals LAYOUT + SIDEBAR + FOOTER', () => {
+    expect(STRUCTURE_FILES).toEqual([...LAYOUT_FILES, ...SIDEBAR_FILES, ...FOOTER_FILES])
+  })
+
+  it('COMPONENT_FILES contains all 9 component files', () => {
     expect(COMPONENT_FILES).toHaveLength(9)
     expect(COMPONENT_FILES).toContain('app/components/FeaturedProject.tsx')
     expect(COMPONENT_FILES).toContain('app/components/Personal.tsx')
