@@ -324,12 +324,11 @@ export async function runAgentSwarm(context) {
     readFile(path.join(promptDir, 'component-agent.md'), 'utf8'),
   ])
 
-  // Read reference files for each agent
-  const [tokenRefFiles, structureRefFiles, componentRefFiles] = await Promise.all([
-    readFileGroup(TOKEN_FILES),
-    readFileGroup(STRUCTURE_FILES),
-    readFileGroup(COMPONENT_FILES),
-  ])
+  // Read reference files — only Token Designer gets them (needs current preset structure).
+  // Structure and Component agents do NOT receive previous file contents to prevent
+  // anchoring on yesterday's design. Their technical contracts (imports, exports, prop
+  // interfaces) are defined in the system prompts, not in the reference files.
+  const tokenRefFiles = await readFileGroup(TOKEN_FILES)
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')
@@ -411,7 +410,7 @@ export async function runAgentSwarm(context) {
   console.log('\n  --- Structure Agent ---')
   const structureUserPrompt = buildAgentPrompt('structure-agent', {
     brief,
-    referenceFiles: structureRefFiles,
+    referenceFiles: [],
     tokenContext,
   })
 
@@ -427,7 +426,7 @@ export async function runAgentSwarm(context) {
   console.log('\n  --- Component Agent ---')
   const componentUserPrompt = buildAgentPrompt('component-agent', {
     brief,
-    referenceFiles: componentRefFiles,
+    referenceFiles: [],
     tokenContext,
   })
 
@@ -494,19 +493,16 @@ export async function runAgentSwarm(context) {
     : [failingAgent]
 
   for (const agent of retryAgents) {
-    let sysPrompt, userPrompt, refFiles
+    let sysPrompt, userPrompt
     if (agent === 'token-designer') {
       sysPrompt = tokenSystemPrompt
-      refFiles = tokenRefFiles
-      userPrompt = buildAgentPrompt('token-designer', { brief, referenceFiles: refFiles, tokenContext: null })
+      userPrompt = buildAgentPrompt('token-designer', { brief, referenceFiles: tokenRefFiles, tokenContext: null })
     } else if (agent === 'structure-agent') {
       sysPrompt = structureSystemPrompt
-      refFiles = structureRefFiles
-      userPrompt = buildAgentPrompt('structure-agent', { brief, referenceFiles: refFiles, tokenContext })
+      userPrompt = buildAgentPrompt('structure-agent', { brief, referenceFiles: [], tokenContext })
     } else {
       sysPrompt = componentSystemPrompt
-      refFiles = componentRefFiles
-      userPrompt = buildAgentPrompt('component-agent', { brief, referenceFiles: refFiles, tokenContext })
+      userPrompt = buildAgentPrompt('component-agent', { brief, referenceFiles: [], tokenContext })
     }
 
     console.log(`\n  retrying ${agent} with build error context...`)
