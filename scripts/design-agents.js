@@ -366,11 +366,9 @@ export async function runAgentSwarm(context) {
     readFile(path.join(promptDir, 'component-agent.md'), 'utf8'),
   ])
 
-  // Read reference files — only Token Designer gets them (needs current preset structure).
-  // Structure and Component agents do NOT receive previous file contents to prevent
-  // anchoring on yesterday's design. Their technical contracts (imports, exports, prop
-  // interfaces) are defined in the system prompts, not in the reference files.
-  const tokenRefFiles = await readFileGroup(TOKEN_FILES)
+  // No agent receives previous file contents — they all design from scratch.
+  // The technical contracts (imports, exports, structure) are defined in the system prompts.
+  // Sending previous files causes color/layout anchoring.
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')
@@ -384,7 +382,7 @@ export async function runAgentSwarm(context) {
 
   const tokenUserPrompt = buildAgentPrompt('token-designer', {
     brief,
-    referenceFiles: tokenRefFiles,
+    referenceFiles: [],
     tokenContext: null,
   })
 
@@ -567,7 +565,7 @@ export async function runAgentSwarm(context) {
 
   // Build agent lookup for retry
   const agentConfig = {
-    'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief, referenceFiles: tokenRefFiles, tokenContext: null }) },
+    'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief, referenceFiles: [], tokenContext: null }) },
     'layout-architect': { prompt: layoutSystemPrompt, user: () => buildAgentPrompt('layout-architect', { brief, referenceFiles: [], tokenContext }) },
     'sidebar-designer': { prompt: sidebarSystemPrompt, user: () => buildAgentPrompt('sidebar-designer', { brief, referenceFiles: layoutRef, tokenContext }) },
     'footer-designer': { prompt: footerSystemPrompt, user: () => buildAgentPrompt('footer-designer', { brief, referenceFiles: layoutRef, tokenContext }) },
