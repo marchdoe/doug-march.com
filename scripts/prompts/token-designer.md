@@ -34,14 +34,16 @@ You must also produce `rationale` and `design_brief` fields in your JSON respons
 
 ## Response Format
 
-Respond with ONLY a valid JSON object:
-```json
-{
-  "rationale": "1-2 paragraphs explaining your creative choices",
-  "design_brief": "One evocative sentence for the archive",
-  "files": [
-    { "path": "elements/preset.ts", "content": "...full file content..." },
-    { "path": "app/routes/__root.tsx", "content": "...full file content..." }
-  ]
-}
-```
+Respond using this exact delimiter format. Write the COMPLETE file contents after each ===FILE:path=== marker. No JSON wrapping, no code fences — just the delimiters and raw file content.
+
+===RATIONALE===
+1-2 paragraphs explaining your creative choices
+
+===DESIGN_BRIEF===
+One evocative sentence for the archive
+
+===FILE:elements/preset.ts===
+...full file content here...
+
+===FILE:app/routes/__root.tsx===
+...full file content here...

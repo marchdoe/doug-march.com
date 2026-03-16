@@ -135,7 +135,7 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError) {
     fullPrompt += `\n\n---\n\nThe previous attempt failed with this build error:\n\n${buildError}\n\nPlease fix the issues and try again.`
   }
 
-  fullPrompt += `\n\n---\n\nIMPORTANT: Respond with ONLY a valid JSON object matching the response format above (no markdown, no code fences, no explanation before or after). Include complete file contents — not diffs.`
+  fullPrompt += `\n\n---\n\nIMPORTANT: Use the ===FILE:path=== delimiter format described in your instructions. Write complete file contents after each delimiter. No JSON, no markdown code fences, no explanation — just the delimiters and raw file content.`
 
   // Write prompt to temp file
   const promptPath = path.join(ROOT, `.agent-prompt-${agentName}.tmp`)
@@ -242,30 +242,56 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError) {
     })
   })
 
-  // Parse JSON response — handle markdown fences, preamble text, and trailing content
+  // Parse response — supports both delimiter format and JSON
+  // Delimiter format: ===FILE:path=== followed by file content, repeated per file
+  // Also extracts ===RATIONALE=== and ===DESIGN_BRIEF=== for Token Designer
   let parsed
-  try {
-    parsed = JSON.parse(result)
-  } catch {
-    // Strip markdown fences (```json, ```, with optional whitespace/newlines)
-    let cleaned = result
-      .replace(/```(?:json|JSON)?\s*\n?/g, '')
-      .replace(/\n?\s*```\s*$/g, '')
-      .trim()
+
+  if (result.includes('===FILE:')) {
+    // Delimiter-based format (preferred — avoids JSON escaping issues)
+    const files = []
+    const filePattern = /===FILE:([^=]+)===([\s\S]*?)(?====FILE:|===RATIONALE===|===DESIGN_BRIEF===|$)/g
+    let match
+    while ((match = filePattern.exec(result)) !== null) {
+      const filePath = match[1].trim()
+      const content = match[2].trim()
+      if (filePath && content) {
+        files.push({ path: filePath, content })
+      }
+    }
+
+    let rationale = undefined
+    const rationaleMatch = result.match(/===RATIONALE===([\s\S]*?)(?====|$)/)
+    if (rationaleMatch) rationale = rationaleMatch[1].trim()
+
+    let design_brief = undefined
+    const briefMatch = result.match(/===DESIGN_BRIEF===([\s\S]*?)(?====|$)/)
+    if (briefMatch) design_brief = briefMatch[1].trim()
+
+    parsed = { files, rationale, design_brief }
+  } else {
+    // JSON fallback
     try {
-      parsed = JSON.parse(cleaned)
+      parsed = JSON.parse(result)
     } catch {
-      // Find the first { and last } to extract the JSON object
-      const jsonStart = cleaned.indexOf('{')
-      const jsonEnd = cleaned.lastIndexOf('}')
-      if (jsonStart >= 0 && jsonEnd > jsonStart) {
-        try {
-          parsed = JSON.parse(cleaned.slice(jsonStart, jsonEnd + 1))
-        } catch (e3) {
-          throw new Error(`[${agentName}] failed to parse JSON: ${e3.message}\nFirst 300 chars: ${result.slice(0, 300)}`)
+      let cleaned = result
+        .replace(/```(?:json|JSON)?\s*\n?/g, '')
+        .replace(/\n?\s*```\s*$/g, '')
+        .trim()
+      try {
+        parsed = JSON.parse(cleaned)
+      } catch {
+        const jsonStart = cleaned.indexOf('{')
+        const jsonEnd = cleaned.lastIndexOf('}')
+        if (jsonStart >= 0 && jsonEnd > jsonStart) {
+          try {
+            parsed = JSON.parse(cleaned.slice(jsonStart, jsonEnd + 1))
+          } catch (e3) {
+            throw new Error(`[${agentName}] failed to parse response: ${e3.message}\nFirst 300 chars: ${result.slice(0, 300)}`)
+          }
+        } else {
+          throw new Error(`[${agentName}] no parseable response found\nFirst 300 chars: ${result.slice(0, 300)}`)
         }
-      } else {
-        throw new Error(`[${agentName}] no JSON object found in response\nFirst 300 chars: ${result.slice(0, 300)}`)
       }
     }
   }

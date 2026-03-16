@@ -47,19 +47,31 @@ Each component imports its own data directly from app/content/. Do not change im
 
 ## Response Format
 
-Respond with ONLY a valid JSON object:
-```json
-{
-  "files": [
-    { "path": "app/components/FeaturedProject.tsx", "content": "..." },
-    { "path": "app/components/ProjectRow.tsx", "content": "..." },
-    { "path": "app/components/SectionHead.tsx", "content": "..." },
-    { "path": "app/components/SelectedWork.tsx", "content": "..." },
-    { "path": "app/components/Experiments.tsx", "content": "..." },
-    { "path": "app/components/Bio.tsx", "content": "..." },
-    { "path": "app/components/Timeline.tsx", "content": "..." },
-    { "path": "app/components/Capabilities.tsx", "content": "..." },
-    { "path": "app/components/Personal.tsx", "content": "..." }
-  ]
-}
-```
+Respond using this exact delimiter format. Write the COMPLETE file contents after each ===FILE:path=== marker. No JSON wrapping, no code fences — just the delimiters and raw file content.
+
+===FILE:app/components/FeaturedProject.tsx===
+...full file content here...
+
+===FILE:app/components/ProjectRow.tsx===
+...full file content here...
+
+===FILE:app/components/SectionHead.tsx===
+...full file content here...
+
+===FILE:app/components/SelectedWork.tsx===
+...full file content here...
+
+===FILE:app/components/Experiments.tsx===
+...full file content here...
+
+===FILE:app/components/Bio.tsx===
+...full file content here...
+
+===FILE:app/components/Timeline.tsx===
+...full file content here...
+
+===FILE:app/components/Capabilities.tsx===
+...full file content here...
+
+===FILE:app/components/Personal.tsx===
+...full file content here...

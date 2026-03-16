@@ -32,11 +32,7 @@ The MobileFooter must render:
 
 ## Response Format
 
-Respond with ONLY a valid JSON object:
-```json
-{
-  "files": [
-    { "path": "app/components/MobileFooter.tsx", "content": "...full file content..." }
-  ]
-}
-```
+Respond using this exact delimiter format. Write the COMPLETE file content after the ===FILE:path=== marker. No JSON wrapping, no code fences — just the delimiter and raw file content.
+
+===FILE:app/components/MobileFooter.tsx===
+...full file content here...

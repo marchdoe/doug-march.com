@@ -67,14 +67,16 @@ Examples of what Layout.tsx might look like:
 
 ## Response Format
 
-Respond with ONLY a valid JSON object:
-```json
-{
-  "files": [
-    { "path": "app/components/Layout.tsx", "content": "...full file content..." },
-    { "path": "app/routes/index.tsx", "content": "..." },
-    { "path": "app/routes/about.tsx", "content": "..." },
-    { "path": "app/routes/work.$slug.tsx", "content": "..." }
-  ]
-}
-```
+Respond using this exact delimiter format. Write the COMPLETE file contents after each ===FILE:path=== marker. No JSON wrapping, no code fences — just the delimiters and raw file content.
+
+===FILE:app/components/Layout.tsx===
+...full file content here...
+
+===FILE:app/routes/index.tsx===
+...full file content here...
+
+===FILE:app/routes/about.tsx===
+...full file content here...
+
+===FILE:app/routes/work.$slug.tsx===
+...full file content here...
