@@ -242,25 +242,30 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError) {
     })
   })
 
-  // Parse JSON response — handle markdown fences and preamble
+  // Parse JSON response — handle markdown fences, preamble text, and trailing content
   let parsed
   try {
     parsed = JSON.parse(result)
   } catch {
-    let cleaned = result.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+    // Strip markdown fences (```json, ```, with optional whitespace/newlines)
+    let cleaned = result
+      .replace(/```(?:json|JSON)?\s*\n?/g, '')
+      .replace(/\n?\s*```\s*$/g, '')
+      .trim()
     try {
       parsed = JSON.parse(cleaned)
     } catch {
+      // Find the first { and last } to extract the JSON object
       const jsonStart = cleaned.indexOf('{')
-      if (jsonStart > 0) {
-        cleaned = cleaned.slice(jsonStart)
+      const jsonEnd = cleaned.lastIndexOf('}')
+      if (jsonStart >= 0 && jsonEnd > jsonStart) {
         try {
-          parsed = JSON.parse(cleaned)
+          parsed = JSON.parse(cleaned.slice(jsonStart, jsonEnd + 1))
         } catch (e3) {
-          throw new Error(`[${agentName}] failed to parse JSON: ${e3.message}\nFirst 500 chars: ${result.slice(0, 500)}`)
+          throw new Error(`[${agentName}] failed to parse JSON: ${e3.message}\nFirst 300 chars: ${result.slice(0, 300)}`)
         }
       } else {
-        throw new Error(`[${agentName}] failed to parse JSON: no object found\nFirst 500 chars: ${result.slice(0, 500)}`)
+        throw new Error(`[${agentName}] no JSON object found in response\nFirst 300 chars: ${result.slice(0, 300)}`)
       }
     }
   }
