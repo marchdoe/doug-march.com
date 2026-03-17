@@ -302,6 +302,31 @@ export async function runAgentSwarm(context) {
   } catch {}
 
   // -----------------------------------------------------------------------
+  // Read recent ratings for taste feedback
+  // -----------------------------------------------------------------------
+  let recentRatings = ''
+  try {
+    const ratingDirs = readdirSync(archiveDir)
+      .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
+      .sort()
+      .reverse()
+      .slice(0, 10)
+    for (const dir of ratingDirs) {
+      const ratingPath = path.join(archiveDir, dir, 'rating.json')
+      if (existsSync(ratingPath)) {
+        const rating = JSON.parse(readFileSync(ratingPath, 'utf8'))
+        const briefPath = path.join(archiveDir, dir, 'brief.md')
+        const briefLine = existsSync(briefPath)
+          ? readFileSync(briefPath, 'utf8').match(/\*\*Design Brief:\*\*\s*(.+)/)?.[1] || ''
+          : ''
+        recentRatings += `\n### ${dir} — "${briefLine}"\n`
+        recentRatings += `Scores: hierarchy=${rating.ratings?.hierarchy || '?'}/5, typography=${rating.ratings?.typography || '?'}/5, composition=${rating.ratings?.composition || '?'}/5, signals=${rating.ratings?.signalIntegration || '?'}/5, polish=${rating.ratings?.polish || '?'}/5\n`
+        if (rating.notes) recentRatings += `Notes: "${rating.notes}"\n`
+      }
+    }
+  } catch {}
+
+  // -----------------------------------------------------------------------
   // Read design references (collected by collect-references.js)
   // -----------------------------------------------------------------------
   const referencesPath = path.resolve(ROOT, 'signals/today.references.md')
@@ -322,6 +347,7 @@ export async function runAgentSwarm(context) {
     tokenContext: null,
   }) + (recentBriefs ? '\n\n## Recent Archive Briefs\n' + recentBriefs : '')
     + (references ? '\n\n## Design References\n\n' + references : '')
+    + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
 
   let visualSpec = ''
   try {
@@ -447,7 +473,7 @@ export async function runAgentSwarm(context) {
     brief: enrichedBrief,
     referenceFiles: [],
     tokenContext,
-  })
+  }) + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
 
   let designerResult
   try {
