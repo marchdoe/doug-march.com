@@ -103,33 +103,34 @@ Call out tensions explicitly. Instruct the designer to hold them, not resolve th
 
 ## Your Output
 
-Write a creative brief with exactly these six sections. Be opinionated and specific — you are a PM writing requirements, not a mood board.
+Write a creative brief with exactly these five sections. Be opinionated and specific — you are a PM writing requirements, not a mood board.
+
+## Mood
+[2-4 sentences of atmospheric writing. Set the emotional register for today's design. Fold in any tensions between signals — when signals conflict, name the conflict and instruct the designer to hold it, not resolve it. This replaces both the old "Tension" and the atmospheric parts of palette direction. Write this like an editorial lede, not a list of adjectives.]
+
+## Composition Direction
+[Name a specific composition archetype and explain why it fits today. You MUST choose from: Poster, Broadsheet, Gallery Wall, Scroll, Split, Stack, Specimen, Index. You may suggest a hybrid of two archetypes (e.g., "Specimen with Gallery Wall energy") but the primary archetype must be named first. Explain in 1-2 sentences why this archetype matches today's signals. IMPORTANT: Avoid repeating the same archetype within a 3-day window — check recent briefs if available.]
+
+## Typography Direction
+[1-2 sentences on type scale, spacing, and character. Should the type be tight or generous? Loud or quiet? Angular or rounded? Should headings whisper or shout? Let the mood and composition choice inform this — a Specimen day demands extreme type scale; a Broadsheet day demands strict hierarchy through size alone.]
+
+## Signal Integration
+[Bulleted list specifying HOW each noteworthy signal should manifest in the design. Do not just list signals — describe their treatment. Every bullet must answer "how does this appear?" not just "this exists."]
+
+Format:
+- [signal name] → [specific treatment: what form it takes, where it lives, what tone it carries]
+
+Examples of good signal integration:
+- Tigers 13-6 win → inline celebration callout, not a card. Triumphant but brief — a scoreline with editorial swagger, tucked near the masthead.
+- Waning crescent moon → reduce overall contrast slightly. The page should feel like it's lit by less.
+- Radiohead on rotation → angular, precise type spacing. Let letter-spacing run tight.
+
+Only include signals worth commenting on. "Off season" or "no notable news" are not worth a bullet. A win, a loss, an approaching holiday, a resonant quote, notable music — those ARE.
+
+The signal that should be FELT most strongly when someone lands on the site should be listed FIRST and given the most detailed treatment. This is your call as PM — what's the headline of today's design?
 
 ## Palette Direction
-[1-2 sentences on color temperature, saturation, mood — derived from PRIMARY signals (weather, season, daylight). Never prescribe specific hex colors — describe the feeling.]
-
-## Layout Energy
-[1-2 sentences on density, spacing, rhythm, visual weight — derived from day of week, season, daylight hours. Weekend = relaxed/spacious, weekday = structured/tight.]
-
-## Tension
-[1-2 sentences identifying contradictions between signals. What conflicts exist? Instruct the designer to hold the tension, not resolve it. If no tension, say so — some days are harmonious.]
-
-## Required Elements
-[Bulleted list of editorial design elements the designer MUST include. Each has a signal source, editorial direction, and tone. These are requirements, not suggestions.]
-
-Format:
-- [element description]: [editorial direction + tone] (source: [signal name])
-
-Only include elements for signals worth commenting on. "Off season" is not worth an element. A win or loss IS. An approaching holiday IS. A notable golf leaderboard IS.
-
-## Accent Notes
-[Bulleted list of subtle influences from ACCENT signals. These are suggestions, not requirements.]
-
-Format:
-- [signal name] ([key detail]): [how it might subtly influence texture, typography, or personality]
-
-## Anchor Signal
-[One sentence naming the single signal that should be FELT most strongly when someone lands on the site. This is your call as PM — what's the headline of today's design?]`
+[2-3 sentences on color temperature, saturation, and mood — derived from PRIMARY signals (weather, season, daylight). Be more specific than "warm" or "cool" — describe contrast level (high/low), warmth or coolness on a spectrum, and degree of restraint (monochromatic vs. multi-hue). Never prescribe specific hex colors — describe the feeling and boundaries.]`
 }
 
 /**
