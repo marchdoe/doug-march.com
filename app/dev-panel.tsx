@@ -290,28 +290,17 @@ export function DevPanel() {
     }
   }
 
-  // ── Run pipeline ──────────────────────────────────────────────────────────
-  const handleRun = () => {
-    const startTime = Date.now()
-    runStartRef.current = startTime
-    setPipelineStatus('running')
-    setPhases(makePhases())
-    setLogLines([])
-    logAccumRef.current = []
-    setAttemptNum(1)
-    setResult(null)
-    setElapsedMs(0)
+  // ── SSE stream handler — shared by initial run and reconnect ─────────────
+  const reconnectAttemptsRef = useRef(0)
+  const MAX_RECONNECT_ATTEMPTS = 5
 
-    // Start elapsed timer (ticks every 250ms for smooth display)
-    if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
-    elapsedTimerRef.current = setInterval(() => {
-      setElapsedMs(Date.now() - startTime)
-    }, 250)
-
-    const es = new EventSource(`/api/pipeline?dryRun=${dryRun}&mock=true`)
+  const connectToStream = (startTime: number) => {
+    const es = new EventSource('/api/pipeline')
     esRef.current = es
 
     es.onmessage = (e) => {
+      // Reset reconnect counter on successful message
+      reconnectAttemptsRef.current = 0
       const event = JSON.parse(e.data) as
         | { type: 'log'; line: string }
         | { type: 'done'; success: boolean; error?: string }
@@ -354,6 +343,8 @@ export function DevPanel() {
         const totalMs = Date.now() - startTime
         if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
         setElapsedMs(totalMs)
+        // Persist completion so HMR reload shows result
+        try { sessionStorage.removeItem('pipeline-start-time') } catch {}
 
         if (event.success) {
           setPhases(prev => prev.map(p => ({
@@ -376,11 +367,85 @@ export function DevPanel() {
 
     es.onerror = () => {
       es.close()
-      const totalMs = Date.now() - startTime
-      if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
-      setPipelineStatus('error')
-      setResult({ error: 'Connection to pipeline server lost', totalMs })
+      reconnectAttemptsRef.current += 1
+
+      // On HMR-triggered reconnect, try reconnecting to a still-running pipeline
+      // instead of immediately reporting an error (max 5 attempts)
+      if (reconnectAttemptsRef.current <= MAX_RECONNECT_ATTEMPTS) {
+        setTimeout(() => {
+          const savedStart = sessionStorage.getItem('pipeline-start-time')
+          if (savedStart) {
+            connectToStream(Number(savedStart))
+          }
+        }, 1000)
+      } else {
+        // Exhausted retries — clean up and show error
+        reconnectAttemptsRef.current = 0
+        if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
+        try { sessionStorage.removeItem('pipeline-start-time') } catch {}
+        setPipelineStatus('error')
+        setResult({ error: 'Lost connection to pipeline (server may be down)', totalMs: 0 })
+      }
     }
+  }
+
+  // ── Reconnect on mount if pipeline was running before HMR ────────────────
+  useEffect(() => {
+    const savedStart = sessionStorage.getItem('pipeline-start-time')
+    if (savedStart) {
+      const startTime = Number(savedStart)
+      setPipelineStatus('running')
+      setPhases(makePhases())
+      logAccumRef.current = []
+
+      if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
+      elapsedTimerRef.current = setInterval(() => {
+        setElapsedMs(Date.now() - startTime)
+      }, 250)
+
+      connectToStream(startTime)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // ── Run pipeline ──────────────────────────────────────────────────────────
+  const handleRun = async () => {
+    const startTime = Date.now()
+    runStartRef.current = startTime
+    setPipelineStatus('running')
+    setPhases(makePhases())
+    setLogLines([])
+    logAccumRef.current = []
+    setAttemptNum(1)
+    setResult(null)
+    setElapsedMs(0)
+
+    // Persist start time so we can reconnect after HMR reloads
+    try { sessionStorage.setItem('pipeline-start-time', String(startTime)) } catch {}
+
+    // Start elapsed timer (ticks every 250ms for smooth display)
+    if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
+    elapsedTimerRef.current = setInterval(() => {
+      setElapsedMs(Date.now() - startTime)
+    }, 250)
+
+    // Launch the pipeline via POST, then connect to SSE stream
+    const resp = await fetch('/api/pipeline/start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ dryRun, mock: true }),
+    })
+
+    if (!resp.ok) {
+      const data = await resp.json().catch(() => ({ error: 'Failed to start pipeline' }))
+      if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
+      try { sessionStorage.removeItem('pipeline-start-time') } catch {}
+      setPipelineStatus('error')
+      setResult({ error: data.error ?? 'Failed to start pipeline', totalMs: 0 })
+      return
+    }
+
+    connectToStream(startTime)
   }
 
   const isRunDisabled = pipelineStatus === 'running' || pipelineStatus === 'cooldown'
@@ -554,6 +619,7 @@ export function DevPanel() {
               archive={archive}
               startCooldown={startCooldown}
               cooldownLeft={cooldownLeft}
+              signalDate={signals?.date ?? ''}
             />
           )}
         </div>
@@ -909,7 +975,7 @@ function InspectorPane() {
 
 // ─── Run Pane ────────────────────────────────────────────────────────────────
 
-function RunPane({ pipelineStatus, dryRun, setDryRun, isRunDisabled, handleRun, phases, logLines, attemptNum, logEndRef, elapsedMs, result, archive, startCooldown, cooldownLeft }: {
+function RunPane({ pipelineStatus, dryRun, setDryRun, isRunDisabled, handleRun, phases, logLines, attemptNum, logEndRef, elapsedMs, result, archive, startCooldown, cooldownLeft, signalDate }: {
   pipelineStatus: PipelineStatus
   dryRun: boolean
   setDryRun: (v: boolean) => void
@@ -924,6 +990,7 @@ function RunPane({ pipelineStatus, dryRun, setDryRun, isRunDisabled, handleRun, 
   archive: ArchiveEntry[]
   startCooldown: () => void
   cooldownLeft: number
+  signalDate: string
 }) {
   return (
     <>
@@ -1038,6 +1105,7 @@ function RunPane({ pipelineStatus, dryRun, setDryRun, isRunDisabled, handleRun, 
             onRunAgain={() => { startCooldown() }}
             cooldownLeft={cooldownLeft}
             isCooldown={pipelineStatus === 'cooldown'}
+            signalDate={signalDate}
           />
         )}
       </div>
@@ -2109,11 +2177,52 @@ function PhaseDot({ status }: { status: 'pending' | 'active' | 'done' }) {
   return <div style={{ ...base, background: c.border, border: `1px solid ${c.ghost}` }} />
 }
 
-function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases, onRunAgain, cooldownLeft, isCooldown }: {
+function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases, onRunAgain, cooldownLeft, isCooldown, signalDate }: {
   brief: string; timestamp: string; attemptNum: number; archive: ArchiveEntry[];
-  totalMs: number; phases: Phase[]; onRunAgain: () => void; cooldownLeft: number; isCooldown: boolean
+  totalMs: number; phases: Phase[]; onRunAgain: () => void; cooldownLeft: number; isCooldown: boolean;
+  signalDate: string
 }) {
   const today = new Date().toISOString().slice(0, 10)
+  const ratingDate = signalDate || today
+
+  // Rating state
+  const [ratings, setRatings] = useState<Record<string, number>>({})
+  const [ratingNotes, setRatingNotes] = useState('')
+  const [ratingSaved, setRatingSaved] = useState(false)
+
+  // Load existing rating on mount
+  useEffect(() => {
+    if (!ratingDate) return
+    fetch(`/api/dev-rate?date=${ratingDate}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.ratings) {
+          setRatings(data.ratings)
+          setRatingNotes(data.notes || '')
+          setRatingSaved(true)
+        }
+      })
+      .catch(() => {})
+  }, [ratingDate])
+
+  const ratingCategories = [
+    { key: 'hierarchy', label: 'Visual Hierarchy' },
+    { key: 'typography', label: 'Typography' },
+    { key: 'composition', label: 'Composition' },
+    { key: 'signalIntegration', label: 'Signal Integration' },
+    { key: 'polish', label: 'Overall Polish' },
+  ]
+
+  const handleSaveRating = async () => {
+    try {
+      const resp = await fetch('/api/dev-rate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date: ratingDate, ratings, notes: ratingNotes }),
+      })
+      if (resp.ok) setRatingSaved(true)
+    } catch {}
+  }
   const siteUrl = window.location.origin
 
   return (
@@ -2287,6 +2396,100 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
             </div>
           )
         })}
+      </div>
+
+      {/* Rating form */}
+      <div style={{ padding: '12px 16px', borderTop: `1px solid rgba(92,190,74,0.1)` }}>
+        <div style={{
+          fontSize: '9px',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '.12em',
+          color: c.dim,
+          marginBottom: '10px',
+          fontFamily: c.font,
+        }}>Rate This Design</div>
+
+        {ratingCategories.map(({ key, label }) => (
+          <div key={key} style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '6px',
+          }}>
+            <span style={{ fontSize: '10px', color: c.secondary, fontFamily: c.font }}>{label}</span>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              {[1, 2, 3, 4, 5].map(n => (
+                <button
+                  key={n}
+                  onClick={() => { setRatings(prev => ({ ...prev, [key]: n })); setRatingSaved(false) }}
+                  style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '3px',
+                    border: `1px solid ${ratings[key] === n ? c.cyan : c.border}`,
+                    background: ratings[key] === n ? 'rgba(0,229,255,0.15)' : c.cardBg,
+                    color: ratings[key] === n ? c.cyan : c.muted,
+                    fontSize: '10px',
+                    fontWeight: 700,
+                    fontFamily: c.font,
+                    cursor: 'pointer',
+                    padding: 0,
+                  }}
+                >
+                  {n}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <textarea
+          value={ratingNotes}
+          onChange={e => { setRatingNotes(e.target.value); setRatingSaved(false) }}
+          placeholder="Notes (optional) -- what worked, what didn't..."
+          style={{
+            width: '100%',
+            minHeight: '48px',
+            background: c.cardBg,
+            border: `1px solid ${c.border}`,
+            borderRadius: '4px',
+            color: c.primary,
+            fontSize: '10px',
+            fontFamily: c.font,
+            padding: '8px',
+            marginTop: '8px',
+            resize: 'vertical',
+            boxSizing: 'border-box',
+          }}
+        />
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '8px' }}>
+          <button
+            onClick={handleSaveRating}
+            disabled={Object.keys(ratings).length === 0}
+            style={{
+              background: Object.keys(ratings).length === 0 ? c.muted : c.cyan,
+              color: c.pageBg,
+              border: 'none',
+              borderRadius: '4px',
+              padding: '6px 14px',
+              fontSize: '10px',
+              fontWeight: 700,
+              fontFamily: c.font,
+              cursor: Object.keys(ratings).length === 0 ? 'default' : 'pointer',
+              opacity: Object.keys(ratings).length === 0 ? 0.5 : 1,
+              letterSpacing: '.05em',
+            }}
+          >
+            SAVE RATING
+          </button>
+          {ratingSaved && (
+            <span style={{ fontSize: '10px', color: c.green, fontFamily: c.font, fontWeight: 700 }}>
+              Rating saved &#x2713;
+            </span>
+          )}
+        </div>
       </div>
     </div>
   )
