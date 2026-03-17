@@ -65,6 +65,7 @@ You MUST produce ALL 15 of these files:
 - Imports from `'../../styled-system/jsx'` and `'../../styled-system/css'`
 - Imports `Sidebar` from `'./Sidebar'`
 - For links, use plain `<a href="/">` tags — do NOT import from any routing library
+- **CRITICAL: Layout.tsx renders the Sidebar (which contains the site header/nav). Route files (index.tsx, about.tsx, etc.) must NOT render their own header, nav, or identity elements. The Sidebar is the ONLY place the masthead appears. Duplicating it in routes creates a double header bug.**
 
 **Route files (index.tsx, about.tsx, work.$slug.tsx):**
 - MUST preserve route exports: `export const Route = createFileRoute('...')({ component: ... })`

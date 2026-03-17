@@ -266,8 +266,9 @@ async function main() {
   if (Array.isArray(awwwardsSites)) {
     const sitesWithScreenshots = awwwardsSites.filter(s => typeof s === 'object' && s.screenshot_url)
     if (sitesWithScreenshots.length > 0) {
-      console.log(`  fetching ${sitesWithScreenshots.length} Awwwards screenshots...`)
-      for (const site of sitesWithScreenshots.slice(0, 3)) {
+      // Limit to 1 screenshot — each is ~300KB (440KB as base64), more would exceed prompt limits
+      console.log(`  fetching top Awwwards screenshot...`)
+      for (const site of sitesWithScreenshots.slice(0, 1)) {
         try {
           const imgRes = await fetch(site.screenshot_url, {
             signal: AbortSignal.timeout(10000),
