@@ -148,13 +148,90 @@ function pipelineApiPlugin(): Plugin {
         }
       })
 
-      // SSE: run pipeline
-      // In local mode (mock=true): uses `claude` CLI with Max plan subscription
-      // In production mode: uses Anthropic API directly
-      server.middlewares.use('/api/pipeline', (req, res) => {
-        const url = new URL(req.url ?? '', `http://${req.headers.host}`)
-        const dryRun = url.searchParams.get('dryRun') === 'true'
-        const useMock = url.searchParams.get('mock') !== 'false'
+      // Pipeline process state — lives in the Vite server, survives HMR page reloads.
+      // The child process is decoupled from any single SSE connection so that
+      // Vite HMR (triggered when agents write files) doesn't kill the pipeline.
+      let pipelineChild: ReturnType<typeof spawn> | null = null
+      let pipelineLog: Array<{ type: string; line?: string; success?: boolean; error?: string }> = []
+      let pipelineDone = false
+      const pipelineListeners = new Set<(data: object) => void>()
+
+      function broadcastPipeline(data: object) {
+        pipelineLog.push(data as any)
+        for (const listener of pipelineListeners) {
+          try { listener(data) } catch {}
+        }
+      }
+
+      // POST /api/pipeline/start — launch the pipeline (if not already running)
+      server.middlewares.use('/api/pipeline/start', (req, res) => {
+        if (req.method !== 'POST') { res.writeHead(405); res.end(); return }
+
+        if (pipelineChild && !pipelineDone) {
+          res.writeHead(409, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ error: 'Pipeline already running' }))
+          return
+        }
+
+        let body = ''
+        req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+        req.on('end', () => {
+          let parsed: Record<string, unknown> = {}
+          if (body) {
+            try { parsed = JSON.parse(body) } catch {
+              res.writeHead(400, { 'Content-Type': 'application/json' })
+              res.end(JSON.stringify({ error: 'Invalid JSON' }))
+              return
+            }
+          }
+          const { dryRun = false, mock = true } = parsed
+
+          // Reset state
+          pipelineLog = []
+          pipelineDone = false
+
+          const pipelineEnv = { ...process.env, DRY_RUN: dryRun ? 'true' : 'false', MOCK_MODE: mock ? 'true' : 'false' }
+          if (mock) delete pipelineEnv.ANTHROPIC_API_KEY
+
+          pipelineChild = spawn('node', [scriptPath], {
+            env: pipelineEnv,
+            cwd: process.cwd(),
+          })
+
+          const handleData = (chunk: Buffer) => {
+            const lines = chunk.toString().split('\n').filter((l: string) => l.trim())
+            for (const line of lines) {
+              broadcastPipeline({ type: 'log', line })
+            }
+          }
+
+          pipelineChild.stdout!.on('data', handleData)
+          pipelineChild.stderr!.on('data', handleData)
+
+          pipelineChild.on('close', (code) => {
+            if (pipelineDone) return
+            pipelineDone = true
+            broadcastPipeline({ type: 'done', success: code === 0, ...(code !== 0 ? { error: `Process exited with code ${code}` } : {}) })
+            pipelineChild = null
+          })
+
+          pipelineChild.on('error', (err) => {
+            if (pipelineDone) return
+            pipelineDone = true
+            broadcastPipeline({ type: 'done', success: false, error: err.message })
+            pipelineChild = null
+          })
+
+          res.writeHead(200, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ ok: true }))
+        })
+      })
+
+      // GET /api/pipeline — SSE stream. Replays buffered logs then streams live.
+      // Clients can reconnect after HMR without losing the pipeline.
+      server.middlewares.use('/api/pipeline', (req, res, next) => {
+        // Only handle GET (SSE), let POST through to /start
+        if (req.method !== 'GET') return next()
 
         res.writeHead(200, {
           'Content-Type': 'text/event-stream',
@@ -163,42 +240,78 @@ function pipelineApiPlugin(): Plugin {
         })
 
         const send = (data: object) => {
-          res.write(`data: ${JSON.stringify(data)}\n\n`)
+          try { res.write(`data: ${JSON.stringify(data)}\n\n`) } catch {}
         }
 
-        // Both modes use the same pipeline script — MOCK_MODE controls
-        // whether it calls claude CLI (Max plan) or the Anthropic API
-        const pipelineEnv = { ...process.env, DRY_RUN: dryRun ? 'true' : 'false', MOCK_MODE: useMock ? 'true' : 'false' }
-        // Strip API key in mock mode so claude CLI uses Max plan subscription
-        if (useMock) delete pipelineEnv.ANTHROPIC_API_KEY
-
-        const child = spawn('node', [scriptPath], {
-          env: pipelineEnv,
-          cwd: process.cwd(),
-        })
-
-        const handleData = (chunk: Buffer) => {
-          const lines = chunk.toString().split('\n').filter((l: string) => l.trim())
-          for (const line of lines) {
-            send({ type: 'log', line })
-          }
+        // Replay buffered log so reconnecting clients catch up
+        for (const entry of pipelineLog) {
+          send(entry)
         }
 
-        child.stdout.on('data', handleData)
-        child.stderr.on('data', handleData)
-
-        child.on('close', (code) => {
-          send({ type: 'done', success: code === 0, ...(code !== 0 ? { error: `Process exited with code ${code}` } : {}) })
+        // If pipeline already finished, close immediately
+        if (pipelineDone || !pipelineChild) {
           res.end()
-        })
+          return
+        }
 
-        child.on('error', (err) => {
-          send({ type: 'done', success: false, error: err.message })
-          res.end()
-        })
+        // Subscribe to live updates
+        pipelineListeners.add(send)
 
         req.on('close', () => {
-          child.kill()
+          pipelineListeners.delete(send)
+          // Do NOT kill the child — let it finish independently
+        })
+      })
+
+      // API: rate a design (save/load ratings)
+      server.middlewares.use('/api/dev-rate', (req, res) => {
+        if (req.method === 'GET') {
+          // Parse date from query string
+          const url = new URL(req.url || '/', `http://${req.headers.host}`)
+          const date = url.searchParams.get('date')
+          if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+            res.writeHead(400, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ error: 'Missing or invalid date parameter' }))
+            return
+          }
+          const ratingPath = resolve('archive', date, 'rating.json')
+          if (existsSync(ratingPath)) {
+            const rating = JSON.parse(readFileSync(ratingPath, 'utf8'))
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify(rating))
+          } else {
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ rating: null }))
+          }
+          return
+        }
+
+        if (req.method !== 'POST') { res.writeHead(405); res.end(); return }
+
+        let body = ''
+        req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+        req.on('end', () => {
+          try {
+            const { date, ratings, notes } = JSON.parse(body)
+            if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+              res.writeHead(400, { 'Content-Type': 'application/json' })
+              res.end(JSON.stringify({ error: 'Missing or invalid date' }))
+              return
+            }
+            const archivePath = resolve('archive', date)
+            if (!existsSync(archivePath)) {
+              res.writeHead(404, { 'Content-Type': 'application/json' })
+              res.end(JSON.stringify({ error: `No archive for ${date}` }))
+              return
+            }
+            const ratingPath = resolve('archive', date, 'rating.json')
+            writeFileSync(ratingPath, JSON.stringify({ date, ratings, notes }, null, 2), 'utf8')
+            res.writeHead(200, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ ok: true }))
+          } catch (err) {
+            res.writeHead(500, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ error: String(err) }))
+          }
         })
       })
 
@@ -210,6 +323,11 @@ function pipelineApiPlugin(): Plugin {
 
         const [, date, filePath] = match
         const fullPath = resolve('archive', date, 'site', filePath)
+
+        const archiveBase = resolve('archive')
+        if (!fullPath.startsWith(archiveBase + '/')) {
+          res.writeHead(403); res.end('Forbidden'); return
+        }
 
         if (!existsSync(fullPath)) {
           res.writeHead(404)
