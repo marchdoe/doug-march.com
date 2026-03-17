@@ -256,11 +256,13 @@ export async function runAgentSwarm(context) {
   const [
     directorPromptRaw,
     specCriticPromptRaw,
+    screenshotCriticPromptRaw,
     tokenPromptRaw, layoutPromptRaw, sidebarPromptRaw, footerPromptRaw, componentPromptRaw,
     designSystemRef, libTypography, libColor, libLayout, libComponents, libComposition,
   ] = await Promise.all([
     readFile(path.join(promptDir, 'design-director.md'), 'utf8'),
     readFile(path.join(promptDir, 'spec-critic.md'), 'utf8'),
+    readFile(path.join(promptDir, 'screenshot-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'structure-agent.md'), 'utf8'),
     readFile(path.join(promptDir, 'sidebar-designer.md'), 'utf8'),
@@ -275,6 +277,7 @@ export async function runAgentSwarm(context) {
   ])
 
   const specCriticPrompt = specCriticPromptRaw
+  const screenshotCriticPrompt = screenshotCriticPromptRaw
 
   // Build system prompts with relevant libraries appended
   const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComposition}`
@@ -535,6 +538,77 @@ export async function runAgentSwarm(context) {
 
   if (buildResult.success) {
     console.log('\n=== Build passed! ===')
+
+    // -----------------------------------------------------------------
+    // Screenshot Critic Gate
+    // -----------------------------------------------------------------
+    try {
+      console.log('\n[screenshot-critic] Capturing screenshot...')
+      const { captureScreenshot } = await import('./utils/snapshot.js')
+      const screenshotBuffer = await captureScreenshot()
+      console.log(`  screenshot captured (${(screenshotBuffer.length / 1024).toFixed(0)}KB)`)
+
+      console.log('[screenshot-critic] Evaluating design...')
+      const criticUserPrompt = [
+        '## Structured Brief\n\n' + brief,
+        '## Visual Specification\n\n' + visualSpec,
+        references ? '## Design References\n\n' + references : '',
+        '\n\nA screenshot of the rendered homepage is attached as a base64 PNG image below.\n\n' +
+        '![Homepage Screenshot](data:image/png;base64,' + screenshotBuffer.toString('base64') + ')',
+      ].filter(Boolean).join('\n\n---\n\n')
+
+      const screenshotCriticResult = await callAgent('screenshot-critic', screenshotCriticPrompt, criticUserPrompt)
+      const criticResponse = screenshotCriticResult._rawResponse || screenshotCriticResult.rationale || ''
+
+      if (criticResponse.includes('REVISE')) {
+        const agentMatch = criticResponse.match(/\*\*Responsible agent:\*\*\s*([\w-]+)/)
+        const responsibleAgent = agentMatch?.[1] || 'layout-architect'
+        const feedback = criticResponse.replace(/===VERDICT===/, '').replace(/===END===/, '').replace('REVISE', '').trim()
+
+        console.log(`  [screenshot-critic] REVISE — responsible: ${responsibleAgent}`)
+        console.log(`  feedback: ${feedback.slice(0, 200)}...`)
+
+        const agentConfig = {
+          'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) },
+          'layout-architect': { prompt: layoutSystemPrompt, user: () => buildAgentPrompt('layout-architect', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
+          'sidebar-designer': { prompt: sidebarSystemPrompt, user: () => buildAgentPrompt('sidebar-designer', { brief: enrichedBrief, referenceFiles: layoutRef, tokenContext }) },
+          'footer-designer': { prompt: footerSystemPrompt, user: () => buildAgentPrompt('footer-designer', { brief: enrichedBrief, referenceFiles: layoutRef, tokenContext }) },
+          'component-agent': { prompt: componentSystemPrompt, user: () => buildAgentPrompt('component-agent', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
+        }
+
+        const config = agentConfig[responsibleAgent]
+        if (config) {
+          console.log(`  retrying ${responsibleAgent} with critic feedback...`)
+          try {
+            const retryResult = await callAgent(responsibleAgent, config.prompt, config.user(), feedback)
+            await writeFiles(retryResult.files)
+
+            const retryBuild = validateBuild()
+            if (!retryBuild.success) {
+              console.warn('  post-critic revision broke the build — restoring pre-revision files')
+              const filesToRestore = new Map()
+              for (const [filePath, content] of originalBackup.entries()) {
+                const owner = FILE_OWNERSHIP[filePath]
+                if (owner === responsibleAgent) {
+                  filesToRestore.set(filePath, content)
+                }
+              }
+              await restore(filesToRestore)
+              if (responsibleAgent === 'token-designer') validateCodegen()
+            } else {
+              console.log('  post-critic revision build passed')
+            }
+          } catch (err) {
+            console.warn(`  ${responsibleAgent} revision failed (non-blocking): ${err.message}`)
+          }
+        }
+      } else {
+        console.log('  [screenshot-critic] SHIP')
+      }
+    } catch (err) {
+      console.warn(`  [screenshot-critic] Failed (non-blocking): ${err.message}`)
+      console.warn('  Shipping without screenshot review')
+    }
 
     const allFiles = [
       ...tokenResult.files,
