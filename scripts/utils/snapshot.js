@@ -154,3 +154,56 @@ export async function captureSnapshot(date) {
     child.kill()
   }
 }
+
+/**
+ * Capture a PNG screenshot of the rendered homepage.
+ * Spins up a Vite preview server and uses Playwright to render and screenshot.
+ *
+ * @param {number} [port] - Optional port if server is already running
+ * @returns {Promise<Buffer>} PNG image buffer
+ */
+export async function captureScreenshot(port) {
+  const { chromium } = await import('playwright')
+
+  let server = null
+  let serverPort = port
+
+  if (!serverPort) {
+    serverPort = 14000 + Math.floor(Math.random() * 1000)
+    server = spawn('npx', ['vite', 'preview', '--port', String(serverPort)], {
+      cwd: ROOT,
+      stdio: 'pipe',
+    })
+
+    await new Promise((resolve, reject) => {
+      const timeout = setTimeout(
+        () => reject(new Error('Preview server timeout')),
+        15000
+      )
+      server.stdout.on('data', (chunk) => {
+        if (chunk.toString().includes('Local:')) {
+          clearTimeout(timeout)
+          resolve()
+        }
+      })
+      server.on('error', (err) => {
+        clearTimeout(timeout)
+        reject(err)
+      })
+    })
+  }
+
+  try {
+    const browser = await chromium.launch({ headless: true })
+    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
+    await page.goto(`http://localhost:${serverPort}/`, {
+      waitUntil: 'networkidle',
+    })
+    await page.waitForTimeout(1000) // wait for fonts
+    const screenshot = await page.screenshot({ type: 'png', fullPage: false })
+    await browser.close()
+    return screenshot
+  } finally {
+    if (server) server.kill()
+  }
+}
