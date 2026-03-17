@@ -2,162 +2,269 @@ import { definePreset } from '@pandacss/dev'
 
 export const elementsPreset = definePreset({
   name: 'elements',
+
   globalCss: {
     '*, *::before, *::after': {
       boxSizing: 'border-box',
       margin: '0',
       padding: '0',
     },
-    html: { fontSize: '17px' },
+    html: {
+      fontSize: '16px',
+      WebkitTextSizeAdjust: '100%',
+    },
     body: {
-      fontFamily: 'serif',
+      fontFamily: 'body',
       background: 'bg',
       color: 'text',
+      fontSize: 'base',
+      lineHeight: 'normal',
+      fontWeight: 'regular',
       WebkitFontSmoothing: 'antialiased',
       MozOsxFontSmoothing: 'grayscale',
     },
-    a: { color: 'inherit', textDecoration: 'none' },
-  },
-  conditions: {
-    extend: {
-      light: '.light &, [data-theme=light] &',
+    'h1, h2, h3, h4, h5, h6': {
+      fontFamily: 'heading',
+      lineHeight: 'tight',
+      letterSpacing: 'tight',
+      fontWeight: 'bold',
+    },
+    a: {
+      color: 'accent',
+      textDecoration: 'none',
+      _hover: {
+        color: 'accentLight',
+      },
+    },
+    'button, input, select, textarea': {
+      fontFamily: 'body',
+      fontSize: 'base',
+    },
+    'pre, code, kbd, samp': {
+      fontFamily: 'mono',
+    },
+    img: {
+      maxWidth: '100%',
+      display: 'block',
+    },
+    hr: {
+      border: 'none',
+      borderTop: '1px solid',
+      borderColor: 'border',
     },
   },
+
   theme: {
     tokens: {
       colors: {
-        // Fog — the primary neutral: barely-green gray, overcast spring air
-        // Neither warm stone nor cold slate — damp fog on new grass
-        fog: {
-          50:  { value: '#F0F2EE' },
-          100: { value: '#E1E5DE' },
-          200: { value: '#C3C9BE' },
-          300: { value: '#98A092' },
-          400: { value: '#6D7568' },
-          500: { value: '#484F43' },
-          600: { value: '#303630' },
-          700: { value: '#20241F' },
-          800: { value: '#161914' },
-          900: { value: '#0C0E0A' },
+        // Neutral scale — H:210°, S:7–9%, cold blue-slate
+        slate: {
+          50: { value: '#F3F4F8' },
+          100: { value: '#E8ECF2' },
+          200: { value: '#CBD0DB' },
+          300: { value: '#A1AABB' },
+          400: { value: '#747E92' },
+          500: { value: '#535D6E' },
+          600: { value: '#383F4D' },
+          700: { value: '#262C38' },
+          800: { value: '#161D26' },
+          900: { value: '#0D1016' },
         },
-        // Fern — St. Patrick's eve green, seen through cloud cover
-        // Saturated enough to feel alive, muted enough to feel anticipated
-        fern: {
-          50:  { value: '#EAF0E6' },
-          100: { value: '#CCD9C5' },
-          200: { value: '#99BC8D' },
-          300: { value: '#5A9450' },  // dark mode accent — 5.1:1 vs fog.800 ✓ AA
-          400: { value: '#3A7330' },
-          500: { value: '#275120' },  // light mode accent — 8.0:1 vs fog.50 ✓ AA
-          600: { value: '#1A3817' },
-          glow: { value: 'rgba(90,148,80,0.13)' },
-          dim:  { value: 'rgba(58,115,48,0.08)' },
-        },
-        // Amber — genuine win signal: Tigers 13 runs, Cameron Young -13
-        // Warm counterpoint to the green field — a circled box score
-        amber: {
-          400: { value: '#C4883E' },
-          500: { value: '#A06E2C' },
-          dim:  { value: 'rgba(196,136,62,0.11)' },
+        // Accent — deep moss green, H:148°
+        moss: {
+          light: { value: '#6FAE8D' },
+          base: { value: '#37785A' },
+          dark: { value: '#1A5636' },
+          glow: { value: 'rgba(55, 120, 90, 0.10)' },
         },
       },
+
       fonts: {
-        mono:  { value: "'DM Mono', 'Courier New', monospace" },
-        serif: { value: "'Newsreader', Georgia, serif" },
+        heading: { value: "'Syne', sans-serif" },
+        body: { value: "'Work Sans', sans-serif" },
+        mono: { value: "'JetBrains Mono', monospace" },
       },
+
+      // Major Third scale (×1.250), base 16px
       fontSizes: {
-        '2xs': { value: '0.62rem' },   // ~10.5px — labels only
-        xs:    { value: '0.74rem' },   // ~12.6px — captions
-        sm:    { value: '0.865rem' },  // ~14.7px — secondary text, meets AA floor
-        base:  { value: '0.94rem' },   // ~16px — body
-        md:    { value: '1.1rem' },    // ~18.7px — comfortable read
-        lg:    { value: '1.5rem' },    // ~25.5px — section titles
-        xl:    { value: '2.65rem' },   // ~45px — display
-        '2xl': { value: '4.4rem' },    // ~75px — hero
+        '2xs': { value: '10px' },
+        xs: { value: '13px' },
+        sm: { value: '16px' },
+        base: { value: '16px' },
+        md: { value: '20px' },
+        lg: { value: '25px' },
+        xl: { value: '31px' },
+        '2xl': { value: '39px' },
       },
+
       fontWeights: {
         regular: { value: '400' },
-        medium:  { value: '500' },
-        bold:    { value: '600' },
+        medium: { value: '500' },
+        semibold: { value: '600' },
+        bold: { value: '700' },
+        extrabold: { value: '800' },
       },
-      letterSpacings: {
-        tight:  { value: '-0.03em' },
-        normal: { value: '0' },
-        wide:   { value: '0.06em' },
-        wider:  { value: '0.11em' },
-        widest: { value: '0.17em' },
-        // The workweek grid — precise as a ruled ledger
-        ruled:  { value: '0.22em' },
-      },
+
       lineHeights: {
-        tight:  { value: '1.06' },
-        snug:   { value: '1.28' },
-        normal: { value: '1.65' },
-        loose:  { value: '1.88' },
+        tight: { value: '1.05' },
+        snug: { value: '1.22' },
+        normal: { value: '1.58' },
+        loose: { value: '1.80' },
       },
+
+      letterSpacings: {
+        tight: { value: '-0.025em' },
+        normal: { value: '0em' },
+        wide: { value: '0.06em' },
+        wider: { value: '0.10em' },
+        widest: { value: '0.14em' },
+      },
+
+      // Spacing scale — 4px base unit
       spacing: {
-        1:  { value: '0.25rem' },   // 4px
-        2:  { value: '0.5rem' },    // 8px
-        3:  { value: '0.75rem' },   // 12px
-        4:  { value: '1rem' },      // 16px
-        5:  { value: '1.5rem' },    // 24px
-        6:  { value: '2rem' },      // 32px
-        8:  { value: '3.25rem' },   // 52px
-        10: { value: '4.5rem' },    // 72px
-        12: { value: '6rem' },      // 96px
+        '1': { value: '4px' },
+        '2': { value: '8px' },
+        '4': { value: '16px' },
+        '6': { value: '24px' },
+        '8': { value: '32px' },
+        '12': { value: '48px' },
+        '16': { value: '64px' },
       },
-      durations: {
-        fast: { value: '0.12s' },
-        base: { value: '0.25s' },
-        slow: { value: '0.5s' },
+
+      // Newspaper has no radius — everything is hard-edged
+      radii: {
+        none: { value: '0px' },
+        sm: { value: '0px' },
+        md: { value: '0px' },
+        lg: { value: '0px' },
+        xl: { value: '0px' },
+        full: { value: '0px' },
       },
-      easings: {
-        default: { value: 'ease' },
-        out:     { value: 'cubic-bezier(0.0, 0, 0.2, 1)' },
+
+      // No shadows — flat, unlit, new moon
+      shadows: {
+        none: { value: 'none' },
+        sm: { value: 'none' },
+        md: { value: 'none' },
+        lg: { value: 'none' },
+      },
+
+      // Layout dimensions from the Broadsheet spec
+      sizes: {
+        masthead: { value: '56px' },
+        row: { value: '44px' },
+        footer: { value: '48px' },
+        maxContent: { value: '1200px' },
       },
     },
+
     semanticTokens: {
       colors: {
+        // Backgrounds
         bg: {
-          // fog.800: near-black with a whisper of green — the new moon sky
-          DEFAULT: { value: { base: '{colors.fog.800}', _light: '{colors.fog.50}' } },
-          side:    { value: { base: '{colors.fog.900}', _light: '{colors.fog.50}' } },
-          card:    { value: { base: '{colors.fog.700}', _light: '#FFFFFF' } },
-          // Subtle fern tint for elements that want the green to creep through
-          tint:    { value: { base: '{colors.fern.glow}', _light: '{colors.fern.dim}' } },
+          value: {
+            base: '{colors.slate.800}',
+            _light: '{colors.slate.50}',
+          },
         },
-        border: {
-          DEFAULT: { value: { base: '{colors.fog.600}', _light: '{colors.fog.200}' } },
-          mid:     { value: { base: '{colors.fog.500}', _light: '{colors.fog.300}' } },
-          // The fern edge — St. Patrick's eve creeping in at the margins
-          accent:  { value: { base: '{colors.fern.300}', _light: '{colors.fern.400}' } },
+        bgElevated: {
+          value: {
+            base: '#1B2230',
+            _light: '{colors.slate.100}',
+          },
         },
+        bgMasthead: {
+          value: {
+            base: '{colors.slate.900}',
+            _light: '{colors.slate.100}',
+          },
+        },
+        bgHover: {
+          value: {
+            base: '{colors.moss.glow}',
+            _light: '{colors.moss.glow}',
+          },
+        },
+
+        // Text hierarchy
         text: {
-          // fog.100 vs fog.800: 14.6:1 ✓✓  |  fog.700 vs fog.50: 14.0:1 ✓✓
-          DEFAULT: { value: { base: '{colors.fog.100}', _light: '{colors.fog.700}' } },
-          mid:     { value: { base: '{colors.fog.300}', _light: '{colors.fog.500}' } },
-          dim:     { value: { base: '{colors.fog.400}', _light: '{colors.fog.400}' } },
+          value: {
+            base: '{colors.slate.100}',
+            _light: '{colors.slate.700}',
+          },
         },
+        textSecondary: {
+          value: {
+            base: '{colors.slate.300}',
+            _light: '{colors.slate.500}',
+          },
+        },
+        textMuted: {
+          value: {
+            base: '{colors.slate.400}',
+            _light: '{colors.slate.400}',
+          },
+        },
+
+        // Accent — the single green thread
         accent: {
-          // fern.300 vs fog.800: ~5.1:1 ✓ AA  |  fern.500 vs fog.50: ~8.0:1 ✓ AA
-          DEFAULT: { value: { base: '{colors.fern.300}', _light: '{colors.fern.500}' } },
-          dim:     { value: { base: '{colors.fern.400}', _light: '{colors.fern.500}' } },
-          glow:    { value: { base: '{colors.fern.glow}', _light: '{colors.fern.dim}' } },
+          value: {
+            base: '{colors.moss.base}',
+            _light: '{colors.moss.base}',
+          },
         },
-        signal: {
-          // Amber for genuine wins — Tigers 13 runs, Cameron Young's -13
-          win:      { value: { base: '{colors.amber.400}', _light: '{colors.amber.500}' } },
-          winDim:   { value: { base: '{colors.amber.dim}',  _light: '{colors.amber.dim}' } },
-          // Fern for market green and St. Patrick's eve
-          green:    { value: { base: '{colors.fern.300}',   _light: '{colors.fern.500}' } },
-          greenDim: { value: { base: '{colors.fern.glow}',  _light: '{colors.fern.dim}' } },
+        accentLight: {
+          value: {
+            base: '{colors.moss.light}',
+            _light: '{colors.moss.light}',
+          },
         },
-        logo: {
-          blue:     { value: { base: '{colors.fog.400}',   _light: '{colors.fog.500}' } },
-          blueDim:  { value: { base: 'rgba(109,117,104,0.13)', _light: 'rgba(72,79,67,0.10)' } },
-          green:    { value: { base: '{colors.fern.300}',  _light: '{colors.fern.500}' } },
-          greenDim: { value: { base: '{colors.fern.glow}', _light: '{colors.fern.dim}' } },
+        accentDark: {
+          value: {
+            base: '{colors.moss.dark}',
+            _light: '{colors.moss.dark}',
+          },
         },
+        accentGlow: {
+          value: {
+            base: '{colors.moss.glow}',
+            _light: '{colors.moss.glow}',
+          },
+        },
+
+        // Borders — hairline rules are the only structure
+        border: {
+          value: {
+            base: '{colors.slate.700}',
+            _light: '{colors.slate.200}',
+          },
+        },
+        borderStrong: {
+          value: {
+            base: '{colors.slate.600}',
+            _light: '{colors.slate.300}',
+          },
+        },
+        borderAccent: {
+          value: {
+            base: '{colors.moss.base}',
+            _light: '{colors.moss.base}',
+          },
+        },
+      },
+
+      // fonts and fontSizes are defined in raw tokens — no semantic overrides needed
+
+      radii: {
+        sm: { value: '{radii.none}' },
+        md: { value: '{radii.none}' },
+        lg: { value: '{radii.none}' },
+      },
+
+      shadows: {
+        sm: { value: '{shadows.none}' },
+        md: { value: '{shadows.none}' },
+        lg: { value: '{shadows.none}' },
       },
     },
   },

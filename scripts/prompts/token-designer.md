@@ -93,6 +93,28 @@ semanticTokens: {
 }
 ```
 
+## CRITICAL: Avoid These Errors
+
+**NEVER create circular token references.** A semantic token must NOT reference itself. This breaks PandaCSS at runtime:
+```typescript
+// WRONG — circular reference, will crash:
+semanticTokens: {
+  fonts: { heading: { value: '{fonts.heading}' } },  // fonts.heading → fonts.heading → infinite loop!
+  fontSizes: { base: { value: '{fontSizes.base}' } }, // same problem
+}
+```
+
+**DO NOT create semantic tokens for fonts or fontSizes** unless you are mapping them to DIFFERENT values. The raw tokens in `theme.tokens.fonts` are already available to components. If you want components to use `fontFamily: 'heading'`, just define `fonts.heading` in the raw tokens — do NOT duplicate it in semanticTokens.
+
+**Use `import type` for React types.** If you import React types (ReactNode, FC, etc.), always use `import type`:
+```typescript
+// WRONG — breaks SSR:
+import { ReactNode } from 'react'
+
+// CORRECT:
+import type { ReactNode } from 'react'
+```
+
 ## Response Format
 
 Respond using this exact delimiter format. Write the COMPLETE file contents after each ===FILE:path=== marker. No JSON wrapping, no code fences — just the delimiters and raw file content.

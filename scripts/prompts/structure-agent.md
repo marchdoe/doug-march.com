@@ -87,6 +87,7 @@ When the Design Director provides CSS hints like `grid-template-columns: 1.5fr 1
 - Routes import `createFileRoute` from `'@tanstack/react-router'` — ONLY in route files
 - Do NOT use `@tanstack/react-router` in component files (Layout.tsx). For links in components, use plain `<a href="/">` tags.
 - Do NOT import from `@remix-run/react`, `react-router-dom`, or `next/link` anywhere.
+- If you import React types (ReactNode, FC, etc.), ALWAYS use `import type { ReactNode } from 'react'` — NOT `import { ReactNode } from 'react'`. Non-type imports of React types break SSR.
 - Use only the semantic tokens and spacing values defined in preset.ts
 - Component exports you can import: FeaturedProject, SelectedWork, Experiments, SectionHead, ProjectRow, Bio, Timeline, Capabilities, Personal, Sidebar, MobileFooter
 

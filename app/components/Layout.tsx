@@ -1,83 +1,145 @@
-import React from 'react'
-import { Box, Grid } from '../../styled-system/jsx'
+import type { ReactNode } from 'react'
+import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { Sidebar } from './Sidebar'
 
-/**
- * Layout Architecture: Ruled-Ledger Split
- *
- * A narrow identity strip (220px) holds identity + nav on the left,
- * separated from the main content by a fern-green border — the green
- * creeping in at the margin before St. Patrick's Day arrives.
- *
- * The sidebar is sticky on desktop (like a page margin on a ruled notebook),
- * the main content scrolls freely. On mobile, the sidebar collapses —
- * the Sidebar component handles its own mobile presentation.
- *
- * The deep fog.800 background on main and fog.900 on side creates the
- * near-new-moon darkness the brief calls for. Structure is tight and
- * purposeful (Monday workweek grid energy) but not cold — there's
- * breathing room in the padding and the max-width keeps body text
- * comfortably under 75 characters.
- */
-
 interface LayoutProps {
-  children: React.ReactNode
+  children: ReactNode
 }
-
-const sidebarWrapStyles = css({
-  position: { base: 'static', lg: 'sticky' },
-  top: '0',
-  height: { base: 'auto', lg: '100vh' },
-  overflow: { lg: 'hidden' },
-  bg: 'bg.side',
-  // The fern accent border — St. Patrick's eve green arriving at the left edge
-  borderBottomWidth: { base: '1px', lg: '0' },
-  borderRightWidth: { base: '0', lg: '1px' },
-  borderStyle: 'solid',
-  borderColor: 'border.accent',
-  zIndex: '10',
-  flexShrink: '0',
-})
-
-const mainStyles = css({
-  minHeight: '100vh',
-  px: { base: '5', md: '8', lg: '10' },
-  pt: { base: '6', md: '8', lg: '10' },
-  pb: { base: '10', lg: '12' },
-  // Keep line length readable — max ~75ch for body text
-  maxWidth: '860px',
-  width: '100%',
-})
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <Box
-      minHeight="100vh"
-      bg="bg"
-      className={css({
-        display: 'flex',
-        flexDirection: { base: 'column', lg: 'row' },
-        alignItems: 'flex-start',
-      })}
-    >
-      {/* Sidebar: identity strip + nav, sticky on desktop */}
+    <Box className="dark" minHeight="100vh" background="bg">
+
+      {/* ── MASTHEAD ──────────────────────────────────────────────
+          Pinned top bar. 56px tall. 2px emerald accent at crown —
+          the St. Patrick's Day acknowledgment. No shamrocks.
+          Left: name in Fraunces + role in Outfit.
+          Right: 4 nav links, uppercase, widest tracking.
+      ─────────────────────────────────────────────────────────── */}
       <Box
-        className={sidebarWrapStyles}
-        width={{ base: '100%', lg: '220px' }}
-        minWidth={{ lg: '220px' }}
+        as="header"
+        position="sticky"
+        top="0"
+        zIndex="50"
+        height="56px"
+        background="bgSidebar"
+        borderTopWidth="2px"
+        borderTopStyle="solid"
+        borderTopColor="accent"
+        borderBottomWidth="1px"
+        borderBottomStyle="solid"
+        borderBottomColor="borderCard"
       >
-        <Sidebar />
+        <Flex
+          maxWidth="1100px"
+          marginInline="auto"
+          paddingInline="5"
+          height="100%"
+          align="center"
+          justify="space-between"
+        >
+          {/* Identity */}
+          <a href="/" className={css({ textDecoration: 'none' })}>
+            <Flex align="baseline" gap="2">
+              <Box
+                as="span"
+                fontFamily="heading"
+                fontSize="base"
+                fontWeight="regular"
+                color="text"
+                letterSpacing="tight"
+              >
+                Doug March
+              </Box>
+              <Box
+                as="span"
+                fontFamily="body"
+                fontSize="xs"
+                fontWeight="light"
+                color="textSecondary"
+                letterSpacing="wider"
+                textTransform="uppercase"
+                display={{ base: 'none', sm: 'inline' }}
+              >
+                Designer &amp; Developer
+              </Box>
+            </Flex>
+          </a>
+
+          {/* Nav links */}
+          <Flex as="nav" gap="5" align="center">
+            {([
+              { label: 'Work',   href: '/' },
+              { label: 'About',  href: '/about' },
+              { label: 'GitHub', href: 'https://github.com/dougmarch' },
+              { label: 'Email',  href: 'mailto:doug@doug-march.com' },
+            ] as const).map(({ label, href }) => (
+              <a
+                key={label}
+                href={href}
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: 'xs',
+                  fontWeight: 'medium',
+                  letterSpacing: 'widest',
+                  textTransform: 'uppercase',
+                  color: 'textSecondary',
+                  textDecoration: 'none',
+                  transition: 'color 0.15s ease',
+                  _hover: { color: 'accent' },
+                })}
+              >
+                {label}
+              </a>
+            ))}
+          </Flex>
+        </Flex>
       </Box>
 
-      {/* Main content: scrollable, ruled breathing room */}
+      {/* ── FROST LINE ────────────────────────────────────────────
+          1px separator below masthead. rgba(28,155,104,0.24).
+          A shamrock under ice. The holiday's one moment of
+          visible identity. Does not announce itself.
+      ─────────────────────────────────────────────────────────── */}
+      <Box height="1px" background="borderFrost" />
+
+      {/* ── PAGE BODY ─────────────────────────────────────────────
+          Magazine structure: 8-col main + 4-col sidebar.
+          Max width 1100px, centered, 24px gutters.
+          Sidebar is sticky below the 57px masthead+frostline.
+          On mobile: single column, sidebar stacks below main.
+      ─────────────────────────────────────────────────────────── */}
       <Box
-        as="main"
-        className={mainStyles}
-        flex="1"
+        maxWidth="1100px"
+        marginInline="auto"
+        paddingInline="5"
+        paddingTop="8"
+        paddingBottom="12"
       >
-        {children}
+        <Box
+          display="grid"
+          gridTemplateColumns={{ base: '1fr', lg: 'minmax(0, 695px) 357px' }}
+          gap="6"
+          alignItems="start"
+        >
+          {/* Main content column — hero, work, essays, quote */}
+          <Box as="main">
+            {children}
+          </Box>
+
+          {/* Sidebar column — signals, scores, culture, listening */}
+          <Box
+            position={{ base: 'static', lg: 'sticky' }}
+            top="57px"
+            maxHeight={{ base: 'none', lg: 'calc(100vh - 57px)' }}
+            overflowY={{ base: 'visible', lg: 'auto' }}
+          >
+            <Sidebar />
+          </Box>
+        </Box>
       </Box>
+
     </Box>
   )
 }
