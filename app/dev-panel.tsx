@@ -358,6 +358,7 @@ export function DevPanel() {
           setPipelineStatus('success')
           setResult({ brief: briefLine?.split('design_brief: ')[1] ?? 'Run complete', timestamp, totalMs })
           fetch('/api/dev-data').then(r => r.json()).then(data => setArchive(data.archive))
+          // Rating state is fresh per build — SuccessSection starts with empty state by default
         } else {
           setPipelineStatus('error')
           setResult({ error: event.error ?? 'Unknown error', totalMs })
@@ -2190,20 +2191,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
   const [ratingNotes, setRatingNotes] = useState('')
   const [ratingSaved, setRatingSaved] = useState(false)
 
-  // Load existing rating on mount
-  useEffect(() => {
-    if (!ratingDate) return
-    fetch(`/api/dev-rate?date=${ratingDate}`)
-      .then(r => r.json())
-      .then(data => {
-        if (data.ratings) {
-          setRatings(data.ratings)
-          setRatingNotes(data.notes || '')
-          setRatingSaved(true)
-        }
-      })
-      .catch(() => {})
-  }, [ratingDate])
+  // Each build starts fresh — no pre-population from previous ratings
 
   const ratingCategories = [
     { key: 'hierarchy', label: 'Visual Hierarchy' },
@@ -2218,7 +2206,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
       const resp = await fetch('/api/dev-rate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date: ratingDate, ratings, notes: ratingNotes }),
+        body: JSON.stringify({ date: ratingDate, ratings, notes: ratingNotes, timestamp: Date.now() }),
       })
       if (resp.ok) setRatingSaved(true)
     } catch {}

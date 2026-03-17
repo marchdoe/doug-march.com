@@ -264,6 +264,7 @@ function pipelineApiPlugin(): Plugin {
       })
 
       // API: rate a design (save/load ratings)
+      // Supports multiple ratings per day — each saved as rating-{timestamp}.json
       server.middlewares.use('/api/dev-rate', (req, res) => {
         if (req.method === 'GET') {
           // Parse date from query string
@@ -274,15 +275,33 @@ function pipelineApiPlugin(): Plugin {
             res.end(JSON.stringify({ error: 'Missing or invalid date parameter' }))
             return
           }
-          const ratingPath = resolve('archive', date, 'rating.json')
-          if (existsSync(ratingPath)) {
-            const rating = JSON.parse(readFileSync(ratingPath, 'utf8'))
-            res.writeHead(200, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify(rating))
-          } else {
-            res.writeHead(200, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ rating: null }))
+          const archivePath = resolve('archive', date)
+          const allRatings: Array<Record<string, unknown>> = []
+
+          if (existsSync(archivePath)) {
+            // Read legacy rating.json if it exists
+            const legacyPath = resolve('archive', date, 'rating.json')
+            if (existsSync(legacyPath)) {
+              try {
+                const legacy = JSON.parse(readFileSync(legacyPath, 'utf8'))
+                allRatings.push({ ...legacy, timestamp: legacy.timestamp || 0 })
+              } catch {}
+            }
+
+            // Read all rating-{timestamp}.json files
+            const ratingFiles = readdirSync(archivePath)
+              .filter(f => f.startsWith('rating-') && f.endsWith('.json'))
+              .sort()
+            for (const file of ratingFiles) {
+              try {
+                const rating = JSON.parse(readFileSync(resolve(archivePath, file), 'utf8'))
+                allRatings.push(rating)
+              } catch {}
+            }
           }
+
+          res.writeHead(200, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ ratings: allRatings }))
           return
         }
 
@@ -292,7 +311,7 @@ function pipelineApiPlugin(): Plugin {
         req.on('data', (chunk: Buffer) => { body += chunk.toString() })
         req.on('end', () => {
           try {
-            const { date, ratings, notes } = JSON.parse(body)
+            const { date, ratings, notes, timestamp } = JSON.parse(body)
             if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
               res.writeHead(400, { 'Content-Type': 'application/json' })
               res.end(JSON.stringify({ error: 'Missing or invalid date' }))
@@ -304,8 +323,9 @@ function pipelineApiPlugin(): Plugin {
               res.end(JSON.stringify({ error: `No archive for ${date}` }))
               return
             }
-            const ratingPath = resolve('archive', date, 'rating.json')
-            writeFileSync(ratingPath, JSON.stringify({ date, ratings, notes }, null, 2), 'utf8')
+            const ts = timestamp || Date.now()
+            const ratingPath = resolve('archive', date, `rating-${ts}.json`)
+            writeFileSync(ratingPath, JSON.stringify({ date, ratings, notes, timestamp: ts }, null, 2), 'utf8')
             res.writeHead(200, { 'Content-Type': 'application/json' })
             res.end(JSON.stringify({ ok: true }))
           } catch (err) {

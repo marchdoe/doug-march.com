@@ -312,14 +312,38 @@ export async function runAgentSwarm(context) {
       .reverse()
       .slice(0, 10)
     for (const dir of ratingDirs) {
-      const ratingPath = path.join(archiveDir, dir, 'rating.json')
-      if (existsSync(ratingPath)) {
-        const rating = JSON.parse(readFileSync(ratingPath, 'utf8'))
-        const briefPath = path.join(archiveDir, dir, 'brief.md')
-        const briefLine = existsSync(briefPath)
-          ? readFileSync(briefPath, 'utf8').match(/\*\*Design Brief:\*\*\s*(.+)/)?.[1] || ''
-          : ''
-        recentRatings += `\n### ${dir} — "${briefLine}"\n`
+      const dirPath = path.join(archiveDir, dir)
+      const briefPath = path.join(dirPath, 'brief.md')
+      const briefLine = existsSync(briefPath)
+        ? readFileSync(briefPath, 'utf8').match(/\*\*Design Brief:\*\*\s*(.+)/)?.[1] || ''
+        : ''
+
+      // Collect all ratings for this date (legacy + per-build)
+      const allRatings = []
+
+      // Legacy single rating.json
+      const legacyPath = path.join(dirPath, 'rating.json')
+      if (existsSync(legacyPath)) {
+        try {
+          const legacy = JSON.parse(readFileSync(legacyPath, 'utf8'))
+          allRatings.push({ ...legacy, timestamp: legacy.timestamp || 0 })
+        } catch {}
+      }
+
+      // Per-build rating-{timestamp}.json files
+      const ratingFiles = readdirSync(dirPath)
+        .filter(f => f.startsWith('rating-') && f.endsWith('.json'))
+        .sort()
+      for (const file of ratingFiles) {
+        try {
+          allRatings.push(JSON.parse(readFileSync(path.join(dirPath, file), 'utf8')))
+        } catch {}
+      }
+
+      for (const rating of allRatings) {
+        const ts = rating.timestamp ? new Date(rating.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : ''
+        const buildLabel = ts ? ` (build ${ts})` : ''
+        recentRatings += `\n### ${dir}${buildLabel} — "${briefLine}"\n`
         recentRatings += `Scores: hierarchy=${rating.ratings?.hierarchy || '?'}/5, typography=${rating.ratings?.typography || '?'}/5, composition=${rating.ratings?.composition || '?'}/5, signals=${rating.ratings?.signalIntegration || '?'}/5, polish=${rating.ratings?.polish || '?'}/5\n`
         if (rating.notes) recentRatings += `Notes: "${rating.notes}"\n`
       }
