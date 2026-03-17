@@ -131,10 +131,15 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
     timeoutMs: options.timeoutMs || 600000, // default 10 minutes
   })
 
-  // Parse response — supports delimiter format, visual spec format, and JSON
+  // Parse response — supports verdict, delimiter, visual spec, and JSON formats
   let parsed
 
-  if (result.includes('===VISUAL_SPEC===')) {
+  if (result.includes('===VERDICT===')) {
+    // Critic response (spec-critic, screenshot-critic) — extract verdict and feedback
+    const verdictMatch = result.match(/===VERDICT===([\s\S]*?)===END===/)
+    const verdictBody = verdictMatch ? verdictMatch[1].trim() : result.trim()
+    parsed = { files: [], rationale: verdictBody, design_brief: '', _rawResponse: verdictBody }
+  } else if (result.includes('===VISUAL_SPEC===')) {
     // Design Director response — the entire content after the delimiter is the spec
     const specMatch = result.match(/===VISUAL_SPEC===([\s\S]*)/)
     const spec = specMatch ? specMatch[1].trim() : result.trim()

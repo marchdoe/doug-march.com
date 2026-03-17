@@ -101,6 +101,25 @@ export function validateGenerated() {
     }
   }
 
+  // Check 3: Route files must NOT import or use Layout
+  // __root.tsx already wraps all routes in <Layout> — importing it again creates double headers
+  const routeFiles = [
+    'app/routes/index.tsx',
+    'app/routes/about.tsx',
+    'app/routes/work.$slug.tsx',
+  ]
+
+  for (const file of routeFiles) {
+    try {
+      const content = readFileSync(resolve(ROOT, file), 'utf8')
+      if (content.includes("from '../components/Layout'") || content.includes('from "../components/Layout"')) {
+        errors.push(`${file}: imports Layout — routes must NOT import Layout (already provided by __root.tsx). This creates a double header.`)
+      }
+    } catch {
+      // File doesn't exist — skip
+    }
+  }
+
   if (errors.length > 0) {
     const errorMsg = 'Pre-build validation failed:\n' + errors.map(e => `  - ${e}`).join('\n')
     console.log('  pre-build validation failed')
