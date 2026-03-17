@@ -1,0 +1,18 @@
+# Curated Design Reference Library
+# Add screenshots to this directory and index them here.
+# The pipeline selects 3-5 relevant references based on the daily brief.
+#
+# Tags:
+#   composition: poster | broadsheet | gallery | scroll | split | stack | specimen | index
+#   mood: warm | cold | energetic | calm | dramatic | minimal | playful | serious
+#   density: sparse | moderate | dense
+
+references:
+  # Example entry (uncomment and add your own):
+  # - file: editorial-01.png
+  #   url: https://example.com/inspiration
+  #   description: "Full-bleed editorial layout with oversized serif headings"
+  #   tags:
+  #     composition: poster
+  #     mood: dramatic
+  #     density: sparse
