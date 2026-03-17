@@ -80,8 +80,10 @@ function formatSignalsMarkdown(signals) {
  */
 export async function archive(date, signals, rationale, designBrief, changedFiles) {
   const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : String(date)
+  const buildId = String(Date.now())
   const dir = path.join(ROOT, 'archive', dateStr)
-  await mkdir(dir, { recursive: true })
+  const buildDir = path.join(dir, `build-${buildId}`)
+  await mkdir(buildDir, { recursive: true })
 
   const content = [
     `# ${dateStr}`,
@@ -101,13 +103,19 @@ export async function archive(date, signals, rationale, designBrief, changedFile
     '',
   ].join('\n')
 
-  const briefPath = path.join(dir, 'brief.md')
+  // Save brief to the build-specific directory
+  const briefPath = path.join(buildDir, 'brief.md')
   await writeFile(briefPath, content, 'utf8')
-  console.log(`  archived to archive/${dateStr}/brief.md`)
+  console.log(`  archived to archive/${dateStr}/build-${buildId}/brief.md`)
 
-  // Capture static HTML snapshot (non-blocking — brief.md is already saved)
+  // Also save/overwrite the top-level brief.md as the "latest" for backwards compatibility
+  // (the dev panel and Design Director read archive/{date}/brief.md)
+  const latestBriefPath = path.join(dir, 'brief.md')
+  await writeFile(latestBriefPath, content, 'utf8')
+
+  // Capture static HTML snapshot into the build directory (non-blocking)
   try {
-    await captureSnapshot(dateStr)
+    await captureSnapshot(dateStr, buildId)
   } catch (err) {
     console.warn(`  snapshot failed (non-blocking): ${err.message}`)
   }

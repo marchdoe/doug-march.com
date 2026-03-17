@@ -86,7 +86,7 @@ async function waitForServer(url, timeoutMs = 15000, intervalMs = 500) {
  * @param {string} date - archive date string, e.g. "2026-03-16"
  * @returns {Promise<void>}
  */
-export async function captureSnapshot(date) {
+export async function captureSnapshot(date, buildId) {
   const port = 14000 + Math.floor(Math.random() * 1000)
   const baseUrl = `http://localhost:${port}`
 
@@ -135,10 +135,24 @@ export async function captureSnapshot(date) {
       }
     }
 
-    // Save files
-    const siteDir = path.join(ROOT, 'archive', date, 'site')
+    // Save files — to build-specific directory if buildId provided, otherwise top-level
+    const baseDir = buildId
+      ? path.join(ROOT, 'archive', date, `build-${buildId}`)
+      : path.join(ROOT, 'archive', date)
+    const siteDir = path.join(baseDir, 'site')
     await mkdir(siteDir, { recursive: true })
     await mkdir(path.join(siteDir, 'work'), { recursive: true })
+
+    // Also save to top-level site/ for backwards compatibility
+    if (buildId) {
+      const latestSiteDir = path.join(ROOT, 'archive', date, 'site')
+      await mkdir(latestSiteDir, { recursive: true })
+      await mkdir(path.join(latestSiteDir, 'work'), { recursive: true })
+      for (const route of routes) {
+        if (route.html === null) continue
+        await writeFile(path.join(latestSiteDir, route.file), route.html, 'utf8')
+      }
+    }
 
     let saved = 0
     for (const route of routes) {
