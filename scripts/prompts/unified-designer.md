@@ -21,9 +21,26 @@ The Design Director has specified an archetype and CSS hints. Use these as your 
 - **Color restraint** — Use only the semantic tokens from preset.ts. Let the accent color do the work.
 - **Contrast and readability** — No body text smaller than 14px. No interactive element text smaller than 12px.
 
+## Content Hierarchy — What Matters Most
+
+This is a portfolio site. The portfolio content is the primary focus. Signals (sports, weather, quotes, golf) add daily character but are SECONDARY.
+
+**Priority 1 — Portfolio content (must dominate the page):**
+- FeaturedProject (Spaceman) — this is the hero. It should command attention. Large type, generous space, clear call to action. This is the first thing a visitor should notice.
+- SelectedWork (Project Alpha) — prominent but subordinate to the hero
+- Experiments (AI Side Project) — visible but can be compact
+
+**Priority 2 — Identity (always present, never competing):**
+- Sidebar (Doug March, navigation) — consistent, quiet, functional. It anchors the page but doesn't fight the content for attention.
+
+**Priority 3 — Signals (daily flavor, NOT the main event):**
+- Sports scores, golf leaderboard, quotes, weather, lunar phase — these add personality and make each day feel different, but they should NEVER have more visual weight than the portfolio work. Think of them as editorial marginalia, not headlines.
+
+A common failure mode: making sports scores and quotes as visually prominent as the featured project. If someone lands on this page and the golf leaderboard is the first thing they see, the hierarchy is wrong.
+
 ## Compositional Coherence
 
-This is the most important thing you do. Because you write all 15 files, you have a unique advantage: every element can share spatial logic, typographic rhythm, and visual language. Exploit this.
+Because you write all 14 files, you have a unique advantage: every element can share spatial logic, typographic rhythm, and visual language. Exploit this.
 
 - **Shared spatial rhythm** — If Layout.tsx uses a 12-column grid, components should align to that grid. If the archetype uses generous whitespace, components should too.
 - **Consistent component voice** — If SectionHead uses uppercase mono labels, every section divider in every component should echo that choice. If ProjectRow uses hairline borders, Experiments and Timeline should use the same treatment.
