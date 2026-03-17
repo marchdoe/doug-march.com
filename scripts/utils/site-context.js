@@ -13,7 +13,6 @@ export const MUTABLE_FILES = [
   'app/components/Layout.tsx',
   'app/components/Sidebar.tsx',
   'app/components/SectionHead.tsx',
-  'app/components/MobileFooter.tsx',
   'app/components/ProjectRow.tsx',
   'app/components/FeaturedProject.tsx',
   'app/components/SelectedWork.tsx',
@@ -47,12 +46,10 @@ export const SIDEBAR_FILES = [
   'app/components/Sidebar.tsx',
 ]
 
-/** Files owned by the Footer Designer agent. */
-export const FOOTER_FILES = [
-  'app/components/MobileFooter.tsx',
-]
+/** Files owned by the Footer Designer agent (currently empty). */
+export const FOOTER_FILES = []
 
-/** All structure files (Layout + Sidebar + Footer) for backwards compat. */
+/** All structure files (Layout + Sidebar) for backwards compat. */
 export const STRUCTURE_FILES = [
   ...LAYOUT_FILES,
   ...SIDEBAR_FILES,

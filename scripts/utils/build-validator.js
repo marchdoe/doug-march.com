@@ -71,7 +71,6 @@ export function validateGenerated() {
   const componentFiles = [
     'app/components/Layout.tsx',
     'app/components/Sidebar.tsx',
-    'app/components/MobileFooter.tsx',
     'app/components/FeaturedProject.tsx',
     'app/components/ProjectRow.tsx',
     'app/components/SectionHead.tsx',
