@@ -260,9 +260,46 @@ async function main() {
     process.exit(1)
   }
 
+  // Step 1.5: Fetch Awwwards screenshots if available
+  let designReferenceImages = []
+  const awwwardsSites = signals?.awwwards?.sites_of_the_day
+  if (Array.isArray(awwwardsSites)) {
+    const sitesWithScreenshots = awwwardsSites.filter(s => typeof s === 'object' && s.screenshot_url)
+    if (sitesWithScreenshots.length > 0) {
+      console.log(`  fetching ${sitesWithScreenshots.length} Awwwards screenshots...`)
+      for (const site of sitesWithScreenshots.slice(0, 3)) {
+        try {
+          const imgRes = await fetch(site.screenshot_url, {
+            signal: AbortSignal.timeout(10000),
+          })
+          if (imgRes.ok) {
+            const buf = Buffer.from(await imgRes.arrayBuffer())
+            designReferenceImages.push({
+              title: site.title,
+              description: site.description,
+              base64: buf.toString('base64'),
+              contentType: imgRes.headers.get('content-type') || 'image/jpeg',
+            })
+            console.log(`    ✓ ${site.title} (${(buf.length / 1024).toFixed(0)}KB)`)
+          }
+        } catch (err) {
+          console.warn(`    ✗ ${site.title}: ${err.message}`)
+        }
+      }
+    }
+  }
+
   // Step 2: Build prompt and call Claude
   console.log('\n[2/3] Calling Claude...')
-  const prompt = buildInterpretPrompt(signals)
+  let prompt = buildInterpretPrompt(signals)
+
+  // Append design reference images if available
+  if (designReferenceImages.length > 0) {
+    prompt += `\n\n---\n\n## Design References — Awwwards Sites of the Day\n\nBelow are screenshots of today's award-winning websites. Analyze their design approaches and note any trends in your brief — compositional patterns, typography choices, color approaches, layout strategies. These observations should inform your Composition Direction and Typography Direction sections.\n\n`
+    for (const img of designReferenceImages) {
+      prompt += `### ${img.title}\n${img.description || ''}\n\n![${img.title}](data:${img.contentType};base64,${img.base64})\n\n`
+    }
+  }
 
   let responseText
   try {

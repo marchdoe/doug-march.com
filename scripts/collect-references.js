@@ -92,11 +92,14 @@ function formatTrendingSection(signals) {
   if (Array.isArray(awwwards) && awwwards.length > 0) {
     const lines = ['## Awwwards Sites of the Day', '']
     for (const site of awwwards) {
-      const title = site.title ?? site.name ?? 'Untitled'
-      const url = site.url ?? ''
-      const desc = site.description ?? ''
+      // Awwwards data may be strings or objects depending on provider version
+      const title = typeof site === 'string' ? site : (site.title ?? site.name ?? 'Untitled')
+      const url = typeof site === 'string' ? '' : (site.url ?? '')
+      const desc = typeof site === 'string' ? '' : (site.description ?? '')
+      const screenshot = typeof site === 'string' ? '' : (site.screenshot_url ?? '')
       lines.push(`- **${title}**${url ? ` — ${url}` : ''}`)
       if (desc) lines.push(`  ${desc}`)
+      if (screenshot) lines.push(`  Screenshot: ${screenshot}`)
     }
     lines.push('')
     sections.push(lines.join('\n'))
