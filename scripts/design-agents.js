@@ -18,10 +18,10 @@ import { fileURLToPath } from 'url'
 import path from 'path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
 
-import { readFile, writeFile, unlink } from 'fs/promises'
-import { existsSync, createReadStream } from 'fs'
-import { spawn } from 'child_process'
+import { readFile } from 'fs/promises'
+import { existsSync, readdirSync, readFileSync } from 'fs'
 import { spawnSync } from 'child_process'
+import { callClaudeCLI } from './utils/claude-cli.js'
 import {
   MUTABLE_FILES,
   TOKEN_FILES,
@@ -40,11 +40,6 @@ import { archive } from './utils/archiver.js'
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
-
-const PIPELINE_SETTINGS = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  'pipeline-settings.json'
-)
 
 /** Maps every mutable file to exactly one agent name. */
 export const FILE_OWNERSHIP = Object.fromEntries([
@@ -137,109 +132,8 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError) {
 
   fullPrompt += `\n\n---\n\nIMPORTANT: Use the ===FILE:path=== delimiter format described in your instructions. Write complete file contents after each delimiter. No JSON, no markdown code fences, no explanation — just the delimiters and raw file content.`
 
-  // Write prompt to temp file
-  const promptPath = path.join(ROOT, `.agent-prompt-${agentName}.tmp`)
-  await writeFile(promptPath, fullPrompt, 'utf8')
-
-  console.log(`  [${agentName}] calling claude CLI...`)
-  console.log(`  [${agentName}] prompt: ${(fullPrompt.length / 1024).toFixed(0)}KB`)
-
-  const cliArgs = [
-    '-p',
-    '--verbose',
-    '--output-format', 'stream-json',
-    '--max-turns', '1',
-    '--model', 'sonnet',
-    '--tools', '',
-    '--disable-slash-commands',
-    '--settings', PIPELINE_SETTINGS,
-    '--system-prompt', systemPrompt,
-  ]
-
-  // Strip ANTHROPIC_API_KEY so claude uses Max plan auth
-  const cliEnv = { ...process.env }
-  delete cliEnv.ANTHROPIC_API_KEY
-
-  const result = await new Promise((resolve, reject) => {
-    const child = spawn('claude', cliArgs, {
-      cwd: ROOT,
-      env: cliEnv,
-    })
-
-    let fullText = ''
-    let finalResult = ''
-    let stderr = ''
-    let lineBuffer = ''
-    let charCount = 0
-
-    // Pipe prompt via stdin
-    const promptStream = createReadStream(promptPath)
-    child.stdin.on('error', () => {}) // swallow EPIPE
-    promptStream.pipe(child.stdin)
-
-    child.stdout.on('data', (chunk) => {
-      lineBuffer += chunk.toString()
-      const lines = lineBuffer.split('\n')
-      lineBuffer = lines.pop() || ''
-
-      for (const line of lines) {
-        if (!line.trim()) continue
-        try {
-          const event = JSON.parse(line)
-          if (event.type === 'assistant' && event.message?.content) {
-            for (const block of event.message.content) {
-              if (block.type === 'text' && block.text) {
-                fullText += block.text
-                const newChars = block.text.length
-                charCount += newChars
-                if (charCount > 0 && charCount % 2000 < newChars) {
-                  console.log(`  [${agentName}] ... generating (${(charCount / 1024).toFixed(0)}KB)`)
-                }
-              }
-            }
-          } else if (event.type === 'result') {
-            finalResult = event.result || ''
-          }
-        } catch {
-          // Not valid JSON line — skip
-        }
-      }
-    })
-
-    child.stderr.on('data', (chunk) => { stderr += chunk.toString() })
-
-    const timeout = setTimeout(() => {
-      child.kill()
-      reject(new Error(`[${agentName}] timed out after 5 minutes (generated ${(charCount / 1024).toFixed(0)}KB)`))
-    }, 300000) // 5 minutes
-
-    child.on('close', (code) => {
-      clearTimeout(timeout)
-      // Process remaining buffer
-      if (lineBuffer.trim()) {
-        try {
-          const event = JSON.parse(lineBuffer)
-          if (event.type === 'result') finalResult = event.result || ''
-          if (event.type === 'assistant' && event.message?.content) {
-            for (const block of event.message.content) {
-              if (block.type === 'text') fullText += block.text
-            }
-          }
-        } catch {}
-      }
-      console.log(`  [${agentName}] finished (${(charCount / 1024).toFixed(0)}KB total)`)
-      if (code !== 0 && !finalResult && !fullText) {
-        console.error(`  [${agentName}] stderr: ${stderr.slice(0, 500)}`)
-        reject(new Error(`[${agentName}] claude exited with code ${code}: ${stderr.slice(0, 500)}`))
-      } else {
-        resolve(finalResult || fullText)
-      }
-    })
-
-    child.on('error', (err) => {
-      clearTimeout(timeout)
-      reject(err)
-    })
+  const result = await callClaudeCLI(agentName, systemPrompt, fullPrompt, {
+    timeoutMs: 600000, // 10 minutes
   })
 
   // Parse response — supports delimiter format, visual spec format, and JSON
@@ -307,9 +201,6 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError) {
 
   console.log(`  [${agentName}] responded with ${parsed.files.length} files${parsed._rawResponse ? ' + visual spec' : ''}`)
 
-  // Clean up temp file
-  try { await unlink(promptPath) } catch {}
-
   return parsed
 }
 
@@ -365,7 +256,7 @@ export async function runAgentSwarm(context) {
   const [
     directorPromptRaw,
     tokenPromptRaw, layoutPromptRaw, sidebarPromptRaw, footerPromptRaw, componentPromptRaw,
-    designSystemRef, libTypography, libColor, libLayout, libComponents,
+    designSystemRef, libTypography, libColor, libLayout, libComponents, libComposition,
   ] = await Promise.all([
     readFile(path.join(promptDir, 'design-director.md'), 'utf8'),
     readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
@@ -378,12 +269,13 @@ export async function runAgentSwarm(context) {
     readFile(path.join(promptDir, 'library-color.md'), 'utf8'),
     readFile(path.join(promptDir, 'library-layout.md'), 'utf8'),
     readFile(path.join(promptDir, 'library-components.md'), 'utf8'),
+    readFile(path.join(promptDir, 'library-composition.md'), 'utf8'),
   ])
 
   // Build system prompts with relevant libraries appended
-  const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}`
+  const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComposition}`
   const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libTypography}\n\n${libColor}`
-  const layoutSystemPrompt = `${layoutPromptRaw}\n\n${libLayout}\n\n${designSystemRef}`
+  const layoutSystemPrompt = `${layoutPromptRaw}\n\n${libLayout}\n\n${libComposition}\n\n${designSystemRef}`
   const sidebarSystemPrompt = `${sidebarPromptRaw}\n\n${designSystemRef}`
   const footerSystemPrompt = `${footerPromptRaw}\n\n${designSystemRef}`
   const componentSystemPrompt = `${componentPromptRaw}\n\n${libComponents}\n\n${designSystemRef}`
@@ -394,6 +286,23 @@ export async function runAgentSwarm(context) {
   console.log(`  backed up ${originalBackup.size} files`)
 
   // -----------------------------------------------------------------------
+  // Read recent archive briefs for Design Director context
+  // -----------------------------------------------------------------------
+  const archiveDir = path.join(ROOT, 'archive')
+  let recentBriefs = ''
+  try {
+    const dirs = readdirSync(archiveDir)
+      .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
+      .sort().reverse().slice(0, 5)
+    for (const dir of dirs) {
+      const briefPath = path.join(archiveDir, dir, 'brief.md')
+      if (existsSync(briefPath)) {
+        recentBriefs += `\n### ${dir}\n${readFileSync(briefPath, 'utf8')}\n`
+      }
+    }
+  } catch {}
+
+  // -----------------------------------------------------------------------
   // Phase 0: Design Director — produces a visual specification
   // -----------------------------------------------------------------------
   console.log('\n[phase-0] Design Director')
@@ -402,7 +311,7 @@ export async function runAgentSwarm(context) {
     brief,
     referenceFiles: [],
     tokenContext: null,
-  })
+  }) + (recentBriefs ? '\n\n## Recent Archive Briefs\n' + recentBriefs : '')
 
   let visualSpec = ''
   try {
