@@ -303,6 +303,16 @@ export async function runAgentSwarm(context) {
   } catch {}
 
   // -----------------------------------------------------------------------
+  // Read design references (collected by collect-references.js)
+  // -----------------------------------------------------------------------
+  const referencesPath = path.resolve(ROOT, 'signals/today.references.md')
+  let references = ''
+  if (existsSync(referencesPath)) {
+    references = await readFile(referencesPath, 'utf8')
+    console.log(`  using references (${references.length} chars)`)
+  }
+
+  // -----------------------------------------------------------------------
   // Phase 0: Design Director — produces a visual specification
   // -----------------------------------------------------------------------
   console.log('\n[phase-0] Design Director')
@@ -312,6 +322,7 @@ export async function runAgentSwarm(context) {
     referenceFiles: [],
     tokenContext: null,
   }) + (recentBriefs ? '\n\n## Recent Archive Briefs\n' + recentBriefs : '')
+    + (references ? '\n\n## Design References\n\n' + references : '')
 
   let visualSpec = ''
   try {
