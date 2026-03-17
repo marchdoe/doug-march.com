@@ -3,10 +3,10 @@
 /**
  * Designer Agent Swarm Orchestrator
  *
- * Dispatches 3 specialized Claude CLI agents sequentially:
- *   1. Token Designer  — elements/preset.ts, app/routes/__root.tsx
- *   2. Structure Agent  — Layout, Sidebar, MobileFooter, 3 routes
- *   3. Component Agent  — 9 data-display components
+ * Dispatches specialized Claude CLI agents sequentially:
+ *   Phase 0: Design Director — visual specification
+ *   Phase 1: Token Designer  — elements/preset.ts, app/routes/__root.tsx
+ *   Phase 2: Unified Designer — all 15 remaining component/route files
  *
  * Each agent gets the creative brief, relevant reference files, and (after
  * Phase 1) the design tokens from preset.ts. Build validation and retry
@@ -25,12 +25,8 @@ import { callClaudeCLI } from './utils/claude-cli.js'
 import {
   MUTABLE_FILES,
   TOKEN_FILES,
-  LAYOUT_FILES,
-  SIDEBAR_FILES,
-  FOOTER_FILES,
   STRUCTURE_FILES,
   COMPONENT_FILES,
-  readFileGroup,
   readContext,
 } from './utils/site-context.js'
 import { backup, writeFiles, restore, ROOT } from './utils/file-manager.js'
@@ -44,10 +40,8 @@ import { archive } from './utils/archiver.js'
 /** Maps every mutable file to exactly one agent name. */
 export const FILE_OWNERSHIP = Object.fromEntries([
   ...TOKEN_FILES.map(f => [f, 'token-designer']),
-  ...LAYOUT_FILES.map(f => [f, 'layout-architect']),
-  ...SIDEBAR_FILES.map(f => [f, 'sidebar-designer']),
-  ...FOOTER_FILES.map(f => [f, 'footer-designer']),
-  ...COMPONENT_FILES.map(f => [f, 'component-agent']),
+  ...STRUCTURE_FILES.map(f => [f, 'unified-designer']),
+  ...COMPONENT_FILES.map(f => [f, 'unified-designer']),
 ])
 
 // ---------------------------------------------------------------------------
@@ -67,7 +61,7 @@ export function buildAgentPrompt(agentName, { brief, referenceFiles, tokenContex
   // Section 1: Creative Brief
   sections.push(`## Creative Brief\n\n${brief}`)
 
-  // Section 2: Design Tokens (only for structure-agent and component-agent)
+  // Section 2: Design Tokens (for unified-designer and downstream agents)
   if (tokenContext) {
     sections.push(
       `## Design Tokens (from elements/preset.ts)\n\nUse these token names in your components. Do not invent new tokens — only reference what exists here.\n\n\`\`\`typescript\n${tokenContext}\n\`\`\``
@@ -93,7 +87,7 @@ ${fileBlocks.join('\n\n')}`)
  * Identify which agent's files appear in a build error.
  *
  * @param {string} errorOutput
- * @returns {'token-designer'|'structure-agent'|'component-agent'|'both'}
+ * @returns {'token-designer'|'unified-designer'|'both'}
  */
 export function identifyFailingAgent(errorOutput) {
   const agents = new Set()
@@ -121,9 +115,10 @@ export function identifyFailingAgent(errorOutput) {
  * @param {string} systemPrompt
  * @param {string} userPrompt
  * @param {string} [buildError]
+ * @param {{ timeoutMs?: number }} [options]
  * @returns {Promise<{ files: Array<{path: string, content: string}>, rationale?: string, design_brief?: string }>}
  */
-async function callAgent(agentName, systemPrompt, userPrompt, buildError) {
+async function callAgent(agentName, systemPrompt, userPrompt, buildError, options = {}) {
   let fullPrompt = userPrompt
 
   if (buildError) {
@@ -133,7 +128,7 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError) {
   fullPrompt += `\n\n---\n\nIMPORTANT: Use the ===FILE:path=== delimiter format described in your instructions. Write complete file contents after each delimiter. No JSON, no markdown code fences, no explanation — just the delimiters and raw file content.`
 
   const result = await callClaudeCLI(agentName, systemPrompt, fullPrompt, {
-    timeoutMs: 600000, // 10 minutes
+    timeoutMs: options.timeoutMs || 600000, // default 10 minutes
   })
 
   // Parse response — supports delimiter format, visual spec format, and JSON
@@ -239,11 +234,13 @@ function validateCodegen() {
 // ---------------------------------------------------------------------------
 
 /**
- * Run the 5-agent design swarm.
+ * Run the design agent swarm.
  *
+ * Phase 0: Design Director — visual specification
  * Phase 1: Token Designer (preset.ts + __root.tsx)
- * Phase 2: Layout Architect (Layout.tsx + 3 routes) — reads tokens from disk
- * Phase 3: Sidebar Designer + Footer Designer + Component Agent (parallel) — read Layout.tsx + tokens
+ * Phase 2: Unified Designer — all 15 remaining component/route files
+ * Phase 4: Build validation
+ * Phase 5: Retry on failure
  *
  * @param {{ signals: object, brief: string, contentSummary: string }} context
  * @returns {Promise<{ rationale: string, design_brief: string, files: Array<{path: string, content: string}> }>}
@@ -257,17 +254,15 @@ export async function runAgentSwarm(context) {
     directorPromptRaw,
     specCriticPromptRaw,
     screenshotCriticPromptRaw,
-    tokenPromptRaw, layoutPromptRaw, sidebarPromptRaw, footerPromptRaw, componentPromptRaw,
+    tokenPromptRaw,
+    unifiedDesignerPromptRaw,
     designSystemRef, libTypography, libColor, libLayout, libComponents, libComposition,
   ] = await Promise.all([
     readFile(path.join(promptDir, 'design-director.md'), 'utf8'),
     readFile(path.join(promptDir, 'spec-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'screenshot-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
-    readFile(path.join(promptDir, 'structure-agent.md'), 'utf8'),
-    readFile(path.join(promptDir, 'sidebar-designer.md'), 'utf8'),
-    readFile(path.join(promptDir, 'footer-designer.md'), 'utf8'),
-    readFile(path.join(promptDir, 'component-agent.md'), 'utf8'),
+    readFile(path.join(promptDir, 'unified-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'design-system-reference.md'), 'utf8'),
     readFile(path.join(promptDir, 'library-typography.md'), 'utf8'),
     readFile(path.join(promptDir, 'library-color.md'), 'utf8'),
@@ -282,10 +277,7 @@ export async function runAgentSwarm(context) {
   // Build system prompts with relevant libraries appended
   const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComposition}`
   const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libTypography}\n\n${libColor}`
-  const layoutSystemPrompt = `${layoutPromptRaw}\n\n${libLayout}\n\n${libComposition}\n\n${designSystemRef}`
-  const sidebarSystemPrompt = `${sidebarPromptRaw}\n\n${designSystemRef}`
-  const footerSystemPrompt = `${footerPromptRaw}\n\n${designSystemRef}`
-  const componentSystemPrompt = `${componentPromptRaw}\n\n${libComponents}\n\n${designSystemRef}`
+  const unifiedDesignerSystemPrompt = `${unifiedDesignerPromptRaw}\n\n${designSystemRef}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComposition}\n\n${libComponents}`
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')
@@ -440,94 +432,40 @@ export async function runAgentSwarm(context) {
   }
 
   // -----------------------------------------------------------------------
-  // Phase 2: Layout Architect (reads tokens from disk)
+  // Phase 2: Unified Designer (reads tokens from disk, writes all 15 files)
   // -----------------------------------------------------------------------
   const presetPath = path.join(ROOT, 'elements/preset.ts')
   const tokenContext = await readFile(presetPath, 'utf8')
 
-  console.log('\n[phase-2] Layout Architect')
+  console.log('\n[phase-2] Unified Designer')
 
-  // All downstream agents get the visual spec prepended to their brief
   const enrichedBrief = visualSpec
     ? `## Visual Specification (from Design Director)\n\n${visualSpec}\n\n---\n\n## Original Creative Brief\n\n${brief}`
     : brief
 
-  let layoutResult = null
-  const layoutUserPrompt = buildAgentPrompt('layout-architect', {
+  const designerUserPrompt = buildAgentPrompt('unified-designer', {
     brief: enrichedBrief,
     referenceFiles: [],
     tokenContext,
   })
 
+  let designerResult
   try {
-    layoutResult = await callAgent('layout-architect', layoutSystemPrompt, layoutUserPrompt)
-    await writeFiles(layoutResult.files)
+    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPrompt, designerUserPrompt, null, { timeoutMs: 900000 }) // 15 minutes — writes 15 files
   } catch (err) {
-    console.error(`  Layout Architect failed: ${err.message}`)
+    console.error(`  Unified Designer failed: ${err.message}`)
     await restore(originalBackup)
-    throw new Error(`Layout Architect failed: ${err.message}`)
+    throw new Error(`Unified Designer failed: ${err.message}`)
   }
 
-  // Verify Layout.tsx was written (downstream agents depend on it)
+  // Write all files
+  await writeFiles(designerResult.files)
+
+  // Verify Layout.tsx was written (critical for the site to function)
   const layoutPath = path.join(ROOT, 'app/components/Layout.tsx')
   if (!existsSync(layoutPath)) {
     await restore(originalBackup)
-    throw new Error('Layout Architect did not produce Layout.tsx — downstream agents cannot proceed')
-  }
-
-  // -----------------------------------------------------------------------
-  // Phase 3: Sidebar + Footer + Components (read Layout.tsx + tokens)
-  // -----------------------------------------------------------------------
-  console.log('\n[phase-3] Sidebar Designer + Footer Designer + Component Agent')
-
-  // Read Layout.tsx so Sidebar/Footer designers can see the structure
-  const layoutContent = await readFile(layoutPath, 'utf8')
-  const layoutRef = [{ path: 'app/components/Layout.tsx', content: layoutContent }]
-
-  let sidebarResult = null
-  let footerResult = null
-  let componentResult = null
-
-  // Sidebar Designer
-  console.log('\n  --- Sidebar Designer ---')
-  const sidebarUserPrompt = buildAgentPrompt('sidebar-designer', {
-    brief: enrichedBrief,
-    referenceFiles: layoutRef,
-    tokenContext,
-  })
-  try {
-    sidebarResult = await callAgent('sidebar-designer', sidebarSystemPrompt, sidebarUserPrompt)
-    await writeFiles(sidebarResult.files)
-  } catch (err) {
-    console.error(`  Sidebar Designer failed: ${err.message}`)
-  }
-
-  // Footer Designer
-  console.log('\n  --- Footer Designer ---')
-  const footerUserPrompt = buildAgentPrompt('footer-designer', {
-    brief: enrichedBrief,
-    referenceFiles: layoutRef,
-    tokenContext,
-  })
-  try {
-    footerResult = await callAgent('footer-designer', footerSystemPrompt, footerUserPrompt)
-    await writeFiles(footerResult.files)
-  } catch (err) {
-    console.error(`  Footer Designer failed: ${err.message}`)
-  }
-
-  // Component Agent
-  console.log('\n  --- Component Agent ---')
-  const componentUserPrompt = buildAgentPrompt('component-agent', {
-    brief: enrichedBrief,
-    referenceFiles: [],
-    tokenContext,
-  })
-  try {
-    componentResult = await callAgent('component-agent', componentSystemPrompt, componentUserPrompt)
-    await writeFiles(componentResult.files)
-  } catch (err) {
-    console.error(`  Component Agent failed: ${err.message}`)
+    throw new Error('Unified Designer did not produce Layout.tsx — site cannot function without it')
   }
 
   // -----------------------------------------------------------------------
@@ -562,7 +500,7 @@ export async function runAgentSwarm(context) {
 
       if (criticResponse.includes('REVISE')) {
         const agentMatch = criticResponse.match(/\*\*Responsible agent:\*\*\s*([\w-]+)/)
-        const responsibleAgent = agentMatch?.[1] || 'layout-architect'
+        const responsibleAgent = agentMatch?.[1] || 'unified-designer'
         const feedback = criticResponse.replace(/===VERDICT===/, '').replace(/===END===/, '').replace('REVISE', '').trim()
 
         console.log(`  [screenshot-critic] REVISE — responsible: ${responsibleAgent}`)
@@ -570,10 +508,7 @@ export async function runAgentSwarm(context) {
 
         const agentConfig = {
           'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) },
-          'layout-architect': { prompt: layoutSystemPrompt, user: () => buildAgentPrompt('layout-architect', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
-          'sidebar-designer': { prompt: sidebarSystemPrompt, user: () => buildAgentPrompt('sidebar-designer', { brief: enrichedBrief, referenceFiles: layoutRef, tokenContext }) },
-          'footer-designer': { prompt: footerSystemPrompt, user: () => buildAgentPrompt('footer-designer', { brief: enrichedBrief, referenceFiles: layoutRef, tokenContext }) },
-          'component-agent': { prompt: componentSystemPrompt, user: () => buildAgentPrompt('component-agent', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
+          'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: () => buildAgentPrompt('unified-designer', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
         }
 
         const config = agentConfig[responsibleAgent]
@@ -612,10 +547,7 @@ export async function runAgentSwarm(context) {
 
     const allFiles = [
       ...tokenResult.files,
-      ...layoutResult.files,
-      ...(sidebarResult?.files ?? []),
-      ...(footerResult?.files ?? []),
-      ...(componentResult?.files ?? []),
+      ...designerResult.files,
     ]
     const changedPaths = allFiles.map(f => f.path)
 
@@ -648,14 +580,11 @@ export async function runAgentSwarm(context) {
   // Build agent lookup for retry
   const agentConfig = {
     'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) },
-    'layout-architect': { prompt: layoutSystemPrompt, user: () => buildAgentPrompt('layout-architect', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
-    'sidebar-designer': { prompt: sidebarSystemPrompt, user: () => buildAgentPrompt('sidebar-designer', { brief: enrichedBrief, referenceFiles: layoutRef, tokenContext }) },
-    'footer-designer': { prompt: footerSystemPrompt, user: () => buildAgentPrompt('footer-designer', { brief: enrichedBrief, referenceFiles: layoutRef, tokenContext }) },
-    'component-agent': { prompt: componentSystemPrompt, user: () => buildAgentPrompt('component-agent', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
+    'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: () => buildAgentPrompt('unified-designer', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
   }
 
   const retryAgents = failingAgent === 'both'
-    ? ['layout-architect', 'sidebar-designer', 'footer-designer', 'component-agent']
+    ? ['unified-designer']
     : [failingAgent]
 
   for (const agent of retryAgents) {
@@ -678,10 +607,7 @@ export async function runAgentSwarm(context) {
 
     const allFiles = [
       ...tokenResult.files,
-      ...(layoutResult?.files ?? []),
-      ...(sidebarResult?.files ?? []),
-      ...(footerResult?.files ?? []),
-      ...(componentResult?.files ?? []),
+      ...designerResult.files,
     ]
     const changedPaths = allFiles.map(f => f.path)
 
