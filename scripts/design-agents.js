@@ -255,10 +255,12 @@ export async function runAgentSwarm(context) {
   const promptDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'prompts')
   const [
     directorPromptRaw,
+    specCriticPromptRaw,
     tokenPromptRaw, layoutPromptRaw, sidebarPromptRaw, footerPromptRaw, componentPromptRaw,
     designSystemRef, libTypography, libColor, libLayout, libComponents, libComposition,
   ] = await Promise.all([
     readFile(path.join(promptDir, 'design-director.md'), 'utf8'),
+    readFile(path.join(promptDir, 'spec-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'structure-agent.md'), 'utf8'),
     readFile(path.join(promptDir, 'sidebar-designer.md'), 'utf8'),
@@ -271,6 +273,8 @@ export async function runAgentSwarm(context) {
     readFile(path.join(promptDir, 'library-components.md'), 'utf8'),
     readFile(path.join(promptDir, 'library-composition.md'), 'utf8'),
   ])
+
+  const specCriticPrompt = specCriticPromptRaw
 
   // Build system prompts with relevant libraries appended
   const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComposition}`
@@ -332,6 +336,42 @@ export async function runAgentSwarm(context) {
   } catch (err) {
     console.warn(`  Design Director failed (non-blocking): ${err.message}`)
     console.warn('  Proceeding without visual spec — agents will use brief directly')
+  }
+
+  // -----------------------------------------------------------------------
+  // Spec Critic Gate — reviews visual spec for ambition and range
+  // -----------------------------------------------------------------------
+  try {
+    console.log('\n[spec-critic] Reviewing visual spec...')
+    const criticUserPrompt = [
+      '## Structured Brief\n\n' + brief,
+      '## Visual Specification\n\n' + visualSpec,
+      recentBriefs ? '## Recent Archive Briefs\n' + recentBriefs : '',
+    ].filter(Boolean).join('\n\n---\n\n')
+
+    const criticResult = await callAgent('spec-critic', specCriticPrompt, criticUserPrompt)
+    const rawResponse = criticResult._rawResponse || criticResult.rationale || ''
+
+    if (rawResponse.includes('REVISE')) {
+      const feedback = rawResponse.replace(/===VERDICT===/, '').replace(/===END===/, '').replace('REVISE', '').trim()
+      console.log(`  [spec-critic] REVISE: ${feedback.slice(0, 200)}...`)
+      console.log('\n[spec-critic] Design Director revising...')
+
+      // Re-run Design Director with critic feedback
+      const revisionPrompt = directorUserPrompt + '\n\n---\n\n## Critic Feedback (revise your spec)\n\n' + feedback
+      try {
+        const revisedResult = await callAgent('design-director', directorSystemPrompt, revisionPrompt)
+        visualSpec = revisedResult._rawResponse || revisedResult.rationale || visualSpec
+        console.log(`  [spec-critic] Revision complete. visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB`)
+      } catch (err) {
+        console.warn(`  [spec-critic] Director revision failed (non-blocking): ${err.message}`)
+      }
+    } else {
+      console.log('  [spec-critic] APPROVED')
+    }
+  } catch (err) {
+    console.warn(`  [spec-critic] Critic failed (non-blocking): ${err.message}`)
+    console.warn('  Proceeding without spec review')
   }
 
   // -----------------------------------------------------------------------
