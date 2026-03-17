@@ -1,8 +1,6 @@
-import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { Box } from '../../styled-system/jsx'
-import { Layout } from '../components/Layout'
 import { SectionHead } from '../components/SectionHead'
 import { projects } from '../content/projects'
 
@@ -140,17 +138,17 @@ function WorkDetailPage() {
 
   if (!project) {
     return (
-      <Layout>
+      <>
         <a href="/" className={backLink}>← All Work</a>
         <div className={notFoundStyles}>
           Project not found.
         </div>
-      </Layout>
+      </>
     )
   }
 
   return (
-    <Layout>
+    <>
       {/* ── Navigation back ──────────────────────── */}
       <a href="/" className={backLink}>← All Work</a>
 
@@ -207,7 +205,7 @@ function WorkDetailPage() {
           <p>{project.description}</p>
         </div>
       )}
-    </Layout>
+    </>
   )
 }
 

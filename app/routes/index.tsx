@@ -1,8 +1,6 @@
-import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { Box, Grid, Flex } from '../../styled-system/jsx'
-import { Layout } from '../components/Layout'
 import { FeaturedProject } from '../components/FeaturedProject'
 import { SelectedWork } from '../components/SelectedWork'
 import { Experiments } from '../components/Experiments'
@@ -219,7 +217,7 @@ const smallWebLink = css({
 
 function HomePage() {
   return (
-    <Layout>
+    <>
       {/* ── Featured Project ─────────────────────────── */}
       <FeaturedProject project={featuredProject} />
 
@@ -291,7 +289,7 @@ function HomePage() {
           The small web is bigger than you might think.
         </a>
       </div>
-    </Layout>
+    </>
   )
 }
 

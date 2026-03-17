@@ -1,7 +1,5 @@
-import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Layout } from '../components/Layout'
 import { Bio } from '../components/Bio'
 import { Timeline } from '../components/Timeline'
 import { Capabilities } from '../components/Capabilities'
@@ -28,7 +26,7 @@ const sectionDivider = css({
 
 function AboutPage() {
   return (
-    <Layout>
+    <>
       <div className={pageStack}>
 
         {/* ── Bio — the identity statement ──────────── */}
@@ -55,7 +53,7 @@ function AboutPage() {
         </section>
 
       </div>
-    </Layout>
+    </>
   )
 }
 
