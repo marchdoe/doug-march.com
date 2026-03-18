@@ -21,32 +21,122 @@ import path from 'path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
 
 import { readFile, writeFile } from 'fs/promises'
+import { existsSync, readdirSync } from 'fs'
 import yaml from 'js-yaml'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const MOCK_MODE = process.env.MOCK_MODE === 'true'
 
 /**
- * Build a prompt asking Claude to interpret the raw signal data.
+ * Build the signal dump section, structurally filtered based on signal weight.
+ * Low weights strip the dump to only primary signals. High weights keep everything.
  *
  * @param {object} signals - parsed signals from today.yml
- * @returns {string} the prompt text
+ * @param {number} signalWeight - 0-10 weight for signals
+ * @returns {string} the signal dump markdown
  */
-export function buildInterpretPrompt(signals, weights = {}) {
-  const signalDump = Object.entries(signals)
-    .filter(([key]) => key !== 'date')
+function buildSignalDump(signals, signalWeight) {
+  const allEntries = Object.entries(signals).filter(([key]) => key !== 'date')
+
+  if (signalWeight <= 3) {
+    // Low signal weight: strip down to just primary signals
+    const primaryKeys = ['weather', 'season', 'sun', 'day_of_week', 'daylight']
+    const filtered = allEntries.filter(([key]) =>
+      primaryKeys.some(pk => key.toLowerCase().includes(pk))
+    )
+    // If nothing matched the primary keys, fall back to first 3 entries
+    const entries = filtered.length > 0 ? filtered : allEntries.slice(0, 3)
+    return entries
+      .map(([key, value]) => `### ${key}\n${JSON.stringify(value, null, 2)}`)
+      .join('\n\n')
+  }
+
+  // Medium or high: full dump
+  return allEntries
     .map(([key, value]) => `### ${key}\n${JSON.stringify(value, null, 2)}`)
     .join('\n\n')
+}
 
-  return `You are the Product Manager for doug-march.com — a personal portfolio site that redesigns itself daily based on environmental signals.
+/**
+ * Build a prompt asking Claude to interpret the raw signal data.
+ * Weights STRUCTURALLY change what the model sees, not just add advisory text.
+ *
+ * @param {object} signals - parsed signals from today.yml
+ * @param {object} weights - creative weights (signals, inspiration, ratings, risk)
+ * @param {object} options - additional options
+ * @param {string} [options.previousBrief] - previous brief to avoid repetition
+ * @param {number} [options.runNumber] - which run this is today
+ * @param {Array} [options.designReferenceImages] - Awwwards screenshots
+ * @returns {string} the prompt text
+ */
+export function buildInterpretPrompt(signals, weights = {}, options = {}) {
+  const { previousBrief, runNumber = 1, designReferenceImages = [] } = options
+  const signalWeight = weights.signals ?? 5
+  const inspirationWeight = weights.inspiration ?? 5
+  const riskWeight = weights.risk ?? 5
 
-Your job is to read today's raw signals and write a structured creative brief. You are NOT the designer. You write requirements — opinionated, editorial, specific. The designer (a separate stage) will receive your brief and decide HOW to execute it visually.
+  const signalDump = buildSignalDump(signals, signalWeight)
 
-## Today's Raw Signals (${signals.date || 'unknown'})
+  // --- Assemble prompt sections in order based on weights ---
+  const sections = []
 
-${signalDump}
+  // Role preamble (always first)
+  sections.push(`You are the Product Manager for doug-march.com — a personal portfolio site that redesigns itself daily based on environmental signals.
 
----
+Your job is to read today's raw signals and write a structured creative brief. You are NOT the designer. You write requirements — opinionated, editorial, specific. The designer (a separate stage) will receive your brief and decide HOW to execute it visually.`)
+
+  // HIGH INSPIRATION: Design references come BEFORE signals — the first thing the model sees
+  if (inspirationWeight >= 7 && designReferenceImages.length > 0) {
+    let refSection = `## Design References — Awwwards Sites of the Day (PRIMARY DRIVER)
+
+Your primary job today is to create a brief inspired by this award-winning design. Adapt its compositional approach for a portfolio site. Study the screenshot carefully — its layout structure, typography choices, color approach, and spatial relationships should heavily influence your archetype choice and layout direction.
+
+`
+    for (const img of designReferenceImages) {
+      refSection += `### ${img.title}\n${img.description || ''}\n\n![${img.title}](data:${img.contentType};base64,${img.base64})\n\n`
+    }
+    sections.push(refSection)
+  }
+
+  // Signal dump section — framed differently based on weight
+  if (signalWeight <= 3) {
+    sections.push(`## Today's Raw Signals — Minimal (${signals.date || 'unknown'})
+
+Signals are set to low influence today. Only primary environmental data is shown. Use these as light background texture — do not let them drive major design decisions.
+
+${signalDump}`)
+  } else if (signalWeight <= 6) {
+    sections.push(`## Today's Raw Signals (${signals.date || 'unknown'})
+
+Signals are at moderate influence today. They should inform palette and mood but not dominate the creative direction.
+
+${signalDump}`)
+  } else {
+    sections.push(`## Today's Raw Signals (${signals.date || 'unknown'})
+
+${signalDump}`)
+  }
+
+  // MODERATE/LOW INSPIRATION: Design references come after signals
+  if (inspirationWeight < 7 && designReferenceImages.length > 0) {
+    let refSection = `---
+
+## Design References — Awwwards Sites of the Day
+
+`
+    if (inspirationWeight <= 3) {
+      refSection += `These are ambient context only. Do not try to emulate them — just note any broad trends.\n\n`
+    } else {
+      refSection += `Analyze their design approaches and note any trends — compositional patterns, typography choices, color approaches, layout strategies. These observations should inform your Composition Direction and Typography Direction sections.\n\n`
+    }
+    for (const img of designReferenceImages) {
+      refSection += `### ${img.title}\n${img.description || ''}\n\n![${img.title}](data:${img.contentType};base64,${img.base64})\n\n`
+    }
+    sections.push(refSection)
+  }
+
+  // Signal hierarchy (always included)
+  sections.push(`---
 
 ## Signal Hierarchy
 
@@ -84,9 +174,10 @@ These add texture and personality. They should be felt, not seen.
 | GitHub trending | Tech texture hints | AI repos → code-aesthetic elements |
 | Hacker News | Cultural temperature | Interesting HN day → tech-forward personality |
 | Books | Personality hint | Reading sci-fi → futuristic touches |
-| Air quality | Environmental overlay | Poor AQI → hazy/muted treatment |
+| Air quality | Environmental overlay | Poor AQI → hazy/muted treatment |`)
 
----
+  // Conflict resolution
+  sections.push(`---
 
 ## Conflict Resolution: Tension is the Feature
 
@@ -97,9 +188,47 @@ Examples:
 - Sunny day + market crash → bright layout BUT compressed, anxious typography for market elements
 - Holiday approaching + bad weather → festive accents layered over a cold palette
 
-Call out tensions explicitly. Instruct the designer to hold them, not resolve them.
+Call out tensions explicitly. Instruct the designer to hold them, not resolve them.`)
 
----
+  // --- STRUCTURAL CONSTRAINTS based on weights (injected BEFORE output format) ---
+
+  // Risk weight constraints
+  if (riskWeight >= 7) {
+    sections.push(`---
+
+## Creative Risk Directive (HIGH)
+
+You MUST choose an archetype you have NOT used in the last 5 days. If the last 5 briefs all used conventional layouts, choose The Specimen or The Index. Surprise the owner. Push boundaries — choose unusual archetypes, extreme typography, unexpected compositions. The site owner wants to be surprised.`)
+  } else if (riskWeight <= 3) {
+    sections.push(`---
+
+## Creative Risk Directive (LOW)
+
+Choose a proven, professional layout. The Scroll or The Stack are safe choices. Play it safe — use proven layouts, conventional hierarchy, readable and professional.`)
+  }
+
+  // Run number constraint for forced diversity
+  if (runNumber > 1) {
+    sections.push(`---
+
+## Run Diversity Requirement
+
+This is run #${runNumber} today. The previous ${runNumber - 1} run(s) have already been built. You MUST choose a DIFFERENT archetype and typography direction than what was used before.`)
+  }
+
+  // Previous brief constraint (do not repeat)
+  if (previousBrief) {
+    sections.push(`---
+
+## Previous Run's Brief (DO NOT REPEAT)
+
+The previous pipeline run produced this brief. Your brief MUST be substantially different — choose a different archetype, different palette direction, and different typography approach. Do not produce a variation of the same design.
+
+${previousBrief}`)
+  }
+
+  // Output format section
+  sections.push(`---
 
 ## Your Output
 
@@ -115,7 +244,7 @@ Write a creative brief with exactly these five sections. Be opinionated and spec
 [1-2 sentences on type scale, spacing, and character. Should the type be tight or generous? Loud or quiet? Angular or rounded? Should headings whisper or shout? Let the mood and composition choice inform this — a Specimen day demands extreme type scale; a Broadsheet day demands strict hierarchy through size alone.]
 
 ## Signal Integration
-[Bulleted list specifying HOW each noteworthy signal should manifest in the design. Do not just list signals — describe their treatment. Every bullet must answer "how does this appear?" not just "this exists."]
+[Bulleted list specifying HOW each noteworthy signal should manifest in the design. Do not just list signals — describe their treatment. Every bullet must answer "how does this appear?" not just "this exists."
 
 Format:
 - [signal name] → [specific treatment: what form it takes, where it lives, what tone it carries]
@@ -127,7 +256,7 @@ Examples of good signal integration:
 
 Only include signals worth commenting on. "Off season" or "no notable news" are not worth a bullet. A win, a loss, an approaching holiday, a resonant quote, notable music — those ARE.
 
-The signal that should be FELT most strongly when someone lands on the site should be listed FIRST and given the most detailed treatment. This is your call as PM — what's the headline of today's design?
+The signal that should be FELT most strongly when someone lands on the site should be listed FIRST and given the most detailed treatment. This is your call as PM — what's the headline of today's design?]
 
 ## Palette Direction
 [2-3 sentences on color temperature, saturation, and mood — derived from PRIMARY signals (weather, season, daylight). Be more specific than "warm" or "cool" — describe contrast level (high/low), warmth or coolness on a spectrum, and degree of restraint (monochromatic vs. multi-hue). Never prescribe specific hex colors — describe the feeling and boundaries.]
@@ -139,7 +268,9 @@ These weights (0-10 scale) tell you how much influence each input should have on
 - **Signals influence: ${weights.signals ?? 5}/10** — ${(weights.signals ?? 5) >= 7 ? 'Signals should be the PRIMARY creative driver. Let weather, sports, and holidays shape the mood, palette, and composition heavily.' : (weights.signals ?? 5) <= 3 ? 'Signals should be minimal background texture. Don\'t let weather or sports drive major design decisions.' : 'Signals play a moderate role — they influence palette and mood but don\'t dominate.'}
 - **Design inspiration: ${weights.inspiration ?? 5}/10** — ${(weights.inspiration ?? 5) >= 7 ? 'The Awwwards design references should be the PRIMARY creative driver. Study the screenshot carefully and let its compositional approach heavily influence your archetype choice and layout direction.' : (weights.inspiration ?? 5) <= 3 ? 'Design references are just ambient context. Don\'t try to emulate them.' : 'Design references provide moderate compositional guidance.'}
 - **Past ratings: ${weights.ratings ?? 5}/10** — ${(weights.ratings ?? 5) >= 7 ? 'The user\'s past ratings are critical. Study what scored high and low. Repeat what worked, avoid what didn\'t.' : (weights.ratings ?? 5) <= 3 ? 'Past ratings are just background. Focus on today\'s creative direction.' : 'Consider past ratings but don\'t be constrained by them.'}
-- **Creative risk: ${weights.risk ?? 5}/10** — ${(weights.risk ?? 5) >= 7 ? 'Push boundaries. Choose unusual archetypes, extreme typography, unexpected compositions. The site owner wants to be surprised.' : (weights.risk ?? 5) <= 3 ? 'Play it safe. Use proven layouts, conventional hierarchy, readable and professional.' : 'Balanced risk — be intentional but not predictable.'}`
+- **Creative risk: ${weights.risk ?? 5}/10** — ${(weights.risk ?? 5) >= 7 ? 'Push boundaries. Choose unusual archetypes, extreme typography, unexpected compositions. The site owner wants to be surprised.' : (weights.risk ?? 5) <= 3 ? 'Play it safe. Use proven layouts, conventional hierarchy, readable and professional.' : 'Balanced risk — be intentional but not predictable.'}`)
+
+  return sections.join('\n\n')
 }
 
 /**
@@ -277,7 +408,27 @@ async function main() {
     process.exit(1)
   }
 
-  // Step 1.5: Fetch Awwwards screenshots if available
+  // Step 1.5: Read previous brief if it exists (for "do not repeat" constraint)
+  let previousBrief = null
+  const briefPath = path.join(ROOT, 'signals', 'today.brief.md')
+  try {
+    if (existsSync(briefPath)) {
+      previousBrief = await readFile(briefPath, 'utf8')
+      console.log(`  previous brief found (${previousBrief.length} chars) — will inject "do not repeat" constraint`)
+    }
+  } catch {}
+
+  // Step 1.6: Count existing builds today for run diversity
+  const archiveDir = path.join(ROOT, 'archive', signals.date || new Date().toISOString().slice(0, 10))
+  let runNumber = 1
+  try {
+    runNumber = readdirSync(archiveDir).filter(d => d.startsWith('build-')).length + 1
+  } catch {}
+  if (runNumber > 1) {
+    console.log(`  run #${runNumber} today — will enforce archetype diversity`)
+  }
+
+  // Step 1.7: Fetch Awwwards screenshots if available
   let designReferenceImages = []
   const awwwardsSites = signals?.awwwards?.sites_of_the_day
   if (Array.isArray(awwwardsSites)) {
@@ -309,15 +460,11 @@ async function main() {
 
   // Step 2: Build prompt and call Claude
   console.log('\n[2/3] Calling Claude...')
-  let prompt = buildInterpretPrompt(signals, weights)
-
-  // Append design reference images if available
-  if (designReferenceImages.length > 0) {
-    prompt += `\n\n---\n\n## Design References — Awwwards Sites of the Day\n\nBelow are screenshots of today's award-winning websites. Analyze their design approaches and note any trends in your brief — compositional patterns, typography choices, color approaches, layout strategies. These observations should inform your Composition Direction and Typography Direction sections.\n\n`
-    for (const img of designReferenceImages) {
-      prompt += `### ${img.title}\n${img.description || ''}\n\n![${img.title}](data:${img.contentType};base64,${img.base64})\n\n`
-    }
-  }
+  const prompt = buildInterpretPrompt(signals, weights, {
+    previousBrief,
+    runNumber,
+    designReferenceImages,
+  })
 
   let responseText
   try {
@@ -336,7 +483,6 @@ async function main() {
 
   // Step 3: Write brief
   console.log('\n[3/3] Writing signals/today.brief.md...')
-  const briefPath = path.join(ROOT, 'signals', 'today.brief.md')
   const briefContent = `# Signals Brief — ${signals.date || 'today'}\n\n${responseText}\n`
   await writeFile(briefPath, briefContent, 'utf8')
   console.log(`  written to signals/today.brief.md`)
