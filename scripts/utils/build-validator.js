@@ -1,5 +1,5 @@
 import { spawnSync } from 'child_process'
-import { readFileSync } from 'fs'
+import { readFileSync, readdirSync } from 'fs'
 import { resolve } from 'path'
 import { ROOT } from './file-manager.js'
 
@@ -68,19 +68,15 @@ export function validateGenerated() {
 
   // Check 2: Non-type imports of React types in component files
   // e.g., import { ReactNode } from 'react' breaks SSR — must be import type { ReactNode }
-  const componentFiles = [
-    'app/components/Layout.tsx',
-    'app/components/Sidebar.tsx',
-    'app/components/FeaturedProject.tsx',
-    'app/components/ProjectRow.tsx',
-    'app/components/SectionHead.tsx',
-    'app/components/SelectedWork.tsx',
-    'app/components/Experiments.tsx',
-    'app/components/Bio.tsx',
-    'app/components/Timeline.tsx',
-    'app/components/Capabilities.tsx',
-    'app/components/Personal.tsx',
-  ]
+  // Dynamically scan all .tsx files in app/components/ (designer may create any components)
+  let componentFiles = []
+  try {
+    componentFiles = readdirSync(resolve(ROOT, 'app/components'))
+      .filter(f => f.endsWith('.tsx'))
+      .map(f => `app/components/${f}`)
+  } catch {
+    componentFiles = ['app/components/Layout.tsx', 'app/components/Sidebar.tsx']
+  }
 
   const reactTypes = ['ReactNode', 'ReactElement', 'FC', 'PropsWithChildren', 'CSSProperties', 'MouseEvent', 'ChangeEvent', 'FormEvent']
 
