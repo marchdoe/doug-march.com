@@ -32,7 +32,7 @@ const MOCK_MODE = process.env.MOCK_MODE === 'true'
  * @param {object} signals - parsed signals from today.yml
  * @returns {string} the prompt text
  */
-export function buildInterpretPrompt(signals) {
+export function buildInterpretPrompt(signals, weights = {}) {
   const signalDump = Object.entries(signals)
     .filter(([key]) => key !== 'date')
     .map(([key, value]) => `### ${key}\n${JSON.stringify(value, null, 2)}`)
@@ -130,7 +130,16 @@ Only include signals worth commenting on. "Off season" or "no notable news" are 
 The signal that should be FELT most strongly when someone lands on the site should be listed FIRST and given the most detailed treatment. This is your call as PM — what's the headline of today's design?
 
 ## Palette Direction
-[2-3 sentences on color temperature, saturation, and mood — derived from PRIMARY signals (weather, season, daylight). Be more specific than "warm" or "cool" — describe contrast level (high/low), warmth or coolness on a spectrum, and degree of restraint (monochromatic vs. multi-hue). Never prescribe specific hex colors — describe the feeling and boundaries.]`
+[2-3 sentences on color temperature, saturation, and mood — derived from PRIMARY signals (weather, season, daylight). Be more specific than "warm" or "cool" — describe contrast level (high/low), warmth or coolness on a spectrum, and degree of restraint (monochromatic vs. multi-hue). Never prescribe specific hex colors — describe the feeling and boundaries.]
+
+## Creative Weights (set by the site owner)
+
+These weights (0-10 scale) tell you how much influence each input should have on your brief:
+
+- **Signals influence: ${weights.signals ?? 5}/10** — ${(weights.signals ?? 5) >= 7 ? 'Signals should be the PRIMARY creative driver. Let weather, sports, and holidays shape the mood, palette, and composition heavily.' : (weights.signals ?? 5) <= 3 ? 'Signals should be minimal background texture. Don\'t let weather or sports drive major design decisions.' : 'Signals play a moderate role — they influence palette and mood but don\'t dominate.'}
+- **Design inspiration: ${weights.inspiration ?? 5}/10** — ${(weights.inspiration ?? 5) >= 7 ? 'The Awwwards design references should be the PRIMARY creative driver. Study the screenshot carefully and let its compositional approach heavily influence your archetype choice and layout direction.' : (weights.inspiration ?? 5) <= 3 ? 'Design references are just ambient context. Don\'t try to emulate them.' : 'Design references provide moderate compositional guidance.'}
+- **Past ratings: ${weights.ratings ?? 5}/10** — ${(weights.ratings ?? 5) >= 7 ? 'The user\'s past ratings are critical. Study what scored high and low. Repeat what worked, avoid what didn\'t.' : (weights.ratings ?? 5) <= 3 ? 'Past ratings are just background. Focus on today\'s creative direction.' : 'Consider past ratings but don\'t be constrained by them.'}
+- **Creative risk: ${weights.risk ?? 5}/10** — ${(weights.risk ?? 5) >= 7 ? 'Push boundaries. Choose unusual archetypes, extreme typography, unexpected compositions. The site owner wants to be surprised.' : (weights.risk ?? 5) <= 3 ? 'Play it safe. Use proven layouts, conventional hierarchy, readable and professional.' : 'Balanced risk — be intentional but not predictable.'}`
 }
 
 /**
@@ -240,6 +249,14 @@ async function main() {
   console.log('\n=== Interpret Signals ===')
   console.log(`MOCK_MODE: ${MOCK_MODE}`)
 
+  const weights = {
+    signals: parseInt(process.env.WEIGHT_SIGNALS || '5'),
+    inspiration: parseInt(process.env.WEIGHT_INSPIRATION || '5'),
+    ratings: parseInt(process.env.WEIGHT_RATINGS || '5'),
+    risk: parseInt(process.env.WEIGHT_RISK || '5'),
+  }
+  console.log(`  creative weights: signals=${weights.signals} inspiration=${weights.inspiration} ratings=${weights.ratings} risk=${weights.risk}`)
+
   if (!MOCK_MODE && !process.env.ANTHROPIC_API_KEY) {
     console.error('Error: ANTHROPIC_API_KEY is not set.')
     console.error('  Use MOCK_MODE=true to use local Claude Code CLI.')
@@ -292,7 +309,7 @@ async function main() {
 
   // Step 2: Build prompt and call Claude
   console.log('\n[2/3] Calling Claude...')
-  let prompt = buildInterpretPrompt(signals)
+  let prompt = buildInterpretPrompt(signals, weights)
 
   // Append design reference images if available
   if (designReferenceImages.length > 0) {

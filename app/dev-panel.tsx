@@ -187,6 +187,7 @@ export function DevPanel() {
 
   const [pipelineStatus, setPipelineStatus] = useState<PipelineStatus>('idle')
   const [dryRun, setDryRun] = useState(false)
+  const [weights, setWeights] = useState({ signals: 5, inspiration: 5, ratings: 5, risk: 5 })
   const [phases, setPhases] = useState<Phase[]>(makePhases())
   const [logLines, setLogLines] = useState<string[]>([])
   const logAccumRef = useRef<string[]>([])
@@ -434,7 +435,7 @@ export function DevPanel() {
     const resp = await fetch('/api/pipeline/start', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ dryRun, mock: true }),
+      body: JSON.stringify({ dryRun, mock: true, weights }),
     })
 
     if (!resp.ok) {
@@ -621,6 +622,8 @@ export function DevPanel() {
               startCooldown={startCooldown}
               cooldownLeft={cooldownLeft}
               signalDate={signals?.date ?? ''}
+              weights={weights}
+              setWeights={setWeights}
             />
           )}
         </div>
@@ -976,7 +979,7 @@ function InspectorPane() {
 
 // ─── Run Pane ────────────────────────────────────────────────────────────────
 
-function RunPane({ pipelineStatus, dryRun, setDryRun, isRunDisabled, handleRun, phases, logLines, attemptNum, logEndRef, elapsedMs, result, archive, startCooldown, cooldownLeft, signalDate }: {
+function RunPane({ pipelineStatus, dryRun, setDryRun, isRunDisabled, handleRun, phases, logLines, attemptNum, logEndRef, elapsedMs, result, archive, startCooldown, cooldownLeft, signalDate, weights, setWeights }: {
   pipelineStatus: PipelineStatus
   dryRun: boolean
   setDryRun: (v: boolean) => void
@@ -992,6 +995,8 @@ function RunPane({ pipelineStatus, dryRun, setDryRun, isRunDisabled, handleRun, 
   startCooldown: () => void
   cooldownLeft: number
   signalDate: string
+  weights: { signals: number; inspiration: number; ratings: number; risk: number }
+  setWeights: (v: { signals: number; inspiration: number; ratings: number; risk: number }) => void
 }) {
   return (
     <>
@@ -1006,6 +1011,65 @@ function RunPane({ pipelineStatus, dryRun, setDryRun, isRunDisabled, handleRun, 
       }}>
         // RUN PIPELINE
       </h2>
+
+      {/* Creative Weights */}
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{
+          fontSize: '9px',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '.12em',
+          color: c.dim,
+          marginBottom: '10px',
+          fontFamily: c.font,
+        }}>Creative Weights</div>
+
+        {([
+          { key: 'signals' as const, label: 'Signals', desc: 'How much weather, sports, holidays drive the design' },
+          { key: 'inspiration' as const, label: 'Inspiration', desc: 'How much Awwwards/design trends drive composition' },
+          { key: 'ratings' as const, label: 'Ratings', desc: 'How much past feedback influences decisions' },
+          { key: 'risk' as const, label: 'Risk', desc: 'How experimental vs safe the design should be' },
+        ]).map(({ key, label, desc }) => (
+          <div key={key} style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '6px',
+            gap: '10px',
+          }}>
+            <span title={desc} style={{
+              fontSize: '10px',
+              color: c.secondary,
+              fontFamily: c.font,
+              minWidth: '72px',
+              cursor: 'help',
+            }}>{label}</span>
+            <div style={{ display: 'flex', gap: '3px' }}>
+              {Array.from({ length: 11 }, (_, n) => (
+                <button
+                  key={n}
+                  onClick={() => setWeights({ ...weights, [key]: n })}
+                  disabled={isRunDisabled}
+                  style={{
+                    width: '22px',
+                    height: '22px',
+                    borderRadius: '3px',
+                    border: `1px solid ${weights[key] === n ? c.cyan : c.border}`,
+                    background: weights[key] === n ? 'rgba(0,229,255,0.15)' : c.cardBg,
+                    color: weights[key] === n ? c.cyan : c.muted,
+                    fontSize: '9px',
+                    fontWeight: 700,
+                    fontFamily: c.font,
+                    cursor: isRunDisabled ? 'default' : 'pointer',
+                    padding: 0,
+                  }}
+                >
+                  {n}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* Run controls */}
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>

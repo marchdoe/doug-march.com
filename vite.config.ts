@@ -184,13 +184,21 @@ function pipelineApiPlugin(): Plugin {
               return
             }
           }
-          const { dryRun = false, mock = true } = parsed
+          const { dryRun = false, mock = true, weights = {} } = parsed as { dryRun?: boolean; mock?: boolean; weights?: Record<string, number> }
 
           // Reset state
           pipelineLog = []
           pipelineDone = false
 
-          const pipelineEnv = { ...process.env, DRY_RUN: dryRun ? 'true' : 'false', MOCK_MODE: mock ? 'true' : 'false' }
+          const pipelineEnv = {
+            ...process.env,
+            DRY_RUN: dryRun ? 'true' : 'false',
+            MOCK_MODE: mock ? 'true' : 'false',
+            WEIGHT_SIGNALS: String(weights.signals ?? 5),
+            WEIGHT_INSPIRATION: String(weights.inspiration ?? 5),
+            WEIGHT_RATINGS: String(weights.ratings ?? 5),
+            WEIGHT_RISK: String(weights.risk ?? 5),
+          }
           if (mock) delete pipelineEnv.ANTHROPIC_API_KEY
 
           pipelineChild = spawn('node', [scriptPath], {

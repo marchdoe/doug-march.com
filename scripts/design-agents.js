@@ -253,6 +253,17 @@ function validateCodegen() {
 export async function runAgentSwarm(context) {
   const { signals, brief, contentSummary } = context
 
+  // Read creative weights from environment
+  const weights = {
+    signals: parseInt(process.env.WEIGHT_SIGNALS || '5'),
+    inspiration: parseInt(process.env.WEIGHT_INSPIRATION || '5'),
+    ratings: parseInt(process.env.WEIGHT_RATINGS || '5'),
+    risk: parseInt(process.env.WEIGHT_RISK || '5'),
+  }
+  console.log(`  creative weights: signals=${weights.signals} inspiration=${weights.inspiration} ratings=${weights.ratings} risk=${weights.risk}`)
+
+  const weightsPrompt = `\n\n## Creative Weights (0-10, set by the site owner)\n\nSignals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'The owner wants BOLD, EXPERIMENTAL design today. Push boundaries.' : weights.risk <= 3 ? 'The owner wants SAFE, POLISHED design today. Proven patterns.' : ''}${weights.inspiration >= 7 ? '\nDesign references should HEAVILY influence your compositional choices.' : ''}${weights.signals <= 3 ? '\nSignals are background texture only — do NOT let weather or sports drive the design.' : ''}`
+
   // Read all prompts and libraries
   const promptDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'prompts')
   const [
@@ -377,6 +388,7 @@ export async function runAgentSwarm(context) {
   }) + (recentBriefs ? '\n\n## Recent Archive Briefs\n' + recentBriefs : '')
     + (references ? '\n\n## Design References\n\n' + references : '')
     + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
+    + weightsPrompt
 
   let visualSpec = ''
   try {
@@ -503,6 +515,7 @@ export async function runAgentSwarm(context) {
     referenceFiles: [],
     tokenContext,
   }) + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
+    + weightsPrompt
 
   let designerResult
   try {
