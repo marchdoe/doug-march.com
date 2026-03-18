@@ -2254,6 +2254,8 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
   const [ratings, setRatings] = useState<Record<string, number>>({})
   const [ratingNotes, setRatingNotes] = useState('')
   const [ratingSaved, setRatingSaved] = useState(false)
+  const [saveAsReference, setSaveAsReference] = useState(false)
+  const [referenceConfirmation, setReferenceConfirmation] = useState('')
 
   // Each build starts fresh — no pre-population from previous ratings
 
@@ -2270,9 +2272,19 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
       const resp = await fetch('/api/dev-rate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date: ratingDate, ratings, notes: ratingNotes, timestamp: Date.now() }),
+        body: JSON.stringify({ date: ratingDate, ratings, notes: ratingNotes, timestamp: Date.now(), saveAsReference }),
       })
-      if (resp.ok) setRatingSaved(true)
+      if (resp.ok) {
+        const data = await resp.json()
+        setRatingSaved(true)
+        if (saveAsReference && data.referenceAdded) {
+          setReferenceConfirmation('Rating saved \u2713 \u2014 Design added to reference library')
+        } else if (saveAsReference && !data.referenceAdded) {
+          setReferenceConfirmation(`Rating saved \u2713 \u2014 Reference failed: ${data.error || 'unknown error'}`)
+        } else {
+          setReferenceConfirmation('')
+        }
+      }
     } catch {}
   }
   const siteUrl = window.location.origin
@@ -2516,6 +2528,39 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
           }}
         />
 
+        <div
+          onClick={() => { setSaveAsReference(!saveAsReference); setRatingSaved(false); setReferenceConfirmation('') }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            marginTop: '10px',
+            cursor: 'pointer',
+            userSelect: 'none',
+          }}
+        >
+          <div style={{
+            width: '14px',
+            height: '14px',
+            borderRadius: '3px',
+            border: `1px solid ${saveAsReference ? c.cyan : c.ghost}`,
+            background: saveAsReference ? 'rgba(0,229,255,0.15)' : 'transparent',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '10px',
+            color: c.cyan,
+            fontFamily: c.font,
+            fontWeight: 700,
+            flexShrink: 0,
+          }}>
+            {saveAsReference ? '\u2713' : ''}
+          </div>
+          <span style={{ fontSize: '10px', color: saveAsReference ? c.secondary : c.muted, fontFamily: c.font }}>
+            Save this design as a reference for future runs
+          </span>
+        </div>
+
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '8px' }}>
           <button
             onClick={handleSaveRating}
@@ -2538,7 +2583,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
           </button>
           {ratingSaved && (
             <span style={{ fontSize: '10px', color: c.green, fontFamily: c.font, fontWeight: 700 }}>
-              Rating saved &#x2713;
+              {referenceConfirmation || 'Rating saved \u2713'}
             </span>
           )}
         </div>

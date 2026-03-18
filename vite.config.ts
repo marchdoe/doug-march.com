@@ -3,7 +3,7 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { resolve } from 'path'
 import { spawn, spawnSync } from 'child_process'
-import { readFileSync, writeFileSync, existsSync, readdirSync } from 'fs'
+import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync } from 'fs'
 import { config } from 'dotenv'
 import yaml from 'js-yaml'
 
@@ -317,9 +317,9 @@ function pipelineApiPlugin(): Plugin {
 
         let body = ''
         req.on('data', (chunk: Buffer) => { body += chunk.toString() })
-        req.on('end', () => {
+        req.on('end', async () => {
           try {
-            const { date, ratings, notes, timestamp } = JSON.parse(body)
+            const { date, ratings, notes, timestamp, saveAsReference } = JSON.parse(body)
             if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
               res.writeHead(400, { 'Content-Type': 'application/json' })
               res.end(JSON.stringify({ error: 'Missing or invalid date' }))
@@ -334,6 +334,81 @@ function pipelineApiPlugin(): Plugin {
             const ts = timestamp || Date.now()
             const ratingPath = resolve('archive', date, `rating-${ts}.json`)
             writeFileSync(ratingPath, JSON.stringify({ date, ratings, notes, timestamp: ts }, null, 2), 'utf8')
+
+            // Handle save-as-reference
+            if (saveAsReference) {
+              try {
+                // Read the brief from the archive
+                const briefPath = resolve('archive', date, 'brief.md')
+                let briefText = ''
+                if (existsSync(briefPath)) {
+                  const md = readFileSync(briefPath, 'utf8')
+                  const briefMatch = md.match(/\*\*Design Brief:\*\*\s*(.+)/)
+                  briefText = briefMatch?.[1] ?? ''
+                }
+
+                // Capture screenshot using the existing utility
+                const { captureScreenshot } = await import('./scripts/utils/snapshot.js')
+                const screenshotBuffer = await captureScreenshot()
+
+                // Save screenshot to references/
+                const refsDir = resolve('references')
+                mkdirSync(refsDir, { recursive: true })
+                const sanitized = briefText
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, '-')
+                  .replace(/^-|-$/g, '')
+                  .slice(0, 60)
+                const filename = `own-${date}-${ts}.png`
+                const screenshotPath = resolve('references', filename)
+                writeFileSync(screenshotPath, screenshotBuffer)
+
+                // Update references/index.yml
+                const indexPath = resolve('references', 'index.yml')
+                let indexData: { references: Array<Record<string, unknown>> } = { references: [] }
+                if (existsSync(indexPath)) {
+                  const raw = readFileSync(indexPath, 'utf8')
+                  const parsed = yaml.load(raw) as Record<string, unknown>
+                  if (parsed && Array.isArray(parsed.references)) {
+                    indexData.references = parsed.references
+                  }
+                }
+
+                // Extract composition hint from brief
+                const compositionKeywords = ['poster', 'broadsheet', 'gallery', 'scroll', 'split', 'stack', 'specimen', 'index']
+                let composition = 'mixed'
+                for (const kw of compositionKeywords) {
+                  if (briefText.toLowerCase().includes(kw)) {
+                    composition = kw
+                    break
+                  }
+                }
+
+                indexData.references.push({
+                  file: filename,
+                  description: briefText || `Pipeline output from ${date}`,
+                  tags: {
+                    composition,
+                    mood: 'owner-approved',
+                    density: 'moderate',
+                  },
+                  source: 'pipeline-output',
+                  ratings,
+                })
+
+                writeFileSync(indexPath, yaml.dump(indexData, { lineWidth: 120 }), 'utf8')
+
+                res.writeHead(200, { 'Content-Type': 'application/json' })
+                res.end(JSON.stringify({ ok: true, referenceAdded: true, referenceFile: filename }))
+                return
+              } catch (refErr) {
+                // Screenshot/reference failed — still return success for the rating itself
+                res.writeHead(200, { 'Content-Type': 'application/json' })
+                res.end(JSON.stringify({ ok: true, referenceAdded: false, error: String(refErr) }))
+                return
+              }
+            }
+
             res.writeHead(200, { 'Content-Type': 'application/json' })
             res.end(JSON.stringify({ ok: true }))
           } catch (err) {
