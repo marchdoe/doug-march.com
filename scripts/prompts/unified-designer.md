@@ -85,14 +85,14 @@ const { slug } = Route.useParams()
 **Content imports (from route files — relative to app/routes/):**
 ```tsx
 import { featuredProject, selectedWork, experiments, projects } from '../content/projects'
-import { timeline, capabilities } from '../content/timeline'
+import { timeline, capabilities, education } from '../content/timeline'
 import { identity, personal } from '../content/about'
 ```
 
 **Content imports (from component files — relative to app/components/):**
 ```tsx
 import { featuredProject, selectedWork, experiments, projects } from '../content/projects'
-import { timeline, capabilities } from '../content/timeline'
+import { timeline, capabilities, education } from '../content/timeline'
 import { identity, personal } from '../content/about'
 ```
 
@@ -130,8 +130,13 @@ const selectedWork: Project[]    // full-depth, non-featured
 const experiments: Project[]     // lightweight
 
 // ../content/timeline
-type TimelineEntry = { year: string; role: string; company: string; description: string; current?: boolean }
-const timeline: TimelineEntry[]
+type TimelineEntry = {
+  year: string; role: string; company: string; description: string;
+  current?: boolean; bullets?: string[]; technologies?: string[];
+}
+type Education = { school: string; degree: string; concentration: string; years: string }
+const timeline: TimelineEntry[]   // 8 entries from 2006 to present
+const education: Education
 const capabilities: string[]
 
 // ../content/about
@@ -140,6 +145,7 @@ const personal: { holesInOne: number; sport: string; teams: string[]; currentFoc
 ```
 
 WARNING: There is NO `bio` export. Use `identity`.
+NOTE: Import `education` from `'../content/timeline'` alongside `timeline` and `capabilities`.
 
 ## Semantic Tokens Available
 

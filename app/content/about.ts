@@ -1,5 +1,3 @@
-// app/content/about.ts
-
 export type Identity = {
   name: string
   role: string
@@ -15,7 +13,7 @@ export type Personal = {
 
 export const identity: Identity = {
   name: 'Doug March',
-  role: 'Designer & Developer',
+  role: 'Product Designer & Developer',
   statement:
     "I work at the intersection of design and engineering — not as a generalist, but as someone who has gone deep in both. I've spent my career closing the gap between what gets designed and what gets built: making sure designs are technically feasible before a line of code is written, and that what ships actually looks like what was designed.",
 }
