@@ -93,7 +93,7 @@ Your primary job today is to create a brief inspired by this award-winning desig
 
 `
     for (const img of designReferenceImages) {
-      refSection += `### ${img.title}\n${img.description || ''}\n\n![${img.title}](data:${img.contentType};base64,${img.base64})\n\n`
+      refSection += `### ${img.title}\n${img.description || 'Award-winning website'}\n\n`
     }
     sections.push(refSection)
   }
@@ -130,7 +130,7 @@ ${signalDump}`)
       refSection += `Analyze their design approaches and note any trends — compositional patterns, typography choices, color approaches, layout strategies. These observations should inform your Composition Direction and Typography Direction sections.\n\n`
     }
     for (const img of designReferenceImages) {
-      refSection += `### ${img.title}\n${img.description || ''}\n\n![${img.title}](data:${img.contentType};base64,${img.base64})\n\n`
+      refSection += `### ${img.title}\n${img.description || 'Award-winning website'}\n\n`
     }
     sections.push(refSection)
   }
@@ -428,33 +428,21 @@ async function main() {
     console.log(`  run #${runNumber} today — will enforce archetype diversity`)
   }
 
-  // Step 1.7: Fetch Awwwards screenshots if available
+  // Step 1.7: Collect Awwwards site descriptions (text only — no screenshots)
+  // Screenshots are too large for the interpret-signals prompt (2MB+ PNGs become 3MB+ base64).
+  // The unified designer receives screenshots separately via the reference system.
   let designReferenceImages = []
   const awwwardsSites = signals?.awwwards?.sites_of_the_day
   if (Array.isArray(awwwardsSites)) {
-    const sitesWithScreenshots = awwwardsSites.filter(s => typeof s === 'object' && s.screenshot_url)
-    if (sitesWithScreenshots.length > 0) {
-      // Limit to 1 screenshot — each is ~300KB (440KB as base64), more would exceed prompt limits
-      console.log(`  fetching top Awwwards screenshot...`)
-      for (const site of sitesWithScreenshots.slice(0, 1)) {
-        try {
-          const imgRes = await fetch(site.screenshot_url, {
-            signal: AbortSignal.timeout(10000),
-          })
-          if (imgRes.ok) {
-            const buf = Buffer.from(await imgRes.arrayBuffer())
-            designReferenceImages.push({
-              title: site.title,
-              description: site.description,
-              base64: buf.toString('base64'),
-              contentType: imgRes.headers.get('content-type') || 'image/jpeg',
-            })
-            console.log(`    ✓ ${site.title} (${(buf.length / 1024).toFixed(0)}KB)`)
-          }
-        } catch (err) {
-          console.warn(`    ✗ ${site.title}: ${err.message}`)
-        }
-      }
+    const sitesWithScreenshots = awwwardsSites.filter(s => typeof s === 'object' && s.title)
+    for (const site of sitesWithScreenshots.slice(0, 3)) {
+      designReferenceImages.push({
+        title: site.title,
+        description: site.description || '',
+      })
+    }
+    if (designReferenceImages.length > 0) {
+      console.log(`  awwwards references: ${designReferenceImages.map(s => s.title).join(', ')}`)
     }
   }
 
@@ -480,6 +468,13 @@ async function main() {
 
   const elapsed = ((Date.now() - start) / 1000).toFixed(1)
   console.log(`  Claude responded in ${elapsed}s`)
+
+  // Detect error responses that look like success
+  const errorPatterns = ['Prompt is too long', 'context window', 'maximum context length', 'token limit']
+  if (responseText.length < 100 || errorPatterns.some(p => responseText.includes(p))) {
+    console.error(`  ERROR: Claude returned an error response: "${responseText.slice(0, 200)}"`)
+    process.exit(1)
+  }
 
   // Step 3: Write brief
   console.log('\n[3/3] Writing signals/today.brief.md...')
