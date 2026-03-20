@@ -78,7 +78,7 @@ function formatSignalsMarkdown(signals) {
  * @param {string} designBrief - one-sentence design brief
  * @param {string[]} changedFiles - list of relative file paths that were written
  */
-export async function archive(date, signals, rationale, designBrief, changedFiles) {
+export async function archive(date, signals, rationale, designBrief, changedFiles, weights = {}) {
   const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : String(date)
   const buildId = String(Date.now())
   const dir = path.join(ROOT, 'archive', dateStr)
@@ -106,10 +106,25 @@ export async function archive(date, signals, rationale, designBrief, changedFile
   // Save brief to the build-specific directory
   const briefPath = path.join(buildDir, 'brief.md')
   await writeFile(briefPath, content, 'utf8')
-  console.log(`  archived to archive/${dateStr}/build-${buildId}/brief.md`)
+
+  // Save build metadata (weights, timestamp, brief) for the archive UI
+  const buildMeta = {
+    buildId,
+    date: dateStr,
+    timestamp: parseInt(buildId),
+    brief: designBrief,
+    weights: {
+      signals: weights.signals ?? 5,
+      inspiration: weights.inspiration ?? 5,
+      ratings: weights.ratings ?? 5,
+      risk: weights.risk ?? 5,
+    },
+  }
+  await writeFile(path.join(buildDir, 'build.json'), JSON.stringify(buildMeta, null, 2), 'utf8')
+  console.log(`  archived to archive/${dateStr}/build-${buildId}/`)
 
   // Also save/overwrite the top-level brief.md as the "latest" for backwards compatibility
-  // (the dev panel and Design Director read archive/{date}/brief.md)
+  // (the Design Director reads archive/{date}/brief.md)
   const latestBriefPath = path.join(dir, 'brief.md')
   await writeFile(latestBriefPath, content, 'utf8')
 

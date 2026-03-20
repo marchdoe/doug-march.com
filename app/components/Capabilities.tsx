@@ -1,50 +1,33 @@
-import { css } from '../../styled-system/css'
-import { Box } from '../../styled-system/jsx'
-import { capabilities } from '../content/timeline'
+import { Box, Flex } from '../../styled-system/jsx'
 import { SectionHead } from './SectionHead'
+import { capabilities } from '../content/timeline'
 
 export function Capabilities() {
   return (
-    <Box
-      className={css({
-        mb: '8',
-      })}
-    >
+    <Box>
       <SectionHead label="Capabilities" />
-
-      <div
-        className={css({
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '2',
-        })}
-      >
-        {capabilities.map((capability: string) => (
-          <span
-            key={capability}
-            className={css({
-              fontFamily: 'mono',
-              fontSize: 'xs',
-              fontWeight: 'regular',
-              letterSpacing: 'wide',
-              color: 'text.mid',
-              bg: 'bg.card',
-              border: '1px solid',
-              borderColor: 'border.DEFAULT',
-              px: '3',
-              py: '1',
-              lineHeight: 'snug',
-              transition: 'border-color 0.12s ease, color 0.12s ease',
-              _hover: {
-                borderColor: 'border.accent',
-                color: 'text',
-              },
-            })}
+      <Flex gap="2" flexWrap="wrap">
+        {capabilities.map((cap) => (
+          <Box
+            key={cap}
+            fontSize="2xs"
+            fontFamily="body"
+            fontWeight="semibold"
+            letterSpacing="wide"
+            color="textSecondary"
+            paddingTop="1"
+            paddingBottom="1"
+            paddingLeft="2"
+            paddingRight="2"
+            borderWidth="1px"
+            borderStyle="solid"
+            borderColor="border"
+            background="bgColumnFill"
           >
-            {capability}
-          </span>
+            {cap}
+          </Box>
         ))}
-      </div>
+      </Flex>
     </Box>
   )
 }

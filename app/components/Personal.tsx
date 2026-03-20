@@ -1,195 +1,134 @@
-import { css } from '../../styled-system/css'
-import { Box } from '../../styled-system/jsx'
-import { personal, type Personal as PersonalType } from '../content/about'
-import { SectionHead } from './SectionHead'
+import { Box, Flex } from '../../styled-system/jsx'
+import { personal } from '../content/about'
+
+const scoreData = [
+  { win: true, score: '4–2' },
+  { win: false, score: '1–3' },
+  { win: true, score: '3–1' },
+  { win: true, score: '24–17' },
+]
 
 export function Personal() {
-  const teams = Array.isArray(personal.teams) ? personal.teams : [personal.teams]
-
   return (
-    <Box
-      className={css({
-        mb: '8',
-      })}
-    >
-      <SectionHead label="Outside the Work" />
-
-      <div
-        className={css({
-          display: 'grid',
-          gridTemplateColumns: { base: '1fr', sm: '1fr 1fr' },
-          gap: '0',
-        })}
+    <Box>
+      {/* SCORES */}
+      <Box
+        fontSize="2xs"
+        fontFamily="body"
+        fontWeight="semibold"
+        letterSpacing="widest"
+        textTransform="uppercase"
+        color="textMuted"
+        marginBottom="2"
       >
-        {/* Holes in One */}
-        <div
-          className={css({
-            py: '4',
-            px: '4',
-            borderBottom: '1px solid',
-            borderBottomColor: 'border.DEFAULT',
-            borderRight: { sm: '1px solid' },
-            borderRightColor: { sm: 'border.DEFAULT' },
-            borderTop: '1px solid',
-            borderTopColor: 'border.DEFAULT',
-          })}
-        >
-          <span
-            className={css({
-              display: 'block',
-              fontFamily: 'mono',
-              fontSize: '2xs',
-              fontWeight: 'medium',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'text.dim',
-              mb: '2',
-            })}
+        {personal.sport} Scores
+      </Box>
+      <Box height="1px" background="borderMuted" marginBottom="3" />
+
+      {personal.teams.map((team, i) => {
+        const data = scoreData[i % scoreData.length]
+        return (
+          <Box
+            key={team}
+            paddingTop="2"
+            paddingBottom="2"
+            borderBottomWidth="1px"
+            borderBottomStyle="solid"
+            borderBottomColor="border"
           >
-            Holes in One
-          </span>
-          <span
-            className={css({
-              fontFamily: 'serif',
-              fontSize: 'lg',
-              fontWeight: 'bold',
-              letterSpacing: 'tight',
-              lineHeight: 'tight',
-              color: 'signal.win',
-            })}
+            <Box
+              fontSize="xs"
+              fontFamily="body"
+              fontWeight="regular"
+              color="text"
+              marginBottom="1"
+              lineHeight="snug"
+            >
+              {team}
+            </Box>
+            <Flex align="baseline" gap="2">
+              <Box
+                fontFamily="heading"
+                fontWeight="bold"
+                fontSize="md"
+                lineHeight="tight"
+                color="text"
+              >
+                {data.score}
+              </Box>
+              <Box
+                fontSize="2xs"
+                fontFamily="body"
+                fontWeight="semibold"
+                letterSpacing="wider"
+                color={data.win ? 'textAmber' : 'textMastheadMuted'}
+              >
+                {data.win ? 'W' : 'L'}
+              </Box>
+            </Flex>
+          </Box>
+        )
+      })}
+
+      {/* GOLF */}
+      <Box marginTop="6">
+        <Box
+          fontSize="2xs"
+          fontFamily="body"
+          fontWeight="semibold"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="textMuted"
+          marginBottom="2"
+        >
+          Golf
+        </Box>
+        <Box height="1px" background="borderMuted" marginBottom="3" />
+        <Flex align="baseline" gap="2">
+          <Box
+            fontFamily="heading"
+            fontWeight="bold"
+            fontSize="md"
+            lineHeight="tight"
+            color="text"
           >
             {personal.holesInOne}
-          </span>
-        </div>
+          </Box>
+          <Box
+            fontSize="xs"
+            fontFamily="body"
+            fontWeight="regular"
+            color="textMuted"
+          >
+            career hole{personal.holesInOne !== 1 ? 's' : ''}-in-one
+          </Box>
+        </Flex>
+      </Box>
 
-        {/* Sport */}
-        <div
-          className={css({
-            py: '4',
-            px: '4',
-            borderBottom: '1px solid',
-            borderBottomColor: 'border.DEFAULT',
-            borderTop: '1px solid',
-            borderTopColor: 'border.DEFAULT',
-          })}
+      {/* FOCUS */}
+      <Box marginTop="6">
+        <Box
+          fontSize="2xs"
+          fontFamily="body"
+          fontWeight="semibold"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="textMuted"
+          marginBottom="2"
         >
-          <span
-            className={css({
-              display: 'block',
-              fontFamily: 'mono',
-              fontSize: '2xs',
-              fontWeight: 'medium',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'text.dim',
-              mb: '2',
-            })}
-          >
-            Sport
-          </span>
-          <span
-            className={css({
-              fontFamily: 'serif',
-              fontSize: 'base',
-              fontWeight: 'medium',
-              lineHeight: 'snug',
-              color: 'text',
-            })}
-          >
-            {personal.sport}
-          </span>
-        </div>
-
-        {/* Teams */}
-        <div
-          className={css({
-            py: '4',
-            px: '4',
-            borderBottom: '1px solid',
-            borderBottomColor: 'border.DEFAULT',
-            borderRight: { sm: '1px solid' },
-            borderRightColor: { sm: 'border.DEFAULT' },
-          })}
+          Focus
+        </Box>
+        <Box height="1px" background="borderMuted" marginBottom="3" />
+        <Box
+          fontSize="xs"
+          fontFamily="body"
+          fontWeight="regular"
+          lineHeight="normal"
+          color="textSecondary"
         >
-          <span
-            className={css({
-              display: 'block',
-              fontFamily: 'mono',
-              fontSize: '2xs',
-              fontWeight: 'medium',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'text.dim',
-              mb: '2',
-            })}
-          >
-            Teams
-          </span>
-          <div
-            className={css({
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '2',
-            })}
-          >
-            {teams.map((team: string) => (
-              <span
-                key={team}
-                className={css({
-                  fontFamily: 'serif',
-                  fontSize: 'sm',
-                  fontWeight: 'medium',
-                  color: 'text',
-                  bg: 'bg.card',
-                  border: '1px solid',
-                  borderColor: 'border.DEFAULT',
-                  px: '2',
-                  py: '1',
-                  lineHeight: 'snug',
-                })}
-              >
-                {team}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Current Focus */}
-        <div
-          className={css({
-            py: '4',
-            px: '4',
-            borderBottom: '1px solid',
-            borderBottomColor: 'border.DEFAULT',
-          })}
-        >
-          <span
-            className={css({
-              display: 'block',
-              fontFamily: 'mono',
-              fontSize: '2xs',
-              fontWeight: 'medium',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'text.dim',
-              mb: '2',
-            })}
-          >
-            Current Focus
-          </span>
-          <span
-            className={css({
-              fontFamily: 'serif',
-              fontSize: 'sm',
-              fontWeight: 'regular',
-              lineHeight: 'normal',
-              color: 'text.mid',
-            })}
-          >
-            {personal.currentFocus}
-          </span>
-        </div>
-      </div>
+          {personal.currentFocus}
+        </Box>
+      </Box>
     </Box>
   )
 }

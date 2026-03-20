@@ -1,23 +1,17 @@
 import type { ReactNode } from 'react'
-import { Box } from '../../styled-system/jsx'
 import { Sidebar } from './Sidebar'
 
-interface LayoutProps {
-  children: ReactNode
-}
-
-export function Layout({ children }: LayoutProps) {
+export function Layout({ children }: { children: ReactNode }) {
   return (
-    <Box
-      background="bg"
-      color="text"
-      fontFamily="body"
-      minHeight="100vh"
-    >
+    <>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+      />
       <Sidebar />
-      <Box>
-        {children}
-      </Box>
-    </Box>
+      {children}
+    </>
   )
 }

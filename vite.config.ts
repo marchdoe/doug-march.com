@@ -74,15 +74,41 @@ function pipelineApiPlugin(): Plugin {
           }
 
           const archiveDir = resolve('archive')
-          const archive: Array<{ date: string; brief: string }> = []
+          const archive: Array<{ date: string; buildId: string; timestamp: number; brief: string; weights?: Record<string, number> }> = []
           if (existsSync(archiveDir)) {
-            const dirs = readdirSync(archiveDir).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort().reverse()
-            for (const dir of dirs) {
-              const briefPath = resolve('archive', dir, 'brief.md')
-              if (existsSync(briefPath)) {
-                const md = readFileSync(briefPath, 'utf8')
-                const briefMatch = md.match(/\*\*Design Brief:\*\*\s*(.+)/)
-                archive.push({ date: dir, brief: briefMatch?.[1] ?? '' })
+            const dateDirs = readdirSync(archiveDir).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort().reverse()
+            for (const dir of dateDirs) {
+              const datePath = resolve('archive', dir)
+              // Enumerate per-build subdirs (build-{timestamp})
+              const buildDirs = readdirSync(datePath)
+                .filter(d => /^build-\d+$/.test(d))
+                .sort()
+                .reverse()
+              if (buildDirs.length > 0) {
+                for (const buildDir of buildDirs) {
+                  const buildJsonPath = resolve('archive', dir, buildDir, 'build.json')
+                  const briefPath = resolve('archive', dir, buildDir, 'brief.md')
+                  if (existsSync(buildJsonPath)) {
+                    try {
+                      const meta = JSON.parse(readFileSync(buildJsonPath, 'utf8'))
+                      archive.push({ date: dir, buildId: meta.buildId, timestamp: meta.timestamp, brief: meta.brief, weights: meta.weights })
+                    } catch {}
+                  } else if (existsSync(briefPath)) {
+                    // Legacy build dir without build.json
+                    const md = readFileSync(briefPath, 'utf8')
+                    const briefMatch = md.match(/\*\*Design Brief:\*\*\s*(.+)/)
+                    const buildId = buildDir.replace('build-', '')
+                    archive.push({ date: dir, buildId, timestamp: parseInt(buildId), brief: briefMatch?.[1] ?? '' })
+                  }
+                }
+              } else {
+                // Legacy date-only entry (no build subdirs)
+                const briefPath = resolve('archive', dir, 'brief.md')
+                if (existsSync(briefPath)) {
+                  const md = readFileSync(briefPath, 'utf8')
+                  const briefMatch = md.match(/\*\*Design Brief:\*\*\s*(.+)/)
+                  archive.push({ date: dir, buildId: '', timestamp: 0, brief: briefMatch?.[1] ?? '' })
+                }
               }
             }
           }
@@ -319,7 +345,7 @@ function pipelineApiPlugin(): Plugin {
         req.on('data', (chunk: Buffer) => { body += chunk.toString() })
         req.on('end', async () => {
           try {
-            const { date, ratings, notes, timestamp, saveAsReference } = JSON.parse(body)
+            const { date, buildId, ratings, notes, timestamp, saveAsReference } = JSON.parse(body)
             if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
               res.writeHead(400, { 'Content-Type': 'application/json' })
               res.end(JSON.stringify({ error: 'Missing or invalid date' }))
@@ -332,14 +358,18 @@ function pipelineApiPlugin(): Plugin {
               return
             }
             const ts = timestamp || Date.now()
-            const ratingPath = resolve('archive', date, `rating-${ts}.json`)
-            writeFileSync(ratingPath, JSON.stringify({ date, ratings, notes, timestamp: ts }, null, 2), 'utf8')
+            // Save rating inside the build dir if buildId provided, else fall back to date root
+            const ratingDir = buildId ? resolve('archive', date, `build-${buildId}`) : resolve('archive', date)
+            const ratingPath = resolve(ratingDir, `rating-${ts}.json`)
+            writeFileSync(ratingPath, JSON.stringify({ date, buildId: buildId || null, ratings, notes, timestamp: ts }, null, 2), 'utf8')
 
             // Handle save-as-reference
             if (saveAsReference) {
               try {
-                // Read the brief from the archive
-                const briefPath = resolve('archive', date, 'brief.md')
+                // Read the brief from the build dir (or fall back to date root)
+                const briefPath = buildId
+                  ? resolve('archive', date, `build-${buildId}`, 'brief.md')
+                  : resolve('archive', date, 'brief.md')
                 let briefText = ''
                 if (existsSync(briefPath)) {
                   const md = readFileSync(briefPath, 'utf8')
@@ -347,21 +377,24 @@ function pipelineApiPlugin(): Plugin {
                   briefText = briefMatch?.[1] ?? ''
                 }
 
-                // Capture screenshot using the existing utility
-                const { captureScreenshot } = await import('./scripts/utils/snapshot.js')
-                const screenshotBuffer = await captureScreenshot()
-
-                // Save screenshot to references/
+                // Capture screenshot via child process (keeps playwright out of Vite's bundle)
                 const refsDir = resolve('references')
                 mkdirSync(refsDir, { recursive: true })
-                const sanitized = briefText
-                  .toLowerCase()
-                  .replace(/[^a-z0-9]+/g, '-')
-                  .replace(/^-|-$/g, '')
-                  .slice(0, 60)
                 const filename = `own-${date}-${ts}.png`
                 const screenshotPath = resolve('references', filename)
-                writeFileSync(screenshotPath, screenshotBuffer)
+
+                const result = spawnSync(
+                  'node',
+                  [
+                    resolve('scripts/capture-reference.js'),
+                    '--port=5173',
+                    `--output=${screenshotPath}`,
+                  ],
+                  { encoding: 'utf8', timeout: 60000 }
+                )
+                if (result.status !== 0) {
+                  throw new Error(result.stderr || result.error?.message || 'screenshot failed')
+                }
 
                 // Update references/index.yml
                 const indexPath = resolve('references', 'index.yml')
@@ -420,12 +453,21 @@ function pipelineApiPlugin(): Plugin {
 
       // Serve archived site snapshots for the preview viewer
       server.middlewares.use('/api/archive-preview', (req, res, next) => {
-        // URL format: /api/archive-preview/2026-03-16/index.html
-        const match = req.url?.match(/^\/(\d{4}-\d{2}-\d{2})\/(.+)$/)
-        if (!match) { res.writeHead(404); res.end('Not found'); return }
+        // URL formats:
+        //   /api/archive-preview/2026-03-20/build-123456/index.html  (per-build)
+        //   /api/archive-preview/2026-03-16/index.html               (legacy date-level)
+        const buildMatch = req.url?.match(/^\/(\d{4}-\d{2}-\d{2})\/(build-\d+)\/(.+)$/)
+        const legacyMatch = !buildMatch && req.url?.match(/^\/(\d{4}-\d{2}-\d{2})\/(.+)$/)
+        if (!buildMatch && !legacyMatch) { res.writeHead(404); res.end('Not found'); return }
 
-        const [, date, filePath] = match
-        const fullPath = resolve('archive', date, 'site', filePath)
+        let fullPath: string
+        if (buildMatch) {
+          const [, date, buildDir, filePath] = buildMatch
+          fullPath = resolve('archive', date, buildDir, 'site', filePath)
+        } else {
+          const [, date, filePath] = legacyMatch!
+          fullPath = resolve('archive', date, 'site', filePath)
+        }
 
         const archiveBase = resolve('archive')
         if (!fullPath.startsWith(archiveBase + '/')) {

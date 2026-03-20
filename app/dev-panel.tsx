@@ -28,7 +28,10 @@ interface Meta {
 
 interface ArchiveEntry {
   date: string
+  buildId: string
+  timestamp: number
   brief: string
+  weights?: { signals: number; inspiration: number; ratings: number; risk: number }
 }
 
 type PipelineStatus = 'idle' | 'running' | 'success' | 'error' | 'cooldown'
@@ -844,7 +847,16 @@ function PipelinePane({ signals, meta, archive, moodOverride, setMoodOverride, n
 
 function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
   const today = new Date().toISOString().slice(0, 10)
-  const [expandedDate, setExpandedDate] = useState<string | null>(null)
+
+  function previewUrl(entry: ArchiveEntry) {
+    if (entry.buildId) return `/api/archive-preview/${entry.date}/build-${entry.buildId}/index.html`
+    return `/api/archive-preview/${entry.date}/index.html`
+  }
+
+  function buildTime(entry: ArchiveEntry) {
+    if (!entry.timestamp) return ''
+    return new Date(entry.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })
+  }
 
   return (
     <>
@@ -866,9 +878,10 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
 
       {archive.map((entry, i) => {
         const isToday = entry.date === today
-        const isExpanded = expandedDate === entry.date
+        const time = buildTime(entry)
+        const w = entry.weights
         return (
-          <div key={entry.date + i} style={{
+          <div key={entry.buildId || entry.date + i} style={{
             padding: '10px 12px',
             marginBottom: '6px',
             background: isToday ? 'rgba(0,229,255,0.04)' : c.cardBg,
@@ -876,69 +889,37 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
             borderRadius: '4px',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{
-                fontSize: '12px',
-                fontWeight: 700,
-                color: isToday ? c.cyan : c.primary,
-                fontFamily: c.font,
-                minWidth: '90px',
-              }}>
-                {entry.date}
-                {isToday && <span style={{ fontSize: '9px', color: c.cyan, marginLeft: '6px' }}>TODAY</span>}
-              </span>
-              <span style={{
-                fontSize: '11px',
-                color: c.secondary,
-                fontStyle: 'italic',
-                fontFamily: c.font,
-                flex: 1,
-              }}>
+              <div style={{ minWidth: '110px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: isToday ? c.cyan : c.primary, fontFamily: c.font }}>
+                  {entry.date}
+                  {isToday && <span style={{ fontSize: '9px', color: c.cyan, marginLeft: '6px' }}>TODAY</span>}
+                </span>
+                {time && (
+                  <div style={{ fontSize: '9px', color: c.muted, fontFamily: c.font, marginTop: '2px' }}>{time}</div>
+                )}
+              </div>
+              <span style={{ fontSize: '11px', color: c.secondary, fontStyle: 'italic', fontFamily: c.font, flex: 1, lineHeight: '1.4' }}>
                 {entry.brief}
               </span>
               <button
-                onClick={() => window.open(`/api/archive-preview/${entry.date}/index.html`, '_blank')}
+                onClick={() => window.open(previewUrl(entry), '_blank')}
                 style={{
-                  background: 'rgba(34,211,238,0.1)',
-                  border: '1px solid rgba(34,211,238,0.2)',
-                  borderRadius: '3px',
-                  padding: '3px 8px',
-                  fontSize: '9px',
-                  color: '#22d3ee',
-                  cursor: 'pointer',
-                  fontFamily: c.font,
-                  flexShrink: 0,
+                  background: 'rgba(34,211,238,0.1)', border: '1px solid rgba(34,211,238,0.2)',
+                  borderRadius: '3px', padding: '3px 8px', fontSize: '9px', color: '#22d3ee',
+                  cursor: 'pointer', fontFamily: c.font, flexShrink: 0,
                 }}
               >
                 Preview ↗
               </button>
-              <button
-                onClick={() => setExpandedDate(isExpanded ? null : entry.date)}
-                style={{
-                  background: 'transparent',
-                  border: `1px solid ${c.border}`,
-                  borderRadius: '3px',
-                  padding: '3px 8px',
-                  fontSize: '9px',
-                  color: c.dim,
-                  cursor: 'pointer',
-                  fontFamily: c.font,
-                  flexShrink: 0,
-                }}
-              >
-                {isExpanded ? 'Hide' : 'View Brief'}
-              </button>
             </div>
-            {isExpanded && (
-              <div style={{
-                marginTop: '8px',
-                paddingTop: '8px',
-                borderTop: `1px solid ${c.border}`,
-                fontSize: '11px',
-                color: c.muted,
-                fontFamily: c.font,
-                lineHeight: '1.6',
-              }}>
-                {entry.brief}
+            {w && (
+              <div style={{ display: 'flex', gap: '12px', marginTop: '6px', paddingTop: '6px', borderTop: `1px solid ${c.border}` }}>
+                {(['signals', 'inspiration', 'ratings', 'risk'] as const).map(k => (
+                  <span key={k} style={{ fontSize: '9px', color: c.muted, fontFamily: c.font }}>
+                    <span style={{ color: c.dim }}>{k[0].toUpperCase() + k.slice(1)}</span>{' '}
+                    <span style={{ color: c.secondary }}>{w[k]}</span>
+                  </span>
+                ))}
               </div>
             )}
           </div>
@@ -1163,6 +1144,7 @@ function RunPane({ pipelineStatus, dryRun, setDryRun, isRunDisabled, handleRun, 
           <SuccessSection
             brief={result.brief ?? ''}
             timestamp={result.timestamp ?? ''}
+            buildId={archive[0]?.buildId ?? ''}
             attemptNum={attemptNum}
             archive={archive}
             totalMs={result.totalMs ?? 0}
@@ -2242,8 +2224,8 @@ function PhaseDot({ status }: { status: 'pending' | 'active' | 'done' }) {
   return <div style={{ ...base, background: c.border, border: `1px solid ${c.ghost}` }} />
 }
 
-function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases, onRunAgain, cooldownLeft, isCooldown, signalDate }: {
-  brief: string; timestamp: string; attemptNum: number; archive: ArchiveEntry[];
+function SuccessSection({ brief, timestamp, buildId, attemptNum, archive, totalMs, phases, onRunAgain, cooldownLeft, isCooldown, signalDate }: {
+  brief: string; timestamp: string; buildId: string; attemptNum: number; archive: ArchiveEntry[];
   totalMs: number; phases: Phase[]; onRunAgain: () => void; cooldownLeft: number; isCooldown: boolean;
   signalDate: string
 }) {
@@ -2272,7 +2254,7 @@ function SuccessSection({ brief, timestamp, attemptNum, archive, totalMs, phases
       const resp = await fetch('/api/dev-rate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date: ratingDate, ratings, notes: ratingNotes, timestamp: Date.now(), saveAsReference }),
+        body: JSON.stringify({ date: ratingDate, buildId, ratings, notes: ratingNotes, timestamp: Date.now(), saveAsReference }),
       })
       if (resp.ok) {
         const data = await resp.json()

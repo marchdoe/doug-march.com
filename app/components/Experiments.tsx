@@ -1,126 +1,84 @@
-import { css } from '../../styled-system/css'
-import { Box } from '../../styled-system/jsx'
-import { experiments } from '../content/projects'
+import { Box, Flex } from '../../styled-system/jsx'
 import { SectionHead } from './SectionHead'
+import { experiments } from '../content/projects'
 
 export function Experiments() {
   return (
-    <Box
-      className={css({
-        mb: '8',
-      })}
-    >
+    <Box>
       <SectionHead label="Experiments" />
-      <div>
+      <Box>
         {experiments.map((project, index) => {
-          const href = project.link ?? project.externalUrl ?? project.url ?? '#'
-          const isExternal = !!href && !href.startsWith('/')
-
+          const href = project.externalUrl || `/work/${project.slug}`
+          const isExternal = !!project.externalUrl
           return (
             <a
-              key={project.title}
+              key={project.slug}
               href={href}
-              {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              className={css({
-                display: 'flex',
-                alignItems: 'baseline',
-                gap: '4',
-                py: '3',
-                px: '4',
-                borderBottom: '1px solid',
-                borderBottomColor: 'border.DEFAULT',
-                textDecoration: 'none',
-                transition: 'background 0.12s ease',
-                _hover: {
-                  bg: 'bg.tint',
-                  '& [data-title]': {
-                    color: 'accent.DEFAULT',
-                  },
-                },
-                _first: {
-                  borderTop: '1px solid',
-                  borderTopColor: 'border.DEFAULT',
-                },
-              })}
+              target={isExternal ? '_blank' : undefined}
+              rel={isExternal ? 'noopener noreferrer' : undefined}
+              style={{ textDecoration: 'none', display: 'block' }}
             >
-              {/* Index */}
-              <span
-                className={css({
-                  fontFamily: 'mono',
-                  fontSize: '2xs',
-                  fontWeight: 'regular',
-                  color: 'text.dim',
-                  minWidth: '1.5rem',
-                  textAlign: 'right',
-                  flexShrink: '0',
-                })}
+              <Box
+                paddingTop="3"
+                paddingBottom="3"
+                borderBottomWidth="1px"
+                borderBottomStyle="solid"
+                borderBottomColor="border"
+                style={{ transition: 'background 0.15s ease' }}
               >
-                {String(index + 1).padStart(2, '0')}
-              </span>
-
-              {/* Title */}
-              <span
-                data-title=""
-                className={css({
-                  fontFamily: 'serif',
-                  fontSize: 'base',
-                  fontWeight: 'medium',
-                  lineHeight: 'snug',
-                  color: 'text',
-                  flex: '1',
-                  transition: 'color 0.12s ease',
-                })}
-              >
-                {project.title}
-              </span>
-
-              {/* Type */}
-              <span
-                className={css({
-                  fontFamily: 'mono',
-                  fontSize: 'xs',
-                  fontWeight: 'regular',
-                  color: 'text.mid',
-                  letterSpacing: 'wide',
-                  display: { base: 'none', sm: 'block' },
-                })}
-              >
-                {project.type}
-              </span>
-
-              {/* Year */}
-              <span
-                className={css({
-                  fontFamily: 'mono',
-                  fontSize: 'xs',
-                  fontWeight: 'regular',
-                  color: 'text.dim',
-                  minWidth: '2.5rem',
-                  textAlign: 'right',
-                  flexShrink: '0',
-                })}
-              >
-                {project.year}
-              </span>
-
-              {/* External indicator */}
-              {isExternal && (
-                <span
-                  aria-hidden="true"
-                  className={css({
-                    fontFamily: 'mono',
-                    fontSize: 'xs',
-                    color: 'text.dim',
-                    flexShrink: '0',
-                  })}
-                >
-                  ↗
-                </span>
-              )}
+                <Flex align="baseline" justify="space-between">
+                  <Flex align="baseline" gap="3" flex="1">
+                    <Box
+                      fontSize="2xs"
+                      fontFamily="body"
+                      fontWeight="semibold"
+                      color="textMuted"
+                      letterSpacing="widest"
+                      style={{ fontVariantNumeric: 'tabular-nums', minWidth: '20px' }}
+                    >
+                      E{String(index + 1).padStart(2, '0')}
+                    </Box>
+                    <Box flex="1">
+                      <Box
+                        fontSize="sm"
+                        fontFamily="body"
+                        fontWeight="semibold"
+                        color="text"
+                        lineHeight="snug"
+                      >
+                        {project.title}
+                      </Box>
+                      <Box
+                        fontSize="2xs"
+                        fontFamily="body"
+                        fontWeight="semibold"
+                        letterSpacing="wide"
+                        textTransform="uppercase"
+                        color="textMuted"
+                        marginTop="1"
+                      >
+                        {project.type}
+                      </Box>
+                    </Box>
+                  </Flex>
+                  <Flex align="baseline" gap="3">
+                    <Box
+                      fontSize="2xs"
+                      fontFamily="body"
+                      fontWeight="semibold"
+                      letterSpacing="wide"
+                      color="textMuted"
+                    >
+                      {project.year}
+                    </Box>
+                    <Box fontSize="xs" fontFamily="body" color="accent">→</Box>
+                  </Flex>
+                </Flex>
+              </Box>
             </a>
           )
         })}
-      </div>
+      </Box>
     </Box>
   )
 }

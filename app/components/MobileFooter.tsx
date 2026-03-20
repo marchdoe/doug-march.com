@@ -1,67 +1,47 @@
-import React from 'react'
 import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 
-const footerStyles = css({
-  display: { base: 'flex', lg: 'none' },
-  position: 'fixed',
-  bottom: '0',
-  left: '0',
-  right: '0',
-  zIndex: '20',
-  bg: 'bg.side',
-  borderTopWidth: '1px',
-  borderStyle: 'solid',
-  borderColor: 'border.accent',
-  height: '56px',
-  alignItems: 'stretch',
-})
-
-const linkStyles = css({
-  flex: '1',
+const mobileLinkClass = css({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  flex: '1',
   minHeight: '44px',
-  fontFamily: 'mono',
   fontSize: 'xs',
-  fontWeight: 'medium',
-  letterSpacing: 'wide',
+  color: 'textMuted',
+  letterSpacing: 'wider',
+  fontFamily: 'mono',
+  textDecoration: 'none',
   textTransform: 'uppercase',
-  color: 'text.mid',
-  transition: 'color 0.12s ease, background 0.12s ease',
+  transition: 'color 0.15s ease',
   _hover: {
-    color: 'accent.DEFAULT',
-    bg: 'accent.glow',
+    color: 'accentLight',
   },
   _focusVisible: {
-    outline: '2px solid',
-    outlineColor: 'accent.DEFAULT',
+    outline: '1px solid',
+    outlineColor: 'accentLight',
     outlineOffset: '-2px',
   },
-})
-
-const dividerStyles = css({
-  width: '1px',
-  bg: 'border.DEFAULT',
-  alignSelf: 'stretch',
-  flexShrink: '0',
 })
 
 export function MobileFooter() {
   return (
     <Box
-      as="nav"
-      aria-label="Mobile navigation"
-      className={footerStyles}
+      display={{ base: 'flex', md: 'none' }}
+      position="fixed"
+      bottom="0"
+      left="0"
+      right="0"
+      background="bgHeader"
+      borderTop="1px solid"
+      borderColor="border"
+      zIndex={50}
     >
-      <a href="/" className={linkStyles}>
-        Home
-      </a>
-      <Box className={dividerStyles} />
-      <a href="/about" className={linkStyles}>
-        About
-      </a>
+      <Flex align="stretch" width="100%">
+        <a href="/" className={mobileLinkClass}>Home</a>
+        <Box width="1px" background="border" flexShrink={0} />
+        <a href="/about" className={mobileLinkClass}>About</a>
+      </Flex>
     </Box>
   )
 }

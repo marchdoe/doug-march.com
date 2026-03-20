@@ -23,6 +23,7 @@ config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.e
 import { execSync } from 'child_process'
 import { readFile } from 'fs/promises'
 import { existsSync } from 'fs'
+import { callClaudeCLI as callClaudeCLIShared } from './utils/claude-cli.js'
 import { readContext } from './utils/site-context.js'
 import { MUTABLE_FILES } from './utils/site-context.js'
 import { buildMessages } from './utils/prompt-builder.js'
@@ -92,9 +93,6 @@ let client
  * @returns {{ rationale: string, design_brief: string, files: Array<{path: string, content: string}> }}
  */
 async function callClaudeCLI(system, userPrompt, buildError) {
-  const { writeFile: writeFileAsync } = await import('fs/promises')
-  const { execSync: exec } = await import('child_process')
-
   // Build the full prompt for claude CLI
   let fullPrompt = userPrompt
 
@@ -119,117 +117,21 @@ You MUST include elements/preset.ts at minimum. Include complete file contents �
   // and --settings disables hooks, giving us a clean non-agentic context.
   const combinedPrompt = `${system}\n\n---\n\n${fullPrompt}`
 
-  // Write prompt to temp file (it's too long for command line args)
-  const promptPath = path.join(ROOT, '.claude-prompt.tmp')
-  await writeFileAsync(promptPath, combinedPrompt, 'utf8')
-
-  console.log('  calling claude CLI (Max plan)...')
-  console.log(`  prompt written to .claude-prompt.tmp (${(combinedPrompt.length / 1024).toFixed(0)}KB)`)
-
-  // Call claude CLI in print mode, piping the prompt from the temp file.
-  // IMPORTANT: Strip ANTHROPIC_API_KEY from env so claude CLI uses the
-  // Max plan subscription auth instead of (possibly empty) API credits.
-  const cliEnv = { ...process.env }
-  delete cliEnv.ANTHROPIC_API_KEY
-
-  const { spawn: spawnProc } = await import('child_process')
-  const { createReadStream } = await import('fs')
-
-  const result = await new Promise((resolve, reject) => {
-    const child = spawnProc('claude', CLAUDE_CLI_ARGS, {
-      cwd: ROOT,
-      env: cliEnv,
-    })
-
-    let fullText = ''  // Accumulated response text from content blocks
-    let finalResult = ''  // The result field from the final message
-    let stderr = ''
-    let lineBuffer = ''  // Buffer for incomplete JSON lines
-    let charCount = 0  // Track characters received for progress
-
-    // Pipe the prompt file to stdin, ignoring EPIPE if the child exits early
-    const promptStream = createReadStream(promptPath)
-    child.stdin.on('error', () => {}) // swallow EPIPE
-    promptStream.pipe(child.stdin)
-
-    child.stdout.on('data', (chunk) => {
-      lineBuffer += chunk.toString()
-      const lines = lineBuffer.split('\n')
-      // Keep the last incomplete line in the buffer
-      lineBuffer = lines.pop() || ''
-
-      for (const line of lines) {
-        if (!line.trim()) continue
-        try {
-          const event = JSON.parse(line)
-
-          if (event.type === 'assistant' && event.message?.content) {
-            // Content block with text — accumulate and show progress
-            for (const block of event.message.content) {
-              if (block.type === 'text' && block.text) {
-                fullText += block.text
-                const newChars = block.text.length
-                charCount += newChars
-                // Log progress every ~2000 chars so the SSE stream shows activity
-                if (charCount > 0 && charCount % 2000 < newChars) {
-                  console.log(`  ... designing (${(charCount / 1024).toFixed(0)}KB generated)`)
-                }
-              }
-            }
-          } else if (event.type === 'result') {
-            // Final result — this is the complete response
-            finalResult = event.result || ''
-          }
-        } catch {
-          // Not valid JSON — skip
-        }
-      }
-    })
-    child.stderr.on('data', (chunk) => { stderr += chunk.toString() })
-
-    const timeout = setTimeout(async () => {
-      child.kill()
+  const result = await callClaudeCLIShared('daily-redesign', DESIGNER_SYSTEM_PROMPT, combinedPrompt, {
+    timeoutMs: 1200000, // 20 minute timeout
+    extraCliArgs: ['--fallback-model', 'haiku'],
+    onTimeout: async ({ charCount }) => {
       // Check for concurrent claude sessions that may be blocking throughput
-      let concurrencyWarning = ''
       try {
         const { execSync: execS } = await import('child_process')
         const procs = execS("ps aux | grep '[c]laude' | grep -v grep | grep -v '.sh'", { encoding: 'utf8' }).trim().split('\n')
         const interactive = procs.filter(p => !p.includes('-p') && !p.includes('ShipIt'))
         if (interactive.length > 0) {
-          concurrencyWarning = `\n\n⚠ ${interactive.length} other Claude Code session(s) detected. The Max plan CLI shares a per-account connection pool — concurrent sessions may block pipeline throughput. Try closing idle sessions or running the pipeline when no interactive sessions are active.`
+          return `\n\n⚠ ${interactive.length} other Claude Code session(s) detected. The Max plan CLI shares a per-account connection pool — concurrent sessions may block pipeline throughput. Try closing idle sessions or running the pipeline when no interactive sessions are active.`
         }
       } catch {}
-      reject(new Error(`Claude CLI timed out after 20 minutes (generated ${(charCount / 1024).toFixed(0)}KB before timeout)${concurrencyWarning}`))
-    }, 1200000) // 20 minute timeout
-
-    child.on('close', (code) => {
-      clearTimeout(timeout)
-      // Process any remaining data in the line buffer
-      if (lineBuffer.trim()) {
-        try {
-          const event = JSON.parse(lineBuffer)
-          if (event.type === 'result') finalResult = event.result || ''
-          if (event.type === 'assistant' && event.message?.content) {
-            for (const block of event.message.content) {
-              if (block.type === 'text') fullText += block.text
-            }
-          }
-        } catch {}
-      }
-      console.log(`  claude CLI finished (${(charCount / 1024).toFixed(0)}KB total)`)
-      if (code !== 0 && !finalResult && !fullText) {
-        console.error(`  claude CLI stderr: ${stderr.slice(0, 500)}`)
-        reject(new Error(`claude CLI exited with code ${code}: ${stderr.slice(0, 500)}`))
-      } else {
-        // Prefer finalResult (from result event), fall back to accumulated text
-        resolve(finalResult || fullText)
-      }
-    })
-
-    child.on('error', (err) => {
-      clearTimeout(timeout)
-      reject(err)
-    })
+      return ''
+    },
   })
 
   // Parse the JSON response — Claude may include preamble text or markdown fences
@@ -267,9 +169,6 @@ You MUST include elements/preset.ts at minimum. Include complete file contents �
   }
 
   console.log(`  claude CLI responded with ${parsed.files.length} files`)
-
-  // Clean up temp file
-  try { const { unlink } = await import('fs/promises'); await unlink(promptPath) } catch {}
 
   return parsed
 }
@@ -484,12 +383,19 @@ async function main() {
 
       // Archive
       const changedPaths = input.files.map((f) => f.path)
+      const weights = {
+        signals: parseInt(process.env.WEIGHT_SIGNALS || '5'),
+        inspiration: parseInt(process.env.WEIGHT_INSPIRATION || '5'),
+        ratings: parseInt(process.env.WEIGHT_RATINGS || '5'),
+        risk: parseInt(process.env.WEIGHT_RISK || '5'),
+      }
       await archive(
         context.signals.date,
         context.signals,
         input.rationale,
         input.design_brief,
-        changedPaths
+        changedPaths,
+        weights
       )
 
       if (DRY_RUN) {

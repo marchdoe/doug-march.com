@@ -1,37 +1,24 @@
+import { Box } from '../../styled-system/jsx'
+
 interface SectionHeadProps {
   label: string
 }
 
 export function SectionHead({ label }: SectionHeadProps) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.75rem',
-        marginBottom: '1.5rem',
-      }}
-    >
-      <span
-        style={{
-          fontFamily: "'DM Mono', 'Courier New', monospace",
-          fontSize: '0.74rem',
-          fontWeight: '500',
-          letterSpacing: '0.22em',
-          textTransform: 'uppercase' as const,
-          color: 'var(--colors-accent-default, var(--colors-accent))',
-          whiteSpace: 'nowrap' as const,
-        }}
+    <Box marginBottom="4">
+      <Box
+        fontSize="2xs"
+        fontFamily="body"
+        fontWeight="semibold"
+        letterSpacing="widest"
+        textTransform="uppercase"
+        color="textMuted"
+        marginBottom="2"
       >
         {label}
-      </span>
-      <div
-        style={{
-          flex: 1,
-          height: '1px',
-          backgroundColor: 'var(--colors-border-default, var(--colors-border))',
-        }}
-      />
-    </div>
+      </Box>
+      <Box height="1px" background="borderMuted" />
+    </Box>
   )
 }

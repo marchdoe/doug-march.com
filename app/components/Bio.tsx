@@ -1,58 +1,43 @@
-import { css } from '../../styled-system/css'
 import { Box } from '../../styled-system/jsx'
+import { SectionHead } from './SectionHead'
 import { identity } from '../content/about'
 
 export function Bio() {
   return (
-    <Box
-      className={css({
-        mb: '8',
-      })}
-    >
-      {/* Role label */}
-      <span
-        className={css({
-          display: 'block',
-          fontFamily: 'mono',
-          fontSize: '2xs',
-          fontWeight: 'medium',
-          letterSpacing: 'widest',
-          textTransform: 'uppercase',
-          color: 'accent.DEFAULT',
-          mb: '3',
-        })}
-      >
-        {identity.role}
-      </span>
-
-      {/* Name */}
-      <h1
-        className={css({
-          fontFamily: 'serif',
-          fontSize: 'xl',
-          fontWeight: 'bold',
-          letterSpacing: 'tight',
-          lineHeight: 'tight',
-          color: 'text',
-          mb: '4',
-        })}
+    <Box>
+      <SectionHead label="About" />
+      <Box
+        fontFamily="heading"
+        fontWeight="bold"
+        fontSize="lg"
+        lineHeight="snug"
+        letterSpacing="tight"
+        color="text"
+        marginBottom="4"
       >
         {identity.name}
-      </h1>
-
-      {/* Statement */}
-      <p
-        className={css({
-          fontFamily: 'serif',
-          fontSize: 'md',
-          fontWeight: 'regular',
-          lineHeight: 'loose',
-          color: 'text.mid',
-          maxWidth: '52ch',
-        })}
+      </Box>
+      <Box
+        fontSize="2xs"
+        fontFamily="body"
+        fontWeight="semibold"
+        letterSpacing="widest"
+        textTransform="uppercase"
+        color="accent"
+        marginBottom="4"
+      >
+        {identity.role}
+      </Box>
+      <Box
+        fontSize="base"
+        fontFamily="body"
+        fontWeight="regular"
+        lineHeight="normal"
+        color="textSecondary"
+        maxWidth="520px"
       >
         {identity.statement}
-      </p>
+      </Box>
     </Box>
   )
 }

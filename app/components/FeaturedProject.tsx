@@ -1,114 +1,153 @@
-import { css } from '../../styled-system/css'
 import { Box, Flex } from '../../styled-system/jsx'
 import { featuredProject } from '../content/projects'
 
 export function FeaturedProject() {
+  if (!featuredProject) return null
+
+  const href = featuredProject.liveUrl || featuredProject.externalUrl
+
   return (
-    <Box
-      className={css({
-        bg: 'bg.card',
-        borderTop: '3px solid',
-        borderTopColor: 'border.accent',
-        borderBottom: '1px solid',
-        borderBottomColor: 'border.DEFAULT',
-        borderLeft: '1px solid',
-        borderLeftColor: 'border.DEFAULT',
-        borderRight: '1px solid',
-        borderRightColor: 'border.DEFAULT',
-        p: '6',
-        mb: '8',
-        position: 'relative',
-      })}
-    >
-      {/* Fern tint overlay */}
+    <Box>
+      {/* Section slug */}
       <Box
-        className={css({
-          position: 'absolute',
-          inset: '0',
-          bg: 'accent.glow',
-          pointerEvents: 'none',
-        })}
-      />
-
-      <Flex
-        className={css({
-          flexDirection: 'column',
-          gap: '4',
-          position: 'relative',
-        })}
+        fontSize="2xs"
+        fontFamily="body"
+        fontWeight="semibold"
+        letterSpacing="widest"
+        textTransform="uppercase"
+        color="accent"
+        marginBottom="2"
       >
-        {/* Label */}
-        <span
-          className={css({
-            fontFamily: 'mono',
-            fontSize: '2xs',
-            fontWeight: 'medium',
-            letterSpacing: 'widest',
-            textTransform: 'uppercase',
-            color: 'accent.DEFAULT',
-          })}
-        >
-          Featured Project
-        </span>
+        Featured
+      </Box>
+      <Box height="1px" background="borderAccent" marginBottom="6" />
 
-        {/* Title */}
-        <h2
-          className={css({
-            fontFamily: 'serif',
-            fontSize: 'lg',
-            fontWeight: 'bold',
-            letterSpacing: 'tight',
-            lineHeight: 'snug',
-            color: 'text',
-          })}
-        >
-          {featuredProject.title}
-        </h2>
+      {/* Headline */}
+      {href ? (
+        <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+          <Box
+            fontFamily="heading"
+            fontWeight="black"
+            fontSize="2xl"
+            lineHeight="tight"
+            letterSpacing="tight"
+            color="text"
+            marginBottom="4"
+            style={{ transition: 'color 0.15s ease' }}
+          >
+            {featuredProject.title}
+          </Box>
+        </a>
+      ) : (
+        <a href={`/work/${featuredProject.slug}`} style={{ textDecoration: 'none' }}>
+          <Box
+            fontFamily="heading"
+            fontWeight="black"
+            fontSize="2xl"
+            lineHeight="tight"
+            letterSpacing="tight"
+            color="text"
+            marginBottom="4"
+            style={{ transition: 'color 0.15s ease' }}
+          >
+            {featuredProject.title}
+          </Box>
+        </a>
+      )}
 
-        {/* Problem Statement */}
-        <p
-          className={css({
-            fontFamily: 'serif',
-            fontSize: 'base',
-            fontWeight: 'regular',
-            lineHeight: 'normal',
-            color: 'text.mid',
-            maxWidth: '60ch',
-          })}
+      {/* Type + Year */}
+      <Flex gap="3" align="center" marginBottom="5">
+        <Box
+          fontSize="2xs"
+          fontFamily="body"
+          fontWeight="semibold"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="textMuted"
+        >
+          {featuredProject.type}
+        </Box>
+        <Box width="px" height="3" background="borderMuted" />
+        <Box
+          fontSize="2xs"
+          fontFamily="body"
+          fontWeight="semibold"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="textMuted"
+        >
+          {featuredProject.year}
+        </Box>
+        {featuredProject.role && (
+          <>
+            <Box width="px" height="3" background="borderMuted" />
+            <Box
+              fontSize="2xs"
+              fontFamily="body"
+              fontWeight="semibold"
+              letterSpacing="widest"
+              textTransform="uppercase"
+              color="textMuted"
+            >
+              {featuredProject.role}
+            </Box>
+          </>
+        )}
+      </Flex>
+
+      {/* Problem statement */}
+      {featuredProject.problem && (
+        <Box
+          fontSize="base"
+          fontFamily="body"
+          fontWeight="regular"
+          lineHeight="normal"
+          color="textSecondary"
+          maxWidth="520px"
+          marginBottom="6"
         >
           {featuredProject.problem}
-        </p>
+        </Box>
+      )}
 
-        {/* External Link */}
-        <a
-          href={featuredProject.link ?? featuredProject.externalUrl ?? featuredProject.url ?? '#'}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={css({
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '2',
-            fontFamily: 'mono',
-            fontSize: 'xs',
-            fontWeight: 'medium',
-            letterSpacing: 'wide',
-            textTransform: 'uppercase',
-            color: 'accent.DEFAULT',
-            borderBottom: '1px solid',
-            borderBottomColor: 'border.accent',
-            pb: '1',
-            width: 'fit-content',
-            transition: 'color 0.12s ease, border-color 0.12s ease',
-            _hover: {
-              color: 'text',
-              borderBottomColor: 'border.mid',
-            },
-          })}
-        >
-          View Project
-          <span aria-hidden="true">↗</span>
+      {/* CTA */}
+      {href ? (
+        <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+          <Box
+            fontSize="xs"
+            fontFamily="body"
+            fontWeight="semibold"
+            letterSpacing="wider"
+            textTransform="uppercase"
+            color="accent"
+            borderBottomWidth="1px"
+            borderBottomStyle="solid"
+            borderBottomColor="borderAccent"
+            paddingBottom="px"
+            display="inline-block"
+          >
+            View Project →
+          </Box>
         </a>
-      </Flex>
+      ) : (
+        <a href={`/work/${featuredProject.slug}`} style={{ textDecoration: 'none' }}>
+          <Box
+            fontSize="xs"
+            fontFamily="body"
+            fontWeight="semibold"
+            letterSpacing="wider"
+            textTransform="uppercase"
+            color="accent"
+            borderBottomWidth="1px"
+            borderBottomStyle="solid"
+            borderBottomColor="borderAccent"
+            paddingBottom="px"
+            display="inline-block"
+          >
+            View Project →
+          </Box>
+        </a>
+      )}
     </Box>
   )
 }

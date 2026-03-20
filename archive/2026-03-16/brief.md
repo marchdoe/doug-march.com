@@ -1,6 +1,6 @@
 # 2026-03-16
 
-**Design Brief:** St. Patrick's eve green creeps through the fog like a promise not yet kept — a well-organized desk beside a rain-streaked window, where the Tigers score is circled in Sharpie and the Lao Tzu quote sits alone waiting for the mud to settle.
+**Design Brief:** Wet grass under March cloud cover — a season wanting to arrive, held back just enough, with a week beginning in quiet purpose.
 
 ## Signals
 
@@ -11,9 +11,9 @@
 
 ## Claude's Rationale
 
-The overcast March Monday called for a palette that holds two truths at once: the muted cool of fog on new spring grass, and the genuine green energy of St. Patrick's eve pushing through. The neutral scale ("fog") tilts just barely toward green — not stone, not pure gray — because this is a living sky, not a winter one. The accent ("fern") has real saturation but is seen through cloud: present, not shouting. Amber steps in only for the win signals (Tigers, Cameron Young) — a warm counterpoint that reads like a circled box score against the cool green field.
+The overcast spring Monday called for a palette built on hue 100° — that specific yellow-green frequency of wet March grass under cloud cover. The neutral scale carries the hue throughout, keeping the page alive without ever feeling bright. Fraunces with its high-contrast strokes and optical warmth carries the "four-track" imperfection the brief asked for — slightly melodic, slightly rough, emphatically not corporate — while Outfit recedes into pure service as body text. The semantic token layer maps all the spec's named values (bgCard, bgSidebar, textMuted, etc.) so components can reference meaning rather than raw values. Dark mode is built in from the ground up, defaulting to the deep moss backgrounds with lighter accent and text values.
 
-Newsreader brings the editorial gravity this brief needs — it has that slightly rough, ink-on-paper quality that fits both the Lao Tzu quote sitting alone in silence and the structured leaderboard presenting TPC Sawgrass results. It doesn't feel designed in a studio; it feels set in a compositing room. DM Mono stays for labels and scorecard numerals — the grid rhythm of a workweek Monday. The dark mode defaults because the new moon (1.2% illumination) and the heavier headlines underneath all the wins earn that quiet negative space. The fog.800 background is almost-black-but-green, not void — there's light diffused in here, just very far away.
+The spring green accent (#5A8A3E) earns its presence by appearing in exactly the right places — the left stripe on the Tigers widget, the quote bar, the St. Patrick's hairline — while the amber secondary (#C4875A at 35% opacity) is a single hairline above the Iran note and nowhere else. The Perfect Fourth scale (1.333) gives the layout editorial drama at 50px headings and real weight at 37px scores, while keeping body and labels honest.
 
 ## Files Changed
 
@@ -25,9 +25,9 @@ Newsreader brings the editorial gravity this brief needs — it has that slightl
 - app/routes/work.$slug.tsx
 - app/components/Sidebar.tsx
 - app/components/MobileFooter.tsx
-- app/components/SectionHead.tsx
 - app/components/FeaturedProject.tsx
 - app/components/ProjectRow.tsx
+- app/components/SectionHead.tsx
 - app/components/SelectedWork.tsx
 - app/components/Experiments.tsx
 - app/components/Bio.tsx
