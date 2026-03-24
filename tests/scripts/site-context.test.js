@@ -32,8 +32,8 @@ describe('file group constants', () => {
     expect(SIDEBAR_FILES).toEqual(['app/components/Sidebar.tsx'])
   })
 
-  it('FOOTER_FILES contains only MobileFooter.tsx', () => {
-    expect(FOOTER_FILES).toEqual(['app/components/MobileFooter.tsx'])
+  it('FOOTER_FILES is empty (MobileFooter removed from mutable files)', () => {
+    expect(FOOTER_FILES).toEqual([])
   })
 
   it('STRUCTURE_FILES equals LAYOUT + SIDEBAR + FOOTER', () => {
