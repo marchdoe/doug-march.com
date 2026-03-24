@@ -2236,6 +2236,8 @@ function SuccessSection({ brief, timestamp, buildId, attemptNum, archive, totalM
   const [ratings, setRatings] = useState<Record<string, number>>({})
   const [ratingNotes, setRatingNotes] = useState('')
   const [ratingSaved, setRatingSaved] = useState(false)
+  const [ratingSaving, setRatingSaving] = useState(false)
+  const [ratingError, setRatingError] = useState('')
   const [saveAsReference, setSaveAsReference] = useState(false)
   const [referenceConfirmation, setReferenceConfirmation] = useState('')
 
@@ -2250,14 +2252,16 @@ function SuccessSection({ brief, timestamp, buildId, attemptNum, archive, totalM
   ]
 
   const handleSaveRating = async () => {
+    setRatingSaving(true)
+    setRatingError('')
     try {
       const resp = await fetch('/api/dev-rate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ date: ratingDate, buildId, ratings, notes: ratingNotes, timestamp: Date.now(), saveAsReference }),
       })
+      const data = await resp.json()
       if (resp.ok) {
-        const data = await resp.json()
         setRatingSaved(true)
         if (saveAsReference && data.referenceAdded) {
           setReferenceConfirmation('Rating saved \u2713 \u2014 Design added to reference library')
@@ -2266,8 +2270,14 @@ function SuccessSection({ brief, timestamp, buildId, attemptNum, archive, totalM
         } else {
           setReferenceConfirmation('')
         }
+      } else {
+        setRatingError(`Save failed: ${data.error || resp.status}`)
       }
-    } catch {}
+    } catch (err) {
+      setRatingError(`Save failed: ${err instanceof Error ? err.message : String(err)}`)
+    } finally {
+      setRatingSaving(false)
+    }
   }
   const siteUrl = window.location.origin
 
@@ -2546,9 +2556,9 @@ function SuccessSection({ brief, timestamp, buildId, attemptNum, archive, totalM
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '8px' }}>
           <button
             onClick={handleSaveRating}
-            disabled={Object.keys(ratings).length === 0}
+            disabled={Object.keys(ratings).length === 0 || ratingSaving}
             style={{
-              background: Object.keys(ratings).length === 0 ? c.muted : c.cyan,
+              background: Object.keys(ratings).length === 0 || ratingSaving ? c.muted : c.cyan,
               color: c.pageBg,
               border: 'none',
               borderRadius: '4px',
@@ -2556,16 +2566,21 @@ function SuccessSection({ brief, timestamp, buildId, attemptNum, archive, totalM
               fontSize: '10px',
               fontWeight: 700,
               fontFamily: c.font,
-              cursor: Object.keys(ratings).length === 0 ? 'default' : 'pointer',
-              opacity: Object.keys(ratings).length === 0 ? 0.5 : 1,
+              cursor: Object.keys(ratings).length === 0 || ratingSaving ? 'default' : 'pointer',
+              opacity: Object.keys(ratings).length === 0 || ratingSaving ? 0.5 : 1,
               letterSpacing: '.05em',
             }}
           >
-            SAVE RATING
+            {ratingSaving ? 'SAVING...' : 'SAVE RATING'}
           </button>
           {ratingSaved && (
             <span style={{ fontSize: '10px', color: c.green, fontFamily: c.font, fontWeight: 700 }}>
               {referenceConfirmation || 'Rating saved \u2713'}
+            </span>
+          )}
+          {ratingError && (
+            <span style={{ fontSize: '10px', color: '#ef4444', fontFamily: c.font }}>
+              {ratingError}
             </span>
           )}
         </div>

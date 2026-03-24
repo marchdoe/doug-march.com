@@ -461,11 +461,14 @@ function pipelineApiPlugin(): Plugin {
         if (!buildMatch && !legacyMatch) { res.writeHead(404); res.end('Not found'); return }
 
         let fullPath: string
+        let filePath: string
         if (buildMatch) {
-          const [, date, buildDir, filePath] = buildMatch
+          const [, date, buildDir, fp] = buildMatch
+          filePath = fp
           fullPath = resolve('archive', date, buildDir, 'site', filePath)
         } else {
-          const [, date, filePath] = legacyMatch!
+          const [, date, fp] = legacyMatch!
+          filePath = fp
           fullPath = resolve('archive', date, 'site', filePath)
         }
 
