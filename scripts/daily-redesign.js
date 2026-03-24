@@ -254,26 +254,13 @@ function gitCommit(date, designBrief) {
 }
 
 async function main() {
-  // Validate environment before starting
-  if (!MOCK_MODE && !process.env.ANTHROPIC_API_KEY) {
-    console.error('Error: ANTHROPIC_API_KEY environment variable is not set.')
-    console.error('  Set ANTHROPIC_API_KEY in .env, or use MOCK_MODE=true to use local Claude Code CLI.')
+  // Validate claude CLI is available (required in all modes)
+  try {
+    execSync('claude --version', { encoding: 'utf8', timeout: 5000 })
+  } catch {
+    console.error('Error: The `claude` CLI (Claude Code) is required.')
+    console.error('  Install: https://claude.ai/download')
     process.exit(1)
-  }
-
-  if (MOCK_MODE) {
-    try {
-      execSync('claude --version', { encoding: 'utf8', timeout: 5000 })
-    } catch {
-      console.error('Error: MOCK_MODE requires the `claude` CLI (Claude Code) to be installed.')
-      console.error('  Install: https://claude.ai/download')
-      process.exit(1)
-    }
-  }
-
-  if (!MOCK_MODE) {
-    const { default: Anthropic } = await import('@anthropic-ai/sdk')
-    client = new Anthropic()
   }
 
   console.log(`\n=== Daily Redesign Pipeline ===`)
@@ -300,163 +287,25 @@ async function main() {
   const { system, messages } = buildMessages(context)
   // messages is a mutable array — we append to it on retries
 
-  // Step 3: Backup current files
-  let originalBackup
-  if (!MOCK_MODE) {
-    console.log('[3/4] Backing up current mutable files...')
-    originalBackup = await backup(MUTABLE_FILES)
-    console.log(`  backed up ${originalBackup.size} files`)
+  // Step 3: Run agent swarm (handles its own backup/restore/retry/archive)
+  console.log('[3/4] Running agent swarm...')
+  let result
+  try {
+    result = await runAgentSwarm(context)
+  } catch (err) {
+    console.error(`\nAgent swarm failed: ${err.message}`)
+    process.exit(1)
   }
 
-  if (MOCK_MODE) {
-    // Agent swarm handles its own backup/restore/retry/archive
-    console.log('[4/4] Running agent swarm...')
-    try {
-      const result = await runAgentSwarm(context)
-      console.log(`\ndesign_brief: ${result.design_brief}`)
-      console.log('\nMOCK_MODE=true — files written to disk, skipping git commit.')
-      console.log('Reload the site to see the new design.')
-      process.exit(0)
-    } catch (err) {
-      console.error(`\nAgent swarm failed: ${err.message}`)
-      process.exit(1)
-    }
+  console.log(`\ndesign_brief: ${result.design_brief}`)
+
+  if (DRY_RUN) {
+    console.log('\nDRY_RUN=true — files written to disk. Build was verified.')
+  } else {
+    console.log('\nDone. GitHub Actions will commit and push.')
   }
 
-  // Step 4: Retry loop
-  console.log('[4/4] Starting generation loop...')
-  let lastError = null
-
-  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    console.log(`\n--- Attempt ${attempt}/${MAX_ATTEMPTS} ---`)
-
-    let input, toolUseId, response
-
-    // Call Claude
-    console.log('  calling Claude API (claude-opus-4-6)...')
-    try {
-      response = await client.messages.create({
-        model: 'claude-opus-4-6',
-        max_tokens: 16384,
-        system,
-        messages,
-        tools: [SUBMIT_REDESIGN_TOOL],
-        tool_choice: { type: 'tool', name: 'submit_redesign' },
-      })
-    } catch (err) {
-      console.error(`  Claude API error: ${err.message}`)
-      lastError = `Claude API error: ${err.message}`
-      break
-    }
-
-    console.log(`  stop_reason: ${response.stop_reason}`)
-
-    // Extract tool use
-    try {
-      ;({ toolUseId, input } = extractToolUse(response))
-    } catch (err) {
-      console.error(`  ${err.message}`)
-      lastError = err.message
-      break
-    }
-
-    console.log(`  design_brief: ${input.design_brief}`)
-    console.log(`  files to write: ${input.files.length}`)
-
-    // Write files
-    console.log('  writing files...')
-    try {
-      await writeFiles(input.files)
-    } catch (err) {
-      console.error(`  writeFiles error: ${err.message}`)
-      console.log('  restoring originals...')
-      await restore(originalBackup)
-      lastError = err.message
-      break
-    }
-
-    // Validate build
-    const buildResult = validateBuild()
-
-    if (buildResult.success) {
-      console.log('\n=== Build passed! ===')
-
-      // Archive
-      const changedPaths = input.files.map((f) => f.path)
-      const weights = {
-        signals: parseInt(process.env.WEIGHT_SIGNALS || '5'),
-        inspiration: parseInt(process.env.WEIGHT_INSPIRATION || '5'),
-        ratings: parseInt(process.env.WEIGHT_RATINGS || '5'),
-        risk: parseInt(process.env.WEIGHT_RISK || '5'),
-      }
-      await archive(
-        context.signals.date,
-        context.signals,
-        input.rationale,
-        input.design_brief,
-        changedPaths,
-        weights
-      )
-
-      if (DRY_RUN) {
-        console.log('\nDRY_RUN=true — skipping git commit.')
-        console.log('Generated files are on disk. Build was verified.')
-        // Restore originals so dry run is truly non-destructive
-        console.log('Restoring originals (dry run)...')
-        await restore(originalBackup)
-      } else if (MOCK_MODE) {
-        console.log('\nMOCK_MODE=true — files written to disk, skipping git commit.')
-        console.log('Reload the site to see the new design.')
-      } else {
-        gitCommit(context.signals.date, input.design_brief)
-        console.log('\nDone. Committed successfully.')
-        console.log('GitHub Actions will push to main.')
-      }
-
-      process.exit(0)
-    }
-
-    // Build failed — restore and prepare retry
-    console.log('\n  Build failed. Restoring originals for retry...')
-    await restore(originalBackup)
-
-    lastError = buildResult.error
-
-    if (attempt < MAX_ATTEMPTS) {
-      // Append conversation history for the retry
-      // First: append Claude's response (with the tool use)
-      messages.push({
-        role: 'assistant',
-        content: response.content,
-      })
-
-      // Second: append the build failure as a tool result + follow-up instruction
-      messages.push({
-        role: 'user',
-        content: [
-          {
-            type: 'tool_result',
-            tool_use_id: toolUseId,
-            content: `Build failed with the following errors (last 3000 chars of output):\n\n${buildResult.error}`,
-          },
-          {
-            type: 'text',
-            text: 'The build failed due to the errors above. Please fix the TypeScript and/or PandaCSS issues and call submit_redesign again with corrected files. Common causes:\n- Semantic token names referenced in components that do not exist in elements/preset.ts\n- TypeScript type errors in component props\n- Missing or incorrect import paths\n- Attempting to import from styled-system/ paths that changed due to token renames\n\nSubmit all files again, including corrected ones.',
-          },
-        ],
-      })
-
-      console.log(`  Prepared retry message. Retrying...`)
-    }
-  }
-
-  // All attempts exhausted (or fatal error)
-  console.error(`\n=== All ${MAX_ATTEMPTS} attempts failed. ===`)
-  if (lastError) {
-    console.error(`Last error: ${lastError.slice(0, 500)}`)
-  }
-  console.log('Originals have been restored.')
-  process.exit(1)
+  process.exit(0)
 }
 
 // Run main only when executed directly (not when imported for testing)
