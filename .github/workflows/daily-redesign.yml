@@ -1,0 +1,45 @@
+name: Daily Redesign
+
+on:
+  schedule:
+    - cron: '0 10 * * *'  # 5am EST (UTC-5) / 6am EDT (UTC-4) — runs at 10am UTC
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — generate and verify build but do not commit'
+        type: boolean
+        default: false
+
+jobs:
+  redesign:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run daily redesign
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: node scripts/daily-redesign.js
+
+      - name: Push changes
+        if: ${{ !inputs.dry_run }}
+        run: git push origin main

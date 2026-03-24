@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { SectionHead } from '../components/SectionHead'
-import { MissionCard } from '../components/MissionCard'
+import { FeaturedProject } from '../components/FeaturedProject'
 import { ProjectRow } from '../components/ProjectRow'
 import { MobileFooter } from '../components/MobileFooter'
 import type { Project } from '../content/types'
@@ -260,16 +260,6 @@ const spacingScale: { name: string; value: string }[] = [
   { name: '12', value: '3rem'    },
 ]
 
-const demoFeatured: Project = {
-  slug: 'demo',
-  title: 'Spaceman',
-  type: 'SaaS',
-  year: 2024,
-  depth: 'full',
-  problem: 'Aerospace teams were stuck using generic tools that didn\'t fit their workflows.',
-  externalUrl: 'https://spaceman.llc',
-}
-
 const demoRowFull: Project = {
   slug: 'demo-full',
   title: 'Project Alpha',
@@ -360,8 +350,8 @@ function Elements() {
       <Section>
         <SectionHead label="COMPONENTS" />
 
-        <SubHead>MISSIONCARD</SubHead>
-        <MissionCard project={demoFeatured} />
+        <SubHead>FEATUREDPROJECT</SubHead>
+        <FeaturedProject />
 
         <SubHead>PROJECTROW — FULL (internal link)</SubHead>
         <ProjectRow project={demoRowFull} index={0} />

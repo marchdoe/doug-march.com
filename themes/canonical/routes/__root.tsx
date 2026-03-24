@@ -1,5 +1,5 @@
 import '../styles/panda.css'
-import { createRootRoute, Link, Outlet, HeadContent, Scripts } from '@tanstack/react-router'
+import { createRootRoute, Link, Outlet, HeadContent } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { styled } from '../../styled-system/jsx'
 
@@ -37,7 +37,6 @@ function RootComponent() {
     <>
       <HeadContent />
       <Outlet />
-      <Scripts />
     </>
   )
 }

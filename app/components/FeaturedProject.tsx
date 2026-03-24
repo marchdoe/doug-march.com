@@ -1,4 +1,4 @@
-import type { Project } from '../content/types'
+import { featuredProject } from '../content/projects'
 import { styled } from '../../styled-system/jsx'
 
 const Card = styled('div', {
@@ -87,20 +87,20 @@ const CardLink = styled('a', {
   },
 })
 
-type Props = { project: Project }
+export function FeaturedProject() {
+  if (!featuredProject) return null
 
-export function MissionCard({ project }: Props) {
   return (
     <Card>
-      <CardName>{project.title.toUpperCase()}</CardName>
-      {project.problem && <CardDesc>{project.problem}</CardDesc>}
-      {project.externalUrl && (
+      <CardName>{featuredProject.title.toUpperCase()}</CardName>
+      {featuredProject.problem && <CardDesc>{featuredProject.problem}</CardDesc>}
+      {featuredProject.externalUrl && (
         <CardLink
-          href={project.externalUrl}
+          href={featuredProject.externalUrl}
           target="_blank"
           rel="noopener noreferrer"
         >
-          → VISIT {project.externalUrl.replace(/^https?:\/\//, '').toUpperCase()}
+          → VISIT {featuredProject.externalUrl.replace(/^https?:\/\//, '').toUpperCase()}
         </CardLink>
       )}
     </Card>
