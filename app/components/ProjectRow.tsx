@@ -1,131 +1,82 @@
-import { Link } from '@tanstack/react-router'
-import type { Project } from '../content/types'
-import { styled } from '../../styled-system/jsx'
+import { Box, Flex } from '../../styled-system/jsx'
+import type { Project } from '../content/projects'
 
-const RowLink = styled(Link, {
-  base: {
-    display: 'grid',
-    gridTemplateColumns: '1.75rem 1fr auto 4rem',
-    gap: '0 1rem',
-    alignItems: 'center',
-    paddingTop: '0.6rem',
-    paddingBottom: '0.6rem',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'logo.blueDim',
-    cursor: 'pointer',
-    transitionProperty: 'padding-left',
-    transitionDuration: '0.2s',
-    transitionTimingFunction: 'default',
-    _hover: { paddingLeft: '0.35rem' },
-  },
-})
+interface ProjectRowProps {
+  project: Project
+  index: number
+}
 
-const RowLinkExt = styled('a', {
-  base: {
-    display: 'grid',
-    gridTemplateColumns: '1.75rem 1fr auto 4rem',
-    gap: '0 1rem',
-    alignItems: 'center',
-    paddingTop: '0.6rem',
-    paddingBottom: '0.6rem',
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'logo.blueDim',
-    cursor: 'pointer',
-    transitionProperty: 'padding-left',
-    transitionDuration: '0.2s',
-    transitionTimingFunction: 'default',
-    _hover: { paddingLeft: '0.35rem' },
-  },
-})
-
-const Num = styled('div', {
-  base: {
-    fontSize: 'xs',
-    color: 'text.dim',
-    textAlign: 'right',
-  },
-})
-
-const Name = styled('div', {
-  base: {
-    fontSize: 'md',
-    fontWeight: 'bold',
-    color: 'text.mid',
-    transitionProperty: 'color',
-    transitionDuration: 'fast',
-    transitionTimingFunction: 'default',
-    _groupHover: { color: 'text' },
-  },
-  variants: {
-    experiment: {
-      true: {
-        fontWeight: 'regular',
-        fontStyle: 'italic',
-        color: 'text.dim',
-        _groupHover: { color: 'text.mid' },
-      },
-    },
-  },
-})
-
-const Tag = styled('div', {
-  base: {
-    fontSize: '0.5rem',
-    fontWeight: 'bold',
-    letterSpacing: '0.07em',
-    color: 'text.dim',
-    background: 'bg.card',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.blueDim',
-    paddingTop: '0.15rem',
-    paddingBottom: '0.15rem',
-    paddingLeft: '0.4rem',
-    paddingRight: '0.4rem',
-  },
-})
-
-const Year = styled('div', {
-  base: {
-    fontSize: '0.58rem',
-    color: 'text.dim',
-    textAlign: 'right',
-    transitionProperty: 'color',
-    transitionDuration: 'fast',
-    transitionTimingFunction: 'default',
-    _groupHover: { color: 'accent' },
-  },
-})
-
-type Props = { project: Project; index: number }
-
-export function ProjectRow({ project, index }: Props) {
-  const isExperiment = project.depth === 'lightweight'
-  const yearLabel = project.externalUrl ? `${project.year} ↗` : `${project.year}`
-  const num = String(index + 1).padStart(2, '0')
-
-  const inner = (
-    <>
-      <Num>{num}</Num>
-      <Name experiment={isExperiment ? true : undefined}>{project.title}</Name>
-      <Tag>{project.type.toUpperCase()}</Tag>
-      <Year>{yearLabel}</Year>
-    </>
-  )
-
-  if (project.externalUrl && isExperiment) {
-    return (
-      <RowLinkExt href={project.externalUrl} target="_blank" rel="noopener noreferrer" data-group>
-        {inner}
-      </RowLinkExt>
-    )
-  }
+export function ProjectRow({ project, index }: ProjectRowProps) {
+  const href = project.externalUrl || `/work/${project.slug}`
+  const isExternal = !!project.externalUrl
 
   return (
-    <RowLink to="/work/$slug" params={{ slug: project.slug } as any} data-group>
-      {inner}
-    </RowLink>
+    <a
+      href={href}
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
+      style={{ textDecoration: 'none', display: 'block' }}
+    >
+      <Box
+        paddingTop="3"
+        paddingBottom="3"
+        borderBottomWidth="1px"
+        borderBottomStyle="solid"
+        borderBottomColor="border"
+        style={{ transition: 'background 0.15s ease' }}
+      >
+        <Flex align="baseline" gap="3" marginBottom="1">
+          <Box
+            fontSize="2xs"
+            fontFamily="body"
+            fontWeight="semibold"
+            color="textMuted"
+            letterSpacing="widest"
+            style={{ fontVariantNumeric: 'tabular-nums', minWidth: '20px' }}
+          >
+            {String(index + 1).padStart(2, '0')}
+          </Box>
+          <Box
+            flex="1"
+            fontSize="sm"
+            fontFamily="body"
+            fontWeight="semibold"
+            color="text"
+            lineHeight="snug"
+          >
+            {project.title}
+          </Box>
+          <Box
+            fontSize="2xs"
+            fontFamily="body"
+            fontWeight="semibold"
+            letterSpacing="wide"
+            textTransform="uppercase"
+            color="textMuted"
+          >
+            {project.year}
+          </Box>
+          <Box
+            fontSize="xs"
+            fontFamily="body"
+            color="accent"
+          >
+            →
+          </Box>
+        </Flex>
+        <Box paddingLeft="8">
+          <Box
+            fontSize="2xs"
+            fontFamily="body"
+            fontWeight="semibold"
+            letterSpacing="wide"
+            textTransform="uppercase"
+            color="textMuted"
+          >
+            {project.type}
+          </Box>
+        </Box>
+      </Box>
+    </a>
   )
 }

@@ -17,3 +17,17 @@ styled-system/
 
 .redesign-prompt.txt
 .redesign-input.json
+.claude-prompt.txt
+.claude-prompt.tmp
+.agent-prompt-*.tmp
+.interpret-prompt.tmp
+.claude-response.json
+.pipeline-trigger
+
+signals/today.yml
+signals/today.meta.yml
+signals/today.brief.md
+
+references/*.png
+references/*.jpg
+references/*.jpeg

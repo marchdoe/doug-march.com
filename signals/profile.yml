@@ -1,0 +1,42 @@
+# signals/profile.yml
+# Fixed context — who you are, what you care about
+# Providers receive this as their `profile` argument
+
+location:
+  zip: "20105"
+  name: "Ashburn, VA"
+  lat: 39.0438
+  lng: -77.4874
+
+sports:
+  teams:
+    - { name: "Detroit Lions", league: "NFL" }
+    - { name: "Detroit Red Wings", league: "NHL" }
+    - { name: "Detroit Pistons", league: "NBA" }
+    - { name: "Detroit Tigers", league: "MLB" }
+
+golf:
+  focus: "PGA Tour"
+
+music:
+  bands:
+    - "Guided by Voices"
+    - "My Morning Jacket"
+    - "The War on Drugs"
+    - "Wet Leg"
+    - "Tobin Sprout"
+    - "Radiohead"
+
+news:
+  disallow:
+    - "Trump"
+    - "politics"
+    - "election"
+    - "Republican"
+    - "Democrat"
+    - "Congress"
+    - "partisan"
+    - "GOP"
+
+books:
+  currently_reading: []

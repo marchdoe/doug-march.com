@@ -13,7 +13,6 @@ export const MUTABLE_FILES = [
   'app/components/Layout.tsx',
   'app/components/Sidebar.tsx',
   'app/components/SectionHead.tsx',
-  'app/components/MobileFooter.tsx',
   'app/components/ProjectRow.tsx',
   'app/components/FeaturedProject.tsx',
   'app/components/SelectedWork.tsx',
@@ -26,6 +25,48 @@ export const MUTABLE_FILES = [
   'app/routes/index.tsx',
   'app/routes/about.tsx',
   'app/routes/work.$slug.tsx',
+]
+
+/** Files owned by the Token Designer agent. */
+export const TOKEN_FILES = [
+  'elements/preset.ts',
+  'app/routes/__root.tsx',
+]
+
+/** Files owned by the Layout Architect agent. */
+export const LAYOUT_FILES = [
+  'app/components/Layout.tsx',
+  'app/routes/index.tsx',
+  'app/routes/about.tsx',
+  'app/routes/work.$slug.tsx',
+]
+
+/** Files owned by the Sidebar Designer agent. */
+export const SIDEBAR_FILES = [
+  'app/components/Sidebar.tsx',
+]
+
+/** Files owned by the Footer Designer agent (currently empty). */
+export const FOOTER_FILES = []
+
+/** All structure files (Layout + Sidebar) for backwards compat. */
+export const STRUCTURE_FILES = [
+  ...LAYOUT_FILES,
+  ...SIDEBAR_FILES,
+  ...FOOTER_FILES,
+]
+
+/** Files owned by the Component Agent. */
+export const COMPONENT_FILES = [
+  'app/components/FeaturedProject.tsx',
+  'app/components/ProjectRow.tsx',
+  'app/components/SectionHead.tsx',
+  'app/components/SelectedWork.tsx',
+  'app/components/Experiments.tsx',
+  'app/components/Bio.tsx',
+  'app/components/Timeline.tsx',
+  'app/components/Capabilities.tsx',
+  'app/components/Personal.tsx',
 ]
 
 /**
@@ -95,6 +136,23 @@ async function readCurrentFiles() {
 }
 
 /**
+ * Read a subset of mutable files from disk.
+ * @param {string[]} filePaths - relative paths to read
+ * @returns {Promise<Array<{path: string, content: string}>>}
+ */
+export async function readFileGroup(filePaths) {
+  const files = []
+  for (const relPath of filePaths) {
+    const absPath = path.join(ROOT, relPath)
+    if (existsSync(absPath)) {
+      const content = await readFile(absPath, 'utf8')
+      files.push({ path: relPath, content })
+    }
+  }
+  return files
+}
+
+/**
  * Read and return all context Claude needs to produce a redesign.
  * @returns {Promise<{ signals: object, contentSummary: string, currentFiles: Array<{path: string, content: string}> }>}
  */
@@ -103,6 +161,11 @@ export async function readContext() {
   const signalsPath = path.join(ROOT, 'signals/today.yml')
   const signalsRaw = await readFile(signalsPath, 'utf8')
   const signals = yaml.load(signalsRaw)
+
+  // js-yaml parses bare YAML dates as Date objects — normalize to string
+  if (signals.date instanceof Date) {
+    signals.date = signals.date.toISOString().slice(0, 10)
+  }
 
   const contentSummary = await buildContentSummary()
   const currentFiles = await readCurrentFiles()

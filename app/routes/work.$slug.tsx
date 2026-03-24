@@ -1,346 +1,308 @@
-import { createFileRoute, Link, notFound } from '@tanstack/react-router'
-import { Layout } from '../components/Layout'
-import { SectionHead } from '../components/SectionHead'
+import { createFileRoute } from '@tanstack/react-router'
+import { Box, Flex } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
-import { styled } from '../../styled-system/jsx'
 
-export const Route = createFileRoute('/work/$slug')({
-  loader: ({ params }) => {
-    const project = projects.find((p) => p.slug === params.slug)
-    if (!project) throw notFound()
-    return project
-  },
-  component: ProjectPage,
+export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
+
+const metaLabel = css({
+  fontFamily: 'body',
+  fontSize: '2xs',
+  fontWeight: 'bold',
+  letterSpacing: 'widest',
+  color: 'textMuted',
+  textTransform: 'uppercase',
 })
 
-const BackLink = styled(Link, {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '0.4rem',
-    fontSize: 'sm',
-    fontWeight: 'bold',
-    color: 'text.dim',
-    letterSpacing: 'wide',
-    marginBottom: '8',
-    transitionProperty: 'color',
-    transitionDuration: 'fast',
-    transitionTimingFunction: 'default',
-    _hover: { color: 'accent' },
-  },
+const bodyText = css({
+  fontFamily: 'body',
+  fontSize: 'base',
+  fontWeight: 'light',
+  color: 'textSecondary',
+  lineHeight: 'normal',
 })
 
-const Header = styled('div', {
-  base: {
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: 'logo.blueDim',
-    paddingBottom: '8',
-    marginBottom: '8',
-  },
-})
+function WorkDetailPage() {
+  const { slug } = Route.useParams()
+  const project = projects.find((p) => p.slug === slug)
 
-const TypeLabel = styled('div', {
-  base: {
-    fontSize: 'xs',
-    fontWeight: 'bold',
-    letterSpacing: 'widest',
-    color: 'text.dim',
-    marginBottom: '3',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '2',
-    _before: { content: '"//"', color: 'accent' },
-  },
-})
-
-const Title = styled('div', {
-  base: {
-    fontSize: '2xl',
-    fontWeight: 'bold',
-    letterSpacing: '-0.04em',
-    color: 'accent',
-    textShadow: '0 0 24px rgba(0, 229, 255, 0.2)',
-    lineHeight: 'tight',
-    marginBottom: '3',
-  },
-})
-
-const Meta = styled('div', {
-  base: {
-    display: 'flex',
-    gap: '6',
-    flexWrap: 'wrap',
-  },
-})
-
-const MetaItem = styled('div', {
-  base: { display: 'flex', flexDirection: 'column', gap: '0.2rem' },
-})
-
-const MetaLabel = styled('div', {
-  base: { fontSize: '2xs', letterSpacing: 'wider', color: 'text.dim' },
-})
-
-const MetaValue = styled('div', {
-  base: { fontSize: '0.65rem', fontWeight: 'bold', color: 'text.mid' },
-})
-
-const Section = styled('div', {
-  base: { marginBottom: '8' },
-})
-
-const SectionTitle = styled('div', {
-  base: {
-    fontSize: '0.55rem',
-    fontWeight: 'bold',
-    letterSpacing: 'widest',
-    color: 'accent.dim',
-    marginBottom: '0.6rem',
-  },
-})
-
-const Body = styled('div', {
-  base: {
-    fontSize: '0.72rem',
-    color: 'text.mid',
-    lineHeight: '1.9',
-    fontStyle: 'italic',
-  },
-})
-
-const Tags = styled('div', {
-  base: {
-    display: 'flex',
-    gap: '2',
-    flexWrap: 'wrap',
-    marginTop: '3',
-  },
-})
-
-const Tag = styled('div', {
-  base: {
-    fontSize: '0.5rem',
-    fontWeight: 'bold',
-    letterSpacing: '0.07em',
-    color: 'text.dim',
-    background: 'bg.card',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.blueDim',
-    paddingTop: '0.2rem',
-    paddingBottom: '0.2rem',
-    paddingLeft: '2',
-    paddingRight: '2',
-  },
-})
-
-const Ctas = styled('div', {
-  base: { display: 'flex', gap: '3', marginTop: '8' },
-})
-
-const BtnGreen = styled('a', {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '2',
-    fontSize: '0.62rem',
-    fontWeight: 'bold',
-    color: 'logo.green',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.green',
-    paddingTop: '0.4rem',
-    paddingBottom: '0.4rem',
-    paddingLeft: '0.85rem',
-    paddingRight: '0.85rem',
-    transitionProperty: 'background, gap',
-    transitionDuration: '0.2s',
-    transitionTimingFunction: 'default',
-    _hover: { background: 'logo.greenDim', gap: '0.75rem' },
-  },
-})
-
-const BtnGhost = styled('a', {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '2',
-    fontSize: '0.62rem',
-    fontWeight: 'bold',
-    color: 'text.mid',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'border.mid',
-    paddingTop: '0.4rem',
-    paddingBottom: '0.4rem',
-    paddingLeft: '0.85rem',
-    paddingRight: '0.85rem',
-    transitionProperty: 'color, border-color, gap',
-    transitionDuration: '0.2s',
-    transitionTimingFunction: 'default',
-    _hover: { color: 'accent', borderColor: 'accent.dim', gap: '0.75rem' },
-  },
-})
-
-const LightCard = styled('div', {
-  base: {
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.blueDim',
-    background: 'bg.card',
-    paddingTop: '1.75rem',
-    paddingBottom: '1.75rem',
-    paddingLeft: '8',
-    paddingRight: '8',
-    marginBottom: '10',
-    position: 'relative',
-    _before: {
-      content: 'attr(data-label)',
-      position: 'absolute',
-      top: '-0.55rem',
-      left: '6',
-      background: 'bg',
-      paddingLeft: '2',
-      paddingRight: '2',
-      fontSize: 'xs',
-      fontWeight: 'bold',
-      letterSpacing: 'widest',
-      color: 'text.dim',
-    },
-  },
-})
-
-const LightTitle = styled('div', {
-  base: {
-    fontSize: 'xl',
-    fontWeight: 'bold',
-    letterSpacing: 'tight',
-    color: 'text',
-    lineHeight: 'tight',
-    marginBottom: '2',
-  },
-})
-
-const LightDesc = styled('div', {
-  base: {
-    fontSize: 'base',
-    color: 'text.mid',
-    lineHeight: '1.85',
-    fontStyle: 'italic',
-    marginBottom: '5',
-  },
-})
-
-const QuickFacts = styled('div', {
-  base: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.blueDim',
-    marginBottom: '8',
-  },
-})
-
-const Fact = styled('div', {
-  base: {
-    paddingTop: '0.85rem',
-    paddingBottom: '0.85rem',
-    paddingLeft: '4',
-    paddingRight: '4',
-    borderRightWidth: '1px',
-    borderRightStyle: 'solid',
-    borderRightColor: 'logo.blueDim',
-    '&:last-child': { borderRightWidth: '0' },
-  },
-})
-
-const FactLabel = styled('div', {
-  base: { fontSize: '2xs', letterSpacing: 'wider', color: 'text.dim', marginBottom: '0.3rem' },
-})
-
-const FactValue = styled('div', {
-  base: { fontSize: '0.72rem', fontWeight: 'bold', color: 'text.mid' },
-})
-
-function ProjectPage() {
-  const project = Route.useLoaderData()
-
-  if (project.depth === 'lightweight') {
+  if (!project) {
     return (
-      <Layout>
-        <BackLink to={'/' as any}>← BACK TO WORK</BackLink>
-        <LightCard data-label={project.type.toUpperCase()}>
-          <LightTitle>{project.title}</LightTitle>
-          <LightDesc>{project.description}</LightDesc>
-          {project.externalUrl && (
-            <BtnGreen href={project.externalUrl} target="_blank" rel="noopener noreferrer">
-              VIEW PROJECT ↗
-            </BtnGreen>
-          )}
-        </LightCard>
-        <SectionHead label="QUICK FACTS" />
-        <QuickFacts>
-          <Fact><FactLabel>TYPE</FactLabel><FactValue>{project.type}</FactValue></Fact>
-          <Fact><FactLabel>YEAR</FactLabel><FactValue>{project.year}</FactValue></Fact>
-          <Fact><FactLabel>STATUS</FactLabel><FactValue>{project.status ?? 'Complete'}</FactValue></Fact>
-        </QuickFacts>
-        {project.stack && (
-          <>
-            <SectionHead label="STACK" />
-            <Tags style={{ marginTop: '0.5rem' }}>
-              {project.stack.map((s) => <Tag key={s}>{s.toUpperCase()}</Tag>)}
-            </Tags>
-          </>
-        )}
-      </Layout>
+      <Box
+        style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '80px 64px',
+        }}
+      >
+        <Box
+          className={css({
+            fontFamily: 'heading',
+            fontWeight: 'black',
+            color: 'text',
+            textTransform: 'uppercase',
+            lineHeight: 'tight',
+          })}
+          style={{ fontSize: 'clamp(48px, 8vw, 96px)', letterSpacing: '-0.03em', marginBottom: '32px' }}
+        >
+          Not Found
+        </Box>
+        <a
+          href="/"
+          className={css({
+            fontFamily: 'body',
+            fontSize: 'xs',
+            fontWeight: 'regular',
+            letterSpacing: 'widest',
+            color: 'textSecondary',
+            textTransform: 'uppercase',
+            textDecoration: 'none',
+            _hover: { color: 'text', textDecoration: 'underline' },
+          })}
+        >
+          ← Back to work
+        </a>
+      </Box>
     )
   }
 
   return (
-    <Layout>
-      <BackLink to={'/' as any}>← BACK TO WORK</BackLink>
-      <Header>
-        <TypeLabel>{project.type} · {project.year}</TypeLabel>
-        <Title>{project.title}</Title>
-        <Meta>
+    <>
+      {/* ── PROJECT SPECIMEN HEADER ────────────────────────────────── */}
+      <Box
+        style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '48px 64px 0 64px',
+        }}
+      >
+        {/* Breadcrumb */}
+        <Box style={{ marginBottom: '32px' }}>
+          <a
+            href="/"
+            className={css({
+              fontFamily: 'body',
+              fontSize: 'xs',
+              fontWeight: 'light',
+              letterSpacing: 'widest',
+              color: 'textMuted',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
+              _hover: { color: 'textSecondary', textDecoration: 'underline' },
+            })}
+          >
+            ← Work
+          </a>
+        </Box>
+
+        {/* Title at display scale */}
+        <h1
+          className={css({
+            fontFamily: 'heading',
+            fontWeight: 'black',
+            lineHeight: 'tight',
+            letterSpacing: 'tight',
+            color: 'text',
+            textTransform: 'uppercase',
+            margin: '0',
+          })}
+          style={{ fontSize: 'clamp(64px, 12vw, 160px)' }}
+        >
+          {project.title}
+        </h1>
+
+        {/* Metadata strip */}
+        <Flex
+          gap="8"
+          align="center"
+          style={{
+            borderTop: '1px solid #CBD1D8',
+            marginTop: '32px',
+            paddingTop: '20px',
+          }}
+        >
+          <Box>
+            <Box className={metaLabel} style={{ marginBottom: '4px' }}>Type</Box>
+            <Box className={css({ fontFamily: 'body', fontSize: 'sm', fontWeight: 'light', color: 'textSecondary', letterSpacing: 'wide', textTransform: 'uppercase' })}>
+              {project.type}
+            </Box>
+          </Box>
+          <Box style={{ width: '1px', height: '32px', background: '#CBD1D8' }} />
+          <Box>
+            <Box className={metaLabel} style={{ marginBottom: '4px' }}>Year</Box>
+            <Box className={css({ fontFamily: 'body', fontSize: 'sm', fontWeight: 'light', color: 'textSecondary' })}>
+              {project.year}
+            </Box>
+          </Box>
           {project.role && (
-            <MetaItem><MetaLabel>ROLE</MetaLabel><MetaValue>{project.role}</MetaValue></MetaItem>
+            <>
+              <Box style={{ width: '1px', height: '32px', background: '#CBD1D8' }} />
+              <Box>
+                <Box className={metaLabel} style={{ marginBottom: '4px' }}>Role</Box>
+                <Box className={css({ fontFamily: 'body', fontSize: 'sm', fontWeight: 'light', color: 'textSecondary' })}>
+                  {project.role}
+                </Box>
+              </Box>
+            </>
           )}
-          {project.timeline && (
-            <MetaItem><MetaLabel>TIMELINE</MetaLabel><MetaValue>{project.timeline}</MetaValue></MetaItem>
+          {(project.liveUrl || project.externalUrl) && (
+            <Box style={{ marginLeft: 'auto' }}>
+              <a
+                href={project.liveUrl || project.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: 'xs',
+                  fontWeight: 'regular',
+                  letterSpacing: 'widest',
+                  color: 'accent',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  border: '1px solid',
+                  borderColor: 'accent',
+                  _hover: { background: 'accentBg', color: 'accentText' },
+                })}
+                style={{ padding: '8px 16px' }}
+              >
+                Visit Project →
+              </a>
+            </Box>
           )}
-          {project.status && (
-            <MetaItem><MetaLabel>STATUS</MetaLabel><MetaValue>{project.status}</MetaValue></MetaItem>
-          )}
-        </Meta>
-      </Header>
+        </Flex>
+      </Box>
 
-      {project.problem && (
-        <Section><SectionTitle>// PROBLEM</SectionTitle><Body>{project.problem}</Body></Section>
-      )}
-      {project.approach && (
-        <Section><SectionTitle>// APPROACH</SectionTitle><Body>{project.approach}</Body></Section>
-      )}
-      {project.outcome && (
-        <Section><SectionTitle>// OUTCOME</SectionTitle><Body>{project.outcome}</Body></Section>
-      )}
-      {project.stack && (
-        <Section>
-          <SectionTitle>// STACK</SectionTitle>
-          <Tags>{project.stack.map((s) => <Tag key={s}>{s.toUpperCase()}</Tag>)}</Tags>
-        </Section>
-      )}
+      {/* ── CASE STUDY CONTENT ─────────────────────────────────────── */}
+      <Box
+        style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '64px 64px 96px 64px',
+        }}
+      >
+        <Box
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '64px',
+            alignItems: 'start',
+          }}
+        >
+          {/* Left column */}
+          <Box>
+            {project.problem && (
+              <Box style={{ marginBottom: '48px' }}>
+                <Box className={metaLabel} style={{ marginBottom: '16px' }}>
+                  Problem
+                </Box>
+                <Box
+                  style={{
+                    borderTop: '1px solid #CBD1D8',
+                    paddingTop: '20px',
+                  }}
+                >
+                  <p className={bodyText}>{project.problem}</p>
+                </Box>
+              </Box>
+            )}
 
-      <Ctas>
-        {project.liveUrl && (
-          <BtnGreen href={project.liveUrl} target="_blank" rel="noopener noreferrer">VIEW LIVE SITE →</BtnGreen>
-        )}
+            {project.approach && (
+              <Box style={{ marginBottom: '48px' }}>
+                <Box className={metaLabel} style={{ marginBottom: '16px' }}>
+                  Approach
+                </Box>
+                <Box style={{ borderTop: '1px solid #CBD1D8', paddingTop: '20px' }}>
+                  <p className={bodyText}>{project.approach}</p>
+                </Box>
+              </Box>
+            )}
+          </Box>
+
+          {/* Right column */}
+          <Box>
+            {project.outcome && (
+              <Box style={{ marginBottom: '48px' }}>
+                <Box className={metaLabel} style={{ marginBottom: '16px' }}>
+                  Outcome
+                </Box>
+                <Box style={{ borderTop: '1px solid #CBD1D8', paddingTop: '20px' }}>
+                  <p className={bodyText}>{project.outcome}</p>
+                </Box>
+              </Box>
+            )}
+
+            {project.description && !project.outcome && (
+              <Box style={{ marginBottom: '48px' }}>
+                <Box className={metaLabel} style={{ marginBottom: '16px' }}>
+                  Overview
+                </Box>
+                <Box style={{ borderTop: '1px solid #CBD1D8', paddingTop: '20px' }}>
+                  <p className={bodyText}>{project.description}</p>
+                </Box>
+              </Box>
+            )}
+
+            {project.stack && project.stack.length > 0 && (
+              <Box>
+                <Box className={metaLabel} style={{ marginBottom: '16px' }}>
+                  Stack
+                </Box>
+                <Box style={{ borderTop: '1px solid #CBD1D8', paddingTop: '20px' }}>
+                  <Flex gap="2" style={{ flexWrap: 'wrap' }}>
+                    {project.stack.map((tech) => (
+                      <Box
+                        key={tech}
+                        className={css({
+                          fontFamily: 'body',
+                          fontSize: 'xs',
+                          fontWeight: 'light',
+                          color: 'textSecondary',
+                          letterSpacing: 'wide',
+                          textTransform: 'uppercase',
+                          border: '1px solid',
+                          borderColor: 'border',
+                        })}
+                        style={{ padding: '5px 10px' }}
+                      >
+                        {tech}
+                      </Box>
+                    ))}
+                  </Flex>
+                </Box>
+              </Box>
+            )}
+          </Box>
+        </Box>
+
+        {/* GitHub link if available */}
         {project.githubUrl && (
-          <BtnGhost href={project.githubUrl} target="_blank" rel="noopener noreferrer">VIEW ON GITHUB ↗</BtnGhost>
+          <Box
+            style={{
+              marginTop: '48px',
+              borderTop: '1px solid #CBD1D8',
+              paddingTop: '24px',
+            }}
+          >
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={css({
+                fontFamily: 'body',
+                fontSize: 'xs',
+                fontWeight: 'regular',
+                letterSpacing: 'widest',
+                color: 'textSecondary',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+                _hover: { color: 'text', textDecoration: 'underline' },
+              })}
+            >
+              View on GitHub →
+            </a>
+          </Box>
         )}
-      </Ctas>
-    </Layout>
+      </Box>
+    </>
   )
 }

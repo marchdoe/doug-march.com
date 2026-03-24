@@ -1,0 +1,26 @@
+# 2026-03-21
+
+**Design Brief:** Fog that knows it's the first day of spring and doesn't quite believe it yet — one pale sage rule as equinox, everything else the color of damp linen and unhurried breath.
+
+## Signals
+
+### Weather
+**Location:** Aldie, Virginia
+**Conditions:** Fog
+**Feel:** undefined
+
+## Claude's Rationale
+
+This palette inhabits the fog itself — the warm amber-linen neutrals (hue 28°) carry the character of damp linen and wet concrete, never resolving into cool gray or bright white. The single sage accent (#8AA68A, hue 102°) is the only chromatic commitment: it doesn't declare spring so much as acknowledge it arrived when no one was watching. Cormorant Garamond at extreme scale with light weight captures the War on Drugs quality the brief demands — letterforms that breathe slowly, seen through glass, tall and unhurried. IBM Plex Mono as the body/annotation voice lands the Wet Leg register: clipped, dry, factual, the margin note left by whoever built the site.
+
+The Perfect Fourth scale (1.333) adds enough drama for the editorial weight of the poster archetype. All radii are 0px — fog has no edges. All shadows are none — fog diffuses them out of existence. The signal tray, sage rule, and suppressed-contrast ground are encoded in the semantic tokens so every component can reference them without reaching for raw hex values.
+
+## Files Changed
+
+- elements/preset.ts
+- app/routes/__root.tsx
+- app/components/Layout.tsx
+- app/components/Sidebar.tsx
+- app/routes/index.tsx
+- app/routes/about.tsx
+- app/routes/work.$slug.tsx

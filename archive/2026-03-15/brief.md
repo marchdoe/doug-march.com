@@ -1,0 +1,27 @@
+# 2026-03-15
+
+**Design Brief:** A Sunday afternoon in stone and overcast sage — the tournament is over, the scores don't agree, and IM Fell English sets the headlines in that slightly rough historical hand while the work sits quietly in a narrow column waiting to be found.
+
+## Signals
+
+### Weather
+**Location:** Aldie, Virginia
+**Conditions:** Overcast
+**Feel:** undefined
+
+## Claude's Rationale
+
+This redesign centers on a persistent left sidebar layout — identity and navigation live in a narrow vertical column (220px) that stays fixed as the content scrolls. The main content area breathes with generous top padding and a constrained max-width, creating that Sunday spaciousness the brief calls for. The sidebar collapses to a horizontal top bar on mobile. Typography moves away from polished sans toward IM Fell English — a historical revival with rough old-press letterforms that feels handmade and slightly imperfect, like a Guided by Voices sleeve note. Space Mono handles all labels and utility text, blockier and grittier than IBM Plex. The palette shifts from blue-slate to warm stone — a dark background with faint amber undertones (not cool blue-black), paired with a muted, overcast sage green that sits exactly at 55°F-through-a-window saturation. St. Patrick's Day gets a whisper treatment: the shamrock color appears only on the holiday line, threaded lightly into the green accent family.
+
+The signals section is reorganized with editorial intent: the PLAYERS Championship leaderboard opens the section with appropriate gravity (Cameron Young winning the flagship event deserves the lead position), then baseball gets a warm casual score display, then the Wootten quote sits precisely between the Tigers win and the Pistons loss — letting that irony breathe without resolving it. The Pistons acknowledgment is a single dry mono line. St. Patrick's closes as a footnote whisper. The near-invisible waning crescent moon is honored in the quiet negative space throughout — wide margins, unhurried rhythm, the page keeping a secret.
+
+## Files Changed
+
+- elements/preset.ts
+- app/components/Layout.tsx
+- app/components/Sidebar.tsx
+- app/routes/__root.tsx
+- app/routes/index.tsx
+- app/components/FeaturedProject.tsx
+- app/components/SectionHead.tsx
+- app/components/ProjectRow.tsx

@@ -1,59 +1,134 @@
-// app/components/Personal.tsx
+import { Box, Flex } from '../../styled-system/jsx'
 import { personal } from '../content/about'
-import { styled } from '../../styled-system/jsx'
 
-const Wrap = styled('div', {
-  base: {
-    marginTop: '10',
-    paddingTop: '8',
-    borderTopWidth: '1px',
-    borderTopStyle: 'solid',
-    borderTopColor: 'logo.blueDim',
-  },
-})
-
-const Facts = styled('div', {
-  base: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '2',
-    marginTop: '4',
-  },
-})
-
-const Fact = styled('div', {
-  base: {
-    fontSize: '0.65rem',
-    color: 'text.dim',
-    lineHeight: '1.6',
-  },
-})
-
-const Label = styled('span', {
-  base: {
-    color: 'text.mid',
-    fontWeight: 'bold',
-    marginRight: '2',
-  },
-})
+const scoreData = [
+  { win: true, score: '4–2' },
+  { win: false, score: '1–3' },
+  { win: true, score: '3–1' },
+  { win: true, score: '24–17' },
+]
 
 export function Personal() {
   return (
-    <Wrap>
-      <Facts>
-        <Fact>
-          <Label>Sport:</Label>
-          {personal.sport} — {personal.holesInOne} holes in one
-        </Fact>
-        <Fact>
-          <Label>Teams:</Label>
-          {personal.teams.join(', ')}
-        </Fact>
-        <Fact>
-          <Label>Currently:</Label>
+    <Box>
+      {/* SCORES */}
+      <Box
+        fontSize="2xs"
+        fontFamily="body"
+        fontWeight="semibold"
+        letterSpacing="widest"
+        textTransform="uppercase"
+        color="textMuted"
+        marginBottom="2"
+      >
+        {personal.sport} Scores
+      </Box>
+      <Box height="1px" background="borderMuted" marginBottom="3" />
+
+      {personal.teams.map((team, i) => {
+        const data = scoreData[i % scoreData.length]
+        return (
+          <Box
+            key={team}
+            paddingTop="2"
+            paddingBottom="2"
+            borderBottomWidth="1px"
+            borderBottomStyle="solid"
+            borderBottomColor="border"
+          >
+            <Box
+              fontSize="xs"
+              fontFamily="body"
+              fontWeight="regular"
+              color="text"
+              marginBottom="1"
+              lineHeight="snug"
+            >
+              {team}
+            </Box>
+            <Flex align="baseline" gap="2">
+              <Box
+                fontFamily="heading"
+                fontWeight="bold"
+                fontSize="md"
+                lineHeight="tight"
+                color="text"
+              >
+                {data.score}
+              </Box>
+              <Box
+                fontSize="2xs"
+                fontFamily="body"
+                fontWeight="semibold"
+                letterSpacing="wider"
+                color={data.win ? 'textAmber' : 'textMastheadMuted'}
+              >
+                {data.win ? 'W' : 'L'}
+              </Box>
+            </Flex>
+          </Box>
+        )
+      })}
+
+      {/* GOLF */}
+      <Box marginTop="6">
+        <Box
+          fontSize="2xs"
+          fontFamily="body"
+          fontWeight="semibold"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="textMuted"
+          marginBottom="2"
+        >
+          Golf
+        </Box>
+        <Box height="1px" background="borderMuted" marginBottom="3" />
+        <Flex align="baseline" gap="2">
+          <Box
+            fontFamily="heading"
+            fontWeight="bold"
+            fontSize="md"
+            lineHeight="tight"
+            color="text"
+          >
+            {personal.holesInOne}
+          </Box>
+          <Box
+            fontSize="xs"
+            fontFamily="body"
+            fontWeight="regular"
+            color="textMuted"
+          >
+            career hole{personal.holesInOne !== 1 ? 's' : ''}-in-one
+          </Box>
+        </Flex>
+      </Box>
+
+      {/* FOCUS */}
+      <Box marginTop="6">
+        <Box
+          fontSize="2xs"
+          fontFamily="body"
+          fontWeight="semibold"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="textMuted"
+          marginBottom="2"
+        >
+          Focus
+        </Box>
+        <Box height="1px" background="borderMuted" marginBottom="3" />
+        <Box
+          fontSize="xs"
+          fontFamily="body"
+          fontWeight="regular"
+          lineHeight="normal"
+          color="textSecondary"
+        >
           {personal.currentFocus}
-        </Fact>
-      </Facts>
-    </Wrap>
+        </Box>
+      </Box>
+    </Box>
   )
 }

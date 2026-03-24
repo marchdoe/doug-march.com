@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'fs/promises'
 import path from 'path'
 import { ROOT } from './file-manager.js'
+import { captureSnapshot } from './snapshot.js'
 
 /**
  * Format a signals object as readable markdown sections.
@@ -77,10 +78,12 @@ function formatSignalsMarkdown(signals) {
  * @param {string} designBrief - one-sentence design brief
  * @param {string[]} changedFiles - list of relative file paths that were written
  */
-export async function archive(date, signals, rationale, designBrief, changedFiles) {
+export async function archive(date, signals, rationale, designBrief, changedFiles, weights = {}) {
   const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : String(date)
+  const buildId = String(Date.now())
   const dir = path.join(ROOT, 'archive', dateStr)
-  await mkdir(dir, { recursive: true })
+  const buildDir = path.join(dir, `build-${buildId}`)
+  await mkdir(buildDir, { recursive: true })
 
   const content = [
     `# ${dateStr}`,
@@ -100,7 +103,35 @@ export async function archive(date, signals, rationale, designBrief, changedFile
     '',
   ].join('\n')
 
-  const briefPath = path.join(dir, 'brief.md')
+  // Save brief to the build-specific directory
+  const briefPath = path.join(buildDir, 'brief.md')
   await writeFile(briefPath, content, 'utf8')
-  console.log(`  archived to archive/${dateStr}/brief.md`)
+
+  // Save build metadata (weights, timestamp, brief) for the archive UI
+  const buildMeta = {
+    buildId,
+    date: dateStr,
+    timestamp: parseInt(buildId),
+    brief: designBrief,
+    weights: {
+      signals: weights.signals ?? 5,
+      inspiration: weights.inspiration ?? 5,
+      ratings: weights.ratings ?? 5,
+      risk: weights.risk ?? 5,
+    },
+  }
+  await writeFile(path.join(buildDir, 'build.json'), JSON.stringify(buildMeta, null, 2), 'utf8')
+  console.log(`  archived to archive/${dateStr}/build-${buildId}/`)
+
+  // Also save/overwrite the top-level brief.md as the "latest" for backwards compatibility
+  // (the Design Director reads archive/{date}/brief.md)
+  const latestBriefPath = path.join(dir, 'brief.md')
+  await writeFile(latestBriefPath, content, 'utf8')
+
+  // Capture static HTML snapshot into the build directory (non-blocking)
+  try {
+    await captureSnapshot(dateStr, buildId)
+  } catch (err) {
+    console.warn(`  snapshot failed (non-blocking): ${err.message}`)
+  }
 }

@@ -1,7 +1,8 @@
 import '../styles/panda.css'
-import { createRootRoute, Link, Outlet, HeadContent, Scripts } from '@tanstack/react-router'
+import { createRootRoute, Link, Outlet, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { styled } from '../../styled-system/jsx'
+import type { ReactNode } from 'react'
 
 const THEME_INIT_SCRIPT = `(function(){
   var s=localStorage.getItem('theme');
@@ -11,102 +12,51 @@ const THEME_INIT_SCRIPT = `(function(){
 
 export const Route = createRootRoute({
   head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
-    ],
-    title: 'Doug March',
     links: [
-      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.googleapis.com',
+      },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossOrigin: 'anonymous',
+      },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans:wght@300;400&display=swap',
       },
     ],
-    scripts: [
-      { children: THEME_INIT_SCRIPT },
-    ],
+    scripts: [{ children: THEME_INIT_SCRIPT }],
   }),
-  notFoundComponent: NotFound,
+  notFoundComponent: () => {
+    return (
+      <div>
+        <p>This page does not exist.</p>
+        <Link to="/">Go home</Link>
+      </div>
+    )
+  },
   component: RootComponent,
 })
 
 function RootComponent() {
   return (
-    <>
-      <HeadContent />
-      <Outlet />
-      <Scripts />
-    </>
+    <RootDocument>
+      <Layout>
+        <Outlet />
+      </Layout>
+    </RootDocument>
   )
 }
 
-// NotFound styled components — inline here since they're only used in this file
-const Wrap = styled('div', {
-  base: { paddingTop: '12' },
-})
-
-const Code = styled('div', {
-  base: {
-    fontSize: '0.55rem',
-    fontWeight: 'bold',
-    letterSpacing: 'widest',
-    color: 'text.dim',
-    marginBottom: '6',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '2',
-    _before: { content: '"//"', color: 'text.dim' },
-  },
-})
-
-const Heading = styled('div', {
-  base: {
-    fontSize: 'xl',
-    fontWeight: 'bold',
-    letterSpacing: 'tight',
-    color: 'text',
-    lineHeight: 'tight',
-    marginBottom: '3',
-  },
-})
-
-const Message = styled('p', {
-  base: {
-    fontSize: 'base',
-    color: 'text.dim',
-    fontStyle: 'italic',
-    lineHeight: 'normal',
-    marginBottom: '8',
-  },
-})
-
-const BackLink = styled(Link, {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '0.4rem',
-    fontSize: 'sm',
-    fontWeight: 'bold',
-    color: 'text.dim',
-    letterSpacing: 'wide',
-    transitionProperty: 'color',
-    transitionDuration: 'fast',
-    transitionTimingFunction: 'default',
-    _hover: { color: 'accent' },
-  },
-})
-
-function NotFound() {
+function RootDocument({ children }: { children: ReactNode }) {
   return (
-    <Layout>
-      <Wrap>
-        <Code>404</Code>
-        <Heading>NOT FOUND</Heading>
-        <Message>The page you're looking for doesn't exist or has been moved.</Message>
-        <BackLink to={'/' as any}>← BACK TO WORK</BackLink>
-      </Wrap>
-    </Layout>
+    <>
+      <HeadContent />
+      {children}
+      <ScrollRestoration />
+      <Scripts />
+    </>
   )
 }

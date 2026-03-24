@@ -1,39 +1,33 @@
+import { Box, Flex } from '../../styled-system/jsx'
+import { SectionHead } from './SectionHead'
 import { capabilities } from '../content/timeline'
-import { styled } from '../../styled-system/jsx'
-
-const Grid = styled('div', {
-  base: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
-    gap: '2',
-    marginTop: '10',
-  },
-})
-
-const Item = styled('div', {
-  base: {
-    fontSize: '0.55rem',
-    fontWeight: 'bold',
-    letterSpacing: '0.07em',
-    color: 'text.dim',
-    background: 'bg.card',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: 'logo.blueDim',
-    paddingTop: '0.4rem',
-    paddingBottom: '0.4rem',
-    paddingLeft: '0.6rem',
-    paddingRight: '0.6rem',
-    textTransform: 'uppercase',
-  },
-})
 
 export function Capabilities() {
   return (
-    <Grid>
-      {capabilities.map((skill) => (
-        <Item key={skill}>{skill}</Item>
-      ))}
-    </Grid>
+    <Box>
+      <SectionHead label="Capabilities" />
+      <Flex gap="2" flexWrap="wrap">
+        {capabilities.map((cap) => (
+          <Box
+            key={cap}
+            fontSize="2xs"
+            fontFamily="body"
+            fontWeight="semibold"
+            letterSpacing="wide"
+            color="textSecondary"
+            paddingTop="1"
+            paddingBottom="1"
+            paddingLeft="2"
+            paddingRight="2"
+            borderWidth="1px"
+            borderStyle="solid"
+            borderColor="border"
+            background="bgColumnFill"
+          >
+            {cap}
+          </Box>
+        ))}
+      </Flex>
+    </Box>
   )
 }

@@ -29,6 +29,7 @@ interface Signals {
 }
 
 type PipelineStatus = 'idle' | 'running' | 'success' | 'error'
+type PaneName = 'pipeline' | 'archive' | 'inspector' | 'run'
 
 interface Phase {
   label: string
@@ -48,22 +49,84 @@ const INITIAL_PHASES: Phase[] = [
 // ─── Styles ───────────────────────────────────────────────────────────────────
 
 const s = {
-  page: { padding: '28px 32px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', fontSize: '13px', color: '#1e293b', maxWidth: '960px' } as React.CSSProperties,
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' } as React.CSSProperties,
-  title: { fontSize: '18px', fontWeight: 700, color: '#0f172a', margin: 0 } as React.CSSProperties,
-  meta: { fontSize: '12px', color: '#94a3b8', marginTop: '3px' } as React.CSSProperties,
-  badge: { display: 'inline-flex', alignItems: 'center', gap: '5px', background: '#f0fdf4', color: '#16a34a', border: '1px solid #bbf7d0', borderRadius: '20px', padding: '4px 10px', fontSize: '11px', fontWeight: 500 } as React.CSSProperties,
+  // Layout shell
+  page: {
+    fontFamily: '"Space Mono", "Courier New", monospace',
+    fontSize: '13px',
+    color: '#e0e6ed',
+    background: '#0e1117',
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    overflow: 'hidden',
+  } as React.CSSProperties,
+  topBar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '12px 24px',
+    borderBottom: '1px solid #1e2633',
+    background: '#0e1117',
+    flexShrink: 0,
+  } as React.CSSProperties,
+  layout: {
+    display: 'grid',
+    gridTemplateColumns: '190px 1fr',
+    flex: 1,
+    overflow: 'hidden',
+  } as React.CSSProperties,
+  sidebar: {
+    background: '#0e1117',
+    borderRight: '1px solid #1e2633',
+    display: 'flex',
+    flexDirection: 'column',
+    paddingTop: '8px',
+    overflow: 'hidden',
+  } as React.CSSProperties,
+  navItem: {
+    padding: '10px 20px',
+    fontSize: '12px',
+    fontFamily: '"Space Mono", monospace',
+    color: '#6b7b8d',
+    cursor: 'pointer',
+    borderLeft: '2px solid transparent',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    background: 'none',
+    border: 'none',
+    borderLeftWidth: '2px',
+    borderLeftStyle: 'solid' as const,
+    borderLeftColor: 'transparent',
+    width: '100%',
+    textAlign: 'left' as const,
+  } as React.CSSProperties,
+  navItemActive: {
+    color: '#22d3ee',
+    borderLeftColor: '#22d3ee',
+    background: 'rgba(34,211,238,0.05)',
+  } as React.CSSProperties,
+  content: {
+    overflow: 'auto',
+    padding: '24px 28px',
+  } as React.CSSProperties,
+
+  // Existing component styles (dark theme)
+  title: { fontSize: '15px', fontWeight: 700, color: '#e0e6ed', margin: 0, fontFamily: '"Space Mono", monospace' } as React.CSSProperties,
+  meta: { fontSize: '12px', color: '#6b7b8d', marginTop: '0' } as React.CSSProperties,
+  badge: { display: 'inline-flex', alignItems: 'center', gap: '5px', background: 'rgba(34,197,94,0.1)', color: '#4ade80', border: '1px solid rgba(34,197,94,0.2)', borderRadius: '20px', padding: '4px 10px', fontSize: '11px', fontWeight: 500, fontFamily: '"Space Mono", monospace' } as React.CSSProperties,
+  sectionLabel: { fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' },
   signalsGrid: { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px', marginBottom: '20px' } as React.CSSProperties,
-  signalCard: { background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', padding: '12px' } as React.CSSProperties,
-  signalLabel: { fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#94a3b8', marginBottom: '6px' },
-  signalMain: { fontSize: '12px', fontWeight: 500, color: '#1e293b', lineHeight: '1.4' } as React.CSSProperties,
-  signalSub: { fontSize: '11px', color: '#64748b', marginTop: '2px', lineHeight: '1.3' } as React.CSSProperties,
+  signalCard: { background: '#151b23', border: '1px solid #1e2633', borderRadius: '8px', padding: '12px' } as React.CSSProperties,
+  signalLabel: { fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', marginBottom: '6px', fontFamily: '"Space Mono", monospace' },
+  signalMain: { fontSize: '12px', fontWeight: 500, color: '#e0e6ed', lineHeight: '1.4' } as React.CSSProperties,
+  signalSub: { fontSize: '11px', color: '#8b98a5', marginTop: '2px', lineHeight: '1.3' } as React.CSSProperties,
   overridesRow: { display: 'flex', gap: '12px', marginBottom: '20px', alignItems: 'flex-end' } as React.CSSProperties,
   fieldGroup: { display: 'flex', flexDirection: 'column' as const, gap: '5px' },
-  fieldLabel: { fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#94a3b8' },
-  select: { border: '1px solid #e2e8f0', borderRadius: '6px', padding: '7px 10px', fontSize: '12px', color: '#1e293b', background: '#fff', fontFamily: 'inherit', minWidth: '160px' } as React.CSSProperties,
-  textarea: { border: '1px solid #e2e8f0', borderRadius: '6px', padding: '7px 10px', fontSize: '12px', color: '#1e293b', background: '#fff', fontFamily: 'inherit', resize: 'none' as const, height: '56px', width: '340px' } as React.CSSProperties,
-  saveBtn: { background: '#f1f5f9', border: '1px solid #e2e8f0', borderRadius: '6px', padding: '7px 14px', fontSize: '12px', fontWeight: 500, color: '#475569', cursor: 'pointer', height: '34px' } as React.CSSProperties,
+  fieldLabel: { fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' },
+  select: { border: '1px solid #1e2633', borderRadius: '6px', padding: '7px 10px', fontSize: '12px', color: '#e0e6ed', background: '#151b23', fontFamily: '"Space Mono", monospace', minWidth: '160px' } as React.CSSProperties,
+  textarea: { border: '1px solid #1e2633', borderRadius: '6px', padding: '7px 10px', fontSize: '12px', color: '#e0e6ed', background: '#151b23', fontFamily: '"Space Mono", monospace', resize: 'none' as const, height: '56px', width: '340px' } as React.CSSProperties,
+  saveBtn: { background: '#151b23', border: '1px solid #1e2633', borderRadius: '6px', padding: '7px 14px', fontSize: '12px', fontWeight: 500, color: '#8b98a5', cursor: 'pointer', height: '34px', fontFamily: '"Space Mono", monospace' } as React.CSSProperties,
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -71,6 +134,8 @@ const s = {
 function DevPanel() {
   const { signals: initialSignals, archive } = Route.useLoaderData()
   const signals = initialSignals as Signals
+
+  const [activePane, setActivePane] = useState<PaneName>('pipeline')
 
   const [moodOverride, setMoodOverride] = useState<string>(signals.mood_override ?? '')
   const [notes, setNotes] = useState<string>(signals.notes ?? '')
@@ -85,8 +150,6 @@ function DevPanel() {
   const logEndRef = useRef<HTMLDivElement>(null)
   const [attemptNum, setAttemptNum] = useState(1)
   const [result, setResult] = useState<{ brief?: string; timestamp?: string; error?: string } | null>(null)
-
-  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
   // ── EventSource cleanup on unmount ──────────────────────────────────────────
   useEffect(() => {
@@ -117,7 +180,7 @@ function DevPanel() {
     setAttemptNum(1)
     setResult(null)
 
-    const es = new EventSource(`/api/pipeline?dryRun=${dryRun}`)
+    const es = new EventSource(`/api/pipeline?dryRun=${dryRun}&mock=true`)
     esRef.current = es
 
     es.onmessage = (e) => {
@@ -178,43 +241,175 @@ function DevPanel() {
   return (
     <div style={s.page}>
 
-      {/* Header */}
-      <div style={s.header}>
-        <div>
-          <h1 style={s.title}>Daily Redesign</h1>
-          <div style={s.meta}>{today}</div>
+      {/* Top Bar */}
+      <div style={s.topBar}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
+          <span style={s.title}>doug-march.com</span>
+          <span style={s.meta}>Daily Redesign &middot; Dev Panel</span>
         </div>
-        <div style={s.badge}>dev server running</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={s.badge}>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80' }} />
+            dev server running
+          </div>
+          <a
+            href="http://localhost:3000"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontSize: '12px', color: '#22d3ee', textDecoration: 'none', fontFamily: '"Space Mono", monospace' }}
+          >
+            Open Site &#8599;
+          </a>
+        </div>
       </div>
 
-      {/* Signals */}
+      {/* Layout: Sidebar + Content */}
+      <div style={s.layout}>
+
+        {/* Sidebar */}
+        <nav style={s.sidebar}>
+          <div style={{ flex: 1 }}>
+            <SidebarItem
+              label="Pipeline"
+              icon="&#9654;"
+              active={activePane === 'pipeline'}
+              onClick={() => setActivePane('pipeline')}
+            />
+            <SidebarItem
+              label="Archive"
+              icon="&#9776;"
+              active={activePane === 'archive'}
+              onClick={() => setActivePane('archive')}
+            />
+            <SidebarItem
+              label="Prompt Inspector"
+              icon="&#128269;"
+              active={activePane === 'inspector'}
+              onClick={() => setActivePane('inspector')}
+            />
+          </div>
+          <div style={{ borderTop: '1px solid #1e2633', paddingTop: '8px', paddingBottom: '8px' }}>
+            <SidebarItem
+              label="Run Pipeline"
+              icon="&#9881;"
+              active={activePane === 'run'}
+              onClick={() => setActivePane('run')}
+              trailing={pipelineStatus === 'running' ? (
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b', flexShrink: 0 }} />
+              ) : undefined}
+            />
+          </div>
+        </nav>
+
+        {/* Content */}
+        <div style={s.content}>
+          {activePane === 'pipeline' && (
+            <PipelinePane
+              signals={signals}
+              archive={archive as ArchiveEntry[]}
+              moodOverride={moodOverride}
+              notes={notes}
+              savingOverrides={savingOverrides}
+              onMoodOverrideChange={setMoodOverride}
+              onNotesChange={setNotes}
+              onSaveOverrides={handleSaveOverrides}
+            />
+          )}
+          {activePane === 'archive' && (
+            <ArchivePane archive={archive as ArchiveEntry[]} />
+          )}
+          {activePane === 'inspector' && (
+            <InspectorPane />
+          )}
+          {activePane === 'run' && (
+            <RunPane
+              pipelineStatus={pipelineStatus}
+              dryRun={dryRun}
+              onDryRunChange={setDryRun}
+              onRun={handleRun}
+              phases={phases}
+              logLines={logLines}
+              attemptNum={attemptNum}
+              result={result}
+              logEndRef={logEndRef}
+              archive={archive as ArchiveEntry[]}
+            />
+          )}
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
+// ─── Sidebar Item ─────────────────────────────────────────────────────────────
+
+function SidebarItem({ label, icon, active, onClick, trailing }: {
+  label: string
+  icon: string
+  active: boolean
+  onClick: () => void
+  trailing?: React.ReactNode
+}) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        ...s.navItem,
+        ...(active ? s.navItemActive : {}),
+      }}
+    >
+      <span style={{ fontSize: '11px' }} dangerouslySetInnerHTML={{ __html: icon }} />
+      <span>{label}</span>
+      {trailing && <span style={{ marginLeft: 'auto' }}>{trailing}</span>}
+    </button>
+  )
+}
+
+// ─── Pipeline Pane ────────────────────────────────────────────────────────────
+
+function PipelinePane({ signals, archive, moodOverride, notes, savingOverrides, onMoodOverrideChange, onNotesChange, onSaveOverrides }: {
+  signals: Signals
+  archive: ArchiveEntry[]
+  moodOverride: string
+  notes: string
+  savingOverrides: boolean
+  onMoodOverrideChange: (v: string) => void
+  onNotesChange: (v: string) => void
+  onSaveOverrides: () => void
+}) {
+  const lastRun = archive[0]
+  return (
+    <>
+      {/* Section: Signals */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '10px' }}>
-        <div style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#94a3b8' }}>Signals</div>
-        <div style={{ fontSize: '11px', color: '#cbd5e1' }} data-testid="signals-date">{signals.date}</div>
+        <div style={s.sectionLabel}>// SIGNALS</div>
+        <div style={{ fontSize: '11px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' }} data-testid="signals-date">{signals.date}</div>
       </div>
       <div style={s.signalsGrid} data-testid="signals-grid">
-        <SignalCard label="Weather" icon="🌨️"
-          main={signals.weather?.location ?? '—'}
-          sub={signals.weather ? `${signals.weather.conditions} · ${signals.weather.feel}` : ''} />
-        <SignalCard label="Sports" icon="🏀"
-          main={signals.sports?.[0] ? `${signals.sports[0].team}` : '—'}
+        <SignalCard label="Weather" icon="&#127784;&#65039;"
+          main={signals.weather?.location ?? '\u2014'}
+          sub={signals.weather ? `${signals.weather.conditions} \u00b7 ${signals.weather.feel}` : ''} />
+        <SignalCard label="Sports" icon="&#127936;"
+          main={signals.sports?.[0] ? `${signals.sports[0].team}` : '\u2014'}
           sub={signals.sports?.[0]?.result ?? ''} />
-        <SignalCard label="Golf" icon="⛳"
-          main={signals.golf?.[0]?.slice(0, 30) ?? '—'}
+        <SignalCard label="Golf" icon="&#9971;"
+          main={signals.golf?.[0]?.slice(0, 30) ?? '\u2014'}
           sub={signals.golf?.[1] ?? ''} />
-        <SignalCard label="GitHub" icon="⭐"
-          main={signals.github_trending?.[0]?.repo ?? '—'}
+        <SignalCard label="GitHub" icon="&#11088;"
+          main={signals.github_trending?.[0]?.repo ?? '\u2014'}
           sub={`${signals.github_trending?.[0]?.stars?.toLocaleString() ?? '?'} stars`} />
-        <SignalCard label="News" icon="📰"
-          main={signals.news?.[0]?.slice(0, 40) ?? '—'}
+        <SignalCard label="News" icon="&#128240;"
+          main={signals.news?.[0]?.slice(0, 40) ?? '\u2014'}
           sub={signals.news?.[1]?.slice(0, 40) ?? ''} />
       </div>
 
-      {/* Overrides */}
+      {/* Section: Overrides */}
+      <div style={{ ...s.sectionLabel, marginBottom: '10px' }}>// OVERRIDES</div>
       <div style={s.overridesRow}>
         <div style={s.fieldGroup}>
           <div style={s.fieldLabel}>Mood Override</div>
-          <select style={s.select} value={moodOverride} onChange={e => setMoodOverride(e.target.value)} data-testid="mood-override-input">
+          <select style={s.select} value={moodOverride} onChange={e => onMoodOverrideChange(e.target.value)} data-testid="mood-override-input">
             <option value="">— none (Claude decides) —</option>
             <option value="dark">dark</option>
             <option value="celebratory">celebratory</option>
@@ -227,41 +422,217 @@ function DevPanel() {
           <textarea
             style={s.textarea}
             value={notes}
-            onChange={e => setNotes(e.target.value)}
+            onChange={e => onNotesChange(e.target.value)}
             placeholder="Optional extra context, e.g. 'I just got a hole in one'"
           />
         </div>
-        <button style={s.saveBtn} onClick={handleSaveOverrides} disabled={savingOverrides} data-testid="save-overrides-btn">
+        <button style={s.saveBtn} onClick={onSaveOverrides} disabled={savingOverrides} data-testid="save-overrides-btn">
           {savingOverrides ? 'Saving...' : 'Save overrides'}
         </button>
       </div>
 
-      {/* Run */}
-      <RunSection
-        pipelineStatus={pipelineStatus}
-        dryRun={dryRun}
-        onDryRunChange={setDryRun}
-        onRun={handleRun}
-        archive={archive as ArchiveEntry[]}
-      />
-
-      {/* Progress / Result */}
-      {pipelineStatus === 'running' && (
-        <ProgressSection phases={phases} logLines={logLines} attemptNum={attemptNum} />
+      {/* Section: Last Run */}
+      {lastRun && (
+        <>
+          <div style={{ ...s.sectionLabel, marginBottom: '10px' }}>// LAST RUN</div>
+          <div style={{ background: '#151b23', border: '1px solid #1e2633', borderRadius: '8px', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#4ade80', flexShrink: 0 }} />
+            <div>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: '#e0e6ed' }}>{lastRun.date}</span>
+              <span style={{ fontSize: '12px', color: '#6b7b8d', fontStyle: 'italic', marginLeft: '12px' }}>{lastRun.brief.slice(0, 80)}{lastRun.brief.length > 80 ? '\u2026' : ''}</span>
+            </div>
+            {lastRun.filesChanged && lastRun.filesChanged.length > 0 && (
+              <span style={{ marginLeft: 'auto', fontSize: '11px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' }}>
+                {lastRun.filesChanged.length} files
+              </span>
+            )}
+          </div>
+        </>
       )}
+    </>
+  )
+}
+
+// ─── Archive Pane ─────────────────────────────────────────────────────────────
+
+function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
+  const [expandedDate, setExpandedDate] = useState<string | null>(null)
+  const today = new Date().toISOString().slice(0, 10)
+
+  return (
+    <>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '16px' }}>
+        <div style={s.sectionLabel}>// ARCHIVE</div>
+        <div style={{ fontSize: '11px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' }}>{archive.length} entries</div>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+        {archive.map((entry) => {
+          const isToday = entry.date === today
+          const isExpanded = expandedDate === entry.date
+          return (
+            <div key={entry.date}>
+              <div
+                style={{
+                  background: isToday ? 'rgba(34,211,238,0.05)' : '#151b23',
+                  border: '1px solid',
+                  borderColor: isToday ? 'rgba(34,211,238,0.15)' : '#1e2633',
+                  borderRadius: isExpanded ? '8px 8px 0 0' : '8px',
+                  padding: '12px 16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  marginBottom: isExpanded ? '0' : '6px',
+                }}
+              >
+                <span style={{ fontSize: '13px', fontWeight: 600, color: isToday ? '#22d3ee' : '#e0e6ed', minWidth: '95px', fontFamily: '"Space Mono", monospace' }}>
+                  {entry.date}
+                </span>
+                <span style={{ fontSize: '12px', color: isToday ? '#8b98a5' : '#6b7b8d', fontStyle: 'italic', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {entry.brief}
+                </span>
+                {entry.filesChanged.length > 0 && (
+                  <span style={{ fontSize: '11px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace', flexShrink: 0 }}>
+                    {entry.filesChanged.length} files
+                  </span>
+                )}
+                {entry.rationale && (
+                  <button
+                    onClick={() => setExpandedDate(isExpanded ? null : entry.date)}
+                    style={{
+                      background: 'none',
+                      border: '1px solid #1e2633',
+                      borderRadius: '4px',
+                      padding: '3px 8px',
+                      fontSize: '10px',
+                      color: isExpanded ? '#22d3ee' : '#6b7b8d',
+                      cursor: 'pointer',
+                      fontFamily: '"Space Mono", monospace',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {isExpanded ? 'Hide Brief' : 'View Brief'}
+                  </button>
+                )}
+              </div>
+              {isExpanded && entry.rationale && (
+                <div style={{
+                  background: '#0a0e14',
+                  border: '1px solid',
+                  borderColor: isToday ? 'rgba(34,211,238,0.15)' : '#1e2633',
+                  borderTop: 'none',
+                  borderRadius: '0 0 8px 8px',
+                  padding: '14px 16px',
+                  marginBottom: '6px',
+                }}>
+                  <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.07em', color: '#6b7b8d', marginBottom: '8px', fontFamily: '"Space Mono", monospace' }}>
+                    Claude's Rationale
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#8b98a5', lineHeight: '1.7', whiteSpace: 'pre-wrap' }}>
+                    {entry.rationale}
+                  </div>
+                  {entry.filesChanged.length > 0 && (
+                    <>
+                      <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.07em', color: '#6b7b8d', marginTop: '14px', marginBottom: '6px', fontFamily: '"Space Mono", monospace' }}>
+                        Files Changed
+                      </div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                        {entry.filesChanged.map(f => (
+                          <span key={f} style={{ fontSize: '11px', color: '#22d3ee', background: 'rgba(34,211,238,0.08)', padding: '2px 8px', borderRadius: '3px', fontFamily: '"Space Mono", monospace' }}>
+                            {f}
+                          </span>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </>
+  )
+}
+
+// ─── Inspector Pane (placeholder) ─────────────────────────────────────────────
+
+function InspectorPane() {
+  return (
+    <>
+      <div style={{ ...s.sectionLabel, marginBottom: '16px' }}>// PROMPT INSPECTOR</div>
+      <div style={{ background: '#151b23', border: '1px solid #1e2633', borderRadius: '8px', padding: '24px', textAlign: 'center' }}>
+        <div style={{ fontSize: '13px', color: '#6b7b8d', lineHeight: '1.6' }}>
+          Available when agent swarm is active.<br />
+          Shows the prompts sent to each designer agent with token/byte counts.
+        </div>
+      </div>
+    </>
+  )
+}
+
+// ─── Run Pane ─────────────────────────────────────────────────────────────────
+
+function RunPane({ pipelineStatus, dryRun, onDryRunChange, onRun, phases, logLines, attemptNum, result, logEndRef, archive }: {
+  pipelineStatus: PipelineStatus
+  dryRun: boolean
+  onDryRunChange: (v: boolean) => void
+  onRun: () => void
+  phases: Phase[]
+  logLines: string[]
+  attemptNum: number
+  result: { brief?: string; timestamp?: string; error?: string } | null
+  logEndRef: React.RefObject<HTMLDivElement | null>
+  archive: ArchiveEntry[]
+}) {
+  return (
+    <>
+      <div style={{ ...s.sectionLabel, marginBottom: '16px' }}>// RUN PIPELINE</div>
+
+      {/* Controls */}
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '20px' }}>
+        <button
+          onClick={onRun}
+          disabled={pipelineStatus === 'running'}
+          data-testid="run-pipeline-btn"
+          style={{
+            background: pipelineStatus === 'running' ? '#1e2633' : '#22d3ee',
+            color: pipelineStatus === 'running' ? '#6b7b8d' : '#0e1117',
+            border: 'none',
+            borderRadius: '8px',
+            padding: '10px 24px',
+            fontSize: '14px',
+            fontWeight: 600,
+            cursor: pipelineStatus === 'running' ? 'default' : 'pointer',
+            fontFamily: '"Space Mono", monospace',
+          }}
+        >
+          {pipelineStatus === 'running' ? 'Running...' : 'Run Pipeline'}
+        </button>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' }}>
+          <input type="checkbox" checked={dryRun} onChange={e => onDryRunChange(e.target.checked)} />
+          Dry run (no commit)
+        </label>
+      </div>
+
+      {/* Progress tracker - always visible */}
+      <ProgressSection phases={phases} logLines={logLines} attemptNum={attemptNum} logEndRef={logEndRef} />
+
+      {/* Success panel */}
       {pipelineStatus === 'success' && result && (
         <SuccessSection
           brief={result.brief ?? ''}
           timestamp={result.timestamp ?? ''}
           attemptNum={attemptNum}
-          archive={archive as ArchiveEntry[]}
+          archive={archive}
         />
       )}
-      {pipelineStatus === 'error' && result && (
-        <ErrorSection error={result.error ?? 'Unknown error'} onRetry={handleRun} />
-      )}
 
-    </div>
+      {/* Error panel */}
+      {pipelineStatus === 'error' && result && (
+        <ErrorSection error={result.error ?? 'Unknown error'} onRetry={onRun} />
+      )}
+    </>
   )
 }
 
@@ -271,69 +642,44 @@ function SignalCard({ label, icon, main, sub }: { label: string; icon: string; m
   return (
     <div style={s.signalCard}>
       <div style={s.signalLabel}>{label}</div>
-      <div style={{ fontSize: '20px', marginBottom: '5px' }}>{icon}</div>
+      <div style={{ fontSize: '20px', marginBottom: '5px' }} dangerouslySetInnerHTML={{ __html: icon }} />
       <div style={s.signalMain}>{main}</div>
       {sub && <div style={s.signalSub}>{sub}</div>}
     </div>
   )
 }
 
-function RunSection({ pipelineStatus, dryRun, onDryRunChange, onRun, archive }: {
-  pipelineStatus: PipelineStatus
-  dryRun: boolean
-  onDryRunChange: (v: boolean) => void
-  onRun: () => void
-  archive: ArchiveEntry[]
-}) {
-  const lastRun = archive[0]
+function ProgressSection({ phases, logLines, attemptNum, logEndRef }: { phases: Phase[]; logLines: string[]; attemptNum: number; logEndRef: React.RefObject<HTMLDivElement | null> }) {
+  const isRunning = phases.some(p => p.status === 'active')
   return (
-    <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
-      <button
-        onClick={onRun}
-        disabled={pipelineStatus === 'running'}
-        data-testid="run-pipeline-btn"
-        style={{ background: pipelineStatus === 'running' ? '#818cf8' : '#4f46e5', color: 'white', border: 'none', borderRadius: '8px', padding: '10px 24px', fontSize: '14px', fontWeight: 600, cursor: pipelineStatus === 'running' ? 'default' : 'pointer' }}
-      >
-        {pipelineStatus === 'running' ? '⏳ Running...' : '▶ Run Pipeline'}
-      </button>
-      <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#64748b' }}>
-        <input type="checkbox" checked={dryRun} onChange={e => onDryRunChange(e.target.checked)} />
-        Dry run (no commit)
-      </label>
-      {lastRun && (
-        <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#94a3b8' }}>
-          Last run: <strong style={{ color: '#475569' }}>{lastRun.date}</strong> · <em>{lastRun.brief.slice(0, 50)}…</em>
-        </div>
-      )}
-    </div>
-  )
-}
-
-function ProgressSection({ phases, logLines, attemptNum }: { phases: Phase[]; logLines: string[]; attemptNum: number }) {
-  return (
-    <div style={{ border: '1px solid #e2e8f0', borderRadius: '8px', overflow: 'hidden', marginBottom: '16px' }}>
-      <div style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '10px 14px', fontSize: '12px', fontWeight: 600, color: '#475569', display: 'flex', justifyContent: 'space-between' }}>
-        <span>Pipeline · Attempt {attemptNum} of 3</span>
-        <span style={{ color: '#f59e0b' }}>● running</span>
+    <div style={{ border: '1px solid #1e2633', borderRadius: '8px', overflow: 'hidden', marginBottom: '16px' }}>
+      <div style={{ background: '#151b23', borderBottom: '1px solid #1e2633', padding: '10px 14px', fontSize: '12px', fontWeight: 600, color: '#8b98a5', display: 'flex', justifyContent: 'space-between', fontFamily: '"Space Mono", monospace' }}>
+        <span>Pipeline &middot; Attempt {attemptNum} of 3</span>
+        {isRunning && <span style={{ color: '#f59e0b' }}>&#9679; running</span>}
+        {!isRunning && phases.every(p => p.status === 'done') && <span style={{ color: '#4ade80' }}>&#9679; complete</span>}
+        {!isRunning && phases.every(p => p.status === 'pending') && <span style={{ color: '#6b7b8d' }}>&#9679; idle</span>}
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr' }}>
         {/* Phase tracker */}
-        <div style={{ padding: '14px', borderRight: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '9px' }}>
+        <div style={{ padding: '14px', borderRight: '1px solid #1e2633', display: 'flex', flexDirection: 'column', gap: '9px' }}>
           {phases.map(p => (
             <div key={p.label} style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
               <PhaseDot status={p.status} />
-              <span style={{ fontSize: '11px', color: p.status === 'pending' ? '#cbd5e1' : p.status === 'done' ? '#94a3b8' : '#0f172a', fontWeight: p.status === 'active' ? 600 : 400, textDecoration: p.status === 'done' ? 'line-through' : 'none' }}>
+              <span style={{ fontSize: '11px', color: p.status === 'pending' ? '#3d4a5c' : p.status === 'done' ? '#6b7b8d' : '#e0e6ed', fontWeight: p.status === 'active' ? 600 : 400, textDecoration: p.status === 'done' ? 'line-through' : 'none', fontFamily: '"Space Mono", monospace' }}>
                 {p.label}
               </span>
             </div>
           ))}
         </div>
         {/* Log pane */}
-        <div style={{ background: '#0f172a', padding: '14px', fontFamily: 'Courier New, monospace', fontSize: '11px', lineHeight: '1.7', color: '#94a3b8', minHeight: '180px', maxHeight: '220px', overflowY: 'auto' }}>
+        <div style={{ background: '#0a0e14', padding: '14px', fontFamily: '"Space Mono", monospace', fontSize: '11px', lineHeight: '1.7', color: '#6b7b8d', minHeight: '180px', maxHeight: '280px', overflowY: 'auto' }}>
+          {logLines.length === 0 && (
+            <div style={{ color: '#3d4a5c' }}>Waiting for pipeline to start...</div>
+          )}
           {logLines.map((line, i) => (
-            <div key={i} style={{ color: line.includes('===') || line.includes('calling Claude') ? '#fbbf24' : '#64748b' }}>{line}</div>
+            <div key={i} style={{ color: line.includes('===') || line.includes('calling Claude') ? '#fbbf24' : '#6b7b8d' }}>{line}</div>
           ))}
-          <span style={{ color: '#fbbf24' }}>▌</span>
+          {logLines.length > 0 && <span style={{ color: '#22d3ee' }}>&#9612;</span>}
           <div ref={logEndRef} />
         </div>
       </div>
@@ -343,9 +689,9 @@ function ProgressSection({ phases, logLines, attemptNum }: { phases: Phase[]; lo
 
 function PhaseDot({ status }: { status: 'pending' | 'active' | 'done' }) {
   const base = { width: '16px', height: '16px', borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '9px' } as React.CSSProperties
-  if (status === 'done') return <div style={{ ...base, background: '#22c55e', color: 'white' }}>✓</div>
+  if (status === 'done') return <div style={{ ...base, background: '#22c55e', color: 'white' }}>&#10003;</div>
   if (status === 'active') return <div style={{ ...base, background: '#f59e0b' }} />
-  return <div style={{ ...base, background: '#e2e8f0' }} />
+  return <div style={{ ...base, background: '#1e2633' }} />
 }
 
 function SuccessSection({ brief, timestamp, attemptNum, archive }: {
@@ -356,33 +702,33 @@ function SuccessSection({ brief, timestamp, attemptNum, archive }: {
 }) {
   const today = new Date().toISOString().slice(0, 10)
   return (
-    <div style={{ border: '1px solid #bbf7d0', borderRadius: '8px', background: '#f0fdf4', overflow: 'hidden' }}>
-      <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #bbf7d0' }}>
-        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', flexShrink: 0 }}>✓</div>
+    <div style={{ border: '1px solid rgba(34,197,94,0.3)', borderRadius: '8px', background: 'rgba(34,197,94,0.05)', overflow: 'hidden' }}>
+      <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid rgba(34,197,94,0.15)' }}>
+        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', flexShrink: 0 }}>&#10003;</div>
         <div>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: '#166534' }}>Build passed · committed</div>
-          <div style={{ fontSize: '12px', color: '#16a34a', fontStyle: 'italic' }}>"{brief}"</div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: '#4ade80' }}>Build passed &middot; committed</div>
+          <div style={{ fontSize: '12px', color: '#6b7b8d', fontStyle: 'italic' }}>"{brief}"</div>
         </div>
-        <div style={{ marginLeft: 'auto', fontSize: '11px', color: '#86efac', textAlign: 'right' as const }}>
-          {timestamp} · {attemptNum} attempt{attemptNum !== 1 ? 's' : ''}
+        <div style={{ marginLeft: 'auto', fontSize: '11px', color: '#4ade80', textAlign: 'right' as const, fontFamily: '"Space Mono", monospace' }}>
+          {timestamp} &middot; {attemptNum} attempt{attemptNum !== 1 ? 's' : ''}
         </div>
         <button
           onClick={() => window.open('http://localhost:3000', '_blank')}
-          style={{ background: '#166534', color: 'white', border: 'none', borderRadius: '5px', padding: '5px 12px', fontSize: '11px', fontWeight: 500, cursor: 'pointer', flexShrink: 0 }}
+          style={{ background: '#22c55e', color: '#0e1117', border: 'none', borderRadius: '5px', padding: '5px 12px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', flexShrink: 0, fontFamily: '"Space Mono", monospace' }}
         >
-          Open site ↗
+          Open site &#8599;
         </button>
       </div>
       <div style={{ padding: '10px 16px' }}>
-        <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#86efac', marginBottom: '8px' }}>Recent designs</div>
+        <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', marginBottom: '8px', fontFamily: '"Space Mono", monospace' }}>Recent designs</div>
         {archive.map((entry, i) => {
           const isToday = entry.date === today
           return (
-            <div key={entry.date} style={{ display: 'flex', gap: '10px', padding: '6px 0', borderBottom: i < archive.length - 1 ? '1px solid #dcfce7' : 'none' }}>
-              <span style={{ fontSize: '11px', fontWeight: isToday ? 700 : 600, color: isToday ? '#166534' : '#16a34a', minWidth: '85px' }}>
-                {entry.date}{isToday ? ' ✦' : ''}
+            <div key={entry.date} style={{ display: 'flex', gap: '10px', padding: '6px 0', borderBottom: i < archive.length - 1 ? '1px solid rgba(34,197,94,0.1)' : 'none' }}>
+              <span style={{ fontSize: '11px', fontWeight: isToday ? 700 : 600, color: isToday ? '#22d3ee' : '#4ade80', minWidth: '85px', fontFamily: '"Space Mono", monospace' }}>
+                {entry.date}{isToday ? ' *' : ''}
               </span>
-              <span style={{ fontSize: '11px', color: isToday ? '#166534' : '#4ade80', fontStyle: 'italic', fontWeight: isToday ? 600 : 400 }}>{entry.brief}</span>
+              <span style={{ fontSize: '11px', color: isToday ? '#e0e6ed' : '#6b7b8d', fontStyle: 'italic', fontWeight: isToday ? 600 : 400 }}>{entry.brief}</span>
             </div>
           )
         })}
@@ -393,15 +739,15 @@ function SuccessSection({ brief, timestamp, attemptNum, archive }: {
 
 function ErrorSection({ error, onRetry }: { error: string; onRetry: () => void }) {
   return (
-    <div style={{ border: '1px solid #fecaca', borderRadius: '8px', background: '#fef2f2', padding: '16px', display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
-      <div style={{ color: '#dc2626', fontSize: '18px', flexShrink: 0 }}>✕</div>
+    <div style={{ border: '1px solid rgba(220,38,38,0.3)', borderRadius: '8px', background: 'rgba(220,38,38,0.05)', padding: '16px', display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+      <div style={{ color: '#ef4444', fontSize: '18px', flexShrink: 0 }}>&#10005;</div>
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: '13px', fontWeight: 600, color: '#991b1b', marginBottom: '4px' }}>Pipeline failed</div>
-        <div style={{ fontSize: '11px', color: '#b91c1c', fontFamily: 'monospace' }}>{error}</div>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: '#ef4444', marginBottom: '4px' }}>Pipeline failed</div>
+        <div style={{ fontSize: '11px', color: '#f87171', fontFamily: '"Space Mono", monospace' }}>{error}</div>
       </div>
       <button
         onClick={onRetry}
-        style={{ background: '#dc2626', color: 'white', border: 'none', borderRadius: '6px', padding: '7px 14px', fontSize: '12px', fontWeight: 500, cursor: 'pointer', flexShrink: 0 }}
+        style={{ background: '#ef4444', color: 'white', border: 'none', borderRadius: '6px', padding: '7px 14px', fontSize: '12px', fontWeight: 500, cursor: 'pointer', flexShrink: 0, fontFamily: '"Space Mono", monospace' }}
       >
         Retry
       </button>

@@ -1,59 +1,47 @@
-import { styled } from '../../styled-system/jsx'
+import { Box, Flex } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
 
-const FooterRoot = styled('footer', {
-  base: {
-    display: 'none',
-    _mobile: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingTop: '3',
-      paddingLeft: '5',
-      paddingRight: '5',
-      paddingBottom: 'calc(1rem + env(safe-area-inset-bottom))',
-      borderTopWidth: '1px',
-      borderTopStyle: 'solid',
-      borderTopColor: 'logo.blueDim',
-      marginTop: 'auto',
-    },
+const mobileLinkClass = css({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flex: '1',
+  minHeight: '44px',
+  fontSize: 'xs',
+  color: 'textMuted',
+  letterSpacing: 'wider',
+  fontFamily: 'mono',
+  textDecoration: 'none',
+  textTransform: 'uppercase',
+  transition: 'color 0.15s ease',
+  _hover: {
+    color: 'accentLight',
   },
-})
-
-const Copy = styled('span', {
-  base: {
-    fontSize: 'xs',
-    color: 'text.dim',
-  },
-})
-
-const Links = styled('div', {
-  base: {
-    display: 'flex',
-    gap: '3',
-  },
-})
-
-const FooterLink = styled('a', {
-  base: {
-    fontSize: '0.58rem',
-    color: 'text.dim',
-    transitionProperty: 'color',
-    transitionDuration: 'fast',
-    transitionTimingFunction: 'default',
-    _hover: { color: 'accent' },
+  _focusVisible: {
+    outline: '1px solid',
+    outlineColor: 'accentLight',
+    outlineOffset: '-2px',
   },
 })
 
 export function MobileFooter() {
   return (
-    <FooterRoot>
-      <Copy>© {new Date().getFullYear()} DOUG MARCH</Copy>
-      <Links>
-        <FooterLink href="https://github.com/dougmarch" target="_blank" rel="noopener noreferrer">GitHub ↗</FooterLink>
-        <FooterLink href="https://twitter.com/dougmarch" target="_blank" rel="noopener noreferrer">Twitter / X ↗</FooterLink>
-        <FooterLink href="https://linkedin.com/in/dougmarch" target="_blank" rel="noopener noreferrer">LinkedIn ↗</FooterLink>
-        <FooterLink href="mailto:doug@doug-march.com">Email →</FooterLink>
-      </Links>
-    </FooterRoot>
+    <Box
+      display={{ base: 'flex', md: 'none' }}
+      position="fixed"
+      bottom="0"
+      left="0"
+      right="0"
+      background="bgHeader"
+      borderTop="1px solid"
+      borderColor="border"
+      zIndex={50}
+    >
+      <Flex align="stretch" width="100%">
+        <a href="/" className={mobileLinkClass}>Home</a>
+        <Box width="1px" background="border" flexShrink={0} />
+        <a href="/about" className={mobileLinkClass}>About</a>
+      </Flex>
+    </Box>
   )
 }
