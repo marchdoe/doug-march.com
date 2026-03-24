@@ -9,7 +9,7 @@ describe('FILE_OWNERSHIP', () => {
   it('maps every file to exactly one agent', () => {
     const allFiles = Object.values(FILE_OWNERSHIP)
     expect(new Set(allFiles).size).toBeLessThanOrEqual(5)
-    expect(Object.keys(FILE_OWNERSHIP)).toHaveLength(17)
+    expect(Object.keys(FILE_OWNERSHIP)).toHaveLength(16)
   })
 
   it('maps preset.ts and __root.tsx to token-designer', () => {
@@ -17,34 +17,28 @@ describe('FILE_OWNERSHIP', () => {
     expect(FILE_OWNERSHIP['app/routes/__root.tsx']).toBe('token-designer')
   })
 
-  it('maps layout and route files to layout-architect', () => {
-    expect(FILE_OWNERSHIP['app/components/Layout.tsx']).toBe('layout-architect')
-    expect(FILE_OWNERSHIP['app/routes/index.tsx']).toBe('layout-architect')
+  it('maps layout, route, sidebar, and component files to unified-designer', () => {
+    expect(FILE_OWNERSHIP['app/components/Layout.tsx']).toBe('unified-designer')
+    expect(FILE_OWNERSHIP['app/routes/index.tsx']).toBe('unified-designer')
+    expect(FILE_OWNERSHIP['app/components/Sidebar.tsx']).toBe('unified-designer')
+    expect(FILE_OWNERSHIP['app/components/Bio.tsx']).toBe('unified-designer')
+    expect(FILE_OWNERSHIP['app/components/FeaturedProject.tsx']).toBe('unified-designer')
   })
 
-  it('maps Sidebar.tsx to sidebar-designer', () => {
-    expect(FILE_OWNERSHIP['app/components/Sidebar.tsx']).toBe('sidebar-designer')
-  })
-
-  it('maps MobileFooter.tsx to footer-designer', () => {
-    expect(FILE_OWNERSHIP['app/components/MobileFooter.tsx']).toBe('footer-designer')
-  })
-
-  it('maps component files to component-agent', () => {
-    expect(FILE_OWNERSHIP['app/components/Bio.tsx']).toBe('component-agent')
-    expect(FILE_OWNERSHIP['app/components/FeaturedProject.tsx']).toBe('component-agent')
+  it('MobileFooter.tsx is not in FILE_OWNERSHIP (removed from mutable files)', () => {
+    expect(FILE_OWNERSHIP['app/components/MobileFooter.tsx']).toBeUndefined()
   })
 })
 
 describe('identifyFailingAgent', () => {
-  it('identifies layout-architect from a build error mentioning Layout.tsx', () => {
+  it('identifies unified-designer from a build error mentioning Layout.tsx', () => {
     const error = "app/components/Layout.tsx(15,7): error TS2322"
-    expect(identifyFailingAgent(error)).toBe('layout-architect')
+    expect(identifyFailingAgent(error)).toBe('unified-designer')
   })
 
-  it('identifies component-agent from a build error mentioning Bio.tsx', () => {
+  it('identifies unified-designer from a build error mentioning Bio.tsx', () => {
     const error = "app/components/Bio.tsx(8,3): error TS2304"
-    expect(identifyFailingAgent(error)).toBe('component-agent')
+    expect(identifyFailingAgent(error)).toBe('unified-designer')
   })
 
   it('identifies token-designer from error mentioning preset', () => {
@@ -52,9 +46,9 @@ describe('identifyFailingAgent', () => {
     expect(identifyFailingAgent(error)).toBe('token-designer')
   })
 
-  it('returns "both" when errors span multiple agents', () => {
+  it('returns unified-designer when errors span multiple unified-designer files', () => {
     const error = "app/components/Layout.tsx(15,7): error\napp/components/Bio.tsx(8,3): error"
-    expect(identifyFailingAgent(error)).toBe('both')
+    expect(identifyFailingAgent(error)).toBe('unified-designer')
   })
 
   it('returns "both" when no file can be identified', () => {
