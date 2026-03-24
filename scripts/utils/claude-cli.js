@@ -63,9 +63,10 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     ...extraCliArgs,
   ]
 
-  // Strip ANTHROPIC_API_KEY so claude uses Max plan auth
+  // In production (ANTHROPIC_API_KEY set), use it directly.
+  // Locally without a key, strip it so claude falls back to Max plan auth.
   const cliEnv = { ...process.env }
-  delete cliEnv.ANTHROPIC_API_KEY
+  if (!process.env.ANTHROPIC_API_KEY) delete cliEnv.ANTHROPIC_API_KEY
 
   const result = await new Promise((resolve, reject) => {
     const child = spawn('claude', cliArgs, {
