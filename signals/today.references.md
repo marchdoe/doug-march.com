@@ -1,15 +1,15 @@
-# Design References — 2026-03-20
+# Design References — 2026-03-24
 
 > Sources: trending signals
 
 ## Awwwards Sites of the Day
 
-- **GQ & AP The Extraordinary Lab**
-  An immersive digital experience exploring the RD Series by Audemars Piguet, revealing the brand’s relentless pursuit of research, ultra thin engineering...
-  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69b304fc7f0dd819068686.png
-- **The Obsidian Assembly**
-  The Obsidian Assembly is an independent organization coordinating distributed spaces and product development.
-  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69a5bef9385b5362866290.jpg
-- **The Agency of Love & Logic**
-  This site introduces our agency rebrand with a renewed vision. It presents the duality behind our work through the lens of love and logic across curated...
-  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69a849752f761629311403.jpg
+- **The J12 Watch**
+  As the first unisex sports watch by CHANEL, the J12 has revolutionized the world of watchmaking, asserting itself as a 21st-century icon from the moment...
+  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69b161374cfed400765511.png
+- **The Future of Experience**
+  The Future of Experience is an insightful, bold, multi-format manifesto exploring the future of retail, designed to be immersive and accessible across...
+  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69b91a688d910834490753.jpg
+- **The Aurora Way**
+  The Aurora Way is a professionally developed and designed to deliver a smooth, modern, and user-focused digital experience, with an emphasis on clean...
+  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69ac4a312ba3c253951590.png

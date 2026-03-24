@@ -5,285 +5,260 @@ export const elementsPreset = definePreset({
 
   conditions: {
     extend: {
-      _light: '.light &',
-      _dark: '.dark &',
+      light: '.light &',
+      dark: '.dark &',
     },
   },
 
   globalCss: {
     '*, *::before, *::after': {
       boxSizing: 'border-box',
-      margin: '0',
-      padding: '0',
     },
     html: {
       fontSize: '16px',
-      scrollBehavior: 'smooth',
-      fontFeatureSettings: '"tnum"',
+      WebkitFontSmoothing: 'antialiased',
+      MozOsxFontSmoothing: 'grayscale',
     },
     body: {
       fontFamily: 'body',
-      fontSize: 'sm',
+      fontSize: 'base',
       lineHeight: 'normal',
-      background: 'bg',
       color: 'text',
-      fontWeight: 'regular',
-      WebkitFontSmoothing: 'antialiased',
-      MozOsxFontSmoothing: 'grayscale',
+      minHeight: '100vh',
+      margin: '0',
+      padding: '0',
+      background: 'linear-gradient(to right, #D8DCE2 0%, #E6E9ED 45%, #F0F2F5 100%)',
+      _dark: {
+        background: 'linear-gradient(to right, #070C10 0%, #0A1118 45%, #131B22 100%)',
+      },
     },
     'h1, h2, h3, h4, h5, h6': {
       fontFamily: 'heading',
       lineHeight: 'tight',
       letterSpacing: 'tight',
-      fontWeight: 'bold',
+      color: 'heading',
+      margin: '0',
+    },
+    p: {
+      margin: '0',
     },
     a: {
       color: 'accent',
       textDecoration: 'none',
     },
-    table: {
-      borderCollapse: 'collapse',
-      width: '100%',
-    },
-    'button, input, select, textarea': {
-      fontFamily: 'body',
-    },
-    '::selection': {
-      background: 'accent',
-      color: '{colors.stone.900}',
+    'a:hover': {
+      color: 'accentHover',
+      textDecoration: 'underline',
     },
   },
 
   theme: {
     tokens: {
+      colors: {
+        // Chrome neutral scale — hue 207°, saturation 4-8%
+        // Near-achromatic: the cold is felt, not seen
+        chrome: {
+          50: { value: '#F0F2F5' },   // page background base
+          100: { value: '#E5E8EC' },  // card backgrounds, subtle fills
+          200: { value: '#CBD1D8' },  // borders, rules
+          300: { value: '#A3ACB5' },  // disabled states
+          400: { value: '#798490' },  // placeholder, muted text
+          500: { value: '#536270' },  // secondary text
+          600: { value: '#38444F' },  // body text in light mode
+          700: { value: '#222C36' },  // headings, annotation text
+          800: { value: '#131B22' },  // deep text, near-black, dark bg
+          900: { value: '#0A1118' },  // specimen type — the darkest stamp
+        },
+
+        // Ember accent — hue 18° (red-orange scoreboard)
+        // The only warmth on the page. One 148px rectangle of defiant spring.
+        ember: {
+          light: { value: '#F0906A' },
+          DEFAULT: { value: '#D94C14' },
+          dark: { value: '#8D2C07' },
+          glow: { value: 'rgba(217, 76, 20, 0.12)' },
+        },
+
+        white: { value: '#FFFFFF' },
+      },
+
       fonts: {
-        heading: { value: '"Barlow Condensed", sans-serif' },
-        body: { value: '"IBM Plex Sans", sans-serif' },
+        // Syne — industrial without being Brutalist, flat terminals,
+        // wheat-pasted not typeset. Wet Leg's jagged charm.
+        heading: { value: "'Syne', sans-serif" },
+        // Work Sans — neutral enough to disappear as annotation.
+        // Radiohead's precision in the footnotes around the monument.
+        body: { value: "'Work Sans', sans-serif" },
       },
 
       fontSizes: {
-        // Perfect Fourth scale (×1.333) — base 16px
-        '2xs': { value: '0.5625rem' },  // 9px  — seam footnote, metadata labels
-        'xs':  { value: '0.75rem' },     // 12px — section headers, index numbers, nav
-        'sm':  { value: '1rem' },         // 16px — body text baseline
-        'base':{ value: '1.3125rem' },   // 21px — secondary headings, score values
-        'md':  { value: '1.75rem' },      // 28px — project titles, section heads
-        'lg':  { value: '2.3125rem' },   // 37px — identity display
-        'xl':  { value: '3.125rem' },    // 50px — featured work heading
-        '2xl': { value: '4.1875rem' },   // 67px — hero declaration (Barlow Condensed 700 only)
+        // Perfect Fifth (1.500) ratio, base 16px
+        // Extreme ratio for Specimen — the gap between display and annotation IS the system
+        '2xs': { value: '0.4375rem' },  // 7px  — micro labels only
+        xs:    { value: '0.6875rem' },  // 11px — annotation strip, captions
+        sm:    { value: '1rem' },       // 16px — body, annotation copy
+        base:  { value: '1rem' },       // 16px — body baseline
+        md:    { value: '1.5rem' },     // 24px — subheadings
+        lg:    { value: '2.25rem' },    // 36px — section display
+        xl:    { value: '3.375rem' },   // 54px — large display
+        '2xl': { value: '5.0625rem' },  // 81px — display headline
+        // Specimen hero lives beyond the scale as a CSS clamp in components:
+        // font-size: clamp(96px, 17vw, 232px) — the monument itself
       },
 
       fontWeights: {
-        light:    { value: '300' },
-        regular:  { value: '400' },
-        medium:   { value: '500' },
-        semibold: { value: '600' },
-        bold:     { value: '700' },
+        light:   { value: '300' },
+        regular: { value: '400' },
+        bold:    { value: '700' },
+        black:   { value: '800' },
       },
 
       lineHeights: {
-        tight:  { value: '0.92' },   // Barlow Condensed xl/2xl — compression is intentional
-        snug:   { value: '1.1' },    // Barlow Condensed md/lg
-        normal: { value: '1.5' },    // IBM Plex Sans body throughout
-        loose:  { value: '1.65' },   // Right panel list items — air against left panel density
+        tight:  { value: '0.85' },  // specimen hero — letters leaning on each other for warmth
+        snug:   { value: '1.1' },   // secondary display
+        normal: { value: '1.5' },   // body / annotation
+        loose:  { value: '1.72' },  // captions with breathing room
       },
 
       letterSpacings: {
-        tight:   { value: '-0.02em' },  // Barlow Condensed headings md and above
-        normal:  { value: '0em' },       // IBM Plex Sans body
-        wide:    { value: '0.06em' },    // Nav items, section sub-labels
-        wider:   { value: '0.10em' },    // RESULTS, STANDINGS, CALENDAR category headers
-        widest:  { value: '0.16em' },    // Seam footnote 9px — maximum tracking for legibility
+        tight:   { value: '-0.04em' },  // specimen hero — industrial compression
+        normal:  { value: '0em' },
+        wide:    { value: '0.06em' },
+        wider:   { value: '0.12em' },   // weather / moon metadata
+        widest:  { value: '0.22em' },   // labels, attribution, category tags
       },
 
       spacing: {
         '1':  { value: '4px' },
         '2':  { value: '8px' },
+        '3':  { value: '12px' },
         '4':  { value: '16px' },
+        '5':  { value: '20px' },
         '6':  { value: '24px' },
         '8':  { value: '32px' },
+        '10': { value: '40px' },
         '12': { value: '48px' },
         '16': { value: '64px' },
+        '20': { value: '80px' },
+        '24': { value: '96px' },
       },
 
       radii: {
-        // Zero rounding throughout — this design does not offer softness
+        // Hard edges everywhere — the brief is explicit.
+        // Chrome in winter light has no soft corners.
         none: { value: '0px' },
-        sm:   { value: '0px' },
-        md:   { value: '0px' },
-        lg:   { value: '0px' },
-        full: { value: '0px' },
+        sm:   { value: '2px' },
+        md:   { value: '4px' },
+        lg:   { value: '8px' },
+        full: { value: '9999px' },
       },
 
-      colors: {
-        // Primary neutral — hue 205° "deep water under ice"
-        // Maximum distance from the 212°/215°/235° cluster of the prior four days.
-        // Dark values: submerged obsidian, no slate warmth, no indigo electricity.
-        // Light values: clean ice-cast appropriate for right panel's winter stone.
-        stone: {
-          '50':  { value: '#EEF3F5' },  // H:205 S:9%  L:95% — right panel bg reference
-          '100': { value: '#D8E5EA' },  // H:205 S:14% L:88% — right panel card surfaces
-          '200': { value: '#B3CAD4' },  // H:205 S:18% L:76% — borders on light bg, hairlines
-          '300': { value: '#84A8B8' },  // H:205 S:22% L:62% — disabled text, subdued borders
-          '400': { value: '#577E8E' },  // H:205 S:26% L:45% — placeholder, muted metadata
-          '500': { value: '#3C5D6C' },  // H:205 S:29% L:33% — secondary text on dark
-          '600': { value: '#274048' },  // H:205 S:30% L:22% — body text on dark
-          '700': { value: '#172B34' },  // H:205 S:36% L:15% — card bg on dark, headings
-          '800': { value: '#0C1A23' },  // H:205 S:40% L:9%  — left panel obsidian (7.8% crescent)
-          '900': { value: '#070D13' },  // H:205 S:42% L:6%  — deepest dark, below-fold
-        },
-
-        // Accent — gymnasium floor amber (hue 38°)
-        // Appears exactly once per viewport: the seam border line.
-        amber: {
-          light:   { value: '#D9A857' },                   // hover tints, calendar active node
-          DEFAULT: { value: '#C48930' },                   // THE seam, win indicator, active nav tick
-          dark:    { value: '#8A5F18' },                   // pressed states, leader score emphasis
-          glow:    { value: 'rgba(196, 137, 48, 0.08)' }, // full-row hover on right panel
-        },
-
-        // Right panel — cool off-white stone
-        // Three steps removed from white, market-down minor key, felt not announced.
-        panel: {
-          stone: { value: '#E6E2DC' },
-        },
-      },
-
-      borders: {
-        seam:   { value: '1px solid #C48930' },  // THE amber border — the equinox
-        subtle: { value: '1px solid #172B34' },  // left panel internal separators
-        rule:   { value: '1px solid #B3CAD4' },  // right panel section separators
-      },
-
-      shadows: {
-        // Left panel: none — obsidian is matte, no elevation theater
-        // Calendar strip only: hairline above to lift from scroll content
-        calendarLift: { value: '0 -1px 0 rgba(23, 43, 52, 0.10)' },
+      sizes: {
+        xs:   { value: '320px' },
+        sm:   { value: '480px' },
+        md:   { value: '768px' },
+        lg:   { value: '1024px' },
+        xl:   { value: '1200px' },
+        '2xl':{ value: '1440px' },
+        full: { value: '100%' },
       },
 
       zIndex: {
         base:    { value: '0' },
         raised:  { value: '10' },
-        overlay: { value: '20' },
-        seam:    { value: '10' },  // ArXiv footnote pill — straddles both panels
+        overlay: { value: '100' },
+        modal:   { value: '200' },
+        toast:   { value: '300' },
       },
     },
 
     semanticTokens: {
       colors: {
-        // ── Backgrounds ──────────────────────────────────────────
+        // Background tokens
         bg: {
           value: {
-            base: '{colors.stone.800}',    // obsidian — left panel default
-            _light: '{colors.stone.50}',
+            base: '{colors.chrome.50}',
+            _dark: '{colors.chrome.900}',
           },
         },
         bgCard: {
           value: {
-            base: '{colors.stone.700}',    // cards on dark — barely lighter than obsidian
-            _light: '{colors.stone.100}',
-          },
-        },
-        bgRightPanel: {
-          // The right panel: cool off-white stone in light, deep stone in dark
-          value: {
-            base: '{colors.stone.700}',
-            _light: '{colors.panel.stone}',
+            base: '#F5F6F8',
+            _dark: '{colors.chrome.800}',
           },
         },
 
-        // ── Text ─────────────────────────────────────────────────
+        // Text tokens — WCAG AA compliant
+        // chrome.900 (#0A1118) on chrome.50 (#F0F2F5) = ~18:1 ✓
+        // chrome.100 (#E5E8EC) on chrome.900 (#0A1118) = ~17:1 ✓
         text: {
-          // WCAG AA: stone.50 (#EEF3F5) on stone.800 (#0C1A23) ≈ 16:1 ✓
           value: {
-            base: '{colors.stone.50}',
-            _light: '{colors.stone.700}',
+            base: '{colors.chrome.900}',
+            _dark: '{colors.chrome.100}',
+          },
+        },
+        heading: {
+          value: {
+            base: '{colors.chrome.900}',
+            _dark: '{colors.chrome.50}',
           },
         },
         textSecondary: {
           value: {
-            base: '{colors.stone.200}',
-            _light: '{colors.stone.600}',
+            base: '{colors.chrome.600}',
+            _dark: '{colors.chrome.400}',
           },
         },
         textMuted: {
           value: {
-            base: '{colors.stone.500}',
-            _light: '{colors.stone.300}',
-          },
-        },
-        // Right panel text — always reads against light stone background
-        textDark: {
-          value: {
-            base: '{colors.stone.700}',
-            _light: '{colors.stone.700}',
-          },
-        },
-        textDarkSecondary: {
-          value: {
-            base: '{colors.stone.600}',
-            _light: '{colors.stone.600}',
-          },
-        },
-        textDarkMuted: {
-          value: {
-            base: '{colors.stone.300}',
-            _light: '{colors.stone.300}',
+            base: '{colors.chrome.400}',
+            _dark: '{colors.chrome.500}',
           },
         },
 
-        // ── Accent ───────────────────────────────────────────────
+        // Border tokens — single horizontal rule is the only line ornament
+        border: {
+          value: {
+            base: '{colors.chrome.200}',
+            _dark: '{colors.chrome.700}',
+          },
+        },
+
+        // Accent tokens — ember heat, appears only where the brief demands
         accent: {
-          // Amber appears once per viewport — use with strict restraint
           value: {
-            base: '{colors.amber.DEFAULT}',
-            _light: '{colors.amber.DEFAULT}',
+            base: '{colors.ember.DEFAULT}',
+            _dark: '{colors.ember.light}',
           },
         },
-        accentLight: {
+        accentHover: {
           value: {
-            base: '{colors.amber.light}',
-            _light: '{colors.amber.light}',
-          },
-        },
-        accentDark: {
-          value: {
-            base: '{colors.amber.dark}',
-            _light: '{colors.amber.dark}',
+            base: '{colors.ember.dark}',
+            _dark: '{colors.ember.DEFAULT}',
           },
         },
         accentGlow: {
           value: {
-            base: '{colors.amber.glow}',
-            _light: '{colors.amber.glow}',
+            base: '{colors.ember.glow}',
+            _dark: '{colors.ember.glow}',
           },
         },
-
-        // ── Borders ──────────────────────────────────────────────
-        border: {
+        accentText: {
           value: {
-            base: '{colors.stone.700}',    // structural, barely visible on dark
-            _light: '{colors.stone.200}',
+            base: '{colors.white}',
+            _dark: '{colors.white}',
           },
         },
-        borderSeam: {
-          // The amber seam — the equinox, the page's primary border
+        accentBg: {
           value: {
-            base: '{colors.amber.DEFAULT}',
-            _light: '{colors.amber.DEFAULT}',
+            base: '{colors.ember.DEFAULT}',
+            _dark: '{colors.ember.DEFAULT}',
           },
         },
-        borderSubtle: {
+        accentBgHover: {
           value: {
-            base: '{colors.stone.600}',
-            _light: '{colors.stone.200}',
-          },
-        },
-        borderRule: {
-          // Right panel section separators
-          value: {
-            base: '{colors.stone.200}',
-            _light: '{colors.stone.200}',
+            base: '{colors.ember.dark}',
+            _dark: '{colors.ember.dark}',
           },
         },
       },

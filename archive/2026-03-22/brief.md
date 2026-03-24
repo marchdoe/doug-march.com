@@ -1,0 +1,26 @@
+# 2026-03-22
+
+**Design Brief:** An edition left on a table beside a cold cup of coffee: newsprint ground in aged stone, a masthead that issues verdicts in italic display type, and one muted jade accent that arrives from spring's insistence — edited, not assembled.
+
+## Signals
+
+### Weather
+**Location:** Aldie, Virginia
+**Conditions:** Mist
+**Feel:** undefined
+
+## Claude's Rationale
+
+The Broadsheet calls for editorial authority, not atmosphere. I've built the token system around two opposing forces: Playfair Display's razor-sharp thick/thin contrast governing the display register, and Source Sans 3's slightly unpolished lightness anchoring body text — with JetBrains Mono carving out a third stratum for wire-copy annotations. The neutral scale derives from hue 195° (stone left in a drafty room — cooler than grey, not cold enough to read as blue), desaturated to 5–8% to produce the aged-newsprint ground the brief demands. Jade 172° is the single spring commitment — present but edited, the kind of color that reads as nearly neutral until it suddenly isn't.
+
+The spacing scale is standard (4/8/16/24/32/48/64), border radii are uniformly zero (newspapers have no rounded corners), and shadows are explicitly absent. Semantic tokens map directly to the dark masthead band (bgMasthead always uses stone.800 regardless of theme) and the reversed text that lives on it. The Perfect Fourth scale (1.333) gives the extreme size gap the brief demands — 9px wire copy and 54px masthead quote share no comfortable middle ground.
+
+## Files Changed
+
+- elements/preset.ts
+- app/routes/__root.tsx
+- app/components/Layout.tsx
+- app/components/Sidebar.tsx
+- app/routes/index.tsx
+- app/routes/about.tsx
+- app/routes/work.$slug.tsx

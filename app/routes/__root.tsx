@@ -13,23 +13,30 @@ const THEME_INIT_SCRIPT = `(function(){
 export const Route = createRootRoute({
   head: () => ({
     links: [
-      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.googleapis.com',
+      },
+      {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossOrigin: 'anonymous',
+      },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans:wght@300;400&display=swap',
       },
     ],
     scripts: [{ children: THEME_INIT_SCRIPT }],
   }),
-  notFoundComponent: () => (
-    <RootDocument>
+  notFoundComponent: () => {
+    return (
       <div>
-        <p>Page not found</p>
+        <p>This page does not exist.</p>
         <Link to="/">Go home</Link>
       </div>
-    </RootDocument>
-  ),
+    )
+  },
   component: RootComponent,
 })
 
@@ -45,15 +52,11 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: ReactNode }) {
   return (
-    <html>
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
-      </body>
-    </html>
+    <>
+      <HeadContent />
+      {children}
+      <ScrollRestoration />
+      <Scripts />
+    </>
   )
 }
