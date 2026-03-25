@@ -13,252 +13,260 @@ export const elementsPreset = definePreset({
   globalCss: {
     '*, *::before, *::after': {
       boxSizing: 'border-box',
+      margin: '0',
+      padding: '0',
     },
     html: {
-      fontSize: '16px',
-      WebkitFontSmoothing: 'antialiased',
-      MozOsxFontSmoothing: 'grayscale',
+      minHeight: '100vh',
     },
     body: {
       fontFamily: 'body',
+      background: 'bg',
+      color: 'text',
       fontSize: 'base',
       lineHeight: 'normal',
-      color: 'text',
+      WebkitFontSmoothing: 'antialiased',
+      MozOsxFontSmoothing: 'grayscale',
       minHeight: '100vh',
-      margin: '0',
-      padding: '0',
-      background: 'linear-gradient(to right, #D8DCE2 0%, #E6E9ED 45%, #F0F2F5 100%)',
-      _dark: {
-        background: 'linear-gradient(to right, #070C10 0%, #0A1118 45%, #131B22 100%)',
-      },
     },
     'h1, h2, h3, h4, h5, h6': {
       fontFamily: 'heading',
       lineHeight: 'tight',
       letterSpacing: 'tight',
-      color: 'heading',
-      margin: '0',
-    },
-    p: {
-      margin: '0',
+      color: 'text',
     },
     a: {
-      color: 'accent',
+      color: 'text',
       textDecoration: 'none',
     },
     'a:hover': {
-      color: 'accentHover',
-      textDecoration: 'underline',
+      color: 'accent',
+    },
+    img: {
+      maxWidth: '100%',
+      display: 'block',
+    },
+    '::selection': {
+      background: 'accentLight',
+      color: 'text',
     },
   },
 
   theme: {
     tokens: {
       colors: {
-        // Chrome neutral scale — hue 207°, saturation 4-8%
-        // Near-achromatic: the cold is felt, not seen
-        chrome: {
-          50: { value: '#F0F2F5' },   // page background base
-          100: { value: '#E5E8EC' },  // card backgrounds, subtle fills
-          200: { value: '#CBD1D8' },  // borders, rules
-          300: { value: '#A3ACB5' },  // disabled states
-          400: { value: '#798490' },  // placeholder, muted text
-          500: { value: '#536270' },  // secondary text
-          600: { value: '#38444F' },  // body text in light mode
-          700: { value: '#222C36' },  // headings, annotation text
-          800: { value: '#131B22' },  // deep text, near-black, dark bg
-          900: { value: '#0A1118' },  // specimen type — the darkest stamp
+        // ── Hay neutral palette (hue 58°, saturation 5–8%) ──────────────
+        hay: {
+          50:  { value: '#F5F3EB' }, // near-white parchment tint
+          100: { value: '#EDEAD9' }, // light — faint warm vellum
+          200: { value: '#D8D4C2' }, // borders, hairline rules
+          300: { value: '#ADAA9A' }, // disabled / subdued
+          400: { value: '#858273' }, // placeholder text
+          500: { value: '#5F5C4E' }, // secondary annotations
+          600: { value: '#433F34' }, // secondary text body
+          700: { value: '#2A2720' }, // primary body text (dark-mode variant)
+          800: { value: '#161410' }, // masthead background
+          900: { value: '#0C0B09' }, // deepest background
         },
 
-        // Ember accent — hue 18° (red-orange scoreboard)
-        // The only warmth on the page. One 148px rectangle of defiant spring.
-        ember: {
-          light: { value: '#F0906A' },
-          DEFAULT: { value: '#D94C14' },
-          dark: { value: '#8D2C07' },
-          glow: { value: 'rgba(217, 76, 20, 0.12)' },
+        // ── Harvest gold accent (hue 58°, high saturation) ──────────────
+        gold: {
+          light:   { value: '#DDD59E' }, // tinted bg, hover states
+          DEFAULT: { value: '#B8A83A' }, // buttons, dateline band border, links
+          dark:    { value: '#7C7120' }, // pressed states, emphasis
+          glow:    { value: 'rgba(184, 168, 58, 0.12)' }, // subtle overlays
         },
 
-        white: { value: '#FFFFFF' },
+        // ── Spring green secondary accent (hue 138°) ─────────────────────
+        green: {
+          light:   { value: '#8DC4A5' }, // light fill, seasonal labels
+          DEFAULT: { value: '#4A8C6A' }, // Tigers win left-border, botanical
+          dark:    { value: '#2D5C45' }, // pressed / deep emphasis
+        },
+
+        // ── Named surface / text colors (from spec) ──────────────────────
+        parchment:    { value: '#EDE9DA' }, // page background — the tonal fulcrum
+        card:         { value: '#E5E1CF' }, // card surface — one step darker than page
+        mastheadBg:   { value: '#161410' }, // dark warm near-black
+        ink:          { value: '#1E1C15' }, // primary text — warm near-black
+        inkSecondary: { value: '#4A4738' }, // secondary editorial body
+        inkMuted:     { value: '#7E7B6C' }, // annotations, metadata, datelines
       },
 
       fonts: {
-        // Syne — industrial without being Brutalist, flat terminals,
-        // wheat-pasted not typeset. Wet Leg's jagged charm.
-        heading: { value: "'Syne', sans-serif" },
-        // Work Sans — neutral enough to disappear as annotation.
-        // Radiohead's precision in the footnotes around the monument.
-        body: { value: "'Work Sans', sans-serif" },
+        heading: { value: "'Fraunces', Georgia, 'Times New Roman', serif" },
+        body:    { value: "'Outfit', system-ui, -apple-system, sans-serif" },
       },
 
       fontSizes: {
-        // Perfect Fifth (1.500) ratio, base 16px
-        // Extreme ratio for Specimen — the gap between display and annotation IS the system
-        '2xs': { value: '0.4375rem' },  // 7px  — micro labels only
-        xs:    { value: '0.6875rem' },  // 11px — annotation strip, captions
-        sm:    { value: '1rem' },       // 16px — body, annotation copy
-        base:  { value: '1rem' },       // 16px — body baseline
-        md:    { value: '1.5rem' },     // 24px — subheadings
-        lg:    { value: '2.25rem' },    // 36px — section display
-        xl:    { value: '3.375rem' },   // 54px — large display
-        '2xl': { value: '5.0625rem' },  // 81px — display headline
-        // Specimen hero lives beyond the scale as a CSS clamp in components:
-        // font-size: clamp(96px, 17vw, 232px) — the monument itself
-      },
-
-      fontWeights: {
-        light:   { value: '300' },
-        regular: { value: '400' },
-        bold:    { value: '700' },
-        black:   { value: '800' },
+        '2xs': { value: '0.4375rem' }, //  7px — extreme micro labels
+        xs:    { value: '0.5625rem' }, //  9px — metadata, dateline labels
+        sm:    { value: '0.75rem'   }, // 12px — secondary body, captions
+        base:  { value: '1rem'      }, // 16px — primary body
+        md:    { value: '1.3125rem' }, // 21px — subheads, callout numerics
+        lg:    { value: '1.75rem'   }, // 28px — section headings, score display
+        xl:    { value: '2.3125rem' }, // 37px — masthead headline
+        '2xl': { value: '3.125rem'  }, // 50px — display only (sparse use)
       },
 
       lineHeights: {
-        tight:  { value: '0.85' },  // specimen hero — letters leaning on each other for warmth
-        snug:   { value: '1.1' },   // secondary display
-        normal: { value: '1.5' },   // body / annotation
-        loose:  { value: '1.72' },  // captions with breathing room
+        tight:  { value: '1.05' }, // large display headings only
+        snug:   { value: '1.2'  }, // subheads and callout numerics
+        normal: { value: '1.55' }, // body text — the breathing quality
+        loose:  { value: '1.75' }, // Rumi quote and pull text — generosity encoded
       },
 
       letterSpacings: {
-        tight:   { value: '-0.04em' },  // specimen hero — industrial compression
-        normal:  { value: '0em' },
-        wide:    { value: '0.06em' },
-        wider:   { value: '0.12em' },   // weather / moon metadata
-        widest:  { value: '0.22em' },   // labels, attribution, category tags
+        tight:   { value: '-0.025em' }, // Fraunces display at 37px+
+        normal:  { value: '0em'      }, // body text at 16px
+        wide:    { value: '0.04em'   }, // secondary labels, bylines, attribution
+        wider:   { value: '0.08em'   }, // column section headers (WORK, SIGNALS)
+        widest:  { value: '0.14em'   }, // masthead nav, dateline uppercase labels
       },
 
       spacing: {
-        '1':  { value: '4px' },
-        '2':  { value: '8px' },
-        '3':  { value: '12px' },
-        '4':  { value: '16px' },
-        '5':  { value: '20px' },
-        '6':  { value: '24px' },
-        '8':  { value: '32px' },
-        '10': { value: '40px' },
-        '12': { value: '48px' },
-        '16': { value: '64px' },
-        '20': { value: '80px' },
-        '24': { value: '96px' },
+        0:  { value: '0px'  },
+        1:  { value: '4px'  },
+        2:  { value: '8px'  },
+        3:  { value: '12px' },
+        4:  { value: '16px' },
+        5:  { value: '20px' },
+        6:  { value: '24px' },
+        7:  { value: '28px' },
+        8:  { value: '32px' },
+        9:  { value: '36px' },
+        10: { value: '40px' },
+        11: { value: '44px' }, // work list row height
+        12: { value: '48px' }, // dateline band height
+        13: { value: '52px' }, // masthead height
+        16: { value: '64px' },
       },
 
       radii: {
-        // Hard edges everywhere — the brief is explicit.
-        // Chrome in winter light has no soft corners.
-        none: { value: '0px' },
-        sm:   { value: '2px' },
-        md:   { value: '4px' },
-        lg:   { value: '8px' },
-        full: { value: '9999px' },
+        none: { value: '0px' }, // cards, tags — editorial flat edges
+        sm:   { value: '2px' }, // buttons — barely softened
+      },
+
+      borderWidths: {
+        thin:   { value: '1px' }, // all column separators and hairlines
+        accent: { value: '3px' }, // Tigers win left accent bar
       },
 
       sizes: {
-        xs:   { value: '320px' },
-        sm:   { value: '480px' },
-        md:   { value: '768px' },
-        lg:   { value: '1024px' },
-        xl:   { value: '1200px' },
-        '2xl':{ value: '1440px' },
-        full: { value: '100%' },
+        full:       { value: '100%'   },
+        maxContent: { value: '1200px' }, // broadsheet max-width
+        masthead:   { value: '52px'   }, // masthead band height
+        dateline:   { value: '48px'   }, // dateline band height
+        aboveFold:  { value: '64vh'   }, // above-fold editorial zone
       },
 
       zIndex: {
-        base:    { value: '0' },
-        raised:  { value: '10' },
-        overlay: { value: '100' },
-        modal:   { value: '200' },
-        toast:   { value: '300' },
+        base:     { value: '0'   },
+        elevated: { value: '10'  },
+        overlay:  { value: '100' },
       },
     },
 
     semanticTokens: {
       colors: {
-        // Background tokens
+        // ── Page backgrounds ─────────────────────────────────────────────
         bg: {
           value: {
-            base: '{colors.chrome.50}',
-            _dark: '{colors.chrome.900}',
+            base:  '{colors.parchment}',  // warm parchment — the tonal fulcrum
+            _dark: '{colors.hay.800}',    // deep warm near-black
           },
         },
         bgCard: {
           value: {
-            base: '#F5F6F8',
-            _dark: '{colors.chrome.800}',
+            base:  '{colors.card}',      // one step darker than page bg
+            _dark: '{colors.hay.700}',   // lifted dark surface
           },
+        },
+        bgSubtle: {
+          value: {
+            base:  '{colors.hay.50}',    // lightest tint for nested sections
+            _dark: '{colors.hay.900}',   // deepest dark
+          },
+        },
+        bgMasthead: {
+          value: '{colors.mastheadBg}',  // always dark — editorial authority
+        },
+        bgDateline: {
+          // gold-tinted mid-page band — expressed as a direct rgba value
+          // (the dateline band is always this warm gold tint regardless of mode)
+          value: 'rgba(184, 168, 58, 0.14)',
+        },
+        bgRow: {
+          // work list row hover — barely-there gold wash
+          value: 'rgba(184, 168, 58, 0.08)',
         },
 
-        // Text tokens — WCAG AA compliant
-        // chrome.900 (#0A1118) on chrome.50 (#F0F2F5) = ~18:1 ✓
-        // chrome.100 (#E5E8EC) on chrome.900 (#0A1118) = ~17:1 ✓
+        // ── Text hierarchy ───────────────────────────────────────────────
         text: {
           value: {
-            base: '{colors.chrome.900}',
-            _dark: '{colors.chrome.100}',
-          },
-        },
-        heading: {
-          value: {
-            base: '{colors.chrome.900}',
-            _dark: '{colors.chrome.50}',
+            base:  '{colors.ink}',       // #1E1C15 — warm near-black (~10:1 on parchment)
+            _dark: '{colors.hay.50}',    // #F5F3EB — near-white on dark bg
           },
         },
         textSecondary: {
           value: {
-            base: '{colors.chrome.600}',
-            _dark: '{colors.chrome.400}',
+            base:  '{colors.inkSecondary}', // #4A4738 — secondary editorial body
+            _dark: '{colors.hay.200}',      // softer on dark
           },
         },
         textMuted: {
           value: {
-            base: '{colors.chrome.400}',
-            _dark: '{colors.chrome.500}',
+            base:  '{colors.inkMuted}',  // #7E7B6C — annotations, metadata
+            _dark: '{colors.hay.400}',   // mid-grey on dark
           },
         },
+        // Text for use directly on the dark masthead band
+        textOnDark: {
+          value: '{colors.hay.200}',     // #D8D4C2 — nav items on dark masthead
+        },
+        textOnDarkMuted: {
+          value: '{colors.hay.400}',     // #858273 — secondary nav, subtitles on dark
+        },
+        textOnDarkDim: {
+          value: '{colors.hay.500}',     // #5F5C4E — whispered annotations on dark
+        },
 
-        // Border tokens — single horizontal rule is the only line ornament
+        // ── Harvest gold accent ──────────────────────────────────────────
+        accent: {
+          value: '{colors.gold.DEFAULT}', // #B8A83A — full saturation, used sparingly
+        },
+        accentLight: {
+          value: '{colors.gold.light}',   // #DDD59E — hover states, tinted fills
+        },
+        accentDark: {
+          value: '{colors.gold.dark}',    // #7C7120 — pressed, deep emphasis
+        },
+
+        // ── Spring green secondary accent (wins / botanical) ─────────────
+        signal: {
+          value: '{colors.green.DEFAULT}', // #4A8C6A — Tigers win left-border
+        },
+        signalLight: {
+          value: '{colors.green.light}',   // #8DC4A5 — seasonal labels
+        },
+        signalDark: {
+          value: '{colors.green.dark}',    // #2D5C45 — deep signal emphasis
+        },
+
+        // ── Borders ──────────────────────────────────────────────────────
         border: {
           value: {
-            base: '{colors.chrome.200}',
-            _dark: '{colors.chrome.700}',
+            base:  '{colors.hay.200}',   // #D8D4C2 — all column separators, hairlines
+            _dark: '{colors.hay.600}',   // #433F34 — dark mode dividers
           },
         },
-
-        // Accent tokens — ember heat, appears only where the brief demands
-        accent: {
-          value: {
-            base: '{colors.ember.DEFAULT}',
-            _dark: '{colors.ember.light}',
-          },
+        borderAccent: {
+          value: '{colors.gold.DEFAULT}', // #B8A83A — dateline band top/bottom border
         },
-        accentHover: {
+        borderSubtle: {
           value: {
-            base: '{colors.ember.dark}',
-            _dark: '{colors.ember.DEFAULT}',
-          },
-        },
-        accentGlow: {
-          value: {
-            base: '{colors.ember.glow}',
-            _dark: '{colors.ember.glow}',
-          },
-        },
-        accentText: {
-          value: {
-            base: '{colors.white}',
-            _dark: '{colors.white}',
-          },
-        },
-        accentBg: {
-          value: {
-            base: '{colors.ember.DEFAULT}',
-            _dark: '{colors.ember.DEFAULT}',
-          },
-        },
-        accentBgHover: {
-          value: {
-            base: '{colors.ember.dark}',
-            _dark: '{colors.ember.dark}',
+            base:  '{colors.hay.100}',   // faintest hairline
+            _dark: '{colors.hay.700}',
           },
         },
       },
