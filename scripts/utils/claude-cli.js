@@ -24,6 +24,7 @@ import { ROOT } from './file-manager.js'
  * @param {object} [options]
  * @param {number} [options.timeoutMs=600000] - Timeout in milliseconds (default 10 min)
  * @param {string} [options.cwd] - Working directory (default ROOT)
+ * @param {string} [options.model='sonnet'] - Model to use (e.g. 'sonnet', 'haiku', 'opus')
  * @param {string[]} [options.extraCliArgs] - Additional CLI args (e.g. ['--fallback-model', 'haiku'])
  * @param {function} [options.onTimeout] - Async callback invoked just before rejecting on timeout.
  *   Receives { charCount: number } and should return a string to append to the error message (or '').
@@ -33,6 +34,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
   const {
     timeoutMs = 600000,
     cwd = ROOT,
+    model = 'sonnet',
     extraCliArgs = [],
     onTimeout,
   } = options
@@ -55,7 +57,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     '--verbose',
     '--output-format', 'stream-json',
     '--max-turns', '1',
-    '--model', 'sonnet',
+    '--model', model,
     '--tools', '',
     '--disable-slash-commands',
     '--settings', PIPELINE_SETTINGS,
