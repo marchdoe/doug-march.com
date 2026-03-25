@@ -1,624 +1,231 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex, VStack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const sectionLabelClass = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '4',
-  marginBottom: '4',
-})
-
-const labelTextClass = css({
-  fontSize: 'xs',
-  fontFamily: 'body',
-  fontWeight: '500',
-  color: 'textMuted',
-  letterSpacing: 'wider',
-  textTransform: 'uppercase',
-})
-
-const labelRuleClass = css({
-  flex: '1',
-  height: '1px',
-  background: 'border',
-})
-
 function SectionLabel({ label }: { label: string }) {
   return (
-    <div className={sectionLabelClass}>
-      <span className={labelTextClass}>{label}</span>
-      <span className={labelRuleClass} />
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '2px' }}>
+      <span className={css({
+        fontFamily: 'oswald',
+        fontSize: 'xs',
+        fontWeight: '400',
+        color: 'textRightMuted',
+        letterSpacing: 'widest',
+        textTransform: 'uppercase',
+      })}>
+        {label}
+      </span>
+      <div style={{ flex: 1, height: '1px', background: '#EAE6D2' }} />
     </div>
   )
 }
 
-const workRowClass = css({
-  display: 'grid',
-  gridTemplateColumns: '1fr auto auto',
-  alignItems: 'center',
-  height: '11',
-  borderBottom: '1px solid',
-  borderBottomColor: 'border',
-  gap: '6',
-  cursor: 'pointer',
-  textDecoration: 'none',
-  _hover: {
-    background: 'bgRow',
-  },
-})
-
 function HomePage() {
+  const allWork = [
+    ...(featuredProject ? [featuredProject] : []),
+    ...selectedWork,
+  ]
+
   return (
-    <Box fontFamily="body">
+    <div style={{ padding: '52px', paddingBottom: '96px' }}>
 
-      {/* ── ABOVE FOLD — 3-column broadsheet ─────────────────── */}
-      <Box
-        maxWidth="1200px"
-        mx="auto"
-        width="100%"
-        display="grid"
-        gridTemplateColumns="2.5fr 1fr 1fr"
-        minHeight="64vh"
+      {/* Weather + market strip */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '48px' }}>
+        <span className={css({
+          fontFamily: 'oswald',
+          fontSize: 'xs',
+          fontWeight: '400',
+          color: 'textRightMuted',
+          letterSpacing: 'widest',
+          textTransform: 'uppercase',
+        })}>
+          36°F &nbsp;·&nbsp; Sunny &nbsp;·&nbsp; Feels like 29°F
+        </span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
+          <span className={css({ fontFamily: 'oswald', fontSize: 'xs', color: 'textRightMuted', letterSpacing: 'widest', textTransform: 'uppercase' })}>
+            Market{' '}
+          </span>
+          <span className={css({ fontFamily: 'oswald', fontSize: 'xs', color: 'marketGreen', letterSpacing: 'widest' })}>
+            +1.05%
+          </span>
+        </span>
+      </div>
+
+      {/* Opening Day — the only eager element */}
+      <div
+        className={css({ background: 'accentOpeningDayGlow' })}
+        style={{ padding: '24px 28px', marginBottom: '48px' }}
       >
+        <div className={css({
+          fontFamily: 'oswald',
+          fontSize: 'xl',
+          fontWeight: '600',
+          color: 'accentOpeningDay',
+          letterSpacing: 'tight',
+          lineHeight: 'tight',
+        })}>
+          2 DAYS
+        </div>
+        <div className={css({
+          fontFamily: 'oswald',
+          fontWeight: '400',
+          color: 'textRightMuted',
+          letterSpacing: 'widest',
+          textTransform: 'uppercase',
+        })} style={{ fontSize: '12px', marginTop: '5px' }}>
+          MLB Opening Day
+        </div>
+      </div>
 
-        {/* Column 1: Identity + Featured Project */}
-        <Box
-          py="8"
-          px="7"
-          paddingLeft="12"
-          borderBottom="1px solid"
-          borderColor="border"
-        >
-          <VStack gap="0" align="stretch">
-            {/* Name */}
-            <Box mb="2">
-              <Box
-                fontSize="xl"
-                fontFamily="heading"
-                fontWeight="700"
-                color="text"
-                lineHeight="tight"
-                letterSpacing="tight"
-              >
-                Doug March
-              </Box>
-            </Box>
+      {/* Pistons — present, acknowledged, moving on */}
+      <div style={{ borderBottom: '1px solid #EAE6D2', marginBottom: '48px' }}>
+        <div style={{ height: '44px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span className={css({
+            fontFamily: 'oswald',
+            fontSize: 'md',
+            fontWeight: '500',
+            color: 'textRight',
+            letterSpacing: 'normal',
+            fontVariantNumeric: 'tabular-nums',
+          })}>
+            DET &nbsp;113 &nbsp;·&nbsp; OKC &nbsp;110
+          </span>
+          <span className={css({
+            fontFamily: 'oswald',
+            fontSize: 'xs',
+            fontWeight: '400',
+            color: 'textRightSecondary',
+            letterSpacing: 'wide',
+          })}>
+            W
+          </span>
+        </div>
+      </div>
 
-            {/* Role */}
-            <Box
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="400"
-              color="textMuted"
-              letterSpacing="wide"
-              mb="6"
+      {/* Work index */}
+      <div style={{ marginBottom: '40px' }}>
+        <SectionLabel label="Work" />
+        {allWork.map((project, i) => {
+          const num = String(i + 1).padStart(3, '0')
+          const href = project.liveUrl ?? project.externalUrl ?? `/work/${project.slug}`
+          const external = !!(project.liveUrl || project.externalUrl)
+          return (
+            <a
+              key={project.slug}
+              href={href}
+              target={external ? '_blank' : undefined}
+              rel={external ? 'noopener noreferrer' : undefined}
+              className={css({
+                display: 'block',
+                transition: 'background 0.15s ease',
+                _hover: { background: 'bgCardRight' },
+              })}
+              style={{ borderBottom: '1px solid #EAE6D2' }}
             >
-              Product Designer &amp; Developer
-            </Box>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '40px 1fr auto auto 18px',
+                height: '44px',
+                alignItems: 'center',
+                gap: '16px',
+              }}>
+                <span className={css({
+                  fontFamily: 'oswald',
+                  fontSize: 'xs',
+                  color: 'textRightMuted',
+                  fontVariantNumeric: 'tabular-nums',
+                })}>
+                  {num}
+                </span>
+                <span className={css({
+                  fontFamily: 'oswald',
+                  fontSize: 'base',
+                  fontWeight: project.featured ? '600' : '500',
+                  color: 'textRight',
+                })}>
+                  {project.title}
+                </span>
+                <span className={css({
+                  fontFamily: 'oswald',
+                  fontSize: 'xs',
+                  color: 'textRightMuted',
+                  letterSpacing: 'wide',
+                  textTransform: 'uppercase',
+                })}>
+                  {project.type}
+                </span>
+                <span className={css({
+                  fontFamily: 'oswald',
+                  fontSize: 'xs',
+                  color: 'textRightMuted',
+                  fontVariantNumeric: 'tabular-nums',
+                })}>
+                  {project.year}
+                </span>
+                <span className={css({
+                  fontFamily: 'oswald',
+                  fontSize: 'sm',
+                  color: 'textRightSecondary',
+                })}>
+                  →
+                </span>
+              </div>
+            </a>
+          )
+        })}
+      </div>
 
-            {/* Statement */}
-            <Box
-              fontSize="md"
-              fontFamily="heading"
-              fontWeight="400"
-              color="textSecondary"
-              lineHeight="normal"
-              mb="10"
-              maxWidth="400px"
-            >
-              Making products that feel inevitable in retrospect.
-            </Box>
-
-            {/* Featured Project */}
-            {featuredProject && (
-              <Box>
-                <Box
-                  fontSize="xs"
-                  fontFamily="body"
-                  fontWeight="500"
-                  color="textMuted"
-                  letterSpacing="widest"
-                  textTransform="uppercase"
-                  mb="3"
-                >
-                  Featured
-                </Box>
-
-                <a
-                  href={featuredProject.externalUrl || `/work/${featuredProject.slug}`}
-                  target={featuredProject.externalUrl ? '_blank' : undefined}
-                  rel="noopener noreferrer"
-                  className={css({ textDecoration: 'none' })}
-                >
-                  <Box
-                    fontSize="lg"
-                    fontFamily="heading"
-                    fontWeight="700"
-                    color="text"
-                    lineHeight="tight"
-                    letterSpacing="tight"
-                    mb="3"
-                    _hover={{ color: 'accent' }}
-                  >
-                    {featuredProject.title}
-                  </Box>
-                </a>
-
-                {featuredProject.problem && (
-                  <Box
-                    fontSize="sm"
-                    fontFamily="body"
-                    fontWeight="400"
-                    color="textSecondary"
-                    lineHeight="normal"
-                    maxWidth="380px"
-                    mb="4"
-                  >
-                    {featuredProject.problem}
-                  </Box>
-                )}
-
-                {featuredProject.role && (
-                  <Box
-                    fontSize="xs"
-                    fontFamily="body"
-                    fontWeight="400"
-                    color="textMuted"
-                    letterSpacing="wide"
-                  >
-                    {featuredProject.role} · {featuredProject.year}
-                  </Box>
-                )}
-              </Box>
-            )}
-          </VStack>
-        </Box>
-
-        {/* Column 2: Sports results */}
-        <Box
-          borderLeft="1px solid"
-          borderColor="border"
-          borderBottom="1px solid"
-          py="8"
-          px="7"
-        >
-          <SectionLabel label="Results" />
-
-          {/* Tigers win — green left-bar callout */}
-          <Box
-            mb="5"
-            py="4"
-            pl="3"
-            style={{ borderLeft: '3px solid #4A8C6A' }}
-          >
-            <Box
-              fontSize="xs"
-              fontFamily="body"
-              fontWeight="500"
-              color="textMuted"
-              letterSpacing="widest"
-              textTransform="uppercase"
-              mb="1"
-            >
-              Det Tigers
-            </Box>
-            <Box
-              fontSize="lg"
-              fontFamily="heading"
-              fontWeight="700"
-              color="text"
-              lineHeight="tight"
-              mb="2"
-            >
-              11–8
-            </Box>
-            <Box
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="400"
-              color="textSecondary"
-              lineHeight="normal"
-            >
-              Offense showed up early. Opening Day tomorrow.
-            </Box>
-          </Box>
-
-          {/* Red Wings loss — terse, no accent bar */}
-          <Box pl="3">
-            <Box
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="400"
-              color="textMuted"
-              lineHeight="normal"
-            >
-              Red Wings fell 2–3.
-            </Box>
-          </Box>
-        </Box>
-
-        {/* Column 3: Environmental signals */}
-        <Box
-          borderLeft="1px solid"
-          borderColor="border"
-          borderBottom="1px solid"
-          py="8"
-          px="7"
-        >
-          <SectionLabel label="Signals" />
-
-          <VStack gap="2" align="stretch">
-            <Box
-              fontSize="xs"
-              fontFamily="body"
-              fontWeight="300"
-              color="textMuted"
-              letterSpacing="wide"
-              lineHeight="normal"
-            >
-              12.1 hrs daylight
-            </Box>
-            <Box
-              fontSize="xs"
-              fontFamily="body"
-              fontWeight="300"
-              color="textMuted"
-              letterSpacing="wide"
-              lineHeight="normal"
-            >
-              First quarter moon · 51.4% illuminated
-            </Box>
-            <Box
-              fontSize="xs"
-              fontFamily="body"
-              fontWeight="300"
-              color="textMuted"
-              letterSpacing="wide"
-              lineHeight="normal"
-              mt="4"
-            >
-              March 25, 2026
-            </Box>
-            <Box
-              fontSize="xs"
-              fontFamily="body"
-              fontWeight="300"
-              color="textMuted"
-              letterSpacing="wide"
-              lineHeight="normal"
-            >
-              Wednesday
-            </Box>
-          </VStack>
-        </Box>
-      </Box>
-
-      {/* ── DATELINE BAND — full width, Stack-borrowed beat ── */}
-      <Box
-        width="100%"
-        height="12"
-        background="bgDateline"
-        borderTop="1px solid"
-        borderBottom="1px solid"
-        borderColor="borderAccent"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        gap="4"
-      >
-        <Box
-          fontSize="xs"
-          fontFamily="body"
-          fontWeight="500"
-          color="accent"
-          letterSpacing="widest"
-          textTransform="uppercase"
-        >
-          Tomorrow
-        </Box>
-        <Box
-          fontSize="xs"
-          color="textMuted"
-          fontFamily="body"
-        >
-          ·
-        </Box>
-        <Box
-          fontSize="xs"
-          fontFamily="body"
-          fontWeight="400"
-          color="textSecondary"
-          letterSpacing="wider"
-          textTransform="uppercase"
-        >
-          MLB Opening Day — March 26, 2026
-        </Box>
-      </Box>
-
-      {/* ── BELOW FOLD — 2-column (grammar shift from 3 to 2) ─ */}
-      <Box
-        maxWidth="1200px"
-        mx="auto"
-        width="100%"
-        display="grid"
-        gridTemplateColumns="2fr 1fr"
-      >
-
-        {/* Column 1 (wide): Work list + Experiments + Sora */}
-        <Box
-          py="10"
-          px="8"
-          paddingLeft="12"
-        >
-          {/* Selected Work */}
-          <Box mb="8">
-            <SectionLabel label="Selected Work" />
-
-            {selectedWork.length === 0 && (
-              <Box fontSize="sm" color="textMuted" fontFamily="body">No projects yet.</Box>
-            )}
-
-            {selectedWork.map(project => (
+      {/* Experiments */}
+      {experiments.length > 0 && (
+        <div>
+          <SectionLabel label="Experiments" />
+          {experiments.map((project, i) => {
+            const num = `E${String(i + 1).padStart(2, '0')}`
+            const href = project.externalUrl ?? project.liveUrl ?? `/work/${project.slug}`
+            const external = !!(project.externalUrl || project.liveUrl)
+            return (
               <a
                 key={project.slug}
-                href={`/work/${project.slug}`}
-                className={workRowClass}
+                href={href}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noopener noreferrer' : undefined}
+                className={css({
+                  display: 'block',
+                  transition: 'background 0.15s ease',
+                  _hover: { background: 'bgCardRight' },
+                })}
+                style={{ borderBottom: '1px solid #EAE6D2' }}
               >
-                <Box
-                  fontSize="base"
-                  fontFamily="body"
-                  fontWeight="400"
-                  color="text"
-                >
-                  {project.title}
-                </Box>
-                <Box
-                  fontSize="xs"
-                  fontFamily="body"
-                  fontWeight="400"
-                  color="textMuted"
-                  letterSpacing="wide"
-                  textTransform="uppercase"
-                >
-                  {project.type}
-                </Box>
-                <Box
-                  fontSize="xs"
-                  fontFamily="body"
-                  fontWeight="400"
-                  color="textMuted"
-                  fontVariantNumeric="tabular-nums"
-                >
-                  {project.year}
-                </Box>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '40px 1fr auto auto 18px',
+                  height: '44px',
+                  alignItems: 'center',
+                  gap: '16px',
+                }}>
+                  <span className={css({ fontFamily: 'oswald', fontSize: 'xs', color: 'textRightMuted', fontVariantNumeric: 'tabular-nums' })}>
+                    {num}
+                  </span>
+                  <span className={css({ fontFamily: 'oswald', fontSize: 'base', fontWeight: '500', color: 'textRight' })}>
+                    {project.title}
+                  </span>
+                  <span className={css({ fontFamily: 'oswald', fontSize: 'xs', color: 'textRightMuted', letterSpacing: 'wide', textTransform: 'uppercase' })}>
+                    {project.type}
+                  </span>
+                  <span className={css({ fontFamily: 'oswald', fontSize: 'xs', color: 'textRightMuted', fontVariantNumeric: 'tabular-nums' })}>
+                    {project.year}
+                  </span>
+                  <span className={css({ fontFamily: 'oswald', fontSize: 'sm', color: 'textRightSecondary' })}>
+                    →
+                  </span>
+                </div>
               </a>
-            ))}
-          </Box>
-
-          {/* Experiments */}
-          <Box mb="8">
-            <SectionLabel label="Experiments" />
-
-            {experiments.map(exp => (
-              <a
-                key={exp.slug}
-                href={exp.externalUrl || `/work/${exp.slug}`}
-                target={exp.externalUrl ? '_blank' : undefined}
-                rel="noopener noreferrer"
-                className={workRowClass}
-              >
-                <Box
-                  fontSize="base"
-                  fontFamily="body"
-                  fontWeight="400"
-                  color="text"
-                >
-                  {exp.title}
-                </Box>
-                <Box
-                  fontSize="xs"
-                  fontFamily="body"
-                  fontWeight="400"
-                  color="textMuted"
-                  letterSpacing="wide"
-                  textTransform="uppercase"
-                >
-                  {exp.type}
-                </Box>
-                <Box
-                  fontSize="xs"
-                  fontFamily="body"
-                  fontWeight="400"
-                  color="textMuted"
-                  fontVariantNumeric="tabular-nums"
-                >
-                  {exp.year}
-                </Box>
-              </a>
-            ))}
-          </Box>
-
-          {/* Sora shutdown — cultural weather note */}
-          <Box
-            pt="6"
-            borderTop="1px solid"
-            borderColor="border"
-          >
-            <Box
-              fontSize="xs"
-              fontFamily="body"
-              fontWeight="500"
-              color="textMuted"
-              letterSpacing="widest"
-              textTransform="uppercase"
-              mb="2"
-            >
-              Tools
-            </Box>
-            <Box
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="400"
-              color="textSecondary"
-              lineHeight="normal"
-              mb="1"
-            >
-              Sora shutting down.
-            </Box>
-            <Box
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="300"
-              color="textMuted"
-              lineHeight="normal"
-            >
-              HN · 726 pts. A tool ends quietly.
-            </Box>
-          </Box>
-        </Box>
-
-        {/* Column 2 (narrow): Rumi + context */}
-        <Box
-          borderLeft="1px solid"
-          borderColor="border"
-          py="10"
-          px="8"
-        >
-          {/* Rumi quote — anchor text, generous leading */}
-          <Box mb="6">
-            <Box
-              fontSize="md"
-              fontFamily="heading"
-              fontWeight="400"
-              fontStyle="italic"
-              color="text"
-              lineHeight="loose"
-              mb="3"
-            >
-              Take time like the river that never grows stale
-            </Box>
-            <Box
-              fontSize="xs"
-              fontFamily="body"
-              fontWeight="300"
-              color="textMuted"
-              letterSpacing="wide"
-            >
-              — Rumi
-            </Box>
-          </Box>
-
-          {/* Separator */}
-          <Box
-            height="1px"
-            background="border"
-            mb="6"
-          />
-
-          {/* Contextual note */}
-          <Box mb="6">
-            <Box
-              fontSize="xs"
-              fontFamily="body"
-              fontWeight="500"
-              color="textMuted"
-              letterSpacing="wider"
-              textTransform="uppercase"
-              mb="3"
-            >
-              Now
-            </Box>
-            <Box
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="400"
-              color="textSecondary"
-              lineHeight="normal"
-            >
-              Wednesday in late March. Light almost even — 12.1 hours. The season hasn't committed yet, but the direction is clear.
-            </Box>
-          </Box>
-
-          {/* About link */}
-          <Box
-            pt="4"
-            borderTop="1px solid"
-            borderColor="border"
-          >
-            <a href="/about" className={css({ textDecoration: 'none' })}>
-              <Box
-                fontSize="xs"
-                fontFamily="body"
-                fontWeight="500"
-                color="textMuted"
-                letterSpacing="wider"
-                textTransform="uppercase"
-                _hover={{ color: 'accent' }}
-              >
-                About Doug →
-              </Box>
-            </a>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* ── FOOTER ───────────────────────────────────────────── */}
-      <Box
-        width="100%"
-        background="bgMasthead"
-        borderTop="1px solid"
-        style={{ borderTopColor: '#2A2720' }}
-        py="6"
-        px="12"
-      >
-        <Flex
-          maxWidth="1200px"
-          mx="auto"
-          justify="space-between"
-          align="center"
-        >
-          <Box
-            fontSize="xs"
-            fontFamily="body"
-            fontWeight="400"
-            color="textOnDarkMuted"
-          >
-            Doug March · 2026
-          </Box>
-          <Flex gap="6">
-            <a href="/" className={css({ textDecoration: 'none' })}>
-              <Box
-                fontSize="xs"
-                fontFamily="body"
-                fontWeight="500"
-                color="textOnDarkMuted"
-                letterSpacing="wider"
-                textTransform="uppercase"
-                _hover={{ color: 'accentLight' }}
-              >
-                Work
-              </Box>
-            </a>
-            <a href="/about" className={css({ textDecoration: 'none' })}>
-              <Box
-                fontSize="xs"
-                fontFamily="body"
-                fontWeight="500"
-                color="textOnDarkMuted"
-                letterSpacing="wider"
-                textTransform="uppercase"
-                _hover={{ color: 'accentLight' }}
-              >
-                About
-              </Box>
-            </a>
-          </Flex>
-        </Flex>
-      </Box>
-    </Box>
+            )
+          })}
+        </div>
+      )}
+    </div>
   )
 }
