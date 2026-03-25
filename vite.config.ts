@@ -499,6 +499,7 @@ export default defineConfig({
     browserStorageContextStub(),
     tanstackStart({
       srcDirectory: 'app',
+      spa: {},
     }),
     tsconfigPaths({ projects: ['./tsconfig.json'] }),
   ],
