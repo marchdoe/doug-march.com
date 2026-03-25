@@ -1,9 +1,23 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex, VStack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
+
+function FieldLabel({ label }: { label: string }) {
+  return (
+    <div className={css({
+      fontFamily: 'oswald',
+      fontSize: 'xs',
+      fontWeight: '400',
+      color: 'textRightMuted',
+      letterSpacing: 'widest',
+      textTransform: 'uppercase',
+    })} style={{ marginBottom: '10px' }}>
+      {label}
+    </div>
+  )
+}
 
 function WorkDetailPage() {
   const { slug } = Route.useParams()
@@ -11,418 +25,231 @@ function WorkDetailPage() {
 
   if (!project) {
     return (
-      <Box fontFamily="body" maxWidth="1200px" mx="auto" px="12" py="16">
-        <Box
-          fontSize="xs"
-          fontFamily="body"
-          fontWeight="500"
-          color="textMuted"
-          letterSpacing="wider"
-          textTransform="uppercase"
-          mb="4"
-        >
-          404
-        </Box>
-        <Box
-          fontSize="lg"
-          fontFamily="heading"
-          fontWeight="700"
-          color="text"
-          lineHeight="tight"
-          mb="6"
-        >
-          Project not found.
-        </Box>
-        <a href="/" className={css({ textDecoration: 'none' })}>
-          <Box
-            fontSize="xs"
-            fontFamily="body"
-            fontWeight="500"
-            color="textMuted"
-            letterSpacing="wider"
-            textTransform="uppercase"
-            _hover={{ color: 'accent' }}
-          >
-            ← All Work
-          </Box>
+      <div style={{ padding: '52px', paddingBottom: '96px' }}>
+        <a href="/" className={css({
+          fontFamily: 'oswald',
+          fontSize: 'xs',
+          color: 'textRightMuted',
+          letterSpacing: 'wide',
+          textTransform: 'uppercase',
+          transition: 'color 0.15s ease',
+          _hover: { color: 'textRight' },
+        })}>
+          ← Work
         </a>
-      </Box>
+        <p className={css({
+          fontFamily: 'spectral',
+          fontSize: 'md',
+          fontWeight: '300',
+          fontStyle: 'italic',
+          color: 'textRightSecondary',
+          lineHeight: 'normal',
+        })} style={{ marginTop: '48px' }}>
+          Project not found.
+        </p>
+      </div>
     )
   }
 
+  const liveLink = project.liveUrl ?? project.externalUrl
+
   return (
-    <Box fontFamily="body">
+    <div style={{ padding: '52px', paddingBottom: '96px' }}>
 
-      {/* ── PROJECT HEADER BAND ──────────────────────────────── */}
-      <Box
-        width="100%"
-        background="bgMasthead"
-        py="10"
-        px="12"
-        borderBottom="1px solid"
-        style={{ borderBottomColor: '#2A2720' }}
-      >
-        <Box maxWidth="1200px" mx="auto">
-          {/* Back link */}
-          <a href="/" className={css({ textDecoration: 'none' })}>
-            <Box
-              fontSize="xs"
-              fontFamily="body"
-              fontWeight="500"
-              color="textOnDarkDim"
-              letterSpacing="wider"
-              textTransform="uppercase"
-              mb="6"
-              display="block"
-              _hover={{ color: 'accentLight' }}
-            >
-              ← All Work
-            </Box>
-          </a>
+      {/* Back */}
+      <div style={{ marginBottom: '48px' }}>
+        <a href="/" className={css({
+          fontFamily: 'oswald',
+          fontSize: 'xs',
+          fontWeight: '400',
+          color: 'textRightMuted',
+          letterSpacing: 'wide',
+          textTransform: 'uppercase',
+          transition: 'color 0.15s ease',
+          _hover: { color: 'textRight' },
+        })}>
+          ← Work
+        </a>
+      </div>
 
-          {/* Type + year */}
-          <Flex gap="3" align="center" mb="3">
-            <Box
-              fontSize="xs"
-              fontFamily="body"
-              fontWeight="500"
-              color="textOnDarkMuted"
-              letterSpacing="widest"
-              textTransform="uppercase"
-            >
-              {project.type}
-            </Box>
-            <Box fontSize="xs" color="textOnDarkDim">·</Box>
-            <Box
-              fontSize="xs"
-              fontFamily="body"
-              fontWeight="400"
-              color="textOnDarkDim"
-              fontVariantNumeric="tabular-nums"
-            >
-              {project.year}
-            </Box>
-          </Flex>
+      {/* Type · Year */}
+      <div style={{ marginBottom: '10px' }}>
+        <span className={css({
+          fontFamily: 'oswald',
+          fontSize: 'xs',
+          fontWeight: '400',
+          color: 'textRightMuted',
+          letterSpacing: 'widest',
+          textTransform: 'uppercase',
+        })}>
+          {project.type} &nbsp;·&nbsp; {project.year}
+        </span>
+      </div>
 
-          {/* Title */}
-          <Box
-            fontSize="xl"
-            fontFamily="heading"
-            fontWeight="700"
-            color="textOnDark"
-            lineHeight="tight"
-            letterSpacing="tight"
-            mb="4"
-          >
-            {project.title}
-          </Box>
+      {/* Title */}
+      <h1 className={css({
+        fontFamily: 'spectral',
+        fontSize: 'lg',
+        fontWeight: '600',
+        color: 'textRight',
+        lineHeight: 'snug',
+        letterSpacing: 'normal',
+      })} style={{ marginBottom: '40px', maxWidth: '480px' }}>
+        {project.title}
+      </h1>
 
-          {/* Role */}
-          {project.role && (
-            <Box
-              fontSize="sm"
-              fontFamily="body"
-              fontWeight="400"
-              color="textOnDarkMuted"
-              letterSpacing="wide"
+      {/* Role */}
+      {project.role && (
+        <div style={{ borderBottom: '1px solid #EAE6D2', paddingBottom: '28px', marginBottom: '28px' }}>
+          <FieldLabel label="Role" />
+          <p className={css({
+            fontFamily: 'spectral',
+            fontSize: 'base',
+            fontWeight: '400',
+            color: 'textRightSecondary',
+            lineHeight: 'normal',
+          })}>
+            {project.role}
+          </p>
+        </div>
+      )}
+
+      {/* Problem */}
+      {project.problem && (
+        <div style={{ borderBottom: '1px solid #EAE6D2', paddingBottom: '28px', marginBottom: '28px' }}>
+          <FieldLabel label="Problem" />
+          <p className={css({
+            fontFamily: 'spectral',
+            fontSize: 'base',
+            fontWeight: '300',
+            color: 'textRight',
+            lineHeight: 'loose',
+          })} style={{ maxWidth: '480px' }}>
+            {project.problem}
+          </p>
+        </div>
+      )}
+
+      {/* Description fallback for lightweight projects */}
+      {!project.problem && project.description && (
+        <div style={{ borderBottom: '1px solid #EAE6D2', paddingBottom: '28px', marginBottom: '28px' }}>
+          <FieldLabel label="Overview" />
+          <p className={css({
+            fontFamily: 'spectral',
+            fontSize: 'base',
+            fontWeight: '300',
+            color: 'textRight',
+            lineHeight: 'loose',
+          })} style={{ maxWidth: '480px' }}>
+            {project.description}
+          </p>
+        </div>
+      )}
+
+      {/* Approach */}
+      {project.approach && (
+        <div style={{ borderBottom: '1px solid #EAE6D2', paddingBottom: '28px', marginBottom: '28px' }}>
+          <FieldLabel label="Approach" />
+          <p className={css({
+            fontFamily: 'spectral',
+            fontSize: 'base',
+            fontWeight: '300',
+            color: 'textRight',
+            lineHeight: 'loose',
+          })} style={{ maxWidth: '480px' }}>
+            {project.approach}
+          </p>
+        </div>
+      )}
+
+      {/* Outcome */}
+      {project.outcome && (
+        <div style={{ borderBottom: '1px solid #EAE6D2', paddingBottom: '28px', marginBottom: '28px' }}>
+          <FieldLabel label="Outcome" />
+          <p className={css({
+            fontFamily: 'spectral',
+            fontSize: 'base',
+            fontWeight: '300',
+            color: 'textRight',
+            lineHeight: 'loose',
+          })} style={{ maxWidth: '480px' }}>
+            {project.outcome}
+          </p>
+        </div>
+      )}
+
+      {/* Stack */}
+      {project.stack && project.stack.length > 0 && (
+        <div style={{ marginBottom: '40px' }}>
+          <FieldLabel label="Stack" />
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {project.stack.map(tech => (
+              <span
+                key={tech}
+                className={css({
+                  fontFamily: 'oswald',
+                  fontSize: 'xs',
+                  fontWeight: '400',
+                  color: 'textRightSecondary',
+                  letterSpacing: 'wide',
+                  textTransform: 'uppercase',
+                })}
+                style={{
+                  padding: '4px 10px',
+                  border: '1px solid #EAE6D2',
+                  borderRadius: '2px',
+                }}
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Links */}
+      {(liveLink || project.githubUrl) && (
+        <div style={{ display: 'flex', gap: '32px', marginTop: '48px', alignItems: 'center' }}>
+          {liveLink && (
+            <a
+              href={liveLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={css({
+                fontFamily: 'oswald',
+                fontSize: 'sm',
+                fontWeight: '500',
+                color: 'textRight',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                transition: 'color 0.15s ease',
+                _hover: { color: 'textRightSecondary' },
+              })}
             >
-              {project.role}
-            </Box>
+              View Project →
+            </a>
           )}
-        </Box>
-      </Box>
-
-      {/* ── PROJECT BODY ─────────────────────────────────────── */}
-      <Box maxWidth="1200px" mx="auto" width="100%">
-        <Box
-          display="grid"
-          gridTemplateColumns="2fr 1fr"
-        >
-          {/* Main content column */}
-          <Box
-            py="10"
-            px="7"
-            paddingLeft="12"
-            borderRight="1px solid"
-            borderColor="border"
-          >
-
-            {/* Problem */}
-            {project.problem && (
-              <Box mb="8">
-                <Box
-                  fontSize="xs"
-                  fontFamily="body"
-                  fontWeight="500"
-                  color="textMuted"
-                  letterSpacing="wider"
-                  textTransform="uppercase"
-                  mb="3"
-                >
-                  Problem
-                </Box>
-                <Box
-                  fontSize="md"
-                  fontFamily="heading"
-                  fontWeight="400"
-                  color="text"
-                  lineHeight="normal"
-                  maxWidth="520px"
-                >
-                  {project.problem}
-                </Box>
-              </Box>
-            )}
-
-            {/* Approach */}
-            {project.approach && (
-              <Box mb="8" pt="6" borderTop="1px solid" borderColor="border">
-                <Box
-                  fontSize="xs"
-                  fontFamily="body"
-                  fontWeight="500"
-                  color="textMuted"
-                  letterSpacing="wider"
-                  textTransform="uppercase"
-                  mb="3"
-                >
-                  Approach
-                </Box>
-                <Box
-                  fontSize="base"
-                  fontFamily="body"
-                  fontWeight="400"
-                  color="textSecondary"
-                  lineHeight="normal"
-                  maxWidth="520px"
-                >
-                  {project.approach}
-                </Box>
-              </Box>
-            )}
-
-            {/* Outcome */}
-            {project.outcome && (
-              <Box mb="8" pt="6" borderTop="1px solid" borderColor="border">
-                <Box
-                  fontSize="xs"
-                  fontFamily="body"
-                  fontWeight="500"
-                  color="textMuted"
-                  letterSpacing="wider"
-                  textTransform="uppercase"
-                  mb="3"
-                >
-                  Outcome
-                </Box>
-                <Box
-                  fontSize="base"
-                  fontFamily="body"
-                  fontWeight="400"
-                  color="textSecondary"
-                  lineHeight="normal"
-                  maxWidth="520px"
-                >
-                  {project.outcome}
-                </Box>
-              </Box>
-            )}
-
-            {/* Description fallback */}
-            {!project.problem && !project.approach && !project.outcome && project.description && (
-              <Box mb="8">
-                <Box
-                  fontSize="base"
-                  fontFamily="body"
-                  fontWeight="400"
-                  color="textSecondary"
-                  lineHeight="normal"
-                  maxWidth="520px"
-                >
-                  {project.description}
-                </Box>
-              </Box>
-            )}
-
-            {/* Stack */}
-            {project.stack && project.stack.length > 0 && (
-              <Box pt="6" borderTop="1px solid" borderColor="border">
-                <Box
-                  fontSize="xs"
-                  fontFamily="body"
-                  fontWeight="500"
-                  color="textMuted"
-                  letterSpacing="wider"
-                  textTransform="uppercase"
-                  mb="3"
-                >
-                  Stack
-                </Box>
-                <Box display="flex" flexWrap="wrap" gap="2">
-                  {project.stack.map(tech => (
-                    <Box
-                      key={tech}
-                      px="3"
-                      py="1"
-                      fontSize="xs"
-                      fontFamily="body"
-                      fontWeight="400"
-                      color="textSecondary"
-                      background="bgCard"
-                      border="1px solid"
-                      borderColor="border"
-                      borderRadius="none"
-                    >
-                      {tech}
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-            )}
-          </Box>
-
-          {/* Sidebar column */}
-          <Box py="10" px="8">
-
-            {/* External links */}
-            <Box mb="8">
-              <Box
-                fontSize="xs"
-                fontFamily="body"
-                fontWeight="500"
-                color="textMuted"
-                letterSpacing="wider"
-                textTransform="uppercase"
-                mb="4"
-              >
-                Links
-              </Box>
-
-              <VStack gap="3" align="stretch">
-                {project.liveUrl && (
-                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={css({ textDecoration: 'none' })}>
-                    <Box
-                      fontSize="sm"
-                      fontFamily="body"
-                      fontWeight="400"
-                      color="textSecondary"
-                      py="3"
-                      borderBottom="1px solid"
-                      borderColor="border"
-                      _hover={{ color: 'accent' }}
-                    >
-                      Live Site →
-                    </Box>
-                  </a>
-                )}
-                {project.githubUrl && (
-                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className={css({ textDecoration: 'none' })}>
-                    <Box
-                      fontSize="sm"
-                      fontFamily="body"
-                      fontWeight="400"
-                      color="textSecondary"
-                      py="3"
-                      borderBottom="1px solid"
-                      borderColor="border"
-                      _hover={{ color: 'accent' }}
-                    >
-                      GitHub →
-                    </Box>
-                  </a>
-                )}
-                {project.externalUrl && (
-                  <a href={project.externalUrl} target="_blank" rel="noopener noreferrer" className={css({ textDecoration: 'none' })}>
-                    <Box
-                      fontSize="sm"
-                      fontFamily="body"
-                      fontWeight="400"
-                      color="textSecondary"
-                      py="3"
-                      borderBottom="1px solid"
-                      borderColor="border"
-                      _hover={{ color: 'accent' }}
-                    >
-                      View Project →
-                    </Box>
-                  </a>
-                )}
-                {!project.liveUrl && !project.githubUrl && !project.externalUrl && (
-                  <Box
-                    fontSize="sm"
-                    fontFamily="body"
-                    fontWeight="300"
-                    color="textMuted"
-                    fontStyle="italic"
-                  >
-                    No public links.
-                  </Box>
-                )}
-              </VStack>
-            </Box>
-
-            {/* Meta */}
-            <Box>
-              <Box
-                fontSize="xs"
-                fontFamily="body"
-                fontWeight="500"
-                color="textMuted"
-                letterSpacing="wider"
-                textTransform="uppercase"
-                mb="4"
-              >
-                Project Info
-              </Box>
-
-              <VStack gap="0" align="stretch">
-                <Flex justify="space-between" py="3" borderBottom="1px solid" borderColor="border">
-                  <Box fontSize="xs" fontFamily="body" color="textMuted" letterSpacing="wide" textTransform="uppercase">Year</Box>
-                  <Box fontSize="xs" fontFamily="body" color="textSecondary" fontVariantNumeric="tabular-nums">{project.year}</Box>
-                </Flex>
-                <Flex justify="space-between" py="3" borderBottom="1px solid" borderColor="border">
-                  <Box fontSize="xs" fontFamily="body" color="textMuted" letterSpacing="wide" textTransform="uppercase">Type</Box>
-                  <Box fontSize="xs" fontFamily="body" color="textSecondary">{project.type}</Box>
-                </Flex>
-                {project.role && (
-                  <Flex justify="space-between" align="flex-start" py="3" borderBottom="1px solid" borderColor="border" gap="4">
-                    <Box fontSize="xs" fontFamily="body" color="textMuted" letterSpacing="wide" textTransform="uppercase" flexShrink="0">Role</Box>
-                    <Box fontSize="xs" fontFamily="body" color="textSecondary" textAlign="right">{project.role}</Box>
-                  </Flex>
-                )}
-              </VStack>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* ── FOOTER ─────────────────────────────────────────── */}
-      <Box
-        width="100%"
-        background="bgMasthead"
-        borderTop="1px solid"
-        style={{ borderTopColor: '#2A2720' }}
-        py="6"
-        px="12"
-      >
-        <Flex maxWidth="1200px" mx="auto" justify="space-between" align="center">
-          <Box fontSize="xs" fontFamily="body" fontWeight="400" color="textOnDarkMuted">
-            Doug March · 2026
-          </Box>
-          <Flex gap="6">
-            <a href="/" className={css({ textDecoration: 'none' })}>
-              <Box fontSize="xs" fontFamily="body" fontWeight="500" color="textOnDarkMuted" letterSpacing="wider" textTransform="uppercase" _hover={{ color: 'accentLight' }}>
-                Work
-              </Box>
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={css({
+                fontFamily: 'oswald',
+                fontSize: 'xs',
+                fontWeight: '400',
+                color: 'textRightMuted',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                transition: 'color 0.15s ease',
+                _hover: { color: 'textRightSecondary' },
+              })}
+            >
+              GitHub →
             </a>
-            <a href="/about" className={css({ textDecoration: 'none' })}>
-              <Box fontSize="xs" fontFamily="body" fontWeight="500" color="textOnDarkMuted" letterSpacing="wider" textTransform="uppercase" _hover={{ color: 'accentLight' }}>
-                About
-              </Box>
-            </a>
-          </Flex>
-        </Flex>
-      </Box>
-    </Box>
+          )}
+        </div>
+      )}
+    </div>
   )
 }

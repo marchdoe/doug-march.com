@@ -5,269 +5,293 @@ export const elementsPreset = definePreset({
 
   conditions: {
     extend: {
-      light: '.light &',
-      dark: '.dark &',
+      _light: '.light &',
+      _dark: '.dark &',
     },
   },
 
   globalCss: {
-    '*, *::before, *::after': {
+    '*': {
       boxSizing: 'border-box',
       margin: '0',
       padding: '0',
     },
     html: {
-      minHeight: '100vh',
+      fontSize: '16px',
+      WebkitFontSmoothing: 'antialiased',
+      MozOsxFontSmoothing: 'grayscale',
     },
     body: {
       fontFamily: 'body',
       background: 'bg',
       color: 'text',
-      fontSize: 'base',
       lineHeight: 'normal',
-      WebkitFontSmoothing: 'antialiased',
-      MozOsxFontSmoothing: 'grayscale',
       minHeight: '100vh',
     },
-    'h1, h2, h3, h4, h5, h6': {
-      fontFamily: 'heading',
-      lineHeight: 'tight',
-      letterSpacing: 'tight',
-      color: 'text',
-    },
     a: {
-      color: 'text',
-      textDecoration: 'none',
-    },
-    'a:hover': {
       color: 'accent',
-    },
-    img: {
-      maxWidth: '100%',
-      display: 'block',
-    },
-    '::selection': {
-      background: 'accentLight',
-      color: 'text',
+      textDecoration: 'none',
     },
   },
 
   theme: {
     tokens: {
       colors: {
-        // ── Hay neutral palette (hue 58°, saturation 5–8%) ──────────────
-        hay: {
-          50:  { value: '#F5F3EB' }, // near-white parchment tint
-          100: { value: '#EDEAD9' }, // light — faint warm vellum
-          200: { value: '#D8D4C2' }, // borders, hairline rules
-          300: { value: '#ADAA9A' }, // disabled / subdued
-          400: { value: '#858273' }, // placeholder text
-          500: { value: '#5F5C4E' }, // secondary annotations
-          600: { value: '#433F34' }, // secondary text body
-          700: { value: '#2A2720' }, // primary body text (dark-mode variant)
-          800: { value: '#161410' }, // masthead background
-          900: { value: '#0C0B09' }, // deepest background
+        // Cold neutral scale — hue 222°, 5–8% saturation
+        // Left panel (dark hemisphere)
+        cold: {
+          50: { value: '#F2F3F8' },
+          100: { value: '#E2E5EF' },
+          200: { value: '#C3C8D9' },
+          300: { value: '#9AA0BC' },
+          400: { value: '#6D7490' },
+          500: { value: '#4D5471' },
+          600: { value: '#333A52' },
+          700: { value: '#1F2640' },
+          800: { value: '#141929' },
+          900: { value: '#0B0D18' },
         },
 
-        // ── Harvest gold accent (hue 58°, high saturation) ──────────────
-        gold: {
-          light:   { value: '#DDD59E' }, // tinted bg, hover states
-          DEFAULT: { value: '#B8A83A' }, // buttons, dateline band border, links
-          dark:    { value: '#7C7120' }, // pressed states, emphasis
-          glow:    { value: 'rgba(184, 168, 58, 0.12)' }, // subtle overlays
+        // Warm neutral scale — hue 45°, 5–8% saturation
+        // Right panel (lit crescent)
+        warm: {
+          50: { value: '#FAFAF4' },
+          100: { value: '#F5F3E8' },
+          200: { value: '#EAE6D2' },
+          300: { value: '#D4CDAB' },
+          400: { value: '#B8AF88' },
+          500: { value: '#908660' },
+          600: { value: '#6B6040' },
+          700: { value: '#453D24' },
+          800: { value: '#2A2514' },
+          900: { value: '#171408' },
         },
 
-        // ── Spring green secondary accent (hue 138°) ─────────────────────
-        green: {
-          light:   { value: '#8DC4A5' }, // light fill, seasonal labels
-          DEFAULT: { value: '#4A8C6A' }, // Tigers win left-border, botanical
-          dark:    { value: '#2D5C45' }, // pressed / deep emphasis
+        // Accent — Opening Day warmth, hue 32° (spring amber-orange)
+        // Reserved exclusively for the countdown element
+        accent: {
+          light: { value: '#F2BC8E' },
+          DEFAULT: { value: '#E07A35' },
+          dark: { value: '#B05820' },
+          glow: { value: 'rgba(224, 122, 53, 0.10)' },
         },
 
-        // ── Named surface / text colors (from spec) ──────────────────────
-        parchment:    { value: '#EDE9DA' }, // page background — the tonal fulcrum
-        card:         { value: '#E5E1CF' }, // card surface — one step darker than page
-        mastheadBg:   { value: '#161410' }, // dark warm near-black
-        ink:          { value: '#1E1C15' }, // primary text — warm near-black
-        inkSecondary: { value: '#4A4738' }, // secondary editorial body
-        inkMuted:     { value: '#7E7B6C' }, // annotations, metadata, datelines
+        // Secondary accent — market/spring sage, hue 152°
+        // Used only for +/- market value display
+        sage: {
+          DEFAULT: { value: '#4A8C6A' },
+          muted: { value: 'rgba(74, 140, 106, 0.15)' },
+        },
       },
 
       fonts: {
-        heading: { value: "'Fraunces', Georgia, 'Times New Roman', serif" },
-        body:    { value: "'Outfit', system-ui, -apple-system, sans-serif" },
+        // Spectral: editorial serif — reclines, assumes you'll sit with it
+        // Left panel, body copy, pull quotes
+        spectral: { value: "'Spectral', Georgia, 'Times New Roman', serif" },
+        // Oswald: condensed sans — inclines, already standing up
+        // Right panel, scores, countdown, metadata strips
+        oswald: { value: "'Oswald', 'Arial Narrow', Arial, sans-serif" },
+        // Semantic aliases
+        body: { value: "'Spectral', Georgia, 'Times New Roman', serif" },
+        heading: { value: "'Oswald', 'Arial Narrow', Arial, sans-serif" },
       },
 
+      // Perfect Fourth scale (1.333 ratio, base 16px)
+      // Steps: 9 · 12 · 16 · 21 · 28 · 37 · 50
       fontSizes: {
-        '2xs': { value: '0.4375rem' }, //  7px — extreme micro labels
-        xs:    { value: '0.5625rem' }, //  9px — metadata, dateline labels
-        sm:    { value: '0.75rem'   }, // 12px — secondary body, captions
-        base:  { value: '1rem'      }, // 16px — primary body
-        md:    { value: '1.3125rem' }, // 21px — subheads, callout numerics
-        lg:    { value: '1.75rem'   }, // 28px — section headings, score display
-        xl:    { value: '2.3125rem' }, // 37px — masthead headline
-        '2xl': { value: '3.125rem'  }, // 50px — display only (sparse use)
+        '2xs': { value: '0.5625rem' },  // 9px  — wire-copy annotations, music reference
+        xs:    { value: '0.75rem' },    // 12px — secondary metadata, tucked signals
+        sm:    { value: '1rem' },       // 16px — nav items, small labels
+        base:  { value: '1rem' },       // 16px — body text (left panel copy)
+        md:    { value: '1.3125rem' },  // 21px — scores, subheadings, Bodhidharma quote
+        lg:    { value: '1.75rem' },    // 28px — name, section display
+        xl:    { value: '2.3125rem' },  // 37px — Opening Day "2 DAYS"
+        '2xl': { value: '3.125rem' },   // 50px — hero/display if used
       },
 
       lineHeights: {
-        tight:  { value: '1.05' }, // large display headings only
-        snug:   { value: '1.2'  }, // subheads and callout numerics
-        normal: { value: '1.55' }, // body text — the breathing quality
-        loose:  { value: '1.75' }, // Rumi quote and pull text — generosity encoded
+        tight:  { value: '1.05' },  // Oswald display headings (right panel)
+        snug:   { value: '1.20' },  // Spectral headings (left panel)
+        normal: { value: '1.55' },  // Body text, standard reading
+        loose:  { value: '1.80' },  // Bodhidharma quote — earns its stillness
       },
 
       letterSpacings: {
-        tight:   { value: '-0.025em' }, // Fraunces display at 37px+
-        normal:  { value: '0em'      }, // body text at 16px
-        wide:    { value: '0.04em'   }, // secondary labels, bylines, attribution
-        wider:   { value: '0.08em'   }, // column section headers (WORK, SIGNALS)
-        widest:  { value: '0.14em'   }, // masthead nav, dateline uppercase labels
+        tight:   { value: '-0.025em' },  // Large display Oswald (xl, 2xl)
+        normal:  { value: '0em' },       // Body text, both panels
+        wide:    { value: '0.04em' },    // Nav items, role labels
+        wider:   { value: '0.08em' },    // All-caps section labels, left panel
+        widest:  { value: '0.14em' },    // Tiny metadata strips (weather, market)
       },
 
+      // Spacing scale — every layout value derives from here
       spacing: {
-        0:  { value: '0px'  },
-        1:  { value: '4px'  },
-        2:  { value: '8px'  },
-        3:  { value: '12px' },
-        4:  { value: '16px' },
-        5:  { value: '20px' },
-        6:  { value: '24px' },
-        7:  { value: '28px' },
-        8:  { value: '32px' },
-        9:  { value: '36px' },
-        10: { value: '40px' },
-        11: { value: '44px' }, // work list row height
-        12: { value: '48px' }, // dateline band height
-        13: { value: '52px' }, // masthead height
-        16: { value: '64px' },
+        '1':  { value: '4px' },
+        '2':  { value: '8px' },
+        '4':  { value: '16px' },
+        '6':  { value: '24px' },
+        '8':  { value: '32px' },
+        '10': { value: '40px' },  // Bodhidharma zone vertical padding
+        '11': { value: '44px' },  // Work row height
+        '12': { value: '48px' },  // Signal gap between major right-panel elements
+        '13': { value: '52px' },  // Panel inner padding (top/bottom)
+        '14': { value: '56px' },  // Generous zone separator
+        '16': { value: '64px' },
+        '24': { value: '96px' },  // Right panel bottom padding
       },
 
       radii: {
-        none: { value: '0px' }, // cards, tags — editorial flat edges
-        sm:   { value: '2px' }, // buttons — barely softened
+        none:  { value: '0px' },  // Default — no softening on either panel
+        badge: { value: '2px' },  // Barely perceptible, right panel warm bg only
       },
 
-      borderWidths: {
-        thin:   { value: '1px' }, // all column separators and hairlines
-        accent: { value: '3px' }, // Tigers win left accent bar
-      },
+      // Shadows: intentionally empty.
+      // "Held breath before a season turns" — shadows break the stillness.
+      shadows: {},
 
-      sizes: {
-        full:       { value: '100%'   },
-        maxContent: { value: '1200px' }, // broadsheet max-width
-        masthead:   { value: '52px'   }, // masthead band height
-        dateline:   { value: '48px'   }, // dateline band height
-        aboveFold:  { value: '64vh'   }, // above-fold editorial zone
-      },
-
-      zIndex: {
-        base:     { value: '0'   },
-        elevated: { value: '10'  },
-        overlay:  { value: '100' },
+      // Borders: no border tokens for panel division.
+      // The background collision IS the only line that exists.
+      borders: {
+        subtle: { value: '1px solid' },  // For work list rows only (right panel)
       },
     },
 
     semanticTokens: {
       colors: {
-        // ── Page backgrounds ─────────────────────────────────────────────
+        // ── Page-level defaults (dark = cold panel as baseline) ──────────────
+
         bg: {
           value: {
-            base:  '{colors.parchment}',  // warm parchment — the tonal fulcrum
-            _dark: '{colors.hay.800}',    // deep warm near-black
+            base: '{colors.cold.800}',
+            _dark: '{colors.cold.800}',
+            _light: '{colors.warm.100}',
           },
-        },
-        bgCard: {
-          value: {
-            base:  '{colors.card}',      // one step darker than page bg
-            _dark: '{colors.hay.700}',   // lifted dark surface
-          },
-        },
-        bgSubtle: {
-          value: {
-            base:  '{colors.hay.50}',    // lightest tint for nested sections
-            _dark: '{colors.hay.900}',   // deepest dark
-          },
-        },
-        bgMasthead: {
-          value: '{colors.mastheadBg}',  // always dark — editorial authority
-        },
-        bgDateline: {
-          // gold-tinted mid-page band — expressed as a direct rgba value
-          // (the dateline band is always this warm gold tint regardless of mode)
-          value: 'rgba(184, 168, 58, 0.14)',
-        },
-        bgRow: {
-          // work list row hover — barely-there gold wash
-          value: 'rgba(184, 168, 58, 0.08)',
         },
 
-        // ── Text hierarchy ───────────────────────────────────────────────
         text: {
           value: {
-            base:  '{colors.ink}',       // #1E1C15 — warm near-black (~10:1 on parchment)
-            _dark: '{colors.hay.50}',    // #F5F3EB — near-white on dark bg
+            base: '{colors.cold.100}',
+            _dark: '{colors.cold.100}',
+            _light: '{colors.cold.700}',
           },
         },
+
         textSecondary: {
           value: {
-            base:  '{colors.inkSecondary}', // #4A4738 — secondary editorial body
-            _dark: '{colors.hay.200}',      // softer on dark
+            base: '{colors.cold.300}',
+            _dark: '{colors.cold.300}',
+            _light: '{colors.cold.500}',
           },
         },
+
         textMuted: {
           value: {
-            base:  '{colors.inkMuted}',  // #7E7B6C — annotations, metadata
-            _dark: '{colors.hay.400}',   // mid-grey on dark
+            base: '{colors.cold.400}',
+            _dark: '{colors.cold.400}',
+            _light: '{colors.warm.400}',
           },
         },
-        // Text for use directly on the dark masthead band
-        textOnDark: {
-          value: '{colors.hay.200}',     // #D8D4C2 — nav items on dark masthead
-        },
-        textOnDarkMuted: {
-          value: '{colors.hay.400}',     // #858273 — secondary nav, subtitles on dark
-        },
-        textOnDarkDim: {
-          value: '{colors.hay.500}',     // #5F5C4E — whispered annotations on dark
-        },
 
-        // ── Harvest gold accent ──────────────────────────────────────────
         accent: {
-          value: '{colors.gold.DEFAULT}', // #B8A83A — full saturation, used sparingly
-        },
-        accentLight: {
-          value: '{colors.gold.light}',   // #DDD59E — hover states, tinted fills
-        },
-        accentDark: {
-          value: '{colors.gold.dark}',    // #7C7120 — pressed, deep emphasis
+          value: '{colors.accent.DEFAULT}',
         },
 
-        // ── Spring green secondary accent (wins / botanical) ─────────────
-        signal: {
-          value: '{colors.green.DEFAULT}', // #4A8C6A — Tigers win left-border
-        },
-        signalLight: {
-          value: '{colors.green.light}',   // #8DC4A5 — seasonal labels
-        },
-        signalDark: {
-          value: '{colors.green.dark}',    // #2D5C45 — deep signal emphasis
-        },
-
-        // ── Borders ──────────────────────────────────────────────────────
         border: {
           value: {
-            base:  '{colors.hay.200}',   // #D8D4C2 — all column separators, hairlines
-            _dark: '{colors.hay.600}',   // #433F34 — dark mode dividers
+            base: '{colors.cold.700}',
+            _dark: '{colors.cold.700}',
+            _light: '{colors.warm.200}',
           },
         },
-        borderAccent: {
-          value: '{colors.gold.DEFAULT}', // #B8A83A — dateline band top/bottom border
-        },
-        borderSubtle: {
+
+        bgCard: {
           value: {
-            base:  '{colors.hay.100}',   // faintest hairline
-            _dark: '{colors.hay.700}',
+            base: '{colors.cold.700}',
+            _dark: '{colors.cold.700}',
+            _light: '{colors.warm.200}',
           },
+        },
+
+        bgSubtle: {
+          value: {
+            base: '{colors.cold.900}',
+            _dark: '{colors.cold.900}',
+            _light: '{colors.warm.50}',
+          },
+        },
+
+        // ── Left panel — dark cold hemisphere (fixed, sticky) ───────────────
+        // background: cold.800 (#141929)
+
+        bgLeft: {
+          value: '{colors.cold.800}',
+        },
+
+        bgCardLeft: {
+          value: '{colors.cold.700}',
+        },
+
+        textLeft: {
+          value: '{colors.cold.100}',
+        },
+
+        textLeftSecondary: {
+          value: '{colors.cold.300}',
+        },
+
+        textLeftMuted: {
+          value: '{colors.cold.400}',
+        },
+
+        // ── Right panel — warm lit crescent (scrollable) ─────────────────────
+        // background: warm.100 (#F5F3E8)
+
+        bgRight: {
+          value: '{colors.warm.100}',
+        },
+
+        bgCardRight: {
+          value: '{colors.warm.200}',
+        },
+
+        textRight: {
+          value: '{colors.cold.700}',
+        },
+
+        textRightSecondary: {
+          value: '{colors.cold.500}',
+        },
+
+        textRightMuted: {
+          value: '{colors.warm.400}',
+        },
+
+        borderRight: {
+          value: '{colors.warm.200}',
+        },
+
+        // ── Signal-specific tokens ────────────────────────────────────────────
+
+        // Opening Day — the only eager element; amber-orange warmth
+        accentOpeningDay: {
+          value: '{colors.accent.DEFAULT}',
+        },
+
+        accentOpeningDayLight: {
+          value: '{colors.accent.light}',
+        },
+
+        accentOpeningDayGlow: {
+          value: '{colors.accent.glow}',
+        },
+
+        // Market data — quiet confidence, no commentary needed
+        marketGreen: {
+          value: '{colors.sage.DEFAULT}',
+        },
+
+        marketGreenMuted: {
+          value: '{colors.sage.muted}',
         },
       },
     },
