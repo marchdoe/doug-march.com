@@ -359,10 +359,10 @@ async function callAnthropicAPI(prompt) {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
 
-  console.log('  calling Claude API (claude-opus-4-6)...')
+  console.log('  calling Claude API (claude-haiku-4-5-20251001)...')
 
   const response = await client.messages.create({
-    model: 'claude-opus-4-6',
+    model: 'claude-haiku-4-5-20251001',
     max_tokens: 2048,
     messages: [{ role: 'user', content: prompt }],
   })

@@ -129,6 +129,7 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
 
   const result = await callClaudeCLI(agentName, systemPrompt, fullPrompt, {
     timeoutMs: options.timeoutMs || 600000, // default 10 minutes
+    model: options.model || 'sonnet',
   })
 
   // Parse response — supports verdict, delimiter, visual spec, and JSON formats
@@ -411,7 +412,7 @@ export async function runAgentSwarm(context) {
       recentBriefs ? '## Recent Archive Briefs\n' + recentBriefs : '',
     ].filter(Boolean).join('\n\n---\n\n')
 
-    const criticResult = await callAgent('spec-critic', specCriticPrompt, criticUserPrompt)
+    const criticResult = await callAgent('spec-critic', specCriticPrompt, criticUserPrompt, null, { model: 'haiku' })
     const rawResponse = criticResult._rawResponse || criticResult.rationale || ''
 
     if (rawResponse.includes('REVISE')) {
