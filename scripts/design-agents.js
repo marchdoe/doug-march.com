@@ -18,7 +18,7 @@ import { fileURLToPath } from 'url'
 import path from 'path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
 
-import { readFile } from 'fs/promises'
+import { readFile, writeFile, mkdir } from 'fs/promises'
 import { existsSync, readdirSync, readFileSync } from 'fs'
 import { spawnSync } from 'child_process'
 import { callClaudeCLI } from './utils/claude-cli.js'
@@ -43,6 +43,73 @@ export const FILE_OWNERSHIP = Object.fromEntries([
   ...STRUCTURE_FILES.map(f => [f, 'unified-designer']),
   ...COMPONENT_FILES.map(f => [f, 'unified-designer']),
 ])
+
+// ---------------------------------------------------------------------------
+// Archetype tracking helpers
+// ---------------------------------------------------------------------------
+
+/** Canonical archetype names — Gallery Wall before Broadsheet to avoid partial match on "Wall" */
+const ARCHETYPE_NAMES = ['Gallery Wall', 'Broadsheet', 'Specimen', 'Poster', 'Scroll', 'Split', 'Stack', 'Index']
+
+/**
+ * Extract the first archetype name found in a block of text.
+ * @param {string} text
+ * @returns {string|null}
+ */
+export function extractArchetypeFromText(text) {
+  for (const name of ARCHETYPE_NAMES) {
+    const pattern = new RegExp(`\\b${name.replace(' ', '\\s+')}\\b`, 'i')
+    if (pattern.test(text)) return name
+  }
+  return null
+}
+
+/**
+ * Read archetype history from the last N archive date directories.
+ * Prefers archetype.txt (written by this pipeline); falls back to parsing brief.md.
+ * @param {string} archiveDir
+ * @param {string[]} recentDirs - sorted newest-first
+ * @returns {Array<{date: string, archetype: string}>}
+ */
+function buildArchetypeHistory(archiveDir, recentDirs) {
+  const history = []
+  for (const dir of recentDirs) {
+    const archetypeFile = path.join(archiveDir, dir, 'archetype.txt')
+    if (existsSync(archetypeFile)) {
+      const name = readFileSync(archetypeFile, 'utf8').trim()
+      if (name) { history.push({ date: dir, archetype: name }); continue }
+    }
+    const briefPath = path.join(archiveDir, dir, 'brief.md')
+    if (existsSync(briefPath)) {
+      const text = readFileSync(briefPath, 'utf8')
+      const name = extractArchetypeFromText(text)
+      if (name) history.push({ date: dir, archetype: name })
+    }
+  }
+  return history
+}
+
+/**
+ * Build the hard archetype constraint block to inject into the Design Director prompt.
+ * @param {Array<{date: string, archetype: string}>} history
+ * @returns {string}
+ */
+function buildArchetypeConstraintPrompt(history) {
+  if (history.length === 0) return ''
+
+  const lines = history.map(h => `  - ${h.date}: ${h.archetype}`).join('\n')
+  const last3 = [...new Set(history.slice(0, 3).map(h => h.archetype))]
+
+  let block = `\n\n## Archetype History — MANDATORY CONSTRAINT\n\nRecent archetype usage (newest first):\n${lines}\n\n`
+
+  if (last3.length > 0) {
+    block += `**FORBIDDEN TODAY** (used in the last 3 days): **${last3.join(', ')}**\n\n`
+    const allowed = ARCHETYPE_NAMES.filter(n => !last3.includes(n))
+    block += `You MUST choose from the remaining archetypes: ${allowed.join(', ')}. Choosing a forbidden archetype is an error — the spec will be rejected.`
+  }
+
+  return block
+}
 
 // ---------------------------------------------------------------------------
 // Exported helpers (also used by tests)
@@ -305,15 +372,22 @@ export async function runAgentSwarm(context) {
   // -----------------------------------------------------------------------
   const archiveDir = path.join(ROOT, 'archive')
   let recentBriefs = ''
+  let archetypeConstraintPrompt = ''
   try {
     const dirs = readdirSync(archiveDir)
       .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
-      .sort().reverse().slice(0, 5)
-    for (const dir of dirs) {
+      .sort().reverse().slice(0, 7)
+    const recentDirs5 = dirs.slice(0, 5)
+    for (const dir of recentDirs5) {
       const briefPath = path.join(archiveDir, dir, 'brief.md')
       if (existsSync(briefPath)) {
         recentBriefs += `\n### ${dir}\n${readFileSync(briefPath, 'utf8')}\n`
       }
+    }
+    const archetypeHistory = buildArchetypeHistory(archiveDir, dirs)
+    archetypeConstraintPrompt = buildArchetypeConstraintPrompt(archetypeHistory)
+    if (archetypeHistory.length > 0) {
+      console.log(`  archetype history: ${archetypeHistory.map(h => `${h.date}=${h.archetype}`).join(', ')}`)
     }
   } catch {}
 
@@ -385,16 +459,19 @@ export async function runAgentSwarm(context) {
     brief,
     referenceFiles: [],
     tokenContext: null,
-  }) + (recentBriefs ? '\n\n## Recent Archive Briefs\n' + recentBriefs : '')
+  }) + archetypeConstraintPrompt
+    + (recentBriefs ? '\n\n## Recent Archive Briefs\n' + recentBriefs : '')
     + (references ? '\n\n## Design References\n\n' + references : '')
     + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
     + weightsPrompt
 
   let visualSpec = ''
+  let chosenArchetype = null
   try {
     const directorResult = await callAgent('design-director', directorSystemPrompt, directorUserPrompt)
     visualSpec = directorResult._rawResponse || directorResult.rationale || ''
-    console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB`)
+    chosenArchetype = extractArchetypeFromText(visualSpec)
+    console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${chosenArchetype ? ` | archetype: ${chosenArchetype}` : ''}`)
   } catch (err) {
     console.warn(`  Design Director failed (non-blocking): ${err.message}`)
     console.warn('  Proceeding without visual spec — agents will use brief directly')
@@ -624,6 +701,16 @@ export async function runAgentSwarm(context) {
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths)
 
+    // Save archetype for future anti-repetition enforcement
+    if (chosenArchetype && signals.date) {
+      try {
+        const datePath = path.join(ROOT, 'archive', signals.date)
+        await mkdir(datePath, { recursive: true })
+        await writeFile(path.join(datePath, 'archetype.txt'), chosenArchetype, 'utf8')
+        console.log(`  [archetype] saved: ${chosenArchetype}`)
+      } catch {}
+    }
+
     return { rationale, design_brief: designBrief, files: allFiles }
   }
 
@@ -683,6 +770,16 @@ export async function runAgentSwarm(context) {
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign (retry)'
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths)
+
+    // Save archetype for future anti-repetition enforcement
+    if (chosenArchetype && signals.date) {
+      try {
+        const datePath = path.join(ROOT, 'archive', signals.date)
+        await mkdir(datePath, { recursive: true })
+        await writeFile(path.join(datePath, 'archetype.txt'), chosenArchetype, 'utf8')
+        console.log(`  [archetype] saved: ${chosenArchetype}`)
+      } catch {}
+    }
 
     return { rationale, design_brief: designBrief, files: allFiles }
   }
