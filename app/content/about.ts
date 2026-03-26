@@ -22,5 +22,5 @@ export const personal: Personal = {
   holesInOne: 4,
   sport: 'golf',
   teams: ['Lions', 'Tigers', 'Pistons', 'Red Wings'],
-  currentFocus: 'Using AI as a force multiplier in product work',
+  currentFocus: 'Building Spaceman and using AI as a force multiplier in product work',
 }

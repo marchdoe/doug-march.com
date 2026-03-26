@@ -63,6 +63,7 @@ export function Sidebar() {
         <Flex gap="8" align="center">
           <a href="/" className={navLink}>Work</a>
           <a href="/about" className={navLink}>About</a>
+          <a href="/archive" className={navLink}>Archive</a>
         </Flex>
       </Flex>
     </Box>
