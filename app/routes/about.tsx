@@ -1,237 +1,489 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { css } from '../../styled-system/css'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
+import { Box, Flex, VStack } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-      <span className={css({
-        fontFamily: 'oswald',
-        fontSize: 'xs',
-        fontWeight: '400',
-        color: 'textRightMuted',
-        letterSpacing: 'widest',
-        textTransform: 'uppercase',
-      })}>
-        {label}
-      </span>
-      <div style={{ flex: 1, height: '1px', background: '#EAE6D2' }} />
-    </div>
-  )
-}
-
 function AboutPage() {
   return (
-    <div style={{ padding: '52px', paddingBottom: '96px' }}>
+    <Box as="main">
+      {/* ─── Header: Identity ─── */}
+      <Box
+        as="section"
+        style={{
+          minHeight: '60vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '120px 48px 80px',
+          maxWidth: '960px',
+          margin: '0 auto',
+        }}
+      >
+        <Box
+          fontFamily="body"
+          fontWeight="400"
+          fontSize="2xs"
+          color="textMuted"
+          letterSpacing="widest"
+          style={{ textTransform: 'uppercase', marginBottom: '32px' }}
+        >
+          About
+        </Box>
 
-      {/* Identity statement */}
-      <div style={{ marginBottom: '52px' }}>
-        <p className={css({
-          fontFamily: 'spectral',
-          fontSize: 'md',
-          fontWeight: '300',
-          fontStyle: 'italic',
-          color: 'textRightSecondary',
-          lineHeight: 'loose',
-          letterSpacing: 'normal',
-        })} style={{ maxWidth: '480px' }}>
+        <Box
+          fontFamily="heading"
+          fontWeight="700"
+          fontSize="xl"
+          color="text"
+          letterSpacing="tight"
+          lineHeight="tight"
+          style={{ marginBottom: '32px', textTransform: 'uppercase' }}
+        >
+          {identity.name}
+        </Box>
+
+        <Box
+          style={{
+            width: '80px',
+            borderTop: '1px solid #a3b49d',
+            marginBottom: '32px',
+          }}
+        />
+
+        <Box
+          fontFamily="body"
+          fontWeight="300"
+          fontSize="md"
+          color="textSecondary"
+          lineHeight="snug"
+          style={{ marginBottom: '24px' }}
+        >
+          {identity.role}
+        </Box>
+
+        <Box
+          fontFamily="body"
+          fontWeight="400"
+          fontSize="base"
+          color="textBody"
+          lineHeight="normal"
+          style={{ maxWidth: '560px' }}
+        >
           {identity.statement}
-        </p>
-      </div>
+        </Box>
+      </Box>
 
-      {/* Experience */}
-      <div style={{ marginBottom: '48px' }}>
-        <SectionLabel label="Experience" />
-        {timeline.map(entry => (
-          <div
-            key={`${entry.year}-${entry.company}`}
-            style={{ borderBottom: '1px solid #EAE6D2', paddingTop: '16px', paddingBottom: '16px' }}
+      {/* ─── Timeline ─── */}
+      <Box
+        as="section"
+        style={{
+          background: '#eaf0e6',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          style={{
+            maxWidth: '760px',
+            width: '100%',
+            padding: '80px 48px',
+          }}
+        >
+          {/* Section label */}
+          <Flex
+            align="center"
+            style={{
+              borderBottom: '1px solid #c9d5c4',
+              paddingBottom: '16px',
+              marginBottom: '0',
+            }}
           >
-            <div style={{ display: 'grid', gridTemplateColumns: '56px 1fr', gap: '24px', alignItems: 'start' }}>
-              <span className={css({
-                fontFamily: 'oswald',
-                fontSize: 'xs',
-                fontWeight: '400',
-                color: 'textRightMuted',
-                fontVariantNumeric: 'tabular-nums',
-                paddingTop: '2px',
-              })}>
-                {entry.year}
-              </span>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span className={css({
-                    fontFamily: 'oswald',
-                    fontSize: 'base',
-                    fontWeight: '500',
-                    color: 'textRight',
-                    letterSpacing: 'normal',
-                  })}>
-                    {entry.role}
-                  </span>
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="2xs"
+              color="textMuted"
+              letterSpacing="widest"
+              style={{ textTransform: 'uppercase' }}
+            >
+              Experience
+            </Box>
+          </Flex>
+
+          {/* Timeline rows */}
+          <VStack gap="0" align="stretch">
+            {timeline.map((entry, i) => (
+              <Flex
+                key={`${entry.year}-${entry.company}-${i}`}
+                gap="6"
+                style={{
+                  padding: '24px 0',
+                  borderBottom: '1px solid #c9d5c4',
+                }}
+              >
+                <Box
+                  fontFamily="body"
+                  fontWeight="400"
+                  fontSize="xs"
+                  color="textMuted"
+                  style={{
+                    minWidth: '50px',
+                    flexShrink: 0,
+                    fontVariantNumeric: 'tabular-nums',
+                    paddingTop: '2px',
+                  }}
+                >
+                  {entry.year}
                   {entry.current && (
-                    <span className={css({
-                      fontFamily: 'oswald',
-                      fontSize: 'xs',
-                      fontWeight: '400',
-                      color: 'accentOpeningDay',
-                      letterSpacing: 'widest',
-                      textTransform: 'uppercase',
-                    })}>
-                      now
-                    </span>
+                    <Box
+                      style={{
+                        display: 'inline-block',
+                        marginLeft: '6px',
+                        color: '#c97d1e',
+                      }}
+                    >
+                      ·
+                    </Box>
                   )}
-                </div>
-                <div className={css({
-                  fontFamily: 'oswald',
-                  fontSize: 'xs',
-                  fontWeight: '400',
-                  color: 'textRightSecondary',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                })} style={{ marginTop: '3px' }}>
-                  {entry.company}
-                </div>
-                {entry.description && (
-                  <p className={css({
-                    fontFamily: 'spectral',
-                    fontSize: 'sm',
-                    fontWeight: '300',
-                    color: 'textRightSecondary',
-                    lineHeight: 'normal',
-                  })} style={{ marginTop: '8px', maxWidth: '420px' }}>
+                </Box>
+                <Box style={{ flex: 1 }}>
+                  <Box
+                    fontFamily="heading"
+                    fontWeight="600"
+                    fontSize="base"
+                    color="text"
+                    style={{ marginBottom: '4px' }}
+                  >
+                    {entry.role}
+                  </Box>
+                  <Box
+                    fontFamily="body"
+                    fontWeight="400"
+                    fontSize="sm"
+                    color="textSecondary"
+                    style={{ marginBottom: '8px' }}
+                  >
+                    {entry.company}
+                  </Box>
+                  <Box
+                    fontFamily="body"
+                    fontWeight="300"
+                    fontSize="sm"
+                    color="textMuted"
+                    lineHeight="normal"
+                  >
                     {entry.description}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
+                  </Box>
+                </Box>
+              </Flex>
+            ))}
+          </VStack>
 
-        {education && (
-          <div style={{ paddingTop: '16px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '56px 1fr', gap: '24px', alignItems: 'start' }}>
-              <span className={css({
-                fontFamily: 'oswald',
-                fontSize: 'xs',
-                color: 'textRightMuted',
-                fontVariantNumeric: 'tabular-nums',
-                paddingTop: '2px',
-              })}>
-                {education.years}
-              </span>
-              <div>
-                <div className={css({
-                  fontFamily: 'oswald',
-                  fontSize: 'base',
-                  fontWeight: '500',
-                  color: 'textRight',
-                })}>
-                  {education.degree}
-                </div>
-                <div className={css({
-                  fontFamily: 'oswald',
-                  fontSize: 'xs',
-                  color: 'textRightSecondary',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                })} style={{ marginTop: '3px' }}>
-                  {education.school}
-                </div>
-                {education.concentration && (
-                  <div className={css({
-                    fontFamily: 'oswald',
-                    fontSize: 'xs',
-                    color: 'textRightMuted',
-                    letterSpacing: 'wide',
-                  })} style={{ marginTop: '2px' }}>
-                    {education.concentration}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+          {/* Education */}
+          {education && (
+            <Box style={{ paddingTop: '32px' }}>
+              <Box
+                fontFamily="body"
+                fontWeight="400"
+                fontSize="2xs"
+                color="textMuted"
+                letterSpacing="widest"
+                style={{ textTransform: 'uppercase', marginBottom: '16px' }}
+              >
+                Education
+              </Box>
+              <Flex gap="6">
+                <Box
+                  fontFamily="body"
+                  fontWeight="400"
+                  fontSize="xs"
+                  color="textMuted"
+                  style={{ minWidth: '50px', flexShrink: 0 }}
+                >
+                  {education.years}
+                </Box>
+                <Box>
+                  <Box
+                    fontFamily="heading"
+                    fontWeight="600"
+                    fontSize="base"
+                    color="text"
+                    style={{ marginBottom: '4px' }}
+                  >
+                    {education.degree}
+                  </Box>
+                  <Box
+                    fontFamily="body"
+                    fontWeight="400"
+                    fontSize="sm"
+                    color="textSecondary"
+                    style={{ marginBottom: '4px' }}
+                  >
+                    {education.school}
+                  </Box>
+                  {education.concentration && (
+                    <Box
+                      fontFamily="body"
+                      fontWeight="300"
+                      fontSize="sm"
+                      color="textMuted"
+                    >
+                      {education.concentration}
+                    </Box>
+                  )}
+                </Box>
+              </Flex>
+            </Box>
+          )}
+        </Box>
+      </Box>
 
-      {/* Capabilities */}
-      <div style={{ marginBottom: '48px' }}>
-        <SectionLabel label="Capabilities" />
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '16px' }}>
-          {capabilities.map(cap => (
-            <span
+      {/* ─── Capabilities ─── */}
+      <Box
+        as="section"
+        style={{
+          maxWidth: '760px',
+          margin: '0 auto',
+          padding: '80px 48px',
+        }}
+      >
+        <Flex
+          align="center"
+          style={{
+            borderBottom: '1px solid #c9d5c4',
+            paddingBottom: '16px',
+            marginBottom: '32px',
+          }}
+        >
+          <Box
+            fontFamily="body"
+            fontWeight="400"
+            fontSize="2xs"
+            color="textMuted"
+            letterSpacing="widest"
+            style={{ textTransform: 'uppercase' }}
+          >
+            Capabilities
+          </Box>
+        </Flex>
+
+        <Box
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '8px',
+          }}
+        >
+          {capabilities.map((cap) => (
+            <Box
               key={cap}
-              className={css({
-                fontFamily: 'oswald',
-                fontSize: 'xs',
-                fontWeight: '400',
-                color: 'textRightSecondary',
-                letterSpacing: 'wide',
-                textTransform: 'uppercase',
-              })}
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="xs"
+              color="textSecondary"
               style={{
-                padding: '4px 10px',
-                border: '1px solid #EAE6D2',
-                borderRadius: '2px',
+                padding: '6px 12px',
+                background: '#eaf0e6',
+                border: '1px solid #c9d5c4',
+                borderRadius: '0px',
+                letterSpacing: '0.02em',
               }}
             >
               {cap}
-            </span>
+            </Box>
           ))}
-        </div>
-      </div>
+        </Box>
+      </Box>
 
-      {/* Personal */}
-      <div>
-        <SectionLabel label="Personal" />
-        <div style={{ marginTop: '8px' }}>
-          {personal.holesInOne > 0 && (
-            <PersonalRow label="Holes in one" value={String(personal.holesInOne)} />
-          )}
-          <PersonalRow label="Sport" value={personal.sport} />
-          <PersonalRow label="Teams" value={personal.teams.join(', ')} />
-          <PersonalRow label="Current focus" value={personal.currentFocus} />
-        </div>
-      </div>
-    </div>
-  )
-}
+      {/* ─── Personal ─── */}
+      <Box
+        as="section"
+        style={{
+          background: '#eaf0e6',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          style={{
+            maxWidth: '760px',
+            width: '100%',
+            padding: '80px 48px',
+          }}
+        >
+          <Flex
+            align="center"
+            style={{
+              borderBottom: '1px solid #c9d5c4',
+              paddingBottom: '16px',
+              marginBottom: '32px',
+            }}
+          >
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="2xs"
+              color="textMuted"
+              letterSpacing="widest"
+              style={{ textTransform: 'uppercase' }}
+            >
+              Off the Clock
+            </Box>
+          </Flex>
 
-function PersonalRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '130px 1fr',
-        gap: '16px',
-        paddingTop: '12px',
-        paddingBottom: '12px',
-        borderBottom: '1px solid #EAE6D2',
-        alignItems: 'baseline',
-      }}
-    >
-      <span className={css({
-        fontFamily: 'oswald',
-        fontSize: 'xs',
-        fontWeight: '400',
-        color: 'textRightMuted',
-        letterSpacing: 'widest',
-        textTransform: 'uppercase',
-      })}>
-        {label}
-      </span>
-      <span className={css({
-        fontFamily: 'spectral',
-        fontSize: 'sm',
-        fontWeight: '300',
-        color: 'textRightSecondary',
-        lineHeight: 'normal',
-      })}>
-        {value}
-      </span>
-    </div>
+          <VStack gap="0" align="stretch">
+            <Flex
+              style={{
+                padding: '16px 0',
+                borderBottom: '1px solid #c9d5c4',
+              }}
+              gap="6"
+            >
+              <Box
+                fontFamily="body"
+                fontWeight="400"
+                fontSize="xs"
+                color="textMuted"
+                style={{ minWidth: '120px', flexShrink: 0 }}
+              >
+                Current Focus
+              </Box>
+              <Box
+                fontFamily="body"
+                fontWeight="400"
+                fontSize="sm"
+                color="textSecondary"
+              >
+                {personal.currentFocus}
+              </Box>
+            </Flex>
+
+            <Flex
+              style={{
+                padding: '16px 0',
+                borderBottom: '1px solid #c9d5c4',
+              }}
+              gap="6"
+            >
+              <Box
+                fontFamily="body"
+                fontWeight="400"
+                fontSize="xs"
+                color="textMuted"
+                style={{ minWidth: '120px', flexShrink: 0 }}
+              >
+                Sport
+              </Box>
+              <Box
+                fontFamily="body"
+                fontWeight="400"
+                fontSize="sm"
+                color="textSecondary"
+              >
+                {personal.sport}
+              </Box>
+            </Flex>
+
+            {personal.holesInOne > 0 && (
+              <Flex
+                style={{
+                  padding: '16px 0',
+                  borderBottom: '1px solid #c9d5c4',
+                }}
+                gap="6"
+              >
+                <Box
+                  fontFamily="body"
+                  fontWeight="400"
+                  fontSize="xs"
+                  color="textMuted"
+                  style={{ minWidth: '120px', flexShrink: 0 }}
+                >
+                  Holes in One
+                </Box>
+                <Box
+                  fontFamily="heading"
+                  fontWeight="600"
+                  fontSize="sm"
+                  color="accent"
+                >
+                  {personal.holesInOne}
+                </Box>
+              </Flex>
+            )}
+
+            <Flex
+              style={{
+                padding: '16px 0',
+              }}
+              gap="6"
+            >
+              <Box
+                fontFamily="body"
+                fontWeight="400"
+                fontSize="xs"
+                color="textMuted"
+                style={{ minWidth: '120px', flexShrink: 0 }}
+              >
+                Teams
+              </Box>
+              <Box
+                fontFamily="body"
+                fontWeight="400"
+                fontSize="sm"
+                color="textSecondary"
+              >
+                {personal.teams.join(', ')}
+              </Box>
+            </Flex>
+          </VStack>
+        </Box>
+      </Box>
+
+      {/* ─── Footer ─── */}
+      <Box
+        as="footer"
+        style={{
+          background: '#2a322a',
+          padding: '48px 48px',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Flex
+          justify="space-between"
+          align="center"
+          style={{ maxWidth: '760px', width: '100%' }}
+        >
+          <a
+            href="/"
+            className={css({
+              fontFamily: 'heading',
+              fontSize: 'xs',
+              letterSpacing: 'wider',
+              textDecoration: 'none',
+              transition: 'color 200ms ease',
+              _hover: { color: 'accentLight' },
+            })}
+            style={{ color: '#a3b49d' }}
+          >
+            ← Work
+          </a>
+          <Box
+            fontFamily="body"
+            fontWeight="300"
+            fontSize="xs"
+            style={{ color: '#596658' }}
+          >
+            © 2026 Doug March
+          </Box>
+        </Flex>
+      </Box>
+    </Box>
   )
 }

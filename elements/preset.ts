@@ -5,16 +5,14 @@ export const elementsPreset = definePreset({
 
   conditions: {
     extend: {
-      _light: '.light &',
-      _dark: '.dark &',
+      _light: '.light &, [data-theme="light"] &',
+      _dark: '.dark &, [data-theme="dark"] &',
     },
   },
 
   globalCss: {
-    '*': {
+    '*, *::before, *::after': {
       boxSizing: 'border-box',
-      margin: '0',
-      padding: '0',
     },
     html: {
       fontSize: '16px',
@@ -23,275 +21,258 @@ export const elementsPreset = definePreset({
     },
     body: {
       fontFamily: 'body',
+      fontSize: 'base',
+      fontWeight: '400',
+      lineHeight: 'normal',
       background: 'bg',
       color: 'text',
-      lineHeight: 'normal',
-      minHeight: '100vh',
+      margin: '0',
+      padding: '0',
+    },
+    'h1, h2, h3, h4, h5, h6': {
+      fontFamily: 'heading',
+      lineHeight: 'tight',
+      letterSpacing: 'tight',
+      color: 'text',
+      margin: '0',
+    },
+    p: {
+      margin: '0',
     },
     a: {
       color: 'accent',
       textDecoration: 'none',
+      transition: 'color 120ms ease',
+    },
+    'a:hover': {
+      color: 'accentDark',
+    },
+    'img, video': {
+      display: 'block',
+      maxWidth: '100%',
     },
   },
 
   theme: {
-    tokens: {
-      colors: {
-        // Cold neutral scale — hue 222°, 5–8% saturation
-        // Left panel (dark hemisphere)
-        cold: {
-          50: { value: '#F2F3F8' },
-          100: { value: '#E2E5EF' },
-          200: { value: '#C3C8D9' },
-          300: { value: '#9AA0BC' },
-          400: { value: '#6D7490' },
-          500: { value: '#4D5471' },
-          600: { value: '#333A52' },
-          700: { value: '#1F2640' },
-          800: { value: '#141929' },
-          900: { value: '#0B0D18' },
-        },
-
-        // Warm neutral scale — hue 45°, 5–8% saturation
-        // Right panel (lit crescent)
-        warm: {
-          50: { value: '#FAFAF4' },
-          100: { value: '#F5F3E8' },
-          200: { value: '#EAE6D2' },
-          300: { value: '#D4CDAB' },
-          400: { value: '#B8AF88' },
-          500: { value: '#908660' },
-          600: { value: '#6B6040' },
-          700: { value: '#453D24' },
-          800: { value: '#2A2514' },
-          900: { value: '#171408' },
-        },
-
-        // Accent — Opening Day warmth, hue 32° (spring amber-orange)
-        // Reserved exclusively for the countdown element
-        accent: {
-          light: { value: '#F2BC8E' },
-          DEFAULT: { value: '#E07A35' },
-          dark: { value: '#B05820' },
-          glow: { value: 'rgba(224, 122, 53, 0.10)' },
-        },
-
-        // Secondary accent — market/spring sage, hue 152°
-        // Used only for +/- market value display
-        sage: {
-          DEFAULT: { value: '#4A8C6A' },
-          muted: { value: 'rgba(74, 140, 106, 0.15)' },
-        },
-      },
-
-      fonts: {
-        // Spectral: editorial serif — reclines, assumes you'll sit with it
-        // Left panel, body copy, pull quotes
-        spectral: { value: "'Spectral', Georgia, 'Times New Roman', serif" },
-        // Oswald: condensed sans — inclines, already standing up
-        // Right panel, scores, countdown, metadata strips
-        oswald: { value: "'Oswald', 'Arial Narrow', Arial, sans-serif" },
-        // Semantic aliases
-        body: { value: "'Spectral', Georgia, 'Times New Roman', serif" },
-        heading: { value: "'Oswald', 'Arial Narrow', Arial, sans-serif" },
-      },
-
-      // Perfect Fourth scale (1.333 ratio, base 16px)
-      // Steps: 9 · 12 · 16 · 21 · 28 · 37 · 50
-      fontSizes: {
-        '2xs': { value: '0.5625rem' },  // 9px  — wire-copy annotations, music reference
-        xs:    { value: '0.75rem' },    // 12px — secondary metadata, tucked signals
-        sm:    { value: '1rem' },       // 16px — nav items, small labels
-        base:  { value: '1rem' },       // 16px — body text (left panel copy)
-        md:    { value: '1.3125rem' },  // 21px — scores, subheadings, Bodhidharma quote
-        lg:    { value: '1.75rem' },    // 28px — name, section display
-        xl:    { value: '2.3125rem' },  // 37px — Opening Day "2 DAYS"
-        '2xl': { value: '3.125rem' },   // 50px — hero/display if used
-      },
-
-      lineHeights: {
-        tight:  { value: '1.05' },  // Oswald display headings (right panel)
-        snug:   { value: '1.20' },  // Spectral headings (left panel)
-        normal: { value: '1.55' },  // Body text, standard reading
-        loose:  { value: '1.80' },  // Bodhidharma quote — earns its stillness
-      },
-
-      letterSpacings: {
-        tight:   { value: '-0.025em' },  // Large display Oswald (xl, 2xl)
-        normal:  { value: '0em' },       // Body text, both panels
-        wide:    { value: '0.04em' },    // Nav items, role labels
-        wider:   { value: '0.08em' },    // All-caps section labels, left panel
-        widest:  { value: '0.14em' },    // Tiny metadata strips (weather, market)
-      },
-
-      // Spacing scale — every layout value derives from here
-      spacing: {
-        '1':  { value: '4px' },
-        '2':  { value: '8px' },
-        '4':  { value: '16px' },
-        '6':  { value: '24px' },
-        '8':  { value: '32px' },
-        '10': { value: '40px' },  // Bodhidharma zone vertical padding
-        '11': { value: '44px' },  // Work row height
-        '12': { value: '48px' },  // Signal gap between major right-panel elements
-        '13': { value: '52px' },  // Panel inner padding (top/bottom)
-        '14': { value: '56px' },  // Generous zone separator
-        '16': { value: '64px' },
-        '24': { value: '96px' },  // Right panel bottom padding
-      },
-
-      radii: {
-        none:  { value: '0px' },  // Default — no softening on either panel
-        badge: { value: '2px' },  // Barely perceptible, right panel warm bg only
-      },
-
-      // Shadows: intentionally empty.
-      // "Held breath before a season turns" — shadows break the stillness.
-      shadows: {},
-
-      // Borders: no border tokens for panel division.
-      // The background collision IS the only line that exists.
-      borders: {
-        subtle: { value: '1px solid' },  // For work list rows only (right panel)
-      },
-    },
-
-    semanticTokens: {
-      colors: {
-        // ── Page-level defaults (dark = cold panel as baseline) ──────────────
-
-        bg: {
-          value: {
-            base: '{colors.cold.800}',
-            _dark: '{colors.cold.800}',
-            _light: '{colors.warm.100}',
+    extend: {
+      tokens: {
+        colors: {
+          // Primary neutral — spring green-gray, hue 108°, saturation 8–14%
+          green: {
+            50:  { value: '#f1f5ef', description: 'Page background' },
+            100: { value: '#e4ece1', description: 'Card / section alt bg' },
+            200: { value: '#c9d5c4', description: 'Borders, hairlines' },
+            300: { value: '#a3b49d', description: 'Muted text, disabled' },
+            400: { value: '#7c8e76', description: 'Placeholder' },
+            500: { value: '#596658', description: 'Secondary text' },
+            600: { value: '#3f4a3d', description: 'Body text' },
+            700: { value: '#2a322a', description: 'Heading text / footer bg' },
+            800: { value: '#191e19', description: 'Dark band bg' },
+            900: { value: '#0e120e', description: 'Deepest bg' },
+          },
+          // Accent — warm amber, hue 35°
+          amber: {
+            100: { value: '#f4d99b', description: 'Amber light — hover states, tinted fills' },
+            500: { value: '#c97d1e', description: 'Amber default — buttons, links, active' },
+            700: { value: '#8f560f', description: 'Amber dark — pressed, emphasis' },
+            glow: { value: 'rgba(201, 125, 30, 0.09)', description: 'Amber glow overlay' },
+          },
+          // Secondary accent — muted terracotta, hue 12°
+          terracotta: {
+            500: { value: '#b8674e', description: 'Loss/deflation signal — Pistons' },
+          },
+          // Section alt bg — midpoint between green.50 and green.100
+          spring: {
+            alt: { value: '#eaf0e6', description: 'Alternating scroll beat bg' },
           },
         },
 
-        text: {
-          value: {
-            base: '{colors.cold.100}',
-            _dark: '{colors.cold.100}',
-            _light: '{colors.cold.700}',
+        fonts: {
+          heading: { value: "'Syne', sans-serif" },
+          body: { value: "'Work Sans', sans-serif" },
+        },
+
+        // Perfect Fourth scale (1.333), base 16px
+        fontSizes: {
+          '2xs': { value: '0.5625rem',  description: '9px — micro labels, index headers' },
+          xs:   { value: '0.75rem',    description: '12px — meta, nav, attribution' },
+          sm:   { value: '0.875rem',   description: '14px — body minimum, item text' },
+          base: { value: '1rem',       description: '16px — body text' },
+          md:   { value: '1.3125rem',  description: '21px — role / subheading' },
+          lg:   { value: '1.75rem',    description: '28px — quote, section heads' },
+          xl:   { value: '2.3125rem',  description: '37px — display sub' },
+          '2xl':{ value: '3.125rem',   description: '50px — hero name' },
+        },
+
+        lineHeights: {
+          tight:  { value: '1.05',  description: 'Display headings — Radiohead compression' },
+          snug:   { value: '1.25',  description: 'Subheadings, compact text' },
+          normal: { value: '1.62',  description: 'Body text — generous spring air' },
+          loose:  { value: '1.88',  description: 'Quote / signal sections — Wet Leg breathing room' },
+        },
+
+        letterSpacings: {
+          tight:   { value: '-0.025em', description: '2xl and xl headings' },
+          normal:  { value: '-0.008em', description: 'md headings' },
+          wide:    { value: '0.045em',  description: 'Section labels' },
+          wider:   { value: '0.09em',   description: 'Index column headers, meta annotations' },
+          widest:  { value: '0.15em',   description: 'Nav links, micro-labels' },
+        },
+
+        // Spacing scale — 4px base unit
+        spacing: {
+          1:  { value: '4px' },
+          2:  { value: '8px' },
+          3:  { value: '12px' },
+          4:  { value: '16px' },
+          6:  { value: '24px' },
+          8:  { value: '32px' },
+          12: { value: '48px' },
+          16: { value: '64px' },
+          20: { value: '80px' },
+          24: { value: '96px' },
+        },
+
+        radii: {
+          none:   { value: '0px', description: 'Cards, tags — architectural, no softness' },
+          button: { value: '2px', description: 'Buttons, inputs — minimal rounding only' },
+        },
+
+        // No shadows — spring light diffuses harshness
+        shadows: {
+          none: { value: 'none' },
+        },
+
+        // Z-index scale
+        zIndex: {
+          base:    { value: '0' },
+          raised:  { value: '10' },
+          overlay: { value: '50' },
+          nav:     { value: '100' },
+          modal:   { value: '200' },
+        },
+
+        // Transition durations
+        durations: {
+          fast:   { value: '120ms' },
+          base:   { value: '150ms' },
+          slow:   { value: '200ms' },
+        },
+      },
+
+      semanticTokens: {
+        colors: {
+          // Backgrounds
+          bg: {
+            value: {
+              base: '{colors.green.50}',
+              _dark: '{colors.green.800}',
+            },
           },
-        },
-
-        textSecondary: {
-          value: {
-            base: '{colors.cold.300}',
-            _dark: '{colors.cold.300}',
-            _light: '{colors.cold.500}',
+          bgAlt: {
+            value: {
+              base: '{colors.spring.alt}',
+              _dark: '{colors.green.900}',
+            },
           },
-        },
-
-        textMuted: {
-          value: {
-            base: '{colors.cold.400}',
-            _dark: '{colors.cold.400}',
-            _light: '{colors.warm.400}',
+          bgCard: {
+            value: {
+              base: '{colors.green.100}',
+              _dark: '{colors.green.700}',
+            },
           },
-        },
-
-        accent: {
-          value: '{colors.accent.DEFAULT}',
-        },
-
-        border: {
-          value: {
-            base: '{colors.cold.700}',
-            _dark: '{colors.cold.700}',
-            _light: '{colors.warm.200}',
+          bgFooter: {
+            value: {
+              base: '{colors.green.700}',
+              _dark: '{colors.green.900}',
+            },
           },
-        },
-
-        bgCard: {
-          value: {
-            base: '{colors.cold.700}',
-            _dark: '{colors.cold.700}',
-            _light: '{colors.warm.200}',
+          bgNav: {
+            value: {
+              base: 'rgba(241, 245, 239, 0.95)',
+              _dark: 'rgba(25, 30, 25, 0.95)',
+            },
           },
-        },
 
-        bgSubtle: {
-          value: {
-            base: '{colors.cold.900}',
-            _dark: '{colors.cold.900}',
-            _light: '{colors.warm.50}',
+          // Text hierarchy
+          text: {
+            value: {
+              base: '{colors.green.700}',
+              _dark: '{colors.green.100}',
+            },
           },
-        },
+          textSecondary: {
+            value: {
+              base: '{colors.green.500}',
+              _dark: '{colors.green.300}',
+            },
+          },
+          textMuted: {
+            value: {
+              base: '{colors.green.300}',
+              _dark: '{colors.green.500}',
+            },
+          },
+          textReversed: {
+            value: {
+              base: '{colors.green.100}',
+              _dark: '{colors.green.700}',
+            },
+          },
+          textBody: {
+            value: {
+              base: '{colors.green.600}',
+              _dark: '{colors.green.200}',
+            },
+          },
 
-        // ── Left panel — dark cold hemisphere (fixed, sticky) ───────────────
-        // background: cold.800 (#141929)
+          // Accent
+          accent: {
+            value: {
+              base: '{colors.amber.500}',
+              _dark: '{colors.amber.500}',
+            },
+          },
+          accentLight: {
+            value: {
+              base: '{colors.amber.100}',
+              _dark: '{colors.amber.100}',
+            },
+          },
+          accentDark: {
+            value: {
+              base: '{colors.amber.700}',
+              _dark: '{colors.amber.700}',
+            },
+          },
+          accentGlow: {
+            value: {
+              base: '{colors.amber.glow}',
+              _dark: '{colors.amber.glow}',
+            },
+          },
 
-        bgLeft: {
-          value: '{colors.cold.800}',
-        },
+          // Borders
+          border: {
+            value: {
+              base: '{colors.green.200}',
+              _dark: '{colors.green.600}',
+            },
+          },
+          borderSubtle: {
+            value: {
+              base: '{colors.green.100}',
+              _dark: '{colors.green.700}',
+            },
+          },
 
-        bgCardLeft: {
-          value: '{colors.cold.700}',
-        },
-
-        textLeft: {
-          value: '{colors.cold.100}',
-        },
-
-        textLeftSecondary: {
-          value: '{colors.cold.300}',
-        },
-
-        textLeftMuted: {
-          value: '{colors.cold.400}',
-        },
-
-        // ── Right panel — warm lit crescent (scrollable) ─────────────────────
-        // background: warm.100 (#F5F3E8)
-
-        bgRight: {
-          value: '{colors.warm.100}',
-        },
-
-        bgCardRight: {
-          value: '{colors.warm.200}',
-        },
-
-        textRight: {
-          value: '{colors.cold.700}',
-        },
-
-        textRightSecondary: {
-          value: '{colors.cold.500}',
-        },
-
-        textRightMuted: {
-          value: '{colors.warm.400}',
-        },
-
-        borderRight: {
-          value: '{colors.warm.200}',
-        },
-
-        // ── Signal-specific tokens ────────────────────────────────────────────
-
-        // Opening Day — the only eager element; amber-orange warmth
-        accentOpeningDay: {
-          value: '{colors.accent.DEFAULT}',
-        },
-
-        accentOpeningDayLight: {
-          value: '{colors.accent.light}',
-        },
-
-        accentOpeningDayGlow: {
-          value: '{colors.accent.glow}',
-        },
-
-        // Market data — quiet confidence, no commentary needed
-        marketGreen: {
-          value: '{colors.sage.DEFAULT}',
-        },
-
-        marketGreenMuted: {
-          value: '{colors.sage.muted}',
+          // Signal — terracotta for loss/deflation
+          signal: {
+            value: {
+              base: '{colors.terracotta.500}',
+              _dark: '{colors.terracotta.500}',
+            },
+          },
         },
       },
     },

@@ -1,255 +1,481 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
+import { Box, Flex, VStack } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
 
-function FieldLabel({ label }: { label: string }) {
-  return (
-    <div className={css({
-      fontFamily: 'oswald',
-      fontSize: 'xs',
-      fontWeight: '400',
-      color: 'textRightMuted',
-      letterSpacing: 'widest',
-      textTransform: 'uppercase',
-    })} style={{ marginBottom: '10px' }}>
-      {label}
-    </div>
-  )
-}
-
 function WorkDetailPage() {
   const { slug } = Route.useParams()
-  const project = projects.find(p => p.slug === slug)
+  const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div style={{ padding: '52px', paddingBottom: '96px' }}>
-        <a href="/" className={css({
-          fontFamily: 'oswald',
-          fontSize: 'xs',
-          color: 'textRightMuted',
-          letterSpacing: 'wide',
-          textTransform: 'uppercase',
-          transition: 'color 0.15s ease',
-          _hover: { color: 'textRight' },
-        })}>
-          ← Work
-        </a>
-        <p className={css({
-          fontFamily: 'spectral',
-          fontSize: 'md',
-          fontWeight: '300',
-          fontStyle: 'italic',
-          color: 'textRightSecondary',
-          lineHeight: 'normal',
-        })} style={{ marginTop: '48px' }}>
+      <Box
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '96px 48px',
+        }}
+      >
+        <Box
+          fontFamily="heading"
+          fontWeight="700"
+          fontSize="2xl"
+          color="text"
+          letterSpacing="tight"
+          lineHeight="tight"
+          style={{ textTransform: 'uppercase', marginBottom: '32px' }}
+        >
+          404
+        </Box>
+        <Box
+          fontFamily="body"
+          fontWeight="300"
+          fontSize="md"
+          color="textSecondary"
+          style={{ marginBottom: '32px' }}
+        >
           Project not found.
-        </p>
-      </div>
+        </Box>
+        <a
+          href="/"
+          className={css({
+            fontFamily: 'body',
+            fontSize: 'sm',
+            color: 'accent',
+            textDecoration: 'none',
+            letterSpacing: 'wide',
+            transition: 'color 150ms ease',
+            _hover: { color: 'accentDark' },
+          })}
+        >
+          ← Back to work
+        </a>
+      </Box>
     )
   }
 
-  const liveLink = project.liveUrl ?? project.externalUrl
-
   return (
-    <div style={{ padding: '52px', paddingBottom: '96px' }}>
+    <Box as="main">
+      {/* ─── Hero ─── */}
+      <Box
+        as="section"
+        style={{
+          minHeight: '55vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          padding: '120px 48px 64px',
+          maxWidth: '960px',
+          margin: '0 auto',
+        }}
+      >
+        {/* Back link */}
+        <Box style={{ marginBottom: '48px' }}>
+          <a
+            href="/"
+            className={css({
+              fontFamily: 'body',
+              fontWeight: '400',
+              fontSize: 'xs',
+              color: 'textMuted',
+              textDecoration: 'none',
+              letterSpacing: 'wide',
+              textTransform: 'uppercase',
+              transition: 'color 150ms ease',
+              _hover: { color: 'accent' },
+            })}
+          >
+            ← Work
+          </a>
+        </Box>
 
-      {/* Back */}
-      <div style={{ marginBottom: '48px' }}>
-        <a href="/" className={css({
-          fontFamily: 'oswald',
-          fontSize: 'xs',
-          fontWeight: '400',
-          color: 'textRightMuted',
-          letterSpacing: 'wide',
-          textTransform: 'uppercase',
-          transition: 'color 0.15s ease',
-          _hover: { color: 'textRight' },
-        })}>
-          ← Work
-        </a>
-      </div>
+        {/* Type + Year */}
+        <Flex gap="4" align="center" style={{ marginBottom: '20px' }}>
+          <Box
+            fontFamily="body"
+            fontWeight="400"
+            fontSize="2xs"
+            color="accent"
+            letterSpacing="widest"
+            style={{ textTransform: 'uppercase' }}
+          >
+            {project.type}
+          </Box>
+          <Box
+            fontFamily="body"
+            fontWeight="300"
+            fontSize="2xs"
+            color="textMuted"
+            letterSpacing="widest"
+            style={{ fontVariantNumeric: 'tabular-nums' }}
+          >
+            {project.year}
+          </Box>
+          {project.featured && (
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="2xs"
+              letterSpacing="widest"
+              style={{
+                textTransform: 'uppercase',
+                color: '#c97d1e',
+                borderLeft: '1px solid #c9d5c4',
+                paddingLeft: '12px',
+              }}
+            >
+              Featured
+            </Box>
+          )}
+        </Flex>
 
-      {/* Type · Year */}
-      <div style={{ marginBottom: '10px' }}>
-        <span className={css({
-          fontFamily: 'oswald',
-          fontSize: 'xs',
-          fontWeight: '400',
-          color: 'textRightMuted',
-          letterSpacing: 'widest',
-          textTransform: 'uppercase',
-        })}>
-          {project.type} &nbsp;·&nbsp; {project.year}
-        </span>
-      </div>
+        {/* Title */}
+        <Box
+          fontFamily="heading"
+          fontWeight="700"
+          fontSize="xl"
+          color="text"
+          letterSpacing="tight"
+          lineHeight="tight"
+          style={{ textTransform: 'uppercase', marginBottom: '24px' }}
+        >
+          {project.title}
+        </Box>
 
-      {/* Title */}
-      <h1 className={css({
-        fontFamily: 'spectral',
-        fontSize: 'lg',
-        fontWeight: '600',
-        color: 'textRight',
-        lineHeight: 'snug',
-        letterSpacing: 'normal',
-      })} style={{ marginBottom: '40px', maxWidth: '480px' }}>
-        {project.title}
-      </h1>
+        {/* Horizon rule */}
+        <Box
+          style={{
+            width: '80px',
+            borderTop: '1px solid #a3b49d',
+          }}
+        />
+      </Box>
 
-      {/* Role */}
-      {project.role && (
-        <div style={{ borderBottom: '1px solid #EAE6D2', paddingBottom: '28px', marginBottom: '28px' }}>
-          <FieldLabel label="Role" />
-          <p className={css({
-            fontFamily: 'spectral',
-            fontSize: 'base',
-            fontWeight: '400',
-            color: 'textRightSecondary',
-            lineHeight: 'normal',
-          })}>
-            {project.role}
-          </p>
-        </div>
-      )}
+      {/* ─── Detail Content ─── */}
+      <Box
+        as="section"
+        style={{
+          maxWidth: '760px',
+          margin: '0 auto',
+          padding: '64px 48px 80px',
+        }}
+      >
+        {project.role && (
+          <Box style={{ marginBottom: '40px' }}>
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="2xs"
+              color="textMuted"
+              letterSpacing="widest"
+              style={{ textTransform: 'uppercase', marginBottom: '12px' }}
+            >
+              Role
+            </Box>
+            <Box
+              fontFamily="heading"
+              fontWeight="600"
+              fontSize="base"
+              color="textSecondary"
+            >
+              {project.role}
+            </Box>
+          </Box>
+        )}
 
-      {/* Problem */}
-      {project.problem && (
-        <div style={{ borderBottom: '1px solid #EAE6D2', paddingBottom: '28px', marginBottom: '28px' }}>
-          <FieldLabel label="Problem" />
-          <p className={css({
-            fontFamily: 'spectral',
-            fontSize: 'base',
-            fontWeight: '300',
-            color: 'textRight',
-            lineHeight: 'loose',
-          })} style={{ maxWidth: '480px' }}>
-            {project.problem}
-          </p>
-        </div>
-      )}
+        {project.problem && (
+          <Box
+            style={{
+              marginBottom: '48px',
+              paddingBottom: '48px',
+              borderBottom: '1px solid #c9d5c4',
+            }}
+          >
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="2xs"
+              color="textMuted"
+              letterSpacing="widest"
+              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
+            >
+              Problem
+            </Box>
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="md"
+              color="textBody"
+              lineHeight="normal"
+              letterSpacing="normal"
+            >
+              {project.problem}
+            </Box>
+          </Box>
+        )}
 
-      {/* Description fallback for lightweight projects */}
-      {!project.problem && project.description && (
-        <div style={{ borderBottom: '1px solid #EAE6D2', paddingBottom: '28px', marginBottom: '28px' }}>
-          <FieldLabel label="Overview" />
-          <p className={css({
-            fontFamily: 'spectral',
-            fontSize: 'base',
-            fontWeight: '300',
-            color: 'textRight',
-            lineHeight: 'loose',
-          })} style={{ maxWidth: '480px' }}>
-            {project.description}
-          </p>
-        </div>
-      )}
+        {project.approach && (
+          <Box
+            style={{
+              marginBottom: '48px',
+              paddingBottom: '48px',
+              borderBottom: '1px solid #c9d5c4',
+            }}
+          >
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="2xs"
+              color="textMuted"
+              letterSpacing="widest"
+              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
+            >
+              Approach
+            </Box>
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="base"
+              color="textBody"
+              lineHeight="normal"
+            >
+              {project.approach}
+            </Box>
+          </Box>
+        )}
 
-      {/* Approach */}
-      {project.approach && (
-        <div style={{ borderBottom: '1px solid #EAE6D2', paddingBottom: '28px', marginBottom: '28px' }}>
-          <FieldLabel label="Approach" />
-          <p className={css({
-            fontFamily: 'spectral',
-            fontSize: 'base',
-            fontWeight: '300',
-            color: 'textRight',
-            lineHeight: 'loose',
-          })} style={{ maxWidth: '480px' }}>
-            {project.approach}
-          </p>
-        </div>
-      )}
+        {project.outcome && (
+          <Box
+            style={{
+              marginBottom: '48px',
+              paddingBottom: '48px',
+              borderBottom: '1px solid #c9d5c4',
+            }}
+          >
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="2xs"
+              color="textMuted"
+              letterSpacing="widest"
+              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
+            >
+              Outcome
+            </Box>
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="base"
+              color="textBody"
+              lineHeight="normal"
+            >
+              {project.outcome}
+            </Box>
+          </Box>
+        )}
 
-      {/* Outcome */}
-      {project.outcome && (
-        <div style={{ borderBottom: '1px solid #EAE6D2', paddingBottom: '28px', marginBottom: '28px' }}>
-          <FieldLabel label="Outcome" />
-          <p className={css({
-            fontFamily: 'spectral',
-            fontSize: 'base',
-            fontWeight: '300',
-            color: 'textRight',
-            lineHeight: 'loose',
-          })} style={{ maxWidth: '480px' }}>
-            {project.outcome}
-          </p>
-        </div>
-      )}
+        {project.description && !project.problem && (
+          <Box
+            style={{
+              marginBottom: '48px',
+              paddingBottom: '48px',
+              borderBottom: '1px solid #c9d5c4',
+            }}
+          >
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="base"
+              color="textBody"
+              lineHeight="normal"
+            >
+              {project.description}
+            </Box>
+          </Box>
+        )}
 
-      {/* Stack */}
-      {project.stack && project.stack.length > 0 && (
-        <div style={{ marginBottom: '40px' }}>
-          <FieldLabel label="Stack" />
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-            {project.stack.map(tech => (
-              <span
-                key={tech}
+        {project.stack && project.stack.length > 0 && (
+          <Box style={{ marginBottom: '48px' }}>
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="2xs"
+              color="textMuted"
+              letterSpacing="widest"
+              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
+            >
+              Stack
+            </Box>
+            <Box
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '8px',
+              }}
+            >
+              {project.stack.map((tech) => (
+                <Box
+                  key={tech}
+                  fontFamily="body"
+                  fontWeight="400"
+                  fontSize="xs"
+                  color="textSecondary"
+                  style={{
+                    padding: '5px 10px',
+                    background: '#eaf0e6',
+                    border: '1px solid #c9d5c4',
+                    fontVariantNumeric: 'tabular-nums',
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  {tech}
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+
+        {/* External links */}
+        {(project.liveUrl || project.githubUrl || project.externalUrl) && (
+          <Flex gap="6" align="center">
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={css({
-                  fontFamily: 'oswald',
+                  fontFamily: 'heading',
+                  fontWeight: '600',
                   fontSize: 'xs',
-                  fontWeight: '400',
-                  color: 'textRightSecondary',
+                  color: 'accent',
+                  textDecoration: 'none',
                   letterSpacing: 'wide',
                   textTransform: 'uppercase',
+                  transition: 'color 150ms ease',
+                  _hover: { color: 'accentDark' },
                 })}
-                style={{
-                  padding: '4px 10px',
-                  border: '1px solid #EAE6D2',
-                  borderRadius: '2px',
-                }}
               >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
+                Live Site →
+              </a>
+            )}
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={css({
+                  fontFamily: 'heading',
+                  fontWeight: '600',
+                  fontSize: 'xs',
+                  color: 'textSecondary',
+                  textDecoration: 'none',
+                  letterSpacing: 'wide',
+                  textTransform: 'uppercase',
+                  transition: 'color 150ms ease',
+                  _hover: { color: 'accent' },
+                })}
+              >
+                GitHub →
+              </a>
+            )}
+            {project.externalUrl && !project.liveUrl && (
+              <a
+                href={project.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={css({
+                  fontFamily: 'heading',
+                  fontWeight: '600',
+                  fontSize: 'xs',
+                  color: 'accent',
+                  textDecoration: 'none',
+                  letterSpacing: 'wide',
+                  textTransform: 'uppercase',
+                  transition: 'color 150ms ease',
+                  _hover: { color: 'accentDark' },
+                })}
+              >
+                View Project →
+              </a>
+            )}
+          </Flex>
+        )}
+      </Box>
 
-      {/* Links */}
-      {(liveLink || project.githubUrl) && (
-        <div style={{ display: 'flex', gap: '32px', marginTop: '48px', alignItems: 'center' }}>
-          {liveLink && (
-            <a
-              href={liveLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={css({
-                fontFamily: 'oswald',
-                fontSize: 'sm',
-                fontWeight: '500',
-                color: 'textRight',
-                letterSpacing: 'wide',
-                textTransform: 'uppercase',
-                transition: 'color 0.15s ease',
-                _hover: { color: 'textRightSecondary' },
-              })}
-            >
-              View Project →
-            </a>
-          )}
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={css({
-                fontFamily: 'oswald',
-                fontSize: 'xs',
-                fontWeight: '400',
-                color: 'textRightMuted',
-                letterSpacing: 'wide',
-                textTransform: 'uppercase',
-                transition: 'color 0.15s ease',
-                _hover: { color: 'textRightSecondary' },
-              })}
-            >
-              GitHub →
-            </a>
-          )}
-        </div>
-      )}
-    </div>
+      {/* ─── Alternate bg: next project hint ─── */}
+      <Box
+        as="section"
+        style={{
+          background: '#eaf0e6',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          style={{
+            maxWidth: '760px',
+            width: '100%',
+            padding: '48px',
+          }}
+        >
+          <a
+            href="/"
+            className={css({
+              fontFamily: 'body',
+              fontWeight: '400',
+              fontSize: 'xs',
+              color: 'textMuted',
+              textDecoration: 'none',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              transition: 'color 150ms ease',
+              _hover: { color: 'accent' },
+            })}
+          >
+            ← All Work
+          </a>
+        </Box>
+      </Box>
+
+      {/* ─── Footer ─── */}
+      <Box
+        as="footer"
+        style={{
+          background: '#2a322a',
+          padding: '48px 48px',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <Flex
+          justify="space-between"
+          align="center"
+          style={{ maxWidth: '760px', width: '100%' }}
+        >
+          <Box
+            fontFamily="body"
+            fontWeight="300"
+            fontSize="xs"
+            style={{ color: '#596658' }}
+          >
+            March 26, 2026
+          </Box>
+          <Box
+            fontFamily="body"
+            fontWeight="300"
+            fontSize="xs"
+            style={{ color: '#596658' }}
+          >
+            © 2026 Doug March
+          </Box>
+        </Flex>
+      </Box>
+    </Box>
   )
 }
