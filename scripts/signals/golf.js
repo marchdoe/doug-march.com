@@ -18,17 +18,32 @@ export async function collect(_profile) {
 
   const event = events[0]
   const tournament = event.name || null
-  const status = event.status?.type?.description || 'Unknown'
+  const statusDescription = event.status?.type?.description || 'Unknown'
+  const statusState = event.status?.type?.state || 'pre'
+
+  // Don't return fake leaders before play has started — competitors are just
+  // field-entry order at this stage, all showing E (even par).
+  if (statusState === 'pre') {
+    return {
+      data: { tournament, status: statusDescription, leaders: [] },
+      meta: { source: 'espn', items: 0 },
+    }
+  }
+
   const competitors = event.competitions?.[0]?.competitors || []
 
-  const leaders = competitors.slice(0, 5).map((c, i) => ({
+  // Sort by ESPN's order field (leaderboard position during/after play),
+  // then take the top 5.
+  const sorted = [...competitors].sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
+
+  const leaders = sorted.slice(0, 5).map(c => ({
     name: c.athlete?.displayName || 'Unknown',
-    position: String(i + 1),
+    position: String(c.order ?? '?'),
     score: typeof c.score === 'string' ? c.score : (c.score?.displayValue || 'E'),
   }))
 
   return {
-    data: { tournament, status, leaders },
+    data: { tournament, status: statusDescription, leaders },
     meta: { source: 'espn', items: leaders.length },
   }
 }

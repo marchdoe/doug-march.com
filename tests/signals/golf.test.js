@@ -10,17 +10,18 @@ describe('golf provider', () => {
     vi.restoreAllMocks()
   })
 
-  it('returns tournament data from ESPN', async () => {
+  it('returns sorted leaderboard for in-progress tournament', async () => {
     fetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         events: [{
           name: 'The Masters',
-          status: { type: { description: 'In Progress' } },
+          status: { type: { description: 'In Progress', state: 'in' } },
           competitions: [{
             competitors: [
-              { athlete: { displayName: 'Scottie Scheffler' }, status: { position: { displayName: '1' } }, score: { displayValue: '-12' } },
-              { athlete: { displayName: 'Rory McIlroy' }, status: { position: { displayName: '2' } }, score: { displayValue: '-8' } },
+              { order: 2, athlete: { displayName: 'Rory McIlroy' }, score: '-8' },
+              { order: 1, athlete: { displayName: 'Scottie Scheffler' }, score: '-12' },
+              { order: 3, athlete: { displayName: 'Collin Morikawa' }, score: '-6' },
             ],
           }],
         }],
@@ -30,7 +31,36 @@ describe('golf provider', () => {
     const result = await collect({})
     expect(name).toBe('golf')
     expect(result.data.tournament).toBe('The Masters')
-    expect(result.data.leaders.length).toBeGreaterThanOrEqual(1)
+    expect(result.data.status).toBe('In Progress')
+    // Should be sorted by order, not array position
+    expect(result.data.leaders[0].name).toBe('Scottie Scheffler')
+    expect(result.data.leaders[0].score).toBe('-12')
+    expect(result.data.leaders[0].position).toBe('1')
+    expect(result.data.leaders.length).toBe(3)
+  })
+
+  it('returns empty leaders for scheduled (pre-event) tournament', async () => {
+    fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        events: [{
+          name: 'Houston Open',
+          status: { type: { description: 'Scheduled', state: 'pre' } },
+          competitions: [{
+            competitors: [
+              { order: 1, athlete: { displayName: 'Player A' }, score: 'E' },
+              { order: 2, athlete: { displayName: 'Player B' }, score: 'E' },
+            ],
+          }],
+        }],
+      }),
+    })
+
+    const result = await collect({})
+    expect(result.data.tournament).toBe('Houston Open')
+    expect(result.data.status).toBe('Scheduled')
+    // Pre-event: no real leaderboard, return empty rather than fake field-entry order
+    expect(result.data.leaders).toEqual([])
   })
 
   it('handles no active tournament', async () => {
