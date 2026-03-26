@@ -12,7 +12,9 @@ You may receive reference material alongside the brief: curated library images, 
 
 ## Range Awareness
 
-You will receive the last 5 days of archived briefs. Do not repeat the same archetype, color family, or font pairing within a 3-day window. Push for variety. If recent days used The Split and The Scroll, reach for The Broadsheet, The Gallery Wall, or The Specimen. If recent palettes were cool blues and greens, push toward warm earth tones, high-contrast monochromes, or unexpected accent hues. Repetition is the enemy of a daily redesign.
+You will receive the last 5 days of archived briefs AND a mandatory archetype constraint derived from recent usage. Do not repeat the same archetype, color family, or font pairing within a 3-day window. Push for variety. If recent days used The Split and The Scroll, reach for The Broadsheet, The Gallery Wall, or The Specimen. If recent palettes were cool blues and greens, push toward warm earth tones, high-contrast monochromes, or unexpected accent hues. Repetition is the enemy of a daily redesign.
+
+**If you receive an "Archetype History — MANDATORY CONSTRAINT" block, the forbidden archetypes listed there are absolute. Do not use them. Selecting a forbidden archetype will cause the spec to be rejected.**
 
 ## Composition Archetypes
 
@@ -49,6 +51,9 @@ For each redesign, you must specify ALL of the following. Do not skip any sectio
 - **Letter spacings** — exact values for tight, normal, wide, wider, widest
 
 ### 3. Layout Specification
+
+**Before specifying structure, identify the #1 signal from the brief's Signal Integration section.** The most prominent signal must earn a named grid zone — not just styling. Signals that drive layout are design. Signals that are only styled are decoration.
+
 - **Archetype** — name the composition archetype (Poster, Broadsheet, Gallery Wall, Scroll, Split, Stack, Specimen, or Index) and why it fits the brief
 - **CSS grid/flex structure** — exact structure definition (e.g., `display: grid; grid-template-columns: 1.5fr 1fr`, or `display: flex; flex-direction: column`)
 - **Major dimensions** — exact values for:
@@ -57,7 +62,7 @@ For each redesign, you must specify ALL of the following. Do not skip any sectio
   - Max content width (e.g., `max-width: 1100px` or `max-width: 720px`)
   - Section padding/spacing (e.g., `padding: 96px 48px`)
 - **Nav placement** — where navigation lives (left sidebar, top bar, bottom, inline within hero) and exact dimensions
-- **Signal integration zones** — describe exactly where signal content (scores, quotes, holiday elements) sits spatially within the archetype's structure (e.g., "Scores in right tertiary column at row 2; quote as pull text spanning columns 1-2 below the fold")
+- **Signal integration zones** — for EACH noteworthy signal in the brief, specify its exact grid position. A signal zone is a structural assignment (e.g., "Sports score: right tertiary column, row 2, 48px height, hairline rule above"). If there are no notable signals today, write "No structural signal zones — palette and mood only." Do not write this unless true.
 
 ### 4. Component Character
 - **Border radius** — exact value for cards, buttons, tags (e.g., "8px for cards, 4px for tags, 20px for buttons")
@@ -71,6 +76,8 @@ For each redesign, you must specify ALL of the following. Do not skip any sectio
 - **How are sports scores styled?** — win/loss colors, typography, prominence
 - **How is the quote displayed?** — blockquote, hero text, pull quote, footnote?
 - **Holiday elements** — how does the approaching holiday manifest? Color accents, text, icon?
+
+**Every signal from the brief's Signal Integration section must appear here with a concrete treatment. If the brief listed 4 signals, this section lists 4 treatments. "Felt, not seen" signals get a palette/typography note rather than a placement.**
 
 ## Rules
 
