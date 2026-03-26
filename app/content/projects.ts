@@ -2,7 +2,7 @@ import type { Project, Client } from './types'
 
 const spacemanClients: Client[] = [
   { name: 'Jeffrey Zeldman', url: 'https://studio.zeldman.com' },
-  { name: 'Rolex', url: 'https://rolex.com' }, // logo: provide high-res file → public/clients/rolex.svg
+  { name: 'Rolex', logo: '/clients/rolex.svg', url: 'https://rolex.com' },
   { name: 'The Nature Conservancy', logo: '/clients/nature-conservancy.svg', url: 'https://nature.org' },
   { name: 'Sapient Razorfish', logo: '/clients/sapient-razorfish.svg', url: 'https://publicissapient.com' },
   { name: 'bswift', logo: '/clients/bswift.svg', url: 'https://bswift.com' },
