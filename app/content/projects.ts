@@ -4,18 +4,19 @@ export const projects: Project[] = [
   {
     slug: 'spaceman',
     title: 'Spaceman',
-    type: 'SaaS',
-    year: 2024,
+    type: 'Founder',
+    year: 2018,
     depth: 'full',
     featured: true,
-    externalUrl: 'https://spaceman.llc',
-    role: 'Founder & Builder',
-    timeline: 'Ongoing',
-    status: 'Live',
-    problem: 'Aerospace teams were stuck using generic tools that didn\'t fit their workflows.',
-    approach: 'Talked to 20+ aerospace engineers before writing a line of code. Built around their actual processes.',
-    outcome: 'Currently in active development with early users.',
-    stack: ['TanStack Start', 'TypeScript', 'PostgreSQL', 'Vercel'],
+    role: 'Founder',
+    timeline: '2018 — Present',
+    status: 'Active',
+    problem:
+      'Independent design and engineering work doesn\'t always fit neatly inside a company. Some of the best work happens at the edges — between studios, between disciplines, between what a client thinks they need and what they actually need.',
+    approach:
+      'Spaceman is the LLC I\'ve operated under for the past decade, partnering with companies and studios across industries. The work spans product design, frontend engineering, design systems, and brand — sometimes as a solo contributor, sometimes embedded in a larger team. Clients have included Jeffrey Zeldman, Rolex, The Nature Conservancy, Sapient Razorfish, bswift, RTIC Coolers, Framebridge, Intuit, LastPass, and WorkAround, among others.',
+    outcome:
+      'Ten years in, Spaceman is still the vehicle for independent work and new experiments. The practice has shaped how I think about the gap between design and engineering — and made me better at closing it.',
     liveUrl: 'https://spaceman.llc',
   },
   {
