@@ -1,6 +1,6 @@
 export type Client = {
   name: string
-  domain?: string // used for logo via clearbit; omit for name-only display
+  logo?: string // local path e.g. '/clients/intuit.svg'; omit for name-only display
   url?: string
   description?: string
 }

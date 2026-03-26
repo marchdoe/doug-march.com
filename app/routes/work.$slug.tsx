@@ -9,10 +9,7 @@ export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage 
 
 function ClientCard({ client }: { client: Client }) {
   const [logoFailed, setLogoFailed] = useState(false)
-  const logoUrl = client.domain
-    ? `https://logo.clearbit.com/${client.domain}?size=80`
-    : null
-  const showLogo = logoUrl && !logoFailed
+  const showLogo = !!client.logo && !logoFailed
 
   const inner = (
     <Box
@@ -35,7 +32,7 @@ function ClientCard({ client }: { client: Client }) {
     >
       {showLogo ? (
         <img
-          src={logoUrl}
+          src={client.logo}
           alt={client.name}
           onError={() => setLogoFailed(true)}
           style={{

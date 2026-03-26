@@ -2,15 +2,15 @@ import type { Project, Client } from './types'
 
 const spacemanClients: Client[] = [
   { name: 'Jeffrey Zeldman', url: 'https://studio.zeldman.com' },
-  { name: 'Rolex', domain: 'rolex.com', url: 'https://rolex.com' },
-  { name: 'The Nature Conservancy', domain: 'nature.org', url: 'https://nature.org' },
-  { name: 'Sapient Razorfish', domain: 'publicissapient.com', url: 'https://publicissapient.com' },
-  { name: 'bswift', domain: 'bswift.com', url: 'https://bswift.com' },
-  { name: 'RTIC Coolers', domain: 'rticoutdoors.com', url: 'https://rticoutdoors.com' },
-  { name: 'Framebridge', domain: 'framebridge.com', url: 'https://framebridge.com' },
-  { name: 'Intuit', domain: 'intuit.com', url: 'https://intuit.com' },
-  { name: 'LastPass', domain: 'lastpass.com', url: 'https://lastpass.com' },
-  { name: 'WorkAround', domain: 'joinworkaround.com', url: 'https://joinworkaround.com' },
+  { name: 'Rolex', url: 'https://rolex.com' }, // logo: provide high-res file → public/clients/rolex.svg
+  { name: 'The Nature Conservancy', logo: '/clients/nature-conservancy.svg', url: 'https://nature.org' },
+  { name: 'Sapient Razorfish', logo: '/clients/sapient-razorfish.svg', url: 'https://publicissapient.com' },
+  { name: 'bswift', logo: '/clients/bswift.svg', url: 'https://bswift.com' },
+  { name: 'RTIC Coolers', logo: '/clients/rtic.svg', url: 'https://rticoutdoors.com' },
+  { name: 'Framebridge', logo: '/clients/framebridge.png', url: 'https://framebridge.com' },
+  { name: 'Intuit', logo: '/clients/intuit.svg', url: 'https://intuit.com' },
+  { name: 'LastPass', logo: '/clients/lastpass.svg', url: 'https://lastpass.com' },
+  { name: 'WorkAround', url: 'https://joinworkaround.com' }, // logo: provide file → public/clients/workaround.svg
 ]
 
 export const projects: Project[] = [
