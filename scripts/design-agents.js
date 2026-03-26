@@ -273,7 +273,7 @@ export async function runAgentSwarm(context) {
     screenshotCriticPromptRaw,
     tokenPromptRaw,
     unifiedDesignerPromptRaw,
-    designSystemRef, libTypography, libColor, libLayout, libComponents, libComposition,
+    designSystemRef, libTypography, libColor, libLayout, libComponents,
   ] = await Promise.all([
     readFile(path.join(promptDir, 'design-director.md'), 'utf8'),
     readFile(path.join(promptDir, 'spec-critic.md'), 'utf8'),
@@ -285,16 +285,15 @@ export async function runAgentSwarm(context) {
     readFile(path.join(promptDir, 'library-color.md'), 'utf8'),
     readFile(path.join(promptDir, 'library-layout.md'), 'utf8'),
     readFile(path.join(promptDir, 'library-components.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-composition.md'), 'utf8'),
   ])
 
   const specCriticPrompt = specCriticPromptRaw
   const screenshotCriticPrompt = screenshotCriticPromptRaw
 
   // Build system prompts with relevant libraries appended
-  const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComposition}`
+  const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}`
   const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libTypography}\n\n${libColor}`
-  const unifiedDesignerSystemPrompt = `${unifiedDesignerPromptRaw}\n\n${designSystemRef}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComposition}\n\n${libComponents}`
+  const unifiedDesignerSystemPrompt = `${unifiedDesignerPromptRaw}\n\n${designSystemRef}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComponents}`
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')
@@ -454,7 +453,7 @@ export async function runAgentSwarm(context) {
 
   let tokenResult
   try {
-    tokenResult = await callAgent('token-designer', tokenSystemPrompt, tokenUserPrompt)
+    tokenResult = await callAgent('token-designer', tokenSystemPrompt, tokenUserPrompt, null, { model: 'haiku' })
   } catch (err) {
     console.error(`  Token Designer failed: ${err.message}`)
     await restore(originalBackup)
@@ -484,7 +483,7 @@ export async function runAgentSwarm(context) {
     await restore(tokenBackup)
 
     try {
-      tokenResult = await callAgent('token-designer', tokenSystemPrompt, tokenUserPrompt, codegenResult.error)
+      tokenResult = await callAgent('token-designer', tokenSystemPrompt, tokenUserPrompt, codegenResult.error, { model: 'haiku' })
     } catch (err) {
       await restore(originalBackup)
       throw new Error(`Token Designer retry failed: ${err.message}`)
