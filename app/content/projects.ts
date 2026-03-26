@@ -1,4 +1,17 @@
-import type { Project } from './types'
+import type { Project, Client } from './types'
+
+const spacemanClients: Client[] = [
+  { name: 'Jeffrey Zeldman', url: 'https://studio.zeldman.com' },
+  { name: 'Rolex', domain: 'rolex.com', url: 'https://rolex.com' },
+  { name: 'The Nature Conservancy', domain: 'nature.org', url: 'https://nature.org' },
+  { name: 'Sapient Razorfish', domain: 'publicissapient.com', url: 'https://publicissapient.com' },
+  { name: 'bswift', domain: 'bswift.com', url: 'https://bswift.com' },
+  { name: 'RTIC Coolers', domain: 'rticoutdoors.com', url: 'https://rticoutdoors.com' },
+  { name: 'Framebridge', domain: 'framebridge.com', url: 'https://framebridge.com' },
+  { name: 'Intuit', domain: 'intuit.com', url: 'https://intuit.com' },
+  { name: 'LastPass', domain: 'lastpass.com', url: 'https://lastpass.com' },
+  { name: 'WorkAround', domain: 'joinworkaround.com', url: 'https://joinworkaround.com' },
+]
 
 export const projects: Project[] = [
   {
@@ -18,6 +31,7 @@ export const projects: Project[] = [
     outcome:
       'Ten years in, Spaceman is still the vehicle for independent work and new experiments. The practice has shaped how I think about the gap between design and engineering — and made me better at closing it.',
     liveUrl: 'https://spaceman.llc',
+    clients: spacemanClients,
   },
   {
     slug: 'fishsticks',

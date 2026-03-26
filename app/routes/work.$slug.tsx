@@ -1,9 +1,91 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { projects } from '../content/projects'
+import type { Client } from '../content/types'
 import { Box, Flex, VStack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
+
+function ClientCard({ client }: { client: Client }) {
+  const [logoFailed, setLogoFailed] = useState(false)
+  const logoUrl = client.domain
+    ? `https://logo.clearbit.com/${client.domain}?size=80`
+    : null
+  const showLogo = logoUrl && !logoFailed
+
+  const inner = (
+    <Box
+      style={{
+        height: '72px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '12px 16px',
+        background: '#f8faf7',
+        border: '1px solid #c9d5c4',
+        transition: 'background 150ms ease, border-color 150ms ease',
+      }}
+      className={css({
+        _hover: {
+          background: '#eaf0e6 !important',
+          borderColor: '#a3b49d !important',
+        },
+      })}
+    >
+      {showLogo ? (
+        <img
+          src={logoUrl}
+          alt={client.name}
+          onError={() => setLogoFailed(true)}
+          style={{
+            maxHeight: '32px',
+            maxWidth: '100%',
+            objectFit: 'contain',
+            filter: 'grayscale(100%)',
+            opacity: 0.7,
+            transition: 'filter 150ms ease, opacity 150ms ease',
+          }}
+          className={css({
+            _hover: {
+              filter: 'grayscale(0%) !important',
+              opacity: '1 !important',
+            },
+          })}
+        />
+      ) : (
+        <Box
+          fontFamily="heading"
+          fontWeight="600"
+          fontSize="xs"
+          color="textSecondary"
+          style={{
+            textAlign: 'center',
+            letterSpacing: '0.02em',
+            lineHeight: '1.3',
+          }}
+        >
+          {client.name}
+        </Box>
+      )}
+    </Box>
+  )
+
+  if (client.url) {
+    return (
+      <a
+        href={client.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: 'none' }}
+      >
+        {inner}
+      </a>
+    )
+  }
+
+  return inner
+}
 
 function WorkDetailPage() {
   const { slug } = Route.useParams()
@@ -335,6 +417,33 @@ function WorkDetailPage() {
                 >
                   {tech}
                 </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+
+        {/* Clients */}
+        {project.clients && project.clients.length > 0 && (
+          <Box style={{ marginBottom: '48px' }}>
+            <Box
+              fontFamily="body"
+              fontWeight="400"
+              fontSize="2xs"
+              color="textMuted"
+              letterSpacing="widest"
+              style={{ textTransform: 'uppercase', marginBottom: '24px' }}
+            >
+              Clients &amp; Partners
+            </Box>
+            <Box
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
+                gap: '12px',
+              }}
+            >
+              {project.clients.map((client) => (
+                <ClientCard key={client.name} client={client} />
               ))}
             </Box>
           </Box>
