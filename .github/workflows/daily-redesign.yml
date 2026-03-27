@@ -61,7 +61,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
+          git add archive/ elements/ app/components/ app/routes/ public/archive/ signals/today.references.md
           git diff --cached --quiet || git commit -m "chore: daily redesign $(date +%Y-%m-%d)"
           git pull --rebase origin main
           git push origin main
