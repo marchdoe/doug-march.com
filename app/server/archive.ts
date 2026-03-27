@@ -10,7 +10,11 @@ export const readArchive = createServerFn({ method: 'GET' })
   .handler(() => _readArchiveHandler())
 
 export const readArchiveDetail = createServerFn({ method: 'GET' })
-  .inputValidator((d: unknown) => d as string)
+  .inputValidator((d: unknown) => {
+    const s = String(d)
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) throw new Error('Invalid date format')
+    return s
+  })
   .handler(async ({ data: date }) => {
     return _readArchiveDetail(date)
   })

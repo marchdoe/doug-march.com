@@ -15,6 +15,7 @@ import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
+import { Route as ArchiveDateRouteImport } from './routes/archive.$date'
 
 const ElementsRoute = ElementsRouteImport.update({
   id: '/elements',
@@ -46,37 +47,59 @@ const WorkSlugRoute = WorkSlugRouteImport.update({
   path: '/work/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArchiveDateRoute = ArchiveDateRouteImport.update({
+  id: '/$date',
+  path: '/$date',
+  getParentRoute: () => ArchiveRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/archive': typeof ArchiveRoute
+  '/archive': typeof ArchiveRouteWithChildren
   '/dev': typeof DevRoute
   '/elements': typeof ElementsRoute
+  '/archive/$date': typeof ArchiveDateRoute
   '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/archive': typeof ArchiveRoute
+  '/archive': typeof ArchiveRouteWithChildren
   '/dev': typeof DevRoute
   '/elements': typeof ElementsRoute
+  '/archive/$date': typeof ArchiveDateRoute
   '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/archive': typeof ArchiveRoute
+  '/archive': typeof ArchiveRouteWithChildren
   '/dev': typeof DevRoute
   '/elements': typeof ElementsRoute
+  '/archive/$date': typeof ArchiveDateRoute
   '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/archive' | '/dev' | '/elements' | '/work/$slug'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/archive'
+    | '/dev'
+    | '/elements'
+    | '/archive/$date'
+    | '/work/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/archive' | '/dev' | '/elements' | '/work/$slug'
+  to:
+    | '/'
+    | '/about'
+    | '/archive'
+    | '/dev'
+    | '/elements'
+    | '/archive/$date'
+    | '/work/$slug'
   id:
     | '__root__'
     | '/'
@@ -84,13 +107,14 @@ export interface FileRouteTypes {
     | '/archive'
     | '/dev'
     | '/elements'
+    | '/archive/$date'
     | '/work/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  ArchiveRoute: typeof ArchiveRoute
+  ArchiveRoute: typeof ArchiveRouteWithChildren
   DevRoute: typeof DevRoute
   ElementsRoute: typeof ElementsRoute
   WorkSlugRoute: typeof WorkSlugRoute
@@ -140,13 +164,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/archive/$date': {
+      id: '/archive/$date'
+      path: '/$date'
+      fullPath: '/archive/$date'
+      preLoaderRoute: typeof ArchiveDateRouteImport
+      parentRoute: typeof ArchiveRoute
+    }
   }
 }
+
+interface ArchiveRouteChildren {
+  ArchiveDateRoute: typeof ArchiveDateRoute
+}
+
+const ArchiveRouteChildren: ArchiveRouteChildren = {
+  ArchiveDateRoute: ArchiveDateRoute,
+}
+
+const ArchiveRouteWithChildren =
+  ArchiveRoute._addFileChildren(ArchiveRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  ArchiveRoute: ArchiveRoute,
+  ArchiveRoute: ArchiveRouteWithChildren,
   DevRoute: DevRoute,
   ElementsRoute: ElementsRoute,
   WorkSlugRoute: WorkSlugRoute,

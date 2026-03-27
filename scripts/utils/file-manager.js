@@ -57,7 +57,11 @@ export async function writeFiles(filesArray) {
       )
     }
 
-    const absPath = path.join(ROOT, relPath)
+    const absPath = path.resolve(ROOT, relPath)
+    if (!absPath.startsWith(ROOT + path.sep) && absPath !== ROOT) {
+      console.warn(`  skipping path traversal attempt: ${relPath}`)
+      continue
+    }
     const dir = path.dirname(absPath)
     await mkdir(dir, { recursive: true })
     await writeFile(absPath, content, 'utf8')
