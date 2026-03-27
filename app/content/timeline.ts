@@ -143,7 +143,7 @@ export const education: Education = {
   school: 'The University of Dayton',
   degree: 'Bachelor of Fine Arts',
   concentration: 'Visual Communication and Design',
-  years: '1995 — 1999',
+  years: '',
 }
 
 export const capabilities = [

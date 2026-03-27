@@ -1,7 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet, useMatch } from '@tanstack/react-router'
 import { readArchive, type ArchiveEntry } from '../server/archive'
-import { Box, Flex, VStack } from '../../styled-system/jsx'
-import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/archive')({
   loader: async () => {
@@ -11,242 +9,159 @@ export const Route = createFileRoute('/archive')({
   component: ArchivePage,
 })
 
+function truncate(text: string, max: number) {
+  if (text.length <= max) return text
+  return text.slice(0, max).replace(/\s+\S*$/, '') + '...'
+}
+
 function ArchivePage() {
   const { entries } = Route.useLoaderData()
+  const childMatch = useMatch({ from: '/archive/$date', shouldThrow: false })
+
+  // If a child route is active, render only the child (Outlet)
+  if (childMatch) {
+    return <Outlet />
+  }
 
   return (
-    <Box as="main">
-      {/* ─── Header ─── */}
-      <Box
-        as="section"
+    <>
+      {/* Header */}
+      <section
         style={{
-          minHeight: '40vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '120px 48px 80px',
-          maxWidth: '960px',
+          maxWidth: 760,
           margin: '0 auto',
+          padding: '120px 48px 64px',
         }}
       >
-        <Box
-          fontFamily="body"
-          fontWeight="400"
-          fontSize="2xs"
-          color="textMuted"
-          letterSpacing="widest"
-          style={{ textTransform: 'uppercase', marginBottom: '32px' }}
+        <p
+          style={{
+            fontVariant: 'all-small-caps',
+            letterSpacing: '0.15em',
+            fontSize: 12,
+            color: 'var(--colors-text-dim, #888)',
+            marginBottom: 16,
+          }}
         >
-          Archive
-        </Box>
-
-        <Box
-          fontFamily="heading"
-          fontWeight="700"
-          fontSize="xl"
-          color="text"
-          letterSpacing="tight"
-          lineHeight="tight"
-          style={{ marginBottom: '32px', textTransform: 'uppercase' }}
+          ARCHIVE
+        </p>
+        <h1
+          style={{
+            fontSize: 36,
+            fontWeight: 700,
+            color: 'var(--colors-text, #111)',
+            marginBottom: 16,
+            lineHeight: 1.15,
+          }}
         >
           Daily Redesigns
-        </Box>
-
-        <Box
+        </h1>
+        <p
           style={{
-            width: '80px',
-            borderTop: '1px solid #a3b49d',
-            marginBottom: '32px',
-          }}
-        />
-
-        <Box
-          fontFamily="body"
-          fontWeight="400"
-          fontSize="base"
-          color="textBody"
-          lineHeight="normal"
-          style={{ maxWidth: '520px' }}
-        >
-          Every morning, a multi-agent pipeline redesigns this site from scratch. Each entry below is one day's output — the brief, the rationale, and what changed.
-        </Box>
-      </Box>
-
-      {/* ─── Entries ─── */}
-      <Box
-        as="section"
-        style={{
-          background: '#eaf0e6',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <Box
-          style={{
-            maxWidth: '760px',
-            width: '100%',
-            padding: '80px 48px',
+            fontSize: 15,
+            lineHeight: 1.6,
+            color: 'var(--colors-text-dim, #666)',
+            maxWidth: 520,
           }}
         >
-          {entries.length === 0 ? (
-            <Box
-              fontFamily="body"
-              fontWeight="300"
-              fontSize="sm"
-              color="textMuted"
-            >
-              No archive entries yet.
-            </Box>
-          ) : (
-            <VStack gap="0" align="stretch">
-              {entries.map((entry, i) => (
-                <ArchiveEntryRow key={entry.date} entry={entry} index={i} total={entries.length} />
-              ))}
-            </VStack>
-          )}
-        </Box>
-      </Box>
+          Every morning a multi-agent pipeline redesigns this site from scratch.
+          Each entry below is one day's output.
+        </p>
+      </section>
 
-      {/* ─── Footer ─── */}
-      <Box
-        as="footer"
+      {/* Entry list */}
+      <section
         style={{
-          background: '#2a322a',
-          padding: '48px 48px',
-          display: 'flex',
-          justifyContent: 'center',
+          maxWidth: 760,
+          margin: '0 auto',
+          padding: '0 48px 120px',
         }}
       >
-        <Flex
-          justify="space-between"
-          align="center"
-          style={{ maxWidth: '760px', width: '100%' }}
-        >
-          <a
-            href="/"
-            className={css({
-              fontFamily: 'heading',
-              fontSize: 'xs',
-              letterSpacing: 'wider',
-              textDecoration: 'none',
-              transition: 'color 200ms ease',
-              _hover: { color: 'accentLight' },
-            })}
-            style={{ color: '#a3b49d' }}
-          >
-            ← Work
-          </a>
-          <Box
-            fontFamily="body"
-            fontWeight="300"
-            fontSize="xs"
-            style={{ color: '#596658' }}
-          >
-            © 2026 Doug March
-          </Box>
-        </Flex>
-      </Box>
-    </Box>
+        {entries.length === 0 ? (
+          <p style={{ color: 'var(--colors-text-dim, #888)', fontSize: 14 }}>
+            No archive entries yet.
+          </p>
+        ) : (
+          entries.map((entry, i) => (
+            <ArchiveRow
+              key={entry.date}
+              entry={entry}
+              isLast={i === entries.length - 1}
+            />
+          ))
+        )}
+      </section>
+    </>
   )
 }
 
-function ArchiveEntryRow({
+function ArchiveRow({
   entry,
-  index,
-  total,
+  isLast,
 }: {
   entry: ArchiveEntry
-  index: number
-  total: number
+  isLast: boolean
 }) {
-  const isLast = index === total - 1
-
   return (
-    <Box
+    <Link
+      to="/archive/$date"
+      params={{ date: entry.date }}
       style={{
-        padding: '32px 0',
-        borderBottom: isLast ? 'none' : '1px solid #c9d5c4',
+        display: 'flex',
+        alignItems: 'baseline',
+        gap: 24,
+        padding: '20px 12px',
+        borderBottom: isLast
+          ? 'none'
+          : '1px solid var(--colors-border, #e0e0e0)',
+        textDecoration: 'none',
+        color: 'inherit',
+        transition: 'background 150ms ease',
+      }}
+      onMouseEnter={(e) => {
+        ;(e.currentTarget as HTMLElement).style.background =
+          'var(--colors-accent, rgba(0,0,0,0.04))'
+      }}
+      onMouseLeave={(e) => {
+        ;(e.currentTarget as HTMLElement).style.background = 'transparent'
       }}
     >
-      {/* Date + index */}
-      <Flex align="center" gap="4" style={{ marginBottom: '16px' }}>
-        <Box
-          fontFamily="body"
-          fontWeight="400"
-          fontSize="2xs"
-          color="textMuted"
-          letterSpacing="widest"
-          style={{ textTransform: 'uppercase', fontVariantNumeric: 'tabular-nums' }}
-        >
-          {entry.date}
-        </Box>
-        <Box
+      {/* Left: archetype + brief */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <span
           style={{
-            width: '1px',
-            height: '10px',
-            background: '#c9d5c4',
+            fontWeight: 600,
+            fontSize: 16,
+            color: 'var(--colors-text, #111)',
+            display: 'block',
+            marginBottom: 4,
           }}
-        />
-        <Box
-          fontFamily="body"
-          fontWeight="400"
-          fontSize="2xs"
-          color="textMuted"
-          style={{ fontVariantNumeric: 'tabular-nums' }}
         >
-          #{String(index + 1).padStart(2, '0')}
-        </Box>
-      </Flex>
+          {entry.archetype || 'Untitled'}
+        </span>
+        <span
+          style={{
+            fontSize: 13,
+            color: 'var(--colors-text-dim, #888)',
+            lineHeight: 1.4,
+          }}
+        >
+          {truncate(entry.brief, 120)}
+        </span>
+      </div>
 
-      {/* Brief */}
-      <Box
-        fontFamily="heading"
-        fontWeight="600"
-        fontSize="base"
-        color="text"
-        style={{ marginBottom: '12px' }}
+      {/* Right: date */}
+      <time
+        dateTime={entry.date}
+        style={{
+          fontSize: 13,
+          fontVariantNumeric: 'tabular-nums',
+          color: 'var(--colors-text-dim, #999)',
+          whiteSpace: 'nowrap',
+          flexShrink: 0,
+        }}
       >
-        {entry.brief}
-      </Box>
-
-      {/* Rationale */}
-      {entry.rationale && (
-        <Box
-          fontFamily="body"
-          fontWeight="300"
-          fontSize="sm"
-          color="textMuted"
-          lineHeight="normal"
-          style={{ marginBottom: '16px', maxWidth: '600px' }}
-        >
-          {entry.rationale}
-        </Box>
-      )}
-
-      {/* Files changed */}
-      {entry.filesChanged.length > 0 && (
-        <Flex gap="2" style={{ flexWrap: 'wrap' }}>
-          {entry.filesChanged.map((file) => (
-            <Box
-              key={file}
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              style={{
-                padding: '3px 8px',
-                background: 'rgba(163, 180, 157, 0.2)',
-                border: '1px solid #c9d5c4',
-                fontVariantNumeric: 'tabular-nums',
-                letterSpacing: '0.01em',
-              }}
-            >
-              {file}
-            </Box>
-          ))}
-        </Flex>
-      )}
-    </Box>
+        {entry.date}
+      </time>
+    </Link>
   )
 }
