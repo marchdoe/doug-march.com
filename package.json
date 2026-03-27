@@ -56,7 +56,14 @@
     ],
     "overrides": {
       "picomatch": ">=4.0.4",
-      "brace-expansion": ">=5.0.5"
+      "brace-expansion": ">=5.0.5",
+      "h3": ">=1.15.9",
+      "srvx": ">=0.11.13",
+      "serialize-javascript": ">=7.0.3",
+      "undici": ">=7.24.0",
+      "node-forge": ">=1.4.0",
+      "path-to-regexp": ">=8.4.0",
+      "esbuild": ">=0.25.0"
     }
   }
 }
