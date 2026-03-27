@@ -10,7 +10,7 @@ export const readArchive = createServerFn({ method: 'GET' })
   .handler(() => _readArchiveHandler())
 
 export const readArchiveDetail = createServerFn({ method: 'GET' })
-  .validator((date: string) => date)
+  .inputValidator((d: unknown) => d as string)
   .handler(async ({ data: date }) => {
     return _readArchiveDetail(date)
   })
