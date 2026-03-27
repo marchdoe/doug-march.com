@@ -12,6 +12,7 @@ A personal portfolio for Doug March — Product Designer & Developer. The site h
 - Name: "Doug March"
 - Role: "Product Designer & Developer"
 - Navigation: Home (/), About (/about)
+- Footer: Include a small "Archive" link to /archive somewhere in the footer area of the page. It should not stand out — it should feel like a natural, understated part of whatever content it sits near. Same typographic treatment as surrounding footer text, no special emphasis.
 
 **Portfolio (the primary content — this is a portfolio site):**
 - One featured project (Spaceman) — title, problem statement, external link
