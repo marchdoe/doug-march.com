@@ -368,6 +368,40 @@ export async function runAgentSwarm(context) {
   console.log(`  backed up ${originalBackup.size} files`)
 
   // -----------------------------------------------------------------------
+  // Pre-archive: snapshot the CURRENT site before overwriting it
+  // Zero LLM cost — just vite preview + HTML capture + file copy
+  // -----------------------------------------------------------------------
+  const today = signals.date || new Date().toISOString().slice(0, 10)
+  const publicArchiveDir = path.join(ROOT, 'public', 'archive', today)
+  if (!existsSync(publicArchiveDir)) {
+    console.log('\n[pre-archive] Preserving current site before redesign...')
+    try {
+      const { captureSnapshot } = await import('./utils/snapshot.js')
+      // Snapshot into a temp build ID — we just need the site/ output
+      const tempBuildId = `pre-${Date.now()}`
+      await captureSnapshot(today, tempBuildId)
+
+      // Copy the snapshot to public/archive/ for static serving
+      const snapshotSiteDir = path.join(ROOT, 'archive', today, `build-${tempBuildId}`, 'site')
+      if (existsSync(snapshotSiteDir)) {
+        const { cpSync } = await import('fs')
+        await mkdir(publicArchiveDir, { recursive: true })
+        cpSync(snapshotSiteDir, publicArchiveDir, { recursive: true })
+        console.log(`  preserved to public/archive/${today}/`)
+      }
+
+      // Clean up the temp build dir (we only needed the public copy)
+      const { rmSync } = await import('fs')
+      const tempBuildDir = path.join(ROOT, 'archive', today, `build-${tempBuildId}`)
+      rmSync(tempBuildDir, { recursive: true, force: true })
+    } catch (err) {
+      console.warn(`  pre-archive failed (non-blocking): ${err.message}`)
+    }
+  } else {
+    console.log(`\n[pre-archive] public/archive/${today}/ already exists, skipping`)
+  }
+
+  // -----------------------------------------------------------------------
   // Read recent archive briefs for Design Director context
   // -----------------------------------------------------------------------
   const archiveDir = path.join(ROOT, 'archive')

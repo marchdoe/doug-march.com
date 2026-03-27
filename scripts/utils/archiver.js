@@ -1,8 +1,46 @@
-import { mkdir, writeFile, readFile } from 'fs/promises'
+import { mkdir, writeFile, readFile, copyFile, readdir } from 'fs/promises'
 import { existsSync } from 'fs'
 import path from 'path'
 import { ROOT } from './file-manager.js'
 import { captureSnapshot } from './snapshot.js'
+
+/**
+ * Copy key archive artifacts to public/archive/ for static serving.
+ * - Screenshot → public/archive/{date}.png
+ * - Site HTML  → public/archive/{date}/index.html, about.html, work/*.html
+ */
+async function copyToPublic(dateStr, buildDir) {
+  const publicBase = path.join(ROOT, 'public', 'archive')
+
+  // Copy screenshot if it exists
+  const screenshotSrc = path.join(buildDir, 'screenshot.png')
+  if (existsSync(screenshotSrc)) {
+    await mkdir(publicBase, { recursive: true })
+    await copyFile(screenshotSrc, path.join(publicBase, `${dateStr}.png`))
+    console.log(`  copied screenshot to public/archive/${dateStr}.png`)
+  }
+
+  // Copy site HTML if it exists
+  const siteSrc = path.join(buildDir, 'site')
+  if (existsSync(siteSrc)) {
+    const publicSiteDir = path.join(publicBase, dateStr)
+    await mkdir(path.join(publicSiteDir, 'work'), { recursive: true })
+    const entries = await readdir(siteSrc, { withFileTypes: true })
+    for (const entry of entries) {
+      if (entry.isFile() && entry.name.endsWith('.html')) {
+        await copyFile(path.join(siteSrc, entry.name), path.join(publicSiteDir, entry.name))
+      } else if (entry.isDirectory() && entry.name === 'work') {
+        const workEntries = await readdir(path.join(siteSrc, 'work'))
+        for (const w of workEntries) {
+          if (w.endsWith('.html')) {
+            await copyFile(path.join(siteSrc, 'work', w), path.join(publicSiteDir, 'work', w))
+          }
+        }
+      }
+    }
+    console.log(`  copied site HTML to public/archive/${dateStr}/`)
+  }
+}
 
 /**
  * Format a signals object as readable markdown sections.
@@ -183,5 +221,12 @@ export async function archive(date, signals, rationale, designBrief, changedFile
     }
   } catch (err) {
     console.warn(`  screenshot failed (non-blocking): ${err.message}`)
+  }
+
+  // Copy artifacts to public/ for static serving
+  try {
+    await copyToPublic(dateStr, buildDir)
+  } catch (err) {
+    console.warn(`  public copy failed (non-blocking): ${err.message}`)
   }
 }
