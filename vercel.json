@@ -3,6 +3,9 @@
   "outputDirectory": "dist/client",
   "framework": null,
   "rewrites": [
+    { "source": "/archive/:date/:file", "destination": "/archive/:date/:file" },
+    { "source": "/archive/:date/work/:file", "destination": "/archive/:date/work/:file" },
+    { "source": "/archive/:date.png", "destination": "/archive/:date.png" },
     { "source": "/(.*)", "destination": "/_shell.html" }
   ]
 }
