@@ -32,6 +32,7 @@ import {
 import { backup, writeFiles, restore, ROOT } from './utils/file-manager.js'
 import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
+import { createTrace } from './utils/trace.js'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -318,7 +319,7 @@ function validateCodegen() {
  * @param {{ signals: object, brief: string, contentSummary: string }} context
  * @returns {Promise<{ rationale: string, design_brief: string, files: Array<{path: string, content: string}> }>}
  */
-export async function runAgentSwarm(context) {
+export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const { signals, brief, contentSummary } = context
 
   // Read creative weights from environment
@@ -329,6 +330,34 @@ export async function runAgentSwarm(context) {
     risk: parseInt(process.env.WEIGHT_RISK || '5'),
   }
   console.log(`  creative weights: signals=${weights.signals} inspiration=${weights.inspiration} ratings=${weights.ratings} risk=${weights.risk}`)
+
+  const trace = createTrace(signals.date || new Date().toISOString().slice(0, 10), {
+    onStep: (step) => {
+      console.log(`[TRACE] ${JSON.stringify(step)}`)
+      onTraceStep?.(step)
+    },
+  })
+
+  async function saveTrace() {
+    try {
+      const archiveDateDir = path.join(ROOT, 'archive', signals.date)
+      const builds = readdirSync(archiveDateDir, { withFileTypes: true })
+        .filter(b => b.isDirectory() && b.name.startsWith('build-'))
+        .sort().reverse()
+      if (builds[0]) {
+        await writeFile(
+          path.join(archiveDateDir, builds[0].name, 'trace.json'),
+          trace.toJSON(),
+          'utf8'
+        )
+        console.log(`  trace saved to ${builds[0].name}/trace.json`)
+      }
+    } catch (err) {
+      console.warn(`  trace save failed (non-blocking): ${err.message}`)
+    }
+  }
+
+  try {
 
   const weightsPrompt = `\n\n## Creative Weights (0-10, set by the site owner)\n\nSignals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'The owner wants BOLD, EXPERIMENTAL design today. Push boundaries.' : weights.risk <= 3 ? 'The owner wants SAFE, POLISHED design today. Proven patterns.' : ''}${weights.inspiration >= 7 ? '\nDesign references should HEAVILY influence your compositional choices.' : ''}${weights.signals <= 3 ? '\nSignals are background texture only — do NOT let weather or sports drive the design.' : ''}`
 
@@ -484,6 +513,24 @@ export async function runAgentSwarm(context) {
     console.log(`  using references (${references.length} chars)`)
   }
 
+  // Trace: record signals and brief loaded
+  trace.addStep({
+    name: 'signals-loaded',
+    phase: 0,
+    input: { providersAvailable: Object.keys(signals).length },
+    output: signals,
+    durationMs: 0,
+  })
+  if (brief) {
+    trace.addStep({
+      name: 'brief-loaded',
+      phase: 0,
+      input: {},
+      output: { brief: brief.slice(0, 500), charCount: brief.length },
+      durationMs: 0,
+    })
+  }
+
   // -----------------------------------------------------------------------
   // Phase 0: Design Director — produces a visual specification
   // -----------------------------------------------------------------------
@@ -502,10 +549,22 @@ export async function runAgentSwarm(context) {
   let visualSpec = ''
   let chosenArchetype = null
   try {
+    const t0Director = Date.now()
     const directorResult = await callAgent('design-director', directorSystemPrompt, directorUserPrompt)
     visualSpec = directorResult._rawResponse || directorResult.rationale || ''
     chosenArchetype = extractArchetypeFromText(visualSpec)
     console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${chosenArchetype ? ` | archetype: ${chosenArchetype}` : ''}`)
+    trace.addStep({
+      name: 'design-director',
+      phase: 1,
+      input: { archetypeConstraints: archetypeConstraintPrompt.slice(0, 500) },
+      output: {
+        archetype: chosenArchetype || 'unknown',
+        specLength: visualSpec.length,
+        specPreview: visualSpec.slice(0, 500),
+      },
+      durationMs: Date.now() - t0Director,
+    })
   } catch (err) {
     console.warn(`  Design Director failed (non-blocking): ${err.message}`)
     console.warn('  Proceeding without visual spec — agents will use brief directly')
@@ -522,8 +581,20 @@ export async function runAgentSwarm(context) {
       recentBriefs ? '## Recent Archive Briefs\n' + recentBriefs : '',
     ].filter(Boolean).join('\n\n---\n\n')
 
+    const t0Critic = Date.now()
     const criticResult = await callAgent('spec-critic', specCriticPrompt, criticUserPrompt, null, { model: 'haiku' })
     const rawResponse = criticResult._rawResponse || criticResult.rationale || ''
+
+    trace.addStep({
+      name: 'spec-critic',
+      phase: 1,
+      input: { specLength: visualSpec.length },
+      output: {
+        verdict: rawResponse.includes('REVISE') ? 'REVISE' : 'APPROVED',
+        feedback: rawResponse.slice(0, 500),
+      },
+      durationMs: Date.now() - t0Critic,
+    })
 
     if (rawResponse.includes('REVISE')) {
       const feedback = rawResponse.replace(/===VERDICT===/, '').replace(/===END===/, '').replace('REVISE', '').trim()
@@ -563,6 +634,7 @@ export async function runAgentSwarm(context) {
   })
 
   let tokenResult
+  const t0Token = Date.now()
   try {
     tokenResult = await callAgent('token-designer', tokenSystemPrompt, tokenUserPrompt, null, { model: 'haiku' })
   } catch (err) {
@@ -581,6 +653,17 @@ export async function runAgentSwarm(context) {
 
   // Write token files
   await writeFiles(tokenResult.files)
+
+  trace.addStep({
+    name: 'token-designer',
+    phase: 2,
+    input: { briefLength: tokenBrief.length },
+    output: {
+      files: tokenResult.files.map(f => f.path),
+      rationale: (tokenResult.rationale || '').slice(0, 500),
+    },
+    durationMs: Date.now() - t0Token,
+  })
 
   // Run codegen to regenerate styled-system
   const codegenResult = validateCodegen()
@@ -629,6 +712,7 @@ export async function runAgentSwarm(context) {
     + weightsPrompt
 
   let designerResult
+  const t0Designer = Date.now()
   try {
     designerResult = await callAgent('unified-designer', unifiedDesignerSystemPrompt, designerUserPrompt, null, { timeoutMs: 900000 }) // 15 minutes — writes 15 files
   } catch (err) {
@@ -639,6 +723,17 @@ export async function runAgentSwarm(context) {
 
   // Write all files
   await writeFiles(designerResult.files)
+
+  trace.addStep({
+    name: 'unified-designer',
+    phase: 3,
+    input: { tokenContext: tokenContext.length, briefLength: enrichedBrief.length },
+    output: {
+      files: designerResult.files.map(f => f.path),
+      rationale: (designerResult.rationale || '').slice(0, 500),
+    },
+    durationMs: Date.now() - t0Designer,
+  })
 
   // Verify Layout.tsx was written (critical for the site to function)
   const layoutPath = path.join(ROOT, 'app/components/Layout.tsx')
@@ -652,6 +747,17 @@ export async function runAgentSwarm(context) {
   // -----------------------------------------------------------------------
   console.log('\n[phase-4] Build validation')
   const buildResult = validateBuild()
+
+  trace.addStep({
+    name: 'build-validation',
+    phase: 4,
+    input: {},
+    output: {
+      success: buildResult.success,
+      error: buildResult.success ? undefined : (buildResult.error || '').slice(0, 500),
+    },
+    durationMs: 0,
+  })
 
   if (buildResult.success) {
     console.log('\n=== Build passed! ===')
@@ -674,8 +780,20 @@ export async function runAgentSwarm(context) {
         '![Homepage Screenshot](data:image/png;base64,' + screenshotBuffer.toString('base64') + ')',
       ].filter(Boolean).join('\n\n---\n\n')
 
+      const t0ScreenshotCritic = Date.now()
       const screenshotCriticResult = await callAgent('screenshot-critic', screenshotCriticPrompt, criticUserPrompt)
       const criticResponse = screenshotCriticResult._rawResponse || screenshotCriticResult.rationale || ''
+
+      trace.addStep({
+        name: 'screenshot-critic',
+        phase: 4,
+        input: {},
+        output: {
+          verdict: criticResponse.includes('REVISE') ? 'REVISE' : 'SHIP',
+          feedback: criticResponse.slice(0, 500),
+        },
+        durationMs: Date.now() - t0ScreenshotCritic,
+      })
 
       if (criticResponse.includes('REVISE')) {
         const agentMatch = criticResponse.match(/\*\*Responsible agent:\*\*\s*([\w-]+)/)
@@ -734,6 +852,7 @@ export async function runAgentSwarm(context) {
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign'
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths)
+    await saveTrace()
 
     // Save archetype for future anti-repetition enforcement
     if (chosenArchetype && signals.date) {
@@ -804,6 +923,7 @@ export async function runAgentSwarm(context) {
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign (retry)'
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths)
+    await saveTrace()
 
     // Save archetype for future anti-repetition enforcement
     if (chosenArchetype && signals.date) {
@@ -821,6 +941,10 @@ export async function runAgentSwarm(context) {
   // All retries exhausted — restore everything and throw
   await restore(originalBackup)
   throw new Error(`Build failed after retry. Error:\n${retryBuild.error?.slice(0, 1000)}`)
+
+  } finally {
+    await saveTrace()
+  }
 }
 
 // ---------------------------------------------------------------------------
