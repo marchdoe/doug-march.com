@@ -14,6 +14,7 @@ export interface ArchiveDetail {
   filesChanged: string[]
   hasScreenshot: boolean
   buildId: string
+  trace: string
 }
 
 export function _readArchiveDetail(date: string, archivePath = ARCHIVE_PATH): ArchiveDetail | null {
@@ -40,6 +41,7 @@ export function _readArchiveDetail(date: string, archivePath = ARCHIVE_PATH): Ar
 
   const signalsBrief = buildDir ? readSafe(join(buildDir, 'signals-brief.md')) : ''
   const preset = buildDir ? readSafe(join(buildDir, 'preset.ts')) : ''
+  const trace = buildDir ? readSafe(join(buildDir, 'trace.json')) : ''
   const hasScreenshot = buildDir ? existsSync(join(buildDir, 'screenshot.png')) : false
   const archetype = readSafe(join(dateDir, 'archetype.txt')).trim()
 
@@ -67,6 +69,6 @@ export function _readArchiveDetail(date: string, archivePath = ARCHIVE_PATH): Ar
 
   return {
     date, archetype, brief, signalsBrief, preset,
-    rationale, filesChanged, hasScreenshot, buildId,
+    rationale, filesChanged, hasScreenshot, buildId, trace,
   }
 }

@@ -235,7 +235,16 @@ function pipelineApiPlugin(): Plugin {
           const handleData = (chunk: Buffer) => {
             const lines = chunk.toString().split('\n').filter((l: string) => l.trim())
             for (const line of lines) {
-              broadcastPipeline({ type: 'log', line })
+              if (line.startsWith('[TRACE] ')) {
+                try {
+                  const step = JSON.parse(line.slice('[TRACE] '.length))
+                  broadcastPipeline({ type: 'trace', step })
+                } catch {
+                  broadcastPipeline({ type: 'log', line })
+                }
+              } else {
+                broadcastPipeline({ type: 'log', line })
+              }
             }
           }
 

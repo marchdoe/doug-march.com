@@ -2,7 +2,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState, useRef, useEffect } from 'react'
 import { readSignals, saveOverrides } from '../server/signals'
-import { readArchive, type ArchiveEntry } from '../server/archive'
+import { readArchive, readArchiveDetail, type ArchiveEntry } from '../server/archive'
 
 export const Route = createFileRoute('/dev')({
   loader: async () => {
@@ -136,6 +136,7 @@ function DevPanel() {
   const signals = initialSignals as Signals
 
   const [activePane, setActivePane] = useState<PaneName>('pipeline')
+  const [traceSteps, setTraceSteps] = useState<any[]>([])
 
   const [moodOverride, setMoodOverride] = useState<string>(signals.mood_override ?? '')
   const [notes, setNotes] = useState<string>(signals.notes ?? '')
@@ -179,6 +180,7 @@ function DevPanel() {
     logAccumRef.current = []
     setAttemptNum(1)
     setResult(null)
+    setTraceSteps([])
 
     const es = new EventSource(`/api/pipeline?dryRun=${dryRun}&mock=true`)
     esRef.current = es
@@ -187,6 +189,12 @@ function DevPanel() {
       const event = JSON.parse(e.data) as
         | { type: 'log'; line: string }
         | { type: 'done'; success: boolean; error?: string }
+        | { type: 'trace'; step: any }
+
+      if (event.type === 'trace') {
+        setTraceSteps(prev => [...prev, event.step])
+        return
+      }
 
       if (event.type === 'log') {
         const line = event.line
@@ -319,7 +327,7 @@ function DevPanel() {
             <ArchivePane archive={archive as ArchiveEntry[]} />
           )}
           {activePane === 'inspector' && (
-            <InspectorPane />
+            <InspectorPane traceSteps={traceSteps} archive={archive as ArchiveEntry[]} />
           )}
           {activePane === 'run' && (
             <RunPane
@@ -555,19 +563,193 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
   )
 }
 
-// ─── Inspector Pane (placeholder) ─────────────────────────────────────────────
+// ─── Inspector Pane ───────────────────────────────────────────────────────────
 
-function InspectorPane() {
+function InspectorPane({ traceSteps, archive }: { traceSteps: any[], archive: ArchiveEntry[] }) {
+  const [selectedDate, setSelectedDate] = useState<string | null>(null)
+  const [savedTrace, setSavedTrace] = useState<any[] | null>(null)
+  const [expandedSteps, setExpandedSteps] = useState<Set<number>>(new Set())
+
+  const loadTrace = async (date: string) => {
+    setSelectedDate(date)
+    try {
+      const detail = await readArchiveDetail({ data: date })
+      if (detail?.trace) {
+        const parsed = JSON.parse(detail.trace)
+        setSavedTrace(parsed.steps || [])
+      } else {
+        setSavedTrace([])
+      }
+    } catch {
+      setSavedTrace([])
+    }
+  }
+
+  const displaySteps = selectedDate ? (savedTrace || []) : traceSteps
+  const isLive = !selectedDate && traceSteps.length > 0
+
+  const toggleStep = (idx: number) => {
+    setExpandedSteps(prev => {
+      const next = new Set(prev)
+      next.has(idx) ? next.delete(idx) : next.add(idx)
+      return next
+    })
+  }
+
   return (
     <>
       <div style={{ ...s.sectionLabel, marginBottom: '16px' }}>// PROMPT INSPECTOR</div>
-      <div style={{ background: '#151b23', border: '1px solid #1e2633', borderRadius: '8px', padding: '24px', textAlign: 'center' }}>
-        <div style={{ fontSize: '13px', color: '#6b7b8d', lineHeight: '1.6' }}>
-          Available when agent swarm is active.<br />
-          Shows the prompts sent to each designer agent with token/byte counts.
-        </div>
+
+      {/* Date selector */}
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
+        <button
+          onClick={() => { setSelectedDate(null); setSavedTrace(null) }}
+          style={{
+            ...s.saveBtn,
+            ...(selectedDate === null ? { color: '#22d3ee', borderColor: '#22d3ee' } : {}),
+          }}
+        >
+          Live
+        </button>
+        {archive.slice(0, 10).map(entry => (
+          <button
+            key={entry.date}
+            onClick={() => loadTrace(entry.date)}
+            style={{
+              ...s.saveBtn,
+              ...(selectedDate === entry.date ? { color: '#22d3ee', borderColor: '#22d3ee' } : {}),
+            }}
+          >
+            {entry.date}
+          </button>
+        ))}
       </div>
+
+      {/* Live indicator */}
+      {isLive && (
+        <div style={{ ...s.badge, marginBottom: '16px' }}>
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b' }} />
+          streaming {traceSteps.length} steps
+        </div>
+      )}
+
+      {/* Steps */}
+      {displaySteps.length === 0 ? (
+        <div style={{ ...s.signalCard, textAlign: 'center' as const, padding: '40px' }}>
+          <div style={{ fontSize: '13px', color: '#6b7b8d' }}>
+            {selectedDate
+              ? 'No trace data available for this build.'
+              : 'Run the pipeline to see trace data here.'}
+          </div>
+        </div>
+      ) : (
+        displaySteps.map((step: any, i: number) => (
+          <TraceStepCard
+            key={i}
+            step={step}
+            index={i}
+            expanded={expandedSteps.has(i)}
+            onToggle={() => toggleStep(i)}
+          />
+        ))
+      )}
     </>
+  )
+}
+
+function TraceStepCard({ step, index, expanded, onToggle }: {
+  step: any, index: number, expanded: boolean, onToggle: () => void
+}) {
+  const phaseColors: Record<number, string> = {
+    0: '#6b7b8d',
+    1: '#22d3ee',
+    2: '#a78bfa',
+    3: '#f59e0b',
+    4: '#4ade80',
+  }
+  const phaseNames: Record<number, string> = {
+    0: 'SETUP',
+    1: 'DIRECTION',
+    2: 'TOKENS',
+    3: 'DESIGN',
+    4: 'VALIDATION',
+  }
+  const color = phaseColors[step.phase] || '#6b7b8d'
+
+  return (
+    <div
+      style={{
+        background: '#151b23',
+        border: '1px solid #1e2633',
+        borderRadius: '8px',
+        padding: '12px',
+        marginBottom: '8px',
+        cursor: 'pointer',
+        borderLeft: `3px solid ${color}`,
+      }}
+      onClick={onToggle}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{
+            fontSize: '9px', color, fontWeight: 700,
+            fontFamily: '"Space Mono", monospace',
+            letterSpacing: '0.05em',
+            background: `${color}15`,
+            padding: '2px 6px',
+            borderRadius: '3px',
+          }}>
+            {phaseNames[step.phase] || `P${step.phase}`}
+          </span>
+          <span style={{ fontSize: '13px', color: '#e0e6ed', fontWeight: 600 }}>
+            {step.name}
+          </span>
+          {step.durationMs > 0 && (
+            <span style={{ fontSize: '11px', color: '#6b7b8d' }}>
+              {step.durationMs > 60000
+                ? `${(step.durationMs / 60000).toFixed(1)}m`
+                : step.durationMs > 1000
+                ? `${(step.durationMs / 1000).toFixed(1)}s`
+                : `${step.durationMs}ms`}
+            </span>
+          )}
+        </div>
+        <span style={{ fontSize: '11px', color: '#6b7b8d' }}>
+          {expanded ? '▾' : '▸'}
+        </span>
+      </div>
+
+      {expanded && (
+        <div style={{ marginTop: '12px' }}>
+          {step.input && Object.keys(step.input).length > 0 && (
+            <div style={{ marginBottom: '8px' }}>
+              <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', fontFamily: '"Space Mono", monospace', marginBottom: '4px' }}>INPUT</div>
+              <pre style={{
+                fontSize: '11px', color: '#8b98a5', background: '#0e1117',
+                padding: '8px', borderRadius: '4px', overflow: 'auto',
+                maxHeight: '200px', whiteSpace: 'pre-wrap' as const, margin: 0,
+                fontFamily: '"Space Mono", monospace',
+              }}>
+                {JSON.stringify(step.input, null, 2)}
+              </pre>
+            </div>
+          )}
+          {step.output && Object.keys(step.output).length > 0 && (
+            <div>
+              <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', fontFamily: '"Space Mono", monospace', marginBottom: '4px' }}>OUTPUT</div>
+              <pre style={{
+                fontSize: '11px', color: '#8b98a5', background: '#0e1117',
+                padding: '8px', borderRadius: '4px', overflow: 'auto',
+                maxHeight: '300px', whiteSpace: 'pre-wrap' as const, margin: 0,
+                fontFamily: '"Space Mono", monospace',
+              }}>
+                {JSON.stringify(step.output, null, 2)}
+              </pre>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   )
 }
 
