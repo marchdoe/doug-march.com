@@ -1,9 +1,28 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { projects } from '../content/projects'
-import { Box, Flex, VStack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
+import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
+
+const label = css({
+  fontFamily: 'heading',
+  fontSize: 'xs',
+  color: 'textMuted',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  fontWeight: '600',
+  display: 'block',
+  marginBottom: '3',
+})
+
+const bodyText = css({
+  fontFamily: 'body',
+  fontSize: 'base',
+  fontWeight: '300',
+  color: 'textSecondary',
+  lineHeight: 'normal',
+  maxWidth: '600px',
+})
 
 function WorkDetailPage() {
   const { slug } = Route.useParams()
@@ -11,471 +30,365 @@ function WorkDetailPage() {
 
   if (!project) {
     return (
-      <Box
-        style={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '96px 48px',
-        }}
-      >
-        <Box
-          fontFamily="heading"
-          fontWeight="700"
-          fontSize="2xl"
-          color="text"
-          letterSpacing="tight"
-          lineHeight="tight"
-          style={{ textTransform: 'uppercase', marginBottom: '32px' }}
+      <main>
+        <div
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '64px 24px',
+          }}
         >
-          404
-        </Box>
-        <Box
-          fontFamily="body"
-          fontWeight="300"
-          fontSize="md"
-          color="textSecondary"
-          style={{ marginBottom: '32px' }}
-        >
-          Project not found.
-        </Box>
-        <a
-          href="/"
-          className={css({
-            fontFamily: 'body',
-            fontSize: 'sm',
-            color: 'accent',
-            textDecoration: 'none',
-            letterSpacing: 'wide',
-            transition: 'color 150ms ease',
-            _hover: { color: 'accentDark' },
-          })}
-        >
-          ← Back to work
-        </a>
-      </Box>
+          <span
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '9px',
+              color: '#4B6478',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              display: 'block',
+              marginBottom: '24px',
+            }}
+          >
+            <a href="/" className="nav-link">← Work</a>
+          </span>
+          <h1
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '37px',
+              fontWeight: 700,
+              color: '#4B6478',
+            }}
+          >
+            Project not found
+          </h1>
+        </div>
+      </main>
     )
   }
 
   return (
-    <Box as="main">
-      {/* ─── Hero ─── */}
-      <Box
-        as="section"
+    <main>
+      <div
         style={{
-          minHeight: '55vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          padding: '120px 48px 64px',
-          maxWidth: '960px',
+          maxWidth: '1200px',
           margin: '0 auto',
+          padding: '24px',
         }}
       >
-        {/* Back link */}
-        <Box style={{ marginBottom: '48px' }}>
+
+        {/* Back nav */}
+        <div style={{ marginBottom: '32px' }}>
           <a
             href="/"
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '400',
-              fontSize: 'xs',
-              color: 'textMuted',
-              textDecoration: 'none',
-              letterSpacing: 'wide',
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '9px',
+              color: '#4B6478',
+              letterSpacing: '0.14em',
               textTransform: 'uppercase',
               transition: 'color 150ms ease',
-              _hover: { color: 'accent' },
-            })}
-          >
-            ← Work
-          </a>
-        </Box>
-
-        {/* Type + Year */}
-        <Flex gap="4" align="center" style={{ marginBottom: '20px' }}>
-          <Box
-            fontFamily="body"
-            fontWeight="400"
-            fontSize="2xs"
-            color="accent"
-            letterSpacing="widest"
-            style={{ textTransform: 'uppercase' }}
-          >
-            {project.type}
-          </Box>
-          <Box
-            fontFamily="body"
-            fontWeight="300"
-            fontSize="2xs"
-            color="textMuted"
-            letterSpacing="widest"
-            style={{ fontVariantNumeric: 'tabular-nums' }}
-          >
-            {project.year}
-          </Box>
-          {project.featured && (
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              letterSpacing="widest"
-              style={{
-                textTransform: 'uppercase',
-                color: '#c97d1e',
-                borderLeft: '1px solid #c9d5c4',
-                paddingLeft: '12px',
-              }}
-            >
-              Featured
-            </Box>
-          )}
-        </Flex>
-
-        {/* Title */}
-        <Box
-          fontFamily="heading"
-          fontWeight="700"
-          fontSize="xl"
-          color="text"
-          letterSpacing="tight"
-          lineHeight="tight"
-          style={{ textTransform: 'uppercase', marginBottom: '24px' }}
-        >
-          {project.title}
-        </Box>
-
-        {/* Horizon rule */}
-        <Box
-          style={{
-            width: '80px',
-            borderTop: '1px solid #a3b49d',
-          }}
-        />
-      </Box>
-
-      {/* ─── Detail Content ─── */}
-      <Box
-        as="section"
-        style={{
-          maxWidth: '760px',
-          margin: '0 auto',
-          padding: '64px 48px 80px',
-        }}
-      >
-        {project.role && (
-          <Box style={{ marginBottom: '40px' }}>
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              letterSpacing="widest"
-              style={{ textTransform: 'uppercase', marginBottom: '12px' }}
-            >
-              Role
-            </Box>
-            <Box
-              fontFamily="heading"
-              fontWeight="600"
-              fontSize="base"
-              color="textSecondary"
-            >
-              {project.role}
-            </Box>
-          </Box>
-        )}
-
-        {project.problem && (
-          <Box
-            style={{
-              marginBottom: '48px',
-              paddingBottom: '48px',
-              borderBottom: '1px solid #c9d5c4',
             }}
-          >
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              letterSpacing="widest"
-              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
-            >
-              Problem
-            </Box>
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="md"
-              color="textBody"
-              lineHeight="normal"
-              letterSpacing="normal"
-            >
-              {project.problem}
-            </Box>
-          </Box>
-        )}
-
-        {project.approach && (
-          <Box
-            style={{
-              marginBottom: '48px',
-              paddingBottom: '48px',
-              borderBottom: '1px solid #c9d5c4',
-            }}
-          >
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              letterSpacing="widest"
-              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
-            >
-              Approach
-            </Box>
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="base"
-              color="textBody"
-              lineHeight="normal"
-            >
-              {project.approach}
-            </Box>
-          </Box>
-        )}
-
-        {project.outcome && (
-          <Box
-            style={{
-              marginBottom: '48px',
-              paddingBottom: '48px',
-              borderBottom: '1px solid #c9d5c4',
-            }}
-          >
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              letterSpacing="widest"
-              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
-            >
-              Outcome
-            </Box>
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="base"
-              color="textBody"
-              lineHeight="normal"
-            >
-              {project.outcome}
-            </Box>
-          </Box>
-        )}
-
-        {project.description && !project.problem && (
-          <Box
-            style={{
-              marginBottom: '48px',
-              paddingBottom: '48px',
-              borderBottom: '1px solid #c9d5c4',
-            }}
-          >
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="base"
-              color="textBody"
-              lineHeight="normal"
-            >
-              {project.description}
-            </Box>
-          </Box>
-        )}
-
-        {project.stack && project.stack.length > 0 && (
-          <Box style={{ marginBottom: '48px' }}>
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              letterSpacing="widest"
-              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
-            >
-              Stack
-            </Box>
-            <Box
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '8px',
-              }}
-            >
-              {project.stack.map((tech) => (
-                <Box
-                  key={tech}
-                  fontFamily="body"
-                  fontWeight="400"
-                  fontSize="xs"
-                  color="textSecondary"
-                  style={{
-                    padding: '5px 10px',
-                    background: '#eaf0e6',
-                    border: '1px solid #c9d5c4',
-                    fontVariantNumeric: 'tabular-nums',
-                    letterSpacing: '0.02em',
-                  }}
-                >
-                  {tech}
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        )}
-
-        {/* External links */}
-        {(project.liveUrl || project.githubUrl || project.externalUrl) && (
-          <Flex gap="6" align="center">
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={css({
-                  fontFamily: 'heading',
-                  fontWeight: '600',
-                  fontSize: 'xs',
-                  color: 'accent',
-                  textDecoration: 'none',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                  transition: 'color 150ms ease',
-                  _hover: { color: 'accentDark' },
-                })}
-              >
-                Live Site →
-              </a>
-            )}
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={css({
-                  fontFamily: 'heading',
-                  fontWeight: '600',
-                  fontSize: 'xs',
-                  color: 'textSecondary',
-                  textDecoration: 'none',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                  transition: 'color 150ms ease',
-                  _hover: { color: 'accent' },
-                })}
-              >
-                GitHub →
-              </a>
-            )}
-            {project.externalUrl && !project.liveUrl && (
-              <a
-                href={project.externalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={css({
-                  fontFamily: 'heading',
-                  fontWeight: '600',
-                  fontSize: 'xs',
-                  color: 'accent',
-                  textDecoration: 'none',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                  transition: 'color 150ms ease',
-                  _hover: { color: 'accentDark' },
-                })}
-              >
-                View Project →
-              </a>
-            )}
-          </Flex>
-        )}
-      </Box>
-
-      {/* ─── Alternate bg: next project hint ─── */}
-      <Box
-        as="section"
-        style={{
-          background: '#eaf0e6',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <Box
-          style={{
-            maxWidth: '760px',
-            width: '100%',
-            padding: '48px',
-          }}
-        >
-          <a
-            href="/"
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '400',
-              fontSize: 'xs',
-              color: 'textMuted',
-              textDecoration: 'none',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              transition: 'color 150ms ease',
-              _hover: { color: 'accent' },
-            })}
+            className="nav-link"
           >
             ← All Work
           </a>
-        </Box>
-      </Box>
+        </div>
 
-      {/* ─── Footer ─── */}
-      <Box
-        as="footer"
-        style={{
-          background: '#2a322a',
-          padding: '48px 48px',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <Flex
-          justify="space-between"
-          align="center"
-          style={{ maxWidth: '760px', width: '100%' }}
+        {/* Hero zone */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 280px',
+            gap: '16px',
+            marginBottom: '16px',
+          }}
         >
-          <Box
-            fontFamily="body"
-            fontWeight="300"
-            fontSize="xs"
-            style={{ color: '#596658' }}
+          <div
+            style={{
+              background: '#192535',
+              padding: '48px 56px',
+              boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+            }}
           >
-            March 26, 2026
-          </Box>
-          <Box
-            fontFamily="body"
-            fontWeight="300"
-            fontSize="xs"
-            style={{ color: '#596658' }}
+            <span
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: '9px',
+                color: project.featured ? '#A8C040' : '#4B6478',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: '16px',
+              }}
+            >
+              {project.featured ? 'Featured · ' : ''}{project.type}
+            </span>
+            <h1
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 'clamp(40px, 5vw, 64px)',
+                fontWeight: 700,
+                lineHeight: 1.0,
+                letterSpacing: '-0.03em',
+                color: '#EEF2F8',
+                marginBottom: '32px',
+              }}
+            >
+              {project.title}
+            </h1>
+            {project.problem && (
+              <p className={bodyText} style={{ fontSize: '18px', lineHeight: 1.75 }}>
+                {project.problem}
+              </p>
+            )}
+          </div>
+
+          {/* Meta sidebar */}
+          <div
+            style={{
+              background: '#192535',
+              padding: '32px 28px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px',
+              boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+            }}
           >
-            © 2026 Doug March
-          </Box>
-        </Flex>
-      </Box>
-    </Box>
+            <div>
+              <span className={label}>Year</span>
+              <span
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '21px',
+                  fontWeight: 600,
+                  color: '#EEF2F8',
+                  letterSpacing: '-0.01em',
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
+                {project.year}
+              </span>
+            </div>
+
+            {project.role && (
+              <div>
+                <span className={label}>Role</span>
+                <span
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '14px',
+                    fontWeight: 300,
+                    color: '#93A8BC',
+                    lineHeight: 1.55,
+                    display: 'block',
+                  }}
+                >
+                  {project.role}
+                </span>
+              </div>
+            )}
+
+            {project.stack && project.stack.length > 0 && (
+              <div>
+                <span className={label}>Stack</span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {project.stack.map((s) => (
+                    <span
+                      key={s}
+                      style={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontSize: '10px',
+                        color: '#4B6478',
+                        padding: '3px 8px',
+                        border: '1px solid #1F3346',
+                        letterSpacing: '0.04em',
+                      }}
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {project.liveUrl && (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: '9px',
+                    color: '#A8C040',
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    padding: '10px 16px',
+                    border: '1px solid #7A9022',
+                    textAlign: 'center',
+                    transition: 'all 150ms ease',
+                    display: 'block',
+                  }}
+                >
+                  View Live →
+                </a>
+              )}
+              {project.externalUrl && !project.liveUrl && (
+                <a
+                  href={project.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: '9px',
+                    color: '#A8C040',
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    padding: '10px 16px',
+                    border: '1px solid #7A9022',
+                    textAlign: 'center',
+                    transition: 'all 150ms ease',
+                    display: 'block',
+                  }}
+                >
+                  View Project →
+                </a>
+              )}
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: '9px',
+                    color: '#4B6478',
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    padding: '10px 16px',
+                    border: '1px solid #1F3346',
+                    textAlign: 'center',
+                    transition: 'all 150ms ease',
+                    display: 'block',
+                  }}
+                >
+                  GitHub
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Content bands */}
+        {(project.approach || project.outcome) && (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: project.approach && project.outcome ? '1fr 1fr' : '1fr',
+              gap: '16px',
+              marginBottom: '16px',
+            }}
+          >
+            {project.approach && (
+              <div
+                style={{
+                  background: '#192535',
+                  padding: '36px 40px',
+                  boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+                }}
+              >
+                <span className={label}>Approach</span>
+                <p
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '16px',
+                    fontWeight: 300,
+                    color: '#93A8BC',
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {project.approach}
+                </p>
+              </div>
+            )}
+            {project.outcome && (
+              <div
+                style={{
+                  background: '#192535',
+                  padding: '36px 40px',
+                  borderLeft: '2px solid #4AA494',
+                  boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+                }}
+              >
+                <span className={label}>Outcome</span>
+                <p
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '16px',
+                    fontWeight: 300,
+                    color: '#93A8BC',
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {project.outcome}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Description fallback */}
+        {project.description && !project.approach && (
+          <div
+            style={{
+              background: '#192535',
+              padding: '36px 40px',
+              marginBottom: '16px',
+              boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+            }}
+          >
+            <span className={label}>About</span>
+            <p
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: '16px',
+                fontWeight: 300,
+                color: '#93A8BC',
+                lineHeight: 1.55,
+                maxWidth: '680px',
+              }}
+            >
+              {project.description}
+            </p>
+          </div>
+        )}
+
+        {/* Footer nav */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingTop: '32px',
+            borderTop: '1px solid #1F3346',
+            marginTop: '16px',
+          }}
+        >
+          <a href="/" className="nav-link">← Back to Work</a>
+          <span
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '9px',
+              color: '#1F3346',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Doug March
+          </span>
+        </div>
+
+      </div>
+    </main>
   )
 }

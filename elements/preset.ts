@@ -2,279 +2,151 @@ import { definePreset } from '@pandacss/dev'
 
 export const elementsPreset = definePreset({
   name: 'elements',
-
   conditions: {
     extend: {
-      _light: '.light &, [data-theme="light"] &',
-      _dark: '.dark &, [data-theme="dark"] &',
+      _light: '[data-color-mode=light] &',
     },
   },
-
-  globalCss: {
-    '*, *::before, *::after': {
-      boxSizing: 'border-box',
-    },
-    html: {
-      fontSize: '16px',
-      WebkitFontSmoothing: 'antialiased',
-      MozOsxFontSmoothing: 'grayscale',
-    },
-    body: {
-      fontFamily: 'body',
-      fontSize: 'base',
-      fontWeight: '400',
-      lineHeight: 'normal',
-      background: 'bg',
-      color: 'text',
-      margin: '0',
-      padding: '0',
-    },
-    'h1, h2, h3, h4, h5, h6': {
-      fontFamily: 'heading',
-      lineHeight: 'tight',
-      letterSpacing: 'tight',
-      color: 'text',
-      margin: '0',
-    },
-    p: {
-      margin: '0',
-    },
-    a: {
-      color: 'accent',
-      textDecoration: 'none',
-      transition: 'color 120ms ease',
-    },
-    'a:hover': {
-      color: 'accentDark',
-    },
-    'img, video': {
-      display: 'block',
-      maxWidth: '100%',
-    },
-  },
-
   theme: {
     extend: {
       tokens: {
         colors: {
-          // Primary neutral — spring green-gray, hue 108°, saturation 8–14%
-          green: {
-            50:  { value: '#f1f5ef', description: 'Page background' },
-            100: { value: '#e4ece1', description: 'Card / section alt bg' },
-            200: { value: '#c9d5c4', description: 'Borders, hairlines' },
-            300: { value: '#a3b49d', description: 'Muted text, disabled' },
-            400: { value: '#7c8e76', description: 'Placeholder' },
-            500: { value: '#596658', description: 'Secondary text' },
-            600: { value: '#3f4a3d', description: 'Body text' },
-            700: { value: '#2a322a', description: 'Heading text / footer bg' },
-            800: { value: '#191e19', description: 'Dark band bg' },
-            900: { value: '#0e120e', description: 'Deepest bg' },
+          neutral: {
+            50: { value: '#EEF2F8' },
+            100: { value: '#DCE4EE' },
+            200: { value: '#BECDD9' },
+            300: { value: '#93A8BC' },
+            400: { value: '#6A85A0' },
+            500: { value: '#4B6478' },
+            600: { value: '#344D62' },
+            700: { value: '#1F3346' },
+            800: { value: '#131F2E' },
+            900: { value: '#0A1319' },
           },
-          // Accent — warm amber, hue 35°
-          amber: {
-            100: { value: '#f4d99b', description: 'Amber light — hover states, tinted fills' },
-            500: { value: '#c97d1e', description: 'Amber default — buttons, links, active' },
-            700: { value: '#8f560f', description: 'Amber dark — pressed, emphasis' },
-            glow: { value: 'rgba(201, 125, 30, 0.09)', description: 'Amber glow overlay' },
+          accent: {
+            light: { value: '#C9D97A' },
+            DEFAULT: { value: '#A8C040' },
+            dark: { value: '#7A9022' },
           },
-          // Secondary accent — muted terracotta, hue 12°
-          terracotta: {
-            500: { value: '#b8674e', description: 'Loss/deflation signal — Pistons' },
-          },
-          // Section alt bg — midpoint between green.50 and green.100
-          spring: {
-            alt: { value: '#eaf0e6', description: 'Alternating scroll beat bg' },
+          seafoam: {
+            light: { value: '#7EC8B8' },
+            DEFAULT: { value: '#4AA494' },
+            dark: { value: '#2C7064' },
           },
         },
-
         fonts: {
-          heading: { value: "'Syne', sans-serif" },
-          body: { value: "'Work Sans', sans-serif" },
+          heading: { value: '"Space Grotesk", sans-serif' },
+          body: { value: '"DM Sans", sans-serif' },
         },
-
-        // Perfect Fourth scale (1.333), base 16px
         fontSizes: {
-          '2xs': { value: '0.5625rem',  description: '9px — micro labels, index headers' },
-          xs:   { value: '0.75rem',    description: '12px — meta, nav, attribution' },
-          sm:   { value: '0.875rem',   description: '14px — body minimum, item text' },
-          base: { value: '1rem',       description: '16px — body text' },
-          md:   { value: '1.3125rem',  description: '21px — role / subheading' },
-          lg:   { value: '1.75rem',    description: '28px — quote, section heads' },
-          xl:   { value: '2.3125rem',  description: '37px — display sub' },
-          '2xl':{ value: '3.125rem',   description: '50px — hero name' },
+          '2xs': { value: '7px' },
+          xs: { value: '9px' },
+          sm: { value: '12px' },
+          base: { value: '16px' },
+          md: { value: '21px' },
+          lg: { value: '28px' },
+          xl: { value: '37px' },
+          '2xl': { value: '50px' },
         },
-
         lineHeights: {
-          tight:  { value: '1.05',  description: 'Display headings — Radiohead compression' },
-          snug:   { value: '1.25',  description: 'Subheadings, compact text' },
-          normal: { value: '1.62',  description: 'Body text — generous spring air' },
-          loose:  { value: '1.88',  description: 'Quote / signal sections — Wet Leg breathing room' },
+          tight: { value: '1.05' },
+          snug: { value: '1.20' },
+          normal: { value: '1.55' },
+          loose: { value: '1.75' },
         },
-
         letterSpacings: {
-          tight:   { value: '-0.025em', description: '2xl and xl headings' },
-          normal:  { value: '-0.008em', description: 'md headings' },
-          wide:    { value: '0.045em',  description: 'Section labels' },
-          wider:   { value: '0.09em',   description: 'Index column headers, meta annotations' },
-          widest:  { value: '0.15em',   description: 'Nav links, micro-labels' },
+          tight: { value: '-0.03em' },
+          normal: { value: '-0.01em' },
+          wide: { value: '0.04em' },
+          wider: { value: '0.08em' },
+          widest: { value: '0.14em' },
         },
-
-        // Spacing scale — 4px base unit
         spacing: {
-          1:  { value: '4px' },
-          2:  { value: '8px' },
-          3:  { value: '12px' },
-          4:  { value: '16px' },
-          6:  { value: '24px' },
-          8:  { value: '32px' },
+          0: { value: '0px' },
+          1: { value: '4px' },
+          2: { value: '8px' },
+          3: { value: '12px' },
+          4: { value: '16px' },
+          5: { value: '20px' },
+          6: { value: '24px' },
+          7: { value: '28px' },
+          8: { value: '32px' },
+          9: { value: '36px' },
+          10: { value: '40px' },
           12: { value: '48px' },
           16: { value: '64px' },
-          20: { value: '80px' },
           24: { value: '96px' },
         },
-
-        radii: {
-          none:   { value: '0px', description: 'Cards, tags — architectural, no softness' },
-          button: { value: '2px', description: 'Buttons, inputs — minimal rounding only' },
-        },
-
-        // No shadows — spring light diffuses harshness
         shadows: {
+          cell: { value: '0 2px 4px rgba(8, 18, 26, 0.7), 0 6px 16px rgba(8, 18, 26, 0.45)' },
           none: { value: 'none' },
         },
-
-        // Z-index scale
-        zIndex: {
-          base:    { value: '0' },
-          raised:  { value: '10' },
-          overlay: { value: '50' },
-          nav:     { value: '100' },
-          modal:   { value: '200' },
-        },
-
-        // Transition durations
-        durations: {
-          fast:   { value: '120ms' },
-          base:   { value: '150ms' },
-          slow:   { value: '200ms' },
+        radii: {
+          none: { value: '0px' },
+          sm: { value: '2px' },
         },
       },
-
       semanticTokens: {
         colors: {
-          // Backgrounds
-          bg: {
-            value: {
-              base: '{colors.green.50}',
-              _dark: '{colors.green.800}',
-            },
-          },
-          bgAlt: {
-            value: {
-              base: '{colors.spring.alt}',
-              _dark: '{colors.green.900}',
-            },
-          },
-          bgCard: {
-            value: {
-              base: '{colors.green.100}',
-              _dark: '{colors.green.700}',
-            },
-          },
-          bgFooter: {
-            value: {
-              base: '{colors.green.700}',
-              _dark: '{colors.green.900}',
-            },
-          },
-          bgNav: {
-            value: {
-              base: 'rgba(241, 245, 239, 0.95)',
-              _dark: 'rgba(25, 30, 25, 0.95)',
-            },
-          },
-
-          // Text hierarchy
-          text: {
-            value: {
-              base: '{colors.green.700}',
-              _dark: '{colors.green.100}',
-            },
-          },
-          textSecondary: {
-            value: {
-              base: '{colors.green.500}',
-              _dark: '{colors.green.300}',
-            },
-          },
-          textMuted: {
-            value: {
-              base: '{colors.green.300}',
-              _dark: '{colors.green.500}',
-            },
-          },
-          textReversed: {
-            value: {
-              base: '{colors.green.100}',
-              _dark: '{colors.green.700}',
-            },
-          },
-          textBody: {
-            value: {
-              base: '{colors.green.600}',
-              _dark: '{colors.green.200}',
-            },
-          },
-
-          // Accent
-          accent: {
-            value: {
-              base: '{colors.amber.500}',
-              _dark: '{colors.amber.500}',
-            },
-          },
-          accentLight: {
-            value: {
-              base: '{colors.amber.100}',
-              _dark: '{colors.amber.100}',
-            },
-          },
-          accentDark: {
-            value: {
-              base: '{colors.amber.700}',
-              _dark: '{colors.amber.700}',
-            },
-          },
-          accentGlow: {
-            value: {
-              base: '{colors.amber.glow}',
-              _dark: '{colors.amber.glow}',
-            },
-          },
-
-          // Borders
-          border: {
-            value: {
-              base: '{colors.green.200}',
-              _dark: '{colors.green.600}',
-            },
-          },
-          borderSubtle: {
-            value: {
-              base: '{colors.green.100}',
-              _dark: '{colors.green.700}',
-            },
-          },
-
-          // Signal — terracotta for loss/deflation
-          signal: {
-            value: {
-              base: '{colors.terracotta.500}',
-              _dark: '{colors.terracotta.500}',
-            },
-          },
+          bg: { value: { base: '#111C28', _light: '{colors.neutral.50}' } },
+          bgCard: { value: { base: '#192535', _light: '#FFFFFF' } },
+          bgOverlay: { value: { base: '#0E1720', _light: '{colors.neutral.100}' } },
+          text: { value: { base: '{colors.neutral.50}', _light: '{colors.neutral.700}' } },
+          textSecondary: { value: { base: '{colors.neutral.300}', _light: '{colors.neutral.600}' } },
+          textMuted: { value: { base: '{colors.neutral.500}', _light: '{colors.neutral.400}' } },
+          accent: { value: '{colors.accent.DEFAULT}' },
+          accentLight: { value: '{colors.accent.light}' },
+          accentDark: { value: '{colors.accent.dark}' },
+          accentGlow: { value: 'rgba(168, 192, 64, 0.10)' },
+          seafoam: { value: '{colors.seafoam.DEFAULT}' },
+          seafoamLight: { value: '{colors.seafoam.light}' },
+          seafoamDark: { value: '{colors.seafoam.dark}' },
+          seafoamGlow: { value: 'rgba(74, 164, 148, 0.10)' },
+          border: { value: { base: '{colors.neutral.600}', _light: '{colors.neutral.300}' } },
+          borderMuted: { value: { base: '{colors.neutral.700}', _light: '{colors.neutral.200}' } },
         },
       },
+    },
+  },
+  globalCss: {
+    '*': {
+      margin: '0',
+      padding: '0',
+      boxSizing: 'border-box',
+    },
+    html: {
+      colorScheme: 'dark light',
+    },
+    body: {
+      fontFamily: 'body',
+      fontSize: 'base',
+      lineHeight: 'normal',
+      color: 'text',
+      backgroundColor: 'bg',
+      transition: 'background-color 200ms ease, color 200ms ease',
+    },
+    a: {
+      color: 'accent',
+      textDecoration: 'none',
+      transition: 'color 150ms ease',
+    },
+    'a:hover': {
+      color: 'textSecondary',
+    },
+    button: {
+      fontFamily: 'body',
+      fontSize: 'base',
+      cursor: 'pointer',
+      transition: 'all 150ms ease',
+    },
+    'input, textarea, select': {
+      fontFamily: 'body',
+      fontSize: 'base',
+    },
+    'h1, h2, h3, h4, h5, h6': {
+      fontFamily: 'heading',
+      fontWeight: '600',
+      lineHeight: 'tight',
     },
   },
 })
