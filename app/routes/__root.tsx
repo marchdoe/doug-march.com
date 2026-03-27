@@ -1,7 +1,7 @@
 import '../styles/panda.css'
-import { createRootRoute, Outlet, Link, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
-import type { ReactNode } from 'react'
+import { createRootRoute, Link, Outlet, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
+import { styled } from '../../styled-system/jsx'
 
 const THEME_INIT_SCRIPT = `(function(){
   var s=localStorage.getItem('theme');
@@ -9,24 +9,31 @@ const THEME_INIT_SCRIPT = `(function(){
   document.documentElement.classList.add(p);
 })();`
 
-function RootDocument({ children }: { children: ReactNode }) {
+const notFoundComponent = () => (
+  <RootComponent>
+    <div style={{ padding: '2rem', textAlign: 'center' }}>
+      <h1>Page not found</h1>
+      <p>
+        <Link to="/">Start Over</Link>
+      </p>
+    </div>
+  </RootComponent>
+)
+
+const RootComponent = ({ children }: { children: React.ReactNode }) => (
+  <RootDocument>
+    <Layout>{children}</Layout>
+  </RootDocument>
+)
+
+const RootDocument = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html>
+    <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="color-scheme" content="light dark" />
         <HeadContent />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Sans:wght@300;400&display=swap"
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: THEME_INIT_SCRIPT,
-          }}
-        />
       </head>
       <body>
         {children}
@@ -37,48 +44,32 @@ function RootDocument({ children }: { children: ReactNode }) {
   )
 }
 
-function RootComponent() {
-  return (
-    <RootDocument>
-      <Layout>
-        <Outlet />
-      </Layout>
-    </RootDocument>
-  )
+function head() {
+  return {
+    links: [
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=IBM+Plex+Sans:wght@400;500&display=swap',
+      },
+    ],
+    scripts: [{ children: THEME_INIT_SCRIPT }],
+  }
 }
 
-function notFoundComponent() {
+function Root() {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        padding: '2rem',
-      }}
-    >
-      <div style={{ textAlign: 'center' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '1rem' }}>404</h1>
-        <p style={{ fontSize: '1.25rem', marginBottom: '1.5rem' }}>Page not found</p>
-        <Link to="/">Go home</Link>
-      </div>
-    </div>
+    <RootComponent>
+      <Outlet />
+    </RootComponent>
   )
 }
 
 export const Route = createRootRoute({
-  component: RootComponent,
+  head,
+  component: Root,
   notFoundComponent,
-  head: () => ({
-    meta: [
-      {
-        charSet: 'utf-8',
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
-      },
-    ],
-  }),
 })
+
+export { ScrollRestoration, Scripts } from '@tanstack/react-router'
