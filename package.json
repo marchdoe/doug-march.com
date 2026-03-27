@@ -2,6 +2,7 @@
   "name": "dougmarch",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.14.0",
   "imports": {
     "#/*": "./app/*"
   },
