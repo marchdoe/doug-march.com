@@ -31,3 +31,7 @@ signals/today.brief.md
 references/*.png
 references/*.jpg
 references/*.jpeg
+
+# Build/pipeline artifacts
+test-results/
+themes/
