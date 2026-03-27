@@ -444,12 +444,47 @@ function ArchiveDetailPage() {
         )}
       </section>
 
+      {/* ── Screenshot ──────────────────────────────────────── */}
+      {detail.hasScreenshot && (
+        <section
+          style={{
+            maxWidth: 720,
+            margin: '0 auto',
+            padding: '0 48px 48px',
+          }}
+        >
+          <p
+            style={{
+              fontVariant: 'all-small-caps',
+              letterSpacing: '0.15em',
+              fontSize: 12,
+              color: 'var(--colors-text-dim, #888)',
+              marginBottom: 24,
+            }}
+          >
+            PREVIEW
+          </p>
+          <img
+            src={`/archive/${detail.date}.png`}
+            alt={`Screenshot of ${detail.archetype} design from ${detail.date}`}
+            style={{
+              width: '100%',
+              border: '1px solid var(--colors-border, #e0e0e0)',
+              borderRadius: 4,
+            }}
+          />
+        </section>
+      )}
+
       {/* ── Section 4: Actions ──────────────────────────────────────── */}
       <section
         style={{
           maxWidth: 720,
           margin: '0 auto',
           padding: '0 48px 120px',
+          display: 'flex',
+          gap: 24,
+          alignItems: 'center',
         }}
       >
         <Link
@@ -462,7 +497,18 @@ function ArchiveDetailPage() {
         >
           ← Back to Archive
         </Link>
-        {/* TODO: "View archived site" link — requires serving archived HTML snapshots */}
+        <a
+          href={`/archive/${detail.date}/index.html`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontSize: 14,
+            color: 'var(--colors-accent, #666)',
+            textDecoration: 'none',
+          }}
+        >
+          View archived site ↗
+        </a>
       </section>
     </>
   )
