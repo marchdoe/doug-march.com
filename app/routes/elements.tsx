@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Layout } from '../components/Layout'
 import { SectionHead } from '../components/SectionHead'
 import { FeaturedProject } from '../components/FeaturedProject'
 import { ProjectRow } from '../components/ProjectRow'
@@ -262,24 +261,24 @@ const spacingScale: { name: string; value: string }[] = [
 
 const demoRowFull: Project = {
   slug: 'demo-full',
-  title: 'Project Alpha',
+  title: 'FishSticks',
   type: 'SaaS',
-  year: 2023,
+  year: 2025,
   depth: 'full',
 }
 
 const demoRowLight: Project = {
   slug: 'demo-light',
-  title: 'AI Side Project',
-  type: 'AI',
-  year: 2024,
+  title: 'Politweets',
+  type: 'Experiment',
+  year: 2008,
   depth: 'lightweight',
   externalUrl: 'https://example.com',
 }
 
 function Elements() {
   return (
-    <Layout>
+    <>
       <PageTitle>ELEMENTS</PageTitle>
       <PageDesc>The building blocks of this site — design tokens and components from the elements/ preset.</PageDesc>
 
@@ -375,6 +374,6 @@ function Elements() {
           <NfBackLink>← BACK TO WORK</NfBackLink>
         </NfWrap>
       </Section>
-    </Layout>
+    </>
   )
 }
