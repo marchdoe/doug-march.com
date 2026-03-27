@@ -1,4 +1,5 @@
-import { mkdir, writeFile } from 'fs/promises'
+import { mkdir, writeFile, readFile } from 'fs/promises'
+import { existsSync } from 'fs'
 import path from 'path'
 import { ROOT } from './file-manager.js'
 import { captureSnapshot } from './snapshot.js'
@@ -123,6 +124,24 @@ export async function archive(date, signals, rationale, designBrief, changedFile
   await writeFile(path.join(buildDir, 'build.json'), JSON.stringify(buildMeta, null, 2), 'utf8')
   console.log(`  archived to archive/${dateStr}/build-${buildId}/`)
 
+  // Save the interpreted signals brief if it exists
+  const signalsBriefSrc = path.join(ROOT, 'signals', 'today.brief.md')
+  if (existsSync(signalsBriefSrc)) {
+    try {
+      const signalsBrief = await readFile(signalsBriefSrc, 'utf8')
+      await writeFile(path.join(buildDir, 'signals-brief.md'), signalsBrief, 'utf8')
+    } catch { /* signals brief read failed — non-blocking */ }
+  }
+
+  // Save the design tokens preset
+  const presetSrc = path.join(ROOT, 'elements', 'preset.ts')
+  if (existsSync(presetSrc)) {
+    try {
+      const preset = await readFile(presetSrc, 'utf8')
+      await writeFile(path.join(buildDir, 'preset.ts'), preset, 'utf8')
+    } catch { /* preset read failed — non-blocking */ }
+  }
+
   // Also save/overwrite the top-level brief.md as the "latest" for backwards compatibility
   // (the Design Director reads archive/{date}/brief.md)
   const latestBriefPath = path.join(dir, 'brief.md')
@@ -133,5 +152,36 @@ export async function archive(date, signals, rationale, designBrief, changedFile
     await captureSnapshot(dateStr, buildId)
   } catch (err) {
     console.warn(`  snapshot failed (non-blocking): ${err.message}`)
+  }
+
+  // Capture a thumbnail screenshot into the build directory (best-effort)
+  try {
+    const { spawnSync } = await import('child_process')
+    const net = await import('net')
+    const portOpen = await new Promise(resolve => {
+      const sock = new net.Socket()
+      sock.setTimeout(2000)
+      sock.once('connect', () => { sock.destroy(); resolve(true) })
+      sock.once('error', () => resolve(false))
+      sock.once('timeout', () => { sock.destroy(); resolve(false) })
+      sock.connect(5173, '127.0.0.1')
+    })
+    if (portOpen) {
+      const screenshotPath = path.join(buildDir, 'screenshot.png')
+      const result = spawnSync('node', [
+        path.join(ROOT, 'scripts', 'capture-reference.js'),
+        '--port=5173',
+        `--output=${screenshotPath}`,
+      ], { timeout: 45000 })
+      if (result.status === 0) {
+        console.log(`  screenshot saved to build-${buildId}/screenshot.png`)
+      } else {
+        console.warn(`  screenshot capture failed (non-blocking)`)
+      }
+    } else {
+      console.log(`  dev server not running, skipping screenshot`)
+    }
+  } catch (err) {
+    console.warn(`  screenshot failed (non-blocking): ${err.message}`)
   }
 }
