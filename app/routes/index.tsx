@@ -1,509 +1,594 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { css } from '../../styled-system/css'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 import { identity } from '../content/about'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
+const sectionLabel = css({
+  fontFamily: 'heading',
+  fontSize: 'xs',
+  color: 'textMuted',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  fontWeight: '600',
+  display: 'block',
+  marginBottom: '3',
+})
+
+const cellLabel = css({
+  fontFamily: 'heading',
+  fontSize: 'xs',
+  color: 'textMuted',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  fontWeight: '600',
+  display: 'block',
+  marginBottom: '4',
+})
+
 function HomePage() {
+  const fp = featuredProject
+  const fp2 = selectedWork[0]
+  const fp3 = selectedWork[1]
+  const indexWork = selectedWork.slice(2)
+  const allIndexWork = [...(fp2 ? [] : []), ...indexWork]
+  const workListItems = selectedWork
+
   return (
-    <div>
+    <main>
+      {/* Gallery Wall Grid */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(12, 1fr)',
+          gridAutoRows: 'minmax(72px, auto)',
+          gap: '16px',
+          padding: '24px',
+          maxWidth: '1200px',
+          margin: '0 auto',
+        }}
+      >
 
-      {/* ── Band 1: Opening Day Declaration ── */}
-      <div className="band-pad" style={{
-        backgroundColor: '#19130D',
-        padding: '72px 48px 80px',
-        minHeight: '38vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-      }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%' }}>
-          <div style={{
-            fontSize: '9px',
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: '#6A5840',
-            fontFamily: '"DM Sans", sans-serif',
-            marginBottom: '20px',
-          }}>
-            March 26, 2026
-          </div>
-          <h1
-            className="opening-day-hed"
-            style={{
-              fontFamily: '"DM Sans", sans-serif',
-              fontSize: 'clamp(52px, 9vw, 100px)',
-              fontWeight: 500,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: '#E8950E',
-              lineHeight: 0.95,
-              marginBottom: '28px',
-            }}
-          >
-            Opening Day
-          </h1>
-          <p style={{
-            fontFamily: '"DM Sans", sans-serif',
-            fontSize: '12px',
-            letterSpacing: '0.10em',
-            textTransform: 'uppercase',
-            color: '#B5A98D',
-          }}>
-            First Pitch · The Ritual Returns
-          </p>
-        </div>
-      </div>
-
-      {/* ── Band 2: Identity + Work ── */}
-      <div className="band-pad" style={{
-        backgroundColor: '#EEE8DF',
-        padding: '96px 48px',
-      }}>
+        {/* ── ZONE 1: Identity / Hero ── cols 1/8, rows 1/5 */}
         <div
-          className="band-inner-grid"
           style={{
-            maxWidth: '1100px',
-            margin: '0 auto',
-            display: 'grid',
-            gridTemplateColumns: '1fr 300px',
-            gap: '72px',
-            alignItems: 'start',
+            gridColumn: '1 / 8',
+            gridRow: '1 / 5',
+            minHeight: '296px',
+            background: '#192535',
+            padding: '32px 40px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
           }}
         >
-          {/* Left: Identity + Featured Project */}
           <div>
-            {/* Identity */}
-            <div style={{ marginBottom: '72px' }}>
-              <div style={{
-                fontSize: '9px',
-                letterSpacing: '0.18em',
+            <h1
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 'clamp(44px, 5vw, 64px)',
+                fontWeight: 700,
+                lineHeight: 1.0,
+                letterSpacing: '-0.03em',
+                color: '#EEF2F8',
+                marginBottom: '16px',
+              }}
+            >
+              {identity.name}
+            </h1>
+            <p
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: '12px',
+                fontWeight: 400,
+                color: '#4B6478',
+                letterSpacing: '0.14em',
                 textTransform: 'uppercase',
-                color: '#907A5C',
-                fontFamily: '"DM Sans", sans-serif',
-                marginBottom: '20px',
-              }}>
-                Product Designer &amp; Developer
-              </div>
-              <p style={{
-                fontFamily: '"Lora", serif',
-                fontSize: '21px',
+                marginBottom: '24px',
+              }}
+            >
+              {identity.role}
+            </p>
+            <p
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: '16px',
+                fontWeight: 300,
+                color: '#93A8BC',
                 lineHeight: 1.55,
-                color: '#48392C',
-                maxWidth: '560px',
-              }}>
-                {identity.statement}
-              </p>
-            </div>
-
-            {/* Featured Project */}
-            {featuredProject && (
-              <div>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
-                  marginBottom: '32px',
-                }}>
-                  <span style={{
-                    fontSize: '9px',
-                    letterSpacing: '0.18em',
-                    textTransform: 'uppercase',
-                    color: '#907A5C',
-                    fontFamily: '"DM Sans", sans-serif',
-                  }}>
-                    Featured
-                  </span>
-                  <div style={{ flex: 1, height: '1px', backgroundColor: '#D8CEBD' }} />
-                </div>
-
-                <a
-                  className="project-link"
-                  href={featuredProject.externalUrl || `/work/${featuredProject.slug}`}
-                  target={featuredProject.externalUrl ? '_blank' : undefined}
-                  rel={featuredProject.externalUrl ? 'noopener noreferrer' : undefined}
-                >
-                  <h2 style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: 'clamp(38px, 5vw, 60px)',
-                    fontWeight: 600,
-                    color: '#2D241A',
-                    lineHeight: 0.95,
-                    letterSpacing: '-0.02em',
-                    marginBottom: '28px',
-                    transition: 'color 0.2s',
-                  }}>
-                    {featuredProject.title}
-                  </h2>
-                </a>
-
-                {featuredProject.problem && (
-                  <p style={{
-                    fontFamily: '"Lora", serif',
-                    fontSize: '16px',
-                    color: '#6A5840',
-                    lineHeight: 1.55,
-                    maxWidth: '520px',
-                    marginBottom: '24px',
-                  }}>
-                    {featuredProject.problem}
-                  </p>
-                )}
-
-                <div style={{
-                  display: 'flex',
-                  gap: '16px',
-                  alignItems: 'center',
-                }}>
-                  <span style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '11px',
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    color: '#907A5C',
-                  }}>
-                    {featuredProject.type}
-                  </span>
-                  <span style={{
-                    width: '3px',
-                    height: '3px',
-                    borderRadius: '50%',
-                    backgroundColor: '#B5A98D',
-                    display: 'inline-block',
-                  }} />
-                  <span style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '11px',
-                    letterSpacing: '0.08em',
-                    color: '#907A5C',
-                  }}>
-                    {featuredProject.year}
-                  </span>
-                  {featuredProject.externalUrl && (
-                    <>
-                      <span style={{
-                        width: '3px',
-                        height: '3px',
-                        borderRadius: '50%',
-                        backgroundColor: '#B5A98D',
-                        display: 'inline-block',
-                      }} />
-                      <a
-                        href={featuredProject.externalUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          fontFamily: '"DM Sans", sans-serif',
-                          fontSize: '11px',
-                          letterSpacing: '0.08em',
-                          textTransform: 'uppercase',
-                          color: '#E8950E',
-                          textDecoration: 'none',
-                        }}
-                      >
-                        View Project ↗
-                      </a>
-                    </>
-                  )}
-                </div>
-              </div>
-            )}
+                maxWidth: '440px',
+              }}
+            >
+              {identity.statement}
+            </p>
           </div>
-
-          {/* Right: Work List */}
-          <div>
-            {/* Selected Work */}
-            <div style={{ marginBottom: '48px' }}>
-              <div style={{
+          <div
+            style={{
+              display: 'flex',
+              gap: '24px',
+              alignItems: 'center',
+            }}
+          >
+            <a
+              href="/about"
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
                 fontSize: '9px',
-                letterSpacing: '0.18em',
+                color: '#4B6478',
+                letterSpacing: '0.14em',
                 textTransform: 'uppercase',
-                color: '#907A5C',
-                fontFamily: '"DM Sans", sans-serif',
-                marginBottom: '20px',
-                paddingBottom: '12px',
-                borderBottom: '1px solid #D8CEBD',
-              }}>
-                Selected Work
-              </div>
-              {selectedWork.map((project) => (
-                <a
-                  key={project.slug}
-                  href={`/work/${project.slug}`}
-                  className="work-row"
+                transition: 'color 150ms ease',
+              }}
+              className="nav-link"
+            >
+              About
+            </a>
+            <span style={{ color: '#1F3346', fontSize: '9px' }}>·</span>
+            <span
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: '11px',
+                color: '#4B6478',
+                letterSpacing: '0.04em',
+              }}
+            >
+              2026
+            </span>
+          </div>
+        </div>
+
+        {/* ── ZONE 2: Score Callout ── cols 8/11, rows 1/2 */}
+        <div
+          style={{
+            gridColumn: '8 / 11',
+            gridRow: '1 / 2',
+            height: '72px',
+            borderLeft: '1px solid #344D62',
+            paddingLeft: '16px',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '12px',
+              fontWeight: 400,
+              color: '#93A8BC',
+              letterSpacing: '0.08em',
+              fontVariantNumeric: 'tabular-nums',
+            }}
+          >
+            P 129–108 / T 8–2
+          </span>
+        </div>
+
+        {/* ── ZONE 3: Experiments Mini ── cols 8/11, rows 2/5 */}
+        <div
+          style={{
+            gridColumn: '8 / 11',
+            gridRow: '2 / 5',
+            padding: '20px 20px 20px 20px',
+            borderLeft: '1px solid #1F3346',
+          }}
+        >
+          <span className={cellLabel}>Experiments</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            {experiments.slice(0, 5).map((exp) => (
+              <a
+                key={exp.slug}
+                href={exp.externalUrl || `/work/${exp.slug}`}
+                target={exp.externalUrl ? '_blank' : undefined}
+                rel={exp.externalUrl ? 'noopener noreferrer' : undefined}
+                className="experiment-link"
+              >
+                <span style={{ color: '#93A8BC' }}>{exp.title}</span>
+                <span
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontSize: '9px',
+                    color: '#4B6478',
+                    letterSpacing: '0.08em',
+                    marginLeft: '8px',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
                 >
+                  {exp.year}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* ── ZONE 4: Quote Interruption ── cols 11/13, rows 1/7 */}
+        <div
+          style={{
+            gridColumn: '11 / 13',
+            gridRow: '1 / 7',
+            minHeight: '432px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+          }}
+        >
+          <span
+            style={{
+              writingMode: 'vertical-rl',
+              transform: 'rotate(180deg)',
+              fontFamily: "'DM Sans', sans-serif",
+              fontWeight: 300,
+              fontSize: '11px',
+              color: '#4B6478',
+              letterSpacing: '0.04em',
+              lineHeight: 1.75,
+              whiteSpace: 'normal',
+              maxHeight: '400px',
+              userSelect: 'none',
+            }}
+          >
+            Even if you persuade me, you won't persuade me
+          </span>
+        </div>
+
+        {/* ── ZONE 5: Featured Project 1 (Spaceman) ── cols 1/6, rows 5/10 */}
+        {fp && (
+          <a
+            href={fp.liveUrl || fp.externalUrl || `/work/${fp.slug}`}
+            target={fp.externalUrl ? '_blank' : undefined}
+            rel={fp.externalUrl ? 'noopener noreferrer' : undefined}
+            className="gallery-cell-project"
+            style={{
+              gridColumn: '1 / 6',
+              gridRow: '5 / 10',
+              minHeight: '360px',
+              padding: '28px 32px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+              textDecoration: 'none',
+            }}
+          >
+            <div>
+              <span className={cellLabel}>Featured</span>
+              <h2
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: 'clamp(32px, 3.5vw, 50px)',
+                  fontWeight: 700,
+                  lineHeight: 1.05,
+                  letterSpacing: '-0.03em',
+                  color: '#EEF2F8',
+                  marginBottom: '20px',
+                }}
+              >
+                {fp.title}
+              </h2>
+              {fp.problem && (
+                <p
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '16px',
+                    fontWeight: 300,
+                    color: '#93A8BC',
+                    lineHeight: 1.55,
+                    maxWidth: '380px',
+                  }}
+                >
+                  {fp.problem}
+                </p>
+              )}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '9px',
+                  color: '#4B6478',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {fp.type}
+              </span>
+              <span
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '9px',
+                  color: '#A8C040',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                {fp.year} →
+              </span>
+            </div>
+          </a>
+        )}
+
+        {/* ── ZONE 6: Featured Project 2 ── cols 6/11, rows 5/8 — SEAFOAM BORDER */}
+        {fp2 && (
+          <a
+            href={`/work/${fp2.slug}`}
+            className="gallery-cell-project"
+            style={{
+              gridColumn: '6 / 11',
+              gridRow: '5 / 8',
+              minHeight: '216px',
+              padding: '24px 28px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              borderLeft: '2px solid #4AA494',
+              boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+              textDecoration: 'none',
+            }}
+          >
+            <div>
+              <span
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '9px',
+                  color: '#4AA494',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginBottom: '12px',
+                }}
+              >
+                {fp2.type}
+              </span>
+              <h3
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '28px',
+                  fontWeight: 700,
+                  lineHeight: 1.05,
+                  letterSpacing: '-0.03em',
+                  color: '#EEF2F8',
+                  marginBottom: '12px',
+                }}
+              >
+                {fp2.title}
+              </h3>
+              {fp2.problem && (
+                <p
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '14px',
+                    fontWeight: 300,
+                    color: '#93A8BC',
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {fp2.problem.length > 100 ? fp2.problem.slice(0, 100) + '…' : fp2.problem}
+                </p>
+              )}
+            </div>
+            <span
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: '9px',
+                color: '#4B6478',
+                letterSpacing: '0.08em',
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
+              {fp2.year}
+            </span>
+          </a>
+        )}
+
+        {/* ── ZONE 7: Featured Project 3 ── cols 6/13, rows 8/11 */}
+        {fp3 && (
+          <a
+            href={`/work/${fp3.slug}`}
+            className="gallery-cell-project"
+            style={{
+              gridColumn: '6 / 13',
+              gridRow: '8 / 11',
+              minHeight: '216px',
+              padding: '24px 32px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+              textDecoration: 'none',
+            }}
+          >
+            <div>
+              <span
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '9px',
+                  color: '#4B6478',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginBottom: '12px',
+                }}
+              >
+                {fp3.type}
+              </span>
+              <h3
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: 'clamp(21px, 2.5vw, 37px)',
+                  fontWeight: 700,
+                  lineHeight: 1.05,
+                  letterSpacing: '-0.03em',
+                  color: '#EEF2F8',
+                  marginBottom: '12px',
+                }}
+              >
+                {fp3.title}
+              </h3>
+              {fp3.problem && (
+                <p
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '14px',
+                    fontWeight: 300,
+                    color: '#93A8BC',
+                    lineHeight: 1.55,
+                    maxWidth: '480px',
+                  }}
+                >
+                  {fp3.problem.length > 120 ? fp3.problem.slice(0, 120) + '…' : fp3.problem}
+                </p>
+              )}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+              <span
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '9px',
+                  color: '#4B6478',
+                  letterSpacing: '0.08em',
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
+                {fp3.year}
+              </span>
+              {fp3.role && (
+                <span
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: '11px',
+                    color: '#4B6478',
+                  }}
+                >
+                  {fp3.role}
+                </span>
+              )}
+            </div>
+          </a>
+        )}
+
+        {/* ── ZONE 8: Work Index ── cols 1/6, rows 10/13 */}
+        <div
+          style={{
+            gridColumn: '1 / 6',
+            gridRow: '10 / 13',
+            padding: '24px 0 24px 0',
+          }}
+        >
+          <span className={sectionLabel}>Selected Work</span>
+          <div>
+            {workListItems.map((project, i) => (
+              <a
+                key={project.slug}
+                href={`/work/${project.slug}`}
+                className="work-row"
+                style={{ textDecoration: 'none' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
                   <span
-                    className="work-row-title"
                     style={{
-                      fontFamily: '"DM Sans", sans-serif',
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: '11px',
+                      color: '#4B6478',
+                      letterSpacing: '0.08em',
+                      fontVariantNumeric: 'tabular-nums',
+                      minWidth: '24px',
+                    }}
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
                       fontSize: '15px',
-                      fontWeight: 500,
-                      color: '#2D241A',
-                      transition: 'color 0.2s',
+                      fontWeight: 600,
+                      color: '#EEF2F8',
+                      letterSpacing: '-0.01em',
                     }}
                   >
                     {project.title}
                   </span>
-                  <span style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '11px',
-                    color: '#907A5C',
-                    fontVariantNumeric: 'tabular-nums',
-                  }}>
-                    {project.year}
-                  </span>
-                </a>
-              ))}
-            </div>
-
-            {/* Experiments */}
-            <div>
-              <div style={{
-                fontSize: '9px',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: '#907A5C',
-                fontFamily: '"DM Sans", sans-serif',
-                marginBottom: '20px',
-                paddingBottom: '12px',
-                borderBottom: '1px solid #D8CEBD',
-              }}>
-                Experiments
-              </div>
-              {experiments.map((exp) => (
-                <a
-                  key={exp.slug}
-                  href={exp.externalUrl || exp.liveUrl || `/work/${exp.slug}`}
-                  target={exp.externalUrl || exp.liveUrl ? '_blank' : undefined}
-                  rel={exp.externalUrl || exp.liveUrl ? 'noopener noreferrer' : undefined}
-                  className="exp-row"
-                >
+                </div>
+                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                   <span
-                    className="exp-row-title"
                     style={{
-                      fontFamily: '"DM Sans", sans-serif',
-                      fontSize: '14px',
-                      color: '#48392C',
-                      transition: 'color 0.2s',
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: '11px',
+                      color: '#4B6478',
                     }}
                   >
-                    {exp.title}
+                    {project.type}
                   </span>
-                  <span style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '11px',
-                    color: '#907A5C',
-                    fontVariantNumeric: 'tabular-nums',
-                  }}>
-                    {exp.year}
+                  <span
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: '11px',
+                      color: '#4B6478',
+                      letterSpacing: '0.08em',
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
+                    {project.year}
                   </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* ── ZONE 9: Contact / Elsewhere ── cols 6/13, rows 11/13 */}
+        <div
+          style={{
+            gridColumn: '6 / 13',
+            gridRow: '11 / 13',
+            padding: '24px 32px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            gap: '16px',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              borderTop: '1px solid #1F3346',
+              paddingTop: '20px',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: '9px',
+                color: '#4B6478',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Doug March — {new Date().getFullYear()}
+            </span>
+            <div style={{ display: 'flex', gap: '24px' }}>
+              {[
+                { label: 'GitHub', href: 'https://github.com' },
+                { label: 'Email', href: 'mailto:doug@example.com' },
+                { label: 'About', href: '/about' },
+              ].map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target={link.href.startsWith('http') ? '_blank' : undefined}
+                  rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className="nav-link"
+                >
+                  {link.label}
                 </a>
               ))}
             </div>
           </div>
         </div>
+
       </div>
-
-      {/* ── Band 3: Signals Triptych ── */}
-      <div className="band-pad" style={{
-        backgroundColor: '#F8F5F0',
-        padding: '72px 48px',
-        borderTop: '1px solid #D8CEBD',
-        borderBottom: '1px solid #D8CEBD',
-      }}>
-        <div
-          className="signals-grid"
-          style={{
-            maxWidth: '1100px',
-            margin: '0 auto',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gap: '0',
-          }}
-        >
-          {/* Golf */}
-          <div style={{ paddingRight: '48px', borderRight: '1px solid #D8CEBD' }}>
-            <div style={{
-              fontSize: '9px',
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: '#907A5C',
-              fontFamily: '"DM Sans", sans-serif',
-              marginBottom: '24px',
-            }}>
-              Houston Open
-            </div>
-            <div className="leaderboard-row">
-              <span style={{ fontFamily: '"DM Sans", sans-serif', fontSize: '14px', color: '#2D241A' }}>
-                Burns
-              </span>
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                <span style={{ fontFamily: '"DM Sans", sans-serif', fontSize: '14px', fontWeight: 600, color: '#2D241A' }}>
-                  −5
-                </span>
-                <span style={{ fontFamily: '"DM Sans", sans-serif', fontSize: '11px', color: '#907A5C', letterSpacing: '0.05em' }}>
-                  R3
-                </span>
-              </div>
-            </div>
-            <div style={{ height: '1px', backgroundColor: '#D8CEBD', margin: '0' }} />
-            <div className="leaderboard-row">
-              <span style={{ fontFamily: '"DM Sans", sans-serif', fontSize: '14px', color: '#2D241A' }}>
-                Waring
-              </span>
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                <span style={{ fontFamily: '"DM Sans", sans-serif', fontSize: '14px', fontWeight: 600, color: '#2D241A' }}>
-                  −5
-                </span>
-                <span style={{ fontFamily: '"DM Sans", sans-serif', fontSize: '11px', color: '#907A5C', letterSpacing: '0.05em' }}>
-                  R3
-                </span>
-              </div>
-            </div>
-            <p style={{
-              fontFamily: '"DM Sans", sans-serif',
-              fontSize: '9px',
-              color: '#907A5C',
-              letterSpacing: '0.10em',
-              marginTop: '16px',
-            }}>
-              Tied for the lead
-            </p>
-          </div>
-
-          {/* Weather */}
-          <div style={{ paddingLeft: '48px', paddingRight: '48px', borderRight: '1px solid #D8CEBD' }}>
-            <div style={{
-              fontSize: '9px',
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: '#907A5C',
-              fontFamily: '"DM Sans", sans-serif',
-              marginBottom: '24px',
-            }}>
-              Weather
-            </div>
-            <div style={{
-              fontFamily: '"DM Sans", sans-serif',
-              fontSize: '38px',
-              fontWeight: 600,
-              color: '#2D241A',
-              lineHeight: 1,
-              marginBottom: '16px',
-            }}>
-              73°
-            </div>
-            <div style={{
-              fontFamily: '"DM Sans", sans-serif',
-              fontSize: '12px',
-              color: '#6A5840',
-              letterSpacing: '0.05em',
-              marginBottom: '8px',
-            }}>
-              Sunny · SW Wind · 38% hum
-            </div>
-            <div style={{
-              fontFamily: '"DM Sans", sans-serif',
-              fontSize: '9px',
-              color: '#907A5C',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              marginTop: '20px',
-            }}>
-              Late March, no clouds — the palette on the page
-            </div>
-          </div>
-
-          {/* Editorial Aside */}
-          <div style={{ paddingLeft: '48px' }}>
-            <div style={{
-              fontSize: '9px',
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: '#907A5C',
-              fontFamily: '"DM Sans", sans-serif',
-              marginBottom: '24px',
-            }}>
-              Noted
-            </div>
-            <p style={{
-              fontFamily: '"Lora", serif',
-              fontSize: '14px',
-              fontStyle: 'italic',
-              color: '#6A5840',
-              lineHeight: 1.55,
-            }}>
-              Disney's Sora contract — a billion dollars, cancelled on Opening Day. Some closures have a certain timing.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Band 4: Pull Quote ── */}
-      <div className="band-pad" style={{
-        backgroundColor: '#D8CEBD',
-        padding: '128px 48px',
-      }}>
-        <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-          <blockquote style={{
-            fontFamily: '"Lora", serif',
-            fontSize: 'clamp(28px, 4vw, 50px)',
-            fontStyle: 'italic',
-            color: '#2D241A',
-            lineHeight: 1.85,
-            margin: 0,
-          }}>
-            Closing your eyes and listening to silence is self-care.
-          </blockquote>
-          <div style={{
-            marginTop: '48px',
-            fontFamily: '"DM Sans", sans-serif',
-            fontSize: '12px',
-            color: '#907A5C',
-            letterSpacing: '0.10em',
-          }}>
-            — March 26, 2026
-          </div>
-        </div>
-      </div>
-
-      {/* ── Band 5: Footer ── */}
-      <div className="band-pad" style={{
-        backgroundColor: '#2D241A',
-        padding: '64px 48px',
-      }}>
-        <div style={{
-          maxWidth: '1100px',
-          margin: '0 auto',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'baseline',
-          gap: '32px',
-        }}>
-          <div style={{ display: 'flex', gap: '48px', alignItems: 'baseline' }}>
-            <a href="/" style={{
-              fontFamily: '"DM Sans", sans-serif',
-              fontSize: '15px',
-              fontWeight: 500,
-              color: '#B5A98D',
-              textDecoration: 'none',
-            }}>
-              Doug March
-            </a>
-            <a href="/about" className="footer-link">About</a>
-          </div>
-          <div style={{
-            fontFamily: '"DM Sans", sans-serif',
-            fontSize: '11px',
-            letterSpacing: '0.10em',
-            textTransform: 'uppercase',
-            color: '#B5A98D',
-          }}>
-            S&amp;P +0.56%
-          </div>
-        </div>
-      </div>
-
-    </div>
+    </main>
   )
 }

@@ -1,380 +1,400 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { identity, personal } from '../content/about'
+import { css } from '../../styled-system/css'
 import { timeline, capabilities, education } from '../content/timeline'
+import { identity, personal } from '../content/about'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
+const sectionLabel = css({
+  fontFamily: 'heading',
+  fontSize: 'xs',
+  color: 'textMuted',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  fontWeight: '600',
+  display: 'block',
+  marginBottom: '6',
+})
+
 function AboutPage() {
   return (
-    <div>
-
-      {/* ── Band 1: Identity Header ── */}
-      <div style={{
-        backgroundColor: '#19130D',
-        padding: '80px 48px 88px',
-      }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div style={{
-            fontSize: '9px',
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: '#6A5840',
-            fontFamily: '"DM Sans", sans-serif',
-            marginBottom: '20px',
-          }}>
+    <main>
+      <div
+        style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '24px',
+        }}
+      >
+        {/* Statement band */}
+        <div
+          style={{
+            background: '#192535',
+            padding: '48px 56px',
+            marginBottom: '16px',
+            boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: '9px',
+              color: '#4B6478',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              marginBottom: '20px',
+            }}
+          >
             {identity.role}
-          </div>
-          <h1 style={{
-            fontFamily: '"DM Sans", sans-serif',
-            fontSize: 'clamp(42px, 6vw, 72px)',
-            fontWeight: 500,
-            color: '#F8F5F0',
-            lineHeight: 0.95,
-            letterSpacing: '-0.02em',
-            marginBottom: '40px',
-          }}>
+          </p>
+          <h1
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              fontSize: 'clamp(32px, 4vw, 50px)',
+              fontWeight: 700,
+              lineHeight: 1.05,
+              letterSpacing: '-0.03em',
+              color: '#EEF2F8',
+              marginBottom: '28px',
+              maxWidth: '800px',
+            }}
+          >
             {identity.name}
           </h1>
-          <p style={{
-            fontFamily: '"Lora", serif',
-            fontSize: '21px',
-            lineHeight: 1.55,
-            color: '#D8CEBD',
-            maxWidth: '600px',
-          }}>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: '18px',
+              fontWeight: 300,
+              color: '#93A8BC',
+              lineHeight: 1.75,
+              maxWidth: '640px',
+            }}
+          >
             {identity.statement}
           </p>
         </div>
-      </div>
 
-      {/* ── Band 2: Timeline ── */}
-      <div style={{
-        backgroundColor: '#EEE8DF',
-        padding: '96px 48px',
-      }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
+        {/* Two-column zone: Timeline + Sidebar info */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 340px',
             gap: '16px',
-            marginBottom: '48px',
-          }}>
-            <span style={{
-              fontSize: '9px',
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: '#907A5C',
-              fontFamily: '"DM Sans", sans-serif',
-            }}>
-              Career
-            </span>
-            <div style={{ flex: 1, height: '1px', backgroundColor: '#D8CEBD' }} />
-          </div>
-
-          <div>
-            {timeline.map((entry, i) => (
-              <div
-                key={`${entry.year}-${entry.company}-${i}`}
-                className="timeline-entry"
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '80px 1fr',
-                  gap: '40px',
-                  padding: '32px 0',
-                }}
-              >
-                <div style={{
-                  fontFamily: '"DM Sans", sans-serif',
-                  fontSize: '12px',
-                  color: entry.current ? '#E8950E' : '#907A5C',
-                  letterSpacing: '0.05em',
-                  paddingTop: '2px',
-                  fontVariantNumeric: 'tabular-nums',
-                }}>
-                  {entry.year}
-                </div>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-                    <span style={{
-                      fontFamily: '"DM Sans", sans-serif',
-                      fontSize: '16px',
-                      fontWeight: 500,
-                      color: '#2D241A',
-                    }}>
-                      {entry.role}
+          }}
+        >
+          {/* Timeline */}
+          <div
+            style={{
+              background: '#192535',
+              padding: '36px 40px',
+              boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+            }}
+          >
+            <span className={sectionLabel}>Timeline</span>
+            <div>
+              {timeline.map((entry) => (
+                <div
+                  key={entry.year + entry.company}
+                  style={{
+                    display: 'flex',
+                    gap: '32px',
+                    padding: '16px 0',
+                    borderBottom: '1px solid #1F3346',
+                  }}
+                >
+                  <div
+                    style={{
+                      minWidth: '52px',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontSize: '11px',
+                        color: entry.current ? '#A8C040' : '#4B6478',
+                        letterSpacing: '0.08em',
+                        fontVariantNumeric: 'tabular-nums',
+                        fontWeight: entry.current ? 600 : 400,
+                      }}
+                    >
+                      {entry.year}
                     </span>
-                    {entry.current && (
-                      <span style={{
-                        fontFamily: '"DM Sans", sans-serif',
-                        fontSize: '9px',
-                        letterSpacing: '0.10em',
-                        textTransform: 'uppercase',
-                        color: '#E8950E',
-                        border: '1px solid #E8950E',
-                        padding: '2px 6px',
-                      }}>
-                        Now
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '4px' }}>
+                      <span
+                        style={{
+                          fontFamily: "'Space Grotesk', sans-serif",
+                          fontSize: '15px',
+                          fontWeight: 600,
+                          color: '#EEF2F8',
+                          letterSpacing: '-0.01em',
+                        }}
+                      >
+                        {entry.role}
                       </span>
-                    )}
-                  </div>
-                  <div style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '14px',
-                    color: '#907A5C',
-                    marginBottom: '8px',
-                    letterSpacing: '0.02em',
-                  }}>
-                    {entry.company}
-                  </div>
-                  <p style={{
-                    fontFamily: '"Lora", serif',
-                    fontSize: '15px',
-                    color: '#6A5840',
-                    lineHeight: 1.55,
-                  }}>
-                    {entry.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Education */}
-          {education && (
-            <div style={{ marginTop: '48px', paddingTop: '48px', borderTop: '1px solid #D8CEBD' }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                marginBottom: '32px',
-              }}>
-                <span style={{
-                  fontSize: '9px',
-                  letterSpacing: '0.18em',
-                  textTransform: 'uppercase',
-                  color: '#907A5C',
-                  fontFamily: '"DM Sans", sans-serif',
-                }}>
-                  Education
-                </span>
-                <div style={{ flex: 1, height: '1px', backgroundColor: '#D8CEBD' }} />
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: '40px' }}>
-                <div style={{
-                  fontFamily: '"DM Sans", sans-serif',
-                  fontSize: '12px',
-                  color: '#907A5C',
-                  letterSpacing: '0.05em',
-                }}>
-                  {education.years}
-                </div>
-                <div>
-                  <div style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '16px',
-                    fontWeight: 500,
-                    color: '#2D241A',
-                    marginBottom: '4px',
-                  }}>
-                    {education.degree}
-                  </div>
-                  <div style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '14px',
-                    color: '#907A5C',
-                    marginBottom: '4px',
-                  }}>
-                    {education.school}
-                  </div>
-                  {education.concentration && (
-                    <div style={{
-                      fontFamily: '"Lora", serif',
-                      fontSize: '14px',
-                      fontStyle: 'italic',
-                      color: '#6A5840',
-                    }}>
-                      {education.concentration}
+                      {entry.current && (
+                        <span
+                          style={{
+                            fontFamily: "'Space Grotesk', sans-serif",
+                            fontSize: '8px',
+                            color: '#A8C040',
+                            letterSpacing: '0.14em',
+                            textTransform: 'uppercase',
+                            padding: '2px 6px',
+                            border: '1px solid #7A9022',
+                          }}
+                        >
+                          Now
+                        </span>
+                      )}
                     </div>
-                  )}
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: '13px',
+                        color: '#4AA494',
+                        display: 'block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      {entry.company}
+                    </span>
+                    <p
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: '14px',
+                        fontWeight: 300,
+                        color: '#4B6478',
+                        lineHeight: 1.55,
+                      }}
+                    >
+                      {entry.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ── Band 3: Capabilities + Personal ── */}
-      <div style={{
-        backgroundColor: '#F8F5F0',
-        padding: '96px 48px',
-        borderTop: '1px solid #D8CEBD',
-      }}>
-        <div style={{
-          maxWidth: '1100px',
-          margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '80px',
-          alignItems: 'start',
-        }}>
-          {/* Capabilities */}
-          <div>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '16px',
-              marginBottom: '32px',
-            }}>
-              <span style={{
-                fontSize: '9px',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: '#907A5C',
-                fontFamily: '"DM Sans", sans-serif',
-              }}>
-                Capabilities
-              </span>
-              <div style={{ flex: 1, height: '1px', backgroundColor: '#D8CEBD' }} />
-            </div>
-            <div style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '8px',
-            }}>
-              {capabilities.map((cap) => (
-                <span key={cap} className="capability-tag">
-                  {cap}
-                </span>
               ))}
             </div>
-          </div>
 
-          {/* Personal */}
-          <div>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '16px',
-              marginBottom: '32px',
-            }}>
-              <span style={{
-                fontSize: '9px',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: '#907A5C',
-                fontFamily: '"DM Sans", sans-serif',
-              }}>
-                Personal
-              </span>
-              <div style={{ flex: 1, height: '1px', backgroundColor: '#D8CEBD' }} />
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              <div>
-                <div style={{
-                  fontFamily: '"DM Sans", sans-serif',
-                  fontSize: '9px',
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: '#907A5C',
-                  marginBottom: '6px',
-                }}>
-                  Currently
-                </div>
-                <p style={{
-                  fontFamily: '"Lora", serif',
-                  fontSize: '15px',
-                  color: '#6A5840',
-                  lineHeight: 1.55,
-                }}>
-                  {personal.currentFocus}
-                </p>
-              </div>
-              <div>
-                <div style={{
-                  fontFamily: '"DM Sans", sans-serif',
-                  fontSize: '9px',
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: '#907A5C',
-                  marginBottom: '6px',
-                }}>
-                  Sport
-                </div>
-                <p style={{
-                  fontFamily: '"DM Sans", sans-serif',
-                  fontSize: '15px',
-                  color: '#2D241A',
-                }}>
-                  {personal.sport}
-                  {personal.holesInOne > 0 && (
-                    <span style={{ color: '#907A5C', fontSize: '13px', marginLeft: '8px' }}>
-                      {personal.holesInOne} hole{personal.holesInOne > 1 ? 's' : ''} in one
+            {/* Education */}
+            {education && (
+              <div style={{ marginTop: '32px' }}>
+                <span className={sectionLabel}>Education</span>
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '32px',
+                    paddingTop: '8px',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: '11px',
+                      color: '#4B6478',
+                      letterSpacing: '0.08em',
+                      minWidth: '52px',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {education.years}
+                  </span>
+                  <div>
+                    <span
+                      style={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontSize: '15px',
+                        fontWeight: 600,
+                        color: '#EEF2F8',
+                        display: 'block',
+                        marginBottom: '4px',
+                      }}
+                    >
+                      {education.school}
                     </span>
-                  )}
-                </p>
-              </div>
-              {personal.teams && personal.teams.length > 0 && (
-                <div>
-                  <div style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '9px',
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    color: '#907A5C',
-                    marginBottom: '6px',
-                  }}>
-                    Teams
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: '13px',
+                        color: '#4B6478',
+                      }}
+                    >
+                      {education.degree} — {education.concentration}
+                    </span>
                   </div>
-                  <p style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '15px',
-                    color: '#2D241A',
-                  }}>
-                    {personal.teams.join(' · ')}
-                  </p>
                 </div>
-              )}
+              </div>
+            )}
+          </div>
+
+          {/* Right column: Capabilities + Personal */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+            {/* Capabilities */}
+            <div
+              style={{
+                background: '#192535',
+                padding: '28px 28px',
+                boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+              }}
+            >
+              <span className={sectionLabel}>Capabilities</span>
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '8px',
+                }}
+              >
+                {capabilities.map((cap) => (
+                  <span
+                    key={cap}
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: '12px',
+                      fontWeight: 300,
+                      color: '#93A8BC',
+                      padding: '4px 10px',
+                      border: '1px solid #1F3346',
+                      letterSpacing: '0.04em',
+                    }}
+                  >
+                    {cap}
+                  </span>
+                ))}
+              </div>
             </div>
+
+            {/* Personal */}
+            <div
+              style={{
+                background: '#192535',
+                padding: '28px 28px',
+                boxShadow: '0 2px 4px rgba(8,18,26,0.7), 0 6px 16px rgba(8,18,26,0.45)',
+              }}
+            >
+              <span className={sectionLabel}>Personal</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ borderBottom: '1px solid #1F3346', paddingBottom: '16px' }}>
+                  <span
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: '9px',
+                      color: '#4B6478',
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      display: 'block',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    Currently
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: '14px',
+                      fontWeight: 300,
+                      color: '#93A8BC',
+                      lineHeight: 1.55,
+                    }}
+                  >
+                    {personal.currentFocus}
+                  </span>
+                </div>
+                <div style={{ borderBottom: '1px solid #1F3346', paddingBottom: '16px' }}>
+                  <span
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: '9px',
+                      color: '#4B6478',
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      display: 'block',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    Teams
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: '14px',
+                      fontWeight: 300,
+                      color: '#93A8BC',
+                    }}
+                  >
+                    {personal.teams.join(', ')}
+                  </span>
+                </div>
+                <div>
+                  <span
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: '9px',
+                      color: '#4B6478',
+                      letterSpacing: '0.14em',
+                      textTransform: 'uppercase',
+                      display: 'block',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    {personal.sport}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: '14px',
+                      fontWeight: 300,
+                      color: '#93A8BC',
+                    }}
+                  >
+                    {personal.holesInOne} hole{personal.holesInOne !== 1 ? 's' : ''} in one
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Quote panel */}
+            <div
+              style={{
+                padding: '28px',
+                borderLeft: '1px solid #1F3346',
+                flex: 1,
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontWeight: 300,
+                  fontSize: '13px',
+                  color: '#4B6478',
+                  lineHeight: 1.75,
+                  letterSpacing: '0.04em',
+                  fontStyle: 'italic',
+                }}
+              >
+                Even if you persuade me,<br />you won't persuade me.
+              </p>
+              <span
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontSize: '9px',
+                  color: '#344D62',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  display: 'block',
+                  marginTop: '12px',
+                }}
+              >
+                Aristophanes
+              </span>
+            </div>
+
           </div>
         </div>
       </div>
-
-      {/* ── Footer ── */}
-      <div style={{
-        backgroundColor: '#2D241A',
-        padding: '64px 48px',
-      }}>
-        <div style={{
-          maxWidth: '1100px',
-          margin: '0 auto',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'baseline',
-        }}>
-          <div style={{ display: 'flex', gap: '48px', alignItems: 'baseline' }}>
-            <a href="/" style={{
-              fontFamily: '"DM Sans", sans-serif',
-              fontSize: '15px',
-              fontWeight: 500,
-              color: '#B5A98D',
-              textDecoration: 'none',
-            }}>
-              Doug March
-            </a>
-            <a href="/" className="footer-link">Work</a>
-          </div>
-          <div style={{
-            fontFamily: '"DM Sans", sans-serif',
-            fontSize: '11px',
-            letterSpacing: '0.10em',
-            textTransform: 'uppercase',
-            color: '#6A5840',
-          }}>
-            {new Date().getFullYear()}
-          </div>
-        </div>
-      </div>
-
-    </div>
+    </main>
   )
 }

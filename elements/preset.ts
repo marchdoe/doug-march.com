@@ -2,308 +2,151 @@ import { definePreset } from '@pandacss/dev'
 
 export const elementsPreset = definePreset({
   name: 'elements',
-
   conditions: {
     extend: {
-      _light: '[class~="light"] &',
-      _dark: '[class~="dark"] &',
+      _light: '[data-color-mode=light] &',
     },
   },
-
+  theme: {
+    extend: {
+      tokens: {
+        colors: {
+          neutral: {
+            50: { value: '#EEF2F8' },
+            100: { value: '#DCE4EE' },
+            200: { value: '#BECDD9' },
+            300: { value: '#93A8BC' },
+            400: { value: '#6A85A0' },
+            500: { value: '#4B6478' },
+            600: { value: '#344D62' },
+            700: { value: '#1F3346' },
+            800: { value: '#131F2E' },
+            900: { value: '#0A1319' },
+          },
+          accent: {
+            light: { value: '#C9D97A' },
+            DEFAULT: { value: '#A8C040' },
+            dark: { value: '#7A9022' },
+          },
+          seafoam: {
+            light: { value: '#7EC8B8' },
+            DEFAULT: { value: '#4AA494' },
+            dark: { value: '#2C7064' },
+          },
+        },
+        fonts: {
+          heading: { value: '"Space Grotesk", sans-serif' },
+          body: { value: '"DM Sans", sans-serif' },
+        },
+        fontSizes: {
+          '2xs': { value: '7px' },
+          xs: { value: '9px' },
+          sm: { value: '12px' },
+          base: { value: '16px' },
+          md: { value: '21px' },
+          lg: { value: '28px' },
+          xl: { value: '37px' },
+          '2xl': { value: '50px' },
+        },
+        lineHeights: {
+          tight: { value: '1.05' },
+          snug: { value: '1.20' },
+          normal: { value: '1.55' },
+          loose: { value: '1.75' },
+        },
+        letterSpacings: {
+          tight: { value: '-0.03em' },
+          normal: { value: '-0.01em' },
+          wide: { value: '0.04em' },
+          wider: { value: '0.08em' },
+          widest: { value: '0.14em' },
+        },
+        spacing: {
+          0: { value: '0px' },
+          1: { value: '4px' },
+          2: { value: '8px' },
+          3: { value: '12px' },
+          4: { value: '16px' },
+          5: { value: '20px' },
+          6: { value: '24px' },
+          7: { value: '28px' },
+          8: { value: '32px' },
+          9: { value: '36px' },
+          10: { value: '40px' },
+          12: { value: '48px' },
+          16: { value: '64px' },
+          24: { value: '96px' },
+        },
+        shadows: {
+          cell: { value: '0 2px 4px rgba(8, 18, 26, 0.7), 0 6px 16px rgba(8, 18, 26, 0.45)' },
+          none: { value: 'none' },
+        },
+        radii: {
+          none: { value: '0px' },
+          sm: { value: '2px' },
+        },
+      },
+      semanticTokens: {
+        colors: {
+          bg: { value: { base: '#111C28', _light: '{colors.neutral.50}' } },
+          bgCard: { value: { base: '#192535', _light: '#FFFFFF' } },
+          bgOverlay: { value: { base: '#0E1720', _light: '{colors.neutral.100}' } },
+          text: { value: { base: '{colors.neutral.50}', _light: '{colors.neutral.700}' } },
+          textSecondary: { value: { base: '{colors.neutral.300}', _light: '{colors.neutral.600}' } },
+          textMuted: { value: { base: '{colors.neutral.500}', _light: '{colors.neutral.400}' } },
+          accent: { value: '{colors.accent.DEFAULT}' },
+          accentLight: { value: '{colors.accent.light}' },
+          accentDark: { value: '{colors.accent.dark}' },
+          accentGlow: { value: 'rgba(168, 192, 64, 0.10)' },
+          seafoam: { value: '{colors.seafoam.DEFAULT}' },
+          seafoamLight: { value: '{colors.seafoam.light}' },
+          seafoamDark: { value: '{colors.seafoam.dark}' },
+          seafoamGlow: { value: 'rgba(74, 164, 148, 0.10)' },
+          border: { value: { base: '{colors.neutral.600}', _light: '{colors.neutral.300}' } },
+          borderMuted: { value: { base: '{colors.neutral.700}', _light: '{colors.neutral.200}' } },
+        },
+      },
+    },
+  },
   globalCss: {
     '*': {
-      boxSizing: 'border-box',
       margin: '0',
       padding: '0',
+      boxSizing: 'border-box',
     },
     html: {
-      fontSize: '16px',
+      colorScheme: 'dark light',
     },
     body: {
       fontFamily: 'body',
-      background: 'bg',
-      color: 'text',
+      fontSize: 'base',
       lineHeight: 'normal',
-      minHeight: '100vh',
-      WebkitFontSmoothing: 'antialiased',
-      MozOsxFontSmoothing: 'grayscale',
-    },
-    'h1, h2, h3, h4, h5, h6': {
-      fontFamily: 'heading',
-      lineHeight: 'snug',
+      color: 'text',
+      backgroundColor: 'bg',
+      transition: 'background-color 200ms ease, color 200ms ease',
     },
     a: {
       color: 'accent',
       textDecoration: 'none',
+      transition: 'color 150ms ease',
     },
     'a:hover': {
-      textDecoration: 'underline',
+      color: 'textSecondary',
     },
-  },
-
-  theme: {
-    tokens: {
-      colors: {
-        stone: {
-          50:  { value: '#F8F5F0' },
-          100: { value: '#EEE8DF' },
-          200: { value: '#D8CEBD' },
-          300: { value: '#B5A98D' },
-          400: { value: '#907A5C' },
-          500: { value: '#6A5840' },
-          600: { value: '#48392C' },
-          700: { value: '#2D241A' },
-          800: { value: '#19130D' },
-          900: { value: '#0F0B07' },
-        },
-        amber: {
-          light:   { value: '#F5C97A' },
-          DEFAULT: { value: '#E8950E' },
-          dark:    { value: '#A86B05' },
-          glow:    { value: 'rgba(232, 149, 14, 0.10)' },
-        },
-      },
-
-      fonts: {
-        heading: { value: '"DM Sans", sans-serif' },
-        body:    { value: '"Lora", Georgia, serif' },
-        mono:    { value: '"JetBrains Mono", "Fira Code", monospace' },
-      },
-
-      fontSizes: {
-        '2xs': { value: '0.5625rem' },   /* 9px  */
-        xs:    { value: '0.75rem' },      /* 12px */
-        sm:    { value: '1rem' },         /* 16px */
-        base:  { value: '1.3125rem' },   /* 21px */
-        md:    { value: '1.75rem' },      /* 28px */
-        lg:    { value: '2.375rem' },     /* 38px */
-        xl:    { value: '3.125rem' },     /* 50px */
-        '2xl': { value: '4.1875rem' },   /* 67px */
-      },
-
-      fontWeights: {
-        regular: { value: '400' },
-        medium:  { value: '500' },
-        semibold:{ value: '600' },
-        bold:    { value: '700' },
-      },
-
-      lineHeights: {
-        tight:  { value: '0.95' },
-        snug:   { value: '1.2' },
-        normal: { value: '1.55' },
-        loose:  { value: '1.85' },
-      },
-
-      letterSpacings: {
-        tight:   { value: '-0.02em' },
-        normal:  { value: '0em' },
-        wide:    { value: '0.05em' },
-        wider:   { value: '0.10em' },
-        widest:  { value: '0.18em' },
-      },
-
-      spacing: {
-        px:  { value: '1px' },
-        1:   { value: '4px' },
-        2:   { value: '8px' },
-        3:   { value: '12px' },
-        4:   { value: '16px' },
-        6:   { value: '24px' },
-        8:   { value: '32px' },
-        10:  { value: '40px' },
-        12:  { value: '48px' },
-        16:  { value: '64px' },
-        18:  { value: '72px' },
-        20:  { value: '80px' },
-        24:  { value: '96px' },
-        32:  { value: '128px' },
-      },
-
-      radii: {
-        none: { value: '0px' },
-        sm:   { value: '0px' },
-        md:   { value: '0px' },
-        lg:   { value: '0px' },
-        full: { value: '0px' },
-      },
-
-      shadows: {
-        none: { value: 'none' },
-        sm:   { value: 'none' },
-        md:   { value: 'none' },
-        lg:   { value: 'none' },
-      },
-
-      sizes: {
-        content:   { value: '1100px' },
-        sidebar:   { value: '320px' },
-        quotebox:  { value: '720px' },
-        rowHeight: { value: '44px' },
-      },
-
-      borders: {
-        hairline: { value: '1px solid' },
-      },
-
-      zIndex: {
-        base:    { value: '0' },
-        raised:  { value: '10' },
-        nav:     { value: '100' },
-        overlay: { value: '200' },
-      },
+    button: {
+      fontFamily: 'body',
+      fontSize: 'base',
+      cursor: 'pointer',
+      transition: 'all 150ms ease',
     },
-
-    semanticTokens: {
-      colors: {
-        /* ── Page backgrounds ── */
-        bg: {
-          value: {
-            base:   '{colors.stone.800}',
-            _light: '{colors.stone.100}',
-          },
-        },
-        bgDeep: {
-          value: {
-            base:   '{colors.stone.900}',
-            _light: '{colors.stone.50}',
-          },
-        },
-        bgCard: {
-          value: {
-            base:   '{colors.stone.700}',
-            _light: '{colors.stone.50}',
-          },
-        },
-        bgMuted: {
-          value: {
-            base:   '{colors.stone.700}',
-            _light: '{colors.stone.200}',
-          },
-        },
-        bgSubtle: {
-          value: {
-            base:   '{colors.stone.800}',
-            _light: '{colors.stone.50}',
-          },
-        },
-
-        /* ── Band-specific backgrounds ── */
-        bgBandDark: {
-          value: {
-            base:   '{colors.stone.900}',
-            _light: '{colors.stone.800}',
-          },
-        },
-        bgBandWarm: {
-          value: {
-            base:   '{colors.stone.700}',
-            _light: '{colors.stone.100}',
-          },
-        },
-        bgBandLight: {
-          value: {
-            base:   '{colors.stone.800}',
-            _light: '{colors.stone.50}',
-          },
-        },
-        bgBandStone: {
-          value: {
-            base:   '{colors.stone.700}',
-            _light: '{colors.stone.200}',
-          },
-        },
-        bgBandFooter: {
-          value: {
-            base:   '{colors.stone.900}',
-            _light: '{colors.stone.700}',
-          },
-        },
-
-        /* ── Text ── */
-        text: {
-          value: {
-            base:   '{colors.stone.50}',
-            _light: '{colors.stone.700}',
-          },
-        },
-        textSecondary: {
-          value: {
-            base:   '{colors.stone.200}',
-            _light: '{colors.stone.500}',
-          },
-        },
-        textMuted: {
-          value: {
-            base:   '{colors.stone.300}',
-            _light: '{colors.stone.400}',
-          },
-        },
-        textOnDark: {
-          value: {
-            base:   '{colors.stone.50}',
-            _light: '{colors.stone.50}',
-          },
-        },
-        textSecondaryOnDark: {
-          value: {
-            base:   '{colors.stone.200}',
-            _light: '{colors.stone.200}',
-          },
-        },
-        textMutedOnDark: {
-          value: {
-            base:   '{colors.stone.300}',
-            _light: '{colors.stone.300}',
-          },
-        },
-
-        /* ── Accent ── */
-        accent: {
-          value: {
-            base:   '{colors.amber.DEFAULT}',
-            _light: '{colors.amber.DEFAULT}',
-          },
-        },
-        accentLight: {
-          value: {
-            base:   '{colors.amber.light}',
-            _light: '{colors.amber.light}',
-          },
-        },
-        accentDark: {
-          value: {
-            base:   '{colors.amber.dark}',
-            _light: '{colors.amber.dark}',
-          },
-        },
-        accentGlow: {
-          value: {
-            base:   '{colors.amber.glow}',
-            _light: '{colors.amber.glow}',
-          },
-        },
-
-        /* ── Borders ── */
-        border: {
-          value: {
-            base:   '{colors.stone.600}',
-            _light: '{colors.stone.200}',
-          },
-        },
-        borderSubtle: {
-          value: {
-            base:   '{colors.stone.700}',
-            _light: '{colors.stone.200}',
-          },
-        },
-        borderOnDark: {
-          value: {
-            base:   '{colors.stone.300}',
-            _light: '{colors.stone.300}',
-          },
-        },
-      },
+    'input, textarea, select': {
+      fontFamily: 'body',
+      fontSize: 'base',
+    },
+    'h1, h2, h3, h4, h5, h6': {
+      fontFamily: 'heading',
+      fontWeight: '600',
+      lineHeight: 'tight',
     },
   },
 })
