@@ -29,7 +29,7 @@ if (!output) {
 
 const browser = await chromium.launch({ headless: true })
 const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
-await page.goto(`http://localhost:${port}/`, { waitUntil: 'load', timeout: 15000 })
+await page.goto(`http://localhost:${port}/`, { waitUntil: 'domcontentloaded', timeout: 30000 })
 await page.waitForTimeout(1500) // wait for fonts/CSS
 const screenshot = await page.screenshot({ type: 'png', fullPage: false })
 await browser.close()

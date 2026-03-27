@@ -17,20 +17,20 @@ export type Education = {
 
 export const timeline: TimelineEntry[] = [
   {
-    year: 'Jan 2025 —',
+    year: '2025 —',
     role: '',
     company: 'iCapital',
     description: '',
     current: true,
   },
   {
-    year: 'Mar 2022 — Jan 2025',
+    year: '2022 — 2025',
     role: '',
     company: 'Parallel Markets',
     description: 'Acquired by iCapital in January 2025.',
   },
   {
-    year: 'May 2020 — Mar 2022',
+    year: '2020 — 2022',
     role: '',
     company: 'Mandiant',
     description: '',
@@ -42,7 +42,7 @@ export const timeline: TimelineEntry[] = [
     description: 'Independent design and engineering practice. Clients included Jeffrey Zeldman, Rolex, The Nature Conservancy, Sapient Razorfish, bswift, RTIC Coolers, Framebridge, Intuit, LastPass, WorkAround, and others.',
   },
   {
-    year: 'Apr — Dec 2018',
+    year: '2018',
     role: 'Sr. Frontend Engineer',
     company: 'The Atlantic',
     description: 'Led the initiative to build a design system within the product team, encouraging sharing and reuse of code across all Atlantic properties.',
@@ -53,7 +53,7 @@ export const timeline: TimelineEntry[] = [
     technologies: ['Fractal', 'Nunjucks', 'SCSS', 'JavaScript', 'Python'],
   },
   {
-    year: 'Mar — Aug 2017',
+    year: '2017',
     role: 'Sr. Frontend Engineer',
     company: 'Territory Foods',
     description: 'Led the rebrand of the consumer-facing site from Power Supply to Territory Foods, and built a React component library documented via Storybook.',
@@ -78,7 +78,7 @@ export const timeline: TimelineEntry[] = [
     technologies: ['ReactJS', 'Ruby on Rails', 'SCSS', 'PostCSS', 'Storybook', 'Sketch'],
   },
   {
-    year: 'Jan — Jul 2014',
+    year: '2014',
     role: 'Director of Engineering',
     company: 'Interfolio',
     description: 'Responsible for directly managing, supporting, and providing direction and leadership to the engineering team and other members of the product team.',

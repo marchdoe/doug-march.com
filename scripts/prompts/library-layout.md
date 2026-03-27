@@ -167,11 +167,11 @@ Everything is a list. Dense, systematic, programmatic. The data is the aesthetic
 │  Doug March — Designer & Developer              [date] │
 ├───────────────────────────────────────────────────────┤
 │  WORK                                                  │
-│  001  Spaceman            2024  Design, Dev   →        │
-│  002  Project Alpha       2024  Strategy      →        │
+│  001  Spaceman            2018  Founder        →        │
+│  002  FishSticks          2025  SaaS           →        │
 ├───────────────────────────────────────────────────────┤
 │  EXPERIMENTS                                           │
-│  E01  Three.js canvas     ongoing              →       │
+│  E01  Politweets          2008                  →       │
 └───────────────────────────────────────────────────────┘
 ```
 
