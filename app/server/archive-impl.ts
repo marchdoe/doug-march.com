@@ -10,6 +10,8 @@ export interface ArchiveEntry {
   brief: string
   rationale: string
   filesChanged: string[]
+  archetype: string
+  buildId: string
 }
 
 export function _readArchiveHandler(archivePath = ARCHIVE_PATH): ArchiveEntry[] {
@@ -18,7 +20,27 @@ export function _readArchiveHandler(archivePath = ARCHIVE_PATH): ArchiveEntry[] 
   return readdirSync(archivePath, { withFileTypes: true })
     .filter(d => d.isDirectory())
     .map(d => {
-      const briefPath = join(archivePath, d.name, 'brief.md')
+      const dateDir = join(archivePath, d.name)
+
+      // Read archetype
+      const archetypePath = join(dateDir, 'archetype.txt')
+      const archetype = existsSync(archetypePath)
+        ? readFileSync(archetypePath, 'utf8').trim()
+        : ''
+
+      // Find latest build directory
+      const builds = readdirSync(dateDir, { withFileTypes: true })
+        .filter(b => b.isDirectory() && b.name.startsWith('build-'))
+        .map(b => b.name)
+        .sort()
+        .reverse()
+      const latestBuild = builds[0]
+      const buildId = latestBuild?.replace('build-', '') ?? ''
+
+      // Read brief.md from build dir if available, else from date dir
+      const briefPath = latestBuild
+        ? join(dateDir, latestBuild, 'brief.md')
+        : join(dateDir, 'brief.md')
       if (!existsSync(briefPath)) return null
       const content = readFileSync(briefPath, 'utf8')
       const lines = content.split('\n')
@@ -53,9 +75,10 @@ export function _readArchiveHandler(archivePath = ARCHIVE_PATH): ArchiveEntry[] 
         brief: briefLine.slice('**Design Brief:** '.length).trim(),
         rationale,
         filesChanged,
+        archetype,
+        buildId,
       }
     })
     .filter((e): e is ArchiveEntry => e !== null)
     .sort((a, b) => b.date.localeCompare(a.date))
-    .slice(0, 10)
 }

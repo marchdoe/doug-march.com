@@ -8,14 +8,23 @@ import { _readArchiveHandler } from '../../app/server/archive-impl.js'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const FIXTURES_DIR = resolve(__dirname, '../fixtures/archive')
 
-function writeArchiveEntry(date: string, brief: string) {
+function writeArchiveEntry(date: string, brief: string, opts?: { archetype?: string; buildId?: string }) {
   const dir = resolve(FIXTURES_DIR, date)
   mkdirSync(dir, { recursive: true })
-  writeFileSync(
-    resolve(dir, 'brief.md'),
-    `# ${date}\n\n**Design Brief:** ${brief}\n\n## Signals\n`,
-    'utf8'
-  )
+
+  if (opts?.archetype) {
+    writeFileSync(resolve(dir, 'archetype.txt'), opts.archetype, 'utf8')
+  }
+
+  const briefContent = `# ${date}\n\n**Design Brief:** ${brief}\n\n## Signals\n`
+
+  if (opts?.buildId) {
+    const buildDir = resolve(dir, `build-${opts.buildId}`)
+    mkdirSync(buildDir, { recursive: true })
+    writeFileSync(resolve(buildDir, 'brief.md'), briefContent, 'utf8')
+  } else {
+    writeFileSync(resolve(dir, 'brief.md'), briefContent, 'utf8')
+  }
 }
 
 afterEach(() => {
@@ -52,11 +61,25 @@ describe('_readArchiveHandler', () => {
     expect(result).toHaveLength(0)
   })
 
-  it('returns at most 10 entries', () => {
+  it('returns all entries without a limit', () => {
     for (let i = 1; i <= 12; i++) {
       writeArchiveEntry(`2026-03-${String(i).padStart(2, '0')}`, `Design ${i}`)
     }
     const result = _readArchiveHandler(FIXTURES_DIR)
-    expect(result).toHaveLength(10)
+    expect(result).toHaveLength(12)
+  })
+
+  it('includes archetype and buildId fields', () => {
+    writeArchiveEntry('2026-03-14', 'Brutalist design', { archetype: 'Specimen', buildId: '1234567890' })
+    const result = _readArchiveHandler(FIXTURES_DIR)
+    expect(result[0].archetype).toBe('Specimen')
+    expect(result[0].buildId).toBe('1234567890')
+  })
+
+  it('defaults archetype and buildId to empty string when missing', () => {
+    writeArchiveEntry('2026-03-14', 'Simple design')
+    const result = _readArchiveHandler(FIXTURES_DIR)
+    expect(result[0].archetype).toBe('')
+    expect(result[0].buildId).toBe('')
   })
 })
