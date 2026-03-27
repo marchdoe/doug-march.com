@@ -1,3 +1,10 @@
+export type Client = {
+  name: string
+  logo?: string // local path e.g. '/clients/intuit.svg'; omit for name-only display
+  url?: string
+  description?: string
+}
+
 export type ProjectType =
   | 'SaaS'
   | 'Design'
@@ -27,4 +34,6 @@ export type Project = {
   githubUrl?: string
   // Lightweight fields
   description?: string
+  // Client list (e.g. Spaceman)
+  clients?: Client[]
 }

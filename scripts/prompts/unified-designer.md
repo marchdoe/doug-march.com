@@ -15,8 +15,8 @@ A personal portfolio for Doug March — Product Designer & Developer. The site h
 
 **Portfolio (the primary content — this is a portfolio site):**
 - One featured project (Spaceman) — title, problem statement, external link
-- Selected work (Project Alpha, etc.) — each has: title, type, year, slug, optional role/problem/approach/outcome/stack
-- Experiments (AI Side Project, etc.) — each has: title, type, year, link
+- Selected work (FishSticks, 15th Club, doug-march.com) — each has: title, type, year, slug, optional role/problem/approach/outcome/stack
+- Experiments (TeeTurn, Politweets, Twittertale) — each has: title, type, year, description
 
 **About (secondary content):**
 - Identity statement (name, role, statement)
@@ -135,7 +135,12 @@ type TimelineEntry = {
   current?: boolean; bullets?: string[]; technologies?: string[];
 }
 type Education = { school: string; degree: string; concentration: string; years: string }
-const timeline: TimelineEntry[]   // 8 entries from 2006 to present
+const timeline: TimelineEntry[]   // 11 entries from 2006 to present
+// LAYOUT: The `year` field is years only — ranges like "2014 — 2017" or single years
+// like "2017". The year column MUST have a fixed width (e.g. min-width: 120px or fixed
+// flex-basis) so that single-year entries ("2017") align identically to ranges
+// ("2014 — 2017"). The role/company columns must start at the same horizontal position
+// for every row regardless of year string length.
 const education: Education
 const capabilities: string[]
 
