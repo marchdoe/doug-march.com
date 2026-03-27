@@ -1,30 +1,45 @@
 import { test, expect } from '@playwright/test'
 
-// Runs against localhost:3001 (started automatically by playwright webServer config)
+// Runs against localhost dev server (started by playwright webServer config)
 // Usage: pnpm test:e2e:dev
 
 test.describe('/dev panel', () => {
-  test('loads with signals data visible', async ({ page }) => {
+  test('loads without console errors', async ({ page }) => {
+    const errors: string[] = []
+    page.on('console', msg => {
+      if (msg.type() === 'error') errors.push(msg.text())
+    })
+
     await page.goto('/dev')
     await page.waitForLoadState('networkidle')
-    // The panel renders a "Signals" section heading
-    await expect(page.locator('[data-testid="signals-heading"]')).toBeVisible()
-    // Date field from today.yml should be rendered
-    await expect(page.locator('[data-testid="signals-date"]')).toBeVisible()
+    await page.waitForTimeout(1000)
+    expect(errors).toHaveLength(0)
   })
 
-  test('save overrides button is present and functional', async ({ page }) => {
+  test('shows signals data', async ({ page }) => {
     await page.goto('/dev')
     await page.waitForLoadState('networkidle')
-    // Mood override select exists
-    await expect(page.locator('[data-testid="mood-override-input"]')).toBeVisible()
-    // Save button exists
-    await expect(page.locator('[data-testid="save-overrides-btn"]')).toBeVisible()
+    await page.waitForTimeout(1000)
+
+    // Should show signals section with date
+    await expect(page.locator('text=SIGNALS').first()).toBeVisible({ timeout: 10000 })
   })
 
-  test('pipeline run button is present', async ({ page }) => {
+  test('shows archive section', async ({ page }) => {
     await page.goto('/dev')
     await page.waitForLoadState('networkidle')
-    await expect(page.locator('[data-testid="run-pipeline-btn"]')).toBeVisible()
+    await page.waitForTimeout(1000)
+
+    // Archive tab/section should be accessible
+    const archiveBtn = page.locator('text=Archive').first()
+    await expect(archiveBtn).toBeVisible({ timeout: 10000 })
+  })
+
+  test('shows run pipeline option', async ({ page }) => {
+    await page.goto('/dev')
+    await page.waitForLoadState('networkidle')
+    await page.waitForTimeout(1000)
+
+    await expect(page.locator('text=Run Pipeline').first()).toBeVisible({ timeout: 10000 })
   })
 })

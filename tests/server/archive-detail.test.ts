@@ -75,4 +75,11 @@ describe('archive detail', () => {
     const result = _readArchiveDetail('9999-99-99', TEST_ARCHIVE)
     expect(result).toBeNull()
   })
+
+  it('returns null for path traversal attempts', () => {
+    // These should return null because the resolved path won't match a valid date dir
+    expect(_readArchiveDetail('../../etc', TEST_ARCHIVE)).toBeNull()
+    expect(_readArchiveDetail('../../../etc/passwd', TEST_ARCHIVE)).toBeNull()
+    expect(_readArchiveDetail('2099-01-01/../../etc', TEST_ARCHIVE)).toBeNull()
+  })
 })
