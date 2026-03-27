@@ -1,587 +1,385 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { projects } from '../content/projects'
-import type { Client } from '../content/types'
-import { Box, Flex, VStack } from '../../styled-system/jsx'
-import { css } from '../../styled-system/css'
-import { useState } from 'react'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-function ClientCard({ client }: { client: Client }) {
-  const [logoFailed, setLogoFailed] = useState(false)
-  const showLogo = !!client.logo && !logoFailed
-
-  const inner = (
-    <Box
-      style={{
-        height: '72px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '12px 16px',
-        background: '#f8faf7',
-        border: '1px solid #c9d5c4',
-        transition: 'background 150ms ease, border-color 150ms ease',
-      }}
-      className={css({
-        _hover: {
-          background: '#eaf0e6 !important',
-          borderColor: '#a3b49d !important',
-        },
-      })}
-    >
-      {showLogo ? (
-        <img
-          src={client.logo}
-          alt={client.name}
-          onError={() => setLogoFailed(true)}
-          style={{
-            maxHeight: '32px',
-            maxWidth: '100%',
-            objectFit: 'contain',
-            filter: 'grayscale(100%)',
-            opacity: 0.7,
-            transition: 'filter 150ms ease, opacity 150ms ease',
-          }}
-          className={css({
-            _hover: {
-              filter: 'grayscale(0%) !important',
-              opacity: '1 !important',
-            },
-          })}
-        />
-      ) : (
-        <Box
-          fontFamily="heading"
-          fontWeight="600"
-          fontSize="xs"
-          color="textSecondary"
-          style={{
-            textAlign: 'center',
-            letterSpacing: '0.02em',
-            lineHeight: '1.3',
-          }}
-        >
-          {client.name}
-        </Box>
-      )}
-    </Box>
-  )
-
-  if (client.url) {
-    return (
-      <a
-        href={client.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ textDecoration: 'none' }}
-      >
-        {inner}
-      </a>
-    )
-  }
-
-  return inner
-}
-
-function WorkDetailPage() {
+function ProjectPage() {
   const { slug } = Route.useParams()
-  const project = projects.find((p) => p.slug === slug)
+  const project = projects.find(p => p.slug === slug)
 
   if (!project) {
     return (
-      <Box
-        style={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '96px 48px',
-        }}
-      >
-        <Box
-          fontFamily="heading"
-          fontWeight="700"
-          fontSize="2xl"
-          color="text"
-          letterSpacing="tight"
-          lineHeight="tight"
-          style={{ textTransform: 'uppercase', marginBottom: '32px' }}
-        >
-          404
-        </Box>
-        <Box
-          fontFamily="body"
-          fontWeight="300"
-          fontSize="md"
-          color="textSecondary"
-          style={{ marginBottom: '32px' }}
-        >
-          Project not found.
-        </Box>
-        <a
-          href="/"
-          className={css({
-            fontFamily: 'body',
-            fontSize: 'sm',
-            color: 'accent',
+      <div style={{ backgroundColor: '#EEE8DF', minHeight: '80vh' }}>
+        <div style={{
+          maxWidth: '1100px',
+          margin: '0 auto',
+          padding: '128px 48px',
+        }}>
+          <div style={{
+            fontSize: '9px',
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color: '#907A5C',
+            fontFamily: '"DM Sans", sans-serif',
+            marginBottom: '20px',
+          }}>
+            404
+          </div>
+          <h1 style={{
+            fontFamily: '"DM Sans", sans-serif',
+            fontSize: '38px',
+            fontWeight: 500,
+            color: '#2D241A',
+            lineHeight: 1.2,
+            marginBottom: '24px',
+          }}>
+            Project not found
+          </h1>
+          <a href="/" style={{
+            fontFamily: '"DM Sans", sans-serif',
+            fontSize: '14px',
+            color: '#E8950E',
             textDecoration: 'none',
-            letterSpacing: 'wide',
-            transition: 'color 150ms ease',
-            _hover: { color: 'accentDark' },
-          })}
-        >
-          ← Back to work
-        </a>
-      </Box>
+            letterSpacing: '0.05em',
+          }}>
+            ← Back to work
+          </a>
+        </div>
+      </div>
     )
   }
 
+  const hasFullDepth = project.depth === 'full'
+
   return (
-    <Box as="main">
-      {/* ─── Hero ─── */}
-      <Box
-        as="section"
-        style={{
-          minHeight: '55vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          padding: '120px 48px 64px',
-          maxWidth: '960px',
-          margin: '0 auto',
-        }}
-      >
-        {/* Back link */}
-        <Box style={{ marginBottom: '48px' }}>
-          <a
-            href="/"
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '400',
-              fontSize: 'xs',
-              color: 'textMuted',
-              textDecoration: 'none',
-              letterSpacing: 'wide',
-              textTransform: 'uppercase',
-              transition: 'color 150ms ease',
-              _hover: { color: 'accent' },
-            })}
-          >
+    <div>
+
+      {/* ── Band 1: Project Header ── */}
+      <div style={{
+        backgroundColor: '#19130D',
+        padding: '80px 48px 88px',
+      }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <a href="/" style={{
+            fontFamily: '"DM Sans", sans-serif',
+            fontSize: '11px',
+            letterSpacing: '0.10em',
+            textTransform: 'uppercase',
+            color: '#6A5840',
+            textDecoration: 'none',
+            display: 'inline-block',
+            marginBottom: '40px',
+          }}>
             ← Work
           </a>
-        </Box>
 
-        {/* Type + Year */}
-        <Flex gap="4" align="center" style={{ marginBottom: '20px' }}>
-          <Box
-            fontFamily="body"
-            fontWeight="400"
-            fontSize="2xs"
-            color="accent"
-            letterSpacing="widest"
-            style={{ textTransform: 'uppercase' }}
-          >
-            {project.type}
-          </Box>
-          <Box
-            fontFamily="body"
-            fontWeight="300"
-            fontSize="2xs"
-            color="textMuted"
-            letterSpacing="widest"
-            style={{ fontVariantNumeric: 'tabular-nums' }}
-          >
-            {project.year}
-          </Box>
-          {project.featured && (
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              letterSpacing="widest"
-              style={{
-                textTransform: 'uppercase',
-                color: '#c97d1e',
-                borderLeft: '1px solid #c9d5c4',
-                paddingLeft: '12px',
-              }}
-            >
-              Featured
-            </Box>
-          )}
-        </Flex>
+          <div style={{
+            display: 'flex',
+            gap: '16px',
+            alignItems: 'center',
+            marginBottom: '24px',
+          }}>
+            <span style={{
+              fontFamily: '"DM Sans", sans-serif',
+              fontSize: '11px',
+              letterSpacing: '0.10em',
+              textTransform: 'uppercase',
+              color: '#907A5C',
+            }}>
+              {project.type}
+            </span>
+            <span style={{ color: '#6A5840', fontSize: '10px' }}>·</span>
+            <span style={{
+              fontFamily: '"DM Sans", sans-serif',
+              fontSize: '11px',
+              color: '#907A5C',
+              fontVariantNumeric: 'tabular-nums',
+            }}>
+              {project.year}
+            </span>
+          </div>
 
-        {/* Title */}
-        <Box
-          fontFamily="heading"
-          fontWeight="700"
-          fontSize="xl"
-          color="text"
-          letterSpacing="tight"
-          lineHeight="tight"
-          style={{ textTransform: 'uppercase', marginBottom: '24px' }}
-        >
-          {project.title}
-        </Box>
+          <h1 style={{
+            fontFamily: '"DM Sans", sans-serif',
+            fontSize: 'clamp(38px, 6vw, 72px)',
+            fontWeight: 500,
+            color: '#F8F5F0',
+            lineHeight: 0.95,
+            letterSpacing: '-0.02em',
+            marginBottom: '32px',
+          }}>
+            {project.title}
+          </h1>
 
-        {/* Horizon rule */}
-        <Box
-          style={{
-            width: '80px',
-            borderTop: '1px solid #a3b49d',
-          }}
-        />
-      </Box>
-
-      {/* ─── Detail Content ─── */}
-      <Box
-        as="section"
-        style={{
-          maxWidth: '760px',
-          margin: '0 auto',
-          padding: '64px 48px 80px',
-        }}
-      >
-        {project.role && (
-          <Box style={{ marginBottom: '40px' }}>
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              letterSpacing="widest"
-              style={{ textTransform: 'uppercase', marginBottom: '12px' }}
-            >
-              Role
-            </Box>
-            <Box
-              fontFamily="heading"
-              fontWeight="600"
-              fontSize="base"
-              color="textSecondary"
-            >
+          {project.role && (
+            <div style={{
+              fontFamily: '"DM Sans", sans-serif',
+              fontSize: '14px',
+              color: '#B5A98D',
+              letterSpacing: '0.02em',
+            }}>
               {project.role}
-            </Box>
-          </Box>
-        )}
+            </div>
+          )}
+        </div>
+      </div>
 
-        {project.problem && (
-          <Box
-            style={{
-              marginBottom: '48px',
-              paddingBottom: '48px',
-              borderBottom: '1px solid #c9d5c4',
-            }}
-          >
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              letterSpacing="widest"
-              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
-            >
-              Problem
-            </Box>
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="md"
-              color="textBody"
-              lineHeight="normal"
-              letterSpacing="normal"
-            >
-              {project.problem}
-            </Box>
-          </Box>
-        )}
+      {/* ── Band 2: Problem + Approach ── */}
+      {(project.problem || project.approach || project.description) && (
+        <div style={{
+          backgroundColor: '#EEE8DF',
+          padding: '96px 48px',
+        }}>
+          <div style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: hasFullDepth && project.problem && project.approach ? '1fr 1fr' : '1fr',
+            gap: '80px',
+            alignItems: 'start',
+          }}>
+            {(project.problem || project.description) && (
+              <div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  marginBottom: '28px',
+                }}>
+                  <span style={{
+                    fontSize: '9px',
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                    color: '#907A5C',
+                    fontFamily: '"DM Sans", sans-serif',
+                  }}>
+                    {project.problem ? 'Problem' : 'About'}
+                  </span>
+                  <div style={{ flex: 1, height: '1px', backgroundColor: '#D8CEBD' }} />
+                </div>
+                <p style={{
+                  fontFamily: '"Lora", serif',
+                  fontSize: '18px',
+                  color: '#48392C',
+                  lineHeight: 1.65,
+                }}>
+                  {project.problem || project.description}
+                </p>
+              </div>
+            )}
 
-        {project.approach && (
-          <Box
-            style={{
-              marginBottom: '48px',
-              paddingBottom: '48px',
-              borderBottom: '1px solid #c9d5c4',
-            }}
-          >
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              letterSpacing="widest"
-              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
-            >
-              Approach
-            </Box>
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="base"
-              color="textBody"
-              lineHeight="normal"
-            >
-              {project.approach}
-            </Box>
-          </Box>
-        )}
+            {project.approach && (
+              <div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  marginBottom: '28px',
+                }}>
+                  <span style={{
+                    fontSize: '9px',
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                    color: '#907A5C',
+                    fontFamily: '"DM Sans", sans-serif',
+                  }}>
+                    Approach
+                  </span>
+                  <div style={{ flex: 1, height: '1px', backgroundColor: '#D8CEBD' }} />
+                </div>
+                <p style={{
+                  fontFamily: '"Lora", serif',
+                  fontSize: '16px',
+                  color: '#6A5840',
+                  lineHeight: 1.65,
+                }}>
+                  {project.approach}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
-        {project.outcome && (
-          <Box
-            style={{
-              marginBottom: '48px',
-              paddingBottom: '48px',
-              borderBottom: '1px solid #c9d5c4',
-            }}
-          >
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              letterSpacing="widest"
-              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
-            >
-              Outcome
-            </Box>
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="base"
-              color="textBody"
-              lineHeight="normal"
-            >
-              {project.outcome}
-            </Box>
-          </Box>
-        )}
+      {/* ── Band 3: Outcome + Stack ── */}
+      {(project.outcome || (project.stack && project.stack.length > 0)) && (
+        <div style={{
+          backgroundColor: '#F8F5F0',
+          padding: '96px 48px',
+          borderTop: '1px solid #D8CEBD',
+        }}>
+          <div style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: project.outcome && project.stack ? '1fr 1fr' : '1fr',
+            gap: '80px',
+            alignItems: 'start',
+          }}>
+            {project.outcome && (
+              <div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  marginBottom: '28px',
+                }}>
+                  <span style={{
+                    fontSize: '9px',
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                    color: '#907A5C',
+                    fontFamily: '"DM Sans", sans-serif',
+                  }}>
+                    Outcome
+                  </span>
+                  <div style={{ flex: 1, height: '1px', backgroundColor: '#D8CEBD' }} />
+                </div>
+                <p style={{
+                  fontFamily: '"Lora", serif',
+                  fontSize: '16px',
+                  color: '#6A5840',
+                  lineHeight: 1.65,
+                }}>
+                  {project.outcome}
+                </p>
+              </div>
+            )}
 
-        {project.description && !project.problem && (
-          <Box
-            style={{
-              marginBottom: '48px',
-              paddingBottom: '48px',
-              borderBottom: '1px solid #c9d5c4',
-            }}
-          >
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="base"
-              color="textBody"
-              lineHeight="normal"
-            >
-              {project.description}
-            </Box>
-          </Box>
-        )}
+            {project.stack && project.stack.length > 0 && (
+              <div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  marginBottom: '28px',
+                }}>
+                  <span style={{
+                    fontSize: '9px',
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                    color: '#907A5C',
+                    fontFamily: '"DM Sans", sans-serif',
+                  }}>
+                    Stack
+                  </span>
+                  <div style={{ flex: 1, height: '1px', backgroundColor: '#D8CEBD' }} />
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  {project.stack.map((tech) => (
+                    <span
+                      key={tech}
+                      style={{
+                        fontFamily: '"DM Sans", sans-serif',
+                        fontSize: '12px',
+                        color: '#6A5840',
+                        backgroundColor: '#EEE8DF',
+                        border: '1px solid #D8CEBD',
+                        padding: '6px 12px',
+                        letterSpacing: '0.03em',
+                      }}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
-        {project.stack && project.stack.length > 0 && (
-          <Box style={{ marginBottom: '48px' }}>
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              letterSpacing="widest"
-              style={{ textTransform: 'uppercase', marginBottom: '16px' }}
-            >
-              Stack
-            </Box>
-            <Box
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '8px',
-              }}
-            >
-              {project.stack.map((tech) => (
-                <Box
-                  key={tech}
-                  fontFamily="body"
-                  fontWeight="400"
-                  fontSize="xs"
-                  color="textSecondary"
+      {/* ── Links Band (if external/live/github) ── */}
+      {(project.liveUrl || project.githubUrl || project.externalUrl) && (
+        <div style={{
+          backgroundColor: '#D8CEBD',
+          padding: '64px 48px',
+        }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            <div style={{
+              display: 'flex',
+              gap: '32px',
+              alignItems: 'center',
+            }}>
+              {(project.liveUrl || project.externalUrl) && (
+                <a
+                  href={project.liveUrl || project.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
-                    padding: '5px 10px',
-                    background: '#eaf0e6',
-                    border: '1px solid #c9d5c4',
-                    fontVariantNumeric: 'tabular-nums',
-                    letterSpacing: '0.02em',
+                    fontFamily: '"DM Sans", sans-serif',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: '#2D241A',
+                    textDecoration: 'none',
+                    letterSpacing: '0.05em',
+                    borderBottom: '1px solid #907A5C',
+                    paddingBottom: '2px',
                   }}
                 >
-                  {tech}
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        )}
+                  View Live ↗
+                </a>
+              )}
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: '"DM Sans", sans-serif',
+                    fontSize: '14px',
+                    color: '#6A5840',
+                    textDecoration: 'none',
+                    letterSpacing: '0.05em',
+                    borderBottom: '1px solid #B5A98D',
+                    paddingBottom: '2px',
+                  }}
+                >
+                  GitHub ↗
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
-        {/* Clients */}
-        {project.clients && project.clients.length > 0 && (
-          <Box style={{ marginBottom: '48px' }}>
-            <Box
-              fontFamily="body"
-              fontWeight="400"
-              fontSize="2xs"
-              color="textMuted"
-              letterSpacing="widest"
-              style={{ textTransform: 'uppercase', marginBottom: '24px' }}
-            >
-              Clients &amp; Partners
-            </Box>
-            <Box
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-                gap: '12px',
-              }}
-            >
-              {project.clients.map((client) => (
-                <ClientCard key={client.name} client={client} />
-              ))}
-            </Box>
-          </Box>
-        )}
-
-        {/* External links */}
-        {(project.liveUrl || project.githubUrl || project.externalUrl) && (
-          <Flex gap="6" align="center">
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={css({
-                  fontFamily: 'heading',
-                  fontWeight: '600',
-                  fontSize: 'xs',
-                  color: 'accent',
-                  textDecoration: 'none',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                  transition: 'color 150ms ease',
-                  _hover: { color: 'accentDark' },
-                })}
-              >
-                Live Site →
-              </a>
-            )}
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={css({
-                  fontFamily: 'heading',
-                  fontWeight: '600',
-                  fontSize: 'xs',
-                  color: 'textSecondary',
-                  textDecoration: 'none',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                  transition: 'color 150ms ease',
-                  _hover: { color: 'accent' },
-                })}
-              >
-                GitHub →
-              </a>
-            )}
-            {project.externalUrl && !project.liveUrl && (
-              <a
-                href={project.externalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={css({
-                  fontFamily: 'heading',
-                  fontWeight: '600',
-                  fontSize: 'xs',
-                  color: 'accent',
-                  textDecoration: 'none',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                  transition: 'color 150ms ease',
-                  _hover: { color: 'accentDark' },
-                })}
-              >
-                View Project →
-              </a>
-            )}
-          </Flex>
-        )}
-      </Box>
-
-      {/* ─── Alternate bg: next project hint ─── */}
-      <Box
-        as="section"
-        style={{
-          background: '#eaf0e6',
-          width: '100%',
+      {/* ── Footer ── */}
+      <div style={{
+        backgroundColor: '#2D241A',
+        padding: '64px 48px',
+      }}>
+        <div style={{
+          maxWidth: '1100px',
+          margin: '0 auto',
           display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <Box
-          style={{
-            maxWidth: '760px',
-            width: '100%',
-            padding: '48px',
-          }}
-        >
-          <a
-            href="/"
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '400',
-              fontSize: 'xs',
-              color: 'textMuted',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+        }}>
+          <div style={{ display: 'flex', gap: '48px', alignItems: 'baseline' }}>
+            <a href="/" style={{
+              fontFamily: '"DM Sans", sans-serif',
+              fontSize: '15px',
+              fontWeight: 500,
+              color: '#B5A98D',
               textDecoration: 'none',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              transition: 'color 150ms ease',
-              _hover: { color: 'accent' },
-            })}
-          >
-            ← All Work
-          </a>
-        </Box>
-      </Box>
+            }}>
+              Doug March
+            </a>
+            <a href="/" className="footer-link">All Work</a>
+            <a href="/about" className="footer-link">About</a>
+          </div>
+          <div style={{
+            fontFamily: '"DM Sans", sans-serif',
+            fontSize: '11px',
+            letterSpacing: '0.10em',
+            textTransform: 'uppercase',
+            color: '#6A5840',
+          }}>
+            {new Date().getFullYear()}
+          </div>
+        </div>
+      </div>
 
-      {/* ─── Footer ─── */}
-      <Box
-        as="footer"
-        style={{
-          background: '#2a322a',
-          padding: '48px 48px',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <Flex
-          justify="space-between"
-          align="center"
-          style={{ maxWidth: '760px', width: '100%' }}
-        >
-          <Box
-            fontFamily="body"
-            fontWeight="300"
-            fontSize="xs"
-            style={{ color: '#596658' }}
-          >
-            March 26, 2026
-          </Box>
-          <Box
-            fontFamily="body"
-            fontWeight="300"
-            fontSize="xs"
-            style={{ color: '#596658' }}
-          >
-            © 2026 Doug March
-          </Box>
-        </Flex>
-      </Box>
-    </Box>
+    </div>
   )
 }

@@ -5,273 +5,302 @@ export const elementsPreset = definePreset({
 
   conditions: {
     extend: {
-      _light: '.light &, [data-theme="light"] &',
-      _dark: '.dark &, [data-theme="dark"] &',
+      _light: '[class~="light"] &',
+      _dark: '[class~="dark"] &',
     },
   },
 
   globalCss: {
-    '*, *::before, *::after': {
+    '*': {
       boxSizing: 'border-box',
-    },
-    html: {
-      fontSize: '16px',
-      WebkitFontSmoothing: 'antialiased',
-      MozOsxFontSmoothing: 'grayscale',
-    },
-    body: {
-      fontFamily: 'body',
-      fontSize: 'base',
-      fontWeight: '400',
-      lineHeight: 'normal',
-      background: 'bg',
-      color: 'text',
       margin: '0',
       padding: '0',
     },
+    html: {
+      fontSize: '16px',
+    },
+    body: {
+      fontFamily: 'body',
+      background: 'bg',
+      color: 'text',
+      lineHeight: 'normal',
+      minHeight: '100vh',
+      WebkitFontSmoothing: 'antialiased',
+      MozOsxFontSmoothing: 'grayscale',
+    },
     'h1, h2, h3, h4, h5, h6': {
       fontFamily: 'heading',
-      lineHeight: 'tight',
-      letterSpacing: 'tight',
-      color: 'text',
-      margin: '0',
-    },
-    p: {
-      margin: '0',
+      lineHeight: 'snug',
     },
     a: {
       color: 'accent',
       textDecoration: 'none',
-      transition: 'color 120ms ease',
     },
     'a:hover': {
-      color: 'accentDark',
-    },
-    'img, video': {
-      display: 'block',
-      maxWidth: '100%',
+      textDecoration: 'underline',
     },
   },
 
   theme: {
-    extend: {
-      tokens: {
-        colors: {
-          // Primary neutral — spring green-gray, hue 108°, saturation 8–14%
-          green: {
-            50:  { value: '#f1f5ef', description: 'Page background' },
-            100: { value: '#e4ece1', description: 'Card / section alt bg' },
-            200: { value: '#c9d5c4', description: 'Borders, hairlines' },
-            300: { value: '#a3b49d', description: 'Muted text, disabled' },
-            400: { value: '#7c8e76', description: 'Placeholder' },
-            500: { value: '#596658', description: 'Secondary text' },
-            600: { value: '#3f4a3d', description: 'Body text' },
-            700: { value: '#2a322a', description: 'Heading text / footer bg' },
-            800: { value: '#191e19', description: 'Dark band bg' },
-            900: { value: '#0e120e', description: 'Deepest bg' },
-          },
-          // Accent — warm amber, hue 35°
-          amber: {
-            100: { value: '#f4d99b', description: 'Amber light — hover states, tinted fills' },
-            500: { value: '#c97d1e', description: 'Amber default — buttons, links, active' },
-            700: { value: '#8f560f', description: 'Amber dark — pressed, emphasis' },
-            glow: { value: 'rgba(201, 125, 30, 0.09)', description: 'Amber glow overlay' },
-          },
-          // Secondary accent — muted terracotta, hue 12°
-          terracotta: {
-            500: { value: '#b8674e', description: 'Loss/deflation signal — Pistons' },
-          },
-          // Section alt bg — midpoint between green.50 and green.100
-          spring: {
-            alt: { value: '#eaf0e6', description: 'Alternating scroll beat bg' },
-          },
+    tokens: {
+      colors: {
+        stone: {
+          50:  { value: '#F8F5F0' },
+          100: { value: '#EEE8DF' },
+          200: { value: '#D8CEBD' },
+          300: { value: '#B5A98D' },
+          400: { value: '#907A5C' },
+          500: { value: '#6A5840' },
+          600: { value: '#48392C' },
+          700: { value: '#2D241A' },
+          800: { value: '#19130D' },
+          900: { value: '#0F0B07' },
         },
-
-        fonts: {
-          heading: { value: "'Syne', sans-serif" },
-          body: { value: "'Work Sans', sans-serif" },
-        },
-
-        // Perfect Fourth scale (1.333), base 16px
-        fontSizes: {
-          '2xs': { value: '0.5625rem',  description: '9px — micro labels, index headers' },
-          xs:   { value: '0.75rem',    description: '12px — meta, nav, attribution' },
-          sm:   { value: '0.875rem',   description: '14px — body minimum, item text' },
-          base: { value: '1rem',       description: '16px — body text' },
-          md:   { value: '1.3125rem',  description: '21px — role / subheading' },
-          lg:   { value: '1.75rem',    description: '28px — quote, section heads' },
-          xl:   { value: '2.3125rem',  description: '37px — display sub' },
-          '2xl':{ value: '3.125rem',   description: '50px — hero name' },
-        },
-
-        lineHeights: {
-          tight:  { value: '1.05',  description: 'Display headings — Radiohead compression' },
-          snug:   { value: '1.25',  description: 'Subheadings, compact text' },
-          normal: { value: '1.62',  description: 'Body text — generous spring air' },
-          loose:  { value: '1.88',  description: 'Quote / signal sections — Wet Leg breathing room' },
-        },
-
-        letterSpacings: {
-          tight:   { value: '-0.025em', description: '2xl and xl headings' },
-          normal:  { value: '-0.008em', description: 'md headings' },
-          wide:    { value: '0.045em',  description: 'Section labels' },
-          wider:   { value: '0.09em',   description: 'Index column headers, meta annotations' },
-          widest:  { value: '0.15em',   description: 'Nav links, micro-labels' },
-        },
-
-        // Spacing scale — 4px base unit
-        spacing: {
-          1:  { value: '4px' },
-          2:  { value: '8px' },
-          3:  { value: '12px' },
-          4:  { value: '16px' },
-          6:  { value: '24px' },
-          8:  { value: '32px' },
-          12: { value: '48px' },
-          16: { value: '64px' },
-          20: { value: '80px' },
-          24: { value: '96px' },
-        },
-
-        radii: {
-          none:   { value: '0px', description: 'Cards, tags — architectural, no softness' },
-          button: { value: '2px', description: 'Buttons, inputs — minimal rounding only' },
-        },
-
-        // No shadows — spring light diffuses harshness
-        shadows: {
-          none: { value: 'none' },
-        },
-
-        // Z-index scale
-        zIndex: {
-          base:    { value: '0' },
-          raised:  { value: '10' },
-          overlay: { value: '50' },
-          nav:     { value: '100' },
-          modal:   { value: '200' },
-        },
-
-        // Transition durations
-        durations: {
-          fast:   { value: '120ms' },
-          base:   { value: '150ms' },
-          slow:   { value: '200ms' },
+        amber: {
+          light:   { value: '#F5C97A' },
+          DEFAULT: { value: '#E8950E' },
+          dark:    { value: '#A86B05' },
+          glow:    { value: 'rgba(232, 149, 14, 0.10)' },
         },
       },
 
-      semanticTokens: {
-        colors: {
-          // Backgrounds
-          bg: {
-            value: {
-              base: '{colors.green.50}',
-              _dark: '{colors.green.800}',
-            },
-          },
-          bgAlt: {
-            value: {
-              base: '{colors.spring.alt}',
-              _dark: '{colors.green.900}',
-            },
-          },
-          bgCard: {
-            value: {
-              base: '{colors.green.100}',
-              _dark: '{colors.green.700}',
-            },
-          },
-          bgFooter: {
-            value: {
-              base: '{colors.green.700}',
-              _dark: '{colors.green.900}',
-            },
-          },
-          bgNav: {
-            value: {
-              base: 'rgba(241, 245, 239, 0.95)',
-              _dark: 'rgba(25, 30, 25, 0.95)',
-            },
-          },
+      fonts: {
+        heading: { value: '"DM Sans", sans-serif' },
+        body:    { value: '"Lora", Georgia, serif' },
+        mono:    { value: '"JetBrains Mono", "Fira Code", monospace' },
+      },
 
-          // Text hierarchy
-          text: {
-            value: {
-              base: '{colors.green.700}',
-              _dark: '{colors.green.100}',
-            },
-          },
-          textSecondary: {
-            value: {
-              base: '{colors.green.500}',
-              _dark: '{colors.green.300}',
-            },
-          },
-          textMuted: {
-            value: {
-              base: '{colors.green.300}',
-              _dark: '{colors.green.500}',
-            },
-          },
-          textReversed: {
-            value: {
-              base: '{colors.green.100}',
-              _dark: '{colors.green.700}',
-            },
-          },
-          textBody: {
-            value: {
-              base: '{colors.green.600}',
-              _dark: '{colors.green.200}',
-            },
-          },
+      fontSizes: {
+        '2xs': { value: '0.5625rem' },   /* 9px  */
+        xs:    { value: '0.75rem' },      /* 12px */
+        sm:    { value: '1rem' },         /* 16px */
+        base:  { value: '1.3125rem' },   /* 21px */
+        md:    { value: '1.75rem' },      /* 28px */
+        lg:    { value: '2.375rem' },     /* 38px */
+        xl:    { value: '3.125rem' },     /* 50px */
+        '2xl': { value: '4.1875rem' },   /* 67px */
+      },
 
-          // Accent
-          accent: {
-            value: {
-              base: '{colors.amber.500}',
-              _dark: '{colors.amber.500}',
-            },
-          },
-          accentLight: {
-            value: {
-              base: '{colors.amber.100}',
-              _dark: '{colors.amber.100}',
-            },
-          },
-          accentDark: {
-            value: {
-              base: '{colors.amber.700}',
-              _dark: '{colors.amber.700}',
-            },
-          },
-          accentGlow: {
-            value: {
-              base: '{colors.amber.glow}',
-              _dark: '{colors.amber.glow}',
-            },
-          },
+      fontWeights: {
+        regular: { value: '400' },
+        medium:  { value: '500' },
+        semibold:{ value: '600' },
+        bold:    { value: '700' },
+      },
 
-          // Borders
-          border: {
-            value: {
-              base: '{colors.green.200}',
-              _dark: '{colors.green.600}',
-            },
-          },
-          borderSubtle: {
-            value: {
-              base: '{colors.green.100}',
-              _dark: '{colors.green.700}',
-            },
-          },
+      lineHeights: {
+        tight:  { value: '0.95' },
+        snug:   { value: '1.2' },
+        normal: { value: '1.55' },
+        loose:  { value: '1.85' },
+      },
 
-          // Signal — terracotta for loss/deflation
-          signal: {
-            value: {
-              base: '{colors.terracotta.500}',
-              _dark: '{colors.terracotta.500}',
-            },
+      letterSpacings: {
+        tight:   { value: '-0.02em' },
+        normal:  { value: '0em' },
+        wide:    { value: '0.05em' },
+        wider:   { value: '0.10em' },
+        widest:  { value: '0.18em' },
+      },
+
+      spacing: {
+        px:  { value: '1px' },
+        1:   { value: '4px' },
+        2:   { value: '8px' },
+        3:   { value: '12px' },
+        4:   { value: '16px' },
+        6:   { value: '24px' },
+        8:   { value: '32px' },
+        10:  { value: '40px' },
+        12:  { value: '48px' },
+        16:  { value: '64px' },
+        18:  { value: '72px' },
+        20:  { value: '80px' },
+        24:  { value: '96px' },
+        32:  { value: '128px' },
+      },
+
+      radii: {
+        none: { value: '0px' },
+        sm:   { value: '0px' },
+        md:   { value: '0px' },
+        lg:   { value: '0px' },
+        full: { value: '0px' },
+      },
+
+      shadows: {
+        none: { value: 'none' },
+        sm:   { value: 'none' },
+        md:   { value: 'none' },
+        lg:   { value: 'none' },
+      },
+
+      sizes: {
+        content:   { value: '1100px' },
+        sidebar:   { value: '320px' },
+        quotebox:  { value: '720px' },
+        rowHeight: { value: '44px' },
+      },
+
+      borders: {
+        hairline: { value: '1px solid' },
+      },
+
+      zIndex: {
+        base:    { value: '0' },
+        raised:  { value: '10' },
+        nav:     { value: '100' },
+        overlay: { value: '200' },
+      },
+    },
+
+    semanticTokens: {
+      colors: {
+        /* ── Page backgrounds ── */
+        bg: {
+          value: {
+            base:   '{colors.stone.800}',
+            _light: '{colors.stone.100}',
+          },
+        },
+        bgDeep: {
+          value: {
+            base:   '{colors.stone.900}',
+            _light: '{colors.stone.50}',
+          },
+        },
+        bgCard: {
+          value: {
+            base:   '{colors.stone.700}',
+            _light: '{colors.stone.50}',
+          },
+        },
+        bgMuted: {
+          value: {
+            base:   '{colors.stone.700}',
+            _light: '{colors.stone.200}',
+          },
+        },
+        bgSubtle: {
+          value: {
+            base:   '{colors.stone.800}',
+            _light: '{colors.stone.50}',
+          },
+        },
+
+        /* ── Band-specific backgrounds ── */
+        bgBandDark: {
+          value: {
+            base:   '{colors.stone.900}',
+            _light: '{colors.stone.800}',
+          },
+        },
+        bgBandWarm: {
+          value: {
+            base:   '{colors.stone.700}',
+            _light: '{colors.stone.100}',
+          },
+        },
+        bgBandLight: {
+          value: {
+            base:   '{colors.stone.800}',
+            _light: '{colors.stone.50}',
+          },
+        },
+        bgBandStone: {
+          value: {
+            base:   '{colors.stone.700}',
+            _light: '{colors.stone.200}',
+          },
+        },
+        bgBandFooter: {
+          value: {
+            base:   '{colors.stone.900}',
+            _light: '{colors.stone.700}',
+          },
+        },
+
+        /* ── Text ── */
+        text: {
+          value: {
+            base:   '{colors.stone.50}',
+            _light: '{colors.stone.700}',
+          },
+        },
+        textSecondary: {
+          value: {
+            base:   '{colors.stone.200}',
+            _light: '{colors.stone.500}',
+          },
+        },
+        textMuted: {
+          value: {
+            base:   '{colors.stone.300}',
+            _light: '{colors.stone.400}',
+          },
+        },
+        textOnDark: {
+          value: {
+            base:   '{colors.stone.50}',
+            _light: '{colors.stone.50}',
+          },
+        },
+        textSecondaryOnDark: {
+          value: {
+            base:   '{colors.stone.200}',
+            _light: '{colors.stone.200}',
+          },
+        },
+        textMutedOnDark: {
+          value: {
+            base:   '{colors.stone.300}',
+            _light: '{colors.stone.300}',
+          },
+        },
+
+        /* ── Accent ── */
+        accent: {
+          value: {
+            base:   '{colors.amber.DEFAULT}',
+            _light: '{colors.amber.DEFAULT}',
+          },
+        },
+        accentLight: {
+          value: {
+            base:   '{colors.amber.light}',
+            _light: '{colors.amber.light}',
+          },
+        },
+        accentDark: {
+          value: {
+            base:   '{colors.amber.dark}',
+            _light: '{colors.amber.dark}',
+          },
+        },
+        accentGlow: {
+          value: {
+            base:   '{colors.amber.glow}',
+            _light: '{colors.amber.glow}',
+          },
+        },
+
+        /* ── Borders ── */
+        border: {
+          value: {
+            base:   '{colors.stone.600}',
+            _light: '{colors.stone.200}',
+          },
+        },
+        borderSubtle: {
+          value: {
+            base:   '{colors.stone.700}',
+            _light: '{colors.stone.200}',
+          },
+        },
+        borderOnDark: {
+          value: {
+            base:   '{colors.stone.300}',
+            _light: '{colors.stone.300}',
           },
         },
       },

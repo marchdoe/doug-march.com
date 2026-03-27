@@ -1,15 +1,15 @@
-# Design References — 2026-03-24
+# Design References — 2026-03-26
 
 > Sources: trending signals
 
 ## Awwwards Sites of the Day
 
-- **The J12 Watch**
-  As the first unisex sports watch by CHANEL, the J12 has revolutionized the world of watchmaking, asserting itself as a 21st-century icon from the moment...
-  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69b161374cfed400765511.png
-- **The Future of Experience**
-  The Future of Experience is an insightful, bold, multi-format manifesto exploring the future of retail, designed to be immersive and accessible across...
-  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69b91a688d910834490753.jpg
-- **The Aurora Way**
-  The Aurora Way is a professionally developed and designed to deliver a smooth, modern, and user-focused digital experience, with an emphasis on clean...
-  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69ac4a312ba3c253951590.png
+- **GQ & AP The Extraordinary Lab**
+  An immersive digital experience exploring the RD Series by Audemars Piguet, revealing the brand’s relentless pursuit of research, ultra thin engineering...
+  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69b304fc7f0dd819068686.png
+- **The Overlake School**
+  Redesigning Overlake School’s website to showcase campus life, student stories, and community, creating an engaging, welcoming digital experience for...
+  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69c43c344d80b952967409.jpg
+- **Age of Automation**
+  Discover how autonomous mining trucks and automation technology are improving safety and efficiency while keeping people at the centre of modern mining...
+  Screenshot: https://assets.awwwards.com/awards/submissions/2026/03/69b2a14677a2c447846592.jpg
