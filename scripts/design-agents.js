@@ -654,6 +654,38 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // Write token files
   await writeFiles(tokenResult.files)
 
+  // Post-write fixup: ensure __root.tsx has critical imports for SPA hydration.
+  // The token designer frequently drops ScrollRestoration and Scripts imports,
+  // which prevents the client JS bundle from loading (site renders server HTML only).
+  try {
+    const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
+    let rootContent = await readFile(rootPath, 'utf8')
+    const requiredImports = ['ScrollRestoration', 'Scripts']
+    const missing = requiredImports.filter(name => !rootContent.includes(name))
+    if (missing.length > 0) {
+      // Add missing imports to the @tanstack/react-router import line
+      rootContent = rootContent.replace(
+        /import\s*\{([^}]+)\}\s*from\s*['"]@tanstack\/react-router['"]/,
+        (match, imports) => {
+          const existing = imports.split(',').map(s => s.trim())
+          const merged = [...new Set([...existing, ...missing])]
+          return `import { ${merged.join(', ')} } from '@tanstack/react-router'`
+        }
+      )
+      // Ensure ScrollRestoration and Scripts are in the JSX
+      if (!rootContent.includes('<ScrollRestoration')) {
+        rootContent = rootContent.replace(
+          /(<\/Layout>[\s\S]*?)(\s*<\/>)/,
+          '$1\n    <ScrollRestoration />\n    <Scripts />$2'
+        )
+      }
+      await writeFile(rootPath, rootContent, 'utf8')
+      console.log(`  [fixup] added missing imports to __root.tsx: ${missing.join(', ')}`)
+    }
+  } catch (err) {
+    console.warn(`  [fixup] __root.tsx fixup failed (non-blocking): ${err.message}`)
+  }
+
   trace.addStep({
     name: 'token-designer',
     phase: 2,

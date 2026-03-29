@@ -1,5 +1,5 @@
 import '../styles/panda.css'
-import { createRootRoute, Link, Outlet, HeadContent } from '@tanstack/react-router'
+import { createRootRoute, Link, Outlet, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { styled } from '../../styled-system/jsx'
 
@@ -49,6 +49,8 @@ const RootDocument = ({ children }: { children: React.ReactNode }) => (
     </HeadContent>
     <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
     <Layout>{children}</Layout>
+    <ScrollRestoration />
+    <Scripts />
   </>
 )
 
