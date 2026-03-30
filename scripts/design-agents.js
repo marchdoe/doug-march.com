@@ -746,7 +746,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   let designerResult
   const t0Designer = Date.now()
   try {
-    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPrompt, designerUserPrompt, null, { timeoutMs: 900000 }) // 15 minutes — writes 15 files
+    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPrompt, designerUserPrompt, null, { timeoutMs: 1800000 }) // 30 minutes — writes 15 files
   } catch (err) {
     console.error(`  Unified Designer failed: ${err.message}`)
     await restore(originalBackup)
