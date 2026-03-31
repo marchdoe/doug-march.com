@@ -672,12 +672,22 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           return `import { ${merged.join(', ')} } from '@tanstack/react-router'`
         }
       )
-      // Ensure ScrollRestoration and Scripts are in the JSX
+      // Ensure ScrollRestoration and Scripts are in the JSX body.
+      // The token designer produces varying structures, so try multiple patterns:
+      //   1. </Layout> ... </> (fragment wrapper)
+      //   2. {children} ... </body> (html/body wrapper)
+      //   3. {children} ... </> (any wrapper)
       if (!rootContent.includes('<ScrollRestoration')) {
-        rootContent = rootContent.replace(
-          /(<\/Layout>[\s\S]*?)(\s*<\/>)/,
-          '$1\n    <ScrollRestoration />\n    <Scripts />$2'
-        )
+        const inserted = rootContent
+          .replace(/(\{children\})([\s\S]*?)(<\/body>)/, '$1\n        <ScrollRestoration />\n        <Scripts />$2$3')
+        if (inserted !== rootContent) {
+          rootContent = inserted
+        } else {
+          // Fallback: insert before the last closing tag pair
+          rootContent = rootContent
+            .replace(/(\{children\}<\/Layout>)([\s\S]*?)(\s*<\/>)/, '$1\n    <ScrollRestoration />\n    <Scripts />$2$3')
+            .replace(/(<\/Layout>)([\s\S]*?)(\s*<\/>)/, '$1\n    <ScrollRestoration />\n    <Scripts />$2$3')
+        }
       }
       await writeFile(rootPath, rootContent, 'utf8')
       console.log(`  [fixup] added missing imports to __root.tsx: ${missing.join(', ')}`)
