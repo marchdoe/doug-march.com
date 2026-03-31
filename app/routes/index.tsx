@@ -1,595 +1,462 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { featuredProject, selectedWork, experiments } from '../content/projects'
+import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
+import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const label = css({
-  display: 'block',
-  fontFamily: 'body',
-  fontWeight: '500',
-  fontSize: '2xs',
-  color: 'text-muted',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
+const section = css({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+})
+
+const content = css({
+  width: '100%',
+  style: 'max-width: 960px',
 })
 
 const workRowLink = css({
-  display: 'block',
-  textDecoration: 'none',
-  paddingTop: '32px',
-  paddingBottom: '32px',
-  paddingLeft: '16px',
+  display: 'flex',
+  alignItems: 'flex-start',
+  gap: '8',
+  paddingTop: '6',
+  paddingBottom: '6',
+  paddingLeft: '4',
+  paddingRight: '4',
   borderBottom: '1px solid',
-  borderBottomColor: 'border',
-  borderLeft: '2px solid transparent',
-  transition: 'border-left-color 200ms ease, padding-left 200ms ease',
-  _hover: {
-    borderLeftColor: 'accent',
-    paddingLeft: '14px',
-  },
+  borderColor: 'borderSubtle',
+  textDecoration: 'none',
+  transition: 'background 0.15s',
+  _hover: { background: 'bgCard' },
 })
 
-const workTitle = css({
-  fontFamily: 'heading',
-  fontSize: 'lg',
-  letterSpacing: 'tight',
-  lineHeight: 'snug',
-  color: 'text-primary',
+const indexRowLink = css({
+  display: 'flex',
+  alignItems: 'center',
+  height: '14',
+  paddingLeft: '4',
+  paddingRight: '4',
+  gap: '4',
+  background: 'bg',
+  textDecoration: 'none',
+  transition: 'background 0.15s',
+  _hover: { background: 'bgCard' },
 })
 
-const workMeta = css({
-  fontFamily: 'body',
-  fontWeight: '300',
-  fontSize: '2xs',
-  color: 'text-muted',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-})
-
-const workProblem = css({
-  fontFamily: 'body',
-  fontWeight: '300',
-  fontSize: 'sm',
-  color: 'text-secondary',
-  letterSpacing: 'wide',
-  lineHeight: 'normal',
-  maxWidth: '540px',
-  marginTop: '10px',
-})
-
-const bodySmMuted = css({
-  fontFamily: 'body',
-  fontWeight: '300',
-  fontSize: 'sm',
-  color: 'text-muted',
-  letterSpacing: 'wide',
-  lineHeight: 'normal',
-})
-
-const bodyXsMuted = css({
-  fontFamily: 'body',
-  fontWeight: '300',
+const backLink = css({
   fontSize: 'xs',
-  color: 'text-muted',
+  fontFamily: 'body',
+  color: 'textMuted',
+  textDecoration: 'none',
   letterSpacing: 'wide',
+  _hover: { color: 'textSecondary' },
 })
 
-function SectionRule({ children }: { children: string }) {
+function SectionLabel({ label }: { label: string }) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '16px',
-        marginBottom: '48px',
-      }}
+    <Box
+      fontSize="2xs"
+      fontFamily="body"
+      fontWeight="500"
+      letterSpacing="widest"
+      textTransform="uppercase"
+      color="textMuted"
+      mb="8"
     >
-      <span className={label}>{children}</span>
-      <div style={{ flex: 1, height: '1px', backgroundColor: '#3A3933' }} />
-    </div>
+      {label}
+    </Box>
   )
 }
 
 function HomePage() {
   return (
-    <div style={{ backgroundColor: '#171714' }}>
+    <Box>
 
-      {/* ── 1. Hero ── */}
-      <section
-        style={{
-          minHeight: '100vh',
-          backgroundColor: '#0D0D0A',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          padding: '96px 48px',
-        }}
+      {/* ═══ 1. HERO — full moon, dark sky, name at display scale ═══ */}
+      <Box
+        className={section}
+        style={{ minHeight: '100vh', background: '#0A1520' }}
       >
-        <div style={{ maxWidth: '740px' }}>
-          <h1
-            className={css({
-              fontFamily: 'heading',
-              fontSize: '2xl',
-              letterSpacing: 'tight',
-              lineHeight: 'tight',
-              color: 'text-primary',
-              marginBottom: '20px',
-            })}
-          >
-            Doug March
-          </h1>
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '300',
-              fontSize: 'sm',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'text-muted',
-              lineHeight: 'tight',
-            })}
-          >
-            Product Designer &amp; Developer
-          </p>
-        </div>
-      </section>
-
-      {/* ── 2. HN Editorial ── */}
-      <section style={{ padding: '80px 48px', backgroundColor: '#171714' }}>
-        <div style={{ maxWidth: '620px', margin: '0 auto' }}>
-          <p
-            className={css({
-              fontFamily: 'heading',
-              fontStyle: 'italic',
-              fontSize: 'lg',
-              color: 'text-primary',
-              letterSpacing: 'normal',
-              lineHeight: 'snug',
-              marginBottom: '16px',
-            })}
-          >
-            On persistence.
-          </p>
-          <p className={bodySmMuted}>
-            A founder's story is making the rounds today. 1,128 people stopped to read it.
-          </p>
-        </div>
-      </section>
-
-      {/* ── 3. Featured Project ── */}
-      {featuredProject && (
-        <section
+        <Box
           style={{
-            padding: '96px 48px',
-            backgroundColor: '#171714',
-            borderTop: '1px solid #3A3933',
+            width: '100%',
+            maxWidth: '960px',
+            padding: '0 48px',
+            paddingTop: '40vh',
           }}
         >
-          <div style={{ maxWidth: '740px', margin: '0 auto' }}>
-            <span className={label} style={{ marginBottom: '32px' }}>
-              Featured
-            </span>
-            <div style={{ marginTop: '32px' }}>
-              <a
-                href={
-                  featuredProject.externalUrl ||
-                  featuredProject.liveUrl ||
-                  `/work/${featuredProject.slug}`
-                }
-                target={featuredProject.externalUrl ? '_blank' : undefined}
-                rel={featuredProject.externalUrl ? 'noopener noreferrer' : undefined}
-                style={{ textDecoration: 'none' }}
+          <Box
+            fontFamily="heading"
+            fontWeight="700"
+            color="text"
+            letterSpacing="tight"
+            lineHeight="tight"
+            style={{ fontSize: 'clamp(44px, 8vw, 67px)' }}
+          >
+            Doug<br />March
+          </Box>
+          <Box
+            mt="6"
+            fontSize="md"
+            fontFamily="heading"
+            fontWeight="300"
+            color="textMuted"
+          >
+            Product Designer & Developer
+          </Box>
+          <Box
+            mt="4"
+            fontSize="2xs"
+            fontFamily="body"
+            color="textMuted"
+            letterSpacing="widest"
+            textTransform="uppercase"
+          >
+            March 31, 2026
+          </Box>
+        </Box>
+      </Box>
+
+      {/* ═══ 2. FEATURED PROJECT — Spaceman, full beat ═══ */}
+      {featuredProject && (
+        <Box
+          className={section}
+          style={{
+            minHeight: '80vh',
+            borderLeft: '1px solid rgba(47, 168, 101, 0.12)',
+            paddingTop: '96px',
+            paddingBottom: '96px',
+            borderTop: '1px solid #2C4055',
+          }}
+        >
+          <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
+            <SectionLabel label="Featured" />
+
+            <Box
+              fontSize="2xs"
+              fontFamily="body"
+              letterSpacing="widest"
+              textTransform="uppercase"
+              color="textMuted"
+              mb="6"
+            >
+              {featuredProject.type}
+              {' · '}
+              {featuredProject.year}
+              {featuredProject.role ? ` · ${featuredProject.role}` : ''}
+            </Box>
+
+            <a
+              href={featuredProject.externalUrl || featuredProject.liveUrl || '#'}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: 'none', display: 'block' }}
+            >
+              <Box
+                fontFamily="heading"
+                fontWeight="700"
+                color="text"
+                fontSize="xl"
+                lineHeight="snug"
+                letterSpacing="tight"
+                mb="8"
+                style={{
+                  maxWidth: '640px',
+                  transition: 'opacity 0.2s',
+                  cursor: 'pointer',
+                }}
               >
-                <h2
-                  className={css({
-                    fontFamily: 'heading',
-                    fontSize: 'xl',
-                    letterSpacing: 'tight',
-                    lineHeight: 'snug',
-                    color: 'text-primary',
-                    marginBottom: '24px',
-                    transition: 'color 200ms ease',
-                    _hover: { color: 'accent' },
-                  })}
-                >
-                  {featuredProject.title}
-                </h2>
-              </a>
-              {featuredProject.problem && (
-                <p
-                  className={css({
-                    fontFamily: 'body',
-                    fontWeight: '300',
-                    fontSize: 'base',
-                    color: 'text-secondary',
-                    letterSpacing: 'wide',
-                    lineHeight: 'normal',
-                    maxWidth: '580px',
-                  })}
-                >
-                  {featuredProject.problem}
-                </p>
-              )}
-              {(featuredProject.externalUrl || featuredProject.liveUrl) && (
-                <a
-                  href={featuredProject.externalUrl || featuredProject.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={css({
-                    display: 'inline-block',
-                    marginTop: '32px',
-                    fontFamily: 'body',
-                    fontWeight: '400',
-                    fontSize: 'xs',
-                    color: 'accent',
-                    letterSpacing: 'widest',
-                    textTransform: 'uppercase',
-                    textDecoration: 'none',
-                    borderBottom: '1px solid',
-                    borderBottomColor: 'accent',
-                    paddingBottom: '2px',
-                    transition: 'opacity 200ms ease',
-                    _hover: { opacity: 0.7, textDecoration: 'none' },
-                  })}
-                >
-                  View Project ↗
-                </a>
-              )}
-            </div>
-          </div>
-        </section>
+                {featuredProject.title}
+              </Box>
+            </a>
+
+            {featuredProject.problem && (
+              <Box
+                fontSize="base"
+                fontFamily="body"
+                color="textSecondary"
+                lineHeight="normal"
+                mb="5"
+                style={{ maxWidth: '640px' }}
+              >
+                {featuredProject.problem}
+              </Box>
+            )}
+
+            {featuredProject.approach && (
+              <Box
+                fontSize="base"
+                fontFamily="body"
+                color="textMuted"
+                lineHeight="normal"
+                mb="8"
+                style={{ maxWidth: '640px' }}
+              >
+                {featuredProject.approach}
+              </Box>
+            )}
+
+            {featuredProject.stack && featuredProject.stack.length > 0 && (
+              <Flex gap="2" flexWrap="wrap">
+                {featuredProject.stack.map((tech) => (
+                  <Box
+                    key={tech}
+                    fontSize="2xs"
+                    fontFamily="body"
+                    color="textMuted"
+                    letterSpacing="wide"
+                    textTransform="uppercase"
+                    px="3"
+                    py="1"
+                    border="1px solid"
+                    borderColor="borderSubtle"
+                    borderRadius="none"
+                  >
+                    {tech}
+                  </Box>
+                ))}
+              </Flex>
+            )}
+          </Box>
+        </Box>
       )}
 
-      {/* ── 4. Selected Work ── */}
-      <section
+      {/* ═══ 3. SELECTED WORK — three projects, each a full row ═══ */}
+      <Box
+        className={section}
+        id="work"
         style={{
-          padding: '96px 48px',
-          backgroundColor: '#171714',
-          borderTop: '1px solid #3A3933',
+          paddingTop: '96px',
+          paddingBottom: '96px',
+          borderTop: '1px solid #19293A',
         }}
       >
-        <div style={{ maxWidth: '740px', margin: '0 auto' }}>
-          <SectionRule>Selected Work</SectionRule>
+        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
+          <SectionLabel label="Selected Work" />
+
           {selectedWork.map((project) => (
             <a
               key={project.slug}
               href={`/work/${project.slug}`}
               className={workRowLink}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                  gap: '16px',
-                }}
+              <Box
+                fontSize="2xs"
+                fontFamily="body"
+                color="textMuted"
+                letterSpacing="widest"
+                textTransform="uppercase"
+                style={{ minWidth: '80px', flexShrink: 0, paddingTop: '3px' }}
               >
-                <span className={workTitle}>{project.title}</span>
-                <span className={workMeta} style={{ flexShrink: 0 }}>
-                  {project.year}
-                </span>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '16px',
-                  marginTop: '8px',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <span className={workMeta}>{project.type}</span>
-                {project.role && (
-                  <span className={workMeta}>{project.role}</span>
+                {project.year}
+              </Box>
+              <Box flex="1">
+                <Box
+                  fontSize="lg"
+                  fontFamily="heading"
+                  fontWeight="500"
+                  color="text"
+                  lineHeight="snug"
+                  mb="2"
+                >
+                  {project.title}
+                </Box>
+                <Box
+                  fontSize="2xs"
+                  fontFamily="body"
+                  color="textMuted"
+                  letterSpacing="widest"
+                  textTransform="uppercase"
+                  mb="3"
+                >
+                  {project.type}
+                  {project.role ? ` · ${project.role}` : ''}
+                </Box>
+                {project.problem && (
+                  <Box
+                    fontSize="sm"
+                    fontFamily="body"
+                    color="textSecondary"
+                    lineHeight="normal"
+                    style={{ maxWidth: '520px' }}
+                  >
+                    {project.problem}
+                  </Box>
                 )}
-              </div>
-              {project.problem && (
-                <p className={workProblem}>{project.problem}</p>
-              )}
+              </Box>
+              <Box
+                fontSize="base"
+                color="textMuted"
+                style={{ flexShrink: 0, paddingTop: '2px' }}
+              >
+                →
+              </Box>
             </a>
           ))}
-        </div>
-      </section>
+        </Box>
+      </Box>
 
-      {/* ── 5. Zafón Quote ── */}
-      <section
+      {/* ═══ 4. WORK INDEX — systematic two-column grid ═══ */}
+      <Box
+        className={section}
         style={{
-          padding: '128px 48px',
-          backgroundColor: '#171714',
+          paddingTop: '64px',
+          paddingBottom: '64px',
+          borderTop: '1px solid #19293A',
         }}
       >
-        <div style={{ maxWidth: '580px', margin: '0 auto' }}>
-          <p
-            className={css({
-              fontFamily: 'heading',
-              fontStyle: 'italic',
-              fontSize: 'xl',
-              color: 'text-primary',
-              letterSpacing: 'normal',
-              lineHeight: 'snug',
-              marginBottom: '24px',
-            })}
-          >
-            We all give up great expectations along the way.
-          </p>
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '300',
-              fontSize: 'xs',
-              color: 'text-muted',
-              letterSpacing: 'wider',
-            })}
-          >
-            — Carlos Ruiz Zafón
-          </span>
-        </div>
-      </section>
+        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
+          <SectionLabel label="All Work" />
 
-      {/* ── 6. Golf Specimen ── */}
-      <section
-        style={{
-          padding: '80px 48px',
-          backgroundColor: '#0D0D0A',
-        }}
-      >
-        <div
-          style={{
-            width: '300px',
-            maxWidth: '100%',
-            margin: '0 auto',
-            border: '1px solid #3A3933',
-            padding: '32px 24px',
-          }}
-        >
-          <div
+          <Box
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '16px',
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '1px',
+              background: '#19293A',
             }}
           >
-            <span
-              className={css({
-                fontFamily: 'body',
-                fontWeight: '500',
-                fontSize: '2xs',
-                color: 'text-muted',
-                letterSpacing: 'widest',
-                textTransform: 'uppercase',
-              })}
-            >
-              Houston Open — Round 3
-            </span>
-          </div>
-          <span
-            className={css({
-              display: 'block',
-              fontFamily: 'body',
-              fontWeight: '500',
-              fontSize: '2xs',
-              color: 'sage',
-              letterSpacing: 'wider',
-              marginBottom: '24px',
-            })}
-          >
-            ● Live
-          </span>
-          <div style={{ marginBottom: '20px' }}>
-            <span
-              className={css({
-                display: 'block',
-                fontFamily: 'heading',
-                fontSize: 'xl',
-                letterSpacing: 'tight',
-                lineHeight: 'tight',
-                color: 'text-primary',
-              })}
-            >
-              Woodland
-            </span>
-            <span
-              className={css({
-                display: 'block',
-                fontFamily: 'body',
-                fontWeight: '300',
-                fontSize: 'md',
-                color: 'text-secondary',
-                marginTop: '6px',
-                fontVariantNumeric: 'tabular-nums',
-              })}
-            >
-              −18
-            </span>
-          </div>
-          <div style={{ borderTop: '1px solid #3A3933' }}>
-            {[
-              { name: 'Scheffler', score: '−16' },
-              { name: 'Thomas', score: '−15' },
-              { name: 'Cantlay', score: '−14' },
-            ].map((player) => (
-              <div
-                key={player.name}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  height: '40px',
-                  borderBottom: '1px solid #3A3933',
-                }}
+            {[...selectedWork, ...experiments].map((project, i) => (
+              <a
+                key={project.slug}
+                href={
+                  project.depth === 'full'
+                    ? `/work/${project.slug}`
+                    : project.liveUrl || project.externalUrl || '#'
+                }
+                target={project.depth === 'lightweight' ? '_blank' : undefined}
+                rel={
+                  project.depth === 'lightweight'
+                    ? 'noopener noreferrer'
+                    : undefined
+                }
+                className={indexRowLink}
               >
-                <span
-                  className={css({
-                    fontFamily: 'body',
-                    fontWeight: '300',
-                    fontSize: 'sm',
-                    color: 'text-muted',
-                    letterSpacing: 'wide',
-                  })}
+                <Box
+                  fontSize="2xs"
+                  fontFamily="body"
+                  color="textMuted"
+                  style={{ minWidth: '28px', flexShrink: 0 }}
                 >
-                  {player.name}
-                </span>
-                <span
-                  className={css({
-                    fontFamily: 'body',
-                    fontWeight: '300',
-                    fontSize: 'sm',
-                    color: 'text-secondary',
-                    fontVariantNumeric: 'tabular-nums',
-                  })}
+                  {String(i + 1).padStart(2, '0')}
+                </Box>
+                <Box
+                  fontSize="base"
+                  fontFamily="heading"
+                  fontWeight="500"
+                  color="text"
+                  flex="1"
+                  style={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
                 >
-                  {player.score}
-                </span>
-              </div>
+                  {project.title}
+                </Box>
+                <Box
+                  fontSize="xs"
+                  fontFamily="body"
+                  color="textMuted"
+                  style={{ flexShrink: 0 }}
+                >
+                  {project.year}
+                </Box>
+              </a>
             ))}
-          </div>
-        </div>
-      </section>
+          </Box>
 
-      {/* ── 7. Detroit Sports ── */}
-      <section
-        style={{
-          padding: '64px 48px',
-          backgroundColor: '#171714',
-          borderTop: '1px solid #3A3933',
-        }}
-      >
-        <div style={{ maxWidth: '740px', margin: '0 auto' }}>
-          <span className={label} style={{ marginBottom: '24px', display: 'block' }}>
-            Detroit · March 29
-          </span>
-          {[
-            { team: 'Pistons', result: '109 – 87', opp: 'Bucks' },
-            { team: 'Red Wings', result: 'L', opp: '' },
-            { team: 'Tigers', result: 'L', opp: '' },
-          ].map((row) => (
-            <div
-              key={row.team}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                height: '40px',
-              }}
+          {/* Sports footnotes — wry, 9px, terminal tone */}
+          <Box
+            mt="8"
+            pt="8"
+            borderTop="1px solid"
+            borderColor="borderSubtle"
+          >
+            <Box
+              fontSize="2xs"
+              fontFamily="body"
+              color="textMuted"
+              letterSpacing="wide"
+              lineHeight="loose"
             >
-              <span
-                className={css({
-                  fontFamily: 'body',
-                  fontWeight: '300',
-                  fontSize: 'sm',
-                  color: 'text-secondary',
-                  letterSpacing: 'wide',
-                })}
-              >
-                {row.team}
-              </span>
-              <span className={bodyXsMuted}>
-                {row.opp ? `${row.result}  ${row.opp}` : row.result}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+              <Box>¹ DET 110 – IND 114. Noted.</Box>
+              <Box>² Tigers 6 – 9. Onward.</Box>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
 
-      {/* ── 8. Experiments ── */}
-      <section
+      {/* ═══ 5. RUMI — seed-dot, then the quote, nothing else ═══ */}
+      <Box
+        className={section}
         style={{
-          padding: '96px 48px',
-          backgroundColor: '#171714',
-          borderTop: '1px solid #3A3933',
+          minHeight: '40vh',
+          paddingTop: '64px',
+          paddingBottom: '64px',
+          justifyContent: 'center',
+          borderTop: '1px solid #19293A',
         }}
       >
-        <div style={{ maxWidth: '740px', margin: '0 auto' }}>
-          <SectionRule>Experiments</SectionRule>
-          {experiments.map((exp) => (
-            <div
-              key={exp.slug}
-              style={{
-                paddingTop: '28px',
-                paddingBottom: '28px',
-                borderBottom: '1px solid #3A3933',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'baseline',
-                  gap: '16px',
-                }}
-              >
-                <span
-                  className={css({
-                    fontFamily: 'body',
-                    fontWeight: '400',
-                    fontSize: 'base',
-                    color: 'text-primary',
-                    letterSpacing: 'wide',
-                  })}
-                >
-                  {exp.title}
-                </span>
-                <span className={workMeta} style={{ flexShrink: 0 }}>
-                  {exp.type} · {exp.year}
-                </span>
-              </div>
-              {exp.description && (
-                <p
-                  className={css({
-                    fontFamily: 'body',
-                    fontWeight: '300',
-                    fontSize: 'sm',
-                    color: 'text-muted',
-                    letterSpacing: 'wide',
-                    lineHeight: 'normal',
-                    maxWidth: '540px',
-                    marginTop: '8px',
-                  })}
-                >
-                  {exp.description}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Footer ── */}
-      <footer
-        style={{
-          padding: '48px',
-          backgroundColor: '#0D0D0A',
-          borderTop: '1px solid #3A3933',
-        }}
-      >
-        <div
+        <Box
           style={{
-            maxWidth: '740px',
-            margin: '0 auto',
+            width: '100%',
+            maxWidth: '960px',
+            padding: '0 48px',
             display: 'flex',
-            justifyContent: 'space-between',
+            flexDirection: 'column',
             alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          <span className={bodyXsMuted}>
-            Doug March · 2026
-          </span>
-          <span className={bodyXsMuted}>
-            <a
-              href="/archive"
-              style={{
-                textDecoration: 'none',
-                color: 'inherit',
-              }}
-            >
-              archive
-            </a>
-          </span>
-        </div>
-      </footer>
+          {/* The one spring green gesture */}
+          <Box
+            fontSize="sm"
+            color="accent"
+            letterSpacing="wider"
+            mb="6"
+            textAlign="center"
+            style={{ userSelect: 'none' }}
+          >
+            ·
+          </Box>
+          <Box
+            fontSize="md"
+            fontFamily="body"
+            fontWeight="400"
+            color="textSecondary"
+            lineHeight="loose"
+            textAlign="center"
+            style={{ maxWidth: '520px' }}
+          >
+            What is planted in each person's soul will sprout
+          </Box>
+        </Box>
+      </Box>
 
-    </div>
+      {/* ═══ FOOTER ═══ */}
+      <Box
+        className={section}
+        style={{
+          paddingTop: '80px',
+          paddingBottom: '80px',
+          borderTop: '1px solid #19293A',
+        }}
+      >
+        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
+          <Flex justify="space-between" align="baseline">
+            <Box fontSize="xs" fontFamily="body" color="textMuted">
+              Doug March · Product Designer & Developer · 2026
+            </Box>
+            <Box fontSize="xs" fontFamily="body" color="textMuted">
+              <a href="/archive" className={backLink}>archive</a>
+            </Box>
+          </Flex>
+        </Box>
+      </Box>
+
+    </Box>
   )
 }
