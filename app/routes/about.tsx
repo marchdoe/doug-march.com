@@ -1,270 +1,161 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex } from '../../styled-system/jsx'
-import { css } from '../../styled-system/css'
-import { timeline, capabilities, education } from '../content/timeline'
 import { identity, personal } from '../content/about'
+import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const section = css({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-})
-
-const backLink = css({
-  fontSize: 'xs',
-  fontFamily: 'body',
-  color: 'textMuted',
-  textDecoration: 'none',
-  letterSpacing: 'wide',
-  _hover: { color: 'textSecondary' },
-})
-
-function SectionLabel({ label }: { label: string }) {
+function SectionLabel({ children }: { children: string }) {
   return (
-    <Box
-      fontSize="2xs"
-      fontFamily="body"
-      fontWeight="500"
-      letterSpacing="widest"
-      textTransform="uppercase"
-      color="textMuted"
-      mb="8"
-    >
-      {label}
-    </Box>
+    <div style={{
+      fontFamily: 'Syne, sans-serif',
+      fontWeight: 400,
+      fontSize: '9px',
+      color: '#625A53',
+      letterSpacing: '0.15em',
+      textTransform: 'uppercase' as const,
+      marginBottom: '32px',
+      marginLeft: '4px',
+    }}>
+      {children}
+    </div>
   )
 }
 
 function AboutPage() {
   return (
-    <Box>
+    <div style={{ background: '#0D0A08', color: '#F0EAE3', fontFamily: '"Work Sans", sans-serif' }}>
 
-      {/* ═══ IDENTITY HEADER ═══ */}
-      <Box
-        className={section}
-        style={{
-          paddingTop: '120px',
-          paddingBottom: '96px',
-          minHeight: '60vh',
-          borderBottom: '1px solid #19293A',
-        }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <Box
-            fontFamily="heading"
-            fontWeight="700"
-            color="text"
-            letterSpacing="tight"
-            lineHeight="tight"
-            mb="6"
-            style={{ fontSize: 'clamp(36px, 6vw, 50px)' }}
-          >
+      {/* Identity header */}
+      <section style={{ borderBottom: '1px solid #2A2420' }}>
+        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '96px 48px' }}>
+          <h1 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '37px', lineHeight: 1.0, letterSpacing: '-0.03em', color: '#F0EAE3', marginBottom: '12px' }}>
             {identity.name}
-          </Box>
-          <Box
-            fontSize="md"
-            fontFamily="heading"
-            fontWeight="300"
-            color="textMuted"
-            mb="10"
-          >
+          </h1>
+          <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 300, fontSize: '16px', color: '#AFA59C', letterSpacing: '0.04em', marginBottom: '40px' }}>
             {identity.role}
-          </Box>
-          <Box
-            fontSize="base"
-            fontFamily="body"
-            color="textSecondary"
-            lineHeight="normal"
-            style={{ maxWidth: '640px' }}
-          >
+          </div>
+          <p style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '21px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#F0EAE3', maxWidth: '580px', margin: 0 }}>
             {identity.statement}
-          </Box>
-        </Box>
-      </Box>
+          </p>
+        </div>
+      </section>
 
-      {/* ═══ TIMELINE ═══ */}
-      <Box
-        className={section}
-        style={{ paddingTop: '64px', paddingBottom: '64px' }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <SectionLabel label="Experience" />
-          {timeline.map((entry, i) => (
-            <Flex
-              key={`${entry.year}-${entry.company}-${i}`}
-              gap="8"
-              py="6"
-              borderBottom="1px solid"
-              borderColor="borderSubtle"
-            >
-              {/* Year column — fixed width so ranges and single years align */}
-              <Box
-                fontSize="xs"
-                fontFamily="body"
-                color="textMuted"
-                lineHeight="snug"
-                style={{
-                  minWidth: '120px',
-                  width: '120px',
-                  flexShrink: 0,
-                  paddingTop: '2px',
-                }}
+      {/* Timeline */}
+      <section style={{ borderBottom: '1px solid #2A2420' }}>
+        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
+          <SectionLabel>Experience</SectionLabel>
+          <div>
+            {timeline.map((entry, i) => (
+              <div
+                key={`${entry.year}-${entry.company}-${i}`}
+                style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', paddingTop: '20px', paddingBottom: '20px', borderBottom: '1px solid #2A2420' }}
               >
-                {entry.year}
-              </Box>
+                {/* Year column — fixed width so ranges and single years align */}
+                <div style={{ minWidth: '130px', flexShrink: 0, fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '12px', color: '#625A53', letterSpacing: '0.04em', fontVariantNumeric: 'tabular-nums', paddingTop: '2px' }}>
+                  {entry.year}
+                </div>
 
-              {/* Role / company / description */}
-              <Box flex="1">
-                <Flex align="baseline" gap="3" mb="1">
-                  <Box
-                    fontSize="base"
-                    fontFamily="heading"
-                    fontWeight="500"
-                    color="text"
-                    lineHeight="snug"
-                  >
-                    {entry.role}
-                  </Box>
-                  {entry.current && (
-                    <Box
-                      fontSize="2xs"
-                      fontFamily="body"
-                      color="accent"
-                      letterSpacing="wider"
-                      textTransform="uppercase"
-                    >
-                      now
-                    </Box>
-                  )}
-                </Flex>
-                <Box
-                  fontSize="sm"
-                  fontFamily="body"
-                  color="textSecondary"
-                  mb="2"
-                >
-                  {entry.company}
-                </Box>
-                <Box
-                  fontSize="sm"
-                  fontFamily="body"
-                  color="textMuted"
-                  lineHeight="normal"
-                >
-                  {entry.description}
-                </Box>
-              </Box>
-            </Flex>
-          ))}
-        </Box>
-      </Box>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
+                    <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 500, fontSize: '16px', letterSpacing: '0.04em', color: '#F0EAE3' }}>
+                      {entry.role}
+                    </span>
+                    {entry.current && (
+                      <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#C95220', letterSpacing: '0.09em', textTransform: 'uppercase', border: '1px solid #C95220', padding: '2px 6px' }}>
+                        Now
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '14px', color: '#AFA59C', letterSpacing: '0.04em', marginBottom: '8px' }}>
+                    {entry.company}
+                  </div>
+                  <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '12px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#625A53' }}>
+                    {entry.description}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* ═══ CAPABILITIES ═══ */}
-      <Box
-        className={section}
-        style={{
-          paddingTop: '64px',
-          paddingBottom: '64px',
-          borderTop: '1px solid #19293A',
-        }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <SectionLabel label="Capabilities" />
-          <Flex gap="2" flexWrap="wrap">
-            {capabilities.map((cap) => (
-              <Box
+      {/* Capabilities */}
+      <section style={{ borderBottom: '1px solid #2A2420' }}>
+        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
+          <SectionLabel>Capabilities</SectionLabel>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {capabilities.map(cap => (
+              <span
                 key={cap}
-                fontSize="xs"
-                fontFamily="body"
-                color="textSecondary"
-                px="3"
-                py="1"
-                border="1px solid"
-                borderColor="borderSubtle"
-                borderRadius="none"
+                className="tag"
+                style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#AFA59C', letterSpacing: '0.09em', textTransform: 'uppercase', border: '1px solid #2A2420', padding: '6px 12px' }}
               >
                 {cap}
-              </Box>
+              </span>
             ))}
-          </Flex>
-        </Box>
-      </Box>
+          </div>
+        </div>
+      </section>
 
-      {/* ═══ EDUCATION ═══ */}
-      <Box
-        className={section}
-        style={{
-          paddingTop: '64px',
-          paddingBottom: '64px',
-          borderTop: '1px solid #19293A',
-        }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <SectionLabel label="Education" />
-          <Box>
-            <Box
-              fontSize="base"
-              fontFamily="heading"
-              fontWeight="500"
-              color="text"
-              lineHeight="snug"
-              mb="2"
-            >
-              {education.school}
-            </Box>
-            <Box fontSize="sm" fontFamily="body" color="textSecondary" mb="1">
-              {education.degree} · {education.concentration}
-            </Box>
-            <Box fontSize="xs" fontFamily="body" color="textMuted">
+      {/* Education */}
+      <section style={{ borderBottom: '1px solid #2A2420' }}>
+        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
+          <SectionLabel>Education</SectionLabel>
+          <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
+            <div style={{ minWidth: '130px', flexShrink: 0, fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '12px', color: '#625A53', letterSpacing: '0.04em' }}>
               {education.years}
-            </Box>
-          </Box>
-        </Box>
-      </Box>
+            </div>
+            <div>
+              <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 500, fontSize: '16px', color: '#F0EAE3', letterSpacing: '0.04em', marginBottom: '4px' }}>
+                {education.school}
+              </div>
+              <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '12px', color: '#AFA59C', letterSpacing: '0.04em' }}>
+                {education.degree}{education.concentration ? ` — ${education.concentration}` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* ═══ PERSONAL ═══ */}
-      <Box
-        className={section}
-        style={{
-          paddingTop: '64px',
-          paddingBottom: '64px',
-          borderTop: '1px solid #19293A',
-        }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <SectionLabel label="Personal" />
-          <Box fontSize="sm" fontFamily="body" color="textSecondary" lineHeight="loose">
-            <Box mb="2">Currently: {personal.currentFocus}</Box>
-            <Box mb="2">
-              {personal.sport} · {personal.holesInOne} hole{personal.holesInOne !== 1 ? 's' : ''}-in-one
-            </Box>
-            <Box>Teams: {personal.teams.join(', ')}</Box>
-          </Box>
-        </Box>
-      </Box>
+      {/* Personal */}
+      <section style={{ borderBottom: '1px solid #2A2420' }}>
+        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
+          <SectionLabel>Personal</SectionLabel>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {[
+              { label: 'Sport', value: personal.sport },
+              { label: 'Teams', value: personal.teams.join(', ') },
+              { label: 'Holes in One', value: String(personal.holesInOne) },
+              { label: 'Current Focus', value: personal.currentFocus },
+            ].map(row => (
+              <div key={row.label} style={{ display: 'flex', gap: '32px', alignItems: 'baseline' }}>
+                <span style={{ minWidth: '130px', flexShrink: 0, fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em', textTransform: 'uppercase' }}>
+                  {row.label}
+                </span>
+                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '14px', color: '#AFA59C', letterSpacing: '0.04em' }}>
+                  {row.value}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* ═══ FOOTER ═══ */}
-      <Box
-        className={section}
-        style={{
-          paddingTop: '80px',
-          paddingBottom: '80px',
-          borderTop: '1px solid #19293A',
-        }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <Flex justify="space-between" align="baseline">
-            <Box fontSize="xs" fontFamily="body" color="textMuted">
-              Doug March · 2026
-            </Box>
-            <a href="/archive" className={backLink}>archive</a>
-          </Flex>
-        </Box>
-      </Box>
+      {/* Footer */}
+      <footer>
+        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '48px 48px' }}>
+          <div style={{ height: '2px', background: '#C9A87C', marginBottom: '16px' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em' }}>
+              © 2026 Doug March
+            </span>
+            <a href="/archive" className="footer-link" style={{ fontSize: '9px', letterSpacing: '0.09em' }}>
+              Archive
+            </a>
+          </div>
+        </div>
+      </footer>
 
-    </Box>
+    </div>
   )
 }

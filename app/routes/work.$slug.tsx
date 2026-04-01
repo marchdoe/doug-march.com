@@ -1,278 +1,179 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex } from '../../styled-system/jsx'
-import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
 
-const section = css({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-})
-
-const backLink = css({
-  fontSize: 'xs',
-  fontFamily: 'body',
-  color: 'textMuted',
-  textDecoration: 'none',
-  letterSpacing: 'wide',
-  _hover: { color: 'textSecondary' },
-})
-
-const externalLink = css({
-  fontSize: 'sm',
-  fontFamily: 'body',
-  color: 'textSecondary',
-  textDecoration: 'none',
-  letterSpacing: 'normal',
-  transition: 'color 0.2s',
-  _hover: { color: 'text' },
-})
-
-function SectionLabel({ label }: { label: string }) {
+function SectionLabel({ children }: { children: string }) {
   return (
-    <Box
-      fontSize="2xs"
-      fontFamily="body"
-      fontWeight="500"
-      letterSpacing="widest"
-      textTransform="uppercase"
-      color="textMuted"
-      mb="4"
-    >
-      {label}
-    </Box>
+    <div style={{
+      fontFamily: 'Syne, sans-serif',
+      fontWeight: 400,
+      fontSize: '9px',
+      color: '#625A53',
+      letterSpacing: '0.15em',
+      textTransform: 'uppercase' as const,
+      marginBottom: '24px',
+      marginLeft: '4px',
+    }}>
+      {children}
+    </div>
   )
 }
 
 function WorkPage() {
   const { slug } = Route.useParams()
-  const project = projects.find((p) => p.slug === slug)
+  const project = projects.find(p => p.slug === slug)
 
   if (!project) {
     return (
-      <Box
-        className={section}
-        style={{ paddingTop: '120px', paddingBottom: '96px' }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <Box fontSize="sm" fontFamily="body" color="textMuted" mb="6">
+      <div style={{ background: '#0D0A08', color: '#F0EAE3', minHeight: '100vh', fontFamily: '"Work Sans", sans-serif' }}>
+        <div style={{ maxWidth: '760px', margin: '0 auto', padding: '96px 48px' }}>
+          <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '37px', lineHeight: 1.0, letterSpacing: '-0.03em', color: '#F0EAE3', marginBottom: '32px' }}>
             Project not found.
-          </Box>
-          <a href="/" className={backLink}>← Back home</a>
-        </Box>
-      </Box>
+          </div>
+          <a href="/" className="footer-link" style={{ fontSize: '9px', letterSpacing: '0.09em', textTransform: 'uppercase' }}>
+            ← Back to work
+          </a>
+        </div>
+      </div>
     )
   }
 
   return (
-    <Box>
+    <div style={{ background: '#0D0A08', color: '#F0EAE3', fontFamily: '"Work Sans", sans-serif' }}>
 
-      {/* ═══ PROJECT HEADER ═══ */}
-      <Box
-        className={section}
-        style={{ paddingTop: '120px', paddingBottom: '96px', minHeight: '60vh' }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <Box mb="8">
-            <a href="/" className={backLink}>← Doug March</a>
-          </Box>
+      {/* Header */}
+      <section style={{ borderBottom: '1px solid #2A2420' }}>
+        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '96px 48px 64px' }}>
+          <a href="/" className="footer-link" style={{ display: 'inline-block', fontSize: '9px', letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: '48px' }}>
+            ← Work
+          </a>
 
-          <Box
-            fontSize="2xs"
-            fontFamily="body"
-            color="textMuted"
-            letterSpacing="widest"
-            textTransform="uppercase"
-            mb="6"
-          >
-            {project.type}
-            {' · '}
-            {project.year}
-            {project.role ? ` · ${project.role}` : ''}
-          </Box>
+          <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '16px' }}>
+            {project.type} — {project.year}
+          </div>
 
-          <Box
-            fontFamily="heading"
-            fontWeight="700"
-            color="text"
-            letterSpacing="tight"
-            lineHeight="tight"
-            mb="8"
-            style={{ fontSize: 'clamp(36px, 6vw, 50px)' }}
-          >
+          <h1 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '49px', lineHeight: 1.0, letterSpacing: '-0.03em', color: '#F0EAE3', marginBottom: '24px' }}>
             {project.title}
-          </Box>
+          </h1>
 
-          {project.problem && (
-            <Box
-              fontSize="md"
-              fontFamily="body"
-              color="textSecondary"
-              lineHeight="normal"
-              style={{ maxWidth: '640px' }}
-            >
-              {project.problem}
-            </Box>
+          {project.role && (
+            <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 300, fontSize: '16px', color: '#AFA59C', letterSpacing: '0.04em' }}>
+              {project.role}
+            </div>
           )}
-        </Box>
-      </Box>
+        </div>
+      </section>
 
-      {/* ═══ PROJECT BODY ═══ */}
-      {(project.approach || project.outcome || project.stack || project.description) && (
-        <Box
-          className={section}
-          style={{
-            paddingTop: '64px',
-            paddingBottom: '64px',
-            borderTop: '1px solid #19293A',
-          }}
-        >
-          <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-
-            {project.description && (
-              <Box mb="12">
-                <Box
-                  fontSize="base"
-                  fontFamily="body"
-                  color="textSecondary"
-                  lineHeight="normal"
-                  style={{ maxWidth: '640px' }}
-                >
-                  {project.description}
-                </Box>
-              </Box>
-            )}
-
-            {project.approach && (
-              <Box mb="12">
-                <SectionLabel label="Approach" />
-                <Box
-                  fontSize="base"
-                  fontFamily="body"
-                  color="textSecondary"
-                  lineHeight="normal"
-                  style={{ maxWidth: '640px' }}
-                >
-                  {project.approach}
-                </Box>
-              </Box>
-            )}
-
-            {project.outcome && (
-              <Box mb="12">
-                <SectionLabel label="Outcome" />
-                <Box
-                  fontSize="base"
-                  fontFamily="body"
-                  color="textSecondary"
-                  lineHeight="normal"
-                  style={{ maxWidth: '640px' }}
-                >
-                  {project.outcome}
-                </Box>
-              </Box>
-            )}
-
-            {project.stack && project.stack.length > 0 && (
-              <Box mb="12">
-                <SectionLabel label="Stack" />
-                <Flex gap="2" flexWrap="wrap">
-                  {project.stack.map((tech) => (
-                    <Box
-                      key={tech}
-                      fontSize="2xs"
-                      fontFamily="body"
-                      color="textMuted"
-                      letterSpacing="wide"
-                      textTransform="uppercase"
-                      px="3"
-                      py="1"
-                      border="1px solid"
-                      borderColor="borderSubtle"
-                      borderRadius="none"
-                    >
-                      {tech}
-                    </Box>
-                  ))}
-                </Flex>
-              </Box>
-            )}
-
-            {(project.liveUrl || project.externalUrl || project.githubUrl) && (
-              <Flex gap="6" align="center">
-                {(project.liveUrl || project.externalUrl) && (
-                  <a
-                    href={project.liveUrl || project.externalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={externalLink}
-                  >
-                    View project →
-                  </a>
-                )}
-                {project.githubUrl && (
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={externalLink}
-                  >
-                    GitHub →
-                  </a>
-                )}
-              </Flex>
-            )}
-
-          </Box>
-        </Box>
+      {/* Problem */}
+      {project.problem && (
+        <section style={{ borderBottom: '1px solid #2A2420' }}>
+          <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
+            <SectionLabel>Problem</SectionLabel>
+            <p style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '21px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#F0EAE3', maxWidth: '580px', margin: 0 }}>
+              {project.problem}
+            </p>
+          </div>
+        </section>
       )}
 
-      {/* ═══ MORE WORK ═══ */}
-      <Box
-        className={section}
-        style={{
-          paddingTop: '64px',
-          paddingBottom: '64px',
-          borderTop: '1px solid #19293A',
-        }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <Box
-            fontSize="2xs"
-            fontFamily="body"
-            letterSpacing="widest"
-            textTransform="uppercase"
-            color="textMuted"
-            mb="6"
-          >
-            More Work
-          </Box>
-          <a href="/" className={backLink}>← All projects</a>
-        </Box>
-      </Box>
+      {/* Approach */}
+      {project.approach && (
+        <section style={{ borderBottom: '1px solid #2A2420' }}>
+          <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
+            <SectionLabel>Approach</SectionLabel>
+            <p style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '16px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#AFA59C', maxWidth: '580px', margin: 0 }}>
+              {project.approach}
+            </p>
+          </div>
+        </section>
+      )}
 
-      {/* ═══ FOOTER ═══ */}
-      <Box
-        className={section}
-        style={{
-          paddingTop: '80px',
-          paddingBottom: '80px',
-          borderTop: '1px solid #19293A',
-        }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <Flex justify="space-between" align="baseline">
-            <Box fontSize="xs" fontFamily="body" color="textMuted">
-              Doug March · {project.year}
-            </Box>
-            <a href="/archive" className={backLink}>archive</a>
-          </Flex>
-        </Box>
-      </Box>
+      {/* Outcome */}
+      {project.outcome && (
+        <section style={{ borderBottom: '1px solid #2A2420' }}>
+          <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
+            <SectionLabel>Outcome</SectionLabel>
+            <p style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '16px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#AFA59C', maxWidth: '580px', margin: 0 }}>
+              {project.outcome}
+            </p>
+          </div>
+        </section>
+      )}
 
-    </Box>
+      {/* Description fallback for lightweight projects */}
+      {!project.problem && !project.approach && project.description && (
+        <section style={{ borderBottom: '1px solid #2A2420' }}>
+          <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
+            <SectionLabel>About</SectionLabel>
+            <p style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '16px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#AFA59C', maxWidth: '580px', margin: 0 }}>
+              {project.description}
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* Stack */}
+      {project.stack && project.stack.length > 0 && (
+        <section style={{ borderBottom: '1px solid #2A2420' }}>
+          <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
+            <SectionLabel>Stack</SectionLabel>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {project.stack.map(tech => (
+                <span key={tech} className="tag" style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#AFA59C', letterSpacing: '0.09em', textTransform: 'uppercase', border: '1px solid #2A2420', padding: '6px 12px' }}>
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Links */}
+      {(project.liveUrl || project.githubUrl || project.externalUrl) && (
+        <section style={{ borderBottom: '1px solid #2A2420' }}>
+          <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              {(project.liveUrl || project.externalUrl) && (
+                <a
+                  href={project.liveUrl || project.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary"
+                >
+                  View Project →
+                </a>
+              )}
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary"
+                >
+                  GitHub
+                </a>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Footer */}
+      <footer>
+        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '48px 48px' }}>
+          <div style={{ height: '2px', background: '#C9A87C', marginBottom: '16px' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em' }}>
+              © 2026 Doug March
+            </span>
+            <a href="/archive" className="footer-link" style={{ fontSize: '9px', letterSpacing: '0.09em' }}>
+              Archive
+            </a>
+          </div>
+        </div>
+      </footer>
+
+    </div>
   )
 }

@@ -1,462 +1,202 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex } from '../../styled-system/jsx'
-import { css } from '../../styled-system/css'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const section = css({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-})
-
-const content = css({
-  width: '100%',
-  style: 'max-width: 960px',
-})
-
-const workRowLink = css({
-  display: 'flex',
-  alignItems: 'flex-start',
-  gap: '8',
-  paddingTop: '6',
-  paddingBottom: '6',
-  paddingLeft: '4',
-  paddingRight: '4',
-  borderBottom: '1px solid',
-  borderColor: 'borderSubtle',
-  textDecoration: 'none',
-  transition: 'background 0.15s',
-  _hover: { background: 'bgCard' },
-})
-
-const indexRowLink = css({
-  display: 'flex',
-  alignItems: 'center',
-  height: '14',
-  paddingLeft: '4',
-  paddingRight: '4',
-  gap: '4',
-  background: 'bg',
-  textDecoration: 'none',
-  transition: 'background 0.15s',
-  _hover: { background: 'bgCard' },
-})
-
-const backLink = css({
-  fontSize: 'xs',
-  fontFamily: 'body',
-  color: 'textMuted',
-  textDecoration: 'none',
-  letterSpacing: 'wide',
-  _hover: { color: 'textSecondary' },
-})
-
-function SectionLabel({ label }: { label: string }) {
+function SectionLabel({ children }: { children: string }) {
   return (
-    <Box
-      fontSize="2xs"
-      fontFamily="body"
-      fontWeight="500"
-      letterSpacing="widest"
-      textTransform="uppercase"
-      color="textMuted"
-      mb="8"
-    >
-      {label}
-    </Box>
+    <div style={{
+      fontFamily: 'Syne, sans-serif',
+      fontWeight: 400,
+      fontSize: '9px',
+      color: '#625A53',
+      letterSpacing: '0.15em',
+      textTransform: 'uppercase' as const,
+      marginBottom: '32px',
+      marginLeft: '4px',
+    }}>
+      {children}
+    </div>
   )
 }
 
 function HomePage() {
   return (
-    <Box>
+    <div style={{ background: '#0D0A08', color: '#F0EAE3', fontFamily: '"Work Sans", sans-serif' }}>
 
-      {/* ═══ 1. HERO — full moon, dark sky, name at display scale ═══ */}
-      <Box
-        className={section}
-        style={{ minHeight: '100vh', background: '#0A1520' }}
-      >
-        <Box
-          style={{
-            width: '100%',
-            maxWidth: '960px',
-            padding: '0 48px',
-            paddingTop: '40vh',
-          }}
-        >
-          <Box
-            fontFamily="heading"
-            fontWeight="700"
-            color="text"
-            letterSpacing="tight"
-            lineHeight="tight"
-            style={{ fontSize: 'clamp(44px, 8vw, 67px)' }}
-          >
-            Doug<br />March
-          </Box>
-          <Box
-            mt="6"
-            fontSize="md"
-            fontFamily="heading"
-            fontWeight="300"
-            color="textMuted"
-          >
-            Product Designer & Developer
-          </Box>
-          <Box
-            mt="4"
-            fontSize="2xs"
-            fontFamily="body"
-            color="textMuted"
-            letterSpacing="widest"
-            textTransform="uppercase"
-          >
-            March 31, 2026
-          </Box>
-        </Box>
-      </Box>
+      {/* ── BEAT 1: HERO ─────────────────────────────────────────── */}
+      <section style={{ minHeight: '100vh', position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '75vh', left: 0, right: 0, height: '80px', background: '#181310', zIndex: 0 }} />
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '760px', margin: '0 auto', width: '100%', padding: '0 48px' }}>
+          <h1 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '49px', lineHeight: 1.0, letterSpacing: '-0.03em', color: '#F0EAE3', marginBottom: '16px' }}>
+            Doug March
+          </h1>
+          <p style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 300, fontSize: '21px', lineHeight: 1.15, letterSpacing: '0.04em', color: '#AFA59C', marginBottom: '48px' }}>
+            Product Designer &amp; Developer
+          </p>
+          <p style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '16px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#625A53', maxWidth: '460px' }}>
+            Building products at the intersection of design and engineering.
+          </p>
+        </div>
+      </section>
 
-      {/* ═══ 2. FEATURED PROJECT — Spaceman, full beat ═══ */}
+      <hr />
+
+      {/* ── BEAT 2: SPECIMEN — EINSTEIN ──────────────────────────── */}
+      <section style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', background: '#0D0A08' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%', padding: '96px 48px' }}>
+          <blockquote style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(72px, 11vw, 120px)', lineHeight: 1.0, letterSpacing: '-0.03em', color: '#F0EAE3', margin: 0, padding: 0 }}>
+            Insanity is doing the same thing over and over and expecting different results.
+          </blockquote>
+          <cite style={{ display: 'block', fontFamily: '"Work Sans", sans-serif', fontWeight: 300, fontSize: '12px', color: '#625A53', letterSpacing: '0.09em', marginTop: '32px', fontStyle: 'normal' }}>
+            — Albert Einstein
+          </cite>
+        </div>
+      </section>
+
+      <hr />
+
+      {/* ── BEAT 3: FEATURED WORK ────────────────────────────────── */}
       {featuredProject && (
-        <Box
-          className={section}
-          style={{
-            minHeight: '80vh',
-            borderLeft: '1px solid rgba(47, 168, 101, 0.12)',
-            paddingTop: '96px',
-            paddingBottom: '96px',
-            borderTop: '1px solid #2C4055',
-          }}
-        >
-          <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-            <SectionLabel label="Featured" />
-
-            <Box
-              fontSize="2xs"
-              fontFamily="body"
-              letterSpacing="widest"
-              textTransform="uppercase"
-              color="textMuted"
-              mb="6"
-            >
-              {featuredProject.type}
-              {' · '}
-              {featuredProject.year}
-              {featuredProject.role ? ` · ${featuredProject.role}` : ''}
-            </Box>
-
+        <section style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', background: '#0D0A08' }}>
+          <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '96px 48px' }}>
+            <SectionLabel>Featured</SectionLabel>
             <a
-              href={featuredProject.externalUrl || featuredProject.liveUrl || '#'}
+              href={featuredProject.liveUrl || featuredProject.externalUrl || `/work/${featuredProject.slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ textDecoration: 'none', display: 'block' }}
+              className="text-link"
+              style={{ display: 'block', marginBottom: '32px' }}
             >
-              <Box
-                fontFamily="heading"
-                fontWeight="700"
-                color="text"
-                fontSize="xl"
-                lineHeight="snug"
-                letterSpacing="tight"
-                mb="8"
-                style={{
-                  maxWidth: '640px',
-                  transition: 'opacity 0.2s',
-                  cursor: 'pointer',
-                }}
-              >
+              <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '37px', lineHeight: 1.0, letterSpacing: '-0.03em', color: 'inherit', margin: 0 }}>
                 {featuredProject.title}
-              </Box>
+              </h2>
             </a>
-
             {featuredProject.problem && (
-              <Box
-                fontSize="base"
-                fontFamily="body"
-                color="textSecondary"
-                lineHeight="normal"
-                mb="5"
-                style={{ maxWidth: '640px' }}
-              >
+              <p style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '21px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#AFA59C', maxWidth: '540px', margin: 0 }}>
                 {featuredProject.problem}
-              </Box>
+              </p>
             )}
-
-            {featuredProject.approach && (
-              <Box
-                fontSize="base"
-                fontFamily="body"
-                color="textMuted"
-                lineHeight="normal"
-                mb="8"
-                style={{ maxWidth: '640px' }}
-              >
-                {featuredProject.approach}
-              </Box>
-            )}
-
-            {featuredProject.stack && featuredProject.stack.length > 0 && (
-              <Flex gap="2" flexWrap="wrap">
-                {featuredProject.stack.map((tech) => (
-                  <Box
-                    key={tech}
-                    fontSize="2xs"
-                    fontFamily="body"
-                    color="textMuted"
-                    letterSpacing="wide"
-                    textTransform="uppercase"
-                    px="3"
-                    py="1"
-                    border="1px solid"
-                    borderColor="borderSubtle"
-                    borderRadius="none"
-                  >
-                    {tech}
-                  </Box>
-                ))}
-              </Flex>
-            )}
-          </Box>
-        </Box>
+            <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em', textTransform: 'uppercase', marginTop: '48px' }}>
+              {featuredProject.type} — {featuredProject.year}
+            </div>
+          </div>
+        </section>
       )}
 
-      {/* ═══ 3. SELECTED WORK — three projects, each a full row ═══ */}
-      <Box
-        className={section}
-        id="work"
-        style={{
-          paddingTop: '96px',
-          paddingBottom: '96px',
-          borderTop: '1px solid #19293A',
-        }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <SectionLabel label="Selected Work" />
+      <hr />
 
-          {selectedWork.map((project) => (
-            <a
-              key={project.slug}
-              href={`/work/${project.slug}`}
-              className={workRowLink}
-            >
-              <Box
-                fontSize="2xs"
-                fontFamily="body"
-                color="textMuted"
-                letterSpacing="widest"
-                textTransform="uppercase"
-                style={{ minWidth: '80px', flexShrink: 0, paddingTop: '3px' }}
-              >
-                {project.year}
-              </Box>
-              <Box flex="1">
-                <Box
-                  fontSize="lg"
-                  fontFamily="heading"
-                  fontWeight="500"
-                  color="text"
-                  lineHeight="snug"
-                  mb="2"
-                >
-                  {project.title}
-                </Box>
-                <Box
-                  fontSize="2xs"
-                  fontFamily="body"
-                  color="textMuted"
-                  letterSpacing="widest"
-                  textTransform="uppercase"
-                  mb="3"
-                >
-                  {project.type}
-                  {project.role ? ` · ${project.role}` : ''}
-                </Box>
-                {project.problem && (
-                  <Box
-                    fontSize="sm"
-                    fontFamily="body"
-                    color="textSecondary"
-                    lineHeight="normal"
-                    style={{ maxWidth: '520px' }}
-                  >
-                    {project.problem}
-                  </Box>
-                )}
-              </Box>
-              <Box
-                fontSize="base"
-                color="textMuted"
-                style={{ flexShrink: 0, paddingTop: '2px' }}
-              >
-                →
-              </Box>
-            </a>
-          ))}
-        </Box>
-      </Box>
-
-      {/* ═══ 4. WORK INDEX — systematic two-column grid ═══ */}
-      <Box
-        className={section}
-        style={{
-          paddingTop: '64px',
-          paddingBottom: '64px',
-          borderTop: '1px solid #19293A',
-        }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <SectionLabel label="All Work" />
-
-          <Box
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '1px',
-              background: '#19293A',
-            }}
-          >
-            {[...selectedWork, ...experiments].map((project, i) => (
+      {/* ── BEAT 4: WORK INDEX ───────────────────────────────────── */}
+      <section style={{ position: 'relative', background: '#0D0A08' }}>
+        {/* Code-editor gutter accent strip */}
+        <div style={{ position: 'absolute', left: '16px', top: 0, bottom: 0, width: '2px', background: '#C95220', opacity: 0.6 }} />
+        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
+          <SectionLabel>Selected Work</SectionLabel>
+          <div style={{ borderTop: '1px solid #2A2420' }}>
+            {selectedWork.map(project => (
               <a
                 key={project.slug}
-                href={
-                  project.depth === 'full'
-                    ? `/work/${project.slug}`
-                    : project.liveUrl || project.externalUrl || '#'
-                }
-                target={project.depth === 'lightweight' ? '_blank' : undefined}
-                rel={
-                  project.depth === 'lightweight'
-                    ? 'noopener noreferrer'
-                    : undefined
-                }
-                className={indexRowLink}
+                href={`/work/${project.slug}`}
+                className="work-row"
               >
-                <Box
-                  fontSize="2xs"
-                  fontFamily="body"
-                  color="textMuted"
-                  style={{ minWidth: '28px', flexShrink: 0 }}
-                >
-                  {String(i + 1).padStart(2, '0')}
-                </Box>
-                <Box
-                  fontSize="base"
-                  fontFamily="heading"
-                  fontWeight="500"
-                  color="text"
-                  flex="1"
-                  style={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
+                <span style={{ flex: 1, fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '16px', letterSpacing: '0.04em', color: '#F0EAE3', lineHeight: 1.0 }}>
                   {project.title}
-                </Box>
-                <Box
-                  fontSize="xs"
-                  fontFamily="body"
-                  color="textMuted"
-                  style={{ flexShrink: 0 }}
-                >
+                </span>
+                <span style={{ width: '96px', textAlign: 'center', fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em', textTransform: 'uppercase', lineHeight: 1.0 }}>
+                  {project.type}
+                </span>
+                <span style={{ width: '48px', textAlign: 'right', fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em', fontVariantNumeric: 'tabular-nums', lineHeight: 1.0 }}>
                   {project.year}
-                </Box>
+                </span>
               </a>
             ))}
-          </Box>
+          </div>
+        </div>
+      </section>
 
-          {/* Sports footnotes — wry, 9px, terminal tone */}
-          <Box
-            mt="8"
-            pt="8"
-            borderTop="1px solid"
-            borderColor="borderSubtle"
-          >
-            <Box
-              fontSize="2xs"
-              fontFamily="body"
-              color="textMuted"
-              letterSpacing="wide"
-              lineHeight="loose"
-            >
-              <Box>¹ DET 110 – IND 114. Noted.</Box>
-              <Box>² Tigers 6 – 9. Onward.</Box>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
+      <hr />
 
-      {/* ═══ 5. RUMI — seed-dot, then the quote, nothing else ═══ */}
-      <Box
-        className={section}
-        style={{
-          minHeight: '40vh',
-          paddingTop: '64px',
-          paddingBottom: '64px',
-          justifyContent: 'center',
-          borderTop: '1px solid #19293A',
-        }}
-      >
-        <Box
-          style={{
-            width: '100%',
-            maxWidth: '960px',
-            padding: '0 48px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {/* The one spring green gesture */}
-          <Box
-            fontSize="sm"
-            color="accent"
-            letterSpacing="wider"
-            mb="6"
-            textAlign="center"
-            style={{ userSelect: 'none' }}
-          >
-            ·
-          </Box>
-          <Box
-            fontSize="md"
-            fontFamily="body"
-            fontWeight="400"
-            color="textSecondary"
-            lineHeight="loose"
-            textAlign="center"
-            style={{ maxWidth: '520px' }}
-          >
-            What is planted in each person's soul will sprout
-          </Box>
-        </Box>
-      </Box>
+      {/* ── BEAT 5: EXPERIMENTS ──────────────────────────────────── */}
+      <section style={{ background: '#0D0A08' }}>
+        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '96px 48px' }}>
+          <SectionLabel>Experiments</SectionLabel>
+          {experiments.map(exp => (
+            <div key={exp.slug} style={{ display: 'flex', alignItems: 'flex-start', gap: '24px', paddingTop: '24px', paddingBottom: '24px', borderBottom: '1px solid #2A2420' }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 500, fontSize: '16px', letterSpacing: '0.04em', color: '#F0EAE3', marginBottom: '6px' }}>
+                  {exp.title}
+                </div>
+                {exp.description && (
+                  <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '12px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#625A53' }}>
+                    {exp.description}
+                  </div>
+                )}
+                <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em', textTransform: 'uppercase', marginTop: '8px' }}>
+                  {exp.type}
+                </div>
+              </div>
+              <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em', fontVariantNumeric: 'tabular-nums', flexShrink: 0, paddingTop: '3px' }}>
+                {exp.year}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      {/* ═══ FOOTER ═══ */}
-      <Box
-        className={section}
-        style={{
-          paddingTop: '80px',
-          paddingBottom: '80px',
-          borderTop: '1px solid #19293A',
-        }}
-      >
-        <Box style={{ width: '100%', maxWidth: '960px', padding: '0 48px' }}>
-          <Flex justify="space-between" align="baseline">
-            <Box fontSize="xs" fontFamily="body" color="textMuted">
-              Doug March · Product Designer & Developer · 2026
-            </Box>
-            <Box fontSize="xs" fontFamily="body" color="textMuted">
-              <a href="/archive" className={backLink}>archive</a>
-            </Box>
-          </Flex>
-        </Box>
-      </Box>
+      <hr />
 
-    </Box>
+      {/* ── BEAT 6: FOOTER ───────────────────────────────────────── */}
+      <footer style={{ background: '#0D0A08' }}>
+        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '48px 48px' }}>
+
+          {/* Main footer row: scores left, contact right */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '48px' }}>
+
+            {/* Sports scores */}
+            <div style={{ fontVariantNumeric: 'tabular-nums' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '7px' }}>
+                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#AFA59C' }}>
+                  DET&nbsp;&nbsp;127 · MEM&nbsp;&nbsp;116
+                </span>
+                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#C95220' }}>W</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '7px' }}>
+                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#AFA59C' }}>
+                  DET&nbsp;&nbsp;&nbsp;&nbsp;1 · TBL&nbsp;&nbsp;&nbsp;&nbsp;5
+                </span>
+                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#625A53' }}>L</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
+                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#AFA59C' }}>
+                  DET&nbsp;&nbsp;&nbsp;&nbsp;5 · CLE&nbsp;&nbsp;&nbsp;&nbsp;7
+                </span>
+                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#625A53' }}>L</span>
+              </div>
+            </div>
+
+            {/* Contact links */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
+              <a href="mailto:doug@doug-march.com" className="footer-link" style={{ fontSize: '9px', letterSpacing: '0.09em', textTransform: 'uppercase' }}>Email</a>
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="footer-link" style={{ fontSize: '9px', letterSpacing: '0.09em', textTransform: 'uppercase' }}>GitHub</a>
+              <a href="/about" className="footer-link" style={{ fontSize: '9px', letterSpacing: '0.09em', textTransform: 'uppercase' }}>About</a>
+            </div>
+          </div>
+
+          {/* Easter sand hairline — one warm breath before copyright */}
+          <div style={{ height: '2px', background: '#C9A87C', marginBottom: '16px' }} />
+
+          {/* Copyright + Archive */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em' }}>
+              © 2026 Doug March
+            </span>
+            <a href="/archive" className="footer-link" style={{ fontSize: '9px', letterSpacing: '0.09em' }}>
+              Archive
+            </a>
+          </div>
+        </div>
+      </footer>
+
+    </div>
   )
 }
