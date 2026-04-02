@@ -1,64 +1,62 @@
 import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 
-const navLink = css({
+const navLinkClass = css({
+  color: 'text.muted',
   fontSize: 'xs',
-  fontFamily: 'heading',
-  fontWeight: '500',
-  letterSpacing: 'wider',
-  color: 'textMuted',
+  fontFamily: 'body',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
   textDecoration: 'none',
-  transition: 'color 0.2s',
-  _hover: { color: 'text' },
-})
-
-const siteName = css({
-  fontSize: 'xs',
-  fontFamily: 'heading',
-  fontWeight: '500',
-  letterSpacing: 'wider',
-  color: 'textSecondary',
-  textDecoration: 'none',
-  transition: 'color 0.2s',
-  _hover: { color: 'text' },
+  transition: 'color 120ms ease',
+  _hover: { color: 'accent' },
 })
 
 export function Sidebar() {
   return (
     <Box
-      as="nav"
-      position="fixed"
+      as="header"
+      background="bg"
+      borderBottom="1px solid"
+      borderColor="border"
+      position="sticky"
       top="0"
-      left="0"
-      right="0"
-      zIndex="100"
-      height="12"
-      style={{
-        background: 'rgba(10, 21, 32, 0.94)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        boxShadow: '0 1px 0 rgba(7, 15, 22, 0.8)',
-      }}
+      style={{ zIndex: 50, height: '56px' }}
     >
       <Flex
         align="center"
         justify="space-between"
-        height="100%"
-        style={{ maxWidth: '960px', margin: '0 auto', padding: '0 48px' }}
+        style={{ maxWidth: '1200px', margin: '0 auto', height: '100%', padding: '0 24px' }}
       >
-        <a href="/" className={siteName}>Doug March</a>
-        <Flex gap="6" align="center">
-          <a href="/about" className={navLink}>about</a>
-          <a href="/#work" className={navLink}>work</a>
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={navLink}
+        <a href="/" style={{ textDecoration: 'none' }}>
+          <Box
+            as="span"
+            fontFamily="heading"
+            fontSize="xl"
+            fontWeight="700"
+            color="text"
+            letterSpacing="tight"
+            lineHeight="tight"
           >
-            github
-          </a>
-          <a href="mailto:hello@doug-march.com" className={navLink}>email</a>
+            Doug March
+          </Box>
+        </a>
+
+        <Flex align="center" gap="6">
+          <Flex align="center" gap="6">
+            <a href="/" className={navLinkClass}>Work</a>
+            <a href="/about" className={navLinkClass}>About</a>
+          </Flex>
+          <Box
+            fontSize="xs"
+            fontFamily="body"
+            fontWeight="500"
+            color="secondary"
+            letterSpacing="widest"
+            style={{ textTransform: 'uppercase' }}
+          >
+            April 2 — 12.5 Hrs Daylight
+          </Box>
         </Flex>
       </Flex>
     </Box>

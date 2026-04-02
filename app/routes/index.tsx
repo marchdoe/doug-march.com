@@ -1,202 +1,425 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Box, Flex } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
+import { identity } from '../content/about'
+import { SectionLabel } from '../components/SectionLabel'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-function SectionLabel({ children }: { children: string }) {
+const mainGridClass = css({
+  display: 'grid',
+  gridTemplateColumns: '2fr 1fr 1fr',
+})
+
+const workGridClass = css({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+})
+
+const workCardClass = css({
+  padding: '24px',
+  borderRight: '1px solid',
+  borderRightColor: 'border',
+  borderBottom: '1px solid',
+  borderBottomColor: 'border',
+  borderLeft: '2px solid transparent',
+  transition: 'background 0ms ease, border-left-color 120ms ease',
+  _hover: {
+    background: 'bg.card',
+    borderLeftColor: 'accent',
+  },
+})
+
+const experimentCardClass = css({
+  padding: '20px 24px',
+  borderRight: '1px solid',
+  borderRightColor: 'border',
+  borderBottom: '1px solid',
+  borderBottomColor: 'border',
+  borderLeft: '2px solid transparent',
+  transition: 'background 0ms ease, border-left-color 120ms ease',
+  _hover: {
+    background: 'bg.card',
+    borderLeftColor: 'accent',
+  },
+})
+
+function WorkCard({ project }: { project: (typeof selectedWork)[number] }) {
   return (
-    <div style={{
-      fontFamily: 'Syne, sans-serif',
-      fontWeight: 400,
-      fontSize: '9px',
-      color: '#625A53',
-      letterSpacing: '0.15em',
-      textTransform: 'uppercase' as const,
-      marginBottom: '32px',
-      marginLeft: '4px',
-    }}>
-      {children}
-    </div>
+    <Box className={workCardClass} style={{ minHeight: '200px' }}>
+      <Box
+        fontSize="xs"
+        fontFamily="body"
+        fontWeight="700"
+        color="accent"
+        letterSpacing="wider"
+        style={{ textTransform: 'uppercase', marginBottom: '10px' }}
+      >
+        {project.type}
+      </Box>
+      <a href={`/work/${project.slug}`} style={{ textDecoration: 'none' }}>
+        <Box
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight="600"
+          color="text"
+          lineHeight="snug"
+          letterSpacing="wide"
+          style={{ marginBottom: '12px' }}
+        >
+          {project.title}
+        </Box>
+      </a>
+      {project.problem && (
+        <Box
+          fontSize="sm"
+          fontFamily="body"
+          color="text.secondary"
+          lineHeight="normal"
+          style={{ marginBottom: '16px' }}
+        >
+          {project.problem}
+        </Box>
+      )}
+      <Flex justify="space-between" align="center" style={{ marginTop: 'auto' }}>
+        <Box fontSize="xs" color="text.muted" fontFamily="body">
+          {project.year}
+        </Box>
+        <a href={`/work/${project.slug}`} style={{ textDecoration: 'none' }}>
+          <Box fontSize="sm" color="accent" letterSpacing="wide">
+            →
+          </Box>
+        </a>
+      </Flex>
+    </Box>
+  )
+}
+
+function ExperimentCard({ project }: { project: (typeof experiments)[number] }) {
+  return (
+    <Box className={experimentCardClass}>
+      <Flex align="baseline" gap="2" style={{ marginBottom: '8px' }}>
+        <Box
+          fontSize="xs"
+          fontFamily="body"
+          fontWeight="700"
+          color="text.muted"
+          letterSpacing="wider"
+          style={{ textTransform: 'uppercase' }}
+        >
+          {project.type}
+        </Box>
+        <Box fontSize="xs" fontFamily="body" color="text.muted">
+          · {project.year}
+        </Box>
+      </Flex>
+      <a href={`/work/${project.slug}`} style={{ textDecoration: 'none' }}>
+        <Box
+          fontFamily="heading"
+          fontSize="md"
+          fontWeight="600"
+          color="text"
+          lineHeight="snug"
+          style={{ marginBottom: '8px' }}
+        >
+          {project.title}
+        </Box>
+      </a>
+      {project.description && (
+        <Box
+          fontSize="sm"
+          fontFamily="body"
+          color="text.muted"
+          lineHeight="normal"
+        >
+          {project.description}
+        </Box>
+      )}
+    </Box>
   )
 }
 
 function HomePage() {
+  const powellQuote = 'Perpetual optimism is a force multiplier.'
+
   return (
-    <div style={{ background: '#0D0A08', color: '#F0EAE3', fontFamily: '"Work Sans", sans-serif' }}>
+    <Box style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
-      {/* ── BEAT 1: HERO ─────────────────────────────────────────── */}
-      <section style={{ minHeight: '100vh', position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '75vh', left: 0, right: 0, height: '80px', background: '#181310', zIndex: 0 }} />
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '760px', margin: '0 auto', width: '100%', padding: '0 48px' }}>
-          <h1 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '49px', lineHeight: 1.0, letterSpacing: '-0.03em', color: '#F0EAE3', marginBottom: '16px' }}>
-            Doug March
-          </h1>
-          <p style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 300, fontSize: '21px', lineHeight: 1.15, letterSpacing: '0.04em', color: '#AFA59C', marginBottom: '48px' }}>
-            Product Designer &amp; Developer
-          </p>
-          <p style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '16px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#625A53', maxWidth: '460px' }}>
-            Building products at the intersection of design and engineering.
-          </p>
-        </div>
-      </section>
+      {/* ── Three-column broadsheet grid ── */}
+      <div className={mainGridClass}>
 
-      <hr />
+        {/* COL 1 — Featured project */}
+        <Box
+          borderRight="1px solid"
+          borderColor="border"
+          style={{ padding: '32px 24px', minHeight: '68vh' }}
+        >
+          <SectionLabel>Featured</SectionLabel>
 
-      {/* ── BEAT 2: SPECIMEN — EINSTEIN ──────────────────────────── */}
-      <section style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', background: '#0D0A08' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', width: '100%', padding: '96px 48px' }}>
-          <blockquote style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(72px, 11vw, 120px)', lineHeight: 1.0, letterSpacing: '-0.03em', color: '#F0EAE3', margin: 0, padding: 0 }}>
-            Insanity is doing the same thing over and over and expecting different results.
-          </blockquote>
-          <cite style={{ display: 'block', fontFamily: '"Work Sans", sans-serif', fontWeight: 300, fontSize: '12px', color: '#625A53', letterSpacing: '0.09em', marginTop: '32px', fontStyle: 'normal' }}>
-            — Albert Einstein
-          </cite>
-        </div>
-      </section>
-
-      <hr />
-
-      {/* ── BEAT 3: FEATURED WORK ────────────────────────────────── */}
-      {featuredProject && (
-        <section style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', background: '#0D0A08' }}>
-          <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '96px 48px' }}>
-            <SectionLabel>Featured</SectionLabel>
-            <a
-              href={featuredProject.liveUrl || featuredProject.externalUrl || `/work/${featuredProject.slug}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-link"
-              style={{ display: 'block', marginBottom: '32px' }}
-            >
-              <h2 style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '37px', lineHeight: 1.0, letterSpacing: '-0.03em', color: 'inherit', margin: 0 }}>
-                {featuredProject.title}
-              </h2>
-            </a>
-            {featuredProject.problem && (
-              <p style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '21px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#AFA59C', maxWidth: '540px', margin: 0 }}>
-                {featuredProject.problem}
-              </p>
-            )}
-            <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em', textTransform: 'uppercase', marginTop: '48px' }}>
-              {featuredProject.type} — {featuredProject.year}
-            </div>
-          </div>
-        </section>
-      )}
-
-      <hr />
-
-      {/* ── BEAT 4: WORK INDEX ───────────────────────────────────── */}
-      <section style={{ position: 'relative', background: '#0D0A08' }}>
-        {/* Code-editor gutter accent strip */}
-        <div style={{ position: 'absolute', left: '16px', top: 0, bottom: 0, width: '2px', background: '#C95220', opacity: 0.6 }} />
-        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '64px 48px' }}>
-          <SectionLabel>Selected Work</SectionLabel>
-          <div style={{ borderTop: '1px solid #2A2420' }}>
-            {selectedWork.map(project => (
-              <a
-                key={project.slug}
-                href={`/work/${project.slug}`}
-                className="work-row"
+          {featuredProject && (
+            <Box style={{ paddingTop: '12px' }}>
+              <Box
+                fontSize="2xs"
+                fontFamily="body"
+                color="text.muted"
+                letterSpacing="widest"
+                style={{ textTransform: 'uppercase', marginBottom: '20px' }}
               >
-                <span style={{ flex: 1, fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '16px', letterSpacing: '0.04em', color: '#F0EAE3', lineHeight: 1.0 }}>
-                  {project.title}
-                </span>
-                <span style={{ width: '96px', textAlign: 'center', fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em', textTransform: 'uppercase', lineHeight: 1.0 }}>
-                  {project.type}
-                </span>
-                <span style={{ width: '48px', textAlign: 'right', fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em', fontVariantNumeric: 'tabular-nums', lineHeight: 1.0 }}>
-                  {project.year}
-                </span>
+                {featuredProject.type} · {featuredProject.year}
+              </Box>
+
+              <a
+                href={
+                  featuredProject.externalUrl ||
+                  featuredProject.liveUrl ||
+                  `/work/${featuredProject.slug}`
+                }
+                target={featuredProject.externalUrl ? '_blank' : undefined}
+                rel={
+                  featuredProject.externalUrl ? 'noopener noreferrer' : undefined
+                }
+                style={{ textDecoration: 'none' }}
+              >
+                <Box
+                  fontFamily="heading"
+                  fontSize="2xl"
+                  fontWeight="700"
+                  color="text"
+                  lineHeight="tight"
+                  letterSpacing="tight"
+                  style={{ marginBottom: '24px' }}
+                >
+                  {featuredProject.title}
+                </Box>
               </a>
+
+              {featuredProject.problem && (
+                <Box
+                  fontSize="base"
+                  fontFamily="body"
+                  color="text.secondary"
+                  lineHeight="normal"
+                  style={{ maxWidth: '520px', marginBottom: '28px' }}
+                >
+                  {featuredProject.problem}
+                </Box>
+              )}
+
+              {featuredProject.role && (
+                <Box
+                  fontSize="sm"
+                  fontFamily="body"
+                  color="text.muted"
+                  style={{ marginBottom: '28px' }}
+                >
+                  Role — {featuredProject.role}
+                </Box>
+              )}
+
+              <a
+                href={
+                  featuredProject.externalUrl ||
+                  featuredProject.liveUrl ||
+                  `/work/${featuredProject.slug}`
+                }
+                target={featuredProject.externalUrl ? '_blank' : undefined}
+                rel={
+                  featuredProject.externalUrl ? 'noopener noreferrer' : undefined
+                }
+                style={{ textDecoration: 'none' }}
+              >
+                <Box
+                  fontSize="sm"
+                  fontFamily="body"
+                  color="accent"
+                  letterSpacing="wide"
+                >
+                  View project ↗
+                </Box>
+              </a>
+            </Box>
+          )}
+        </Box>
+
+        {/* COL 2 — About + Powell quote (specimen zone) */}
+        <Box
+          borderRight="1px solid"
+          borderColor="border"
+          style={{ padding: '24px 20px' }}
+        >
+          <SectionLabel>About</SectionLabel>
+
+          <Box style={{ marginBottom: '24px' }}>
+            <Box
+              fontFamily="heading"
+              fontSize="md"
+              fontWeight="600"
+              color="text"
+              lineHeight="snug"
+              style={{ marginBottom: '6px' }}
+            >
+              {identity.name}
+            </Box>
+            <Box
+              fontSize="xs"
+              fontFamily="body"
+              color="text.muted"
+              letterSpacing="wide"
+              style={{ textTransform: 'uppercase', marginBottom: '14px' }}
+            >
+              {identity.role}
+            </Box>
+            <Box
+              fontSize="sm"
+              fontFamily="body"
+              color="text.secondary"
+              lineHeight="normal"
+              style={{ marginBottom: '16px' }}
+            >
+              {identity.statement}
+            </Box>
+            <a href="/about" style={{ textDecoration: 'none' }}>
+              <Box
+                fontSize="xs"
+                fontFamily="body"
+                color="text.muted"
+                letterSpacing="wide"
+              >
+                Full bio →
+              </Box>
+            </a>
+          </Box>
+
+          {/* Separator */}
+          <Box borderTop="1px solid" borderColor="border" />
+
+          {/* Powell quote — specimen accent zone */}
+          <Box style={{ padding: '48px 0' }}>
+            <Box
+              borderLeft="2px solid"
+              borderColor="accent"
+              style={{ paddingLeft: '20px' }}
+            >
+              <Box
+                as="blockquote"
+                fontFamily="heading"
+                fontSize="xl"
+                fontWeight="300"
+                color="text"
+                lineHeight="loose"
+                letterSpacing="wide"
+                style={{ margin: '0 0 14px 0', fontStyle: 'normal' }}
+              >
+                "{powellQuote}"
+              </Box>
+              <Box
+                fontSize="xs"
+                fontFamily="body"
+                color="text.muted"
+                letterSpacing="wider"
+                style={{ textTransform: 'uppercase' }}
+              >
+                — Colin Powell
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+
+        {/* COL 3 — Signals */}
+        <Box style={{ padding: '20px 16px' }}>
+          <SectionLabel>Signals</SectionLabel>
+
+          {/* Tigers score */}
+          <Box style={{ marginBottom: '4px' }}>
+            <Box
+              fontFamily="heading"
+              fontSize="sm"
+              fontWeight="300"
+              color="signal"
+              lineHeight="snug"
+              style={{ fontStyle: 'italic' }}
+            >
+              DET 0 · OAK 1 — L
+            </Box>
+          </Box>
+          <Box
+            fontSize="sm"
+            fontFamily="body"
+            fontWeight="300"
+            color="text.muted"
+            style={{ marginBottom: '20px' }}
+          >
+            noted.
+          </Box>
+
+          {/* Hairline */}
+          <Box borderTop="1px solid" borderColor="border" style={{ marginBottom: '14px' }} />
+
+          {/* Easter + Masters */}
+          <Box style={{ marginBottom: '8px' }}>
+            <Box
+              fontSize="xs"
+              fontFamily="body"
+              color="text.muted"
+              lineHeight="normal"
+            >
+              <Box as="span" color="accent">◦</Box>
+              {' '}Easter → 3 days
+            </Box>
+          </Box>
+          <Box style={{ marginBottom: '8px' }}>
+            <Box
+              fontSize="xs"
+              fontFamily="body"
+              color="text.muted"
+              lineHeight="normal"
+            >
+              Augusta → 7 days
+            </Box>
+          </Box>
+
+          {/* Artemis — bottom of column */}
+          <Box style={{ marginTop: '32px' }}>
+            <Box borderTop="1px solid" borderColor="border" style={{ marginBottom: '12px' }} />
+            <Box
+              fontSize="xs"
+              fontFamily="body"
+              color="text.muted"
+              letterSpacing="wide"
+            >
+              Artemis II ↑
+            </Box>
+          </Box>
+        </Box>
+
+      </div>
+
+      {/* ── Selected work section ── */}
+      <Box borderTop="1px solid" borderColor="border" style={{ padding: '24px 24px 0' }}>
+        <SectionLabel>Selected Work</SectionLabel>
+      </Box>
+
+      <div className={workGridClass}>
+        {selectedWork.map((project) => (
+          <WorkCard key={project.slug} project={project} />
+        ))}
+      </div>
+
+      {/* ── Experiments section ── */}
+      {experiments.length > 0 && (
+        <>
+          <Box style={{ padding: '24px 24px 0' }}>
+            <SectionLabel>Experiments</SectionLabel>
+          </Box>
+          <div className={workGridClass}>
+            {experiments.map((project) => (
+              <ExperimentCard key={project.slug} project={project} />
             ))}
           </div>
-        </div>
-      </section>
+        </>
+      )}
 
-      <hr />
-
-      {/* ── BEAT 5: EXPERIMENTS ──────────────────────────────────── */}
-      <section style={{ background: '#0D0A08' }}>
-        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '96px 48px' }}>
-          <SectionLabel>Experiments</SectionLabel>
-          {experiments.map(exp => (
-            <div key={exp.slug} style={{ display: 'flex', alignItems: 'flex-start', gap: '24px', paddingTop: '24px', paddingBottom: '24px', borderBottom: '1px solid #2A2420' }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 500, fontSize: '16px', letterSpacing: '0.04em', color: '#F0EAE3', marginBottom: '6px' }}>
-                  {exp.title}
-                </div>
-                {exp.description && (
-                  <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '12px', lineHeight: 1.65, letterSpacing: '0.04em', color: '#625A53' }}>
-                    {exp.description}
-                  </div>
-                )}
-                <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em', textTransform: 'uppercase', marginTop: '8px' }}>
-                  {exp.type}
-                </div>
-              </div>
-              <div style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em', fontVariantNumeric: 'tabular-nums', flexShrink: 0, paddingTop: '3px' }}>
-                {exp.year}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <hr />
-
-      {/* ── BEAT 6: FOOTER ───────────────────────────────────────── */}
-      <footer style={{ background: '#0D0A08' }}>
-        <div style={{ maxWidth: '760px', margin: '0 auto', width: '100%', padding: '48px 48px' }}>
-
-          {/* Main footer row: scores left, contact right */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '48px' }}>
-
-            {/* Sports scores */}
-            <div style={{ fontVariantNumeric: 'tabular-nums' }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '7px' }}>
-                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#AFA59C' }}>
-                  DET&nbsp;&nbsp;127 · MEM&nbsp;&nbsp;116
-                </span>
-                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#C95220' }}>W</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '7px' }}>
-                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#AFA59C' }}>
-                  DET&nbsp;&nbsp;&nbsp;&nbsp;1 · TBL&nbsp;&nbsp;&nbsp;&nbsp;5
-                </span>
-                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#625A53' }}>L</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#AFA59C' }}>
-                  DET&nbsp;&nbsp;&nbsp;&nbsp;5 · CLE&nbsp;&nbsp;&nbsp;&nbsp;7
-                </span>
-                <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#625A53' }}>L</span>
-              </div>
-            </div>
-
-            {/* Contact links */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
-              <a href="mailto:doug@doug-march.com" className="footer-link" style={{ fontSize: '9px', letterSpacing: '0.09em', textTransform: 'uppercase' }}>Email</a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="footer-link" style={{ fontSize: '9px', letterSpacing: '0.09em', textTransform: 'uppercase' }}>GitHub</a>
-              <a href="/about" className="footer-link" style={{ fontSize: '9px', letterSpacing: '0.09em', textTransform: 'uppercase' }}>About</a>
-            </div>
-          </div>
-
-          {/* Easter sand hairline — one warm breath before copyright */}
-          <div style={{ height: '2px', background: '#C9A87C', marginBottom: '16px' }} />
-
-          {/* Copyright + Archive */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontFamily: '"Work Sans", sans-serif', fontWeight: 400, fontSize: '9px', color: '#625A53', letterSpacing: '0.09em' }}>
-              © 2026 Doug March
-            </span>
-            <a href="/archive" className="footer-link" style={{ fontSize: '9px', letterSpacing: '0.09em' }}>
-              Archive
-            </a>
-          </div>
-        </div>
-      </footer>
-
-    </div>
+    </Box>
   )
 }
