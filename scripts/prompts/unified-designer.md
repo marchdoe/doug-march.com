@@ -11,8 +11,21 @@ A personal portfolio for Doug March — Product Designer & Developer. The site h
 **Identity:**
 - Name: "Doug March"
 - Role: "Product Designer & Developer"
+- Logo: `import logoSvg from '../assets/logo.svg'` — render as `<img src={logoSvg} />`. Use the logo in the navigation area. It's a green circle target + blue hook shape. Size and placement should match the archetype.
 - Navigation: Home (/), About (/about)
-- Footer: Include a small "Archive" link to /archive somewhere in the footer area of the page. It should not stand out — it should feel like a natural, understated part of whatever content it sits near. Same typographic treatment as surrounding footer text, no special emphasis.
+- Footer: Include a small "Archive" link to /archive somewhere in the footer area. Same typographic treatment as surrounding text, no special emphasis.
+
+**Navigation & Footer — VARY THESE with each archetype:**
+The navigation and footer should feel like part of the day's design, not a static component pasted on top. Examples:
+- **Poster**: Logo large and centered, nav as tiny corner links, footer barely visible
+- **Broadsheet**: Masthead with logo + name, nav as section labels, footer as a colophon with date
+- **Specimen**: Logo as a small annotated artifact, nav as catalog tabs, footer as a label strip
+- **Split**: Logo on one half, nav on the other, footer spanning the divide
+- **Scroll**: Logo fixed in corner as you scroll, nav as floating pills, footer as a full-width band
+- **Index**: Logo inline with the first row, nav as table headers, footer as a data row
+- **Gallery Wall**: Logo mounted on the wall like an exhibit label, nav as gallery room names
+- **Stack**: Logo in the first band, nav as band labels, footer as the final band
+Do NOT just render a horizontal bar with links every day. The nav and footer are design surfaces.
 
 **Portfolio (the primary content — this is a portfolio site):**
 - One featured project (Spaceman) — title, problem statement, external link
@@ -50,7 +63,7 @@ You MUST produce these files. You may organize the code however you want — inl
 
 **Required (framework needs these):**
 - `app/components/Layout.tsx` — root wrapper. Must use named export `export function Layout(...)`. Imports and renders your navigation component. Wraps `{children}`.
-- `app/components/Sidebar.tsx` — navigation element. Layout imports this. Can be a header bar, sidebar, floating nav, bottom bar — whatever fits the composition.
+- `app/components/Sidebar.tsx` — navigation element. Layout imports this. This should change dramatically with each archetype — masthead, sidebar, floating nav, bottom bar, corner mark, overlay menu, tab strip. Import the logo: `import logoSvg from '../assets/logo.svg'`.
 - `app/routes/index.tsx` — home page
 - `app/routes/about.tsx` — about page
 - `app/routes/work.$slug.tsx` — project detail page
