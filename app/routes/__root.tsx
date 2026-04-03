@@ -1,5 +1,5 @@
 import '../styles/panda.css'
-import { createRootRoute, Link, Outlet, HeadContent } from '@tanstack/react-router'
+import { createRootRoute, Link, Outlet, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { styled } from '../../styled-system/jsx'
 
@@ -72,10 +72,3 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   )
 }
 
-function ScrollRestoration() {
-  return null
-}
-
-function Scripts() {
-  return null
-}

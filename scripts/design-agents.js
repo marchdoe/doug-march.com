@@ -656,41 +656,52 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   // Post-write fixup: ensure __root.tsx has critical imports for SPA hydration.
   // The token designer frequently drops ScrollRestoration and Scripts imports,
-  // which prevents the client JS bundle from loading (site renders server HTML only).
+  // or defines fake local versions (return null). Both break client-side hydration.
   try {
     const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
     let rootContent = await readFile(rootPath, 'utf8')
+    let fixed = false
+
+    // Step 1: Check if ScrollRestoration/Scripts are in the @tanstack/react-router import line
+    const routerImportMatch = rootContent.match(/import\s*\{([^}]+)\}\s*from\s*['"]@tanstack\/react-router['"]/)
+    const routerImports = routerImportMatch ? routerImportMatch[1] : ''
     const requiredImports = ['ScrollRestoration', 'Scripts']
-    const missing = requiredImports.filter(name => !rootContent.includes(name))
-    if (missing.length > 0) {
-      // Add missing imports to the @tanstack/react-router import line
+    const missingFromImport = requiredImports.filter(name => !routerImports.includes(name))
+
+    if (missingFromImport.length > 0) {
+      // Add missing to the import line
       rootContent = rootContent.replace(
         /import\s*\{([^}]+)\}\s*from\s*['"]@tanstack\/react-router['"]/,
         (match, imports) => {
           const existing = imports.split(',').map(s => s.trim())
-          const merged = [...new Set([...existing, ...missing])]
+          const merged = [...new Set([...existing, ...missingFromImport])]
           return `import { ${merged.join(', ')} } from '@tanstack/react-router'`
         }
       )
-      // Ensure ScrollRestoration and Scripts are in the JSX body.
-      // The token designer produces varying structures, so try multiple patterns:
-      //   1. </Layout> ... </> (fragment wrapper)
-      //   2. {children} ... </body> (html/body wrapper)
-      //   3. {children} ... </> (any wrapper)
-      if (!rootContent.includes('<ScrollRestoration')) {
-        const inserted = rootContent
-          .replace(/(\{children\})([\s\S]*?)(<\/body>)/, '$1\n        <ScrollRestoration />\n        <Scripts />$2$3')
-        if (inserted !== rootContent) {
-          rootContent = inserted
-        } else {
-          // Fallback: insert before the last closing tag pair
-          rootContent = rootContent
-            .replace(/(\{children\}<\/Layout>)([\s\S]*?)(\s*<\/>)/, '$1\n    <ScrollRestoration />\n    <Scripts />$2$3')
-            .replace(/(<\/Layout>)([\s\S]*?)(\s*<\/>)/, '$1\n    <ScrollRestoration />\n    <Scripts />$2$3')
-        }
+      fixed = true
+    }
+
+    // Step 2: Remove fake local definitions (function ScrollRestoration/Scripts that return null)
+    rootContent = rootContent.replace(/\nfunction ScrollRestoration\(\)\s*\{[\s\S]*?return\s+null[\s\S]*?\}\n?/g, '\n')
+    rootContent = rootContent.replace(/\nfunction Scripts\(\)\s*\{[\s\S]*?return\s+null[\s\S]*?\}\n?/g, '\n')
+
+    // Step 3: Ensure ScrollRestoration and Scripts are in the JSX body
+    if (!rootContent.includes('<ScrollRestoration')) {
+      const inserted = rootContent
+        .replace(/(\{children\})([\s\S]*?)(<\/body>)/, '$1\n        <ScrollRestoration />\n        <Scripts />$2$3')
+      if (inserted !== rootContent) {
+        rootContent = inserted
+      } else {
+        rootContent = rootContent
+          .replace(/(\{children\}<\/Layout>)([\s\S]*?)(\s*<\/>)/, '$1\n    <ScrollRestoration />\n    <Scripts />$2$3')
+          .replace(/(<\/Layout>)([\s\S]*?)(\s*<\/>)/, '$1\n    <ScrollRestoration />\n    <Scripts />$2$3')
       }
+      fixed = true
+    }
+
+    if (fixed) {
       await writeFile(rootPath, rootContent, 'utf8')
-      console.log(`  [fixup] added missing imports to __root.tsx: ${missing.join(', ')}`)
+      console.log(`  [fixup] fixed __root.tsx: ensured ScrollRestoration/Scripts are imported from @tanstack/react-router`)
     }
   } catch (err) {
     console.warn(`  [fixup] __root.tsx fixup failed (non-blocking): ${err.message}`)
