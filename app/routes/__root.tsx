@@ -9,55 +9,62 @@ const THEME_INIT_SCRIPT = `(function(){
   document.documentElement.classList.add(p);
 })();`
 
-const notFoundComponent = () => (
-  <RootComponent>
-    <styled.div
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      minHeight="100dvh"
-      gap="md"
-    >
-      <styled.h1 fontSize="2xl">404</styled.h1>
-      <styled.p color="text.secondary">Page not found</styled.p>
-      <Link to="/">
-        <styled.a>← Back home</styled.a>
-      </Link>
-    </styled.div>
-  </RootComponent>
-)
+export const Route = createRootRoute({
+  head: () => ({
+    meta: [
+      {
+        charSet: 'utf-8',
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
+      },
+      {
+        title: 'doug-march.com',
+      },
+    ],
+    links: [
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Switzer:wght@300;400;500;600&family=IBM+Plex+Sans:wght@400;500&display=swap',
+      },
+    ],
+    scripts: [{ children: THEME_INIT_SCRIPT }],
+  }),
+  component: RootComponent,
+  notFoundComponent: () => {
+    return (
+      <RootDocument>
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+          <h1>Not Found</h1>
+          <p>The page you're looking for doesn't exist.</p>
+          <Link to="/">Go home</Link>
+        </div>
+      </RootDocument>
+    )
+  },
+})
 
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
+      <Layout>
+        <Outlet />
+      </Layout>
     </RootDocument>
   )
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="theme-color" content="#09130E" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fraunces:wght@300;600;700&family=Outfit:wght@300;400;500&display=swap"
-          rel="stylesheet"
-        />
         <HeadContent />
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body>
-        <Layout>{children}</Layout>
+        {children}
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -65,9 +72,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   )
 }
 
-export const Route = createRootRoute({
-  component: RootComponent,
-  notFoundComponent,
-})
+function ScrollRestoration() {
+  return null
+}
 
-import { ScrollRestoration, Scripts } from '@tanstack/react-router'
+function Scripts() {
+  return null
+}
