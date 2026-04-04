@@ -1,25 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Box, Flex } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
-
-// ─── Project Background Gradients ─────────────────────────────────────────────
-
-const PROJECT_BG: Record<string, string> = {
-  spaceman:      'linear-gradient(160deg, #0D110A 0%, #181D11 45%, #2D3224 100%)',
-  fishsticks:    'linear-gradient(160deg, #181D11 0%, #2D3224 100%)',
-  '15th-club':   'linear-gradient(160deg, #2D3224 0%, #484F3C 100%)',
-  'doug-march':  'linear-gradient(145deg, #484F3C 0%, #636B56 55%, #8A9280 100%)',
-  teeturn:       'linear-gradient(160deg, #9A4A1C 0%, #C26535 100%)',
-  politweets:    'linear-gradient(160deg, #8A9280 0%, #AFB6A3 100%)',
-  twittertale:   'linear-gradient(160deg, #636B56 0%, #8A9280 100%)',
-}
-
-function bgForSlug(slug: string): string {
-  return PROJECT_BG[slug] ?? 'linear-gradient(160deg, #181D11, #2D3224)'
-}
-
-// ─── Work Page ────────────────────────────────────────────────────────────────
 
 function WorkPage() {
   const { slug } = Route.useParams()
@@ -27,365 +11,528 @@ function WorkPage() {
 
   if (!project) {
     return (
-      <div
+      <Box
         style={{
-          maxWidth: '1296px',
-          margin: '0 auto',
-          padding: '40px 48px 80px',
+          minHeight: '80vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <a
-          href="/"
-          style={{
-            fontFamily: '"IBM Plex Sans", sans-serif',
-            fontSize: '12px',
-            color: '#636B56',
-            textDecoration: 'none',
-            letterSpacing: '0.08em',
-            display: 'inline-block',
-            marginBottom: '48px',
-            transition: 'color 300ms ease',
-          }}
-        >
-          ← Work
-        </a>
-        <div
-          style={{
-            fontFamily: 'Switzer, sans-serif',
-            fontSize: '37px',
-            fontWeight: 400,
-            color: '#8A9280',
-            letterSpacing: '-0.025em',
-          }}
-        >
-          Project not found.
-        </div>
-      </div>
+        <Box style={{ textAlign: 'center' }}>
+          <Box
+            fontFamily="serif"
+            fontSize="lg"
+            style={{
+              fontWeight: '400',
+              color: '#3A3228',
+              marginBottom: '24px',
+              fontStyle: 'italic',
+            }}
+          >
+            Project not found.
+          </Box>
+          <a href="/" style={{ textDecoration: 'none', borderBottom: 'none' }}>
+            <Box
+              fontFamily="body"
+              fontSize="xs"
+              color="accent"
+              style={{ letterSpacing: '0.04em' }}
+            >
+              ← Back home
+            </Box>
+          </a>
+        </Box>
+      </Box>
     )
   }
 
-  const liveHref = project.liveUrl || project.externalUrl
-
   return (
-    <div
-      style={{
-        maxWidth: '1296px',
-        margin: '0 auto',
-        padding: '40px 48px 80px',
-      }}
-    >
-      {/* ── Back link ── */}
-      <a
-        href="/"
-        style={{
-          fontFamily: '"IBM Plex Sans", sans-serif',
-          fontSize: '12px',
-          color: '#636B56',
-          textDecoration: 'none',
-          letterSpacing: '0.08em',
-          display: 'inline-block',
-          marginBottom: '48px',
-          transition: 'color 300ms ease',
-        }}
-      >
-        ← Work
-      </a>
-
+    <Box>
       {/* ── Project Header ── */}
-      <div style={{ marginBottom: '40px' }}>
-        {/* Type label */}
-        <div
-          style={{
-            fontFamily: '"IBM Plex Sans", sans-serif',
-            fontSize: '9px',
-            color: '#8A9280',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase' as const,
-            marginBottom: '12px',
-          }}
-        >
-          {project.type}
-        </div>
-
-        {/* Title */}
-        <h1
-          style={{
-            fontFamily: 'Switzer, sans-serif',
-            fontSize: '50px',
-            fontWeight: 400,
-            color: '#1D2219',
-            letterSpacing: '-0.025em',
-            lineHeight: 1.0,
-            marginBottom: '20px',
-          }}
-        >
-          {project.title}
-        </h1>
-
-        {/* Meta row */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap' as const,
-            gap: '8px 20px',
-            alignItems: 'baseline',
-            fontFamily: '"IBM Plex Sans", sans-serif',
-            fontSize: '12px',
-            color: '#8A9280',
-            letterSpacing: '-0.01em',
-          }}
-        >
-          <span>{project.year}</span>
-          {project.role && (
-            <>
-              <span style={{ color: '#D2D6C8' }}>·</span>
-              <span>{project.role}</span>
-            </>
-          )}
-          {liveHref && (
-            <>
-              <span style={{ color: '#D2D6C8' }}>·</span>
-              <a
-                href={liveHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: '#C26535',
-                  textDecoration: 'none',
-                  transition: 'color 300ms ease',
-                }}
-              >
-                Live site →
-              </a>
-            </>
-          )}
-          {project.githubUrl && (
-            <>
-              <span style={{ color: '#D2D6C8' }}>·</span>
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: '#636B56',
-                  textDecoration: 'none',
-                  transition: 'color 300ms ease',
-                }}
-              >
-                GitHub →
-              </a>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* ── Divider ── */}
-      <div
-        style={{ height: '1px', background: '#D2D6C8', marginBottom: '48px' }}
-      />
-
-      {/* ── Visual Surface ── */}
-      <div
+      <Box
+        as="section"
         style={{
-          height: '400px',
-          background: bgForSlug(slug),
-          filter: 'contrast(1.08) saturate(0.90)',
-          marginBottom: '48px',
-        }}
-      />
-
-      {/* ── Content Grid ── */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '7fr 5fr',
-          gap: '80px',
-          alignItems: 'start',
+          borderBottom: '1px solid #E5DFC8',
+          paddingTop: '96px',
+          paddingBottom: '64px',
         }}
       >
-        {/* Main narrative */}
-        <div>
+        <Box
+          style={{
+            width: '100%',
+            maxWidth: '720px',
+            margin: '0 auto',
+            paddingLeft: '48px',
+            paddingRight: '48px',
+          }}
+        >
+          {/* Breadcrumb */}
+          <Flex align="center" style={{ gap: '8px', marginBottom: '40px' }}>
+            <a href="/" style={{ textDecoration: 'none', borderBottom: 'none' }}>
+              <Box
+                fontFamily="body"
+                fontSize="xs"
+                color="text-muted"
+                style={{ letterSpacing: '0.04em' }}
+              >
+                Doug March
+              </Box>
+            </a>
+            <Box fontFamily="body" fontSize="xs" color="text-disabled">
+              /
+            </Box>
+            <Box
+              fontFamily="body"
+              fontSize="xs"
+              color="text-muted"
+              style={{ letterSpacing: '0.04em' }}
+            >
+              Work
+            </Box>
+            <Box fontFamily="body" fontSize="xs" color="text-disabled">
+              /
+            </Box>
+            <Box
+              fontFamily="body"
+              fontSize="xs"
+              color="text-secondary"
+              style={{ letterSpacing: '0.04em' }}
+            >
+              {project.title}
+            </Box>
+          </Flex>
+
+          {/* Type + Year label */}
+          <Box
+            fontFamily="body"
+            fontSize="xs"
+            color="accent"
+            style={{
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              fontWeight: '600',
+              marginBottom: '16px',
+            }}
+          >
+            {project.type}
+            <Box as="span" color="text-disabled" style={{ margin: '0 8px' }}>
+              ·
+            </Box>
+            <Box as="span" color="text-muted" style={{ fontVariantNumeric: 'tabular-nums' }}>
+              {project.year}
+            </Box>
+          </Box>
+
+          {/* Project title */}
+          <Box
+            fontFamily="serif"
+            fontSize="2xl"
+            style={{
+              fontWeight: '700',
+              lineHeight: '1.05',
+              letterSpacing: '-0.02em',
+              color: '#120D09',
+              marginBottom: '20px',
+            }}
+          >
+            {project.title}
+          </Box>
+
+          {/* Role */}
+          {project.role && (
+            <Box
+              fontFamily="body"
+              fontSize="sm"
+              color="text-secondary"
+              style={{
+                letterSpacing: '0.04em',
+                lineHeight: '1.4',
+              }}
+            >
+              {project.role}
+            </Box>
+          )}
+        </Box>
+      </Box>
+
+      {/* ── Project Image ── */}
+      <Box style={{ borderBottom: '1px solid #E5DFC8' }}>
+        <Box
+          style={{
+            width: '100%',
+            maxWidth: '720px',
+            margin: '0 auto',
+            paddingLeft: '48px',
+            paddingRight: '48px',
+            paddingTop: '48px',
+            paddingBottom: '48px',
+          }}
+        >
+          <Box
+            style={{
+              width: '100%',
+              aspectRatio: '16/9',
+              borderRadius: '6px',
+              background: 'linear-gradient(135deg, #E5DFC8 0%, #C8BFA0 45%, #BBD4A4 100%)',
+              border: '1px solid #E5DFC8',
+              boxShadow: '0 1px 4px rgba(33, 28, 20, 0.06)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden',
+            }}
+          >
+            <Box
+              fontFamily="serif"
+              style={{
+                fontSize: 'clamp(40px, 6vw, 72px)',
+                fontStyle: 'italic',
+                fontWeight: '400',
+                color: '#C8BFA0',
+                lineHeight: '1',
+                letterSpacing: '-0.02em',
+                userSelect: 'none',
+              }}
+            >
+              {project.title}
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+
+      {/* ── Project Content ── */}
+      <Box style={{ borderBottom: '1px solid #E5DFC8' }}>
+        <Box
+          style={{
+            width: '100%',
+            maxWidth: '720px',
+            margin: '0 auto',
+            paddingLeft: '48px',
+            paddingRight: '48px',
+            paddingTop: '64px',
+            paddingBottom: '64px',
+          }}
+        >
+          {/* Problem */}
           {project.problem && (
-            <div style={{ marginBottom: '36px' }}>
-              <div
+            <Box style={{ marginBottom: '48px' }}>
+              <Box
+                fontFamily="body"
+                fontSize="xs"
+                color="text-muted"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  fontWeight: '600',
                   marginBottom: '16px',
                 }}
               >
-                <span
-                  style={{
-                    fontFamily: '"IBM Plex Sans", sans-serif',
-                    fontSize: '9px',
-                    color: '#8A9280',
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase' as const,
-                    fontWeight: 500,
-                    whiteSpace: 'nowrap' as const,
-                  }}
-                >
-                  Problem
-                </span>
-                <div style={{ flex: 1, height: '1px', background: '#D2D6C8' }} />
-              </div>
-              <div
+                The Problem
+              </Box>
+              <Box
+                fontFamily="body"
+                fontSize="base"
+                color="text-secondary"
                 style={{
-                  fontFamily: '"IBM Plex Sans", sans-serif',
-                  fontSize: '16px',
-                  color: '#2D3224',
-                  lineHeight: 1.6,
+                  lineHeight: '1.65',
+                  letterSpacing: '0.04em',
                   maxWidth: '560px',
                 }}
               >
                 {project.problem}
-              </div>
-            </div>
+              </Box>
+            </Box>
           )}
 
+          {/* Approach */}
           {project.approach && (
-            <div style={{ marginBottom: '36px' }}>
-              <div
+            <Box style={{ marginBottom: '48px' }}>
+              <Box
+                fontFamily="body"
+                fontSize="xs"
+                color="text-muted"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  fontWeight: '600',
                   marginBottom: '16px',
                 }}
               >
-                <span
-                  style={{
-                    fontFamily: '"IBM Plex Sans", sans-serif',
-                    fontSize: '9px',
-                    color: '#8A9280',
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase' as const,
-                    fontWeight: 500,
-                    whiteSpace: 'nowrap' as const,
-                  }}
-                >
-                  Approach
-                </span>
-                <div style={{ flex: 1, height: '1px', background: '#D2D6C8' }} />
-              </div>
-              <div
+                Approach
+              </Box>
+              <Box
+                fontFamily="body"
+                fontSize="base"
+                color="text-secondary"
                 style={{
-                  fontFamily: '"IBM Plex Sans", sans-serif',
-                  fontSize: '16px',
-                  color: '#484F3C',
-                  lineHeight: 1.6,
+                  lineHeight: '1.65',
+                  letterSpacing: '0.04em',
                   maxWidth: '560px',
                 }}
               >
                 {project.approach}
-              </div>
-            </div>
+              </Box>
+            </Box>
           )}
 
+          {/* Outcome */}
           {project.outcome && (
-            <div style={{ marginBottom: '36px' }}>
-              <div
+            <Box style={{ marginBottom: '48px' }}>
+              <Box
+                fontFamily="body"
+                fontSize="xs"
+                color="text-muted"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  fontWeight: '600',
                   marginBottom: '16px',
                 }}
               >
-                <span
-                  style={{
-                    fontFamily: '"IBM Plex Sans", sans-serif',
-                    fontSize: '9px',
-                    color: '#8A9280',
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase' as const,
-                    fontWeight: 500,
-                    whiteSpace: 'nowrap' as const,
-                  }}
-                >
-                  Outcome
-                </span>
-                <div style={{ flex: 1, height: '1px', background: '#D2D6C8' }} />
-              </div>
-              <div
+                Outcome
+              </Box>
+              <Box
+                fontFamily="body"
+                fontSize="base"
+                color="text-secondary"
                 style={{
-                  fontFamily: '"IBM Plex Sans", sans-serif',
-                  fontSize: '16px',
-                  color: '#484F3C',
-                  lineHeight: 1.6,
+                  lineHeight: '1.65',
+                  letterSpacing: '0.04em',
                   maxWidth: '560px',
                 }}
               >
                 {project.outcome}
-              </div>
-            </div>
+              </Box>
+            </Box>
           )}
 
-          {/* Fallback: description for lightweight projects */}
-          {project.description && !project.problem && !project.approach && !project.outcome && (
-            <div
-              style={{
-                fontFamily: '"IBM Plex Sans", sans-serif',
-                fontSize: '16px',
-                color: '#484F3C',
-                lineHeight: 1.6,
-                maxWidth: '560px',
-              }}
-            >
-              {project.description}
-            </div>
-          )}
-        </div>
-
-        {/* Aside: stack */}
-        <div>
-          {project.stack && project.stack.length > 0 && (
-            <div>
-              <div
+          {/* Description fallback */}
+          {!project.problem && !project.approach && !project.outcome && project.description && (
+            <Box style={{ marginBottom: '48px' }}>
+              <Box
+                fontFamily="body"
+                fontSize="base"
+                color="text-secondary"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
+                  lineHeight: '1.65',
+                  letterSpacing: '0.04em',
+                  maxWidth: '560px',
+                }}
+              >
+                {project.description}
+              </Box>
+            </Box>
+          )}
+
+          {/* Stack */}
+          {project.stack && project.stack.length > 0 && (
+            <Box style={{ marginBottom: '48px' }}>
+              <Box
+                fontFamily="body"
+                fontSize="xs"
+                color="text-muted"
+                style={{
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  fontWeight: '600',
                   marginBottom: '16px',
                 }}
               >
-                <span
-                  style={{
-                    fontFamily: '"IBM Plex Sans", sans-serif',
-                    fontSize: '9px',
-                    color: '#8A9280',
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase' as const,
-                    fontWeight: 500,
-                  }}
-                >
-                  Stack
-                </span>
-                <div style={{ flex: 1, height: '1px', background: '#D2D6C8' }} />
-              </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap' as const, gap: '8px' }}>
+                Stack
+              </Box>
+              <Box style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {project.stack.map((tech) => (
-                  <span
+                  <Box
                     key={tech}
+                    fontFamily="body"
+                    fontSize="xs"
+                    color="text-secondary"
                     style={{
-                      fontFamily: '"IBM Plex Sans", sans-serif',
-                      fontSize: '12px',
-                      color: '#484F3C',
-                      background: '#E8EBE1',
-                      padding: '4px 10px',
-                      borderRadius: '2px',
-                      letterSpacing: '0.02em',
+                      padding: '5px 12px',
+                      border: '1px solid #E5DFC8',
+                      borderRadius: '3px',
+                      backgroundColor: '#FAFAF4',
+                      letterSpacing: '0.04em',
+                      boxShadow: '0 1px 4px rgba(33, 28, 20, 0.04)',
                     }}
                   >
                     {tech}
-                  </span>
+                  </Box>
                 ))}
-              </div>
-            </div>
+              </Box>
+            </Box>
           )}
-        </div>
-      </div>
-    </div>
+
+          {/* Links */}
+          {(project.liveUrl || project.externalUrl || project.githubUrl) && (
+            <Flex style={{ gap: '12px', flexWrap: 'wrap' }}>
+              {(project.liveUrl || project.externalUrl) && (
+                <a
+                  href={project.liveUrl || project.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'none', borderBottom: 'none' }}
+                >
+                  <Box
+                    fontFamily="body"
+                    fontSize="xs"
+                    style={{
+                      padding: '10px 24px',
+                      borderRadius: '28px',
+                      backgroundColor: '#6A9D51',
+                      color: 'white',
+                      letterSpacing: '0.04em',
+                      fontWeight: '600',
+                      transition: 'all 140ms ease',
+                      display: 'inline-block',
+                    }}
+                    className={css({ _hover: { backgroundColor: 'accent-dark' } })}
+                  >
+                    View Project →
+                  </Box>
+                </a>
+              )}
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'none', borderBottom: 'none' }}
+                >
+                  <Box
+                    fontFamily="body"
+                    fontSize="xs"
+                    style={{
+                      padding: '10px 24px',
+                      borderRadius: '28px',
+                      border: '1px solid #E5DFC8',
+                      color: '#574E3F',
+                      letterSpacing: '0.04em',
+                      fontWeight: '600',
+                      transition: 'all 140ms ease',
+                      display: 'inline-block',
+                      backgroundColor: '#FAFAF4',
+                    }}
+                    className={css({ _hover: { borderColor: 'border', backgroundColor: 'card-bg' } })}
+                  >
+                    GitHub
+                  </Box>
+                </a>
+              )}
+            </Flex>
+          )}
+        </Box>
+      </Box>
+
+      {/* ── Quote Beat (project pages get a quieter version) ── */}
+      <Box
+        backgroundColor="card-bg"
+        style={{
+          borderBottom: '1px solid #E5DFC8',
+          paddingTop: '64px',
+          paddingBottom: '64px',
+        }}
+      >
+        <Box
+          style={{
+            width: '100%',
+            maxWidth: '720px',
+            margin: '0 auto',
+            paddingLeft: '48px',
+            paddingRight: '48px',
+          }}
+        >
+          <Box
+            fontFamily="serif"
+            fontSize="xl"
+            style={{
+              fontStyle: 'italic',
+              fontWeight: '400',
+              color: '#120D09',
+              lineHeight: '1.2',
+              letterSpacing: '-0.02em',
+              marginBottom: '20px',
+            }}
+          >
+            Smile, breathe and go slowly.
+          </Box>
+          <Box
+            style={{
+              width: '48px',
+              height: '1px',
+              backgroundColor: '#6A9D51',
+              marginBottom: '12px',
+            }}
+          />
+          <Box
+            fontFamily="body"
+            fontSize="xs"
+            color="text-muted"
+            style={{ letterSpacing: '0.04em' }}
+          >
+            — Thich Nhat Hanh
+          </Box>
+        </Box>
+      </Box>
+
+      {/* ── Footer ── */}
+      <Box as="footer">
+        <Box
+          style={{
+            width: '100%',
+            maxWidth: '720px',
+            margin: '0 auto',
+            padding: '64px 48px',
+          }}
+        >
+          <Flex
+            justify="space-between"
+            align="center"
+            style={{ marginBottom: '20px' }}
+          >
+            <a href="/" style={{ textDecoration: 'none', borderBottom: 'none' }}>
+              <Box
+                fontFamily="body"
+                fontSize="xs"
+                color="text-muted"
+                style={{ letterSpacing: '0.04em' }}
+              >
+                ← Back to work
+              </Box>
+            </a>
+            <Flex style={{ gap: '24px' }}>
+              <a href="/about" style={{ textDecoration: 'none', borderBottom: 'none' }}>
+                <Box fontFamily="body" fontSize="xs" color="text-muted">About</Box>
+              </a>
+              <a href="/archive" style={{ textDecoration: 'none', borderBottom: 'none' }}>
+                <Box fontFamily="body" fontSize="xs" color="text-muted">Archive</Box>
+              </a>
+            </Flex>
+          </Flex>
+
+          <Box style={{ borderTop: '1px solid #E5DFC8', paddingTop: '16px' }}>
+            <Flex justify="space-between" align="center">
+              <Box
+                fontFamily="body"
+                fontSize="2xs"
+                color="text-muted"
+                style={{ letterSpacing: '0.04em' }}
+              >
+                © 2026 Doug March
+              </Box>
+              <Box
+                fontFamily="body"
+                fontSize="2xs"
+                color="text-muted"
+                style={{ fontVariantNumeric: 'tabular-nums', letterSpacing: '0.02em' }}
+              >
+                Valero Texas Open — R. MacIntyre −14
+              </Box>
+            </Flex>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   )
 }

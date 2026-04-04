@@ -1,67 +1,109 @@
 import { Box, Flex } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
+import logoSvg from '../assets/logo.svg'
 
-export function Sidebar() {
+export default function Sidebar() {
   return (
     <Box
-      as="header"
-      background="bg"
-      display="flex"
-      alignItems="center"
-      style={{ height: '56px' }}
+      as="nav"
+      position="sticky"
+      top="0"
+      zIndex="100"
+      width="100%"
+      backgroundColor="bg"
+      style={{
+        height: '56px',
+        borderBottom: '1px solid #E5DFC8',
+      }}
     >
       <Flex
-        justify="space-between"
         align="center"
-        width="full"
-        style={{ maxWidth: '1296px', margin: '0 auto', padding: '0 48px' }}
+        justify="space-between"
+        height="100%"
+        style={{
+          maxWidth: '840px',
+          margin: '0 auto',
+          paddingLeft: '48px',
+          paddingRight: '48px',
+        }}
       >
-        <a href="/" style={{ textDecoration: 'none' }}>
-          <span
-            style={{
-              fontFamily: 'Switzer, sans-serif',
-              fontSize: '14px',
-              fontWeight: 400,
-              color: '#484F3C',
-              letterSpacing: '0.08em',
-            }}
-          >
-            doug-march
-          </span>
-        </a>
-        <nav
+        {/* Logo + Name */}
+        <a
+          href="/"
           style={{
+            textDecoration: 'none',
+            borderBottom: 'none',
             display: 'flex',
-            gap: '32px',
             alignItems: 'center',
+            gap: '10px',
           }}
         >
+          <img
+            src={logoSvg}
+            alt="Doug March"
+            style={{ width: '24px', height: '24px', display: 'block' }}
+          />
+          <Box
+            fontFamily="body"
+            fontSize="xs"
+            color="text"
+            style={{ fontWeight: '600', letterSpacing: '0.06em' }}
+          >
+            Doug March
+          </Box>
+        </a>
+
+        {/* Nav links + Easter waypoint */}
+        <Flex align="center" style={{ gap: '28px' }}>
           <a
             href="/"
-            style={{
-              fontFamily: '"IBM Plex Sans", sans-serif',
-              fontSize: '12px',
-              color: '#636B56',
-              letterSpacing: '0.08em',
-              textDecoration: 'none',
-              transition: 'color 300ms ease',
-            }}
+            style={{ textDecoration: 'none', borderBottom: 'none' }}
+            className={css({ _hover: { '& > div': { color: 'text' } } })}
           >
-            work
+            <Box
+              fontFamily="body"
+              fontSize="xs"
+              color="text-muted"
+              style={{ letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'all 180ms ease' }}
+            >
+              Home
+            </Box>
           </a>
           <a
             href="/about"
-            style={{
-              fontFamily: '"IBM Plex Sans", sans-serif',
-              fontSize: '12px',
-              color: '#636B56',
-              letterSpacing: '0.08em',
-              textDecoration: 'none',
-              transition: 'color 300ms ease',
-            }}
+            style={{ textDecoration: 'none', borderBottom: 'none' }}
+            className={css({ _hover: { '& > div': { color: 'text' } } })}
           >
-            about
+            <Box
+              fontFamily="body"
+              fontSize="xs"
+              color="text-muted"
+              style={{ letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'all 180ms ease' }}
+            >
+              About
+            </Box>
           </a>
-        </nav>
+
+          {/* Vertical rule */}
+          <Box
+            style={{
+              width: '1px',
+              height: '16px',
+              backgroundColor: '#E5DFC8',
+              flexShrink: '0',
+            }}
+          />
+
+          {/* Easter waypoint */}
+          <Box
+            fontFamily="body"
+            fontSize="2xs"
+            color="text-disabled"
+            style={{ letterSpacing: '0.04em', whiteSpace: 'nowrap' }}
+          >
+            Easter tomorrow
+          </Box>
+        </Flex>
       </Flex>
     </Box>
   )
