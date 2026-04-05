@@ -1,110 +1,61 @@
-import { Box, Flex } from '../../styled-system/jsx'
-import { css } from '../../styled-system/css'
 import logoSvg from '../assets/logo.svg'
 
-export default function Sidebar() {
+export function Sidebar() {
   return (
-    <Box
-      as="nav"
-      position="sticky"
-      top="0"
-      zIndex="100"
-      width="100%"
-      backgroundColor="bg"
+    <header
       style={{
-        height: '56px',
-        borderBottom: '1px solid #E5DFC8',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 48px',
+        height: '52px',
+        background: 'rgba(242, 247, 245, 0.94)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(201, 221, 217, 0.55)',
       }}
     >
-      <Flex
-        align="center"
-        justify="space-between"
-        height="100%"
+      <a
+        href="/"
         style={{
-          maxWidth: '840px',
-          margin: '0 auto',
-          paddingLeft: '48px',
-          paddingRight: '48px',
+          display: 'flex',
+          alignItems: 'center',
+          textDecoration: 'none',
         }}
       >
-        {/* Logo + Name */}
+        <img src={logoSvg} alt="Doug March" style={{ height: '26px', width: 'auto' }} />
+      </a>
+      <nav style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
         <a
           href="/"
           style={{
+            fontSize: '12px',
+            letterSpacing: '0.05em',
+            fontFamily: "'Lora', serif",
+            color: '#4A7870',
             textDecoration: 'none',
-            borderBottom: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
           }}
         >
-          <img
-            src={logoSvg}
-            alt="Doug March"
-            style={{ width: '24px', height: '24px', display: 'block' }}
-          />
-          <Box
-            fontFamily="body"
-            fontSize="xs"
-            color="text"
-            style={{ fontWeight: '600', letterSpacing: '0.06em' }}
-          >
-            Doug March
-          </Box>
+          work
         </a>
-
-        {/* Nav links + Easter waypoint */}
-        <Flex align="center" style={{ gap: '28px' }}>
-          <a
-            href="/"
-            style={{ textDecoration: 'none', borderBottom: 'none' }}
-            className={css({ _hover: { '& > div': { color: 'text' } } })}
-          >
-            <Box
-              fontFamily="body"
-              fontSize="xs"
-              color="text-muted"
-              style={{ letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'all 180ms ease' }}
-            >
-              Home
-            </Box>
-          </a>
-          <a
-            href="/about"
-            style={{ textDecoration: 'none', borderBottom: 'none' }}
-            className={css({ _hover: { '& > div': { color: 'text' } } })}
-          >
-            <Box
-              fontFamily="body"
-              fontSize="xs"
-              color="text-muted"
-              style={{ letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'all 180ms ease' }}
-            >
-              About
-            </Box>
-          </a>
-
-          {/* Vertical rule */}
-          <Box
-            style={{
-              width: '1px',
-              height: '16px',
-              backgroundColor: '#E5DFC8',
-              flexShrink: '0',
-            }}
-          />
-
-          {/* Easter waypoint */}
-          <Box
-            fontFamily="body"
-            fontSize="2xs"
-            color="text-disabled"
-            style={{ letterSpacing: '0.04em', whiteSpace: 'nowrap' }}
-          >
-            Easter tomorrow
-          </Box>
-        </Flex>
-      </Flex>
-    </Box>
+        <a
+          href="/about"
+          style={{
+            fontSize: '12px',
+            letterSpacing: '0.05em',
+            fontFamily: "'Lora', serif",
+            color: '#4A7870',
+            textDecoration: 'none',
+          }}
+        >
+          about
+        </a>
+      </nav>
+    </header>
   )
 }

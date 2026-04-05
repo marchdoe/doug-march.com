@@ -1,265 +1,241 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex } from '../../styled-system/jsx'
 import { timeline, capabilities, education } from '../content/timeline'
 import { identity, personal } from '../content/about'
+import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-function SectionLabel({ children }: { children: string }) {
+// ─── Hover for timeline rows ──────────────────────────────────────────────────
+const timelineRow = css({
+  display: 'flex',
+  gap: '32px',
+  padding: '24px 0',
+  borderBottom: '1px solid #C9DDD9',
+  transition: 'background-color 150ms ease',
+  _hover: {
+    backgroundColor: '#E4EFEC',
+  },
+})
+
+// ─── Primitives ───────────────────────────────────────────────────────────────
+function AmberRule() {
   return (
-    <Box
-      fontFamily="body"
-      fontSize="xs"
-      color="text-muted"
+    <div
       style={{
-        letterSpacing: '0.12em',
+        width: '40px',
+        height: '1px',
+        backgroundColor: '#C9920E',
+        marginBottom: '12px',
+      }}
+    />
+  )
+}
+
+function SectionLabel({ text }: { text: string }) {
+  return (
+    <p
+      style={{
+        fontFamily: "'Lora', serif",
+        fontSize: '9px',
+        fontWeight: '500',
+        letterSpacing: '0.14em',
+        color: '#4A7870',
         textTransform: 'uppercase',
-        fontWeight: '600',
-        marginBottom: '32px',
+        margin: '0 0 40px 0',
       }}
     >
-      {children}
-    </Box>
+      {text}
+    </p>
   )
 }
 
 function AboutPage() {
   return (
-    <Box>
-      {/* ── Hero / Identity ── */}
-      <Box
-        as="section"
+    <div style={{ width: '100%' }}>
+
+      {/* ── HEADER ── */}
+      <section
         style={{
-          minHeight: '50vh',
+          width: '100%',
           display: 'flex',
+          justifyContent: 'center',
+          minHeight: '60vh',
           alignItems: 'center',
-          borderBottom: '1px solid #E5DFC8',
         }}
       >
-        <Box
+        <div
           style={{
-            width: '100%',
             maxWidth: '720px',
-            margin: '0 auto',
-            padding: '96px 48px',
+            width: '100%',
+            padding: '120px 48px 80px',
+            boxSizing: 'border-box',
           }}
         >
-          <Box
-            fontFamily="body"
-            fontSize="xs"
-            color="text-muted"
+          <AmberRule />
+          <h1
             style={{
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              fontWeight: '600',
-              marginBottom: '28px',
-            }}
-          >
-            About
-          </Box>
-
-          <Box
-            fontFamily="serif"
-            fontSize="xl"
-            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: '50px',
               fontWeight: '700',
-              lineHeight: '1.1',
-              letterSpacing: '-0.02em',
-              color: '#120D09',
-              marginBottom: '28px',
+              lineHeight: '1.05',
+              letterSpacing: '-0.03em',
+              color: '#213A37',
+              margin: '0 0 16px 0',
             }}
           >
             {identity.name}
-          </Box>
-
-          <Box
-            fontFamily="body"
-            fontSize="base"
-            color="text-secondary"
+          </h1>
+          <p
             style={{
-              lineHeight: '1.65',
-              letterSpacing: '0.04em',
-              maxWidth: '560px',
+              fontFamily: "'Lora', serif",
+              fontSize: '12px',
+              fontWeight: '400',
+              letterSpacing: '0.09em',
+              color: '#4A7870',
+              textTransform: 'uppercase',
+              margin: '0 0 44px 0',
+            }}
+          >
+            {identity.role}
+          </p>
+          <p
+            style={{
+              fontFamily: "'Lora', serif",
+              fontSize: '16px',
+              lineHeight: '1.62',
+              color: '#4A7870',
+              maxWidth: '540px',
+              margin: '0',
             }}
           >
             {identity.statement}
-          </Box>
-        </Box>
-      </Box>
+          </p>
+        </div>
+      </section>
 
-      {/* ── Experience / Timeline ── */}
-      <Box as="section" style={{ borderBottom: '1px solid #E5DFC8' }}>
-        <Box
+      {/* ── EXPERIENCE / TIMELINE ── */}
+      <section
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          borderTop: '1px solid #C9DDD9',
+        }}
+      >
+        <div
           style={{
-            width: '100%',
             maxWidth: '720px',
-            margin: '0 auto',
-            padding: '96px 48px',
+            width: '100%',
+            padding: '64px 48px',
+            boxSizing: 'border-box',
           }}
         >
-          <SectionLabel>Experience</SectionLabel>
+          <AmberRule />
+          <SectionLabel text="Experience" />
 
-          {timeline.map((entry, i) => (
-            <Box
-              key={`${entry.year}-${entry.company}-${i}`}
-              style={{
-                paddingTop: '28px',
-                paddingBottom: '28px',
-                borderBottom: '1px solid #E5DFC8',
-                display: 'flex',
-                gap: '32px',
-              }}
+          {timeline.map((entry) => (
+            <div
+              key={`${entry.year}-${entry.company}`}
+              className={timelineRow}
             >
-              {/* Year column — fixed width so all years align */}
-              <Box
-                fontFamily="body"
-                fontSize="xs"
-                color="text-muted"
+              {/* Year column — fixed width so ranges and single years align */}
+              <div
                 style={{
-                  minWidth: '120px',
-                  flexShrink: '0',
-                  fontVariantNumeric: 'tabular-nums',
-                  letterSpacing: '0.04em',
+                  minWidth: '140px',
+                  flexShrink: 0,
                   paddingTop: '3px',
-                  lineHeight: '1.4',
                 }}
               >
-                {entry.year}
-              </Box>
-
-              {/* Content column */}
-              <Box style={{ flex: '1', minWidth: '0' }}>
-                <Flex align="center" style={{ gap: '10px', marginBottom: '4px' }}>
-                  <Box
-                    fontFamily="serif"
-                    fontSize="sm"
-                    style={{
-                      fontWeight: '700',
-                      lineHeight: '1.2',
-                      color: '#120D09',
-                    }}
-                  >
-                    {entry.role}
-                  </Box>
-                  {entry.current && (
-                    <Box
-                      fontFamily="body"
-                      fontSize="2xs"
-                      color="accent"
-                      style={{
-                        letterSpacing: '0.08em',
-                        textTransform: 'uppercase',
-                        fontWeight: '600',
-                        border: '1px solid #6A9D51',
-                        borderRadius: '3px',
-                        padding: '1px 6px',
-                      }}
-                    >
-                      Now
-                    </Box>
-                  )}
-                </Flex>
-
-                <Box
-                  fontFamily="body"
-                  fontSize="xs"
-                  color="text-secondary"
+                <span
                   style={{
-                    letterSpacing: '0.04em',
-                    marginBottom: '8px',
+                    fontFamily: "'Lora', serif",
+                    fontSize: '12px',
+                    color: '#6D9C95',
+                    fontVariantNumeric: 'tabular-nums',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {entry.year}
+                </span>
+              </div>
+
+              {/* Role + company + description */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: '21px',
                     fontWeight: '600',
+                    lineHeight: '1.20',
+                    color: '#213A37',
+                    marginBottom: '4px',
+                  }}
+                >
+                  {entry.role}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '14px',
+                    color: '#4A7870',
+                    marginBottom: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
                   }}
                 >
                   {entry.company}
-                </Box>
-
-                <Box
-                  fontFamily="body"
-                  fontSize="xs"
-                  color="text-muted"
+                  {entry.current && (
+                    <span
+                      style={{
+                        fontSize: '9px',
+                        fontWeight: '500',
+                        letterSpacing: '0.09em',
+                        color: '#C9920E',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      Current
+                    </span>
+                  )}
+                </div>
+                <div
                   style={{
-                    lineHeight: '1.65',
-                    letterSpacing: '0.04em',
+                    fontFamily: "'Lora', serif",
+                    fontSize: '14px',
+                    lineHeight: '1.62',
+                    color: '#6D9C95',
                   }}
                 >
                   {entry.description}
-                </Box>
-              </Box>
-            </Box>
+                </div>
+              </div>
+            </div>
           ))}
+        </div>
+      </section>
 
-          {/* Education row */}
-          <Box
-            style={{
-              paddingTop: '28px',
-              paddingBottom: '28px',
-              display: 'flex',
-              gap: '32px',
-            }}
-          >
-            <Box
-              fontFamily="body"
-              fontSize="xs"
-              color="text-muted"
-              style={{
-                minWidth: '120px',
-                flexShrink: '0',
-                fontVariantNumeric: 'tabular-nums',
-                letterSpacing: '0.04em',
-                paddingTop: '3px',
-              }}
-            >
-              {education.years}
-            </Box>
-            <Box style={{ flex: '1', minWidth: '0' }}>
-              <Box
-                fontFamily="serif"
-                fontSize="sm"
-                style={{
-                  fontWeight: '700',
-                  lineHeight: '1.2',
-                  color: '#120D09',
-                  marginBottom: '4px',
-                }}
-              >
-                {education.degree}
-              </Box>
-              <Box
-                fontFamily="body"
-                fontSize="xs"
-                color="text-secondary"
-                style={{ fontWeight: '600', marginBottom: '4px', letterSpacing: '0.04em' }}
-              >
-                {education.school}
-              </Box>
-              {education.concentration && (
-                <Box
-                  fontFamily="body"
-                  fontSize="xs"
-                  color="text-muted"
-                  style={{ letterSpacing: '0.04em' }}
-                >
-                  {education.concentration}
-                </Box>
-              )}
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* ── Capabilities ── */}
-      <Box as="section" style={{ borderBottom: '1px solid #E5DFC8' }}>
-        <Box
+      {/* ── CAPABILITIES ── */}
+      <section
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          borderTop: '1px solid #C9DDD9',
+          backgroundColor: '#F9FBFA',
+        }}
+      >
+        <div
           style={{
-            width: '100%',
             maxWidth: '720px',
-            margin: '0 auto',
-            padding: '96px 48px',
+            width: '100%',
+            padding: '64px 48px',
+            boxSizing: 'border-box',
           }}
         >
-          <SectionLabel>Capabilities</SectionLabel>
-
-          <Box
+          <AmberRule />
+          <SectionLabel text="Capabilities" />
+          <div
             style={{
               display: 'flex',
               flexWrap: 'wrap',
@@ -267,213 +243,191 @@ function AboutPage() {
             }}
           >
             {capabilities.map((cap) => (
-              <Box
+              <span
                 key={cap}
-                fontFamily="body"
-                fontSize="xs"
-                color="text-secondary"
                 style={{
+                  fontFamily: "'Lora', serif",
+                  fontSize: '12px',
+                  color: '#4A7870',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #C9DDD9',
+                  borderRadius: '2px',
                   padding: '6px 14px',
-                  border: '1px solid #E5DFC8',
-                  borderRadius: '3px',
-                  backgroundColor: '#FAFAF4',
-                  letterSpacing: '0.04em',
-                  lineHeight: '1.4',
+                  boxShadow: '0 2px 20px rgba(33, 58, 55, 0.06)',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {cap}
-              </Box>
+              </span>
             ))}
-          </Box>
-        </Box>
-      </Box>
+          </div>
+        </div>
+      </section>
 
-      {/* ── Personal ── */}
-      <Box as="section" backgroundColor="card-bg" style={{ borderBottom: '1px solid #E5DFC8' }}>
-        <Box
+      {/* ── EDUCATION ── */}
+      {education && (
+        <section
           style={{
             width: '100%',
-            maxWidth: '720px',
-            margin: '0 auto',
-            padding: '96px 48px',
+            display: 'flex',
+            justifyContent: 'center',
+            borderTop: '1px solid #C9DDD9',
           }}
         >
-          <SectionLabel>Outside Work</SectionLabel>
-
-          <Box
+          <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '40px',
+              maxWidth: '720px',
+              width: '100%',
+              padding: '64px 48px',
+              boxSizing: 'border-box',
             }}
           >
-            <Box>
-              <Box
-                fontFamily="body"
-                fontSize="2xs"
-                color="text-muted"
-                style={{
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  marginBottom: '10px',
-                  fontWeight: '600',
-                }}
-              >
-                Sport
-              </Box>
-              <Box
-                fontFamily="serif"
-                fontSize="sm"
-                style={{ fontWeight: '400', color: '#3A3228', lineHeight: '1.4' }}
-              >
-                {personal.sport}
-              </Box>
-            </Box>
-
-            <Box>
-              <Box
-                fontFamily="body"
-                fontSize="2xs"
-                color="text-muted"
-                style={{
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  marginBottom: '10px',
-                  fontWeight: '600',
-                }}
-              >
-                Holes in One
-              </Box>
-              <Flex align="baseline" style={{ gap: '8px' }}>
-                <Box
-                  fontFamily="serif"
-                  fontSize="lg"
+            <AmberRule />
+            <SectionLabel text="Education" />
+            <div style={{ display: 'flex', gap: '32px' }}>
+              <div style={{ minWidth: '140px', flexShrink: 0, paddingTop: '3px' }}>
+                <span
                   style={{
-                    fontWeight: '700',
-                    color: '#6A9D51',
-                    lineHeight: '1',
+                    fontFamily: "'Lora', serif",
+                    fontSize: '12px',
+                    color: '#6D9C95',
                     fontVariantNumeric: 'tabular-nums',
                   }}
                 >
-                  {personal.holesInOne}
-                </Box>
-                <Box
-                  fontFamily="body"
-                  fontSize="xs"
-                  color="text-muted"
-                  style={{ letterSpacing: '0.04em' }}
+                  {education.years}
+                </span>
+              </div>
+              <div>
+                <div
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: '21px',
+                    fontWeight: '600',
+                    color: '#213A37',
+                    lineHeight: '1.20',
+                    marginBottom: '6px',
+                  }}
                 >
-                  career
-                </Box>
-              </Flex>
-            </Box>
+                  {education.school}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '14px',
+                    color: '#4A7870',
+                  }}
+                >
+                  {education.degree}
+                  {education.concentration && ` — ${education.concentration}`}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
-            <Box>
-              <Box
-                fontFamily="body"
-                fontSize="2xs"
-                color="text-muted"
-                style={{
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  marginBottom: '10px',
-                  fontWeight: '600',
-                }}
-              >
-                Teams
-              </Box>
-              <Box
-                fontFamily="body"
-                fontSize="xs"
-                color="text-secondary"
-                style={{ lineHeight: '1.65', letterSpacing: '0.04em' }}
-              >
-                {personal.teams.join(', ')}
-              </Box>
-            </Box>
-
-            <Box>
-              <Box
-                fontFamily="body"
-                fontSize="2xs"
-                color="text-muted"
-                style={{
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  marginBottom: '10px',
-                  fontWeight: '600',
-                }}
-              >
-                Current Focus
-              </Box>
-              <Box
-                fontFamily="body"
-                fontSize="xs"
-                color="text-secondary"
-                style={{ lineHeight: '1.65', letterSpacing: '0.04em' }}
-              >
-                {personal.currentFocus}
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* ── Footer ── */}
-      <Box as="footer">
-        <Box
+      {/* ── PERSONAL ── */}
+      <section
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          borderTop: '1px solid #C9DDD9',
+          backgroundColor: '#F9FBFA',
+        }}
+      >
+        <div
           style={{
-            width: '100%',
             maxWidth: '720px',
-            margin: '0 auto',
+            width: '100%',
             padding: '64px 48px',
+            boxSizing: 'border-box',
           }}
         >
-          <Flex
-            justify="space-between"
-            align="center"
-            style={{ marginBottom: '20px' }}
-          >
-            <Box
-              fontFamily="body"
-              fontSize="xs"
-              color="text-secondary"
-              style={{ letterSpacing: '0.04em' }}
-            >
-              Doug March
-            </Box>
-            <Flex style={{ gap: '24px' }}>
-              <a href="/" style={{ textDecoration: 'none', borderBottom: 'none' }}>
-                <Box fontFamily="body" fontSize="xs" color="text-muted">Home</Box>
-              </a>
-              <a href="/archive" style={{ textDecoration: 'none', borderBottom: 'none' }}>
-                <Box fontFamily="body" fontSize="xs" color="text-muted">Archive</Box>
-              </a>
-            </Flex>
-          </Flex>
+          <AmberRule />
+          <SectionLabel text="Off the Clock" />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {[
+              { label: 'Sport', value: personal.sport },
+              { label: 'Holes in One', value: String(personal.holesInOne) },
+              { label: 'Teams', value: personal.teams.join(', ') },
+              { label: 'Currently', value: personal.currentFocus },
+            ].map(({ label, value }) => (
+              <div key={label} style={{ display: 'flex', gap: '32px', alignItems: 'baseline' }}>
+                <span
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '12px',
+                    color: '#6D9C95',
+                    minWidth: '140px',
+                    flexShrink: 0,
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  {label}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '16px',
+                    lineHeight: '1.62',
+                    color: '#213A37',
+                  }}
+                >
+                  {value}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          <Box style={{ borderTop: '1px solid #E5DFC8', paddingTop: '16px' }}>
-            <Flex justify="space-between" align="center">
-              <Box
-                fontFamily="body"
-                fontSize="2xs"
-                color="text-muted"
-                style={{ letterSpacing: '0.04em' }}
-              >
-                © 2026 Doug March
-              </Box>
-              <Box
-                fontFamily="body"
-                fontSize="2xs"
-                color="text-muted"
-                style={{ fontVariantNumeric: 'tabular-nums', letterSpacing: '0.02em' }}
-              >
-                Valero Texas Open — R. MacIntyre −14
-              </Box>
-            </Flex>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+      {/* ── FOOTER ── */}
+      <footer
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          borderTop: '1px solid #C9DDD9',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '720px',
+            width: '100%',
+            padding: '40px 48px',
+            boxSizing: 'border-box',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <a
+            href="/"
+            style={{
+              fontFamily: "'Lora', serif",
+              fontSize: '12px',
+              color: '#6D9C95',
+              letterSpacing: '0.05em',
+              textDecoration: 'none',
+            }}
+          >
+            ← Work
+          </a>
+          <a
+            href="/archive"
+            style={{
+              fontFamily: "'Lora', serif",
+              fontSize: '12px',
+              color: '#6D9C95',
+              letterSpacing: '0.05em',
+              textDecoration: 'none',
+            }}
+          >
+            archive
+          </a>
+        </div>
+      </footer>
+    </div>
   )
 }

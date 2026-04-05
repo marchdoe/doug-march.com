@@ -1,396 +1,362 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex } from '../../styled-system/jsx'
-import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
+
+// ─── Primitives ───────────────────────────────────────────────────────────────
+function AmberRule() {
+  return (
+    <div
+      style={{
+        width: '40px',
+        height: '1px',
+        backgroundColor: '#C9920E',
+        marginBottom: '12px',
+      }}
+    />
+  )
+}
+
+function SectionLabel({ text }: { text: string }) {
+  return (
+    <p
+      style={{
+        fontFamily: "'Lora', serif",
+        fontSize: '9px',
+        fontWeight: '500',
+        letterSpacing: '0.14em',
+        color: '#4A7870',
+        textTransform: 'uppercase',
+        margin: '0 0 24px 0',
+      }}
+    >
+      {text}
+    </p>
+  )
+}
+
+function ContentSection({
+  label,
+  body,
+  tint = false,
+}: {
+  label: string
+  body: string
+  tint?: boolean
+}) {
+  return (
+    <section
+      style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        borderTop: '1px solid #C9DDD9',
+        backgroundColor: tint ? '#F9FBFA' : 'transparent',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '720px',
+          width: '100%',
+          padding: '64px 48px',
+          boxSizing: 'border-box',
+        }}
+      >
+        <AmberRule />
+        <SectionLabel text={label} />
+        <p
+          style={{
+            fontFamily: "'Lora', serif",
+            fontSize: '16px',
+            lineHeight: '1.62',
+            color: '#4A7870',
+            maxWidth: '580px',
+            margin: '0',
+          }}
+        >
+          {body}
+        </p>
+      </div>
+    </section>
+  )
+}
 
 function WorkPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
+  // ── Not found ───────────────────────────────────────────────────────────────
   if (!project) {
     return (
-      <Box
+      <div
         style={{
-          minHeight: '80vh',
+          width: '100%',
           display: 'flex',
-          alignItems: 'center',
           justifyContent: 'center',
+          minHeight: '100vh',
+          alignItems: 'center',
         }}
       >
-        <Box style={{ textAlign: 'center' }}>
-          <Box
-            fontFamily="serif"
-            fontSize="lg"
+        <div
+          style={{
+            maxWidth: '720px',
+            width: '100%',
+            padding: '120px 48px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <AmberRule />
+          <h1
             style={{
-              fontWeight: '400',
-              color: '#3A3228',
-              marginBottom: '24px',
-              fontStyle: 'italic',
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: '37px',
+              fontWeight: '600',
+              lineHeight: '1.20',
+              letterSpacing: '-0.03em',
+              color: '#213A37',
+              margin: '0 0 24px 0',
             }}
           >
             Project not found.
-          </Box>
-          <a href="/" style={{ textDecoration: 'none', borderBottom: 'none' }}>
-            <Box
-              fontFamily="body"
-              fontSize="xs"
-              color="accent"
-              style={{ letterSpacing: '0.04em' }}
-            >
-              ← Back home
-            </Box>
+          </h1>
+          <a
+            href="/"
+            style={{
+              fontFamily: "'Lora', serif",
+              fontSize: '14px',
+              color: '#C9920E',
+              textDecoration: 'none',
+              letterSpacing: '0.03em',
+            }}
+          >
+            ← Back to work
           </a>
-        </Box>
-      </Box>
+        </div>
+      </div>
     )
   }
 
+  const hasLinks = project.liveUrl || project.githubUrl || project.externalUrl
+
   return (
-    <Box>
-      {/* ── Project Header ── */}
-      <Box
-        as="section"
+    <div style={{ width: '100%' }}>
+
+      {/* ── PROJECT HEADER ── */}
+      <section
         style={{
-          borderBottom: '1px solid #E5DFC8',
-          paddingTop: '96px',
-          paddingBottom: '64px',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
         }}
       >
-        <Box
+        <div
           style={{
-            width: '100%',
             maxWidth: '720px',
-            margin: '0 auto',
-            paddingLeft: '48px',
-            paddingRight: '48px',
+            width: '100%',
+            padding: '120px 48px 80px',
+            boxSizing: 'border-box',
           }}
         >
-          {/* Breadcrumb */}
-          <Flex align="center" style={{ gap: '8px', marginBottom: '40px' }}>
-            <a href="/" style={{ textDecoration: 'none', borderBottom: 'none' }}>
-              <Box
-                fontFamily="body"
-                fontSize="xs"
-                color="text-muted"
-                style={{ letterSpacing: '0.04em' }}
-              >
-                Doug March
-              </Box>
-            </a>
-            <Box fontFamily="body" fontSize="xs" color="text-disabled">
-              /
-            </Box>
-            <Box
-              fontFamily="body"
-              fontSize="xs"
-              color="text-muted"
-              style={{ letterSpacing: '0.04em' }}
-            >
-              Work
-            </Box>
-            <Box fontFamily="body" fontSize="xs" color="text-disabled">
-              /
-            </Box>
-            <Box
-              fontFamily="body"
-              fontSize="xs"
-              color="text-secondary"
-              style={{ letterSpacing: '0.04em' }}
-            >
-              {project.title}
-            </Box>
-          </Flex>
-
-          {/* Type + Year label */}
-          <Box
-            fontFamily="body"
-            fontSize="xs"
-            color="accent"
+          {/* Back link */}
+          <a
+            href="/"
             style={{
-              letterSpacing: '0.12em',
+              fontFamily: "'Lora', serif",
+              fontSize: '12px',
+              letterSpacing: '0.05em',
+              color: '#4A7870',
+              textDecoration: 'none',
+              display: 'inline-block',
+              marginBottom: '56px',
+            }}
+          >
+            ← Work
+          </a>
+
+          {/* Type label */}
+          <p
+            style={{
+              fontFamily: "'Lora', serif",
+              fontSize: '9px',
+              fontWeight: '500',
+              letterSpacing: '0.14em',
+              color: '#4A7870',
               textTransform: 'uppercase',
-              fontWeight: '600',
-              marginBottom: '16px',
+              margin: '0 0 12px 0',
             }}
           >
             {project.type}
-            <Box as="span" color="text-disabled" style={{ margin: '0 8px' }}>
-              ·
-            </Box>
-            <Box as="span" color="text-muted" style={{ fontVariantNumeric: 'tabular-nums' }}>
-              {project.year}
-            </Box>
-          </Box>
+          </p>
+          <AmberRule />
 
-          {/* Project title */}
-          <Box
-            fontFamily="serif"
-            fontSize="2xl"
+          {/* Title */}
+          <h1
             style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: '50px',
               fontWeight: '700',
               lineHeight: '1.05',
-              letterSpacing: '-0.02em',
-              color: '#120D09',
-              marginBottom: '20px',
+              letterSpacing: '-0.03em',
+              color: '#213A37',
+              margin: '0 0 20px 0',
             }}
           >
             {project.title}
-          </Box>
+          </h1>
 
-          {/* Role */}
-          {project.role && (
-            <Box
-              fontFamily="body"
-              fontSize="sm"
-              color="text-secondary"
-              style={{
-                letterSpacing: '0.04em',
-                lineHeight: '1.4',
-              }}
-            >
-              {project.role}
-            </Box>
-          )}
-        </Box>
-      </Box>
-
-      {/* ── Project Image ── */}
-      <Box style={{ borderBottom: '1px solid #E5DFC8' }}>
-        <Box
-          style={{
-            width: '100%',
-            maxWidth: '720px',
-            margin: '0 auto',
-            paddingLeft: '48px',
-            paddingRight: '48px',
-            paddingTop: '48px',
-            paddingBottom: '48px',
-          }}
-        >
-          <Box
+          {/* Meta row */}
+          <div
             style={{
-              width: '100%',
-              aspectRatio: '16/9',
-              borderRadius: '6px',
-              background: 'linear-gradient(135deg, #E5DFC8 0%, #C8BFA0 45%, #BBD4A4 100%)',
-              border: '1px solid #E5DFC8',
-              boxShadow: '0 1px 4px rgba(33, 28, 20, 0.06)',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              overflow: 'hidden',
+              gap: '24px',
+              alignItems: 'baseline',
+              flexWrap: 'wrap',
             }}
           >
-            <Box
-              fontFamily="serif"
+            <span
               style={{
-                fontSize: 'clamp(40px, 6vw, 72px)',
-                fontStyle: 'italic',
-                fontWeight: '400',
-                color: '#C8BFA0',
-                lineHeight: '1',
-                letterSpacing: '-0.02em',
-                userSelect: 'none',
+                fontFamily: "'Lora', serif",
+                fontSize: '12px',
+                color: '#6D9C95',
+                fontVariantNumeric: 'tabular-nums',
               }}
             >
-              {project.title}
-            </Box>
-          </Box>
-        </Box>
-      </Box>
+              {project.year}
+            </span>
+            {project.role && (
+              <>
+                <span style={{ color: '#C9DDD9', fontSize: '12px' }}>·</span>
+                <span
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '12px',
+                    color: '#4A7870',
+                  }}
+                >
+                  {project.role}
+                </span>
+              </>
+            )}
+          </div>
+        </div>
+      </section>
 
-      {/* ── Project Content ── */}
-      <Box style={{ borderBottom: '1px solid #E5DFC8' }}>
-        <Box
+      {/* ── PROBLEM ── */}
+      {project.problem && (
+        <ContentSection label="The Problem" body={project.problem} tint={false} />
+      )}
+
+      {/* ── DESCRIPTION (for lightweight projects without problem/approach) ── */}
+      {project.description && !project.problem && (
+        <ContentSection label="Overview" body={project.description} tint={false} />
+      )}
+
+      {/* ── APPROACH ── */}
+      {project.approach && (
+        <ContentSection label="The Approach" body={project.approach} tint={true} />
+      )}
+
+      {/* ── OUTCOME ── */}
+      {project.outcome && (
+        <ContentSection label="The Outcome" body={project.outcome} tint={false} />
+      )}
+
+      {/* ── STACK ── */}
+      {project.stack && project.stack.length > 0 && (
+        <section
           style={{
             width: '100%',
-            maxWidth: '720px',
-            margin: '0 auto',
-            paddingLeft: '48px',
-            paddingRight: '48px',
-            paddingTop: '64px',
-            paddingBottom: '64px',
+            display: 'flex',
+            justifyContent: 'center',
+            borderTop: '1px solid #C9DDD9',
+            backgroundColor: '#F9FBFA',
           }}
         >
-          {/* Problem */}
-          {project.problem && (
-            <Box style={{ marginBottom: '48px' }}>
-              <Box
-                fontFamily="body"
-                fontSize="xs"
-                color="text-muted"
-                style={{
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  fontWeight: '600',
-                  marginBottom: '16px',
-                }}
-              >
-                The Problem
-              </Box>
-              <Box
-                fontFamily="body"
-                fontSize="base"
-                color="text-secondary"
-                style={{
-                  lineHeight: '1.65',
-                  letterSpacing: '0.04em',
-                  maxWidth: '560px',
-                }}
-              >
-                {project.problem}
-              </Box>
-            </Box>
-          )}
+          <div
+            style={{
+              maxWidth: '720px',
+              width: '100%',
+              padding: '64px 48px',
+              boxSizing: 'border-box',
+            }}
+          >
+            <AmberRule />
+            <SectionLabel text="Stack" />
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {project.stack.map((tech) => (
+                <span
+                  key={tech}
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '12px',
+                    color: '#4A7870',
+                    backgroundColor: '#FFFFFF',
+                    border: '1px solid #C9DDD9',
+                    borderRadius: '2px',
+                    padding: '6px 14px',
+                    boxShadow: '0 2px 20px rgba(33, 58, 55, 0.06)',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
-          {/* Approach */}
-          {project.approach && (
-            <Box style={{ marginBottom: '48px' }}>
-              <Box
-                fontFamily="body"
-                fontSize="xs"
-                color="text-muted"
-                style={{
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  fontWeight: '600',
-                  marginBottom: '16px',
-                }}
-              >
-                Approach
-              </Box>
-              <Box
-                fontFamily="body"
-                fontSize="base"
-                color="text-secondary"
-                style={{
-                  lineHeight: '1.65',
-                  letterSpacing: '0.04em',
-                  maxWidth: '560px',
-                }}
-              >
-                {project.approach}
-              </Box>
-            </Box>
-          )}
-
-          {/* Outcome */}
-          {project.outcome && (
-            <Box style={{ marginBottom: '48px' }}>
-              <Box
-                fontFamily="body"
-                fontSize="xs"
-                color="text-muted"
-                style={{
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  fontWeight: '600',
-                  marginBottom: '16px',
-                }}
-              >
-                Outcome
-              </Box>
-              <Box
-                fontFamily="body"
-                fontSize="base"
-                color="text-secondary"
-                style={{
-                  lineHeight: '1.65',
-                  letterSpacing: '0.04em',
-                  maxWidth: '560px',
-                }}
-              >
-                {project.outcome}
-              </Box>
-            </Box>
-          )}
-
-          {/* Description fallback */}
-          {!project.problem && !project.approach && !project.outcome && project.description && (
-            <Box style={{ marginBottom: '48px' }}>
-              <Box
-                fontFamily="body"
-                fontSize="base"
-                color="text-secondary"
-                style={{
-                  lineHeight: '1.65',
-                  letterSpacing: '0.04em',
-                  maxWidth: '560px',
-                }}
-              >
-                {project.description}
-              </Box>
-            </Box>
-          )}
-
-          {/* Stack */}
-          {project.stack && project.stack.length > 0 && (
-            <Box style={{ marginBottom: '48px' }}>
-              <Box
-                fontFamily="body"
-                fontSize="xs"
-                color="text-muted"
-                style={{
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  fontWeight: '600',
-                  marginBottom: '16px',
-                }}
-              >
-                Stack
-              </Box>
-              <Box style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {project.stack.map((tech) => (
-                  <Box
-                    key={tech}
-                    fontFamily="body"
-                    fontSize="xs"
-                    color="text-secondary"
-                    style={{
-                      padding: '5px 12px',
-                      border: '1px solid #E5DFC8',
-                      borderRadius: '3px',
-                      backgroundColor: '#FAFAF4',
-                      letterSpacing: '0.04em',
-                      boxShadow: '0 1px 4px rgba(33, 28, 20, 0.04)',
-                    }}
-                  >
-                    {tech}
-                  </Box>
-                ))}
-              </Box>
-            </Box>
-          )}
-
-          {/* Links */}
-          {(project.liveUrl || project.externalUrl || project.githubUrl) && (
-            <Flex style={{ gap: '12px', flexWrap: 'wrap' }}>
-              {(project.liveUrl || project.externalUrl) && (
+      {/* ── LINKS ── */}
+      {hasLinks && (
+        <section
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            borderTop: '1px solid #C9DDD9',
+          }}
+        >
+          <div
+            style={{
+              maxWidth: '720px',
+              width: '100%',
+              padding: '64px 48px',
+              boxSizing: 'border-box',
+            }}
+          >
+            <AmberRule />
+            <SectionLabel text="Links" />
+            <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap', alignItems: 'center' }}>
+              {project.liveUrl && (
                 <a
-                  href={project.liveUrl || project.externalUrl}
+                  href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ textDecoration: 'none', borderBottom: 'none' }}
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '14px',
+                    color: '#C9920E',
+                    textDecoration: 'none',
+                    letterSpacing: '0.02em',
+                  }}
                 >
-                  <Box
-                    fontFamily="body"
-                    fontSize="xs"
-                    style={{
-                      padding: '10px 24px',
-                      borderRadius: '28px',
-                      backgroundColor: '#6A9D51',
-                      color: 'white',
-                      letterSpacing: '0.04em',
-                      fontWeight: '600',
-                      transition: 'all 140ms ease',
-                      display: 'inline-block',
-                    }}
-                    className={css({ _hover: { backgroundColor: 'accent-dark' } })}
-                  >
-                    View Project →
-                  </Box>
+                  View live →
+                </a>
+              )}
+              {project.externalUrl && !project.liveUrl && (
+                <a
+                  href={project.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '14px',
+                    color: '#C9920E',
+                    textDecoration: 'none',
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  View project →
                 </a>
               )}
               {project.githubUrl && (
@@ -398,141 +364,68 @@ function WorkPage() {
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ textDecoration: 'none', borderBottom: 'none' }}
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '14px',
+                    color: '#4A7870',
+                    textDecoration: 'none',
+                    letterSpacing: '0.02em',
+                  }}
                 >
-                  <Box
-                    fontFamily="body"
-                    fontSize="xs"
-                    style={{
-                      padding: '10px 24px',
-                      borderRadius: '28px',
-                      border: '1px solid #E5DFC8',
-                      color: '#574E3F',
-                      letterSpacing: '0.04em',
-                      fontWeight: '600',
-                      transition: 'all 140ms ease',
-                      display: 'inline-block',
-                      backgroundColor: '#FAFAF4',
-                    }}
-                    className={css({ _hover: { borderColor: 'border', backgroundColor: 'card-bg' } })}
-                  >
-                    GitHub
-                  </Box>
+                  GitHub →
                 </a>
               )}
-            </Flex>
-          )}
-        </Box>
-      </Box>
+            </div>
+          </div>
+        </section>
+      )}
 
-      {/* ── Quote Beat (project pages get a quieter version) ── */}
-      <Box
-        backgroundColor="card-bg"
+      {/* ── FOOTER ── */}
+      <footer
         style={{
-          borderBottom: '1px solid #E5DFC8',
-          paddingTop: '64px',
-          paddingBottom: '64px',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          borderTop: '1px solid #C9DDD9',
         }}
       >
-        <Box
+        <div
           style={{
-            width: '100%',
             maxWidth: '720px',
-            margin: '0 auto',
-            paddingLeft: '48px',
-            paddingRight: '48px',
+            width: '100%',
+            padding: '40px 48px',
+            boxSizing: 'border-box',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          <Box
-            fontFamily="serif"
-            fontSize="xl"
+          <a
+            href="/"
             style={{
-              fontStyle: 'italic',
-              fontWeight: '400',
-              color: '#120D09',
-              lineHeight: '1.2',
-              letterSpacing: '-0.02em',
-              marginBottom: '20px',
+              fontFamily: "'Lora', serif",
+              fontSize: '12px',
+              color: '#6D9C95',
+              letterSpacing: '0.05em',
+              textDecoration: 'none',
             }}
           >
-            Smile, breathe and go slowly.
-          </Box>
-          <Box
+            ← Back to Work
+          </a>
+          <a
+            href="/archive"
             style={{
-              width: '48px',
-              height: '1px',
-              backgroundColor: '#6A9D51',
-              marginBottom: '12px',
+              fontFamily: "'Lora', serif",
+              fontSize: '12px',
+              color: '#6D9C95',
+              letterSpacing: '0.05em',
+              textDecoration: 'none',
             }}
-          />
-          <Box
-            fontFamily="body"
-            fontSize="xs"
-            color="text-muted"
-            style={{ letterSpacing: '0.04em' }}
           >
-            — Thich Nhat Hanh
-          </Box>
-        </Box>
-      </Box>
-
-      {/* ── Footer ── */}
-      <Box as="footer">
-        <Box
-          style={{
-            width: '100%',
-            maxWidth: '720px',
-            margin: '0 auto',
-            padding: '64px 48px',
-          }}
-        >
-          <Flex
-            justify="space-between"
-            align="center"
-            style={{ marginBottom: '20px' }}
-          >
-            <a href="/" style={{ textDecoration: 'none', borderBottom: 'none' }}>
-              <Box
-                fontFamily="body"
-                fontSize="xs"
-                color="text-muted"
-                style={{ letterSpacing: '0.04em' }}
-              >
-                ← Back to work
-              </Box>
-            </a>
-            <Flex style={{ gap: '24px' }}>
-              <a href="/about" style={{ textDecoration: 'none', borderBottom: 'none' }}>
-                <Box fontFamily="body" fontSize="xs" color="text-muted">About</Box>
-              </a>
-              <a href="/archive" style={{ textDecoration: 'none', borderBottom: 'none' }}>
-                <Box fontFamily="body" fontSize="xs" color="text-muted">Archive</Box>
-              </a>
-            </Flex>
-          </Flex>
-
-          <Box style={{ borderTop: '1px solid #E5DFC8', paddingTop: '16px' }}>
-            <Flex justify="space-between" align="center">
-              <Box
-                fontFamily="body"
-                fontSize="2xs"
-                color="text-muted"
-                style={{ letterSpacing: '0.04em' }}
-              >
-                © 2026 Doug March
-              </Box>
-              <Box
-                fontFamily="body"
-                fontSize="2xs"
-                color="text-muted"
-                style={{ fontVariantNumeric: 'tabular-nums', letterSpacing: '0.02em' }}
-              >
-                Valero Texas Open — R. MacIntyre −14
-              </Box>
-            </Flex>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+            archive
+          </a>
+        </div>
+      </footer>
+    </div>
   )
 }

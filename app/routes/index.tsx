@@ -1,534 +1,710 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex } from '../../styled-system/jsx'
-import { css } from '../../styled-system/css'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 import { identity } from '../content/about'
+import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const projectRowClass = css({
-  display: 'block',
+// ─── Hover class for work rows ────────────────────────────────────────────────
+const rowLink = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '20px 0',
+  borderBottom: '1px solid #C9DDD9',
   textDecoration: 'none',
-  borderBottom: '1px solid #E5DFC8',
-  transition: 'all 180ms ease',
+  transition: 'background-color 150ms ease',
+  cursor: 'pointer',
   _hover: {
-    backgroundColor: 'card-bg',
-    boxShadow: 'inset 3px 0 0 0 #6A9D51',
+    backgroundColor: '#E4EFEC',
+    textDecoration: 'none',
   },
 })
 
-function SectionLabel({ children }: { children: string }) {
+const hnCardHover = css({
+  backgroundColor: '#FFFFFF',
+  borderLeft: '3px solid #C9920E',
+  borderRadius: '4px',
+  boxShadow: '0 4px 32px rgba(33, 58, 55, 0.10)',
+  padding: '32px',
+  transition: 'box-shadow 180ms ease, border-left-color 180ms ease',
+  _hover: {
+    boxShadow: '0 6px 40px rgba(33, 58, 55, 0.14)',
+    borderLeftColor: '#8A6408',
+  },
+})
+
+// ─── Primitives ───────────────────────────────────────────────────────────────
+function AmberRule() {
   return (
-    <Box
-      fontFamily="body"
-      fontSize="xs"
-      color="text-muted"
+    <div
       style={{
-        letterSpacing: '0.12em',
-        textTransform: 'uppercase',
-        fontWeight: '600',
-        marginBottom: '32px',
+        width: '40px',
+        height: '1px',
+        backgroundColor: '#C9920E',
+        marginBottom: '12px',
       }}
-    >
-      {children}
-    </Box>
+    />
   )
 }
 
+function SectionLabel({ text }: { text: string }) {
+  return (
+    <p
+      style={{
+        fontFamily: "'Lora', serif",
+        fontSize: '9px',
+        fontWeight: '500',
+        letterSpacing: '0.14em',
+        color: '#4A7870',
+        textTransform: 'uppercase',
+        margin: '0 0 48px 0',
+      }}
+    >
+      {text}
+    </p>
+  )
+}
+
+function Divider() {
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '1px',
+        backgroundColor: '#C9DDD9',
+      }}
+    />
+  )
+}
+
+// ─── Home Page ────────────────────────────────────────────────────────────────
 function HomePage() {
   return (
-    <Box>
-      {/* ── Beat 1: Hero / Identity ── */}
-      <Box
-        as="section"
+    <div style={{ width: '100%' }}>
+
+      {/* ── SECTION 1: HERO ── */}
+      <section
         style={{
-          minHeight: '85vh',
+          width: '100%',
           display: 'flex',
-          alignItems: 'center',
-          borderBottom: '1px solid #E5DFC8',
+          justifyContent: 'center',
+          minHeight: '100vh',
         }}
       >
-        <Box
+        <div
+          style={{
+            maxWidth: '720px',
+            width: '100%',
+            padding: '96px 48px 64px',
+            boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
+          {/* Identity block */}
+          <div>
+            <AmberRule />
+            <h1
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: '50px',
+                fontWeight: '700',
+                lineHeight: '1.05',
+                letterSpacing: '-0.03em',
+                color: '#213A37',
+                margin: '0 0 16px 0',
+              }}
+            >
+              {identity.name}
+            </h1>
+            <p
+              style={{
+                fontFamily: "'Lora', serif",
+                fontSize: '12px',
+                fontWeight: '400',
+                letterSpacing: '0.09em',
+                color: '#4A7870',
+                textTransform: 'uppercase',
+                margin: '0 0 44px 0',
+              }}
+            >
+              {identity.role}
+            </p>
+            <p
+              style={{
+                fontFamily: "'Lora', serif",
+                fontSize: '16px',
+                lineHeight: '1.62',
+                color: '#4A7870',
+                maxWidth: '480px',
+                margin: '0',
+              }}
+            >
+              {identity.statement}
+            </p>
+          </div>
+
+          {/* Hero nav — bottom of hero */}
+          <nav
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0',
+            }}
+          >
+            {[
+              { label: 'work', href: '/' },
+              { label: 'about', href: '/about' },
+              { label: 'github', href: 'https://github.com', external: true },
+              { label: 'email', href: 'mailto:hello@doug-march.com', external: true },
+            ].map(({ label, href, external }, i) => (
+              <span key={label} style={{ display: 'flex', alignItems: 'center' }}>
+                {i > 0 && (
+                  <span
+                    style={{
+                      color: '#9BBFB8',
+                      fontSize: '12px',
+                      margin: '0 10px',
+                      userSelect: 'none',
+                    }}
+                  >
+                    ·
+                  </span>
+                )}
+                <a
+                  href={href}
+                  target={external ? '_blank' : undefined}
+                  rel={external ? 'noopener noreferrer' : undefined}
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '12px',
+                    letterSpacing: '0.05em',
+                    color: '#4A7870',
+                    textDecoration: 'none',
+                  }}
+                >
+                  {label}
+                </a>
+              </span>
+            ))}
+          </nav>
+        </div>
+      </section>
+
+      {/* ── SECTION 2: FEATURED PROJECT ── */}
+      {featuredProject && (
+        <section
           style={{
             width: '100%',
-            maxWidth: '720px',
-            margin: '0 auto',
-            padding: '120px 48px 96px',
-          }}
-        >
-          <Box
-            fontFamily="body"
-            fontSize="xs"
-            color="text-muted"
-            style={{
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              fontWeight: '600',
-              marginBottom: '28px',
-            }}
-          >
-            {identity.role}
-          </Box>
-
-          <Box
-            fontFamily="serif"
-            fontSize="2xl"
-            style={{
-              fontWeight: '700',
-              lineHeight: '1.05',
-              letterSpacing: '-0.02em',
-              color: '#120D09',
-              marginBottom: '32px',
-            }}
-          >
-            {identity.name}
-          </Box>
-
-          <Box
-            fontFamily="body"
-            fontSize="base"
-            color="text-secondary"
-            style={{
-              lineHeight: '1.65',
-              letterSpacing: '0.04em',
-              maxWidth: '540px',
-            }}
-          >
-            {identity.statement}
-          </Box>
-
-          <Box
-            style={{
-              marginTop: '48px',
-              display: 'flex',
-              gap: '24px',
-              alignItems: 'center',
-            }}
-          >
-            <a
-              href="/about"
-              style={{ textDecoration: 'none', borderBottom: 'none' }}
-            >
-              <Box
-                fontFamily="body"
-                fontSize="xs"
-                style={{
-                  padding: '10px 24px',
-                  borderRadius: '28px',
-                  backgroundColor: '#6A9D51',
-                  color: 'white',
-                  letterSpacing: '0.04em',
-                  fontWeight: '600',
-                  transition: 'all 140ms ease',
-                  display: 'inline-block',
-                }}
-                className={css({ _hover: { backgroundColor: 'accent-dark' } })}
-              >
-                About Doug
-              </Box>
-            </a>
-            <Box
-              fontFamily="body"
-              fontSize="xs"
-              color="text-muted"
-              style={{ letterSpacing: '0.04em' }}
-            >
-              ↓ Selected work below
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* ── Beat 2: Featured Work ── */}
-      {featuredProject && (
-        <Box
-          as="section"
-          style={{
-            minHeight: '70vh',
             display: 'flex',
-            alignItems: 'center',
-            borderBottom: '1px solid #E5DFC8',
+            justifyContent: 'center',
+            minHeight: '80vh',
+            borderTop: '1px solid #C9DDD9',
           }}
         >
-          <Box
+          <div
             style={{
-              width: '100%',
               maxWidth: '720px',
-              margin: '0 auto',
+              width: '100%',
               padding: '96px 48px',
+              boxSizing: 'border-box',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
             }}
           >
-            <SectionLabel>Featured Work</SectionLabel>
-
-            <a
-              href={
-                featuredProject.liveUrl ||
-                featuredProject.externalUrl ||
-                `/work/${featuredProject.slug}`
-              }
-              target={featuredProject.liveUrl || featuredProject.externalUrl ? '_blank' : undefined}
-              rel="noopener noreferrer"
-              style={{ textDecoration: 'none', borderBottom: 'none', display: 'block' }}
+            <p
+              style={{
+                fontFamily: "'Lora', serif",
+                fontSize: '9px',
+                fontWeight: '500',
+                letterSpacing: '0.14em',
+                color: '#4A7870',
+                textTransform: 'uppercase',
+                margin: '0 0 12px 0',
+              }}
             >
-              {/* Image area — warm cream-to-sage gradient placeholder */}
-              <Box
+              Spring Renewal
+            </p>
+            <AmberRule />
+            <p
+              style={{
+                fontFamily: "'Lora', serif",
+                fontSize: '9px',
+                fontWeight: '500',
+                letterSpacing: '0.14em',
+                color: '#C9920E',
+                textTransform: 'uppercase',
+                margin: '0 0 24px 0',
+              }}
+            >
+              Featured Project
+            </p>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: '37px',
+                fontWeight: '600',
+                lineHeight: '1.20',
+                letterSpacing: '-0.03em',
+                color: '#213A37',
+                margin: '0 0 24px 0',
+              }}
+            >
+              {featuredProject.title}
+            </h2>
+            {featuredProject.problem && (
+              <p
                 style={{
-                  width: '100%',
-                  aspectRatio: '16/9',
-                  borderRadius: '6px',
-                  background:
-                    'linear-gradient(135deg, #E5DFC8 0%, #C8BFA0 45%, #BBD4A4 100%)',
-                  marginBottom: '24px',
-                  border: '1px solid #E5DFC8',
-                  boxShadow: '0 1px 4px rgba(33, 28, 20, 0.06)',
-                  overflow: 'hidden',
-                  transition: 'all 180ms ease',
-                  display: 'flex',
+                  fontFamily: "'Lora', serif",
+                  fontSize: '16px',
+                  lineHeight: '1.62',
+                  color: '#4A7870',
+                  maxWidth: '580px',
+                  margin: '0 0 48px 0',
+                }}
+              >
+                {featuredProject.problem}
+              </p>
+            )}
+            {(featuredProject.liveUrl || featuredProject.externalUrl) && (
+              <a
+                href={featuredProject.liveUrl || featuredProject.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: "'Lora', serif",
+                  fontSize: '14px',
+                  color: '#C9920E',
+                  textDecoration: 'none',
+                  letterSpacing: '0.03em',
+                  display: 'inline-flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                className={css({
-                  _hover: {
-                    opacity: '0.88',
-                    transform: 'scale(1.01)',
-                  },
-                })}
-              >
-                <Box
-                  fontFamily="serif"
-                  style={{
-                    fontSize: 'clamp(48px, 7vw, 80px)',
-                    fontStyle: 'italic',
-                    fontWeight: '400',
-                    color: '#C8BFA0',
-                    lineHeight: '1',
-                    letterSpacing: '-0.02em',
-                    userSelect: 'none',
-                  }}
-                >
-                  {featuredProject.title}
-                </Box>
-              </Box>
-
-              <Box
-                fontFamily="serif"
-                fontSize="md"
-                style={{
-                  fontWeight: '700',
-                  lineHeight: '1.2',
-                  color: '#120D09',
-                  marginBottom: '12px',
+                  alignSelf: 'flex-start',
                 }}
               >
-                {featuredProject.title}
-              </Box>
-
-              {featuredProject.problem && (
-                <Box
-                  fontFamily="body"
-                  fontSize="sm"
-                  color="text-secondary"
-                  style={{
-                    lineHeight: '1.65',
-                    letterSpacing: '0.04em',
-                    maxWidth: '540px',
-                  }}
-                >
-                  {featuredProject.problem}
-                </Box>
-              )}
-            </a>
-          </Box>
-        </Box>
+                View project →
+              </a>
+            )}
+          </div>
+        </section>
       )}
 
-      {/* ── Beat 3: Work List ── */}
-      <Box as="section" style={{ borderBottom: '1px solid #E5DFC8' }}>
-        <Box
+      {/* ── SECTION 3: HN CALLOUT (800px wide — the only grid break) ── */}
+      <section
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '50vh',
+          borderTop: '1px solid #C9DDD9',
+          backgroundColor: '#F9FBFA',
+        }}
+      >
+        <div
           style={{
+            maxWidth: '800px',
             width: '100%',
-            maxWidth: '720px',
-            margin: '0 auto',
             padding: '96px 48px',
+            boxSizing: 'border-box',
           }}
         >
-          <SectionLabel>Selected Work</SectionLabel>
+          <div className={hnCardHover}>
+            <p
+              style={{
+                fontFamily: "'Lora', serif",
+                fontSize: '9px',
+                fontWeight: '500',
+                letterSpacing: '0.14em',
+                color: '#C9920E',
+                textTransform: 'uppercase',
+                margin: '0 0 16px 0',
+              }}
+            >
+              Discovery · HN · 756 pts
+            </p>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: '28px',
+                fontWeight: '600',
+                lineHeight: '1.20',
+                letterSpacing: '-0.03em',
+                color: '#213A37',
+                margin: '0 0 16px 0',
+              }}
+            >
+              Build a GPU Without Leaving Your Browser.
+            </h2>
+            <p
+              style={{
+                fontFamily: "'Lora', serif",
+                fontSize: '16px',
+                lineHeight: '1.62',
+                color: '#4A7870',
+                maxWidth: '580px',
+                margin: '0 0 24px 0',
+              }}
+            >
+              An interactive simulation that walks you through GPU architecture—shaders, pipelines,
+              parallelism—piece by piece. No prior graphics knowledge required. Rare web-native
+              education done genuinely well.
+            </p>
+            <a
+              href="https://news.ycombinator.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: "'Lora', serif",
+                fontSize: '14px',
+                color: '#C9920E',
+                textDecoration: 'none',
+                letterSpacing: '0.02em',
+              }}
+            >
+              worth your time →
+            </a>
+          </div>
+        </div>
+      </section>
 
-          {selectedWork.map((project, i) => (
+      {/* ── SECTION 4: QUOTE — the still center ── */}
+      <section
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '60vh',
+          borderTop: '1px solid #C9DDD9',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '560px',
+            width: '100%',
+            padding: '96px 48px',
+            boxSizing: 'border-box',
+            textAlign: 'center',
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: '37px',
+              fontWeight: '400',
+              fontStyle: 'italic',
+              lineHeight: '1.78',
+              letterSpacing: '-0.03em',
+              color: '#213A37',
+              margin: '0 0 32px 0',
+            }}
+          >
+            Each day your life grows a day shorter. Make every move count.
+          </p>
+          <div
+            style={{
+              width: '48px',
+              height: '1px',
+              backgroundColor: '#C9DDD9',
+              margin: '0 auto 32px',
+            }}
+          />
+          <p
+            style={{
+              fontFamily: "'Lora', serif",
+              fontSize: '12px',
+              fontWeight: '400',
+              letterSpacing: '0.05em',
+              color: '#4A7870',
+              margin: '0',
+            }}
+          >
+            Ming-Dao Deng
+          </p>
+        </div>
+      </section>
+
+      {/* ── SECTION 5: WORK INDEX ── */}
+      <section
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          borderTop: '1px solid #C9DDD9',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '720px',
+            width: '100%',
+            padding: '64px 48px',
+            boxSizing: 'border-box',
+          }}
+        >
+          <AmberRule />
+          <SectionLabel text="Selected Work" />
+
+          {selectedWork.map((project) => (
             <a
               key={project.slug}
               href={`/work/${project.slug}`}
-              className={projectRowClass}
-              style={{ borderBottom: '1px solid #E5DFC8' }}
+              className={rowLink}
             >
-              <Box
-                style={{
-                  paddingTop: '28px',
-                  paddingBottom: '28px',
-                }}
-              >
-                <Flex
-                  align="baseline"
-                  style={{ gap: '16px' }}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                    fontSize: '21px',
+                    fontWeight: '600',
+                    lineHeight: '1.20',
+                    color: '#213A37',
+                    marginBottom: '4px',
+                  }}
                 >
-                  <Box
-                    fontFamily="serif"
-                    fontSize="md"
-                    style={{
-                      fontWeight: '700',
-                      lineHeight: '1.2',
-                      color: '#120D09',
-                      flex: '2',
-                      minWidth: '0',
-                    }}
-                  >
-                    {project.title}
-                  </Box>
-
-                  {project.stack && project.stack.length > 0 && (
-                    <Box
-                      fontFamily="body"
-                      fontSize="xs"
-                      style={{
-                        flex: '1',
-                        letterSpacing: '0.04em',
-                        color: i === 0 ? '#6A9D51' : '#7A7060',
-                        minWidth: '0',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {project.stack.slice(0, 3).join(' · ')}
-                    </Box>
-                  )}
-
-                  <Box
-                    fontFamily="body"
-                    fontSize="xs"
-                    color="text-muted"
-                    style={{
-                      fontVariantNumeric: 'tabular-nums',
-                      flexShrink: '0',
-                      letterSpacing: '0.04em',
-                    }}
-                  >
-                    {project.year}
-                  </Box>
-                </Flex>
-
+                  {project.title}
+                </div>
                 {project.role && (
-                  <Box
-                    fontFamily="body"
-                    fontSize="xs"
-                    color="text-muted"
+                  <div
                     style={{
-                      marginTop: '6px',
-                      letterSpacing: '0.04em',
+                      fontFamily: "'Lora', serif",
+                      fontSize: '12px',
+                      color: '#4A7870',
                     }}
                   >
                     {project.role}
-                  </Box>
+                  </div>
                 )}
-              </Box>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  gap: '4px',
+                  paddingLeft: '32px',
+                  flexShrink: 0,
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '9px',
+                    fontWeight: '500',
+                    letterSpacing: '0.09em',
+                    color: '#4A7870',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {project.type}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'Lora', serif",
+                    fontSize: '12px',
+                    color: '#6D9C95',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
+                  {project.year}
+                </div>
+              </div>
             </a>
           ))}
-        </Box>
-      </Box>
 
-      {/* ── Beat 4: Quote Beat ── */}
-      <Box
-        as="section"
-        backgroundColor="card-bg"
+          {/* Experiments subsection */}
+          <div style={{ marginTop: '64px' }}>
+            <AmberRule />
+            <SectionLabel text="Experiments" />
+
+            {experiments.map((exp) => (
+              <a
+                key={exp.slug}
+                href={`/work/${exp.slug}`}
+                className={rowLink}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div
+                    style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontSize: '21px',
+                      fontWeight: '600',
+                      lineHeight: '1.20',
+                      color: '#213A37',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    {exp.title}
+                  </div>
+                  {exp.description && (
+                    <div
+                      style={{
+                        fontFamily: "'Lora', serif",
+                        fontSize: '14px',
+                        color: '#4A7870',
+                        lineHeight: '1.62',
+                      }}
+                    >
+                      {exp.description}
+                    </div>
+                  )}
+                </div>
+                <div
+                  style={{
+                    paddingLeft: '32px',
+                    flexShrink: 0,
+                    alignSelf: 'flex-start',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "'Lora', serif",
+                      fontSize: '12px',
+                      color: '#6D9C95',
+                      fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
+                    {exp.year}
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 6: SIGNALS ── */}
+      <section
         style={{
-          minHeight: '60vh',
+          width: '100%',
           display: 'flex',
-          alignItems: 'center',
           justifyContent: 'center',
-          borderBottom: '1px solid #E5DFC8',
+          borderTop: '1px solid #C9DDD9',
+          backgroundColor: '#F9FBFA',
         }}
       >
-        <Box
+        <div
           style={{
-            width: '100%',
-            maxWidth: '680px',
-            margin: '0 auto',
-            padding: '112px 96px',
-          }}
-        >
-          <Box
-            fontFamily="serif"
-            style={{
-              fontSize: 'clamp(64px, 9vw, 110px)',
-              fontStyle: 'italic',
-              fontWeight: '400',
-              color: '#120D09',
-              lineHeight: '1.05',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            Smile, breathe and go slowly.
-          </Box>
-
-          <Box
-            style={{
-              width: '64px',
-              height: '1px',
-              backgroundColor: '#6A9D51',
-              marginTop: '32px',
-              marginBottom: '16px',
-            }}
-          />
-
-          <Box
-            fontFamily="body"
-            fontSize="xs"
-            color="text-muted"
-            style={{ letterSpacing: '0.04em' }}
-          >
-            — Thich Nhat Hanh
-          </Box>
-        </Box>
-      </Box>
-
-      {/* ── Beat 5: Experiments ── */}
-      <Box as="section" style={{ borderBottom: '1px solid #E5DFC8' }}>
-        <Box
-          style={{
-            width: '100%',
             maxWidth: '720px',
-            margin: '0 auto',
-            padding: '96px 48px',
+            width: '100%',
+            padding: '64px 48px',
+            boxSizing: 'border-box',
           }}
         >
-          <SectionLabel>Experiments</SectionLabel>
+          <AmberRule />
+          <SectionLabel text="Yesterday" />
 
-          {experiments.map((exp) => (
-            <Box
-              key={exp.slug}
+          {/* Pistons win */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              marginBottom: '12px',
+            }}
+          >
+            <span
               style={{
-                paddingTop: '28px',
-                paddingBottom: '28px',
-                borderBottom: '1px solid #E5DFC8',
+                fontFamily: "'Lora', serif",
+                fontSize: '12px',
+                color: '#213A37',
+                fontVariantNumeric: 'tabular-nums',
+                letterSpacing: '0.02em',
               }}
             >
-              <Flex align="baseline" justify="space-between" style={{ gap: '16px' }}>
-                <Box
-                  fontFamily="serif"
-                  fontSize="base"
-                  style={{
-                    fontWeight: '400',
-                    lineHeight: '1.2',
-                    color: '#3A3228',
-                  }}
-                >
-                  {exp.title}
-                </Box>
-                <Box
-                  fontFamily="body"
-                  fontSize="xs"
-                  color="text-muted"
-                  style={{
-                    fontVariantNumeric: 'tabular-nums',
-                    flexShrink: '0',
-                    letterSpacing: '0.04em',
-                  }}
-                >
-                  {exp.year}
-                </Box>
-              </Flex>
+              DET 116 · MIL 93
+            </span>
+            <span
+              style={{
+                fontFamily: "'Lora', serif",
+                fontSize: '9px',
+                fontWeight: '500',
+                color: '#8A6408',
+                letterSpacing: '0.09em',
+              }}
+            >
+              W
+            </span>
+          </div>
 
-              {exp.description && (
-                <Box
-                  fontFamily="body"
-                  fontSize="xs"
-                  color="text-muted"
-                  style={{
-                    marginTop: '8px',
-                    lineHeight: '1.65',
-                    letterSpacing: '0.04em',
-                    maxWidth: '480px',
-                  }}
-                >
-                  {exp.description}
-                </Box>
-              )}
+          {/* Red Wings loss */}
+          <div style={{ marginBottom: '24px' }}>
+            <span
+              style={{
+                fontFamily: "'Lora', serif",
+                fontSize: '12px',
+                color: '#6D9C95',
+                fontVariantNumeric: 'tabular-nums',
+                letterSpacing: '0.02em',
+              }}
+            >
+              DET 1 · STL 4
+            </span>
+          </div>
 
-              {exp.type && (
-                <Box
-                  fontFamily="body"
-                  fontSize="xs"
-                  color="text-disabled"
-                  style={{
-                    marginTop: '6px',
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    fontSize: '10px',
-                  }}
-                >
-                  {exp.type}
-                </Box>
-              )}
-            </Box>
-          ))}
-        </Box>
-      </Box>
+          {/* Masters note */}
+          <div>
+            <span
+              style={{
+                fontFamily: "'Lora', serif",
+                fontSize: '12px',
+                letterSpacing: '0.05em',
+                color: '#6D9C95',
+              }}
+            >
+              Augusta National opens Thursday.
+            </span>
+          </div>
+        </div>
+      </section>
 
-      {/* ── Beat 6: Footer ── */}
-      <Box as="footer">
-        <Box
+      {/* ── FOOTER ── */}
+      <footer
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          borderTop: '1px solid #C9DDD9',
+        }}
+      >
+        <div
           style={{
-            width: '100%',
             maxWidth: '720px',
-            margin: '0 auto',
-            padding: '64px 48px',
+            width: '100%',
+            padding: '40px 48px',
+            boxSizing: 'border-box',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          <Flex
-            justify="space-between"
-            align="center"
-            style={{ marginBottom: '20px' }}
+          <span
+            style={{
+              fontFamily: "'Lora', serif",
+              fontSize: '12px',
+              color: '#6D9C95',
+              letterSpacing: '0.05em',
+            }}
           >
-            <Box
-              fontFamily="body"
-              fontSize="xs"
-              color="text-secondary"
-              style={{ letterSpacing: '0.04em' }}
-            >
-              Doug March — Product Designer & Developer
-            </Box>
-            <Flex style={{ gap: '24px' }}>
-              <a href="/about" style={{ textDecoration: 'none', borderBottom: 'none' }}>
-                <Box fontFamily="body" fontSize="xs" color="text-muted">About</Box>
-              </a>
-              <a href="/archive" style={{ textDecoration: 'none', borderBottom: 'none' }}>
-                <Box fontFamily="body" fontSize="xs" color="text-muted">Archive</Box>
-              </a>
-            </Flex>
-          </Flex>
-
-          <Box style={{ borderTop: '1px solid #E5DFC8', paddingTop: '16px' }}>
-            <Flex justify="space-between" align="center">
-              <Box
-                fontFamily="body"
-                fontSize="2xs"
-                color="text-muted"
-                style={{ letterSpacing: '0.04em' }}
-              >
-                © 2026 Doug March
-              </Box>
-              <Box
-                fontFamily="body"
-                fontSize="2xs"
-                color="text-muted"
-                style={{ fontVariantNumeric: 'tabular-nums', letterSpacing: '0.02em' }}
-              >
-                Valero Texas Open — R. MacIntyre −14
-              </Box>
-            </Flex>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+            Doug March · 2026
+          </span>
+          <a
+            href="/archive"
+            style={{
+              fontFamily: "'Lora', serif",
+              fontSize: '12px',
+              color: '#6D9C95',
+              letterSpacing: '0.05em',
+              textDecoration: 'none',
+            }}
+          >
+            archive
+          </a>
+        </div>
+      </footer>
+    </div>
   )
 }
