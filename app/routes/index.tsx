@@ -1,710 +1,540 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { featuredProject, selectedWork, experiments } from '../content/projects'
-import { identity } from '../content/about'
 import { css } from '../../styled-system/css'
+import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-// ─── Hover class for work rows ────────────────────────────────────────────────
-const rowLink = css({
+// ─── Reusable CSS classes ────────────────────────────────────────────────────
+
+const sectionLabel = css({
+  fontFamily: '"DM Sans", sans-serif',
+  fontSize: '13px',
+  fontWeight: '500',
+  color: '#4A9A6C',
+  letterSpacing: '0.04em',
+  marginBottom: '32px',
+  display: 'block',
+})
+
+const workRow = css({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '20px 0',
-  borderBottom: '1px solid #C9DDD9',
+  height: '48px',
+  borderBottom: '1px solid #C8D8DF',
   textDecoration: 'none',
-  transition: 'background-color 150ms ease',
-  cursor: 'pointer',
+  transition: 'background-color 120ms ease',
+  paddingLeft: '0',
+  paddingRight: '0',
   _hover: {
-    backgroundColor: '#E4EFEC',
-    textDecoration: 'none',
+    backgroundColor: '#E5EDF1',
   },
 })
 
-const hnCardHover = css({
-  backgroundColor: '#FFFFFF',
-  borderLeft: '3px solid #C9920E',
-  borderRadius: '4px',
-  boxShadow: '0 4px 32px rgba(33, 58, 55, 0.10)',
-  padding: '32px',
-  transition: 'box-shadow 180ms ease, border-left-color 180ms ease',
-  _hover: {
-    boxShadow: '0 6px 40px rgba(33, 58, 55, 0.14)',
-    borderLeftColor: '#8A6408',
-  },
-})
+// ─── Page ────────────────────────────────────────────────────────────────────
 
-// ─── Primitives ───────────────────────────────────────────────────────────────
-function AmberRule() {
-  return (
-    <div
-      style={{
-        width: '40px',
-        height: '1px',
-        backgroundColor: '#C9920E',
-        marginBottom: '12px',
-      }}
-    />
-  )
-}
-
-function SectionLabel({ text }: { text: string }) {
-  return (
-    <p
-      style={{
-        fontFamily: "'Lora', serif",
-        fontSize: '9px',
-        fontWeight: '500',
-        letterSpacing: '0.14em',
-        color: '#4A7870',
-        textTransform: 'uppercase',
-        margin: '0 0 48px 0',
-      }}
-    >
-      {text}
-    </p>
-  )
-}
-
-function Divider() {
-  return (
-    <div
-      style={{
-        width: '100%',
-        height: '1px',
-        backgroundColor: '#C9DDD9',
-      }}
-    />
-  )
-}
-
-// ─── Home Page ────────────────────────────────────────────────────────────────
 function HomePage() {
+  const now = new Date()
+  const dateStr = now.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
+
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
 
-      {/* ── SECTION 1: HERO ── */}
-      <section
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          minHeight: '100vh',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '720px',
-            width: '100%',
-            padding: '96px 48px 64px',
-            boxSizing: 'border-box',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}
-        >
-          {/* Identity block */}
-          <div>
-            <AmberRule />
-            <h1
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: '50px',
-                fontWeight: '700',
-                lineHeight: '1.05',
-                letterSpacing: '-0.03em',
-                color: '#213A37',
-                margin: '0 0 16px 0',
-              }}
-            >
-              {identity.name}
-            </h1>
-            <p
-              style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '12px',
-                fontWeight: '400',
-                letterSpacing: '0.09em',
-                color: '#4A7870',
-                textTransform: 'uppercase',
-                margin: '0 0 44px 0',
-              }}
-            >
-              {identity.role}
-            </p>
-            <p
-              style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '16px',
-                lineHeight: '1.62',
-                color: '#4A7870',
-                maxWidth: '480px',
-                margin: '0',
-              }}
-            >
-              {identity.statement}
-            </p>
-          </div>
-
-          {/* Hero nav — bottom of hero */}
-          <nav
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0',
-            }}
-          >
-            {[
-              { label: 'work', href: '/' },
-              { label: 'about', href: '/about' },
-              { label: 'github', href: 'https://github.com', external: true },
-              { label: 'email', href: 'mailto:hello@doug-march.com', external: true },
-            ].map(({ label, href, external }, i) => (
-              <span key={label} style={{ display: 'flex', alignItems: 'center' }}>
-                {i > 0 && (
-                  <span
-                    style={{
-                      color: '#9BBFB8',
-                      fontSize: '12px',
-                      margin: '0 10px',
-                      userSelect: 'none',
-                    }}
-                  >
-                    ·
-                  </span>
-                )}
-                <a
-                  href={href}
-                  target={external ? '_blank' : undefined}
-                  rel={external ? 'noopener noreferrer' : undefined}
-                  style={{
-                    fontFamily: "'Lora', serif",
-                    fontSize: '12px',
-                    letterSpacing: '0.05em',
-                    color: '#4A7870',
-                    textDecoration: 'none',
-                  }}
-                >
-                  {label}
-                </a>
-              </span>
-            ))}
-          </nav>
-        </div>
-      </section>
-
-      {/* ── SECTION 2: FEATURED PROJECT ── */}
-      {featuredProject && (
-        <section
-          style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            minHeight: '80vh',
-            borderTop: '1px solid #C9DDD9',
-          }}
-        >
+      {/* ── Band 1: Hero Identity (dark — seamless with sidebar) ── */}
+      <div style={{ background: '#183848', width: '100%' }}>
+        <div style={{ maxWidth: '1080px', margin: '0 auto', padding: '64px 48px 88px' }}>
           <div
             style={{
-              maxWidth: '720px',
-              width: '100%',
-              padding: '96px 48px',
-              boxSizing: 'border-box',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
+              fontFamily: '"DM Sans", sans-serif',
+              fontSize: '49px',
+              fontWeight: 600,
+              color: '#E5EDF1',
+              lineHeight: 1.05,
+              letterSpacing: '-0.025em',
+              marginBottom: '16px',
             }}
           >
-            <p
-              style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '9px',
-                fontWeight: '500',
-                letterSpacing: '0.14em',
-                color: '#4A7870',
-                textTransform: 'uppercase',
-                margin: '0 0 12px 0',
-              }}
-            >
-              Spring Renewal
-            </p>
-            <AmberRule />
-            <p
-              style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '9px',
-                fontWeight: '500',
-                letterSpacing: '0.14em',
-                color: '#C9920E',
-                textTransform: 'uppercase',
-                margin: '0 0 24px 0',
-              }}
-            >
-              Featured Project
-            </p>
-            <h2
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: '37px',
-                fontWeight: '600',
-                lineHeight: '1.20',
-                letterSpacing: '-0.03em',
-                color: '#213A37',
-                margin: '0 0 24px 0',
-              }}
-            >
-              {featuredProject.title}
-            </h2>
-            {featuredProject.problem && (
-              <p
-                style={{
-                  fontFamily: "'Lora', serif",
-                  fontSize: '16px',
-                  lineHeight: '1.62',
-                  color: '#4A7870',
-                  maxWidth: '580px',
-                  margin: '0 0 48px 0',
-                }}
-              >
-                {featuredProject.problem}
-              </p>
-            )}
-            {(featuredProject.liveUrl || featuredProject.externalUrl) && (
-              <a
-                href={featuredProject.liveUrl || featuredProject.externalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  fontFamily: "'Lora', serif",
-                  fontSize: '14px',
-                  color: '#C9920E',
-                  textDecoration: 'none',
-                  letterSpacing: '0.03em',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  alignSelf: 'flex-start',
-                }}
-              >
-                View project →
-              </a>
-            )}
+            Doug March
           </div>
-        </section>
-      )}
-
-      {/* ── SECTION 3: HN CALLOUT (800px wide — the only grid break) ── */}
-      <section
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '50vh',
-          borderTop: '1px solid #C9DDD9',
-          backgroundColor: '#F9FBFA',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '800px',
-            width: '100%',
-            padding: '96px 48px',
-            boxSizing: 'border-box',
-          }}
-        >
-          <div className={hnCardHover}>
-            <p
-              style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '9px',
-                fontWeight: '500',
-                letterSpacing: '0.14em',
-                color: '#C9920E',
-                textTransform: 'uppercase',
-                margin: '0 0 16px 0',
-              }}
-            >
-              Discovery · HN · 756 pts
-            </p>
-            <h2
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: '28px',
-                fontWeight: '600',
-                lineHeight: '1.20',
-                letterSpacing: '-0.03em',
-                color: '#213A37',
-                margin: '0 0 16px 0',
-              }}
-            >
-              Build a GPU Without Leaving Your Browser.
-            </h2>
-            <p
-              style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '16px',
-                lineHeight: '1.62',
-                color: '#4A7870',
-                maxWidth: '580px',
-                margin: '0 0 24px 0',
-              }}
-            >
-              An interactive simulation that walks you through GPU architecture—shaders, pipelines,
-              parallelism—piece by piece. No prior graphics knowledge required. Rare web-native
-              education done genuinely well.
-            </p>
-            <a
-              href="https://news.ycombinator.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '14px',
-                color: '#C9920E',
-                textDecoration: 'none',
-                letterSpacing: '0.02em',
-              }}
-            >
-              worth your time →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 4: QUOTE — the still center ── */}
-      <section
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '60vh',
-          borderTop: '1px solid #C9DDD9',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '560px',
-            width: '100%',
-            padding: '96px 48px',
-            boxSizing: 'border-box',
-            textAlign: 'center',
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: '37px',
-              fontWeight: '400',
-              fontStyle: 'italic',
-              lineHeight: '1.78',
-              letterSpacing: '-0.03em',
-              color: '#213A37',
-              margin: '0 0 32px 0',
-            }}
-          >
-            Each day your life grows a day shorter. Make every move count.
-          </p>
           <div
             style={{
-              width: '48px',
-              height: '1px',
-              backgroundColor: '#C9DDD9',
-              margin: '0 auto 32px',
-            }}
-          />
-          <p
-            style={{
-              fontFamily: "'Lora', serif",
-              fontSize: '12px',
-              fontWeight: '400',
-              letterSpacing: '0.05em',
-              color: '#4A7870',
-              margin: '0',
+              fontFamily: '"DM Sans", sans-serif',
+              fontSize: '25px',
+              fontWeight: 400,
+              color: '#9DB6C0',
+              lineHeight: 1.2,
+              marginBottom: '40px',
             }}
           >
-            Ming-Dao Deng
-          </p>
+            Product Designer &amp; Developer
+          </div>
+          <div
+            style={{
+              fontFamily: '"IBM Plex Sans", sans-serif',
+              fontSize: '13px',
+              fontWeight: 300,
+              color: '#6B8E9E',
+              letterSpacing: '0.08em',
+            }}
+          >
+            {dateStr}
+          </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── SECTION 5: WORK INDEX ── */}
-      <section
+      {/* ── Band 2: Featured Work (spring-breath light) ── */}
+      <div
         style={{
+          background: '#EEF4F6',
           width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          borderTop: '1px solid #C9DDD9',
+          minHeight: '55vh',
+          boxSizing: 'border-box',
+          padding: '96px 48px',
         }}
       >
-        <div
-          style={{
-            maxWidth: '720px',
-            width: '100%',
-            padding: '64px 48px',
-            boxSizing: 'border-box',
-          }}
-        >
-          <AmberRule />
-          <SectionLabel text="Selected Work" />
+        <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
+          <span className={sectionLabel}>featured work</span>
 
-          {selectedWork.map((project) => (
-            <a
-              key={project.slug}
-              href={`/work/${project.slug}`}
-              className={rowLink}
-            >
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: '21px',
-                    fontWeight: '600',
-                    lineHeight: '1.20',
-                    color: '#213A37',
-                    marginBottom: '4px',
-                  }}
-                >
-                  {project.title}
-                </div>
-                {project.role && (
-                  <div
-                    style={{
-                      fontFamily: "'Lora', serif",
-                      fontSize: '12px',
-                      color: '#4A7870',
-                    }}
-                  >
-                    {project.role}
-                  </div>
-                )}
-              </div>
+          {featuredProject && (
+            <div>
+              {/* HN / AI signal — monospace tech whisper */}
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-end',
-                  gap: '4px',
-                  paddingLeft: '32px',
-                  flexShrink: 0,
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  fontSize: '12px',
+                  color: '#6B8E9E',
+                  marginBottom: '28px',
+                  letterSpacing: '0em',
                 }}
+              >
+                {featuredProject.stack && featuredProject.stack.length > 0
+                  ? `→ built with: ${featuredProject.stack.join(' · ')}`
+                  : '→ built with: node · llm-orchestration · postgres'}
+              </div>
+
+              {/* Project title */}
+              <a
+                href={
+                  featuredProject.liveUrl ||
+                  featuredProject.externalUrl ||
+                  `/work/${featuredProject.slug}`
+                }
+                target={
+                  featuredProject.liveUrl || featuredProject.externalUrl
+                    ? '_blank'
+                    : undefined
+                }
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none', display: 'block' }}
               >
                 <div
                   style={{
-                    fontFamily: "'Lora', serif",
-                    fontSize: '9px',
-                    fontWeight: '500',
-                    letterSpacing: '0.09em',
-                    color: '#4A7870',
+                    fontFamily: '"DM Sans", sans-serif',
+                    fontSize: '39px',
+                    fontWeight: 600,
+                    color: '#183848',
+                    lineHeight: 1.05,
+                    letterSpacing: '-0.025em',
+                    marginBottom: '24px',
+                    transition: 'color 120ms ease',
+                  }}
+                >
+                  {featuredProject.title}
+                </div>
+              </a>
+
+              {/* Problem statement */}
+              {featuredProject.problem && (
+                <div
+                  style={{
+                    fontFamily: '"IBM Plex Sans", sans-serif',
+                    fontSize: '20px',
+                    fontWeight: 400,
+                    color: '#446878',
+                    lineHeight: 1.55,
+                    maxWidth: '640px',
+                    marginBottom: '36px',
+                  }}
+                >
+                  {featuredProject.problem}
+                </div>
+              )}
+
+              {/* Meta row */}
+              <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
+                <span
+                  style={{
+                    fontFamily: '"IBM Plex Mono", monospace',
+                    fontSize: '13px',
+                    color: '#6B8E9E',
+                    letterSpacing: '0.08em',
+                  }}
+                >
+                  {featuredProject.year}
+                </span>
+                <span
+                  style={{
+                    fontFamily: '"IBM Plex Sans", sans-serif',
+                    fontSize: '13px',
+                    color: '#6B8E9E',
+                    letterSpacing: '0.08em',
                     textTransform: 'uppercase',
                   }}
                 >
-                  {project.type}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'Lora', serif",
-                    fontSize: '12px',
-                    color: '#6D9C95',
-                    fontVariantNumeric: 'tabular-nums',
-                  }}
-                >
-                  {project.year}
-                </div>
+                  {featuredProject.type}
+                </span>
+                {(featuredProject.liveUrl || featuredProject.externalUrl) && (
+                  <a
+                    href={featuredProject.liveUrl || featuredProject.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      fontFamily: '"IBM Plex Sans", sans-serif',
+                      fontSize: '13px',
+                      color: '#4A9A6C',
+                      textDecoration: 'none',
+                      letterSpacing: '0.04em',
+                    }}
+                  >
+                    view project →
+                  </a>
+                )}
               </div>
-            </a>
-          ))}
+            </div>
+          )}
+        </div>
+      </div>
 
-          {/* Experiments subsection */}
-          <div style={{ marginTop: '64px' }}>
-            <AmberRule />
-            <SectionLabel text="Experiments" />
+      {/* ── Band 3: Work Index ── */}
+      <div
+        style={{
+          background: '#F2F7F9',
+          width: '100%',
+          padding: '80px 48px',
+          boxSizing: 'border-box',
+        }}
+      >
+        <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
 
-            {experiments.map((exp) => (
+          {/* Selected work */}
+          <span className={sectionLabel}>work</span>
+          <div style={{ marginBottom: '56px' }}>
+            {selectedWork.map((project) => (
               <a
-                key={exp.slug}
-                href={`/work/${exp.slug}`}
-                className={rowLink}
+                key={project.slug}
+                href={`/work/${project.slug}`}
+                className={workRow}
               >
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div
-                    style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontSize: '21px',
-                      fontWeight: '600',
-                      lineHeight: '1.20',
-                      color: '#213A37',
-                      marginBottom: '4px',
-                    }}
-                  >
-                    {exp.title}
-                  </div>
-                  {exp.description && (
-                    <div
-                      style={{
-                        fontFamily: "'Lora', serif",
-                        fontSize: '14px',
-                        color: '#4A7870',
-                        lineHeight: '1.62',
-                      }}
-                    >
-                      {exp.description}
-                    </div>
-                  )}
-                </div>
-                <div
+                <span
                   style={{
-                    paddingLeft: '32px',
-                    flexShrink: 0,
-                    alignSelf: 'flex-start',
+                    fontFamily: '"DM Sans", sans-serif',
+                    fontSize: '16px',
+                    fontWeight: 500,
+                    color: '#183848',
+                    flex: 1,
                   }}
                 >
-                  <div
+                  {project.title}
+                </span>
+                <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+                  <span
                     style={{
-                      fontFamily: "'Lora', serif",
-                      fontSize: '12px',
-                      color: '#6D9C95',
-                      fontVariantNumeric: 'tabular-nums',
+                      fontFamily: '"IBM Plex Sans", sans-serif',
+                      fontSize: '13px',
+                      color: '#6B8E9E',
                     }}
                   >
-                    {exp.year}
-                  </div>
+                    {project.type}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontSize: '13px',
+                      color: '#6B8E9E',
+                      minWidth: '40px',
+                      textAlign: 'right',
+                    }}
+                  >
+                    {project.year}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: '"IBM Plex Sans", sans-serif',
+                      fontSize: '13px',
+                      color: '#4A9A6C',
+                      minWidth: '16px',
+                    }}
+                  >
+                    →
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {/* Experiments */}
+          <span className={sectionLabel}>experiments</span>
+          <div>
+            {experiments.map((project) => (
+              <a
+                key={project.slug}
+                href={`/work/${project.slug}`}
+                className={workRow}
+              >
+                <span
+                  style={{
+                    fontFamily: '"DM Sans", sans-serif',
+                    fontSize: '16px',
+                    fontWeight: 400,
+                    color: '#2C4F5D',
+                    flex: 1,
+                  }}
+                >
+                  {project.title}
+                </span>
+                <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+                  <span
+                    style={{
+                      fontFamily: '"IBM Plex Sans", sans-serif',
+                      fontSize: '13px',
+                      color: '#6B8E9E',
+                      maxWidth: '240px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {project.type}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontSize: '13px',
+                      color: '#6B8E9E',
+                      minWidth: '40px',
+                      textAlign: 'right',
+                    }}
+                  >
+                    {project.year}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: '"IBM Plex Sans", sans-serif',
+                      fontSize: '13px',
+                      color: '#C8D8DF',
+                      minWidth: '16px',
+                    }}
+                  >
+                    →
+                  </span>
                 </div>
               </a>
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── SECTION 6: SIGNALS ── */}
-      <section
+      {/* ── Band 4: Signals ── */}
+      <div
         style={{
+          background: '#EAF0F3',
           width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          borderTop: '1px solid #C9DDD9',
-          backgroundColor: '#F9FBFA',
+          padding: '80px 48px',
+          boxSizing: 'border-box',
+        }}
+      >
+        <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
+          <span className={sectionLabel}>signals</span>
+
+          <div style={{ display: 'flex', gap: '64px', alignItems: 'flex-start' }}>
+
+            {/* Melville epigraph */}
+            <div style={{ flex: 1 }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '32px 1fr',
+                  position: 'relative',
+                }}
+              >
+                {/* Green left rule */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '15px',
+                    top: '4px',
+                    bottom: '4px',
+                    width: '2px',
+                    background: '#4A9A6C',
+                  }}
+                />
+                {/* Spacer column */}
+                <div />
+                {/* Quote content */}
+                <div>
+                  <div
+                    style={{
+                      fontFamily: '"DM Sans", sans-serif',
+                      fontSize: '25px',
+                      fontWeight: 400,
+                      fontStyle: 'italic',
+                      color: '#446878',
+                      lineHeight: 1.75,
+                      marginBottom: '12px',
+                    }}
+                  >
+                    I'll go to it laughing.
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: '"IBM Plex Sans", sans-serif',
+                      fontSize: '13px',
+                      color: '#6B8E9E',
+                    }}
+                  >
+                    — Melville
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Detroit aside — editorial, dismissive */}
+            <div style={{ minWidth: '220px', maxWidth: '220px' }}>
+              <div
+                style={{
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  fontSize: '13px',
+                  color: '#C4AD8A',
+                  letterSpacing: '0.08em',
+                  marginBottom: '12px',
+                }}
+              >
+                Monday results
+              </div>
+              <div
+                style={{
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  fontSize: '11px',
+                  color: '#6B8E9E',
+                  lineHeight: 1.75,
+                }}
+              >
+                DET vs BOS&nbsp;&nbsp;L&nbsp;&nbsp;4–5<br />
+                DET vs MIA&nbsp;&nbsp;L&nbsp;&nbsp;3–5
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {/* ── Band 5: Footer ── */}
+      <div
+        style={{
+          background: '#0C2230',
+          width: '100%',
+          minHeight: '200px',
+          padding: '48px',
+          boxSizing: 'border-box',
+          marginTop: 'auto',
         }}
       >
         <div
           style={{
-            maxWidth: '720px',
-            width: '100%',
-            padding: '64px 48px',
-            boxSizing: 'border-box',
+            maxWidth: '1080px',
+            margin: '0 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            minHeight: '104px',
           }}
         >
-          <AmberRule />
-          <SectionLabel text="Yesterday" />
-
-          {/* Pistons win */}
+          {/* Top row */}
           <div
             style={{
               display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              marginBottom: '12px',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
             }}
           >
-            <span
+            <div>
+              <div
+                style={{
+                  fontFamily: '"DM Sans", sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  color: '#E5EDF1',
+                  marginBottom: '16px',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                Doug March
+              </div>
+              <div style={{ display: 'flex', gap: '24px' }}>
+                {[
+                  { href: '/', label: 'work' },
+                  { href: '/about', label: 'about' },
+                  { href: '/archive', label: 'archive' },
+                ].map(({ href, label }) => (
+                  <a
+                    key={href}
+                    href={href}
+                    style={{
+                      fontFamily: '"IBM Plex Sans", sans-serif',
+                      fontSize: '13px',
+                      color: '#9DB6C0',
+                      textDecoration: 'none',
+                      letterSpacing: '0.04em',
+                    }}
+                  >
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div
               style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '12px',
-                color: '#213A37',
-                fontVariantNumeric: 'tabular-nums',
-                letterSpacing: '0.02em',
+                fontFamily: '"IBM Plex Sans", sans-serif',
+                fontSize: '13px',
+                color: '#9DB6C0',
+                textAlign: 'right',
               }}
             >
-              DET 116 · MIL 93
-            </span>
-            <span
-              style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '9px',
-                fontWeight: '500',
-                color: '#8A6408',
-                letterSpacing: '0.09em',
-              }}
-            >
-              W
-            </span>
+              Product Designer &amp; Developer
+            </div>
           </div>
 
-          {/* Red Wings loss */}
-          <div style={{ marginBottom: '24px' }}>
-            <span
+          {/* Bottom row — Masters note + copyright */}
+          <div style={{ marginTop: '40px' }}>
+            <div
               style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '12px',
-                color: '#6D9C95',
-                fontVariantNumeric: 'tabular-nums',
-                letterSpacing: '0.02em',
+                fontFamily: '"IBM Plex Sans", sans-serif',
+                fontSize: '11px',
+                fontWeight: 300,
+                color: '#9DB6C0',
+                marginBottom: '4px',
               }}
             >
-              DET 1 · STL 4
-            </span>
-          </div>
-
-          {/* Masters note */}
-          <div>
-            <span
+              Masters · April 10
+            </div>
+            <div
               style={{
-                fontFamily: "'Lora', serif",
-                fontSize: '12px',
-                letterSpacing: '0.05em',
-                color: '#6D9C95',
+                fontFamily: '"IBM Plex Sans", sans-serif',
+                fontSize: '11px',
+                color: '#446878',
               }}
             >
-              Augusta National opens Thursday.
-            </span>
+              © 2026 Doug March
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── FOOTER ── */}
-      <footer
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          borderTop: '1px solid #C9DDD9',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '720px',
-            width: '100%',
-            padding: '40px 48px',
-            boxSizing: 'border-box',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "'Lora', serif",
-              fontSize: '12px',
-              color: '#6D9C95',
-              letterSpacing: '0.05em',
-            }}
-          >
-            Doug March · 2026
-          </span>
-          <a
-            href="/archive"
-            style={{
-              fontFamily: "'Lora', serif",
-              fontSize: '12px',
-              color: '#6D9C95',
-              letterSpacing: '0.05em',
-              textDecoration: 'none',
-            }}
-          >
-            archive
-          </a>
-        </div>
-      </footer>
     </div>
   )
 }

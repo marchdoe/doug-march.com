@@ -2,43 +2,60 @@ import logoSvg from '../assets/logo.svg'
 
 export function Sidebar() {
   return (
-    <header
+    <div
       style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
+        background: '#183848',
+        width: '100%',
+        height: '64px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 48px',
-        height: '52px',
-        background: 'rgba(242, 247, 245, 0.94)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        borderBottom: '1px solid rgba(201, 221, 217, 0.55)',
+        paddingLeft: '48px',
+        paddingRight: '48px',
+        boxSizing: 'border-box',
+        flexShrink: 0,
       }}
     >
+      {/* Logo + name */}
       <a
         href="/"
         style={{
           display: 'flex',
           alignItems: 'center',
+          gap: '10px',
           textDecoration: 'none',
         }}
       >
-        <img src={logoSvg} alt="Doug March" style={{ height: '26px', width: 'auto' }} />
+        <img
+          src={logoSvg}
+          alt=""
+          style={{ height: '22px', width: '22px', display: 'block' }}
+        />
+        <span
+          style={{
+            fontFamily: '"DM Sans", sans-serif',
+            fontSize: '13px',
+            fontWeight: 500,
+            color: '#E5EDF1',
+            letterSpacing: '0.04em',
+          }}
+        >
+          Doug March
+        </span>
       </a>
-      <nav style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+
+      {/* Nav links */}
+      <nav style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
         <a
           href="/"
           style={{
-            fontSize: '12px',
-            letterSpacing: '0.05em',
-            fontFamily: "'Lora', serif",
-            color: '#4A7870',
+            fontFamily: '"IBM Plex Sans", sans-serif',
+            fontSize: '13px',
+            fontWeight: 400,
+            color: '#9DB6C0',
             textDecoration: 'none',
+            letterSpacing: '0.04em',
+            transition: 'opacity 120ms ease',
           }}
         >
           work
@@ -46,16 +63,18 @@ export function Sidebar() {
         <a
           href="/about"
           style={{
-            fontSize: '12px',
-            letterSpacing: '0.05em',
-            fontFamily: "'Lora', serif",
-            color: '#4A7870',
+            fontFamily: '"IBM Plex Sans", sans-serif',
+            fontSize: '13px',
+            fontWeight: 400,
+            color: '#9DB6C0',
             textDecoration: 'none',
+            letterSpacing: '0.04em',
+            transition: 'opacity 120ms ease',
           }}
         >
           about
         </a>
       </nav>
-    </header>
+    </div>
   )
 }

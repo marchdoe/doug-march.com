@@ -1,433 +1,360 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { timeline, capabilities, education } from '../content/timeline'
 import { identity, personal } from '../content/about'
-import { css } from '../../styled-system/css'
+import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-// ─── Hover for timeline rows ──────────────────────────────────────────────────
-const timelineRow = css({
-  display: 'flex',
-  gap: '32px',
-  padding: '24px 0',
-  borderBottom: '1px solid #C9DDD9',
-  transition: 'background-color 150ms ease',
-  _hover: {
-    backgroundColor: '#E4EFEC',
-  },
-})
-
-// ─── Primitives ───────────────────────────────────────────────────────────────
-function AmberRule() {
-  return (
-    <div
-      style={{
-        width: '40px',
-        height: '1px',
-        backgroundColor: '#C9920E',
-        marginBottom: '12px',
-      }}
-    />
-  )
-}
-
-function SectionLabel({ text }: { text: string }) {
-  return (
-    <p
-      style={{
-        fontFamily: "'Lora', serif",
-        fontSize: '9px',
-        fontWeight: '500',
-        letterSpacing: '0.14em',
-        color: '#4A7870',
-        textTransform: 'uppercase',
-        margin: '0 0 40px 0',
-      }}
-    >
-      {text}
-    </p>
-  )
-}
-
 function AboutPage() {
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
 
-      {/* ── HEADER ── */}
-      <section
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          minHeight: '60vh',
-          alignItems: 'center',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '720px',
-            width: '100%',
-            padding: '120px 48px 80px',
-            boxSizing: 'border-box',
-          }}
-        >
-          <AmberRule />
-          <h1
+      {/* ── Identity header band (dark, echoing home Band 1) ── */}
+      <div style={{ background: '#183848', width: '100%' }}>
+        <div style={{ maxWidth: '1080px', margin: '0 auto', padding: '56px 48px 64px' }}>
+          <div
             style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: '50px',
-              fontWeight: '700',
-              lineHeight: '1.05',
-              letterSpacing: '-0.03em',
-              color: '#213A37',
-              margin: '0 0 16px 0',
+              fontFamily: '"DM Sans", sans-serif',
+              fontSize: '39px',
+              fontWeight: 600,
+              color: '#E5EDF1',
+              lineHeight: 1.05,
+              letterSpacing: '-0.025em',
+              marginBottom: '20px',
             }}
           >
             {identity.name}
-          </h1>
-          <p
+          </div>
+          <div
             style={{
-              fontFamily: "'Lora', serif",
-              fontSize: '12px',
-              fontWeight: '400',
-              letterSpacing: '0.09em',
-              color: '#4A7870',
-              textTransform: 'uppercase',
-              margin: '0 0 44px 0',
-            }}
-          >
-            {identity.role}
-          </p>
-          <p
-            style={{
-              fontFamily: "'Lora', serif",
-              fontSize: '16px',
-              lineHeight: '1.62',
-              color: '#4A7870',
-              maxWidth: '540px',
-              margin: '0',
+              fontFamily: '"IBM Plex Sans", sans-serif',
+              fontSize: '20px',
+              fontWeight: 400,
+              color: '#9DB6C0',
+              lineHeight: 1.55,
+              maxWidth: '560px',
             }}
           >
             {identity.statement}
-          </p>
-        </div>
-      </section>
-
-      {/* ── EXPERIENCE / TIMELINE ── */}
-      <section
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          borderTop: '1px solid #C9DDD9',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '720px',
-            width: '100%',
-            padding: '64px 48px',
-            boxSizing: 'border-box',
-          }}
-        >
-          <AmberRule />
-          <SectionLabel text="Experience" />
-
-          {timeline.map((entry) => (
-            <div
-              key={`${entry.year}-${entry.company}`}
-              className={timelineRow}
-            >
-              {/* Year column — fixed width so ranges and single years align */}
-              <div
-                style={{
-                  minWidth: '140px',
-                  flexShrink: 0,
-                  paddingTop: '3px',
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "'Lora', serif",
-                    fontSize: '12px',
-                    color: '#6D9C95',
-                    fontVariantNumeric: 'tabular-nums',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {entry.year}
-                </span>
-              </div>
-
-              {/* Role + company + description */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: '21px',
-                    fontWeight: '600',
-                    lineHeight: '1.20',
-                    color: '#213A37',
-                    marginBottom: '4px',
-                  }}
-                >
-                  {entry.role}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'Lora', serif",
-                    fontSize: '14px',
-                    color: '#4A7870',
-                    marginBottom: '10px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                  }}
-                >
-                  {entry.company}
-                  {entry.current && (
-                    <span
-                      style={{
-                        fontSize: '9px',
-                        fontWeight: '500',
-                        letterSpacing: '0.09em',
-                        color: '#C9920E',
-                        textTransform: 'uppercase',
-                      }}
-                    >
-                      Current
-                    </span>
-                  )}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'Lora', serif",
-                    fontSize: '14px',
-                    lineHeight: '1.62',
-                    color: '#6D9C95',
-                  }}
-                >
-                  {entry.description}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── CAPABILITIES ── */}
-      <section
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          borderTop: '1px solid #C9DDD9',
-          backgroundColor: '#F9FBFA',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '720px',
-            width: '100%',
-            padding: '64px 48px',
-            boxSizing: 'border-box',
-          }}
-        >
-          <AmberRule />
-          <SectionLabel text="Capabilities" />
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '8px',
-            }}
-          >
-            {capabilities.map((cap) => (
-              <span
-                key={cap}
-                style={{
-                  fontFamily: "'Lora', serif",
-                  fontSize: '12px',
-                  color: '#4A7870',
-                  backgroundColor: '#FFFFFF',
-                  border: '1px solid #C9DDD9',
-                  borderRadius: '2px',
-                  padding: '6px 14px',
-                  boxShadow: '0 2px 20px rgba(33, 58, 55, 0.06)',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {cap}
-              </span>
-            ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── EDUCATION ── */}
-      {education && (
-        <section
-          style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            borderTop: '1px solid #C9DDD9',
-          }}
-        >
-          <div
-            style={{
-              maxWidth: '720px',
-              width: '100%',
-              padding: '64px 48px',
-              boxSizing: 'border-box',
-            }}
-          >
-            <AmberRule />
-            <SectionLabel text="Education" />
-            <div style={{ display: 'flex', gap: '32px' }}>
-              <div style={{ minWidth: '140px', flexShrink: 0, paddingTop: '3px' }}>
-                <span
+      {/* ── Main content ── */}
+      <div style={{ background: '#F2F7F9', width: '100%', flex: 1 }}>
+        <div style={{ maxWidth: '1080px', margin: '0 auto', padding: '80px 48px' }}>
+
+          {/* Experience / Timeline */}
+          <section style={{ marginBottom: '72px' }}>
+            <div
+              style={{
+                fontFamily: '"DM Sans", sans-serif',
+                fontSize: '13px',
+                fontWeight: 500,
+                color: '#4A9A6C',
+                letterSpacing: '0.04em',
+                marginBottom: '32px',
+              }}
+            >
+              experience
+            </div>
+
+            <div>
+              {timeline.map((entry) => (
+                <div
+                  key={`${entry.year}-${entry.company}`}
                   style={{
-                    fontFamily: "'Lora', serif",
-                    fontSize: '12px',
-                    color: '#6D9C95',
-                    fontVariantNumeric: 'tabular-nums',
+                    display: 'flex',
+                    gap: '40px',
+                    paddingTop: '20px',
+                    paddingBottom: '20px',
+                    borderBottom: '1px solid #C8D8DF',
+                    alignItems: 'flex-start',
                   }}
                 >
-                  {education.years}
-                </span>
+                  {/* Year — fixed width for alignment */}
+                  <div
+                    style={{
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontSize: '13px',
+                      color: '#6B8E9E',
+                      minWidth: '120px',
+                      flexShrink: 0,
+                      paddingTop: '2px',
+                    }}
+                  >
+                    {entry.year}
+                  </div>
+
+                  {/* Content */}
+                  <div style={{ flex: 1 }}>
+                    <div
+                      style={{
+                        fontFamily: '"DM Sans", sans-serif',
+                        fontSize: '16px',
+                        fontWeight: 500,
+                        color: '#183848',
+                        marginBottom: '2px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                      }}
+                    >
+                      {entry.role}
+                      {entry.current && (
+                        <span
+                          style={{
+                            fontFamily: '"IBM Plex Sans", sans-serif',
+                            fontSize: '11px',
+                            color: '#4A9A6C',
+                            letterSpacing: '0.08em',
+                            fontWeight: 400,
+                          }}
+                        >
+                          current
+                        </span>
+                      )}
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: '"IBM Plex Sans", sans-serif',
+                        fontSize: '13px',
+                        color: '#446878',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      {entry.company}
+                    </div>
+                    {entry.description && (
+                      <div
+                        style={{
+                          fontFamily: '"IBM Plex Sans", sans-serif',
+                          fontSize: '13px',
+                          color: '#6B8E9E',
+                          lineHeight: 1.55,
+                        }}
+                      >
+                        {entry.description}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Education */}
+          <section style={{ marginBottom: '72px' }}>
+            <div
+              style={{
+                fontFamily: '"DM Sans", sans-serif',
+                fontSize: '13px',
+                fontWeight: 500,
+                color: '#4A9A6C',
+                letterSpacing: '0.04em',
+                marginBottom: '32px',
+              }}
+            >
+              education
+            </div>
+
+            <div
+              style={{
+                display: 'flex',
+                gap: '40px',
+                paddingBottom: '20px',
+                borderBottom: '1px solid #C8D8DF',
+                alignItems: 'flex-start',
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  fontSize: '13px',
+                  color: '#6B8E9E',
+                  minWidth: '120px',
+                  flexShrink: 0,
+                  paddingTop: '2px',
+                }}
+              >
+                {education.years}
               </div>
-              <div>
+              <div style={{ flex: 1 }}>
                 <div
                   style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: '21px',
-                    fontWeight: '600',
-                    color: '#213A37',
-                    lineHeight: '1.20',
-                    marginBottom: '6px',
+                    fontFamily: '"DM Sans", sans-serif',
+                    fontSize: '16px',
+                    fontWeight: 500,
+                    color: '#183848',
+                    marginBottom: '2px',
                   }}
                 >
                   {education.school}
                 </div>
                 <div
                   style={{
-                    fontFamily: "'Lora', serif",
-                    fontSize: '14px',
-                    color: '#4A7870',
+                    fontFamily: '"IBM Plex Sans", sans-serif',
+                    fontSize: '13px',
+                    color: '#446878',
                   }}
                 >
-                  {education.degree}
-                  {education.concentration && ` — ${education.concentration}`}
+                  {education.degree} · {education.concentration}
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
 
-      {/* ── PERSONAL ── */}
-      <section
+          {/* Capabilities */}
+          <section style={{ marginBottom: '72px' }}>
+            <div
+              style={{
+                fontFamily: '"DM Sans", sans-serif',
+                fontSize: '13px',
+                fontWeight: 500,
+                color: '#4A9A6C',
+                letterSpacing: '0.04em',
+                marginBottom: '32px',
+              }}
+            >
+              capabilities
+            </div>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {capabilities.map((cap) => (
+                <span
+                  key={cap}
+                  style={{
+                    fontFamily: '"IBM Plex Sans", sans-serif',
+                    fontSize: '13px',
+                    color: '#446878',
+                    background: '#EAF0F3',
+                    border: '1px solid #C8D8DF',
+                    borderRadius: '2px',
+                    padding: '5px 12px',
+                  }}
+                >
+                  {cap}
+                </span>
+              ))}
+            </div>
+          </section>
+
+          {/* Personal */}
+          <section>
+            <div
+              style={{
+                fontFamily: '"DM Sans", sans-serif',
+                fontSize: '13px',
+                fontWeight: 500,
+                color: '#4A9A6C',
+                letterSpacing: '0.04em',
+                marginBottom: '32px',
+              }}
+            >
+              off-court
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {personal.holesInOne > 0 && (
+                <div
+                  style={{
+                    fontFamily: '"IBM Plex Sans", sans-serif',
+                    fontSize: '16px',
+                    color: '#2C4F5D',
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {personal.holesInOne} hole{personal.holesInOne !== 1 ? 's' : ''} in one
+                </div>
+              )}
+              <div
+                style={{
+                  fontFamily: '"IBM Plex Sans", sans-serif',
+                  fontSize: '16px',
+                  color: '#2C4F5D',
+                  lineHeight: 1.55,
+                }}
+              >
+                {personal.sport}
+              </div>
+              <div
+                style={{
+                  fontFamily: '"IBM Plex Sans", sans-serif',
+                  fontSize: '16px',
+                  color: '#2C4F5D',
+                  lineHeight: 1.55,
+                }}
+              >
+                {personal.teams.join(' · ')}
+              </div>
+              <div
+                style={{
+                  fontFamily: '"IBM Plex Sans", sans-serif',
+                  fontSize: '13px',
+                  color: '#6B8E9E',
+                  lineHeight: 1.55,
+                  marginTop: '4px',
+                }}
+              >
+                {personal.currentFocus}
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+      {/* ── Footer ── */}
+      <div
         style={{
+          background: '#0C2230',
           width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          borderTop: '1px solid #C9DDD9',
-          backgroundColor: '#F9FBFA',
+          padding: '48px',
+          boxSizing: 'border-box',
         }}
       >
-        <div
-          style={{
-            maxWidth: '720px',
-            width: '100%',
-            padding: '64px 48px',
-            boxSizing: 'border-box',
-          }}
-        >
-          <AmberRule />
-          <SectionLabel text="Off the Clock" />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {[
-              { label: 'Sport', value: personal.sport },
-              { label: 'Holes in One', value: String(personal.holesInOne) },
-              { label: 'Teams', value: personal.teams.join(', ') },
-              { label: 'Currently', value: personal.currentFocus },
-            ].map(({ label, value }) => (
-              <div key={label} style={{ display: 'flex', gap: '32px', alignItems: 'baseline' }}>
-                <span
+        <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <div style={{ display: 'flex', gap: '24px' }}>
+              {[
+                { href: '/', label: 'work' },
+                { href: '/about', label: 'about' },
+                { href: '/archive', label: 'archive' },
+              ].map(({ href, label }) => (
+                <a
+                  key={href}
+                  href={href}
                   style={{
-                    fontFamily: "'Lora', serif",
-                    fontSize: '12px',
-                    color: '#6D9C95',
-                    minWidth: '140px',
-                    flexShrink: 0,
-                    letterSpacing: '0.02em',
+                    fontFamily: '"IBM Plex Sans", sans-serif',
+                    fontSize: '13px',
+                    color: '#9DB6C0',
+                    textDecoration: 'none',
+                    letterSpacing: '0.04em',
                   }}
                 >
                   {label}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "'Lora', serif",
-                    fontSize: '16px',
-                    lineHeight: '1.62',
-                    color: '#213A37',
-                  }}
-                >
-                  {value}
-                </span>
-              </div>
-            ))}
+                </a>
+              ))}
+            </div>
+            <div
+              style={{
+                fontFamily: '"IBM Plex Sans", sans-serif',
+                fontSize: '11px',
+                fontWeight: 300,
+                color: '#446878',
+              }}
+            >
+              © 2026 Doug March
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── FOOTER ── */}
-      <footer
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          borderTop: '1px solid #C9DDD9',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '720px',
-            width: '100%',
-            padding: '40px 48px',
-            boxSizing: 'border-box',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <a
-            href="/"
-            style={{
-              fontFamily: "'Lora', serif",
-              fontSize: '12px',
-              color: '#6D9C95',
-              letterSpacing: '0.05em',
-              textDecoration: 'none',
-            }}
-          >
-            ← Work
-          </a>
-          <a
-            href="/archive"
-            style={{
-              fontFamily: "'Lora', serif",
-              fontSize: '12px',
-              color: '#6D9C95',
-              letterSpacing: '0.05em',
-              textDecoration: 'none',
-            }}
-          >
-            archive
-          </a>
-        </div>
-      </footer>
     </div>
   )
 }
