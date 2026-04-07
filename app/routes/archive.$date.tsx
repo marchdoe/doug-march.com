@@ -127,7 +127,7 @@ function ArchiveDetailPage() {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    fetch(`/archive/${date}/detail.json`)
+    fetch(`/archive/${date}/_detail.json`)
       .then(res => res.ok ? res.json() : null)
       .then(data => { if (data) setDetail(data); else setError(true) })
       .catch(() => setError(true))

@@ -25,7 +25,7 @@ function ArchivePage() {
   const childMatch = useMatch({ from: '/archive/$date', shouldThrow: false })
 
   useEffect(() => {
-    fetch('/archive/index.json')
+    fetch('/archive/_data.json')
       .then(res => res.ok ? res.json() : [])
       .then(data => { setEntries(data); setLoaded(true) })
       .catch(() => setLoaded(true))

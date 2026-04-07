@@ -142,11 +142,11 @@ console.log(`  found ${entries.length} archive entries`)
 // Write index.json
 mkdirSync(PUBLIC_ARCHIVE, { recursive: true })
 writeFileSync(
-  join(PUBLIC_ARCHIVE, 'index.json'),
+  join(PUBLIC_ARCHIVE, '_data.json'),
   JSON.stringify(entries),
   'utf8'
 )
-console.log('  wrote public/archive/index.json')
+console.log('  wrote public/archive/_data.json')
 
 // Write per-date detail.json
 let detailCount = 0
@@ -156,7 +156,7 @@ for (const entry of entries) {
     const dateDir = join(PUBLIC_ARCHIVE, entry.date)
     mkdirSync(dateDir, { recursive: true })
     writeFileSync(
-      join(dateDir, 'detail.json'),
+      join(dateDir, '_detail.json'),
       JSON.stringify(detail),
       'utf8'
     )
