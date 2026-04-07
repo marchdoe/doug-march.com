@@ -1,11 +1,16 @@
 import { createFileRoute, Link, Outlet, useMatch } from '@tanstack/react-router'
-import { readArchive, type ArchiveEntry } from '../server/archive'
+import { useState, useEffect } from 'react'
+
+export interface ArchiveEntry {
+  date: string
+  brief: string
+  rationale: string
+  filesChanged: string[]
+  archetype: string
+  buildId: string
+}
 
 export const Route = createFileRoute('/archive')({
-  loader: async () => {
-    const entries = await readArchive()
-    return { entries }
-  },
   component: ArchivePage,
 })
 
@@ -15,8 +20,16 @@ function truncate(text: string, max: number) {
 }
 
 function ArchivePage() {
-  const { entries } = Route.useLoaderData()
+  const [entries, setEntries] = useState<ArchiveEntry[]>([])
+  const [loaded, setLoaded] = useState(false)
   const childMatch = useMatch({ from: '/archive/$date', shouldThrow: false })
+
+  useEffect(() => {
+    fetch('/archive/index.json')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => { setEntries(data); setLoaded(true) })
+      .catch(() => setLoaded(true))
+  }, [])
 
   // If a child route is active, render only the child (Outlet)
   if (childMatch) {
