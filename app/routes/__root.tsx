@@ -1,6 +1,5 @@
 import '../styles/panda.css'
-import { createRootRoute, Link, Outlet, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
-import type { ReactNode } from 'react'
+import { createRootRoute, Link, Outlet, HeadContent } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { styled } from '../../styled-system/jsx'
 
@@ -10,50 +9,70 @@ const THEME_INIT_SCRIPT = `(function(){
   document.documentElement.classList.add(p);
 })();`
 
-export const Route = createRootRoute({
-  head: () => ({
-    links: [
-      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@300;400;500&display=swap',
-      },
-    ],
-    scripts: [{ children: THEME_INIT_SCRIPT }],
-  }),
-  notFoundComponent: () => {
-    return (
-      <div>
-        <p>Page not found.</p>
-        <Link to="/">Go home</Link>
-      </div>
-    )
-  },
-  component: RootComponent,
-})
+const notFoundComponent = () => (
+  <styled.div
+    display="flex"
+    flexDirection="column"
+    alignItems="center"
+    justifyContent="center"
+    minHeight="100vh"
+    padding="16px"
+  >
+    <styled.h1 fontSize="2xl" marginBottom="16px">
+      404 — Page Not Found
+    </styled.h1>
+    <styled.p marginBottom="24px">
+      The page you're looking for doesn't exist.
+    </styled.p>
+    <Link to="/" className="link">
+      Back to Home
+    </Link>
+  </styled.div>
+)
 
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
+      <Layout>
+        <Outlet />
+      </Layout>
     </RootDocument>
   )
 }
 
-function RootDocument({ children }: { children: ReactNode }) {
+function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <meta charSet="UTF-8" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        />
+        <meta name="description" content="Doug March — Portfolio" />
+        <meta name="theme-color" content="#F4F5ED" />
+        <title>Doug March</title>
+        <script>{THEME_INIT_SCRIPT}</script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap"
+          rel="stylesheet"
+        />
         <HeadContent />
       </head>
       <body>
-        <Layout>
-          {children}
-        </Layout>
-        <ScrollRestoration />
-        <Scripts />
+        {children}
       </body>
     </html>
   )
 }
+
+export const Route = createRootRoute({
+  component: RootComponent,
+  notFoundComponent: notFoundComponent,
+})

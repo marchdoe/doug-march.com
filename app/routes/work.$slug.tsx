@@ -1,309 +1,343 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
+export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
 
-function WorkDetailPage() {
+const FONT_HEADING = '"Syne", sans-serif'
+const FONT_BODY = '"IBM Plex Sans", sans-serif'
+const FONT_MONO = '"IBM Plex Mono", monospace'
+
+function SectionBlock({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: '0' }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        height: '36px',
+        borderTop: '1px solid #D3D5C6',
+      }}>
+        <span style={{
+          fontFamily: FONT_HEADING,
+          fontWeight: 600,
+          fontSize: '9px',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase' as const,
+          color: '#676A59',
+        }}>
+          {label}
+        </span>
+      </div>
+      <div style={{ padding: '16px 0 28px 0', borderBottom: '1px solid #D3D5C6' }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+function WorkPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div
-        style={{
-          background: '#F2F7F9',
-          minHeight: 'calc(100vh - 64px)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '48px',
-        }}
-      >
-        <div
-          style={{
-            fontFamily: '"DM Sans", sans-serif',
-            fontSize: '39px',
-            fontWeight: 600,
-            color: '#183848',
-            letterSpacing: '-0.025em',
-            marginBottom: '16px',
-          }}
-        >
-          Not found.
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '64px 40px',
+        backgroundColor: '#F4F5ED',
+        minHeight: 'calc(100vh - 52px)',
+      }}>
+        <div style={{
+          fontFamily: FONT_HEADING,
+          fontWeight: 600,
+          fontSize: '9px',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: '#C4992E',
+          marginBottom: '16px',
+        }}>
+          404
         </div>
-        <a
-          href="/"
-          style={{
-            fontFamily: '"IBM Plex Sans", sans-serif',
-            fontSize: '13px',
-            color: '#4A9A6C',
-            textDecoration: 'none',
-            letterSpacing: '0.04em',
-          }}
-        >
-          ← back to work
+        <h1 style={{
+          fontFamily: FONT_HEADING,
+          fontWeight: 700,
+          fontSize: '37px',
+          lineHeight: '1.08',
+          letterSpacing: '-0.025em',
+          color: '#1D1F13',
+          margin: '0 0 16px 0',
+        }}>
+          Project not found
+        </h1>
+        <a href="/" style={{
+          fontFamily: FONT_BODY,
+          fontSize: '14px',
+          color: '#C4992E',
+          textDecoration: 'none',
+          letterSpacing: '0.03em',
+        }}>
+          ← Return to work
         </a>
       </div>
     )
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-
-      {/* ── Project header (dark band) ── */}
-      <div style={{ background: '#183848', width: '100%' }}>
-        <div style={{ maxWidth: '1080px', margin: '0 auto', padding: '48px 48px 72px' }}>
-
-          {/* Back link */}
-          <a
-            href="/"
-            style={{
-              fontFamily: '"IBM Plex Sans", sans-serif',
-              fontSize: '13px',
-              color: '#9DB6C0',
-              textDecoration: 'none',
-              letterSpacing: '0.04em',
-              display: 'block',
-              marginBottom: '40px',
-            }}
-          >
-            ← work
+    <div style={{ backgroundColor: '#F4F5ED', minHeight: 'calc(100vh - 52px)' }}>
+      {/* Project header */}
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '40px 40px 36px 40px',
+        borderBottom: '1px solid #D3D5C6',
+      }}>
+        {/* Breadcrumb */}
+        <div style={{ marginBottom: '24px' }}>
+          <a href="/" style={{
+            fontFamily: FONT_BODY,
+            fontSize: '11px',
+            color: '#676A59',
+            textDecoration: 'none',
+            letterSpacing: '0.07em',
+            textTransform: 'uppercase',
+          }}>
+            ← Work
           </a>
+        </div>
 
-          {/* Type label */}
-          <div
-            style={{
-              fontFamily: '"IBM Plex Sans", sans-serif',
-              fontSize: '13px',
-              color: '#6B8E9E',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              marginBottom: '16px',
-            }}
-          >
-            {project.type}
-          </div>
+        {/* Type label */}
+        <div style={{
+          fontFamily: FONT_HEADING,
+          fontWeight: 600,
+          fontSize: '9px',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: '#C4992E',
+          marginBottom: '14px',
+        }}>
+          {project.type}
+        </div>
 
-          {/* Title */}
-          <div
-            style={{
-              fontFamily: '"DM Sans", sans-serif',
-              fontSize: '49px',
-              fontWeight: 600,
-              color: '#E5EDF1',
-              lineHeight: 1.05,
-              letterSpacing: '-0.025em',
-              marginBottom: '24px',
-            }}
-          >
-            {project.title}
-          </div>
+        {/* Title */}
+        <h1 style={{
+          fontFamily: FONT_HEADING,
+          fontWeight: 700,
+          fontSize: '50px',
+          lineHeight: '1.08',
+          letterSpacing: '-0.025em',
+          color: '#1D1F13',
+          margin: '0 0 24px 0',
+          padding: 0,
+        }}>
+          {project.title}
+        </h1>
 
-          {/* Meta row */}
-          <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
-            <span
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: '13px',
-                color: '#9DB6C0',
-                letterSpacing: '0.08em',
-              }}
-            >
-              {project.year}
-            </span>
-            {project.role && (
-              <span
-                style={{
-                  fontFamily: '"IBM Plex Sans", sans-serif',
-                  fontSize: '13px',
-                  color: '#9DB6C0',
-                  letterSpacing: '0.04em',
-                }}
-              >
-                {project.role}
+        {/* Meta row */}
+        <div style={{
+          display: 'flex',
+          gap: '0',
+          flexWrap: 'wrap',
+        }}>
+          {[
+            { label: 'Year', value: String(project.year) },
+            project.role ? { label: 'Role', value: project.role } : null,
+          ].filter(Boolean).map((item, i) => (
+            <div key={item!.label} style={{
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: '8px',
+              paddingRight: '32px',
+            }}>
+              <span style={{
+                fontFamily: FONT_MONO,
+                fontSize: '11px',
+                color: '#8C8F7E',
+                letterSpacing: '0.07em',
+                textTransform: 'uppercase',
+              }}>
+                {item!.label}
               </span>
-            )}
-          </div>
+              <span style={{
+                fontFamily: FONT_MONO,
+                fontSize: '13px',
+                color: '#4C4F3F',
+              }}>
+                {item!.value}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* ── Project content ── */}
-      <div
-        style={{
-          background: '#F2F7F9',
-          width: '100%',
-          flex: 1,
-          padding: '80px 48px',
-          boxSizing: 'border-box',
-        }}
-      >
-        <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
-          <div style={{ maxWidth: '720px' }}>
+      {/* Project body — 2-column: content + meta */}
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        display: 'grid',
+        gridTemplateColumns: '3fr 2fr',
+      }}>
 
-            {/* Problem */}
-            {project.problem && (
-              <div style={{ marginBottom: '56px' }}>
-                <div
-                  style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: '#4A9A6C',
-                    letterSpacing: '0.04em',
-                    marginBottom: '16px',
-                  }}
-                >
-                  problem
-                </div>
-                <div
-                  style={{
-                    fontFamily: '"IBM Plex Sans", sans-serif',
-                    fontSize: '20px',
-                    fontWeight: 400,
-                    color: '#2C4F5D',
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {project.problem}
-                </div>
+        {/* Left: main content */}
+        <div style={{ padding: '0 36px 64px 40px', borderRight: '1px solid #D3D5C6' }}>
+
+          {project.problem && (
+            <SectionBlock label="Problem">
+              <p style={{
+                fontFamily: FONT_BODY,
+                fontWeight: 400,
+                fontSize: '16px',
+                lineHeight: '1.58',
+                color: '#4C4F3F',
+                margin: 0,
+                padding: 0,
+                maxWidth: '560px',
+              }}>
+                {project.problem}
+              </p>
+            </SectionBlock>
+          )}
+
+          {project.approach && (
+            <SectionBlock label="Approach">
+              <p style={{
+                fontFamily: FONT_BODY,
+                fontWeight: 400,
+                fontSize: '16px',
+                lineHeight: '1.58',
+                color: '#4C4F3F',
+                margin: 0,
+                padding: 0,
+                maxWidth: '560px',
+              }}>
+                {project.approach}
+              </p>
+            </SectionBlock>
+          )}
+
+          {project.outcome && (
+            <SectionBlock label="Outcome">
+              <p style={{
+                fontFamily: FONT_BODY,
+                fontWeight: 400,
+                fontSize: '16px',
+                lineHeight: '1.58',
+                color: '#4C4F3F',
+                margin: 0,
+                padding: 0,
+                maxWidth: '560px',
+              }}>
+                {project.outcome}
+              </p>
+            </SectionBlock>
+          )}
+
+          {project.description && !project.problem && (
+            <SectionBlock label="About">
+              <p style={{
+                fontFamily: FONT_BODY,
+                fontWeight: 400,
+                fontSize: '16px',
+                lineHeight: '1.58',
+                color: '#4C4F3F',
+                margin: 0,
+                padding: 0,
+                maxWidth: '560px',
+              }}>
+                {project.description}
+              </p>
+            </SectionBlock>
+          )}
+        </div>
+
+        {/* Right: meta sidebar */}
+        <div style={{ padding: '0 24px 64px 32px' }}>
+
+          {/* Stack */}
+          {project.stack && project.stack.length > 0 && (
+            <div>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                height: '36px',
+                borderBottom: '1px solid #D3D5C6',
+              }}>
+                <span style={{
+                  fontFamily: FONT_HEADING,
+                  fontWeight: 600,
+                  fontSize: '9px',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase' as const,
+                  color: '#676A59',
+                }}>
+                  Stack
+                </span>
               </div>
-            )}
 
-            {/* Description (for lightweight entries without problem field) */}
-            {!project.problem && project.description && (
-              <div style={{ marginBottom: '56px' }}>
-                <div
-                  style={{
-                    fontFamily: '"IBM Plex Sans", sans-serif',
-                    fontSize: '20px',
-                    fontWeight: 400,
-                    color: '#2C4F5D',
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {project.description}
-                </div>
+              <div style={{
+                paddingTop: '16px',
+                paddingBottom: '28px',
+                borderBottom: '1px solid #D3D5C6',
+                display: 'flex',
+                flexDirection: 'column' as const,
+                gap: '0',
+              }}>
+                {project.stack.map((tech) => (
+                  <div
+                    key={tech}
+                    style={{
+                      fontFamily: FONT_MONO,
+                      fontSize: '13px',
+                      color: '#4C4F3F',
+                      padding: '8px 0',
+                      borderBottom: '1px solid #E9EAE0',
+                    }}
+                  >
+                    {tech}
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Approach */}
-            {project.approach && (
-              <div style={{ marginBottom: '56px' }}>
-                <div
-                  style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: '#4A9A6C',
-                    letterSpacing: '0.04em',
-                    marginBottom: '16px',
-                  }}
-                >
-                  approach
-                </div>
-                <div
-                  style={{
-                    fontFamily: '"IBM Plex Sans", sans-serif',
-                    fontSize: '16px',
-                    fontWeight: 400,
-                    color: '#2C4F5D',
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {project.approach}
-                </div>
+          {/* Links */}
+          {(project.liveUrl || project.githubUrl || project.externalUrl) && (
+            <div>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                height: '36px',
+                borderBottom: '1px solid #D3D5C6',
+              }}>
+                <span style={{
+                  fontFamily: FONT_HEADING,
+                  fontWeight: 600,
+                  fontSize: '9px',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase' as const,
+                  color: '#676A59',
+                }}>
+                  Links
+                </span>
               </div>
-            )}
 
-            {/* Outcome */}
-            {project.outcome && (
-              <div style={{ marginBottom: '56px' }}>
-                <div
-                  style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: '#4A9A6C',
-                    letterSpacing: '0.04em',
-                    marginBottom: '16px',
-                  }}
-                >
-                  outcome
-                </div>
-                <div
-                  style={{
-                    fontFamily: '"IBM Plex Sans", sans-serif',
-                    fontSize: '16px',
-                    fontWeight: 400,
-                    color: '#2C4F5D',
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {project.outcome}
-                </div>
-              </div>
-            )}
-
-            {/* Stack */}
-            {project.stack && project.stack.length > 0 && (
-              <div style={{ marginBottom: '56px' }}>
-                <div
-                  style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: '#4A9A6C',
-                    letterSpacing: '0.04em',
-                    marginBottom: '16px',
-                  }}
-                >
-                  stack
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {project.stack.map((tech) => (
-                    <span
-                      key={tech}
-                      style={{
-                        fontFamily: '"IBM Plex Mono", monospace',
-                        fontSize: '13px',
-                        color: '#446878',
-                        background: '#EAF0F3',
-                        border: '1px solid #C8D8DF',
-                        borderRadius: '2px',
-                        padding: '4px 12px',
-                      }}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* External links */}
-            {(project.liveUrl || project.externalUrl || project.githubUrl) && (
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '16px' }}>
+              <div style={{ paddingTop: '16px', display: 'flex', flexDirection: 'column' as const, gap: '12px' }}>
                 {(project.liveUrl || project.externalUrl) && (
                   <a
                     href={project.liveUrl || project.externalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      fontFamily: '"IBM Plex Sans", sans-serif',
+                      fontFamily: FONT_BODY,
                       fontSize: '13px',
-                      fontWeight: 500,
-                      color: '#4A9A6C',
+                      color: '#C4992E',
                       textDecoration: 'none',
-                      border: '1px solid #4A9A6C',
-                      borderRadius: '4px',
-                      padding: '8px 18px',
-                      letterSpacing: '0.04em',
-                      transition: 'background-color 120ms ease, color 120ms ease',
-                      display: 'inline-block',
+                      letterSpacing: '0.03em',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
                     }}
                   >
-                    view project →
+                    View Project →
                   </a>
                 )}
                 {project.githubUrl && (
@@ -312,80 +346,77 @@ function WorkDetailPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      fontFamily: '"IBM Plex Sans", sans-serif',
+                      fontFamily: FONT_BODY,
                       fontSize: '13px',
-                      fontWeight: 400,
-                      color: '#446878',
+                      color: '#676A59',
                       textDecoration: 'none',
-                      border: '1px solid #C8D8DF',
-                      borderRadius: '4px',
-                      padding: '8px 18px',
-                      letterSpacing: '0.04em',
-                      display: 'inline-block',
+                      letterSpacing: '0.03em',
                     }}
                   >
-                    github →
+                    GitHub →
                   </a>
                 )}
               </div>
-            )}
+            </div>
+          )}
 
-          </div>
-        </div>
-      </div>
-
-      {/* ── Footer ── */}
-      <div
-        style={{
-          background: '#0C2230',
-          width: '100%',
-          padding: '48px',
-          boxSizing: 'border-box',
-        }}
-      >
-        <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
-          <div
-            style={{
+          {/* Navigation to other projects */}
+          <div style={{ marginTop: '48px' }}>
+            <div style={{
               display: 'flex',
-              justifyContent: 'space-between',
               alignItems: 'center',
-            }}
-          >
-            <div style={{ display: 'flex', gap: '24px' }}>
-              {[
-                { href: '/', label: 'work' },
-                { href: '/about', label: 'about' },
-                { href: '/archive', label: 'archive' },
-              ].map(({ href, label }) => (
+              height: '36px',
+              borderBottom: '1px solid #D3D5C6',
+            }}>
+              <span style={{
+                fontFamily: FONT_HEADING,
+                fontWeight: 600,
+                fontSize: '9px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase' as const,
+                color: '#676A59',
+              }}>
+                More Work
+              </span>
+            </div>
+
+            {projects
+              .filter((p) => p.slug !== slug)
+              .slice(0, 4)
+              .map((p) => (
                 <a
-                  key={href}
-                  href={href}
+                  key={p.slug}
+                  href={`/work/${p.slug}`}
                   style={{
-                    fontFamily: '"IBM Plex Sans", sans-serif',
-                    fontSize: '13px',
-                    color: '#9DB6C0',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '12px 0',
+                    borderBottom: '1px solid #E9EAE0',
                     textDecoration: 'none',
-                    letterSpacing: '0.04em',
+                    color: 'inherit',
                   }}
                 >
-                  {label}
+                  <span style={{
+                    fontFamily: FONT_HEADING,
+                    fontWeight: 600,
+                    fontSize: '14px',
+                    color: '#1D1F13',
+                  }}>
+                    {p.title}
+                  </span>
+                  <span style={{
+                    fontFamily: FONT_MONO,
+                    fontSize: '11px',
+                    color: '#8C8F7E',
+                  }}>
+                    {p.year}
+                  </span>
                 </a>
               ))}
-            </div>
-            <div
-              style={{
-                fontFamily: '"IBM Plex Sans", sans-serif',
-                fontSize: '11px',
-                fontWeight: 300,
-                color: '#446878',
-              }}
-            >
-              © 2026 Doug March
-            </div>
           </div>
         </div>
       </div>
-
     </div>
   )
 }

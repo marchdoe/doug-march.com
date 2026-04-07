@@ -1,540 +1,573 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { css } from '../../styled-system/css'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-// ─── Reusable CSS classes ────────────────────────────────────────────────────
+const FONT_HEADING = '"Syne", sans-serif'
+const FONT_BODY = '"IBM Plex Sans", sans-serif'
+const FONT_MONO = '"IBM Plex Mono", monospace'
 
-const sectionLabel = css({
-  fontFamily: '"DM Sans", sans-serif',
-  fontSize: '13px',
-  fontWeight: '500',
-  color: '#4A9A6C',
-  letterSpacing: '0.04em',
-  marginBottom: '32px',
-  display: 'block',
-})
+function ColLabel({ children }: { children: string }) {
+  return (
+    <span style={{
+      fontFamily: FONT_HEADING,
+      fontWeight: 600,
+      fontSize: '9px',
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase' as const,
+      color: '#676A59',
+    }}>
+      {children}
+    </span>
+  )
+}
 
-const workRow = css({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  height: '48px',
-  borderBottom: '1px solid #C8D8DF',
-  textDecoration: 'none',
-  transition: 'background-color 120ms ease',
-  paddingLeft: '0',
-  paddingRight: '0',
-  _hover: {
-    backgroundColor: '#E5EDF1',
-  },
-})
-
-// ─── Page ────────────────────────────────────────────────────────────────────
+function SectionLabel({ children, color = '#676A59' }: { children: string; color?: string }) {
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      height: '36px',
+      borderTop: '1px solid #D3D5C6',
+    }}>
+      <span style={{
+        fontFamily: FONT_HEADING,
+        fontWeight: 600,
+        fontSize: '9px',
+        letterSpacing: '0.12em',
+        textTransform: 'uppercase' as const,
+        color,
+      }}>
+        {children}
+      </span>
+    </div>
+  )
+}
 
 function HomePage() {
-  const now = new Date()
-  const dateStr = now.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  })
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-
-      {/* ── Band 1: Hero Identity (dark — seamless with sidebar) ── */}
-      <div style={{ background: '#183848', width: '100%' }}>
-        <div style={{ maxWidth: '1080px', margin: '0 auto', padding: '64px 48px 88px' }}>
-          <div
-            style={{
-              fontFamily: '"DM Sans", sans-serif',
-              fontSize: '49px',
-              fontWeight: 600,
-              color: '#E5EDF1',
-              lineHeight: 1.05,
-              letterSpacing: '-0.025em',
-              marginBottom: '16px',
-            }}
-          >
-            Doug March
-          </div>
-          <div
-            style={{
-              fontFamily: '"DM Sans", sans-serif',
-              fontSize: '25px',
-              fontWeight: 400,
-              color: '#9DB6C0',
-              lineHeight: 1.2,
-              marginBottom: '40px',
-            }}
-          >
-            Product Designer &amp; Developer
-          </div>
-          <div
-            style={{
-              fontFamily: '"IBM Plex Sans", sans-serif',
-              fontSize: '13px',
-              fontWeight: 300,
-              color: '#6B8E9E',
-              letterSpacing: '0.08em',
-            }}
-          >
-            {dateStr}
-          </div>
+    <div style={{ backgroundColor: '#F4F5ED' }}>
+      {/* Column labels bar */}
+      <div style={{
+        borderBottom: '1px solid #D3D5C6',
+        maxWidth: '1200px',
+        margin: '0 auto',
+        display: 'grid',
+        gridTemplateColumns: '2fr 1fr 1fr',
+        height: '36px',
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '0 36px 0 40px',
+          borderRight: '1px solid #D3D5C6',
+        }}>
+          <ColLabel>Work</ColLabel>
+        </div>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '0 24px',
+          borderRight: '1px solid #D3D5C6',
+        }}>
+          <ColLabel>Leaderboard</ColLabel>
+        </div>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '0 24px',
+        }}>
+          <ColLabel>Signals</ColLabel>
         </div>
       </div>
 
-      {/* ── Band 2: Featured Work (spring-breath light) ── */}
-      <div
-        style={{
-          background: '#EEF4F6',
-          width: '100%',
-          minHeight: '55vh',
-          boxSizing: 'border-box',
-          padding: '96px 48px',
-        }}
-      >
-        <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
-          <span className={sectionLabel}>featured work</span>
+      {/* Main editorial grid */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '2fr 1fr 1fr',
+        maxWidth: '1200px',
+        margin: '0 auto',
+        minHeight: 'calc(100vh - 88px)',
+      }}>
 
+        {/* ── PRIMARY COLUMN: Work ── */}
+        <div style={{ padding: '32px 36px 48px 40px' }}>
+
+          {/* Featured project */}
           {featuredProject && (
-            <div>
-              {/* HN / AI signal — monospace tech whisper */}
-              <div
-                style={{
-                  fontFamily: '"IBM Plex Mono", monospace',
-                  fontSize: '12px',
-                  color: '#6B8E9E',
-                  marginBottom: '28px',
-                  letterSpacing: '0em',
-                }}
-              >
-                {featuredProject.stack && featuredProject.stack.length > 0
-                  ? `→ built with: ${featuredProject.stack.join(' · ')}`
-                  : '→ built with: node · llm-orchestration · postgres'}
+            <div style={{
+              marginBottom: '0',
+              paddingBottom: '36px',
+              borderBottom: '1px solid #D3D5C6',
+            }}>
+              <div style={{
+                fontFamily: FONT_HEADING,
+                fontWeight: 600,
+                fontSize: '9px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: '#C4992E',
+                marginBottom: '14px',
+              }}>
+                Featured
               </div>
 
-              {/* Project title */}
               <a
-                href={
-                  featuredProject.liveUrl ||
-                  featuredProject.externalUrl ||
-                  `/work/${featuredProject.slug}`
-                }
-                target={
-                  featuredProject.liveUrl || featuredProject.externalUrl
-                    ? '_blank'
-                    : undefined
-                }
+                href={featuredProject.externalUrl || featuredProject.liveUrl || '#'}
+                target="_blank"
                 rel="noopener noreferrer"
+                className="work-link"
                 style={{ textDecoration: 'none', display: 'block' }}
               >
-                <div
+                <h1
+                  className="work-title"
                   style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '39px',
-                    fontWeight: 600,
-                    color: '#183848',
-                    lineHeight: 1.05,
+                    fontFamily: FONT_HEADING,
+                    fontWeight: 700,
+                    fontSize: '50px',
+                    lineHeight: '1.08',
                     letterSpacing: '-0.025em',
-                    marginBottom: '24px',
-                    transition: 'color 120ms ease',
+                    color: '#1D1F13',
+                    marginBottom: '20px',
+                    margin: '0 0 20px 0',
+                    padding: 0,
                   }}
                 >
                   {featuredProject.title}
-                </div>
+                </h1>
               </a>
 
-              {/* Problem statement */}
               {featuredProject.problem && (
-                <div
-                  style={{
-                    fontFamily: '"IBM Plex Sans", sans-serif',
-                    fontSize: '20px',
-                    fontWeight: 400,
-                    color: '#446878',
-                    lineHeight: 1.55,
-                    maxWidth: '640px',
-                    marginBottom: '36px',
-                  }}
-                >
+                <p style={{
+                  fontFamily: FONT_BODY,
+                  fontWeight: 400,
+                  fontSize: '16px',
+                  lineHeight: '1.58',
+                  color: '#4C4F3F',
+                  maxWidth: '520px',
+                  margin: '0 0 14px 0',
+                  padding: 0,
+                }}>
                   {featuredProject.problem}
-                </div>
+                </p>
               )}
 
-              {/* Meta row */}
-              <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
-                <span
-                  style={{
-                    fontFamily: '"IBM Plex Mono", monospace',
-                    fontSize: '13px',
-                    color: '#6B8E9E',
-                    letterSpacing: '0.08em',
-                  }}
-                >
-                  {featuredProject.year}
-                </span>
-                <span
-                  style={{
-                    fontFamily: '"IBM Plex Sans", sans-serif',
-                    fontSize: '13px',
-                    color: '#6B8E9E',
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {featuredProject.type}
-                </span>
-                {(featuredProject.liveUrl || featuredProject.externalUrl) && (
-                  <a
-                    href={featuredProject.liveUrl || featuredProject.externalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      fontFamily: '"IBM Plex Sans", sans-serif',
-                      fontSize: '13px',
-                      color: '#4A9A6C',
-                      textDecoration: 'none',
-                      letterSpacing: '0.04em',
-                    }}
-                  >
-                    view project →
-                  </a>
+              <div style={{
+                fontFamily: FONT_BODY,
+                fontSize: '11px',
+                color: '#8C8F7E',
+                letterSpacing: '0.07em',
+                textTransform: 'uppercase',
+                display: 'flex',
+                gap: '10px',
+              }}>
+                <span>{featuredProject.type}</span>
+                <span>·</span>
+                <span>{featuredProject.year}</span>
+                {featuredProject.role && (
+                  <>
+                    <span>·</span>
+                    <span>{featuredProject.role}</span>
+                  </>
                 )}
               </div>
             </div>
           )}
-        </div>
-      </div>
 
-      {/* ── Band 3: Work Index ── */}
-      <div
-        style={{
-          background: '#F2F7F9',
-          width: '100%',
-          padding: '80px 48px',
-          boxSizing: 'border-box',
-        }}
-      >
-        <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
+          {/* Selected Work */}
+          <SectionLabel>Selected Work</SectionLabel>
 
-          {/* Selected work */}
-          <span className={sectionLabel}>work</span>
-          <div style={{ marginBottom: '56px' }}>
-            {selectedWork.map((project) => (
+          {selectedWork.map((project) => (
+            <div
+              key={project.slug}
+              style={{
+                paddingBottom: '24px',
+                paddingTop: '20px',
+                borderBottom: '1px solid #D3D5C6',
+              }}
+            >
               <a
-                key={project.slug}
                 href={`/work/${project.slug}`}
-                className={workRow}
+                className="work-link"
+                style={{ textDecoration: 'none', display: 'block', marginBottom: '8px' }}
               >
                 <span
+                  className="work-title"
                   style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '16px',
-                    fontWeight: 500,
-                    color: '#183848',
-                    flex: 1,
+                    fontFamily: FONT_HEADING,
+                    fontWeight: 600,
+                    fontSize: '21px',
+                    lineHeight: '1.22',
+                    letterSpacing: '-0.025em',
+                    color: '#1D1F13',
+                    display: 'block',
                   }}
                 >
                   {project.title}
                 </span>
-                <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-                  <span
-                    style={{
-                      fontFamily: '"IBM Plex Sans", sans-serif',
-                      fontSize: '13px',
-                      color: '#6B8E9E',
-                    }}
-                  >
-                    {project.type}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: '"IBM Plex Mono", monospace',
-                      fontSize: '13px',
-                      color: '#6B8E9E',
-                      minWidth: '40px',
-                      textAlign: 'right',
-                    }}
-                  >
-                    {project.year}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: '"IBM Plex Sans", sans-serif',
-                      fontSize: '13px',
-                      color: '#4A9A6C',
-                      minWidth: '16px',
-                    }}
-                  >
-                    →
-                  </span>
-                </div>
               </a>
-            ))}
-          </div>
+
+              {project.problem && (
+                <p style={{
+                  fontFamily: FONT_BODY,
+                  fontSize: '14px',
+                  lineHeight: '1.58',
+                  color: '#676A59',
+                  margin: '0 0 10px 0',
+                  padding: 0,
+                  maxWidth: '500px',
+                }}>
+                  {project.problem}
+                </p>
+              )}
+
+              <div style={{
+                display: 'flex',
+                gap: '8px',
+                alignItems: 'center',
+                fontFamily: FONT_BODY,
+                fontSize: '11px',
+                color: '#8C8F7E',
+                letterSpacing: '0.07em',
+                textTransform: 'uppercase',
+              }}>
+                <span>{project.type}</span>
+                <span>·</span>
+                <span>{project.year}</span>
+                {project.role && (
+                  <>
+                    <span>·</span>
+                    <span>{project.role}</span>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
 
           {/* Experiments */}
-          <span className={sectionLabel}>experiments</span>
-          <div>
-            {experiments.map((project) => (
-              <a
-                key={project.slug}
-                href={`/work/${project.slug}`}
-                className={workRow}
-              >
-                <span
-                  style={{
-                    fontFamily: '"DM Sans", sans-serif',
-                    fontSize: '16px',
-                    fontWeight: 400,
-                    color: '#2C4F5D',
-                    flex: 1,
-                  }}
+          <SectionLabel>Experiments</SectionLabel>
+
+          {experiments.map((exp, i) => (
+            <div
+              key={exp.slug}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                padding: '14px 0',
+                borderBottom: `1px solid ${i === experiments.length - 1 ? '#D3D5C6' : '#E9EAE0'}`,
+                gap: '12px',
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <a
+                  href={`/work/${exp.slug}`}
+                  className="work-link"
+                  style={{ textDecoration: 'none' }}
                 >
-                  {project.title}
+                  <span
+                    className="work-title"
+                    style={{
+                      fontFamily: FONT_HEADING,
+                      fontWeight: 600,
+                      fontSize: '16px',
+                      color: '#1D1F13',
+                      display: 'block',
+                      marginBottom: exp.description ? '4px' : '0',
+                    }}
+                  >
+                    {exp.title}
+                  </span>
+                </a>
+                {exp.description && (
+                  <p style={{
+                    fontFamily: FONT_BODY,
+                    fontSize: '13px',
+                    color: '#676A59',
+                    lineHeight: '1.58',
+                    margin: 0,
+                    padding: 0,
+                  }}>
+                    {exp.description}
+                  </p>
+                )}
+              </div>
+              <div style={{ flexShrink: 0, textAlign: 'right' }}>
+                <span style={{
+                  fontFamily: FONT_MONO,
+                  fontSize: '12px',
+                  color: '#8C8F7E',
+                }}>
+                  {exp.year}
                 </span>
-                <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-                  <span
-                    style={{
-                      fontFamily: '"IBM Plex Sans", sans-serif',
-                      fontSize: '13px',
-                      color: '#6B8E9E',
-                      maxWidth: '240px',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {project.type}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: '"IBM Plex Mono", monospace',
-                      fontSize: '13px',
-                      color: '#6B8E9E',
-                      minWidth: '40px',
-                      textAlign: 'right',
-                    }}
-                  >
-                    {project.year}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: '"IBM Plex Sans", sans-serif',
-                      fontSize: '13px',
-                      color: '#C8D8DF',
-                      minWidth: '16px',
-                    }}
-                  >
-                    →
-                  </span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── Band 4: Signals ── */}
-      <div
-        style={{
-          background: '#EAF0F3',
-          width: '100%',
-          padding: '80px 48px',
-          boxSizing: 'border-box',
-        }}
-      >
-        <div style={{ maxWidth: '1080px', margin: '0 auto' }}>
-          <span className={sectionLabel}>signals</span>
-
-          <div style={{ display: 'flex', gap: '64px', alignItems: 'flex-start' }}>
-
-            {/* Melville epigraph */}
-            <div style={{ flex: 1 }}>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '32px 1fr',
-                  position: 'relative',
-                }}
-              >
-                {/* Green left rule */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    left: '15px',
-                    top: '4px',
-                    bottom: '4px',
-                    width: '2px',
-                    background: '#4A9A6C',
-                  }}
-                />
-                {/* Spacer column */}
-                <div />
-                {/* Quote content */}
-                <div>
-                  <div
-                    style={{
-                      fontFamily: '"DM Sans", sans-serif',
-                      fontSize: '25px',
-                      fontWeight: 400,
-                      fontStyle: 'italic',
-                      color: '#446878',
-                      lineHeight: 1.75,
-                      marginBottom: '12px',
-                    }}
-                  >
-                    I'll go to it laughing.
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: '"IBM Plex Sans", sans-serif',
-                      fontSize: '13px',
-                      color: '#6B8E9E',
-                    }}
-                  >
-                    — Melville
-                  </div>
-                </div>
               </div>
             </div>
+          ))}
 
-            {/* Detroit aside — editorial, dismissive */}
-            <div style={{ minWidth: '220px', maxWidth: '220px' }}>
-              <div
-                style={{
-                  fontFamily: '"IBM Plex Mono", monospace',
-                  fontSize: '13px',
-                  color: '#C4AD8A',
-                  letterSpacing: '0.08em',
-                  marginBottom: '12px',
-                }}
-              >
-                Monday results
-              </div>
-              <div
-                style={{
-                  fontFamily: '"IBM Plex Mono", monospace',
-                  fontSize: '11px',
-                  color: '#6B8E9E',
-                  lineHeight: 1.75,
-                }}
-              >
-                DET vs BOS&nbsp;&nbsp;L&nbsp;&nbsp;4–5<br />
-                DET vs MIA&nbsp;&nbsp;L&nbsp;&nbsp;3–5
-              </div>
-            </div>
-
+          {/* Quote */}
+          <div style={{
+            marginTop: '52px',
+            paddingLeft: '16px',
+            borderLeft: '2px solid #C4992E',
+          }}>
+            <p style={{
+              fontFamily: FONT_BODY,
+              fontWeight: 300,
+              fontStyle: 'italic',
+              fontSize: '21px',
+              lineHeight: '1.22',
+              color: '#1D1F13',
+              margin: 0,
+              padding: 0,
+            }}>
+              Better to live until you die
+            </p>
           </div>
         </div>
-      </div>
 
-      {/* ── Band 5: Footer ── */}
-      <div
-        style={{
-          background: '#0C2230',
-          width: '100%',
-          minHeight: '200px',
-          padding: '48px',
-          boxSizing: 'border-box',
-          marginTop: 'auto',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '1080px',
-            margin: '0 auto',
+        {/* ── SECONDARY COLUMN: Leaderboard ── */}
+        <div style={{
+          padding: '32px 24px 48px 24px',
+          borderLeft: '1px solid #D3D5C6',
+        }}>
+          {/* LEADERBOARD section label — ochre, first in column */}
+          <div style={{
             display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            minHeight: '104px',
-          }}
-        >
-          {/* Top row */}
+            alignItems: 'center',
+            height: '36px',
+          }}>
+            <span style={{
+              fontFamily: FONT_HEADING,
+              fontWeight: 600,
+              fontSize: '9px',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase' as const,
+              color: '#C4992E',
+            }}>
+              Leaderboard
+            </span>
+          </div>
+
+          {/* Tournament sub-header */}
+          <div style={{
+            fontFamily: FONT_MONO,
+            fontSize: '10px',
+            color: '#676A59',
+            letterSpacing: '0.07em',
+            textTransform: 'uppercase',
+            marginBottom: '8px',
+            lineHeight: '1.4',
+          }}>
+            VALERO TEXAS OPEN · FINAL
+          </div>
+
+          {/* Player rows */}
+          {[
+            { name: 'J.J. Spaun', score: '-17', leader: true },
+            { name: 'D. McCarthy', score: '-16', close: true },
+            { name: 'A. Eckroat', score: '-16', close: true },
+            { name: 'S. Lowry', score: '-16', close: true },
+          ].map((player) => (
+            <div
+              key={player.name}
+              className="lb-row"
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                height: '40px',
+                borderBottom: '1px solid #E9EAE0',
+                paddingLeft: '2px',
+                paddingRight: '2px',
+              }}
+            >
+              <span style={{
+                fontFamily: FONT_MONO,
+                fontSize: '14px',
+                color: '#4C4F3F',
+              }}>
+                {player.name}
+              </span>
+              <span style={{
+                fontFamily: FONT_MONO,
+                fontSize: '14px',
+                color: player.leader ? '#4F8646' : '#4C4F3F',
+                fontWeight: player.leader ? 500 : 400,
+              }}>
+                {player.score}
+              </span>
+            </div>
+          ))}
+
+          {/* Masters teaser */}
+          <div style={{
+            marginTop: '32px',
+            paddingTop: '20px',
+            borderTop: '1px solid #D3D5C6',
+          }}>
+            <div style={{
+              fontFamily: FONT_HEADING,
+              fontWeight: 600,
+              fontSize: '9px',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: '#676A59',
+              marginBottom: '10px',
+            }}>
+              Augusta · Thursday
+            </div>
+            <p style={{
+              fontFamily: FONT_BODY,
+              fontWeight: 300,
+              fontSize: '13px',
+              lineHeight: '1.58',
+              color: '#676A59',
+              margin: 0,
+              padding: 0,
+            }}>
+              The Masters begins Thursday at Augusta National. Spaun carries momentum into the week. One tournament ends; the next one's already in the air.
+            </p>
+          </div>
+        </div>
+
+        {/* ── TERTIARY COLUMN: Results + Reading ── */}
+        <div style={{
+          padding: '32px 24px 48px 24px',
+          borderLeft: '1px solid #D3D5C6',
+        }}>
+          {/* RESULTS — first in column, no border-top */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            height: '36px',
+          }}>
+            <span style={{
+              fontFamily: FONT_HEADING,
+              fontWeight: 600,
+              fontSize: '9px',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase' as const,
+              color: '#676A59',
+            }}>
+              Results
+            </span>
+          </div>
+
+          {/* Score rows */}
           <div
+            className="results-row"
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'flex-start',
+              alignItems: 'center',
+              height: '40px',
+              borderBottom: '1px solid #E9EAE0',
             }}
           >
-            <div>
-              <div
-                style={{
-                  fontFamily: '"DM Sans", sans-serif',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: '#E5EDF1',
-                  marginBottom: '16px',
-                  letterSpacing: '0.04em',
-                }}
-              >
-                Doug March
-              </div>
-              <div style={{ display: 'flex', gap: '24px' }}>
-                {[
-                  { href: '/', label: 'work' },
-                  { href: '/about', label: 'about' },
-                  { href: '/archive', label: 'archive' },
-                ].map(({ href, label }) => (
-                  <a
-                    key={href}
-                    href={href}
-                    style={{
-                      fontFamily: '"IBM Plex Sans", sans-serif',
-                      fontSize: '13px',
-                      color: '#9DB6C0',
-                      textDecoration: 'none',
-                      letterSpacing: '0.04em',
-                    }}
-                  >
-                    {label}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <div
-              style={{
-                fontFamily: '"IBM Plex Sans", sans-serif',
-                fontSize: '13px',
-                color: '#9DB6C0',
-                textAlign: 'right',
-              }}
-            >
-              Product Designer &amp; Developer
-            </div>
+            <span style={{
+              fontFamily: FONT_MONO,
+              fontSize: '12px',
+              color: '#4C4F3F',
+              letterSpacing: '0.03em',
+            }}>
+              DET PISTONS
+            </span>
+            <span style={{
+              fontFamily: FONT_MONO,
+              fontSize: '12px',
+              color: '#676A59',
+            }}>
+              107 — 123
+            </span>
           </div>
 
-          {/* Bottom row — Masters note + copyright */}
-          <div style={{ marginTop: '40px' }}>
+          <div
+            className="results-row"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              height: '40px',
+              borderBottom: '1px solid #D3D5C6',
+            }}
+          >
+            <span style={{
+              fontFamily: FONT_MONO,
+              fontSize: '12px',
+              color: '#4C4F3F',
+              letterSpacing: '0.03em',
+            }}>
+              DET TIGERS
+            </span>
+            <span style={{
+              fontFamily: FONT_MONO,
+              fontSize: '12px',
+              color: '#676A59',
+            }}>
+              3 — 7
+            </span>
+          </div>
+
+          {/* READING section */}
+          <SectionLabel>Reading</SectionLabel>
+
+          {[
+            { title: 'Ghost Pepper', pts: '384 pts' },
+            { title: 'GPU History', pts: '90 pts' },
+            { title: 'Rice Farming', pts: '166 pts' },
+          ].map((item, i) => (
             <div
+              key={item.title}
+              className="hn-item"
               style={{
-                fontFamily: '"IBM Plex Sans", sans-serif',
-                fontSize: '11px',
-                fontWeight: 300,
-                color: '#9DB6C0',
-                marginBottom: '4px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                height: '40px',
+                borderBottom: `1px solid ${i === 2 ? '#D3D5C6' : '#E9EAE0'}`,
+                cursor: 'default',
               }}
             >
-              Masters · April 10
+              <span
+                className="hn-title"
+                style={{
+                  fontFamily: FONT_MONO,
+                  fontSize: '12px',
+                  color: '#4C4F3F',
+                }}
+              >
+                {item.title}
+              </span>
+              <span style={{
+                fontFamily: FONT_MONO,
+                fontSize: '12px',
+                color: '#676A59',
+              }}>
+                {item.pts}
+              </span>
             </div>
-            <div
-              style={{
-                fontFamily: '"IBM Plex Sans", sans-serif',
-                fontSize: '11px',
-                color: '#446878',
-              }}
-            >
-              © 2026 Doug March
-            </div>
+          ))}
+
+          {/* Ambient note */}
+          <div style={{
+            marginTop: '32px',
+            paddingTop: '20px',
+            borderTop: '1px solid #D3D5C6',
+          }}>
+            <p style={{
+              fontFamily: FONT_BODY,
+              fontWeight: 300,
+              fontSize: '12px',
+              lineHeight: '1.78',
+              color: '#8C8F7E',
+              margin: 0,
+              padding: 0,
+            }}>
+              12.7 hrs daylight · Last quarter moon · Spring, Midwest
+            </p>
           </div>
         </div>
       </div>
-
     </div>
   )
 }
