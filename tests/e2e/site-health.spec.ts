@@ -45,8 +45,6 @@ test.describe('site health — project pages', () => {
 test.describe('site health — archive', () => {
   test('archive list loads and shows entries', async ({ page }) => {
     await page.goto('/archive')
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(2000) // SPA hydration
 
     // Should have at least one archive entry link
     const entries = page.locator('a[href^="/archive/20"]')
@@ -57,15 +55,11 @@ test.describe('site health — archive', () => {
   test('archive detail page loads for a valid date', async ({ page }) => {
     // Go to archive list and click the first entry
     await page.goto('/archive')
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(2000) // SPA hydration
 
     const firstEntry = page.locator('a[href^="/archive/20"]').first()
     await expect(firstEntry).toBeVisible({ timeout: 15000 })
 
     await firstEntry.click()
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(1000)
 
     // Should show back link (confirms detail page rendered)
     await expect(page.locator('text=Back to Archive')).toBeVisible({ timeout: 15000 })
@@ -96,24 +90,16 @@ test.describe('site health — archived site serving', () => {
 test.describe('site health — content verification', () => {
   test('home page shows real project names', async ({ page }) => {
     await page.goto('/')
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(1000)
 
-    const body = await page.textContent('body')
-    // Should contain at least one real project name, not placeholders
-    const hasRealContent = body?.includes('Spaceman') || body?.includes('FishSticks') || body?.includes('Doug March')
-    expect(hasRealContent).toBeTruthy()
+    // Wait for content to hydrate by checking for a real project name
+    await expect(page.locator('body')).toContainText(/Spaceman|FishSticks|Doug March/, { timeout: 15000 })
   })
 
   test('about page shows real timeline content', async ({ page }) => {
     await page.goto('/about')
-    await page.waitForLoadState('networkidle')
-    await page.waitForTimeout(1000)
 
-    const body = await page.textContent('body')
-    // Should contain real company names from the timeline
-    const hasTimeline = body?.includes('LivingSocial') || body?.includes('iCapital') || body?.includes('Doug March')
-    expect(hasTimeline).toBeTruthy()
+    // Wait for content to hydrate by checking for real timeline content
+    await expect(page.locator('body')).toContainText(/LivingSocial|iCapital|Doug March/, { timeout: 15000 })
   })
 })
 
@@ -122,14 +108,12 @@ test.describe('site health — navigation', () => {
     // Start at home
     const homeResponse = await page.goto('/')
     expect(homeResponse?.status()).toBeLessThan(500)
-    await page.waitForLoadState('networkidle')
 
-    // Navigate to about via link
+    // Wait for hydration
     const aboutLink = page.locator('a[href="/about"]').first()
-    if (await aboutLink.isVisible({ timeout: 5000 }).catch(() => false)) {
-      await aboutLink.click()
-      await page.waitForLoadState('networkidle')
-      await expect(page).toHaveURL(/\/about/)
-    }
+    await expect(aboutLink).toBeVisible({ timeout: 15000 })
+
+    await aboutLink.click()
+    await expect(page).toHaveURL(/\/about/, { timeout: 15000 })
   })
 })
