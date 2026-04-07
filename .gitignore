@@ -34,8 +34,8 @@ references/*.jpg
 references/*.jpeg
 
 # Generated archive JSON (built from archive/ at build time)
-public/archive/index.json
-public/archive/*/detail.json
+public/archive/_data.json
+public/archive/*/_detail.json
 
 # Build/pipeline artifacts
 test-results/
