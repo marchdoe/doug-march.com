@@ -1,9 +1,19 @@
 import { createFileRoute, Link, Outlet, useMatch } from '@tanstack/react-router'
-import { readArchive, type ArchiveEntry } from '../server/archive'
+
+export interface ArchiveEntry {
+  date: string
+  brief: string
+  rationale: string
+  filesChanged: string[]
+  archetype: string
+  buildId: string
+}
 
 export const Route = createFileRoute('/archive')({
   loader: async () => {
-    const entries = await readArchive()
+    const res = await fetch('/archive/index.json')
+    if (!res.ok) return { entries: [] as ArchiveEntry[] }
+    const entries: ArchiveEntry[] = await res.json()
     return { entries }
   },
   component: ArchivePage,

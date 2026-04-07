@@ -1,10 +1,23 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { readArchiveDetail } from '../server/archive'
+
+export interface ArchiveDetail {
+  date: string
+  archetype: string
+  brief: string
+  signalsBrief: string
+  preset: string
+  rationale: string
+  filesChanged: string[]
+  hasScreenshot: boolean
+  buildId: string
+  trace: string
+}
 
 export const Route = createFileRoute('/archive/$date')({
   loader: async ({ params }) => {
-    const detail = await readArchiveDetail({ data: params.date })
-    if (!detail) throw new Error('Archive entry not found')
+    const res = await fetch(`/archive/${params.date}/detail.json`)
+    if (!res.ok) throw new Error('Archive entry not found')
+    const detail: ArchiveDetail = await res.json()
     return { detail }
   },
   component: ArchiveDetailPage,
