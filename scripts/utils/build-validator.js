@@ -97,7 +97,16 @@ export function validateGenerated() {
     }
   }
 
-  // Check 3: Route files must NOT import or use Layout
+  // Check 3: __root.tsx must render <Scripts /> in the body
+  // Without it, client JS never loads and all route content renders empty
+  try {
+    const rootContent = readFileSync(resolve(ROOT, 'app/routes/__root.tsx'), 'utf8')
+    if (!rootContent.includes('Scripts')) {
+      errors.push('app/routes/__root.tsx: missing <Scripts /> — client JS will not load and routes will render empty. Import Scripts from @tanstack/react-router and render it in the body.')
+    }
+  } catch {}
+
+  // Check 4: Route files must NOT import or use Layout
   // __root.tsx already wraps all routes in <Layout> — importing it again creates double headers
   const routeFiles = [
     'app/routes/index.tsx',
