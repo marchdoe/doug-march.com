@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useParams } from '@tanstack/react-router'
+import { useState, useEffect } from 'react'
 
 export interface ArchiveDetail {
   date: string
@@ -14,32 +15,7 @@ export interface ArchiveDetail {
 }
 
 export const Route = createFileRoute('/archive/$date')({
-  loader: async ({ params }) => {
-    const res = await fetch(`/archive/${params.date}/detail.json`)
-    if (!res.ok) throw new Error('Archive entry not found')
-    const detail: ArchiveDetail = await res.json()
-    return { detail }
-  },
   component: ArchiveDetailPage,
-  errorComponent: () => (
-    <div style={{ padding: '80px 48px', maxWidth: 800, margin: '0 auto' }}>
-      <h2
-        style={{
-          fontSize: '1.5rem',
-          marginBottom: 16,
-          color: 'var(--colors-text, #111)',
-        }}
-      >
-        Archive entry not found
-      </h2>
-      <Link
-        to="/archive"
-        style={{ color: 'var(--colors-accent, #666)', textDecoration: 'none' }}
-      >
-        ← Back to Archive
-      </Link>
-    </div>
-  ),
 })
 
 /* ---------------------------------------------------------------------------
@@ -146,7 +122,32 @@ function formatDate(date: string): string {
  * ------------------------------------------------------------------------- */
 
 function ArchiveDetailPage() {
-  const { detail } = Route.useLoaderData()
+  const { date } = Route.useParams()
+  const [detail, setDetail] = useState<ArchiveDetail | null>(null)
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    fetch(`/archive/${date}/detail.json`)
+      .then(res => res.ok ? res.json() : null)
+      .then(data => { if (data) setDetail(data); else setError(true) })
+      .catch(() => setError(true))
+  }, [date])
+
+  if (error) {
+    return (
+      <div style={{ padding: '80px 48px', maxWidth: 800, margin: '0 auto' }}>
+        <h2 style={{ fontSize: '1.5rem', marginBottom: 16, color: 'var(--colors-text, #111)' }}>
+          Archive entry not found
+        </h2>
+        <Link to="/archive" style={{ color: 'var(--colors-accent, #666)', textDecoration: 'none' }}>
+          ← Back to Archive
+        </Link>
+      </div>
+    )
+  }
+
+  if (!detail) return null
+
   const tokens = detail.preset ? parsePreset(detail.preset) : null
   const signals = detail.signalsBrief ? parseSignals(detail.signalsBrief) : null
 
