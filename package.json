@@ -67,7 +67,9 @@
       "undici": ">=7.24.0",
       "node-forge": ">=1.4.0",
       "path-to-regexp": ">=8.4.0",
-      "esbuild": ">=0.25.0"
+      "esbuild": ">=0.25.0",
+      "hono": ">=4.12.12",
+      "@hono/node-server": ">=1.19.13"
     }
   }
 }
