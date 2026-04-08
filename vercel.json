@@ -2,6 +2,16 @@
   "buildCommand": "pnpm run build",
   "outputDirectory": "dist/client",
   "framework": null,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ],
   "rewrites": [
     { "source": "/archive/:date/:file", "destination": "/archive/:date/:file" },
     { "source": "/archive/:date/work/:file", "destination": "/archive/:date/work/:file" },

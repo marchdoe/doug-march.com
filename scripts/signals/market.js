@@ -12,6 +12,9 @@ export async function collect(_profile) {
   const json = await res.json()
 
   const quote = json['Global Quote']
+  if (!quote || !quote['05. price']) {
+    throw new Error('Alpha Vantage returned no quote data (rate limit or market closed)')
+  }
   const price = quote['05. price']
   const change = quote['09. change']
   const change_percent = quote['10. change percent']

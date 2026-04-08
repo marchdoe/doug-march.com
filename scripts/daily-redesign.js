@@ -20,7 +20,7 @@ import { fileURLToPath } from 'url'
 import path from 'path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
 
-import { execSync, spawnSync } from 'child_process'
+import { execSync } from 'child_process'
 import { readFile } from 'fs/promises'
 import { existsSync } from 'fs'
 import { callClaudeCLI as callClaudeCLIShared } from './utils/claude-cli.js'
@@ -235,21 +235,6 @@ function extractToolUse(response) {
     toolUseId: toolUseBlock.id,
     input: toolUseBlock.input,
   }
-}
-
-/**
- * Commit the generated files to git.
- * Configures git identity (required in GitHub Actions), stages all, commits.
- * @param {string} date
- * @param {string} designBrief
- */
-function gitCommit(date, designBrief) {
-  execSync('git config user.name "Daily Redesign"', { cwd: ROOT })
-  execSync('git config user.email "redesign@doug-march.com"', { cwd: ROOT })
-  execSync('git add -A', { cwd: ROOT })
-  const msg = `design(${date}): ${designBrief}`
-  spawnSync('git', ['commit', '-m', msg], { cwd: ROOT, stdio: 'inherit' })
-  console.log(`  committed: ${msg}`)
 }
 
 async function main() {

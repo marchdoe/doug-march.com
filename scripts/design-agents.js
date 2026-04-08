@@ -53,16 +53,36 @@ export const FILE_OWNERSHIP = Object.fromEntries([
 const ARCHETYPE_NAMES = ['Gallery Wall', 'Broadsheet', 'Specimen', 'Poster', 'Scroll', 'Split', 'Stack', 'Index']
 
 /**
- * Extract the first archetype name found in a block of text.
+ * Extract the chosen archetype from a visual spec or block of text.
+ *
+ * First tries to match the structured declaration line (e.g., "**Archetype:** The Broadsheet").
+ * Falls back to finding the last archetype mention in the text, which avoids
+ * false matches from the forbidden-archetype constraint block that appears early.
+ *
  * @param {string} text
  * @returns {string|null}
  */
 export function extractArchetypeFromText(text) {
+  // Strategy 1: Match the structured "**Archetype:**" declaration line
   for (const name of ARCHETYPE_NAMES) {
-    const pattern = new RegExp(`\\b${name.replace(' ', '\\s+')}\\b`, 'i')
+    const pattern = new RegExp(`\\*\\*Archetype:\\*\\*\\s*(?:The\\s+)?${name.replace(' ', '\\s+')}`, 'i')
     if (pattern.test(text)) return name
   }
-  return null
+
+  // Strategy 2: Find the last mention of any archetype name in the text.
+  // The chosen archetype appears in the spec body; forbidden names appear
+  // earlier in the echoed constraint block.
+  let latest = null
+  for (const name of ARCHETYPE_NAMES) {
+    const pattern = new RegExp(`\\b${name.replace(' ', '\\s+')}\\b`, 'gi')
+    let m
+    while ((m = pattern.exec(text)) !== null) {
+      if (!latest || m.index > latest.index) {
+        latest = { name, index: m.index }
+      }
+    }
+  }
+  return latest?.name ?? null
 }
 
 /**
@@ -167,9 +187,8 @@ export function identifyFailingAgent(errorOutput) {
   }
 
   if (agents.size === 0) return 'both'
-  if (agents.has('token-designer')) return 'token-designer'
-  if (agents.size === 1) return [...agents][0]
-  return 'both'
+  if (agents.size === 2) return 'both'
+  return [...agents][0]
 }
 
 // ---------------------------------------------------------------------------
@@ -577,6 +596,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     console.log('\n[spec-critic] Reviewing visual spec...')
     const criticUserPrompt = [
       '## Structured Brief\n\n' + brief,
+      archetypeConstraintPrompt ? '## Archetype Constraints\n' + archetypeConstraintPrompt : '',
       '## Visual Specification\n\n' + visualSpec,
       recentBriefs ? '## Recent Archive Briefs\n' + recentBriefs : '',
     ].filter(Boolean).join('\n\n---\n\n')
@@ -956,6 +976,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     try {
       const retryResult = await callAgent(agent, config.prompt, config.user(), buildResult.error)
       await writeFiles(retryResult.files)
+      // Update the result so the archive records the retry output, not stale originals
+      if (agent === 'token-designer') tokenResult = retryResult
+      if (agent === 'unified-designer') designerResult = retryResult
     } catch (err) {
       console.error(`  ${agent} retry failed: ${err.message}`)
     }
