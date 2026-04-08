@@ -23,6 +23,7 @@ import { ROOT } from './file-manager.js'
  * @param {string} promptText - Full prompt text to send via stdin
  * @param {object} [options]
  * @param {number} [options.timeoutMs=600000] - Timeout in milliseconds (default 10 min)
+ * @param {number} [options.stallTimeoutMs=900000] - Kill if no output for this many ms (default 15 min)
  * @param {string} [options.cwd] - Working directory (default ROOT)
  * @param {string} [options.model='sonnet'] - Model to use (e.g. 'sonnet', 'haiku', 'opus')
  * @param {string[]} [options.extraCliArgs] - Additional CLI args (e.g. ['--fallback-model', 'haiku'])
@@ -33,6 +34,7 @@ import { ROOT } from './file-manager.js'
 export async function callClaudeCLI(agentName, systemPrompt, promptText, options = {}) {
   const {
     timeoutMs = 600000,
+    stallTimeoutMs = 900000,
     cwd = ROOT,
     model = 'sonnet',
     extraCliArgs = [],
@@ -136,11 +138,12 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
       reject(new Error(`[${agentName}] timed out after ${Math.round(timeoutMs / 60000)} minutes (generated ${(charCount / 1024).toFixed(0)}KB before timeout)${extra}`))
     }, timeoutMs)
 
-    // Stall detection: kill if no output for 5 minutes
-    const STALL_TIMEOUT_MS = 300000
+    // Stall detection: kill if no output for stallTimeoutMs (default 15 min).
+    // The unified-designer routinely takes 9-12 min of silent "thinking"
+    // before streaming its first output, so this must be generous.
     const stallCheck = setInterval(() => {
       const stallDuration = Date.now() - lastOutputTime
-      if (stallDuration > STALL_TIMEOUT_MS) {
+      if (stallDuration > stallTimeoutMs) {
         clearInterval(stallCheck)
         child.kill()
         const stallMin = Math.round(stallDuration / 60000)
