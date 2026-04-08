@@ -138,16 +138,10 @@ function pipelineApiPlugin(): Plugin {
           try {
             const { moodOverride, notes } = JSON.parse(body)
             const signalsPath = resolve('signals/today.yml')
-            let content = readFileSync(signalsPath, 'utf8')
-            content = content.replace(/^mood_override:.*$/m, `mood_override: ${moodOverride ? `"${moodOverride}"` : 'null'}`)
-            if (notes) {
-              if (content.includes('notes:')) {
-                content = content.replace(/^notes:.*$/m, `notes: "${notes}"`)
-              } else {
-                content += `\nnotes: "${notes}"\n`
-              }
-            }
-            writeFileSync(signalsPath, content, 'utf8')
+            const signals = yaml.load(readFileSync(signalsPath, 'utf8')) as Record<string, unknown>
+            signals.mood_override = moodOverride ? String(moodOverride) : null
+            if (notes) signals.notes = String(notes)
+            writeFileSync(signalsPath, yaml.dump(signals, { lineWidth: 120 }), 'utf8')
             res.writeHead(200, { 'Content-Type': 'application/json' })
             res.end(JSON.stringify({ ok: true }))
           } catch (err) {

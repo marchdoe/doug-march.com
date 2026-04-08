@@ -81,6 +81,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     let stderr = ''
     let lineBuffer = ''   // Buffer for incomplete JSON lines
     let charCount = 0     // Track characters received for progress
+    let lastOutputTime = Date.now()  // Track last output for stall detection
 
     // Pipe the prompt file to stdin, ignoring EPIPE if the child exits early
     const promptStream = createReadStream(promptPath)
@@ -88,6 +89,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     promptStream.pipe(child.stdin)
 
     child.stdout.on('data', (chunk) => {
+      lastOutputTime = Date.now()
       lineBuffer += chunk.toString()
       const lines = lineBuffer.split('\n')
       // Keep the last incomplete line in the buffer
@@ -134,8 +136,21 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
       reject(new Error(`[${agentName}] timed out after ${Math.round(timeoutMs / 60000)} minutes (generated ${(charCount / 1024).toFixed(0)}KB before timeout)${extra}`))
     }, timeoutMs)
 
+    // Stall detection: kill if no output for 5 minutes
+    const STALL_TIMEOUT_MS = 300000
+    const stallCheck = setInterval(() => {
+      const stallDuration = Date.now() - lastOutputTime
+      if (stallDuration > STALL_TIMEOUT_MS) {
+        clearInterval(stallCheck)
+        child.kill()
+        const stallMin = Math.round(stallDuration / 60000)
+        reject(new Error(`[${agentName}] stalled — no output for ${stallMin} minutes (generated ${(charCount / 1024).toFixed(0)}KB before stall)`))
+      }
+    }, 30000)
+
     child.on('close', (code) => {
       clearTimeout(timeout)
+      clearInterval(stallCheck)
       // Process any remaining data in the line buffer
       if (lineBuffer.trim()) {
         try {
@@ -160,6 +175,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
 
     child.on('error', (err) => {
       clearTimeout(timeout)
+      clearInterval(stallCheck)
       reject(err)
     })
   })
