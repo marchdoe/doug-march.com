@@ -91,7 +91,6 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     promptStream.pipe(child.stdin)
 
     child.stdout.on('data', (chunk) => {
-      lastOutputTime = Date.now()
       lineBuffer += chunk.toString()
       const lines = lineBuffer.split('\n')
       // Keep the last incomplete line in the buffer
@@ -103,12 +102,15 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
           const event = JSON.parse(line)
 
           if (event.type === 'assistant' && event.message?.content) {
-            // Content block with text -- accumulate and show progress
+            // Content block with text -- accumulate and show progress.
+            // Only update lastOutputTime when actual text content arrives
+            // (not on init/heartbeat events) so stall detection is accurate.
             for (const block of event.message.content) {
               if (block.type === 'text' && block.text) {
                 fullText += block.text
                 const newChars = block.text.length
                 charCount += newChars
+                lastOutputTime = Date.now()
                 // Log progress every ~2000 chars so the SSE stream shows activity
                 if (charCount > 0 && charCount % 2000 < newChars) {
                   console.log(`  [${agentName}] ... generating (${(charCount / 1024).toFixed(0)}KB)`)
@@ -118,6 +120,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
           } else if (event.type === 'result') {
             // Final result -- this is the complete response
             finalResult = event.result || ''
+            lastOutputTime = Date.now()
           }
         } catch {
           // Not valid JSON -- skip
