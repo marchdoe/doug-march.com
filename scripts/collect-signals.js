@@ -40,6 +40,7 @@ async function discoverProviders() {
         name: mod.name,
         timeout: mod.timeout ?? 5000,
         collect: mod.collect,
+        requiresApiKey: mod.requiresApiKey,
       })
     }
   }
@@ -47,6 +48,16 @@ async function discoverProviders() {
 }
 
 async function runProvider(provider, profile) {
+  // If the provider declares a required API key and it's missing, skip
+  // cleanly with a 'skipped' status instead of letting it throw. This
+  // distinguishes "no key configured" from actual runtime errors in logs.
+  if (provider.requiresApiKey && !process.env[provider.requiresApiKey]) {
+    return {
+      status: 'skipped',
+      reason: `${provider.requiresApiKey} not set`,
+      meta: { latency_ms: 0 },
+    }
+  }
   const start = Date.now()
   const ac = new AbortController()
   // Start the provider call and attach a no-op catch handler immediately.

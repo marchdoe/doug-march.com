@@ -32,6 +32,14 @@ import { ROOT } from './file-manager.js'
  * @returns {Promise<string>} The raw text response from Claude
  */
 export async function callClaudeCLI(agentName, systemPrompt, promptText, options = {}) {
+  // Validate agentName — it's interpolated into a file path for the temp
+  // prompt file. Reject anything that could escape the repo root or
+  // contain shell-special characters. All current callers pass plain
+  // ASCII names like 'token-designer', so this is strictly tightening.
+  if (typeof agentName !== 'string' || !/^[a-z0-9][a-z0-9-]{0,50}$/i.test(agentName)) {
+    throw new Error(`Invalid agentName: ${JSON.stringify(agentName)} (must match /^[a-z0-9][a-z0-9-]{0,50}$/i)`)
+  }
+
   const {
     timeoutMs = 600000,
     stallTimeoutMs = 900000,

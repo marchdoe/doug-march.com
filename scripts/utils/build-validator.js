@@ -84,9 +84,14 @@ export function validateGenerated() {
   for (const file of componentFiles) {
     try {
       const content = readFileSync(resolve(ROOT, file), 'utf8')
-      // Match: import { ReactNode } from 'react' (NOT import type { ReactNode })
-      const importMatch = content.match(/^import\s+\{([^}]+)\}\s+from\s+['"]react['"]/m)
-      if (importMatch) {
+      // Match ALL value imports from 'react' (not just the first one).
+      // The old .match() with no /g flag only caught the first occurrence,
+      // missing subsequent imports that AI often splits across multiple lines.
+      // Explicitly excludes `import type { ... } from 'react'` since those
+      // are correct.
+      const importRegex = /^import\s+\{([^}]+)\}\s+from\s+['"]react['"]/gm
+      let importMatch
+      while ((importMatch = importRegex.exec(content)) !== null) {
         const imports = importMatch[1].split(',').map(s => s.trim())
         const typeImports = imports.filter(i => reactTypes.includes(i))
         if (typeImports.length > 0) {
@@ -125,24 +130,25 @@ export function validateGenerated() {
     }
   } catch {}
 
-  // Check 4: Route files must NOT import or use Layout
-  // __root.tsx already wraps all routes in <Layout> — importing it again creates double headers
-  const routeFiles = [
-    'app/routes/index.tsx',
-    'app/routes/about.tsx',
-    'app/routes/work.$slug.tsx',
-  ]
+  // Check 4: Route files must NOT import or use Layout. __root.tsx already
+  // wraps all routes in <Layout> — importing it again creates double headers.
+  // Dynamically scan every .tsx in app/routes/ so newly-added routes are
+  // covered (the old hardcoded list missed anything new).
+  try {
+    const routesDir = resolve(ROOT, 'app/routes')
+    const routeFiles = readdirSync(routesDir)
+      .filter(f => f.endsWith('.tsx') && f !== '__root.tsx')
+      .map(f => `app/routes/${f}`)
 
-  for (const file of routeFiles) {
-    try {
-      const content = readFileSync(resolve(ROOT, file), 'utf8')
-      if (content.includes("from '../components/Layout'") || content.includes('from "../components/Layout"')) {
-        errors.push(`${file}: imports Layout — routes must NOT import Layout (already provided by __root.tsx). This creates a double header.`)
-      }
-    } catch {
-      // File doesn't exist — skip
+    for (const file of routeFiles) {
+      try {
+        const content = readFileSync(resolve(ROOT, file), 'utf8')
+        if (/from\s+['"]\.\.\/components\/Layout['"]/.test(content)) {
+          errors.push(`${file}: imports Layout — routes must NOT import Layout (already provided by __root.tsx). This creates a double header.`)
+        }
+      } catch {}
     }
-  }
+  } catch {}
 
   // Check 5: Scan generated code for security-sensitive patterns.
   // AI output is untrusted — a compromised or prompt-injected agent can

@@ -1,0 +1,82 @@
+name: Rollback Daily Redesign
+
+# Manual workflow to revert the most recent daily redesign commit.
+# Use when today's design ships broken and you need to restore yesterday's
+# working state without waiting for tomorrow's run.
+
+on:
+  workflow_dispatch:
+    inputs:
+      commits_back:
+        description: 'How many commits back to roll mutable files to (default 1 = last redesign)'
+        type: number
+        default: 1
+
+# Don't race with the daily redesign workflow — both modify main.
+concurrency:
+  group: daily-redesign
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 50  # enough history to go back a few commits
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Roll back mutable files
+        run: |
+          N=${{ inputs.commits_back }}
+          echo "Rolling back mutable files to HEAD~$N"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Restore only the AI-mutable files — leave everything else alone
+          git checkout HEAD~$N -- \
+            elements/preset.ts \
+            app/components/Layout.tsx \
+            app/components/Sidebar.tsx \
+            app/components/SectionHead.tsx \
+            app/components/ProjectRow.tsx \
+            app/components/FeaturedProject.tsx \
+            app/components/SelectedWork.tsx \
+            app/components/Experiments.tsx \
+            app/components/Bio.tsx \
+            app/components/Timeline.tsx \
+            app/components/Capabilities.tsx \
+            app/components/Personal.tsx \
+            app/routes/__root.tsx \
+            app/routes/index.tsx \
+            app/routes/about.tsx \
+            'app/routes/work.$slug.tsx'
+
+      - name: Regenerate styled-system
+        run: pnpm panda codegen
+
+      - name: Verify build
+        run: pnpm build
+
+      - name: Commit and push
+        run: |
+          git add elements/ app/components/ app/routes/ styled-system/ 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "revert: roll back daily redesign (rollback workflow)"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            echo "push attempt $i failed, retrying in 10s..."
+            sleep 10
+          done

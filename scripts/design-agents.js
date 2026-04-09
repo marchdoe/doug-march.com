@@ -133,6 +133,45 @@ function buildArchetypeConstraintPrompt(history) {
 }
 
 /**
+ * Parse a Claude CLI response in the line-anchored ===FILE:path=== format.
+ *
+ * Delimiters must appear at the start of a line. This prevents corruption
+ * when a file's content legitimately contains the string ===FILE:path===
+ * (e.g., in a comment or documentation string). The previous unanchored
+ * regex would split such files in two and emit a spurious second "file"
+ * with the inner path as its name.
+ *
+ * @param {string} result - raw response text
+ * @returns {{ files: Array<{path: string, content: string}>, rationale?: string, design_brief?: string }}
+ */
+export function parseDelimiterResponse(result) {
+  const files = []
+  // JavaScript regex has no \Z (end of string in multiline mode), so we
+  // append a sentinel delimiter that the lookahead can match as a substitute.
+  const sentinel = '\n===END_SENTINEL===\n'
+  const withSentinel = result + sentinel
+  const filePattern = /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===END_SENTINEL===)/gm
+  let match
+  while ((match = filePattern.exec(withSentinel)) !== null) {
+    const filePath = match[1].trim()
+    const content = match[2].trim()
+    if (filePath && content) {
+      files.push({ path: filePath, content })
+    }
+  }
+
+  let rationale
+  const rationaleMatch = withSentinel.match(/^===RATIONALE===\s*\n([\s\S]*?)(?=^===)/m)
+  if (rationaleMatch) rationale = rationaleMatch[1].trim()
+
+  let design_brief
+  const briefMatch = withSentinel.match(/^===DESIGN_BRIEF===\s*\n([\s\S]*?)(?=^===)/m)
+  if (briefMatch) design_brief = briefMatch[1].trim()
+
+  return { files, rationale, design_brief }
+}
+
+/**
  * Fix a generated __root.tsx file by ensuring Scripts and ScrollRestoration
  * are imported from @tanstack/react-router. Returns the fixed content, or
  * null if the file looks so broken we shouldn't touch it.
@@ -272,28 +311,8 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
     const specMatch = result.match(/===VISUAL_SPEC===([\s\S]*)/)
     const spec = specMatch ? specMatch[1].trim() : result.trim()
     parsed = { files: [], rationale: spec, design_brief: '', _rawResponse: spec }
-  } else if (result.includes('===FILE:')) {
-    // Delimiter-based format (preferred — avoids JSON escaping issues)
-    const files = []
-    const filePattern = /===FILE:([^=]+)===([\s\S]*?)(?====FILE:|===RATIONALE===|===DESIGN_BRIEF===|$)/g
-    let match
-    while ((match = filePattern.exec(result)) !== null) {
-      const filePath = match[1].trim()
-      const content = match[2].trim()
-      if (filePath && content) {
-        files.push({ path: filePath, content })
-      }
-    }
-
-    let rationale = undefined
-    const rationaleMatch = result.match(/===RATIONALE===([\s\S]*?)(?====|$)/)
-    if (rationaleMatch) rationale = rationaleMatch[1].trim()
-
-    let design_brief = undefined
-    const briefMatch = result.match(/===DESIGN_BRIEF===([\s\S]*?)(?====|$)/)
-    if (briefMatch) design_brief = briefMatch[1].trim()
-
-    parsed = { files, rationale, design_brief }
+  } else if (result.match(/^===FILE:/m)) {
+    parsed = parseDelimiterResponse(result)
   } else {
     // JSON fallback
     try {

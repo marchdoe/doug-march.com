@@ -1,5 +1,6 @@
 export const name = 'weather'
 export const timeout = 5000
+export const requiresApiKey = 'WEATHER_API_KEY'
 
 export async function collect(profile) {
   const key = process.env.WEATHER_API_KEY

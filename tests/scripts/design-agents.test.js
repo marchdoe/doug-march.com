@@ -5,6 +5,7 @@ import {
   identifyFailingAgent,
   extractArchetypeFromText,
   fixRootTsx,
+  parseDelimiterResponse,
 } from '../../scripts/design-agents.js'
 
 describe('FILE_OWNERSHIP', () => {
@@ -228,6 +229,121 @@ describe('fixRootTsx', () => {
     const input = `import { Outlet } from "@tanstack/react-router"`
     const result = fixRootTsx(input)
     expect(result).toContain('Scripts')
+  })
+})
+
+describe('parseDelimiterResponse', () => {
+  it('parses a single file', () => {
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      'export const x = 42',
+      '',
+    ].join('\n')
+    const { files } = parseDelimiterResponse(input)
+    expect(files).toHaveLength(1)
+    expect(files[0].path).toBe('app/components/Foo.tsx')
+    expect(files[0].content).toBe('export const x = 42')
+  })
+
+  it('parses multiple files', () => {
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      'const foo = 1',
+      '===FILE:app/components/Bar.tsx===',
+      'const bar = 2',
+      '',
+    ].join('\n')
+    const { files } = parseDelimiterResponse(input)
+    expect(files).toHaveLength(2)
+    expect(files[0].path).toBe('app/components/Foo.tsx')
+    expect(files[1].path).toBe('app/components/Bar.tsx')
+  })
+
+  it('preserves === in file content (not line-anchored)', () => {
+    // This is the regression we are guarding against. The old parser
+    // would split Foo.tsx in two when the content contained === anywhere.
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      "const x = 'border: 3px solid === separator ==='",
+      'const y = 42',
+      '===FILE:app/components/Bar.tsx===',
+      'const bar = 1',
+      '',
+    ].join('\n')
+    const { files } = parseDelimiterResponse(input)
+    expect(files).toHaveLength(2)
+    expect(files[0].content).toContain('=== separator ===')
+    expect(files[1].path).toBe('app/components/Bar.tsx')
+  })
+
+  it('preserves ===FILE: inside file content when not at start of line', () => {
+    // Even if a file has "===FILE:path===" in a comment or string,
+    // it should not be treated as a delimiter.
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      '// Example: ===FILE:path=== was the old format',
+      'const x = 42',
+      '===FILE:app/components/Bar.tsx===',
+      'const bar = 1',
+      '',
+    ].join('\n')
+    const { files } = parseDelimiterResponse(input)
+    expect(files).toHaveLength(2)
+    expect(files[0].content).toContain('// Example: ===FILE:path===')
+    expect(files[1].path).toBe('app/components/Bar.tsx')
+  })
+
+  it('extracts rationale after ===RATIONALE===', () => {
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      'const x = 42',
+      '===RATIONALE===',
+      'This is the rationale.',
+      '',
+    ].join('\n')
+    const { rationale } = parseDelimiterResponse(input)
+    expect(rationale).toBe('This is the rationale.')
+  })
+
+  it('extracts design_brief after ===DESIGN_BRIEF===', () => {
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      'const x = 42',
+      '===DESIGN_BRIEF===',
+      'Post-blizzard brutalism.',
+      '',
+    ].join('\n')
+    const { design_brief } = parseDelimiterResponse(input)
+    expect(design_brief).toBe('Post-blizzard brutalism.')
+  })
+
+  it('extracts both rationale and design_brief', () => {
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      'content',
+      '===RATIONALE===',
+      'Why I did this.',
+      '===DESIGN_BRIEF===',
+      'Spring morning.',
+      '',
+    ].join('\n')
+    const result = parseDelimiterResponse(input)
+    expect(result.rationale).toBe('Why I did this.')
+    expect(result.design_brief).toBe('Spring morning.')
+    expect(result.files).toHaveLength(1)
+  })
+
+  it('ignores files with empty paths or content', () => {
+    const input = [
+      '===FILE: ===',
+      'content',
+      '===FILE:valid.tsx===',
+      'const x = 1',
+      '',
+    ].join('\n')
+    const { files } = parseDelimiterResponse(input)
+    expect(files).toHaveLength(1)
+    expect(files[0].path).toBe('valid.tsx')
   })
 })
 
