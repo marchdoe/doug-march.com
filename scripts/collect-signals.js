@@ -16,6 +16,7 @@ import { existsSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import yaml from 'js-yaml'
+import { sanitizeSignals } from './utils/sanitize-signal.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -39,6 +40,7 @@ async function discoverProviders() {
         name: mod.name,
         timeout: mod.timeout ?? 5000,
         collect: mod.collect,
+        requiresApiKey: mod.requiresApiKey,
       })
     }
   }
@@ -46,14 +48,36 @@ async function discoverProviders() {
 }
 
 async function runProvider(provider, profile) {
+  // If the provider declares a required API key and it's missing, skip
+  // cleanly with a 'skipped' status instead of letting it throw. This
+  // distinguishes "no key configured" from actual runtime errors in logs.
+  if (provider.requiresApiKey && !process.env[provider.requiresApiKey]) {
+    return {
+      status: 'skipped',
+      reason: `${provider.requiresApiKey} not set`,
+      meta: { latency_ms: 0 },
+    }
+  }
   const start = Date.now()
+  const ac = new AbortController()
+  // Start the provider call and attach a no-op catch handler immediately.
+  // This prevents unhandled rejections when the race times out and the
+  // provider's fetch later rejects with an AbortError or network error —
+  // by the time that rejection settles, Promise.race has already moved on.
+  const providerPromise = provider.collect(profile, { signal: ac.signal })
+  providerPromise.catch(() => {})
+
+  let timeoutId
+  const timeoutPromise = new Promise((_, reject) => {
+    timeoutId = setTimeout(
+      () => reject(new Error(`timeout after ${provider.timeout}ms`)),
+      provider.timeout
+    )
+  })
+
   try {
-    const result = await Promise.race([
-      provider.collect(profile),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error(`timeout after ${provider.timeout}ms`)), provider.timeout)
-      ),
-    ])
+    const result = await Promise.race([providerPromise, timeoutPromise])
+    clearTimeout(timeoutId)
     const latency = Date.now() - start
     return {
       status: 'ok',
@@ -61,14 +85,35 @@ async function runProvider(provider, profile) {
       meta: { ...result.meta, latency_ms: latency },
     }
   } catch (err) {
+    clearTimeout(timeoutId)
     const latency = Date.now() - start
+    // Classify based on error message content, not latency — CI event loop
+    // jitter can cause a latency-based classification to flip 'error' to
+    // 'skipped' incorrectly (code review finding #18).
+    const status = err.message?.startsWith('timeout after') ? 'skipped' : 'error'
     return {
-      status: latency >= provider.timeout ? 'skipped' : 'error',
+      status,
       reason: err.message,
       meta: { latency_ms: latency },
     }
+  } finally {
+    // Cancel any still-running provider work. If the provider already
+    // finished, this is a no-op. If it's hung on fetch, abort signals
+    // fetch to stop and release resources.
+    ac.abort()
   }
 }
+
+// Safety net: if a provider's fetch rejects after the Promise.race already
+// settled (e.g., slow network response arriving post-timeout), Node 20+
+// would crash on unhandled rejection. We've already attached .catch() to
+// every provider promise, but this handler is belt-and-suspenders.
+process.on('unhandledRejection', (reason) => {
+  const msg = reason?.message || String(reason)
+  // Only suppress signal-provider related rejections; surface everything else
+  if (msg.includes('AbortError') || msg.includes('aborted')) return
+  console.warn('[unhandledRejection]', msg)
+})
 
 export async function runCollector(providerOverrides, profileOverride) {
   const profile = profileOverride ?? await loadProfile()
@@ -94,7 +139,10 @@ export async function runCollector(providerOverrides, profileOverride) {
     if (settled.status !== 'fulfilled') continue
     const r = settled.value
     if (r.status === 'ok' && r.data) {
-      signals[r.name] = r.data
+      // Sanitize all third-party string data to defend against prompt
+      // injection. Signal data flows into Claude prompts unmodified;
+      // a crafted HN title or news headline could steer the AI output.
+      signals[r.name] = sanitizeSignals(r.data)
     }
     sources[r.name] = r.status === 'ok'
       ? { status: 'ok', source: r.meta.source ?? r.name, latency_ms: r.meta.latency_ms, items: r.meta.items ?? 0 }

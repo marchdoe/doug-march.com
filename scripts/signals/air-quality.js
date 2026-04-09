@@ -1,5 +1,6 @@
 export const name = 'air_quality'
 export const timeout = 5000
+export const requiresApiKey = 'WEATHER_API_KEY'
 
 const AQI_LABELS = {
   1: 'Good',

@@ -1,10 +1,18 @@
 // app/routes/dev.tsx
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, notFound } from '@tanstack/react-router'
 import { useState, useRef, useEffect } from 'react'
 import { readSignals, saveOverrides } from '../server/signals'
 import { readArchive, readArchiveDetail, type ArchiveEntry } from '../server/archive'
 
 export const Route = createFileRoute('/dev')({
+  beforeLoad: () => {
+    // The dev panel is a local-only admin interface. It reads archive
+    // and signal data, spawns the pipeline, and saves overrides. None
+    // of that should be reachable in production.
+    if (import.meta.env.PROD) {
+      throw notFound()
+    }
+  },
   loader: async () => {
     const [signals, archive] = await Promise.all([
       readSignals(),
@@ -279,19 +287,19 @@ function DevPanel() {
           <div style={{ flex: 1 }}>
             <SidebarItem
               label="Pipeline"
-              icon="&#9654;"
+              icon="\u25B6"
               active={activePane === 'pipeline'}
               onClick={() => setActivePane('pipeline')}
             />
             <SidebarItem
               label="Archive"
-              icon="&#9776;"
+              icon="\u2630"
               active={activePane === 'archive'}
               onClick={() => setActivePane('archive')}
             />
             <SidebarItem
               label="Prompt Inspector"
-              icon="&#128269;"
+              icon="\u{1F50D}"
               active={activePane === 'inspector'}
               onClick={() => setActivePane('inspector')}
             />
@@ -299,7 +307,7 @@ function DevPanel() {
           <div style={{ borderTop: '1px solid #1e2633', paddingTop: '8px', paddingBottom: '8px' }}>
             <SidebarItem
               label="Run Pipeline"
-              icon="&#9881;"
+              icon="\u2699"
               active={activePane === 'run'}
               onClick={() => setActivePane('run')}
               trailing={pipelineStatus === 'running' ? (
@@ -367,7 +375,7 @@ function SidebarItem({ label, icon, active, onClick, trailing }: {
         ...(active ? s.navItemActive : {}),
       }}
     >
-      <span style={{ fontSize: '11px' }} dangerouslySetInnerHTML={{ __html: icon }} />
+      <span style={{ fontSize: '11px' }}>{icon}</span>
       <span>{label}</span>
       {trailing && <span style={{ marginLeft: 'auto' }}>{trailing}</span>}
     </button>
@@ -395,19 +403,19 @@ function PipelinePane({ signals, archive, moodOverride, notes, savingOverrides, 
         <div style={{ fontSize: '11px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' }} data-testid="signals-date">{signals.date}</div>
       </div>
       <div style={s.signalsGrid} data-testid="signals-grid">
-        <SignalCard label="Weather" icon="&#127784;&#65039;"
+        <SignalCard label="Weather" icon="\u{1F326}\uFE0F"
           main={signals.weather?.location ?? '\u2014'}
           sub={signals.weather ? `${signals.weather.conditions} \u00b7 ${signals.weather.feel}` : ''} />
-        <SignalCard label="Sports" icon="&#127936;"
+        <SignalCard label="Sports" icon="\u{1F3C0}"
           main={signals.sports?.[0] ? `${signals.sports[0].team}` : '\u2014'}
           sub={signals.sports?.[0]?.result ?? ''} />
-        <SignalCard label="Golf" icon="&#9971;"
+        <SignalCard label="Golf" icon="\u26F3"
           main={signals.golf?.[0]?.slice(0, 30) ?? '\u2014'}
           sub={signals.golf?.[1] ?? ''} />
-        <SignalCard label="GitHub" icon="&#11088;"
+        <SignalCard label="GitHub" icon="\u2B50"
           main={signals.github_trending?.[0]?.repo ?? '\u2014'}
           sub={`${signals.github_trending?.[0]?.stars?.toLocaleString() ?? '?'} stars`} />
-        <SignalCard label="News" icon="&#128240;"
+        <SignalCard label="News" icon="\u{1F4F0}"
           main={signals.news?.[0]?.slice(0, 40) ?? '\u2014'}
           sub={signals.news?.[1]?.slice(0, 40) ?? ''} />
       </div>
@@ -824,7 +832,7 @@ function SignalCard({ label, icon, main, sub }: { label: string; icon: string; m
   return (
     <div style={s.signalCard}>
       <div style={s.signalLabel}>{label}</div>
-      <div style={{ fontSize: '20px', marginBottom: '5px' }} dangerouslySetInnerHTML={{ __html: icon }} />
+      <div style={{ fontSize: '20px', marginBottom: '5px' }}>{icon}</div>
       <div style={s.signalMain}>{main}</div>
       {sub && <div style={s.signalSub}>{sub}</div>}
     </div>

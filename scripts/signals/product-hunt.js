@@ -1,5 +1,6 @@
 export const name = 'product_hunt'
 export const timeout = 5000
+export const requiresApiKey = 'PRODUCT_HUNT_TOKEN'
 
 export async function collect(_profile) {
   const token = process.env.PRODUCT_HUNT_TOKEN

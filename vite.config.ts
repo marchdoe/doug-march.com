@@ -29,11 +29,75 @@ function pipelineApiPlugin(): Plugin {
   config() // load .env
   const scriptPath = resolve('scripts/run-pipeline.js')
 
+  // Localhost-only guard for all dev API endpoints. The Vite dev server
+  // can bind to 0.0.0.0 (via --host), and these endpoints spawn processes
+  // with live secrets. Anyone on the network could trigger pipeline runs
+  // or write files without this check. DNS-rebinding attacks are also
+  // possible without an explicit Origin check.
+  const MAX_BODY_SIZE = 64 * 1024  // 64KB limit on request bodies
+
+  function isLocalRequest(req: import('http').IncomingMessage): boolean {
+    const addr = req.socket.remoteAddress
+    if (!addr) return false
+    // IPv4 localhost, IPv6 localhost, IPv4-mapped IPv6 localhost
+    if (addr === '127.0.0.1' || addr === '::1' || addr === '::ffff:127.0.0.1') return true
+    return false
+  }
+
+  function isAllowedOrigin(req: import('http').IncomingMessage): boolean {
+    const origin = req.headers.origin || ''
+    const host = req.headers.host || ''
+    // No origin header means same-origin request (fetch from dev panel itself)
+    if (!origin) return true
+    try {
+      const url = new URL(origin)
+      // Allow any localhost:port origin
+      return url.hostname === 'localhost' || url.hostname === '127.0.0.1' || url.hostname === '::1'
+    } catch {
+      return false
+    }
+  }
+
+  function guardRequest(req: import('http').IncomingMessage, res: import('http').ServerResponse): boolean {
+    if (!isLocalRequest(req)) {
+      res.writeHead(403, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ error: 'Forbidden: dev API is localhost-only' }))
+      return false
+    }
+    if (!isAllowedOrigin(req)) {
+      res.writeHead(403, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ error: 'Forbidden: invalid origin' }))
+      return false
+    }
+    return true
+  }
+
+  // Read a request body with an enforced size cap to prevent unbounded
+  // memory growth from a malicious or buggy client.
+  function readBodyLimited(req: import('http').IncomingMessage): Promise<string> {
+    return new Promise((resolve, reject) => {
+      let body = ''
+      let total = 0
+      req.on('data', (chunk) => {
+        total += chunk.length
+        if (total > MAX_BODY_SIZE) {
+          reject(new Error(`Request body exceeds ${MAX_BODY_SIZE} bytes`))
+          req.destroy()
+          return
+        }
+        body += chunk.toString()
+      })
+      req.on('end', () => resolve(body))
+      req.on('error', reject)
+    })
+  }
+
   return {
     name: 'pipeline-api',
     configureServer(server) {
       // Serve /dev as a standalone SPA page
       server.middlewares.use('/dev', (req, res, next) => {
+        if (!guardRequest(req, res)) return
         if (req.url && req.url !== '/' && !req.url.startsWith('/?')) return next()
         const htmlPath = resolve('app/dev-panel.html')
         let html = readFileSync(htmlPath, 'utf8')
@@ -44,7 +108,8 @@ function pipelineApiPlugin(): Plugin {
       })
 
       // API: read signals + archive
-      server.middlewares.use('/api/dev-data', (_req, res) => {
+      server.middlewares.use('/api/dev-data', (req, res) => {
+        if (!guardRequest(req, res)) return
         try {
           const signalsPath = resolve('signals/today.yml')
 
@@ -130,29 +195,28 @@ function pipelineApiPlugin(): Plugin {
       })
 
       // API: save overrides to signals YAML
-      server.middlewares.use('/api/dev-overrides', (req, res) => {
+      server.middlewares.use('/api/dev-overrides', async (req, res) => {
+        if (!guardRequest(req, res)) return
         if (req.method !== 'POST') { res.writeHead(405); res.end(); return }
-        let body = ''
-        req.on('data', chunk => { body += chunk })
-        req.on('end', () => {
-          try {
-            const { moodOverride, notes } = JSON.parse(body)
-            const signalsPath = resolve('signals/today.yml')
-            const signals = yaml.load(readFileSync(signalsPath, 'utf8')) as Record<string, unknown>
-            signals.mood_override = moodOverride ? String(moodOverride) : null
-            if (notes) signals.notes = String(notes)
-            writeFileSync(signalsPath, yaml.dump(signals, { lineWidth: 120 }), 'utf8')
-            res.writeHead(200, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ ok: true }))
-          } catch (err) {
-            res.writeHead(500, { 'Content-Type': 'application/json' })
-            res.end(JSON.stringify({ error: String(err) }))
-          }
-        })
+        try {
+          const body = await readBodyLimited(req)
+          const { moodOverride, notes } = JSON.parse(body)
+          const signalsPath = resolve('signals/today.yml')
+          const signals = yaml.load(readFileSync(signalsPath, 'utf8')) as Record<string, unknown>
+          signals.mood_override = moodOverride ? String(moodOverride) : null
+          if (notes) signals.notes = String(notes)
+          writeFileSync(signalsPath, yaml.dump(signals, { lineWidth: 120 }), 'utf8')
+          res.writeHead(200, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ ok: true }))
+        } catch (err) {
+          res.writeHead(500, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ error: String(err) }))
+        }
       })
 
       // API: re-collect signals
-      server.middlewares.use('/api/collect-signals', (_req, res) => {
+      server.middlewares.use('/api/collect-signals', (req, res) => {
+        if (!guardRequest(req, res)) return
         try {
           console.log('[collect-signals] refreshing...')
           spawnSync('node', [resolve('scripts/collect-signals.js')], {
@@ -184,7 +248,8 @@ function pipelineApiPlugin(): Plugin {
       }
 
       // POST /api/pipeline/start — launch the pipeline (if not already running)
-      server.middlewares.use('/api/pipeline/start', (req, res) => {
+      server.middlewares.use('/api/pipeline/start', async (req, res) => {
+        if (!guardRequest(req, res)) return
         if (req.method !== 'POST') { res.writeHead(405); res.end(); return }
 
         if (pipelineChild && !pipelineDone) {
@@ -193,75 +258,80 @@ function pipelineApiPlugin(): Plugin {
           return
         }
 
-        let body = ''
-        req.on('data', (chunk: Buffer) => { body += chunk.toString() })
-        req.on('end', () => {
-          let parsed: Record<string, unknown> = {}
-          if (body) {
-            try { parsed = JSON.parse(body) } catch {
-              res.writeHead(400, { 'Content-Type': 'application/json' })
-              res.end(JSON.stringify({ error: 'Invalid JSON' }))
-              return
-            }
+        let body: string
+        try {
+          body = await readBodyLimited(req)
+        } catch (err) {
+          res.writeHead(413, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({ error: String(err) }))
+          return
+        }
+
+        let parsed: Record<string, unknown> = {}
+        if (body) {
+          try { parsed = JSON.parse(body) } catch {
+            res.writeHead(400, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ error: 'Invalid JSON' }))
+            return
           }
-          const { dryRun = false, mock = true, weights = {} } = parsed as { dryRun?: boolean; mock?: boolean; weights?: Record<string, number> }
+        }
+        const { dryRun = false, mock = true, weights = {} } = parsed as { dryRun?: boolean; mock?: boolean; weights?: Record<string, number> }
 
-          // Reset state
-          pipelineLog = []
-          pipelineDone = false
+        // Reset state
+        pipelineLog = []
+        pipelineDone = false
 
-          const pipelineEnv = {
-            ...process.env,
-            DRY_RUN: dryRun ? 'true' : 'false',
-            MOCK_MODE: mock ? 'true' : 'false',
-            WEIGHT_SIGNALS: String(weights.signals ?? 5),
-            WEIGHT_INSPIRATION: String(weights.inspiration ?? 5),
-            WEIGHT_RATINGS: String(weights.ratings ?? 5),
-            WEIGHT_RISK: String(weights.risk ?? 5),
-          }
-          if (mock) delete pipelineEnv.ANTHROPIC_API_KEY
+        const pipelineEnv = {
+          ...process.env,
+          DRY_RUN: dryRun ? 'true' : 'false',
+          MOCK_MODE: mock ? 'true' : 'false',
+          WEIGHT_SIGNALS: String(weights.signals ?? 5),
+          WEIGHT_INSPIRATION: String(weights.inspiration ?? 5),
+          WEIGHT_RATINGS: String(weights.ratings ?? 5),
+          WEIGHT_RISK: String(weights.risk ?? 5),
+        }
+        if (mock) delete pipelineEnv.ANTHROPIC_API_KEY
 
-          pipelineChild = spawn('node', [scriptPath], {
-            env: pipelineEnv,
-            cwd: process.cwd(),
-          })
+        pipelineChild = spawn('node', [scriptPath], {
+          env: pipelineEnv,
+          cwd: process.cwd(),
+        })
 
-          const handleData = (chunk: Buffer) => {
-            const lines = chunk.toString().split('\n').filter((l: string) => l.trim())
-            for (const line of lines) {
-              if (line.startsWith('[TRACE] ')) {
-                try {
-                  const step = JSON.parse(line.slice('[TRACE] '.length))
-                  broadcastPipeline({ type: 'trace', step })
-                } catch {
-                  broadcastPipeline({ type: 'log', line })
-                }
-              } else {
+        const handleData = (chunk: Buffer) => {
+          const lines = chunk.toString().split('\n').filter((l: string) => l.trim())
+          for (const line of lines) {
+            if (line.startsWith('[TRACE] ')) {
+              try {
+                const step = JSON.parse(line.slice('[TRACE] '.length))
+                broadcastPipeline({ type: 'trace', step })
+              } catch {
                 broadcastPipeline({ type: 'log', line })
               }
+            } else {
+              broadcastPipeline({ type: 'log', line })
             }
           }
+        }
 
-          pipelineChild.stdout!.on('data', handleData)
-          pipelineChild.stderr!.on('data', handleData)
+        pipelineChild.stdout!.on('data', handleData)
+        pipelineChild.stderr!.on('data', handleData)
 
-          pipelineChild.on('close', (code) => {
-            if (pipelineDone) return
-            pipelineDone = true
-            broadcastPipeline({ type: 'done', success: code === 0, ...(code !== 0 ? { error: `Process exited with code ${code}` } : {}) })
-            pipelineChild = null
-          })
-
-          pipelineChild.on('error', (err) => {
-            if (pipelineDone) return
-            pipelineDone = true
-            broadcastPipeline({ type: 'done', success: false, error: err.message })
-            pipelineChild = null
-          })
-
-          res.writeHead(200, { 'Content-Type': 'application/json' })
-          res.end(JSON.stringify({ ok: true }))
+        pipelineChild.on('close', (code) => {
+          if (pipelineDone) return
+          pipelineDone = true
+          broadcastPipeline({ type: 'done', success: code === 0, ...(code !== 0 ? { error: `Process exited with code ${code}` } : {}) })
+          pipelineChild = null
         })
+
+        pipelineChild.on('error', (err) => {
+          if (pipelineDone) return
+          pipelineDone = true
+          broadcastPipeline({ type: 'done', success: false, error: err.message })
+          pipelineChild = null
+        })
+
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ ok: true }))
       })
 
       // GET /api/pipeline — SSE stream. Replays buffered logs then streams live.
@@ -269,6 +339,7 @@ function pipelineApiPlugin(): Plugin {
       server.middlewares.use('/api/pipeline', (req, res, next) => {
         // Only handle GET (SSE), let POST through to /start
         if (req.method !== 'GET') return next()
+        if (!guardRequest(req, res)) return
 
         res.writeHead(200, {
           'Content-Type': 'text/event-stream',
@@ -303,6 +374,7 @@ function pipelineApiPlugin(): Plugin {
       // API: rate a design (save/load ratings)
       // Supports multiple ratings per day — each saved as rating-{timestamp}.json
       server.middlewares.use('/api/dev-rate', (req, res) => {
+        if (!guardRequest(req, res)) return
         if (req.method === 'GET') {
           // Parse date from query string
           const url = new URL(req.url || '/', `http://${req.headers.host}`)
@@ -344,9 +416,15 @@ function pipelineApiPlugin(): Plugin {
 
         if (req.method !== 'POST') { res.writeHead(405); res.end(); return }
 
-        let body = ''
-        req.on('data', (chunk: Buffer) => { body += chunk.toString() })
-        req.on('end', async () => {
+        ;(async () => {
+          let body: string
+          try {
+            body = await readBodyLimited(req)
+          } catch (err) {
+            res.writeHead(413, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({ error: String(err) }))
+            return
+          }
           try {
             const { date, buildId, ratings, notes, timestamp, saveAsReference } = JSON.parse(body)
             if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
@@ -354,6 +432,15 @@ function pipelineApiPlugin(): Plugin {
               res.end(JSON.stringify({ error: 'Missing or invalid date' }))
               return
             }
+            // buildId must be a positive integer string (timestamp-like).
+            // Without this check, a malicious buildId of "../../../etc/passwd"
+            // would escape the archive dir via path.resolve().
+            if (buildId !== undefined && buildId !== null && !/^\d+$/.test(String(buildId))) {
+              res.writeHead(400, { 'Content-Type': 'application/json' })
+              res.end(JSON.stringify({ error: 'Invalid buildId (must be digits only)' }))
+              return
+            }
+            const archiveBase = resolve('archive')
             const archivePath = resolve('archive', date)
             if (!existsSync(archivePath)) {
               res.writeHead(404, { 'Content-Type': 'application/json' })
@@ -364,6 +451,12 @@ function pipelineApiPlugin(): Plugin {
             // Save rating inside the build dir if buildId provided, else fall back to date root
             const ratingDir = buildId ? resolve('archive', date, `build-${buildId}`) : resolve('archive', date)
             const ratingPath = resolve(ratingDir, `rating-${ts}.json`)
+            // Defense-in-depth: verify resolved path stays within archive/
+            if (!ratingPath.startsWith(archiveBase + '/')) {
+              res.writeHead(403, { 'Content-Type': 'application/json' })
+              res.end(JSON.stringify({ error: 'Forbidden: path escapes archive' }))
+              return
+            }
             writeFileSync(ratingPath, JSON.stringify({ date, buildId: buildId || null, ratings, notes, timestamp: ts }, null, 2), 'utf8')
 
             // Handle save-as-reference
@@ -451,11 +544,12 @@ function pipelineApiPlugin(): Plugin {
             res.writeHead(500, { 'Content-Type': 'application/json' })
             res.end(JSON.stringify({ error: String(err) }))
           }
-        })
+        })()
       })
 
       // Serve archived site snapshots for the preview viewer
       server.middlewares.use('/api/archive-preview', (req, res, next) => {
+        if (!guardRequest(req, res)) return
         // URL formats:
         //   /api/archive-preview/2026-03-20/build-123456/index.html  (per-build)
         //   /api/archive-preview/2026-03-16/index.html               (legacy date-level)

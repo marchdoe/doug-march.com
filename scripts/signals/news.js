@@ -1,5 +1,6 @@
 export const name = 'news'
 export const timeout = 5000
+export const requiresApiKey = 'NEWS_API_KEY'
 
 export function filterHeadlines(headlines, disallow) {
   const keywords = disallow.map(k => k.toLowerCase())

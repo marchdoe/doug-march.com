@@ -3,6 +3,9 @@ import {
   FILE_OWNERSHIP,
   buildAgentPrompt,
   identifyFailingAgent,
+  extractArchetypeFromText,
+  fixRootTsx,
+  parseDelimiterResponse,
 } from '../../scripts/design-agents.js'
 
 describe('FILE_OWNERSHIP', () => {
@@ -113,6 +116,234 @@ describe('buildAgentPrompt', () => {
       tokenContext: null,
     })
     expect(prompt).not.toContain('Do NOT use these as a design starting point')
+  })
+})
+
+describe('extractArchetypeFromText', () => {
+  it('extracts from the structured **Archetype:** declaration', () => {
+    const spec = `# Visual Specification\n**Date:** 2026-04-09\n**Archetype:** The Broadsheet\n\n...`
+    expect(extractArchetypeFromText(spec)).toBe('Broadsheet')
+  })
+
+  it('handles archetype without "The" prefix', () => {
+    const spec = `**Archetype:** Specimen\n\nbody`
+    expect(extractArchetypeFromText(spec)).toBe('Specimen')
+  })
+
+  it('handles "Gallery Wall" with space (avoids partial match on Wall)', () => {
+    const spec = `**Archetype:** The Gallery Wall\n\nbody`
+    expect(extractArchetypeFromText(spec)).toBe('Gallery Wall')
+  })
+
+  it('picks the chosen archetype, not forbidden names from constraint text', () => {
+    // This was the regression that shipped wrong archetypes — the
+    // forbidden-list echo appears earlier in the text than the actual
+    // choice, and the old first-match implementation returned the
+    // forbidden name.
+    const spec = `
+## Archetype History — MANDATORY CONSTRAINT
+Recent archetype usage: Gallery Wall, Specimen, Gallery Wall
+**FORBIDDEN TODAY**: Gallery Wall, Specimen
+
+You MUST choose from: Broadsheet, Poster, Scroll, Split, Stack, Index.
+
+# Visual Specification
+**Archetype:** The Index
+`
+    expect(extractArchetypeFromText(spec)).toBe('Index')
+  })
+
+  it('falls back to last-match when structured line is absent', () => {
+    const spec = 'FORBIDDEN: Gallery Wall, Specimen\n\nThis uses the Stack approach with horizontal bands.'
+    expect(extractArchetypeFromText(spec)).toBe('Stack')
+  })
+
+  it('returns null when no archetype is mentioned', () => {
+    expect(extractArchetypeFromText('random prose with no archetype names')).toBeNull()
+  })
+
+  it('returns null for empty string', () => {
+    expect(extractArchetypeFromText('')).toBeNull()
+  })
+
+  it('matches Broadsheet case-insensitively in structured line', () => {
+    expect(extractArchetypeFromText('**Archetype:** THE BROADSHEET')).toBe('Broadsheet')
+  })
+})
+
+describe('fixRootTsx', () => {
+  it('adds missing Scripts and ScrollRestoration to existing import', () => {
+    const input = `import { createRootRoute, Outlet } from '@tanstack/react-router'\n\nexport const Route = createRootRoute({})`
+    const result = fixRootTsx(input)
+    expect(result).toContain("'@tanstack/react-router'")
+    expect(result).toContain('ScrollRestoration')
+    expect(result).toContain('Scripts')
+  })
+
+  it('returns content unchanged when imports are already correct', () => {
+    const input = `import { createRootRoute, ScrollRestoration, Scripts } from '@tanstack/react-router'`
+    expect(fixRootTsx(input)).toBe(input)
+  })
+
+  it('returns null when no @tanstack/react-router import exists', () => {
+    const input = `import React from 'react'\nconsole.log('hi')`
+    expect(fixRootTsx(input)).toBeNull()
+  })
+
+  it('does not touch unrelated imports', () => {
+    const input = [
+      `import React from 'react'`,
+      `import { Outlet } from '@tanstack/react-router'`,
+      `import { Layout } from '../components/Layout'`,
+    ].join('\n')
+    const result = fixRootTsx(input)
+    expect(result).toContain(`import React from 'react'`)
+    expect(result).toContain(`import { Layout } from '../components/Layout'`)
+    expect(result).toMatch(/import\s*\{[^}]*Scripts[^}]*\}\s*from\s*['"]@tanstack\/react-router['"]/)
+  })
+
+  it('preserves existing imports and adds only missing ones', () => {
+    const input = `import { createRootRoute, Outlet, Scripts } from '@tanstack/react-router'`
+    const result = fixRootTsx(input)
+    // Should add ScrollRestoration but not duplicate Scripts
+    const scriptsCount = (result.match(/Scripts/g) || []).length
+    expect(scriptsCount).toBe(1)
+    expect(result).toContain('ScrollRestoration')
+  })
+
+  it('does not corrupt files with <body> or </body> strings', () => {
+    // The old regex would try to insert JSX near </body> — verify we don't
+    const input = `import { createRootRoute, Outlet } from '@tanstack/react-router'\nconst html = "<body>test</body>"`
+    const result = fixRootTsx(input)
+    // The string literal should be preserved exactly
+    expect(result).toContain('const html = "<body>test</body>"')
+  })
+
+  it('handles single-quoted import path', () => {
+    const input = `import { Outlet } from '@tanstack/react-router'`
+    const result = fixRootTsx(input)
+    expect(result).toContain('Scripts')
+  })
+
+  it('handles double-quoted import path', () => {
+    const input = `import { Outlet } from "@tanstack/react-router"`
+    const result = fixRootTsx(input)
+    expect(result).toContain('Scripts')
+  })
+})
+
+describe('parseDelimiterResponse', () => {
+  it('parses a single file', () => {
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      'export const x = 42',
+      '',
+    ].join('\n')
+    const { files } = parseDelimiterResponse(input)
+    expect(files).toHaveLength(1)
+    expect(files[0].path).toBe('app/components/Foo.tsx')
+    expect(files[0].content).toBe('export const x = 42')
+  })
+
+  it('parses multiple files', () => {
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      'const foo = 1',
+      '===FILE:app/components/Bar.tsx===',
+      'const bar = 2',
+      '',
+    ].join('\n')
+    const { files } = parseDelimiterResponse(input)
+    expect(files).toHaveLength(2)
+    expect(files[0].path).toBe('app/components/Foo.tsx')
+    expect(files[1].path).toBe('app/components/Bar.tsx')
+  })
+
+  it('preserves === in file content (not line-anchored)', () => {
+    // This is the regression we are guarding against. The old parser
+    // would split Foo.tsx in two when the content contained === anywhere.
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      "const x = 'border: 3px solid === separator ==='",
+      'const y = 42',
+      '===FILE:app/components/Bar.tsx===',
+      'const bar = 1',
+      '',
+    ].join('\n')
+    const { files } = parseDelimiterResponse(input)
+    expect(files).toHaveLength(2)
+    expect(files[0].content).toContain('=== separator ===')
+    expect(files[1].path).toBe('app/components/Bar.tsx')
+  })
+
+  it('preserves ===FILE: inside file content when not at start of line', () => {
+    // Even if a file has "===FILE:path===" in a comment or string,
+    // it should not be treated as a delimiter.
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      '// Example: ===FILE:path=== was the old format',
+      'const x = 42',
+      '===FILE:app/components/Bar.tsx===',
+      'const bar = 1',
+      '',
+    ].join('\n')
+    const { files } = parseDelimiterResponse(input)
+    expect(files).toHaveLength(2)
+    expect(files[0].content).toContain('// Example: ===FILE:path===')
+    expect(files[1].path).toBe('app/components/Bar.tsx')
+  })
+
+  it('extracts rationale after ===RATIONALE===', () => {
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      'const x = 42',
+      '===RATIONALE===',
+      'This is the rationale.',
+      '',
+    ].join('\n')
+    const { rationale } = parseDelimiterResponse(input)
+    expect(rationale).toBe('This is the rationale.')
+  })
+
+  it('extracts design_brief after ===DESIGN_BRIEF===', () => {
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      'const x = 42',
+      '===DESIGN_BRIEF===',
+      'Post-blizzard brutalism.',
+      '',
+    ].join('\n')
+    const { design_brief } = parseDelimiterResponse(input)
+    expect(design_brief).toBe('Post-blizzard brutalism.')
+  })
+
+  it('extracts both rationale and design_brief', () => {
+    const input = [
+      '===FILE:app/components/Foo.tsx===',
+      'content',
+      '===RATIONALE===',
+      'Why I did this.',
+      '===DESIGN_BRIEF===',
+      'Spring morning.',
+      '',
+    ].join('\n')
+    const result = parseDelimiterResponse(input)
+    expect(result.rationale).toBe('Why I did this.')
+    expect(result.design_brief).toBe('Spring morning.')
+    expect(result.files).toHaveLength(1)
+  })
+
+  it('ignores files with empty paths or content', () => {
+    const input = [
+      '===FILE: ===',
+      'content',
+      '===FILE:valid.tsx===',
+      'const x = 1',
+      '',
+    ].join('\n')
+    const { files } = parseDelimiterResponse(input)
+    expect(files).toHaveLength(1)
+    expect(files[0].path).toBe('valid.tsx')
   })
 })
 

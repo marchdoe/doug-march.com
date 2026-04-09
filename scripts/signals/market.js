@@ -1,5 +1,6 @@
 export const name = 'market'
 export const timeout = 5000
+export const requiresApiKey = 'ALPHA_VANTAGE_API_KEY'
 
 export async function collect(_profile) {
   const key = process.env.ALPHA_VANTAGE_API_KEY

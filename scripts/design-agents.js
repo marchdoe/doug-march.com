@@ -29,7 +29,7 @@ import {
   COMPONENT_FILES,
   readContext,
 } from './utils/site-context.js'
-import { backup, writeFiles, restore, ROOT } from './utils/file-manager.js'
+import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-manager.js'
 import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
 import { createTrace } from './utils/trace.js'
@@ -132,6 +132,85 @@ function buildArchetypeConstraintPrompt(history) {
   return block
 }
 
+/**
+ * Parse a Claude CLI response in the line-anchored ===FILE:path=== format.
+ *
+ * Delimiters must appear at the start of a line. This prevents corruption
+ * when a file's content legitimately contains the string ===FILE:path===
+ * (e.g., in a comment or documentation string). The previous unanchored
+ * regex would split such files in two and emit a spurious second "file"
+ * with the inner path as its name.
+ *
+ * @param {string} result - raw response text
+ * @returns {{ files: Array<{path: string, content: string}>, rationale?: string, design_brief?: string }}
+ */
+export function parseDelimiterResponse(result) {
+  const files = []
+  // JavaScript regex has no \Z (end of string in multiline mode), so we
+  // append a sentinel delimiter that the lookahead can match as a substitute.
+  const sentinel = '\n===END_SENTINEL===\n'
+  const withSentinel = result + sentinel
+  const filePattern = /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===END_SENTINEL===)/gm
+  let match
+  while ((match = filePattern.exec(withSentinel)) !== null) {
+    const filePath = match[1].trim()
+    const content = match[2].trim()
+    if (filePath && content) {
+      files.push({ path: filePath, content })
+    }
+  }
+
+  let rationale
+  const rationaleMatch = withSentinel.match(/^===RATIONALE===\s*\n([\s\S]*?)(?=^===)/m)
+  if (rationaleMatch) rationale = rationaleMatch[1].trim()
+
+  let design_brief
+  const briefMatch = withSentinel.match(/^===DESIGN_BRIEF===\s*\n([\s\S]*?)(?=^===)/m)
+  if (briefMatch) design_brief = briefMatch[1].trim()
+
+  return { files, rationale, design_brief }
+}
+
+/**
+ * Fix a generated __root.tsx file by ensuring Scripts and ScrollRestoration
+ * are imported from @tanstack/react-router. Returns the fixed content, or
+ * null if the file looks so broken we shouldn't touch it.
+ *
+ * Conservative behavior: only patches the import line (the safest edit).
+ * Does NOT attempt to insert/remove JSX or function definitions — the old
+ * regex approach corrupted files with nested braces or multiple </body> tags.
+ * If the fix is insufficient, the build validator catches it and triggers
+ * a retry with explicit error context, which is more reliable.
+ *
+ * @param {string} content - current __root.tsx content
+ * @returns {string|null} fixed content, or null to abort the fixup
+ */
+export function fixRootTsx(content) {
+  const REQUIRED = ['ScrollRestoration', 'Scripts']
+
+  // Find the @tanstack/react-router import line. Must be a single-line
+  // match — multi-line imports are too ambiguous to rewrite safely.
+  const importRegex = /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]@tanstack\/react-router['"]/
+  const match = content.match(importRegex)
+  if (!match) {
+    // No router import at all — can't safely fix. Let build validator reject.
+    return null
+  }
+
+  const existing = match[1].split(',').map(s => s.trim()).filter(Boolean)
+  const missing = REQUIRED.filter(name => !existing.includes(name))
+  if (missing.length === 0) {
+    // Imports are already correct. No fix needed.
+    return content
+  }
+
+  // Add missing imports to the existing import line. This is the only
+  // edit we make — intentionally conservative.
+  const merged = [...new Set([...existing, ...missing])]
+  const fixedImport = `import { ${merged.join(', ')} } from '@tanstack/react-router'`
+  return content.replace(importRegex, fixedImport)
+}
+
 // ---------------------------------------------------------------------------
 // Exported helpers (also used by tests)
 // ---------------------------------------------------------------------------
@@ -232,28 +311,8 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
     const specMatch = result.match(/===VISUAL_SPEC===([\s\S]*)/)
     const spec = specMatch ? specMatch[1].trim() : result.trim()
     parsed = { files: [], rationale: spec, design_brief: '', _rawResponse: spec }
-  } else if (result.includes('===FILE:')) {
-    // Delimiter-based format (preferred — avoids JSON escaping issues)
-    const files = []
-    const filePattern = /===FILE:([^=]+)===([\s\S]*?)(?====FILE:|===RATIONALE===|===DESIGN_BRIEF===|$)/g
-    let match
-    while ((match = filePattern.exec(result)) !== null) {
-      const filePath = match[1].trim()
-      const content = match[2].trim()
-      if (filePath && content) {
-        files.push({ path: filePath, content })
-      }
-    }
-
-    let rationale = undefined
-    const rationaleMatch = result.match(/===RATIONALE===([\s\S]*?)(?====|$)/)
-    if (rationaleMatch) rationale = rationaleMatch[1].trim()
-
-    let design_brief = undefined
-    const briefMatch = result.match(/===DESIGN_BRIEF===([\s\S]*?)(?====|$)/)
-    if (briefMatch) design_brief = briefMatch[1].trim()
-
-    parsed = { files, rationale, design_brief }
+  } else if (result.match(/^===FILE:/m)) {
+    parsed = parseDelimiterResponse(result)
   } else {
     // JSON fallback
     try {
@@ -357,25 +416,59 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     },
   })
 
-  async function saveTrace() {
+  // Track whether archive() succeeded in this run so saveTrace() knows
+  // whether to write into the current build dir or create a failed-build dir.
+  let archiveRan = false
+
+  async function saveTrace(error) {
     try {
       const archiveDateDir = path.join(ROOT, 'archive', signals.date)
-      const builds = readdirSync(archiveDateDir, { withFileTypes: true })
-        .filter(b => b.isDirectory() && b.name.startsWith('build-'))
-        .sort().reverse()
-      if (builds[0]) {
+
+      if (archiveRan) {
+        // Success path: find the build dir that archive() just created
+        const builds = readdirSync(archiveDateDir, { withFileTypes: true })
+          .filter(b => b.isDirectory() && b.name.startsWith('build-') && !b.name.startsWith('build-failed-') && !b.name.startsWith('build-pre-'))
+          .sort().reverse()
+        if (builds[0]) {
+          await writeFile(
+            path.join(archiveDateDir, builds[0].name, 'trace.json'),
+            trace.toJSON(),
+            'utf8'
+          )
+          console.log(`  trace saved to ${builds[0].name}/trace.json`)
+          return
+        }
+      }
+
+      // Failure path: create a dedicated build-failed-* dir so failure
+      // diagnostics are preserved without corrupting prior successful builds
+      const failedDir = path.join(archiveDateDir, `build-failed-${Date.now()}`)
+      await mkdir(failedDir, { recursive: true })
+      await writeFile(path.join(failedDir, 'trace.json'), trace.toJSON(), 'utf8')
+      if (error) {
         await writeFile(
-          path.join(archiveDateDir, builds[0].name, 'trace.json'),
-          trace.toJSON(),
+          path.join(failedDir, 'error.txt'),
+          `${error.message || String(error)}\n\n${error.stack || ''}`,
           'utf8'
         )
-        console.log(`  trace saved to ${builds[0].name}/trace.json`)
       }
+      console.log(`  failure trace saved to ${path.basename(failedDir)}/trace.json`)
+      // Also emit trace to stdout so it's captured in Actions logs even if
+      // the filesystem write fails for some reason.
+      console.log(`[TRACE-FINAL] ${trace.toJSON()}`)
     } catch (err) {
       console.warn(`  trace save failed (non-blocking): ${err.message}`)
+      // Last-ditch: emit to stdout so logs always have it
+      try { console.log(`[TRACE-FINAL] ${trace.toJSON()}`) } catch {}
     }
   }
 
+  let swarmError = null
+  // Track every path written during the swarm so we can clean up orphan
+  // files (paths the AI invented beyond MUTABLE_FILES) on any failure.
+  // restore(originalBackup) only reverts paths in the backup; files created
+  // by the AI outside that set would leak without this tracking.
+  const writtenPaths = new Set()
   try {
 
   const weightsPrompt = `\n\n## Creative Weights (0-10, set by the site owner)\n\nSignals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'The owner wants BOLD, EXPERIMENTAL design today. Push boundaries.' : weights.risk <= 3 ? 'The owner wants SAFE, POLISHED design today. Proven patterns.' : ''}${weights.inspiration >= 7 ? '\nDesign references should HEAVILY influence your compositional choices.' : ''}${weights.signals <= 3 ? '\nSignals are background texture only — do NOT let weather or sports drive the design.' : ''}`
@@ -423,27 +516,35 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const publicArchiveDir = path.join(ROOT, 'public', 'archive', today)
   if (!existsSync(publicArchiveDir)) {
     console.log('\n[pre-archive] Preserving current site before redesign...')
+    // tempBuildDir must always be cleaned up — even if captureSnapshot,
+    // cpSync, or any step throws. Otherwise `git add archive/` in the
+    // workflow commits the temp dir to main.
+    const tempBuildId = `pre-${Date.now()}`
+    const tempBuildDir = path.join(ROOT, 'archive', today, `build-${tempBuildId}`)
     try {
       const { captureSnapshot } = await import('./utils/snapshot.js')
-      // Snapshot into a temp build ID — we just need the site/ output
-      const tempBuildId = `pre-${Date.now()}`
       await captureSnapshot(today, tempBuildId)
 
       // Copy the snapshot to public/archive/ for static serving
-      const snapshotSiteDir = path.join(ROOT, 'archive', today, `build-${tempBuildId}`, 'site')
+      const snapshotSiteDir = path.join(tempBuildDir, 'site')
       if (existsSync(snapshotSiteDir)) {
         const { cpSync } = await import('fs')
         await mkdir(publicArchiveDir, { recursive: true })
         cpSync(snapshotSiteDir, publicArchiveDir, { recursive: true })
         console.log(`  preserved to public/archive/${today}/`)
       }
-
-      // Clean up the temp build dir (we only needed the public copy)
-      const { rmSync } = await import('fs')
-      const tempBuildDir = path.join(ROOT, 'archive', today, `build-${tempBuildId}`)
-      rmSync(tempBuildDir, { recursive: true, force: true })
     } catch (err) {
       console.warn(`  pre-archive failed (non-blocking): ${err.message}`)
+    } finally {
+      // Always clean up the temp build dir — we only needed the public copy
+      try {
+        const { rmSync } = await import('fs')
+        if (existsSync(tempBuildDir)) {
+          rmSync(tempBuildDir, { recursive: true, force: true })
+        }
+      } catch (cleanupErr) {
+        console.warn(`  pre-archive temp cleanup failed: ${cleanupErr.message}`)
+      }
     }
   } else {
     console.log(`\n[pre-archive] public/archive/${today}/ already exists, skipping`)
@@ -672,56 +773,23 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
 
   // Write token files
-  await writeFiles(tokenResult.files)
+  for (const p of await writeFiles(tokenResult.files)) writtenPaths.add(p)
 
   // Post-write fixup: ensure __root.tsx has critical imports for SPA hydration.
-  // The token designer frequently drops ScrollRestoration and Scripts imports,
-  // or defines fake local versions (return null). Both break client-side hydration.
+  // The token designer frequently drops Scripts import or defines a fake
+  // local version (return null). Both break client-side hydration.
+  //
+  // This fixup is best-effort and defensive — if anything looks ambiguous,
+  // we leave the file alone and let the build validator catch it. The
+  // validator will trigger a retry with the explicit error, which is
+  // more reliable than risking a corrupted file from aggressive regex surgery.
   try {
     const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
-    let rootContent = await readFile(rootPath, 'utf8')
-    let fixed = false
-
-    // Step 1: Check if ScrollRestoration/Scripts are in the @tanstack/react-router import line
-    const routerImportMatch = rootContent.match(/import\s*\{([^}]+)\}\s*from\s*['"]@tanstack\/react-router['"]/)
-    const routerImports = routerImportMatch ? routerImportMatch[1] : ''
-    const requiredImports = ['ScrollRestoration', 'Scripts']
-    const missingFromImport = requiredImports.filter(name => !routerImports.includes(name))
-
-    if (missingFromImport.length > 0) {
-      // Add missing to the import line
-      rootContent = rootContent.replace(
-        /import\s*\{([^}]+)\}\s*from\s*['"]@tanstack\/react-router['"]/,
-        (match, imports) => {
-          const existing = imports.split(',').map(s => s.trim())
-          const merged = [...new Set([...existing, ...missingFromImport])]
-          return `import { ${merged.join(', ')} } from '@tanstack/react-router'`
-        }
-      )
-      fixed = true
-    }
-
-    // Step 2: Remove fake local definitions (function ScrollRestoration/Scripts that return null)
-    rootContent = rootContent.replace(/\nfunction ScrollRestoration\(\)\s*\{[\s\S]*?return\s+null[\s\S]*?\}\n?/g, '\n')
-    rootContent = rootContent.replace(/\nfunction Scripts\(\)\s*\{[\s\S]*?return\s+null[\s\S]*?\}\n?/g, '\n')
-
-    // Step 3: Ensure ScrollRestoration and Scripts are in the JSX body
-    if (!rootContent.includes('<ScrollRestoration')) {
-      const inserted = rootContent
-        .replace(/(\{children\})([\s\S]*?)(<\/body>)/, '$1\n        <ScrollRestoration />\n        <Scripts />$2$3')
-      if (inserted !== rootContent) {
-        rootContent = inserted
-      } else {
-        rootContent = rootContent
-          .replace(/(\{children\}<\/Layout>)([\s\S]*?)(\s*<\/>)/, '$1\n    <ScrollRestoration />\n    <Scripts />$2$3')
-          .replace(/(<\/Layout>)([\s\S]*?)(\s*<\/>)/, '$1\n    <ScrollRestoration />\n    <Scripts />$2$3')
-      }
-      fixed = true
-    }
-
-    if (fixed) {
-      await writeFile(rootPath, rootContent, 'utf8')
-      console.log(`  [fixup] fixed __root.tsx: ensured ScrollRestoration/Scripts are imported from @tanstack/react-router`)
+    const original = await readFile(rootPath, 'utf8')
+    const fixed = fixRootTsx(original)
+    if (fixed !== null && fixed !== original) {
+      await writeFile(rootPath, fixed, 'utf8')
+      console.log(`  [fixup] fixed __root.tsx: added Scripts/ScrollRestoration imports`)
     }
   } catch (err) {
     console.warn(`  [fixup] __root.tsx fixup failed (non-blocking): ${err.message}`)
@@ -752,14 +820,16 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     try {
       tokenResult = await callAgent('token-designer', tokenSystemPrompt, tokenUserPrompt, codegenResult.error, { model: 'haiku' })
     } catch (err) {
+      await cleanupOrphans(writtenPaths, originalBackup)
       await restore(originalBackup)
       throw new Error(`Token Designer retry failed: ${err.message}`)
     }
 
-    await writeFiles(tokenResult.files)
+    for (const p of await writeFiles(tokenResult.files)) writtenPaths.add(p)
 
     const retryCodegen = validateCodegen()
     if (!retryCodegen.success) {
+      await cleanupOrphans(writtenPaths, originalBackup)
       await restore(originalBackup)
       throw new Error(`Token Designer codegen failed after retry: ${retryCodegen.error?.slice(0, 500)}`)
     }
@@ -795,7 +865,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
 
   // Write all files
-  await writeFiles(designerResult.files)
+  for (const p of await writeFiles(designerResult.files)) writtenPaths.add(p)
 
   trace.addStep({
     name: 'unified-designer',
@@ -811,6 +881,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // Verify Layout.tsx was written (critical for the site to function)
   const layoutPath = path.join(ROOT, 'app/components/Layout.tsx')
   if (!existsSync(layoutPath)) {
+    await cleanupOrphans(writtenPaths, originalBackup)
     await restore(originalBackup)
     throw new Error('Unified Designer did not produce Layout.tsx — site cannot function without it')
   }
@@ -886,7 +957,16 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           console.log(`  retrying ${responsibleAgent} with critic feedback...`)
           try {
             const retryResult = await callAgent(responsibleAgent, config.prompt, config.user(), feedback)
-            await writeFiles(retryResult.files)
+            for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
+
+            // Re-run codegen before validateBuild if token files changed,
+            // otherwise validateBuild sees stale styled-system output.
+            if (responsibleAgent === 'token-designer') {
+              const codegenAfterRetry = validateCodegen()
+              if (!codegenAfterRetry.success) {
+                console.warn(`  codegen failed after critic retry: ${codegenAfterRetry.error?.slice(0, 200)}`)
+              }
+            }
 
             const retryBuild = validateBuild()
             if (!retryBuild.success) {
@@ -898,6 +978,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
                   filesToRestore.set(filePath, content)
                 }
               }
+              await cleanupOrphans(writtenPaths, originalBackup)
               await restore(filesToRestore)
               if (responsibleAgent === 'token-designer') validateCodegen()
             } else {
@@ -925,7 +1006,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign'
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths)
-    await saveTrace()
+    archiveRan = true
 
     // Save archetype for future anti-repetition enforcement
     if (chosenArchetype && signals.date) {
@@ -968,6 +1049,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     ? ['unified-designer']
     : [failingAgent]
 
+  // Track whether a token-designer retry ran so we know to re-run codegen
+  let tokenRetried = false
+
   for (const agent of retryAgents) {
     const config = agentConfig[agent]
     if (!config) continue
@@ -975,12 +1059,34 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     console.log(`\n  retrying ${agent} with build error context...`)
     try {
       const retryResult = await callAgent(agent, config.prompt, config.user(), buildResult.error)
-      await writeFiles(retryResult.files)
+      for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
       // Update the result so the archive records the retry output, not stale originals
-      if (agent === 'token-designer') tokenResult = retryResult
+      if (agent === 'token-designer') {
+        tokenResult = retryResult
+        tokenRetried = true
+      }
       if (agent === 'unified-designer') designerResult = retryResult
     } catch (err) {
       console.error(`  ${agent} retry failed: ${err.message}`)
+      // If the retry agent itself crashed, don't silently continue to
+      // validateBuild — bail out with the real error so debugging points
+      // at the actual cause (code review #14).
+      await cleanupOrphans(writtenPaths, originalBackup)
+      await restore(originalBackup)
+      throw new Error(`${agent} retry crashed: ${err.message}`)
+    }
+  }
+
+  // If token files changed, codegen must run before the build checks the
+  // new styled-system. Otherwise validateBuild can succeed on stale output
+  // or fail referencing tokens that exist in the new preset.
+  if (tokenRetried) {
+    console.log('  re-running codegen after token retry...')
+    const retryCodegen = validateCodegen()
+    if (!retryCodegen.success) {
+      await cleanupOrphans(writtenPaths, originalBackup)
+      await restore(originalBackup)
+      throw new Error(`Codegen failed after token retry: ${retryCodegen.error?.slice(0, 500)}`)
     }
   }
 
@@ -999,7 +1105,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign (retry)'
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths)
-    await saveTrace()
+    archiveRan = true
 
     // Save archetype for future anti-repetition enforcement
     if (chosenArchetype && signals.date) {
@@ -1015,11 +1121,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
 
   // All retries exhausted — restore everything and throw
+  await cleanupOrphans(writtenPaths, originalBackup)
   await restore(originalBackup)
   throw new Error(`Build failed after retry. Error:\n${retryBuild.error?.slice(0, 1000)}`)
 
+  } catch (err) {
+    swarmError = err
+    throw err
   } finally {
-    await saveTrace()
+    await saveTrace(swarmError)
   }
 }
 
