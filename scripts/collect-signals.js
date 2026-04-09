@@ -16,6 +16,7 @@ import { existsSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import yaml from 'js-yaml'
+import { sanitizeSignals } from './utils/sanitize-signal.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -94,7 +95,10 @@ export async function runCollector(providerOverrides, profileOverride) {
     if (settled.status !== 'fulfilled') continue
     const r = settled.value
     if (r.status === 'ok' && r.data) {
-      signals[r.name] = r.data
+      // Sanitize all third-party string data to defend against prompt
+      // injection. Signal data flows into Claude prompts unmodified;
+      // a crafted HN title or news headline could steer the AI output.
+      signals[r.name] = sanitizeSignals(r.data)
     }
     sources[r.name] = r.status === 'ok'
       ? { status: 'ok', source: r.meta.source ?? r.name, latency_ms: r.meta.latency_ms, items: r.meta.items ?? 0 }

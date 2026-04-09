@@ -10,12 +10,20 @@ on:
         type: boolean
         default: false
 
+# Prevent overlapping runs (cron + manual trigger) that would race on
+# git push to main. Queue instead of cancelling — we never want to
+# abort a successful run mid-commit.
+concurrency:
+  group: daily-redesign
+  cancel-in-progress: false
+
 jobs:
   redesign:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
       contents: write
+      issues: write  # for failure notification issues
 
     steps:
       - uses: actions/checkout@v4
@@ -61,5 +69,32 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add archive/ elements/ app/components/ app/routes/ public/archive/ signals/today.references.md
           git diff --cached --quiet || git commit -m "chore: daily redesign $(date +%Y-%m-%d)"
-          git pull --rebase origin main
-          git push origin main
+          # Retry push up to 3 times in case of concurrent pushes to main
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin main && break
+            echo "push attempt $i failed, retrying in 10s..."
+            sleep 10
+          done
+
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `Daily redesign failed — ${new Date().toISOString().slice(0, 10)}`
+            const body = [
+              `The daily redesign pipeline failed.`,
+              ``,
+              `**Run:** [${context.runId}](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
+              `**Trigger:** ${context.eventName}`,
+              `**Commit:** ${context.sha.slice(0, 7)}`,
+              ``,
+              `Check the run logs for the failure reason. If a trace was saved, find it under \`archive/$(date -u +%Y-%m-%d)/build-failed-*/trace.json\`.`,
+            ].join('\n')
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['pipeline-failure'],
+            })

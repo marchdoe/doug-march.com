@@ -2,6 +2,7 @@ import { spawnSync } from 'child_process'
 import { readFileSync, readdirSync } from 'fs'
 import { resolve } from 'path'
 import { ROOT } from './file-manager.js'
+import { MUTABLE_FILES } from './site-context.js'
 
 /**
  * Pre-build validation: check for known bad patterns in generated code.
@@ -122,6 +123,104 @@ export function validateGenerated() {
       }
     } catch {
       // File doesn't exist — skip
+    }
+  }
+
+  // Check 5: Scan generated code for security-sensitive patterns.
+  // AI output is untrusted — a compromised or prompt-injected agent can
+  // emit code that exfiltrates data, runs arbitrary scripts, or loads
+  // third-party resources. This is the second line of defense after
+  // signal sanitization in collect-signals.js.
+  const DANGEROUS_PATTERNS = [
+    { name: 'fetch() call', regex: /\bfetch\s*\(/, severity: 'blocks network exfiltration' },
+    { name: 'XMLHttpRequest', regex: /\bXMLHttpRequest\b/, severity: 'blocks network exfiltration' },
+    { name: 'sendBeacon', regex: /\bnavigator\.sendBeacon\b/, severity: 'blocks network exfiltration' },
+    { name: 'WebSocket', regex: /\bnew\s+WebSocket\b/, severity: 'blocks network exfiltration' },
+    { name: 'EventSource', regex: /\bnew\s+EventSource\b/, severity: 'blocks network exfiltration' },
+    { name: 'eval()', regex: /\beval\s*\(/, severity: 'blocks arbitrary code execution' },
+    { name: 'new Function()', regex: /\bnew\s+Function\s*\(/, severity: 'blocks arbitrary code execution' },
+    { name: 'dynamic import()', regex: /\bimport\s*\(\s*[`'"]/, severity: 'blocks arbitrary module loading' },
+    { name: 'dangerouslySetInnerHTML', regex: /dangerouslySetInnerHTML/, severity: 'blocks XSS' },
+    { name: 'document.write', regex: /document\.write\s*\(/, severity: 'blocks XSS' },
+    { name: 'innerHTML assignment', regex: /\.innerHTML\s*=/, severity: 'blocks XSS' },
+    { name: 'script tag', regex: /<script[\s>]/i, severity: 'blocks inline scripts' },
+    { name: 'javascript: URL', regex: /javascript:/i, severity: 'blocks XSS via URL' },
+    // onerror/onclick as HTML attributes only (not JS property assignments like es.onerror = fn)
+    { name: 'inline onerror attribute', regex: /\sonerror\s*=\s*["']/i, severity: 'blocks inline event handlers' },
+    { name: 'inline onclick attribute', regex: /\sonclick\s*=\s*["']/i, severity: 'blocks inline event handlers' },
+    { name: 'atob/btoa', regex: /\b(?:atob|btoa)\s*\(/, severity: 'blocks obfuscated payloads' },
+  ]
+
+  // Per-file exceptions for legitimate current uses in AI-generated files.
+  // Keep this small and explicit — every exception is an increase in
+  // attack surface. Non-mutable files (archive.tsx, elements.tsx, dev.tsx)
+  // are not scanned at all, so no exception is needed for them.
+  const PATTERN_EXCEPTIONS = {
+    // __root.tsx contains the theme-init script (dark mode detection on
+    // first paint). The AI must preserve this pattern when regenerating.
+    // The content of the script is validated separately via the THEME_INIT_SCRIPT
+    // check in Check 3.
+    'app/routes/__root.tsx': ['script tag'],
+  }
+
+  // Allowlist of domains permitted in URL strings in generated code.
+  // Fonts and project-owned URLs only. Any other domain is flagged.
+  const ALLOWED_URL_HOSTS = new Set([
+    'fonts.googleapis.com',
+    'fonts.gstatic.com',
+    'spaceman.llc',
+    'getfishsticks.com',
+    '15th.club',
+    'doug-march.com',
+  ])
+
+  // Files to scan: only AI-generated mutable files. Hand-maintained
+  // files like elements.tsx, archive.tsx, archive.$date.tsx, dev.tsx are
+  // excluded — they have different trust boundaries.
+  // Plus any components/ files the designer may have added beyond the
+  // canonical list (dynamically discovered).
+  const filesToScan = [...MUTABLE_FILES]
+  try {
+    const componentsDir = resolve(ROOT, 'app/components')
+    for (const f of readdirSync(componentsDir)) {
+      if (!f.endsWith('.tsx') && !f.endsWith('.ts')) continue
+      const relPath = `app/components/${f}`
+      if (!filesToScan.includes(relPath)) filesToScan.push(relPath)
+    }
+  } catch {}
+
+  for (const file of filesToScan) {
+    let content
+    try {
+      content = readFileSync(resolve(ROOT, file), 'utf8')
+    } catch {
+      continue
+    }
+
+    // Strip comments so patterns in comments don't trigger false positives.
+    // Only strip standalone line comments (start of line + whitespace) to
+    // avoid breaking URLs like https:// — a trailing comment rarely contains
+    // a dangerous pattern that isn't also in the code itself.
+    const stripped = content
+      .replace(/\/\*[\s\S]*?\*\//g, '')    // block comments
+      .replace(/^\s*\/\/[^\n]*/gm, '')     // standalone line comments only
+
+    const fileExceptions = PATTERN_EXCEPTIONS[file] || []
+
+    for (const { name, regex, severity } of DANGEROUS_PATTERNS) {
+      if (fileExceptions.includes(name)) continue
+      if (regex.test(stripped)) {
+        errors.push(`${file}: contains ${name} (${severity})`)
+      }
+    }
+
+    // Check all URLs in the code against allowlist
+    const urlMatches = stripped.matchAll(/https?:\/\/([a-zA-Z0-9.-]+)/g)
+    for (const match of urlMatches) {
+      const host = match[1].toLowerCase()
+      if (!ALLOWED_URL_HOSTS.has(host)) {
+        errors.push(`${file}: contains disallowed URL to ${host} (only ${[...ALLOWED_URL_HOSTS].join(', ')} are allowed)`)
+      }
     }
   }
 

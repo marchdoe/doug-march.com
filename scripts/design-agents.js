@@ -357,25 +357,54 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     },
   })
 
-  async function saveTrace() {
+  // Track whether archive() succeeded in this run so saveTrace() knows
+  // whether to write into the current build dir or create a failed-build dir.
+  let archiveRan = false
+
+  async function saveTrace(error) {
     try {
       const archiveDateDir = path.join(ROOT, 'archive', signals.date)
-      const builds = readdirSync(archiveDateDir, { withFileTypes: true })
-        .filter(b => b.isDirectory() && b.name.startsWith('build-'))
-        .sort().reverse()
-      if (builds[0]) {
+
+      if (archiveRan) {
+        // Success path: find the build dir that archive() just created
+        const builds = readdirSync(archiveDateDir, { withFileTypes: true })
+          .filter(b => b.isDirectory() && b.name.startsWith('build-') && !b.name.startsWith('build-failed-') && !b.name.startsWith('build-pre-'))
+          .sort().reverse()
+        if (builds[0]) {
+          await writeFile(
+            path.join(archiveDateDir, builds[0].name, 'trace.json'),
+            trace.toJSON(),
+            'utf8'
+          )
+          console.log(`  trace saved to ${builds[0].name}/trace.json`)
+          return
+        }
+      }
+
+      // Failure path: create a dedicated build-failed-* dir so failure
+      // diagnostics are preserved without corrupting prior successful builds
+      const failedDir = path.join(archiveDateDir, `build-failed-${Date.now()}`)
+      await mkdir(failedDir, { recursive: true })
+      await writeFile(path.join(failedDir, 'trace.json'), trace.toJSON(), 'utf8')
+      if (error) {
         await writeFile(
-          path.join(archiveDateDir, builds[0].name, 'trace.json'),
-          trace.toJSON(),
+          path.join(failedDir, 'error.txt'),
+          `${error.message || String(error)}\n\n${error.stack || ''}`,
           'utf8'
         )
-        console.log(`  trace saved to ${builds[0].name}/trace.json`)
       }
+      console.log(`  failure trace saved to ${path.basename(failedDir)}/trace.json`)
+      // Also emit trace to stdout so it's captured in Actions logs even if
+      // the filesystem write fails for some reason.
+      console.log(`[TRACE-FINAL] ${trace.toJSON()}`)
     } catch (err) {
       console.warn(`  trace save failed (non-blocking): ${err.message}`)
+      // Last-ditch: emit to stdout so logs always have it
+      try { console.log(`[TRACE-FINAL] ${trace.toJSON()}`) } catch {}
     }
   }
 
+  let swarmError = null
   try {
 
   const weightsPrompt = `\n\n## Creative Weights (0-10, set by the site owner)\n\nSignals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'The owner wants BOLD, EXPERIMENTAL design today. Push boundaries.' : weights.risk <= 3 ? 'The owner wants SAFE, POLISHED design today. Proven patterns.' : ''}${weights.inspiration >= 7 ? '\nDesign references should HEAVILY influence your compositional choices.' : ''}${weights.signals <= 3 ? '\nSignals are background texture only — do NOT let weather or sports drive the design.' : ''}`
@@ -925,7 +954,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign'
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths)
-    await saveTrace()
+    archiveRan = true
 
     // Save archetype for future anti-repetition enforcement
     if (chosenArchetype && signals.date) {
@@ -999,7 +1028,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign (retry)'
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths)
-    await saveTrace()
+    archiveRan = true
 
     // Save archetype for future anti-repetition enforcement
     if (chosenArchetype && signals.date) {
@@ -1018,8 +1047,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   await restore(originalBackup)
   throw new Error(`Build failed after retry. Error:\n${retryBuild.error?.slice(0, 1000)}`)
 
+  } catch (err) {
+    swarmError = err
+    throw err
   } finally {
-    await saveTrace()
+    await saveTrace(swarmError)
   }
 }
 
