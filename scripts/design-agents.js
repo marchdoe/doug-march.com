@@ -29,7 +29,7 @@ import {
   COMPONENT_FILES,
   readContext,
 } from './utils/site-context.js'
-import { backup, writeFiles, restore, ROOT } from './utils/file-manager.js'
+import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-manager.js'
 import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
 import { createTrace } from './utils/trace.js'
@@ -405,6 +405,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
 
   let swarmError = null
+  // Track every path written during the swarm so we can clean up orphan
+  // files (paths the AI invented beyond MUTABLE_FILES) on any failure.
+  // restore(originalBackup) only reverts paths in the backup; files created
+  // by the AI outside that set would leak without this tracking.
+  const writtenPaths = new Set()
   try {
 
   const weightsPrompt = `\n\n## Creative Weights (0-10, set by the site owner)\n\nSignals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'The owner wants BOLD, EXPERIMENTAL design today. Push boundaries.' : weights.risk <= 3 ? 'The owner wants SAFE, POLISHED design today. Proven patterns.' : ''}${weights.inspiration >= 7 ? '\nDesign references should HEAVILY influence your compositional choices.' : ''}${weights.signals <= 3 ? '\nSignals are background texture only — do NOT let weather or sports drive the design.' : ''}`
@@ -452,27 +457,35 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const publicArchiveDir = path.join(ROOT, 'public', 'archive', today)
   if (!existsSync(publicArchiveDir)) {
     console.log('\n[pre-archive] Preserving current site before redesign...')
+    // tempBuildDir must always be cleaned up — even if captureSnapshot,
+    // cpSync, or any step throws. Otherwise `git add archive/` in the
+    // workflow commits the temp dir to main.
+    const tempBuildId = `pre-${Date.now()}`
+    const tempBuildDir = path.join(ROOT, 'archive', today, `build-${tempBuildId}`)
     try {
       const { captureSnapshot } = await import('./utils/snapshot.js')
-      // Snapshot into a temp build ID — we just need the site/ output
-      const tempBuildId = `pre-${Date.now()}`
       await captureSnapshot(today, tempBuildId)
 
       // Copy the snapshot to public/archive/ for static serving
-      const snapshotSiteDir = path.join(ROOT, 'archive', today, `build-${tempBuildId}`, 'site')
+      const snapshotSiteDir = path.join(tempBuildDir, 'site')
       if (existsSync(snapshotSiteDir)) {
         const { cpSync } = await import('fs')
         await mkdir(publicArchiveDir, { recursive: true })
         cpSync(snapshotSiteDir, publicArchiveDir, { recursive: true })
         console.log(`  preserved to public/archive/${today}/`)
       }
-
-      // Clean up the temp build dir (we only needed the public copy)
-      const { rmSync } = await import('fs')
-      const tempBuildDir = path.join(ROOT, 'archive', today, `build-${tempBuildId}`)
-      rmSync(tempBuildDir, { recursive: true, force: true })
     } catch (err) {
       console.warn(`  pre-archive failed (non-blocking): ${err.message}`)
+    } finally {
+      // Always clean up the temp build dir — we only needed the public copy
+      try {
+        const { rmSync } = await import('fs')
+        if (existsSync(tempBuildDir)) {
+          rmSync(tempBuildDir, { recursive: true, force: true })
+        }
+      } catch (cleanupErr) {
+        console.warn(`  pre-archive temp cleanup failed: ${cleanupErr.message}`)
+      }
     }
   } else {
     console.log(`\n[pre-archive] public/archive/${today}/ already exists, skipping`)
@@ -701,7 +714,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
 
   // Write token files
-  await writeFiles(tokenResult.files)
+  for (const p of await writeFiles(tokenResult.files)) writtenPaths.add(p)
 
   // Post-write fixup: ensure __root.tsx has critical imports for SPA hydration.
   // The token designer frequently drops ScrollRestoration and Scripts imports,
@@ -781,14 +794,16 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     try {
       tokenResult = await callAgent('token-designer', tokenSystemPrompt, tokenUserPrompt, codegenResult.error, { model: 'haiku' })
     } catch (err) {
+      await cleanupOrphans(writtenPaths, originalBackup)
       await restore(originalBackup)
       throw new Error(`Token Designer retry failed: ${err.message}`)
     }
 
-    await writeFiles(tokenResult.files)
+    for (const p of await writeFiles(tokenResult.files)) writtenPaths.add(p)
 
     const retryCodegen = validateCodegen()
     if (!retryCodegen.success) {
+      await cleanupOrphans(writtenPaths, originalBackup)
       await restore(originalBackup)
       throw new Error(`Token Designer codegen failed after retry: ${retryCodegen.error?.slice(0, 500)}`)
     }
@@ -824,7 +839,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
 
   // Write all files
-  await writeFiles(designerResult.files)
+  for (const p of await writeFiles(designerResult.files)) writtenPaths.add(p)
 
   trace.addStep({
     name: 'unified-designer',
@@ -840,6 +855,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // Verify Layout.tsx was written (critical for the site to function)
   const layoutPath = path.join(ROOT, 'app/components/Layout.tsx')
   if (!existsSync(layoutPath)) {
+    await cleanupOrphans(writtenPaths, originalBackup)
     await restore(originalBackup)
     throw new Error('Unified Designer did not produce Layout.tsx — site cannot function without it')
   }
@@ -915,7 +931,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           console.log(`  retrying ${responsibleAgent} with critic feedback...`)
           try {
             const retryResult = await callAgent(responsibleAgent, config.prompt, config.user(), feedback)
-            await writeFiles(retryResult.files)
+            for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
 
             const retryBuild = validateBuild()
             if (!retryBuild.success) {
@@ -927,6 +943,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
                   filesToRestore.set(filePath, content)
                 }
               }
+              await cleanupOrphans(writtenPaths, originalBackup)
               await restore(filesToRestore)
               if (responsibleAgent === 'token-designer') validateCodegen()
             } else {
@@ -1004,7 +1021,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     console.log(`\n  retrying ${agent} with build error context...`)
     try {
       const retryResult = await callAgent(agent, config.prompt, config.user(), buildResult.error)
-      await writeFiles(retryResult.files)
+      for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
       // Update the result so the archive records the retry output, not stale originals
       if (agent === 'token-designer') tokenResult = retryResult
       if (agent === 'unified-designer') designerResult = retryResult
@@ -1044,6 +1061,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
 
   // All retries exhausted — restore everything and throw
+  await cleanupOrphans(writtenPaths, originalBackup)
   await restore(originalBackup)
   throw new Error(`Build failed after retry. Error:\n${retryBuild.error?.slice(0, 1000)}`)
 

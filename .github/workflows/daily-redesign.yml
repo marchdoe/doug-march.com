@@ -67,8 +67,19 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add archive/ elements/ app/components/ app/routes/ public/archive/ signals/today.references.md
-          git diff --cached --quiet || git commit -m "chore: daily redesign $(date +%Y-%m-%d)"
+          TODAY=$(date -u +%Y-%m-%d)
+          # Stage only today's completed build — explicitly exclude
+          # build-pre-* (snapshot temp dirs) and build-failed-* (failure
+          # diagnostic dirs) so they never leak into main. Uses explicit
+          # paths instead of archive/ so other dates' dirs aren't touched.
+          git add "archive/$TODAY/archetype.txt" 2>/dev/null || true
+          git add "archive/$TODAY/brief.md" 2>/dev/null || true
+          # Only stage numeric timestamp build dirs (build-\d+), not build-pre-* or build-failed-*
+          for d in archive/$TODAY/build-[0-9]*; do
+            [ -d "$d" ] && git add "$d"
+          done
+          git add elements/ app/components/ app/routes/ public/archive/ signals/today.references.md
+          git diff --cached --quiet || git commit -m "chore: daily redesign $TODAY"
           # Retry push up to 3 times in case of concurrent pushes to main
           for i in 1 2 3; do
             git pull --rebase origin main && git push origin main && break
