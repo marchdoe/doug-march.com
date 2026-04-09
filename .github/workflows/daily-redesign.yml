@@ -33,7 +33,10 @@ jobs:
         run: pnpm install
 
       - name: Install Claude CLI
-        run: npm install -g @anthropic-ai/claude-code
+        # Pinned to 2.1.92 — versions 2.1.94+ caused the unified-designer
+        # agent to produce 0KB output for large (56KB) prompts in CI.
+        # See PR #40 for investigation. Bump after verifying in a test run.
+        run: npm install -g @anthropic-ai/claude-code@2.1.92
 
       - name: Collect signals
         env:
