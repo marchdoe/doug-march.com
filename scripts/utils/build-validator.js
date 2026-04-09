@@ -1,5 +1,5 @@
 import { spawnSync } from 'child_process'
-import { readFileSync, readdirSync } from 'fs'
+import { readFileSync, readdirSync, existsSync } from 'fs'
 import { resolve } from 'path'
 import { ROOT } from './file-manager.js'
 import { MUTABLE_FILES } from './site-context.js'
@@ -98,12 +98,30 @@ export function validateGenerated() {
     }
   }
 
-  // Check 3: __root.tsx must render <Scripts /> in the body
-  // Without it, client JS never loads and all route content renders empty
+  // Check 3: __root.tsx must import Scripts and ScrollRestoration from
+  // @tanstack/react-router AND render them. Previously we just did a
+  // substring check for "Scripts" which would pass on a fake local
+  // `function Scripts() { return null }` — that breaks SPA hydration
+  // but satisfies the old regex.
   try {
     const rootContent = readFileSync(resolve(ROOT, 'app/routes/__root.tsx'), 'utf8')
-    if (!rootContent.includes('Scripts')) {
-      errors.push('app/routes/__root.tsx: missing <Scripts /> — client JS will not load and routes will render empty. Import Scripts from @tanstack/react-router and render it in the body.')
+    // Must import Scripts from the router package (not a fake local definition)
+    const routerImport = rootContent.match(/import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]@tanstack\/react-router['"]/)
+    if (!routerImport) {
+      errors.push('app/routes/__root.tsx: no import from @tanstack/react-router')
+    } else {
+      const imports = routerImport[1].split(',').map(s => s.trim())
+      if (!imports.includes('Scripts')) {
+        errors.push('app/routes/__root.tsx: Scripts not imported from @tanstack/react-router — client JS will not load and routes will render empty')
+      }
+    }
+    // Must render <Scripts /> or <Scripts/> somewhere (JSX usage)
+    if (!/<Scripts\s*\/?>/m.test(rootContent)) {
+      errors.push('app/routes/__root.tsx: <Scripts /> not rendered in JSX — client JS will not load')
+    }
+    // Reject fake local definitions that satisfy other checks
+    if (/function\s+Scripts\s*\(\s*\)/.test(rootContent)) {
+      errors.push('app/routes/__root.tsx: has a local `function Scripts()` definition — must use the import from @tanstack/react-router')
     }
   } catch {}
 
@@ -258,18 +276,94 @@ export function validateBuild() {
     timeout: 120000, // 2 minute timeout
   })
 
-  if (result.status === 0) {
-    console.log('  build succeeded')
-    return { success: true }
+  if (result.status !== 0) {
+    const combined = (result.stderr ?? '') + (result.stdout ?? '')
+    const error = combined.slice(-3000) // last 3000 chars
+
+    console.log('  build failed')
+    console.log('  --- last 500 chars of build output ---')
+    console.log(combined.slice(-500))
+    console.log('  ---')
+
+    return { success: false, error }
   }
 
-  const combined = (result.stderr ?? '') + (result.stdout ?? '')
-  const error = combined.slice(-3000) // last 3000 chars
+  // Build exited 0 — but that doesn't mean the output is usable.
+  // An AI designer can produce a preset that compiles but renders blank
+  // pages, or an __root.tsx that omits Scripts so the page never hydrates.
+  // Run smoke checks on the built output before declaring success.
+  const smokeCheck = validateBuildOutput()
+  if (!smokeCheck.success) {
+    console.log('  build output smoke check failed')
+    for (const e of smokeCheck.errors) console.log(`  ✗ ${e}`)
+    return { success: false, error: 'Build output smoke check failed:\n' + smokeCheck.errors.map(e => `  - ${e}`).join('\n') }
+  }
 
-  console.log('  build failed')
-  console.log('  --- last 500 chars of build output ---')
-  console.log(combined.slice(-500))
-  console.log('  ---')
+  console.log('  build succeeded')
+  return { success: true }
+}
 
-  return { success: false, error }
+/**
+ * Post-build smoke checks: verify the built output is actually usable.
+ * Runs after `pnpm build` exits 0 but before we declare success.
+ *
+ * Catches cases where the build compiles but produces unusable output —
+ * blank pages, missing asset bundles, or a SPA shell with no scripts.
+ *
+ * @returns {{ success: boolean, errors: string[] }}
+ */
+export function validateBuildOutput() {
+  const errors = []
+  const distClient = resolve(ROOT, 'dist/client')
+
+  // Check 1: dist/client must exist
+  try {
+    const entries = readdirSync(distClient)
+    if (entries.length === 0) {
+      errors.push('dist/client/ is empty — build produced no output')
+      return { success: false, errors }
+    }
+  } catch (err) {
+    errors.push(`dist/client/ does not exist: ${err.message}`)
+    return { success: false, errors }
+  }
+
+  // Check 2: SPA shell HTML must exist and contain expected markers
+  const shellPath = resolve(distClient, '_shell.html')
+  const indexPath = resolve(distClient, 'index.html')
+  let shellHtml = ''
+  try {
+    shellHtml = readFileSync(existsSync(shellPath) ? shellPath : indexPath, 'utf8')
+  } catch {
+    errors.push('dist/client/_shell.html and index.html are both missing')
+    return { success: false, errors }
+  }
+
+  if (shellHtml.length < 500) {
+    errors.push(`SPA shell HTML is suspiciously small (${shellHtml.length} bytes) — likely empty or malformed`)
+  }
+
+  // Must load client JS for hydration
+  if (!shellHtml.includes('<script') && !shellHtml.includes('modulepreload')) {
+    errors.push('SPA shell has no <script> or modulepreload tags — client JS will not load')
+  }
+
+  // Must have a root/mount point
+  if (!shellHtml.match(/<body[^>]*>/)) {
+    errors.push('SPA shell has no <body> tag')
+  }
+
+  // Check 3: asset bundles must exist
+  const assetsDir = resolve(distClient, 'assets')
+  try {
+    const assets = readdirSync(assetsDir)
+    const hasJS = assets.some(f => f.endsWith('.js'))
+    const hasCSS = assets.some(f => f.endsWith('.css'))
+    if (!hasJS) errors.push('dist/client/assets/ has no .js bundles')
+    if (!hasCSS) errors.push('dist/client/assets/ has no .css bundles')
+  } catch (err) {
+    errors.push(`dist/client/assets/ missing or unreadable: ${err.message}`)
+  }
+
+  return { success: errors.length === 0, errors }
 }

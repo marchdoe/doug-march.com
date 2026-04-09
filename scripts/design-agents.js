@@ -132,6 +132,46 @@ function buildArchetypeConstraintPrompt(history) {
   return block
 }
 
+/**
+ * Fix a generated __root.tsx file by ensuring Scripts and ScrollRestoration
+ * are imported from @tanstack/react-router. Returns the fixed content, or
+ * null if the file looks so broken we shouldn't touch it.
+ *
+ * Conservative behavior: only patches the import line (the safest edit).
+ * Does NOT attempt to insert/remove JSX or function definitions — the old
+ * regex approach corrupted files with nested braces or multiple </body> tags.
+ * If the fix is insufficient, the build validator catches it and triggers
+ * a retry with explicit error context, which is more reliable.
+ *
+ * @param {string} content - current __root.tsx content
+ * @returns {string|null} fixed content, or null to abort the fixup
+ */
+export function fixRootTsx(content) {
+  const REQUIRED = ['ScrollRestoration', 'Scripts']
+
+  // Find the @tanstack/react-router import line. Must be a single-line
+  // match — multi-line imports are too ambiguous to rewrite safely.
+  const importRegex = /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]@tanstack\/react-router['"]/
+  const match = content.match(importRegex)
+  if (!match) {
+    // No router import at all — can't safely fix. Let build validator reject.
+    return null
+  }
+
+  const existing = match[1].split(',').map(s => s.trim()).filter(Boolean)
+  const missing = REQUIRED.filter(name => !existing.includes(name))
+  if (missing.length === 0) {
+    // Imports are already correct. No fix needed.
+    return content
+  }
+
+  // Add missing imports to the existing import line. This is the only
+  // edit we make — intentionally conservative.
+  const merged = [...new Set([...existing, ...missing])]
+  const fixedImport = `import { ${merged.join(', ')} } from '@tanstack/react-router'`
+  return content.replace(importRegex, fixedImport)
+}
+
 // ---------------------------------------------------------------------------
 // Exported helpers (also used by tests)
 // ---------------------------------------------------------------------------
@@ -717,53 +757,20 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   for (const p of await writeFiles(tokenResult.files)) writtenPaths.add(p)
 
   // Post-write fixup: ensure __root.tsx has critical imports for SPA hydration.
-  // The token designer frequently drops ScrollRestoration and Scripts imports,
-  // or defines fake local versions (return null). Both break client-side hydration.
+  // The token designer frequently drops Scripts import or defines a fake
+  // local version (return null). Both break client-side hydration.
+  //
+  // This fixup is best-effort and defensive — if anything looks ambiguous,
+  // we leave the file alone and let the build validator catch it. The
+  // validator will trigger a retry with the explicit error, which is
+  // more reliable than risking a corrupted file from aggressive regex surgery.
   try {
     const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
-    let rootContent = await readFile(rootPath, 'utf8')
-    let fixed = false
-
-    // Step 1: Check if ScrollRestoration/Scripts are in the @tanstack/react-router import line
-    const routerImportMatch = rootContent.match(/import\s*\{([^}]+)\}\s*from\s*['"]@tanstack\/react-router['"]/)
-    const routerImports = routerImportMatch ? routerImportMatch[1] : ''
-    const requiredImports = ['ScrollRestoration', 'Scripts']
-    const missingFromImport = requiredImports.filter(name => !routerImports.includes(name))
-
-    if (missingFromImport.length > 0) {
-      // Add missing to the import line
-      rootContent = rootContent.replace(
-        /import\s*\{([^}]+)\}\s*from\s*['"]@tanstack\/react-router['"]/,
-        (match, imports) => {
-          const existing = imports.split(',').map(s => s.trim())
-          const merged = [...new Set([...existing, ...missingFromImport])]
-          return `import { ${merged.join(', ')} } from '@tanstack/react-router'`
-        }
-      )
-      fixed = true
-    }
-
-    // Step 2: Remove fake local definitions (function ScrollRestoration/Scripts that return null)
-    rootContent = rootContent.replace(/\nfunction ScrollRestoration\(\)\s*\{[\s\S]*?return\s+null[\s\S]*?\}\n?/g, '\n')
-    rootContent = rootContent.replace(/\nfunction Scripts\(\)\s*\{[\s\S]*?return\s+null[\s\S]*?\}\n?/g, '\n')
-
-    // Step 3: Ensure ScrollRestoration and Scripts are in the JSX body
-    if (!rootContent.includes('<ScrollRestoration')) {
-      const inserted = rootContent
-        .replace(/(\{children\})([\s\S]*?)(<\/body>)/, '$1\n        <ScrollRestoration />\n        <Scripts />$2$3')
-      if (inserted !== rootContent) {
-        rootContent = inserted
-      } else {
-        rootContent = rootContent
-          .replace(/(\{children\}<\/Layout>)([\s\S]*?)(\s*<\/>)/, '$1\n    <ScrollRestoration />\n    <Scripts />$2$3')
-          .replace(/(<\/Layout>)([\s\S]*?)(\s*<\/>)/, '$1\n    <ScrollRestoration />\n    <Scripts />$2$3')
-      }
-      fixed = true
-    }
-
-    if (fixed) {
-      await writeFile(rootPath, rootContent, 'utf8')
-      console.log(`  [fixup] fixed __root.tsx: ensured ScrollRestoration/Scripts are imported from @tanstack/react-router`)
+    const original = await readFile(rootPath, 'utf8')
+    const fixed = fixRootTsx(original)
+    if (fixed !== null && fixed !== original) {
+      await writeFile(rootPath, fixed, 'utf8')
+      console.log(`  [fixup] fixed __root.tsx: added Scripts/ScrollRestoration imports`)
     }
   } catch (err) {
     console.warn(`  [fixup] __root.tsx fixup failed (non-blocking): ${err.message}`)
@@ -933,6 +940,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
             const retryResult = await callAgent(responsibleAgent, config.prompt, config.user(), feedback)
             for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
 
+            // Re-run codegen before validateBuild if token files changed,
+            // otherwise validateBuild sees stale styled-system output.
+            if (responsibleAgent === 'token-designer') {
+              const codegenAfterRetry = validateCodegen()
+              if (!codegenAfterRetry.success) {
+                console.warn(`  codegen failed after critic retry: ${codegenAfterRetry.error?.slice(0, 200)}`)
+              }
+            }
+
             const retryBuild = validateBuild()
             if (!retryBuild.success) {
               console.warn('  post-critic revision broke the build — restoring pre-revision files')
@@ -1014,6 +1030,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     ? ['unified-designer']
     : [failingAgent]
 
+  // Track whether a token-designer retry ran so we know to re-run codegen
+  let tokenRetried = false
+
   for (const agent of retryAgents) {
     const config = agentConfig[agent]
     if (!config) continue
@@ -1023,10 +1042,32 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const retryResult = await callAgent(agent, config.prompt, config.user(), buildResult.error)
       for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
       // Update the result so the archive records the retry output, not stale originals
-      if (agent === 'token-designer') tokenResult = retryResult
+      if (agent === 'token-designer') {
+        tokenResult = retryResult
+        tokenRetried = true
+      }
       if (agent === 'unified-designer') designerResult = retryResult
     } catch (err) {
       console.error(`  ${agent} retry failed: ${err.message}`)
+      // If the retry agent itself crashed, don't silently continue to
+      // validateBuild — bail out with the real error so debugging points
+      // at the actual cause (code review #14).
+      await cleanupOrphans(writtenPaths, originalBackup)
+      await restore(originalBackup)
+      throw new Error(`${agent} retry crashed: ${err.message}`)
+    }
+  }
+
+  // If token files changed, codegen must run before the build checks the
+  // new styled-system. Otherwise validateBuild can succeed on stale output
+  // or fail referencing tokens that exist in the new preset.
+  if (tokenRetried) {
+    console.log('  re-running codegen after token retry...')
+    const retryCodegen = validateCodegen()
+    if (!retryCodegen.success) {
+      await cleanupOrphans(writtenPaths, originalBackup)
+      await restore(originalBackup)
+      throw new Error(`Codegen failed after token retry: ${retryCodegen.error?.slice(0, 500)}`)
     }
   }
 
