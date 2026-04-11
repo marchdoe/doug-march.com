@@ -3,271 +3,250 @@ import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
 
+const label: React.CSSProperties = {
+  fontSize: '9px',
+  fontFamily: '"Space Grotesk", sans-serif',
+  fontWeight: '400',
+  color: '#6B8599',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+}
+const divider: React.CSSProperties = { borderTop: '1px solid rgba(150, 170, 187, 0.08)' }
+const sectionWrap: React.CSSProperties = {
+  width: '100%',
+  maxWidth: '720px',
+  padding: '64px 48px',
+}
+
 function WorkPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div>
-        <div style={{ marginBottom: '40px' }}>
-          <a href="/" className="back-link">← Work</a>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        background: '#0D1822',
+        gap: '16px',
+      }}>
+        <div style={{
+          fontFamily: '"Space Grotesk", sans-serif',
+          fontSize: '50px',
+          fontWeight: '700',
+          letterSpacing: '-0.03em',
+          color: '#2E3E4D',
+          lineHeight: 1.05,
+        }}>
+          404
         </div>
-        <p style={{
-          fontFamily: '"Fraunces", serif',
-          fontSize: '28px',
-          fontWeight: 300,
-          color: '#2D3E39',
-          lineHeight: 1.2,
-          marginBottom: '16px',
+        <div style={{
+          fontFamily: '"Work Sans", sans-serif',
+          fontSize: '16px',
+          fontWeight: '300',
+          color: '#6B8599',
         }}>
           Project not found.
-        </p>
-        <a href="/" className="dim-link">Return to index</a>
+        </div>
+        <a href="/" className="u-line" style={{
+          marginTop: '16px',
+          fontFamily: '"Space Grotesk", sans-serif',
+          fontSize: '12px',
+          color: '#6B8599',
+          letterSpacing: '0.08em',
+          textDecoration: 'none',
+        }}>
+          ← back to work
+        </a>
       </div>
     )
   }
 
+  const sections = [
+    { key: 'problem', heading: 'Problem', content: project.problem },
+    { key: 'approach', heading: 'Approach', content: project.approach },
+    { key: 'outcome', heading: 'Outcome', content: project.outcome },
+  ]
+
   return (
-    <>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '100%',
+      background: '#0D1822',
+      minHeight: '100vh',
+      paddingTop: '96px',
+    }}>
+
       {/* Back */}
-      <div style={{ marginBottom: '48px' }}>
-        <a href="/" className="back-link">← Work</a>
+      <div style={{ width: '100%', maxWidth: '720px', padding: '0 48px 24px' }}>
+        <a href="/" className="u-line" style={{
+          fontFamily: '"Space Grotesk", sans-serif',
+          fontSize: '12px',
+          color: '#6B8599',
+          letterSpacing: '0.08em',
+          textDecoration: 'none',
+        }}>
+          ← work
+        </a>
       </div>
 
-      {/* Header */}
-      <header style={{
-        paddingBottom: '40px',
-        borderBottom: '1px solid #CDD9D5',
-        marginBottom: '48px',
-      }}>
-        <div style={{
-          display: 'flex',
-          gap: '16px',
-          alignItems: 'baseline',
-          marginBottom: '16px',
-        }}>
-          <span style={{
-            fontFamily: '"Outfit", sans-serif',
-            fontSize: '9px',
-            fontWeight: 300,
-            color: '#849690',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-          }}>
-            {project.type}
-          </span>
-          <span style={{
-            fontFamily: '"Outfit", sans-serif',
-            fontSize: '9px',
-            fontWeight: 300,
-            color: '#AAB9B4',
-            letterSpacing: '0.08em',
-            fontVariantNumeric: 'tabular-nums',
-          }}>
-            {project.year}
-          </span>
+      {/* Project Header */}
+      <div style={{ ...sectionWrap, ...divider }}>
+        <div style={{ ...label, color: '#C34B22', marginBottom: '24px' }}>
+          {project.type}&nbsp;&nbsp;·&nbsp;&nbsp;{project.year}
         </div>
 
         <h1 style={{
-          fontFamily: '"Fraunces", serif',
-          fontSize: '37px',
-          fontWeight: 300,
-          color: '#2D3E39',
-          letterSpacing: '-0.025em',
+          fontFamily: '"Space Grotesk", sans-serif',
+          fontSize: '50px',
+          fontWeight: '700',
           lineHeight: 1.05,
-          marginBottom: '16px',
+          letterSpacing: '-0.03em',
+          color: '#DFE7F1',
+          margin: '0 0 16px 0',
         }}>
           {project.title}
         </h1>
 
         {project.role && (
           <div style={{
-            fontFamily: '"Outfit", sans-serif',
-            fontSize: '14px',
-            fontWeight: 300,
-            color: '#5E726C',
-            letterSpacing: '0.02em',
+            fontFamily: '"Space Grotesk", sans-serif',
+            fontSize: '16px',
+            fontWeight: '400',
+            color: '#96AABB',
+            marginBottom: '24px',
+            letterSpacing: '-0.01em',
           }}>
             {project.role}
           </div>
         )}
-      </header>
 
-      {/* Body */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '48px' }}>
-
-        {project.problem && (
-          <section>
-            <div style={{
-              fontFamily: '"Outfit", sans-serif',
-              fontSize: '9px',
-              fontWeight: 300,
-              color: '#849690',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              marginBottom: '16px',
-            }}>
-              Problem
-            </div>
-            <p style={{
-              fontFamily: '"Outfit", sans-serif',
-              fontSize: '16px',
-              fontWeight: 400,
-              color: '#435651',
-              lineHeight: 1.55,
-              maxWidth: '560px',
-            }}>
-              {project.problem}
-            </p>
-          </section>
-        )}
-
-        {project.approach && (
-          <section>
-            <div style={{
-              fontFamily: '"Outfit", sans-serif',
-              fontSize: '9px',
-              fontWeight: 300,
-              color: '#849690',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              marginBottom: '16px',
-            }}>
-              Approach
-            </div>
-            <p style={{
-              fontFamily: '"Outfit", sans-serif',
-              fontSize: '16px',
-              fontWeight: 400,
-              color: '#435651',
-              lineHeight: 1.55,
-              maxWidth: '560px',
-            }}>
-              {project.approach}
-            </p>
-          </section>
-        )}
-
-        {project.outcome && (
-          <section>
-            <div style={{
-              fontFamily: '"Outfit", sans-serif',
-              fontSize: '9px',
-              fontWeight: 300,
-              color: '#849690',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              marginBottom: '16px',
-            }}>
-              Outcome
-            </div>
-            <p style={{
-              fontFamily: '"Outfit", sans-serif',
-              fontSize: '16px',
-              fontWeight: 400,
-              color: '#435651',
-              lineHeight: 1.55,
-              maxWidth: '560px',
-            }}>
-              {project.outcome}
-            </p>
-          </section>
+        {(project.liveUrl || project.externalUrl) && (
+          <a
+            href={project.liveUrl || project.externalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="u-line"
+            style={{
+              fontFamily: '"Space Grotesk", sans-serif',
+              fontSize: '12px',
+              color: '#C34B22',
+              letterSpacing: '0.08em',
+              textDecoration: 'none',
+            }}
+          >
+            Visit project →
+          </a>
         )}
 
         {project.description && !project.problem && (
-          <section>
-            <p style={{
-              fontFamily: '"Outfit", sans-serif',
-              fontSize: '16px',
-              fontWeight: 400,
-              color: '#435651',
-              lineHeight: 1.55,
-              maxWidth: '560px',
-            }}>
-              {project.description}
-            </p>
-          </section>
-        )}
-
-        {project.stack && project.stack.length > 0 && (
-          <section>
-            <div style={{
-              fontFamily: '"Outfit", sans-serif',
-              fontSize: '9px',
-              fontWeight: 300,
-              color: '#849690',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              marginBottom: '16px',
-            }}>
-              Stack
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {project.stack.map((tech) => (
-                <span
-                  key={tech}
-                  style={{
-                    fontFamily: '"Outfit", sans-serif',
-                    fontSize: '12px',
-                    fontWeight: 300,
-                    color: '#5E726C',
-                    background: '#EEF5F1',
-                    padding: '5px 12px',
-                    borderRadius: '2px',
-                    border: '1px solid #CDD9D5',
-                  }}
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Links */}
-        {(project.liveUrl || project.externalUrl || project.githubUrl) && (
-          <section style={{
-            display: 'flex',
-            gap: '24px',
-            flexWrap: 'wrap',
-            paddingTop: '8px',
-            borderTop: '1px solid #CDD9D5',
+          <p style={{
+            fontFamily: '"Work Sans", sans-serif',
+            fontSize: '16px',
+            fontWeight: '300',
+            color: '#96AABB',
+            lineHeight: 1.75,
+            maxWidth: '540px',
+            margin: '24px 0 0 0',
           }}>
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="secondary-cta-link"
-              >
-                View live →
-              </a>
-            )}
-            {project.externalUrl && !project.liveUrl && (
-              <a
-                href={project.externalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="secondary-cta-link"
-              >
-                View project →
-              </a>
-            )}
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="github-link"
-              >
-                GitHub →
-              </a>
-            )}
-          </section>
+            {project.description}
+          </p>
         )}
-
       </div>
-    </>
+
+      {/* Content Sections */}
+      {sections.map(({ key, heading, content }) =>
+        content ? (
+          <div key={key} style={{ ...sectionWrap, ...divider }}>
+            <div style={{ ...label, marginBottom: '24px' }}>{heading}</div>
+            <p style={{
+              fontFamily: '"Work Sans", sans-serif',
+              fontSize: '16px',
+              fontWeight: '300',
+              color: '#96AABB',
+              lineHeight: 1.75,
+              maxWidth: '540px',
+              margin: 0,
+            }}>
+              {content}
+            </p>
+          </div>
+        ) : null
+      )}
+
+      {/* Stack */}
+      {project.stack && project.stack.length > 0 && (
+        <div style={{ ...sectionWrap, ...divider }}>
+          <div style={{ ...label, marginBottom: '24px' }}>Stack</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {project.stack.map((tech) => (
+              <div key={tech} style={{
+                padding: '6px 12px',
+                fontFamily: '"Space Grotesk", sans-serif',
+                fontSize: '12px',
+                color: '#96AABB',
+                letterSpacing: '0.04em',
+                background: 'rgba(27, 42, 55, 0.9)',
+                border: '1px solid rgba(150, 170, 187, 0.10)',
+                borderRadius: '0',
+              }}>
+                {tech}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* GitHub link if present */}
+      {project.githubUrl && (
+        <div style={{ ...sectionWrap, ...divider }}>
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="u-line"
+            style={{
+              fontFamily: '"Space Grotesk", sans-serif',
+              fontSize: '12px',
+              color: '#6B8599',
+              letterSpacing: '0.08em',
+              textDecoration: 'none',
+            }}
+          >
+            View on GitHub →
+          </a>
+        </div>
+      )}
+
+      {/* Footer */}
+      <div style={{ ...sectionWrap, ...divider, marginTop: '32px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <a href="/" style={{
+            fontFamily: '"Space Grotesk", sans-serif',
+            fontSize: '12px',
+            color: '#485F70',
+            letterSpacing: '0.04em',
+            textDecoration: 'none',
+          }}>
+            ← All work
+          </a>
+          <a href="/archive" style={{
+            fontFamily: '"Space Grotesk", sans-serif',
+            fontSize: '12px',
+            color: '#485F70',
+            letterSpacing: '0.04em',
+            textDecoration: 'none',
+          }}>
+            Archive
+          </a>
+        </div>
+      </div>
+
+    </div>
   )
 }

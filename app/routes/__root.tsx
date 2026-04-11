@@ -1,8 +1,6 @@
 import '../styles/panda.css'
-import { createRootRoute, Link, Outlet, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
+import { createRootRoute, Outlet, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
-import { styled } from '../../styled-system/jsx'
-import type { ReactNode } from 'react'
 
 const THEME_INIT_SCRIPT = `(function(){
   var s=localStorage.getItem('theme');
@@ -12,24 +10,32 @@ const THEME_INIT_SCRIPT = `(function(){
 
 export const Route = createRootRoute({
   head: () => ({
+    meta: [
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { title: 'doug-march.com' },
+    ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=Outfit:wght@300;400&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Work+Sans:wght@300;400&display=swap',
       },
     ],
     scripts: [{ children: THEME_INIT_SCRIPT }],
   }),
+
   notFoundComponent: () => {
     return (
-      <div>
-        <p>This page does not exist!</p>
-        <Link to='/'>Go home</Link>
-      </div>
+      <RootDocument>
+        <div>
+          <p>Page not found</p>
+        </div>
+      </RootDocument>
     )
   },
+
   component: RootComponent,
 })
 
@@ -43,9 +49,9 @@ function RootComponent() {
   )
 }
 
-function RootDocument({ children }: { children: ReactNode }) {
+function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <head>
         <HeadContent />
       </head>

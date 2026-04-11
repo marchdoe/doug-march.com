@@ -1,0 +1,293 @@
+{
+  "date": "2026-04-11",
+  "startedAt": "2026-04-11T10:12:04.234Z",
+  "completedAt": "2026-04-11T10:34:01.913Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Not Worth the Gamble",
+              "description": "An integrated digital campaign exposing illegal gambling risks through cinematic storytelling, educating communities and driving awareness across British...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69caad027c47b296567479.jpg"
+            },
+            {
+              "title": "The Cube",
+              "description": "The Cube is a multi-functional venue located in Copenhagen, Denmark. It works as a flexible space for events, workshops, studio productions, and product...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69caa2ed308a1315623251.jpg"
+            },
+            {
+              "title": "Home of Ambrose",
+              "description": "Web design for Home of Ambrose, a Madrid-based project celebrating timeless living through curated, design-led homes shaped by narrative, detail, and...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69c538044c78b578228067.jpg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Saturday",
+          "is_weekend": true,
+          "day_index": 6
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "microsoft/markitdown/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "coleam00/Archon/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "NousResearch/hermes-agent/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "rowboatlabs/rowboat/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "multica-ai/multica/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Masters Tournament",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Rory McIlroy",
+              "position": "1",
+              "score": "-12"
+            },
+            {
+              "name": "Patrick Reed",
+              "position": "2",
+              "score": "-6"
+            },
+            {
+              "name": "Sam Burns",
+              "position": "3",
+              "score": "-6"
+            },
+            {
+              "name": "Tommy Fleetwood",
+              "position": "4",
+              "score": "-5"
+            },
+            {
+              "name": "Justin Rose",
+              "position": "5",
+              "score": "-5"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Filing the corners off my MacBooks",
+              "url": "https://kentwalters.com/posts/corners/",
+              "score": 814,
+              "by": "normanvalentine"
+            },
+            {
+              "title": "Optimal Strategy for Connect 4",
+              "url": "https://2swap.github.io/WeakC4/explanation/",
+              "score": 36,
+              "by": "marvinborner"
+            },
+            {
+              "title": "Starfling: A one-tap endless orbital slingshot game in a single HTML file",
+              "url": "https://playstarfling.com",
+              "score": 175,
+              "by": "iceberger2001"
+            },
+            {
+              "title": "1D Chess",
+              "url": "https://rowan441.github.io/1dchess/chess.html",
+              "score": 817,
+              "by": "burnt-resistor"
+            },
+            {
+              "title": "Artemis II safely splashes down",
+              "url": "https://www.cbsnews.com/live-updates/artemis-ii-splashdown-return/",
+              "score": 898,
+              "by": "areoform"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waning crescent",
+          "illumination": 0.259,
+          "days_into_cycle": 24.51
+        },
+        "music": {
+          "bands": [
+            "Radiohead",
+            "My Morning Jacket"
+          ]
+        },
+        "quote": {
+          "text": "When you are able to employ your will always for constructive purposes, you become the controller of your destiny.",
+          "author": "Paramahansa Yogananda"
+        },
+        "season": {
+          "season": "spring",
+          "month": 4,
+          "day": 11,
+          "day_of_year": 101,
+          "month_name": "April"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": "2026-04-10T23:00Z",
+              "result": "win",
+              "score": "118-100"
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-04-10T22:40Z",
+              "result": "win",
+              "score": "2-0"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:45",
+          "sunset": "18:37",
+          "daylight_hours": 12.9
+        },
+        "date": "2026-04-11"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-04-11T10:12:19.644Z"
+    },
+    {
+      "name": "brief-loaded",
+      "phase": 0,
+      "input": {},
+      "output": {
+        "brief": "# Signals Brief — 2026-04-11\n\n# Creative Brief: doug-march.com\n**2026-04-11 | Saturday**\n\n---\n\n## Mood\n\nSpring Saturday afternoon energy — open-ended, spacious, slightly introspective. There's a quiet momentum in the air: the Masters unfolds, the Pistons and Tigers both won yesterday, and HackerNews is buzzing with playful constraint-breaking (1D Chess, filing MacBook corners, single-HTML games). But the signal influence is moderate, so the design shouldn't feel driven by any single event. Inste",
+        "charCount": 5008
+      },
+      "durationMs": 0,
+      "timestamp": "2026-04-11T10:12:19.644Z"
+    },
+    {
+      "name": "design-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — MANDATORY CONSTRAINT\n\nRecent archetype usage (newest first):\n  - 2026-04-10: Gallery Wall\n  - 2026-04-07: Gallery Wall\n  - 2026-04-06: Specimen\n  - 2026-04-05: Gallery Wall\n  - 2026-04-04: Specimen\n  - 2026-04-03: Gallery Wall\n  - 2026-04-02: Broadsheet\n\n**FORBIDDEN TODAY** (used in the last 3 days): **Gallery Wall, Specimen**\n\nYou MUST choose from the remaining archetypes: Broadsheet, Poster, Scroll, Split, Stack, Index. Choosing a forbidden archetype is an error — the "
+      },
+      "output": {
+        "archetype": "Scroll",
+        "specLength": 16548,
+        "specPreview": "# Visual Specification — doug-march.com — 2026-04-11\n\n---\n\n## Archetype Declaration\n\n**THE SCROLL** — Single-column, cinematic pacing, each section a complete beat before the next. Chosen because the brief demands Saturday morning unhurriedness, moderate signal influence (no single event deserves poster urgency), and a page that rewards wandering rather than scanning. Forbidden archetypes (Gallery Wall, Specimen) are respected. Specimen *micro-moments* appear as embedded treatments within Scroll"
+      },
+      "durationMs": 154659,
+      "timestamp": "2026-04-11T10:14:54.303Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 16548
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "REVISE\n\n- The primary hue (H:200°) is within 5° of the 2026-04-06 specification (H:195°)—well within the 20° match threshold. While the brief's direction (\"pre-sunrise dawn sky blue\") is clear, the spec lacks justification for why this palette overlap is acceptable versus Monday's similar cool-blue palette (\"diffuse April morning light\"). Either acknowledge and differentiate the two (e.g., \"H:195° was warmer diffuse morning; H:200° reads as cooler pre-dawn, reinforced by the rust accent's warm-c"
+      },
+      "durationMs": 74903,
+      "timestamp": "2026-04-11T10:16:09.206Z"
+    },
+    {
+      "name": "token-designer",
+      "phase": 2,
+      "input": {
+        "briefLength": 17636
+      },
+      "output": {
+        "files": [
+          "elements/preset.ts",
+          "app/routes/__root.tsx"
+        ],
+        "rationale": "This design system encodes the pre-dawn moment at 26% lunar illumination—H:218° indigo sky (23° cooler than the previous 4/06 spec's warmer H:195°) paired with rust and gold accents that suggest the horizon catching fire before sunrise. The Scroll archetype respects Saturday's unhurried pacing with 50–100vh section beats and 96px structural padding, while Space Grotesk's angular precision (tight letter-spacing −0.03em at display sizes) meets Work Sans's warm humanist body copy (1.55 line-height)"
+      },
+      "durationMs": 92972,
+      "timestamp": "2026-04-11T10:21:32.445Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4664,
+        "briefLength": 17636
+      },
+      "output": {
+        "files": [
+          "app/components/Layout.tsx",
+          "app/components/Sidebar.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 689327,
+      "timestamp": "2026-04-11T10:33:03.134Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": false,
+        "error": "erence-file] Identifier 'Scripts' has already been declared. (3:9)\u001b[31m\nfile: \u001b[36m/home/runner/work/doug-march.com/doug-march.com/app/routes/__root.tsx:3:9\u001b[31m\n    at constructor (/home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)\n    at TypeScriptParserMixin.raise (/home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)\n    at Ty"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-04-11T10:33:07.098Z"
+    }
+  ]
+}

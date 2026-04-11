@@ -2,97 +2,45 @@ import logoSvg from '../assets/logo.svg'
 
 export function Sidebar() {
   return (
-    <header style={{
-      height: '52px',
-      borderBottom: '2px solid #1D1F13',
-      backgroundColor: '#F4F5ED',
-      display: 'flex',
-      alignItems: 'center',
-      padding: '0 40px',
-      justifyContent: 'space-between',
-      position: 'sticky',
-      top: 0,
-      zIndex: 100,
-      width: '100%',
-    }}>
-      {/* Left zone: logo + name + nav */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-          <img src={logoSvg} style={{ height: '26px', width: 'auto' }} alt="Doug March" />
-          <span style={{
-            fontFamily: '"Syne", sans-serif',
-            fontWeight: 600,
-            fontSize: '16px',
-            color: '#1D1F13',
-            letterSpacing: '-0.01em',
-            lineHeight: 1,
-          }}>
-            Doug March
-          </span>
+    <>
+      {/* Logo — fixed top-left corner mark */}
+      <div style={{
+        position: 'fixed',
+        top: '28px',
+        left: '32px',
+        zIndex: 200,
+      }}>
+        <a href="/" style={{ display: 'block', lineHeight: 1 }}>
+          <img
+            src={logoSvg}
+            alt="Doug March"
+            style={{ width: '26px', height: '26px', display: 'block' }}
+          />
         </a>
-
-        <nav style={{ display: 'flex', gap: '20px' }}>
-          <a
-            href="/"
-            className="nav-link"
-            style={{
-              fontFamily: '"IBM Plex Sans", sans-serif',
-              fontSize: '11px',
-              color: '#676A59',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              textDecoration: 'none',
-            }}
-          >
-            Home
-          </a>
-          <a
-            href="/about"
-            className="nav-link"
-            style={{
-              fontFamily: '"IBM Plex Sans", sans-serif',
-              fontSize: '11px',
-              color: '#676A59',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              textDecoration: 'none',
-            }}
-          >
-            About
-          </a>
-        </nav>
       </div>
 
-      {/* Center zone: broadsheet flag */}
-      <div style={{
-        position: 'absolute',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        fontFamily: '"Syne", sans-serif',
-        fontWeight: 700,
-        fontSize: '11px',
-        color: '#1D1F13',
-        letterSpacing: '0.12em',
-        textTransform: 'uppercase',
-        whiteSpace: 'nowrap',
-        pointerEvents: 'none',
-      }}>
-        DOUG MARCH · PORTFOLIO
+      {/* Nav — fixed bottom-left, like map coordinates */}
+      <div
+        className="nav-group"
+        style={{
+          position: 'fixed',
+          bottom: '40px',
+          left: '64px',
+          zIndex: 200,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          fontFamily: '"Space Grotesk", sans-serif',
+          fontSize: '12px',
+          letterSpacing: '0.08em',
+        }}
+      >
+        <a href="/" className="nav-link" style={{ color: '#6B8599', textDecoration: 'none' }}>work</a>
+        <span style={{ color: '#2E3E4D' }}>·</span>
+        <a href="/about" className="nav-link" style={{ color: '#6B8599', textDecoration: 'none' }}>about</a>
+        <span style={{ color: '#2E3E4D' }}>·</span>
+        <a href="mailto:hello@doug-march.com" className="nav-link" style={{ color: '#6B8599', textDecoration: 'none' }}>contact</a>
       </div>
-
-      {/* Right zone: date + masters countdown */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '7px',
-        fontFamily: '"IBM Plex Sans", sans-serif',
-        fontSize: '11px',
-        color: '#676A59',
-      }}>
-        <span style={{ letterSpacing: '0.03em' }}>Tuesday, April 7</span>
-        <span style={{ color: '#B2B5A2' }}>·</span>
-        <span style={{ letterSpacing: '0.12em' }}>MASTERS · 2D</span>
-      </div>
-    </header>
+    </>
   )
 }
