@@ -119,6 +119,34 @@ describe('build validator content scanner', () => {
     }
   })
 
+  it('allows URLs to github.com', async () => {
+    writeTestFile(
+      'app/components/__scanner_test.tsx',
+      `const url = 'https://github.com/marchdoe/project'`
+    )
+    const result = await runValidator()
+    if (!result.success) {
+      expect(result.error).not.toContain('__scanner_test.tsx')
+    }
+  })
+
+  it('allows URLs to all allowlisted project domains', async () => {
+    writeTestFile(
+      'app/components/__scanner_test.tsx',
+      `const urls = [
+        'https://spaceman.llc',
+        'https://getfishsticks.com',
+        'https://15th.club',
+        'https://doug-march.com',
+        'https://fonts.gstatic.com/s/inter',
+      ]`
+    )
+    const result = await runValidator()
+    if (!result.success) {
+      expect(result.error).not.toContain('__scanner_test.tsx')
+    }
+  })
+
   it('flags document.write', async () => {
     writeTestFile(
       'app/components/__scanner_test.tsx',
