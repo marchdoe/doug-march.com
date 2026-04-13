@@ -196,6 +196,7 @@ export function validateGenerated() {
     'getfishsticks.com',
     '15th.club',
     'doug-march.com',
+    'github.com',
   ])
 
   // Files to scan: only AI-generated mutable files. Hand-maintained

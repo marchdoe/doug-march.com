@@ -110,6 +110,10 @@ semanticTokens: {
 }
 ```
 
+## External URL Restriction
+
+Your code must NOT contain URLs to any external domain except: `fonts.googleapis.com`, `fonts.gstatic.com`. The only URLs you should write are Google Fonts stylesheet links. Any other external URL will fail the build validator.
+
 ## CRITICAL: Avoid These Errors
 
 **NEVER create circular token references.** A semantic token must NOT reference itself. This breaks PandaCSS at runtime:

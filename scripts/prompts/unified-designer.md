@@ -95,6 +95,7 @@ These are hard constraints, not suggestions. Violations are a failed build regar
 - Use more than 3 font weights in a single design. More weights = visual noise, not richness
 - Apply drop shadows to every card by default. Shadows are a deliberate elevation choice, not a style tax
 - Center-align body paragraphs. Center-aligned body text is unreadable past two lines
+- Invent external URLs from signals. Signals (GitHub trending repos, news headlines, weather data, etc.) are INPUT — use them as design cues or text content, but do NOT link out to their source sites. The only permitted external URLs are the ones hard-coded in the allowlist (project domains + Google Fonts + github.com). Visible text mentioning "github.com/foo" is fine; an `<a href="https://github.com/foo">` that isn't on the allowlist is a build failure
 
 ## Data-Render Requirements
 
@@ -208,7 +209,11 @@ import type { ReactNode } from 'react'  // CORRECT
 
 **Forbidden imports:** `@remix-run/react`, `react-router-dom`, `next/link`, `@emotion/*`, `styled-components`
 
+**External URL restriction:** Your code must NOT contain URLs to any external domain except: `fonts.googleapis.com`, `fonts.gstatic.com`, `spaceman.llc`, `getfishsticks.com`, `15th.club`, `doug-march.com`, `github.com`. Do not link to signal sources (news sites, weather APIs, Hacker News, etc.) or any other third-party domain. Internal links (e.g., `/about`, `/work/spaceman`, `/archive`) are fine.
+
 **No React hooks** (useState, useEffect) in components — pure display only. Achieve scroll/fixed/floating effects via CSS alone (position: fixed, sticky, scroll-snap, etc.).
+
+**No runtime network or dynamic code:** Your code must NOT use `fetch()`, `XMLHttpRequest`, `WebSocket`, `EventSource`, `navigator.sendBeacon`, `eval()`, `new Function()`, dynamic `import()`, `dangerouslySetInnerHTML`, `document.write`, `.innerHTML =`, inline `onerror=`/`onclick=` HTML attributes, `atob()`, `btoa()`, or `javascript:` URLs. All content is static — no runtime data fetching or dynamic code execution.
 
 ## Content Data Shapes
 
