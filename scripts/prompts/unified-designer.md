@@ -69,7 +69,7 @@ Do NOT just render a horizontal bar with links every day. The nav and footer are
 
 ## How to Think About This
 
-Don't think "I need a FeaturedProject component." Think "how should Spaceman appear on this page today?"
+Don't think "I need a fixed hero component." Think "how should Spaceman appear on this page today?"
 
 Don't think "I need a Sidebar component." Think "where does navigation live in this composition?"
 
