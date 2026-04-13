@@ -96,10 +96,10 @@ You may present this data in any visual form — large type, small label, toolti
 - The identity statement (from the `identity` export)
 - Each timeline entry: year, role, company, description
 - All capability strings
+- Education: school, degree, concentration, years
 - Personal: holes in one count, sport, teams, current focus
 
-**All pages must render (via the Sidebar file):**
-- Name, role, and all nav links
+**All pages:** Name, role, and nav links — rendered by the Sidebar component, in whatever form today's archetype calls for (masthead, floating pills, bottom bar, corner mark, overlay menu, or classical sidebar).
 
 Layout, typography, color, spacing, and interaction of every element are entirely yours. The data must appear; the presentation is free.
 
@@ -182,7 +182,7 @@ import type { ReactNode } from 'react'  // CORRECT
 
 **Forbidden imports:** `@remix-run/react`, `react-router-dom`, `next/link`, `@emotion/*`, `styled-components`
 
-**No React hooks** (useState, useEffect) in components — pure display only.
+**No React hooks** (useState, useEffect) in components — pure display only. Achieve scroll/fixed/floating effects via CSS alone (position: fixed, sticky, scroll-snap, etc.).
 
 ## Content Data Shapes
 
