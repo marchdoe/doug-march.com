@@ -118,13 +118,33 @@ Layout, typography, color, spacing, and interaction of every element are entirel
 
 ## Accessibility — Non-Negotiable
 
-These constraints cannot be violated regardless of creative direction. Bold design and accessible design are not in conflict.
+These constraints cannot be relaxed for creative direction. Bold design and accessible design are not in conflict.
 
-- **Contrast:** Body text must meet WCAG AA (4.5:1 ratio against its background). Large text (18px+ or 14px+ bold) must meet 3:1.
-- **Font size:** No body text smaller than 14px. No interactive element text smaller than 12px.
-- **Readability:** Line length must not exceed 75 characters for body text. Line height for body text must be at least 1.4.
-- **Navigation:** All nav links must be keyboard-accessible and visually distinguishable.
-- **Links:** All links must be visually distinguishable from surrounding text (via color, underline, or other treatment).
+**Contrast (WCAG AA):**
+- Body text against its background: ≥4.5:1
+- Large text (≥18px or ≥14px bold) and UI components: ≥3:1
+- If you specify a color pair that fails, fix the colors — do not lower the size to dodge the rule
+
+**Type sizes (floors):**
+- Body: ≥16px
+- Captions/metadata: ≥12px
+- Interactive labels (buttons, links): ≥14px
+- Line length for body text: ≤75 characters
+- Line height for body text: ≥1.4
+
+**Touch targets:**
+- Any tappable element ≥44×44px (visible or via padding)
+
+**Focus:**
+- Every interactive element has a visible focus state distinct from hover
+- No `outline: none` without a replacement focus indicator
+
+**Motion:**
+- Any animation or transition must respect `prefers-reduced-motion: reduce`
+
+**Links & navigation:**
+- All nav links keyboard-accessible
+- All links visually distinguishable from surrounding text (color, underline, or other treatment)
 
 ## Required Files
 
