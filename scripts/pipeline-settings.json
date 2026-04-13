@@ -1,3 +1,10 @@
 {
-  "hooks": {}
+  "hooks": {},
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": false,
+    "frontend-design@claude-plugins-official": false,
+    "playwright@claude-plugins-official": false,
+    "playground@claude-plugins-official": false,
+    "gsd@claude-plugins-official": false
+  }
 }
