@@ -858,11 +858,17 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // production matches local-dev byte-for-byte up to the production-only
   // additions (ratings + creative weights) appended below.
   const buildUnifiedDesignerPrompt = () => {
+    // Production's system prompt already includes the content contract and
+    // technical requirements via the library-* references appended above.
+    // Pass contentSummary: '' and currentFiles: [] so buildMessages skips
+    // the duplicate Site Content Reference / Technical Requirements /
+    // Current Component Files blocks — otherwise the user prompt balloons
+    // past ~60KB and the subprocess stalls.
     const { messages } = buildMessages({
       signals,
       brief: enrichedBrief,
-      contentSummary,
-      currentFiles,
+      contentSummary: '',
+      currentFiles: [],
       tokenContext,
     })
     return messages[0].content

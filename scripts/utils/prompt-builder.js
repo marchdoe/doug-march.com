@@ -134,13 +134,25 @@ ${context.tokenContext}
 \`\`\``)
   }
 
-  sections.push(`## Site Content Reference
+  // Site Content Reference — only when a summary is actually provided.
+  // Production's system prompt already carries the content contract via
+  // library references, so design-agents.js passes contentSummary: '' and
+  // this block is skipped.
+  if (context.contentSummary && context.contentSummary.trim()) {
+    sections.push(`## Site Content Reference
 
 The following describes the content structure. This is for reference only — you must preserve all import statements that reference these files. Do not modify anything in \`app/content/\`.
 
 ${context.contentSummary}`)
+  }
 
-  sections.push(`## Technical Requirements
+  // Technical Requirements — only when currentFiles is provided. Production
+  // has these in its system prompt via library refs and a delimiter-format
+  // nudge appended by callAgent; duplicating them here bloats the prompt
+  // and previously contradicted the response format (referenced
+  // submit_redesign, a retired tool-call shape).
+  if (context.currentFiles && context.currentFiles.length > 0) {
+    sections.push(`## Technical Requirements
 
 1. **No new packages.** You cannot add new npm dependencies. Use only what is already available in the project.
 2. **TypeScript must compile.** All TypeScript must be valid. Fix type errors in the code itself — do not suggest changing \`tsconfig.json\`.
@@ -149,17 +161,18 @@ ${context.contentSummary}`)
 5. **Preserve route exports.** Every route file must keep its \`export const Route = createFileRoute('...')({ component: ... })\` exactly as-is. The route path string (e.g., \`'/'\`, \`'/about'\`, \`'/work/\$slug'\`) must not change.
 6. **Preserve content imports.** Routes that import from \`'../content/projects'\` or \`'../content/timeline'\` must keep those imports exactly.
 7. **elements/preset.ts structure.** Must export \`elementsPreset\` as a named export. Must use \`definePreset\` from \`'@pandacss/dev'\`. The structure must be: \`export const elementsPreset = definePreset({ name: 'elements', ... })\`.
-8. **Submit all files.** In the \`files\` array of your \`submit_redesign\` call, include only files you have changed. You must include at minimum \`elements/preset.ts\`. Include the complete file content — not diffs.`)
+8. **Response format.** Emit every file you produce using the \`===FILE:path===\` delimiter, one per file, with complete file contents following each delimiter. Include at minimum \`elements/preset.ts\`. No JSON, no markdown code fences, no explanation outside the files.`)
 
-  sections.push(`## Current Component Files — Technical Reference
+    sections.push(`## Current Component Files — Technical Reference
 
 Below are the current component files for technical reference. They show you the component API, import paths, and TypeScript interfaces you must preserve. Do NOT use these as a layout starting point — design from scratch. The structure, styling, and spatial organization should be entirely new.`)
-  for (const file of context.currentFiles) {
-    sections.push(`### ${file.path}
+    for (const file of context.currentFiles) {
+      sections.push(`### ${file.path}
 
 \`\`\`typescript
 ${file.content}
 \`\`\``)
+    }
   }
 
   return sections.join('\n\n')
