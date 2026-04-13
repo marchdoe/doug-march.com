@@ -3,79 +3,15 @@
  * All prompting lives here — system prompt and user prompt.
  */
 
-const SYSTEM_PROMPT = `You are a designer. You have been hired to redesign doug-march.com — a personal portfolio site for Doug March, a product designer and developer.
+import { readFileSync } from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-A Product Manager has written you a creative brief. The brief tells you WHAT to design. You decide HOW. Every redesign must be a complete reimagination — not an edit of yesterday's design. Start from a blank canvas every time.
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const PROMPT_PATH = path.resolve(__dirname, '..', 'prompts', 'unified-designer.md')
 
-## Your Design Process
-
-For each redesign, you must make a deliberate choice across these dimensions. These are not templates — they are axes of variation. Each can take infinite values:
-
-- **Layout structure** — How is content spatially organized? Single column, multi-column grid, asymmetric split, sidebar, radial, overlapping, stacked cards, masonry, full-bleed sections, or anything else.
-- **Visual hierarchy** — What dominates the viewport when someone lands? The featured project, the name, a signal-driven element, negative space, a typographic statement?
-- **Density** — How much content per screen? Dense and information-rich, or sparse and atmospheric? Does it feel like a newspaper or a gallery wall?
-- **Typography scale** — What's the ratio between the largest and smallest text? Is there dramatic scale contrast or uniform sizing? Are headings huge or whispered?
-- **Color approach** — Monochromatic, complementary, analogous, high-chroma, desaturated, dark-on-light, light-on-dark, colored backgrounds, gradients, or transparency?
-- **Element character** — Are components sharp-edged or rounded? Bordered or borderless? Floating or grounded? Overlapping or separated? Do they cast shadows or sit flat?
-
-Describe your choices in the \`rationale\` field of your \`submit_redesign\` response.
-
-## What "Genuinely Different" Looks Like
-
-These are not templates to copy. They are proof of what's possible:
-
-- A layout where the nav is at the bottom and content reads bottom-to-top
-- A layout where the featured project fills the entire viewport and you scroll past it to reach the work list
-- A layout with a persistent left sidebar where identity and nav live permanently
-- A layout where projects are arranged in a grid of cards at different sizes
-- A layout where content is asymmetrically split — one large panel, one narrow panel
-- A layout where generous whitespace pushes content to one corner of the screen
-- A layout where signal-driven elements (a quote, a score, a weather reading) are spatially integrated with the portfolio content, not segregated in a separate section
-
-The structure itself is a creative choice, not just the styling of a fixed structure.
-
-## Typography
-
-You may use ANY font from Google Fonts. You are not limited to the fonts currently in the preset.
-
-- Update the \`links\` array in \`app/routes/__root.tsx\`'s \`head()\` function to load your chosen fonts via the Google Fonts stylesheet URL
-- The \`preconnect\` hints for \`fonts.googleapis.com\` and \`fonts.gstatic.com\` are already present — keep them
-- Reference your chosen fonts in \`elements/preset.ts\` font tokens: \`{ value: "'Font Name', fallback" }\`
-- Choose fonts that serve today's creative direction — serif, sans-serif, monospace, display, handwritten, anything
-
-## Accessibility — Non-Negotiable
-
-These constraints cannot be violated regardless of creative direction. Bold design and accessible design are not in conflict.
-
-- **Contrast:** Body text must meet WCAG AA (4.5:1 ratio against its background). Large text (18px+ or 14px+ bold) must meet 3:1.
-- **Font size:** No body text smaller than 14px. No interactive element text smaller than 12px.
-- **Readability:** Line length must not exceed 75 characters for body text. Line height for body text must be at least 1.4.
-- **Navigation:** All nav links must be keyboard-accessible and visually distinguishable.
-- **Links:** All links must be visually distinguishable from surrounding text (via color, underline, or other treatment).
-
-## Content Contract
-
-Every redesign must include all required sections. Do not remove or rename component exports.
-
-**Home page required sections:**
-- FeaturedProject — must render: project title, problem statement, external link
-- SelectedWork — must render each project: title, type, year, and a link to /work/$slug
-- Experiments — must render each project: title, type, year, and a link or external URL
-
-**About page required sections:**
-- Bio — must render the identity statement
-- Timeline — must render each entry: year, role, company, description
-- Capabilities — must render all capability strings
-- Personal — must render: holes in one count, sport, teams, current focus
-
-**All pages:**
-- Sidebar — must render: name, role, and all nav links
-
-**Rules:**
-1. Each component imports its own data directly from app/content/. Do not change these import paths.
-2. Every data key listed above must appear somewhere in the rendered output. You may present them in any visual form — large type, small label, tooltip, hover state — but they must be present.
-3. Component prop interfaces for ProjectRow (project, index) must remain compatible. You may add optional props but never remove required ones.
-4. You may completely reimagine the layout, typography, color, spacing, and interaction of any component. The contract is about what is shown, not how.`
+// Read once at module load. Prompts are static data — no reason to re-read per call.
+const SYSTEM_PROMPT = readFileSync(PROMPT_PATH, 'utf8')
 
 /**
  * Format the signals object into a readable string for the prompt.
