@@ -95,7 +95,7 @@ function formatSignals(signals) {
 
 /**
  * Build the user prompt from context.
- * @param {{ signals: object, contentSummary: string, currentFiles: Array<{path: string, content: string}> }} context
+ * @param {{ signals: object, contentSummary: string, currentFiles: Array<{path: string, content: string}>, tokenContext?: string|null }} context
  * @returns {string}
  */
 function buildUserPrompt(context) {
@@ -121,6 +121,17 @@ The following brief was written by the Product Manager. It contains your design 
 ${context.brief}`)
   } else {
     sections.push(formatSignals(context.signals))
+  }
+
+  // Optional: Design Tokens block (production path only — passed after Token Designer runs)
+  if (context.tokenContext) {
+    sections.push(`## Design Tokens (from elements/preset.ts)
+
+Use these token names in your components. Do not invent new tokens — only reference what exists here.
+
+\`\`\`typescript
+${context.tokenContext}
+\`\`\``)
   }
 
   sections.push(`## Site Content Reference
@@ -156,7 +167,7 @@ ${file.content}
 
 /**
  * Build the messages array for the Claude API call.
- * @param {{ signals: object, contentSummary: string, currentFiles: Array<{path: string, content: string}> }} context
+ * @param {{ signals: object, contentSummary: string, currentFiles: Array<{path: string, content: string}>, brief?: string, tokenContext?: string|null }} context
  * @returns {{ system: string, messages: Array<{role: string, content: string}> }}
  */
 export function buildMessages(context) {

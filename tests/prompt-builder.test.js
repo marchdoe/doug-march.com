@@ -33,3 +33,21 @@ test('user message uses brief when provided', () => {
   assert.ok(messages[0].content.includes('Creative Brief'))
   assert.ok(messages[0].content.includes('quiet, editorial'))
 })
+
+test('tokenContext is threaded into user prompt when provided', () => {
+  const tokenSnippet = 'export const elementsPreset = definePreset({ name: "elements" })'
+  const { messages } = buildMessages({ ...CONTEXT, tokenContext: tokenSnippet })
+  assert.ok(messages[0].content.includes('## Design Tokens'))
+  assert.ok(messages[0].content.includes(tokenSnippet))
+})
+
+test('optional tokenContext defaults to absent (local-dev parity)', () => {
+  const withoutOptional = buildMessages(CONTEXT)
+  const withNull = buildMessages({ ...CONTEXT, tokenContext: null })
+  const withUndefined = buildMessages({ ...CONTEXT, tokenContext: undefined })
+  // When omitted/null/undefined, no Design Tokens section is emitted
+  // and the three outputs are identical.
+  assert.equal(withoutOptional.messages[0].content, withNull.messages[0].content)
+  assert.equal(withoutOptional.messages[0].content, withUndefined.messages[0].content)
+  assert.ok(!withoutOptional.messages[0].content.includes('## Design Tokens'))
+})

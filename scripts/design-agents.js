@@ -33,6 +33,7 @@ import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-
 import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
 import { createTrace } from './utils/trace.js'
+import { buildMessages } from './utils/prompt-builder.js'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -398,7 +399,7 @@ function validateCodegen() {
  * @returns {Promise<{ rationale: string, design_brief: string, files: Array<{path: string, content: string}> }>}
  */
 export async function runAgentSwarm(context, { onTraceStep } = {}) {
-  const { signals, brief, contentSummary } = context
+  const { signals, brief, contentSummary, currentFiles = [] } = context
 
   // Read creative weights from environment
   const weights = {
@@ -480,14 +481,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     specCriticPromptRaw,
     screenshotCriticPromptRaw,
     tokenPromptRaw,
-    unifiedDesignerPromptRaw,
     designSystemRef, libTypography, libColor, libLayout, libComponents,
   ] = await Promise.all([
     readFile(path.join(promptDir, 'design-director.md'), 'utf8'),
     readFile(path.join(promptDir, 'spec-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'screenshot-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
-    readFile(path.join(promptDir, 'unified-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'design-system-reference.md'), 'utf8'),
     readFile(path.join(promptDir, 'library-typography.md'), 'utf8'),
     readFile(path.join(promptDir, 'library-color.md'), 'utf8'),
@@ -498,10 +497,18 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const specCriticPrompt = specCriticPromptRaw
   const screenshotCriticPrompt = screenshotCriticPromptRaw
 
-  // Build system prompts with relevant libraries appended
+  // Build system prompts with relevant libraries appended.
+  // unified-designer base prompt is loaded through buildMessages (single source
+  // of truth shared with local-dev path in scripts/generate-redesign.js).
+  const { system: unifiedDesignerBasePrompt } = buildMessages({
+    signals,
+    brief: '',
+    contentSummary: '',
+    currentFiles: [],
+  })
   const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}`
   const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libTypography}\n\n${libColor}`
-  const unifiedDesignerSystemPrompt = `${unifiedDesignerPromptRaw}\n\n${designSystemRef}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComponents}`
+  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComponents}`
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')
@@ -847,12 +854,22 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     ? `## Visual Specification (from Design Director)\n\n${visualSpec}\n\n---\n\n## Original Creative Brief\n\n${brief}`
     : brief
 
-  const designerUserPrompt = buildAgentPrompt('unified-designer', {
-    brief: enrichedBrief,
-    referenceFiles: [],
-    tokenContext,
-  }) + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
-    + weightsPrompt
+  // Build the unified-designer user prompt via the shared prompt-builder so
+  // production matches local-dev byte-for-byte up to the production-only
+  // additions (ratings + creative weights) appended below.
+  const buildUnifiedDesignerPrompt = () => {
+    const { messages } = buildMessages({
+      signals,
+      brief: enrichedBrief,
+      contentSummary,
+      currentFiles,
+      tokenContext,
+    })
+    return messages[0].content
+      + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
+      + weightsPrompt
+  }
+  const designerUserPrompt = buildUnifiedDesignerPrompt()
 
   let designerResult
   const t0Designer = Date.now()
@@ -949,7 +966,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
         const agentConfig = {
           'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) },
-          'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: () => buildAgentPrompt('unified-designer', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
+          'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: buildUnifiedDesignerPrompt },
         }
 
         const config = agentConfig[responsibleAgent]
@@ -1042,7 +1059,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // Build agent lookup for retry
   const agentConfig = {
     'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) },
-    'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: () => buildAgentPrompt('unified-designer', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
+    'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: buildUnifiedDesignerPrompt },
   }
 
   const retryAgents = failingAgent === 'both'
