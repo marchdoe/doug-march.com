@@ -188,7 +188,8 @@ export function validateGenerated() {
   }
 
   // Allowlist of domains permitted in URL strings in generated code.
-  // Fonts and project-owned URLs only. Any other domain is flagged.
+  // Fonts, project-owned URLs, and XML namespace identifiers. Any other
+  // domain is flagged.
   const ALLOWED_URL_HOSTS = new Set([
     'fonts.googleapis.com',
     'fonts.gstatic.com',
@@ -197,6 +198,11 @@ export function validateGenerated() {
     '15th.club',
     'doug-march.com',
     'github.com',
+    // XML namespace URIs that appear in xmlns / xmlns:xlink attributes on
+    // inline SVG. These are identifiers, not fetchable URLs — no network
+    // request is ever made to them, and inline SVG without xmlns can fail
+    // to render in some environments.
+    'www.w3.org',
   ])
 
   // Files to scan: only AI-generated mutable files. Hand-maintained
