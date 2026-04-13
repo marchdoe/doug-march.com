@@ -120,8 +120,8 @@ describe('buildMessages — formatSignals catch-all', () => {
 describe('buildMessages — system prompt (designer prompt rewrite)', () => {
   it('establishes designer role receiving a brief from PM', () => {
     const { system } = buildMessages(baseContext)
-    expect(system).toContain('You are a designer')
-    expect(system).toContain('Product Manager')
+    expect(system).toContain('You are designing a complete website')
+    expect(system).toContain('creative brief')
     expect(system).toContain('complete reimagination')
   })
 
