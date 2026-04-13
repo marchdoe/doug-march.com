@@ -1,6 +1,5 @@
 // tests/prompt-builder.test.js
-import { test } from 'node:test'
-import assert from 'node:assert/strict'
+import { describe, it, expect } from 'vitest'
 import { readFile } from 'fs/promises'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -16,38 +15,40 @@ const CONTEXT = {
   currentFiles: [{ path: 'app/components/Sidebar.tsx', content: '// ...' }],
 }
 
-test('system prompt matches unified-designer.md byte-for-byte', async () => {
-  const expected = await readFile(path.join(ROOT, 'scripts/prompts/unified-designer.md'), 'utf8')
-  const { system } = buildMessages(CONTEXT)
-  assert.equal(system, expected)
-})
+describe('prompt-builder', () => {
+  it('system prompt matches unified-designer.md byte-for-byte', async () => {
+    const expected = await readFile(path.join(ROOT, 'scripts/prompts/unified-designer.md'), 'utf8')
+    const { system } = buildMessages(CONTEXT)
+    expect(system).toBe(expected)
+  })
 
-test('user message contains formatted signals', () => {
-  const { messages } = buildMessages(CONTEXT)
-  assert.ok(messages[0].content.includes("Today's Signals (2026-04-13)"))
-  assert.ok(messages[0].content.includes('Boston'))
-})
+  it('user message contains formatted signals', () => {
+    const { messages } = buildMessages(CONTEXT)
+    expect(messages[0].content).toContain("Today's Signals (2026-04-13)")
+    expect(messages[0].content).toContain('Boston')
+  })
 
-test('user message uses brief when provided', () => {
-  const { messages } = buildMessages({ ...CONTEXT, brief: 'Design a quiet, editorial day.' })
-  assert.ok(messages[0].content.includes('Creative Brief'))
-  assert.ok(messages[0].content.includes('quiet, editorial'))
-})
+  it('user message uses brief when provided', () => {
+    const { messages } = buildMessages({ ...CONTEXT, brief: 'Design a quiet, editorial day.' })
+    expect(messages[0].content).toContain('Creative Brief')
+    expect(messages[0].content).toContain('quiet, editorial')
+  })
 
-test('tokenContext is threaded into user prompt when provided', () => {
-  const tokenSnippet = 'export const elementsPreset = definePreset({ name: "elements" })'
-  const { messages } = buildMessages({ ...CONTEXT, tokenContext: tokenSnippet })
-  assert.ok(messages[0].content.includes('## Design Tokens'))
-  assert.ok(messages[0].content.includes(tokenSnippet))
-})
+  it('tokenContext is threaded into user prompt when provided', () => {
+    const tokenSnippet = 'export const elementsPreset = definePreset({ name: "elements" })'
+    const { messages } = buildMessages({ ...CONTEXT, tokenContext: tokenSnippet })
+    expect(messages[0].content).toContain('## Design Tokens')
+    expect(messages[0].content).toContain(tokenSnippet)
+  })
 
-test('optional tokenContext defaults to absent (local-dev parity)', () => {
-  const withoutOptional = buildMessages(CONTEXT)
-  const withNull = buildMessages({ ...CONTEXT, tokenContext: null })
-  const withUndefined = buildMessages({ ...CONTEXT, tokenContext: undefined })
-  // When omitted/null/undefined, no Design Tokens section is emitted
-  // and the three outputs are identical.
-  assert.equal(withoutOptional.messages[0].content, withNull.messages[0].content)
-  assert.equal(withoutOptional.messages[0].content, withUndefined.messages[0].content)
-  assert.ok(!withoutOptional.messages[0].content.includes('## Design Tokens'))
+  it('optional tokenContext defaults to absent (local-dev parity)', () => {
+    const withoutOptional = buildMessages(CONTEXT)
+    const withNull = buildMessages({ ...CONTEXT, tokenContext: null })
+    const withUndefined = buildMessages({ ...CONTEXT, tokenContext: undefined })
+    // When omitted/null/undefined, no Design Tokens section is emitted
+    // and the three outputs are identical.
+    expect(withoutOptional.messages[0].content).toBe(withNull.messages[0].content)
+    expect(withoutOptional.messages[0].content).toBe(withUndefined.messages[0].content)
+    expect(withoutOptional.messages[0].content).not.toContain('## Design Tokens')
+  })
 })
