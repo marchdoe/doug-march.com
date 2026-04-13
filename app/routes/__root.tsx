@@ -1,6 +1,7 @@
 import '../styles/panda.css'
 import { createRootRoute, Outlet, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
+import { styled } from '../../styled-system/jsx'
 
 const THEME_INIT_SCRIPT = `(function(){
   var s=localStorage.getItem('theme');
@@ -10,32 +11,26 @@ const THEME_INIT_SCRIPT = `(function(){
 
 export const Route = createRootRoute({
   head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'doug-march.com' },
-    ],
+    scripts: [{ children: THEME_INIT_SCRIPT }],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Work+Sans:wght@300;400&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@400&display=swap',
       },
     ],
-    scripts: [{ children: THEME_INIT_SCRIPT }],
   }),
-
   notFoundComponent: () => {
     return (
       <RootDocument>
-        <div>
-          <p>Page not found</p>
-        </div>
+        <styled.div display="flex" flexDirection="column" alignItems="center" justifyContent="center" minH="60vh" gap="4">
+          <styled.h1 fontFamily="heading" fontSize="xl">404</styled.h1>
+          <styled.p color="textSecondary">Page not found.</styled.p>
+        </styled.div>
       </RootDocument>
     )
   },
-
   component: RootComponent,
 })
 

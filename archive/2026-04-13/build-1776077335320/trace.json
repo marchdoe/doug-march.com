@@ -1,0 +1,294 @@
+{
+  "date": "2026-04-13",
+  "startedAt": "2026-04-13T10:34:03.687Z",
+  "completedAt": "2026-04-13T10:48:57.155Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Art Of Noticing",
+              "description": "A clean, interactive portfolio for videographer Thomas Mamfredas. Jump in and float through a visual gallery of his best photo and video work.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69cd4b9a55db6223574484.png"
+            },
+            {
+              "title": "Not Worth the Gamble",
+              "description": "An integrated digital campaign exposing illegal gambling risks through cinematic storytelling, educating communities and driving awareness across British...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69caad027c47b296567479.jpg"
+            },
+            {
+              "title": "The Cube",
+              "description": "The Cube is a multi-functional venue located in Copenhagen, Denmark. It works as a flexible space for events, workshops, studio productions, and product...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69caa2ed308a1315623251.jpg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Monday",
+          "is_weekend": false,
+          "day_index": 1
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "NousResearch/hermes-agent/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "shiyu-coder/Kronos/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "forrestchang/andrej-karpathy-skills/stargazers",
+              "description": "",
+              "language": null,
+              "stars": null
+            },
+            {
+              "name": "microsoft/markitdown/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "multica-ai/multica/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Masters Tournament",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Rory McIlroy",
+              "position": "1",
+              "score": "-12"
+            },
+            {
+              "name": "Scottie Scheffler",
+              "position": "2",
+              "score": "-11"
+            },
+            {
+              "name": "Tyrrell Hatton",
+              "position": "3",
+              "score": "-10"
+            },
+            {
+              "name": "Russell Henley",
+              "position": "4",
+              "score": "-10"
+            },
+            {
+              "name": "Justin Rose",
+              "position": "5",
+              "score": "-10"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "All elementary functions from a single binary operator",
+              "url": "https://arxiv.org/abs/2603.21852",
+              "score": 419,
+              "by": "pizza"
+            },
+            {
+              "title": "The Economics of Software Teams: Why Most Engineering Orgs Are Flying Blind",
+              "url": "https://www.viktorcessan.com/the-economics-of-software-teams/",
+              "score": 149,
+              "by": "kiyanwang"
+            },
+            {
+              "title": "Taking on CUDA with ROCm: 'One Step After Another'",
+              "url": "https://www.eetimes.com/taking-on-cuda-with-rocm-one-step-after-another/",
+              "score": 176,
+              "by": "mindcrime"
+            },
+            {
+              "title": "Bring Back Idiomatic Design (2023)",
+              "url": "https://essays.johnloeber.com/p/4-bring-back-idiomatic-design",
+              "score": 564,
+              "by": "phil294"
+            },
+            {
+              "title": "DIY Soft Drinks",
+              "url": "https://blinry.org/diy-soft-drinks/",
+              "score": 458,
+              "by": "_Microft"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waning crescent",
+          "illumination": 0.099,
+          "days_into_cycle": 26.53
+        },
+        "music": {
+          "bands": [
+            "My Morning Jacket",
+            "Guided by Voices",
+            "Wet Leg"
+          ]
+        },
+        "quote": {
+          "text": "A wise man will be master of his mind, a fool will be its slave.",
+          "author": "Publilius Syrus"
+        },
+        "season": {
+          "season": "spring",
+          "month": 4,
+          "day": 13,
+          "day_of_year": 103,
+          "month_name": "April"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": "2026-04-12T22:00Z",
+              "result": "win",
+              "score": "133-121"
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-04-12T17:40Z",
+              "result": "win",
+              "score": "8-2"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:42",
+          "sunset": "18:39",
+          "daylight_hours": 12.9
+        },
+        "date": "2026-04-13"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-04-13T10:34:19.127Z"
+    },
+    {
+      "name": "brief-loaded",
+      "phase": 0,
+      "input": {},
+      "output": {
+        "brief": "# Signals Brief — 2026-04-13\n\n# Creative Brief — doug-march.com\n**April 13, 2026 | Monday**\n\n---\n\n## Mood\n\nMonday morning clarity layered over spring's soft momentum—a day caught between structural discipline and natural renewal. The waning crescent (just 10% illuminated) suggests restraint and inward focus, while the Masters conclusion and a suite of technical conversations on Hacker News create intellectual momentum. Hold the tension: this is a day of *decisive thinking*, not celebration. The ",
+        "charCount": 5198
+      },
+      "durationMs": 0,
+      "timestamp": "2026-04-13T10:34:19.127Z"
+    },
+    {
+      "name": "design-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — MANDATORY CONSTRAINT\n\nRecent archetype usage (newest first):\n  - 2026-04-11: Scroll\n  - 2026-04-10: Gallery Wall\n  - 2026-04-07: Gallery Wall\n  - 2026-04-06: Specimen\n  - 2026-04-05: Gallery Wall\n  - 2026-04-04: Specimen\n  - 2026-04-03: Gallery Wall\n\n**FORBIDDEN TODAY** (used in the last 3 days): **Scroll, Gallery Wall**\n\nYou MUST choose from the remaining archetypes: Broadsheet, Specimen, Poster, Split, Stack, Index. Choosing a forbidden archetype is an error — the spec"
+      },
+      "output": {
+        "archetype": "Specimen",
+        "specLength": 11622,
+        "specPreview": "# Visual Specification — doug-march.com\n## April 13, 2026 | Monday\n\n---\n\n## 1. Color Specification\n\n**Primary hue decision:** H:105° — sage green, the hue of April foliage seen through overcast morning light. Not posterized, not vivid; a color that reads as *grown*, not manufactured. Chosen because the brief demands spring-forward without celebration — this hue carries renewal quietly.\n\n**Neutral palette** (built from H:105°, S:5–10%, fully desaturated toward warm paper):\n\n| Token | Hex | Notes "
+      },
+      "durationMs": 171839,
+      "timestamp": "2026-04-13T10:37:10.967Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 11622
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 51213,
+      "timestamp": "2026-04-13T10:38:02.180Z"
+    },
+    {
+      "name": "token-designer",
+      "phase": 2,
+      "input": {
+        "briefLength": 16903
+      },
+      "output": {
+        "files": [
+          "elements/preset.ts",
+          "app/routes/__root.tsx"
+        ],
+        "rationale": "This design system embodies April 13's duality: Monday discipline meets spring renewal. The neutral palette derives from sage green (H:105°), creating a palette that feels *grown* rather than manufactured—desaturated, warm-tinted paper tones that evoke morning light diffused through cloud cover. The Specimen archetype with Broadsheet undertones enforces structural clarity: typography is the primary visual tool, with extreme scale contrast (9px to clamp(80px, 13vw, 160px)) doing the hierarchy wor"
+      },
+      "durationMs": 94613,
+      "timestamp": "2026-04-13T10:39:36.793Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 5147,
+        "briefLength": 16903
+      },
+      "output": {
+        "files": [
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/components/Layout.tsx",
+          "app/components/Sidebar.tsx",
+          "app/routes/index.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 501099,
+      "timestamp": "2026-04-13T10:47:59.228Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": false,
+        "error": "[31m✗\u001b[39m Build failed in 557ms\n\u001b[31merror during build:\n\u001b[31m[tanstack-router:code-splitter:compile-reference-file] Duplicate declaration \"ScrollRestoration\"\u001b[31m\nfile: \u001b[36m/home/runner/work/doug-march.com/doug-march.com/app/routes/__root.tsx\u001b[31m\n    at Hub.buildError (/home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/@babel+traverse@7.29.0/node_modules/@babel/traverse/lib/hub.js:14:12)\n    at Scope.checkBlockScopedCollisions (/home/runner/work/doug-march.com/doug-march.com/"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-04-13T10:48:02.939Z"
+    }
+  ]
+}

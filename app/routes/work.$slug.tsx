@@ -1,21 +1,26 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { projects } from '../content/projects'
+import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
 
-const label: React.CSSProperties = {
-  fontSize: '9px',
-  fontFamily: '"Space Grotesk", sans-serif',
+const sectionLabelText = css({
+  fontFamily: 'body',
   fontWeight: '400',
-  color: '#6B8599',
-  letterSpacing: '0.12em',
+  color: 'text.muted',
+  letterSpacing: 'widest',
   textTransform: 'uppercase',
-}
-const divider: React.CSSProperties = { borderTop: '1px solid rgba(150, 170, 187, 0.08)' }
-const sectionWrap: React.CSSProperties = {
-  width: '100%',
-  maxWidth: '720px',
-  padding: '64px 48px',
+})
+
+function SectionLabel({ label }: { label: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+      <span className={sectionLabelText} style={{ fontSize: '9px', whiteSpace: 'nowrap' }}>
+        {label}
+      </span>
+      <div style={{ flex: '1', height: '1px', background: '#C8D1C2' }} />
+    </div>
+  )
 }
 
 function WorkPage() {
@@ -24,229 +29,350 @@ function WorkPage() {
 
   if (!project) {
     return (
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        background: '#0D1822',
-        gap: '16px',
-      }}>
-        <div style={{
-          fontFamily: '"Space Grotesk", sans-serif',
-          fontSize: '50px',
-          fontWeight: '700',
-          letterSpacing: '-0.03em',
-          color: '#2E3E4D',
-          lineHeight: 1.05,
-        }}>
-          404
-        </div>
-        <div style={{
-          fontFamily: '"Work Sans", sans-serif',
-          fontSize: '16px',
-          fontWeight: '300',
-          color: '#6B8599',
-        }}>
-          Project not found.
-        </div>
-        <a href="/" className="u-line" style={{
-          marginTop: '16px',
-          fontFamily: '"Space Grotesk", sans-serif',
-          fontSize: '12px',
-          color: '#6B8599',
-          letterSpacing: '0.08em',
-          textDecoration: 'none',
-        }}>
-          ← back to work
-        </a>
+      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 48px' }}>
+        <section style={{ paddingTop: '96px', paddingBottom: '96px' }}>
+          <a
+            href="/"
+            className={css({
+              fontFamily: 'mono',
+              color: 'text.muted',
+              textDecoration: 'none',
+              letterSpacing: 'wider',
+              transition: 'color 200ms ease',
+              _hover: { color: 'accent', textDecoration: 'none' },
+            })}
+            style={{ fontSize: '11px', display: 'inline-block', marginBottom: '48px' }}
+          >
+            ← Index
+          </a>
+
+          <p
+            className={css({ fontFamily: 'heading', fontWeight: '700', color: 'text', fontSize: 'lg' })}
+          >
+            Project not found.
+          </p>
+        </section>
       </div>
     )
   }
 
-  const sections = [
-    { key: 'problem', heading: 'Problem', content: project.problem },
-    { key: 'approach', heading: 'Approach', content: project.approach },
-    { key: 'outcome', heading: 'Outcome', content: project.outcome },
-  ]
+  const hasFullDepth = project.depth === 'full'
 
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      width: '100%',
-      background: '#0D1822',
-      minHeight: '100vh',
-      paddingTop: '96px',
-    }}>
+    <div>
+      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 48px' }}>
 
-      {/* Back */}
-      <div style={{ width: '100%', maxWidth: '720px', padding: '0 48px 24px' }}>
-        <a href="/" className="u-line" style={{
-          fontFamily: '"Space Grotesk", sans-serif',
-          fontSize: '12px',
-          color: '#6B8599',
-          letterSpacing: '0.08em',
-          textDecoration: 'none',
-        }}>
-          ← work
-        </a>
-      </div>
-
-      {/* Project Header */}
-      <div style={{ ...sectionWrap, ...divider }}>
-        <div style={{ ...label, color: '#C34B22', marginBottom: '24px' }}>
-          {project.type}&nbsp;&nbsp;·&nbsp;&nbsp;{project.year}
+        {/* BACK LINK */}
+        <div style={{ paddingTop: '48px' }}>
+          <a
+            href="/"
+            className={css({
+              fontFamily: 'mono',
+              color: 'text.muted',
+              textDecoration: 'none',
+              letterSpacing: 'wider',
+              transition: 'color 200ms ease',
+              _hover: { color: 'accent', textDecoration: 'none' },
+            })}
+            style={{ fontSize: '11px' }}
+          >
+            ← All Work
+          </a>
         </div>
 
-        <h1 style={{
-          fontFamily: '"Space Grotesk", sans-serif',
-          fontSize: '50px',
-          fontWeight: '700',
-          lineHeight: 1.05,
-          letterSpacing: '-0.03em',
-          color: '#DFE7F1',
-          margin: '0 0 16px 0',
-        }}>
-          {project.title}
-        </h1>
-
-        {project.role && (
-          <div style={{
-            fontFamily: '"Space Grotesk", sans-serif',
-            fontSize: '16px',
-            fontWeight: '400',
-            color: '#96AABB',
-            marginBottom: '24px',
-            letterSpacing: '-0.01em',
-          }}>
-            {project.role}
-          </div>
-        )}
-
-        {(project.liveUrl || project.externalUrl) && (
-          <a
-            href={project.liveUrl || project.externalUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="u-line"
+        {/* PROJECT HEADER */}
+        <section style={{ paddingTop: '64px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
+          {/* Meta row */}
+          <div
             style={{
-              fontFamily: '"Space Grotesk", sans-serif',
-              fontSize: '12px',
-              color: '#C34B22',
-              letterSpacing: '0.08em',
-              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '24px',
+              marginBottom: '24px',
             }}
           >
-            Visit project →
-          </a>
-        )}
+            <span
+              className={css({
+                fontFamily: 'mono',
+                color: 'text.muted',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+              })}
+              style={{ fontSize: '9px' }}
+            >
+              {project.type}
+            </span>
+            <span
+              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
+              style={{ fontSize: '11px' }}
+            >
+              {project.year}
+            </span>
+            {project.featured && (
+              <span
+                className={css({
+                  fontFamily: 'mono',
+                  color: 'accent',
+                  letterSpacing: 'widest',
+                  textTransform: 'uppercase',
+                })}
+                style={{ fontSize: '8px' }}
+              >
+                Featured
+              </span>
+            )}
+          </div>
 
-        {project.description && !project.problem && (
-          <p style={{
-            fontFamily: '"Work Sans", sans-serif',
-            fontSize: '16px',
-            fontWeight: '300',
-            color: '#96AABB',
-            lineHeight: 1.75,
-            maxWidth: '540px',
-            margin: '24px 0 0 0',
-          }}>
-            {project.description}
-          </p>
-        )}
-      </div>
+          {/* Title */}
+          <h1
+            className={css({
+              fontFamily: 'heading',
+              fontWeight: '800',
+              color: 'text',
+              lineHeight: 'tight',
+              letterSpacing: 'tight',
+              margin: '0 0 32px',
+            })}
+            style={{ fontSize: 'clamp(48px, 8vw, 96px)' }}
+          >
+            {project.title}
+          </h1>
 
-      {/* Content Sections */}
-      {sections.map(({ key, heading, content }) =>
-        content ? (
-          <div key={key} style={{ ...sectionWrap, ...divider }}>
-            <div style={{ ...label, marginBottom: '24px' }}>{heading}</div>
-            <p style={{
-              fontFamily: '"Work Sans", sans-serif',
-              fontSize: '16px',
-              fontWeight: '300',
-              color: '#96AABB',
-              lineHeight: 1.75,
-              maxWidth: '540px',
-              margin: 0,
-            }}>
-              {content}
+          {/* Role */}
+          {project.role && (
+            <p
+              className={css({
+                fontFamily: 'body',
+                fontWeight: '400',
+                color: 'text.secondary',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                margin: '0',
+              })}
+              style={{ fontSize: '12px' }}
+            >
+              Role &nbsp;—&nbsp; {project.role}
             </p>
-          </div>
-        ) : null
-      )}
+          )}
+        </section>
 
-      {/* Stack */}
-      {project.stack && project.stack.length > 0 && (
-        <div style={{ ...sectionWrap, ...divider }}>
-          <div style={{ ...label, marginBottom: '24px' }}>Stack</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-            {project.stack.map((tech) => (
-              <div key={tech} style={{
-                padding: '6px 12px',
-                fontFamily: '"Space Grotesk", sans-serif',
-                fontSize: '12px',
-                color: '#96AABB',
-                letterSpacing: '0.04em',
-                background: 'rgba(27, 42, 55, 0.9)',
-                border: '1px solid rgba(150, 170, 187, 0.10)',
-                borderRadius: '0',
-              }}>
-                {tech}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+        {/* PROBLEM */}
+        {project.problem && (
+          <section style={{ paddingTop: '64px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
+            <SectionLabel label="The Problem" />
+            <p
+              className={css({
+                fontFamily: 'body',
+                fontWeight: '300',
+                color: 'text.secondary',
+                lineHeight: 'normal',
+                margin: '0',
+              })}
+              style={{ fontSize: '18px', maxWidth: '680px' }}
+            >
+              {project.problem}
+            </p>
+          </section>
+        )}
 
-      {/* GitHub link if present */}
-      {project.githubUrl && (
-        <div style={{ ...sectionWrap, ...divider }}>
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="u-line"
-            style={{
-              fontFamily: '"Space Grotesk", sans-serif',
-              fontSize: '12px',
-              color: '#6B8599',
-              letterSpacing: '0.08em',
-              textDecoration: 'none',
-            }}
+        {/* DESCRIPTION (lightweight projects) */}
+        {!hasFullDepth && project.description && (
+          <section style={{ paddingTop: '64px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
+            <SectionLabel label="About" />
+            <p
+              className={css({
+                fontFamily: 'body',
+                fontWeight: '300',
+                color: 'text.secondary',
+                lineHeight: 'normal',
+                margin: '0',
+              })}
+              style={{ fontSize: '18px', maxWidth: '680px' }}
+            >
+              {project.description}
+            </p>
+          </section>
+        )}
+
+        {/* APPROACH */}
+        {hasFullDepth && project.approach && (
+          <section style={{ paddingTop: '64px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
+            <SectionLabel label="Approach" />
+            <p
+              className={css({
+                fontFamily: 'body',
+                fontWeight: '300',
+                color: 'text.secondary',
+                lineHeight: 'normal',
+                margin: '0',
+              })}
+              style={{ fontSize: '18px', maxWidth: '680px' }}
+            >
+              {project.approach}
+            </p>
+          </section>
+        )}
+
+        {/* OUTCOME */}
+        {hasFullDepth && project.outcome && (
+          <section style={{ paddingTop: '64px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
+            <SectionLabel label="Outcome" />
+            <p
+              className={css({
+                fontFamily: 'body',
+                fontWeight: '300',
+                color: 'text.secondary',
+                lineHeight: 'normal',
+                margin: '0',
+              })}
+              style={{ fontSize: '18px', maxWidth: '680px' }}
+            >
+              {project.outcome}
+            </p>
+          </section>
+        )}
+
+        {/* STACK */}
+        {project.stack && project.stack.length > 0 && (
+          <section style={{ paddingTop: '48px', paddingBottom: '48px', borderBottom: '1px solid #C8D1C2' }}>
+            <SectionLabel label="Stack" />
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {project.stack.map((item) => (
+                <span
+                  key={item}
+                  className={css({
+                    fontFamily: 'mono',
+                    fontWeight: '400',
+                    color: 'text.secondary',
+                    background: 'bg.nav',
+                    letterSpacing: 'wider',
+                  })}
+                  style={{ fontSize: '11px', padding: '6px 10px', border: '1px solid #C8D1C2' }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* LINKS */}
+        {(project.liveUrl || project.githubUrl || project.externalUrl) && (
+          <section style={{ paddingTop: '48px', paddingBottom: '96px' }}>
+            <SectionLabel label="Links" />
+            <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
+              {project.liveUrl && (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={css({
+                    fontFamily: 'body',
+                    fontWeight: '500',
+                    color: 'accent',
+                    textDecoration: 'none',
+                    letterSpacing: 'wide',
+                    textTransform: 'uppercase',
+                    transition: 'color 200ms ease',
+                    _hover: { color: 'accent', textDecoration: 'underline' },
+                  })}
+                  style={{ fontSize: '12px' }}
+                >
+                  View Live →
+                </a>
+              )}
+              {project.externalUrl && !project.liveUrl && (
+                <a
+                  href={project.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={css({
+                    fontFamily: 'body',
+                    fontWeight: '500',
+                    color: 'accent',
+                    textDecoration: 'none',
+                    letterSpacing: 'wide',
+                    textTransform: 'uppercase',
+                    transition: 'color 200ms ease',
+                    _hover: { color: 'accent', textDecoration: 'underline' },
+                  })}
+                  style={{ fontSize: '12px' }}
+                >
+                  View Project →
+                </a>
+              )}
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={css({
+                    fontFamily: 'body',
+                    fontWeight: '400',
+                    color: 'text.secondary',
+                    textDecoration: 'none',
+                    letterSpacing: 'wide',
+                    textTransform: 'uppercase',
+                    transition: 'color 200ms ease',
+                    _hover: { color: 'accent', textDecoration: 'none' },
+                  })}
+                  style={{ fontSize: '12px' }}
+                >
+                  GitHub →
+                </a>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* Spacer if no links section */}
+        {!(project.liveUrl || project.githubUrl || project.externalUrl) && (
+          <div style={{ paddingBottom: '96px' }} />
+        )}
+      </div>
+
+      {/* FOOTER */}
+      <footer style={{ borderTop: '1px solid #C8D1C2', background: '#E4E9DF', paddingTop: '28px', paddingBottom: '28px' }}>
+        <div
+          style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            padding: '0 48px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <span
+            className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
+            style={{ fontSize: '11px' }}
           >
-            View on GitHub →
-          </a>
-        </div>
-      )}
+            DET &nbsp; PIS 133–121 W &nbsp;·&nbsp; TIG 8–2 W
+          </span>
 
-      {/* Footer */}
-      <div style={{ ...sectionWrap, ...divider, marginTop: '32px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <a href="/" style={{
-            fontFamily: '"Space Grotesk", sans-serif',
-            fontSize: '12px',
-            color: '#485F70',
-            letterSpacing: '0.04em',
-            textDecoration: 'none',
-          }}>
-            ← All work
-          </a>
-          <a href="/archive" style={{
-            fontFamily: '"Space Grotesk", sans-serif',
-            fontSize: '12px',
-            color: '#485F70',
-            letterSpacing: '0.04em',
-            textDecoration: 'none',
-          }}>
+          <span
+            className={css({ fontFamily: 'body', fontWeight: '300', color: 'text.muted' })}
+            style={{ fontSize: '11px', letterSpacing: '0.05em' }}
+          >
+            doug-march.com &nbsp;©&nbsp; 2026
+          </span>
+
+          <a
+            href="/archive"
+            className={css({
+              fontFamily: 'body',
+              fontWeight: '300',
+              color: 'text.muted',
+              textDecoration: 'none',
+              transition: 'color 200ms ease',
+              _hover: { color: 'text.secondary', textDecoration: 'none' },
+            })}
+            style={{ fontSize: '11px', letterSpacing: '0.05em' }}
+          >
             Archive
           </a>
         </div>
-      </div>
-
+      </footer>
     </div>
   )
 }

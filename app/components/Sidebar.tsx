@@ -1,46 +1,107 @@
 import logoSvg from '../assets/logo.svg'
+import { css } from '../../styled-system/css'
+
+const navLink = css({
+  fontFamily: 'body',
+  fontWeight: '400',
+  color: 'text.muted',
+  textDecoration: 'none',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  transition: 'color 200ms ease',
+  _hover: {
+    color: 'accent',
+    textDecoration: 'none',
+  },
+})
 
 export function Sidebar() {
   return (
-    <>
-      {/* Logo — fixed top-left corner mark */}
-      <div style={{
-        position: 'fixed',
-        top: '28px',
-        left: '32px',
-        zIndex: 200,
-      }}>
-        <a href="/" style={{ display: 'block', lineHeight: 1 }}>
-          <img
-            src={logoSvg}
-            alt="Doug March"
-            style={{ width: '26px', height: '26px', display: 'block' }}
-          />
-        </a>
-      </div>
-
-      {/* Nav — fixed bottom-left, like map coordinates */}
+    <header
+      className={css({
+        position: 'sticky',
+        top: '0',
+        zIndex: '100',
+        width: '100%',
+        background: 'bg.nav',
+        borderBottom: '1px solid',
+        borderColor: 'border',
+      })}
+    >
       <div
-        className="nav-group"
         style={{
-          position: 'fixed',
-          bottom: '40px',
-          left: '64px',
-          zIndex: 200,
-          display: 'flex',
+          maxWidth: '1100px',
+          margin: '0 auto',
+          padding: '0 48px',
+          height: '48px',
+          display: 'grid',
+          gridTemplateColumns: '1fr auto 1fr',
           alignItems: 'center',
-          gap: '10px',
-          fontFamily: '"Space Grotesk", sans-serif',
-          fontSize: '12px',
-          letterSpacing: '0.08em',
         }}
       >
-        <a href="/" className="nav-link" style={{ color: '#6B8599', textDecoration: 'none' }}>work</a>
-        <span style={{ color: '#2E3E4D' }}>·</span>
-        <a href="/about" className="nav-link" style={{ color: '#6B8599', textDecoration: 'none' }}>about</a>
-        <span style={{ color: '#2E3E4D' }}>·</span>
-        <a href="mailto:hello@doug-march.com" className="nav-link" style={{ color: '#6B8599', textDecoration: 'none' }}>contact</a>
+        {/* Left: Logo + Name */}
+        <a
+          href="/"
+          className={css({
+            display: 'flex',
+            alignItems: 'center',
+            textDecoration: 'none',
+            _hover: { textDecoration: 'none' },
+          })}
+          style={{ gap: '10px' }}
+        >
+          <img src={logoSvg} alt="" style={{ height: '20px', width: 'auto' }} />
+          <span
+            className={css({
+              fontFamily: 'heading',
+              fontWeight: '700',
+              color: 'text',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+            })}
+            style={{ fontSize: '13px' }}
+          >
+            Doug March
+          </span>
+        </a>
+
+        {/* Center: Masters badge */}
+        <span
+          className={css({
+            fontFamily: 'mono',
+            color: 'link',
+            letterSpacing: 'wider',
+            display: 'flex',
+            alignItems: 'center',
+          })}
+          style={{
+            fontSize: '11px',
+            padding: '0 12px',
+            height: '28px',
+            borderLeft: '1px solid #C8D1C2',
+            borderRight: '1px solid #C8D1C2',
+          }}
+        >
+          McIlroy &nbsp;−12 &nbsp;✓
+        </span>
+
+        {/* Right: Nav links */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: '32px',
+          }}
+        >
+          <a href="/" className={navLink} style={{ fontSize: '12px' }}>
+            Home
+          </a>
+          <a href="/about" className={navLink} style={{ fontSize: '12px' }}>
+            About
+          </a>
+        </div>
       </div>
-    </>
+    </header>
   )
 }

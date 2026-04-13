@@ -1,288 +1,295 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { timeline, capabilities, education } from '../content/timeline'
 import { identity, personal } from '../content/about'
+import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const label: React.CSSProperties = {
-  fontSize: '9px',
-  fontFamily: '"Space Grotesk", sans-serif',
+const sectionLabelText = css({
+  fontFamily: 'body',
   fontWeight: '400',
-  color: '#6B8599',
-  letterSpacing: '0.12em',
+  color: 'text.muted',
+  letterSpacing: 'widest',
   textTransform: 'uppercase',
-}
-const divider: React.CSSProperties = { borderTop: '1px solid rgba(150, 170, 187, 0.08)' }
-const sectionWrap: React.CSSProperties = {
-  width: '100%',
-  maxWidth: '720px',
-  padding: '64px 48px',
+})
+
+function SectionLabel({ label }: { label: string }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
+      <span className={sectionLabelText} style={{ fontSize: '9px', whiteSpace: 'nowrap' }}>
+        {label}
+      </span>
+      <div style={{ flex: '1', height: '1px', background: '#C8D1C2' }} />
+    </div>
+  )
 }
 
 function AboutPage() {
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      width: '100%',
-      background: '#0D1822',
-      minHeight: '100vh',
-      paddingTop: '96px',
-    }}>
+    <div>
+      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 48px' }}>
 
-      {/* ── IDENTITY ────────────────────────────────────────── */}
-      <div style={{ ...sectionWrap }}>
-        <div style={{ ...label, marginBottom: '28px' }}>About</div>
+        {/* IDENTITY HEADER */}
+        <section style={{ paddingTop: '96px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
+          <p
+            className={css({
+              fontFamily: 'body',
+              fontWeight: '400',
+              color: 'text.muted',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              margin: '0 0 16px',
+            })}
+            style={{ fontSize: '9px' }}
+          >
+            About
+          </p>
 
-        <h1 style={{
-          fontFamily: '"Space Grotesk", sans-serif',
-          fontSize: '50px',
-          fontWeight: '700',
-          lineHeight: 1.05,
-          letterSpacing: '-0.03em',
-          color: '#DFE7F1',
-          margin: '0 0 16px 0',
-        }}>
-          {identity.name}
-        </h1>
+          <h1
+            className={css({
+              fontFamily: 'heading',
+              fontWeight: '800',
+              fontSize: '2xl',
+              lineHeight: 'tight',
+              letterSpacing: 'tight',
+              color: 'text',
+              margin: '0 0 12px',
+            })}
+          >
+            {identity.name}
+          </h1>
 
-        <div style={{
-          fontFamily: '"Space Grotesk", sans-serif',
-          fontSize: '21px',
-          fontWeight: '400',
-          color: '#96AABB',
-          letterSpacing: '-0.01em',
-          lineHeight: 1.20,
-          marginBottom: '36px',
-        }}>
-          {identity.role}
-        </div>
+          <p
+            className={css({
+              fontFamily: 'body',
+              fontWeight: '400',
+              color: 'text.secondary',
+              letterSpacing: 'wide',
+              textTransform: 'uppercase',
+              margin: '0 0 48px',
+            })}
+            style={{ fontSize: '14px' }}
+          >
+            {identity.role}
+          </p>
 
-        <p style={{
-          fontFamily: '"Work Sans", sans-serif',
-          fontSize: '16px',
-          fontWeight: '300',
-          color: '#96AABB',
-          lineHeight: 1.75,
-          maxWidth: '540px',
-          margin: 0,
-        }}>
-          {identity.statement}
-        </p>
-      </div>
+          <p
+            className={css({
+              fontFamily: 'body',
+              fontWeight: '300',
+              color: 'text.secondary',
+              lineHeight: 'normal',
+              margin: '0',
+            })}
+            style={{ fontSize: '18px', maxWidth: '640px' }}
+          >
+            {identity.statement}
+          </p>
+        </section>
 
-      {/* ── EXPERIENCE / TIMELINE ───────────────────────────── */}
-      <div style={{ ...sectionWrap, ...divider }}>
-        <div style={{ ...label, marginBottom: '40px' }}>Experience</div>
+        {/* EXPERIENCE */}
+        <section style={{ paddingTop: '80px', paddingBottom: '80px', borderBottom: '1px solid #C8D1C2' }}>
+          <SectionLabel label="Experience" />
 
-        <div>
-          {timeline.map((entry) => (
+          {timeline.map((entry, i) => (
             <div
-              key={`${entry.year}-${entry.company}`}
+              key={`${entry.year}-${entry.company}-${i}`}
               style={{
-                display: 'flex',
+                display: 'grid',
+                gridTemplateColumns: '140px 1fr',
                 gap: '32px',
                 padding: '20px 0',
-                borderBottom: '1px solid rgba(150, 170, 187, 0.08)',
+                borderBottom: i < timeline.length - 1 ? '1px solid #C8D1C2' : 'none',
+                alignItems: 'start',
               }}
             >
-              {/* Year — fixed width so single years align with ranges */}
-              <div style={{
-                fontFamily: '"Space Grotesk", sans-serif',
-                fontSize: '12px',
-                color: '#6B8599',
-                letterSpacing: '0.04em',
-                minWidth: '140px',
-                flexShrink: 0,
-                paddingTop: '3px',
-                fontVariantNumeric: 'tabular-nums',
-                lineHeight: 1.55,
-              }}>
+              <span
+                className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wide' })}
+                style={{ fontSize: '12px', paddingTop: '2px', display: 'block' }}
+              >
                 {entry.year}
-              </div>
-
-              <div style={{ flex: 1 }}>
-                <div style={{
-                  fontFamily: '"Space Grotesk", sans-serif',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  color: '#DFE7F1',
-                  marginBottom: '2px',
-                }}>
-                  {entry.role}
-                </div>
-
-                <div style={{
-                  fontFamily: '"Work Sans", sans-serif',
-                  fontSize: '14px',
-                  fontWeight: '400',
-                  color: '#96AABB',
-                  marginBottom: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                }}>
-                  {entry.company}
-                  {entry.current && (
-                    <span style={{
-                      fontSize: '9px',
-                      fontFamily: '"Space Grotesk", sans-serif',
-                      color: '#C34B22',
-                      letterSpacing: '0.12em',
+                {entry.current && (
+                  <span
+                    className={css({
+                      fontFamily: 'mono',
+                      color: 'accent',
+                      display: 'block',
+                      letterSpacing: 'widest',
                       textTransform: 'uppercase',
-                    }}>
-                      Now
-                    </span>
-                  )}
-                </div>
+                    })}
+                    style={{ fontSize: '8px', marginTop: '4px' }}
+                  >
+                    Current
+                  </span>
+                )}
+              </span>
 
-                <div style={{
-                  fontFamily: '"Work Sans", sans-serif',
-                  fontSize: '14px',
-                  fontWeight: '300',
-                  color: '#6B8599',
-                  lineHeight: 1.55,
-                }}>
+              <div>
+                <p className={css({ fontFamily: 'body', fontWeight: '500', color: 'text', fontSize: 'sm', margin: '0 0 2px' })}>
+                  {entry.role}
+                </p>
+                <p
+                  className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', margin: '0 0 10px' })}
+                  style={{ fontSize: '13px' }}
+                >
+                  {entry.company}
+                </p>
+                <p
+                  className={css({ fontFamily: 'body', fontWeight: '300', color: 'text.muted', lineHeight: 'normal', margin: '0' })}
+                  style={{ fontSize: '14px', maxWidth: '560px' }}
+                >
                   {entry.description}
-                </div>
+                </p>
               </div>
             </div>
           ))}
+        </section>
 
-          {/* Education — same alignment as timeline rows */}
-          <div style={{
-            display: 'flex',
-            gap: '32px',
-            padding: '20px 0',
-          }}>
-            <div style={{
-              fontFamily: '"Space Grotesk", sans-serif',
-              fontSize: '12px',
-              color: '#6B8599',
-              letterSpacing: '0.04em',
-              minWidth: '140px',
-              flexShrink: 0,
-              paddingTop: '3px',
-              fontVariantNumeric: 'tabular-nums',
-            }}>
+        {/* EDUCATION */}
+        <section style={{ paddingTop: '64px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
+          <SectionLabel label="Education" />
+
+          <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '32px', alignItems: 'start' }}>
+            <span
+              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wide' })}
+              style={{ fontSize: '12px' }}
+            >
               {education.years}
-            </div>
+            </span>
             <div>
-              <div style={{
-                fontFamily: '"Space Grotesk", sans-serif',
-                fontSize: '16px',
-                fontWeight: '600',
-                color: '#DFE7F1',
-                marginBottom: '2px',
-              }}>
+              <p className={css({ fontFamily: 'body', fontWeight: '500', color: 'text', fontSize: 'sm', margin: '0 0 2px' })}>
                 {education.degree}
-              </div>
-              <div style={{
-                fontFamily: '"Work Sans", sans-serif',
-                fontSize: '14px',
-                fontWeight: '400',
-                color: '#96AABB',
-                marginBottom: '4px',
-              }}>
-                {education.school}
-              </div>
-              <div style={{
-                fontFamily: '"Work Sans", sans-serif',
-                fontSize: '14px',
-                fontWeight: '300',
-                color: '#6B8599',
-              }}>
+              </p>
+              <p
+                className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', margin: '0 0 4px' })}
+                style={{ fontSize: '13px' }}
+              >
                 {education.concentration}
-              </div>
+              </p>
+              <p
+                className={css({ fontFamily: 'body', fontWeight: '300', color: 'text.muted', margin: '0' })}
+                style={{ fontSize: '13px' }}
+              >
+                {education.school}
+              </p>
             </div>
           </div>
-        </div>
+        </section>
+
+        {/* CAPABILITIES */}
+        <section style={{ paddingTop: '64px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
+          <SectionLabel label="Capabilities" />
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {capabilities.map((cap) => (
+              <span
+                key={cap}
+                className={css({
+                  fontFamily: 'body',
+                  fontWeight: '400',
+                  color: 'text.secondary',
+                  background: 'bg.nav',
+                  letterSpacing: 'wider',
+                  textTransform: 'uppercase',
+                })}
+                style={{ fontSize: '9px', padding: '6px 10px', border: '1px solid #C8D1C2' }}
+              >
+                {cap}
+              </span>
+            ))}
+          </div>
+        </section>
+
+        {/* PERSONAL */}
+        <section style={{ paddingTop: '64px', paddingBottom: '96px' }}>
+          <SectionLabel label="Outside Work" />
+
+          <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '32px', rowGap: '20px' }}>
+            <span
+              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
+              style={{ fontSize: '11px', paddingTop: '2px' }}
+            >
+              Sport
+            </span>
+            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
+              {personal.sport}
+            </span>
+
+            <span
+              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
+              style={{ fontSize: '11px', paddingTop: '2px' }}
+            >
+              Teams
+            </span>
+            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
+              {personal.teams.join(', ')}
+            </span>
+
+            <span
+              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
+              style={{ fontSize: '11px', paddingTop: '2px' }}
+            >
+              Holes in One
+            </span>
+            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
+              {personal.holesInOne}
+            </span>
+
+            <span
+              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
+              style={{ fontSize: '11px', paddingTop: '2px' }}
+            >
+              Current Focus
+            </span>
+            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
+              {personal.currentFocus}
+            </span>
+          </div>
+        </section>
       </div>
 
-      {/* ── CAPABILITIES ────────────────────────────────────── */}
-      <div style={{ ...sectionWrap, ...divider }}>
-        <div style={{ ...label, marginBottom: '32px' }}>Capabilities</div>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {capabilities.map((cap) => (
-            <div key={cap} style={{
-              padding: '6px 12px',
-              fontFamily: '"Space Grotesk", sans-serif',
-              fontSize: '12px',
-              color: '#96AABB',
-              letterSpacing: '0.04em',
-              background: 'rgba(27, 42, 55, 0.9)',
-              border: '1px solid rgba(150, 170, 187, 0.10)',
-              borderRadius: '0',
-            }}>
-              {cap}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── PERSONAL ────────────────────────────────────────── */}
-      <div style={{ ...sectionWrap, ...divider }}>
-        <div style={{ ...label, marginBottom: '32px' }}>Outside the Work</div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '480px' }}>
-          {[
-            { key: 'Sport', value: personal.sport },
-            { key: 'Holes in One', value: String(personal.holesInOne) },
-            { key: 'Teams', value: personal.teams.join(', ') },
-            { key: 'Current Focus', value: personal.currentFocus },
-          ].map(({ key, value }) => (
-            <div key={key} style={{ display: 'flex', gap: '32px', alignItems: 'flex-start' }}>
-              <div style={{
-                fontFamily: '"Space Grotesk", sans-serif',
-                fontSize: '11px',
-                color: '#485F70',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                minWidth: '120px',
-                flexShrink: 0,
-                paddingTop: '2px',
-              }}>
-                {key}
-              </div>
-              <div style={{
-                fontFamily: '"Work Sans", sans-serif',
-                fontSize: '14px',
-                fontWeight: '300',
-                color: '#96AABB',
-                lineHeight: 1.55,
-              }}>
-                {value}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── FOOTER ───────────────────────────────────────────── */}
-      <div style={{ ...sectionWrap, ...divider }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{
-            fontFamily: '"Space Grotesk", sans-serif',
-            fontSize: '12px',
-            color: '#485F70',
-            letterSpacing: '0.04em',
-          }}>
-            Doug March · {new Date().getFullYear()}
+      {/* FOOTER */}
+      <footer style={{ borderTop: '1px solid #C8D1C2', background: '#E4E9DF', paddingTop: '28px', paddingBottom: '28px' }}>
+        <div
+          style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            padding: '0 48px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <span
+            className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
+            style={{ fontSize: '11px' }}
+          >
+            DET &nbsp; PIS 133–121 W &nbsp;·&nbsp; TIG 8–2 W
           </span>
-          <a href="/archive" style={{
-            fontFamily: '"Space Grotesk", sans-serif',
-            fontSize: '12px',
-            color: '#485F70',
-            letterSpacing: '0.04em',
-            textDecoration: 'none',
-          }}>
+
+          <span
+            className={css({ fontFamily: 'body', fontWeight: '300', color: 'text.muted' })}
+            style={{ fontSize: '11px', letterSpacing: '0.05em' }}
+          >
+            doug-march.com &nbsp;©&nbsp; 2026
+          </span>
+
+          <a
+            href="/archive"
+            className={css({
+              fontFamily: 'body',
+              fontWeight: '300',
+              color: 'text.muted',
+              textDecoration: 'none',
+              transition: 'color 200ms ease',
+              _hover: { color: 'text.secondary', textDecoration: 'none' },
+            })}
+            style={{ fontSize: '11px', letterSpacing: '0.05em' }}
+          >
             Archive
           </a>
         </div>
-      </div>
-
+      </footer>
     </div>
   )
 }
