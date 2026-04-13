@@ -296,6 +296,7 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
 
   const result = await callClaudeCLI(agentName, systemPrompt, fullPrompt, {
     timeoutMs: options.timeoutMs || 600000, // default 10 minutes
+    stallTimeoutMs: options.stallTimeoutMs, // undefined → claude-cli.js default (15 min)
     model: options.model || 'sonnet',
   })
 
@@ -880,7 +881,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   let designerResult
   const t0Designer = Date.now()
   try {
-    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPrompt, designerUserPrompt, null, { timeoutMs: 1800000 }) // 30 minutes — writes 15 files
+    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPrompt, designerUserPrompt, null, { timeoutMs: 1800000, stallTimeoutMs: 1500000 }) // 30 min total, 25 min silent-thinking headroom — the CLI comment documents 9-12 min of silent thinking as normal; default 15 min was too tight
   } catch (err) {
     console.error(`  Unified Designer failed: ${err.message}`)
     await restore(originalBackup)
