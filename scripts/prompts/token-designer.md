@@ -52,6 +52,7 @@ You must also produce `rationale` and `design_brief` fields in your JSON respons
 ### CRITICAL: __root.tsx must preserve these elements:
 - `import '../styles/panda.css'` — FIRST LINE. Without this, NO styles load. NEVER remove it.
 - The `THEME_INIT_SCRIPT` constant and its `scripts: [{ children: THEME_INIT_SCRIPT }]` in head()
+- The `meta` array in `head()` with `{ charSet: 'utf-8' }` and `{ name: 'viewport', content: 'width=device-width, initial-scale=1' }`. Without `charSet: 'utf-8'` any non-ASCII characters (em-dashes, smart quotes, accented letters from signals/briefs) render as Mojibake like `â€"` instead of `—`. NEVER remove or reorder the meta array.
 - The `notFoundComponent` and `RootComponent` / `RootDocument` structure
 - The `Layout` import and usage in RootComponent
 - The `ScrollRestoration` and `Scripts` components in the body
@@ -71,7 +72,21 @@ const THEME_INIT_SCRIPT = `(function(){
   document.documentElement.classList.add(p);
 })();`
 ```
-This MUST be the top of your __root.tsx file. Only change the Google Fonts URL.
+
+The `head()` inside `createRootRoute` MUST include the meta array alongside links and scripts:
+
+```typescript
+head: () => ({
+  meta: [
+    { charSet: 'utf-8' },
+    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+  ],
+  links: [ /* preconnect + Google Fonts stylesheet */ ],
+  scripts: [{ children: THEME_INIT_SCRIPT }],
+}),
+```
+
+This MUST be the top of your __root.tsx file. Only change the Google Fonts URL in the stylesheet link.
 
 ### CRITICAL: globalCss token reference syntax
 

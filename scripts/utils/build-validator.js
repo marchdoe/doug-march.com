@@ -128,6 +128,12 @@ export function validateGenerated() {
     if (/function\s+Scripts\s*\(\s*\)/.test(rootContent)) {
       errors.push('app/routes/__root.tsx: has a local `function Scripts()` definition — must use the import from @tanstack/react-router')
     }
+    // head() must declare UTF-8 charset. Without it, em-dashes, smart
+    // quotes, and other non-ASCII bytes from signals/briefs render as
+    // Mojibake (`â€"` etc.) in the browser.
+    if (!/charSet\s*:\s*['"]utf-8['"]/i.test(rootContent)) {
+      errors.push('app/routes/__root.tsx: head() missing meta charSet "utf-8" — non-ASCII characters will render as Mojibake')
+    }
   } catch {}
 
   // Check 4: Route files must NOT import or use Layout. __root.tsx already
