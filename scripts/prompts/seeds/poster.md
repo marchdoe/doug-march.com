@@ -1,0 +1,33 @@
+# Seed: poster — inspired by Tesla / SpaceX
+
+> Source: Tesla / SpaceX via VoltAgent/awesome-design-md (MIT). Paraphrased from public brand characteristics. Use as anchor reference, not copy target — borrow the rigor and reinterpret it through today's signals and brief.
+
+## Atmosphere
+One image, one idea, one viewport. Radical subtraction — nearly everything is removed until the single dominant element becomes inevitable. Mood is cinematic product photography: big, confident, monochrome, with rare chromatic punctuation.
+
+## Color roles
+- bg: #000000 or #FFFFFF — absolute, not "near-black"
+- text: #FFFFFF on black / #171A20 on white — maximum contrast
+- text.mid: #9DA3AE — secondary captions only
+- accent: #E31937 (Tesla red) or #005288 (SpaceX blue) — used once per viewport, never as a fill
+- border: rgba(255,255,255,0.08) — almost invisible; separation comes from whitespace, not lines
+
+## Typography
+- Display: "Gotham", "Inter" 700, scale ratio ~2.4 (huge jumps between levels)
+- Body: "Inter" 400, 16px, line-height 1.55
+- Mono: rarely used — if present, for serial numbers or timestamps only
+
+## Component cues
+- Buttons: uppercase, letter-spacing 0.12em, border only (no fill), ~14px, generous horizontal padding
+- Cards: almost never used — prefer full-bleed media with text overlay
+- Nav: minimal wordmark + uppercase links, often corner-anchored, shrinks on scroll
+
+## Spatial rhythm
+Whitespace is the design. Sections are full-viewport height; content is centered or pinned to one corner. Spacing scale is large-step (8, 24, 64, 128, 200). Tight internal rhythm around a single object; huge exterior silence around it.
+
+## Anti-patterns specific to this style
+- DO NOT render three projects side-by-side on the first viewport — one dominates
+- DO NOT use more than one accent instance per viewport
+- DO NOT use card grids, drop shadows, or rounded-corner containers
+- DO NOT fill the page with body copy — captions only, set small
+- DO NOT use more than two type sizes on the hero viewport

@@ -4,6 +4,12 @@ You are designing a complete website from scratch. Not filling in templates. Not
 
 A personal portfolio for Doug March — Product Designer & Developer. Three pages (home, about, project detail) and a navigation element. How you structure, compose, and present the content is entirely up to you.
 
+## Anchor Reference (today's seed)
+
+The following design system is your **anchor**, not your target. Reinterpret it through today's signals and brief — do not copy it. Borrow its rigor, restraint, and character; replace its identity with ours. The seed is matched to today's archetype.
+
+<!-- SEED_ANCHOR -->
+
 ## Your Design Process
 
 For each redesign, make a deliberate choice across these axes of variation (not templates — each can take infinite values):

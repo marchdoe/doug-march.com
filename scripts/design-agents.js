@@ -34,6 +34,7 @@ import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
 import { createTrace } from './utils/trace.js'
 import { buildMessages } from './utils/prompt-builder.js'
+import { selectSeed } from './utils/select-seed.js'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -905,10 +906,17 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
   const designerUserPrompt = buildUnifiedDesignerPrompt()
 
+  // Inject today's archetype-matched seed into the unified-designer system
+  // prompt. The seed is an anchor reference — see scripts/prompts/seeds/.
+  const seedPath = selectSeed(chosenArchetype || 'stack')
+  const seedContent = readFileSync(seedPath, 'utf8')
+  const unifiedDesignerSystemPromptWithSeed = unifiedDesignerSystemPrompt.replace('<!-- SEED_ANCHOR -->', seedContent)
+  console.log(`  injecting seed: ${path.basename(seedPath)} (${(seedContent.length / 1024).toFixed(1)}KB)`)
+
   let designerResult
   const t0Designer = Date.now()
   try {
-    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPrompt, designerUserPrompt, null, { timeoutMs: 1800000, stallTimeoutMs: 1500000 }) // 30 min total, 25 min silent-thinking headroom — the CLI comment documents 9-12 min of silent thinking as normal; default 15 min was too tight
+    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPromptWithSeed, designerUserPrompt, null, { timeoutMs: 1800000, stallTimeoutMs: 1500000 }) // 30 min total, 25 min silent-thinking headroom — the CLI comment documents 9-12 min of silent thinking as normal; default 15 min was too tight
   } catch (err) {
     console.error(`  Unified Designer failed: ${err.message}`)
     await restore(originalBackup)
@@ -932,7 +940,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     console.warn(`  ⚠ Unified Designer omitted required files: ${missing.join(', ')} — retrying with explicit reminder`)
     const reminderPrompt = `${designerUserPrompt}\n\n---\n\n## REQUIRED FILES MISSING — RETRY\n\nYour previous response omitted these required files: ${missing.join(', ')}\n\nThis silently preserves yesterday's chrome and breaks the day's archetype. Re-emit your COMPLETE response. Every required file must appear, including these you missed:\n${missing.map(m => `- ${m}`).join('\n')}`
     try {
-      const retry = await callAgent('unified-designer', unifiedDesignerSystemPrompt, reminderPrompt, null, { timeoutMs: 1800000, stallTimeoutMs: 1500000 })
+      const retry = await callAgent('unified-designer', unifiedDesignerSystemPromptWithSeed, reminderPrompt, null, { timeoutMs: 1800000, stallTimeoutMs: 1500000 })
       const retryProduced = new Set(retry.files.map(f => f.path))
       const stillMissing = REQUIRED_FILES.filter(p => !retryProduced.has(p))
       if (stillMissing.length === 0) {
