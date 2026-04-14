@@ -114,23 +114,24 @@ function buildArchetypeHistory(archiveDir, recentDirs) {
 /**
  * Build the hard archetype constraint block to inject into the Design Director prompt.
  * @param {Array<{date: string, archetype: string}>} history
- * @returns {string}
+ * @returns {{ block: string, forbidden: string[], allowed: string[] }}
  */
 function buildArchetypeConstraintPrompt(history) {
-  if (history.length === 0) return ''
+  if (history.length === 0) return { block: '', forbidden: [], allowed: [...ARCHETYPE_NAMES] }
 
   const lines = history.map(h => `  - ${h.date}: ${h.archetype}`).join('\n')
   const last3 = [...new Set(history.slice(0, 3).map(h => h.archetype))]
 
   let block = `\n\n## Archetype History — MANDATORY CONSTRAINT\n\nRecent archetype usage (newest first):\n${lines}\n\n`
 
+  let allowed = [...ARCHETYPE_NAMES]
   if (last3.length > 0) {
+    allowed = ARCHETYPE_NAMES.filter(n => !last3.includes(n))
     block += `**FORBIDDEN TODAY** (used in the last 3 days): **${last3.join(', ')}**\n\n`
-    const allowed = ARCHETYPE_NAMES.filter(n => !last3.includes(n))
-    block += `You MUST choose from the remaining archetypes: ${allowed.join(', ')}. Choosing a forbidden archetype is an error — the spec will be rejected.`
+    block += `You MUST choose from the remaining archetypes: ${allowed.join(', ')}. Choosing a forbidden archetype is an error — the spec will be rejected and the director will be re-run with a stricter prompt.`
   }
 
-  return block
+  return { block, forbidden: last3, allowed }
 }
 
 /**
@@ -564,6 +565,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const archiveDir = path.join(ROOT, 'archive')
   let recentBriefs = ''
   let archetypeConstraintPrompt = ''
+  let forbiddenArchetypes = []
+  let allowedArchetypes = [...ARCHETYPE_NAMES]
   try {
     const dirs = readdirSync(archiveDir)
       .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
@@ -576,7 +579,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       }
     }
     const archetypeHistory = buildArchetypeHistory(archiveDir, dirs)
-    archetypeConstraintPrompt = buildArchetypeConstraintPrompt(archetypeHistory)
+    const constraint = buildArchetypeConstraintPrompt(archetypeHistory)
+    archetypeConstraintPrompt = constraint.block
+    forbiddenArchetypes = constraint.forbidden
+    allowedArchetypes = constraint.allowed
     if (archetypeHistory.length > 0) {
       console.log(`  archetype history: ${archetypeHistory.map(h => `${h.date}=${h.archetype}`).join(', ')}`)
     }
@@ -678,10 +684,31 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   let chosenArchetype = null
   try {
     const t0Director = Date.now()
-    const directorResult = await callAgent('design-director', directorSystemPrompt, directorUserPrompt)
+    let directorResult = await callAgent('design-director', directorSystemPrompt, directorUserPrompt)
     visualSpec = directorResult._rawResponse || directorResult.rationale || ''
     chosenArchetype = extractArchetypeFromText(visualSpec)
     console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${chosenArchetype ? ` | archetype: ${chosenArchetype}` : ''}`)
+
+    // Enforce the FORBIDDEN list programmatically. The prompt threatens
+    // "spec will be rejected" but until now nothing actually rejected it.
+    // Retry director once with an explicit "you violated the constraint"
+    // message; if the retry also picks a forbidden archetype, accept and
+    // log a warning rather than spinning forever.
+    if (chosenArchetype && forbiddenArchetypes.includes(chosenArchetype)) {
+      console.warn(`  ⚠ Director picked FORBIDDEN archetype "${chosenArchetype}" — retrying with stricter prompt`)
+      const stricterPrompt = `${directorUserPrompt}\n\n---\n\n## CONSTRAINT VIOLATION — RETRY REQUIRED\n\nYour previous response chose **${chosenArchetype}**, which is on the FORBIDDEN list (used in the last 3 days). Choose a different archetype from this exact set: **${allowedArchetypes.join(', ')}**. Any other choice fails the build. Re-emit the complete VISUAL_SPEC with a new archetype.`
+      directorResult = await callAgent('design-director', directorSystemPrompt, stricterPrompt)
+      visualSpec = directorResult._rawResponse || directorResult.rationale || ''
+      const retryArchetype = extractArchetypeFromText(visualSpec)
+      console.log(`  retry visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${retryArchetype ? ` | archetype: ${retryArchetype}` : ''}`)
+      if (retryArchetype && !forbiddenArchetypes.includes(retryArchetype)) {
+        chosenArchetype = retryArchetype
+      } else {
+        console.warn(`  ⚠ Director retry also picked forbidden/unknown archetype — proceeding with "${retryArchetype || chosenArchetype}"`)
+        chosenArchetype = retryArchetype || chosenArchetype
+      }
+    }
+
     trace.addStep({
       name: 'design-director',
       phase: 1,
@@ -886,6 +913,37 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     console.error(`  Unified Designer failed: ${err.message}`)
     await restore(originalBackup)
     throw new Error(`Unified Designer failed: ${err.message}`)
+  }
+
+  // Enforce that ALL five required files are present. The most common
+  // failure mode is the designer omitting Layout.tsx or Sidebar.tsx, which
+  // silently preserves yesterday's nav and causes the "designs all look
+  // the same" complaint. Retry once if either is missing.
+  const REQUIRED_FILES = [
+    'app/components/Layout.tsx',
+    'app/components/Sidebar.tsx',
+    'app/routes/index.tsx',
+    'app/routes/about.tsx',
+    'app/routes/work.$slug.tsx',
+  ]
+  const producedPaths = new Set(designerResult.files.map(f => f.path))
+  const missing = REQUIRED_FILES.filter(p => !producedPaths.has(p))
+  if (missing.length > 0) {
+    console.warn(`  ⚠ Unified Designer omitted required files: ${missing.join(', ')} — retrying with explicit reminder`)
+    const reminderPrompt = `${designerUserPrompt}\n\n---\n\n## REQUIRED FILES MISSING — RETRY\n\nYour previous response omitted these required files: ${missing.join(', ')}\n\nThis silently preserves yesterday's chrome and breaks the day's archetype. Re-emit your COMPLETE response. Every required file must appear, including these you missed:\n${missing.map(m => `- ${m}`).join('\n')}`
+    try {
+      const retry = await callAgent('unified-designer', unifiedDesignerSystemPrompt, reminderPrompt, null, { timeoutMs: 1800000, stallTimeoutMs: 1500000 })
+      const retryProduced = new Set(retry.files.map(f => f.path))
+      const stillMissing = REQUIRED_FILES.filter(p => !retryProduced.has(p))
+      if (stillMissing.length === 0) {
+        designerResult = retry
+        console.log(`  ✓ retry produced all required files`)
+      } else {
+        console.warn(`  ⚠ retry still missing ${stillMissing.join(', ')} — proceeding with original output`)
+      }
+    } catch (err) {
+      console.warn(`  ⚠ retry failed: ${err.message} — proceeding with original output`)
+    }
   }
 
   // Write all files

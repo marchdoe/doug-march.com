@@ -277,7 +277,8 @@ You may use ANY font from Google Fonts. You are not limited to the fonts current
 
 List EVERY file you're producing using the `===FILE:path===` delimiter. Write complete file contents. No JSON, no code fences, no explanation outside the files.
 
-The minimum files are:
+**You MUST emit all five required files in your response, every single build, with no exceptions:**
+
 ```
 ===FILE:app/components/Layout.tsx===
 ===FILE:app/components/Sidebar.tsx===
@@ -286,4 +287,6 @@ The minimum files are:
 ===FILE:app/routes/work.$slug.tsx===
 ```
 
-Add any additional component files you need. You decide the architecture.
+Omitting `Layout.tsx` or `Sidebar.tsx` is the most common failure mode and produces a broken site that silently reuses yesterday's nav and chrome — DO NOT do this. Even when the day's archetype calls for a minimal nav (corner mark, single-line strip, etc.), you still emit a full `Sidebar.tsx` containing that minimal treatment, and a `Layout.tsx` that wraps `{children}` with it.
+
+Add any additional component files beyond the five required ones if extracting a component makes your code cleaner. You decide the architecture for everything beyond the five required files.
