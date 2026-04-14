@@ -126,7 +126,11 @@ import type { ReactNode } from 'react'  // CORRECT
 
 **Forbidden imports:** `@remix-run/react`, `react-router-dom`, `next/link`, `@emotion/*`, `styled-components`
 
+**External URL restriction:** Your code must NOT contain URLs to any external domain except: `fonts.googleapis.com`, `fonts.gstatic.com`, `spaceman.llc`, `getfishsticks.com`, `15th.club`, `doug-march.com`, `github.com`. Do not link to signal sources (news sites, weather APIs, etc.) or any other third-party domain. Internal links (e.g., `/about`, `/work/spaceman`, `/archive`) are fine.
+
 **No React hooks** (useState, useEffect) in components — pure display only.
+
+**No runtime network or dynamic code:** Your code must NOT use `fetch()`, `XMLHttpRequest`, `WebSocket`, `EventSource`, `navigator.sendBeacon`, `eval()`, `new Function()`, dynamic `import()`, `dangerouslySetInnerHTML`, `document.write`, `.innerHTML =`, inline `onerror=`/`onclick=` HTML attributes, `atob()`, `btoa()`, or `javascript:` URLs. All content is static — no runtime data fetching or dynamic code execution.
 
 ## Content Data Shapes
 
