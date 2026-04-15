@@ -1,295 +1,498 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { timeline, capabilities, education } from '../content/timeline'
 import { identity, personal } from '../content/about'
-import { css } from '../../styled-system/css'
+import { timeline, capabilities, education } from '../content/timeline'
+import { Footer } from '../components/Footer'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
-
-const sectionLabelText = css({
-  fontFamily: 'body',
-  fontWeight: '400',
-  color: 'text.muted',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-})
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
-      <span className={sectionLabelText} style={{ fontSize: '9px', whiteSpace: 'nowrap' }}>
-        {label}
-      </span>
-      <div style={{ flex: '1', height: '1px', background: '#C8D1C2' }} />
-    </div>
-  )
-}
 
 function AboutPage() {
   return (
     <div>
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 48px' }}>
-
-        {/* IDENTITY HEADER */}
-        <section style={{ paddingTop: '96px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '400',
-              color: 'text.muted',
-              letterSpacing: 'widest',
+      {/* Header band — continues dark from Sidebar */}
+      <div style={{ background: '#1A1610' }}>
+        <div
+          style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            padding: '64px 48px 80px',
+          }}
+        >
+          <div
+            style={{
+              fontFamily: 'Source Sans 3, sans-serif',
+              fontSize: '9px',
+              fontWeight: 600,
+              color: '#695F50',
+              letterSpacing: '0.14em',
               textTransform: 'uppercase',
-              margin: '0 0 16px',
-            })}
-            style={{ fontSize: '9px' }}
+              marginBottom: '32px',
+            }}
           >
             About
-          </p>
-
+          </div>
           <h1
-            className={css({
-              fontFamily: 'heading',
-              fontWeight: '800',
-              fontSize: '2xl',
-              lineHeight: 'tight',
-              letterSpacing: 'tight',
-              color: 'text',
-              margin: '0 0 12px',
-            })}
+            style={{
+              fontFamily: 'Playfair Display, serif',
+              fontSize: 'clamp(37px, 5vw, 64px)',
+              fontWeight: 700,
+              lineHeight: '1.05',
+              letterSpacing: '-0.02em',
+              color: '#EEE8D8',
+              margin: '0 0 32px 0',
+            }}
           >
             {identity.name}
           </h1>
-
           <p
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '400',
-              color: 'text.secondary',
-              letterSpacing: 'wide',
-              textTransform: 'uppercase',
-              margin: '0 0 48px',
-            })}
-            style={{ fontSize: '14px' }}
-          >
-            {identity.role}
-          </p>
-
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '300',
-              color: 'text.secondary',
-              lineHeight: 'normal',
+            style={{
+              fontFamily: 'Source Sans 3, sans-serif',
+              fontSize: '18px',
+              fontWeight: 300,
+              color: '#B5AC97',
+              lineHeight: '1.62',
+              maxWidth: '640px',
               margin: '0',
-            })}
-            style={{ fontSize: '18px', maxWidth: '640px' }}
+            }}
           >
             {identity.statement}
           </p>
-        </section>
+        </div>
+      </div>
 
-        {/* EXPERIENCE */}
-        <section style={{ paddingTop: '80px', paddingBottom: '80px', borderBottom: '1px solid #C8D1C2' }}>
-          <SectionLabel label="Experience" />
-
-          {timeline.map((entry, i) => (
-            <div
-              key={`${entry.year}-${entry.company}-${i}`}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '140px 1fr',
-                gap: '32px',
-                padding: '20px 0',
-                borderBottom: i < timeline.length - 1 ? '1px solid #C8D1C2' : 'none',
-                alignItems: 'start',
-              }}
-            >
-              <span
-                className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wide' })}
-                style={{ fontSize: '12px', paddingTop: '2px', display: 'block' }}
+      {/* Role / Identity */}
+      <div style={{ background: '#F9F6EE' }}>
+        <div
+          style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            padding: '80px 48px',
+          }}
+        >
+          <div
+            style={{
+              fontFamily: 'Source Sans 3, sans-serif',
+              fontSize: '9px',
+              fontWeight: 600,
+              color: '#695F50',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              marginBottom: '40px',
+            }}
+          >
+            Identity
+          </div>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '64px',
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontFamily: 'Source Sans 3, sans-serif',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: '#8C8373',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  marginBottom: '12px',
+                }}
               >
-                {entry.year}
-                {entry.current && (
-                  <span
-                    className={css({
-                      fontFamily: 'mono',
-                      color: 'accent',
-                      display: 'block',
-                      letterSpacing: 'widest',
-                      textTransform: 'uppercase',
-                    })}
-                    style={{ fontSize: '8px', marginTop: '4px' }}
-                  >
-                    Current
-                  </span>
-                )}
-              </span>
-
-              <div>
-                <p className={css({ fontFamily: 'body', fontWeight: '500', color: 'text', fontSize: 'sm', margin: '0 0 2px' })}>
-                  {entry.role}
-                </p>
-                <p
-                  className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', margin: '0 0 10px' })}
-                  style={{ fontSize: '13px' }}
-                >
-                  {entry.company}
-                </p>
-                <p
-                  className={css({ fontFamily: 'body', fontWeight: '300', color: 'text.muted', lineHeight: 'normal', margin: '0' })}
-                  style={{ fontSize: '14px', maxWidth: '560px' }}
-                >
-                  {entry.description}
-                </p>
+                Role
+              </div>
+              <div
+                style={{
+                  fontFamily: 'Playfair Display, serif',
+                  fontSize: '21px',
+                  fontWeight: 400,
+                  color: '#2D2820',
+                  lineHeight: '1.3',
+                }}
+              >
+                {identity.role}
               </div>
             </div>
-          ))}
-        </section>
-
-        {/* EDUCATION */}
-        <section style={{ paddingTop: '64px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
-          <SectionLabel label="Education" />
-
-          <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '32px', alignItems: 'start' }}>
-            <span
-              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wide' })}
-              style={{ fontSize: '12px' }}
-            >
-              {education.years}
-            </span>
             <div>
-              <p className={css({ fontFamily: 'body', fontWeight: '500', color: 'text', fontSize: 'sm', margin: '0 0 2px' })}>
-                {education.degree}
-              </p>
-              <p
-                className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', margin: '0 0 4px' })}
-                style={{ fontSize: '13px' }}
+              <div
+                style={{
+                  fontFamily: 'Source Sans 3, sans-serif',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: '#8C8373',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  marginBottom: '12px',
+                }}
               >
-                {education.concentration}
-              </p>
-              <p
-                className={css({ fontFamily: 'body', fontWeight: '300', color: 'text.muted', margin: '0' })}
-                style={{ fontSize: '13px' }}
+                Focus
+              </div>
+              <div
+                style={{
+                  fontFamily: 'Source Sans 3, sans-serif',
+                  fontSize: '16px',
+                  fontWeight: 300,
+                  color: '#4A4238',
+                  lineHeight: '1.62',
+                }}
               >
-                {education.school}
-              </p>
+                {personal.currentFocus}
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </div>
 
-        {/* CAPABILITIES */}
-        <section style={{ paddingTop: '64px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
-          <SectionLabel label="Capabilities" />
+      {/* Timeline */}
+      <div style={{ background: '#EEE8D8' }}>
+        <div
+          style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            padding: '80px 48px',
+          }}
+        >
+          <div
+            style={{
+              fontFamily: 'Source Sans 3, sans-serif',
+              fontSize: '9px',
+              fontWeight: 600,
+              color: '#695F50',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              marginBottom: '40px',
+            }}
+          >
+            Experience
+          </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-            {capabilities.map((cap) => (
+          <div style={{ borderTop: '1px solid #D9D1BC' }}>
+            {timeline.map((entry, i) => (
+              <div
+                key={`${entry.year}-${entry.company}-${i}`}
+                style={{
+                  display: 'flex',
+                  gap: '48px',
+                  padding: '24px 0',
+                  borderBottom: '1px solid #D9D1BC',
+                }}
+              >
+                {/* Year column — fixed width for alignment */}
+                <div
+                  style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '12px',
+                    color: '#8C8373',
+                    minWidth: '140px',
+                    flexShrink: 0,
+                    paddingTop: '3px',
+                    letterSpacing: '0.02em',
+                  }}
+                >
+                  {entry.year}
+                  {entry.current && (
+                    <span
+                      style={{
+                        display: 'block',
+                        fontFamily: 'Source Sans 3, sans-serif',
+                        fontSize: '9px',
+                        color: '#5E8C55',
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        marginTop: '4px',
+                      }}
+                    >
+                      current
+                    </span>
+                  )}
+                </div>
+
+                {/* Content */}
+                <div style={{ flex: 1 }}>
+                  <div
+                    style={{
+                      fontFamily: 'Source Sans 3, sans-serif',
+                      fontSize: '16px',
+                      fontWeight: 600,
+                      color: '#2D2820',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    {entry.role}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: 'Source Sans 3, sans-serif',
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      color: '#695F50',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    {entry.company}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: 'Source Sans 3, sans-serif',
+                      fontSize: '14px',
+                      fontWeight: 300,
+                      color: '#8C8373',
+                      lineHeight: '1.62',
+                    }}
+                  >
+                    {entry.description}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Education */}
+          <div style={{ marginTop: '48px' }}>
+            <div
+              style={{
+                fontFamily: 'Source Sans 3, sans-serif',
+                fontSize: '9px',
+                fontWeight: 600,
+                color: '#695F50',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                marginBottom: '24px',
+              }}
+            >
+              Education
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                gap: '48px',
+                padding: '24px 0',
+                borderTop: '1px solid #D9D1BC',
+                borderBottom: '1px solid #D9D1BC',
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: 'JetBrains Mono, monospace',
+                  fontSize: '12px',
+                  color: '#8C8373',
+                  minWidth: '140px',
+                  flexShrink: 0,
+                  paddingTop: '3px',
+                }}
+              >
+                {education.years}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    fontFamily: 'Source Sans 3, sans-serif',
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    color: '#2D2820',
+                    marginBottom: '4px',
+                  }}
+                >
+                  {education.school}
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'Source Sans 3, sans-serif',
+                    fontSize: '14px',
+                    fontWeight: 300,
+                    color: '#695F50',
+                  }}
+                >
+                  {education.degree} · {education.concentration}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Capabilities */}
+      <div style={{ background: '#F2EDE2' }}>
+        <div
+          style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            padding: '80px 48px',
+          }}
+        >
+          <div
+            style={{
+              fontFamily: 'Source Sans 3, sans-serif',
+              fontSize: '9px',
+              fontWeight: 600,
+              color: '#695F50',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              marginBottom: '40px',
+            }}
+          >
+            Capabilities
+          </div>
+
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '8px',
+              marginBottom: '64px',
+            }}
+          >
+            {capabilities.map(cap => (
               <span
                 key={cap}
-                className={css({
-                  fontFamily: 'body',
-                  fontWeight: '400',
-                  color: 'text.secondary',
-                  background: 'bg.nav',
-                  letterSpacing: 'wider',
-                  textTransform: 'uppercase',
-                })}
-                style={{ fontSize: '9px', padding: '6px 10px', border: '1px solid #C8D1C2' }}
+                style={{
+                  fontFamily: 'Source Sans 3, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 400,
+                  color: '#4A4238',
+                  background: '#D9D1BC',
+                  padding: '6px 14px',
+                  borderRadius: '2px',
+                  letterSpacing: '0.02em',
+                }}
               >
                 {cap}
               </span>
             ))}
           </div>
-        </section>
 
-        {/* PERSONAL */}
-        <section style={{ paddingTop: '64px', paddingBottom: '96px' }}>
-          <SectionLabel label="Outside Work" />
-
-          <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '32px', rowGap: '20px' }}>
-            <span
-              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
-              style={{ fontSize: '11px', paddingTop: '2px' }}
-            >
-              Sport
-            </span>
-            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
-              {personal.sport}
-            </span>
-
-            <span
-              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
-              style={{ fontSize: '11px', paddingTop: '2px' }}
-            >
-              Teams
-            </span>
-            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
-              {personal.teams.join(', ')}
-            </span>
-
-            <span
-              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
-              style={{ fontSize: '11px', paddingTop: '2px' }}
-            >
-              Holes in One
-            </span>
-            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
-              {personal.holesInOne}
-            </span>
-
-            <span
-              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
-              style={{ fontSize: '11px', paddingTop: '2px' }}
-            >
-              Current Focus
-            </span>
-            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
-              {personal.currentFocus}
-            </span>
+          {/* Personal */}
+          <div
+            style={{
+              fontFamily: 'Source Sans 3, sans-serif',
+              fontSize: '9px',
+              fontWeight: 600,
+              color: '#695F50',
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              marginBottom: '40px',
+            }}
+          >
+            Personal
           </div>
-        </section>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '40px',
+              borderTop: '1px solid #D9D1BC',
+              paddingTop: '40px',
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontFamily: 'Source Sans 3, sans-serif',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: '#8C8373',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  marginBottom: '12px',
+                }}
+              >
+                Sport
+              </div>
+              <div
+                style={{
+                  fontFamily: 'Playfair Display, serif',
+                  fontSize: '21px',
+                  fontWeight: 400,
+                  color: '#2D2820',
+                }}
+              >
+                {personal.sport}
+              </div>
+              {personal.holesInOne > 0 && (
+                <div
+                  style={{
+                    fontFamily: 'Source Sans 3, sans-serif',
+                    fontSize: '14px',
+                    fontWeight: 300,
+                    color: '#695F50',
+                    marginTop: '8px',
+                  }}
+                >
+                  {personal.holesInOne} hole{personal.holesInOne !== 1 ? 's' : ''} in one
+                </div>
+              )}
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontFamily: 'Source Sans 3, sans-serif',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: '#8C8373',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  marginBottom: '12px',
+                }}
+              >
+                Teams
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px',
+                }}
+              >
+                {personal.teams.map(team => (
+                  <div
+                    key={team}
+                    style={{
+                      fontFamily: 'Source Sans 3, sans-serif',
+                      fontSize: '16px',
+                      fontWeight: 300,
+                      color: '#4A4238',
+                    }}
+                  >
+                    {team}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div
+                style={{
+                  fontFamily: 'Source Sans 3, sans-serif',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: '#8C8373',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  marginBottom: '12px',
+                }}
+              >
+                Currently
+              </div>
+              <div
+                style={{
+                  fontFamily: 'Source Sans 3, sans-serif',
+                  fontSize: '16px',
+                  fontWeight: 300,
+                  color: '#4A4238',
+                  lineHeight: '1.62',
+                }}
+              >
+                {personal.currentFocus}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid #C8D1C2', background: '#E4E9DF', paddingTop: '28px', paddingBottom: '28px' }}>
-        <div
-          style={{
-            maxWidth: '1100px',
-            margin: '0 auto',
-            padding: '0 48px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <span
-            className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
-            style={{ fontSize: '11px' }}
-          >
-            DET &nbsp; PIS 133–121 W &nbsp;·&nbsp; TIG 8–2 W
-          </span>
-
-          <span
-            className={css({ fontFamily: 'body', fontWeight: '300', color: 'text.muted' })}
-            style={{ fontSize: '11px', letterSpacing: '0.05em' }}
-          >
-            doug-march.com &nbsp;©&nbsp; 2026
-          </span>
-
-          <a
-            href="/archive"
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '300',
-              color: 'text.muted',
-              textDecoration: 'none',
-              transition: 'color 200ms ease',
-              _hover: { color: 'text.secondary', textDecoration: 'none' },
-            })}
-            style={{ fontSize: '11px', letterSpacing: '0.05em' }}
-          >
-            Archive
-          </a>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
