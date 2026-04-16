@@ -127,3 +127,37 @@ export function validateSchemeAgainstPreset(scheme, presetSrc) {
   }
   return { ok: warnings.length === 0, warnings }
 }
+
+/**
+ * Warn when the scheme's primary hue falls outside the mandate's target
+ * range or inside a forbidden zone.
+ *
+ * @param {object} scheme - with primary_hue.h
+ * @param {{ targetHueRange: [number, number], forbiddenHues: Array<[number, number]> }} mandate
+ * @returns {{ ok: boolean, warnings: string[] }}
+ */
+export function validateSchemeAgainstMandate(scheme, mandate) {
+  const warnings = []
+  if (!scheme?.primary_hue || !mandate) return { ok: true, warnings }
+  const h = scheme.primary_hue.h
+
+  const [lo, hi] = mandate.targetHueRange
+  if (!(lo === 0 && hi === 360)) {
+    if (h < lo || h > hi) {
+      warnings.push(
+        `primary hue ${h}° (${scheme.primary_hue.name || 'unnamed'}) is outside target range ${lo}°–${hi}°.`
+      )
+    }
+  }
+
+  for (const [a, b] of mandate.forbiddenHues) {
+    if (h >= a && h <= b) {
+      warnings.push(
+        `primary hue ${h}° is inside forbidden zone ${a}°–${b}° (recent palette repeated).`
+      )
+      break
+    }
+  }
+
+  return { ok: warnings.length === 0, warnings }
+}

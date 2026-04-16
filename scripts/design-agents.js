@@ -946,7 +946,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // retry), so we always validate the version that will actually ship.
   // -----------------------------------------------------------------------
   if (tokenResult.color_scheme && !tokenResult.color_scheme.__parse_error) {
-    const { detectCoffeeShopPalette, validateSchemeAgainstPreset } = await import('./utils/color-validation.js')
+    const { detectCoffeeShopPalette, validateSchemeAgainstPreset, validateSchemeAgainstMandate } = await import('./utils/color-validation.js')
     const presetSrc = tokenResult.files.find((f) => f.path === 'elements/preset.ts')?.content || ''
 
     const consistency = validateSchemeAgainstPreset(tokenResult.color_scheme, presetSrc)
@@ -954,6 +954,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     const rut = detectCoffeeShopPalette(tokenResult.color_scheme, presetSrc)
     for (const w of rut.warnings) console.warn(`[color-scheme] ${w}`)
+
+    const mandateCheck = validateSchemeAgainstMandate(tokenResult.color_scheme, colorMandate)
+    for (const w of mandateCheck.warnings) console.warn(`[color-scheme] ${w}`)
   } else if (tokenResult.color_scheme && tokenResult.color_scheme.__parse_error) {
     console.warn('[color-scheme] Token Designer emitted ===COLOR_SCHEME=== but JSON was unparseable; continuing.')
   } else {
