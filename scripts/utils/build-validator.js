@@ -1,5 +1,5 @@
 import { spawnSync } from 'child_process'
-import { readFileSync, readdirSync, existsSync, statSync } from 'fs'
+import { readFileSync, readdirSync, existsSync, statSync, writeFileSync, mkdirSync } from 'fs'
 import { resolve } from 'path'
 import { ROOT } from './file-manager.js'
 import { MUTABLE_FILES } from './site-context.js'
@@ -276,7 +276,17 @@ export function validateGenerated() {
  * Run `pnpm build` in the repo root.
  * Returns { success: true } on success.
  * Returns { success: false, error: string } on failure.
- * The error string contains the last 3000 chars of combined stderr+stdout.
+ *
+ * On failure:
+ *   1. The FULL combined stdout+stderr is written to
+ *      `archive/<today>/last-build-output.txt` (overwritten each attempt)
+ *      so future diagnostics have the untruncated log.
+ *   2. The last ~2000 chars of combined output are printed to the console.
+ *   3. If the output contains a line matching `/^Error: /m` (typical
+ *      `@tanstack/router-plugin` configResolved crashes surface the real
+ *      error this way, often hundreds of lines ABOVE the tail), that line
+ *      is hoisted to the top of the returned `error` string so callers see
+ *      it first.
  *
  * @returns {{ success: boolean, error?: string }}
  */
@@ -297,11 +307,38 @@ export function validateBuild() {
 
   if (result.status !== 0) {
     const combined = (result.stderr ?? '') + (result.stdout ?? '')
-    const error = combined.slice(-3000) // last 3000 chars
+
+    // 1. Write the FULL combined output to disk for post-mortem diagnosis.
+    //    The 3000-char tail returned to callers truncated the real Vite /
+    //    @tanstack/router-plugin error last time the pipeline failed; this
+    //    preserves the complete log alongside the archive tree.
+    const today = new Date().toISOString().slice(0, 10)
+    const outputDir = resolve(ROOT, 'archive', today)
+    const outputPath = resolve(outputDir, 'last-build-output.txt')
+    try {
+      mkdirSync(outputDir, { recursive: true })
+      writeFileSync(outputPath, combined, 'utf8')
+      console.log(`  full build output written to archive/${today}/last-build-output.txt (${combined.length} chars)`)
+    } catch (writeErr) {
+      console.warn(`  could not write full build output to ${outputPath}: ${writeErr.message}`)
+    }
+
+    // 3. Surface `@tanstack/router-plugin` / Vite `Error: …` lines that
+    //    would otherwise be buried above the stack trace tail.
+    const errorLineMatch = combined.match(/^Error: .*$/m)
+    const headline = errorLineMatch ? errorLineMatch[0] : null
+
+    const tail = combined.slice(-3000)
+    const error = headline
+      ? `${headline}\n\n---\n(last 3000 chars of build output follows)\n---\n\n${tail}`
+      : tail
 
     console.log('  build failed')
-    console.log('  --- last 500 chars of build output ---')
-    console.log(combined.slice(-500))
+    if (headline) {
+      console.log(`  headline: ${headline}`)
+    }
+    console.log('  --- last 2000 chars of build output ---')
+    console.log(combined.slice(-2000))
     console.log('  ---')
 
     return { success: false, error }

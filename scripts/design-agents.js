@@ -1008,7 +1008,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   let designerResult
   const t0Designer = Date.now()
   try {
-    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPromptWithSeed, designerUserPrompt, null, { timeoutMs: 1800000, stallTimeoutMs: 1500000 }) // 30 min total, 25 min silent-thinking headroom — the CLI comment documents 9-12 min of silent thinking as normal; default 15 min was too tight
+    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPromptWithSeed, designerUserPrompt, null, { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 }) // 30 min total, 25 min silent-thinking headroom — the CLI comment documents 9-12 min of silent thinking as normal; default 15 min was too tight
   } catch (err) {
     console.error(`  Unified Designer failed: ${err.message}`)
     await restore(originalBackup)
@@ -1032,7 +1032,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     console.warn(`  ⚠ Unified Designer omitted required files: ${missing.join(', ')} — retrying with explicit reminder`)
     const reminderPrompt = `${designerUserPrompt}\n\n---\n\n## REQUIRED FILES MISSING — RETRY\n\nYour previous response omitted these required files: ${missing.join(', ')}\n\nThis silently preserves yesterday's chrome and breaks the day's archetype. Re-emit your COMPLETE response. Every required file must appear, including these you missed:\n${missing.map(m => `- ${m}`).join('\n')}`
     try {
-      const retry = await callAgent('unified-designer', unifiedDesignerSystemPromptWithSeed, reminderPrompt, null, { timeoutMs: 1800000, stallTimeoutMs: 1500000 })
+      const retry = await callAgent('unified-designer', unifiedDesignerSystemPromptWithSeed, reminderPrompt, null, { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 })
       const retryProduced = new Set(retry.files.map(f => f.path))
       const stillMissing = REQUIRED_FILES.filter(p => !retryProduced.has(p))
       if (stillMissing.length === 0) {
@@ -1129,16 +1129,28 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         console.log(`  [screenshot-critic] REVISE — responsible: ${responsibleAgent}`)
         console.log(`  feedback: ${feedback.slice(0, 200)}...`)
 
+        // Per-agent options keep model/timeout choices next to the prompt so
+        // this retry path can't fall through to Sonnet defaults on the
+        // unified-designer (Sonnet stalls at 0KB on unified-designer-class
+        // prompts — see scripts/design-agents.js:1011 commentary).
         const agentConfig = {
-          'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) + '\n\n' + colorMandateSection },
-          'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: buildUnifiedDesignerPrompt },
+          'token-designer': {
+            prompt: tokenSystemPrompt,
+            user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) + '\n\n' + colorMandateSection,
+            options: { model: 'haiku' },
+          },
+          'unified-designer': {
+            prompt: unifiedDesignerSystemPrompt,
+            user: buildUnifiedDesignerPrompt,
+            options: { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 },
+          },
         }
 
         const config = agentConfig[responsibleAgent]
         if (config) {
           console.log(`  retrying ${responsibleAgent} with critic feedback...`)
           try {
-            const retryResult = await callAgent(responsibleAgent, config.prompt, config.user(), feedback)
+            const retryResult = await callAgent(responsibleAgent, config.prompt, config.user(), feedback, config.options)
             for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
 
             // Re-run codegen before validateBuild if token files changed,
@@ -1221,10 +1233,22 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
   await restore(filesToRestore)
 
-  // Build agent lookup for retry
+  // Build agent lookup for retry. Per-agent `options` carry the model +
+  // timeout overrides so new agents added later don't need re-wiring at the
+  // callAgent site. Keep these options in sync with the primary invocation
+  // of each agent (see scripts/design-agents.js:860 for token-designer and
+  // :1011, :1035 for unified-designer).
   const agentConfig = {
-    'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) + '\n\n' + colorMandateSection },
-    'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: buildUnifiedDesignerPrompt },
+    'token-designer': {
+      prompt: tokenSystemPrompt,
+      user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) + '\n\n' + colorMandateSection,
+      options: { model: 'haiku' },
+    },
+    'unified-designer': {
+      prompt: unifiedDesignerSystemPrompt,
+      user: buildUnifiedDesignerPrompt,
+      options: { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 },
+    },
   }
 
   const retryAgents = failingAgent === 'both'
@@ -1240,7 +1264,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     console.log(`\n  retrying ${agent} with build error context...`)
     try {
-      const retryResult = await callAgent(agent, config.prompt, config.user(), buildResult.error)
+      const retryResult = await callAgent(agent, config.prompt, config.user(), buildResult.error, config.options)
       for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
       // Update the result so the archive records the retry output, not stale originals
       if (agent === 'token-designer') {
