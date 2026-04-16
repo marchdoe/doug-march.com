@@ -852,7 +852,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     brief: tokenBrief,
     referenceFiles: [],
     tokenContext: null,
-  })
+  }) + '\n\n' + colorMandateSection
 
   let tokenResult
   const t0Token = Date.now()
@@ -1127,7 +1127,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         console.log(`  feedback: ${feedback.slice(0, 200)}...`)
 
         const agentConfig = {
-          'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) },
+          'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) + '\n\n' + colorMandateSection },
           'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: buildUnifiedDesignerPrompt },
         }
 
@@ -1220,7 +1220,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   // Build agent lookup for retry
   const agentConfig = {
-    'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) },
+    'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) + '\n\n' + colorMandateSection },
     'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: buildUnifiedDesignerPrompt },
   }
 
