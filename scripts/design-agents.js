@@ -512,8 +512,16 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     currentFiles: [],
   })
   const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}`
-  const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libTypography}\n\n${libColor}`
-  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComponents}`
+  // Token Designer no longer authors fonts or fontSizes (chassis owns them),
+  // so library-typography.md is omitted from its system prompt — saves ~47 lines
+  // of dead context and prevents Haiku from reasoning about typography tokens
+  // that the orchestrator will overwrite anyway.
+  const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libColor}`
+  // libTypography is omitted — unified-designer uses font tokens but does not
+  // choose fonts or scale ratios (chassis owns those). The pairing recipes and
+  // ratio table in library-typography.md are dead context here. Director still
+  // gets it for chassis-selection mood matching.
+  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}\n\n${libColor}\n\n${libLayout}\n\n${libComponents}`
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')

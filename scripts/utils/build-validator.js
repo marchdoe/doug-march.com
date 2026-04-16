@@ -1,5 +1,5 @@
 import { spawnSync } from 'child_process'
-import { readFileSync, readdirSync, existsSync } from 'fs'
+import { readFileSync, readdirSync, existsSync, statSync } from 'fs'
 import { resolve } from 'path'
 import { ROOT } from './file-manager.js'
 import { MUTABLE_FILES } from './site-context.js'
@@ -377,9 +377,28 @@ export function validateBuildOutput() {
   try {
     const assets = readdirSync(assetsDir)
     const hasJS = assets.some(f => f.endsWith('.js'))
-    const hasCSS = assets.some(f => f.endsWith('.css'))
+    const cssFiles = assets.filter(f => f.endsWith('.css'))
     if (!hasJS) errors.push('dist/client/assets/ has no .js bundles')
-    if (!hasCSS) errors.push('dist/client/assets/ has no .css bundles')
+    if (cssFiles.length === 0) {
+      errors.push('dist/client/assets/ has no .css bundles')
+    } else {
+      // Check 4: CSS bundle must contain meaningful content. A preset with
+      // empty globalCss + no semantic tokens still emits utility CSS from
+      // component usage, but the total stays under ~1KB. Healthy builds
+      // produce 5-15KB. The 2KB floor catches "preset produced no CSS"
+      // without false positives on legitimately small builds.
+      const totalCssBytes = cssFiles.reduce(
+        (sum, f) => sum + statSync(resolve(assetsDir, f)).size,
+        0
+      )
+      const MIN_CSS_BYTES = 2000
+      if (totalCssBytes < MIN_CSS_BYTES) {
+        errors.push(
+          `CSS bundles total only ${totalCssBytes} bytes (minimum ${MIN_CSS_BYTES}). ` +
+          'The preset likely produced no globalCss or semanticTokens — site will render unstyled.'
+        )
+      }
+    }
   } catch (err) {
     errors.push(`dist/client/assets/ missing or unreadable: ${err.message}`)
   }

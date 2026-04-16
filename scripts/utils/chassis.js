@@ -155,9 +155,11 @@ export function renderChassisPresetFile(chassis) {
 export const chassisPreset = definePreset({
   name: 'chassis',
   theme: {
-    tokens: {
-${formatTokenBlock('fonts', fonts, 6)}
-${formatTokenBlock('fontSizes', sizes, 6)}
+    extend: {
+      tokens: {
+${formatTokenBlock('fonts', fonts, 8)}
+${formatTokenBlock('fontSizes', sizes, 8)}
+      },
     },
   },
 })

@@ -15,20 +15,22 @@ import { definePreset } from '@pandacss/dev'
 export const chassisPreset = definePreset({
   name: 'chassis',
   theme: {
-    tokens: {
-      fonts: {
-        display: { value: '"Playfair Display", Georgia, "Times New Roman", serif' },
-        body:    { value: 'Outfit, system-ui, -apple-system, sans-serif' },
-      },
-      fontSizes: {
-        '2xs': { value: '10px' },
-        xs:    { value: '12px' },
-        sm:    { value: '13px' },
-        base:  { value: '16px' },
-        md:    { value: '21px' },
-        lg:    { value: '34px' },
-        xl:    { value: '56px' },
-        '2xl': { value: '88px' },
+    extend: {
+      tokens: {
+        fonts: {
+          display: { value: '"Playfair Display", Georgia, "Times New Roman", serif' },
+          body:    { value: 'Outfit, system-ui, -apple-system, sans-serif' },
+        },
+        fontSizes: {
+          '2xs': { value: '10px' },
+          xs:    { value: '12px' },
+          sm:    { value: '13px' },
+          base:  { value: '16px' },
+          md:    { value: '21px' },
+          lg:    { value: '34px' },
+          xl:    { value: '56px' },
+          '2xl': { value: '88px' },
+        },
       },
     },
   },

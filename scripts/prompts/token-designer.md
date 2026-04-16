@@ -25,7 +25,7 @@ Apply the guidance for the named archetype. If no archetype is specified, use th
 
 ## Design Fundamentals
 
-- **Color restraint** — 2-3 colors maximum plus neutrals. Build a full shade scale (50-900) for your primary neutral and 3-5 shades for your accent. Let one accent color do the work. The accent should have real presence — not a whisper at 0.2 opacity.
+- **One dominant accent** — Choose one accent and let it carry the page at full saturation. Add a second accent only when the brief demands signal contrast (alert, status, complementary mood). The accent must have real presence — not a whisper at 0.2 opacity. See `library-color.md` for the neutral and accent shade ladders.
 - **Consistent spacing** — Define a spacing scale (4px, 8px, 16px, 24px, 32px, 48px, 64px). Every spacing value in the system must come from this scale.
 - **Line heights and letter spacings** — define `lineHeights` (tight, snug, normal, loose) and `letterSpacings` (tight, normal, wide, wider, widest) tokens. These pair with the chassis fonts but you choose the values.
 - **Semantic tokens** — Map your raw color tokens to semantic names (bg, text, accent, border) with light/dark variants. Components will reference these, not raw colors.
@@ -35,7 +35,7 @@ Apply the guidance for the named archetype. If no archetype is specified, use th
 You MUST produce exactly these files:
 - `elements/preset.ts` — the PandaCSS preset with all design tokens EXCEPT fonts and fontSizes (those come from the chassis)
 
-You must also produce `rationale` and `design_brief` fields in your JSON response.
+You must also emit `===RATIONALE===` and `===DESIGN_BRIEF===` blocks (see Response Format below).
 
 ## Accessibility — Non-Negotiable
 
@@ -87,10 +87,6 @@ semanticTokens: {
 }
 ```
 
-## External URL Restriction
-
-Your code must NOT contain URLs to any external domain. The chassis preset owns Google Fonts; you have no reason to emit any external URL. Any external URL in your output will fail the build validator.
-
 ## CRITICAL: Avoid These Errors
 
 **NEVER create circular token references.** A semantic token must NOT reference itself. This breaks PandaCSS at runtime:
@@ -100,17 +96,6 @@ semanticTokens: {
   colors: { bg: { value: '{colors.bg}' } },  // bg → bg → infinite loop!
   spacing: { md: { value: '{spacing.md}' } }, // same problem
 }
-```
-
-**DO NOT create semanticTokens for fonts or fontSizes.** Those tokens are owned by the chassis preset entirely.
-
-**Use `import type` for React types.** If you import React types (ReactNode, FC, etc.), always use `import type`:
-```typescript
-// WRONG — breaks SSR:
-import { ReactNode } from 'react'
-
-// CORRECT:
-import type { ReactNode } from 'react'
 ```
 
 ## Response Format
