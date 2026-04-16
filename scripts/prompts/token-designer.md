@@ -100,7 +100,7 @@ semanticTokens: {
 
 ## Response Format
 
-Respond using this exact delimiter format. Write the COMPLETE file contents after each ===FILE:path=== marker. No JSON wrapping, no code fences — just the delimiters and raw file content.
+Respond using this exact delimiter format. Write the COMPLETE file contents after each ===FILE:path=== marker. No JSON wrapping on the file content, no code fences — just the delimiters and raw file content.
 
 ===RATIONALE===
 1-2 paragraphs explaining your creative choices
@@ -108,5 +108,44 @@ Respond using this exact delimiter format. Write the COMPLETE file contents afte
 ===DESIGN_BRIEF===
 One evocative sentence for the archive
 
+===COLOR_SCHEME===
+{
+  "primary_hue": { "h": <0-360>, "s": <0-100>, "l": <0-100>, "name": "<short name>" },
+  "secondary_accent": null | { "h": ..., "s": ..., "l": ..., "name": "..." },
+  "neutral_family": { "tinted_toward": "<hue family>", "name": "<short name>" },
+  "mood_word": "<single word>",
+  "color_story": "<one sentence>"
+}
+
 ===FILE:elements/preset.ts===
 ...full file content here (no fonts, no fontSizes)...
+
+## Worked Example Color Schemes
+
+Two reference examples showing the quality and specificity expected in the `===COLOR_SCHEME===` block. Pick the one closer to the day's mood; adapt — don't copy.
+
+**Example A — Vibrant (for an energetic or celebratory brief):**
+
+```json
+{
+  "primary_hue": { "h": 345, "s": 80, "l": 55, "name": "hot magenta" },
+  "secondary_accent": { "h": 50, "s": 90, "l": 60, "name": "citrus yellow" },
+  "neutral_family": { "tinted_toward": "magenta", "name": "rosewood" },
+  "mood_word": "kinetic",
+  "color_story": "Magenta demanding attention, yellow punctuating emphasis — rosewood neutrals keep it warm, not clinical."
+}
+```
+
+**Example B — Restrained (for a literary, editorial, or reflective brief):**
+
+```json
+{
+  "primary_hue": { "h": 215, "s": 65, "l": 45, "name": "deep teal" },
+  "secondary_accent": null,
+  "neutral_family": { "tinted_toward": "teal", "name": "graphite" },
+  "mood_word": "considered",
+  "color_story": "Deep teal as a single strong gesture against graphite neutrals — no second accent, so the teal carries all the weight."
+}
+```
+
+Your `color_story` must be specific to the day's brief and signals. Not "a vibrant palette" — something like "last frost palette: slate fading to ice-white, one amber accent for the morning light."
