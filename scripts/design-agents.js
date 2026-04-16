@@ -917,6 +917,26 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
 
   // -----------------------------------------------------------------------
+  // Color scheme validation — warnings only, never fails the build.
+  // Runs once here after tokenResult is finalized (first pass or codegen
+  // retry), so we always validate the version that will actually ship.
+  // -----------------------------------------------------------------------
+  if (tokenResult.color_scheme && !tokenResult.color_scheme.__parse_error) {
+    const { detectCoffeeShopPalette, validateSchemeAgainstPreset } = await import('./utils/color-validation.js')
+    const presetSrc = tokenResult.files.find((f) => f.path === 'elements/preset.ts')?.content || ''
+
+    const consistency = validateSchemeAgainstPreset(tokenResult.color_scheme, presetSrc)
+    for (const w of consistency.warnings) console.warn(`[color-scheme] ${w}`)
+
+    const rut = detectCoffeeShopPalette(tokenResult.color_scheme, presetSrc)
+    for (const w of rut.warnings) console.warn(`[color-scheme] ${w}`)
+  } else if (tokenResult.color_scheme && tokenResult.color_scheme.__parse_error) {
+    console.warn('[color-scheme] Token Designer emitted ===COLOR_SCHEME=== but JSON was unparseable; continuing.')
+  } else {
+    console.warn('[color-scheme] Token Designer did not emit ===COLOR_SCHEME===; palette monitoring will not fire for this build.')
+  }
+
+  // -----------------------------------------------------------------------
   // Phase 2: Unified Designer (reads tokens from disk, writes all 15 files)
   // -----------------------------------------------------------------------
   const presetPath = path.join(ROOT, 'elements/preset.ts')
@@ -1140,7 +1160,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const rationale = tokenResult.rationale || 'Agent swarm redesign'
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign'
 
-    await archive(signals.date, signals, rationale, designBrief, changedPaths)
+    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null)
     archiveRan = true
 
     // Save archetype for future anti-repetition enforcement
@@ -1239,7 +1259,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const rationale = tokenResult.rationale || 'Agent swarm redesign (retry)'
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign (retry)'
 
-    await archive(signals.date, signals, rationale, designBrief, changedPaths)
+    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null)
     archiveRan = true
 
     // Save archetype for future anti-repetition enforcement
