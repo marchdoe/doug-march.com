@@ -687,6 +687,29 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     })
   }
 
+  // Compute the deterministic color mandate once per run; inject into
+  // Director and Token Designer user prompts. Pure data — no LLM.
+  const { computeColorMandate, formatMandateForPrompt } = await import('./utils/color-mandate.js')
+  let colorMandate
+  try {
+    colorMandate = computeColorMandate({
+      archiveDir: path.join(ROOT, 'archive'),
+      signals,
+      lookbackDays: 7,
+      zoneRadius: 30,
+    })
+  } catch (err) {
+    console.warn(`[color-mandate] computation failed, using permissive default: ${err.message}`)
+    colorMandate = {
+      targetHueRange: [0, 360],
+      forbiddenHues: [],
+      recentPrimaryHues: [],
+      rationale: 'Mandate computation unavailable; palette is open.',
+    }
+  }
+  const colorMandateSection = formatMandateForPrompt(colorMandate)
+  console.log(`  color-mandate: target ${colorMandate.targetHueRange[0]}-${colorMandate.targetHueRange[1]}°, ${colorMandate.forbiddenHues.length} forbidden zone(s)`)
+
   // -----------------------------------------------------------------------
   // Phase 0: Design Director — produces a visual specification
   // -----------------------------------------------------------------------
@@ -706,6 +729,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
     + chassisCatalogBlock
     + weightsPrompt
+    + '\n\n' + colorMandateSection
 
   let visualSpec = ''
   let chosenArchetype = null
