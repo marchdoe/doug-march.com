@@ -1,0 +1,7 @@
+{
+  "primary_hue": { "h": 80, "s": 60, "l": 45, "name": "olive" },
+  "secondary_accent": null,
+  "neutral_family": { "tinted_toward": "warm", "name": "stone" },
+  "mood_word": "earthy",
+  "color_story": "Olive on stone."
+}
