@@ -186,7 +186,7 @@ function buildArchetypeConstraintPrompt(history) {
  * with the inner path as its name.
  *
  * @param {string} result - raw response text
- * @returns {{ files: Array<{path: string, content: string}>, rationale?: string, design_brief?: string }}
+ * @returns {{ files: Array<{path: string, content: string}>, rationale?: string, design_brief?: string, color_scheme?: object }}
  */
 export function parseDelimiterResponse(result) {
   const files = []
@@ -194,7 +194,7 @@ export function parseDelimiterResponse(result) {
   // append a sentinel delimiter that the lookahead can match as a substitute.
   const sentinel = '\n===END_SENTINEL===\n'
   const withSentinel = result + sentinel
-  const filePattern = /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===END_SENTINEL===)/gm
+  const filePattern = /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===END_SENTINEL===)/gm
   let match
   while ((match = filePattern.exec(withSentinel)) !== null) {
     const filePath = match[1].trim()
@@ -212,7 +212,18 @@ export function parseDelimiterResponse(result) {
   const briefMatch = withSentinel.match(/^===DESIGN_BRIEF===\s*\n([\s\S]*?)(?=^===)/m)
   if (briefMatch) design_brief = briefMatch[1].trim()
 
-  return { files, rationale, design_brief }
+  let color_scheme
+  const schemeMatch = withSentinel.match(/^===COLOR_SCHEME===\s*\n([\s\S]*?)(?=^===)/m)
+  if (schemeMatch) {
+    const raw = schemeMatch[1].trim()
+    try {
+      color_scheme = JSON.parse(raw)
+    } catch {
+      color_scheme = { __parse_error: true, raw }
+    }
+  }
+
+  return { files, rationale, design_brief, color_scheme }
 }
 
 // ---------------------------------------------------------------------------
