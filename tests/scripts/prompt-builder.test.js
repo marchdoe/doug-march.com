@@ -143,12 +143,11 @@ describe('buildMessages — system prompt (designer prompt rewrite)', () => {
     expect(system).toContain('asymmetrically split')
   })
 
-  it('unlocks Google Fonts typography', () => {
+  it('forbids the unified-designer from authoring fonts (chassis owns them)', () => {
     const { system } = buildMessages(baseContext)
-    expect(system).toContain('ANY font from Google Fonts')
-    expect(system).toContain('links')
-    expect(system).toContain('__root.tsx')
-    expect(system).toContain('font tokens')
+    expect(system).toContain('typography chassis')
+    expect(system).toContain('do NOT')
+    expect(system).not.toContain('ANY font from Google Fonts')
   })
 
   it('includes accessibility floors', () => {

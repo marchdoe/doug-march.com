@@ -25,12 +25,23 @@ export const MUTABLE_FILES = [
   'app/routes/index.tsx',
   'app/routes/about.tsx',
   'app/routes/work.$slug.tsx',
+  'elements/chassis-preset.ts',
 ]
 
 /** Files owned by the Token Designer agent. */
 export const TOKEN_FILES = [
   'elements/preset.ts',
+]
+
+/**
+ * Files owned by the orchestrator (generated deterministically from the
+ * Director-chosen chassis, never authored by an agent). Listed in
+ * MUTABLE_FILES so backup/restore covers them, but kept out of TOKEN_FILES
+ * so the Token Designer is never asked to author them.
+ */
+export const ORCHESTRATOR_FILES = [
   'app/routes/__root.tsx',
+  'elements/chassis-preset.ts',
 ]
 
 /** Files owned by the Layout Architect agent. */

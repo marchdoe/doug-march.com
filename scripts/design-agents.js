@@ -5,7 +5,9 @@
  *
  * Dispatches specialized Claude CLI agents sequentially:
  *   Phase 0: Design Director — visual specification
- *   Phase 1: Token Designer  — elements/preset.ts, app/routes/__root.tsx
+ *   Phase 1: Token Designer  — elements/preset.ts (orchestrator generates
+ *                                __root.tsx + chassis-preset.ts deterministically
+ *                                from the Director-chosen typography chassis)
  *   Phase 2: Unified Designer — all 15 remaining component/route files
  *
  * Each agent gets the creative brief, relevant reference files, and (after
@@ -35,6 +37,14 @@ import { archive } from './utils/archiver.js'
 import { createTrace } from './utils/trace.js'
 import { buildMessages } from './utils/prompt-builder.js'
 import { selectSeed } from './utils/select-seed.js'
+import { CHASSIS_CATALOG } from '../elements/chassis/index.js'
+import {
+  buildGoogleFontsUrl,
+  renderRootTemplate,
+  renderChassisPresetFile,
+  getChassisById,
+  formatChassisCatalogForPrompt,
+} from './utils/chassis.js'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -85,6 +95,37 @@ export function extractArchetypeFromText(text) {
     }
   }
   return latest?.name ?? null
+}
+
+/**
+ * Extract the Director-chosen typography chassis from its response.
+ *
+ * Looks for a `===CHASSIS_ID===` delimiter block and matches the next
+ * meaningful token against the catalog. Tolerates: surrounding whitespace,
+ * backtick-quoted ids, and trailing punctuation. If the explicit block is
+ * missing (Director ignored format), falls back to scanning the whole
+ * spec for any catalog id appearing as a backtick-quoted code span.
+ *
+ * Returns the matching ChassisEntry or null. Caller falls back to
+ * CHASSIS_CATALOG[0] on null.
+ */
+export function resolveChassisFromDirectorOutput(text, catalog) {
+  if (!text) return null
+
+  const blockMatch = text.match(/===CHASSIS_ID===\s*\n?\s*`?([a-z0-9-]+)`?/i)
+  if (blockMatch) {
+    const id = blockMatch[1].trim().toLowerCase()
+    const hit = catalog.find(c => c.id === id)
+    if (hit) return hit
+  }
+
+  // Fallback: scan for any catalog id mentioned in backticks anywhere.
+  for (const c of catalog) {
+    const re = new RegExp('`\\s*' + c.id.replace(/-/g, '\\-') + '\\s*`', 'i')
+    if (re.test(text)) return c
+  }
+
+  return null
 }
 
 /**
@@ -172,46 +213,6 @@ export function parseDelimiterResponse(result) {
   if (briefMatch) design_brief = briefMatch[1].trim()
 
   return { files, rationale, design_brief }
-}
-
-/**
- * Fix a generated __root.tsx file by ensuring Scripts and ScrollRestoration
- * are imported from @tanstack/react-router. Returns the fixed content, or
- * null if the file looks so broken we shouldn't touch it.
- *
- * Conservative behavior: only patches the import line (the safest edit).
- * Does NOT attempt to insert/remove JSX or function definitions — the old
- * regex approach corrupted files with nested braces or multiple </body> tags.
- * If the fix is insufficient, the build validator catches it and triggers
- * a retry with explicit error context, which is more reliable.
- *
- * @param {string} content - current __root.tsx content
- * @returns {string|null} fixed content, or null to abort the fixup
- */
-export function fixRootTsx(content) {
-  const REQUIRED = ['ScrollRestoration', 'Scripts']
-
-  // Find the @tanstack/react-router import line. Must be a single-line
-  // match — multi-line imports are too ambiguous to rewrite safely.
-  const importRegex = /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]@tanstack\/react-router['"]/
-  const match = content.match(importRegex)
-  if (!match) {
-    // No router import at all — can't safely fix. Let build validator reject.
-    return null
-  }
-
-  const existing = match[1].split(',').map(s => s.trim()).filter(Boolean)
-  const missing = REQUIRED.filter(name => !existing.includes(name))
-  if (missing.length === 0) {
-    // Imports are already correct. No fix needed.
-    return content
-  }
-
-  // Add missing imports to the existing import line. This is the only
-  // edit we make — intentionally conservative.
-  const merged = [...new Set([...existing, ...missing])]
-  const fixedImport = `import { ${merged.join(', ')} } from '@tanstack/react-router'`
-  return content.replace(importRegex, fixedImport)
 }
 
 // ---------------------------------------------------------------------------
@@ -392,8 +393,9 @@ function validateCodegen() {
 /**
  * Run the design agent swarm.
  *
- * Phase 0: Design Director — visual specification
- * Phase 1: Token Designer (preset.ts + __root.tsx)
+ * Phase 0: Design Director — visual specification + typography chassis pick
+ * Phase 1: Token Designer (preset.ts colors/spacing/semantics; orchestrator
+ *          deterministically generates __root.tsx + chassis-preset.ts)
  * Phase 2: Unified Designer — all 15 remaining component/route files
  * Phase 4: Build validation
  * Phase 5: Retry on failure
@@ -671,6 +673,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // -----------------------------------------------------------------------
   console.log('\n[phase-0] Design Director')
 
+  const chassisCatalogBlock = '\n\n## Typography Chassis Catalog\n\n'
+    + 'Pick ONE chassis id from this table and emit it in the `===CHASSIS_ID===` block of your response. Match by archetype affinity first, then by mood.\n\n'
+    + formatChassisCatalogForPrompt(CHASSIS_CATALOG)
+
   const directorUserPrompt = buildAgentPrompt('design-director', {
     brief,
     referenceFiles: [],
@@ -679,16 +685,19 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     + (recentBriefs ? '\n\n## Recent Archive Briefs\n' + recentBriefs : '')
     + (references ? '\n\n## Design References\n\n' + references : '')
     + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
+    + chassisCatalogBlock
     + weightsPrompt
 
   let visualSpec = ''
   let chosenArchetype = null
+  let chosenChassis = null
   try {
     const t0Director = Date.now()
     let directorResult = await callAgent('design-director', directorSystemPrompt, directorUserPrompt)
     visualSpec = directorResult._rawResponse || directorResult.rationale || ''
     chosenArchetype = extractArchetypeFromText(visualSpec)
-    console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${chosenArchetype ? ` | archetype: ${chosenArchetype}` : ''}`)
+    chosenChassis = resolveChassisFromDirectorOutput(visualSpec, CHASSIS_CATALOG)
+    console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${chosenArchetype ? ` | archetype: ${chosenArchetype}` : ''}${chosenChassis ? ` | chassis: ${chosenChassis.id}` : ''}`)
 
     // Enforce the FORBIDDEN list programmatically. The prompt threatens
     // "spec will be rejected" but until now nothing actually rejected it.
@@ -701,13 +710,24 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       directorResult = await callAgent('design-director', directorSystemPrompt, stricterPrompt)
       visualSpec = directorResult._rawResponse || directorResult.rationale || ''
       const retryArchetype = extractArchetypeFromText(visualSpec)
-      console.log(`  retry visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${retryArchetype ? ` | archetype: ${retryArchetype}` : ''}`)
+      const retryChassis = resolveChassisFromDirectorOutput(visualSpec, CHASSIS_CATALOG)
+      console.log(`  retry visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${retryArchetype ? ` | archetype: ${retryArchetype}` : ''}${retryChassis ? ` | chassis: ${retryChassis.id}` : ''}`)
       if (retryArchetype && !forbiddenArchetypes.includes(retryArchetype)) {
         chosenArchetype = retryArchetype
       } else {
         console.warn(`  ⚠ Director retry also picked forbidden/unknown archetype — proceeding with "${retryArchetype || chosenArchetype}"`)
         chosenArchetype = retryArchetype || chosenArchetype
       }
+      if (retryChassis) chosenChassis = retryChassis
+    }
+
+    // Fall back to first catalog entry if Director never produced a valid id.
+    // We log loudly but don't crash — the chassis is hand-curated, so any
+    // entry produces a working site, and the Token Designer can still
+    // author colors/spacing for the day.
+    if (!chosenChassis) {
+      chosenChassis = CHASSIS_CATALOG[0]
+      console.warn(`  ⚠ Director did not pick a valid chassis — falling back to "${chosenChassis.id}"`)
     }
 
     trace.addStep({
@@ -716,6 +736,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       input: { archetypeConstraints: archetypeConstraintPrompt.slice(0, 500) },
       output: {
         archetype: chosenArchetype || 'unknown',
+        chassisId: chosenChassis?.id || 'unknown',
         specLength: visualSpec.length,
         specPreview: visualSpec.slice(0, 500),
       },
@@ -800,35 +821,39 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     throw new Error(`Token Designer failed: ${err.message}`)
   }
 
-  // Verify expected files
+  // Token Designer no longer owns __root.tsx (orchestrator generates it
+  // from the chassis template). preset.ts is the only required output;
+  // anything else from the agent is silently ignored.
   const hasPreset = tokenResult.files.some(f => f.path === 'elements/preset.ts')
-  const hasRoot = tokenResult.files.some(f => f.path === 'app/routes/__root.tsx')
-  if (!hasPreset || !hasRoot) {
+  if (!hasPreset) {
     await restore(originalBackup)
-    throw new Error(`Token Designer missing required files. Got: ${tokenResult.files.map(f => f.path).join(', ')}`)
+    throw new Error(`Token Designer missing required file elements/preset.ts. Got: ${tokenResult.files.map(f => f.path).join(', ')}`)
   }
 
-  // Write token files
-  for (const p of await writeFiles(tokenResult.files)) writtenPaths.add(p)
+  // Write token files (filter out anything outside TOKEN_FILES — e.g.,
+  // a stray __root.tsx the agent emitted out of habit).
+  const tokenFilesOnly = tokenResult.files.filter(f => TOKEN_FILES.includes(f.path))
+  for (const p of await writeFiles(tokenFilesOnly)) writtenPaths.add(p)
 
-  // Post-write fixup: ensure __root.tsx has critical imports for SPA hydration.
-  // The token designer frequently drops Scripts import or defines a fake
-  // local version (return null). Both break client-side hydration.
-  //
-  // This fixup is best-effort and defensive — if anything looks ambiguous,
-  // we leave the file alone and let the build validator catch it. The
-  // validator will trigger a retry with the explicit error, which is
-  // more reliable than risking a corrupted file from aggressive regex surgery.
+  // Orchestrator generates the chassis preset (fonts + fontSizes) and
+  // __root.tsx (Google Fonts URL substituted into the frozen template).
+  // These two files are NEVER written by an agent in the chassis era.
   try {
+    const chassisPresetSrc = renderChassisPresetFile(chosenChassis)
+    const chassisPresetPath = path.join(ROOT, 'elements/chassis-preset.ts')
+    await writeFile(chassisPresetPath, chassisPresetSrc, 'utf8')
+    writtenPaths.add('elements/chassis-preset.ts')
+    console.log(`  [chassis] wrote chassis-preset.ts (${chosenChassis.id})`)
+
+    const rootSrc = renderRootTemplate(buildGoogleFontsUrl(chosenChassis))
     const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
-    const original = await readFile(rootPath, 'utf8')
-    const fixed = fixRootTsx(original)
-    if (fixed !== null && fixed !== original) {
-      await writeFile(rootPath, fixed, 'utf8')
-      console.log(`  [fixup] fixed __root.tsx: added Scripts/ScrollRestoration imports`)
-    }
+    await writeFile(rootPath, rootSrc, 'utf8')
+    writtenPaths.add('app/routes/__root.tsx')
+    console.log(`  [chassis] wrote __root.tsx from template`)
   } catch (err) {
-    console.warn(`  [fixup] __root.tsx fixup failed (non-blocking): ${err.message}`)
+    await cleanupOrphans(writtenPaths, originalBackup)
+    await restore(originalBackup)
+    throw new Error(`Chassis file generation failed: ${err.message}`)
   }
 
   trace.addStep({
@@ -861,7 +886,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       throw new Error(`Token Designer retry failed: ${err.message}`)
     }
 
-    for (const p of await writeFiles(tokenResult.files)) writtenPaths.add(p)
+    const tokenRetryFilesOnly = tokenResult.files.filter(f => TOKEN_FILES.includes(f.path))
+    for (const p of await writeFiles(tokenRetryFilesOnly)) writtenPaths.add(p)
 
     const retryCodegen = validateCodegen()
     if (!retryCodegen.success) {
