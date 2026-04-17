@@ -2,106 +2,147 @@ import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
 const navLink = css({
-  fontFamily: 'body',
-  fontWeight: '400',
-  color: 'text.muted',
+  display: 'flex',
+  alignItems: 'center',
+  height: '40px',
+  fontFamily: 'mono',
+  fontSize: 'xs',
+  letterSpacing: 'wider',
+  color: '#78947A',
   textDecoration: 'none',
-  letterSpacing: 'widest',
   textTransform: 'uppercase',
-  transition: 'color 200ms ease',
+  transition: 'color 150ms ease',
   _hover: {
-    color: 'accent',
+    color: '#519A58',
     textDecoration: 'none',
   },
 })
 
 export function Sidebar() {
   return (
-    <header
-      className={css({
-        position: 'sticky',
-        top: '0',
-        zIndex: '100',
-        width: '100%',
-        background: 'bg.nav',
-        borderBottom: '1px solid',
-        borderColor: 'border',
-      })}
+    <aside
+      style={{
+        height: '100vh',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '48px 40px',
+        background: '#DCE6DD',
+        borderRight: '1px solid #CDD9CE',
+        boxSizing: 'border-box',
+      }}
     >
-      <div
-        style={{
-          maxWidth: '1100px',
-          margin: '0 auto',
-          padding: '0 48px',
-          height: '48px',
-          display: 'grid',
-          gridTemplateColumns: '1fr auto 1fr',
-          alignItems: 'center',
-        }}
-      >
-        {/* Left: Logo + Name */}
-        <a
-          href="/"
-          className={css({
-            display: 'flex',
-            alignItems: 'center',
-            textDecoration: 'none',
-            _hover: { textDecoration: 'none' },
-          })}
-          style={{ gap: '10px' }}
-        >
-          <img src={logoSvg} alt="" style={{ height: '20px', width: 'auto' }} />
-          <span
-            className={css({
-              fontFamily: 'heading',
-              fontWeight: '700',
-              color: 'text',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-            })}
-            style={{ fontSize: '13px' }}
-          >
-            Doug March
-          </span>
-        </a>
+      {/* Logo */}
+      <div style={{ marginBottom: '20px' }}>
+        <img
+          src={logoSvg}
+          alt="Doug March"
+          style={{ width: '34px', height: '34px', display: 'block' }}
+        />
+      </div>
 
-        {/* Center: Masters badge */}
-        <span
-          className={css({
-            fontFamily: 'mono',
-            color: 'link',
-            letterSpacing: 'wider',
-            display: 'flex',
-            alignItems: 'center',
-          })}
-          style={{
-            fontSize: '11px',
-            padding: '0 12px',
-            height: '28px',
-            borderLeft: '1px solid #C8D1C2',
-            borderRight: '1px solid #C8D1C2',
-          }}
-        >
-          McIlroy &nbsp;−12 &nbsp;✓
-        </span>
-
-        {/* Right: Nav links */}
+      {/* Identity */}
+      <div style={{ marginBottom: '48px' }}>
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            gap: '32px',
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontWeight: 600,
+            fontSize: '28px',
+            lineHeight: '1.05',
+            letterSpacing: '-0.02em',
+            color: '#192B1A',
+            marginBottom: '12px',
           }}
         >
-          <a href="/" className={navLink} style={{ fontSize: '12px' }}>
-            Home
-          </a>
-          <a href="/about" className={navLink} style={{ fontSize: '12px' }}>
-            About
-          </a>
+          Doug
+          <br />
+          March
+        </div>
+        <div
+          style={{
+            fontFamily: '"Source Sans 3", sans-serif',
+            fontSize: '12px',
+            color: '#78947A',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            lineHeight: '1.6',
+          }}
+        >
+          Product Designer
+          <br />
+          &amp; Developer
         </div>
       </div>
-    </header>
+
+      {/* Navigation */}
+      <nav style={{ marginBottom: '24px' }}>
+        <a href="/" className={navLink}>
+          Home
+        </a>
+        <a href="/about" className={navLink}>
+          About
+        </a>
+      </nav>
+
+      {/* Tigers Score Signal */}
+      <div
+        style={{
+          borderTop: '1px solid #CDD9CE',
+          paddingTop: '16px',
+          marginBottom: '16px',
+        }}
+      >
+        <div
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontSize: '12px',
+            color: '#3D5C3F',
+            marginBottom: '4px',
+            letterSpacing: '0.05em',
+          }}
+        >
+          DET 10 &nbsp;·&nbsp; OAK 9
+        </div>
+        <div
+          style={{
+            fontFamily: '"Source Sans 3", sans-serif',
+            fontWeight: 300,
+            fontStyle: 'italic',
+            fontSize: '12px',
+            color: '#78947A',
+          }}
+        >
+          Tigers win.
+        </div>
+      </div>
+
+      {/* Spacer */}
+      <div style={{ flex: 1 }} />
+
+      {/* Quote — earned at bottom */}
+      <div style={{ paddingBottom: '0' }}>
+        <div
+          style={{
+            fontFamily: '"Source Sans 3", sans-serif',
+            fontStyle: 'italic',
+            fontSize: '12px',
+            color: '#78947A',
+            lineHeight: '1.72',
+            marginBottom: '3px',
+          }}
+        >
+          "Things cannot forever go downward."
+        </div>
+        <div
+          style={{
+            fontFamily: '"Source Sans 3", sans-serif',
+            fontSize: '12px',
+            color: '#78947A',
+          }}
+        >
+          — Deng Xiaoping
+        </div>
+      </div>
+    </aside>
   )
 }

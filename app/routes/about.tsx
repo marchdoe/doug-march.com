@@ -1,295 +1,436 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { timeline, capabilities, education } from '../content/timeline'
 import { identity, personal } from '../content/about'
-import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const sectionLabelText = css({
-  fontFamily: 'body',
-  fontWeight: '400',
-  color: 'text.muted',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-})
+const sectionMarker = {
+  fontFamily: '"IBM Plex Mono", monospace',
+  fontSize: '9px',
+  color: '#78947A',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase' as const,
+  marginBottom: '32px',
+}
 
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
-      <span className={sectionLabelText} style={{ fontSize: '9px', whiteSpace: 'nowrap' }}>
-        {label}
-      </span>
-      <div style={{ flex: '1', height: '1px', background: '#C8D1C2' }} />
-    </div>
-  )
+const indexLabel = {
+  position: 'absolute' as const,
+  left: '28px',
+  fontFamily: '"IBM Plex Mono", monospace',
+  fontSize: '9px',
+  color: '#A9BBAA',
+  letterSpacing: '0.05em',
 }
 
 function AboutPage() {
   return (
     <div>
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 48px' }}>
+      {/* Section 01: Identity */}
+      <div
+        style={{
+          position: 'relative',
+          padding: '80px 56px',
+          borderBottom: '1px solid #CDD9CE',
+          boxSizing: 'border-box',
+        }}
+      >
+        <span style={{ ...indexLabel, top: '80px' }}>01</span>
 
-        {/* IDENTITY HEADER */}
-        <section style={{ paddingTop: '96px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '400',
-              color: 'text.muted',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              margin: '0 0 16px',
-            })}
-            style={{ fontSize: '9px' }}
-          >
-            About
-          </p>
+        <div style={sectionMarker}>About</div>
 
-          <h1
-            className={css({
-              fontFamily: 'heading',
-              fontWeight: '800',
-              fontSize: '2xl',
-              lineHeight: 'tight',
-              letterSpacing: 'tight',
-              color: 'text',
-              margin: '0 0 12px',
-            })}
-          >
-            {identity.name}
-          </h1>
+        <h1
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontWeight: 600,
+            fontSize: '37px',
+            lineHeight: '1.15',
+            letterSpacing: '-0.02em',
+            color: '#192B1A',
+            marginBottom: '24px',
+          }}
+        >
+          {identity.name}
+        </h1>
 
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '400',
-              color: 'text.secondary',
-              letterSpacing: 'wide',
-              textTransform: 'uppercase',
-              margin: '0 0 48px',
-            })}
-            style={{ fontSize: '14px' }}
-          >
-            {identity.role}
-          </p>
+        <div
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontSize: '12px',
+            color: '#78947A',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            marginBottom: '32px',
+          }}
+        >
+          {identity.role}
+        </div>
 
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '300',
-              color: 'text.secondary',
-              lineHeight: 'normal',
-              margin: '0',
-            })}
-            style={{ fontSize: '18px', maxWidth: '640px' }}
-          >
-            {identity.statement}
-          </p>
-        </section>
+        <p
+          style={{
+            fontFamily: '"Source Sans 3", sans-serif',
+            fontSize: '21px',
+            fontWeight: 300,
+            color: '#3D5C3F',
+            lineHeight: '1.55',
+            maxWidth: '520px',
+          }}
+        >
+          {identity.statement}
+        </p>
+      </div>
 
-        {/* EXPERIENCE */}
-        <section style={{ paddingTop: '80px', paddingBottom: '80px', borderBottom: '1px solid #C8D1C2' }}>
-          <SectionLabel label="Experience" />
+      {/* Section 02: Timeline */}
+      <div
+        style={{
+          position: 'relative',
+          padding: '56px 56px',
+          borderBottom: '1px solid #CDD9CE',
+          boxSizing: 'border-box',
+        }}
+      >
+        <span style={{ ...indexLabel, top: '56px' }}>02</span>
 
+        <div style={sectionMarker}>Experience</div>
+
+        <div>
           {timeline.map((entry, i) => (
             <div
-              key={`${entry.year}-${entry.company}-${i}`}
+              key={entry.year + entry.company + i}
               style={{
-                display: 'grid',
-                gridTemplateColumns: '140px 1fr',
+                display: 'flex',
                 gap: '32px',
                 padding: '20px 0',
-                borderBottom: i < timeline.length - 1 ? '1px solid #C8D1C2' : 'none',
-                alignItems: 'start',
+                borderBottom: '1px solid #E5EDE6',
+                alignItems: 'flex-start',
               }}
             >
-              <span
-                className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wide' })}
-                style={{ fontSize: '12px', paddingTop: '2px', display: 'block' }}
+              <div
+                style={{
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  fontSize: '12px',
+                  color: '#78947A',
+                  letterSpacing: '0.05em',
+                  minWidth: '120px',
+                  flexShrink: 0,
+                  paddingTop: '2px',
+                  lineHeight: '1.55',
+                }}
               >
                 {entry.year}
-                {entry.current && (
-                  <span
-                    className={css({
-                      fontFamily: 'mono',
-                      color: 'accent',
-                      display: 'block',
-                      letterSpacing: 'widest',
-                      textTransform: 'uppercase',
-                    })}
-                    style={{ fontSize: '8px', marginTop: '4px' }}
-                  >
-                    Current
-                  </span>
-                )}
-              </span>
-
-              <div>
-                <p className={css({ fontFamily: 'body', fontWeight: '500', color: 'text', fontSize: 'sm', margin: '0 0 2px' })}>
-                  {entry.role}
-                </p>
-                <p
-                  className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', margin: '0 0 10px' })}
-                  style={{ fontSize: '13px' }}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: '12px',
+                    marginBottom: '6px',
+                    flexWrap: 'wrap',
+                  }}
                 >
-                  {entry.company}
-                </p>
-                <p
-                  className={css({ fontFamily: 'body', fontWeight: '300', color: 'text.muted', lineHeight: 'normal', margin: '0' })}
-                  style={{ fontSize: '14px', maxWidth: '560px' }}
+                  <div
+                    style={{
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontWeight: 600,
+                      fontSize: '16px',
+                      color: '#192B1A',
+                      lineHeight: '1.15',
+                    }}
+                  >
+                    {entry.role}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: '"Source Sans 3", sans-serif',
+                      fontSize: '14px',
+                      color: '#519A58',
+                    }}
+                  >
+                    {entry.company}
+                  </div>
+                  {entry.current && (
+                    <div
+                      style={{
+                        fontFamily: '"IBM Plex Mono", monospace',
+                        fontSize: '9px',
+                        color: '#519A58',
+                        letterSpacing: '0.12em',
+                        textTransform: 'uppercase',
+                        border: '1px solid #519A58',
+                        padding: '1px 6px',
+                      }}
+                    >
+                      Current
+                    </div>
+                  )}
+                </div>
+                <div
+                  style={{
+                    fontFamily: '"Source Sans 3", sans-serif',
+                    fontSize: '14px',
+                    color: '#78947A',
+                    lineHeight: '1.55',
+                  }}
                 >
                   {entry.description}
-                </p>
+                </div>
               </div>
             </div>
           ))}
-        </section>
+        </div>
 
-        {/* EDUCATION */}
-        <section style={{ paddingTop: '64px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
-          <SectionLabel label="Education" />
-
-          <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '32px', alignItems: 'start' }}>
-            <span
-              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wide' })}
-              style={{ fontSize: '12px' }}
+        {/* Education */}
+        <div style={{ marginTop: '40px' }}>
+          <div
+            style={{
+              fontFamily: '"IBM Plex Mono", monospace',
+              fontSize: '9px',
+              color: '#A9BBAA',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              marginBottom: '16px',
+            }}
+          >
+            Education
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              gap: '32px',
+              alignItems: 'flex-start',
+            }}
+          >
+            <div
+              style={{
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: '12px',
+                color: '#78947A',
+                minWidth: '120px',
+                flexShrink: 0,
+              }}
             >
               {education.years}
-            </span>
+            </div>
             <div>
-              <p className={css({ fontFamily: 'body', fontWeight: '500', color: 'text', fontSize: 'sm', margin: '0 0 2px' })}>
-                {education.degree}
-              </p>
-              <p
-                className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', margin: '0 0 4px' })}
-                style={{ fontSize: '13px' }}
-              >
-                {education.concentration}
-              </p>
-              <p
-                className={css({ fontFamily: 'body', fontWeight: '300', color: 'text.muted', margin: '0' })}
-                style={{ fontSize: '13px' }}
+              <div
+                style={{
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  fontWeight: 600,
+                  fontSize: '16px',
+                  color: '#192B1A',
+                  marginBottom: '4px',
+                }}
               >
                 {education.school}
-              </p>
+              </div>
+              <div
+                style={{
+                  fontFamily: '"Source Sans 3", sans-serif',
+                  fontSize: '14px',
+                  color: '#78947A',
+                }}
+              >
+                {education.degree} &middot; {education.concentration}
+              </div>
             </div>
           </div>
-        </section>
-
-        {/* CAPABILITIES */}
-        <section style={{ paddingTop: '64px', paddingBottom: '64px', borderBottom: '1px solid #C8D1C2' }}>
-          <SectionLabel label="Capabilities" />
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-            {capabilities.map((cap) => (
-              <span
-                key={cap}
-                className={css({
-                  fontFamily: 'body',
-                  fontWeight: '400',
-                  color: 'text.secondary',
-                  background: 'bg.nav',
-                  letterSpacing: 'wider',
-                  textTransform: 'uppercase',
-                })}
-                style={{ fontSize: '9px', padding: '6px 10px', border: '1px solid #C8D1C2' }}
-              >
-                {cap}
-              </span>
-            ))}
-          </div>
-        </section>
-
-        {/* PERSONAL */}
-        <section style={{ paddingTop: '64px', paddingBottom: '96px' }}>
-          <SectionLabel label="Outside Work" />
-
-          <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: '32px', rowGap: '20px' }}>
-            <span
-              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
-              style={{ fontSize: '11px', paddingTop: '2px' }}
-            >
-              Sport
-            </span>
-            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
-              {personal.sport}
-            </span>
-
-            <span
-              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
-              style={{ fontSize: '11px', paddingTop: '2px' }}
-            >
-              Teams
-            </span>
-            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
-              {personal.teams.join(', ')}
-            </span>
-
-            <span
-              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
-              style={{ fontSize: '11px', paddingTop: '2px' }}
-            >
-              Holes in One
-            </span>
-            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
-              {personal.holesInOne}
-            </span>
-
-            <span
-              className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
-              style={{ fontSize: '11px', paddingTop: '2px' }}
-            >
-              Current Focus
-            </span>
-            <span className={css({ fontFamily: 'body', fontWeight: '400', color: 'text.secondary', fontSize: 'sm' })}>
-              {personal.currentFocus}
-            </span>
-          </div>
-        </section>
+        </div>
       </div>
 
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid #C8D1C2', background: '#E4E9DF', paddingTop: '28px', paddingBottom: '28px' }}>
+      {/* Section 03: Capabilities */}
+      <div
+        style={{
+          position: 'relative',
+          padding: '64px 56px',
+          borderBottom: '1px solid #CDD9CE',
+          boxSizing: 'border-box',
+        }}
+      >
+        <span style={{ ...indexLabel, top: '64px' }}>03</span>
+
+        <div style={sectionMarker}>Capabilities</div>
+
         <div
           style={{
-            maxWidth: '1100px',
-            margin: '0 auto',
-            padding: '0 48px',
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '8px',
           }}
         >
-          <span
-            className={css({ fontFamily: 'mono', color: 'text.muted', letterSpacing: 'wider' })}
-            style={{ fontSize: '11px' }}
-          >
-            DET &nbsp; PIS 133–121 W &nbsp;·&nbsp; TIG 8–2 W
-          </span>
-
-          <span
-            className={css({ fontFamily: 'body', fontWeight: '300', color: 'text.muted' })}
-            style={{ fontSize: '11px', letterSpacing: '0.05em' }}
-          >
-            doug-march.com &nbsp;©&nbsp; 2026
-          </span>
-
-          <a
-            href="/archive"
-            className={css({
-              fontFamily: 'body',
-              fontWeight: '300',
-              color: 'text.muted',
-              textDecoration: 'none',
-              transition: 'color 200ms ease',
-              _hover: { color: 'text.secondary', textDecoration: 'none' },
-            })}
-            style={{ fontSize: '11px', letterSpacing: '0.05em' }}
-          >
-            Archive
-          </a>
+          {capabilities.map((cap) => (
+            <div
+              key={cap}
+              style={{
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: '12px',
+                color: '#3D5C3F',
+                background: '#EAEEEB',
+                padding: '6px 12px',
+                letterSpacing: '0.05em',
+                border: '1px solid #CDD9CE',
+                borderRadius: '0px',
+              }}
+            >
+              {cap}
+            </div>
+          ))}
         </div>
-      </footer>
+      </div>
+
+      {/* Section 04: Personal */}
+      <div
+        style={{
+          position: 'relative',
+          padding: '64px 56px',
+          borderBottom: '1px solid #CDD9CE',
+          boxSizing: 'border-box',
+        }}
+      >
+        <span style={{ ...indexLabel, top: '64px' }}>04</span>
+
+        <div style={sectionMarker}>Personal</div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '24px',
+            maxWidth: '560px',
+          }}
+        >
+          <div>
+            <div
+              style={{
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: '9px',
+                color: '#A9BBAA',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
+              }}
+            >
+              Sport
+            </div>
+            <div
+              style={{
+                fontFamily: '"Source Sans 3", sans-serif',
+                fontSize: '16px',
+                color: '#192B1A',
+              }}
+            >
+              {personal.sport}
+            </div>
+          </div>
+
+          <div>
+            <div
+              style={{
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: '9px',
+                color: '#A9BBAA',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
+              }}
+            >
+              Holes in One
+            </div>
+            <div
+              style={{
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontWeight: 600,
+                fontSize: '28px',
+                color: '#192B1A',
+                lineHeight: '1.05',
+              }}
+            >
+              {personal.holesInOne}
+            </div>
+          </div>
+
+          <div>
+            <div
+              style={{
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: '9px',
+                color: '#A9BBAA',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
+              }}
+            >
+              Teams
+            </div>
+            <div
+              style={{
+                fontFamily: '"Source Sans 3", sans-serif',
+                fontSize: '14px',
+                color: '#3D5C3F',
+                lineHeight: '1.55',
+              }}
+            >
+              {personal.teams.join(', ')}
+            </div>
+          </div>
+
+          <div>
+            <div
+              style={{
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: '9px',
+                color: '#A9BBAA',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
+              }}
+            >
+              Current Focus
+            </div>
+            <div
+              style={{
+                fontFamily: '"Source Sans 3", sans-serif',
+                fontSize: '14px',
+                color: '#3D5C3F',
+                lineHeight: '1.55',
+              }}
+            >
+              {personal.currentFocus}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div
+        style={{
+          padding: '28px 56px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <span
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontSize: '9px',
+            color: '#A9BBAA',
+            letterSpacing: '0.12em',
+          }}
+        >
+          doug-march.com &nbsp;·&nbsp; 2026
+        </span>
+        <a
+          href="/archive"
+          style={{
+            fontFamily: '"Source Sans 3", sans-serif',
+            fontSize: '12px',
+            color: '#78947A',
+            textDecoration: 'none',
+          }}
+        >
+          archive
+        </a>
+      </div>
     </div>
   )
 }
