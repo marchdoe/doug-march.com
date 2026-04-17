@@ -116,8 +116,10 @@ function formatSignalsMarkdown(signals) {
  * @param {string} rationale - Claude's rationale text
  * @param {string} designBrief - one-sentence design brief
  * @param {string[]} changedFiles - list of relative file paths that were written
+ * @param {object} [weights={}] - optional weighting overrides (signals, inspiration, ratings, risk)
+ * @param {object|null} [colorScheme=null] - optional color scheme object emitted by the designer; written as color-scheme.json in the build dir
  */
-export async function archive(date, signals, rationale, designBrief, changedFiles, weights = {}) {
+export async function archive(date, signals, rationale, designBrief, changedFiles, weights = {}, colorScheme = null) {
   const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : String(date)
   const buildId = String(Date.now())
   const dir = path.join(ROOT, 'archive', dateStr)
@@ -178,6 +180,19 @@ export async function archive(date, signals, rationale, designBrief, changedFile
       const preset = await readFile(presetSrc, 'utf8')
       await writeFile(path.join(buildDir, 'preset.ts'), preset, 'utf8')
     } catch { /* preset read failed — non-blocking */ }
+  }
+
+  // Save the color scheme JSON artifact, if provided
+  if (colorScheme && !colorScheme.__parse_error) {
+    try {
+      await writeFile(
+        path.join(buildDir, 'color-scheme.json'),
+        JSON.stringify(colorScheme, null, 2),
+        'utf8'
+      )
+    } catch (err) {
+      console.warn(`  warning: could not write color-scheme.json: ${err.message}`)
+    }
   }
 
   // Also save/overwrite the top-level brief.md as the "latest" for backwards compatibility

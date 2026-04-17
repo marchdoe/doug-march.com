@@ -1,0 +1,7 @@
+{
+  "primary_hue": { "h": 30, "s": 70, "l": 50, "name": "amber" },
+  "secondary_accent": null,
+  "neutral_family": { "tinted_toward": "warm", "name": "stone" },
+  "mood_word": "cozy",
+  "color_story": "Amber warmth."
+}

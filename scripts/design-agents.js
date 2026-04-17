@@ -5,7 +5,9 @@
  *
  * Dispatches specialized Claude CLI agents sequentially:
  *   Phase 0: Design Director — visual specification
- *   Phase 1: Token Designer  — elements/preset.ts, app/routes/__root.tsx
+ *   Phase 1: Token Designer  — elements/preset.ts (orchestrator generates
+ *                                __root.tsx + chassis-preset.ts deterministically
+ *                                from the Director-chosen typography chassis)
  *   Phase 2: Unified Designer — all 15 remaining component/route files
  *
  * Each agent gets the creative brief, relevant reference files, and (after
@@ -33,6 +35,16 @@ import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-
 import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
 import { createTrace } from './utils/trace.js'
+import { buildMessages } from './utils/prompt-builder.js'
+import { selectSeed } from './utils/select-seed.js'
+import { CHASSIS_CATALOG } from '../elements/chassis/index.js'
+import {
+  buildGoogleFontsUrl,
+  renderRootTemplate,
+  renderChassisPresetFile,
+  getChassisById,
+  formatChassisCatalogForPrompt,
+} from './utils/chassis.js'
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -86,6 +98,37 @@ export function extractArchetypeFromText(text) {
 }
 
 /**
+ * Extract the Director-chosen typography chassis from its response.
+ *
+ * Looks for a `===CHASSIS_ID===` delimiter block and matches the next
+ * meaningful token against the catalog. Tolerates: surrounding whitespace,
+ * backtick-quoted ids, and trailing punctuation. If the explicit block is
+ * missing (Director ignored format), falls back to scanning the whole
+ * spec for any catalog id appearing as a backtick-quoted code span.
+ *
+ * Returns the matching ChassisEntry or null. Caller falls back to
+ * CHASSIS_CATALOG[0] on null.
+ */
+export function resolveChassisFromDirectorOutput(text, catalog) {
+  if (!text) return null
+
+  const blockMatch = text.match(/===CHASSIS_ID===\s*\n?\s*`?([a-z0-9-]+)`?/i)
+  if (blockMatch) {
+    const id = blockMatch[1].trim().toLowerCase()
+    const hit = catalog.find(c => c.id === id)
+    if (hit) return hit
+  }
+
+  // Fallback: scan for any catalog id mentioned in backticks anywhere.
+  for (const c of catalog) {
+    const re = new RegExp('`\\s*' + c.id.replace(/-/g, '\\-') + '\\s*`', 'i')
+    if (re.test(text)) return c
+  }
+
+  return null
+}
+
+/**
  * Read archetype history from the last N archive date directories.
  * Prefers archetype.txt (written by this pipeline); falls back to parsing brief.md.
  * @param {string} archiveDir
@@ -113,23 +156,24 @@ function buildArchetypeHistory(archiveDir, recentDirs) {
 /**
  * Build the hard archetype constraint block to inject into the Design Director prompt.
  * @param {Array<{date: string, archetype: string}>} history
- * @returns {string}
+ * @returns {{ block: string, forbidden: string[], allowed: string[] }}
  */
 function buildArchetypeConstraintPrompt(history) {
-  if (history.length === 0) return ''
+  if (history.length === 0) return { block: '', forbidden: [], allowed: [...ARCHETYPE_NAMES] }
 
   const lines = history.map(h => `  - ${h.date}: ${h.archetype}`).join('\n')
   const last3 = [...new Set(history.slice(0, 3).map(h => h.archetype))]
 
   let block = `\n\n## Archetype History — MANDATORY CONSTRAINT\n\nRecent archetype usage (newest first):\n${lines}\n\n`
 
+  let allowed = [...ARCHETYPE_NAMES]
   if (last3.length > 0) {
+    allowed = ARCHETYPE_NAMES.filter(n => !last3.includes(n))
     block += `**FORBIDDEN TODAY** (used in the last 3 days): **${last3.join(', ')}**\n\n`
-    const allowed = ARCHETYPE_NAMES.filter(n => !last3.includes(n))
-    block += `You MUST choose from the remaining archetypes: ${allowed.join(', ')}. Choosing a forbidden archetype is an error — the spec will be rejected.`
+    block += `You MUST choose from the remaining archetypes: ${allowed.join(', ')}. Choosing a forbidden archetype is an error — the spec will be rejected and the director will be re-run with a stricter prompt.`
   }
 
-  return block
+  return { block, forbidden: last3, allowed }
 }
 
 /**
@@ -142,7 +186,7 @@ function buildArchetypeConstraintPrompt(history) {
  * with the inner path as its name.
  *
  * @param {string} result - raw response text
- * @returns {{ files: Array<{path: string, content: string}>, rationale?: string, design_brief?: string }}
+ * @returns {{ files: Array<{path: string, content: string}>, rationale?: string, design_brief?: string, color_scheme?: object }}
  */
 export function parseDelimiterResponse(result) {
   const files = []
@@ -150,7 +194,7 @@ export function parseDelimiterResponse(result) {
   // append a sentinel delimiter that the lookahead can match as a substitute.
   const sentinel = '\n===END_SENTINEL===\n'
   const withSentinel = result + sentinel
-  const filePattern = /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===END_SENTINEL===)/gm
+  const filePattern = /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===END_SENTINEL===)/gm
   let match
   while ((match = filePattern.exec(withSentinel)) !== null) {
     const filePath = match[1].trim()
@@ -168,47 +212,18 @@ export function parseDelimiterResponse(result) {
   const briefMatch = withSentinel.match(/^===DESIGN_BRIEF===\s*\n([\s\S]*?)(?=^===)/m)
   if (briefMatch) design_brief = briefMatch[1].trim()
 
-  return { files, rationale, design_brief }
-}
-
-/**
- * Fix a generated __root.tsx file by ensuring Scripts and ScrollRestoration
- * are imported from @tanstack/react-router. Returns the fixed content, or
- * null if the file looks so broken we shouldn't touch it.
- *
- * Conservative behavior: only patches the import line (the safest edit).
- * Does NOT attempt to insert/remove JSX or function definitions — the old
- * regex approach corrupted files with nested braces or multiple </body> tags.
- * If the fix is insufficient, the build validator catches it and triggers
- * a retry with explicit error context, which is more reliable.
- *
- * @param {string} content - current __root.tsx content
- * @returns {string|null} fixed content, or null to abort the fixup
- */
-export function fixRootTsx(content) {
-  const REQUIRED = ['ScrollRestoration', 'Scripts']
-
-  // Find the @tanstack/react-router import line. Must be a single-line
-  // match — multi-line imports are too ambiguous to rewrite safely.
-  const importRegex = /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]@tanstack\/react-router['"]/
-  const match = content.match(importRegex)
-  if (!match) {
-    // No router import at all — can't safely fix. Let build validator reject.
-    return null
+  let color_scheme
+  const schemeMatch = withSentinel.match(/^===COLOR_SCHEME===\s*\n([\s\S]*?)(?=^===)/m)
+  if (schemeMatch) {
+    const raw = schemeMatch[1].trim()
+    try {
+      color_scheme = JSON.parse(raw)
+    } catch {
+      color_scheme = { __parse_error: true, raw }
+    }
   }
 
-  const existing = match[1].split(',').map(s => s.trim()).filter(Boolean)
-  const missing = REQUIRED.filter(name => !existing.includes(name))
-  if (missing.length === 0) {
-    // Imports are already correct. No fix needed.
-    return content
-  }
-
-  // Add missing imports to the existing import line. This is the only
-  // edit we make — intentionally conservative.
-  const merged = [...new Set([...existing, ...missing])]
-  const fixedImport = `import { ${merged.join(', ')} } from '@tanstack/react-router'`
-  return content.replace(importRegex, fixedImport)
+  return { files, rationale, design_brief, color_scheme }
 }
 
 // ---------------------------------------------------------------------------
@@ -295,6 +310,7 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
 
   const result = await callClaudeCLI(agentName, systemPrompt, fullPrompt, {
     timeoutMs: options.timeoutMs || 600000, // default 10 minutes
+    stallTimeoutMs: options.stallTimeoutMs, // undefined → claude-cli.js default (15 min)
     model: options.model || 'sonnet',
   })
 
@@ -388,8 +404,9 @@ function validateCodegen() {
 /**
  * Run the design agent swarm.
  *
- * Phase 0: Design Director — visual specification
- * Phase 1: Token Designer (preset.ts + __root.tsx)
+ * Phase 0: Design Director — visual specification + typography chassis pick
+ * Phase 1: Token Designer (preset.ts colors/spacing/semantics; orchestrator
+ *          deterministically generates __root.tsx + chassis-preset.ts)
  * Phase 2: Unified Designer — all 15 remaining component/route files
  * Phase 4: Build validation
  * Phase 5: Retry on failure
@@ -398,7 +415,7 @@ function validateCodegen() {
  * @returns {Promise<{ rationale: string, design_brief: string, files: Array<{path: string, content: string}> }>}
  */
 export async function runAgentSwarm(context, { onTraceStep } = {}) {
-  const { signals, brief, contentSummary } = context
+  const { signals, brief, contentSummary, currentFiles = [] } = context
 
   // Read creative weights from environment
   const weights = {
@@ -480,14 +497,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     specCriticPromptRaw,
     screenshotCriticPromptRaw,
     tokenPromptRaw,
-    unifiedDesignerPromptRaw,
     designSystemRef, libTypography, libColor, libLayout, libComponents,
   ] = await Promise.all([
     readFile(path.join(promptDir, 'design-director.md'), 'utf8'),
     readFile(path.join(promptDir, 'spec-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'screenshot-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
-    readFile(path.join(promptDir, 'unified-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'design-system-reference.md'), 'utf8'),
     readFile(path.join(promptDir, 'library-typography.md'), 'utf8'),
     readFile(path.join(promptDir, 'library-color.md'), 'utf8'),
@@ -498,10 +513,26 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const specCriticPrompt = specCriticPromptRaw
   const screenshotCriticPrompt = screenshotCriticPromptRaw
 
-  // Build system prompts with relevant libraries appended
+  // Build system prompts with relevant libraries appended.
+  // unified-designer base prompt is loaded through buildMessages (single source
+  // of truth shared with local-dev path in scripts/generate-redesign.js).
+  const { system: unifiedDesignerBasePrompt } = buildMessages({
+    signals,
+    brief: '',
+    contentSummary: '',
+    currentFiles: [],
+  })
   const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}`
-  const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libTypography}\n\n${libColor}`
-  const unifiedDesignerSystemPrompt = `${unifiedDesignerPromptRaw}\n\n${designSystemRef}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}\n\n${libComponents}`
+  // Token Designer no longer authors fonts or fontSizes (chassis owns them),
+  // so library-typography.md is omitted from its system prompt — saves ~47 lines
+  // of dead context and prevents Haiku from reasoning about typography tokens
+  // that the orchestrator will overwrite anyway.
+  const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libColor}`
+  // libTypography is omitted — unified-designer uses font tokens but does not
+  // choose fonts or scale ratios (chassis owns those). The pairing recipes and
+  // ratio table in library-typography.md are dead context here. Director still
+  // gets it for chassis-selection mood matching.
+  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}\n\n${libColor}\n\n${libLayout}\n\n${libComponents}`
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')
@@ -556,6 +587,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const archiveDir = path.join(ROOT, 'archive')
   let recentBriefs = ''
   let archetypeConstraintPrompt = ''
+  let forbiddenArchetypes = []
+  let allowedArchetypes = [...ARCHETYPE_NAMES]
   try {
     const dirs = readdirSync(archiveDir)
       .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
@@ -568,7 +601,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       }
     }
     const archetypeHistory = buildArchetypeHistory(archiveDir, dirs)
-    archetypeConstraintPrompt = buildArchetypeConstraintPrompt(archetypeHistory)
+    const constraint = buildArchetypeConstraintPrompt(archetypeHistory)
+    archetypeConstraintPrompt = constraint.block
+    forbiddenArchetypes = constraint.forbidden
+    allowedArchetypes = constraint.allowed
     if (archetypeHistory.length > 0) {
       console.log(`  archetype history: ${archetypeHistory.map(h => `${h.date}=${h.archetype}`).join(', ')}`)
     }
@@ -651,10 +687,37 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     })
   }
 
+  // Compute the deterministic color mandate once per run; inject into
+  // Director and Token Designer user prompts. Pure data — no LLM.
+  const { computeColorMandate, formatMandateForPrompt } = await import('./utils/color-mandate.js')
+  let colorMandate
+  try {
+    colorMandate = computeColorMandate({
+      archiveDir: path.join(ROOT, 'archive'),
+      signals,
+      lookbackDays: 7,
+      zoneRadius: 30,
+    })
+  } catch (err) {
+    console.warn(`[color-mandate] computation failed, using permissive default: ${err.message}`)
+    colorMandate = {
+      targetHueRange: [0, 360],
+      forbiddenHues: [],
+      recentPrimaryHues: [],
+      rationale: 'Mandate computation unavailable; palette is open.',
+    }
+  }
+  const colorMandateSection = formatMandateForPrompt(colorMandate)
+  console.log(`  color-mandate: target ${colorMandate.targetHueRange[0]}-${colorMandate.targetHueRange[1]}°, ${colorMandate.forbiddenHues.length} forbidden zone(s)`)
+
   // -----------------------------------------------------------------------
   // Phase 0: Design Director — produces a visual specification
   // -----------------------------------------------------------------------
   console.log('\n[phase-0] Design Director')
+
+  const chassisCatalogBlock = '\n\n## Typography Chassis Catalog\n\n'
+    + 'Pick ONE chassis id from this table and emit it in the `===CHASSIS_ID===` block of your response. Match by archetype affinity first, then by mood.\n\n'
+    + formatChassisCatalogForPrompt(CHASSIS_CATALOG)
 
   const directorUserPrompt = buildAgentPrompt('design-director', {
     brief,
@@ -664,22 +727,59 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     + (recentBriefs ? '\n\n## Recent Archive Briefs\n' + recentBriefs : '')
     + (references ? '\n\n## Design References\n\n' + references : '')
     + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
+    + chassisCatalogBlock
     + weightsPrompt
+    + '\n\n' + colorMandateSection
 
   let visualSpec = ''
   let chosenArchetype = null
+  let chosenChassis = null
   try {
     const t0Director = Date.now()
-    const directorResult = await callAgent('design-director', directorSystemPrompt, directorUserPrompt)
+    let directorResult = await callAgent('design-director', directorSystemPrompt, directorUserPrompt)
     visualSpec = directorResult._rawResponse || directorResult.rationale || ''
     chosenArchetype = extractArchetypeFromText(visualSpec)
-    console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${chosenArchetype ? ` | archetype: ${chosenArchetype}` : ''}`)
+    chosenChassis = resolveChassisFromDirectorOutput(visualSpec, CHASSIS_CATALOG)
+    console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${chosenArchetype ? ` | archetype: ${chosenArchetype}` : ''}${chosenChassis ? ` | chassis: ${chosenChassis.id}` : ''}`)
+
+    // Enforce the FORBIDDEN list programmatically. The prompt threatens
+    // "spec will be rejected" but until now nothing actually rejected it.
+    // Retry director once with an explicit "you violated the constraint"
+    // message; if the retry also picks a forbidden archetype, accept and
+    // log a warning rather than spinning forever.
+    if (chosenArchetype && forbiddenArchetypes.includes(chosenArchetype)) {
+      console.warn(`  ⚠ Director picked FORBIDDEN archetype "${chosenArchetype}" — retrying with stricter prompt`)
+      const stricterPrompt = `${directorUserPrompt}\n\n---\n\n## CONSTRAINT VIOLATION — RETRY REQUIRED\n\nYour previous response chose **${chosenArchetype}**, which is on the FORBIDDEN list (used in the last 3 days). Choose a different archetype from this exact set: **${allowedArchetypes.join(', ')}**. Any other choice fails the build. Re-emit the complete VISUAL_SPEC with a new archetype.`
+      directorResult = await callAgent('design-director', directorSystemPrompt, stricterPrompt)
+      visualSpec = directorResult._rawResponse || directorResult.rationale || ''
+      const retryArchetype = extractArchetypeFromText(visualSpec)
+      const retryChassis = resolveChassisFromDirectorOutput(visualSpec, CHASSIS_CATALOG)
+      console.log(`  retry visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${retryArchetype ? ` | archetype: ${retryArchetype}` : ''}${retryChassis ? ` | chassis: ${retryChassis.id}` : ''}`)
+      if (retryArchetype && !forbiddenArchetypes.includes(retryArchetype)) {
+        chosenArchetype = retryArchetype
+      } else {
+        console.warn(`  ⚠ Director retry also picked forbidden/unknown archetype — proceeding with "${retryArchetype || chosenArchetype}"`)
+        chosenArchetype = retryArchetype || chosenArchetype
+      }
+      if (retryChassis) chosenChassis = retryChassis
+    }
+
+    // Fall back to first catalog entry if Director never produced a valid id.
+    // We log loudly but don't crash — the chassis is hand-curated, so any
+    // entry produces a working site, and the Token Designer can still
+    // author colors/spacing for the day.
+    if (!chosenChassis) {
+      chosenChassis = CHASSIS_CATALOG[0]
+      console.warn(`  ⚠ Director did not pick a valid chassis — falling back to "${chosenChassis.id}"`)
+    }
+
     trace.addStep({
       name: 'design-director',
       phase: 1,
       input: { archetypeConstraints: archetypeConstraintPrompt.slice(0, 500) },
       output: {
         archetype: chosenArchetype || 'unknown',
+        chassisId: chosenChassis?.id || 'unknown',
         specLength: visualSpec.length,
         specPreview: visualSpec.slice(0, 500),
       },
@@ -752,7 +852,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     brief: tokenBrief,
     referenceFiles: [],
     tokenContext: null,
-  })
+  }) + '\n\n' + colorMandateSection
 
   let tokenResult
   const t0Token = Date.now()
@@ -764,35 +864,39 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     throw new Error(`Token Designer failed: ${err.message}`)
   }
 
-  // Verify expected files
+  // Token Designer no longer owns __root.tsx (orchestrator generates it
+  // from the chassis template). preset.ts is the only required output;
+  // anything else from the agent is silently ignored.
   const hasPreset = tokenResult.files.some(f => f.path === 'elements/preset.ts')
-  const hasRoot = tokenResult.files.some(f => f.path === 'app/routes/__root.tsx')
-  if (!hasPreset || !hasRoot) {
+  if (!hasPreset) {
     await restore(originalBackup)
-    throw new Error(`Token Designer missing required files. Got: ${tokenResult.files.map(f => f.path).join(', ')}`)
+    throw new Error(`Token Designer missing required file elements/preset.ts. Got: ${tokenResult.files.map(f => f.path).join(', ')}`)
   }
 
-  // Write token files
-  for (const p of await writeFiles(tokenResult.files)) writtenPaths.add(p)
+  // Write token files (filter out anything outside TOKEN_FILES — e.g.,
+  // a stray __root.tsx the agent emitted out of habit).
+  const tokenFilesOnly = tokenResult.files.filter(f => TOKEN_FILES.includes(f.path))
+  for (const p of await writeFiles(tokenFilesOnly)) writtenPaths.add(p)
 
-  // Post-write fixup: ensure __root.tsx has critical imports for SPA hydration.
-  // The token designer frequently drops Scripts import or defines a fake
-  // local version (return null). Both break client-side hydration.
-  //
-  // This fixup is best-effort and defensive — if anything looks ambiguous,
-  // we leave the file alone and let the build validator catch it. The
-  // validator will trigger a retry with the explicit error, which is
-  // more reliable than risking a corrupted file from aggressive regex surgery.
+  // Orchestrator generates the chassis preset (fonts + fontSizes) and
+  // __root.tsx (Google Fonts URL substituted into the frozen template).
+  // These two files are NEVER written by an agent in the chassis era.
   try {
+    const chassisPresetSrc = renderChassisPresetFile(chosenChassis)
+    const chassisPresetPath = path.join(ROOT, 'elements/chassis-preset.ts')
+    await writeFile(chassisPresetPath, chassisPresetSrc, 'utf8')
+    writtenPaths.add('elements/chassis-preset.ts')
+    console.log(`  [chassis] wrote chassis-preset.ts (${chosenChassis.id})`)
+
+    const rootSrc = renderRootTemplate(buildGoogleFontsUrl(chosenChassis))
     const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
-    const original = await readFile(rootPath, 'utf8')
-    const fixed = fixRootTsx(original)
-    if (fixed !== null && fixed !== original) {
-      await writeFile(rootPath, fixed, 'utf8')
-      console.log(`  [fixup] fixed __root.tsx: added Scripts/ScrollRestoration imports`)
-    }
+    await writeFile(rootPath, rootSrc, 'utf8')
+    writtenPaths.add('app/routes/__root.tsx')
+    console.log(`  [chassis] wrote __root.tsx from template`)
   } catch (err) {
-    console.warn(`  [fixup] __root.tsx fixup failed (non-blocking): ${err.message}`)
+    await cleanupOrphans(writtenPaths, originalBackup)
+    await restore(originalBackup)
+    throw new Error(`Chassis file generation failed: ${err.message}`)
   }
 
   trace.addStep({
@@ -825,7 +929,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       throw new Error(`Token Designer retry failed: ${err.message}`)
     }
 
-    for (const p of await writeFiles(tokenResult.files)) writtenPaths.add(p)
+    const tokenRetryFilesOnly = tokenResult.files.filter(f => TOKEN_FILES.includes(f.path))
+    for (const p of await writeFiles(tokenRetryFilesOnly)) writtenPaths.add(p)
 
     const retryCodegen = validateCodegen()
     if (!retryCodegen.success) {
@@ -833,6 +938,29 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       await restore(originalBackup)
       throw new Error(`Token Designer codegen failed after retry: ${retryCodegen.error?.slice(0, 500)}`)
     }
+  }
+
+  // -----------------------------------------------------------------------
+  // Color scheme validation — warnings only, never fails the build.
+  // Runs once here after tokenResult is finalized (first pass or codegen
+  // retry), so we always validate the version that will actually ship.
+  // -----------------------------------------------------------------------
+  if (tokenResult.color_scheme && !tokenResult.color_scheme.__parse_error) {
+    const { detectCoffeeShopPalette, validateSchemeAgainstPreset, validateSchemeAgainstMandate } = await import('./utils/color-validation.js')
+    const presetSrc = tokenResult.files.find((f) => f.path === 'elements/preset.ts')?.content || ''
+
+    const consistency = validateSchemeAgainstPreset(tokenResult.color_scheme, presetSrc)
+    for (const w of consistency.warnings) console.warn(`[color-scheme] ${w}`)
+
+    const rut = detectCoffeeShopPalette(tokenResult.color_scheme, presetSrc)
+    for (const w of rut.warnings) console.warn(`[color-scheme] ${w}`)
+
+    const mandateCheck = validateSchemeAgainstMandate(tokenResult.color_scheme, colorMandate)
+    for (const w of mandateCheck.warnings) console.warn(`[color-scheme] ${w}`)
+  } else if (tokenResult.color_scheme && tokenResult.color_scheme.__parse_error) {
+    console.warn('[color-scheme] Token Designer emitted ===COLOR_SCHEME=== but JSON was unparseable; continuing.')
+  } else {
+    console.warn('[color-scheme] Token Designer did not emit ===COLOR_SCHEME===; palette monitoring will not fire for this build.')
   }
 
   // -----------------------------------------------------------------------
@@ -847,21 +975,75 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     ? `## Visual Specification (from Design Director)\n\n${visualSpec}\n\n---\n\n## Original Creative Brief\n\n${brief}`
     : brief
 
-  const designerUserPrompt = buildAgentPrompt('unified-designer', {
-    brief: enrichedBrief,
-    referenceFiles: [],
-    tokenContext,
-  }) + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
-    + weightsPrompt
+  // Build the unified-designer user prompt via the shared prompt-builder so
+  // production matches local-dev byte-for-byte up to the production-only
+  // additions (ratings + creative weights) appended below.
+  const buildUnifiedDesignerPrompt = () => {
+    // Production's system prompt already includes the content contract and
+    // technical requirements via the library-* references appended above.
+    // Pass contentSummary: '' and currentFiles: [] so buildMessages skips
+    // the duplicate Site Content Reference / Technical Requirements /
+    // Current Component Files blocks — otherwise the user prompt balloons
+    // past ~60KB and the subprocess stalls.
+    const { messages } = buildMessages({
+      signals,
+      brief: enrichedBrief,
+      contentSummary: '',
+      currentFiles: [],
+      tokenContext,
+    })
+    return messages[0].content
+      + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
+      + weightsPrompt
+  }
+  const designerUserPrompt = buildUnifiedDesignerPrompt()
+
+  // Inject today's archetype-matched seed into the unified-designer system
+  // prompt. The seed is an anchor reference — see scripts/prompts/seeds/.
+  const seedPath = selectSeed(chosenArchetype || 'stack')
+  const seedContent = readFileSync(seedPath, 'utf8')
+  const unifiedDesignerSystemPromptWithSeed = unifiedDesignerSystemPrompt.replace('<!-- SEED_ANCHOR -->', seedContent)
+  console.log(`  injecting seed: ${path.basename(seedPath)} (${(seedContent.length / 1024).toFixed(1)}KB)`)
 
   let designerResult
   const t0Designer = Date.now()
   try {
-    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPrompt, designerUserPrompt, null, { timeoutMs: 1800000 }) // 30 minutes — writes 15 files
+    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPromptWithSeed, designerUserPrompt, null, { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 }) // 30 min total, 25 min silent-thinking headroom — the CLI comment documents 9-12 min of silent thinking as normal; default 15 min was too tight
   } catch (err) {
     console.error(`  Unified Designer failed: ${err.message}`)
     await restore(originalBackup)
     throw new Error(`Unified Designer failed: ${err.message}`)
+  }
+
+  // Enforce that ALL five required files are present. The most common
+  // failure mode is the designer omitting Layout.tsx or Sidebar.tsx, which
+  // silently preserves yesterday's nav and causes the "designs all look
+  // the same" complaint. Retry once if either is missing.
+  const REQUIRED_FILES = [
+    'app/components/Layout.tsx',
+    'app/components/Sidebar.tsx',
+    'app/routes/index.tsx',
+    'app/routes/about.tsx',
+    'app/routes/work.$slug.tsx',
+  ]
+  const producedPaths = new Set(designerResult.files.map(f => f.path))
+  const missing = REQUIRED_FILES.filter(p => !producedPaths.has(p))
+  if (missing.length > 0) {
+    console.warn(`  ⚠ Unified Designer omitted required files: ${missing.join(', ')} — retrying with explicit reminder`)
+    const reminderPrompt = `${designerUserPrompt}\n\n---\n\n## REQUIRED FILES MISSING — RETRY\n\nYour previous response omitted these required files: ${missing.join(', ')}\n\nThis silently preserves yesterday's chrome and breaks the day's archetype. Re-emit your COMPLETE response. Every required file must appear, including these you missed:\n${missing.map(m => `- ${m}`).join('\n')}`
+    try {
+      const retry = await callAgent('unified-designer', unifiedDesignerSystemPromptWithSeed, reminderPrompt, null, { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 })
+      const retryProduced = new Set(retry.files.map(f => f.path))
+      const stillMissing = REQUIRED_FILES.filter(p => !retryProduced.has(p))
+      if (stillMissing.length === 0) {
+        designerResult = retry
+        console.log(`  ✓ retry produced all required files`)
+      } else {
+        console.warn(`  ⚠ retry still missing ${stillMissing.join(', ')} — proceeding with original output`)
+      }
+    } catch (err) {
+      console.warn(`  ⚠ retry failed: ${err.message} — proceeding with original output`)
+    }
   }
 
   // Write all files
@@ -947,16 +1129,28 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         console.log(`  [screenshot-critic] REVISE — responsible: ${responsibleAgent}`)
         console.log(`  feedback: ${feedback.slice(0, 200)}...`)
 
+        // Per-agent options keep model/timeout choices next to the prompt so
+        // this retry path can't fall through to Sonnet defaults on the
+        // unified-designer (Sonnet stalls at 0KB on unified-designer-class
+        // prompts — see scripts/design-agents.js:1011 commentary).
         const agentConfig = {
-          'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) },
-          'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: () => buildAgentPrompt('unified-designer', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
+          'token-designer': {
+            prompt: tokenSystemPrompt,
+            user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) + '\n\n' + colorMandateSection,
+            options: { model: 'haiku' },
+          },
+          'unified-designer': {
+            prompt: unifiedDesignerSystemPrompt,
+            user: buildUnifiedDesignerPrompt,
+            options: { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 },
+          },
         }
 
         const config = agentConfig[responsibleAgent]
         if (config) {
           console.log(`  retrying ${responsibleAgent} with critic feedback...`)
           try {
-            const retryResult = await callAgent(responsibleAgent, config.prompt, config.user(), feedback)
+            const retryResult = await callAgent(responsibleAgent, config.prompt, config.user(), feedback, config.options)
             for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
 
             // Re-run codegen before validateBuild if token files changed,
@@ -1005,7 +1199,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const rationale = tokenResult.rationale || 'Agent swarm redesign'
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign'
 
-    await archive(signals.date, signals, rationale, designBrief, changedPaths)
+    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null)
     archiveRan = true
 
     // Save archetype for future anti-repetition enforcement
@@ -1039,10 +1233,22 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
   await restore(filesToRestore)
 
-  // Build agent lookup for retry
+  // Build agent lookup for retry. Per-agent `options` carry the model +
+  // timeout overrides so new agents added later don't need re-wiring at the
+  // callAgent site. Keep these options in sync with the primary invocation
+  // of each agent (see scripts/design-agents.js:860 for token-designer and
+  // :1011, :1035 for unified-designer).
   const agentConfig = {
-    'token-designer': { prompt: tokenSystemPrompt, user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) },
-    'unified-designer': { prompt: unifiedDesignerSystemPrompt, user: () => buildAgentPrompt('unified-designer', { brief: enrichedBrief, referenceFiles: [], tokenContext }) },
+    'token-designer': {
+      prompt: tokenSystemPrompt,
+      user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) + '\n\n' + colorMandateSection,
+      options: { model: 'haiku' },
+    },
+    'unified-designer': {
+      prompt: unifiedDesignerSystemPrompt,
+      user: buildUnifiedDesignerPrompt,
+      options: { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 },
+    },
   }
 
   const retryAgents = failingAgent === 'both'
@@ -1058,7 +1264,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     console.log(`\n  retrying ${agent} with build error context...`)
     try {
-      const retryResult = await callAgent(agent, config.prompt, config.user(), buildResult.error)
+      const retryResult = await callAgent(agent, config.prompt, config.user(), buildResult.error, config.options)
       for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
       // Update the result so the archive records the retry output, not stale originals
       if (agent === 'token-designer') {
@@ -1104,7 +1310,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const rationale = tokenResult.rationale || 'Agent swarm redesign (retry)'
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign (retry)'
 
-    await archive(signals.date, signals, rationale, designBrief, changedPaths)
+    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null)
     archiveRan = true
 
     // Save archetype for future anti-repetition enforcement

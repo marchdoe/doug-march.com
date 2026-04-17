@@ -4,20 +4,23 @@ import {
   buildAgentPrompt,
   identifyFailingAgent,
   extractArchetypeFromText,
-  fixRootTsx,
   parseDelimiterResponse,
+  resolveChassisFromDirectorOutput,
 } from '../../scripts/design-agents.js'
 
 describe('FILE_OWNERSHIP', () => {
   it('maps every file to exactly one agent', () => {
     const allFiles = Object.values(FILE_OWNERSHIP)
     expect(new Set(allFiles).size).toBeLessThanOrEqual(5)
-    expect(Object.keys(FILE_OWNERSHIP)).toHaveLength(16)
+    expect(Object.keys(FILE_OWNERSHIP)).toHaveLength(15)
   })
 
-  it('maps preset.ts and __root.tsx to token-designer', () => {
+  it('maps preset.ts to token-designer', () => {
     expect(FILE_OWNERSHIP['elements/preset.ts']).toBe('token-designer')
-    expect(FILE_OWNERSHIP['app/routes/__root.tsx']).toBe('token-designer')
+  })
+
+  it('does not map __root.tsx to any agent (orchestrator owns it via the chassis template)', () => {
+    expect(FILE_OWNERSHIP['app/routes/__root.tsx']).toBeUndefined()
   })
 
   it('maps layout, route, sidebar, and component files to unified-designer', () => {
@@ -171,64 +174,33 @@ You MUST choose from: Broadsheet, Poster, Scroll, Split, Stack, Index.
   })
 })
 
-describe('fixRootTsx', () => {
-  it('adds missing Scripts and ScrollRestoration to existing import', () => {
-    const input = `import { createRootRoute, Outlet } from '@tanstack/react-router'\n\nexport const Route = createRootRoute({})`
-    const result = fixRootTsx(input)
-    expect(result).toContain("'@tanstack/react-router'")
-    expect(result).toContain('ScrollRestoration')
-    expect(result).toContain('Scripts')
+describe('resolveChassisFromDirectorOutput', () => {
+  const catalog = [
+    { id: 'playfair-outfit', name: 'Playfair + Outfit' },
+    { id: 'space-grotesk-work-sans', name: 'Space Grotesk + Work Sans' },
+  ]
+
+  it('extracts a chassis id from the explicit ===CHASSIS_ID=== block', () => {
+    const text = '===CHASSIS_ID===\nplayfair-outfit\n\n===VISUAL_SPEC===\nstuff'
+    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('playfair-outfit')
   })
 
-  it('returns content unchanged when imports are already correct', () => {
-    const input = `import { createRootRoute, ScrollRestoration, Scripts } from '@tanstack/react-router'`
-    expect(fixRootTsx(input)).toBe(input)
+  it('tolerates surrounding whitespace and backticks', () => {
+    const text = '===CHASSIS_ID===\n  `space-grotesk-work-sans`  \n'
+    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('space-grotesk-work-sans')
   })
 
-  it('returns null when no @tanstack/react-router import exists', () => {
-    const input = `import React from 'react'\nconsole.log('hi')`
-    expect(fixRootTsx(input)).toBeNull()
+  it('falls back to scanning the spec for a backtick-quoted catalog id', () => {
+    const text = 'no block here. uses `playfair-outfit` somewhere.'
+    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('playfair-outfit')
   })
 
-  it('does not touch unrelated imports', () => {
-    const input = [
-      `import React from 'react'`,
-      `import { Outlet } from '@tanstack/react-router'`,
-      `import { Layout } from '../components/Layout'`,
-    ].join('\n')
-    const result = fixRootTsx(input)
-    expect(result).toContain(`import React from 'react'`)
-    expect(result).toContain(`import { Layout } from '../components/Layout'`)
-    expect(result).toMatch(/import\s*\{[^}]*Scripts[^}]*\}\s*from\s*['"]@tanstack\/react-router['"]/)
+  it('returns null when no catalog id is present', () => {
+    expect(resolveChassisFromDirectorOutput('===CHASSIS_ID===\nunknown-id\n', catalog)).toBeNull()
   })
 
-  it('preserves existing imports and adds only missing ones', () => {
-    const input = `import { createRootRoute, Outlet, Scripts } from '@tanstack/react-router'`
-    const result = fixRootTsx(input)
-    // Should add ScrollRestoration but not duplicate Scripts
-    const scriptsCount = (result.match(/Scripts/g) || []).length
-    expect(scriptsCount).toBe(1)
-    expect(result).toContain('ScrollRestoration')
-  })
-
-  it('does not corrupt files with <body> or </body> strings', () => {
-    // The old regex would try to insert JSX near </body> — verify we don't
-    const input = `import { createRootRoute, Outlet } from '@tanstack/react-router'\nconst html = "<body>test</body>"`
-    const result = fixRootTsx(input)
-    // The string literal should be preserved exactly
-    expect(result).toContain('const html = "<body>test</body>"')
-  })
-
-  it('handles single-quoted import path', () => {
-    const input = `import { Outlet } from '@tanstack/react-router'`
-    const result = fixRootTsx(input)
-    expect(result).toContain('Scripts')
-  })
-
-  it('handles double-quoted import path', () => {
-    const input = `import { Outlet } from "@tanstack/react-router"`
-    const result = fixRootTsx(input)
-    expect(result).toContain('Scripts')
+  it('returns null on empty input', () => {
+    expect(resolveChassisFromDirectorOutput('', catalog)).toBeNull()
   })
 })
 

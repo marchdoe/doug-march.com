@@ -1,7 +1,8 @@
 import '../styles/panda.css'
-import { createRootRoute, Outlet, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
+import { createRootRoute, Link, Outlet, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { styled } from '../../styled-system/jsx'
+import type { ReactNode } from 'react'
 
 const THEME_INIT_SCRIPT = `(function(){
   var s=localStorage.getItem('theme');
@@ -11,27 +12,26 @@ const THEME_INIT_SCRIPT = `(function(){
 
 export const Route = createRootRoute({
   head: () => ({
+    meta: [
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+    ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600&family=JetBrains+Mono:wght@400&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Outfit:wght@300;400;500&display=swap',
       },
     ],
     scripts: [{ children: THEME_INIT_SCRIPT }],
   }),
-
-  notFoundComponent: () => {
-    return (
-      <RootDocument>
-        <div>
-          <p>Page not found</p>
-        </div>
-      </RootDocument>
-    )
-  },
-
+  notFoundComponent: () => (
+    <div>
+      <p>Page not found.</p>
+      <Link to="/">Return home</Link>
+    </div>
+  ),
   component: RootComponent,
 })
 
@@ -45,7 +45,7 @@ function RootComponent() {
   )
 }
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>

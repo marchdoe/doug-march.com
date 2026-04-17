@@ -8,14 +8,21 @@ import {
   FOOTER_FILES,
   STRUCTURE_FILES,
   COMPONENT_FILES,
+  ORCHESTRATOR_FILES,
   readFileGroup,
 } from '../../scripts/utils/site-context.js'
 
 describe('file group constants', () => {
-  it('TOKEN_FILES contains preset.ts and __root.tsx', () => {
+  it('TOKEN_FILES contains only preset.ts (chassis owns __root.tsx + chassis-preset.ts)', () => {
     expect(TOKEN_FILES).toEqual([
       'elements/preset.ts',
+    ])
+  })
+
+  it('ORCHESTRATOR_FILES contains __root.tsx and chassis-preset.ts (generated, never agent-authored)', () => {
+    expect(ORCHESTRATOR_FILES).toEqual([
       'app/routes/__root.tsx',
+      'elements/chassis-preset.ts',
     ])
   })
 
@@ -47,12 +54,12 @@ describe('file group constants', () => {
   })
 
   it('all groups combined equal MUTABLE_FILES', () => {
-    const combined = [...TOKEN_FILES, ...STRUCTURE_FILES, ...COMPONENT_FILES]
+    const combined = [...TOKEN_FILES, ...STRUCTURE_FILES, ...COMPONENT_FILES, ...ORCHESTRATOR_FILES]
     expect(combined.sort()).toEqual([...MUTABLE_FILES].sort())
   })
 
   it('no file appears in more than one group', () => {
-    const all = [...TOKEN_FILES, ...STRUCTURE_FILES, ...COMPONENT_FILES]
+    const all = [...TOKEN_FILES, ...STRUCTURE_FILES, ...COMPONENT_FILES, ...ORCHESTRATOR_FILES]
     const unique = new Set(all)
     expect(unique.size).toBe(all.length)
   })

@@ -43,10 +43,16 @@ For each redesign, you must specify ALL of the following. Do not skip any sectio
 - **Background** — exact hex for page bg, card bg, sidebar bg
 - **Text colors** — exact hex for primary text, secondary text, muted text
 
-### 2. Typography Specification
-- **Heading font** — exact Google Font name, weight(s) to load
-- **Body font** — exact Google Font name, weight(s) to load
-- **Scale** — exact pixel sizes for: 2xs, xs, sm, base, md, lg, xl, 2xl
+### 2. Typography Chassis (PICK ONE FROM CATALOG)
+
+Typography — fonts AND type scale — is selected from a curated catalog of "chassis" presets. You do NOT pick fonts or sizes freely. You pick ONE chassis ID from the table appended below this prompt under "## Typography Chassis Catalog" and emit it in the `===CHASSIS_ID===` block in your response.
+
+Match the chassis to the brief and your chosen archetype:
+- Use the **Best for archetypes** column to filter — a chassis tagged for the archetype you picked is a strong default.
+- Use the **Moods** column to break ties — match the day's brief mood (literary vs. technical vs. expressive).
+- If multiple chassis fit, pick the one you used least recently (the "Recent Archive Briefs" section shows what's been used).
+
+Still specify in your spec body:
 - **Line heights** — exact values for tight, snug, normal, loose
 - **Letter spacings** — exact values for tight, normal, wide, wider, widest
 
@@ -91,7 +97,10 @@ For each redesign, you must specify ALL of the following. Do not skip any sectio
 
 ## Response Format
 
-Respond using this delimiter format:
+Respond using this delimiter format. Both blocks are required.
+
+===CHASSIS_ID===
+The single chassis id from the catalog (e.g., `playfair-outfit`). Just the id, no quotes, no extra prose.
 
 ===VISUAL_SPEC===
 Your complete visual specification here, using the 5 sections above.
