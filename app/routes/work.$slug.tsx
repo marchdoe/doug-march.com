@@ -1,429 +1,336 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { projects } from '../content/projects'
-import { Footer } from '../components/Footer'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
 
+const sectionMarker = {
+  fontFamily: '"IBM Plex Mono", monospace',
+  fontSize: '9px',
+  color: '#78947A',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase' as const,
+  marginBottom: '24px',
+}
+
 function WorkPage() {
   const { slug } = Route.useParams()
-  const project = projects.find(p => p.slug === slug)
+  const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div>
-        <div style={{ background: '#1A1610' }}>
-          <div
-            style={{
-              maxWidth: '1100px',
-              margin: '0 auto',
-              padding: '80px 48px 96px',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '9px',
-                fontWeight: 600,
-                color: '#695F50',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                marginBottom: '32px',
-              }}
-            >
-              404
-            </div>
-            <h1
-              style={{
-                fontFamily: 'Playfair Display, serif',
-                fontSize: '50px',
-                fontWeight: 700,
-                lineHeight: '1.05',
-                color: '#EEE8D8',
-                margin: '0 0 24px 0',
-              }}
-            >
-              Project not found
-            </h1>
-            <a
-              href="/"
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '14px',
-                color: '#AABFA4',
-                letterSpacing: '0.04em',
-              }}
-            >
-              ← Back to work
-            </a>
-          </div>
+      <div
+        style={{
+          padding: '80px 56px',
+          boxSizing: 'border-box',
+        }}
+      >
+        <div
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontSize: '9px',
+            color: '#A9BBAA',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            marginBottom: '32px',
+          }}
+        >
+          404
         </div>
-        <Footer />
+        <h1
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontWeight: 600,
+            fontSize: '37px',
+            lineHeight: '1.15',
+            letterSpacing: '-0.02em',
+            color: '#192B1A',
+            marginBottom: '24px',
+          }}
+        >
+          Project not found
+        </h1>
+        <a
+          href="/"
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontSize: '12px',
+            color: '#519A58',
+            letterSpacing: '0.08em',
+          }}
+        >
+          ← Back home
+        </a>
       </div>
     )
   }
 
-  const externalLink = project.externalUrl || project.liveUrl
-
   return (
     <div>
-      {/* Project header band — dark, continues from Sidebar */}
-      <div style={{ background: '#1A1610' }}>
-        <div
-          style={{
-            maxWidth: '1100px',
-            margin: '0 auto',
-            padding: '64px 48px 80px',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '16px',
-              marginBottom: '32px',
-            }}
-          >
-            <a
-              href="/"
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '12px',
-                color: '#695F50',
-                textDecoration: 'none',
-                letterSpacing: '0.04em',
-              }}
-            >
-              ← Work
-            </a>
-            <span style={{ color: '#695F50', fontSize: '12px' }}>·</span>
-            <span
-              style={{
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '12px',
-                color: '#5E8C55',
-                letterSpacing: '0.08em',
-              }}
-            >
-              {project.type}
-            </span>
-            <span style={{ color: '#695F50', fontSize: '12px' }}>·</span>
-            <span
-              style={{
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '12px',
-                color: '#695F50',
-                letterSpacing: '0.04em',
-              }}
-            >
-              {project.year}
-            </span>
-          </div>
-
-          <h1
-            style={{
-              fontFamily: 'Playfair Display, serif',
-              fontSize: 'clamp(37px, 5.5vw, 72px)',
-              fontWeight: 700,
-              lineHeight: '1.05',
-              letterSpacing: '-0.02em',
-              color: '#EEE8D8',
-              margin: '0 0 32px 0',
-            }}
-          >
-            {project.title}
-          </h1>
-
-          {project.role && (
-            <div
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '14px',
-                fontWeight: 300,
-                color: '#B5AC97',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                marginBottom: '32px',
-              }}
-            >
-              {project.role}
-            </div>
-          )}
-
-          {externalLink && (
-            <a
-              href={externalLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-block',
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '14px',
-                fontWeight: 600,
-                color: '#EEE8D8',
-                background: '#5E8C55',
-                padding: '12px 28px',
-                borderRadius: '3px',
-                textDecoration: 'none',
-                letterSpacing: '0.04em',
-              }}
-            >
-              Visit Site →
-            </a>
-          )}
-        </div>
-      </div>
-
-      {/* Problem statement */}
-      {project.problem && (
-        <div style={{ background: '#F9F6EE' }}>
-          <div
-            style={{
-              maxWidth: '720px',
-              margin: '0 auto',
-              padding: '80px 48px',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '9px',
-                fontWeight: 600,
-                color: '#695F50',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                marginBottom: '32px',
-              }}
-            >
-              The Problem
-            </div>
-            <p
-              style={{
-                fontFamily: 'Playfair Display, serif',
-                fontSize: '21px',
-                fontWeight: 400,
-                lineHeight: '1.5',
-                color: '#2D2820',
-                margin: '0',
-              }}
-            >
-              {project.problem}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Approach */}
-      {project.approach && (
-        <div style={{ background: '#EEE8D8' }}>
-          <div
-            style={{
-              maxWidth: '720px',
-              margin: '0 auto',
-              padding: '80px 48px',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '9px',
-                fontWeight: 600,
-                color: '#695F50',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                marginBottom: '32px',
-              }}
-            >
-              Approach
-            </div>
-            <p
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '17px',
-                fontWeight: 300,
-                lineHeight: '1.62',
-                color: '#4A4238',
-                margin: '0',
-              }}
-            >
-              {project.approach}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Outcome */}
-      {project.outcome && (
-        <div style={{ background: '#F2EDE2' }}>
-          <div
-            style={{
-              maxWidth: '720px',
-              margin: '0 auto',
-              padding: '80px 48px',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '9px',
-                fontWeight: 600,
-                color: '#695F50',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                marginBottom: '32px',
-              }}
-            >
-              Outcome
-            </div>
-            <p
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '17px',
-                fontWeight: 300,
-                lineHeight: '1.62',
-                color: '#4A4238',
-                margin: '0',
-              }}
-            >
-              {project.outcome}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Stack */}
-      {project.stack && project.stack.length > 0 && (
-        <div style={{ background: '#F9F6EE' }}>
-          <div
-            style={{
-              maxWidth: '1100px',
-              margin: '0 auto',
-              padding: '64px 48px',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '9px',
-                fontWeight: 600,
-                color: '#695F50',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                marginBottom: '32px',
-              }}
-            >
-              Stack
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {project.stack.map(tech => (
-                <span
-                  key={tech}
-                  style={{
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '13px',
-                    color: '#4A4238',
-                    background: '#D9D1BC',
-                    padding: '6px 14px',
-                    borderRadius: '2px',
-                    letterSpacing: '0.04em',
-                  }}
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Description fallback for lightweight / experiment projects */}
-      {project.description && !project.problem && (
-        <div style={{ background: '#F9F6EE' }}>
-          <div
-            style={{
-              maxWidth: '720px',
-              margin: '0 auto',
-              padding: '80px 48px',
-            }}
-          >
-            <p
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '18px',
-                fontWeight: 300,
-                lineHeight: '1.62',
-                color: '#4A4238',
-                margin: '0',
-              }}
-            >
-              {project.description}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Navigation band — next/back */}
-      <div style={{ background: '#3A5E34' }}>
-        <div
-          style={{
-            maxWidth: '1100px',
-            margin: '0 auto',
-            padding: '48px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
+      {/* Header */}
+      <div
+        style={{
+          position: 'relative',
+          padding: '80px 56px 64px',
+          borderBottom: '1px solid #CDD9CE',
+          boxSizing: 'border-box',
+          minHeight: '50vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <div style={{ marginBottom: '12px' }}>
           <a
             href="/"
             style={{
-              fontFamily: 'Source Sans 3, sans-serif',
-              fontSize: '14px',
-              fontWeight: 400,
-              color: '#AABFA4',
+              fontFamily: '"IBM Plex Mono", monospace',
+              fontSize: '9px',
+              color: '#A9BBAA',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
               textDecoration: 'none',
-              letterSpacing: '0.04em',
             }}
           >
-            ← All Work
+            ← Work
           </a>
-          {externalLink && (
+        </div>
+
+        <div
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontSize: '9px',
+            color: '#78947A',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            marginBottom: '16px',
+          }}
+        >
+          {project.type} &nbsp;·&nbsp; {project.year}
+        </div>
+
+        <h1
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontWeight: 600,
+            fontSize: '50px',
+            lineHeight: '1.05',
+            letterSpacing: '-0.02em',
+            color: '#192B1A',
+            marginBottom: '24px',
+          }}
+        >
+          {project.title}
+        </h1>
+
+        {project.role && (
+          <div
+            style={{
+              fontFamily: '"IBM Plex Mono", monospace',
+              fontSize: '12px',
+              color: '#78947A',
+              letterSpacing: '0.08em',
+              marginBottom: '24px',
+            }}
+          >
+            {project.role}
+          </div>
+        )}
+
+        {/* Live links */}
+        <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+          {project.liveUrl && (
             <a
-              href={externalLink}
+              href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '14px',
-                fontWeight: 600,
-                color: '#EEE8D8',
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: '12px',
+                color: '#519A58',
+                letterSpacing: '0.08em',
                 textDecoration: 'none',
-                letterSpacing: '0.04em',
+                borderLeft: '3px solid #519A58',
+                paddingLeft: '12px',
               }}
             >
-              Open Live Site →
+              Live site →
             </a>
           )}
-          {project.githubUrl && !externalLink && (
+          {project.externalUrl && !project.liveUrl && (
+            <a
+              href={project.externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: '12px',
+                color: '#519A58',
+                letterSpacing: '0.08em',
+                textDecoration: 'none',
+                borderLeft: '3px solid #519A58',
+                paddingLeft: '12px',
+              }}
+            >
+              Visit →
+            </a>
+          )}
+          {project.githubUrl && (
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '14px',
-                fontWeight: 600,
-                color: '#EEE8D8',
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: '12px',
+                color: '#78947A',
+                letterSpacing: '0.08em',
                 textDecoration: 'none',
-                letterSpacing: '0.04em',
               }}
             >
-              View on GitHub →
+              GitHub →
             </a>
           )}
         </div>
       </div>
 
-      <Footer />
+      {/* Problem / Description */}
+      {(project.problem || project.description) && (
+        <div
+          style={{
+            position: 'relative',
+            padding: '64px 56px',
+            borderBottom: '1px solid #CDD9CE',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div style={sectionMarker}>Problem</div>
+          <p
+            style={{
+              fontFamily: '"Source Sans 3", sans-serif',
+              fontSize: '21px',
+              fontWeight: 300,
+              color: '#3D5C3F',
+              lineHeight: '1.55',
+              maxWidth: '520px',
+            }}
+          >
+            {project.problem || project.description}
+          </p>
+        </div>
+      )}
+
+      {/* Approach */}
+      {project.approach && (
+        <div
+          style={{
+            padding: '64px 56px',
+            borderBottom: '1px solid #CDD9CE',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div style={sectionMarker}>Approach</div>
+          <p
+            style={{
+              fontFamily: '"Source Sans 3", sans-serif',
+              fontSize: '16px',
+              color: '#192B1A',
+              lineHeight: '1.55',
+              maxWidth: '560px',
+            }}
+          >
+            {project.approach}
+          </p>
+        </div>
+      )}
+
+      {/* Outcome */}
+      {project.outcome && (
+        <div
+          style={{
+            padding: '64px 56px',
+            borderBottom: '1px solid #CDD9CE',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div style={sectionMarker}>Outcome</div>
+          <p
+            style={{
+              fontFamily: '"Source Sans 3", sans-serif',
+              fontSize: '16px',
+              color: '#192B1A',
+              lineHeight: '1.55',
+              maxWidth: '560px',
+            }}
+          >
+            {project.outcome}
+          </p>
+        </div>
+      )}
+
+      {/* Stack */}
+      {project.stack && project.stack.length > 0 && (
+        <div
+          style={{
+            padding: '48px 56px',
+            borderBottom: '1px solid #CDD9CE',
+            boxSizing: 'border-box',
+          }}
+        >
+          <div style={sectionMarker}>Stack</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {project.stack.map((tech) => (
+              <div
+                key={tech}
+                style={{
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  fontSize: '12px',
+                  color: '#3D5C3F',
+                  background: '#EAEEEB',
+                  padding: '6px 12px',
+                  letterSpacing: '0.05em',
+                  border: '1px solid #CDD9CE',
+                }}
+              >
+                {tech}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <div
+        style={{
+          padding: '28px 56px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <a
+          href="/"
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontSize: '12px',
+            color: '#78947A',
+            letterSpacing: '0.08em',
+            textDecoration: 'none',
+          }}
+        >
+          ← All Work
+        </a>
+        <a
+          href="/archive"
+          style={{
+            fontFamily: '"Source Sans 3", sans-serif',
+            fontSize: '12px',
+            color: '#78947A',
+            textDecoration: 'none',
+          }}
+        >
+          archive
+        </a>
+      </div>
     </div>
   )
 }

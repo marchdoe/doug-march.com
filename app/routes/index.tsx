@@ -1,443 +1,375 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
-import { Footer } from '../components/Footer'
+import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const repos = [
-  {
-    name: 'voicebox',
-    lang: 'TypeScript',
-    desc: 'Real-time voice interaction layer for AI-powered interfaces.',
+const projectRowLink = css({
+  display: 'block',
+  textDecoration: 'none',
+  transition: 'background 150ms ease',
+  _hover: {
+    background: '#EAEEEB',
+    textDecoration: 'none',
   },
-  {
-    name: 'markitdown',
-    lang: 'Python',
-    desc: 'Markdown document converter with front-matter parsing and export.',
-  },
-  {
-    name: 'elements',
-    lang: 'TypeScript',
-    desc: 'Design token system and component preset for personal projects.',
-  },
-]
+})
 
-function SectionLabel({ children }: { children: string }) {
-  return (
-    <div
-      style={{
-        fontFamily: 'Source Sans 3, sans-serif',
-        fontSize: '9px',
-        fontWeight: 600,
-        color: '#695F50',
-        letterSpacing: '0.14em',
-        textTransform: 'uppercase',
-        marginBottom: '40px',
-      }}
-    >
-      {children}
-    </div>
-  )
+const indexLabel = {
+  position: 'absolute' as const,
+  left: '28px',
+  fontFamily: '"IBM Plex Mono", monospace',
+  fontSize: '9px',
+  color: '#A9BBAA',
+  letterSpacing: '0.05em',
+}
+
+const sectionMarker = {
+  fontFamily: '"IBM Plex Mono", monospace',
+  fontSize: '9px',
+  color: '#78947A',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase' as const,
+  marginBottom: '32px',
 }
 
 function HomePage() {
   return (
     <div>
-      {/* Band 1: Identity — seamlessly continues from Sidebar's dark background */}
-      <div style={{ background: '#1A1610' }}>
-        <div
-          style={{
-            maxWidth: '1100px',
-            margin: '0 auto',
-            padding: '64px 48px 96px',
-          }}
-        >
-          <h1
-            style={{
-              fontFamily: 'Playfair Display, serif',
-              fontSize: 'clamp(56px, 8vw, 104px)',
-              fontWeight: 900,
-              lineHeight: '1.05',
-              letterSpacing: '-0.025em',
-              color: '#EEE8D8',
-              margin: '0 0 24px 0',
-            }}
-          >
-            Product
-            <br />
-            Designer &<br />
-            Developer
-          </h1>
-          <p
-            style={{
-              fontFamily: 'Source Sans 3, sans-serif',
-              fontSize: '16px',
-              fontWeight: 300,
-              color: '#B5AC97',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              margin: '0',
-              lineHeight: '1.62',
-            }}
-          >
-            Building thoughtful software
-          </p>
-        </div>
-      </div>
-
-      {/* Band 2: Featured Work */}
-      <div style={{ background: '#F9F6EE', minHeight: '52vh' }}>
-        <div
-          style={{
-            maxWidth: '1100px',
-            margin: '0 auto',
-            padding: '96px 48px',
-          }}
-        >
-          <SectionLabel>Featured Project</SectionLabel>
-
-          {featuredProject && (
-            <div>
-              <div style={{ marginBottom: '20px' }}>
-                <span
-                  style={{
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '12px',
-                    color: '#5E8C55',
-                    letterSpacing: '0.08em',
-                  }}
-                >
-                  {featuredProject.type} · {featuredProject.year}
-                </span>
-              </div>
-
-              <a
-                href={
-                  featuredProject.externalUrl ||
-                  featuredProject.liveUrl ||
-                  `/work/${featuredProject.slug}`
-                }
-                target={featuredProject.externalUrl ? '_blank' : undefined}
-                rel={featuredProject.externalUrl ? 'noopener noreferrer' : undefined}
-                style={{ textDecoration: 'none' }}
-              >
-                <h2
-                  style={{
-                    fontFamily: 'Playfair Display, serif',
-                    fontSize: 'clamp(37px, 5.5vw, 72px)',
-                    fontWeight: 700,
-                    lineHeight: '1.05',
-                    letterSpacing: '-0.015em',
-                    color: '#2D2820',
-                    margin: '0 0 32px 0',
-                  }}
-                >
-                  {featuredProject.title}
-                </h2>
-              </a>
-
-              {featuredProject.problem && (
-                <p
-                  style={{
-                    fontFamily: 'Source Sans 3, sans-serif',
-                    fontSize: '18px',
-                    fontWeight: 300,
-                    color: '#695F50',
-                    lineHeight: '1.62',
-                    maxWidth: '620px',
-                    margin: '0 0 48px 0',
-                  }}
-                >
-                  {featuredProject.problem}
-                </p>
-              )}
-
-              <a
-                href={
-                  featuredProject.externalUrl ||
-                  featuredProject.liveUrl ||
-                  `/work/${featuredProject.slug}`
-                }
-                target={featuredProject.externalUrl ? '_blank' : undefined}
-                rel={featuredProject.externalUrl ? 'noopener noreferrer' : undefined}
-                style={{
-                  display: 'inline-block',
-                  fontFamily: 'Source Sans 3, sans-serif',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  color: '#EEE8D8',
-                  background: '#5E8C55',
-                  padding: '12px 28px',
-                  borderRadius: '3px',
-                  textDecoration: 'none',
-                  letterSpacing: '0.04em',
-                }}
-              >
-                View Project →
-              </a>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Band 3: Quote — Specimen pause in sage green */}
+      {/* Section 01: Featured Project */}
       <div
         style={{
-          background: '#3A5E34',
-          minHeight: '44vh',
+          position: 'relative',
+          padding: '80px 56px',
+          borderBottom: '1px solid #CDD9CE',
+          minHeight: '80vh',
           display: 'flex',
-          alignItems: 'center',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          boxSizing: 'border-box',
         }}
       >
-        <div
-          style={{
-            maxWidth: '820px',
-            margin: '0 auto',
-            padding: '96px 48px',
-            textAlign: 'center',
-            width: '100%',
-            boxSizing: 'border-box',
-          }}
-        >
-          <blockquote style={{ margin: 0 }}>
-            <p
-              style={{
-                fontFamily: 'Playfair Display, serif',
-                fontStyle: 'italic',
-                fontWeight: 400,
-                fontSize: 'clamp(37px, 4.5vw, 50px)',
-                lineHeight: '1.05',
-                letterSpacing: '-0.015em',
-                color: '#EEE8D8',
-                margin: '0 0 28px 0',
-              }}
+        <span style={{ ...indexLabel, top: '80px' }}>01</span>
+
+        <div style={sectionMarker}>Featured</div>
+
+        {featuredProject && (
+          <>
+            <a
+              href={
+                featuredProject.liveUrl ||
+                featuredProject.externalUrl ||
+                `/work/${featuredProject.slug}`
+              }
+              target={
+                featuredProject.liveUrl || featuredProject.externalUrl
+                  ? '_blank'
+                  : undefined
+              }
+              rel={
+                featuredProject.liveUrl || featuredProject.externalUrl
+                  ? 'noopener noreferrer'
+                  : undefined
+              }
+              style={{ textDecoration: 'none' }}
             >
-              If I persist long enough I will win
-            </p>
-            <footer
-              style={{
-                fontFamily: 'Source Sans 3, sans-serif',
-                fontSize: '12px',
-                fontWeight: 300,
-                color: '#AABFA4',
-                letterSpacing: '0.08em',
-              }}
-            >
-              — Og Mandino
-            </footer>
-          </blockquote>
-        </div>
-      </div>
-
-      {/* Band 4: Recent Repositories */}
-      <div style={{ background: '#EEE8D8' }}>
-        <div
-          style={{
-            maxWidth: '1100px',
-            margin: '0 auto',
-            padding: '80px 48px',
-          }}
-        >
-          <SectionLabel>Recent Repositories</SectionLabel>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '40px',
-              borderTop: '1px solid #D9D1BC',
-              paddingTop: '40px',
-            }}
-          >
-            {repos.map(repo => (
-              <div key={repo.name}>
-                <div
-                  style={{
-                    fontFamily: 'Source Sans 3, sans-serif',
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    color: '#2D2820',
-                    marginBottom: '6px',
-                  }}
-                >
-                  {repo.name}
-                </div>
-                <div
-                  style={{
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '11px',
-                    color: '#5E8C55',
-                    letterSpacing: '0.08em',
-                    marginBottom: '10px',
-                  }}
-                >
-                  {repo.lang}
-                </div>
-                <div
-                  style={{
-                    fontFamily: 'Source Sans 3, sans-serif',
-                    fontSize: '14px',
-                    fontWeight: 300,
-                    color: '#695F50',
-                    lineHeight: '1.62',
-                  }}
-                >
-                  {repo.desc}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Band 5: Work Index */}
-      <div style={{ background: '#F2EDE2' }}>
-        <div
-          style={{
-            maxWidth: '1100px',
-            margin: '0 auto',
-            padding: '80px 48px',
-          }}
-        >
-          {/* Selected Work */}
-          <SectionLabel>Selected Work</SectionLabel>
-
-          <div style={{ borderTop: '1px solid #D9D1BC', marginBottom: '72px' }}>
-            {selectedWork.map(project => (
-              <a
-                key={project.slug}
-                href={`/work/${project.slug}`}
-                style={{ textDecoration: 'none', display: 'block' }}
+              <h1
+                style={{
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  fontWeight: 600,
+                  fontSize: '50px',
+                  lineHeight: '1.05',
+                  letterSpacing: '-0.02em',
+                  color: '#192B1A',
+                  marginBottom: '24px',
+                  transition: 'color 150ms ease',
+                }}
               >
-                <div
+                {featuredProject.title}
+              </h1>
+            </a>
+
+            {featuredProject.problem && (
+              <p
+                style={{
+                  fontFamily: '"Source Sans 3", sans-serif',
+                  fontSize: '21px',
+                  color: '#3D5C3F',
+                  lineHeight: '1.55',
+                  maxWidth: '520px',
+                  marginBottom: '32px',
+                  fontWeight: 300,
+                }}
+              >
+                {featuredProject.problem}
+              </p>
+            )}
+
+            <div
+              style={{
+                display: 'flex',
+                gap: '24px',
+                alignItems: 'center',
+                borderLeft: '3px solid #519A58',
+                paddingLeft: '16px',
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: '"IBM Plex Mono", monospace',
+                  fontSize: '12px',
+                  color: '#78947A',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                {featuredProject.year}
+              </span>
+              {featuredProject.role && (
+                <span
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'baseline',
-                    padding: '22px 0',
-                    borderBottom: '1px solid #D9D1BC',
-                    transition: 'background 150ms ease',
+                    fontFamily: '"IBM Plex Mono", monospace',
+                    fontSize: '12px',
+                    color: '#78947A',
+                    letterSpacing: '0.08em',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px' }}>
-                    <span
-                      style={{
-                        fontFamily: 'Playfair Display, serif',
-                        fontSize: '21px',
-                        fontWeight: 700,
-                        lineHeight: '1.2',
-                        color: '#2D2820',
-                      }}
-                    >
-                      {project.title}
-                    </span>
-                    {project.role && (
-                      <span
-                        style={{
-                          fontFamily: 'Source Sans 3, sans-serif',
-                          fontSize: '14px',
-                          fontWeight: 300,
-                          color: '#8C8373',
-                        }}
-                      >
-                        {project.role}
-                      </span>
-                    )}
-                  </div>
-                  <div style={{ display: 'flex', gap: '32px', alignItems: 'center', flexShrink: 0 }}>
-                    <span
-                      style={{
-                        fontFamily: 'Source Sans 3, sans-serif',
-                        fontSize: '12px',
-                        color: '#8C8373',
-                        letterSpacing: '0.04em',
-                      }}
-                    >
-                      {project.type}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: 'JetBrains Mono, monospace',
-                        fontSize: '12px',
-                        color: '#8C8373',
-                      }}
-                    >
-                      {project.year}
-                    </span>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
+                  {featuredProject.role}
+                </span>
+              )}
+              {(featuredProject.liveUrl || featuredProject.externalUrl) && (
+                <a
+                  href={
+                    featuredProject.liveUrl || featuredProject.externalUrl
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: '"IBM Plex Mono", monospace',
+                    fontSize: '12px',
+                    color: '#519A58',
+                    letterSpacing: '0.08em',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Visit →
+                </a>
+              )}
+            </div>
+          </>
+        )}
+      </div>
 
-          {/* Experiments */}
-          <SectionLabel>Experiments</SectionLabel>
+      {/* Section 02: Selected Work */}
+      <div
+        style={{
+          position: 'relative',
+          padding: '56px 56px',
+          borderBottom: '1px solid #CDD9CE',
+          boxSizing: 'border-box',
+        }}
+      >
+        <span style={{ ...indexLabel, top: '56px' }}>02</span>
 
-          <div style={{ borderTop: '1px solid #D9D1BC' }}>
-            {experiments.map(project => (
+        <div style={sectionMarker}>Selected Work</div>
+
+        <div>
+          {selectedWork.map((project) => (
+            <a
+              key={project.slug}
+              href={`/work/${project.slug}`}
+              className={projectRowLink}
+            >
               <div
-                key={project.slug}
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  alignItems: 'baseline',
-                  padding: '18px 0',
-                  borderBottom: '1px solid #D9D1BC',
+                  alignItems: 'flex-start',
+                  padding: '20px 8px',
+                  borderBottom: '1px solid #CDD9CE',
+                  gap: '24px',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px' }}>
-                  <span
+                <div style={{ flex: 1 }}>
+                  <div
                     style={{
-                      fontFamily: 'Source Sans 3, sans-serif',
-                      fontSize: '16px',
-                      fontWeight: 400,
-                      color: '#4A4238',
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontWeight: 600,
+                      fontSize: '21px',
+                      lineHeight: '1.15',
+                      color: '#192B1A',
+                      marginBottom: '8px',
                     }}
                   >
                     {project.title}
-                  </span>
-                  {project.description && (
-                    <span
+                  </div>
+                  {project.problem && (
+                    <div
                       style={{
-                        fontFamily: 'Source Sans 3, sans-serif',
+                        fontFamily: '"Source Sans 3", sans-serif',
                         fontSize: '14px',
-                        fontWeight: 300,
-                        color: '#8C8373',
+                        color: '#78947A',
+                        lineHeight: '1.55',
+                        maxWidth: '460px',
                       }}
                     >
-                      {project.description}
-                    </span>
+                      {project.problem}
+                    </div>
                   )}
                 </div>
-                <div style={{ display: 'flex', gap: '32px', alignItems: 'center', flexShrink: 0 }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                    gap: '4px',
+                    flexShrink: 0,
+                    paddingTop: '4px',
+                  }}
+                >
                   <span
                     style={{
-                      fontFamily: 'Source Sans 3, sans-serif',
+                      fontFamily: '"IBM Plex Mono", monospace',
                       fontSize: '12px',
-                      color: '#8C8373',
-                      letterSpacing: '0.04em',
-                    }}
-                  >
-                    {project.type}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: 'JetBrains Mono, monospace',
-                      fontSize: '12px',
-                      color: '#8C8373',
+                      color: '#78947A',
+                      letterSpacing: '0.05em',
                     }}
                   >
                     {project.year}
                   </span>
+                  <span
+                    style={{
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontSize: '9px',
+                      color: '#A9BBAA',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {project.type}
+                  </span>
                 </div>
               </div>
-            ))}
-          </div>
+            </a>
+          ))}
         </div>
       </div>
 
-      {/* Band 6: Footer */}
-      <Footer />
+      {/* Section 03: Experiments */}
+      <div
+        style={{
+          position: 'relative',
+          padding: '64px 56px',
+          borderBottom: '1px solid #CDD9CE',
+          boxSizing: 'border-box',
+        }}
+      >
+        <span style={{ ...indexLabel, top: '64px' }}>03</span>
+
+        <div style={sectionMarker}>Experiments</div>
+
+        <div>
+          {experiments.map((exp) => (
+            <div
+              key={exp.slug}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                padding: '14px 0',
+                borderBottom: '1px solid #E5EDE6',
+                gap: '16px',
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <div
+                  style={{
+                    fontFamily: '"IBM Plex Mono", monospace',
+                    fontSize: '16px',
+                    color: '#3D5C3F',
+                    marginBottom: '4px',
+                    lineHeight: '1.15',
+                  }}
+                >
+                  {exp.title}
+                </div>
+                {exp.description && (
+                  <div
+                    style={{
+                      fontFamily: '"Source Sans 3", sans-serif',
+                      fontSize: '14px',
+                      color: '#78947A',
+                      lineHeight: '1.55',
+                    }}
+                  >
+                    {exp.description}
+                  </div>
+                )}
+              </div>
+              <div
+                style={{
+                  flexShrink: 0,
+                  textAlign: 'right',
+                  paddingTop: '2px',
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: '"IBM Plex Mono", monospace',
+                    fontSize: '12px',
+                    color: '#A9BBAA',
+                    letterSpacing: '0.05em',
+                  }}
+                >
+                  {exp.year}
+                </span>
+                <div
+                  style={{
+                    fontFamily: '"IBM Plex Mono", monospace',
+                    fontSize: '9px',
+                    color: '#CDD9CE',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    marginTop: '3px',
+                  }}
+                >
+                  {exp.type}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div
+        style={{
+          padding: '28px 56px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <span
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontSize: '9px',
+            color: '#A9BBAA',
+            letterSpacing: '0.12em',
+          }}
+        >
+          doug-march.com &nbsp;·&nbsp; 2026
+        </span>
+        <a
+          href="/archive"
+          style={{
+            fontFamily: '"Source Sans 3", sans-serif',
+            fontSize: '12px',
+            color: '#78947A',
+            textDecoration: 'none',
+          }}
+        >
+          archive
+        </a>
+      </div>
     </div>
   )
 }
