@@ -1,9 +1,17 @@
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, vi } from 'vitest'
 import { readFile, rm } from 'fs/promises'
 import path from 'path'
 import { existsSync } from 'fs'
-import { archive } from '../../scripts/utils/archiver.js'
-import { ROOT } from '../../scripts/utils/file-manager.js'
+
+// Stub captureSnapshot — it spawns `vite preview` which takes longer
+// than the per-test timeout on CI. This test is about archive() side
+// effects (brief.md, build.json, color-scheme.json), not snapshotting.
+vi.mock('../../scripts/utils/snapshot.js', () => ({
+  captureSnapshot: vi.fn().mockResolvedValue(undefined),
+}))
+
+const { archive } = await import('../../scripts/utils/archiver.js')
+const { ROOT } = await import('../../scripts/utils/file-manager.js')
 
 describe('archive() — color scheme persistence', () => {
   let createdDir = null
