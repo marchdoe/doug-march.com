@@ -1,435 +1,295 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { timeline, capabilities, education } from '../content/timeline'
+import { Box, Flex, Grid } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
 import { identity, personal } from '../content/about'
+import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const sectionMarker = {
-  fontFamily: '"IBM Plex Mono", monospace',
-  fontSize: '9px',
-  color: '#78947A',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase' as const,
-  marginBottom: '32px',
-}
+const frameBase = css({
+  background: '#EDEFD9',
+  border: '1px solid',
+  borderColor: '{colors.neutral.200}',
+  borderRadius: '16px',
+  boxShadow: '0 2px 14px rgba(38, 43, 29, 0.06)',
+  transition: 'background-color 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out',
+  _hover: {
+    background: '#E4E6CC',
+    borderColor: '{colors.neutral.300}',
+    boxShadow: '0 4px 24px rgba(38, 43, 29, 0.10)',
+  },
+  '@media (prefers-reduced-motion: reduce)': {
+    transition: 'none',
+  },
+})
 
-const indexLabel = {
-  position: 'absolute' as const,
-  left: '28px',
-  fontFamily: '"IBM Plex Mono", monospace',
-  fontSize: '9px',
-  color: '#A9BBAA',
-  letterSpacing: '0.05em',
-}
+const frameMd = css({
+  background: '#EDEFD9',
+  border: '1px solid',
+  borderColor: '{colors.neutral.200}',
+  borderRadius: '12px',
+  boxShadow: '0 2px 14px rgba(38, 43, 29, 0.06)',
+  transition: 'background-color 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out',
+  _hover: {
+    background: '#E4E6CC',
+    borderColor: '{colors.neutral.300}',
+    boxShadow: '0 4px 24px rgba(38, 43, 29, 0.10)',
+  },
+  '@media (prefers-reduced-motion: reduce)': {
+    transition: 'none',
+  },
+})
+
+const galleryGrid = css({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(12, 1fr)',
+  gap: '24px',
+  padding: '48px',
+  maxWidth: '1320px',
+  margin: '0 auto',
+  alignItems: 'start',
+  '@media (max-width: 1024px)': {
+    gridTemplateColumns: 'repeat(6, 1fr)',
+    padding: '24px',
+    gap: '16px',
+  },
+  '@media (max-width: 640px)': {
+    gridTemplateColumns: '1fr',
+    padding: '16px',
+    gap: '16px',
+  },
+})
+
+const sectionLabel = css({
+  fontSize: '12px',
+  fontFamily: 'Outfit, sans-serif',
+  fontWeight: '500',
+  letterSpacing: '0.13em',
+  textTransform: 'uppercase',
+  color: '{colors.neutral.400}',
+  marginBottom: '24px',
+})
 
 function AboutPage() {
   return (
-    <div>
-      {/* Section 01: Identity */}
+    <div className={galleryGrid}>
+      {/* Identity Frame */}
       <div
-        style={{
-          position: 'relative',
-          padding: '80px 56px',
-          borderBottom: '1px solid #CDD9CE',
-          boxSizing: 'border-box',
-        }}
+        className={css({
+          gridColumn: '1 / 8',
+          '@media (max-width: 1024px)': { gridColumn: '1 / -1' },
+        })}
       >
-        <span style={{ ...indexLabel, top: '80px' }}>01</span>
-
-        <div style={sectionMarker}>About</div>
-
-        <h1
-          style={{
-            fontFamily: '"IBM Plex Mono", monospace',
-            fontWeight: 600,
-            fontSize: '37px',
-            lineHeight: '1.15',
-            letterSpacing: '-0.02em',
-            color: '#192B1A',
-            marginBottom: '24px',
-          }}
-        >
-          {identity.name}
-        </h1>
-
-        <div
-          style={{
-            fontFamily: '"IBM Plex Mono", monospace',
-            fontSize: '12px',
-            color: '#78947A',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            marginBottom: '32px',
-          }}
-        >
-          {identity.role}
-        </div>
-
-        <p
-          style={{
-            fontFamily: '"Source Sans 3", sans-serif',
-            fontSize: '21px',
-            fontWeight: 300,
-            color: '#3D5C3F',
-            lineHeight: '1.55',
-            maxWidth: '520px',
-          }}
-        >
-          {identity.statement}
-        </p>
+        <Box className={frameBase} padding="48px">
+          <Box
+            fontSize="37px"
+            fontFamily="Fraunces, serif"
+            fontWeight="400"
+            lineHeight="1.15"
+            letterSpacing="0.04em"
+            color="{colors.neutral.700}"
+            marginBottom="16px"
+            style={{ fontVariationSettings: "'opsz' 72" }}
+          >
+            {identity.name}
+          </Box>
+          <Box
+            fontSize="21px"
+            fontFamily="Outfit, sans-serif"
+            color="{colors.neutral.500}"
+            marginBottom="16px"
+            lineHeight="1.15"
+          >
+            {identity.role}
+          </Box>
+          <Box
+            width="48px"
+            height="1px"
+            background="{colors.accent.DEFAULT}"
+            marginBottom="24px"
+          />
+          <Box
+            fontSize="16px"
+            fontFamily="Outfit, sans-serif"
+            lineHeight="1.58"
+            color="{colors.neutral.500}"
+            maxWidth="60ch"
+          >
+            {identity.statement}
+          </Box>
+        </Box>
       </div>
 
-      {/* Section 02: Timeline */}
+      {/* Personal Frame */}
       <div
-        style={{
-          position: 'relative',
-          padding: '56px 56px',
-          borderBottom: '1px solid #CDD9CE',
-          boxSizing: 'border-box',
-        }}
+        className={css({
+          gridColumn: '8 / 13',
+          '@media (max-width: 1024px)': { gridColumn: '1 / -1' },
+        })}
       >
-        <span style={{ ...indexLabel, top: '56px' }}>02</span>
+        <Box className={frameMd} padding="32px">
+          <Box className={sectionLabel}>Personal</Box>
+          <Box marginBottom="16px">
+            <Box fontSize="14px" fontFamily="Outfit, sans-serif" color="{colors.neutral.400}" letterSpacing="0.08em" marginBottom="4px">
+              Sport
+            </Box>
+            <Box fontSize="16px" color="{colors.neutral.700}">{personal.sport}</Box>
+          </Box>
+          <Box marginBottom="16px">
+            <Box fontSize="14px" fontFamily="Outfit, sans-serif" color="{colors.neutral.400}" letterSpacing="0.08em" marginBottom="4px">
+              Holes in One
+            </Box>
+            <Box fontSize="28px" fontFamily="Fraunces, serif" color="{colors.neutral.700}" style={{ fontVariationSettings: "'opsz' 36" }}>
+              {personal.holesInOne}
+            </Box>
+          </Box>
+          <Box marginBottom="16px">
+            <Box fontSize="14px" fontFamily="Outfit, sans-serif" color="{colors.neutral.400}" letterSpacing="0.08em" marginBottom="4px">
+              Teams
+            </Box>
+            <Box fontSize="16px" color="{colors.neutral.700}" lineHeight="1.58">
+              {personal.teams.join(', ')}
+            </Box>
+          </Box>
+          <Box>
+            <Box fontSize="14px" fontFamily="Outfit, sans-serif" color="{colors.neutral.400}" letterSpacing="0.08em" marginBottom="4px">
+              Current Focus
+            </Box>
+            <Box fontSize="16px" color="{colors.neutral.500}" lineHeight="1.58">
+              {personal.currentFocus}
+            </Box>
+          </Box>
+        </Box>
+      </div>
 
-        <div style={sectionMarker}>Experience</div>
-
-        <div>
+      {/* Timeline Frame */}
+      <div
+        className={css({
+          gridColumn: '1 / 8',
+          '@media (max-width: 1024px)': { gridColumn: '1 / -1' },
+        })}
+      >
+        <Box className={frameBase} padding="48px">
+          <Box className={sectionLabel}>Experience</Box>
           {timeline.map((entry, i) => (
-            <div
-              key={entry.year + entry.company + i}
-              style={{
-                display: 'flex',
-                gap: '32px',
-                padding: '20px 0',
-                borderBottom: '1px solid #E5EDE6',
-                alignItems: 'flex-start',
-              }}
+            <Flex
+              key={entry.year + entry.company}
+              gap="24px"
+              paddingY="16px"
+              borderBottom={i < timeline.length - 1 ? '1px solid' : 'none'}
+              borderColor="{colors.neutral.200}"
+              flexWrap={{ base: 'wrap', md: 'nowrap' }}
             >
-              <div
-                style={{
-                  fontFamily: '"IBM Plex Mono", monospace',
-                  fontSize: '12px',
-                  color: '#78947A',
-                  letterSpacing: '0.05em',
-                  minWidth: '120px',
-                  flexShrink: 0,
-                  paddingTop: '2px',
-                  lineHeight: '1.55',
-                }}
+              <Box
+                fontSize="14px"
+                fontFamily="Outfit, sans-serif"
+                fontWeight="400"
+                color="{colors.neutral.400}"
+                letterSpacing="0.08em"
+                minWidth="120px"
+                flexShrink={0}
               >
                 {entry.year}
-              </div>
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    gap: '12px',
-                    marginBottom: '6px',
-                    flexWrap: 'wrap',
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: '"IBM Plex Mono", monospace',
-                      fontWeight: 600,
-                      fontSize: '16px',
-                      color: '#192B1A',
-                      lineHeight: '1.15',
-                    }}
-                  >
-                    {entry.role}
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: '"Source Sans 3", sans-serif',
-                      fontSize: '14px',
-                      color: '#519A58',
-                    }}
-                  >
-                    {entry.company}
-                  </div>
-                  {entry.current && (
-                    <div
-                      style={{
-                        fontFamily: '"IBM Plex Mono", monospace',
-                        fontSize: '9px',
-                        color: '#519A58',
-                        letterSpacing: '0.12em',
-                        textTransform: 'uppercase',
-                        border: '1px solid #519A58',
-                        padding: '1px 6px',
-                      }}
-                    >
-                      Current
-                    </div>
-                  )}
-                </div>
-                <div
-                  style={{
-                    fontFamily: '"Source Sans 3", sans-serif',
-                    fontSize: '14px',
-                    color: '#78947A',
-                    lineHeight: '1.55',
-                  }}
-                >
+              </Box>
+              <Box flex="1" minWidth="0">
+                <Box fontSize="16px" fontWeight="500" color="{colors.neutral.700}" marginBottom="2px">
+                  {entry.role}
+                </Box>
+                <Box fontSize="14px" color="{colors.neutral.500}" marginBottom="4px">
+                  {entry.company}
+                </Box>
+                <Box fontSize="14px" color="{colors.neutral.400}" lineHeight="1.58">
                   {entry.description}
-                </div>
-              </div>
-            </div>
+                </Box>
+              </Box>
+            </Flex>
           ))}
-        </div>
-
-        {/* Education */}
-        <div style={{ marginTop: '40px' }}>
-          <div
-            style={{
-              fontFamily: '"IBM Plex Mono", monospace',
-              fontSize: '9px',
-              color: '#A9BBAA',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              marginBottom: '16px',
-            }}
-          >
-            Education
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              gap: '32px',
-              alignItems: 'flex-start',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: '12px',
-                color: '#78947A',
-                minWidth: '120px',
-                flexShrink: 0,
-              }}
-            >
-              {education.years}
-            </div>
-            <div>
-              <div
-                style={{
-                  fontFamily: '"IBM Plex Mono", monospace',
-                  fontWeight: 600,
-                  fontSize: '16px',
-                  color: '#192B1A',
-                  marginBottom: '4px',
-                }}
-              >
-                {education.school}
-              </div>
-              <div
-                style={{
-                  fontFamily: '"Source Sans 3", sans-serif',
-                  fontSize: '14px',
-                  color: '#78947A',
-                }}
-              >
-                {education.degree} &middot; {education.concentration}
-              </div>
-            </div>
-          </div>
-        </div>
+        </Box>
       </div>
 
-      {/* Section 03: Capabilities */}
+      {/* Capabilities Frame */}
       <div
-        style={{
-          position: 'relative',
-          padding: '64px 56px',
-          borderBottom: '1px solid #CDD9CE',
-          boxSizing: 'border-box',
-        }}
+        className={css({
+          gridColumn: '8 / 13',
+          '@media (max-width: 1024px)': { gridColumn: '1 / -1' },
+        })}
       >
-        <span style={{ ...indexLabel, top: '64px' }}>03</span>
-
-        <div style={sectionMarker}>Capabilities</div>
-
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '8px',
-          }}
-        >
-          {capabilities.map((cap) => (
-            <div
-              key={cap}
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: '12px',
-                color: '#3D5C3F',
-                background: '#EAEEEB',
-                padding: '6px 12px',
-                letterSpacing: '0.05em',
-                border: '1px solid #CDD9CE',
-                borderRadius: '0px',
-              }}
-            >
-              {cap}
-            </div>
-          ))}
-        </div>
+        <Box className={frameMd} padding="32px">
+          <Box className={sectionLabel}>Capabilities</Box>
+          <Flex gap="8px" flexWrap="wrap">
+            {capabilities.map((cap) => (
+              <Box
+                key={cap}
+                fontSize="14px"
+                fontFamily="Outfit, sans-serif"
+                color="{colors.neutral.500}"
+                padding="6px 12px"
+                background="rgba(110, 158, 42, 0.09)"
+                borderRadius="4px"
+                letterSpacing="0.04em"
+              >
+                {cap}
+              </Box>
+            ))}
+          </Flex>
+        </Box>
       </div>
 
-      {/* Section 04: Personal */}
+      {/* Education Frame */}
       <div
-        style={{
-          position: 'relative',
-          padding: '64px 56px',
-          borderBottom: '1px solid #CDD9CE',
-          boxSizing: 'border-box',
-        }}
+        className={css({
+          gridColumn: '8 / 13',
+          '@media (max-width: 1024px)': { gridColumn: '1 / -1' },
+        })}
       >
-        <span style={{ ...indexLabel, top: '64px' }}>04</span>
-
-        <div style={sectionMarker}>Personal</div>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '24px',
-            maxWidth: '560px',
-          }}
-        >
-          <div>
-            <div
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: '9px',
-                color: '#A9BBAA',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                marginBottom: '8px',
-              }}
-            >
-              Sport
-            </div>
-            <div
-              style={{
-                fontFamily: '"Source Sans 3", sans-serif',
-                fontSize: '16px',
-                color: '#192B1A',
-              }}
-            >
-              {personal.sport}
-            </div>
-          </div>
-
-          <div>
-            <div
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: '9px',
-                color: '#A9BBAA',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                marginBottom: '8px',
-              }}
-            >
-              Holes in One
-            </div>
-            <div
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontWeight: 600,
-                fontSize: '28px',
-                color: '#192B1A',
-                lineHeight: '1.05',
-              }}
-            >
-              {personal.holesInOne}
-            </div>
-          </div>
-
-          <div>
-            <div
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: '9px',
-                color: '#A9BBAA',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                marginBottom: '8px',
-              }}
-            >
-              Teams
-            </div>
-            <div
-              style={{
-                fontFamily: '"Source Sans 3", sans-serif',
-                fontSize: '14px',
-                color: '#3D5C3F',
-                lineHeight: '1.55',
-              }}
-            >
-              {personal.teams.join(', ')}
-            </div>
-          </div>
-
-          <div>
-            <div
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: '9px',
-                color: '#A9BBAA',
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                marginBottom: '8px',
-              }}
-            >
-              Current Focus
-            </div>
-            <div
-              style={{
-                fontFamily: '"Source Sans 3", sans-serif',
-                fontSize: '14px',
-                color: '#3D5C3F',
-                lineHeight: '1.55',
-              }}
-            >
-              {personal.currentFocus}
-            </div>
-          </div>
-        </div>
+        <Box className={frameMd} padding="32px">
+          <Box className={sectionLabel}>Education</Box>
+          <Box fontSize="16px" fontWeight="500" color="{colors.neutral.700}" marginBottom="4px">
+            {education.school}
+          </Box>
+          <Box fontSize="14px" color="{colors.neutral.500}" marginBottom="4px">
+            {education.degree} — {education.concentration}
+          </Box>
+          <Box fontSize="14px" color="{colors.neutral.400}" letterSpacing="0.08em">
+            {education.years}
+          </Box>
+        </Box>
       </div>
 
       {/* Footer */}
       <div
-        style={{
-          padding: '28px 56px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
+        className={css({
+          gridColumn: '1 / 13',
+          '@media (max-width: 1024px)': { gridColumn: '1 / -1' },
+        })}
       >
-        <span
-          style={{
-            fontFamily: '"IBM Plex Mono", monospace',
-            fontSize: '9px',
-            color: '#A9BBAA',
-            letterSpacing: '0.12em',
-          }}
+        <Flex
+          justify="space-between"
+          align="center"
+          paddingTop="48px"
+          paddingBottom="32px"
+          fontSize="12px"
+          fontFamily="Outfit, sans-serif"
+          letterSpacing="0.08em"
+          color="{colors.neutral.400}"
+          flexWrap="wrap"
+          gap="16px"
         >
-          doug-march.com &nbsp;·&nbsp; 2026
-        </span>
-        <a
-          href="/archive"
-          style={{
-            fontFamily: '"Source Sans 3", sans-serif',
-            fontSize: '12px',
-            color: '#78947A',
-            textDecoration: 'none',
-          }}
-        >
-          archive
-        </a>
+          <Box>© 2026 Doug March</Box>
+          <a
+            href="/archive"
+            className={css({
+              color: '{colors.neutral.400}',
+              textDecoration: 'none',
+              fontSize: '12px',
+              padding: '4px',
+              _hover: { color: '{colors.accent.DEFAULT}' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px', borderRadius: '4px' },
+            })}
+          >
+            Archive
+          </a>
+        </Flex>
       </div>
     </div>
   )

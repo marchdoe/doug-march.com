@@ -1,16 +1,11 @@
 import { definePreset } from '@pandacss/dev'
 
 /**
- * Typography chassis preset. Owns fonts + fontSizes only; everything else
- * lives in elements/preset.ts authored by the Token Designer agent.
+ * Generated from elements/chassis/playfair-outfit.js by scripts/utils/chassis.js.
+ * Listed LAST in panda.config.ts so its fonts + fontSizes win over any values
+ * the Token Designer emits in elements/preset.ts.
  *
- * Listed LAST in panda.config.ts so its tokens win over any fonts/fontSizes
- * the Token Designer accidentally emits in elements/preset.ts. This is the
- * structural defense that makes "AI authoring + curated typography" safe.
- *
- * Initial state matches the Playfair Display + Outfit pairing that was live
- * before the chassis system landed. The orchestrator overwrites this file
- * on every daily redesign, regenerated from the Director-chosen chassis.
+ * Do not edit by hand — overwritten on every daily redesign.
  */
 export const chassisPreset = definePreset({
   name: 'chassis',
@@ -18,18 +13,18 @@ export const chassisPreset = definePreset({
     extend: {
       tokens: {
         fonts: {
-          display: { value: '"Playfair Display", Georgia, "Times New Roman", serif' },
-          body:    { value: 'Outfit, system-ui, -apple-system, sans-serif' },
+          display: { value: "\"Playfair Display\", Georgia, \"Times New Roman\", serif" },
+          body: { value: "Outfit, system-ui, -apple-system, sans-serif" },
         },
         fontSizes: {
-          '2xs': { value: '10px' },
-          xs:    { value: '12px' },
-          sm:    { value: '13px' },
-          base:  { value: '16px' },
-          md:    { value: '21px' },
-          lg:    { value: '34px' },
-          xl:    { value: '56px' },
-          '2xl': { value: '88px' },
+          '2xs': { value: "0.625rem" },
+          xs: { value: "0.625rem" },
+          sm: { value: "0.75rem" },
+          base: { value: "1rem" },
+          md: { value: "1.333rem" },
+          lg: { value: "1.777rem" },
+          xl: { value: "2.369rem" },
+          '2xl': { value: "3.157rem" },
         },
       },
     },

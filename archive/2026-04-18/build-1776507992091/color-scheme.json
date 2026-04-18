@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 82,
+    "s": 8,
+    "l": 55,
+    "name": "April foliage yellow-green"
+  },
+  "secondary_accent": {
+    "h": 32,
+    "s": 60,
+    "l": 50,
+    "name": "Tigers amber"
+  },
+  "neutral_family": {
+    "tinted_toward": "yellow-green (82°)",
+    "name": "sage cream"
+  },
+  "mood_word": "unhurried",
+  "color_story": "April foliage green (H:82°) at 8% saturation builds the entire neutral scale—never pure gray, always tinted toward spring. Sage cream (neutral-50) and warm stone (neutral-700) form the page. Spring green accent (S:62%, L:50%) at full saturation lands links and primary actions with real presence. Tigers amber (H:32°, S:60%, L:50%) appears only in the loss callout, wry and marginal. The waxing crescent moon (4.4% illumination) manifests as a global contrast restraint: body text at neutral-700 instead of neutral-800, reducing drama by 0.8 stops while preserving WCAG AA readability."
+}

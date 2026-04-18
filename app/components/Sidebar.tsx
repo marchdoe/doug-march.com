@@ -1,148 +1,68 @@
 import logoSvg from '../assets/logo.svg'
+import { Flex, Box } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 
-const navLink = css({
+const navStyle = css({
+  position: 'sticky',
+  top: '0',
+  zIndex: 100,
+  height: '56px',
+  background: 'rgba(244, 245, 238, 0.92)',
+  backdropFilter: 'blur(8px)',
   display: 'flex',
   alignItems: 'center',
-  height: '40px',
-  fontFamily: 'mono',
-  fontSize: 'xs',
-  letterSpacing: 'wider',
-  color: '#78947A',
-  textDecoration: 'none',
-  textTransform: 'uppercase',
-  transition: 'color 150ms ease',
-  _hover: {
-    color: '#519A58',
-    textDecoration: 'none',
+  justifyContent: 'space-between',
+  padding: '0 48px',
+  '@media (max-width: 768px)': {
+    padding: '0 16px',
   },
+})
+
+const linkStyle = css({
+  fontSize: '12px',
+  fontFamily: 'Outfit, sans-serif',
+  letterSpacing: '0.08em',
+  color: '{colors.neutral.500}',
+  textDecoration: 'none',
+  padding: '12px 16px',
+  display: 'inline-block',
+  transition: 'color 200ms ease-out',
+  _hover: {
+    color: '{colors.neutral.700}',
+  },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+    borderRadius: '4px',
+  },
+})
+
+const activeLinkStyle = css({
+  color: '{colors.accent.DEFAULT}',
 })
 
 export function Sidebar() {
   return (
-    <aside
-      style={{
-        height: '100vh',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '48px 40px',
-        background: '#DCE6DD',
-        borderRight: '1px solid #CDD9CE',
-        boxSizing: 'border-box',
-      }}
-    >
-      {/* Logo */}
-      <div style={{ marginBottom: '20px' }}>
-        <img
-          src={logoSvg}
-          alt="Doug March"
-          style={{ width: '34px', height: '34px', display: 'block' }}
-        />
-      </div>
-
-      {/* Identity */}
-      <div style={{ marginBottom: '48px' }}>
-        <div
-          style={{
-            fontFamily: '"IBM Plex Mono", monospace',
-            fontWeight: 600,
-            fontSize: '28px',
-            lineHeight: '1.05',
-            letterSpacing: '-0.02em',
-            color: '#192B1A',
-            marginBottom: '12px',
-          }}
-        >
-          Doug
-          <br />
-          March
-        </div>
-        <div
-          style={{
-            fontFamily: '"Source Sans 3", sans-serif',
-            fontSize: '12px',
-            color: '#78947A',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            lineHeight: '1.6',
-          }}
-        >
-          Product Designer
-          <br />
-          &amp; Developer
-        </div>
-      </div>
-
-      {/* Navigation */}
-      <nav style={{ marginBottom: '24px' }}>
-        <a href="/" className={navLink}>
-          Home
+    <nav className={navStyle}>
+      <Flex align="center" gap="12px">
+        <a href="/" aria-label="Home" className={css({ display: 'flex', alignItems: 'center', padding: '6px', _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px', borderRadius: '4px' } })}>
+          <img src={logoSvg} alt="Doug March logo" width="28" height="28" />
         </a>
-        <a href="/about" className={navLink}>
-          About
-        </a>
-      </nav>
-
-      {/* Tigers Score Signal */}
-      <div
-        style={{
-          borderTop: '1px solid #CDD9CE',
-          paddingTop: '16px',
-          marginBottom: '16px',
-        }}
-      >
-        <div
-          style={{
-            fontFamily: '"IBM Plex Mono", monospace',
-            fontSize: '12px',
-            color: '#3D5C3F',
-            marginBottom: '4px',
-            letterSpacing: '0.05em',
-          }}
+        <Box
+          fontSize="13px"
+          fontFamily="Outfit, sans-serif"
+          letterSpacing="0.08em"
+          color="{colors.neutral.400}"
+          display={{ base: 'none', md: 'block' }}
         >
-          DET 10 &nbsp;·&nbsp; OAK 9
-        </div>
-        <div
-          style={{
-            fontFamily: '"Source Sans 3", sans-serif',
-            fontWeight: 300,
-            fontStyle: 'italic',
-            fontSize: '12px',
-            color: '#78947A',
-          }}
-        >
-          Tigers win.
-        </div>
-      </div>
-
-      {/* Spacer */}
-      <div style={{ flex: 1 }} />
-
-      {/* Quote — earned at bottom */}
-      <div style={{ paddingBottom: '0' }}>
-        <div
-          style={{
-            fontFamily: '"Source Sans 3", sans-serif',
-            fontStyle: 'italic',
-            fontSize: '12px',
-            color: '#78947A',
-            lineHeight: '1.72',
-            marginBottom: '3px',
-          }}
-        >
-          "Things cannot forever go downward."
-        </div>
-        <div
-          style={{
-            fontFamily: '"Source Sans 3", sans-serif',
-            fontSize: '12px',
-            color: '#78947A',
-          }}
-        >
-          — Deng Xiaoping
-        </div>
-      </div>
-    </aside>
+          Doug March
+        </Box>
+      </Flex>
+      <Flex align="center" gap="0">
+        <a href="/" className={linkStyle}>Work</a>
+        <a href="/about" className={linkStyle}>About</a>
+      </Flex>
+    </nav>
   )
 }

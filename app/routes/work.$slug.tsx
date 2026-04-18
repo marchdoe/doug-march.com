@@ -1,335 +1,292 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Box, Flex } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const sectionMarker = {
-  fontFamily: '"IBM Plex Mono", monospace',
-  fontSize: '9px',
-  color: '#78947A',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase' as const,
-  marginBottom: '24px',
-}
+const frameBase = css({
+  background: '#EDEFD9',
+  border: '1px solid',
+  borderColor: '{colors.neutral.200}',
+  borderRadius: '16px',
+  boxShadow: '0 2px 14px rgba(38, 43, 29, 0.06)',
+})
 
-function WorkPage() {
+const frameMd = css({
+  background: '#EDEFD9',
+  border: '1px solid',
+  borderColor: '{colors.neutral.200}',
+  borderRadius: '12px',
+  boxShadow: '0 2px 14px rgba(38, 43, 29, 0.06)',
+})
+
+const sectionLabel = css({
+  fontSize: '12px',
+  fontFamily: 'Outfit, sans-serif',
+  fontWeight: '500',
+  letterSpacing: '0.13em',
+  textTransform: 'uppercase',
+  color: '{colors.neutral.400}',
+  marginBottom: '16px',
+})
+
+const galleryGrid = css({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(12, 1fr)',
+  gap: '24px',
+  padding: '48px',
+  maxWidth: '1320px',
+  margin: '0 auto',
+  alignItems: 'start',
+  '@media (max-width: 1024px)': {
+    gridTemplateColumns: 'repeat(6, 1fr)',
+    padding: '24px',
+    gap: '16px',
+  },
+  '@media (max-width: 640px)': {
+    gridTemplateColumns: '1fr',
+    padding: '16px',
+    gap: '16px',
+  },
+})
+
+function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div
-        style={{
-          padding: '80px 56px',
-          boxSizing: 'border-box',
-        }}
-      >
-        <div
-          style={{
-            fontFamily: '"IBM Plex Mono", monospace',
-            fontSize: '9px',
-            color: '#A9BBAA',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            marginBottom: '32px',
-          }}
-        >
-          404
-        </div>
-        <h1
-          style={{
-            fontFamily: '"IBM Plex Mono", monospace',
-            fontWeight: 600,
-            fontSize: '37px',
-            lineHeight: '1.15',
-            letterSpacing: '-0.02em',
-            color: '#192B1A',
-            marginBottom: '24px',
-          }}
-        >
+      <Box padding="48px" textAlign="center">
+        <Box fontSize="21px" fontFamily="Fraunces, serif" color="{colors.neutral.700}" marginBottom="16px">
           Project not found
-        </h1>
+        </Box>
         <a
           href="/"
-          style={{
-            fontFamily: '"IBM Plex Mono", monospace',
-            fontSize: '12px',
-            color: '#519A58',
-            letterSpacing: '0.08em',
-          }}
+          className={css({
+            color: '{colors.accent.DEFAULT}',
+            textDecoration: 'underline',
+            fontSize: '16px',
+            padding: '4px',
+            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px', borderRadius: '4px' },
+          })}
         >
-          ← Back home
+          Back to work
         </a>
-      </div>
+      </Box>
     )
   }
 
   return (
-    <div>
-      {/* Header */}
-      <div
-        style={{
-          position: 'relative',
-          padding: '80px 56px 64px',
-          borderBottom: '1px solid #CDD9CE',
-          boxSizing: 'border-box',
-          minHeight: '50vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-        }}
-      >
-        <div style={{ marginBottom: '12px' }}>
-          <a
-            href="/"
-            style={{
-              fontFamily: '"IBM Plex Mono", monospace',
-              fontSize: '9px',
-              color: '#A9BBAA',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              textDecoration: 'none',
-            }}
-          >
-            ← Work
-          </a>
-        </div>
-
-        <div
-          style={{
-            fontFamily: '"IBM Plex Mono", monospace',
-            fontSize: '9px',
-            color: '#78947A',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            marginBottom: '16px',
-          }}
-        >
-          {project.type} &nbsp;·&nbsp; {project.year}
-        </div>
-
-        <h1
-          style={{
-            fontFamily: '"IBM Plex Mono", monospace',
-            fontWeight: 600,
-            fontSize: '50px',
-            lineHeight: '1.05',
-            letterSpacing: '-0.02em',
-            color: '#192B1A',
-            marginBottom: '24px',
-          }}
-        >
-          {project.title}
-        </h1>
-
-        {project.role && (
-          <div
-            style={{
-              fontFamily: '"IBM Plex Mono", monospace',
-              fontSize: '12px',
-              color: '#78947A',
-              letterSpacing: '0.08em',
-              marginBottom: '24px',
-            }}
-          >
-            {project.role}
-          </div>
-        )}
-
-        {/* Live links */}
-        <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: '12px',
-                color: '#519A58',
-                letterSpacing: '0.08em',
-                textDecoration: 'none',
-                borderLeft: '3px solid #519A58',
-                paddingLeft: '12px',
-              }}
-            >
-              Live site →
-            </a>
-          )}
-          {project.externalUrl && !project.liveUrl && (
-            <a
-              href={project.externalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: '12px',
-                color: '#519A58',
-                letterSpacing: '0.08em',
-                textDecoration: 'none',
-                borderLeft: '3px solid #519A58',
-                paddingLeft: '12px',
-              }}
-            >
-              Visit →
-            </a>
-          )}
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: '12px',
-                color: '#78947A',
-                letterSpacing: '0.08em',
-                textDecoration: 'none',
-              }}
-            >
-              GitHub →
-            </a>
-          )}
-        </div>
-      </div>
-
-      {/* Problem / Description */}
-      {(project.problem || project.description) && (
-        <div
-          style={{
-            position: 'relative',
-            padding: '64px 56px',
-            borderBottom: '1px solid #CDD9CE',
-            boxSizing: 'border-box',
-          }}
-        >
-          <div style={sectionMarker}>Problem</div>
-          <p
-            style={{
-              fontFamily: '"Source Sans 3", sans-serif',
-              fontSize: '21px',
-              fontWeight: 300,
-              color: '#3D5C3F',
-              lineHeight: '1.55',
-              maxWidth: '520px',
-            }}
-          >
-            {project.problem || project.description}
-          </p>
-        </div>
-      )}
-
-      {/* Approach */}
-      {project.approach && (
-        <div
-          style={{
-            padding: '64px 56px',
-            borderBottom: '1px solid #CDD9CE',
-            boxSizing: 'border-box',
-          }}
-        >
-          <div style={sectionMarker}>Approach</div>
-          <p
-            style={{
-              fontFamily: '"Source Sans 3", sans-serif',
-              fontSize: '16px',
-              color: '#192B1A',
-              lineHeight: '1.55',
-              maxWidth: '560px',
-            }}
-          >
-            {project.approach}
-          </p>
-        </div>
-      )}
-
-      {/* Outcome */}
-      {project.outcome && (
-        <div
-          style={{
-            padding: '64px 56px',
-            borderBottom: '1px solid #CDD9CE',
-            boxSizing: 'border-box',
-          }}
-        >
-          <div style={sectionMarker}>Outcome</div>
-          <p
-            style={{
-              fontFamily: '"Source Sans 3", sans-serif',
-              fontSize: '16px',
-              color: '#192B1A',
-              lineHeight: '1.55',
-              maxWidth: '560px',
-            }}
-          >
-            {project.outcome}
-          </p>
-        </div>
-      )}
-
-      {/* Stack */}
-      {project.stack && project.stack.length > 0 && (
-        <div
-          style={{
-            padding: '48px 56px',
-            borderBottom: '1px solid #CDD9CE',
-            boxSizing: 'border-box',
-          }}
-        >
-          <div style={sectionMarker}>Stack</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-            {project.stack.map((tech) => (
-              <div
-                key={tech}
-                style={{
-                  fontFamily: '"IBM Plex Mono", monospace',
-                  fontSize: '12px',
-                  color: '#3D5C3F',
-                  background: '#EAEEEB',
-                  padding: '6px 12px',
-                  letterSpacing: '0.05em',
-                  border: '1px solid #CDD9CE',
-                }}
-              >
-                {tech}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Footer */}
-      <div
-        style={{
-          padding: '28px 56px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
+    <div className={galleryGrid}>
+      {/* Back link */}
+      <div className={css({ gridColumn: '1 / 13', '@media (max-width: 1024px)': { gridColumn: '1 / -1' } })}>
         <a
           href="/"
-          style={{
-            fontFamily: '"IBM Plex Mono", monospace',
-            fontSize: '12px',
-            color: '#78947A',
+          className={css({
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            fontSize: '14px',
+            fontFamily: 'Outfit, sans-serif',
+            color: '{colors.neutral.400}',
             letterSpacing: '0.08em',
             textDecoration: 'none',
-          }}
+            padding: '8px 0',
+            _hover: { color: '{colors.accent.DEFAULT}' },
+            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px', borderRadius: '4px' },
+          })}
         >
-          ← All Work
+          ← Back
         </a>
-        <a
-          href="/archive"
-          style={{
-            fontFamily: '"Source Sans 3", sans-serif',
-            fontSize: '12px',
-            color: '#78947A',
-            textDecoration: 'none',
-          }}
+      </div>
+
+      {/* Main Project Frame */}
+      <div className={css({ gridColumn: '1 / 9', '@media (max-width: 1024px)': { gridColumn: '1 / -1' } })}>
+        <Box className={frameBase} padding="48px">
+          <Box
+            fontSize="12px"
+            fontFamily="Outfit, sans-serif"
+            fontWeight="500"
+            letterSpacing="0.13em"
+            textTransform="uppercase"
+            color="{colors.neutral.400}"
+            marginBottom="24px"
+          >
+            {project.type} · {project.year}
+          </Box>
+          <Box
+            fontSize="50px"
+            fontFamily="Fraunces, serif"
+            fontWeight="400"
+            lineHeight="1.0"
+            letterSpacing="-0.03em"
+            color="{colors.neutral.700}"
+            marginBottom="24px"
+            style={{ fontVariationSettings: "'opsz' 144" }}
+          >
+            {project.title}
+          </Box>
+          {project.role && (
+            <Box
+              fontSize="21px"
+              fontFamily="Outfit, sans-serif"
+              color="{colors.neutral.500}"
+              lineHeight="1.15"
+              marginBottom="24px"
+            >
+              {project.role}
+            </Box>
+          )}
+          <Box
+            width="48px"
+            height="1px"
+            background="{colors.accent.DEFAULT}"
+            marginBottom="32px"
+          />
+          {project.problem && (
+            <Box marginBottom="32px">
+              <Box className={sectionLabel}>Problem</Box>
+              <Box fontSize="16px" lineHeight="1.58" color="{colors.neutral.500}" maxWidth="60ch">
+                {project.problem}
+              </Box>
+            </Box>
+          )}
+          {project.approach && (
+            <Box marginBottom="32px">
+              <Box className={sectionLabel}>Approach</Box>
+              <Box fontSize="16px" lineHeight="1.58" color="{colors.neutral.500}" maxWidth="60ch">
+                {project.approach}
+              </Box>
+            </Box>
+          )}
+          {project.outcome && (
+            <Box marginBottom="32px">
+              <Box className={sectionLabel}>Outcome</Box>
+              <Box fontSize="16px" lineHeight="1.58" color="{colors.neutral.500}" maxWidth="60ch">
+                {project.outcome}
+              </Box>
+            </Box>
+          )}
+          {project.description && !project.problem && (
+            <Box fontSize="16px" lineHeight="1.58" color="{colors.neutral.500}" maxWidth="60ch">
+              {project.description}
+            </Box>
+          )}
+        </Box>
+      </div>
+
+      {/* Details Sidebar */}
+      <div className={css({ gridColumn: '9 / 13', '@media (max-width: 1024px)': { gridColumn: '1 / -1' } })}>
+        {project.stack && project.stack.length > 0 && (
+          <Box className={frameMd} padding="32px" marginBottom="24px">
+            <Box className={sectionLabel}>Stack</Box>
+            <Flex gap="8px" flexWrap="wrap">
+              {project.stack.map((tech) => (
+                <Box
+                  key={tech}
+                  fontSize="14px"
+                  fontFamily="Outfit, sans-serif"
+                  color="{colors.neutral.500}"
+                  padding="6px 12px"
+                  background="rgba(110, 158, 42, 0.09)"
+                  borderRadius="4px"
+                >
+                  {tech}
+                </Box>
+              ))}
+            </Flex>
+          </Box>
+        )}
+
+        <Box className={frameMd} padding="32px">
+          <Box className={sectionLabel}>Links</Box>
+          <Flex direction="column" gap="12px">
+            {(project.externalUrl || project.liveUrl) && (
+              <a
+                href={project.externalUrl || project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={css({
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '14px',
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: '500',
+                  color: '{colors.neutral.50}',
+                  background: '{colors.accent.DEFAULT}',
+                  padding: '12px 24px',
+                  borderRadius: '24px',
+                  textDecoration: 'none',
+                  transition: 'background-color 200ms ease-out',
+                  _hover: { background: '{colors.accent.dark}' },
+                  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+                  '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+                })}
+              >
+                Visit site →
+              </a>
+            )}
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={css({
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '14px',
+                  fontFamily: 'Outfit, sans-serif',
+                  fontWeight: '500',
+                  color: '{colors.neutral.700}',
+                  background: '{colors.neutral.200}',
+                  padding: '12px 24px',
+                  borderRadius: '24px',
+                  textDecoration: 'none',
+                  transition: 'background-color 200ms ease-out',
+                  _hover: { background: '{colors.neutral.300}' },
+                  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+                  '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+                })}
+              >
+                GitHub
+              </a>
+            )}
+          </Flex>
+        </Box>
+      </div>
+
+      {/* Footer */}
+      <div className={css({ gridColumn: '1 / 13', '@media (max-width: 1024px)': { gridColumn: '1 / -1' } })}>
+        <Flex
+          justify="space-between"
+          align="center"
+          paddingTop="48px"
+          paddingBottom="32px"
+          fontSize="12px"
+          fontFamily="Outfit, sans-serif"
+          letterSpacing="0.08em"
+          color="{colors.neutral.400}"
+          flexWrap="wrap"
+          gap="16px"
         >
-          archive
-        </a>
+          <Box>© 2026 Doug March</Box>
+          <a
+            href="/archive"
+            className={css({
+              color: '{colors.neutral.400}',
+              textDecoration: 'none',
+              fontSize: '12px',
+              padding: '4px',
+              _hover: { color: '{colors.accent.DEFAULT}' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px', borderRadius: '4px' },
+            })}
+          >
+            Archive
+          </a>
+        </Flex>
       </div>
     </div>
   )

@@ -1,27 +1,14 @@
 import type { ReactNode } from 'react'
 import { Sidebar } from './Sidebar'
+import { Box } from '../../styled-system/jsx'
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '38% 1fr',
-        height: '100vh',
-        overflow: 'hidden',
-        minWidth: '580px',
-      }}
-    >
+    <Box minHeight="100vh" background="bg">
       <Sidebar />
-      <main
-        style={{
-          height: '100vh',
-          overflowY: 'auto',
-          background: '#F4F7F4',
-        }}
-      >
+      <Box>
         {children}
-      </main>
-    </div>
+      </Box>
+    </Box>
   )
 }
