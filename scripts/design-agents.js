@@ -1240,7 +1240,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const rationale = tokenResult.rationale || 'Agent swarm redesign'
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign'
 
-    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null)
+    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null)
     archiveRan = true
 
     // Save archetype for future anti-repetition enforcement
@@ -1351,7 +1351,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const rationale = tokenResult.rationale || 'Agent swarm redesign (retry)'
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign (retry)'
 
-    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null)
+    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null)
     archiveRan = true
 
     // Save archetype for future anti-repetition enforcement

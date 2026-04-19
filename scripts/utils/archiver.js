@@ -132,8 +132,9 @@ function formatSignalsMarkdown(signals) {
  * @param {string[]} changedFiles - list of relative file paths that were written
  * @param {object} [weights={}] - optional weighting overrides (signals, inspiration, ratings, risk)
  * @param {object|null} [colorScheme=null] - optional color scheme object emitted by the designer; written as color-scheme.json in the build dir
+ * @param {string|null} [archetype=null] - the chosen archetype for this build (e.g. 'Specimen')
  */
-export async function archive(date, signals, rationale, designBrief, changedFiles, weights = {}, colorScheme = null) {
+export async function archive(date, signals, rationale, designBrief, changedFiles, weights = {}, colorScheme = null, archetype = null) {
   const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : String(date)
   const buildId = String(Date.now())
   const dir = path.join(ROOT, 'archive', dateStr)
@@ -286,7 +287,7 @@ export async function archive(date, signals, rationale, designBrief, changedFile
         const metrics = await scoreResponsive(previewUrl, viewports, { browser })
         metrics.buildId = buildId
         metrics.date = dateStr
-        metrics.archetype = null
+        metrics.archetype = archetype
         metrics.usedInPromptFor = []
 
         await writeFile(
