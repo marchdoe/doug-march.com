@@ -114,3 +114,38 @@ export function _readResponsiveMetrics(
     return null
   }
 }
+
+/**
+ * Read recent responsive-metrics.json files across archive dirs.
+ * Returned newest-first (by date desc, then buildId desc), limited to `limit`.
+ */
+export function _readResponsiveHistory(
+  limit = 30,
+  archivePath = ARCHIVE_PATH
+): ResponsiveMetrics[] {
+  if (!existsSync(archivePath)) return []
+
+  const dates = readdirSync(archivePath)
+    .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
+    .sort()
+    .reverse()
+
+  const out: ResponsiveMetrics[] = []
+  for (const date of dates) {
+    const dateDir = join(archivePath, date)
+    let builds: string[]
+    try {
+      builds = readdirSync(dateDir).filter(b => b.startsWith('build-'))
+    } catch { continue }
+    builds.sort().reverse()
+    for (const b of builds) {
+      const p = join(dateDir, b, 'responsive-metrics.json')
+      if (!existsSync(p)) continue
+      try {
+        out.push(JSON.parse(readFileSync(p, 'utf8')) as ResponsiveMetrics)
+      } catch { /* skip invalid */ }
+      if (out.length >= limit) return out
+    }
+  }
+  return out
+}

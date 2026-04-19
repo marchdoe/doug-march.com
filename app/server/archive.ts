@@ -1,7 +1,7 @@
 // app/server/archive.ts
 'use server'
 import { createServerFn } from '@tanstack/react-start'
-import { _readArchiveHandler, _readResponsiveMetrics } from './archive-impl'
+import { _readArchiveHandler, _readResponsiveMetrics, _readResponsiveHistory } from './archive-impl'
 import { _readArchiveDetail } from './archive-detail-impl'
 export type { ArchiveEntry } from './archive-impl'
 export type { ArchiveDetail } from './archive-detail-impl'
@@ -31,4 +31,15 @@ export const readResponsiveMetrics = createServerFn({ method: 'GET' })
   })
   .handler(async ({ data }) => {
     return _readResponsiveMetrics(data.date, data.buildId)
+  })
+
+export const readResponsiveHistory = createServerFn({ method: 'GET' })
+  .inputValidator((d: unknown) => {
+    const obj = d as { limit?: unknown }
+    const limit = typeof obj?.limit === 'number' ? obj.limit : 30
+    if (limit < 1 || limit > 200) throw new Error('limit must be 1..200')
+    return { limit }
+  })
+  .handler(async ({ data }) => {
+    return _readResponsiveHistory(data.limit)
   })
