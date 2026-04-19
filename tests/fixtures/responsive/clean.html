@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html, body { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: sans-serif; font-size: 16px; line-height: 1.5; }
+    header { display: flex; gap: 16px; padding: 16px; }
+    header > * { flex: 0 0 auto; }
+    a, button { display: inline-block; min-width: 44px; min-height: 44px; padding: 12px; }
+    main { padding: 16px; max-width: 65ch; margin: 0 auto; }
+    h1 { font-size: clamp(2rem, 6vw, 4rem); margin: 0 0 16px; }
+    p { margin: 0 0 16px; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/">Logo</a>
+    <nav><a href="/about">About</a></nav>
+  </header>
+  <main>
+    <h1>Clean Page</h1>
+    <p>This page should pass every responsive check at every viewport.</p>
+  </main>
+</body>
+</html>
