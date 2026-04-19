@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 22,
+    "s": 6,
+    "l": 50,
+    "name": "warm terracotta-stone"
+  },
+  "secondary_accent": {
+    "h": 152,
+    "s": 45,
+    "l": 55,
+    "name": "eucalyptus sage"
+  },
+  "neutral_family": {
+    "tinted_toward": "terracotta (22°)",
+    "name": "warm cream to charcoal"
+  },
+  "mood_word": "unhurried",
+  "color_story": "Terracotta at low saturation (6%) grounds the entire palette as warm neutrals—cream to charcoal, never gray. Eucalyptus sage (152°, 45% saturation) provides one restrained accent for links and emphasis. Under the waxing crescent's gentle illumination, these two hues create a Sunday morning that whispers rather than shouts: contemplative, alert, breathing."
+}

@@ -1,474 +1,571 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex, Grid } from '../../styled-system/jsx'
+import { Box, Flex, VStack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
+import { identity } from '../content/about'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const frameBase = css({
-  background: '#EDEFD9',
-  border: '1px solid',
-  borderColor: '{colors.neutral.200}',
-  borderRadius: '16px',
-  boxShadow: '0 2px 14px rgba(38, 43, 29, 0.06)',
-  transition: 'background-color 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out',
-  _hover: {
-    background: '#E4E6CC',
-    borderColor: '{colors.neutral.300}',
-    boxShadow: '0 4px 24px rgba(38, 43, 29, 0.10)',
-  },
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'none',
-  },
-})
-
-const frameMd = css({
-  background: '#EDEFD9',
-  border: '1px solid',
-  borderColor: '{colors.neutral.200}',
-  borderRadius: '12px',
-  boxShadow: '0 2px 14px rgba(38, 43, 29, 0.06)',
-  transition: 'background-color 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out',
-  _hover: {
-    background: '#E4E6CC',
-    borderColor: '{colors.neutral.300}',
-    boxShadow: '0 4px 24px rgba(38, 43, 29, 0.10)',
-  },
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'none',
-  },
-})
-
-const frameSm = css({
-  background: '#F4F5EE',
-  border: '1px solid',
-  borderColor: '{colors.neutral.200}',
-  borderRadius: '8px',
-  boxShadow: '0 2px 14px rgba(38, 43, 29, 0.06)',
-  transition: 'background-color 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out',
-  _hover: {
-    background: '#E4E6CC',
-    borderColor: '{colors.neutral.300}',
-    boxShadow: '0 4px 24px rgba(38, 43, 29, 0.10)',
-  },
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'none',
-  },
-})
-
-const rowHover = css({
-  padding: '12px 0',
-  borderBottom: '1px solid',
-  borderColor: '{colors.neutral.200}',
-  transition: 'background-color 200ms ease-out',
-  _hover: {
-    background: 'rgba(110, 158, 42, 0.09)',
-  },
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'none',
-  },
-})
-
-const galleryGrid = css({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(12, 1fr)',
-  gap: '24px',
-  padding: '48px',
-  maxWidth: '1320px',
-  margin: '0 auto',
-  alignItems: 'start',
-  '@media (max-width: 1024px)': {
-    gridTemplateColumns: 'repeat(6, 1fr)',
-    padding: '24px',
-    gap: '16px',
-  },
-  '@media (max-width: 640px)': {
-    gridTemplateColumns: '1fr',
-    padding: '16px',
-    gap: '16px',
-  },
-})
-
 function HomePage() {
   return (
-    <div className={galleryGrid}>
-      {/* Identity Frame */}
-      <div
-        className={css({
-          gridColumn: '1 / 8',
-          gridRow: '1',
-          minHeight: '420px',
-          '@media (max-width: 1024px)': {
-            gridColumn: '1 / -1',
-            minHeight: '320px',
-          },
-        })}
+    <Box display="flex" flexDirection="column" width="100%">
+      {/* Beat 1: Identity — full viewport */}
+      <Box
+        width="100%"
+        maxWidth="760px"
+        marginX="auto"
+        paddingX="48"
+        paddingTop="64"
+        paddingBottom="48"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        style={{ minHeight: '100vh' }}
       >
-        <Box className={frameBase} padding="48px" height="100%" display="flex" flexDirection="column" justifyContent="flex-end">
+        <Box style={{ marginTop: 'auto', marginBottom: 'auto' }}>
           <Box
-            fontSize="50px"
-            fontFamily="Fraunces, serif"
-            fontWeight="400"
-            lineHeight="1.0"
-            letterSpacing="-0.03em"
-            color="{colors.neutral.700}"
-            marginBottom="16px"
-            style={{ fontVariationSettings: "'opsz' 144" }}
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: 'clamp(42px, 6vw, 50px)',
+              fontWeight: 700,
+              lineHeight: 1.15,
+              color: '#3E3028',
+              marginBottom: '16px',
+            }}
           >
-            Doug March
+            {identity.name}
           </Box>
           <Box
-            fontSize="21px"
-            fontFamily="Outfit, sans-serif"
-            fontWeight="400"
-            lineHeight="1.15"
-            color="{colors.neutral.500}"
-            marginBottom="16px"
+            style={{
+              fontFamily: "'Outfit', sans-serif",
+              fontSize: '21px',
+              fontWeight: 400,
+              lineHeight: 1.65,
+              color: '#5C4A3E',
+              maxWidth: '540px',
+            }}
           >
-            Product Designer & Developer
+            {identity.role}
           </Box>
           <Box
-            width="48px"
-            height="1px"
-            background="{colors.accent.DEFAULT}"
-            marginBottom="24px"
-          />
-          <Box
-            fontSize="16px"
-            fontFamily="Outfit, sans-serif"
-            fontWeight="400"
-            lineHeight="1.58"
-            color="{colors.neutral.500}"
-            maxWidth="60ch"
+            style={{
+              fontFamily: "'Outfit', sans-serif",
+              fontSize: '16px',
+              fontWeight: 400,
+              lineHeight: 1.65,
+              color: '#7A6558',
+              maxWidth: '540px',
+              marginTop: '24px',
+            }}
           >
-            Building digital products at the intersection of design and engineering. Currently focused on AI-native tools and interfaces that feel human.
+            {identity.statement}
           </Box>
         </Box>
-      </div>
 
-      {/* Featured Work Frame */}
-      {featuredProject && (
-        <div
-          className={css({
-            gridColumn: '8 / 13',
-            gridRow: '1',
-            minHeight: '420px',
-            '@media (max-width: 1024px)': {
-              gridColumn: '1 / -1',
-              minHeight: '300px',
-            },
-          })}
+        {/* Nav at bottom of hero */}
+        <Flex
+          gap="32"
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: '12px',
+            fontWeight: 500,
+            letterSpacing: '0.09em',
+            textTransform: 'uppercase',
+            color: '#7A6558',
+            paddingBottom: '24px',
+          }}
         >
-          <Box className={frameBase} padding="32px" height="100%" display="flex" flexDirection="column" justifyContent="space-between">
-            <Box>
-              <Box
-                fontSize="12px"
-                fontFamily="Outfit, sans-serif"
-                fontWeight="500"
-                letterSpacing="0.13em"
-                textTransform="uppercase"
-                color="{colors.neutral.400}"
-                marginBottom="24px"
-              >
-                Featured · {featuredProject.year}
-              </Box>
-              <Box
-                fontSize="37px"
-                fontFamily="Fraunces, serif"
-                fontWeight="400"
-                lineHeight="1.0"
-                letterSpacing="0.04em"
-                color="{colors.neutral.700}"
-                marginBottom="24px"
-                style={{ fontVariationSettings: "'opsz' 72" }}
-              >
-                {featuredProject.title}
-              </Box>
-              <Box
-                fontSize="16px"
-                fontFamily="Outfit, sans-serif"
-                lineHeight="1.58"
-                color="{colors.neutral.500}"
-                maxWidth="60ch"
-              >
-                {featuredProject.problem}
-              </Box>
+          <a
+            href="#work"
+            className={css({
+              color: 'text-muted',
+              textDecoration: 'none',
+              padding: '4',
+              _hover: { color: 'accent' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+            })}
+          >
+            Work
+          </a>
+          <a
+            href="/about"
+            className={css({
+              color: 'text-muted',
+              textDecoration: 'none',
+              padding: '4',
+              _hover: { color: 'accent' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+            })}
+          >
+            About
+          </a>
+        </Flex>
+      </Box>
+
+      {/* Beat 2: Featured Work */}
+      {featuredProject && (
+        <Box
+          width="100%"
+          maxWidth="760px"
+          marginX="auto"
+          paddingX="48"
+          paddingY="96"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          style={{ minHeight: '72vh' }}
+          id="work"
+        >
+          <Box
+            style={{
+              fontFamily: "'Outfit', sans-serif",
+              fontSize: '11px',
+              fontWeight: 500,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: '#A89080',
+              marginBottom: '32px',
+            }}
+          >
+            Featured Project
+          </Box>
+          <a
+            href={featuredProject.externalUrl || `/work/${featuredProject.slug}`}
+            target={featuredProject.externalUrl ? '_blank' : undefined}
+            rel={featuredProject.externalUrl ? 'noopener noreferrer' : undefined}
+            className={css({
+              textDecoration: 'none',
+              display: 'block',
+              _hover: { textDecoration: 'none' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+            })}
+          >
+            <Box
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: 'clamp(32px, 5vw, 37px)',
+                fontWeight: 400,
+                lineHeight: 1.15,
+                color: '#3E3028',
+                marginBottom: '24px',
+              }}
+            >
+              {featuredProject.title}
             </Box>
-            <Box marginTop="32px">
+          </a>
+          {featuredProject.problem && (
+            <Box
+              style={{
+                fontFamily: "'Outfit', sans-serif",
+                fontSize: '16px',
+                fontWeight: 400,
+                lineHeight: 1.65,
+                color: '#5C4A3E',
+                maxWidth: '600px',
+              }}
+            >
+              {featuredProject.problem}
+            </Box>
+          )}
+          {featuredProject.externalUrl && (
+            <Box style={{ marginTop: '32px' }}>
               <a
-                href={featuredProject.externalUrl || `/work/${featuredProject.slug}`}
-                target={featuredProject.externalUrl ? '_blank' : undefined}
-                rel={featuredProject.externalUrl ? 'noopener noreferrer' : undefined}
+                href={featuredProject.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={css({
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
+                  color: 'accent',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '4px',
                   fontSize: '14px',
-                  fontFamily: 'Outfit, sans-serif',
-                  fontWeight: '500',
-                  color: '{colors.neutral.50}',
-                  background: '{colors.accent.DEFAULT}',
-                  padding: '12px 24px',
-                  borderRadius: '24px',
-                  textDecoration: 'none',
-                  transition: 'background-color 200ms ease-out',
-                  _hover: {
-                    background: '{colors.accent.dark}',
-                  },
-                  _focus: {
-                    outline: '2px solid',
-                    outlineColor: 'accent',
-                    outlineOffset: '2px',
-                  },
-                  '@media (prefers-reduced-motion: reduce)': {
-                    transition: 'none',
-                  },
+                  padding: '4',
+                  _hover: { color: 'accent-dark' },
+                  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
                 })}
+                style={{
+                  fontFamily: "'Outfit', sans-serif",
+                  fontWeight: 500,
+                  letterSpacing: '0.05em',
+                }}
               >
-                View project →
+                Visit Project ↗
               </a>
             </Box>
-          </Box>
-        </div>
+          )}
+        </Box>
       )}
 
-      {/* Breathing Void */}
-      <div
-        className={css({
-          gridColumn: '1 / 4',
-          gridRow: '2',
-          minHeight: '80px',
-          '@media (max-width: 1024px)': {
-            display: 'none',
-          },
-        })}
-      />
-
-      {/* Work List Frame */}
-      <div
-        className={css({
-          gridColumn: '4 / 8',
-          gridRow: '2',
-          minHeight: '320px',
-          '@media (max-width: 1024px)': {
-            gridColumn: '1 / 4',
-            gridRow: '2',
-          },
-          '@media (max-width: 640px)': {
-            gridColumn: '1 / -1',
-          },
-        })}
+      {/* Beat 3: Work List */}
+      <Box
+        width="100%"
+        maxWidth="760px"
+        marginX="auto"
+        paddingX="48"
+        paddingY="64"
       >
-        <Box className={frameBase} padding="32px" height="100%">
-          <Box
-            fontSize="12px"
-            fontFamily="Outfit, sans-serif"
-            fontWeight="500"
-            letterSpacing="0.13em"
-            textTransform="uppercase"
-            color="{colors.neutral.400}"
-            marginBottom="24px"
-          >
-            Selected Work
-          </Box>
+        <Box
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: '11px',
+            fontWeight: 500,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: '#A89080',
+            marginBottom: '32px',
+          }}
+        >
+          Selected Work
+        </Box>
+        <VStack gap="0" alignItems="stretch">
           {selectedWork.map((project, i) => (
             <a
               key={project.slug}
               href={`/work/${project.slug}`}
               className={css({
-                display: 'block',
                 textDecoration: 'none',
-                _focus: {
-                  outline: '2px solid',
-                  outlineColor: 'accent',
-                  outlineOffset: '2px',
-                  borderRadius: '4px',
-                },
+                display: 'flex',
+                alignItems: 'baseline',
+                justifyContent: 'space-between',
+                paddingY: '16',
+                transition: 'background-color 180ms ease-out',
+                marginX: '-16',
+                paddingX: '16',
+                borderRadius: 'tight',
+                _hover: { backgroundColor: 'bg-card' },
+                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
               })}
+              style={{
+                borderBottom: i < selectedWork.length - 1 ? '1px solid rgba(228, 217, 208, 0.6)' : 'none',
+              }}
             >
-              <div className={rowHover}>
+              <Flex gap="16" alignItems="baseline">
                 <Box
-                  fontSize="28px"
-                  fontFamily="Fraunces, serif"
-                  fontWeight="400"
-                  lineHeight="1.15"
-                  letterSpacing="0.04em"
-                  color="{colors.neutral.700}"
-                  marginBottom="4px"
-                  style={{ fontVariationSettings: "'opsz' 36" }}
+                  style={{
+                    fontFamily: "'Outfit', sans-serif",
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    color: '#A89080',
+                    fontVariantNumeric: 'tabular-nums',
+                    minWidth: '32px',
+                  }}
+                >
+                  {String(i + 1).padStart(3, '0')}
+                </Box>
+                <Box
+                  style={{
+                    fontFamily: "'Outfit', sans-serif",
+                    fontSize: '16px',
+                    fontWeight: 400,
+                    color: '#3E3028',
+                  }}
                 >
                   {project.title}
                 </Box>
-                <Flex gap="16px" fontSize="12px" fontFamily="Outfit, sans-serif" letterSpacing="0.08em" color="{colors.neutral.400}">
-                  <span>{project.type}</span>
-                  <span>{project.year}</span>
-                </Flex>
-              </div>
+              </Flex>
+              <Flex gap="24" alignItems="baseline">
+                <Box
+                  style={{
+                    fontFamily: "'Outfit', sans-serif",
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    letterSpacing: '0.09em',
+                    color: '#7A6558',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {project.type}
+                </Box>
+                <Box
+                  style={{
+                    fontFamily: "'Outfit', sans-serif",
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    color: '#A89080',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
+                  {project.year}
+                </Box>
+              </Flex>
             </a>
           ))}
-        </Box>
-      </div>
+        </VStack>
+      </Box>
 
-      {/* Experiments Frame */}
-      <div
-        className={css({
-          gridColumn: '8 / 11',
-          gridRow: '2',
-          minHeight: '320px',
-          '@media (max-width: 1024px)': {
-            gridColumn: '4 / -1',
-            gridRow: '2',
-          },
-          '@media (max-width: 640px)': {
-            gridColumn: '1 / -1',
-          },
-        })}
+      {/* Beat 4: Specimen Quote */}
+      <Box
+        width="100%"
+        maxWidth="1100px"
+        marginX="auto"
+        paddingY="96"
+        paddingLeft="72"
+        paddingRight="48"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        style={{ minHeight: '56vh' }}
       >
-        <Box className={frameMd} padding="28px" height="100%">
+        <Box
+          style={{
+            width: '40px',
+            height: '2px',
+            backgroundColor: '#8DBBA0',
+            marginBottom: '24px',
+          }}
+        />
+        <Box
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: 'clamp(48px, 6.5vw, 96px)',
+            fontWeight: 400,
+            lineHeight: 1.05,
+            color: '#3E3028',
+            letterSpacing: '-0.03em',
+            maxWidth: '960px',
+          }}
+        >
+          "Successful people tend to become more successful because they keep taking action."
+        </Box>
+        <Box
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: '13px',
+            fontWeight: 500,
+            letterSpacing: '0.09em',
+            color: '#7A6558',
+            marginTop: '32px',
+          }}
+        >
+          — Brian Tracy
+        </Box>
+      </Box>
+
+      {/* Beat 5: Score */}
+      <Box
+        width="100%"
+        maxWidth="1100px"
+        marginX="auto"
+        paddingY="64"
+        paddingLeft="56"
+        paddingRight="48"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        style={{
+          minHeight: '40vh',
+          borderTop: '1px solid #E4D9D0',
+          borderBottom: '1px solid #E4D9D0',
+        }}
+      >
+        <Box
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: '11px',
+            fontWeight: 500,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: '#A89080',
+            marginBottom: '32px',
+          }}
+        >
+          RBC Heritage · In Progress
+        </Box>
+        <Box
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: 'clamp(72px, 12vw, 144px)',
+            fontWeight: 800,
+            lineHeight: 1,
+            color: '#3E3028',
+            letterSpacing: '-0.03em',
+          }}
+        >
+          -17
+        </Box>
+        <Box
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: '21px',
+            fontWeight: 400,
+            color: '#5C4A3E',
+            marginTop: '16px',
+          }}
+        >
+          Matt Fitzpatrick
+        </Box>
+        <Flex gap="32" style={{ marginTop: '32px' }}>
           <Box
-            fontSize="21px"
-            fontFamily="Fraunces, serif"
-            fontWeight="400"
-            lineHeight="1.15"
-            color="{colors.neutral.700}"
-            marginBottom="24px"
+            style={{
+              fontFamily: "'Outfit', sans-serif",
+              fontSize: '16px',
+              fontWeight: 500,
+              color: '#7A6558',
+              fontVariantNumeric: 'tabular-nums',
+            }}
           >
-            Thinking out loud.
+            -14 &nbsp;S. Power
           </Box>
-          {experiments.map((exp) => (
-            <Box
+          <Box
+            style={{
+              fontFamily: "'Outfit', sans-serif",
+              fontSize: '16px',
+              fontWeight: 500,
+              color: '#7A6558',
+              fontVariantNumeric: 'tabular-nums',
+            }}
+          >
+            -14 &nbsp;C. Davis
+          </Box>
+        </Flex>
+      </Box>
+
+      {/* Beat 6: Experiments */}
+      <Box
+        width="100%"
+        maxWidth="760px"
+        marginX="auto"
+        paddingX="48"
+        paddingY="96"
+      >
+        <Box
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: '11px',
+            fontWeight: 500,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: '#A89080',
+            marginBottom: '32px',
+          }}
+        >
+          Experiments
+        </Box>
+        <VStack gap="0" alignItems="stretch">
+          {experiments.map((exp, i) => (
+            <a
               key={exp.slug}
-              marginBottom="20px"
-              paddingLeft="12px"
-              borderLeft="2px solid"
-              borderColor="{colors.accent.DEFAULT}"
+              href={exp.externalUrl || `/work/${exp.slug}`}
+              target={exp.externalUrl ? '_blank' : undefined}
+              rel={exp.externalUrl ? 'noopener noreferrer' : undefined}
+              className={css({
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'baseline',
+                justifyContent: 'space-between',
+                paddingY: '16',
+                transition: 'background-color 180ms ease-out',
+                marginX: '-16',
+                paddingX: '16',
+                borderRadius: 'tight',
+                _hover: { backgroundColor: 'bg-card' },
+                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+              })}
+              style={{
+                borderBottom: i < experiments.length - 1 ? '1px solid rgba(228, 217, 208, 0.6)' : 'none',
+              }}
             >
-              <a
-                href={exp.externalUrl || `/work/${exp.slug}`}
-                target={exp.externalUrl ? '_blank' : undefined}
-                rel={exp.externalUrl ? 'noopener noreferrer' : undefined}
-                className={css({
-                  textDecoration: 'none',
-                  display: 'block',
-                  _focus: {
-                    outline: '2px solid',
-                    outlineColor: 'accent',
-                    outlineOffset: '2px',
-                    borderRadius: '4px',
-                  },
-                })}
-              >
+              <Flex gap="16" alignItems="baseline">
                 <Box
-                  fontSize="16px"
-                  fontFamily="Outfit, sans-serif"
-                  fontWeight="500"
-                  color="{colors.neutral.700}"
-                  marginBottom="4px"
+                  style={{
+                    fontFamily: "'Outfit', sans-serif",
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    color: '#A89080',
+                    fontVariantNumeric: 'tabular-nums',
+                    minWidth: '32px',
+                  }}
+                >
+                  E{String(i + 1).padStart(2, '0')}
+                </Box>
+                <Box
+                  style={{
+                    fontFamily: "'Outfit', sans-serif",
+                    fontSize: '16px',
+                    fontWeight: 400,
+                    color: '#3E3028',
+                  }}
                 >
                   {exp.title}
                 </Box>
-                <Flex gap="8px" fontSize="12px" fontFamily="Outfit, sans-serif" letterSpacing="0.08em" color="{colors.neutral.400}">
-                  <span>{exp.type}</span>
-                  <span>·</span>
-                  <span>{exp.year}</span>
-                </Flex>
-                {exp.description && (
-                  <Box
-                    fontSize="14px"
-                    fontFamily="Outfit, sans-serif"
-                    lineHeight="1.58"
-                    color="{colors.neutral.500}"
-                    marginTop="8px"
-                  >
-                    {exp.description}
-                  </Box>
-                )}
-              </a>
-            </Box>
+              </Flex>
+              <Flex gap="24" alignItems="baseline">
+                <Box
+                  style={{
+                    fontFamily: "'Outfit', sans-serif",
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    letterSpacing: '0.09em',
+                    color: '#7A6558',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {exp.type}
+                </Box>
+                <Box
+                  style={{
+                    fontFamily: "'Outfit', sans-serif",
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    color: '#A89080',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
+                  {exp.year}
+                </Box>
+              </Flex>
+            </a>
           ))}
-        </Box>
-      </div>
+        </VStack>
+      </Box>
 
-      {/* Tigers Frame */}
-      <div
-        className={css({
-          gridColumn: '11 / 13',
-          gridRow: '2',
-          minHeight: '120px',
-          '@media (max-width: 1024px)': {
-            gridColumn: '1 / 3',
-            gridRow: '3',
-          },
-          '@media (max-width: 640px)': {
-            gridColumn: '1 / -1',
-          },
-        })}
-      >
-        <Box className={frameSm} padding="20px" height="100%">
-          <Box
-            fontSize="28px"
-            fontFamily="Fraunces, serif"
-            fontWeight="400"
-            lineHeight="1.15"
-            color="{colors.signal.amber}"
-            marginBottom="8px"
-            style={{ fontVariationSettings: "'opsz' 36" }}
-          >
-            0–1.
-          </Box>
-          <Box
-            fontSize="12px"
-            fontFamily="Outfit, sans-serif"
-            letterSpacing="0.08em"
-            color="{colors.neutral.400}"
-            lineHeight="1.85"
-          >
-            Yesterday happened.
-          </Box>
-        </Box>
-      </div>
-
-      {/* Footer Row */}
-      <div
-        className={css({
-          gridColumn: '1 / 13',
-          gridRow: '4',
-          '@media (max-width: 1024px)': {
-            gridColumn: '1 / -1',
-            gridRow: '4',
-          },
-        })}
+      {/* Beat 7: Footer */}
+      <Box
+        width="100%"
+        maxWidth="760px"
+        marginX="auto"
+        paddingX="48"
+        paddingTop="48"
+        paddingBottom="96"
+        style={{
+          borderTop: '1px solid #E4D9D0',
+        }}
       >
         <Flex
-          justify="space-between"
-          align="center"
-          paddingTop="48px"
-          paddingBottom="32px"
-          fontSize="12px"
-          fontFamily="Outfit, sans-serif"
-          letterSpacing="0.08em"
-          color="{colors.neutral.400}"
+          justifyContent="space-between"
+          alignItems="baseline"
           flexWrap="wrap"
-          gap="16px"
+          gap="16"
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: '12px',
+            fontWeight: 500,
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: '#A89080',
+          }}
         >
-          <Box>© 2026 Doug March</Box>
-          <Flex gap="24px">
+          <Flex gap="24" flexWrap="wrap" alignItems="baseline">
+            <span>© 2026 Doug March</span>
+            <span style={{ color: '#C8B5A8' }}>·</span>
+            <span>DET 4 · CHC 1 · Yesterday</span>
+          </Flex>
+          <Flex gap="24" alignItems="baseline">
             <a
               href="/archive"
               className={css({
-                color: '{colors.neutral.400}',
+                color: 'text-placeholder',
                 textDecoration: 'none',
-                fontSize: '12px',
-                padding: '4px',
-                _hover: { color: '{colors.accent.DEFAULT}' },
-                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px', borderRadius: '4px' },
+                padding: '4',
+                _hover: { color: 'accent' },
+                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
               })}
             >
               Archive
             </a>
+            <span>April 19, 2026</span>
           </Flex>
         </Flex>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
