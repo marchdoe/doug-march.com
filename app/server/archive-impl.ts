@@ -82,3 +82,35 @@ export function _readArchiveHandler(archivePath = ARCHIVE_PATH): ArchiveEntry[] 
     .filter((e): e is ArchiveEntry => e !== null)
     .sort((a, b) => b.date.localeCompare(a.date))
 }
+
+export interface ResponsiveMetrics {
+  buildId: string
+  date: string
+  archetype: string | null
+  overallScore: number
+  worstFailure: { viewport: string; check: string; detail: string } | null
+  viewports: Record<string, {
+    width: number
+    height: number
+    score: number
+    checks: Record<string, unknown>
+  }>
+  usedInPromptFor?: string[]
+}
+
+/**
+ * Read responsive-metrics.json for a given build. Returns null if missing or unparseable.
+ */
+export function _readResponsiveMetrics(
+  date: string,
+  buildId: string,
+  archivePath = ARCHIVE_PATH
+): ResponsiveMetrics | null {
+  const p = join(archivePath, date, `build-${buildId}`, 'responsive-metrics.json')
+  if (!existsSync(p)) return null
+  try {
+    return JSON.parse(readFileSync(p, 'utf8')) as ResponsiveMetrics
+  } catch {
+    return null
+  }
+}
