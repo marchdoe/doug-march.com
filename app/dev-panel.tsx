@@ -1,4 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import { ResponsiveCard } from './components/responsive-card'
+import { readResponsiveMetrics } from './server/archive'
+import type { ResponsiveMetrics } from './server/archive'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -2240,6 +2243,16 @@ function SuccessSection({ brief, timestamp, buildId, attemptNum, archive, totalM
   const [ratingError, setRatingError] = useState('')
   const [saveAsReference, setSaveAsReference] = useState(false)
   const [referenceConfirmation, setReferenceConfirmation] = useState('')
+  const [responsiveMetrics, setResponsiveMetrics] = useState<ResponsiveMetrics | null>(null)
+
+  useEffect(() => {
+    if (!ratingDate || !buildId) return
+    let cancelled = false
+    readResponsiveMetrics({ data: { date: ratingDate, buildId } })
+      .then(m => { if (!cancelled) setResponsiveMetrics(m ?? null) })
+      .catch(() => { if (!cancelled) setResponsiveMetrics(null) })
+    return () => { cancelled = true }
+  }, [ratingDate, buildId])
 
   // Each build starts fresh — no pre-population from previous ratings
 
@@ -2456,6 +2469,7 @@ function SuccessSection({ brief, timestamp, buildId, attemptNum, archive, totalM
 
       {/* Rating form */}
       <div style={{ padding: '12px 16px', borderTop: `1px solid rgba(92,190,74,0.1)` }}>
+        <ResponsiveCard metrics={responsiveMetrics} date={ratingDate} />
         <div style={{
           fontSize: '9px',
           fontWeight: 700,
