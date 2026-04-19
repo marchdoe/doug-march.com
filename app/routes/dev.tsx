@@ -140,11 +140,15 @@ const s = {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 function DevPanel() {
-  const { signals: initialSignals, archive } = Route.useLoaderData()
-  const signals = initialSignals as Signals
-  // If a child route (e.g. /dev/responsive) is active, yield to it
+  const loaderData = Route.useLoaderData()
   const childMatch = useMatch({ from: '/dev/responsive', shouldThrow: false })
   if (childMatch) return <Outlet />
+  return <DevPanelBody loaderData={loaderData} />
+}
+
+function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useLoaderData> }) {
+  const { signals: initialSignals, archive } = loaderData
+  const signals = initialSignals as Signals
 
   const [activePane, setActivePane] = useState<PaneName>('pipeline')
   const [traceSteps, setTraceSteps] = useState<any[]>([])
