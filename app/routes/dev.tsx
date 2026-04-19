@@ -1,5 +1,5 @@
 // app/routes/dev.tsx
-import { createFileRoute, notFound } from '@tanstack/react-router'
+import { createFileRoute, notFound, Outlet, useMatch } from '@tanstack/react-router'
 import { useState, useRef, useEffect } from 'react'
 import { readSignals, saveOverrides } from '../server/signals'
 import { readArchive, readArchiveDetail, type ArchiveEntry } from '../server/archive'
@@ -142,6 +142,9 @@ const s = {
 function DevPanel() {
   const { signals: initialSignals, archive } = Route.useLoaderData()
   const signals = initialSignals as Signals
+  // If a child route (e.g. /dev/responsive) is active, yield to it
+  const childMatch = useMatch({ from: '/dev/responsive', shouldThrow: false })
+  if (childMatch) return <Outlet />
 
   const [activePane, setActivePane] = useState<PaneName>('pipeline')
   const [traceSteps, setTraceSteps] = useState<any[]>([])
