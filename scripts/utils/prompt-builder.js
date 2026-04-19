@@ -175,12 +175,20 @@ ${file.content}
     }
   }
 
+  // Optional: Cautionary lesson from a recent failing build.
+  // Set by the orchestrator when RESPONSIVE_FEEDBACK_LOOP=1 is active.
+  if (context.responsiveLesson && context.responsiveLesson.trim()) {
+    sections.push(`## Lesson from Recent Builds
+
+${context.responsiveLesson}`)
+  }
+
   return sections.join('\n\n')
 }
 
 /**
  * Build the messages array for the Claude API call.
- * @param {{ signals: object, contentSummary: string, currentFiles: Array<{path: string, content: string}>, brief?: string, tokenContext?: string|null }} context
+ * @param {{ signals: object, contentSummary: string, currentFiles: Array<{path: string, content: string}>, brief?: string, tokenContext?: string|null, responsiveLesson?: string|null }} context
  * @returns {{ system: string, messages: Array<{role: string, content: string}> }}
  */
 export function buildMessages(context) {
