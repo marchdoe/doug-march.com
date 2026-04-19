@@ -7,7 +7,7 @@ const COLORS = { border: '#2a2f36', muted: '#8a8f97', text: '#dce0e6', cyan: '#0
 function LineChart({ data, label }: { data: Array<{ x: number; y: number; labelX?: string }>; label: string }) {
   const W = 600, H = 120, pad = 24
   if (data.length === 0) return <div style={{ color: COLORS.muted }}>no data</div>
-  const xs = data.map(d => d.x), ys = data.map(d => d.y)
+  const xs = data.map(d => d.x)
   const xMin = Math.min(...xs), xMax = Math.max(...xs)
   const yMin = 1, yMax = 5
   const sx = (x: number) => pad + ((x - xMin) / Math.max(1, xMax - xMin)) * (W - pad * 2)

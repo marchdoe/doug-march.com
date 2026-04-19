@@ -83,6 +83,15 @@ export function _readArchiveHandler(archivePath = ARCHIVE_PATH): ArchiveEntry[] 
     .sort((a, b) => b.date.localeCompare(a.date))
 }
 
+export interface ResponsiveChecks {
+  horizontalScroll?: boolean
+  clippedElements?: Array<{ tag: string; text: string; right: number }>
+  headerOverlap?: Array<{ a: string; b: string }>
+  bodyTextSize?: { min: number | null; passing: boolean }
+  tapTargetFailures?: Array<{ tag: string; text: string; w: number; h: number }>
+  lineLengthFailures?: Array<{ chars: number; lines: number; avgPerLine: number; excerpt: string }>
+}
+
 export interface ResponsiveMetrics {
   buildId: string
   date: string
@@ -93,7 +102,7 @@ export interface ResponsiveMetrics {
     width: number
     height: number
     score: number
-    checks: Record<string, unknown>
+    checks: ResponsiveChecks
   }>
   usedInPromptFor?: string[]
 }
