@@ -73,6 +73,29 @@ const CHECKS = {
     }
     return out
   },
+  lineLengthFailures: () => {
+    // Approximate: chars per paragraph / rendered line count.
+    // Rendered lines ≈ clientHeight / computed line-height.
+    const out = []
+    for (const p of document.querySelectorAll('p')) {
+      const text = (p.textContent || '').trim()
+      if (text.length < 100) continue
+      const cs = getComputedStyle(p)
+      const lh = parseFloat(cs.lineHeight) ||
+                 (parseFloat(cs.fontSize) * 1.5)
+      const lines = Math.max(1, Math.round(p.clientHeight / lh))
+      const avgChars = text.length / lines
+      if (avgChars > 75) {
+        out.push({
+          chars: text.length,
+          lines,
+          avgPerLine: Math.round(avgChars),
+          excerpt: text.slice(0, 40),
+        })
+      }
+    }
+    return out
+  },
 }
 
 /**

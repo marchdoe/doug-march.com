@@ -127,4 +127,24 @@ describe('responsive-scorer', () => {
       expect(metrics.viewports.mobile.checks.tapTargetFailures).toEqual([])
     }, 30_000)
   })
+
+  describe('lineLengthFailures check', () => {
+    it('flags paragraphs with average line length > 75 chars', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('long-lines.html'),
+        [{ name: 'desktop', width: 1440, height: 900 }],
+        { browser }
+      )
+      expect(metrics.viewports.desktop.checks.lineLengthFailures.length).toBeGreaterThan(0)
+    }, 30_000)
+
+    it('passes when max-width constrains lines', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('clean.html'),
+        [{ name: 'desktop', width: 1440, height: 900 }],
+        { browser }
+      )
+      expect(metrics.viewports.desktop.checks.lineLengthFailures).toEqual([])
+    }, 30_000)
+  })
 })
