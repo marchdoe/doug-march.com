@@ -238,6 +238,59 @@ export async function archive(date, signals, rationale, designBrief, changedFile
     console.warn(`  screenshot failed (non-blocking): ${err.message}`)
   }
 
+  // Responsive measurement — soft-fail, non-blocking.
+  // Only runs when the dev server is up (the only way we can point a
+  // headless browser at the built site).
+  try {
+    const net = await import('net')
+    const portOpen = await new Promise(resolve => {
+      const sock = new net.Socket()
+      sock.setTimeout(2000)
+      sock.once('connect', () => { sock.destroy(); resolve(true) })
+      sock.once('error', () => resolve(false))
+      sock.once('timeout', () => { sock.destroy(); resolve(false) })
+      sock.connect(5173, '127.0.0.1')
+    })
+    if (portOpen) {
+      const previewUrl = 'http://localhost:5173/'
+      const viewports = [
+        { name: 'mobile',  width: 360,  height: 640 },
+        { name: 'tablet',  width: 768,  height: 1024 },
+        { name: 'laptop',  width: 1024, height: 768 },
+        { name: 'desktop', width: 1440, height: 900 },
+      ]
+      const { chromium } = await import('@playwright/test')
+      const { screenshotViewports } = await import('./viewport-screenshotter.js')
+      const { scoreResponsive } = await import('./responsive-scorer.js')
+
+      const browser = await chromium.launch({ headless: true })
+      try {
+        const vpDir = path.join(buildDir, 'viewports')
+        await mkdir(vpDir, { recursive: true })
+        await screenshotViewports(previewUrl, viewports, vpDir, { browser })
+
+        const metrics = await scoreResponsive(previewUrl, viewports, { browser })
+        metrics.buildId = buildId
+        metrics.date = dateStr
+        metrics.archetype = null
+        metrics.usedInPromptFor = []
+
+        await writeFile(
+          path.join(buildDir, 'responsive-metrics.json'),
+          JSON.stringify(metrics, null, 2),
+          'utf8'
+        )
+        console.log(`  responsive metrics written (overall ${metrics.overallScore}/5)`)
+      } finally {
+        await browser.close()
+      }
+    } else {
+      console.log(`  dev server not running, skipping responsive measurement`)
+    }
+  } catch (err) {
+    console.warn(`  responsive scoring failed (non-blocking): ${err.message}`)
+  }
+
   // Copy artifacts to public/ for static serving
   try {
     await copyToPublic(dateStr, buildDir)
