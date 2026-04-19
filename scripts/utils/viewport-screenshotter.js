@@ -21,7 +21,7 @@ export async function screenshotViewports(url, viewports, outDir, opts = {}) {
     const results = []
     for (const vp of viewports) {
       await page.setViewportSize({ width: vp.width, height: vp.height })
-      await page.goto(url, { waitUntil: 'networkidle' })
+      await page.goto(url, { waitUntil: 'load', timeout: 30000 })
       await page.waitForTimeout(500)
       const outPath = path.join(outDir, `${vp.name}.png`)
       await page.screenshot({ path: outPath, type: 'png', fullPage: false })

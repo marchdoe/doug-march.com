@@ -173,7 +173,7 @@ export async function scoreResponsive(url, viewports, opts = {}) {
 
     for (const vp of viewports) {
       await page.setViewportSize({ width: vp.width, height: vp.height })
-      await page.goto(url, { waitUntil: 'networkidle' })
+      await page.goto(url, { waitUntil: 'load', timeout: 30000 })
       await page.waitForTimeout(300)
 
       const checks = {}
