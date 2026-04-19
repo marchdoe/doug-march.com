@@ -3,6 +3,22 @@ import { chromium } from '@playwright/test'
 const CHECKS = {
   horizontalScroll: () =>
     document.documentElement.scrollWidth > window.innerWidth,
+  clippedElements: () => {
+    const vw = window.innerWidth
+    const out = []
+    for (const el of document.querySelectorAll('body *')) {
+      const r = el.getBoundingClientRect()
+      if (r.width === 0 || r.height === 0) continue
+      if (r.right > vw + 1) {
+        out.push({
+          tag: el.tagName,
+          text: (el.textContent || '').trim().slice(0, 50),
+          right: Math.round(r.right),
+        })
+      }
+    }
+    return out
+  },
 }
 
 /**

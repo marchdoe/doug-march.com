@@ -36,4 +36,25 @@ describe('responsive-scorer', () => {
       expect(metrics.viewports.mobile.checks.horizontalScroll).toBe(false)
     }, 30_000)
   })
+
+  describe('clippedElements check', () => {
+    it('flags elements extending past the viewport', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('clipped-hero.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.clippedElements.length).toBeGreaterThan(0)
+      expect(metrics.viewports.mobile.checks.clippedElements[0].tag).toBe('DIV')
+    }, 30_000)
+
+    it('does not flag clean pages', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('clean.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.clippedElements).toEqual([])
+    }, 30_000)
+  })
 })
