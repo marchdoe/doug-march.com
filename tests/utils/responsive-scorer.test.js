@@ -98,4 +98,33 @@ describe('responsive-scorer', () => {
       expect(metrics.viewports.mobile.checks.bodyTextSize.passing).toBe(true)
     }, 30_000)
   })
+
+  describe('tapTargetFailures check', () => {
+    it('flags links/buttons under 44x44 at mobile', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('small-tap-targets.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.tapTargetFailures.length).toBeGreaterThanOrEqual(2)
+    }, 30_000)
+
+    it('does not flag at desktop width', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('small-tap-targets.html'),
+        [{ name: 'desktop', width: 1440, height: 900 }],
+        { browser }
+      )
+      expect(metrics.viewports.desktop.checks.tapTargetFailures).toEqual([])
+    }, 30_000)
+
+    it('passes on clean page', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('clean.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.tapTargetFailures).toEqual([])
+    }, 30_000)
+  })
 })

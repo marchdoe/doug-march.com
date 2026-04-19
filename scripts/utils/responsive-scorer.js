@@ -55,6 +55,24 @@ const CHECKS = {
     if (min === Infinity) return { min: null, passing: true }
     return { min: Math.round(min * 10) / 10, passing: min >= 16 }
   },
+  tapTargetFailures: (viewportWidth) => {
+    if (viewportWidth > 768) return []
+    const selectors = 'a[href], button, [role="button"], input[type="button"], input[type="submit"]'
+    const out = []
+    for (const el of document.querySelectorAll(selectors)) {
+      const r = el.getBoundingClientRect()
+      if (r.width === 0 || r.height === 0) continue
+      if (r.width < 44 || r.height < 44) {
+        out.push({
+          tag: el.tagName,
+          text: (el.textContent || '').trim().slice(0, 30),
+          w: Math.round(r.width),
+          h: Math.round(r.height),
+        })
+      }
+    }
+    return out
+  },
 }
 
 /**
@@ -83,7 +101,15 @@ export async function scoreResponsive(url, viewports, opts = {}) {
 
       const checks = {}
       for (const [name, fn] of Object.entries(CHECKS)) {
-        checks[name] = await page.evaluate(fn)
+        // Pass viewport width as second arg — most checks ignore it.
+        checks[name] = await page.evaluate(
+          ([fnStr, vw]) => {
+            // eslint-disable-next-line no-new-func
+            const f = new Function('return ' + fnStr)()
+            return f(vw)
+          },
+          [fn.toString(), vp.width]
+        )
       }
 
       viewportResults[vp.name] = {
