@@ -102,7 +102,7 @@ export function ResponsiveTrend({ history }: { history: HistoryItem[] }) {
       <ul style={{ fontSize: 11, paddingLeft: 16 }}>
         {worstBuilds.map(b => (
           <li key={b.buildId}>
-            <a href={`/dev?date=${b.date}&buildId=${b.buildId}`} style={{ color: COLORS.cyan }}>
+            <a href={`/archive/${b.date}`} style={{ color: COLORS.cyan }}>
               {b.date} · {b.archetype || '—'} · {b.overallScore}/5
             </a>
           </li>
