@@ -57,4 +57,24 @@ describe('responsive-scorer', () => {
       expect(metrics.viewports.mobile.checks.clippedElements).toEqual([])
     }, 30_000)
   })
+
+  describe('headerOverlap check', () => {
+    it('flags overlapping header children', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('header-overlap.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.headerOverlap.length).toBeGreaterThan(0)
+    }, 30_000)
+
+    it('does not flag non-overlapping header', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('clean.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.headerOverlap).toEqual([])
+    }, 30_000)
+  })
 })

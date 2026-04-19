@@ -19,6 +19,26 @@ const CHECKS = {
     }
     return out
   },
+  headerOverlap: () => {
+    const header = document.querySelector('header') || document.querySelector('nav')
+    if (!header) return []
+    const kids = [...header.children].map(el => ({ el, r: el.getBoundingClientRect() }))
+    const overlaps = []
+    for (let i = 0; i < kids.length; i++) {
+      for (let j = i + 1; j < kids.length; j++) {
+        const a = kids[i].r, b = kids[j].r
+        const xOverlap = !(a.right <= b.left || b.right <= a.left)
+        const yOverlap = !(a.bottom <= b.top || b.bottom <= a.top)
+        if (xOverlap && yOverlap) {
+          overlaps.push({
+            a: kids[i].el.tagName + (kids[i].el.className ? '.' + kids[i].el.className : ''),
+            b: kids[j].el.tagName + (kids[j].el.className ? '.' + kids[j].el.className : ''),
+          })
+        }
+      }
+    }
+    return overlaps
+  },
 }
 
 /**
