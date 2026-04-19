@@ -77,4 +77,25 @@ describe('responsive-scorer', () => {
       expect(metrics.viewports.mobile.checks.headerOverlap).toEqual([])
     }, 30_000)
   })
+
+  describe('bodyTextSize check', () => {
+    it('flags body text below 16px', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('tiny-body.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.bodyTextSize.min).toBeLessThan(16)
+      expect(metrics.viewports.mobile.checks.bodyTextSize.passing).toBe(false)
+    }, 30_000)
+
+    it('passes on 16px body', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('clean.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.bodyTextSize.passing).toBe(true)
+    }, 30_000)
+  })
 })

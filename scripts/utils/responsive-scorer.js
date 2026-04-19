@@ -39,6 +39,22 @@ const CHECKS = {
     }
     return overlaps
   },
+  bodyTextSize: () => {
+    const root = document.querySelector('main') || document.body
+    let min = Infinity
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+    let n
+    while ((n = walker.nextNode())) {
+      const text = (n.textContent || '').trim()
+      if (text.length < 8) continue
+      const parent = n.parentElement
+      if (!parent) continue
+      const fs = parseFloat(getComputedStyle(parent).fontSize)
+      if (fs && fs < min) min = fs
+    }
+    if (min === Infinity) return { min: null, passing: true }
+    return { min: Math.round(min * 10) / 10, passing: min >= 16 }
+  },
 }
 
 /**
