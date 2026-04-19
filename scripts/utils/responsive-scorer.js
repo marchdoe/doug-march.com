@@ -99,6 +99,60 @@ const CHECKS = {
 }
 
 /**
+ * Count failures for a viewport's checks.
+ */
+function countFailures(checks) {
+  let n = 0
+  if (checks.horizontalScroll) n++
+  if (Array.isArray(checks.clippedElements) && checks.clippedElements.length) n++
+  if (Array.isArray(checks.headerOverlap) && checks.headerOverlap.length) n++
+  if (checks.bodyTextSize && checks.bodyTextSize.passing === false) n++
+  if (Array.isArray(checks.tapTargetFailures) && checks.tapTargetFailures.length) n++
+  if (Array.isArray(checks.lineLengthFailures) && checks.lineLengthFailures.length) n++
+  return n
+}
+
+/** failure count → 1..5 (inverted, capped at 4+ failures = 1) */
+function scoreFromFailureCount(n) {
+  if (n === 0) return 5
+  if (n === 1) return 4
+  if (n === 2) return 3
+  if (n === 3) return 2
+  return 1
+}
+
+/** Pick the first failing check type (for worstFailure reporting) */
+function firstFailingCheck(checks) {
+  if (checks.horizontalScroll) return 'horizontalScroll'
+  if (checks.clippedElements?.length) return 'clippedElements'
+  if (checks.headerOverlap?.length) return 'headerOverlap'
+  if (checks.bodyTextSize?.passing === false) return 'bodyTextSize'
+  if (checks.tapTargetFailures?.length) return 'tapTargetFailures'
+  if (checks.lineLengthFailures?.length) return 'lineLengthFailures'
+  return null
+}
+
+function formatFailureDetail(check, viewportResult) {
+  const c = viewportResult.checks
+  switch (check) {
+    case 'horizontalScroll':
+      return `document.scrollWidth exceeded viewport ${viewportResult.width}px`
+    case 'clippedElements':
+      return `${c.clippedElements.length} element(s) extended past the viewport (first: <${c.clippedElements[0].tag}>)`
+    case 'headerOverlap':
+      return `${c.headerOverlap.length} overlapping pair(s) in the header`
+    case 'bodyTextSize':
+      return `body text min ${c.bodyTextSize.min}px (floor 16px)`
+    case 'tapTargetFailures':
+      return `${c.tapTargetFailures.length} interactive element(s) below 44×44px`
+    case 'lineLengthFailures':
+      return `${c.lineLengthFailures.length} paragraph(s) over 75 chars per line`
+    default:
+      return 'unknown'
+  }
+}
+
+/**
  * Score a URL across viewports.
  * Each check runs in the page context after setting viewport.
  *
@@ -139,11 +193,31 @@ export async function scoreResponsive(url, viewports, opts = {}) {
         width: vp.width,
         height: vp.height,
         checks,
+        score: scoreFromFailureCount(countFailures(checks)),
+      }
+    }
+
+    const overallScore = Math.min(
+      ...Object.values(viewportResults).map(v => v.score)
+    )
+
+    let worstFailure = null
+    const worstVp = Object.entries(viewportResults)
+      .sort(([, a], [, b]) => a.score - b.score)[0]
+    if (worstVp && worstVp[1].score < 5) {
+      const [vpName, vpResult] = worstVp
+      const check = firstFailingCheck(vpResult.checks)
+      if (check) {
+        worstFailure = {
+          viewport: vpName,
+          check,
+          detail: formatFailureDetail(check, vpResult),
+        }
       }
     }
 
     await page.close()
-    return { viewports: viewportResults }
+    return { viewports: viewportResults, overallScore, worstFailure }
   } finally {
     if (ownBrowser) await browser.close()
   }

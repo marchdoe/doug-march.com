@@ -147,4 +147,44 @@ describe('responsive-scorer', () => {
       expect(metrics.viewports.desktop.checks.lineLengthFailures).toEqual([])
     }, 30_000)
   })
+
+  describe('scoring math', () => {
+    it('clean page scores 5 at every viewport', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('clean.html'),
+        [
+          { name: 'mobile', width: 360, height: 640 },
+          { name: 'desktop', width: 1440, height: 900 },
+        ],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.score).toBe(5)
+      expect(metrics.viewports.desktop.score).toBe(5)
+      expect(metrics.overallScore).toBe(5)
+    }, 30_000)
+
+    it('overflow page scores <5 at mobile and overall = min(viewports)', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('overflow-horizontal.html'),
+        [
+          { name: 'mobile', width: 360, height: 640 },
+          { name: 'desktop', width: 1440, height: 900 },
+        ],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.score).toBeLessThan(5)
+      expect(metrics.overallScore).toBe(metrics.viewports.mobile.score)
+    }, 30_000)
+
+    it('emits worstFailure for bad build', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('overflow-horizontal.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.worstFailure).toBeTruthy()
+      expect(metrics.worstFailure.viewport).toBe('mobile')
+      expect(metrics.worstFailure.check).toBeTruthy()
+    }, 30_000)
+  })
 })
