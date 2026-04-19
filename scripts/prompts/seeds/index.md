@@ -33,3 +33,7 @@ Tight vertical rhythm — rows are 32–40px tall. Horizontal columns aligned to
 - DO NOT vary row heights — uniform rhythm is the voice
 - DO NOT use serif type
 - DO NOT apply the purple accent as a background fill — it marks, never coats
+
+## Mobile strategy
+
+Table rows collapse to stacked cards at ≤ 768px. Year / role / description become inline labels within each card, not adjacent columns. The overall "index" character is preserved by keeping consistent row rhythm and visible row numbers or bullets.

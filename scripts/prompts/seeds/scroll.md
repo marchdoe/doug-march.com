@@ -33,3 +33,7 @@ Sections are 100vh or taller. Internal padding is generous: 80–160px vertical,
 - DO NOT pack a viewport with more than one headline + one image + one caption
 - DO NOT use harsh borders or drop shadows
 - DO NOT use saturated color fills — palette stays near-monochrome with rare blue accent
+
+## Mobile strategy
+
+Already fluid by nature. Ensure signal marginalia (weather, scores, quotes) collapses to **inline** captions or small-caps labels, not floating pull-quotes. Don't place marginalia in the margin at 360px — there is no margin. Tuck them between content beats instead.

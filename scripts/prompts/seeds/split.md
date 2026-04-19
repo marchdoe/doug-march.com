@@ -32,3 +32,7 @@ Two halves in tension. One side is bold, saturated, gradient-lit — the other i
 - DO NOT use the gradient on both sides — it belongs only on the bold pane
 - DO NOT stack the panes vertically on desktop — horizontal split is the identity
 - DO NOT use identical card treatments across both panes
+
+## Mobile strategy
+
+Two halves become two stacked sections on mobile. The divider becomes a horizontal rule (or negative space between sections). Asymmetry carries via aspect-ratio difference — the dominant half gets more vertical space. Avoid flipping which half dominates between viewports.

@@ -32,3 +32,7 @@ Spacing scale on a 4px grid (4, 8, 16, 24, 48, 96). Hero sections are type-only 
 - DO NOT use drop shadows or heavy borders
 - DO NOT center body copy
 - DO NOT render photography-first sections — type dominates every viewport
+
+## Mobile strategy
+
+Specimen fills the full viewport width on mobile; the label block (metadata, callouts, signals) stacks **below** the specimen, not beside. Hero type uses `font-size: clamp(3rem, 14vw, 11.25rem)` so the specimen-scale character survives shrinking without overflow. The specimen element itself should be ≥ 60% of viewport height on mobile — don't let it collapse into something indistinguishable from normal body content.

@@ -32,3 +32,7 @@ Dense multi-column grid (3–5 columns). Gutters narrow (16–20px). Generous le
 - DO NOT use drop shadows, rounded cards, or pill buttons
 - DO NOT render a single-column hero — the front page is columnar from first pixel
 - DO NOT use pure #FFFFFF or #000000 — warm paper and ink black only
+
+## Mobile strategy
+
+Masthead stacks vertically on mobile: logo → name (Playfair, smaller) → nav as a pill row → date. Columns collapse to a single column with section dividers styled like masthead rules (full-width horizontal lines, not gutters). Datelines and kickers stay visible; they define the archetype.

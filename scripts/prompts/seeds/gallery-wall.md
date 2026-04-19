@@ -33,3 +33,7 @@ Masonry columns (3–5 depending on viewport). Column gap tight (12–16px). Row
 - DO NOT use the red accent as a large fill — it marks interactions only
 - DO NOT render fewer than 6 tiles on the first viewport — density is the voice
 - DO NOT use serif type
+
+## Mobile strategy
+
+Wall becomes a vertical scroll of framed artifacts on mobile. Each artifact keeps its scale *relative* to viewport width (e.g. 80vw for featured pieces, 60vw for thumbnails) rather than absolute pixels. The curator's logic should still read — don't just list items end to end; keep the varied rhythm.

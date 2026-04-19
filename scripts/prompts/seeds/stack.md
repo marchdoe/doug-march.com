@@ -34,3 +34,7 @@ Vertical bands separated by 80–120px of padding. Each band has its own interna
 - DO NOT use sharp square corners — rounded is the voice
 - DO NOT use saturated gradients or neon accents
 - DO NOT skip band padding — bands need breathing room to feel distinct
+
+## Mobile strategy
+
+Already naturally mobile-friendly. Use `min-height` tokens that scale down — no `height: 100vh` without a mobile fallback like `min-height: 500px`. Bands should stack with clear visual breaks at all widths.
