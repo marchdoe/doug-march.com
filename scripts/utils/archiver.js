@@ -40,6 +40,20 @@ async function copyToPublic(dateStr, buildDir) {
     }
     console.log(`  copied site HTML to public/archive/${dateStr}/`)
   }
+
+  // Copy viewport screenshots (if the build produced them)
+  const vpSrc = path.join(buildDir, 'viewports')
+  if (existsSync(vpSrc)) {
+    const vpDest = path.join(publicBase, dateStr, 'viewports')
+    await mkdir(vpDest, { recursive: true })
+    const vpEntries = await readdir(vpSrc)
+    for (const f of vpEntries) {
+      if (f.endsWith('.png')) {
+        await copyFile(path.join(vpSrc, f), path.join(vpDest, f))
+      }
+    }
+    console.log(`  copied viewport screenshots to public/archive/${dateStr}/viewports/`)
+  }
 }
 
 /**
