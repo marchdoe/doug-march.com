@@ -15,6 +15,7 @@ import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
+import { Route as DevResponsiveRouteImport } from './routes/dev.responsive'
 import { Route as ArchiveDateRouteImport } from './routes/archive.$date'
 
 const ElementsRoute = ElementsRouteImport.update({
@@ -47,6 +48,11 @@ const WorkSlugRoute = WorkSlugRouteImport.update({
   path: '/work/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevResponsiveRoute = DevResponsiveRouteImport.update({
+  id: '/responsive',
+  path: '/responsive',
+  getParentRoute: () => DevRoute,
+} as any)
 const ArchiveDateRoute = ArchiveDateRouteImport.update({
   id: '/$date',
   path: '/$date',
@@ -57,18 +63,20 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/archive': typeof ArchiveRouteWithChildren
-  '/dev': typeof DevRoute
+  '/dev': typeof DevRouteWithChildren
   '/elements': typeof ElementsRoute
   '/archive/$date': typeof ArchiveDateRoute
+  '/dev/responsive': typeof DevResponsiveRoute
   '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/archive': typeof ArchiveRouteWithChildren
-  '/dev': typeof DevRoute
+  '/dev': typeof DevRouteWithChildren
   '/elements': typeof ElementsRoute
   '/archive/$date': typeof ArchiveDateRoute
+  '/dev/responsive': typeof DevResponsiveRoute
   '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRoutesById {
@@ -76,9 +84,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/archive': typeof ArchiveRouteWithChildren
-  '/dev': typeof DevRoute
+  '/dev': typeof DevRouteWithChildren
   '/elements': typeof ElementsRoute
   '/archive/$date': typeof ArchiveDateRoute
+  '/dev/responsive': typeof DevResponsiveRoute
   '/work/$slug': typeof WorkSlugRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/dev'
     | '/elements'
     | '/archive/$date'
+    | '/dev/responsive'
     | '/work/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/dev'
     | '/elements'
     | '/archive/$date'
+    | '/dev/responsive'
     | '/work/$slug'
   id:
     | '__root__'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/dev'
     | '/elements'
     | '/archive/$date'
+    | '/dev/responsive'
     | '/work/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -115,7 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ArchiveRoute: typeof ArchiveRouteWithChildren
-  DevRoute: typeof DevRoute
+  DevRoute: typeof DevRouteWithChildren
   ElementsRoute: typeof ElementsRoute
   WorkSlugRoute: typeof WorkSlugRoute
 }
@@ -164,6 +176,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dev/responsive': {
+      id: '/dev/responsive'
+      path: '/responsive'
+      fullPath: '/dev/responsive'
+      preLoaderRoute: typeof DevResponsiveRouteImport
+      parentRoute: typeof DevRoute
+    }
     '/archive/$date': {
       id: '/archive/$date'
       path: '/$date'
@@ -185,11 +204,21 @@ const ArchiveRouteChildren: ArchiveRouteChildren = {
 const ArchiveRouteWithChildren =
   ArchiveRoute._addFileChildren(ArchiveRouteChildren)
 
+interface DevRouteChildren {
+  DevResponsiveRoute: typeof DevResponsiveRoute
+}
+
+const DevRouteChildren: DevRouteChildren = {
+  DevResponsiveRoute: DevResponsiveRoute,
+}
+
+const DevRouteWithChildren = DevRoute._addFileChildren(DevRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ArchiveRoute: ArchiveRouteWithChildren,
-  DevRoute: DevRoute,
+  DevRoute: DevRouteWithChildren,
   ElementsRoute: ElementsRoute,
   WorkSlugRoute: WorkSlugRoute,
 }

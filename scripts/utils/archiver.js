@@ -40,6 +40,20 @@ async function copyToPublic(dateStr, buildDir) {
     }
     console.log(`  copied site HTML to public/archive/${dateStr}/`)
   }
+
+  // Copy viewport screenshots (if the build produced them)
+  const vpSrc = path.join(buildDir, 'viewports')
+  if (existsSync(vpSrc)) {
+    const vpDest = path.join(publicBase, dateStr, 'viewports')
+    await mkdir(vpDest, { recursive: true })
+    const vpEntries = await readdir(vpSrc)
+    for (const f of vpEntries) {
+      if (f.endsWith('.png')) {
+        await copyFile(path.join(vpSrc, f), path.join(vpDest, f))
+      }
+    }
+    console.log(`  copied viewport screenshots to public/archive/${dateStr}/viewports/`)
+  }
 }
 
 /**
@@ -118,8 +132,9 @@ function formatSignalsMarkdown(signals) {
  * @param {string[]} changedFiles - list of relative file paths that were written
  * @param {object} [weights={}] - optional weighting overrides (signals, inspiration, ratings, risk)
  * @param {object|null} [colorScheme=null] - optional color scheme object emitted by the designer; written as color-scheme.json in the build dir
+ * @param {string|null} [archetype=null] - the chosen archetype for this build (e.g. 'Specimen')
  */
-export async function archive(date, signals, rationale, designBrief, changedFiles, weights = {}, colorScheme = null) {
+export async function archive(date, signals, rationale, designBrief, changedFiles, weights = {}, colorScheme = null, archetype = null) {
   const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : String(date)
   const buildId = String(Date.now())
   const dir = path.join(ROOT, 'archive', dateStr)
@@ -236,6 +251,59 @@ export async function archive(date, signals, rationale, designBrief, changedFile
     }
   } catch (err) {
     console.warn(`  screenshot failed (non-blocking): ${err.message}`)
+  }
+
+  // Responsive measurement — soft-fail, non-blocking.
+  // Only runs when the dev server is up (the only way we can point a
+  // headless browser at the built site).
+  try {
+    const net = await import('net')
+    const portOpen = await new Promise(resolve => {
+      const sock = new net.Socket()
+      sock.setTimeout(2000)
+      sock.once('connect', () => { sock.destroy(); resolve(true) })
+      sock.once('error', () => resolve(false))
+      sock.once('timeout', () => { sock.destroy(); resolve(false) })
+      sock.connect(5173, '127.0.0.1')
+    })
+    if (portOpen) {
+      const previewUrl = 'http://localhost:5173/'
+      const viewports = [
+        { name: 'mobile',  width: 360,  height: 640 },
+        { name: 'tablet',  width: 768,  height: 1024 },
+        { name: 'laptop',  width: 1024, height: 768 },
+        { name: 'desktop', width: 1440, height: 900 },
+      ]
+      const { chromium } = await import('@playwright/test')
+      const { screenshotViewports } = await import('./viewport-screenshotter.js')
+      const { scoreResponsive } = await import('./responsive-scorer.js')
+
+      const browser = await chromium.launch({ headless: true })
+      try {
+        const vpDir = path.join(buildDir, 'viewports')
+        await mkdir(vpDir, { recursive: true })
+        await screenshotViewports(previewUrl, viewports, vpDir, { browser })
+
+        const metrics = await scoreResponsive(previewUrl, viewports, { browser })
+        metrics.buildId = buildId
+        metrics.date = dateStr
+        metrics.archetype = archetype
+        metrics.usedInPromptFor = []
+
+        await writeFile(
+          path.join(buildDir, 'responsive-metrics.json'),
+          JSON.stringify(metrics, null, 2),
+          'utf8'
+        )
+        console.log(`  responsive metrics written (overall ${metrics.overallScore}/5)`)
+      } finally {
+        await browser.close()
+      }
+    } else {
+      console.log(`  dev server not running, skipping responsive measurement`)
+    }
+  } catch (err) {
+    console.warn(`  responsive scoring failed (non-blocking): ${err.message}`)
   }
 
   // Copy artifacts to public/ for static serving

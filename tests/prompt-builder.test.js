@@ -51,4 +51,16 @@ describe('prompt-builder', () => {
     expect(withoutOptional.messages[0].content).toBe(withUndefined.messages[0].content)
     expect(withoutOptional.messages[0].content).not.toContain('## Design Tokens')
   })
+
+  it('appends the Lesson from Recent Builds section when context.responsiveLesson is present', () => {
+    const lesson = 'Recent lesson (2026-04-14): horizontalScroll failed on mobile.'
+    const { messages } = buildMessages({ ...CONTEXT, responsiveLesson: lesson })
+    expect(messages[0].content).toContain('## Lesson from Recent Builds')
+    expect(messages[0].content).toContain(lesson)
+  })
+
+  it('omits the Lesson section when responsiveLesson is absent', () => {
+    const { messages } = buildMessages(CONTEXT)
+    expect(messages[0].content).not.toContain('## Lesson from Recent Builds')
+  })
 })

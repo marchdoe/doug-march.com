@@ -31,3 +31,7 @@ Whitespace is the design. Sections are full-viewport height; content is centered
 - DO NOT use card grids, drop shadows, or rounded-corner containers
 - DO NOT fill the page with body copy — captions only, set small
 - DO NOT use more than two type sizes on the hero viewport
+
+## Mobile strategy
+
+Retains single dominant element on mobile — scale the hero via `clamp()`. Secondary info (nav, metadata, footer) stays anchored to the poster's bottom, not fighting the hero. If the hero needs to reflow (e.g. "DOUG / MARCH" instead of "DOUG MARCH"), the reflow should look intentional, not cramped.

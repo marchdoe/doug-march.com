@@ -20,11 +20,13 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Install Playwright browsers
+        # Must run before unit tests — the responsive-scorer + viewport-screenshotter
+        # vitest suites launch real Chromium for accurate DOM measurements.
+        run: npx playwright install --with-deps chromium
+
       - name: Run unit tests
         run: npm test
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
 
       - name: Build site
         run: pnpm run build

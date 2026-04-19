@@ -151,7 +151,7 @@ async function main() {
 
     // Archive
     const changedPaths = files.map((f) => f.path)
-    await archive(context.signals.date, context.signals, rationale, design_brief, changedPaths)
+    await archive(context.signals.date, context.signals, rationale, design_brief, changedPaths, {}, null, null)
 
     console.log('\nDRY RUN — restoring originals (not committing).')
     await restore(originalBackup)

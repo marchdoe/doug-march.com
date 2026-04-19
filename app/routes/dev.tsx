@@ -1,5 +1,5 @@
 // app/routes/dev.tsx
-import { createFileRoute, notFound } from '@tanstack/react-router'
+import { createFileRoute, notFound, Outlet, useMatch } from '@tanstack/react-router'
 import { useState, useRef, useEffect } from 'react'
 import { readSignals, saveOverrides } from '../server/signals'
 import { readArchive, readArchiveDetail, type ArchiveEntry } from '../server/archive'
@@ -140,7 +140,14 @@ const s = {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 function DevPanel() {
-  const { signals: initialSignals, archive } = Route.useLoaderData()
+  const loaderData = Route.useLoaderData()
+  const childMatch = useMatch({ from: '/dev/responsive', shouldThrow: false })
+  if (childMatch) return <Outlet />
+  return <DevPanelBody loaderData={loaderData} />
+}
+
+function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useLoaderData> }) {
+  const { signals: initialSignals, archive } = loaderData
   const signals = initialSignals as Signals
 
   const [activePane, setActivePane] = useState<PaneName>('pipeline')

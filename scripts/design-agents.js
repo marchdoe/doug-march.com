@@ -975,6 +975,46 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     ? `## Visual Specification (from Design Director)\n\n${visualSpec}\n\n---\n\n## Original Creative Brief\n\n${brief}`
     : brief
 
+  // Responsive feedback loop: inject a cautionary lesson from a recent failing build
+  // into the unified designer's prompt. Env-gated; non-blocking on failure.
+  let responsiveLesson = null
+  if (process.env.RESPONSIVE_FEEDBACK_LOOP === '1' && chosenArchetype) {
+    try {
+      const { readResponsiveHistory } = await import('./utils/read-responsive-history.js')
+      const { selectRecentFailure } = await import('./utils/prompt-feedback-selector.js')
+      const history = await readResponsiveHistory({ limit: 7 })
+      const today = new Date().toISOString().slice(0, 10)
+      const { lesson, selectedBuildId } = selectRecentFailure({
+        history,
+        todayArchetype: chosenArchetype,
+        today,
+      })
+      if (lesson) {
+        responsiveLesson = lesson
+        if (selectedBuildId) {
+          const b = history.find(x => x.buildId === selectedBuildId)
+          if (b) {
+            const metricsPath = path.join(
+              ROOT,
+              'archive',
+              b.date,
+              `build-${b.buildId}`,
+              'responsive-metrics.json'
+            )
+            try {
+              const raw = JSON.parse(await readFile(metricsPath, 'utf8'))
+              raw.usedInPromptFor = [...(raw.usedInPromptFor || []), today]
+              await writeFile(metricsPath, JSON.stringify(raw, null, 2), 'utf8')
+            } catch { /* non-blocking */ }
+          }
+        }
+        console.log(`  responsive lesson injected from build ${selectedBuildId}`)
+      }
+    } catch (err) {
+      console.warn(`  responsive feedback injection failed (non-blocking): ${err.message}`)
+    }
+  }
+
   // Build the unified-designer user prompt via the shared prompt-builder so
   // production matches local-dev byte-for-byte up to the production-only
   // additions (ratings + creative weights) appended below.
@@ -991,6 +1031,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       contentSummary: '',
       currentFiles: [],
       tokenContext,
+      responsiveLesson,
     })
     return messages[0].content
       + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
@@ -1199,7 +1240,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const rationale = tokenResult.rationale || 'Agent swarm redesign'
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign'
 
-    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null)
+    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null)
     archiveRan = true
 
     // Save archetype for future anti-repetition enforcement
@@ -1310,7 +1351,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const rationale = tokenResult.rationale || 'Agent swarm redesign (retry)'
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign (retry)'
 
-    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null)
+    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null)
     archiveRan = true
 
     // Save archetype for future anti-repetition enforcement

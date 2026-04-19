@@ -153,6 +153,22 @@ These constraints cannot be relaxed for creative direction. Bold design and acce
 - All nav links keyboard-accessible
 - All links visually distinguishable from surrounding text (color, underline, or other treatment)
 
+## Responsive — Mobile-First, Not Desktop-Squashed
+
+You are designing for three characters: phone (360px), tablet (768px), laptop/desktop (1024px / 1440px). Start your composition at 360px and enhance upward. A design that looks great on desktop but overflows or clips on mobile is a failed build regardless of how striking the desktop view is.
+
+**Mobile-first means:**
+- Default CSS targets 360px. Use `@media (min-width: ...)` to add complexity at larger widths — never subtract at smaller.
+- Large type uses `clamp()` or `vw` with caps, not fixed px. A specimen-scale hero at 120px on desktop should collapse to ~48px on mobile.
+- Fixed sidebars, multi-column grids, and persistent nav rails must have a collapse strategy below the tablet breakpoint (usually stacking into a single column).
+- Header chrome (logo + nav + signals) must not overlap at 360px. If everything can't fit, stack or hide behind a toggle.
+- Touch targets ≥ 44×44px on any viewport ≤ 768px.
+- Body text ≥ 16px at all viewports.
+- Line length ≤ 75 characters at all viewports.
+
+**What gets checked automatically:**
+Every build runs at 360 / 768 / 1024 / 1440 and is scored on: horizontal scroll, content clipping, header overlap, body text size, tap-target size, line length. Failures are logged and fed back into tomorrow's prompt as negative examples.
+
 ## Required Files
 
 You MUST produce these files. Organize the code however you want — inline in routes, extract components, or mix. Only the framework constraints below are hard requirements.

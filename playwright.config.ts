@@ -34,7 +34,7 @@ export default defineConfig({
     // Dev-panel tests are local-only — the /dev route is infrastructure, not deployed
     ...(process.env.CI ? [] : [{
       name: 'dev-panel',
-      testMatch: '**/dev-panel.spec.ts',
+      testMatch: ['**/dev-panel.spec.ts', '**/dev-responsive-panel.spec.ts', '**/dev-responsive-trend.spec.ts'],
       use: {
         ...devices['Desktop Chrome'],
         baseURL: DEV_URL,
