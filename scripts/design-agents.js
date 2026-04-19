@@ -982,7 +982,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     try {
       const { readResponsiveHistory } = await import('./utils/read-responsive-history.js')
       const { selectRecentFailure } = await import('./utils/prompt-feedback-selector.js')
-      const { readFile: readFileDynamic, writeFile: writeFileDynamic } = await import('fs/promises')
       const history = await readResponsiveHistory({ limit: 7 })
       const today = new Date().toISOString().slice(0, 10)
       const { lesson, selectedBuildId } = selectRecentFailure({
@@ -996,15 +995,16 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           const b = history.find(x => x.buildId === selectedBuildId)
           if (b) {
             const metricsPath = path.join(
+              ROOT,
               'archive',
               b.date,
               `build-${b.buildId}`,
               'responsive-metrics.json'
             )
             try {
-              const raw = JSON.parse(await readFileDynamic(metricsPath, 'utf8'))
+              const raw = JSON.parse(await readFile(metricsPath, 'utf8'))
               raw.usedInPromptFor = [...(raw.usedInPromptFor || []), today]
-              await writeFileDynamic(metricsPath, JSON.stringify(raw, null, 2), 'utf8')
+              await writeFile(metricsPath, JSON.stringify(raw, null, 2), 'utf8')
             } catch { /* non-blocking */ }
           }
         }
