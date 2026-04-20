@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 158,
+    "s": 6,
+    "l": 50,
+    "name": "eucalyptus sage"
+  },
+  "secondary_accent": {
+    "h": 18,
+    "s": 70,
+    "l": 50,
+    "name": "warm clay"
+  },
+  "neutral_family": {
+    "tinted_toward": "sage",
+    "name": "sage-neutral"
+  },
+  "mood_word": "deliberate",
+  "color_story": "Eucalyptus sage (H:158°) as primary neutral ensures cool-morning clarity without blue-coldness; warm clay (H:18°) appears only at project metadata level, maintaining a 140° visual separation. The hue sits safely outside forbidden zones (0°–112°, 352°–360°) and 33° eastward of Apr 17's position, clearing recent palettes. Light backgrounds (#F2F6F4 page, #FAFCFB cards) reflect spring's lengthening daylight; waxing crescent signal reduces shadow opacity to 0.05 and softens borders, creating a moonlit-but-legible morning-to-daylight transition."
+}
