@@ -469,11 +469,21 @@ async function main() {
   const elapsed = ((Date.now() - start) / 1000).toFixed(1)
   console.log(`  Claude responded in ${elapsed}s`)
 
-  // Detect error responses that look like success
-  const errorPatterns = ['Prompt is too long', 'context window', 'maximum context length', 'token limit']
-  if (responseText.length < 100 || errorPatterns.some(p => responseText.includes(p))) {
-    console.error(`  ERROR: Claude returned an error response: "${responseText.slice(0, 200)}"`)
+  // Detect error responses that look like success.
+  // The Anthropic SDK throws on real errors, so any text returned in API mode is genuine
+  // generation. The pattern sniff exists for the CLI path (MOCK_MODE), where Claude CLI
+  // historically printed errors like "Prompt is too long" to stdout — those would otherwise
+  // be written as the brief and break downstream agents.
+  if (responseText.length < 100) {
+    console.error(`  ERROR: Claude returned suspiciously short response: "${responseText}"`)
     process.exit(1)
+  }
+  if (MOCK_MODE) {
+    const errorPatterns = ['Prompt is too long', 'context window', 'maximum context length', 'token limit']
+    if (errorPatterns.some(p => responseText.includes(p))) {
+      console.error(`  ERROR: Claude CLI returned an error response: "${responseText.slice(0, 500)}"`)
+      process.exit(1)
+    }
   }
 
   // Step 3: Write brief
