@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 210,
+    "s": 9,
+    "l": 22,
+    "name": "cool cerulean gray"
+  },
+  "secondary_accent": {
+    "h": 120,
+    "s": 23,
+    "l": 58,
+    "name": "sage green"
+  },
+  "neutral_family": {
+    "tinted_toward": "cerulean 210°",
+    "name": "stone"
+  },
+  "mood_word": "luminous",
+  "color_story": "Cool cerulean (210°) as the neutral spine, ranging from nearly-white backgrounds (L:97%) through body text (L:22%), held consistently restrained (S:8–9%) for sophistication. Sage green (120°) as the sole accent, intentionally desaturated (S:23%) to signal craft without aggression. Hues fall safely within mandate windows (210° in 188–352°; 120° in 112–128°), avoiding all forbidden zones. High-key luminosity throughout—page background near-white, hero gradient asymmetrically brightened (waxing gibbous 76% at 58%/40% center)—honors spring's 13.5 daylight hours and the brief's 'lit from within' philosophy."
+}
