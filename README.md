@@ -1,5 +1,7 @@
 Welcome to your new TanStack Start app! 
 
+See [TODO.md](./TODO.md) for the current backlog.
+
 # Getting Started
 
 To run this application:
