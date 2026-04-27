@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 120,
+    "s": 64,
+    "l": 38,
+    "name": "saturated forest green"
+  },
+  "secondary_accent": {
+    "h": 300,
+    "s": 20,
+    "l": 55,
+    "name": "muted editorial violet"
+  },
+  "neutral_family": {
+    "tinted_toward": "green",
+    "name": "spring charcoal"
+  },
+  "mood_word": "structured",
+  "color_story": "H:120° is the mathematical center of the allowed 112°–128° band, guaranteed by R=B in every neutral hex. A single saturated green (#22A022) serves as primary accent, breaking through the page once—a 2px rule above the featured project—preventing decoration while maintaining focus. The violet secondary (S:20%) appears only in Band 4's editorial column, reading as editorial texture rather than signal. Spring paper (neutral-50) and forest shadow (neutral-800) create rhythm without coldness; the waxing gibbous at 85% illumination is felt through clean, unsmuddied contrast ratios (17:1+)."
+}

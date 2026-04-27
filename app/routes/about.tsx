@@ -1,272 +1,489 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
+import { Box, Flex, VStack } from '../../styled-system/jsx'
+import { Sidebar } from '../components/Sidebar'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const pageWrap = css({
-  paddingTop: '6xl',
-  maxWidth: '760px',
-  margin: '0 auto',
-  padding: '6xl 3xl 4xl',
-  '@media (max-width: 767px)': {
-    padding: '6xl md 4xl',
-  },
-})
-
-const heroName = css({
-  fontFamily: 'heading',
-  fontSize: 'clamp(36px, 6vw, 56px)',
-  fontWeight: 'normal',
-  lineHeight: 'snug',
-  letterSpacing: 'tight',
-  color: 'text',
-  marginBottom: 'sm',
-})
-
-const heroRole = css({
-  fontFamily: 'body',
-  fontSize: '16px',
-  fontWeight: 'normal',
-  letterSpacing: 'wide',
-  color: 'textSecondary',
-  marginBottom: '2xl',
-})
-
-const statement = css({
-  fontFamily: 'body',
-  fontSize: '18px',
-  fontWeight: 'normal',
-  lineHeight: 'loose',
-  color: 'text',
-  maxWidth: '600px',
-  marginBottom: '6xl',
-})
-
-const sectionLabel = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  fontWeight: 'normal',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '2xl',
-})
-
-const sectionSpacer = css({
-  height: '6xl',
-})
-
-const timelineRow = css({
-  display: 'grid',
-  gridTemplateColumns: '140px 1fr',
-  padding: '2xl 0',
-  borderTop: '1px solid',
-  borderColor: 'border',
-  gap: 'md',
-  '@media (max-width: 600px)': {
-    gridTemplateColumns: '1fr',
-    gap: 'xs',
-  },
-})
-
-const timeYear = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: 'normal',
-  letterSpacing: 'wide',
-  color: 'textMuted',
-  minWidth: '120px',
-  whiteSpace: 'nowrap',
-})
-
-const timeContent = css({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 'xs',
-})
-
-const timeRole = css({
-  fontFamily: 'heading',
-  fontSize: '20px',
-  fontWeight: 'normal',
-  lineHeight: 'snug',
-  color: 'text',
-})
-
-const timeCompany = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  color: 'textSecondary',
-})
-
-const timeDesc = css({
-  fontFamily: 'body',
-  fontSize: '16px',
-  lineHeight: 'normal',
-  color: 'textSecondary',
-  maxWidth: '540px',
-})
-
-const capWrap = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: 'sm',
-})
-
-const capPill = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  fontWeight: 'normal',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  background: 'accentLight',
-  color: 'accentDark',
-  borderRadius: 'md',
-  padding: '4px 12px',
-  lineHeight: 'normal',
-})
-
-const detailRow = css({
-  display: 'flex',
-  gap: 'lg',
-  flexWrap: 'wrap',
-  padding: 'md 0',
-  borderTop: '1px solid',
-  borderColor: 'border',
-})
-
-const detailLabel = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  minWidth: '140px',
-})
-
-const detailValue = css({
-  fontFamily: 'body',
-  fontSize: '16px',
-  lineHeight: 'normal',
-  color: 'text',
-})
-
-const lastBorder = css({
-  borderTop: '1px solid',
-  borderColor: 'border',
-})
-
-const footerArea = css({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: '2xl 0 4xl',
-})
-
-const footerText = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: 'wide',
-  color: 'textMuted',
-})
-
-const footerLink = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: 'wide',
-  color: 'textMuted',
-  textDecoration: 'none',
-  padding: 'xs',
-  minHeight: '44px',
-  display: 'flex',
-  alignItems: 'center',
-  _hover: { color: 'textSecondary' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px', borderRadius: 'sm' },
-})
-
 function AboutPage() {
   return (
-    <main className={pageWrap}>
-      <h1 className={heroName}>{identity.name}</h1>
-      <p className={heroRole}>{identity.role}</p>
-      <p className={statement}>{identity.statement}</p>
+    <>
+      {/* Band 1: Identity Hero */}
+      <section
+        className={css({
+          width: '100%',
+          minHeight: { base: '400px', md: '60vh' },
+          bg: 'bandHero',
+          display: 'flex',
+          justifyContent: 'center',
+        })}
+      >
+        <div
+          className={css({
+            width: '100%',
+            maxWidth: '1100px',
+            px: { base: '6', md: '12' },
+            display: 'grid',
+            gridTemplateRows: 'auto 1fr',
+            pt: '8',
+            pb: '16',
+          })}
+        >
+          <Sidebar />
 
-      <div className={sectionLabel}>Experience</div>
-      <div>
-        {timeline.map((entry, i) => (
-          <div key={`${entry.year}-${entry.company}-${i}`} className={timelineRow}>
-            <span className={timeYear}>{entry.year}</span>
-            <div className={timeContent}>
-              <div className={timeRole}>{entry.role}</div>
-              <div className={timeCompany}>{entry.company}</div>
-              <p className={timeDesc}>{entry.description}</p>
+          <Flex alignItems="flex-end" pb="8">
+            <div>
+              <h1
+                className={css({
+                  fontFamily: 'heading',
+                  fontSize: { base: '37px', md: '50px' },
+                  fontWeight: 'semibold',
+                  lineHeight: 'snug',
+                  letterSpacing: 'tight',
+                  color: 'textOnDark',
+                  mb: '6',
+                })}
+              >
+                {identity.name}
+              </h1>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '16px',
+                  lineHeight: 'normal',
+                  color: 'textSecondaryOnDark',
+                  maxWidth: '600px',
+                  mb: '3',
+                })}
+              >
+                {identity.role}
+              </p>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '16px',
+                  lineHeight: 'normal',
+                  color: 'textSecondaryOnDark',
+                  maxWidth: '600px',
+                })}
+              >
+                {identity.statement}
+              </p>
+            </div>
+          </Flex>
+        </div>
+      </section>
+
+      {/* Band 2: Timeline */}
+      <section
+        className={css({
+          width: '100%',
+          bg: 'bandFeatured',
+          display: 'flex',
+          justifyContent: 'center',
+        })}
+      >
+        <div
+          className={css({
+            width: '100%',
+            maxWidth: '1100px',
+            px: { base: '6', md: '12' },
+            py: { base: '16', md: '24' },
+          })}
+        >
+          <span
+            className={css({
+              fontFamily: 'body',
+              fontSize: '9px',
+              fontWeight: 'semibold',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              color: 'textMuted',
+              display: 'block',
+              mb: '8',
+            })}
+          >
+            Experience
+          </span>
+
+          <VStack gap="0" alignItems="stretch">
+            {timeline.map((entry) => (
+              <Flex
+                key={entry.year + entry.company}
+                gap={{ base: '4', md: '8' }}
+                py="4"
+                borderBottom="1px solid"
+                borderColor="border"
+                flexDirection={{ base: 'column', md: 'row' }}
+              >
+                <Box
+                  className={css({
+                    fontFamily: 'mono',
+                    fontSize: '12px',
+                    color: 'textMuted',
+                    minWidth: '120px',
+                    flexShrink: 0,
+                    letterSpacing: 'wider',
+                  })}
+                >
+                  {entry.year}
+                </Box>
+                <Box flex="1">
+                  <Box
+                    className={css({
+                      fontFamily: 'body',
+                      fontSize: '16px',
+                      fontWeight: 'medium',
+                      color: 'text',
+                      mb: '1',
+                    })}
+                  >
+                    {entry.role}
+                  </Box>
+                  <Box
+                    className={css({
+                      fontFamily: 'body',
+                      fontSize: '14px',
+                      color: 'textSecondary',
+                      mb: '2',
+                    })}
+                  >
+                    {entry.company}
+                  </Box>
+                  <Box
+                    className={css({
+                      fontFamily: 'body',
+                      fontSize: '14px',
+                      color: 'textMuted',
+                      lineHeight: 'normal',
+                      maxWidth: '560px',
+                    })}
+                  >
+                    {entry.description}
+                  </Box>
+                </Box>
+              </Flex>
+            ))}
+          </VStack>
+        </div>
+      </section>
+
+      {/* Band 3: Capabilities & Education */}
+      <section
+        className={css({
+          width: '100%',
+          bg: 'bandIndex',
+          display: 'flex',
+          justifyContent: 'center',
+        })}
+      >
+        <div
+          className={css({
+            width: '100%',
+            maxWidth: '1100px',
+            px: { base: '6', md: '12' },
+            py: { base: '16', md: '20' },
+            display: 'grid',
+            gridTemplateColumns: { base: '1fr', md: '2fr 1fr' },
+            gap: { base: '12', md: '16' },
+          })}
+        >
+          <div>
+            <span
+              className={css({
+                fontFamily: 'body',
+                fontSize: '9px',
+                fontWeight: 'semibold',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                color: 'textMuted',
+                display: 'block',
+                mb: '6',
+              })}
+            >
+              Capabilities
+            </span>
+            <Flex gap="2" flexWrap="wrap">
+              {capabilities.map((cap) => (
+                <Box
+                  key={cap}
+                  className={css({
+                    px: '3',
+                    py: '2',
+                    fontFamily: 'body',
+                    fontSize: '12px',
+                    color: 'textSecondary',
+                    bg: 'bgCard',
+                    border: '1px solid',
+                    borderColor: 'border',
+                    borderRadius: 'sm',
+                    letterSpacing: 'wide',
+                  })}
+                >
+                  {cap}
+                </Box>
+              ))}
+            </Flex>
+          </div>
+
+          <div>
+            <span
+              className={css({
+                fontFamily: 'body',
+                fontSize: '9px',
+                fontWeight: 'semibold',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                color: 'textMuted',
+                display: 'block',
+                mb: '6',
+              })}
+            >
+              Education
+            </span>
+            <Box
+              className={css({
+                fontFamily: 'body',
+                fontSize: '16px',
+                fontWeight: 'medium',
+                color: 'text',
+                mb: '1',
+              })}
+            >
+              {education.school}
+            </Box>
+            <Box
+              className={css({
+                fontFamily: 'body',
+                fontSize: '14px',
+                color: 'textSecondary',
+                mb: '1',
+              })}
+            >
+              {education.degree}
+            </Box>
+            <Box
+              className={css({
+                fontFamily: 'body',
+                fontSize: '14px',
+                color: 'textMuted',
+                mb: '1',
+              })}
+            >
+              {education.concentration}
+            </Box>
+            <Box
+              className={css({
+                fontFamily: 'mono',
+                fontSize: '12px',
+                color: 'textMuted',
+                letterSpacing: 'wider',
+              })}
+            >
+              {education.years}
+            </Box>
+          </div>
+        </div>
+      </section>
+
+      {/* Band 4: Personal */}
+      <section
+        className={css({
+          width: '100%',
+          bg: 'bandEditorial',
+          display: 'flex',
+          justifyContent: 'center',
+        })}
+      >
+        <div
+          className={css({
+            width: '100%',
+            maxWidth: '1100px',
+            px: { base: '6', md: '12' },
+            py: { base: '16', md: '20' },
+          })}
+        >
+          <span
+            className={css({
+              fontFamily: 'body',
+              fontSize: '9px',
+              fontWeight: 'semibold',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              color: 'textMutedOnDark',
+              display: 'block',
+              mb: '8',
+            })}
+          >
+            Personal
+          </span>
+
+          <div
+            className={css({
+              display: 'grid',
+              gridTemplateColumns: { base: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr 1fr' },
+              gap: '8',
+            })}
+          >
+            <div>
+              <Box
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '12px',
+                  letterSpacing: 'wider',
+                  textTransform: 'uppercase',
+                  color: 'textMutedOnDark',
+                  mb: '2',
+                })}
+              >
+                Holes in One
+              </Box>
+              <Box
+                className={css({
+                  fontFamily: 'heading',
+                  fontSize: '28px',
+                  fontWeight: 'semibold',
+                  color: 'textOnDark',
+                  lineHeight: 'snug',
+                })}
+              >
+                {personal.holesInOne}
+              </Box>
+            </div>
+
+            <div>
+              <Box
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '12px',
+                  letterSpacing: 'wider',
+                  textTransform: 'uppercase',
+                  color: 'textMutedOnDark',
+                  mb: '2',
+                })}
+              >
+                Sport
+              </Box>
+              <Box
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '16px',
+                  color: 'textOnDark',
+                })}
+              >
+                {personal.sport}
+              </Box>
+            </div>
+
+            <div>
+              <Box
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '12px',
+                  letterSpacing: 'wider',
+                  textTransform: 'uppercase',
+                  color: 'textMutedOnDark',
+                  mb: '2',
+                })}
+              >
+                Teams
+              </Box>
+              <VStack gap="1" alignItems="flex-start">
+                {personal.teams.map((team) => (
+                  <Box
+                    key={team}
+                    className={css({
+                      fontFamily: 'body',
+                      fontSize: '16px',
+                      color: 'textOnDark',
+                    })}
+                  >
+                    {team}
+                  </Box>
+                ))}
+              </VStack>
+            </div>
+
+            <div>
+              <Box
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '12px',
+                  letterSpacing: 'wider',
+                  textTransform: 'uppercase',
+                  color: 'textMutedOnDark',
+                  mb: '2',
+                })}
+              >
+                Current Focus
+              </Box>
+              <Box
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '16px',
+                  lineHeight: 'normal',
+                  color: 'textOnDark',
+                })}
+              >
+                {personal.currentFocus}
+              </Box>
             </div>
           </div>
-        ))}
-        <div className={lastBorder} />
-      </div>
+        </div>
+      </section>
 
-      <div className={sectionSpacer} />
-
-      <div className={sectionLabel}>Capabilities</div>
-      <div className={capWrap}>
-        {capabilities.map((cap) => (
-          <span key={cap} className={capPill}>{cap}</span>
-        ))}
-      </div>
-
-      <div className={sectionSpacer} />
-
-      <div className={sectionLabel}>Education</div>
-      <div>
-        <div className={detailRow}>
-          <span className={detailLabel}>School</span>
-          <span className={detailValue}>{education.school}</span>
+      {/* Band 5: Footer */}
+      <footer
+        className={css({
+          width: '100%',
+          bg: 'bandFooter',
+          display: 'flex',
+          justifyContent: 'center',
+        })}
+      >
+        <div
+          className={css({
+            width: '100%',
+            maxWidth: '1100px',
+            px: { base: '6', md: '12' },
+            py: '12',
+            display: 'flex',
+            flexDirection: { base: 'column', md: 'row' },
+            justifyContent: 'space-between',
+            alignItems: { base: 'flex-start', md: 'center' },
+            gap: '4',
+          })}
+        >
+          <Flex gap="6" alignItems="center">
+            <span
+              className={css({
+                fontFamily: 'body',
+                fontSize: '12px',
+                letterSpacing: 'wider',
+                color: 'textMutedOnDark',
+              })}
+            >
+              © 2026 Doug March
+            </span>
+            <a
+              href="/archive"
+              className={css({
+                fontFamily: 'body',
+                fontSize: '12px',
+                letterSpacing: 'wider',
+                color: 'textMutedOnDark',
+                textDecoration: 'none',
+                _hover: { color: 'textSecondaryOnDark', textDecoration: 'underline' },
+                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+              })}
+            >
+              Archive
+            </a>
+          </Flex>
         </div>
-        <div className={detailRow}>
-          <span className={detailLabel}>Degree</span>
-          <span className={detailValue}>{education.degree}</span>
-        </div>
-        <div className={detailRow}>
-          <span className={detailLabel}>Concentration</span>
-          <span className={detailValue}>{education.concentration}</span>
-        </div>
-        <div className={detailRow}>
-          <span className={detailLabel}>Years</span>
-          <span className={detailValue}>{education.years}</span>
-        </div>
-        <div className={lastBorder} />
-      </div>
-
-      <div className={sectionSpacer} />
-
-      <div className={sectionLabel}>Personal</div>
-      <div>
-        <div className={detailRow}>
-          <span className={detailLabel}>Holes in One</span>
-          <span className={detailValue}>{personal.holesInOne}</span>
-        </div>
-        <div className={detailRow}>
-          <span className={detailLabel}>Sport</span>
-          <span className={detailValue}>{personal.sport}</span>
-        </div>
-        <div className={detailRow}>
-          <span className={detailLabel}>Teams</span>
-          <span className={detailValue}>{personal.teams.join(', ')}</span>
-        </div>
-        <div className={detailRow}>
-          <span className={detailLabel}>Current Focus</span>
-          <span className={detailValue}>{personal.currentFocus}</span>
-        </div>
-        <div className={lastBorder} />
-      </div>
-
-      <footer className={footerArea}>
-        <span className={footerText}>© 2026 Doug March</span>
-        <a href="/archive" className={footerLink}>Archive</a>
       </footer>
-    </main>
+    </>
   )
 }
