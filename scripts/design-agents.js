@@ -490,30 +490,52 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   const weightsPrompt = `\n\n## Creative Weights (0-10, set by the site owner)\n\nSignals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'The owner wants BOLD, EXPERIMENTAL design today. Push boundaries.' : weights.risk <= 3 ? 'The owner wants SAFE, POLISHED design today. Proven patterns.' : ''}${weights.inspiration >= 7 ? '\nDesign references should HEAVILY influence your compositional choices.' : ''}${weights.signals <= 3 ? '\nSignals are background texture only — do NOT let weather or sports drive the design.' : ''}`
 
-  // Read all prompts and libraries
+  // Read all prompts and design references.
+  // Design references are vendored from pbakaus/impeccable (Apache 2.0) — see
+  // scripts/prompts/impeccable/README.md. They replace the previous library-*.md
+  // files which authored generic guidance; impeccable provides anti-pattern-aware,
+  // OKLCH-native, register-aware design knowledge tuned to fight AI design slop.
   const promptDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'prompts')
+  const refDir = path.join(promptDir, 'impeccable', 'reference')
   const [
     directorPromptRaw,
     specCriticPromptRaw,
     screenshotCriticPromptRaw,
     tokenPromptRaw,
-    designSystemRef, libTypography, libColor, libLayout, libComponents,
+    designSystemRef,
+    refBrand,
+    refTypography,
+    refColor,
+    refSpatial,
+    refResponsive,
+    refInteraction,
+    refCritique,
   ] = await Promise.all([
     readFile(path.join(promptDir, 'design-director.md'), 'utf8'),
     readFile(path.join(promptDir, 'spec-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'screenshot-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'design-system-reference.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-typography.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-color.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-layout.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-components.md'), 'utf8'),
+    readFile(path.join(refDir, 'brand.md'), 'utf8'),
+    readFile(path.join(refDir, 'typography.md'), 'utf8'),
+    readFile(path.join(refDir, 'color-and-contrast.md'), 'utf8'),
+    readFile(path.join(refDir, 'spatial-design.md'), 'utf8'),
+    readFile(path.join(refDir, 'responsive-design.md'), 'utf8'),
+    readFile(path.join(refDir, 'interaction-design.md'), 'utf8'),
+    readFile(path.join(refDir, 'critique.md'), 'utf8'),
   ])
 
-  const specCriticPrompt = specCriticPromptRaw
-  const screenshotCriticPrompt = screenshotCriticPromptRaw
+  // Brand-register declaration. doug-march.com is BRAND register — a personal
+  // portfolio where design IS the product. Inject this into every design agent
+  // so they apply brand-register conventions (expressive composition, committed
+  // color strategy, typographic risk) rather than product-register reflexes
+  // (dense dashboards, restrained palette, generic card grids).
+  const brandRegisterDeclaration = `\n\n## Project Register: BRAND\n\nThis project is BRAND register — a personal portfolio where design IS the product. Apply brand-register conventions throughout. The detailed brand-register reference follows.\n\n${refBrand}`
 
-  // Build system prompts with relevant libraries appended.
+  const specCriticPrompt = `${specCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
+  const screenshotCriticPrompt = `${screenshotCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
+
+  // Build system prompts with relevant references appended.
   // unified-designer base prompt is loaded through buildMessages (single source
   // of truth shared with local-dev path in scripts/generate-redesign.js).
   const { system: unifiedDesignerBasePrompt } = buildMessages({
@@ -522,17 +544,20 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     contentSummary: '',
     currentFiles: [],
   })
-  const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}`
-  // Token Designer no longer authors fonts or fontSizes (chassis owns them),
-  // so library-typography.md is omitted from its system prompt — saves ~47 lines
-  // of dead context and prevents Haiku from reasoning about typography tokens
-  // that the orchestrator will overwrite anyway.
-  const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libColor}`
-  // libTypography is omitted — unified-designer uses font tokens but does not
-  // choose fonts or scale ratios (chassis owns those). The pairing recipes and
-  // ratio table in library-typography.md are dead context here. Director still
-  // gets it for chassis-selection mood matching.
-  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}\n\n${libColor}\n\n${libLayout}\n\n${libComponents}`
+  // Director picks the archetype, visual spec, and chassis. Needs typography
+  // (chassis-selection mood matching), color, spatial composition, and the
+  // brand-register grounding.
+  const directorSystemPrompt = `${directorPromptRaw}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}\n\n${refSpatial}`
+  // Token Designer authors colors and spacing tokens only — chassis owns
+  // typography per token-designer.md's explicit scope. brand.md included for
+  // register grounding; the leading prompt's typography exclusion overrides
+  // any font guidance that bleeds in from brand.md.
+  const tokenSystemPrompt = `${tokenPromptRaw}${brandRegisterDeclaration}\n\n${refColor}\n\n${refSpatial}`
+  // unified-designer writes the actual React/Panda implementation. Gets the
+  // full design knowledge stack: typography, color, spatial, responsive,
+  // interaction. Motion and ux-writing held out for now — add when we have
+  // motion-heavy days or copy-driven layouts.
+  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}\n\n${refSpatial}\n\n${refResponsive}\n\n${refInteraction}`
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')
