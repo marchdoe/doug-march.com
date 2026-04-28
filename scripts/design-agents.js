@@ -154,7 +154,15 @@ function buildArchetypeHistory(archiveDir, recentDirs) {
 }
 
 /**
- * Build the hard archetype constraint block to inject into the Design Director prompt.
+ * Build the archetype-history advisory block to inject into the Design Director prompt.
+ *
+ * Variance is informational, not a hard constraint. iter-1 (2026-04-28) showed
+ * the failure mode of hard rules: the brief called for Poster but the 3-day
+ * lockout forbade it, so the Director picked Scroll — variance over fit. The
+ * brief's hero "full-bleed moon" intent suffered. Soft guidance lets fit win
+ * when the signals genuinely demand a recently-used archetype, while still
+ * nudging toward diversity when two archetypes fit equally well.
+ *
  * @param {Array<{date: string, archetype: string}>} history
  * @returns {{ block: string, forbidden: string[], allowed: string[] }}
  */
@@ -164,16 +172,18 @@ function buildArchetypeConstraintPrompt(history) {
   const lines = history.map(h => `  - ${h.date}: ${h.archetype}`).join('\n')
   const last3 = [...new Set(history.slice(0, 3).map(h => h.archetype))]
 
-  let block = `\n\n## Archetype History — MANDATORY CONSTRAINT\n\nRecent archetype usage (newest first):\n${lines}\n\n`
+  let block = `\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n${lines}\n\n`
 
-  let allowed = [...ARCHETYPE_NAMES]
   if (last3.length > 0) {
-    allowed = ARCHETYPE_NAMES.filter(n => !last3.includes(n))
-    block += `**FORBIDDEN TODAY** (used in the last 3 days): **${last3.join(', ')}**\n\n`
-    block += `You MUST choose from the remaining archetypes: ${allowed.join(', ')}. Choosing a forbidden archetype is an error — the spec will be rejected and the director will be re-run with a stricter prompt.`
+    block += `**Recently used** (last 3 days): ${last3.join(', ')}\n\n`
+    block += `Variance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n`
+    block += `- If two archetypes fit equally well, prefer the one NOT in the recent list.\n`
+    block += `- If the brief or signals genuinely call for a recently-used archetype, use it. Don't pick a worse-fitting archetype just to avoid repetition.\n`
+    block += `- If you do pick a recently-used archetype, the visual spec should make the execution materially different from the prior run (different palette commitment, different chassis register, different content emphasis).`
   }
 
-  return { block, forbidden: last3, allowed }
+  // `forbidden` retained for trace logging only — no longer enforced.
+  return { block, forbidden: last3, allowed: [...ARCHETYPE_NAMES] }
 }
 
 /**
@@ -770,26 +780,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     chosenChassis = resolveChassisFromDirectorOutput(visualSpec, CHASSIS_CATALOG)
     console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${chosenArchetype ? ` | archetype: ${chosenArchetype}` : ''}${chosenChassis ? ` | chassis: ${chosenChassis.id}` : ''}`)
 
-    // Enforce the FORBIDDEN list programmatically. The prompt threatens
-    // "spec will be rejected" but until now nothing actually rejected it.
-    // Retry director once with an explicit "you violated the constraint"
-    // message; if the retry also picks a forbidden archetype, accept and
-    // log a warning rather than spinning forever.
+    // Variance is now informational, not enforced. Log when the Director
+    // re-uses a recently-used archetype but accept the choice — the prompt
+    // already asks the Director to use diversity as a tiebreaker only,
+    // and to make the execution materially different when reusing. Hard
+    // rejection here was producing variance-over-fit failures (iter-1,
+    // 2026-04-28: brief called for Poster, lockout forced Scroll, hero
+    // moon collapsed to a small CSS circle).
     if (chosenArchetype && forbiddenArchetypes.includes(chosenArchetype)) {
-      console.warn(`  ⚠ Director picked FORBIDDEN archetype "${chosenArchetype}" — retrying with stricter prompt`)
-      const stricterPrompt = `${directorUserPrompt}\n\n---\n\n## CONSTRAINT VIOLATION — RETRY REQUIRED\n\nYour previous response chose **${chosenArchetype}**, which is on the FORBIDDEN list (used in the last 3 days). Choose a different archetype from this exact set: **${allowedArchetypes.join(', ')}**. Any other choice fails the build. Re-emit the complete VISUAL_SPEC with a new archetype.`
-      directorResult = await callAgent('design-director', directorSystemPrompt, stricterPrompt)
-      visualSpec = directorResult._rawResponse || directorResult.rationale || ''
-      const retryArchetype = extractArchetypeFromText(visualSpec)
-      const retryChassis = resolveChassisFromDirectorOutput(visualSpec, CHASSIS_CATALOG)
-      console.log(`  retry visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${retryArchetype ? ` | archetype: ${retryArchetype}` : ''}${retryChassis ? ` | chassis: ${retryChassis.id}` : ''}`)
-      if (retryArchetype && !forbiddenArchetypes.includes(retryArchetype)) {
-        chosenArchetype = retryArchetype
-      } else {
-        console.warn(`  ⚠ Director retry also picked forbidden/unknown archetype — proceeding with "${retryArchetype || chosenArchetype}"`)
-        chosenArchetype = retryArchetype || chosenArchetype
-      }
-      if (retryChassis) chosenChassis = retryChassis
+      console.log(`  ℹ Director reused recently-used archetype "${chosenArchetype}" — accepting (variance is advisory)`)
     }
 
     // Fall back to first catalog entry if Director never produced a valid id.
