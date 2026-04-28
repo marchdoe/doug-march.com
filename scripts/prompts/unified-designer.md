@@ -12,6 +12,19 @@ When the brief specifies a hero element's **scale**, **position**, **dimensions*
 
 Underdelivering on the brief's scale or strategy is the most common failure mode. When in doubt, push closer to the literal reading, not a "tasteful" softening.
 
+### Asset constraints (read carefully)
+
+External image URLs are blocked by the build validator. The only allowed external URLs are Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`) and the existing project domains.
+
+**Never use Unsplash, stock photo URLs, or any external image source.** When the brief calls for a "photograph," "image," "hero photo," or "decisive photograph of <subject>," translate it into a CSS-only treatment that honors the brief's spatial intent at the called-for scale:
+
+- Atmospheric gradient block (radial / linear / mesh) — most flexible for "photograph of sky/light/landscape"
+- Solid color plane at full-bleed — for "drenched" / committed-color hero
+- Inline SVG shape (single-color or gradient-filled) — for moons, suns, geometric anchors
+- Typography-as-image — letterforms set at scale that the type IS the visual
+
+The brief's *scale and dominance* are still binding. "Full-bleed photograph of a moon at very large scale" becomes a full-bleed CSS gradient with an inline SVG circle at very large scale — never an `<img src>` to an external URL.
+
 ## What You're Building
 
 A personal portfolio for Doug March — Product Designer & Developer. Three pages (home, about, project detail) and a navigation element. How you structure, compose, and present the content is entirely up to you.
