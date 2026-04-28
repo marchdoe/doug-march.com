@@ -380,20 +380,43 @@ async function callClaudeCLI(prompt, systemPrompt = SYSTEM_PROMPT) {
  * Call the Anthropic SDK in production mode.
  *
  * @param {string} prompt
+ * @param {string} systemPrompt
+ * @param {Array<{data: string, media_type: string, title?: string}>} [images]
+ *   Optional image content blocks (Awwwards SOTD screenshots). Sent before
+ *   the text prompt so the model treats them as primary references. Per
+ *   Spec 01, these are base64 bytes downloaded once at signal-collection
+ *   time — no day-of fetching from awwwards.com.
  * @returns {Promise<string>} the response text
  */
-async function callAnthropicAPI(prompt, systemPrompt = SYSTEM_PROMPT) {
+async function callAnthropicAPI(prompt, systemPrompt = SYSTEM_PROMPT, images = []) {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
 
   console.log('  calling Claude API (claude-haiku-4-5-20251001)...')
   console.log(`  system prompt length: ${systemPrompt.length} chars`)
+  if (images.length > 0) {
+    console.log(`  image content blocks: ${images.length} (${images.map(i => i.title || 'untitled').join(', ')})`)
+  }
+
+  // Build content array: images first (so they're cacheable / referenceable
+  // when the model writes the brief), then the text prompt.
+  const content = [
+    ...images.map(img => ({
+      type: 'image',
+      source: {
+        type: 'base64',
+        media_type: img.media_type,
+        data: img.data,
+      },
+    })),
+    { type: 'text', text: prompt },
+  ]
 
   const response = await client.messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 2048,
     system: systemPrompt,
-    messages: [{ role: 'user', content: prompt }],
+    messages: [{ role: 'user', content }],
   })
 
   const text = response.content
@@ -457,10 +480,13 @@ async function main() {
     console.log(`  run #${runNumber} today — will enforce archetype diversity`)
   }
 
-  // Step 1.7: Collect Awwwards site descriptions (text only — no screenshots)
-  // Screenshots are too large for the interpret-signals prompt (2MB+ PNGs become 3MB+ base64).
-  // The unified designer receives screenshots separately via the reference system.
+  // Step 1.7: Collect Awwwards site references. Per Spec 01, screenshot bytes
+  // are downloaded once at signal-collection time (scripts/signals/awwwards.js)
+  // and surface here as base64 + media_type. The API path sends them as
+  // native image content blocks; the CLI/MOCK path stays text-only because
+  // CLI stdin can't carry binary blocks reliably.
   let designReferenceImages = []
+  let designReferenceImageBlocks = []
   const awwwardsSites = signals?.awwwards?.sites_of_the_day
   if (Array.isArray(awwwardsSites)) {
     const sitesWithScreenshots = awwwardsSites.filter(s => typeof s === 'object' && s.title)
@@ -469,9 +495,19 @@ async function main() {
         title: site.title,
         description: site.description || '',
       })
+      // If signal-collection downloaded the bytes, prepare an image block
+      // for the API path. Missing bytes degrade gracefully to text-only.
+      if (site.screenshot_b64 && site.screenshot_media_type) {
+        designReferenceImageBlocks.push({
+          title: site.title,
+          data: site.screenshot_b64,
+          media_type: site.screenshot_media_type,
+        })
+      }
     }
     if (designReferenceImages.length > 0) {
       console.log(`  awwwards references: ${designReferenceImages.map(s => s.title).join(', ')}`)
+      console.log(`  with image bytes: ${designReferenceImageBlocks.length} of ${designReferenceImages.length}`)
     }
   }
 
@@ -488,7 +524,7 @@ async function main() {
     if (MOCK_MODE) {
       responseText = await callClaudeCLI(prompt)
     } else {
-      responseText = await callAnthropicAPI(prompt)
+      responseText = await callAnthropicAPI(prompt, SYSTEM_PROMPT, designReferenceImageBlocks)
     }
   } catch (err) {
     console.error(`  Error calling Claude: ${err.message}`)

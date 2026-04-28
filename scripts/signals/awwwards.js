@@ -77,6 +77,38 @@ function extractOgMeta(html) {
 }
 
 /**
+ * Fetch the og:image bytes and return base64 + media type. Returns null on
+ * failure so the caller can fall back to URL-only or text-only references.
+ *
+ * Per Spec 01: we download once at signal-collection time so downstream
+ * agents (interpret-signals via API) get deterministic image content blocks
+ * without re-fetching during every Claude call. Failures here are
+ * non-blocking — the run continues with whatever screenshots succeeded.
+ */
+async function fetchScreenshotBytes(url) {
+  try {
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': HEADERS['User-Agent'] },
+    })
+    if (!res.ok) return null
+    const contentType = res.headers.get('content-type') || ''
+    // Anthropic accepts image/jpeg, image/png, image/gif, image/webp.
+    // og:image is typically jpeg/png from awwwards.
+    let mediaType = 'image/jpeg'
+    if (contentType.includes('png')) mediaType = 'image/png'
+    else if (contentType.includes('webp')) mediaType = 'image/webp'
+    else if (contentType.includes('gif')) mediaType = 'image/gif'
+    const buf = Buffer.from(await res.arrayBuffer())
+    // Sanity guard — Anthropic per-image cap is 5MB
+    if (buf.length > 5 * 1024 * 1024) return null
+    return { data: buf.toString('base64'), media_type: mediaType }
+  } catch {
+    return null
+  }
+}
+
+/**
  * Fetch a single SOTD page and extract metadata.
  * Returns null on failure (timeout, non-200, missing data).
  */
@@ -95,10 +127,19 @@ async function fetchSitePage(slug) {
     // Screenshot URL is the key artifact — skip if missing
     if (!meta.screenshot_url) return null
 
+    // Download the screenshot bytes for downstream API image-block use.
+    // Failure here is non-blocking — the site object still ships with
+    // url/title/description; the API path falls back to text references.
+    const bytes = await fetchScreenshotBytes(meta.screenshot_url)
+
     return {
       title: meta.title || slug,
       description: meta.description || '',
       screenshot_url: meta.screenshot_url,
+      ...(bytes ? {
+        screenshot_b64: bytes.data,
+        screenshot_media_type: bytes.media_type,
+      } : {}),
     }
   } catch {
     return null
