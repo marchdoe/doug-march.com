@@ -100,7 +100,7 @@ Still specify in your spec body:
 Respond using this delimiter format. Both blocks are required.
 
 ===CHASSIS_ID===
-The single chassis id from the catalog (e.g., `playfair-outfit`). Just the id, no quotes, no extra prose.
+The single chassis id from the catalog (e.g., `bricolage-manrope`). Just the id, no quotes, no extra prose.
 
 ===VISUAL_SPEC===
 Your complete visual specification here, using the 5 sections above.

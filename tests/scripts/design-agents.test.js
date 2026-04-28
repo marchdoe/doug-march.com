@@ -176,23 +176,23 @@ You MUST choose from: Broadsheet, Poster, Scroll, Split, Stack, Index.
 
 describe('resolveChassisFromDirectorOutput', () => {
   const catalog = [
-    { id: 'playfair-outfit', name: 'Playfair + Outfit' },
-    { id: 'space-grotesk-work-sans', name: 'Space Grotesk + Work Sans' },
+    { id: 'bricolage-manrope', name: 'Bricolage Grotesque + Manrope' },
+    { id: 'spectral-albert', name: 'Spectral + Albert Sans' },
   ]
 
   it('extracts a chassis id from the explicit ===CHASSIS_ID=== block', () => {
-    const text = '===CHASSIS_ID===\nplayfair-outfit\n\n===VISUAL_SPEC===\nstuff'
-    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('playfair-outfit')
+    const text = '===CHASSIS_ID===\nbricolage-manrope\n\n===VISUAL_SPEC===\nstuff'
+    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('bricolage-manrope')
   })
 
   it('tolerates surrounding whitespace and backticks', () => {
-    const text = '===CHASSIS_ID===\n  `space-grotesk-work-sans`  \n'
-    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('space-grotesk-work-sans')
+    const text = '===CHASSIS_ID===\n  `spectral-albert`  \n'
+    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('spectral-albert')
   })
 
   it('falls back to scanning the spec for a backtick-quoted catalog id', () => {
-    const text = 'no block here. uses `playfair-outfit` somewhere.'
-    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('playfair-outfit')
+    const text = 'no block here. uses `bricolage-manrope` somewhere.'
+    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('bricolage-manrope')
   })
 
   it('returns null when no catalog id is present', () => {
