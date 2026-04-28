@@ -554,10 +554,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // any font guidance that bleeds in from brand.md.
   const tokenSystemPrompt = `${tokenPromptRaw}${brandRegisterDeclaration}\n\n${refColor}\n\n${refSpatial}`
   // unified-designer writes the actual React/Panda implementation. Gets the
-  // full design knowledge stack: typography, color, spatial, responsive,
-  // interaction. Motion and ux-writing held out for now — add when we have
-  // motion-heavy days or copy-driven layouts.
-  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}\n\n${refSpatial}\n\n${refResponsive}\n\n${refInteraction}`
+  // typography/color/spatial/responsive design knowledge stack plus brand.
+  // interaction-design.md was previously loaded here but dropped after
+  // iter-2 (2026-04-28) produced a meta-response failure with ~60KB
+  // assembled system prompt — the portfolio is type-and-image driven,
+  // not form-driven, so interaction patterns earn their absence. Re-add
+  // when forms/focus-state UX surfaces become a genuine concern.
+  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}\n\n${refSpatial}\n\n${refResponsive}`
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')

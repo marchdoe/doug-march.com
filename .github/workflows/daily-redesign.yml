@@ -24,6 +24,15 @@ jobs:
     permissions:
       contents: write
       issues: write  # for failure notification issues
+    env:
+      # Push every nightly run into impeccable's "BOLD, EXPERIMENTAL" register
+      # by default. Risk 7 activates the bold-design directive across all
+      # agents (interpret-signals brief writer, design-director, token-designer,
+      # unified-designer) without going so far that the model picks the most
+      # extreme axes. iter-3 (2026-04-28) at risk 8 produced the drenched
+      # terracotta Specimen — risk 7 sits a notch back from there but well
+      # above the iter-1 dark-monochrome floor.
+      WEIGHT_RISK: '7'
 
     steps:
       - uses: actions/checkout@v4
