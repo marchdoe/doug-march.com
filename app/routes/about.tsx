@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { css } from '../../styled-system/css'
 import { Box, Flex, VStack } from '../../styled-system/jsx'
-import { Sidebar } from '../components/Sidebar'
+import { css } from '../../styled-system/css'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
@@ -9,123 +8,116 @@ export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
   return (
-    <>
-      {/* Band 1: Identity Hero */}
-      <section
+    <Box display="flex" flexDirection="column" alignItems="center" width="100%">
+      {/* Hero */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        width="100%"
         className={css({
-          width: '100%',
-          minHeight: { base: '400px', md: '60vh' },
-          bg: 'bandHero',
-          display: 'flex',
-          justifyContent: 'center',
+          minHeight: 'calc(60vh - 56px)',
+          padding: '96px 32px',
+          backgroundColor: '#FAFAF6',
+          '@media (max-width: 767px)': {
+            padding: '64px 24px',
+          },
         })}
       >
-        <div
-          className={css({
-            width: '100%',
-            maxWidth: '1100px',
-            px: { base: '6', md: '12' },
-            display: 'grid',
-            gridTemplateRows: 'auto 1fr',
-            pt: '8',
-            pb: '16',
-          })}
-        >
-          <Sidebar />
-
-          <Flex alignItems="flex-end" pb="8">
-            <div>
-              <h1
-                className={css({
-                  fontFamily: 'heading',
-                  fontSize: { base: '37px', md: '50px' },
-                  fontWeight: 'semibold',
-                  lineHeight: 'snug',
-                  letterSpacing: 'tight',
-                  color: 'textOnDark',
-                  mb: '6',
-                })}
-              >
-                {identity.name}
-              </h1>
-              <p
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  lineHeight: 'normal',
-                  color: 'textSecondaryOnDark',
-                  maxWidth: '600px',
-                  mb: '3',
-                })}
-              >
-                {identity.role}
-              </p>
-              <p
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  lineHeight: 'normal',
-                  color: 'textSecondaryOnDark',
-                  maxWidth: '600px',
-                })}
-              >
-                {identity.statement}
-              </p>
-            </div>
-          </Flex>
-        </div>
-      </section>
-
-      {/* Band 2: Timeline */}
-      <section
-        className={css({
-          width: '100%',
-          bg: 'bandFeatured',
-          display: 'flex',
-          justifyContent: 'center',
-        })}
-      >
-        <div
-          className={css({
-            width: '100%',
-            maxWidth: '1100px',
-            px: { base: '6', md: '12' },
-            py: { base: '16', md: '24' },
-          })}
-        >
-          <span
+        <Box maxWidth="760px" width="100%">
+          <Box
+            className={css({
+              fontFamily: 'display',
+              fontWeight: 'semibold',
+              fontSize: 'clamp(1.75rem, 4vw, 3.125rem)',
+              lineHeight: '1.10',
+              color: '{colors.neutral.700}',
+              marginBottom: '24px',
+            })}
+          >
+            {identity.name}
+          </Box>
+          <Box
             className={css({
               fontFamily: 'body',
-              fontSize: '9px',
-              fontWeight: 'semibold',
-              letterSpacing: 'widest',
+              fontWeight: 'medium',
+              fontSize: '1rem',
+              letterSpacing: '0.08em',
+              color: '{colors.neutral.500}',
               textTransform: 'uppercase',
-              color: 'textMuted',
-              display: 'block',
-              mb: '8',
+              marginBottom: '32px',
+            })}
+          >
+            {identity.role}
+          </Box>
+          <Box
+            className={css({
+              fontFamily: 'body',
+              fontSize: '1rem',
+              lineHeight: '1.60',
+              color: '{colors.neutral.600}',
+              maxWidth: '600px',
+            })}
+          >
+            {identity.statement}
+          </Box>
+        </Box>
+      </Box>
+
+      {/* Timeline */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
+        className={css({
+          padding: '96px 32px',
+          backgroundColor: '{colors.neutral.50}',
+          '@media (max-width: 767px)': {
+            padding: '64px 24px',
+          },
+        })}
+      >
+        <Box maxWidth="760px" width="100%">
+          <Box
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: '0.75rem',
+              letterSpacing: '0.12em',
+              color: '{colors.neutral.400}',
+              textTransform: 'uppercase',
+              marginBottom: '48px',
             })}
           >
             Experience
-          </span>
-
-          <VStack gap="0" alignItems="stretch">
-            {timeline.map((entry) => (
+          </Box>
+          <VStack gap="0" width="100%" alignItems="stretch">
+            {timeline.map((entry, i) => (
               <Flex
-                key={entry.year + entry.company}
-                gap={{ base: '4', md: '8' }}
-                py="4"
-                borderBottom="1px solid"
-                borderColor="border"
-                flexDirection={{ base: 'column', md: 'row' }}
+                key={`${entry.year}-${entry.company}-${i}`}
+                gap="24"
+                className={css({
+                  padding: '24px 0',
+                  borderBottom: '1px solid {colors.neutral.200}',
+                  flexWrap: 'wrap',
+                  '@media (max-width: 600px)': {
+                    flexDirection: 'column',
+                    gap: '8px',
+                  },
+                })}
               >
                 <Box
                   className={css({
-                    fontFamily: 'mono',
-                    fontSize: '12px',
-                    color: 'textMuted',
+                    fontFamily: 'body',
+                    fontSize: '0.75rem',
+                    letterSpacing: '0.08em',
+                    color: '{colors.neutral.400}',
                     minWidth: '120px',
                     flexShrink: 0,
-                    letterSpacing: 'wider',
+                    fontVariantNumeric: 'tabular-nums',
+                    paddingTop: '4px',
                   })}
                 >
                   {entry.year}
@@ -133,11 +125,11 @@ function AboutPage() {
                 <Box flex="1">
                   <Box
                     className={css({
-                      fontFamily: 'body',
-                      fontSize: '16px',
-                      fontWeight: 'medium',
-                      color: 'text',
-                      mb: '1',
+                      fontFamily: 'display',
+                      fontWeight: 'semibold',
+                      fontSize: '1rem',
+                      lineHeight: '1.35',
+                      color: '{colors.neutral.700}',
                     })}
                   >
                     {entry.role}
@@ -145,9 +137,9 @@ function AboutPage() {
                   <Box
                     className={css({
                       fontFamily: 'body',
-                      fontSize: '14px',
-                      color: 'textSecondary',
-                      mb: '2',
+                      fontSize: '0.875rem',
+                      color: '{colors.neutral.500}',
+                      marginTop: '4px',
                     })}
                   >
                     {entry.company}
@@ -155,10 +147,11 @@ function AboutPage() {
                   <Box
                     className={css({
                       fontFamily: 'body',
-                      fontSize: '14px',
-                      color: 'textMuted',
-                      lineHeight: 'normal',
-                      maxWidth: '560px',
+                      fontSize: '0.875rem',
+                      lineHeight: '1.60',
+                      color: '{colors.neutral.400}',
+                      marginTop: '8px',
+                      maxWidth: '540px',
                     })}
                   >
                     {entry.description}
@@ -167,323 +160,279 @@ function AboutPage() {
               </Flex>
             ))}
           </VStack>
-        </div>
-      </section>
+        </Box>
+      </Box>
 
-      {/* Band 3: Capabilities & Education */}
-      <section
+      {/* Education */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
         className={css({
-          width: '100%',
-          bg: 'bandIndex',
-          display: 'flex',
-          justifyContent: 'center',
+          padding: '96px 32px',
+          backgroundColor: '#FAFAF6',
+          '@media (max-width: 767px)': {
+            padding: '64px 24px',
+          },
         })}
       >
-        <div
-          className={css({
-            width: '100%',
-            maxWidth: '1100px',
-            px: { base: '6', md: '12' },
-            py: { base: '16', md: '20' },
-            display: 'grid',
-            gridTemplateColumns: { base: '1fr', md: '2fr 1fr' },
-            gap: { base: '12', md: '16' },
-          })}
-        >
-          <div>
-            <span
-              className={css({
-                fontFamily: 'body',
-                fontSize: '9px',
-                fontWeight: 'semibold',
-                letterSpacing: 'widest',
-                textTransform: 'uppercase',
-                color: 'textMuted',
-                display: 'block',
-                mb: '6',
-              })}
-            >
-              Capabilities
-            </span>
-            <Flex gap="2" flexWrap="wrap">
-              {capabilities.map((cap) => (
-                <Box
-                  key={cap}
-                  className={css({
-                    px: '3',
-                    py: '2',
-                    fontFamily: 'body',
-                    fontSize: '12px',
-                    color: 'textSecondary',
-                    bg: 'bgCard',
-                    border: '1px solid',
-                    borderColor: 'border',
-                    borderRadius: 'sm',
-                    letterSpacing: 'wide',
-                  })}
-                >
-                  {cap}
-                </Box>
-              ))}
-            </Flex>
-          </div>
-
-          <div>
-            <span
-              className={css({
-                fontFamily: 'body',
-                fontSize: '9px',
-                fontWeight: 'semibold',
-                letterSpacing: 'widest',
-                textTransform: 'uppercase',
-                color: 'textMuted',
-                display: 'block',
-                mb: '6',
-              })}
-            >
-              Education
-            </span>
-            <Box
-              className={css({
-                fontFamily: 'body',
-                fontSize: '16px',
-                fontWeight: 'medium',
-                color: 'text',
-                mb: '1',
-              })}
-            >
-              {education.school}
-            </Box>
-            <Box
-              className={css({
-                fontFamily: 'body',
-                fontSize: '14px',
-                color: 'textSecondary',
-                mb: '1',
-              })}
-            >
-              {education.degree}
-            </Box>
-            <Box
-              className={css({
-                fontFamily: 'body',
-                fontSize: '14px',
-                color: 'textMuted',
-                mb: '1',
-              })}
-            >
-              {education.concentration}
-            </Box>
-            <Box
-              className={css({
-                fontFamily: 'mono',
-                fontSize: '12px',
-                color: 'textMuted',
-                letterSpacing: 'wider',
-              })}
-            >
-              {education.years}
-            </Box>
-          </div>
-        </div>
-      </section>
-
-      {/* Band 4: Personal */}
-      <section
-        className={css({
-          width: '100%',
-          bg: 'bandEditorial',
-          display: 'flex',
-          justifyContent: 'center',
-        })}
-      >
-        <div
-          className={css({
-            width: '100%',
-            maxWidth: '1100px',
-            px: { base: '6', md: '12' },
-            py: { base: '16', md: '20' },
-          })}
-        >
-          <span
+        <Box maxWidth="760px" width="100%">
+          <Box
             className={css({
               fontFamily: 'body',
-              fontSize: '9px',
-              fontWeight: 'semibold',
-              letterSpacing: 'widest',
+              fontWeight: 'bold',
+              fontSize: '0.75rem',
+              letterSpacing: '0.12em',
+              color: '{colors.neutral.400}',
               textTransform: 'uppercase',
-              color: 'textMutedOnDark',
-              display: 'block',
-              mb: '8',
+              marginBottom: '48px',
+            })}
+          >
+            Education
+          </Box>
+          <Box
+            className={css({
+              padding: '24px 0',
+              borderBottom: '1px solid {colors.neutral.200}',
+            })}
+          >
+            <Flex gap="24" className={css({ '@media (max-width: 600px)': { flexDirection: 'column', gap: '8px' } })}>
+              <Box
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.08em',
+                  color: '{colors.neutral.400}',
+                  minWidth: '120px',
+                  flexShrink: 0,
+                  fontVariantNumeric: 'tabular-nums',
+                  paddingTop: '4px',
+                })}
+              >
+                {education.years}
+              </Box>
+              <Box flex="1">
+                <Box
+                  className={css({
+                    fontFamily: 'display',
+                    fontWeight: 'semibold',
+                    fontSize: '1rem',
+                    lineHeight: '1.35',
+                    color: '{colors.neutral.700}',
+                  })}
+                >
+                  {education.degree}
+                </Box>
+                <Box
+                  className={css({
+                    fontFamily: 'body',
+                    fontSize: '0.875rem',
+                    color: '{colors.neutral.500}',
+                    marginTop: '4px',
+                  })}
+                >
+                  {education.school}
+                </Box>
+                <Box
+                  className={css({
+                    fontFamily: 'body',
+                    fontSize: '0.875rem',
+                    color: '{colors.neutral.400}',
+                    marginTop: '4px',
+                  })}
+                >
+                  {education.concentration}
+                </Box>
+              </Box>
+            </Flex>
+          </Box>
+        </Box>
+      </Box>
+
+      {/* Capabilities */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
+        className={css({
+          padding: '96px 32px',
+          backgroundColor: '{colors.neutral.50}',
+          '@media (max-width: 767px)': {
+            padding: '64px 24px',
+          },
+        })}
+      >
+        <Box maxWidth="760px" width="100%">
+          <Box
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: '0.75rem',
+              letterSpacing: '0.12em',
+              color: '{colors.neutral.400}',
+              textTransform: 'uppercase',
+              marginBottom: '48px',
+            })}
+          >
+            Capabilities
+          </Box>
+          <Flex flexWrap="wrap" gap="8">
+            {capabilities.map((cap) => (
+              <Box
+                key={cap}
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '0.8125rem',
+                  color: '{colors.neutral.500}',
+                  backgroundColor: 'rgba(90, 173, 165, 0.08)',
+                  padding: '8px 16px',
+                  borderRadius: 'xs',
+                  border: '1px solid {colors.neutral.200}',
+                })}
+              >
+                {cap}
+              </Box>
+            ))}
+          </Flex>
+        </Box>
+      </Box>
+
+      {/* Personal */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
+        className={css({
+          padding: '96px 32px',
+          backgroundColor: '#FAFAF6',
+          '@media (max-width: 767px)': {
+            padding: '64px 24px',
+          },
+        })}
+      >
+        <Box maxWidth="760px" width="100%">
+          <Box
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: '0.75rem',
+              letterSpacing: '0.12em',
+              color: '{colors.neutral.400}',
+              textTransform: 'uppercase',
+              marginBottom: '48px',
             })}
           >
             Personal
-          </span>
-
-          <div
-            className={css({
-              display: 'grid',
-              gridTemplateColumns: { base: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr 1fr' },
-              gap: '8',
-            })}
-          >
-            <div>
-              <Box
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '12px',
-                  letterSpacing: 'wider',
-                  textTransform: 'uppercase',
-                  color: 'textMutedOnDark',
-                  mb: '2',
-                })}
-              >
-                Holes in One
-              </Box>
-              <Box
-                className={css({
-                  fontFamily: 'heading',
-                  fontSize: '28px',
-                  fontWeight: 'semibold',
-                  color: 'textOnDark',
-                  lineHeight: 'snug',
-                })}
-              >
-                {personal.holesInOne}
-              </Box>
-            </div>
-
-            <div>
-              <Box
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '12px',
-                  letterSpacing: 'wider',
-                  textTransform: 'uppercase',
-                  color: 'textMutedOnDark',
-                  mb: '2',
-                })}
-              >
+          </Box>
+          <VStack gap="0" width="100%" alignItems="stretch">
+            <Flex
+              className={css({
+                padding: '16px 0',
+                borderBottom: '1px solid {colors.neutral.200}',
+                gap: '24px',
+              })}
+            >
+              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.400}', minWidth: '120px' })}>
                 Sport
               </Box>
-              <Box
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  color: 'textOnDark',
-                })}
-              >
+              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.600}' })}>
                 {personal.sport}
               </Box>
-            </div>
-
-            <div>
-              <Box
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '12px',
-                  letterSpacing: 'wider',
-                  textTransform: 'uppercase',
-                  color: 'textMutedOnDark',
-                  mb: '2',
-                })}
-              >
+            </Flex>
+            <Flex
+              className={css({
+                padding: '16px 0',
+                borderBottom: '1px solid {colors.neutral.200}',
+                gap: '24px',
+              })}
+            >
+              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.400}', minWidth: '120px' })}>
+                Holes in One
+              </Box>
+              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.600}' })}>
+                {personal.holesInOne}
+              </Box>
+            </Flex>
+            <Flex
+              className={css({
+                padding: '16px 0',
+                borderBottom: '1px solid {colors.neutral.200}',
+                gap: '24px',
+              })}
+            >
+              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.400}', minWidth: '120px' })}>
                 Teams
               </Box>
-              <VStack gap="1" alignItems="flex-start">
-                {personal.teams.map((team) => (
-                  <Box
-                    key={team}
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: '16px',
-                      color: 'textOnDark',
-                    })}
-                  >
-                    {team}
-                  </Box>
-                ))}
-              </VStack>
-            </div>
-
-            <div>
-              <Box
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '12px',
-                  letterSpacing: 'wider',
-                  textTransform: 'uppercase',
-                  color: 'textMutedOnDark',
-                  mb: '2',
-                })}
-              >
+              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.600}' })}>
+                {personal.teams.join(', ')}
+              </Box>
+            </Flex>
+            <Flex
+              className={css({
+                padding: '16px 0',
+                borderBottom: '1px solid {colors.neutral.200}',
+                gap: '24px',
+              })}
+            >
+              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.400}', minWidth: '120px' })}>
                 Current Focus
               </Box>
-              <Box
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  lineHeight: 'normal',
-                  color: 'textOnDark',
-                })}
-              >
+              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.600}' })}>
                 {personal.currentFocus}
               </Box>
-            </div>
-          </div>
-        </div>
-      </section>
+            </Flex>
+          </VStack>
+        </Box>
+      </Box>
 
-      {/* Band 5: Footer */}
-      <footer
+      {/* Footer */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
         className={css({
-          width: '100%',
-          bg: 'bandFooter',
-          display: 'flex',
-          justifyContent: 'center',
+          padding: '64px 48px',
+          backgroundColor: '{colors.neutral.900}',
+          '@media (max-width: 767px)': {
+            padding: '48px 24px',
+          },
         })}
       >
-        <div
-          className={css({
-            width: '100%',
-            maxWidth: '1100px',
-            px: { base: '6', md: '12' },
-            py: '12',
-            display: 'flex',
-            flexDirection: { base: 'column', md: 'row' },
-            justifyContent: 'space-between',
-            alignItems: { base: 'flex-start', md: 'center' },
-            gap: '4',
-          })}
+        <Flex
+          maxWidth="760px"
+          width="100%"
+          justifyContent="space-between"
+          alignItems="center"
+          flexWrap="wrap"
+          gap="16"
         >
-          <Flex gap="6" alignItems="center">
-            <span
-              className={css({
-                fontFamily: 'body',
-                fontSize: '12px',
-                letterSpacing: 'wider',
-                color: 'textMutedOnDark',
-              })}
-            >
-              © 2026 Doug March
-            </span>
-            <a
-              href="/archive"
-              className={css({
-                fontFamily: 'body',
-                fontSize: '12px',
-                letterSpacing: 'wider',
-                color: 'textMutedOnDark',
-                textDecoration: 'none',
-                _hover: { color: 'textSecondaryOnDark', textDecoration: 'underline' },
-                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-              })}
-            >
-              Archive
-            </a>
-          </Flex>
-        </div>
-      </footer>
-    </>
+          <Box className={css({ fontFamily: 'body', fontSize: '0.75rem', letterSpacing: '0.08em', color: '{colors.neutral.400}' })}>
+            © 2026 Doug March
+          </Box>
+          <a
+            href="/archive"
+            className={css({
+              fontFamily: 'body',
+              fontSize: '0.75rem',
+              letterSpacing: '0.08em',
+              color: '{colors.neutral.400}',
+              textDecoration: 'none',
+              padding: '8px 4px',
+              minHeight: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              _hover: { color: '{colors.neutral.200}' },
+              _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px' },
+            })}
+          >
+            Archive
+          </a>
+        </Flex>
+      </Box>
+    </Box>
   )
 }

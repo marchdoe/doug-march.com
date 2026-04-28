@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 88,
+    "s": 10,
+    "l": 50,
+    "name": "warm yellow-green"
+  },
+  "secondary_accent": {
+    "h": 45,
+    "s": 70,
+    "l": 50,
+    "name": "pale gold"
+  },
+  "neutral_family": {
+    "tinted_toward": "yellow-green",
+    "name": "spring paper"
+  },
+  "mood_word": "languid",
+  "color_story": "Warm yellow-green neutrals anchor the palette in mid-spring warmth—not cool violet, but celadon and pale gold flourish as accents. Contrast is high (16:1) but restrained—honoring the waxing gibbous's almost-fullness—creating the tension between April brightness and Tuesday's quiet weight."
+}

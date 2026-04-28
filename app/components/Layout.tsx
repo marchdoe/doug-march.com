@@ -1,13 +1,19 @@
 import type { ReactNode } from 'react'
+import { Box } from '../../styled-system/jsx'
 import { Sidebar } from './Sidebar'
-import { css } from '../../styled-system/css'
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className={css({ display: 'flex', flexDirection: 'column', width: '100%', minHeight: '100vh' })}>
-      {children}
-    </div>
+    <Box
+      display="flex"
+      flexDirection="column"
+      minHeight="100vh"
+      backgroundColor="bg"
+    >
+      <Sidebar />
+      <Box flex="1">
+        {children}
+      </Box>
+    </Box>
   )
 }
-
-export { Sidebar }

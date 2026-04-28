@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { css } from '../../styled-system/css'
 import { Box, Flex, VStack } from '../../styled-system/jsx'
-import { Sidebar } from '../components/Sidebar'
+import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
@@ -12,406 +11,388 @@ function ProjectPage() {
 
   if (!project) {
     return (
-      <>
-        <section
-          className={css({
-            width: '100%',
-            minHeight: '100vh',
-            bg: 'bandHero',
-            display: 'flex',
-            justifyContent: 'center',
-          })}
-        >
-          <div
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        className={css({ minHeight: 'calc(80vh - 56px)', padding: '64px 32px' })}
+      >
+        <Box>
+          <Box
             className={css({
-              width: '100%',
-              maxWidth: '1100px',
-              px: { base: '6', md: '12' },
-              pt: '8',
+              fontFamily: 'display',
+              fontWeight: 'semibold',
+              fontSize: 'clamp(1.5rem, 3vw, 2.313rem)',
+              color: '{colors.neutral.700}',
+              marginBottom: '16px',
             })}
           >
-            <Sidebar />
-            <Box py="20">
-              <h1
-                className={css({
-                  fontFamily: 'heading',
-                  fontSize: '37px',
-                  fontWeight: 'semibold',
-                  color: 'textOnDark',
-                  mb: '4',
-                })}
-              >
-                Project not found
-              </h1>
-              <a
-                href="/"
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '14px',
-                  color: 'accentLight',
-                  textDecoration: 'none',
-                  _hover: { textDecoration: 'underline' },
-                  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-                })}
-              >
-                ← Back to home
-              </a>
-            </Box>
-          </div>
-        </section>
-      </>
-    )
-  }
-
-  return (
-    <>
-      {/* Band 1: Project Hero */}
-      <section
-        className={css({
-          width: '100%',
-          minHeight: { base: '400px', md: '70vh' },
-          bg: 'bandHero',
-          display: 'flex',
-          justifyContent: 'center',
-        })}
-      >
-        <div
-          className={css({
-            width: '100%',
-            maxWidth: '1100px',
-            px: { base: '6', md: '12' },
-            display: 'grid',
-            gridTemplateRows: 'auto 1fr',
-            pt: '8',
-            pb: '16',
-          })}
-        >
-          <Sidebar />
-
-          <Flex alignItems="flex-end" pb="8">
-            <div>
-              <Flex gap="4" mb="4" alignItems="center">
-                <span
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '12px',
-                    letterSpacing: 'widest',
-                    textTransform: 'uppercase',
-                    color: 'textMutedOnDark',
-                  })}
-                >
-                  {project.type}
-                </span>
-                <span
-                  className={css({
-                    fontFamily: 'mono',
-                    fontSize: '12px',
-                    color: 'textMutedOnDark',
-                  })}
-                >
-                  {project.year}
-                </span>
-              </Flex>
-              <h1
-                className={css({
-                  fontFamily: 'heading',
-                  fontSize: { base: '37px', md: '50px' },
-                  fontWeight: 'semibold',
-                  lineHeight: 'snug',
-                  letterSpacing: 'tight',
-                  color: 'textOnDark',
-                  mb: '6',
-                })}
-              >
-                {project.title}
-              </h1>
-              {project.role && (
-                <p
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '16px',
-                    lineHeight: 'normal',
-                    color: 'textSecondaryOnDark',
-                    mb: '2',
-                  })}
-                >
-                  Role: {project.role}
-                </p>
-              )}
-              {(project.externalUrl || project.liveUrl) && (
-                <a
-                  href={project.liveUrl || project.externalUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '14px',
-                    fontWeight: 'medium',
-                    letterSpacing: 'wider',
-                    color: 'accentLight',
-                    textTransform: 'uppercase',
-                    textDecoration: 'none',
-                    _hover: { color: 'textOnDark', textDecoration: 'underline' },
-                    _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-                  })}
-                >
-                  Visit site →
-                </a>
-              )}
-            </div>
-          </Flex>
-        </div>
-      </section>
-
-      {/* Band 2: Project Detail */}
-      <section
-        className={css({
-          width: '100%',
-          bg: 'bandFeatured',
-          display: 'flex',
-          justifyContent: 'center',
-        })}
-      >
-        <div
-          className={css({
-            width: '100%',
-            maxWidth: '1100px',
-            px: { base: '6', md: '12' },
-            py: { base: '16', md: '24' },
-          })}
-        >
-          {project.problem && (
-            <Box mb="12">
-              <span
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '9px',
-                  fontWeight: 'semibold',
-                  letterSpacing: 'widest',
-                  textTransform: 'uppercase',
-                  color: 'textMuted',
-                  display: 'block',
-                  mb: '4',
-                })}
-              >
-                Problem
-              </span>
-              <p
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  lineHeight: 'normal',
-                  color: 'text',
-                  maxWidth: '640px',
-                })}
-              >
-                {project.problem}
-              </p>
-            </Box>
-          )}
-
-          {project.approach && (
-            <Box mb="12">
-              <span
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '9px',
-                  fontWeight: 'semibold',
-                  letterSpacing: 'widest',
-                  textTransform: 'uppercase',
-                  color: 'textMuted',
-                  display: 'block',
-                  mb: '4',
-                })}
-              >
-                Approach
-              </span>
-              <p
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  lineHeight: 'normal',
-                  color: 'text',
-                  maxWidth: '640px',
-                })}
-              >
-                {project.approach}
-              </p>
-            </Box>
-          )}
-
-          {project.outcome && (
-            <Box mb="12">
-              <span
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '9px',
-                  fontWeight: 'semibold',
-                  letterSpacing: 'widest',
-                  textTransform: 'uppercase',
-                  color: 'textMuted',
-                  display: 'block',
-                  mb: '4',
-                })}
-              >
-                Outcome
-              </span>
-              <p
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  lineHeight: 'normal',
-                  color: 'text',
-                  maxWidth: '640px',
-                })}
-              >
-                {project.outcome}
-              </p>
-            </Box>
-          )}
-
-          {project.description && !project.problem && (
-            <Box mb="12">
-              <p
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  lineHeight: 'normal',
-                  color: 'text',
-                  maxWidth: '640px',
-                })}
-              >
-                {project.description}
-              </p>
-            </Box>
-          )}
-
-          {project.stack && project.stack.length > 0 && (
-            <Box>
-              <span
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '9px',
-                  fontWeight: 'semibold',
-                  letterSpacing: 'widest',
-                  textTransform: 'uppercase',
-                  color: 'textMuted',
-                  display: 'block',
-                  mb: '4',
-                })}
-              >
-                Stack
-              </span>
-              <Flex gap="2" flexWrap="wrap">
-                {project.stack.map((tech) => (
-                  <Box
-                    key={tech}
-                    className={css({
-                      px: '3',
-                      py: '2',
-                      fontFamily: 'mono',
-                      fontSize: '12px',
-                      color: 'textSecondary',
-                      bg: 'bgCard',
-                      border: '1px solid',
-                      borderColor: 'border',
-                      borderRadius: 'sm',
-                    })}
-                  >
-                    {tech}
-                  </Box>
-                ))}
-              </Flex>
-            </Box>
-          )}
-        </div>
-      </section>
-
-      {/* Band 3: Back link */}
-      <section
-        className={css({
-          width: '100%',
-          bg: 'bandIndex',
-          display: 'flex',
-          justifyContent: 'center',
-        })}
-      >
-        <div
-          className={css({
-            width: '100%',
-            maxWidth: '1100px',
-            px: { base: '6', md: '12' },
-            py: '12',
-          })}
-        >
+            Project not found
+          </Box>
           <a
             href="/"
             className={css({
               fontFamily: 'body',
-              fontSize: '14px',
-              fontWeight: 'medium',
-              letterSpacing: 'wider',
-              color: 'accent',
-              textTransform: 'uppercase',
+              fontSize: '1rem',
+              color: '{colors.celadon.default}',
               textDecoration: 'none',
-              padding: '2',
-              _hover: { color: 'accentDark', textDecoration: 'underline' },
-              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+              _hover: { color: '{colors.celadon.dark}' },
+              _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px' },
             })}
           >
-            ← All projects
+            ← Back home
           </a>
-        </div>
-      </section>
+        </Box>
+      </Box>
+    )
+  }
 
-      {/* Footer */}
-      <footer
+  return (
+    <Box display="flex" flexDirection="column" alignItems="center" width="100%">
+      {/* Hero */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        width="100%"
         className={css({
-          width: '100%',
-          bg: 'bandFooter',
-          display: 'flex',
-          justifyContent: 'center',
+          minHeight: 'calc(60vh - 56px)',
+          padding: '96px 32px',
+          backgroundColor: '#FAFAF6',
+          '@media (max-width: 767px)': {
+            padding: '64px 24px',
+          },
         })}
       >
-        <div
-          className={css({
-            width: '100%',
-            maxWidth: '1100px',
-            px: { base: '6', md: '12' },
-            py: '12',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          })}
-        >
-          <Flex gap="6" alignItems="center">
-            <span
+        <Box maxWidth="760px" width="100%">
+          <a
+            href="/"
+            className={css({
+              fontFamily: 'body',
+              fontSize: '0.75rem',
+              letterSpacing: '0.08em',
+              color: '{colors.neutral.400}',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              minHeight: '44px',
+              marginBottom: '32px',
+              _hover: { color: '{colors.celadon.default}' },
+              _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px' },
+            })}
+          >
+            ← BACK
+          </a>
+          <Flex gap="16" alignItems="baseline" marginBottom="24px" flexWrap="wrap">
+            <Box
               className={css({
                 fontFamily: 'body',
-                fontSize: '12px',
-                letterSpacing: 'wider',
-                color: 'textMutedOnDark',
+                fontSize: '0.75rem',
+                letterSpacing: '0.08em',
+                color: '{colors.neutral.400}',
+                textTransform: 'uppercase',
               })}
             >
-              © 2026 Doug March
-            </span>
-            <a
-              href="/archive"
+              {project.type}
+            </Box>
+            <Box
               className={css({
                 fontFamily: 'body',
-                fontSize: '12px',
-                letterSpacing: 'wider',
-                color: 'textMutedOnDark',
-                textDecoration: 'none',
-                _hover: { color: 'textSecondaryOnDark', textDecoration: 'underline' },
-                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+                fontSize: '0.75rem',
+                letterSpacing: '0.08em',
+                color: '{colors.neutral.400}',
+                fontVariantNumeric: 'tabular-nums',
               })}
             >
-              Archive
-            </a>
+              {project.year}
+            </Box>
           </Flex>
-        </div>
-      </footer>
-    </>
+          <Box
+            className={css({
+              fontFamily: 'display',
+              fontWeight: 'semibold',
+              fontSize: 'clamp(1.75rem, 4vw, 3.125rem)',
+              lineHeight: '1.10',
+              color: '{colors.neutral.700}',
+              marginBottom: '24px',
+            })}
+          >
+            {project.title}
+          </Box>
+          {project.role && (
+            <Box
+              className={css({
+                fontFamily: 'body',
+                fontSize: '0.875rem',
+                color: '{colors.neutral.500}',
+                marginBottom: '8px',
+              })}
+            >
+              Role: {project.role}
+            </Box>
+          )}
+        </Box>
+      </Box>
+
+      {/* Content */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
+        className={css({
+          padding: '96px 32px',
+          backgroundColor: '{colors.neutral.50}',
+          '@media (max-width: 767px)': {
+            padding: '64px 24px',
+          },
+        })}
+      >
+        <Box maxWidth="760px" width="100%">
+          <VStack gap="48" width="100%" alignItems="stretch">
+            {project.problem && (
+              <Box>
+                <Box
+                  className={css({
+                    fontFamily: 'body',
+                    fontWeight: 'bold',
+                    fontSize: '0.75rem',
+                    letterSpacing: '0.12em',
+                    color: '{colors.neutral.400}',
+                    textTransform: 'uppercase',
+                    marginBottom: '16px',
+                  })}
+                >
+                  Problem
+                </Box>
+                <Box
+                  className={css({
+                    fontFamily: 'body',
+                    fontSize: '1rem',
+                    lineHeight: '1.60',
+                    color: '{colors.neutral.600}',
+                    maxWidth: '600px',
+                  })}
+                >
+                  {project.problem}
+                </Box>
+              </Box>
+            )}
+
+            {project.approach && (
+              <Box>
+                <Box
+                  className={css({
+                    fontFamily: 'body',
+                    fontWeight: 'bold',
+                    fontSize: '0.75rem',
+                    letterSpacing: '0.12em',
+                    color: '{colors.neutral.400}',
+                    textTransform: 'uppercase',
+                    marginBottom: '16px',
+                  })}
+                >
+                  Approach
+                </Box>
+                <Box
+                  className={css({
+                    fontFamily: 'body',
+                    fontSize: '1rem',
+                    lineHeight: '1.60',
+                    color: '{colors.neutral.600}',
+                    maxWidth: '600px',
+                  })}
+                >
+                  {project.approach}
+                </Box>
+              </Box>
+            )}
+
+            {project.outcome && (
+              <Box>
+                <Box
+                  className={css({
+                    fontFamily: 'body',
+                    fontWeight: 'bold',
+                    fontSize: '0.75rem',
+                    letterSpacing: '0.12em',
+                    color: '{colors.neutral.400}',
+                    textTransform: 'uppercase',
+                    marginBottom: '16px',
+                  })}
+                >
+                  Outcome
+                </Box>
+                <Box
+                  className={css({
+                    fontFamily: 'body',
+                    fontSize: '1rem',
+                    lineHeight: '1.60',
+                    color: '{colors.neutral.600}',
+                    maxWidth: '600px',
+                  })}
+                >
+                  {project.outcome}
+                </Box>
+              </Box>
+            )}
+
+            {project.description && (
+              <Box>
+                <Box
+                  className={css({
+                    fontFamily: 'body',
+                    fontSize: '1rem',
+                    lineHeight: '1.60',
+                    color: '{colors.neutral.600}',
+                    maxWidth: '600px',
+                  })}
+                >
+                  {project.description}
+                </Box>
+              </Box>
+            )}
+
+            {project.stack && project.stack.length > 0 && (
+              <Box>
+                <Box
+                  className={css({
+                    fontFamily: 'body',
+                    fontWeight: 'bold',
+                    fontSize: '0.75rem',
+                    letterSpacing: '0.12em',
+                    color: '{colors.neutral.400}',
+                    textTransform: 'uppercase',
+                    marginBottom: '16px',
+                  })}
+                >
+                  Stack
+                </Box>
+                <Flex flexWrap="wrap" gap="8">
+                  {project.stack.map((tech) => (
+                    <Box
+                      key={tech}
+                      className={css({
+                        fontFamily: 'body',
+                        fontSize: '0.8125rem',
+                        color: '{colors.neutral.500}',
+                        backgroundColor: 'rgba(90, 173, 165, 0.08)',
+                        padding: '8px 16px',
+                        borderRadius: 'xs',
+                        border: '1px solid {colors.neutral.200}',
+                      })}
+                    >
+                      {tech}
+                    </Box>
+                  ))}
+                </Flex>
+              </Box>
+            )}
+
+            {(project.externalUrl || project.liveUrl || project.githubUrl) && (
+              <Flex gap="16" flexWrap="wrap">
+                {(project.externalUrl || project.liveUrl) && (
+                  <a
+                    href={project.externalUrl || project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={css({
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      fontFamily: 'body',
+                      fontSize: '0.875rem',
+                      fontWeight: 'medium',
+                      color: '#FAFAF6',
+                      backgroundColor: '{colors.celadon.default}',
+                      padding: '12px 24px',
+                      borderRadius: '3px',
+                      minHeight: '44px',
+                      textDecoration: 'none',
+                      transition: 'background-color 200ms ease',
+                      _hover: { backgroundColor: '{colors.celadon.dark}' },
+                      _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px' },
+                    })}
+                  >
+                    Visit Site ↗
+                  </a>
+                )}
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={css({
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      fontFamily: 'body',
+                      fontSize: '0.875rem',
+                      fontWeight: 'medium',
+                      color: '{colors.celadon.default}',
+                      padding: '12px 24px',
+                      border: '1px solid {colors.celadon.default}',
+                      borderRadius: '3px',
+                      minHeight: '44px',
+                      textDecoration: 'none',
+                      transition: 'background-color 200ms ease, color 200ms ease',
+                      _hover: { backgroundColor: '{colors.celadon.default}', color: '#FAFAF6' },
+                      _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px' },
+                    })}
+                  >
+                    GitHub ↗
+                  </a>
+                )}
+              </Flex>
+            )}
+          </VStack>
+        </Box>
+      </Box>
+
+      {/* Footer */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
+        className={css({
+          padding: '64px 48px',
+          backgroundColor: '{colors.neutral.900}',
+          '@media (max-width: 767px)': {
+            padding: '48px 24px',
+          },
+        })}
+      >
+        <Flex
+          maxWidth="760px"
+          width="100%"
+          justifyContent="space-between"
+          alignItems="center"
+          flexWrap="wrap"
+          gap="16"
+        >
+          <Box className={css({ fontFamily: 'body', fontSize: '0.75rem', letterSpacing: '0.08em', color: '{colors.neutral.400}' })}>
+            © 2026 Doug March
+          </Box>
+          <a
+            href="/archive"
+            className={css({
+              fontFamily: 'body',
+              fontSize: '0.75rem',
+              letterSpacing: '0.08em',
+              color: '{colors.neutral.400}',
+              textDecoration: 'none',
+              padding: '8px 4px',
+              minHeight: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              _hover: { color: '{colors.neutral.200}' },
+              _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px' },
+            })}
+          >
+            Archive
+          </a>
+        </Flex>
+      </Box>
+    </Box>
   )
 }

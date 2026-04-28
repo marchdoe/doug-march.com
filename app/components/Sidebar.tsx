@@ -1,78 +1,95 @@
-import logoSvg from '../assets/logo.svg'
+import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Flex, Box } from '../../styled-system/jsx'
+import logoSvg from '../assets/logo.svg'
 
 export function Sidebar() {
   return (
-    <nav
+    <Box
+      position="sticky"
+      top="0"
+      zIndex={100}
+      width="100%"
+      height="56px"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
       className={css({
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: '56px',
-        borderBottom: '1px solid',
-        borderColor: 'borderOnDark',
-        width: '100%',
+        backgroundColor: 'rgba(242, 243, 238, 0.96)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        '@media (prefers-reduced-motion: reduce)': {
+          backdropFilter: 'none',
+        },
       })}
     >
-      <Flex alignItems="center" gap="3">
-        <img
-          src={logoSvg}
-          alt="Doug March logo"
-          className={css({ width: '24px', height: '24px' })}
-        />
-        <a
-          href="/"
-          className={css({
-            fontFamily: 'body',
-            fontSize: '12px',
-            fontWeight: 'semibold',
-            letterSpacing: 'wider',
-            color: 'textMutedOnDark',
-            textTransform: 'uppercase',
-            textDecoration: 'none',
-            _hover: { color: 'textOnDark' },
-          })}
-        >
-          Doug March
-        </a>
+      <Flex
+        width="100%"
+        maxWidth="1040px"
+        px="32"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Flex alignItems="center" gap="12">
+          <a href="/" aria-label="Home" className={css({ display: 'flex', alignItems: 'center' })}>
+            <img src={logoSvg} alt="" width="28" height="28" />
+          </a>
+          <a
+            href="/"
+            className={css({
+              fontSize: '0.75rem',
+              fontFamily: 'body',
+              fontWeight: 'medium',
+              letterSpacing: '0.08em',
+              color: '{colors.neutral.700}',
+              textDecoration: 'none',
+              _hover: { color: '{colors.celadon.default}' },
+              _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px', borderRadius: 'xs' },
+            })}
+          >
+            DOUG MARCH
+          </a>
+        </Flex>
+        <Flex gap="24" alignItems="center">
+          <a
+            href="/"
+            className={css({
+              fontSize: '0.75rem',
+              fontFamily: 'body',
+              fontWeight: 'medium',
+              letterSpacing: '0.08em',
+              color: '{colors.neutral.500}',
+              textDecoration: 'none',
+              padding: '8px 4px',
+              minHeight: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              _hover: { color: '{colors.celadon.default}' },
+              _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px', borderRadius: 'xs' },
+            })}
+          >
+            WORK
+          </a>
+          <a
+            href="/about"
+            className={css({
+              fontSize: '0.75rem',
+              fontFamily: 'body',
+              fontWeight: 'medium',
+              letterSpacing: '0.08em',
+              color: '{colors.neutral.500}',
+              textDecoration: 'none',
+              padding: '8px 4px',
+              minHeight: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              _hover: { color: '{colors.celadon.default}' },
+              _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px', borderRadius: 'xs' },
+            })}
+          >
+            ABOUT
+          </a>
+        </Flex>
       </Flex>
-      <Flex gap="8" alignItems="center">
-        <a
-          href="/"
-          className={css({
-            fontFamily: 'body',
-            fontSize: '12px',
-            fontWeight: 'normal',
-            letterSpacing: 'wider',
-            color: 'textMutedOnDark',
-            textTransform: 'uppercase',
-            textDecoration: 'none',
-            padding: '2',
-            _hover: { color: 'textOnDark', textDecoration: 'none' },
-            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-          })}
-        >
-          Work
-        </a>
-        <a
-          href="/about"
-          className={css({
-            fontFamily: 'body',
-            fontSize: '12px',
-            fontWeight: 'normal',
-            letterSpacing: 'wider',
-            color: 'textMutedOnDark',
-            textTransform: 'uppercase',
-            textDecoration: 'none',
-            padding: '2',
-            _hover: { color: 'textOnDark', textDecoration: 'none' },
-            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-          })}
-        >
-          About
-        </a>
-      </Flex>
-    </nav>
+    </Box>
   )
 }
