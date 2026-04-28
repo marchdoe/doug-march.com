@@ -154,7 +154,15 @@ function buildArchetypeHistory(archiveDir, recentDirs) {
 }
 
 /**
- * Build the hard archetype constraint block to inject into the Design Director prompt.
+ * Build the archetype-history advisory block to inject into the Design Director prompt.
+ *
+ * Variance is informational, not a hard constraint. iter-1 (2026-04-28) showed
+ * the failure mode of hard rules: the brief called for Poster but the 3-day
+ * lockout forbade it, so the Director picked Scroll — variance over fit. The
+ * brief's hero "full-bleed moon" intent suffered. Soft guidance lets fit win
+ * when the signals genuinely demand a recently-used archetype, while still
+ * nudging toward diversity when two archetypes fit equally well.
+ *
  * @param {Array<{date: string, archetype: string}>} history
  * @returns {{ block: string, forbidden: string[], allowed: string[] }}
  */
@@ -164,16 +172,18 @@ function buildArchetypeConstraintPrompt(history) {
   const lines = history.map(h => `  - ${h.date}: ${h.archetype}`).join('\n')
   const last3 = [...new Set(history.slice(0, 3).map(h => h.archetype))]
 
-  let block = `\n\n## Archetype History — MANDATORY CONSTRAINT\n\nRecent archetype usage (newest first):\n${lines}\n\n`
+  let block = `\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n${lines}\n\n`
 
-  let allowed = [...ARCHETYPE_NAMES]
   if (last3.length > 0) {
-    allowed = ARCHETYPE_NAMES.filter(n => !last3.includes(n))
-    block += `**FORBIDDEN TODAY** (used in the last 3 days): **${last3.join(', ')}**\n\n`
-    block += `You MUST choose from the remaining archetypes: ${allowed.join(', ')}. Choosing a forbidden archetype is an error — the spec will be rejected and the director will be re-run with a stricter prompt.`
+    block += `**Recently used** (last 3 days): ${last3.join(', ')}\n\n`
+    block += `Variance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n`
+    block += `- If two archetypes fit equally well, prefer the one NOT in the recent list.\n`
+    block += `- If the brief or signals genuinely call for a recently-used archetype, use it. Don't pick a worse-fitting archetype just to avoid repetition.\n`
+    block += `- If you do pick a recently-used archetype, the visual spec should make the execution materially different from the prior run (different palette commitment, different chassis register, different content emphasis).`
   }
 
-  return { block, forbidden: last3, allowed }
+  // `forbidden` retained for trace logging only — no longer enforced.
+  return { block, forbidden: last3, allowed: [...ARCHETYPE_NAMES] }
 }
 
 /**
@@ -490,30 +500,52 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   const weightsPrompt = `\n\n## Creative Weights (0-10, set by the site owner)\n\nSignals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'The owner wants BOLD, EXPERIMENTAL design today. Push boundaries.' : weights.risk <= 3 ? 'The owner wants SAFE, POLISHED design today. Proven patterns.' : ''}${weights.inspiration >= 7 ? '\nDesign references should HEAVILY influence your compositional choices.' : ''}${weights.signals <= 3 ? '\nSignals are background texture only — do NOT let weather or sports drive the design.' : ''}`
 
-  // Read all prompts and libraries
+  // Read all prompts and design references.
+  // Design references are vendored from pbakaus/impeccable (Apache 2.0) — see
+  // scripts/prompts/impeccable/README.md. They replace the previous library-*.md
+  // files which authored generic guidance; impeccable provides anti-pattern-aware,
+  // OKLCH-native, register-aware design knowledge tuned to fight AI design slop.
   const promptDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'prompts')
+  const refDir = path.join(promptDir, 'impeccable', 'reference')
   const [
     directorPromptRaw,
     specCriticPromptRaw,
     screenshotCriticPromptRaw,
     tokenPromptRaw,
-    designSystemRef, libTypography, libColor, libLayout, libComponents,
+    designSystemRef,
+    refBrand,
+    refTypography,
+    refColor,
+    refSpatial,
+    refResponsive,
+    refInteraction,
+    refCritique,
   ] = await Promise.all([
     readFile(path.join(promptDir, 'design-director.md'), 'utf8'),
     readFile(path.join(promptDir, 'spec-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'screenshot-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'design-system-reference.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-typography.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-color.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-layout.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-components.md'), 'utf8'),
+    readFile(path.join(refDir, 'brand.md'), 'utf8'),
+    readFile(path.join(refDir, 'typography.md'), 'utf8'),
+    readFile(path.join(refDir, 'color-and-contrast.md'), 'utf8'),
+    readFile(path.join(refDir, 'spatial-design.md'), 'utf8'),
+    readFile(path.join(refDir, 'responsive-design.md'), 'utf8'),
+    readFile(path.join(refDir, 'interaction-design.md'), 'utf8'),
+    readFile(path.join(refDir, 'critique.md'), 'utf8'),
   ])
 
-  const specCriticPrompt = specCriticPromptRaw
-  const screenshotCriticPrompt = screenshotCriticPromptRaw
+  // Brand-register declaration. doug-march.com is BRAND register — a personal
+  // portfolio where design IS the product. Inject this into every design agent
+  // so they apply brand-register conventions (expressive composition, committed
+  // color strategy, typographic risk) rather than product-register reflexes
+  // (dense dashboards, restrained palette, generic card grids).
+  const brandRegisterDeclaration = `\n\n## Project Register: BRAND\n\nThis project is BRAND register — a personal portfolio where design IS the product. Apply brand-register conventions throughout. The detailed brand-register reference follows.\n\n${refBrand}`
 
-  // Build system prompts with relevant libraries appended.
+  const specCriticPrompt = `${specCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
+  const screenshotCriticPrompt = `${screenshotCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
+
+  // Build system prompts with relevant references appended.
   // unified-designer base prompt is loaded through buildMessages (single source
   // of truth shared with local-dev path in scripts/generate-redesign.js).
   const { system: unifiedDesignerBasePrompt } = buildMessages({
@@ -522,17 +554,23 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     contentSummary: '',
     currentFiles: [],
   })
-  const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}`
-  // Token Designer no longer authors fonts or fontSizes (chassis owns them),
-  // so library-typography.md is omitted from its system prompt — saves ~47 lines
-  // of dead context and prevents Haiku from reasoning about typography tokens
-  // that the orchestrator will overwrite anyway.
-  const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libColor}`
-  // libTypography is omitted — unified-designer uses font tokens but does not
-  // choose fonts or scale ratios (chassis owns those). The pairing recipes and
-  // ratio table in library-typography.md are dead context here. Director still
-  // gets it for chassis-selection mood matching.
-  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}\n\n${libColor}\n\n${libLayout}\n\n${libComponents}`
+  // Director picks the archetype, visual spec, and chassis. Needs typography
+  // (chassis-selection mood matching), color, spatial composition, and the
+  // brand-register grounding.
+  const directorSystemPrompt = `${directorPromptRaw}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}\n\n${refSpatial}`
+  // Token Designer authors colors and spacing tokens only — chassis owns
+  // typography per token-designer.md's explicit scope. brand.md included for
+  // register grounding; the leading prompt's typography exclusion overrides
+  // any font guidance that bleeds in from brand.md.
+  const tokenSystemPrompt = `${tokenPromptRaw}${brandRegisterDeclaration}\n\n${refColor}\n\n${refSpatial}`
+  // unified-designer writes the actual React/Panda implementation. Gets the
+  // typography/color/spatial/responsive design knowledge stack plus brand.
+  // interaction-design.md was previously loaded here but dropped after
+  // iter-2 (2026-04-28) produced a meta-response failure with ~60KB
+  // assembled system prompt — the portfolio is type-and-image driven,
+  // not form-driven, so interaction patterns earn their absence. Re-add
+  // when forms/focus-state UX surfaces become a genuine concern.
+  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}\n\n${refSpatial}\n\n${refResponsive}`
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')
@@ -742,26 +780,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     chosenChassis = resolveChassisFromDirectorOutput(visualSpec, CHASSIS_CATALOG)
     console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${chosenArchetype ? ` | archetype: ${chosenArchetype}` : ''}${chosenChassis ? ` | chassis: ${chosenChassis.id}` : ''}`)
 
-    // Enforce the FORBIDDEN list programmatically. The prompt threatens
-    // "spec will be rejected" but until now nothing actually rejected it.
-    // Retry director once with an explicit "you violated the constraint"
-    // message; if the retry also picks a forbidden archetype, accept and
-    // log a warning rather than spinning forever.
+    // Variance is now informational, not enforced. Log when the Director
+    // re-uses a recently-used archetype but accept the choice — the prompt
+    // already asks the Director to use diversity as a tiebreaker only,
+    // and to make the execution materially different when reusing. Hard
+    // rejection here was producing variance-over-fit failures (iter-1,
+    // 2026-04-28: brief called for Poster, lockout forced Scroll, hero
+    // moon collapsed to a small CSS circle).
     if (chosenArchetype && forbiddenArchetypes.includes(chosenArchetype)) {
-      console.warn(`  ⚠ Director picked FORBIDDEN archetype "${chosenArchetype}" — retrying with stricter prompt`)
-      const stricterPrompt = `${directorUserPrompt}\n\n---\n\n## CONSTRAINT VIOLATION — RETRY REQUIRED\n\nYour previous response chose **${chosenArchetype}**, which is on the FORBIDDEN list (used in the last 3 days). Choose a different archetype from this exact set: **${allowedArchetypes.join(', ')}**. Any other choice fails the build. Re-emit the complete VISUAL_SPEC with a new archetype.`
-      directorResult = await callAgent('design-director', directorSystemPrompt, stricterPrompt)
-      visualSpec = directorResult._rawResponse || directorResult.rationale || ''
-      const retryArchetype = extractArchetypeFromText(visualSpec)
-      const retryChassis = resolveChassisFromDirectorOutput(visualSpec, CHASSIS_CATALOG)
-      console.log(`  retry visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${retryArchetype ? ` | archetype: ${retryArchetype}` : ''}${retryChassis ? ` | chassis: ${retryChassis.id}` : ''}`)
-      if (retryArchetype && !forbiddenArchetypes.includes(retryArchetype)) {
-        chosenArchetype = retryArchetype
-      } else {
-        console.warn(`  ⚠ Director retry also picked forbidden/unknown archetype — proceeding with "${retryArchetype || chosenArchetype}"`)
-        chosenArchetype = retryArchetype || chosenArchetype
-      }
-      if (retryChassis) chosenChassis = retryChassis
+      console.log(`  ℹ Director reused recently-used archetype "${chosenArchetype}" — accepting (variance is advisory)`)
     }
 
     // Fall back to first catalog entry if Director never produced a valid id.

@@ -21,11 +21,37 @@ import path from 'path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
 
 import { readFile, writeFile } from 'fs/promises'
-import { existsSync, readdirSync } from 'fs'
+import { existsSync, readdirSync, readFileSync } from 'fs'
 import yaml from 'js-yaml'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const MOCK_MODE = process.env.MOCK_MODE === 'true'
+
+// Brand-register system prompt for the brief writer. Loads impeccable's
+// vendored brand and color-and-contrast references so the brief is shaped
+// by anti-AI-slop, brand-register-aware design wisdom from the start —
+// rather than the brief writer biasing toward muted/restrained defaults
+// that downstream agents inherit.
+const IMPECCABLE_REF_DIR = path.join(ROOT, 'scripts', 'prompts', 'impeccable', 'reference')
+const SYSTEM_PROMPT = `You are a creative brief writer for doug-march.com — a personal portfolio site that redesigns itself daily based on environmental signals.
+
+## Project Register: BRAND
+
+This project is BRAND register — design IS the product (a personal portfolio). The expressive voice matters more than dashboard-style efficiency. Apply brand-register conventions throughout: committed color strategies (Committed / Full palette / Drenched), typographic risk, expressive composition. Reject product-register reflexes by default — beige-and-muted-slate, restrained palette, generic card grids.
+
+The detailed brand-register guidance follows. When the brief calls for palette direction, archetype, or typographic character, default toward the bold/committed end of these references unless today's signals genuinely demand restraint (deep winter, blizzard, heavy losses, etc.).
+
+${readFileSync(path.join(IMPECCABLE_REF_DIR, 'brand.md'), 'utf8')}
+
+---
+
+## Color & Contrast Reference
+
+${readFileSync(path.join(IMPECCABLE_REF_DIR, 'color-and-contrast.md'), 'utf8')}
+
+---
+
+Respond with only the requested creative brief in the format specified by the user message. Do not use tools.`
 
 /**
  * Build the signal dump section, structurally filtered based on signal weight.
@@ -280,7 +306,7 @@ These weights (0-10 scale) tell you how much influence each input should have on
  * @param {string} prompt
  * @returns {Promise<string>} the response text
  */
-async function callClaudeCLI(prompt) {
+async function callClaudeCLI(prompt, systemPrompt = SYSTEM_PROMPT) {
   const { spawn } = await import('child_process')
   const { writeFile: writeFileAsync } = await import('fs/promises')
   const { createReadStream } = await import('fs')
@@ -293,6 +319,7 @@ async function callClaudeCLI(prompt) {
 
   console.log('  calling claude CLI (Max plan)...')
   console.log(`  prompt length: ${prompt.length} chars`)
+  console.log(`  system prompt length: ${systemPrompt.length} chars`)
 
   // Strip ANTHROPIC_API_KEY so claude CLI uses Max plan subscription
   const cliEnv = { ...process.env }
@@ -303,7 +330,7 @@ async function callClaudeCLI(prompt) {
     const child = spawn('claude', [
       '-p', '--max-turns', '1', '--tools', '', '--disable-slash-commands',
       '--settings', pipelineSettings,
-      '--system-prompt', 'You are a creative brief writer. Respond with only the requested text. Do not use tools.',
+      '--system-prompt', systemPrompt,
     ], {
       cwd: ROOT,
       env: cliEnv,
@@ -353,18 +380,43 @@ async function callClaudeCLI(prompt) {
  * Call the Anthropic SDK in production mode.
  *
  * @param {string} prompt
+ * @param {string} systemPrompt
+ * @param {Array<{data: string, media_type: string, title?: string}>} [images]
+ *   Optional image content blocks (Awwwards SOTD screenshots). Sent before
+ *   the text prompt so the model treats them as primary references. Per
+ *   Spec 01, these are base64 bytes downloaded once at signal-collection
+ *   time — no day-of fetching from awwwards.com.
  * @returns {Promise<string>} the response text
  */
-async function callAnthropicAPI(prompt) {
+async function callAnthropicAPI(prompt, systemPrompt = SYSTEM_PROMPT, images = []) {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
 
   console.log('  calling Claude API (claude-haiku-4-5-20251001)...')
+  console.log(`  system prompt length: ${systemPrompt.length} chars`)
+  if (images.length > 0) {
+    console.log(`  image content blocks: ${images.length} (${images.map(i => i.title || 'untitled').join(', ')})`)
+  }
+
+  // Build content array: images first (so they're cacheable / referenceable
+  // when the model writes the brief), then the text prompt.
+  const content = [
+    ...images.map(img => ({
+      type: 'image',
+      source: {
+        type: 'base64',
+        media_type: img.media_type,
+        data: img.data,
+      },
+    })),
+    { type: 'text', text: prompt },
+  ]
 
   const response = await client.messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 2048,
-    messages: [{ role: 'user', content: prompt }],
+    system: systemPrompt,
+    messages: [{ role: 'user', content }],
   })
 
   const text = response.content
@@ -428,10 +480,13 @@ async function main() {
     console.log(`  run #${runNumber} today — will enforce archetype diversity`)
   }
 
-  // Step 1.7: Collect Awwwards site descriptions (text only — no screenshots)
-  // Screenshots are too large for the interpret-signals prompt (2MB+ PNGs become 3MB+ base64).
-  // The unified designer receives screenshots separately via the reference system.
+  // Step 1.7: Collect Awwwards site references. Per Spec 01, screenshot bytes
+  // are downloaded once at signal-collection time (scripts/signals/awwwards.js)
+  // and surface here as base64 + media_type. The API path sends them as
+  // native image content blocks; the CLI/MOCK path stays text-only because
+  // CLI stdin can't carry binary blocks reliably.
   let designReferenceImages = []
+  let designReferenceImageBlocks = []
   const awwwardsSites = signals?.awwwards?.sites_of_the_day
   if (Array.isArray(awwwardsSites)) {
     const sitesWithScreenshots = awwwardsSites.filter(s => typeof s === 'object' && s.title)
@@ -440,9 +495,19 @@ async function main() {
         title: site.title,
         description: site.description || '',
       })
+      // If signal-collection downloaded the bytes, prepare an image block
+      // for the API path. Missing bytes degrade gracefully to text-only.
+      if (site.screenshot_b64 && site.screenshot_media_type) {
+        designReferenceImageBlocks.push({
+          title: site.title,
+          data: site.screenshot_b64,
+          media_type: site.screenshot_media_type,
+        })
+      }
     }
     if (designReferenceImages.length > 0) {
       console.log(`  awwwards references: ${designReferenceImages.map(s => s.title).join(', ')}`)
+      console.log(`  with image bytes: ${designReferenceImageBlocks.length} of ${designReferenceImages.length}`)
     }
   }
 
@@ -459,7 +524,7 @@ async function main() {
     if (MOCK_MODE) {
       responseText = await callClaudeCLI(prompt)
     } else {
-      responseText = await callAnthropicAPI(prompt)
+      responseText = await callAnthropicAPI(prompt, SYSTEM_PROMPT, designReferenceImageBlocks)
     }
   } catch (err) {
     console.error(`  Error calling Claude: ${err.message}`)

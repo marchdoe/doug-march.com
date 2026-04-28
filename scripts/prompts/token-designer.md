@@ -31,7 +31,7 @@ Apply the guidance for the named archetype. If no archetype is specified, use th
 
 ## Design Fundamentals
 
-- **One dominant accent** — Choose one accent and let it carry the page at full saturation. Add a second accent only when the brief demands signal contrast (alert, status, complementary mood). The accent must have real presence — not a whisper at 0.2 opacity. See `library-color.md` for the neutral and accent shade ladders.
+- **One dominant accent** — Choose one accent and let it carry the page at full saturation. Add a second accent only when the brief demands signal contrast (alert, status, complementary mood). The accent must have real presence — not a whisper at 0.2 opacity. See the loaded Color & Contrast reference for tinted-neutral and accent palette structure.
 - **Consistent spacing** — Define a spacing scale (4px, 8px, 16px, 24px, 32px, 48px, 64px). Every spacing value in the system must come from this scale.
 - **Line heights and letter spacings** — define `lineHeights` (tight, snug, normal, loose) and `letterSpacings` (tight, normal, wide, wider, widest) tokens. These pair with the chassis fonts but you choose the values.
 - **Semantic tokens** — Map your raw color tokens to semantic names (bg, text, accent, border) with light/dark variants. Components will reference these, not raw colors.
