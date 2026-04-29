@@ -1204,10 +1204,17 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const failingAgent = identifyFailingAgent(buildResult.error)
   console.log(`  identified failing agent: ${failingAgent}`)
 
-  // Restore only the failing agent's files
+  // Restore only the failing agent's files. Art Director files are
+  // intentionally NEVER restored here — by design (see retryAgents comment
+  // below), build failures involving preset.ts are handled by the Unified
+  // Designer adapting to today's tokens, not by reverting the preset and
+  // re-running the Art Director. Reverting would leave preset.ts and
+  // styled-system/ incoherent (codegen is not re-run in Phase 5) and
+  // produce archive/disk-state divergence.
   const filesToRestore = new Map()
   for (const [filePath, content] of originalBackup.entries()) {
     const owner = FILE_OWNERSHIP[filePath]
+    if (owner === 'art-director') continue
     if (failingAgent === 'both' || owner === failingAgent) {
       filesToRestore.set(filePath, content)
     }
