@@ -1,95 +1,105 @@
-import { Box, Flex } from '../../styled-system/jsx'
-import { css } from '../../styled-system/css'
 import logoSvg from '../assets/logo.svg'
+import { css } from '../../styled-system/css'
+import { Flex, Box } from '../../styled-system/jsx'
 
 export function Sidebar() {
   return (
-    <Box
-      position="sticky"
-      top="0"
-      zIndex={100}
-      width="100%"
-      height="56px"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
+    <header
       className={css({
-        backgroundColor: 'rgba(242, 243, 238, 0.96)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        '@media (prefers-reduced-motion: reduce)': {
-          backdropFilter: 'none',
-        },
+        width: '100%',
+        height: { base: 'auto', md: '64px' },
+        borderBottom: '1px solid',
+        borderColor: 'border',
+        bg: 'bg',
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        display: 'flex',
+        flexDirection: { base: 'column', md: 'row' },
+        alignItems: { base: 'flex-start', md: 'center' },
+        justifyContent: 'space-between',
+        px: { base: 'md', md: '2xl' },
+        py: { base: 'sm', md: '0' },
+        gap: { base: 'xs', md: '0' },
       })}
     >
-      <Flex
-        width="100%"
-        maxWidth="1040px"
-        px="32"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Flex alignItems="center" gap="12">
-          <a href="/" aria-label="Home" className={css({ display: 'flex', alignItems: 'center' })}>
-            <img src={logoSvg} alt="" width="28" height="28" />
-          </a>
-          <a
-            href="/"
-            className={css({
-              fontSize: '0.75rem',
-              fontFamily: 'body',
-              fontWeight: 'medium',
-              letterSpacing: '0.08em',
-              color: '{colors.neutral.700}',
-              textDecoration: 'none',
-              _hover: { color: '{colors.celadon.default}' },
-              _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px', borderRadius: 'xs' },
-            })}
+      <Flex align="center" gap="sm" flexShrink={0}>
+        <a href="/" aria-label="Home" className={css({ display: 'flex', alignItems: 'center' })}>
+          <img
+            src={logoSvg}
+            alt="Doug March logo"
+            className={css({ width: '28px', height: '28px' })}
+          />
+        </a>
+        <Box>
+          <Box
+            fontSize="12px"
+            letterSpacing="widest"
+            color="text-secondary"
+            fontFamily="body"
+            fontWeight="medium"
+            lineHeight="tight"
           >
             DOUG MARCH
-          </a>
-        </Flex>
-        <Flex gap="24" alignItems="center">
-          <a
-            href="/"
-            className={css({
-              fontSize: '0.75rem',
-              fontFamily: 'body',
-              fontWeight: 'medium',
-              letterSpacing: '0.08em',
-              color: '{colors.neutral.500}',
-              textDecoration: 'none',
-              padding: '8px 4px',
-              minHeight: '44px',
-              display: 'flex',
-              alignItems: 'center',
-              _hover: { color: '{colors.celadon.default}' },
-              _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px', borderRadius: 'xs' },
-            })}
+          </Box>
+          <Box
+            fontSize="9px"
+            letterSpacing="widest"
+            color="text-muted"
+            fontFamily="body"
+            lineHeight="snug"
           >
-            WORK
-          </a>
-          <a
-            href="/about"
-            className={css({
-              fontSize: '0.75rem',
-              fontFamily: 'body',
-              fontWeight: 'medium',
-              letterSpacing: '0.08em',
-              color: '{colors.neutral.500}',
-              textDecoration: 'none',
-              padding: '8px 4px',
-              minHeight: '44px',
-              display: 'flex',
-              alignItems: 'center',
-              _hover: { color: '{colors.celadon.default}' },
-              _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px', borderRadius: 'xs' },
-            })}
-          >
-            ABOUT
-          </a>
-        </Flex>
+            DESIGNER · DEVELOPER
+          </Box>
+        </Box>
       </Flex>
-    </Box>
+
+      <Flex
+        as="nav"
+        gap="lg"
+        align="center"
+        className={css({
+          '& a': {
+            fontSize: '12px',
+            letterSpacing: 'wider',
+            color: 'text-secondary',
+            fontFamily: 'body',
+            textDecoration: 'none',
+            padding: 'sm',
+            minHeight: '44px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            _hover: {
+              textDecoration: 'underline',
+              textDecorationColor: 'accent',
+              textUnderlineOffset: '4px',
+              color: 'accent-light',
+            },
+            _focus: {
+              outline: '1.5px solid',
+              outlineColor: 'accent',
+              outlineOffset: '3px',
+            },
+          },
+        })}
+      >
+        <a href="/">Work</a>
+        <a href="/about">About</a>
+      </Flex>
+
+      <Box
+        display={{ base: 'none', lg: 'flex' }}
+        alignItems="center"
+        gap="lg"
+        flexShrink={0}
+      >
+        <Box fontSize="9px" letterSpacing="widest" color="text-muted" fontFamily="body">
+          ◉ FULL MOON · 96.5%
+        </Box>
+        <Box fontSize="9px" letterSpacing="widest" color="text-muted" fontFamily="body">
+          APR 29 2026
+        </Box>
+      </Box>
+    </header>
   )
 }

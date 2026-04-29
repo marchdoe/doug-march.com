@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 280,
+    "s": 6,
+    "l": 50,
+    "name": "cool violet"
+  },
+  "secondary_accent": {
+    "h": 140,
+    "s": 31,
+    "l": 52,
+    "name": "spring moss"
+  },
+  "neutral_family": {
+    "tinted_toward": "violet",
+    "name": "moonlit neutrals"
+  },
+  "mood_word": "lucid",
+  "color_story": "Hue 280° violet-tints all neutrals at 5–8% saturation to mirror moonlight through spring air—imperceptibly warm-free. Page void (#09080B) against near-white text (#F0EDF6) creates ~19:1 contrast matching the full moon's visibility. Spring moss (H 140°, S ~31%) deployed at full strength exactly once per viewport (2px rule above featured work); elsewhere reduced opacity or interactive only. No second accent hue—the violet cast of the neutrals provides all secondary color energy. Discipline befits the full moon's clarity and Wednesday's focused midweek tempo."
+}
