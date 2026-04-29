@@ -65,9 +65,41 @@ Are there visible technical or layout problems?
 
 Failures: Project title wrapping into three lines and overflowing its card. Sidebar and main content overlapping. A section with 300px of empty space before the next heading.
 
+### 6. Canvas Utilization
+
+Does the design *use the canvas*, or does the active content sit in a narrow column with large unexplained empty rails?
+
+The chosen archetype's density floor must be visible in the render:
+- **Specimen / Poster** — type or hero fills the page at ≥70% width AND height. A specimen day with body-article-scale headlines on a sea of cream is a failure regardless of how nice the typography looks.
+- **Broadsheet / Index** — dense, multi-column or tightly-set list, ≥80% canvas utilization. A single narrow column of text with a 60% empty rail is a failure.
+- **Scroll** — committed column at ≥80% viewport width.
+- **Split** — two active halves, no center void.
+- **Stack** — full-width bands, edge to edge.
+- **Gallery Wall** — blocks across the full canvas, not clustered.
+
+A desktop render where active content occupies less than ~70% of the viewport width is an under-execution unless the empty space is *active* (drenched color field, atmospheric gradient, hero motion). A field of plain background color with no role is dead canvas.
+
+Failures: A 40%-wide column of body text on the left half of the page with a 60% empty cream rail on the right. Specimen archetype but headline rendered at body-article scale. Index archetype but only one list, narrow, in a single column. When this fails, owner is **layout-architect**.
+
+### 7. Hero Phrase Execution
+
+The Art Director nominated a specific hero phrase and stated the intended scale (e.g., "marquee, ≥10vw," "specimen-scale, fills the hero zone"). The render must execute it at that scale.
+
+Check:
+- **Is the hero phrase actually present in the render?** The phrase from `===HERO_COPY===` should appear somewhere on the homepage.
+- **Is it rendered at the intended scale?** A "marquee" or "specimen-scale" phrase should dominate the viewport — type at 8–15vw, taking up multiple lines or extending edge-to-edge. A phrase nominated as the hero anchor that ends up at body-article size on the page is a failure.
+- **Is it the visual entry point?** When you first look at the screenshot, does your eye land on the hero phrase? If a project card or sidebar element outranks it visually, the phrase has lost the page.
+
+Failures:
+- The Art Director nominated "There is no limit to what a man can do" as a marquee hero phrase, but the render shows it at the same size as project titles.
+- The hero phrase appears, but only inside the sidebar.
+- The hero phrase is missing entirely from the rendered HTML.
+
+When this fails, owner is **unified-designer**.
+
 ## Verdict Rules
 
-**SHIP** if: All five areas are acceptable. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
+**SHIP** if: All six areas are acceptable. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
 
 **REVISE** if: One or more areas have a clear, specific failure that meaningfully degrades the experience or contradicts the spec. Identify exactly what is wrong and who is responsible.
 
