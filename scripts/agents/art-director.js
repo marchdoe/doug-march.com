@@ -10,14 +10,8 @@
  * The orchestrator (scripts/design-agents.js) handles backup/restore,
  * Phase 2 (Unified Designer), build validation, and archive.
  */
-import { readFile } from 'fs/promises'
-import path from 'path'
-import { fileURLToPath } from 'url'
 import { callClaudeCLI } from '../utils/claude-cli.js'
 import { parseDelimiterResponse } from '../utils/delimiter-parser.js'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const ROOT = path.resolve(__dirname, '../..')
 const ARCHETYPE_NAMES = new Set([
   'Gallery Wall', 'Broadsheet', 'Specimen', 'Poster', 'Scroll', 'Split', 'Stack', 'Index',
 ])
@@ -52,6 +46,7 @@ export function buildArtDirectorUserPrompt({
 
 function formatSignalsAsYaml(signals) {
   return Object.entries(signals)
+    .filter(([, v]) => v !== undefined)
     .map(([k, v]) => typeof v === 'string' ? `${k}: '${v}'` : `${k}: ${JSON.stringify(v)}`)
     .join('\n')
 }
