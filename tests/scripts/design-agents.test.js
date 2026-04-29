@@ -317,6 +317,41 @@ describe('parseDelimiterResponse', () => {
     expect(files).toHaveLength(1)
     expect(files[0].path).toBe('valid.tsx')
   })
+
+  it('parses Art Director hero copy, archetype, chassis, visual spec, and self-check blocks', () => {
+    const input = [
+      '===HERO_COPY===',
+      'There is no limit to what a man can do',
+      '===HERO_RATIONALE===',
+      'Reagan quote anchors the day.',
+      '===ARCHETYPE===',
+      'Specimen',
+      '===CHASSIS_ID===',
+      'big-shoulders-atkinson',
+      '===VISUAL_SPEC===',
+      '## Color Specification\n- Primary hue: 18°',
+      '===SELF_CHECK===',
+      '1. Hero quotability: Yes — universally quotable',
+      '===FILE:elements/preset.ts===',
+      "export const elementsPreset = 'stub'",
+      '===RATIONALE===',
+      'Phrase → Specimen → big-shoulders → terracotta.',
+      '===DESIGN_BRIEF===',
+      'Terracotta marquee.',
+      '',
+    ].join('\n')
+    const r = parseDelimiterResponse(input)
+    expect(r.hero_copy).toBe('There is no limit to what a man can do')
+    expect(r.hero_rationale).toBe('Reagan quote anchors the day.')
+    expect(r.archetype).toBe('Specimen')
+    expect(r.chassis_id).toBe('big-shoulders-atkinson')
+    expect(r.visual_spec).toContain('Primary hue: 18°')
+    expect(r.self_check).toContain('Hero quotability: Yes')
+    expect(r.files).toHaveLength(1)
+    expect(r.files[0].path).toBe('elements/preset.ts')
+    expect(r.rationale).toBe('Phrase → Specimen → big-shoulders → terracotta.')
+    expect(r.design_brief).toBe('Terracotta marquee.')
+  })
 })
 
 describe('agent prompt files include anti-anchoring language', () => {

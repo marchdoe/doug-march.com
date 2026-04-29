@@ -45,6 +45,8 @@ import {
   getChassisById,
   formatChassisCatalogForPrompt,
 } from './utils/chassis.js'
+import { parseDelimiterResponse } from './utils/delimiter-parser.js'
+export { parseDelimiterResponse }
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -184,56 +186,6 @@ function buildArchetypeConstraintPrompt(history) {
 
   // `forbidden` retained for trace logging only — no longer enforced.
   return { block, forbidden: last3, allowed: [...ARCHETYPE_NAMES] }
-}
-
-/**
- * Parse a Claude CLI response in the line-anchored ===FILE:path=== format.
- *
- * Delimiters must appear at the start of a line. This prevents corruption
- * when a file's content legitimately contains the string ===FILE:path===
- * (e.g., in a comment or documentation string). The previous unanchored
- * regex would split such files in two and emit a spurious second "file"
- * with the inner path as its name.
- *
- * @param {string} result - raw response text
- * @returns {{ files: Array<{path: string, content: string}>, rationale?: string, design_brief?: string, color_scheme?: object }}
- */
-export function parseDelimiterResponse(result) {
-  const files = []
-  // JavaScript regex has no \Z (end of string in multiline mode), so we
-  // append a sentinel delimiter that the lookahead can match as a substitute.
-  const sentinel = '\n===END_SENTINEL===\n'
-  const withSentinel = result + sentinel
-  const filePattern = /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===END_SENTINEL===)/gm
-  let match
-  while ((match = filePattern.exec(withSentinel)) !== null) {
-    const filePath = match[1].trim()
-    const content = match[2].trim()
-    if (filePath && content) {
-      files.push({ path: filePath, content })
-    }
-  }
-
-  let rationale
-  const rationaleMatch = withSentinel.match(/^===RATIONALE===\s*\n([\s\S]*?)(?=^===)/m)
-  if (rationaleMatch) rationale = rationaleMatch[1].trim()
-
-  let design_brief
-  const briefMatch = withSentinel.match(/^===DESIGN_BRIEF===\s*\n([\s\S]*?)(?=^===)/m)
-  if (briefMatch) design_brief = briefMatch[1].trim()
-
-  let color_scheme
-  const schemeMatch = withSentinel.match(/^===COLOR_SCHEME===\s*\n([\s\S]*?)(?=^===)/m)
-  if (schemeMatch) {
-    const raw = schemeMatch[1].trim()
-    try {
-      color_scheme = JSON.parse(raw)
-    } catch {
-      color_scheme = { __parse_error: true, raw }
-    }
-  }
-
-  return { files, rationale, design_brief, color_scheme }
 }
 
 // ---------------------------------------------------------------------------
