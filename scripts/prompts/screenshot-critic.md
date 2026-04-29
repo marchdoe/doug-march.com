@@ -99,7 +99,7 @@ When this fails, owner is **unified-designer**.
 
 ## Verdict Rules
 
-**SHIP** if: All six areas are acceptable. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
+**SHIP** if: All seven areas are acceptable. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
 
 **REVISE** if: One or more areas have a clear, specific failure that meaningfully degrades the experience or contradicts the spec. Identify exactly what is wrong and who is responsible.
 
