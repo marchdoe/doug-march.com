@@ -432,7 +432,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     signals: parseInt(process.env.WEIGHT_SIGNALS || '5'),
     inspiration: parseInt(process.env.WEIGHT_INSPIRATION || '5'),
     ratings: parseInt(process.env.WEIGHT_RATINGS || '5'),
-    risk: parseInt(process.env.WEIGHT_RISK || '5'),
+    risk: parseInt(process.env.WEIGHT_RISK || '8'),
   }
   console.log(`  creative weights: signals=${weights.signals} inspiration=${weights.inspiration} ratings=${weights.ratings} risk=${weights.risk}`)
 

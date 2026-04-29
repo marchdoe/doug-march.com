@@ -25,14 +25,12 @@ jobs:
       contents: write
       issues: write  # for failure notification issues
     env:
-      # Push every nightly run into impeccable's "BOLD, EXPERIMENTAL" register
-      # by default. Risk 7 activates the bold-design directive across all
-      # agents (interpret-signals brief writer, design-director, token-designer,
-      # unified-designer) without going so far that the model picks the most
-      # extreme axes. iter-3 (2026-04-28) at risk 8 produced the drenched
-      # terracotta Specimen — risk 7 sits a notch back from there but well
-      # above the iter-1 dark-monochrome floor.
-      WEIGHT_RISK: '7'
+      # Risk 8 is the new default after the 2026-04-28 iter-3 finding:
+      # iter-3's drenched terracotta Specimen happened at risk 8 and was
+      # the gold standard. Risk 7 sat noticeably below that. The Art
+      # Director's hero-phrase-first methodology benefits from a higher
+      # risk floor — committed gestures, not hedges.
+      WEIGHT_RISK: '8'
 
     steps:
       - uses: actions/checkout@v4
