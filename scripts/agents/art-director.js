@@ -103,8 +103,15 @@ export function validateArtDirectorResult(parsed) {
 export async function runArtDirector(ctx) {
   const userPrompt = buildArtDirectorUserPrompt(ctx)
 
+  // 20-minute total / 15-minute stall headroom. AD calls in production
+  // have run 7:45 (run 1) and 8:55 (run 2) at 5–9 weight settings; a
+  // higher-inspiration prompt with the export-name guard added pushed
+  // run 3 past the original 10-minute hard cap. Match the shape of the
+  // unified-designer config (30 min total / 25 min stall) one register
+  // tighter — the AD prompt is smaller and shouldn't need that much.
   const result = await callClaudeCLI('art-director', ctx.systemPrompt, userPrompt, {
-    timeoutMs: 600000,
+    timeoutMs: 1200000,
+    stallTimeoutMs: 900000,
     model: 'sonnet',
   })
 
