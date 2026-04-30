@@ -5,8 +5,11 @@
  *
  * Runs all stages in sequence:
  *   1. Collect signals (scripts/collect-signals.js) — skipped if already collected today
- *   2. Interpret signals (scripts/interpret-signals.js)
+ *   2. Collect references (scripts/collect-references.js) — non-blocking
  *   3. Design + Build + Archive (scripts/daily-redesign.js)
+ *
+ * The historical "Interpret Signals" stage was removed in the Art Director
+ * pipeline (2026-04-29) — the Art Director ingests raw signals directly.
  */
 
 import { execSync } from 'child_process'
@@ -26,9 +29,8 @@ function run(label, command) {
 
 try {
   run('Stage 1: Collect Signals', 'node scripts/collect-signals.js')
-  run('Stage 2: Interpret Signals', 'node scripts/interpret-signals.js')
   try {
-    run('Stage 2.5: Collect References', 'node scripts/collect-references.js')
+    run('Stage 2: Collect References', 'node scripts/collect-references.js')
   } catch (err) {
     console.warn('Reference collection failed (non-blocking):', err.message)
   }
