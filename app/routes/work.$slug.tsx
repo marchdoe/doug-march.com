@@ -1,402 +1,286 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Box, Flex, Grid } from '../../styled-system/jsx'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
 function ProjectPage() {
   const { slug } = Route.useParams()
-  const project = projects.find((p) => p.slug === slug)
+  const project = projects.find(p => p.slug === slug)
 
   if (!project) {
     return (
-      <Box p="3xl" maxW="1200px" mx="auto">
-        <Box fontSize="21px" fontFamily="heading" color="text">
-          Project not found.
-        </Box>
-        <Box mt="md">
-          <a
-            href="/"
-            className={css({
-              fontSize: '14px',
-              fontFamily: 'body',
-              color: 'accent',
-              padding: 'sm',
-              minHeight: '44px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              _hover: { color: 'accent-light' },
-              _focus: { outline: '1.5px solid', outlineColor: 'accent', outlineOffset: '3px' },
-            })}
-          >
-            ← Back to work
-          </a>
-        </Box>
-      </Box>
+      <div className={css({ maxWidth: '1120px', margin: '0 auto', padding: '48px' })}>
+        <h1 className={css({ fontFamily: 'heading', fontSize: '24px', color: 'text' })}>Project not found</h1>
+        <a href="/" className={css({ fontFamily: 'body', fontSize: '16px', color: 'accent', marginTop: '16px', display: 'inline-block', _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' } })}>
+          ← Back home
+        </a>
+      </div>
     )
   }
 
   return (
-    <Box maxW="1200px" mx="auto" w="100%">
-      <Grid
-        className={css({
-          gridTemplateColumns: { base: '1fr', lg: '2fr 1fr' },
-        })}
-      >
-        {/* Main content */}
-        <Box
-          className={css({
-            borderRight: { base: 'none', lg: '1px solid' },
-            borderColor: 'border',
-            p: { base: 'lg', md: '2xl', lg: '3xl 2xl' },
-          })}
-        >
-          {/* Breadcrumb */}
-          <Flex gap="sm" align="center" mb="3xl">
-            <a
-              href="/"
-              className={css({
-                fontSize: '12px',
-                fontFamily: 'body',
-                color: 'text-muted',
-                letterSpacing: 'wider',
-                textDecoration: 'none',
-                padding: 'sm',
-                minHeight: '44px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                _hover: { color: 'accent-light' },
-                _focus: { outline: '1.5px solid', outlineColor: 'accent', outlineOffset: '3px' },
-              })}
-            >
-              Work
-            </a>
-            <Box fontSize="12px" color="text-muted">/</Box>
-            <Box fontSize="12px" fontFamily="body" color="text-secondary" letterSpacing="wider">
-              {project.title}
-            </Box>
-          </Flex>
+    <div className={css({
+      maxWidth: '1120px',
+      margin: '0 auto',
+      padding: { base: '32px 24px 64px', md: '48px 48px 96px' },
+    })}>
+      <div className={css({
+        display: 'grid',
+        gridTemplateColumns: { base: '1fr', md: 'repeat(12, 1fr)' },
+        columnGap: '24px',
+        rowGap: '48px',
+      })}>
 
-          {/* Title block */}
-          <Box borderTop="2px solid" borderColor="accent" pt="lg" mb="3xl">
-            <Box
-              fontSize="clamp(28px, 5vw, 50px)"
-              fontFamily="heading"
-              fontWeight="semibold"
-              lineHeight="tight"
-              letterSpacing="tight"
-              color="text"
-              mb="md"
-            >
-              {project.title}
-            </Box>
-            <Flex gap="lg" flexWrap="wrap">
-              <Box fontSize="12px" fontFamily="body" color="text-muted" letterSpacing="widest" textTransform="uppercase">
-                {project.type}
-              </Box>
-              <Box fontSize="12px" fontFamily="mono" color="text-muted" letterSpacing="wider">
-                {project.year}
-              </Box>
-              {project.role && (
-                <Box fontSize="12px" fontFamily="body" color="text-muted" letterSpacing="wider">
-                  {project.role}
-                </Box>
-              )}
-            </Flex>
-          </Box>
-
-          {/* Problem */}
+        {/* Project header */}
+        <div className={css({
+          gridColumn: { base: '1', md: '1 / 9' },
+        })}>
+          <div className={css({
+            fontFamily: 'body',
+            fontSize: '12px',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'text-muted',
+            marginBottom: '16px',
+            lineHeight: 'loose',
+          })}>
+            {project.type} · {project.year}
+          </div>
+          <h1 className={css({
+            fontFamily: 'heading',
+            fontSize: { base: '32px', md: 'clamp(36px, 5vw, 56px)' },
+            fontWeight: 'bold',
+            lineHeight: 'tight',
+            letterSpacing: 'tight',
+            color: 'text',
+            marginBottom: '24px',
+          })}>
+            {project.title}
+          </h1>
           {project.problem && (
-            <Box mb="xl">
-              <Box
-                fontSize="11px"
-                letterSpacing="widest"
-                color="text-muted"
-                fontFamily="body"
-                textTransform="uppercase"
-                mb="sm"
-              >
-                Problem
-              </Box>
-              <Box
-                fontSize="16px"
-                fontFamily="body"
-                lineHeight="normal"
-                color="text-secondary"
-                maxW="600px"
-              >
-                {project.problem}
-              </Box>
-            </Box>
+            <p className={css({
+              fontFamily: 'body',
+              fontSize: '18px',
+              lineHeight: 'normal',
+              color: 'text-secondary',
+              maxWidth: '600px',
+              letterSpacing: 'wide',
+            })}>
+              {project.problem}
+            </p>
           )}
+        </div>
 
-          {/* Approach */}
-          {project.approach && (
-            <Box mb="xl">
-              <Box
-                fontSize="11px"
-                letterSpacing="widest"
-                color="text-muted"
-                fontFamily="body"
-                textTransform="uppercase"
-                mb="sm"
-              >
-                Approach
-              </Box>
-              <Box
-                fontSize="16px"
-                fontFamily="body"
-                lineHeight="normal"
-                color="text-secondary"
-                maxW="600px"
-              >
-                {project.approach}
-              </Box>
-            </Box>
+        {/* Meta sidebar */}
+        <div className={css({
+          gridColumn: { base: '1', md: '9 / 13' },
+          alignSelf: 'start',
+        })}>
+          {project.role && (
+            <div className={css({ marginBottom: '24px' })}>
+              <div className={css({ fontFamily: 'body', fontSize: '11px', letterSpacing: 'widest', textTransform: 'uppercase', color: 'text-muted', marginBottom: '4px' })}>Role</div>
+              <div className={css({ fontFamily: 'body', fontSize: '14px', color: 'text-secondary', letterSpacing: 'wide' })}>{project.role}</div>
+            </div>
           )}
-
-          {/* Outcome */}
-          {project.outcome && (
-            <Box mb="xl">
-              <Box
-                fontSize="11px"
-                letterSpacing="widest"
-                color="text-muted"
-                fontFamily="body"
-                textTransform="uppercase"
-                mb="sm"
-              >
-                Outcome
-              </Box>
-              <Box
-                fontSize="16px"
-                fontFamily="body"
-                lineHeight="normal"
-                color="text-secondary"
-                maxW="600px"
-              >
-                {project.outcome}
-              </Box>
-            </Box>
-          )}
-
-          {/* Description for lightweight projects */}
-          {project.description && (
-            <Box mb="xl">
-              <Box
-                fontSize="16px"
-                fontFamily="body"
-                lineHeight="normal"
-                color="text-secondary"
-                maxW="600px"
-              >
-                {project.description}
-              </Box>
-            </Box>
-          )}
-        </Box>
-
-        {/* Sidebar metadata */}
-        <Box
-          className={css({
-            p: { base: 'lg', md: '2xl', lg: '3xl lg' },
-          })}
-        >
-          <Box pb="md" mb="xl" borderBottom="1px solid" borderColor="border">
-            <Box
-              fontSize="11px"
-              letterSpacing="widest"
-              color="text-muted"
-              fontFamily="body"
-              textTransform="uppercase"
-            >
-              Details
-            </Box>
-          </Box>
-
-          {/* Stack */}
           {project.stack && project.stack.length > 0 && (
-            <Box mb="xl">
-              <Box
-                fontSize="9px"
-                letterSpacing="widest"
-                color="text-muted"
-                fontFamily="body"
-                textTransform="uppercase"
-                mb="sm"
-              >
-                Stack
-              </Box>
-              <Flex gap="sm" flexWrap="wrap">
-                {project.stack.map((tech) => (
-                  <Box
-                    key={tech}
-                    px="sm"
-                    py="xs"
-                    fontSize="12px"
-                    fontFamily="mono"
-                    color="text-secondary"
-                    border="1px solid"
-                    borderColor="border-subtle"
-                    borderRadius="2px"
-                  >
-                    {tech}
-                  </Box>
+            <div className={css({ marginBottom: '24px' })}>
+              <div className={css({ fontFamily: 'body', fontSize: '11px', letterSpacing: 'widest', textTransform: 'uppercase', color: 'text-muted', marginBottom: '8px' })}>Stack</div>
+              <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '8px' })}>
+                {project.stack.map(s => (
+                  <span key={s} className={css({
+                    fontFamily: 'body',
+                    fontSize: '12px',
+                    letterSpacing: 'wider',
+                    color: 'text-secondary',
+                    padding: '4px 12px',
+                    border: '1px solid',
+                    borderColor: 'border',
+                    borderRadius: 'sm',
+                  })}>
+                    {s}
+                  </span>
                 ))}
-              </Flex>
-            </Box>
+              </div>
+            </div>
           )}
-
-          {/* Links */}
-          <Box>
-            {(project.externalUrl || project.liveUrl) && (
-              <Box mb="md">
-                <Box
-                  fontSize="9px"
-                  letterSpacing="widest"
-                  color="text-muted"
-                  fontFamily="body"
-                  textTransform="uppercase"
-                  mb="sm"
-                >
-                  Links
-                </Box>
-                {project.liveUrl && (
-                  <Box mb="sm">
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={css({
-                        fontSize: '14px',
-                        fontFamily: 'body',
-                        color: 'accent',
-                        padding: 'sm',
-                        minHeight: '44px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        _hover: { color: 'accent-light' },
-                        _focus: { outline: '1.5px solid', outlineColor: 'accent', outlineOffset: '3px' },
-                      })}
-                    >
-                      Live Site →
-                    </a>
-                  </Box>
-                )}
-                {project.externalUrl && (
-                  <Box mb="sm">
-                    <a
-                      href={project.externalUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={css({
-                        fontSize: '14px',
-                        fontFamily: 'body',
-                        color: 'accent',
-                        padding: 'sm',
-                        minHeight: '44px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        _hover: { color: 'accent-light' },
-                        _focus: { outline: '1.5px solid', outlineColor: 'accent', outlineOffset: '3px' },
-                      })}
-                    >
-                      View Project →
-                    </a>
-                  </Box>
-                )}
-                {project.githubUrl && (
-                  <Box>
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={css({
-                        fontSize: '14px',
-                        fontFamily: 'body',
-                        color: 'accent',
-                        padding: 'sm',
-                        minHeight: '44px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        _hover: { color: 'accent-light' },
-                        _focus: { outline: '1.5px solid', outlineColor: 'accent', outlineOffset: '3px' },
-                      })}
-                    >
-                      GitHub →
-                    </a>
-                  </Box>
-                )}
-              </Box>
-            )}
-          </Box>
-
-          {/* Back link */}
-          <Box mt="3xl" pt="md" borderTop="1px solid" borderColor="border">
+          {(project.liveUrl || project.externalUrl) && (
             <a
-              href="/"
+              href={project.liveUrl || project.externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className={css({
-                fontSize: '12px',
-                fontFamily: 'body',
-                color: 'text-muted',
-                letterSpacing: 'wider',
-                textDecoration: 'none',
-                padding: 'sm',
-                minHeight: '44px',
                 display: 'inline-flex',
                 alignItems: 'center',
-                _hover: { color: 'accent-light' },
-                _focus: { outline: '1.5px solid', outlineColor: 'accent', outlineOffset: '3px' },
+                minHeight: '44px',
+                padding: '8px 16px',
+                fontFamily: 'body',
+                fontSize: '12px',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                color: 'accent',
+                border: '1px solid',
+                borderColor: 'accent',
+                borderRadius: 'sm',
+                textDecoration: 'none',
+                transition: 'background 0.15s, color 0.15s',
+                _hover: { background: '{colors.sage.glow}' },
+                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
               })}
             >
-              ← All Work
+              Visit Site ↗
             </a>
-          </Box>
-        </Box>
-      </Grid>
-
-      {/* Footer */}
-      <Box borderTop="1px solid" borderColor="border" px={{ base: 'lg', md: '2xl' }} py="lg">
-        <Flex
-          justify="space-between"
-          align={{ base: 'flex-start', md: 'center' }}
-          flexDirection={{ base: 'column', md: 'row' }}
-          gap="md"
-        >
-          <Flex gap="lg" align="center">
-            <Box fontSize="12px" fontFamily="body" color="text-muted" letterSpacing="wider">
-              © 2026
-            </Box>
+          )}
+          {project.githubUrl && (
             <a
-              href="/archive"
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className={css({
-                fontSize: '12px',
-                fontFamily: 'body',
-                color: 'text-muted',
-                letterSpacing: 'wider',
-                textDecoration: 'none',
-                padding: 'sm',
-                minHeight: '44px',
                 display: 'inline-flex',
                 alignItems: 'center',
-                _hover: { color: 'accent-light' },
-                _focus: { outline: '1.5px solid', outlineColor: 'accent', outlineOffset: '3px' },
+                minHeight: '44px',
+                padding: '8px 16px',
+                marginLeft: '8px',
+                fontFamily: 'body',
+                fontSize: '12px',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                color: 'text-muted',
+                border: '1px solid',
+                borderColor: 'border',
+                borderRadius: 'sm',
+                textDecoration: 'none',
+                transition: 'background 0.15s',
+                _hover: { background: 'bg-card' },
+                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
               })}
             >
-              Archive
+              GitHub ↗
             </a>
-          </Flex>
-          <Box textAlign={{ base: 'left', md: 'right' }}>
-            <Box fontSize="9px" fontFamily="body" letterSpacing="wider" color="text-muted">
-              DET 2 · MIN 5
-            </Box>
-            <Box fontSize="9px" fontFamily="heading" fontStyle="italic" color="#76718A" mt="xs">
-              noted.
-            </Box>
-          </Box>
-        </Flex>
-      </Box>
-    </Box>
+          )}
+        </div>
+
+        {/* Approach */}
+        {project.approach && (
+          <div className={css({
+            gridColumn: { base: '1', md: '1 / 8' },
+          })}>
+            <div className={css({ marginBottom: '16px' })}>
+              <span className={css({ display: 'inline-block', width: '40px', borderTop: '1px solid', borderColor: 'border', marginBottom: '8px' })} />
+              <div className={css({ fontFamily: 'body', fontSize: '10px', letterSpacing: 'widest', textTransform: 'uppercase', color: 'text-muted', lineHeight: 'loose' })}>
+                Approach
+              </div>
+            </div>
+            <p className={css({
+              fontFamily: 'body',
+              fontSize: '16px',
+              lineHeight: 'normal',
+              color: 'text-secondary',
+              maxWidth: '560px',
+              letterSpacing: 'wide',
+            })}>
+              {project.approach}
+            </p>
+          </div>
+        )}
+
+        {/* Outcome */}
+        {project.outcome && (
+          <div className={css({
+            gridColumn: { base: '1', md: '1 / 8' },
+          })}>
+            <div className={css({ marginBottom: '16px' })}>
+              <span className={css({ display: 'inline-block', width: '40px', borderTop: '1px solid', borderColor: 'border', marginBottom: '8px' })} />
+              <div className={css({ fontFamily: 'body', fontSize: '10px', letterSpacing: 'widest', textTransform: 'uppercase', color: 'text-muted', lineHeight: 'loose' })}>
+                Outcome
+              </div>
+            </div>
+            <p className={css({
+              fontFamily: 'body',
+              fontSize: '16px',
+              lineHeight: 'normal',
+              color: 'text-secondary',
+              maxWidth: '560px',
+              letterSpacing: 'wide',
+            })}>
+              {project.outcome}
+            </p>
+          </div>
+        )}
+
+        {/* Description (for lightweight projects) */}
+        {project.description && (
+          <div className={css({
+            gridColumn: { base: '1', md: '1 / 8' },
+          })}>
+            <p className={css({
+              fontFamily: 'body',
+              fontSize: '16px',
+              lineHeight: 'normal',
+              color: 'text-secondary',
+              maxWidth: '560px',
+              letterSpacing: 'wide',
+            })}>
+              {project.description}
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Back + Footer */}
+      <div className={css({ marginTop: '64px' })}>
+        <a href="/" className={css({
+          fontFamily: 'body',
+          fontSize: '14px',
+          color: 'accent',
+          textDecoration: 'none',
+          padding: '8px 0',
+          minHeight: '44px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          _hover: { textDecoration: 'underline' },
+          _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+        })}>
+          ← All Work
+        </a>
+      </div>
+
+      <footer className={css({
+        marginTop: '48px',
+        paddingTop: '24px',
+        borderTop: '1px solid',
+        borderColor: 'border',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px',
+      })}>
+        <span className={css({
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'text-muted',
+          letterSpacing: 'wider',
+        })}>
+          © 2026 Doug March
+        </span>
+        <a href="/archive" className={css({
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'text-muted',
+          letterSpacing: 'wider',
+          textDecoration: 'none',
+          padding: '8px 4px',
+          minHeight: '44px',
+          display: 'flex',
+          alignItems: 'center',
+          _hover: { color: 'text-secondary' },
+          _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+        })}>
+          Archive
+        </a>
+      </footer>
+    </div>
   )
 }

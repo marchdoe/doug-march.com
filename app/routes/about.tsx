@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Box, Flex, Grid } from '../../styled-system/jsx'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
@@ -8,367 +7,314 @@ export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
   return (
-    <Box maxW="1200px" mx="auto" w="100%">
-      <Grid
-        className={css({
-          gridTemplateColumns: { base: '1fr', lg: '2fr 1.1fr 0.9fr' },
-        })}
-      >
-        {/* PRIMARY COLUMN — Identity & Timeline */}
-        <Box
-          className={css({
-            borderRight: { base: 'none', lg: '1px solid' },
-            borderBottom: { base: '1px solid', lg: 'none' },
-            borderColor: 'border',
-            p: { base: 'lg', md: '2xl', lg: '3xl 2xl' },
-          })}
-        >
-          {/* Column label */}
-          <Box pb="md" mb="xl" borderBottom="1px solid" borderColor="border">
-            <Box
-              fontSize="11px"
-              letterSpacing="widest"
-              color="text-muted"
-              fontFamily="body"
-              textTransform="uppercase"
-            >
-              About
-            </Box>
-          </Box>
+    <div className={css({
+      maxWidth: '1120px',
+      margin: '0 auto',
+      padding: { base: '32px 24px 64px', md: '48px 48px 96px' },
+    })}>
+      <div className={css({
+        display: 'grid',
+        gridTemplateColumns: { base: '1fr', md: 'repeat(12, 1fr)' },
+        columnGap: '24px',
+        rowGap: '48px',
+      })}>
 
-          {/* Identity */}
-          <Box mb="3xl">
-            <Box
-              fontSize="clamp(28px, 4vw, 37px)"
-              fontFamily="heading"
-              fontWeight="semibold"
-              lineHeight="tight"
-              letterSpacing="tight"
-              color="text"
-              mb="md"
-            >
-              {identity.name}
-            </Box>
-            <Box
-              fontSize="12px"
-              fontFamily="body"
-              letterSpacing="widest"
-              color="text-muted"
-              textTransform="uppercase"
-              mb="lg"
-            >
-              {identity.role}
-            </Box>
-            <Box
-              fontSize="16px"
-              fontFamily="body"
-              lineHeight="normal"
-              color="text-secondary"
-              maxW="600px"
-            >
-              {identity.statement}
-            </Box>
-          </Box>
+        {/* Identity Statement */}
+        <div className={css({
+          gridColumn: { base: '1', md: '1 / 8' },
+        })}>
+          <h1 className={css({
+            fontFamily: 'heading',
+            fontSize: { base: '28px', md: 'clamp(32px, 4vw, 44px)' },
+            fontWeight: 'bold',
+            lineHeight: 'snug',
+            letterSpacing: 'tight',
+            color: 'text',
+            marginBottom: '24px',
+          })}>
+            {identity.name}
+          </h1>
+          <div className={css({
+            fontFamily: 'body',
+            fontSize: '14px',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'text-muted',
+            marginBottom: '24px',
+            lineHeight: 'loose',
+          })}>
+            {identity.role}
+          </div>
+          <p className={css({
+            fontFamily: 'body',
+            fontSize: '16px',
+            lineHeight: 'normal',
+            color: 'text-secondary',
+            maxWidth: '560px',
+            letterSpacing: 'wide',
+          })}>
+            {identity.statement}
+          </p>
+        </div>
 
-          {/* Timeline */}
-          <Box>
-            <Box
-              fontSize="12px"
-              letterSpacing="widest"
-              color="text-muted"
-              fontFamily="body"
-              textTransform="uppercase"
-              mb="md"
-            >
-              Experience
-            </Box>
+        {/* Personal details */}
+        <div className={css({
+          gridColumn: { base: '1', md: '9 / 13' },
+          alignSelf: 'start',
+        })}>
+          <div className={css({ marginBottom: '24px' })}>
+            <span className={css({
+              display: 'inline-block',
+              width: '40px',
+              borderTop: '1px solid',
+              borderColor: 'border',
+              marginBottom: '8px',
+            })} />
+            <div className={css({
+              fontFamily: 'body',
+              fontSize: '10px',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              color: 'text-muted',
+              lineHeight: 'loose',
+            })}>
+              Personal
+            </div>
+          </div>
+          <dl className={css({
+            fontFamily: 'body',
+            fontSize: '14px',
+            lineHeight: 'normal',
+            color: 'text-secondary',
+            letterSpacing: 'wide',
+          })}>
+            <div className={css({ marginBottom: '12px' })}>
+              <dt className={css({ fontSize: '11px', letterSpacing: 'widest', textTransform: 'uppercase', color: 'text-muted', marginBottom: '2px' })}>Holes in One</dt>
+              <dd>{personal.holesInOne}</dd>
+            </div>
+            <div className={css({ marginBottom: '12px' })}>
+              <dt className={css({ fontSize: '11px', letterSpacing: 'widest', textTransform: 'uppercase', color: 'text-muted', marginBottom: '2px' })}>Sport</dt>
+              <dd>{personal.sport}</dd>
+            </div>
+            <div className={css({ marginBottom: '12px' })}>
+              <dt className={css({ fontSize: '11px', letterSpacing: 'widest', textTransform: 'uppercase', color: 'text-muted', marginBottom: '2px' })}>Teams</dt>
+              <dd>{personal.teams.join(', ')}</dd>
+            </div>
+            <div>
+              <dt className={css({ fontSize: '11px', letterSpacing: 'widest', textTransform: 'uppercase', color: 'text-muted', marginBottom: '2px' })}>Current Focus</dt>
+              <dd>{personal.currentFocus}</dd>
+            </div>
+          </dl>
+        </div>
+
+        {/* Timeline */}
+        <div className={css({
+          gridColumn: { base: '1', md: '1 / 9' },
+        })}>
+          <div className={css({ marginBottom: '24px' })}>
+            <span className={css({
+              display: 'inline-block',
+              width: '40px',
+              borderTop: '1px solid',
+              borderColor: 'border',
+              marginBottom: '8px',
+            })} />
+            <div className={css({
+              fontFamily: 'body',
+              fontSize: '10px',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              color: 'text-muted',
+              lineHeight: 'loose',
+            })}>
+              Timeline
+            </div>
+          </div>
+
+          <div>
             {timeline.map((entry, i) => (
-              <Flex
-                key={`${entry.year}-${entry.company}`}
-                gap={{ base: 'md', md: 'lg' }}
-                py="sm"
-                borderBottom="1px solid"
-                borderColor="border-subtle"
-                flexDirection={{ base: 'column', sm: 'row' }}
+              <div
+                key={`${entry.year}-${entry.company}-${i}`}
+                className={css({
+                  display: 'flex',
+                  gap: { base: '16px', md: '24px' },
+                  paddingTop: '16px',
+                  paddingBottom: '16px',
+                  borderBottom: '1px solid',
+                  borderColor: 'border',
+                })}
               >
-                <Box
-                  fontSize="12px"
-                  fontFamily="mono"
-                  color="text-muted"
-                  letterSpacing="wider"
-                  minW="120px"
-                  flexShrink={0}
-                  pt="xs"
-                >
+                <div className={css({
+                  fontFamily: 'mono',
+                  fontSize: '13px',
+                  color: 'text-muted',
+                  letterSpacing: 'wider',
+                  minWidth: '120px',
+                  flexShrink: 0,
+                  fontVariantNumeric: 'tabular-nums',
+                })}>
                   {entry.year}
-                </Box>
-                <Box flex="1" pb="sm">
-                  <Box
-                    fontSize="16px"
-                    fontFamily="body"
-                    fontWeight="medium"
-                    color="text"
-                    lineHeight="snug"
-                  >
+                </div>
+                <div className={css({ flex: 1 })}>
+                  <div className={css({
+                    fontFamily: 'body',
+                    fontSize: '16px',
+                    fontWeight: 'medium',
+                    color: 'text',
+                    letterSpacing: 'wide',
+                  })}>
                     {entry.role}
-                    {entry.current && (
-                      <Box
-                        as="span"
-                        fontSize="9px"
-                        letterSpacing="widest"
-                        color="accent"
-                        fontFamily="body"
-                        ml="sm"
-                        textTransform="uppercase"
-                      >
-                        Current
-                      </Box>
-                    )}
-                  </Box>
-                  <Box
-                    fontSize="14px"
-                    fontFamily="body"
-                    color="text-secondary"
-                    mt="xs"
-                  >
+                  </div>
+                  <div className={css({
+                    fontFamily: 'body',
+                    fontSize: '14px',
+                    color: 'text-secondary',
+                    letterSpacing: 'wide',
+                    marginTop: '2px',
+                  })}>
                     {entry.company}
-                  </Box>
-                  <Box
-                    fontSize="14px"
-                    fontFamily="body"
-                    color="text-muted"
-                    mt="xs"
-                    lineHeight="normal"
-                    maxW="500px"
-                  >
+                  </div>
+                  <div className={css({
+                    fontFamily: 'body',
+                    fontSize: '14px',
+                    color: 'text-muted',
+                    lineHeight: 'normal',
+                    marginTop: '8px',
+                    maxWidth: '520px',
+                    letterSpacing: 'wide',
+                  })}>
                     {entry.description}
-                  </Box>
-                </Box>
-              </Flex>
+                  </div>
+                </div>
+              </div>
             ))}
-          </Box>
-        </Box>
+          </div>
+        </div>
 
-        {/* SECONDARY COLUMN — Capabilities & Education */}
-        <Box
-          className={css({
-            borderRight: { base: 'none', lg: '1px solid' },
-            borderBottom: { base: '1px solid', lg: 'none' },
-            borderColor: 'border',
-            p: { base: 'lg', md: '2xl', lg: '3xl xl' },
-          })}
-        >
-          <Box pb="md" mb="xl" borderBottom="1px solid" borderColor="border">
-            <Box
-              fontSize="11px"
-              letterSpacing="widest"
-              color="text-muted"
-              fontFamily="body"
-              textTransform="uppercase"
-            >
+        {/* Capabilities */}
+        <div className={css({
+          gridColumn: { base: '1', md: '9 / 13' },
+          position: { md: 'sticky' },
+          top: { md: '48px' },
+          alignSelf: 'start',
+        })}>
+          <div className={css({ marginBottom: '24px' })}>
+            <span className={css({
+              display: 'inline-block',
+              width: '40px',
+              borderTop: '1px solid',
+              borderColor: 'border',
+              marginBottom: '8px',
+            })} />
+            <div className={css({
+              fontFamily: 'body',
+              fontSize: '10px',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              color: 'text-muted',
+              lineHeight: 'loose',
+            })}>
               Capabilities
-            </Box>
-          </Box>
+            </div>
+          </div>
 
-          <Flex gap="sm" flexWrap="wrap" mb="3xl">
-            {capabilities.map((cap) => (
-              <Box
+          <div className={css({
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '8px',
+          })}>
+            {capabilities.map(cap => (
+              <span
                 key={cap}
-                px="sm"
-                py="xs"
-                fontSize="12px"
-                fontFamily="body"
-                color="text-secondary"
-                letterSpacing="wide"
-                border="1px solid"
-                borderColor="border-subtle"
-                borderRadius="2px"
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '12px',
+                  letterSpacing: 'wider',
+                  color: 'text-secondary',
+                  padding: '4px 12px',
+                  border: '1px solid',
+                  borderColor: 'border',
+                  borderRadius: 'sm',
+                })}
               >
                 {cap}
-              </Box>
+              </span>
             ))}
-          </Flex>
+          </div>
 
           {/* Education */}
-          <Box mb="3xl">
-            <Box
-              fontSize="12px"
-              letterSpacing="widest"
-              color="text-muted"
-              fontFamily="body"
-              textTransform="uppercase"
-              mb="md"
-            >
-              Education
-            </Box>
-            <Box>
-              <Box fontSize="16px" fontFamily="body" fontWeight="medium" color="text" lineHeight="snug">
-                {education.school}
-              </Box>
-              <Box fontSize="14px" fontFamily="body" color="text-secondary" mt="xs">
-                {education.degree}
-              </Box>
-              <Box fontSize="14px" fontFamily="body" color="text-muted" mt="xs">
-                {education.concentration}
-              </Box>
-              <Box fontSize="12px" fontFamily="mono" color="text-muted" letterSpacing="wider" mt="xs">
-                {education.years}
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-
-        {/* TERTIARY COLUMN — Personal */}
-        <Box
-          className={css({
-            p: { base: 'lg', md: '2xl', lg: '3xl lg' },
-          })}
-        >
-          <Box pb="md" mb="xl" borderBottom="1px solid" borderColor="border">
-            <Box
-              fontSize="11px"
-              letterSpacing="widest"
-              color="text-muted"
-              fontFamily="body"
-              textTransform="uppercase"
-            >
-              Personal
-            </Box>
-          </Box>
-
-          <Box mb="lg">
-            <Box
-              fontSize="9px"
-              letterSpacing="widest"
-              color="text-muted"
-              fontFamily="body"
-              textTransform="uppercase"
-              mb="xs"
-            >
-              Holes in One
-            </Box>
-            <Box fontSize="28px" fontFamily="heading" fontWeight="semibold" color="text" lineHeight="snug">
-              {personal.holesInOne}
-            </Box>
-          </Box>
-
-          <Box mb="lg">
-            <Box
-              fontSize="9px"
-              letterSpacing="widest"
-              color="text-muted"
-              fontFamily="body"
-              textTransform="uppercase"
-              mb="xs"
-            >
-              Sport
-            </Box>
-            <Box fontSize="16px" fontFamily="body" color="text-secondary" lineHeight="snug">
-              {personal.sport}
-            </Box>
-          </Box>
-
-          <Box mb="lg">
-            <Box
-              fontSize="9px"
-              letterSpacing="widest"
-              color="text-muted"
-              fontFamily="body"
-              textTransform="uppercase"
-              mb="xs"
-            >
-              Teams
-            </Box>
-            {personal.teams.map((team) => (
-              <Box
-                key={team}
-                fontSize="16px"
-                fontFamily="body"
-                color="text-secondary"
-                lineHeight="snug"
-                mb="xs"
-              >
-                {team}
-              </Box>
-            ))}
-          </Box>
-
-          <Box mb="lg">
-            <Box
-              fontSize="9px"
-              letterSpacing="widest"
-              color="text-muted"
-              fontFamily="body"
-              textTransform="uppercase"
-              mb="xs"
-            >
-              Current Focus
-            </Box>
-            <Box fontSize="16px" fontFamily="body" color="text-secondary" lineHeight="normal" maxW="280px">
-              {personal.currentFocus}
-            </Box>
-          </Box>
-
-          {/* Wilde quote on about too */}
-          <Box mt="xl" pt="md" borderTop="1px solid" borderColor="border">
-            <Box
-              fontSize="13px"
-              fontFamily="heading"
-              fontStyle="italic"
-              lineHeight="loose"
-              color="#CAC7D4"
-              mb="sm"
-            >
-              Whenever people agree with me I always feel I must be wrong.
-            </Box>
-            <Box fontSize="11px" fontFamily="body" letterSpacing="wider" color="text-muted">
-              — O. Wilde
-            </Box>
-          </Box>
-        </Box>
-      </Grid>
+          <div className={css({ marginTop: '32px' })}>
+            <div className={css({ marginBottom: '16px' })}>
+              <span className={css({
+                display: 'inline-block',
+                width: '40px',
+                borderTop: '1px solid',
+                borderColor: 'border',
+                marginBottom: '8px',
+              })} />
+              <div className={css({
+                fontFamily: 'body',
+                fontSize: '10px',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                color: 'text-muted',
+                lineHeight: 'loose',
+              })}>
+                Education
+              </div>
+            </div>
+            <div className={css({
+              fontFamily: 'body',
+              fontSize: '14px',
+              color: 'text-secondary',
+              lineHeight: 'normal',
+              letterSpacing: 'wide',
+            })}>
+              <div className={css({ fontWeight: 'medium', color: 'text' })}>{education.school}</div>
+              <div className={css({ marginTop: '4px' })}>{education.degree}</div>
+              <div className={css({ marginTop: '2px' })}>{education.concentration}</div>
+              <div className={css({ marginTop: '4px', fontSize: '12px', color: 'text-muted', fontVariantNumeric: 'tabular-nums' })}>{education.years}</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Footer */}
-      <Box borderTop="1px solid" borderColor="border" px={{ base: 'lg', md: '2xl' }} py="lg">
-        <Flex
-          justify="space-between"
-          align={{ base: 'flex-start', md: 'center' }}
-          flexDirection={{ base: 'column', md: 'row' }}
-          gap="md"
-        >
-          <Flex gap="lg" align="center">
-            <Box fontSize="12px" fontFamily="body" color="text-muted" letterSpacing="wider">
-              © 2026
-            </Box>
-            <a
-              href="/archive"
-              className={css({
-                fontSize: '12px',
-                fontFamily: 'body',
-                color: 'text-muted',
-                letterSpacing: 'wider',
-                textDecoration: 'none',
-                padding: 'sm',
-                minHeight: '44px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                _hover: { color: 'accent-light' },
-                _focus: { outline: '1.5px solid', outlineColor: 'accent', outlineOffset: '3px' },
-              })}
-            >
-              Archive
-            </a>
-          </Flex>
-          <Box textAlign={{ base: 'left', md: 'right' }}>
-            <Box fontSize="9px" fontFamily="body" letterSpacing="wider" color="text-muted">
-              DET 2 · MIN 5
-            </Box>
-            <Box fontSize="9px" fontFamily="heading" fontStyle="italic" color="#76718A" mt="xs">
-              noted.
-            </Box>
-          </Box>
-        </Flex>
-      </Box>
-    </Box>
+      <footer className={css({
+        marginTop: '96px',
+        paddingTop: '24px',
+        borderTop: '1px solid',
+        borderColor: 'border',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px',
+      })}>
+        <span className={css({
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'text-muted',
+          letterSpacing: 'wider',
+        })}>
+          © 2026 Doug March
+        </span>
+        <a href="/archive" className={css({
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'text-muted',
+          letterSpacing: 'wider',
+          textDecoration: 'none',
+          padding: '8px 4px',
+          minHeight: '44px',
+          display: 'flex',
+          alignItems: 'center',
+          _hover: { color: 'text-secondary' },
+          _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+        })}>
+          Archive
+        </a>
+      </footer>
+    </div>
   )
 }

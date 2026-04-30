@@ -1,105 +1,86 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
-import { Flex, Box } from '../../styled-system/jsx'
 
 export function Sidebar() {
   return (
-    <header
-      className={css({
-        width: '100%',
-        height: { base: 'auto', md: '64px' },
-        borderBottom: '1px solid',
-        borderColor: 'border',
-        bg: 'bg',
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-        display: 'flex',
-        flexDirection: { base: 'column', md: 'row' },
-        alignItems: { base: 'flex-start', md: 'center' },
-        justifyContent: 'space-between',
-        px: { base: 'md', md: '2xl' },
-        py: { base: 'sm', md: '0' },
-        gap: { base: 'xs', md: '0' },
-      })}
-    >
-      <Flex align="center" gap="sm" flexShrink={0}>
-        <a href="/" aria-label="Home" className={css({ display: 'flex', alignItems: 'center' })}>
-          <img
-            src={logoSvg}
-            alt="Doug March logo"
-            className={css({ width: '28px', height: '28px' })}
-          />
+    <header className={css({
+      display: 'grid',
+      gridTemplateColumns: { base: '1fr', md: 'auto 1fr' },
+      alignItems: 'end',
+      gap: { base: '16px', md: '24px' },
+      maxWidth: '1120px',
+      margin: '0 auto',
+      padding: { base: '32px 24px 0', md: '80px 48px 0' },
+    })}>
+      <div className={css({ display: 'flex', alignItems: 'center', gap: '16px' })}>
+        <a href="/" aria-label="Home" className={css({ display: 'block', flexShrink: 0 })}>
+          <img src={logoSvg} alt="Doug March logo" className={css({ width: '36px', height: '36px' })} />
         </a>
-        <Box>
-          <Box
-            fontSize="12px"
-            letterSpacing="widest"
-            color="text-secondary"
-            fontFamily="body"
-            fontWeight="medium"
-            lineHeight="tight"
-          >
-            DOUG MARCH
-          </Box>
-          <Box
-            fontSize="9px"
-            letterSpacing="widest"
-            color="text-muted"
-            fontFamily="body"
-            lineHeight="snug"
-          >
-            DESIGNER · DEVELOPER
-          </Box>
-        </Box>
-      </Flex>
-
-      <Flex
-        as="nav"
-        gap="lg"
-        align="center"
-        className={css({
-          '& a': {
-            fontSize: '12px',
+        <div>
+          <div className={css({
+            fontFamily: 'heading',
+            fontSize: { base: '24px', md: '28px' },
+            fontWeight: 'bold',
+            lineHeight: 'snug',
+            letterSpacing: 'tight',
+            color: 'text',
+          })}>
+            Doug March
+          </div>
+          <div className={css({
+            fontFamily: 'body',
+            fontSize: '14px',
             letterSpacing: 'wider',
             color: 'text-secondary',
-            fontFamily: 'body',
-            textDecoration: 'none',
-            padding: 'sm',
-            minHeight: '44px',
-            display: 'inline-flex',
-            alignItems: 'center',
-            _hover: {
-              textDecoration: 'underline',
-              textDecorationColor: 'accent',
-              textUnderlineOffset: '4px',
-              color: 'accent-light',
-            },
-            _focus: {
-              outline: '1.5px solid',
-              outlineColor: 'accent',
-              outlineOffset: '3px',
-            },
-          },
-        })}
-      >
-        <a href="/">Work</a>
-        <a href="/about">About</a>
-      </Flex>
+            lineHeight: 'loose',
+          })}>
+            Product Designer &amp; Developer
+          </div>
+        </div>
+      </div>
 
-      <Box
-        display={{ base: 'none', lg: 'flex' }}
-        alignItems="center"
-        gap="lg"
-        flexShrink={0}
-      >
-        <Box fontSize="9px" letterSpacing="widest" color="text-muted" fontFamily="body">
-          ◉ FULL MOON · 96.5%
-        </Box>
-        <Box fontSize="9px" letterSpacing="widest" color="text-muted" fontFamily="body">
-          APR 29 2026
-        </Box>
-      </Box>
+      <nav className={css({
+        display: 'flex',
+        gap: '24px',
+        justifyContent: { base: 'flex-start', md: 'flex-end' },
+        alignItems: 'end',
+        paddingBottom: '4px',
+      })}>
+        {[
+          { href: '/', label: 'Work' },
+          { href: '/about', label: 'About' },
+        ].map(link => (
+          <a
+            key={link.href}
+            href={link.href}
+            className={css({
+              fontFamily: 'body',
+              fontSize: '12px',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              color: 'text-muted',
+              textDecoration: 'none',
+              padding: '8px 4px',
+              minHeight: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              borderBottom: '1.5px solid transparent',
+              transition: 'color 0.2s, border-color 0.2s',
+              _hover: {
+                color: 'text',
+                borderBottomColor: 'accent',
+              },
+              _focus: {
+                outline: '2px solid',
+                outlineColor: 'accent',
+                outlineOffset: '2px',
+              },
+            })}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
     </header>
   )
 }
