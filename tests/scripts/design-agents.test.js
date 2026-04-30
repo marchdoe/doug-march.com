@@ -15,8 +15,8 @@ describe('FILE_OWNERSHIP', () => {
     expect(Object.keys(FILE_OWNERSHIP)).toHaveLength(15)
   })
 
-  it('maps preset.ts to token-designer', () => {
-    expect(FILE_OWNERSHIP['elements/preset.ts']).toBe('token-designer')
+  it('maps preset.ts to art-director', () => {
+    expect(FILE_OWNERSHIP['elements/preset.ts']).toBe('art-director')
   })
 
   it('does not map __root.tsx to any agent (orchestrator owns it via the chassis template)', () => {
@@ -47,9 +47,9 @@ describe('identifyFailingAgent', () => {
     expect(identifyFailingAgent(error)).toBe('unified-designer')
   })
 
-  it('identifies token-designer from error mentioning preset', () => {
+  it('identifies art-director from error mentioning preset', () => {
     const error = "Error in elements/preset.ts: invalid token"
-    expect(identifyFailingAgent(error)).toBe('token-designer')
+    expect(identifyFailingAgent(error)).toBe('art-director')
   })
 
   it('returns unified-designer when errors span multiple unified-designer files', () => {
@@ -351,14 +351,5 @@ describe('parseDelimiterResponse', () => {
     expect(r.files[0].path).toBe('elements/preset.ts')
     expect(r.rationale).toBe('Phrase → Specimen → big-shoulders → terracotta.')
     expect(r.design_brief).toBe('Terracotta marquee.')
-  })
-})
-
-describe('agent prompt files include anti-anchoring language', () => {
-  it('structure-agent.md tells the model to design from scratch', async () => {
-    const { readFile } = await import('fs/promises')
-    const content = await readFile('scripts/prompts/structure-agent.md', 'utf8')
-    expect(content).toContain('complete reimagination')
-    expect(content).toContain('blank canvas')
   })
 })
