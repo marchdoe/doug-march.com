@@ -49,6 +49,21 @@ Selection criteria, in order:
 
 You write the complete `elements/preset.ts` content yourself. The token designer agent has been removed. The chassis-preset (fonts + fontSizes) is generated deterministically by the orchestrator from your chassis pick — you do NOT define `theme.tokens.fonts` or `theme.tokens.fontSizes`. Anything you put there will be silently overridden, but it wastes tokens — skip them.
 
+### CRITICAL — Required export
+
+`panda.config.ts` imports the preset as `{ elementsPreset }`. Your file MUST end with this exact named export:
+
+```typescript
+import { definePreset } from '@pandacss/dev'
+
+export const elementsPreset = definePreset({
+  name: 'elements',
+  // globalCss, conditions, theme.tokens, theme.semanticTokens here
+})
+```
+
+The binding name `elementsPreset` is fixed. Do NOT rename it (`preset`, `myPreset`, `elementsTokens`, etc. all break the build at codegen). Do NOT use a default export. Do NOT wrap in additional indirection.
+
 You DO define:
 - `globalCss` — body, anchor, headings reset
 - `conditions` — `_light`, `_dark`, `_hover`
@@ -195,7 +210,7 @@ Respond using the exact delimiter blocks below, in this order. Write the COMPLET
 3. Render feasibility: Yes/No — <reason>
 
 ===FILE:elements/preset.ts===
-<full TS source: definePreset({ name: 'elements', ... }) — NO fonts, NO fontSizes>
+<full TS source: must end with `export const elementsPreset = definePreset({ name: 'elements', ... })` — NO fonts, NO fontSizes>
 
 ===RATIONALE===
 <2–3 paragraphs explaining the chain: hero phrase → archetype → chassis → palette → layout>
