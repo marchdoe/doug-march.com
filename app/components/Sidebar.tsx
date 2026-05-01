@@ -1,86 +1,134 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
+import { Flex, Box } from '../../styled-system/jsx'
 
 export function Sidebar() {
   return (
-    <header className={css({
-      display: 'grid',
-      gridTemplateColumns: { base: '1fr', md: 'auto 1fr' },
-      alignItems: 'end',
-      gap: { base: '16px', md: '24px' },
-      maxWidth: '1120px',
-      margin: '0 auto',
-      padding: { base: '32px 24px 0', md: '80px 48px 0' },
-    })}>
-      <div className={css({ display: 'flex', alignItems: 'center', gap: '16px' })}>
-        <a href="/" aria-label="Home" className={css({ display: 'block', flexShrink: 0 })}>
-          <img src={logoSvg} alt="Doug March logo" className={css({ width: '36px', height: '36px' })} />
-        </a>
-        <div>
-          <div className={css({
-            fontFamily: 'heading',
-            fontSize: { base: '24px', md: '28px' },
-            fontWeight: 'bold',
-            lineHeight: 'snug',
-            letterSpacing: 'tight',
-            color: 'text',
-          })}>
-            Doug March
-          </div>
-          <div className={css({
-            fontFamily: 'body',
-            fontSize: '14px',
-            letterSpacing: 'wider',
-            color: 'text-secondary',
-            lineHeight: 'loose',
-          })}>
-            Product Designer &amp; Developer
-          </div>
-        </div>
-      </div>
-
-      <nav className={css({
-        display: 'flex',
-        gap: '24px',
-        justifyContent: { base: 'flex-start', md: 'flex-end' },
-        alignItems: 'end',
-        paddingBottom: '4px',
-      })}>
-        {[
-          { href: '/', label: 'Work' },
-          { href: '/about', label: 'About' },
-        ].map(link => (
+    <header
+      className={css({
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        width: '100%',
+        background: '{colors.neutral.800}',
+        borderBottom: '1px solid {colors.neutral.700}',
+      })}
+    >
+      <Flex
+        align="center"
+        justify="space-between"
+        height="48px"
+        px={{ base: '16', md: '32', lg: '48' }}
+        maxW="1200px"
+        mx="auto"
+        width="100%"
+      >
+        {/* Left: Logo + Name */}
+        <Flex align="center" gap="12">
+          <a href="/" className={css({ display: 'flex', alignItems: 'center', textDecoration: 'none' })}>
+            <img
+              src={logoSvg}
+              alt="Doug March logo"
+              className={css({ height: '24px', width: '24px' })}
+            />
+          </a>
           <a
-            key={link.href}
-            href={link.href}
+            href="/"
             className={css({
-              fontFamily: 'body',
-              fontSize: '12px',
+              fontFamily: 'heading',
+              fontSize: '13px',
+              fontWeight: '500',
               letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'text-muted',
+              color: '{colors.neutral.50}',
               textDecoration: 'none',
-              padding: '8px 4px',
-              minHeight: '44px',
-              display: 'flex',
-              alignItems: 'center',
-              borderBottom: '1.5px solid transparent',
-              transition: 'color 0.2s, border-color 0.2s',
-              _hover: {
-                color: 'text',
-                borderBottomColor: 'accent',
-              },
-              _focus: {
-                outline: '2px solid',
-                outlineColor: 'accent',
-                outlineOffset: '2px',
-              },
+              textTransform: 'uppercase',
+              _hover: { color: 'white' },
+              _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '2px' },
             })}
           >
-            {link.label}
+            Doug March
           </a>
-        ))}
-      </nav>
+        </Flex>
+
+        {/* Center: Date */}
+        <Box
+          display={{ base: 'none', md: 'block' }}
+          fontFamily="body"
+          fontSize="11px"
+          letterSpacing="widest"
+          color="{colors.neutral.400}"
+        >
+          May 1, 2026 — Friday
+        </Box>
+
+        {/* Right: Score badge + Nav */}
+        <Flex align="center" gap="32">
+          {/* Tigers score */}
+          <Flex
+            align="center"
+            gap="8"
+            display={{ base: 'none', lg: 'flex' }}
+          >
+            <Box
+              width="6px"
+              height="6px"
+              borderRadius="50%"
+              background="{colors.accent.DEFAULT}"
+              flexShrink={0}
+            />
+            <Box
+              fontFamily="body"
+              fontSize="11px"
+              letterSpacing="widest"
+              color="{colors.neutral.200}"
+            >
+              DET 5–2
+            </Box>
+          </Flex>
+
+          {/* Nav links */}
+          <Flex
+            as="nav"
+            gap="24"
+            align="center"
+          >
+            <a
+              href="/"
+              className={css({
+                fontFamily: 'body',
+                fontSize: '12px',
+                letterSpacing: 'wider',
+                color: '{colors.neutral.200}',
+                textDecoration: 'none',
+                minHeight: '44px',
+                display: 'flex',
+                alignItems: 'center',
+                _hover: { color: '{colors.neutral.50}' },
+                _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '2px' },
+              })}
+            >
+              Work
+            </a>
+            <a
+              href="/about"
+              className={css({
+                fontFamily: 'body',
+                fontSize: '12px',
+                letterSpacing: 'wider',
+                color: '{colors.neutral.200}',
+                textDecoration: 'none',
+                minHeight: '44px',
+                display: 'flex',
+                alignItems: 'center',
+                _hover: { color: '{colors.neutral.50}' },
+                _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '2px' },
+              })}
+            >
+              About
+            </a>
+          </Flex>
+        </Flex>
+      </Flex>
     </header>
   )
 }

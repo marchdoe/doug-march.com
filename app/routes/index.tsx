@@ -1,353 +1,199 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
+import { Box, Flex, Grid } from '../../styled-system/jsx'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
 function HomePage() {
   return (
-    <div className={css({
-      maxWidth: '1120px',
-      margin: '0 auto',
-      padding: { base: '32px 24px 64px', md: '48px 48px 96px' },
-    })}>
-      {/* Gallery Wall Grid */}
-      <div className={css({
-        display: 'grid',
-        gridTemplateColumns: { base: '1fr', md: 'repeat(12, 1fr)' },
-        columnGap: '24px',
-        rowGap: '48px',
-      })}>
+    <>
+      {/* Quote Zone — Full-width dark band (Specimen puncture) */}
+      <Box
+        width="100%"
+        background="{colors.neutral.800}"
+        borderBottom="1px solid {colors.neutral.700}"
+      >
+        <Box
+          maxW="1200px"
+          mx="auto"
+          px={{ base: '24', md: '48', lg: '120' }}
+          py={{ base: '40', md: '64' }}
+          minHeight={{ base: 'auto', md: '240px' }}
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+        >
+          <Box
+            fontFamily="heading"
+            fontWeight="300"
+            fontSize={{ base: '24px', md: '32px', lg: '37px' }}
+            lineHeight="tight"
+            letterSpacing="tight"
+            color="{colors.neutral.50}"
+            maxW="720px"
+            mb="24"
+          >
+            The future is no more uncertain than the present.
+          </Box>
+          <Box
+            fontFamily="body"
+            fontSize="12px"
+            letterSpacing="wider"
+            color="{colors.accent.DEFAULT}"
+          >
+            — Walt Whitman
+          </Box>
+        </Box>
+      </Box>
 
-        {/* Featured Project — Large tile */}
-        {featuredProject && (
-          <div className={css({
-            gridColumn: { base: '1', md: '1 / 7' },
-            gridRow: { base: 'auto', md: '1' },
-            minHeight: { md: '460px' },
-            border: '1px solid',
-            borderColor: 'border',
-            borderTop: '2px solid',
-            borderTopColor: 'accent',
-            borderRadius: 'none',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            transition: 'background 0.2s',
-            _hover: { background: '{colors.sage.glow}' },
-          })}>
-            <div className={css({
-              fontFamily: 'body',
-              fontSize: '10px',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'text-muted',
-              marginBottom: '16px',
-              lineHeight: 'loose',
-            })}>
-              <span className={css({ display: 'inline-block', width: '40px', borderTop: '1px solid', borderColor: 'border', marginBottom: '8px' })} />
-              <br />Featured Project
-            </div>
-            <a
-              href={featuredProject.externalUrl || `/work/${featuredProject.slug}`}
-              target={featuredProject.externalUrl ? '_blank' : undefined}
-              rel={featuredProject.externalUrl ? 'noopener noreferrer' : undefined}
-              className={css({
-                textDecoration: 'none',
-                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
-              })}
-            >
-              <h2 className={css({
-                fontFamily: 'heading',
-                fontSize: { base: '32px', md: 'clamp(32px, 4vw, 48px)' },
-                fontWeight: 'bold',
-                lineHeight: 'snug',
-                letterSpacing: 'tight',
-                color: 'text',
-                marginBottom: '16px',
-              })}>
-                {featuredProject.title}
-              </h2>
-            </a>
-            {featuredProject.problem && (
-              <p className={css({
-                fontFamily: 'body',
-                fontSize: '16px',
-                lineHeight: 'normal',
-                color: 'text-secondary',
-                maxWidth: '480px',
-                letterSpacing: 'wide',
-              })}>
-                {featuredProject.problem}
-              </p>
+      {/* Broadsheet Grid */}
+      <Box maxW="1200px" mx="auto" px={{ base: '16', md: '32', lg: '48' }} width="100%">
+        <Grid
+          gridTemplateColumns={{ base: '1fr', md: '1fr 1fr', lg: '2fr 1fr 1fr' }}
+          columnGap="0"
+        >
+          {/* Column 1: Primary — Featured + Selected Work */}
+          <Box
+            py="40"
+            pr={{ base: '0', lg: '32' }}
+            borderRight={{ base: 'none', lg: '1px solid {colors.neutral.200}' }}
+          >
+            {/* Featured Project */}
+            {featuredProject && (
+              <Box mb="40" pb="32" borderBottom="1px solid {colors.neutral.800}">
+                <Box
+                  fontFamily="heading"
+                  fontSize="9px"
+                  letterSpacing="widest"
+                  color="{colors.neutral.500}"
+                  textTransform="uppercase"
+                  mb="16"
+                >
+                  Featured
+                </Box>
+                <a
+                  href={featuredProject.externalUrl || `/work/${featuredProject.slug}`}
+                  target={featuredProject.externalUrl ? '_blank' : undefined}
+                  rel={featuredProject.externalUrl ? 'noopener noreferrer' : undefined}
+                  className={css({
+                    textDecoration: 'none',
+                    display: 'block',
+                    _hover: { '& .feat-title': { color: '{colors.accent.DEFAULT}' } },
+                    _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '4px' },
+                  })}
+                >
+                  <Box
+                    className="feat-title"
+                    fontFamily="heading"
+                    fontWeight="700"
+                    fontSize={{ base: '28px', md: '37px' }}
+                    lineHeight="snug"
+                    letterSpacing="tight"
+                    color="{colors.neutral.800}"
+                    mb="16"
+                  >
+                    {featuredProject.title}
+                  </Box>
+                </a>
+                <Box
+                  fontFamily="body"
+                  fontSize="16px"
+                  lineHeight="normal"
+                  color="{colors.neutral.600}"
+                  maxW="520px"
+                >
+                  {featuredProject.problem}
+                </Box>
+                <Flex mt="16" gap="16" align="center">
+                  <Box fontFamily="body" fontSize="12px" letterSpacing="wide" color="{colors.neutral.500}">
+                    {featuredProject.type}
+                  </Box>
+                  <Box fontFamily="mono" fontSize="12px" color="{colors.neutral.400}">
+                    {featuredProject.year}
+                  </Box>
+                </Flex>
+              </Box>
             )}
-          </div>
-        )}
 
-        {/* Selected Work — Medium tile */}
-        {selectedWork[0] && (
-          <div className={css({
-            gridColumn: { base: '1', md: '7 / 11' },
-            gridRow: { base: 'auto', md: '1' },
-            minHeight: { md: '300px' },
-            border: '1px solid',
-            borderColor: 'border',
-            borderTop: '2px solid',
-            borderTopColor: 'accent',
-            borderRadius: 'none',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            transition: 'background 0.2s',
-            _hover: { background: '{colors.sage.glow}' },
-          })}>
-            <div className={css({
-              fontFamily: 'body',
-              fontSize: '10px',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'text-muted',
-              marginBottom: '16px',
-              lineHeight: 'loose',
-            })}>
-              {selectedWork[0].type} · {selectedWork[0].year}
-            </div>
-            <a
-              href={`/work/${selectedWork[0].slug}`}
-              className={css({
-                textDecoration: 'none',
-                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
-              })}
+            {/* Selected Work */}
+            <Box>
+              <Box
+                fontFamily="heading"
+                fontSize="9px"
+                letterSpacing="widest"
+                color="{colors.neutral.500}"
+                textTransform="uppercase"
+                mb="16"
+                pb="8"
+                borderBottom="1px solid {colors.neutral.800}"
+              >
+                Selected Work
+              </Box>
+              {selectedWork.map((project, i) => (
+                <a
+                  key={project.slug}
+                  href={`/work/${project.slug}`}
+                  className={css({
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'baseline',
+                    py: '12',
+                    borderBottom: '1px solid {colors.neutral.100}',
+                    textDecoration: 'none',
+                    gap: '16',
+                    minHeight: '44px',
+                    _hover: {
+                      background: '{colors.neutral.100}',
+                      '& .work-num': { color: '{colors.accent.DEFAULT}' },
+                    },
+                    _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '2px' },
+                  })}
+                >
+                  <Flex align="baseline" gap="12">
+                    <Box
+                      className="work-num"
+                      fontFamily="heading"
+                      fontWeight="700"
+                      fontSize="16px"
+                      color="{colors.neutral.300}"
+                      fontVariantNumeric="tabular-nums"
+                      minW="24px"
+                    >
+                      {String(i + 1).padStart(2, '0')}
+                    </Box>
+                    <Box fontFamily="body" fontSize="16px" fontWeight="500" color="{colors.neutral.800}">
+                      {project.title}
+                    </Box>
+                  </Flex>
+                  <Flex gap="16" fontSize="12px" color="{colors.neutral.400}" flexShrink={0}>
+                    <Box fontFamily="body" letterSpacing="wide">{project.type}</Box>
+                    <Box fontFamily="mono" fontVariantNumeric="tabular-nums">{project.year}</Box>
+                  </Flex>
+                </a>
+              ))}
+            </Box>
+          </Box>
+
+          {/* Column 2: Secondary — Experiments */}
+          <Box
+            py="40"
+            px={{ base: '0', md: '24' }}
+            borderRight={{ base: 'none', lg: '1px solid {colors.neutral.200}' }}
+            borderTop={{ base: '1px solid {colors.neutral.200}', md: 'none' }}
+          >
+            <Box
+              fontFamily="heading"
+              fontSize="9px"
+              letterSpacing="widest"
+              color="{colors.neutral.500}"
+              textTransform="uppercase"
+              mb="16"
+              pb="8"
+              borderBottom="1px solid {colors.neutral.800}"
             >
-              <h3 className={css({
-                fontFamily: 'heading',
-                fontSize: { base: '24px', md: '28px' },
-                fontWeight: 'bold',
-                lineHeight: 'snug',
-                letterSpacing: 'normal',
-                color: 'text',
-              })}>
-                {selectedWork[0].title}
-              </h3>
-            </a>
-            {selectedWork[0].problem && (
-              <p className={css({
-                fontFamily: 'body',
-                fontSize: '14px',
-                lineHeight: 'normal',
-                color: 'text-secondary',
-                marginTop: '8px',
-                letterSpacing: 'wide',
-              })}>
-                {selectedWork[0].problem}
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* Signal Zone — Moon + Sports */}
-        <div className={css({
-          gridColumn: { base: '1', md: '11 / 13' },
-          gridRow: { base: 'auto', md: '1' },
-          alignSelf: 'start',
-          paddingTop: { md: '8px' },
-        })}>
-          {/* Moon marker */}
-          <div className={css({ marginBottom: '24px' })}>
-            <div className={css({
-              width: '22px',
-              height: '22px',
-              border: '1.5px solid',
-              borderColor: 'text',
-              borderRadius: '50%',
-              marginBottom: '8px',
-            })} />
-            <div className={css({
-              fontFamily: 'body',
-              fontSize: '10px',
-              letterSpacing: 'widest',
-              color: 'text-muted',
-            })}>
-              99.3%
-            </div>
-          </div>
-
-          {/* Pistons W */}
-          <div className={css({ marginBottom: '16px' })}>
-            <div className={css({
-              width: '20px',
-              borderTop: '1px solid',
-              borderColor: 'accent-mustard',
-              marginBottom: '8px',
-            })} />
-            <div className={css({
-              fontFamily: 'body',
-              fontSize: '12px',
-              letterSpacing: 'wider',
-              color: 'accent-mustard',
-              fontVariantNumeric: 'tabular-nums',
-            })}>
-              DET 116 · OKC 109
-            </div>
-          </div>
-
-          {/* Tigers L */}
-          <div className={css({
-            fontFamily: 'body',
-            fontSize: '11px',
-            letterSpacing: 'wider',
-            color: 'text-secondary',
-            fontVariantNumeric: 'tabular-nums',
-          })}>
-            DET Tigers 3 · Ari 4
-          </div>
-        </div>
-
-        {/* Row 2: Secondary work items */}
-        {selectedWork[1] && (
-          <div className={css({
-            gridColumn: { base: '1', md: '2 / 6' },
-            gridRow: { base: 'auto', md: '2' },
-            minHeight: { md: '280px' },
-            border: '1px solid',
-            borderColor: 'border',
-            borderRadius: 'none',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            transition: 'background 0.2s',
-            _hover: { background: '{colors.sage.glow}' },
-          })}>
-            <div className={css({
-              fontFamily: 'body',
-              fontSize: '10px',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'text-muted',
-              marginBottom: '12px',
-              lineHeight: 'loose',
-            })}>
-              {selectedWork[1].type} · {selectedWork[1].year}
-            </div>
-            <a
-              href={`/work/${selectedWork[1].slug}`}
-              className={css({
-                textDecoration: 'none',
-                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
-              })}
-            >
-              <h3 className={css({
-                fontFamily: 'heading',
-                fontSize: { base: '22px', md: '24px' },
-                fontWeight: 'bold',
-                lineHeight: 'snug',
-                letterSpacing: 'normal',
-                color: 'text',
-              })}>
-                {selectedWork[1].title}
-              </h3>
-            </a>
-          </div>
-        )}
-
-        {selectedWork[2] && (
-          <div className={css({
-            gridColumn: { base: '1', md: '6 / 10' },
-            gridRow: { base: 'auto', md: '2' },
-            minHeight: { md: '280px' },
-            border: '1px solid',
-            borderColor: 'border',
-            borderRadius: 'none',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            transition: 'background 0.2s',
-            _hover: { background: '{colors.sage.glow}' },
-          })}>
-            <div className={css({
-              fontFamily: 'body',
-              fontSize: '10px',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'text-muted',
-              marginBottom: '12px',
-              lineHeight: 'loose',
-            })}>
-              {selectedWork[2].type} · {selectedWork[2].year}
-            </div>
-            <a
-              href={`/work/${selectedWork[2].slug}`}
-              className={css({
-                textDecoration: 'none',
-                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
-              })}
-            >
-              <h3 className={css({
-                fontFamily: 'heading',
-                fontSize: { base: '22px', md: '24px' },
-                fontWeight: 'bold',
-                lineHeight: 'snug',
-                letterSpacing: 'normal',
-                color: 'text',
-              })}>
-                {selectedWork[2].title}
-              </h3>
-            </a>
-          </div>
-        )}
-
-        {/* Quote zone */}
-        <div className={css({
-          gridColumn: { base: '1', md: '10 / 13' },
-          gridRow: { base: 'auto', md: '2' },
-          alignSelf: 'center',
-          paddingLeft: { md: '8px' },
-        })}>
-          <blockquote className={css({
-            fontFamily: 'heading',
-            fontSize: '18px',
-            fontStyle: 'italic',
-            lineHeight: 'snug',
-            color: 'text-secondary',
-            letterSpacing: 'normal',
-            borderLeft: '1.5px solid',
-            borderColor: 'border',
-            paddingLeft: '16px',
-          })}>
-            "Design is the body language of your first impression."
-          </blockquote>
-        </div>
-
-        {/* Row 3: Experiments — full-width dense list */}
-        <div className={css({
-          gridColumn: { base: '1', md: '1 / 13' },
-          gridRow: { base: 'auto', md: '3' },
-        })}>
-          <div className={css({ marginBottom: '24px' })}>
-            <span className={css({
-              display: 'inline-block',
-              width: '40px',
-              borderTop: '1px solid',
-              borderColor: 'border',
-              marginBottom: '8px',
-            })} />
-            <div className={css({
-              fontFamily: 'body',
-              fontSize: '10px',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'text-muted',
-              lineHeight: 'loose',
-            })}>
               Experiments
-            </div>
-          </div>
-
-          <div>
+            </Box>
             {experiments.map((exp) => (
               <a
                 key={exp.slug}
@@ -355,80 +201,147 @@ function HomePage() {
                 target={exp.externalUrl ? '_blank' : undefined}
                 rel={exp.externalUrl ? 'noopener noreferrer' : undefined}
                 className={css({
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  minHeight: '44px',
-                  padding: '8px 0',
-                  borderBottom: '1px solid',
-                  borderColor: 'border',
+                  display: 'block',
+                  py: '12',
+                  borderBottom: '1px solid {colors.neutral.100}',
                   textDecoration: 'none',
-                  transition: 'background 0.15s',
-                  _hover: { background: 'bg-card' },
-                  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '-2px' },
+                  minHeight: '44px',
+                  _hover: { background: '{colors.neutral.100}' },
+                  _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '2px' },
                 })}
               >
-                <span className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  color: 'text',
-                  letterSpacing: 'wide',
-                })}>
+                <Box fontFamily="body" fontSize="15px" fontWeight="500" color="{colors.neutral.800}" mb="4">
                   {exp.title}
-                </span>
-                <span className={css({
-                  fontFamily: 'body',
-                  fontSize: '12px',
-                  letterSpacing: 'wider',
-                  color: 'text-muted',
-                  fontVariantNumeric: 'tabular-nums',
-                  flexShrink: 0,
-                  marginLeft: '16px',
-                })}>
-                  {exp.type} · {exp.year}
-                </span>
+                </Box>
+                <Flex gap="12" fontSize="12px" color="{colors.neutral.400}">
+                  <Box fontFamily="body" letterSpacing="wide">{exp.type}</Box>
+                  <Box fontFamily="mono" fontVariantNumeric="tabular-nums">{exp.year}</Box>
+                </Flex>
+                {exp.description && (
+                  <Box
+                    fontFamily="body"
+                    fontSize="13px"
+                    lineHeight="normal"
+                    color="{colors.neutral.500}"
+                    mt="8"
+                    maxW="360px"
+                  >
+                    {exp.description}
+                  </Box>
+                )}
               </a>
             ))}
-          </div>
-        </div>
-      </div>
+          </Box>
 
-      {/* Footer */}
-      <footer className={css({
-        marginTop: '96px',
-        paddingTop: '24px',
-        borderTop: '1px solid',
-        borderColor: 'border',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: '16px',
-      })}>
-        <span className={css({
-          fontFamily: 'body',
-          fontSize: '12px',
-          color: 'text-muted',
-          letterSpacing: 'wider',
-        })}>
-          © 2026 Doug March
-        </span>
-        <a href="/archive" className={css({
-          fontFamily: 'body',
-          fontSize: '12px',
-          color: 'text-muted',
-          letterSpacing: 'wider',
-          textDecoration: 'none',
-          padding: '8px 4px',
-          minHeight: '44px',
-          display: 'flex',
-          alignItems: 'center',
-          _hover: { color: 'text-secondary' },
-          _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-        })}>
-          Archive
-        </a>
-      </footer>
-    </div>
+          {/* Column 3: Tertiary — Leaderboard + Signal */}
+          <Box
+            py="40"
+            pl={{ base: '0', lg: '24' }}
+            borderTop={{ base: '1px solid {colors.neutral.200}', lg: 'none' }}
+          >
+            {/* Golf Leaderboard */}
+            <Box mb="32">
+              <Box
+                fontFamily="heading"
+                fontSize="9px"
+                letterSpacing="widest"
+                color="{colors.neutral.500}"
+                textTransform="uppercase"
+                mb="16"
+                pb="8"
+                borderBottom="1px solid"
+                borderColor="{colors.accent.glow}"
+              >
+                Leaderboard
+              </Box>
+              {[
+                { pos: '01', name: 'Cameron Young', score: '-8', lead: true },
+                { pos: '02', name: 'Collin Morikawa', score: '-6', lead: false },
+                { pos: '03', name: 'Scottie Scheffler', score: '-5', lead: false },
+                { pos: 'T4', name: 'Xander Schauffele', score: '-4', lead: false },
+                { pos: 'T4', name: 'Rory McIlroy', score: '-4', lead: false },
+              ].map((player) => (
+                <Flex
+                  key={player.pos + player.name}
+                  align="center"
+                  height="40px"
+                  borderBottom="1px solid {colors.neutral.100}"
+                  gap="12"
+                  className={css({
+                    _hover: {
+                      background: '{colors.neutral.100}',
+                      borderLeft: '3px solid {colors.accent.DEFAULT}',
+                      pl: '8',
+                    },
+                  })}
+                >
+                  <Box
+                    fontFamily="heading"
+                    fontWeight="700"
+                    fontSize="16px"
+                    fontVariantNumeric="tabular-nums"
+                    color="{colors.neutral.800}"
+                    minW="28px"
+                  >
+                    {player.pos}
+                  </Box>
+                  <Box fontFamily="body" fontSize="13px" color="{colors.neutral.600}" flex="1">
+                    {player.name}
+                  </Box>
+                  <Box
+                    fontFamily="mono"
+                    fontSize="13px"
+                    fontWeight="700"
+                    fontVariantNumeric="tabular-nums"
+                    color={player.lead ? '{colors.accent.DEFAULT}' : '{colors.accent.dark}'}
+                  >
+                    {player.score}
+                  </Box>
+                </Flex>
+              ))}
+              <Box
+                fontFamily="body"
+                fontSize="11px"
+                letterSpacing="wider"
+                color="{colors.neutral.500}"
+                mt="12"
+              >
+                Cadillac Championship — Rd 2
+              </Box>
+            </Box>
+
+            {/* HN Signal */}
+            <Box>
+              <Box
+                fontFamily="heading"
+                fontSize="9px"
+                letterSpacing="widest"
+                color="{colors.neutral.500}"
+                textTransform="uppercase"
+                mb="16"
+                pb="8"
+                borderBottom="1px solid {colors.neutral.200}"
+              >
+                Signal
+              </Box>
+              <Box mb="16">
+                <Box fontFamily="body" fontSize="13px" color="{colors.neutral.600}" lineHeight="normal" mb="4">
+                  NSA whistleblower raises new concerns about domestic surveillance infrastructure
+                </Box>
+                <Box fontFamily="body" fontSize="11px" fontVariantNumeric="tabular-nums" color="{colors.neutral.500}">
+                  605 ↑
+                </Box>
+              </Box>
+              <Box fontFamily="body" fontSize="12px" color="{colors.neutral.500}" lineHeight="normal" mb="8">
+                Show HN: Open-source alternative to Vercel deployments
+              </Box>
+              <Box fontFamily="body" fontSize="12px" color="{colors.neutral.500}" lineHeight="normal">
+                Why we moved from Kubernetes back to bare metal
+              </Box>
+            </Box>
+          </Box>
+        </Grid>
+      </Box>
+    </>
   )
 }
