@@ -1,134 +1,250 @@
 import logoSvg from '../assets/logo.svg'
+import { Box, Flex, VStack, styled } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Flex, Box } from '../../styled-system/jsx'
 
 export function Sidebar() {
   return (
-    <header
-      className={css({
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-        width: '100%',
-        background: '{colors.neutral.800}',
-        borderBottom: '1px solid {colors.neutral.700}',
-      })}
+    <Box
+      position="fixed"
+      top="0"
+      left="0"
+      height="100vh"
+      width={{ base: '100%', md: '38%' }}
+      maxWidth={{ md: '480px' }}
+      minWidth={{ md: '340px' }}
+      background="bg-secondary"
+      display="flex"
+      flexDirection="column"
+      padding={{ base: '32px 24px 24px', md: '48px 40px 40px 48px' }}
+      zIndex="10"
+      overflow="hidden"
     >
-      <Flex
-        align="center"
-        justify="space-between"
-        height="48px"
-        px={{ base: '16', md: '32', lg: '48' }}
-        maxW="1200px"
-        mx="auto"
-        width="100%"
-      >
-        {/* Left: Logo + Name */}
-        <Flex align="center" gap="12">
-          <a href="/" className={css({ display: 'flex', alignItems: 'center', textDecoration: 'none' })}>
-            <img
-              src={logoSvg}
-              alt="Doug March logo"
-              className={css({ height: '24px', width: '24px' })}
-            />
-          </a>
-          <a
-            href="/"
-            className={css({
-              fontFamily: 'heading',
-              fontSize: '13px',
-              fontWeight: '500',
-              letterSpacing: 'widest',
-              color: '{colors.neutral.50}',
-              textDecoration: 'none',
-              textTransform: 'uppercase',
-              _hover: { color: 'white' },
-              _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '2px' },
-            })}
+      {/* Identity */}
+      <Flex align="center" gap="12px" marginBottom={{ base: '24px', md: '32px' }}>
+        <img
+          src={logoSvg}
+          alt="Doug March logo"
+          className={css({ width: '32px', height: '32px' })}
+        />
+        <Box>
+          <Box
+            fontSize="16px"
+            fontWeight="semibold"
+            fontFamily="heading"
+            color="text"
+            lineHeight="snug"
           >
             Doug March
-          </a>
-        </Flex>
+          </Box>
+          <Box
+            fontSize="12px"
+            fontWeight="medium"
+            fontFamily="body"
+            color="text-muted"
+            letterSpacing="wide"
+          >
+            Product Designer &amp; Developer
+          </Box>
+        </Box>
+      </Flex>
 
-        {/* Center: Date */}
+      {/* Golf Leaderboard — Primary Signal */}
+      <Box flex="1" display={{ base: 'none', md: 'flex' }} flexDirection="column" justifyContent="center">
         <Box
-          display={{ base: 'none', md: 'block' }}
-          fontFamily="body"
-          fontSize="11px"
+          fontSize="9px"
+          fontFamily="heading"
+          fontWeight="medium"
           letterSpacing="widest"
-          color="{colors.neutral.400}"
+          textTransform="uppercase"
+          color="text-muted"
+          marginBottom="4px"
         >
-          May 1, 2026 — Friday
+          Cadillac Championship
+        </Box>
+        <Box
+          fontSize="9px"
+          fontFamily="heading"
+          fontWeight="medium"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="stone.400"
+          marginBottom="24px"
+        >
+          Leaderboard &nbsp;·&nbsp; Live
         </Box>
 
-        {/* Right: Score badge + Nav */}
-        <Flex align="center" gap="32">
-          {/* Tigers score */}
-          <Flex
-            align="center"
-            gap="8"
-            display={{ base: 'none', lg: 'flex' }}
+        {/* Cameron Young — Row 1 */}
+        <Flex align="flex-end" gap="16px" marginBottom="8px">
+          <Box
+            fontSize="21px"
+            fontFamily="heading"
+            fontWeight="bold"
+            color="accent"
+            lineHeight="tight"
+            minWidth="28px"
+            style={{ fontVariantNumeric: 'tabular-nums' }}
           >
+            1
+          </Box>
+          <Box flex="1">
             <Box
-              width="6px"
-              height="6px"
-              borderRadius="50%"
-              background="{colors.accent.DEFAULT}"
-              flexShrink={0}
-            />
-            <Box
-              fontFamily="body"
-              fontSize="11px"
-              letterSpacing="widest"
-              color="{colors.neutral.200}"
+              fontSize="clamp(20px, 2.2vw, 28px)"
+              fontFamily="heading"
+              fontWeight="semibold"
+              color="text"
+              letterSpacing="tight"
+              lineHeight="snug"
             >
-              DET 5–2
+              Cameron Young
+            </Box>
+          </Box>
+          <Box
+            fontSize="clamp(36px, 4vw, 50px)"
+            fontFamily="heading"
+            fontWeight="bold"
+            color="accent"
+            letterSpacing="tight"
+            lineHeight="tight"
+          >
+            −13
+          </Box>
+        </Flex>
+
+        {/* 2nd place */}
+        <Flex
+          align="baseline"
+          gap="16px"
+          paddingY="8px"
+          opacity="0.75"
+          _hover={{ opacity: 1 }}
+          transition="opacity 0.12s ease"
+        >
+          <Box
+            fontSize="14px"
+            fontFamily="heading"
+            fontWeight="medium"
+            color="text-muted"
+            minWidth="28px"
+            style={{ fontVariantNumeric: 'tabular-nums' }}
+          >
+            2
+          </Box>
+          <Box flex="1" fontSize="16px" fontFamily="heading" color="text-secondary" letterSpacing="normal">
+            Scottie Scheffler
+          </Box>
+          <Box fontSize="21px" fontFamily="heading" fontWeight="semibold" color="text">
+            −11
+          </Box>
+        </Flex>
+
+        {/* 3rd place */}
+        <Flex
+          align="baseline"
+          gap="16px"
+          paddingY="8px"
+          opacity="0.75"
+          _hover={{ opacity: 1 }}
+          transition="opacity 0.12s ease"
+        >
+          <Box
+            fontSize="14px"
+            fontFamily="heading"
+            fontWeight="medium"
+            color="text-muted"
+            minWidth="28px"
+            style={{ fontVariantNumeric: 'tabular-nums' }}
+          >
+            3
+          </Box>
+          <Box flex="1" fontSize="16px" fontFamily="heading" color="text-muted" letterSpacing="normal">
+            Collin Morikawa
+          </Box>
+          <Box fontSize="21px" fontFamily="heading" fontWeight="semibold" color="text-secondary">
+            −9
+          </Box>
+        </Flex>
+
+        <Box height="1px" background="border-muted" marginTop="24px" marginBottom="24px" />
+
+        {/* Sports Scores Strip */}
+        <Flex
+          gap="12px"
+          align="center"
+          fontSize="10px"
+          fontFamily="heading"
+          letterSpacing="wide"
+          fontWeight="medium"
+        >
+          <Flex gap="6px" align="center" color="text-secondary">
+            <span>DET 93</span>
+            <span style={{ opacity: 0.5 }}>—</span>
+            <span>IND 79</span>
+            <Box
+              fontSize="9px"
+              fontWeight="medium"
+              color="sage"
+              letterSpacing="wider"
+              marginLeft="4px"
+            >
+              W
             </Box>
           </Flex>
-
-          {/* Nav links */}
-          <Flex
-            as="nav"
-            gap="24"
-            align="center"
-          >
-            <a
-              href="/"
-              className={css({
-                fontFamily: 'body',
-                fontSize: '12px',
-                letterSpacing: 'wider',
-                color: '{colors.neutral.200}',
-                textDecoration: 'none',
-                minHeight: '44px',
-                display: 'flex',
-                alignItems: 'center',
-                _hover: { color: '{colors.neutral.50}' },
-                _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '2px' },
-              })}
-            >
-              Work
-            </a>
-            <a
-              href="/about"
-              className={css({
-                fontFamily: 'body',
-                fontSize: '12px',
-                letterSpacing: 'wider',
-                color: '{colors.neutral.200}',
-                textDecoration: 'none',
-                minHeight: '44px',
-                display: 'flex',
-                alignItems: 'center',
-                _hover: { color: '{colors.neutral.50}' },
-                _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '2px' },
-              })}
-            >
-              About
-            </a>
+          <Box color="border-muted">·</Box>
+          <Flex gap="6px" color="stone.400">
+            <span>DET 4</span>
+            <span style={{ opacity: 0.5 }}>—</span>
+            <span>MIL 5</span>
           </Flex>
         </Flex>
-      </Flex>
-    </header>
+      </Box>
+
+      {/* Navigation */}
+      <VStack
+        gap="0"
+        align="flex-start"
+        marginTop={{ base: '0', md: '48px' }}
+      >
+        <a
+          href="/"
+          className={css({
+            display: 'block',
+            paddingY: '8px',
+            fontSize: '10px',
+            fontFamily: 'heading',
+            fontWeight: 'medium',
+            letterSpacing: 'wide',
+            textTransform: 'uppercase',
+            color: 'accent',
+            textDecoration: 'none',
+            minHeight: '44px',
+            lineHeight: '28px',
+            _hover: { color: 'accent' },
+            _focus: { outline: '2px solid {colors.accent}', outlineOffset: '2px' },
+          })}
+        >
+          Work
+        </a>
+        <a
+          href="/about"
+          className={css({
+            display: 'block',
+            paddingY: '8px',
+            fontSize: '10px',
+            fontFamily: 'heading',
+            fontWeight: 'medium',
+            letterSpacing: 'wide',
+            textTransform: 'uppercase',
+            color: 'text-muted',
+            textDecoration: 'none',
+            minHeight: '44px',
+            lineHeight: '28px',
+            _hover: { color: 'accent' },
+            _focus: { outline: '2px solid {colors.accent}', outlineOffset: '2px' },
+          })}
+        >
+          About
+        </a>
+      </VStack>
+    </Box>
   )
 }

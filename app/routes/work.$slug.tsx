@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Box, Flex, VStack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Box, Flex, Grid } from '../../styled-system/jsx'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
@@ -11,160 +11,284 @@ function ProjectPage() {
 
   if (!project) {
     return (
-      <Box maxW="1200px" mx="auto" px={{ base: '16', md: '32', lg: '48' }} py="64">
-        <Box fontFamily="heading" fontSize="28px" fontWeight="700" color="{colors.neutral.800}" letterSpacing="tight">
+      <Box
+        padding={{ base: '32px 24px', md: '64px 56px' }}
+        maxWidth="720px"
+      >
+        <Box fontSize="21px" fontFamily="heading" fontWeight="semibold" color="text">
           Project not found
+        </Box>
+        <Box marginTop="16px">
+          <a
+            href="/"
+            className={css({
+              color: 'accent',
+              fontSize: '16px',
+              _hover: { textDecoration: 'underline' },
+              _focus: { outline: '2px solid {colors.accent}', outlineOffset: '2px' },
+            })}
+          >
+            ← Back to work
+          </a>
         </Box>
       </Box>
     )
   }
 
   return (
-    <Box maxW="1200px" mx="auto" px={{ base: '16', md: '32', lg: '48' }} width="100%">
-      <Grid
-        gridTemplateColumns={{ base: '1fr', lg: '2fr 1fr' }}
-        columnGap="0"
-      >
-        {/* Main Content */}
-        <Box
-          py="40"
-          pr={{ base: '0', lg: '32' }}
-          borderRight={{ base: 'none', lg: '1px solid {colors.neutral.200}' }}
+    <Box
+      padding={{ base: '32px 24px 64px', md: '64px 56px 96px 56px' }}
+      maxWidth="720px"
+    >
+      {/* Header */}
+      <Box marginBottom="48px">
+        <a
+          href="/"
+          className={css({
+            fontSize: '14px',
+            fontFamily: 'body',
+            color: 'text-muted',
+            textDecoration: 'none',
+            _hover: { color: 'accent', textDecoration: 'underline' },
+            _focus: { outline: '2px solid {colors.accent}', outlineOffset: '2px' },
+            display: 'inline-flex',
+            alignItems: 'center',
+            minHeight: '44px',
+          })}
         >
-          {/* Header */}
-          <Box mb="40" pb="32" borderBottom="1px solid {colors.neutral.800}">
-            <Flex gap="16" mb="16" align="center">
-              <Box fontFamily="body" fontSize="12px" letterSpacing="wide" color="{colors.neutral.500}">
-                {project.type}
-              </Box>
-              <Box fontFamily="mono" fontSize="12px" color="{colors.neutral.400}" fontVariantNumeric="tabular-nums">
-                {project.year}
-              </Box>
-            </Flex>
-            <Box
-              fontFamily="heading"
-              fontWeight="700"
-              fontSize={{ base: '28px', md: '37px', lg: '50px' }}
-              lineHeight="tight"
-              letterSpacing="tight"
-              color="{colors.neutral.800}"
-              mb="16"
-            >
-              {project.title}
-            </Box>
-            {project.role && (
-              <Box fontFamily="body" fontSize="14px" letterSpacing="wide" color="{colors.neutral.500}">
-                {project.role}
-              </Box>
-            )}
+          ← Back
+        </a>
+      </Box>
+
+      <Box marginBottom="48px">
+        <Flex gap="16px" align="baseline" marginBottom="16px">
+          <Box fontSize="12px" fontFamily="heading" color="text-muted" letterSpacing="wide">
+            {project.type}
           </Box>
-
-          {/* Problem */}
-          {project.problem && (
-            <Box mb="32">
-              <Box
-                fontFamily="heading"
-                fontSize="9px"
-                letterSpacing="widest"
-                color="{colors.neutral.500}"
-                textTransform="uppercase"
-                mb="12"
-              >
-                Problem
-              </Box>
-              <Box fontFamily="body" fontSize="16px" lineHeight="normal" color="{colors.neutral.600}" maxW="600px">
-                {project.problem}
-              </Box>
-            </Box>
-          )}
-
-          {/* Approach */}
-          {project.approach && (
-            <Box mb="32">
-              <Box
-                fontFamily="heading"
-                fontSize="9px"
-                letterSpacing="widest"
-                color="{colors.neutral.500}"
-                textTransform="uppercase"
-                mb="12"
-              >
-                Approach
-              </Box>
-              <Box fontFamily="body" fontSize="16px" lineHeight="normal" color="{colors.neutral.600}" maxW="600px">
-                {project.approach}
-              </Box>
-            </Box>
-          )}
-
-          {/* Outcome */}
-          {project.outcome && (
-            <Box mb="32">
-              <Box
-                fontFamily="heading"
-                fontSize="9px"
-                letterSpacing="widest"
-                color="{colors.neutral.500}"
-                textTransform="uppercase"
-                mb="12"
-              >
-                Outcome
-              </Box>
-              <Box fontFamily="body" fontSize="16px" lineHeight="normal" color="{colors.neutral.600}" maxW="600px">
-                {project.outcome}
-              </Box>
-            </Box>
-          )}
-
-          {/* Description (for lightweight projects) */}
-          {project.description && !project.problem && (
-            <Box mb="32">
-              <Box fontFamily="body" fontSize="16px" lineHeight="normal" color="{colors.neutral.600}" maxW="600px">
-                {project.description}
-              </Box>
-            </Box>
-          )}
-        </Box>
-
-        {/* Sidebar Meta */}
+          <Box
+            fontSize="12px"
+            fontFamily="mono"
+            color="text-muted"
+            style={{ fontVariantNumeric: 'tabular-nums' }}
+          >
+            {project.year}
+          </Box>
+        </Flex>
         <Box
-          py="40"
-          pl={{ base: '0', lg: '24' }}
-          borderTop={{ base: '1px solid {colors.neutral.200}', lg: 'none' }}
+          fontSize="clamp(28px, 3vw, 37px)"
+          fontFamily="heading"
+          fontWeight="semibold"
+          color="text"
+          lineHeight="snug"
+          marginBottom="24px"
         >
-          {/* Links */}
-          {(project.externalUrl || project.liveUrl || project.githubUrl) && (
-            <Box mb="32">
-              <Box
-                fontFamily="heading"
-                fontSize="9px"
-                letterSpacing="widest"
-                color="{colors.neutral.500}"
-                textTransform="uppercase"
-                mb="16"
-                pb="8"
-                borderBottom="1px solid {colors.neutral.800}"
-              >
-                Links
-              </Box>
-              {(project.externalUrl || project.liveUrl) && (
+          {project.title}
+        </Box>
+        {project.externalUrl && (
+          <a
+            href={project.externalUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={css({
+              fontSize: '14px',
+              fontFamily: 'body',
+              color: 'accent',
+              textDecoration: 'none',
+              _hover: { textDecoration: 'underline' },
+              _focus: { outline: '2px solid {colors.accent}', outlineOffset: '2px' },
+              display: 'inline-flex',
+              alignItems: 'center',
+              minHeight: '44px',
+            })}
+          >
+            Visit site ↗
+          </a>
+        )}
+      </Box>
+
+      {/* Details */}
+      <VStack gap="48px" align="stretch">
+        {project.role && (
+          <Box>
+            <Box
+              fontSize="10px"
+              fontFamily="heading"
+              fontWeight="medium"
+              letterSpacing="widest"
+              textTransform="uppercase"
+              color="text-muted"
+              borderTop="1px solid"
+              borderColor="border-muted"
+              paddingTop="20px"
+              marginBottom="16px"
+            >
+              Role
+            </Box>
+            <Box fontSize="16px" fontFamily="body" color="text" lineHeight="normal">
+              {project.role}
+            </Box>
+          </Box>
+        )}
+
+        {project.problem && (
+          <Box>
+            <Box
+              fontSize="10px"
+              fontFamily="heading"
+              fontWeight="medium"
+              letterSpacing="widest"
+              textTransform="uppercase"
+              color="text-muted"
+              borderTop="1px solid"
+              borderColor="border-muted"
+              paddingTop="20px"
+              marginBottom="16px"
+            >
+              Problem
+            </Box>
+            <Box fontSize="16px" fontFamily="body" color="text-secondary" lineHeight="normal" maxWidth="560px">
+              {project.problem}
+            </Box>
+          </Box>
+        )}
+
+        {project.approach && (
+          <Box>
+            <Box
+              fontSize="10px"
+              fontFamily="heading"
+              fontWeight="medium"
+              letterSpacing="widest"
+              textTransform="uppercase"
+              color="text-muted"
+              borderTop="1px solid"
+              borderColor="border-muted"
+              paddingTop="20px"
+              marginBottom="16px"
+            >
+              Approach
+            </Box>
+            <Box fontSize="16px" fontFamily="body" color="text-secondary" lineHeight="normal" maxWidth="560px">
+              {project.approach}
+            </Box>
+          </Box>
+        )}
+
+        {project.outcome && (
+          <Box>
+            <Box
+              fontSize="10px"
+              fontFamily="heading"
+              fontWeight="medium"
+              letterSpacing="widest"
+              textTransform="uppercase"
+              color="text-muted"
+              borderTop="1px solid"
+              borderColor="border-muted"
+              paddingTop="20px"
+              marginBottom="16px"
+            >
+              Outcome
+            </Box>
+            <Box fontSize="16px" fontFamily="body" color="text-secondary" lineHeight="normal" maxWidth="560px">
+              {project.outcome}
+            </Box>
+          </Box>
+        )}
+
+        {project.description && (
+          <Box>
+            <Box
+              fontSize="10px"
+              fontFamily="heading"
+              fontWeight="medium"
+              letterSpacing="widest"
+              textTransform="uppercase"
+              color="text-muted"
+              borderTop="1px solid"
+              borderColor="border-muted"
+              paddingTop="20px"
+              marginBottom="16px"
+            >
+              Description
+            </Box>
+            <Box fontSize="16px" fontFamily="body" color="text-secondary" lineHeight="normal" maxWidth="560px">
+              {project.description}
+            </Box>
+          </Box>
+        )}
+
+        {project.stack && project.stack.length > 0 && (
+          <Box>
+            <Box
+              fontSize="10px"
+              fontFamily="heading"
+              fontWeight="medium"
+              letterSpacing="widest"
+              textTransform="uppercase"
+              color="text-muted"
+              borderTop="1px solid"
+              borderColor="border-muted"
+              paddingTop="20px"
+              marginBottom="16px"
+            >
+              Stack
+            </Box>
+            <Flex gap="8px" flexWrap="wrap">
+              {project.stack.map((tech) => (
+                <Box
+                  key={tech}
+                  paddingX="12px"
+                  paddingY="6px"
+                  fontSize="14px"
+                  fontFamily="body"
+                  color="text-secondary"
+                  border="1px solid"
+                  borderColor="border"
+                  borderRadius="sm"
+                >
+                  {tech}
+                </Box>
+              ))}
+            </Flex>
+          </Box>
+        )}
+
+        {(project.liveUrl || project.githubUrl) && (
+          <Box>
+            <Box
+              fontSize="10px"
+              fontFamily="heading"
+              fontWeight="medium"
+              letterSpacing="widest"
+              textTransform="uppercase"
+              color="text-muted"
+              borderTop="1px solid"
+              borderColor="border-muted"
+              paddingTop="20px"
+              marginBottom="16px"
+            >
+              Links
+            </Box>
+            <Flex gap="24px">
+              {project.liveUrl && (
                 <a
-                  href={project.externalUrl || project.liveUrl}
+                  href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={css({
-                    display: 'block',
-                    fontFamily: 'body',
                     fontSize: '14px',
-                    color: '{colors.accent.DEFAULT}',
+                    fontFamily: 'body',
+                    color: 'accent',
                     textDecoration: 'none',
-                    py: '8',
-                    minHeight: '44px',
                     _hover: { textDecoration: 'underline' },
-                    _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '2px' },
+                    _focus: { outline: '2px solid {colors.accent}', outlineOffset: '2px' },
+                    minHeight: '44px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
                   })}
                 >
-                  Visit site ↗
+                  Live site ↗
                 </a>
               )}
               {project.githubUrl && (
@@ -173,77 +297,68 @@ function ProjectPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={css({
-                    display: 'block',
-                    fontFamily: 'body',
                     fontSize: '14px',
-                    color: '{colors.accent.DEFAULT}',
+                    fontFamily: 'body',
+                    color: 'accent',
                     textDecoration: 'none',
-                    py: '8',
-                    minHeight: '44px',
                     _hover: { textDecoration: 'underline' },
-                    _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '2px' },
+                    _focus: { outline: '2px solid {colors.accent}', outlineOffset: '2px' },
+                    minHeight: '44px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
                   })}
                 >
                   GitHub ↗
                 </a>
               )}
-            </Box>
-          )}
+            </Flex>
+          </Box>
+        )}
+      </VStack>
 
-          {/* Stack */}
-          {project.stack && project.stack.length > 0 && (
-            <Box mb="32">
-              <Box
-                fontFamily="heading"
-                fontSize="9px"
-                letterSpacing="widest"
-                color="{colors.neutral.500}"
-                textTransform="uppercase"
-                mb="16"
-                pb="8"
-                borderBottom="1px solid {colors.neutral.800}"
-              >
-                Stack
-              </Box>
-              <Flex gap="8" flexWrap="wrap">
-                {project.stack.map((tech) => (
-                  <Box
-                    key={tech}
-                    fontFamily="mono"
-                    fontSize="12px"
-                    color="{colors.neutral.600}"
-                    px="12"
-                    py="4"
-                    border="1px solid {colors.neutral.200}"
-                    borderRadius="sm"
-                  >
-                    {tech}
-                  </Box>
-                ))}
-              </Flex>
-            </Box>
-          )}
-
-          {/* Back link */}
+      {/* Footer */}
+      <Box
+        marginTop="96px"
+        borderTop="1px solid"
+        borderColor="border"
+        paddingTop="24px"
+        fontSize="12px"
+        fontFamily="body"
+        color="text-muted"
+      >
+        <Flex justify="space-between" align="center">
           <a
             href="/"
             className={css({
+              color: 'text-muted',
+              textDecoration: 'none',
+              _hover: { textDecoration: 'underline', color: 'accent' },
+              _focus: { outline: '2px solid {colors.accent}', outlineOffset: '2px' },
+              minHeight: '44px',
               display: 'inline-flex',
               alignItems: 'center',
-              fontFamily: 'body',
-              fontSize: '13px',
-              letterSpacing: 'wider',
-              color: '{colors.neutral.500}',
-              textDecoration: 'none',
-              minHeight: '44px',
-              _hover: { color: '{colors.neutral.800}' },
-              _focus: { outline: '2px solid {colors.accent.DEFAULT}', outlineOffset: '2px' },
             })}
           >
             ← All work
           </a>
-        </Box>
-      </Grid>
+          <a
+            href="/archive"
+            className={css({
+              color: 'text-muted',
+              textDecoration: 'none',
+              _hover: { textDecoration: 'underline', color: 'accent' },
+              _focus: { outline: '2px solid {colors.accent}', outlineOffset: '2px' },
+              minHeight: '44px',
+              minWidth: '44px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            })}
+          >
+            Archive
+          </a>
+        </Flex>
+      </Box>
     </Box>
   )
 }

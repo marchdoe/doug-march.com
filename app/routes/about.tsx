@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Box, Flex, VStack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Box, Flex, Grid } from '../../styled-system/jsx'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
@@ -8,224 +8,270 @@ export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
   return (
-    <Box maxW="1200px" mx="auto" px={{ base: '16', md: '32', lg: '48' }} width="100%">
-      <Grid
-        gridTemplateColumns={{ base: '1fr', lg: '2fr 1fr' }}
-        columnGap="0"
-      >
-        {/* Main Column */}
+    <Box
+      padding={{ base: '32px 24px 64px', md: '64px 56px 96px 56px' }}
+      maxWidth="720px"
+    >
+      {/* Identity */}
+      <Box marginBottom="64px">
         <Box
-          py="40"
-          pr={{ base: '0', lg: '32' }}
-          borderRight={{ base: 'none', lg: '1px solid {colors.neutral.200}' }}
+          fontSize="clamp(28px, 3vw, 37px)"
+          fontFamily="heading"
+          fontWeight="semibold"
+          color="text"
+          lineHeight="snug"
+          marginBottom="24px"
         >
-          {/* Identity */}
-          <Box mb="40" pb="32" borderBottom="1px solid {colors.neutral.800}">
-            <Box
-              fontFamily="heading"
-              fontWeight="700"
-              fontSize={{ base: '28px', md: '37px' }}
-              lineHeight="snug"
-              letterSpacing="tight"
-              color="{colors.neutral.800}"
-              mb="8"
-            >
-              {identity.name}
-            </Box>
-            <Box
-              fontFamily="body"
-              fontSize="14px"
-              letterSpacing="wide"
-              color="{colors.accent.DEFAULT}"
-              mb="24"
-              textTransform="uppercase"
-            >
-              {identity.role}
-            </Box>
-            <Box
-              fontFamily="body"
-              fontSize="16px"
-              lineHeight="normal"
-              color="{colors.neutral.600}"
-              maxW="600px"
-            >
-              {identity.statement}
-            </Box>
-          </Box>
+          {identity.name}
+        </Box>
+        <Box
+          fontSize="16px"
+          fontFamily="body"
+          color="text-secondary"
+          lineHeight="normal"
+          maxWidth="560px"
+        >
+          {identity.statement}
+        </Box>
+        <Box
+          fontSize="14px"
+          fontFamily="body"
+          color="text-muted"
+          marginTop="12px"
+        >
+          {identity.role}
+        </Box>
+      </Box>
 
-          {/* Timeline */}
-          <Box mb="40">
-            <Box
-              fontFamily="heading"
-              fontSize="9px"
-              letterSpacing="widest"
-              color="{colors.neutral.500}"
-              textTransform="uppercase"
-              mb="16"
-              pb="8"
-              borderBottom="1px solid {colors.neutral.800}"
+      {/* Timeline */}
+      <Box marginBottom="64px">
+        <Box
+          fontSize="10px"
+          fontFamily="heading"
+          fontWeight="medium"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="text-muted"
+          borderTop="1px solid"
+          borderColor="border-muted"
+          paddingTop="20px"
+          marginBottom="24px"
+        >
+          Experience
+        </Box>
+        <VStack gap="0" align="stretch">
+          {timeline.map((entry, i) => (
+            <Flex
+              key={`${entry.year}-${entry.company}`}
+              gap={{ base: '16px', md: '24px' }}
+              paddingY="16px"
+              borderBottom="1px solid"
+              borderColor="border"
+              align="flex-start"
             >
-              Experience
-            </Box>
-            {timeline.map((entry) => (
-              <Flex
-                key={entry.year + entry.company}
-                gap={{ base: '16', md: '24' }}
-                py="12"
-                borderBottom="1px solid {colors.neutral.100}"
-                flexDirection={{ base: 'column', md: 'row' }}
+              <Box
+                fontSize="14px"
+                fontFamily="mono"
+                color="text-muted"
+                minWidth="120px"
+                flexShrink={0}
+                style={{ fontVariantNumeric: 'tabular-nums' }}
+                lineHeight="snug"
               >
+                {entry.year}
+              </Box>
+              <Box flex="1">
                 <Box
-                  fontFamily="mono"
-                  fontSize="13px"
-                  color="{colors.neutral.400}"
-                  minW="120px"
-                  flexShrink={0}
-                  fontVariantNumeric="tabular-nums"
+                  fontSize="16px"
+                  fontFamily="heading"
+                  fontWeight="medium"
+                  color="text"
+                  lineHeight="snug"
                 >
-                  {entry.year}
+                  {entry.role}
                 </Box>
-                <Box flex="1">
-                  <Box fontFamily="body" fontSize="16px" fontWeight="500" color="{colors.neutral.800}">
-                    {entry.role}
-                  </Box>
-                  <Box fontFamily="body" fontSize="13px" color="{colors.neutral.500}" mb="4">
-                    {entry.company}
-                  </Box>
-                  <Box
-                    fontFamily="body"
-                    fontSize="14px"
-                    lineHeight="normal"
-                    color="{colors.neutral.600}"
-                    maxW="520px"
-                  >
-                    {entry.description}
-                  </Box>
-                </Box>
-              </Flex>
-            ))}
-          </Box>
-
-          {/* Education */}
-          <Box mb="40">
-            <Box
-              fontFamily="heading"
-              fontSize="9px"
-              letterSpacing="widest"
-              color="{colors.neutral.500}"
-              textTransform="uppercase"
-              mb="16"
-              pb="8"
-              borderBottom="1px solid {colors.neutral.800}"
-            >
-              Education
-            </Box>
-            <Flex gap="24" py="12" flexDirection={{ base: 'column', md: 'row' }}>
-              <Box fontFamily="mono" fontSize="13px" color="{colors.neutral.400}" minW="120px" flexShrink={0}>
-                {education.years}
-              </Box>
-              <Box>
-                <Box fontFamily="body" fontSize="16px" fontWeight="500" color="{colors.neutral.800}">
-                  {education.degree}
-                </Box>
-                <Box fontFamily="body" fontSize="13px" color="{colors.neutral.500}">
-                  {education.concentration} — {education.school}
-                </Box>
-              </Box>
-            </Flex>
-          </Box>
-        </Box>
-
-        {/* Side Column */}
-        <Box
-          py="40"
-          pl={{ base: '0', lg: '24' }}
-          borderTop={{ base: '1px solid {colors.neutral.200}', lg: 'none' }}
-        >
-          {/* Capabilities */}
-          <Box mb="32">
-            <Box
-              fontFamily="heading"
-              fontSize="9px"
-              letterSpacing="widest"
-              color="{colors.neutral.500}"
-              textTransform="uppercase"
-              mb="16"
-              pb="8"
-              borderBottom="1px solid {colors.neutral.800}"
-            >
-              Capabilities
-            </Box>
-            <Flex gap="8" flexWrap="wrap">
-              {capabilities.map((cap) => (
                 <Box
-                  key={cap}
+                  fontSize="14px"
                   fontFamily="body"
-                  fontSize="12px"
-                  letterSpacing="wide"
-                  color="{colors.neutral.600}"
-                  px="12"
-                  py="4"
-                  border="1px solid {colors.neutral.200}"
-                  borderRadius="sm"
+                  color="text-secondary"
+                  marginTop="2px"
                 >
-                  {cap}
+                  {entry.company}
                 </Box>
-              ))}
+                <Box
+                  fontSize="14px"
+                  fontFamily="body"
+                  color="text-muted"
+                  marginTop="8px"
+                  lineHeight="normal"
+                >
+                  {entry.description}
+                </Box>
+              </Box>
             </Flex>
-          </Box>
+          ))}
+        </VStack>
+      </Box>
 
-          {/* Personal */}
-          <Box>
-            <Box
-              fontFamily="heading"
-              fontSize="9px"
-              letterSpacing="widest"
-              color="{colors.neutral.500}"
-              textTransform="uppercase"
-              mb="16"
-              pb="8"
-              borderBottom="1px solid {colors.neutral.800}"
-            >
-              Personal
-            </Box>
-            <Box mb="16">
-              <Box fontFamily="body" fontSize="12px" letterSpacing="wider" color="{colors.neutral.400}" textTransform="uppercase" mb="4">
-                Holes in One
-              </Box>
-              <Box fontFamily="heading" fontWeight="700" fontSize="28px" color="{colors.neutral.800}" letterSpacing="tight">
-                {personal.holesInOne}
-              </Box>
-            </Box>
-            <Box mb="16">
-              <Box fontFamily="body" fontSize="12px" letterSpacing="wider" color="{colors.neutral.400}" textTransform="uppercase" mb="4">
-                Sport
-              </Box>
-              <Box fontFamily="body" fontSize="15px" color="{colors.neutral.600}">
-                {personal.sport}
-              </Box>
-            </Box>
-            <Box mb="16">
-              <Box fontFamily="body" fontSize="12px" letterSpacing="wider" color="{colors.neutral.400}" textTransform="uppercase" mb="4">
-                Teams
-              </Box>
-              {personal.teams.map((team) => (
-                <Box key={team} fontFamily="body" fontSize="15px" color="{colors.neutral.600}" mb="2">
-                  {team}
-                </Box>
-              ))}
-            </Box>
-            <Box>
-              <Box fontFamily="body" fontSize="12px" letterSpacing="wider" color="{colors.neutral.400}" textTransform="uppercase" mb="4">
-                Current Focus
-              </Box>
-              <Box fontFamily="body" fontSize="15px" lineHeight="normal" color="{colors.neutral.600}">
-                {personal.currentFocus}
-              </Box>
-            </Box>
-          </Box>
+      {/* Education */}
+      <Box marginBottom="64px">
+        <Box
+          fontSize="10px"
+          fontFamily="heading"
+          fontWeight="medium"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="text-muted"
+          borderTop="1px solid"
+          borderColor="border-muted"
+          paddingTop="20px"
+          marginBottom="24px"
+        >
+          Education
         </Box>
-      </Grid>
+        <Box paddingY="16px" borderBottom="1px solid" borderColor="border">
+          <Flex gap={{ base: '16px', md: '24px' }} align="flex-start">
+            <Box
+              fontSize="14px"
+              fontFamily="mono"
+              color="text-muted"
+              minWidth="120px"
+              flexShrink={0}
+              style={{ fontVariantNumeric: 'tabular-nums' }}
+            >
+              {education.years}
+            </Box>
+            <Box flex="1">
+              <Box fontSize="16px" fontFamily="heading" fontWeight="medium" color="text" lineHeight="snug">
+                {education.degree}
+              </Box>
+              <Box fontSize="14px" fontFamily="body" color="text-secondary" marginTop="2px">
+                {education.school}
+              </Box>
+              <Box fontSize="14px" fontFamily="body" color="text-muted" marginTop="4px">
+                {education.concentration}
+              </Box>
+            </Box>
+          </Flex>
+        </Box>
+      </Box>
+
+      {/* Capabilities */}
+      <Box marginBottom="64px">
+        <Box
+          fontSize="10px"
+          fontFamily="heading"
+          fontWeight="medium"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="text-muted"
+          borderTop="1px solid"
+          borderColor="border-muted"
+          paddingTop="20px"
+          marginBottom="24px"
+        >
+          Capabilities
+        </Box>
+        <Flex gap="8px" flexWrap="wrap">
+          {capabilities.map((cap) => (
+            <Box
+              key={cap}
+              paddingX="12px"
+              paddingY="6px"
+              fontSize="14px"
+              fontFamily="body"
+              color="text-secondary"
+              border="1px solid"
+              borderColor="border"
+              borderRadius="sm"
+            >
+              {cap}
+            </Box>
+          ))}
+        </Flex>
+      </Box>
+
+      {/* Personal */}
+      <Box marginBottom="64px">
+        <Box
+          fontSize="10px"
+          fontFamily="heading"
+          fontWeight="medium"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="text-muted"
+          borderTop="1px solid"
+          borderColor="border-muted"
+          paddingTop="20px"
+          marginBottom="24px"
+        >
+          Personal
+        </Box>
+        <VStack gap="12px" align="stretch">
+          <Flex gap="24px" align="baseline">
+            <Box fontSize="14px" fontFamily="body" color="text-muted" minWidth="120px" flexShrink={0}>
+              Holes in One
+            </Box>
+            <Box fontSize="16px" fontFamily="heading" fontWeight="semibold" color="text">
+              {personal.holesInOne}
+            </Box>
+          </Flex>
+          <Flex gap="24px" align="baseline">
+            <Box fontSize="14px" fontFamily="body" color="text-muted" minWidth="120px" flexShrink={0}>
+              Sport
+            </Box>
+            <Box fontSize="16px" fontFamily="body" color="text">
+              {personal.sport}
+            </Box>
+          </Flex>
+          <Flex gap="24px" align="baseline">
+            <Box fontSize="14px" fontFamily="body" color="text-muted" minWidth="120px" flexShrink={0}>
+              Teams
+            </Box>
+            <Box fontSize="16px" fontFamily="body" color="text">
+              {personal.teams.join(', ')}
+            </Box>
+          </Flex>
+          <Flex gap="24px" align="baseline">
+            <Box fontSize="14px" fontFamily="body" color="text-muted" minWidth="120px" flexShrink={0}>
+              Current Focus
+            </Box>
+            <Box fontSize="16px" fontFamily="body" color="text">
+              {personal.currentFocus}
+            </Box>
+          </Flex>
+        </VStack>
+      </Box>
+
+      {/* Footer */}
+      <Box
+        borderTop="1px solid"
+        borderColor="border"
+        paddingTop="24px"
+        fontSize="12px"
+        fontFamily="body"
+        color="text-muted"
+      >
+        <Flex justify="space-between" align="center">
+          <span>© 2026 Doug March</span>
+          <a
+            href="/archive"
+            className={css({
+              color: 'text-muted',
+              textDecoration: 'none',
+              _hover: { textDecoration: 'underline', color: 'accent' },
+              _focus: { outline: '2px solid {colors.accent}', outlineOffset: '2px' },
+              minHeight: '44px',
+              minWidth: '44px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            })}
+          >
+            Archive
+          </a>
+        </Flex>
+      </Box>
     </Box>
   )
 }
