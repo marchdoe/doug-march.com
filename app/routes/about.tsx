@@ -1,74 +1,128 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex, VStack } from '../../styled-system/jsx'
-import { css } from '../../styled-system/css'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
+import { Box, Flex, VStack } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
   return (
     <>
-      {/* Identity */}
-      <Box marginBottom="4xl">
+      {/* Identity Statement */}
+      <Box mb="64px">
         <Box
-          fontSize="lg"
-          fontFamily="heading"
-          fontWeight="bold"
-          color="text"
-          lineHeight="snug"
-          marginBottom="md"
+          className={css({
+            fontFamily: 'space-grotesk',
+            fontSize: 'clamp(24px, 3vw, 28px)',
+            fontWeight: 'bold',
+            lineHeight: 'snug',
+            letterSpacing: 'tight',
+            color: 'text-heading',
+            marginBottom: '16px',
+          })}
         >
           {identity.name}
         </Box>
-        <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="accent" letterSpacing="wider" textTransform="uppercase" marginBottom="xl">
+        <Box
+          className={css({
+            fontFamily: 'space-grotesk',
+            fontSize: '13px',
+            letterSpacing: 'wide',
+            color: 'text-muted',
+            marginBottom: '24px',
+          })}
+        >
           {identity.role}
         </Box>
-        <Box fontSize="base" fontFamily="body" color="textSecondary" lineHeight="normal" maxWidth="600px">
+        <Box
+          className={css({
+            fontFamily: 'work-sans',
+            fontSize: '16px',
+            lineHeight: 'normal',
+            color: 'text-secondary',
+            maxWidth: '600px',
+          })}
+        >
           {identity.statement}
         </Box>
       </Box>
 
       {/* Timeline */}
-      <Box marginBottom="4xl">
-        <Flex alignItems="center" gap="lg" marginBottom="xl">
-          <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="textMuted" letterSpacing="widest" textTransform="uppercase">
-            Experience
-          </Box>
-          <Box flex="1" height="1px" background="border" />
-        </Flex>
-        <VStack gap="0" alignItems="stretch">
+      <Box mb="64px">
+        <Box
+          className={css({
+            fontFamily: 'space-grotesk',
+            fontSize: '11px',
+            fontWeight: 'semibold',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'text-muted',
+            marginBottom: '24px',
+          })}
+        >
+          Experience
+        </Box>
+        <VStack gap="0" align="stretch">
           {timeline.map((entry, i) => (
             <Flex
-              key={`${entry.year}-${entry.company}`}
-              gap="xl"
-              paddingY="lg"
-              borderBottom="1px solid"
-              borderColor="border"
+              key={`${entry.year}-${entry.company}-${i}`}
+              gap="24px"
               className={css({
+                paddingTop: '16px',
+                paddingBottom: '16px',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+                flexDirection: 'row',
                 '@media (max-width: 767px)': {
                   flexDirection: 'column',
-                  gap: 'sm',
+                  gap: '4px',
                 },
               })}
             >
               <Box
-                fontSize="sm"
-                fontFamily="mono"
-                color="textMuted"
-                minWidth="120px"
-                flexShrink={0}
+                className={css({
+                  fontFamily: 'space-grotesk',
+                  fontSize: '13px',
+                  color: 'text-muted',
+                  fontVariantNumeric: 'tabular-nums',
+                  minWidth: '120px',
+                  flexShrink: 0,
+                })}
               >
                 {entry.year}
               </Box>
               <Box flex="1">
-                <Box fontSize="base" fontFamily="heading" fontWeight="medium" color="text">
+                <Box
+                  className={css({
+                    fontFamily: 'space-grotesk',
+                    fontSize: '16px',
+                    fontWeight: 'medium',
+                    color: 'text-heading',
+                    lineHeight: 'snug',
+                  })}
+                >
                   {entry.role}
                 </Box>
-                <Box fontSize="sm" fontFamily="body" color="textSecondary" marginBottom="xs">
+                <Box
+                  className={css({
+                    fontFamily: 'work-sans',
+                    fontSize: '14px',
+                    color: 'text-muted',
+                    marginTop: '2px',
+                  })}
+                >
                   {entry.company}
                 </Box>
-                <Box fontSize="sm" fontFamily="body" color="textMuted" lineHeight="normal">
+                <Box
+                  className={css({
+                    fontFamily: 'work-sans',
+                    fontSize: '14px',
+                    color: 'text-secondary',
+                    lineHeight: 'normal',
+                    marginTop: '8px',
+                  })}
+                >
                   {entry.description}
                 </Box>
               </Box>
@@ -78,41 +132,91 @@ function AboutPage() {
       </Box>
 
       {/* Education */}
-      <Box marginBottom="4xl">
-        <Flex alignItems="center" gap="lg" marginBottom="xl">
-          <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="textMuted" letterSpacing="widest" textTransform="uppercase">
-            Education
+      <Box mb="64px">
+        <Box
+          className={css({
+            fontFamily: 'space-grotesk',
+            fontSize: '11px',
+            fontWeight: 'semibold',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'text-muted',
+            marginBottom: '24px',
+          })}
+        >
+          Education
+        </Box>
+        <Box
+          className={css({
+            paddingTop: '16px',
+            paddingBottom: '16px',
+            borderBottom: '1px solid',
+            borderColor: 'border',
+          })}
+        >
+          <Box
+            className={css({
+              fontFamily: 'space-grotesk',
+              fontSize: '16px',
+              fontWeight: 'medium',
+              color: 'text-heading',
+            })}
+          >
+            {education.school}
           </Box>
-          <Box flex="1" height="1px" background="border" />
-        </Flex>
-        <Box>
-          <Box fontSize="base" fontFamily="heading" fontWeight="medium" color="text">{education.school}</Box>
-          <Box fontSize="sm" fontFamily="body" color="textSecondary">{education.degree} — {education.concentration}</Box>
-          <Box fontSize="sm" fontFamily="mono" color="textMuted">{education.years}</Box>
+          <Box
+            className={css({
+              fontFamily: 'work-sans',
+              fontSize: '14px',
+              color: 'text-secondary',
+              marginTop: '4px',
+            })}
+          >
+            {education.degree} — {education.concentration}
+          </Box>
+          <Box
+            className={css({
+              fontFamily: 'space-grotesk',
+              fontSize: '13px',
+              color: 'text-muted',
+              fontVariantNumeric: 'tabular-nums',
+              marginTop: '4px',
+            })}
+          >
+            {education.years}
+          </Box>
         </Box>
       </Box>
 
       {/* Capabilities */}
-      <Box marginBottom="4xl">
-        <Flex alignItems="center" gap="lg" marginBottom="xl">
-          <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="textMuted" letterSpacing="widest" textTransform="uppercase">
-            Capabilities
-          </Box>
-          <Box flex="1" height="1px" background="border" />
-        </Flex>
-        <Flex gap="sm" flexWrap="wrap">
+      <Box mb="64px">
+        <Box
+          className={css({
+            fontFamily: 'space-grotesk',
+            fontSize: '11px',
+            fontWeight: 'semibold',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'text-muted',
+            marginBottom: '24px',
+          })}
+        >
+          Capabilities
+        </Box>
+        <Flex gap="8px" flexWrap="wrap">
           {capabilities.map((cap) => (
             <Box
               key={cap}
-              paddingX="md"
-              paddingY="xs"
-              fontSize="sm"
-              fontFamily="body"
-              color="textSecondary"
-              background="bg"
-              borderRadius="xs"
-              border="1px solid"
-              borderColor="border"
+              className={css({
+                fontFamily: 'space-grotesk',
+                fontSize: '13px',
+                color: 'text-secondary',
+                background: 'bg-card',
+                border: '1px solid',
+                borderColor: 'border',
+                borderRadius: 'sm',
+                padding: '4px 12px',
+              })}
             >
               {cap}
             </Box>
@@ -121,50 +225,140 @@ function AboutPage() {
       </Box>
 
       {/* Personal */}
-      <Box marginBottom="3xl">
-        <Flex alignItems="center" gap="lg" marginBottom="xl">
-          <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="textMuted" letterSpacing="widest" textTransform="uppercase">
-            Personal
-          </Box>
-          <Box flex="1" height="1px" background="border" />
-        </Flex>
-        <VStack gap="md" alignItems="flex-start">
-          <Flex gap="sm" alignItems="baseline">
-            <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="textMuted" letterSpacing="wider" textTransform="uppercase" minWidth="120px">Holes in One</Box>
-            <Box fontSize="base" fontFamily="body" color="text">{personal.holesInOne}</Box>
+      <Box>
+        <Box
+          className={css({
+            fontFamily: 'space-grotesk',
+            fontSize: '11px',
+            fontWeight: 'semibold',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'text-muted',
+            marginBottom: '24px',
+          })}
+        >
+          Personal
+        </Box>
+        <VStack gap="0" align="stretch">
+          <Flex
+            justify="space-between"
+            className={css({
+              paddingTop: '12px',
+              paddingBottom: '12px',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+            })}
+          >
+            <Box
+              className={css({
+                fontFamily: 'space-grotesk',
+                fontSize: '14px',
+                color: 'text-muted',
+              })}
+            >
+              Holes in One
+            </Box>
+            <Box
+              className={css({
+                fontFamily: 'space-grotesk',
+                fontSize: '14px',
+                fontWeight: 'semibold',
+                color: 'text-heading',
+                fontVariantNumeric: 'tabular-nums',
+              })}
+            >
+              {personal.holesInOne}
+            </Box>
           </Flex>
-          <Flex gap="sm" alignItems="baseline">
-            <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="textMuted" letterSpacing="wider" textTransform="uppercase" minWidth="120px">Sport</Box>
-            <Box fontSize="base" fontFamily="body" color="text">{personal.sport}</Box>
+          <Flex
+            justify="space-between"
+            className={css({
+              paddingTop: '12px',
+              paddingBottom: '12px',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+            })}
+          >
+            <Box
+              className={css({
+                fontFamily: 'space-grotesk',
+                fontSize: '14px',
+                color: 'text-muted',
+              })}
+            >
+              Sport
+            </Box>
+            <Box
+              className={css({
+                fontFamily: 'space-grotesk',
+                fontSize: '14px',
+                color: 'text-heading',
+              })}
+            >
+              {personal.sport}
+            </Box>
           </Flex>
-          <Flex gap="sm" alignItems="baseline">
-            <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="textMuted" letterSpacing="wider" textTransform="uppercase" minWidth="120px">Teams</Box>
-            <Box fontSize="base" fontFamily="body" color="text">{personal.teams.join(', ')}</Box>
+          <Flex
+            justify="space-between"
+            align="flex-start"
+            className={css({
+              paddingTop: '12px',
+              paddingBottom: '12px',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+            })}
+          >
+            <Box
+              className={css({
+                fontFamily: 'space-grotesk',
+                fontSize: '14px',
+                color: 'text-muted',
+              })}
+            >
+              Teams
+            </Box>
+            <Box
+              className={css({
+                fontFamily: 'space-grotesk',
+                fontSize: '14px',
+                color: 'text-heading',
+                textAlign: 'right',
+              })}
+            >
+              {personal.teams.join(', ')}
+            </Box>
           </Flex>
-          <Flex gap="sm" alignItems="baseline">
-            <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="textMuted" letterSpacing="wider" textTransform="uppercase" minWidth="120px">Focus</Box>
-            <Box fontSize="base" fontFamily="body" color="text">{personal.currentFocus}</Box>
+          <Flex
+            justify="space-between"
+            className={css({
+              paddingTop: '12px',
+              paddingBottom: '12px',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+            })}
+          >
+            <Box
+              className={css({
+                fontFamily: 'space-grotesk',
+                fontSize: '14px',
+                color: 'text-muted',
+              })}
+            >
+              Current Focus
+            </Box>
+            <Box
+              className={css({
+                fontFamily: 'work-sans',
+                fontSize: '14px',
+                color: 'text-heading',
+                textAlign: 'right',
+                maxWidth: '300px',
+              })}
+            >
+              {personal.currentFocus}
+            </Box>
           </Flex>
         </VStack>
-      </Box>
-
-      {/* Footer */}
-      <Box paddingTop="xl" borderTop="1px solid" borderColor="border">
-        <Flex justifyContent="space-between" alignItems="baseline">
-          <Box fontSize="xs" fontFamily="body" color="textMuted">
-            © 2026 Doug March
-          </Box>
-          <a href="/archive" className={css({
-            fontSize: 'xs',
-            fontFamily: 'body',
-            color: 'textMuted',
-            textDecoration: 'none',
-            _hover: { color: 'accent', textDecoration: 'underline' },
-            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px', borderRadius: 'xs' },
-          })}>
-            Archive
-          </a>
-        </Flex>
       </Box>
     </>
   )
