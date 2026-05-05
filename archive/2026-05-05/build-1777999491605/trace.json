@@ -1,0 +1,317 @@
+{
+  "date": "2026-05-05",
+  "startedAt": "2026-05-05T16:33:20.007Z",
+  "completedAt": "2026-05-05T16:44:53.256Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 18
+      },
+      "output": {
+        "air_quality": {
+          "aqi_index": 1,
+          "uv_index": 6.5,
+          "air_quality_label": "Good"
+        },
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Kindred Of Ireland",
+              "description": "Kindred of Ireland partnered with Dash to transform their site into a bespoke, design-led experience; blending heritage, sustainability and craft with...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69e9e663689fe661796021.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAuEyBJREFUeAF0/W2CJDuOJAgCVHWPV+fb6a6qru49S15of+webipfuCm5RogIAFrk2MvICDc3U6WSICAQfND/f//f/88yvuac5mOYu9vzetl4/3v/2e/H6/3+/nm/1v7s/tzz...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "THE NO-CODE SHADER",
+              "description": "Learn-by-doing shader platform built on Unicorn Studio",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69f476fd76d32014543079.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAQD5pJREFUeAHs/V3MZcV1741WLTDNV0zjxkBOJOP4yLxRJNuNtIkSKZHhCEu2jEQjR0qOLR3Avkm4odlX2Vfgq2TfHOAmb3KxTfeRnNhb4QCSrdgKFiBbst9NJD4svUmwZAwX...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "WFEO World Engineering Day",
+              "description": "An interactive global hub for World Engineering Day, highlighting engineering innovation, hackathons and insights shaping a more sustainable future.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69e77e2052287973882897.jpg",
+              "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABkAAD/4QMgaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSAxMC4wLWMwMDAgNzkuZDIw...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Tuesday",
+          "is_weekend": false,
+          "day_index": 2
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "Hmbown/DeepSeek-TUI/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "ruvnet/ruflo/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "virattt/dexter/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "docusealco/docuseal/stargazers",
+              "description": "",
+              "language": "Ruby",
+              "stars": null
+            },
+            {
+              "name": "sponsors/bwya77",
+              "description": "",
+              "language": "PowerShell",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Truist Championship",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Three Inverse Laws of AI",
+              "url": "https://susam.net/inverse-laws-of-robotics.html",
+              "score": 65,
+              "by": "blenderob"
+            },
+            {
+              "title": "Yet Another GitHub Incident",
+              "url": "https://www.githubstatus.com/incidents/1j40g94rn22j",
+              "score": 79,
+              "by": "pera"
+            },
+            {
+              "title": "Agents for financial services and insurance",
+              "url": "https://www.anthropic.com/news/finance-agents",
+              "score": 70,
+              "by": "louiereederson"
+            },
+            {
+              "title": "UK: Two millionth electric car registered as market rebounds strongly",
+              "url": "https://www.smmt.co.uk/two-millionth-electric-car-registered-as-market-rebounds-strongly-from-tax-changes/",
+              "score": 5,
+              "by": "kieranmaine"
+            },
+            {
+              "title": "Async Rust never left the MVP state",
+              "url": "https://tweedegolf.nl/en/blog/237/async-rust-never-left-the-mvp-state",
+              "score": 343,
+              "by": "pjmlp"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Mother's Day",
+              "date": "2026-05-10",
+              "days_away": 5
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "waning gibbous",
+          "illumination": 0.789,
+          "days_into_cycle": 19.25
+        },
+        "market": {
+          "symbol": "SPY",
+          "price": "718.0100",
+          "change": "-2.6400",
+          "change_percent": "-0.3663%",
+          "direction": "down"
+        },
+        "music": {
+          "bands": [
+            "Tobin Sprout",
+            "Guided by Voices",
+            "My Morning Jacket"
+          ]
+        },
+        "news": {
+          "headlines": [
+            {
+              "title": "Orlando Magic Dismiss Jamahl Mosley as Head Coach - NBA",
+              "source": "Orlandomagic.com",
+              "url": "https://orlandomagic.com/news/orlando-magic-dismiss-jamahl-mosley-as-head-coach-20260504"
+            },
+            {
+              "title": "U.S. military denies Iran's claim it struck American warship in Strait of Hormuz - CNBC",
+              "source": "CNBC",
+              "url": "https://www.cnbc.com/2026/05/04/iran-war-trump-strait-of-hormuz.html"
+            },
+            {
+              "title": "Dow futures drop 150 points as oil spikes on increased Iran tensions: Live updates - CNBC",
+              "source": "CNBC",
+              "url": "https://www.cnbc.com/2026/05/03/stock-market-today-live-updates.html"
+            },
+            {
+              "title": "Pixel 11 leak reveals new camera hardware, Tensor G6 details, more specs - 9to5Google",
+              "source": "9to5google.com",
+              "url": "http://9to5google.com/2026/05/04/google-pixel-11-specs-cameras-tensor-g6-leak/"
+            },
+            {
+              "title": "Apparent hantavirus outbreak kills 3 on cruise ship, sickens at least 3 more, health officials say - CBS News",
+              "source": "CBS News",
+              "url": "https://www.cbsnews.com/news/hantavirus-outbreak-apparent-cruise-ship-atlantic-africa-cape-verde/"
+            }
+          ]
+        },
+        "quote": {
+          "text": "It is our experiences that mold us into who we are...during times of adversity our true character will show.",
+          "author": "Unknown"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 5,
+          "day_of_year": 125,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:12",
+          "sunset": "19:01",
+          "daylight_hours": 13.8
+        },
+        "weather": {
+          "location": "Aldie, Virginia",
+          "conditions": "Sunny",
+          "temp_f": 79,
+          "temp_c": 26.1,
+          "humidity": 34,
+          "wind_mph": 11,
+          "wind_dir": "SSW",
+          "feels_like_f": 77.9
+        },
+        "date": "2026-05-05"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-05T16:33:21.668Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-04-30: Specimen\n  - 2026-04-28: Index\n  - 2026-04-27: Stack\n  - 2026-04-26: Poster\n  - 2026-04-20: Specimen\n\n**Recently used** (last 3 days): Specimen, Index, Stack\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or signals genuinely call for a recently-used archetype, us"
+      },
+      "output": {
+        "hero_copy": "guided by voices",
+        "archetype": "Poster",
+        "chassisId": "big-shoulders-atkinson",
+        "specLength": 7568,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue — 350° (crimson-red)**\nCrimson chosen because the phrase \"guided by voices\" carries emotional urgency — not anger, but aliveness. The 350° hue is well outside the forbidden 90°–240° zone. It reads as commitment, vitality, spring blood moving fast. The 79°F sunny day permits warmth; the Risk 8/10 calls for saturation, not restraint.\n\n**Neutral palette — warm cream, tinted toward orange-red (~15° HSL)**\nAll neutrals carry a red-orange undertone so they coh",
+        "selfCheck": "1. Hero quotability: Yes — \"guided by voices\" works as a standalone proclamation that resonates on two registers (the band, the site's signal-driven architecture); someone would screenshot this line without context and find it compelling.\n2. Because-of chain: Yes — the phrase's singular weight deman"
+      },
+      "durationMs": 408511,
+      "timestamp": "2026-05-05T16:40:10.180Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 7568
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 58499,
+      "timestamp": "2026-05-05T16:41:09.526Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4583,
+        "briefLength": 10650
+      },
+      "output": {
+        "files": [
+          "app/components/Layout.tsx",
+          "app/components/Sidebar.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 168633,
+      "timestamp": "2026-05-05T16:43:58.161Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-05T16:44:02.140Z"
+    },
+    {
+      "name": "screenshot-critic",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "verdict": "SHIP",
+        "feedback": "SHIP"
+      },
+      "durationMs": 46109,
+      "timestamp": "2026-05-05T16:44:51.604Z"
+    }
+  ]
+}

@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex, VStack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
@@ -8,431 +7,421 @@ export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" width="100%">
-      {/* Hero */}
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        width="100%"
+    <main
+      className={css({
+        position: 'relative',
+        minHeight: '100vh',
+        background: 'bg',
+        paddingTop: { base: '88px', md: '96px' },
+        paddingBottom: { base: '88px', md: '104px' },
+        overflow: 'hidden',
+      })}
+    >
+      {/* Eyebrow */}
+      <div
         className={css({
-          minHeight: 'calc(60vh - 56px)',
-          padding: '96px 32px',
-          backgroundColor: '#FAFAF6',
-          '@media (max-width: 767px)': {
-            padding: '64px 24px',
-          },
+          paddingX: '6vw',
+          marginBottom: { base: '20px', md: '28px' },
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'warm.400',
+          letterSpacing: '0.20em',
+          textTransform: 'uppercase',
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '12px',
         })}
       >
-        <Box maxWidth="760px" width="100%">
-          <Box
-            className={css({
-              fontFamily: 'display',
-              fontWeight: 'semibold',
-              fontSize: 'clamp(1.75rem, 4vw, 3.125rem)',
-              lineHeight: '1.10',
-              color: '{colors.neutral.700}',
-              marginBottom: '24px',
-            })}
-          >
-            {identity.name}
-          </Box>
-          <Box
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'medium',
-              fontSize: '1rem',
-              letterSpacing: '0.08em',
-              color: '{colors.neutral.500}',
-              textTransform: 'uppercase',
-              marginBottom: '32px',
-            })}
-          >
-            {identity.role}
-          </Box>
-          <Box
-            className={css({
-              fontFamily: 'body',
-              fontSize: '1rem',
-              lineHeight: '1.60',
-              color: '{colors.neutral.600}',
-              maxWidth: '600px',
-            })}
-          >
-            {identity.statement}
-          </Box>
-        </Box>
-      </Box>
+        <span>About · {identity.name}</span>
+        <span>Aldie, VA · 79°</span>
+      </div>
 
-      {/* Timeline */}
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        width="100%"
+      {/* Cascading name hero — DOUG (left) / MARCH (right) */}
+      <header
         className={css({
-          padding: '96px 32px',
-          backgroundColor: '{colors.neutral.50}',
-          '@media (max-width: 767px)': {
-            padding: '64px 24px',
-          },
+          marginBottom: { base: '40px', md: '64px' },
+          fontFamily: 'display',
+          color: 'hero',
+          textTransform: 'uppercase',
         })}
       >
-        <Box maxWidth="760px" width="100%">
-          <Box
+        <div
+          className={css({
+            display: 'flex',
+            justifyContent: 'flex-start',
+            paddingX: '6vw',
+            lineHeight: '0.88',
+          })}
+        >
+          <span
             className={css({
-              fontFamily: 'body',
-              fontWeight: 'bold',
-              fontSize: '0.75rem',
-              letterSpacing: '0.12em',
-              color: '{colors.neutral.400}',
-              textTransform: 'uppercase',
-              marginBottom: '48px',
+              fontWeight: '800',
+              letterSpacing: '-0.02em',
+              fontSize: 'clamp(72px, 22vw, 320px)',
+              display: 'inline-block',
             })}
           >
-            Experience
-          </Box>
-          <VStack gap="0" width="100%" alignItems="stretch">
-            {timeline.map((entry, i) => (
-              <Flex
-                key={`${entry.year}-${entry.company}-${i}`}
-                gap="24"
+            Doug
+          </span>
+        </div>
+        <div
+          className={css({
+            display: 'flex',
+            justifyContent: 'flex-end',
+            paddingX: '6vw',
+            lineHeight: '0.88',
+            marginTop: { base: '-8px', md: '-18px' },
+          })}
+        >
+          <span
+            className={css({
+              fontWeight: '800',
+              letterSpacing: '-0.02em',
+              fontSize: 'clamp(72px, 22vw, 320px)',
+              display: 'inline-block',
+            })}
+          >
+            March
+          </span>
+        </div>
+      </header>
+
+      {/* Identity statement — wide measure, italic body */}
+      <section
+        className={css({
+          paddingX: '6vw',
+          marginBottom: { base: '64px', md: '96px' },
+          display: 'grid',
+          gridTemplateColumns: { base: '1fr', md: '160px 1fr' },
+          gap: { base: '12px', md: '32px' },
+          alignItems: 'baseline',
+        })}
+      >
+        <div
+          className={css({
+            fontFamily: 'body',
+            fontSize: '12px',
+            color: 'textMuted',
+            letterSpacing: '0.20em',
+            textTransform: 'uppercase',
+            paddingTop: { base: '0', md: '10px' },
+          })}
+        >
+          Statement
+        </div>
+        <p
+          className={css({
+            fontFamily: 'display',
+            fontWeight: '500',
+            fontSize: 'clamp(22px, 3.6vw, 44px)',
+            lineHeight: '1.18',
+            color: 'text',
+            letterSpacing: '-0.005em',
+            maxWidth: '28ch',
+          })}
+        >
+          {identity.role}. {identity.statement}
+        </p>
+      </section>
+
+      {/* Timeline — masthead-style dense rows, fixed-width year column */}
+      <section
+        className={css({
+          paddingX: '6vw',
+          marginBottom: { base: '64px', md: '96px' },
+        })}
+      >
+        <h2
+          className={css({
+            fontFamily: 'body',
+            fontSize: '12px',
+            color: 'textMuted',
+            letterSpacing: '0.20em',
+            textTransform: 'uppercase',
+            marginBottom: '24px',
+            borderBottom: '1px solid token(colors.border)',
+            paddingBottom: '12px',
+            display: 'flex',
+            justifyContent: 'space-between',
+          })}
+        >
+          <span>Filed under: 2006 → present</span>
+          <span className={css({ color: 'warm.400' })}>{timeline.length} entries</span>
+        </h2>
+        <ol className={css({ listStyle: 'none', margin: '0', padding: '0' })}>
+          {timeline.map((entry, idx) => (
+            <li
+              key={`${entry.year}-${entry.company}-${idx}`}
+              className={css({
+                display: 'grid',
+                gridTemplateColumns: { base: '1fr', md: '140px 1fr', lg: '140px 1fr 1fr' },
+                columnGap: '24px',
+                rowGap: '6px',
+                alignItems: 'baseline',
+                paddingY: { base: '20px', md: '24px' },
+                borderBottom: '1px solid token(colors.border)',
+                _last: { borderBottom: 'none' },
+              })}
+            >
+              <span
                 className={css({
-                  padding: '24px 0',
-                  borderBottom: '1px solid {colors.neutral.200}',
-                  flexWrap: 'wrap',
-                  '@media (max-width: 600px)': {
-                    flexDirection: 'column',
-                    gap: '8px',
-                  },
+                  fontFamily: 'body',
+                  fontSize: '13px',
+                  color: 'accent',
+                  letterSpacing: '0.10em',
+                  fontVariantNumeric: 'tabular-nums',
+                  whiteSpace: 'nowrap',
                 })}
               >
-                <Box
+                {entry.year}
+                {entry.current ? ' ●' : ''}
+              </span>
+              <div className={css({ minWidth: 0 })}>
+                <div
                   className={css({
-                    fontFamily: 'body',
-                    fontSize: '0.75rem',
-                    letterSpacing: '0.08em',
-                    color: '{colors.neutral.400}',
-                    minWidth: '120px',
-                    flexShrink: 0,
-                    fontVariantNumeric: 'tabular-nums',
-                    paddingTop: '4px',
+                    fontFamily: 'display',
+                    fontWeight: '700',
+                    fontSize: { base: '22px', md: '26px' },
+                    lineHeight: '1.05',
+                    color: 'text',
+                    letterSpacing: '-0.01em',
+                    textTransform: 'uppercase',
                   })}
                 >
-                  {entry.year}
-                </Box>
-                <Box flex="1">
-                  <Box
-                    className={css({
-                      fontFamily: 'display',
-                      fontWeight: 'semibold',
-                      fontSize: '1rem',
-                      lineHeight: '1.35',
-                      color: '{colors.neutral.700}',
-                    })}
-                  >
-                    {entry.role}
-                  </Box>
-                  <Box
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: '0.875rem',
-                      color: '{colors.neutral.500}',
-                      marginTop: '4px',
-                    })}
-                  >
-                    {entry.company}
-                  </Box>
-                  <Box
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: '0.875rem',
-                      lineHeight: '1.60',
-                      color: '{colors.neutral.400}',
-                      marginTop: '8px',
-                      maxWidth: '540px',
-                    })}
-                  >
-                    {entry.description}
-                  </Box>
-                </Box>
-              </Flex>
-            ))}
-          </VStack>
-        </Box>
-      </Box>
+                  {entry.role}
+                </div>
+                <div
+                  className={css({
+                    marginTop: '4px',
+                    fontFamily: 'body',
+                    fontSize: '14px',
+                    color: 'textSecondary',
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                  })}
+                >
+                  {entry.company}
+                </div>
+              </div>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '16px',
+                  lineHeight: '1.5',
+                  color: 'textSecondary',
+                  maxWidth: '60ch',
+                })}
+              >
+                {entry.description}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </section>
 
-      {/* Education */}
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        width="100%"
+      {/* Capabilities — flowing list separated by middle dots */}
+      <section
         className={css({
-          padding: '96px 32px',
-          backgroundColor: '#FAFAF6',
-          '@media (max-width: 767px)': {
-            padding: '64px 24px',
-          },
+          paddingX: '6vw',
+          marginBottom: { base: '64px', md: '96px' },
+          display: 'grid',
+          gridTemplateColumns: { base: '1fr', md: '160px 1fr' },
+          gap: { base: '12px', md: '32px' },
+          alignItems: 'baseline',
         })}
       >
-        <Box maxWidth="760px" width="100%">
-          <Box
+        <h2
+          className={css({
+            fontFamily: 'body',
+            fontSize: '12px',
+            color: 'textMuted',
+            letterSpacing: '0.20em',
+            textTransform: 'uppercase',
+          })}
+        >
+          Capabilities
+        </h2>
+        <p
+          className={css({
+            fontFamily: 'display',
+            fontWeight: '500',
+            fontSize: 'clamp(20px, 2.6vw, 32px)',
+            lineHeight: '1.25',
+            color: 'text',
+            letterSpacing: '-0.005em',
+          })}
+        >
+          {capabilities.map((cap, i) => (
+            <span key={cap}>
+              <span>{cap}</span>
+              {i < capabilities.length - 1 && (
+                <span className={css({ color: 'accent', marginX: '12px' })} aria-hidden>
+                  /
+                </span>
+              )}
+            </span>
+          ))}
+        </p>
+      </section>
+
+      {/* Two-up: Education + Personal */}
+      <section
+        className={css({
+          paddingX: '6vw',
+          display: 'grid',
+          gridTemplateColumns: { base: '1fr', md: '1fr 1fr' },
+          gap: { base: '48px', md: '64px' },
+          borderTop: '1px solid token(colors.border)',
+          paddingTop: { base: '40px', md: '56px' },
+        })}
+      >
+        <div>
+          <h2
             className={css({
               fontFamily: 'body',
-              fontWeight: 'bold',
-              fontSize: '0.75rem',
-              letterSpacing: '0.12em',
-              color: '{colors.neutral.400}',
+              fontSize: '12px',
+              color: 'textMuted',
+              letterSpacing: '0.20em',
               textTransform: 'uppercase',
-              marginBottom: '48px',
+              marginBottom: '20px',
             })}
           >
             Education
-          </Box>
-          <Box
+          </h2>
+          <div
             className={css({
-              padding: '24px 0',
-              borderBottom: '1px solid {colors.neutral.200}',
-            })}
-          >
-            <Flex gap="24" className={css({ '@media (max-width: 600px)': { flexDirection: 'column', gap: '8px' } })}>
-              <Box
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '0.75rem',
-                  letterSpacing: '0.08em',
-                  color: '{colors.neutral.400}',
-                  minWidth: '120px',
-                  flexShrink: 0,
-                  fontVariantNumeric: 'tabular-nums',
-                  paddingTop: '4px',
-                })}
-              >
-                {education.years}
-              </Box>
-              <Box flex="1">
-                <Box
-                  className={css({
-                    fontFamily: 'display',
-                    fontWeight: 'semibold',
-                    fontSize: '1rem',
-                    lineHeight: '1.35',
-                    color: '{colors.neutral.700}',
-                  })}
-                >
-                  {education.degree}
-                </Box>
-                <Box
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '0.875rem',
-                    color: '{colors.neutral.500}',
-                    marginTop: '4px',
-                  })}
-                >
-                  {education.school}
-                </Box>
-                <Box
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '0.875rem',
-                    color: '{colors.neutral.400}',
-                    marginTop: '4px',
-                  })}
-                >
-                  {education.concentration}
-                </Box>
-              </Box>
-            </Flex>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* Capabilities */}
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        width="100%"
-        className={css({
-          padding: '96px 32px',
-          backgroundColor: '{colors.neutral.50}',
-          '@media (max-width: 767px)': {
-            padding: '64px 24px',
-          },
-        })}
-      >
-        <Box maxWidth="760px" width="100%">
-          <Box
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'bold',
-              fontSize: '0.75rem',
-              letterSpacing: '0.12em',
-              color: '{colors.neutral.400}',
+              fontFamily: 'display',
+              fontWeight: '700',
+              fontSize: 'clamp(24px, 3.4vw, 40px)',
+              lineHeight: '1.1',
+              letterSpacing: '-0.01em',
+              color: 'text',
               textTransform: 'uppercase',
-              marginBottom: '48px',
             })}
           >
-            Capabilities
-          </Box>
-          <Flex flexWrap="wrap" gap="8">
-            {capabilities.map((cap) => (
-              <Box
-                key={cap}
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '0.8125rem',
-                  color: '{colors.neutral.500}',
-                  backgroundColor: 'rgba(90, 173, 165, 0.08)',
-                  padding: '8px 16px',
-                  borderRadius: 'xs',
-                  border: '1px solid {colors.neutral.200}',
-                })}
-              >
-                {cap}
-              </Box>
-            ))}
-          </Flex>
-        </Box>
-      </Box>
-
-      {/* Personal */}
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        width="100%"
-        className={css({
-          padding: '96px 32px',
-          backgroundColor: '#FAFAF6',
-          '@media (max-width: 767px)': {
-            padding: '64px 24px',
-          },
-        })}
-      >
-        <Box maxWidth="760px" width="100%">
-          <Box
+            {education.school}
+          </div>
+          <div
             className={css({
+              marginTop: '8px',
               fontFamily: 'body',
-              fontWeight: 'bold',
-              fontSize: '0.75rem',
-              letterSpacing: '0.12em',
-              color: '{colors.neutral.400}',
+              fontSize: '16px',
+              lineHeight: '1.5',
+              color: 'textSecondary',
+            })}
+          >
+            {education.degree}, {education.concentration}
+          </div>
+          <div
+            className={css({
+              marginTop: '4px',
+              fontFamily: 'body',
+              fontSize: '13px',
+              color: 'textMuted',
+              letterSpacing: '0.10em',
               textTransform: 'uppercase',
-              marginBottom: '48px',
+              fontVariantNumeric: 'tabular-nums',
             })}
           >
-            Personal
-          </Box>
-          <VStack gap="0" width="100%" alignItems="stretch">
-            <Flex
-              className={css({
-                padding: '16px 0',
-                borderBottom: '1px solid {colors.neutral.200}',
-                gap: '24px',
-              })}
-            >
-              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.400}', minWidth: '120px' })}>
-                Sport
-              </Box>
-              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.600}' })}>
-                {personal.sport}
-              </Box>
-            </Flex>
-            <Flex
-              className={css({
-                padding: '16px 0',
-                borderBottom: '1px solid {colors.neutral.200}',
-                gap: '24px',
-              })}
-            >
-              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.400}', minWidth: '120px' })}>
-                Holes in One
-              </Box>
-              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.600}' })}>
-                {personal.holesInOne}
-              </Box>
-            </Flex>
-            <Flex
-              className={css({
-                padding: '16px 0',
-                borderBottom: '1px solid {colors.neutral.200}',
-                gap: '24px',
-              })}
-            >
-              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.400}', minWidth: '120px' })}>
-                Teams
-              </Box>
-              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.600}' })}>
-                {personal.teams.join(', ')}
-              </Box>
-            </Flex>
-            <Flex
-              className={css({
-                padding: '16px 0',
-                borderBottom: '1px solid {colors.neutral.200}',
-                gap: '24px',
-              })}
-            >
-              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.400}', minWidth: '120px' })}>
-                Current Focus
-              </Box>
-              <Box className={css({ fontFamily: 'body', fontSize: '0.875rem', color: '{colors.neutral.600}' })}>
-                {personal.currentFocus}
-              </Box>
-            </Flex>
-          </VStack>
-        </Box>
-      </Box>
+            {education.years}
+          </div>
+        </div>
 
-      {/* Footer */}
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        width="100%"
-        className={css({
-          padding: '64px 48px',
-          backgroundColor: '{colors.neutral.900}',
-          '@media (max-width: 767px)': {
-            padding: '48px 24px',
-          },
-        })}
-      >
-        <Flex
-          maxWidth="760px"
-          width="100%"
-          justifyContent="space-between"
-          alignItems="center"
-          flexWrap="wrap"
-          gap="16"
-        >
-          <Box className={css({ fontFamily: 'body', fontSize: '0.75rem', letterSpacing: '0.08em', color: '{colors.neutral.400}' })}>
-            © 2026 Doug March
-          </Box>
-          <a
-            href="/archive"
+        <div>
+          <h2
             className={css({
               fontFamily: 'body',
-              fontSize: '0.75rem',
-              letterSpacing: '0.08em',
-              color: '{colors.neutral.400}',
-              textDecoration: 'none',
-              padding: '8px 4px',
-              minHeight: '44px',
-              display: 'flex',
-              alignItems: 'center',
-              _hover: { color: '{colors.neutral.200}' },
-              _focus: { outline: '2px solid {colors.celadon.default}', outlineOffset: '2px' },
+              fontSize: '12px',
+              color: 'textMuted',
+              letterSpacing: '0.20em',
+              textTransform: 'uppercase',
+              marginBottom: '20px',
             })}
           >
-            Archive
-          </a>
-        </Flex>
-      </Box>
-    </Box>
+            Off the clock
+          </h2>
+          <dl
+            className={css({
+              display: 'grid',
+              gridTemplateColumns: '160px 1fr',
+              rowGap: '14px',
+              columnGap: '16px',
+              fontFamily: 'body',
+              fontSize: '16px',
+              lineHeight: '1.5',
+            })}
+          >
+            <dt
+              className={css({
+                color: 'textMuted',
+                letterSpacing: '0.10em',
+                textTransform: 'uppercase',
+                fontSize: '12px',
+                paddingTop: '4px',
+              })}
+            >
+              Holes in one
+            </dt>
+            <dd
+              className={css({
+                margin: '0',
+                fontFamily: 'display',
+                fontSize: '32px',
+                fontWeight: '700',
+                color: 'accent',
+                lineHeight: '1',
+                fontVariantNumeric: 'tabular-nums',
+              })}
+            >
+              {personal.holesInOne}
+            </dd>
+
+            <dt
+              className={css({
+                color: 'textMuted',
+                letterSpacing: '0.10em',
+                textTransform: 'uppercase',
+                fontSize: '12px',
+                paddingTop: '4px',
+              })}
+            >
+              Sport
+            </dt>
+            <dd className={css({ margin: '0', color: 'text' })}>{personal.sport}</dd>
+
+            <dt
+              className={css({
+                color: 'textMuted',
+                letterSpacing: '0.10em',
+                textTransform: 'uppercase',
+                fontSize: '12px',
+                paddingTop: '4px',
+              })}
+            >
+              Teams
+            </dt>
+            <dd className={css({ margin: '0', color: 'text' })}>
+              {personal.teams.join(' · ')}
+            </dd>
+
+            <dt
+              className={css({
+                color: 'textMuted',
+                letterSpacing: '0.10em',
+                textTransform: 'uppercase',
+                fontSize: '12px',
+                paddingTop: '4px',
+              })}
+            >
+              Currently
+            </dt>
+            <dd className={css({ margin: '0', color: 'text' })}>
+              {personal.currentFocus}
+            </dd>
+          </dl>
+        </div>
+      </section>
+    </main>
   )
 }

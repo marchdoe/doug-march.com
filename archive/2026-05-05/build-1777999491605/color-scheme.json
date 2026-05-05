@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 350,
+    "s": 67,
+    "l": 40,
+    "name": "crimson"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "orange-red",
+    "name": "warm cream"
+  },
+  "mood_word": "urgent",
+  "color_story": "Crimson on warm cream — like a concert broadside printed on sun-aged paper, urgent and alive against the open spring afternoon."
+}
