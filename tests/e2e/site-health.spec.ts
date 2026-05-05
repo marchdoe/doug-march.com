@@ -88,11 +88,14 @@ test.describe('site health — archived site serving', () => {
 })
 
 test.describe('site health — content verification', () => {
-  test('home page shows real project names', async ({ page }) => {
+  test('home page shows real content', async ({ page }) => {
     await page.goto('/')
 
-    // Wait for content to hydrate by checking for a real project name
-    await expect(page.locator('body')).toContainText(/Spaceman|FishSticks|Doug March/, { timeout: 15000 })
+    // Non-Specimen/Poster days: project names appear in the listing.
+    // Specimen/Poster days: phrase-only home page — no project listing, but h1 (hero phrase) is present.
+    const projectNames = page.locator('body').filter({ hasText: /Spaceman|FishSticks|Doug March|Teeturn|Politweets/ })
+    const heroPhrase = page.locator('h1')
+    await expect(projectNames.or(heroPhrase)).toBeVisible({ timeout: 15000 })
   })
 
   test('about page shows real timeline content', async ({ page }) => {
