@@ -1002,7 +1002,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       tokenContext,
       responsiveLesson,
     })
-    return messages[0].content
+    const archetypeBlock = buildArchetypeContractBlock(chosenArchetype)
+    return (archetypeBlock ? archetypeBlock + '\n\n' : '')
+      + messages[0].content
       + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
       + weightsPrompt
   }
