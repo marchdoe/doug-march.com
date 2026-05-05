@@ -79,7 +79,7 @@ The chosen archetype's density floor must be visible in the render:
 
 A desktop render where active content occupies less than ~70% of the viewport width is an under-execution unless the empty space is *active* (drenched color field, atmospheric gradient, hero motion). A field of plain background color with no role is dead canvas.
 
-Failures: A 40%-wide column of body text on the left half of the page with a 60% empty cream rail on the right. Specimen archetype but headline rendered at body-article scale. Index archetype but only one list, narrow, in a single column. When this fails, owner is **layout-architect**.
+Failures: A 40%-wide column of body text on the left half of the page with a 60% empty cream rail on the right. Specimen archetype but headline rendered at body-article scale. Index archetype but only one list, narrow, in a single column. When this fails, owner is **unified-designer**.
 
 ### 7. Hero Phrase Execution
 
@@ -97,23 +97,27 @@ Failures:
 
 When this fails, owner is **unified-designer**.
 
+### 8. Archetype Purity (Specimen / Poster days only)
+
+Skip this section entirely if the archetype is not Specimen or Poster.
+
+For Specimen and Poster days: The home page IS the hero phrase. There must be NO visible project cards, NO work grid, NO "Selected Work" heading, NO featured project section, and NO experiments section on the home page. Projects are accessible only via navigation.
+
+Check:
+- Are any project cards, project titles, or a "Selected Work" / "Experiments" section visible on the home page?
+- Is any content other than the hero phrase, navigation, and optional signal annotation visible?
+
+If yes to either: REVISE. Responsible agent: unified-designer.
+
 ## Verdict Rules
 
-**SHIP** if: All seven areas are acceptable. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
+**SHIP** if: All applicable areas are acceptable — seven standard areas, plus Section 8 if the archetype is Specimen or Poster. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
 
 **REVISE** if: One or more areas have a clear, specific failure that meaningfully degrades the experience or contradicts the spec. Identify exactly what is wrong and who is responsible.
 
 ### Responsible Agents
 
-Assign the revision to exactly one agent. Choose based on scope:
-
-- **token-designer** — Color is wrong, fonts did not load, spacing scale is off throughout the entire site
-- **layout-architect** — Page structure is wrong: nav placement, column proportions, overall grid, section order
-- **sidebar-designer** — Sidebar-specific issues: sidebar content, sidebar layout, sidebar styling
-- **footer-designer** — Footer-specific issues: footer content, footer layout, footer styling
-- **component-agent** — Individual component problems: card styling, typography within components, component-level layout, visual hierarchy between heading and body within a section
-
-When in doubt about which agent owns a problem, pick the one whose scope is closest to the surface where the issue appears.
+All revisions go to **unified-designer**. It owns the entire rendered output: color, fonts, layout structure, nav placement, component styling, hero phrase execution, and archetype purity.
 
 ## Feedback Quality Standard
 
