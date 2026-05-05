@@ -6,6 +6,7 @@ import {
   extractArchetypeFromText,
   parseDelimiterResponse,
   resolveChassisFromDirectorOutput,
+  buildArchetypeContractBlock,
 } from '../../scripts/design-agents.js'
 
 describe('FILE_OWNERSHIP', () => {
@@ -15,8 +16,8 @@ describe('FILE_OWNERSHIP', () => {
     expect(Object.keys(FILE_OWNERSHIP)).toHaveLength(15)
   })
 
-  it('maps preset.ts to token-designer', () => {
-    expect(FILE_OWNERSHIP['elements/preset.ts']).toBe('token-designer')
+  it('maps preset.ts to art-director', () => {
+    expect(FILE_OWNERSHIP['elements/preset.ts']).toBe('art-director')
   })
 
   it('does not map __root.tsx to any agent (orchestrator owns it via the chassis template)', () => {
@@ -47,9 +48,9 @@ describe('identifyFailingAgent', () => {
     expect(identifyFailingAgent(error)).toBe('unified-designer')
   })
 
-  it('identifies token-designer from error mentioning preset', () => {
+  it('identifies art-director from error mentioning preset', () => {
     const error = "Error in elements/preset.ts: invalid token"
-    expect(identifyFailingAgent(error)).toBe('token-designer')
+    expect(identifyFailingAgent(error)).toBe('art-director')
   })
 
   it('returns unified-designer when errors span multiple unified-designer files', () => {
@@ -176,23 +177,23 @@ You MUST choose from: Broadsheet, Poster, Scroll, Split, Stack, Index.
 
 describe('resolveChassisFromDirectorOutput', () => {
   const catalog = [
-    { id: 'playfair-outfit', name: 'Playfair + Outfit' },
-    { id: 'space-grotesk-work-sans', name: 'Space Grotesk + Work Sans' },
+    { id: 'bricolage-manrope', name: 'Bricolage Grotesque + Manrope' },
+    { id: 'spectral-albert', name: 'Spectral + Albert Sans' },
   ]
 
   it('extracts a chassis id from the explicit ===CHASSIS_ID=== block', () => {
-    const text = '===CHASSIS_ID===\nplayfair-outfit\n\n===VISUAL_SPEC===\nstuff'
-    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('playfair-outfit')
+    const text = '===CHASSIS_ID===\nbricolage-manrope\n\n===VISUAL_SPEC===\nstuff'
+    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('bricolage-manrope')
   })
 
   it('tolerates surrounding whitespace and backticks', () => {
-    const text = '===CHASSIS_ID===\n  `space-grotesk-work-sans`  \n'
-    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('space-grotesk-work-sans')
+    const text = '===CHASSIS_ID===\n  `spectral-albert`  \n'
+    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('spectral-albert')
   })
 
   it('falls back to scanning the spec for a backtick-quoted catalog id', () => {
-    const text = 'no block here. uses `playfair-outfit` somewhere.'
-    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('playfair-outfit')
+    const text = 'no block here. uses `bricolage-manrope` somewhere.'
+    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('bricolage-manrope')
   })
 
   it('returns null when no catalog id is present', () => {
@@ -317,13 +318,98 @@ describe('parseDelimiterResponse', () => {
     expect(files).toHaveLength(1)
     expect(files[0].path).toBe('valid.tsx')
   })
+
+  it('parses Art Director hero copy, archetype, chassis, visual spec, and self-check blocks', () => {
+    const input = [
+      '===HERO_COPY===',
+      'There is no limit to what a man can do',
+      '===HERO_RATIONALE===',
+      'Reagan quote anchors the day.',
+      '===ARCHETYPE===',
+      'Specimen',
+      '===CHASSIS_ID===',
+      'big-shoulders-atkinson',
+      '===VISUAL_SPEC===',
+      '## Color Specification\n- Primary hue: 18°',
+      '===SELF_CHECK===',
+      '1. Hero quotability: Yes — universally quotable',
+      '===FILE:elements/preset.ts===',
+      "export const elementsPreset = 'stub'",
+      '===RATIONALE===',
+      'Phrase → Specimen → big-shoulders → terracotta.',
+      '===DESIGN_BRIEF===',
+      'Terracotta marquee.',
+      '',
+    ].join('\n')
+    const r = parseDelimiterResponse(input)
+    expect(r.hero_copy).toBe('There is no limit to what a man can do')
+    expect(r.hero_rationale).toBe('Reagan quote anchors the day.')
+    expect(r.archetype).toBe('Specimen')
+    expect(r.chassis_id).toBe('big-shoulders-atkinson')
+    expect(r.visual_spec).toContain('Primary hue: 18°')
+    expect(r.self_check).toContain('Hero quotability: Yes')
+    expect(r.files).toHaveLength(1)
+    expect(r.files[0].path).toBe('elements/preset.ts')
+    expect(r.rationale).toBe('Phrase → Specimen → big-shoulders → terracotta.')
+    expect(r.design_brief).toBe('Terracotta marquee.')
+  })
+
+  it('strips outer markdown code fence so last block before closing fence is not contaminated', () => {
+    // If the model wraps its entire response in ```markdown...```, the lazy
+    // captureBlock regex extends past the closing fence into the sentinel,
+    // appending backtick chars to the last block before the fence.
+    const input = [
+      '```markdown',
+      '===HERO_COPY===',
+      'STAND UP TO YOUR FRIENDS.',
+      '===CHASSIS_ID===',
+      'big-shoulders-atkinson',
+      '```',
+      '',
+    ].join('\n')
+    const r = parseDelimiterResponse(input)
+    expect(r.hero_copy).toBe('STAND UP TO YOUR FRIENDS.')
+    expect(r.chassis_id).toBe('big-shoulders-atkinson')
+  })
+
+  it('strips outer plain code fence', () => {
+    const input = [
+      '```',
+      '===HERO_COPY===',
+      'No enemies, only rivals.',
+      '===ARCHETYPE===',
+      'Poster',
+      '```',
+      '',
+    ].join('\n')
+    const r = parseDelimiterResponse(input)
+    expect(r.hero_copy).toBe('No enemies, only rivals.')
+    expect(r.archetype).toBe('Poster')
+  })
 })
 
-describe('agent prompt files include anti-anchoring language', () => {
-  it('structure-agent.md tells the model to design from scratch', async () => {
-    const { readFile } = await import('fs/promises')
-    const content = await readFile('scripts/prompts/structure-agent.md', 'utf8')
-    expect(content).toContain('complete reimagination')
-    expect(content).toContain('blank canvas')
+describe('buildArchetypeContractBlock', () => {
+  it('returns override block for Specimen', () => {
+    const block = buildArchetypeContractBlock('Specimen')
+    expect(block).toContain('ARCHETYPE CONTRACT — SPECIMEN')
+    expect(block).toContain('hero phrase + navigation ONLY')
+    expect(block).toContain('Do NOT render project cards')
+  })
+
+  it('returns override block for Poster', () => {
+    const block = buildArchetypeContractBlock('Poster')
+    expect(block).toContain('ARCHETYPE CONTRACT — POSTER')
+    expect(block).toContain('hero phrase + navigation ONLY')
+  })
+
+  it('returns empty string for all other archetypes', () => {
+    expect(buildArchetypeContractBlock('Broadsheet')).toBe('')
+    expect(buildArchetypeContractBlock('Scroll')).toBe('')
+    expect(buildArchetypeContractBlock('Stack')).toBe('')
+    expect(buildArchetypeContractBlock('Gallery Wall')).toBe('')
+    expect(buildArchetypeContractBlock('Split')).toBe('')
+    expect(buildArchetypeContractBlock('Index')).toBe('')
+    expect(buildArchetypeContractBlock(undefined)).toBe('')
+    expect(buildArchetypeContractBlock(null)).toBe('')
   })
 })

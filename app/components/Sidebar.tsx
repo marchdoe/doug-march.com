@@ -1,158 +1,210 @@
 import logoSvg from '../assets/logo.svg'
-import { Box, Flex, VStack, styled } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 
 export function Sidebar() {
   return (
-    <Box
-      position="sticky"
-      top="0"
-      height="100vh"
-      overflowY="auto"
-      background="bg-secondary"
-      borderRight="1px solid"
-      borderColor="border"
-      display="flex"
-      flexDirection="column"
-      px="10"
-      py="14"
-      className={css({
-        '@media (max-width: 767px)': {
-          position: 'relative',
-          height: 'auto',
-          borderRight: 'none',
-          borderBottom: '1px solid',
-          borderColor: 'border',
-          px: '6',
-          py: '8',
-        },
-      })}
-    >
-      {/* Identity */}
-      <Box mb="6">
-        <a href="/" className={css({ display: 'inline-block', marginBottom: '16px' })}>
-          <img src={logoSvg} alt="Doug March logo" width="36" height="36" />
-        </a>
-        <Box
-          fontSize="clamp(32px, 4vw, 50px)"
-          fontWeight="bold"
-          fontFamily="heading"
-          lineHeight="tight"
-          letterSpacing="tight"
-          color="text"
-        >
-          Doug March
-        </Box>
-        <Box
-          fontSize="sm"
-          fontFamily="body"
-          color="text-secondary"
-          mt="2"
-          lineHeight="normal"
-        >
-          Product Designer &amp; Developer
-        </Box>
-      </Box>
-
-      {/* Language Tags */}
-      <Flex gap="2" mb="6" flexWrap="wrap">
-        {['TS', 'PY', 'RS', 'JS'].map((lang) => (
-          <Box
-            key={lang}
-            fontSize="2xs"
-            fontFamily="body"
-            fontWeight="semibold"
-            letterSpacing="widest"
-            px="2"
-            py="1"
-            background="bg"
-            border="1px solid"
-            borderColor="border-strong"
-            borderRadius="sm"
-            color="text-secondary"
-          >
-            {lang}
-          </Box>
-        ))}
-      </Flex>
-
-      {/* Nav */}
-      <VStack gap="4" align="flex-start" mb="8">
+    <>
+      {/* Top-left: wordmark + tiny logo */}
+      <div
+        className={css({
+          position: 'fixed',
+          top: '24px',
+          left: '6vw',
+          zIndex: 50,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'textMuted',
+          letterSpacing: '0.10em',
+          textTransform: 'uppercase',
+          mixBlendMode: 'multiply',
+        })}
+      >
+        <img
+          src={logoSvg}
+          alt=""
+          width={20}
+          height={20}
+          className={css({ display: 'block', width: '20px', height: '20px' })}
+        />
         <a
           href="/"
           className={css({
-            fontSize: 'sm',
-            fontFamily: 'body',
-            color: 'text-secondary',
+            color: 'textMuted',
             textDecoration: 'none',
-            padding: '4px 0',
+            display: 'inline-flex',
+            alignItems: 'center',
+            paddingY: '14px',
+            transition: 'color 0.15s ease',
             _hover: { color: 'accent' },
-            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
           })}
         >
-          Home
+          doug-march.com
+        </a>
+      </div>
+
+      {/* Top-right: minimal nav links */}
+      <nav
+        aria-label="Primary"
+        className={css({
+          position: 'fixed',
+          top: '24px',
+          right: '6vw',
+          zIndex: 50,
+          display: 'flex',
+          gap: { base: '20px', sm: '28px' },
+          alignItems: 'center',
+        })}
+      >
+        <a
+          href="/"
+          className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            color: 'textSecondary',
+            textTransform: 'uppercase',
+            letterSpacing: '0.18em',
+            textDecoration: 'none',
+            paddingY: '14px',
+            paddingX: '4px',
+            minHeight: '44px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            transition: 'color 0.15s ease',
+            _hover: { color: 'accent' },
+            _focusVisible: {
+              outline: '2px solid token(colors.accent)',
+              outlineOffset: '2px',
+            },
+          })}
+        >
+          Work
         </a>
         <a
           href="/about"
           className={css({
-            fontSize: 'sm',
             fontFamily: 'body',
-            color: 'text-secondary',
+            fontSize: '13px',
+            color: 'textSecondary',
+            textTransform: 'uppercase',
+            letterSpacing: '0.18em',
             textDecoration: 'none',
-            padding: '4px 0',
+            paddingY: '14px',
+            paddingX: '4px',
+            minHeight: '44px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            transition: 'color 0.15s ease',
             _hover: { color: 'accent' },
-            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+            _focusVisible: {
+              outline: '2px solid token(colors.accent)',
+              outlineOffset: '2px',
+            },
           })}
         >
           About
         </a>
-      </VStack>
+      </nav>
 
-      {/* Golf Leaderboard */}
-      <Box mb="8">
-        <Box
-          fontSize="2xs"
-          fontFamily="heading"
-          fontWeight="semibold"
-          letterSpacing="wider"
-          color="text-disabled"
-          textTransform="uppercase"
-          mb="3"
-        >
-          PGA Championship
-        </Box>
-        <Flex justify="space-between" align="baseline" mb="4">
-          <Box fontSize="sm" fontFamily="heading" fontWeight="semibold" color="text">
-            Cameron Young
-          </Box>
-          <Box fontSize="sm" fontFamily="heading" fontWeight="semibold" color="accent">
-            −19
-          </Box>
-        </Flex>
-        <Box height="1px" background="border" mb="3" />
-        <Flex justify="space-between" align="baseline" mb="1">
-          <Box fontSize="xs" fontFamily="body" color="text-muted">Scottie Scheffler</Box>
-          <Box fontSize="xs" fontFamily="body" color="text-muted">−13</Box>
-        </Flex>
-        <Flex justify="space-between" align="baseline">
-          <Box fontSize="xs" fontFamily="body" color="text-muted">Collin Morikawa</Box>
-          <Box fontSize="xs" fontFamily="body" color="text-muted">−12</Box>
-        </Flex>
-      </Box>
-
-      {/* Spacer pushes Tigers score to bottom */}
-      <Box mt="auto" />
-
-      {/* Tigers Score */}
-      <Box
-        fontSize="xs"
-        fontFamily="body"
-        color="text-disabled"
-        letterSpacing="wide"
-        textAlign="right"
+      {/* Bottom signal strip */}
+      <aside
+        aria-label="Signals"
+        className={css({
+          position: 'fixed',
+          bottom: '0',
+          left: '0',
+          right: '0',
+          zIndex: 50,
+          minHeight: '48px',
+          background: 'bgCard',
+          borderTop: '1px solid token(colors.border)',
+          display: 'flex',
+          alignItems: 'center',
+          paddingX: '6vw',
+          paddingY: '8px',
+          gap: { base: '18px', md: '28px' },
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'textSecondary',
+          letterSpacing: '0.10em',
+          textTransform: 'uppercase',
+          overflowX: 'auto',
+          whiteSpace: 'nowrap',
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
+        })}
       >
-        DET 4 · BOS 5 — May 4
-      </Box>
-    </Box>
+        <span className={css({ display: 'inline-flex', gap: '6px', flexShrink: 0 })}>
+          <span aria-hidden>79°</span>
+          <span aria-hidden>·</span>
+          <span>Sunny</span>
+        </span>
+        <span className={css({ color: 'textMuted', flexShrink: 0 })}>
+          <span aria-hidden>◑</span> 79%
+        </span>
+        <span
+          className={css({
+            color: 'textSecondary',
+            flexShrink: 1,
+            minWidth: '0',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: 'inline-flex',
+            gap: '8px',
+            alignItems: 'baseline',
+          })}
+        >
+          <span className={css({ color: 'accent' })} aria-hidden>↑ 343</span>
+          <span
+            className={css({
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              maxWidth: { base: '180px', md: '320px' },
+              display: 'inline-block',
+            })}
+          >
+            Async Rust never left the MVP
+          </span>
+        </span>
+        <span className={css({ color: 'textMuted', flexShrink: 0 })}>SPY −0.37%</span>
+        <span
+          className={css({
+            color: 'textMuted',
+            fontStyle: 'italic',
+            textTransform: 'none',
+            letterSpacing: '0.02em',
+            flexShrink: 0,
+          })}
+        >
+          Mother’s Day in 5
+        </span>
+        <span
+          className={css({
+            color: 'textMuted',
+            fontSize: '11px',
+            flexShrink: 0,
+            display: { base: 'none', md: 'inline' },
+          })}
+        >
+          Truist Championship · Scheduled
+        </span>
+        <span className={css({ flex: '1 1 auto' })} />
+        <a
+          href="/archive"
+          className={css({
+            color: 'textMuted',
+            textDecoration: 'none',
+            flexShrink: 0,
+            paddingY: '12px',
+            transition: 'color 0.15s ease',
+            _hover: { color: 'accent', textDecoration: 'underline' },
+          })}
+        >
+          Archive
+        </a>
+      </aside>
+    </>
   )
 }

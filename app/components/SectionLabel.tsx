@@ -1,25 +1,41 @@
 import type { ReactNode } from 'react'
-import { Box, Flex } from '../../styled-system/jsx'
+import { Flex, Box } from '../../styled-system/jsx'
 
-interface SectionLabelProps {
-  children: ReactNode
-}
-
-export function SectionLabel({ children }: SectionLabelProps) {
+export function SectionLabel({ children, count, marginTop = '32px', topRule = true }: { children: ReactNode; count?: string; marginTop?: string; topRule?: boolean }) {
   return (
-    <Flex align="center" gap="3" style={{ marginBottom: '16px' }}>
+    <Flex
+      align="baseline"
+      justify="space-between"
+      borderTop={topRule ? '1px solid' : '0'}
+      borderColor="divider"
+      paddingTop={topRule ? '20px' : '0'}
+      marginTop={marginTop}
+      marginBottom="12px"
+      gap="12px"
+    >
       <Box
-        as="span"
-        fontSize="xs"
         fontFamily="body"
-        fontWeight="700"
-        color="accent"
+        fontSize="12px"
+        fontWeight="medium"
         letterSpacing="widest"
-        style={{ textTransform: 'uppercase', whiteSpace: 'nowrap' }}
+        textTransform="uppercase"
+        color="textRightMuted"
+        lineHeight="tight"
       >
         {children}
       </Box>
-      <Box flex="1" background="border" style={{ height: '1px' }} />
+      {count && (
+        <Box
+          fontFamily="body"
+          fontSize="12px"
+          fontWeight="normal"
+          letterSpacing="widest"
+          color="textRightMuted"
+          style={{ fontVariantNumeric: 'tabular-nums' }}
+        >
+          {count}
+        </Box>
+      )}
     </Flex>
   )
 }

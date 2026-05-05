@@ -45,14 +45,24 @@ import {
   getChassisById,
   formatChassisCatalogForPrompt,
 } from './utils/chassis.js'
+import { parseDelimiterResponse } from './utils/delimiter-parser.js'
+import { runArtDirector } from './agents/art-director.js'
+export { parseDelimiterResponse }
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
 
-/** Maps every mutable file to exactly one agent name. */
+/** Maps every mutable file owned by an LLM agent to that agent name.
+ *  Token-designer ownership was removed in the Art Director pipeline —
+ *  preset.ts is now written by the Art Director. The Art Director's
+ *  files are not retried via this map; retries go through the
+ *  Unified Designer (which is the only agent whose files can fail
+ *  build validation in the new pipeline — preset.ts is validated by
+ *  codegen at write time).
+ */
 export const FILE_OWNERSHIP = Object.fromEntries([
-  ...TOKEN_FILES.map(f => [f, 'token-designer']),
+  ['elements/preset.ts', 'art-director'],
   ...STRUCTURE_FILES.map(f => [f, 'unified-designer']),
   ...COMPONENT_FILES.map(f => [f, 'unified-designer']),
 ])
@@ -154,7 +164,15 @@ function buildArchetypeHistory(archiveDir, recentDirs) {
 }
 
 /**
- * Build the hard archetype constraint block to inject into the Design Director prompt.
+ * Build the archetype-history advisory block to inject into the Design Director prompt.
+ *
+ * Variance is informational, not a hard constraint. iter-1 (2026-04-28) showed
+ * the failure mode of hard rules: the brief called for Poster but the 3-day
+ * lockout forbade it, so the Director picked Scroll — variance over fit. The
+ * brief's hero "full-bleed moon" intent suffered. Soft guidance lets fit win
+ * when the signals genuinely demand a recently-used archetype, while still
+ * nudging toward diversity when two archetypes fit equally well.
+ *
  * @param {Array<{date: string, archetype: string}>} history
  * @returns {{ block: string, forbidden: string[], allowed: string[] }}
  */
@@ -164,66 +182,18 @@ function buildArchetypeConstraintPrompt(history) {
   const lines = history.map(h => `  - ${h.date}: ${h.archetype}`).join('\n')
   const last3 = [...new Set(history.slice(0, 3).map(h => h.archetype))]
 
-  let block = `\n\n## Archetype History — MANDATORY CONSTRAINT\n\nRecent archetype usage (newest first):\n${lines}\n\n`
+  let block = `\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n${lines}\n\n`
 
-  let allowed = [...ARCHETYPE_NAMES]
   if (last3.length > 0) {
-    allowed = ARCHETYPE_NAMES.filter(n => !last3.includes(n))
-    block += `**FORBIDDEN TODAY** (used in the last 3 days): **${last3.join(', ')}**\n\n`
-    block += `You MUST choose from the remaining archetypes: ${allowed.join(', ')}. Choosing a forbidden archetype is an error — the spec will be rejected and the director will be re-run with a stricter prompt.`
+    block += `**Recently used** (last 3 days): ${last3.join(', ')}\n\n`
+    block += `Variance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n`
+    block += `- If two archetypes fit equally well, prefer the one NOT in the recent list.\n`
+    block += `- If the brief or signals genuinely call for a recently-used archetype, use it. Don't pick a worse-fitting archetype just to avoid repetition.\n`
+    block += `- If you do pick a recently-used archetype, the visual spec should make the execution materially different from the prior run (different palette commitment, different chassis register, different content emphasis).`
   }
 
-  return { block, forbidden: last3, allowed }
-}
-
-/**
- * Parse a Claude CLI response in the line-anchored ===FILE:path=== format.
- *
- * Delimiters must appear at the start of a line. This prevents corruption
- * when a file's content legitimately contains the string ===FILE:path===
- * (e.g., in a comment or documentation string). The previous unanchored
- * regex would split such files in two and emit a spurious second "file"
- * with the inner path as its name.
- *
- * @param {string} result - raw response text
- * @returns {{ files: Array<{path: string, content: string}>, rationale?: string, design_brief?: string, color_scheme?: object }}
- */
-export function parseDelimiterResponse(result) {
-  const files = []
-  // JavaScript regex has no \Z (end of string in multiline mode), so we
-  // append a sentinel delimiter that the lookahead can match as a substitute.
-  const sentinel = '\n===END_SENTINEL===\n'
-  const withSentinel = result + sentinel
-  const filePattern = /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===END_SENTINEL===)/gm
-  let match
-  while ((match = filePattern.exec(withSentinel)) !== null) {
-    const filePath = match[1].trim()
-    const content = match[2].trim()
-    if (filePath && content) {
-      files.push({ path: filePath, content })
-    }
-  }
-
-  let rationale
-  const rationaleMatch = withSentinel.match(/^===RATIONALE===\s*\n([\s\S]*?)(?=^===)/m)
-  if (rationaleMatch) rationale = rationaleMatch[1].trim()
-
-  let design_brief
-  const briefMatch = withSentinel.match(/^===DESIGN_BRIEF===\s*\n([\s\S]*?)(?=^===)/m)
-  if (briefMatch) design_brief = briefMatch[1].trim()
-
-  let color_scheme
-  const schemeMatch = withSentinel.match(/^===COLOR_SCHEME===\s*\n([\s\S]*?)(?=^===)/m)
-  if (schemeMatch) {
-    const raw = schemeMatch[1].trim()
-    try {
-      color_scheme = JSON.parse(raw)
-    } catch {
-      color_scheme = { __parse_error: true, raw }
-    }
-  }
-
-  return { files, rationale, design_brief, color_scheme }
+  // `forbidden` retained for trace logging only — no longer enforced.
+  return { block, forbidden: last3, allowed: [...ARCHETYPE_NAMES] }
 }
 
 // ---------------------------------------------------------------------------
@@ -283,6 +253,28 @@ export function identifyFailingAgent(errorOutput) {
   if (agents.size === 0) return 'both'
   if (agents.size === 2) return 'both'
   return [...agents][0]
+}
+
+/**
+ * Build an archetype-specific constraint block for injection into the Unified Designer prompt.
+ *
+ * For Specimen and Poster archetypes, returns a block that explicitly forbids
+ * rendering project cards or portfolio sections on the home page — only the
+ * hero phrase and navigation should appear.
+ *
+ * For all other archetypes, returns an empty string (no constraint).
+ *
+ * @param {string|null|undefined} archetype
+ * @returns {string}
+ */
+export function buildArchetypeContractBlock(archetype) {
+  if (archetype === 'Specimen' || archetype === 'Poster') {
+    return `⚠ ARCHETYPE CONTRACT — ${archetype.toUpperCase()}:
+Home page = hero phrase + navigation ONLY.
+Do NOT render project cards, featured project, experiments, or any portfolio section.
+index.tsx is a single-composition canvas today, not a portfolio hub.`
+  }
+  return ''
 }
 
 // ---------------------------------------------------------------------------
@@ -422,7 +414,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     signals: parseInt(process.env.WEIGHT_SIGNALS || '5'),
     inspiration: parseInt(process.env.WEIGHT_INSPIRATION || '5'),
     ratings: parseInt(process.env.WEIGHT_RATINGS || '5'),
-    risk: parseInt(process.env.WEIGHT_RISK || '5'),
+    risk: parseInt(process.env.WEIGHT_RISK || '8'),
   }
   console.log(`  creative weights: signals=${weights.signals} inspiration=${weights.inspiration} ratings=${weights.ratings} risk=${weights.risk}`)
 
@@ -490,30 +482,48 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   const weightsPrompt = `\n\n## Creative Weights (0-10, set by the site owner)\n\nSignals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'The owner wants BOLD, EXPERIMENTAL design today. Push boundaries.' : weights.risk <= 3 ? 'The owner wants SAFE, POLISHED design today. Proven patterns.' : ''}${weights.inspiration >= 7 ? '\nDesign references should HEAVILY influence your compositional choices.' : ''}${weights.signals <= 3 ? '\nSignals are background texture only — do NOT let weather or sports drive the design.' : ''}`
 
-  // Read all prompts and libraries
+  // Read all prompts and design references.
+  // Design references are vendored from pbakaus/impeccable (Apache 2.0) — see
+  // scripts/prompts/impeccable/README.md. They replace the previous library-*.md
+  // files which authored generic guidance; impeccable provides anti-pattern-aware,
+  // OKLCH-native, register-aware design knowledge tuned to fight AI design slop.
   const promptDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'prompts')
+  const refDir = path.join(promptDir, 'impeccable', 'reference')
   const [
-    directorPromptRaw,
     specCriticPromptRaw,
     screenshotCriticPromptRaw,
-    tokenPromptRaw,
-    designSystemRef, libTypography, libColor, libLayout, libComponents,
+    designSystemRef,
+    refBrand,
+    refTypography,
+    refColor,
+    refSpatial,
+    refResponsive,
+    refInteraction,
+    refCritique,
   ] = await Promise.all([
-    readFile(path.join(promptDir, 'design-director.md'), 'utf8'),
     readFile(path.join(promptDir, 'spec-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'screenshot-critic.md'), 'utf8'),
-    readFile(path.join(promptDir, 'token-designer.md'), 'utf8'),
     readFile(path.join(promptDir, 'design-system-reference.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-typography.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-color.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-layout.md'), 'utf8'),
-    readFile(path.join(promptDir, 'library-components.md'), 'utf8'),
+    readFile(path.join(refDir, 'brand.md'), 'utf8'),
+    readFile(path.join(refDir, 'typography.md'), 'utf8'),
+    readFile(path.join(refDir, 'color-and-contrast.md'), 'utf8'),
+    readFile(path.join(refDir, 'spatial-design.md'), 'utf8'),
+    readFile(path.join(refDir, 'responsive-design.md'), 'utf8'),
+    readFile(path.join(refDir, 'interaction-design.md'), 'utf8'),
+    readFile(path.join(refDir, 'critique.md'), 'utf8'),
   ])
 
-  const specCriticPrompt = specCriticPromptRaw
-  const screenshotCriticPrompt = screenshotCriticPromptRaw
+  // Brand-register declaration. doug-march.com is BRAND register — a personal
+  // portfolio where design IS the product. Inject this into every design agent
+  // so they apply brand-register conventions (expressive composition, committed
+  // color strategy, typographic risk) rather than product-register reflexes
+  // (dense dashboards, restrained palette, generic card grids).
+  const brandRegisterDeclaration = `\n\n## Project Register: BRAND\n\nThis project is BRAND register — a personal portfolio where design IS the product. Apply brand-register conventions throughout. The detailed brand-register reference follows.\n\n${refBrand}`
 
-  // Build system prompts with relevant libraries appended.
+  const specCriticPrompt = `${specCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
+  const screenshotCriticPrompt = `${screenshotCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
+
+  // Build system prompts with relevant references appended.
   // unified-designer base prompt is loaded through buildMessages (single source
   // of truth shared with local-dev path in scripts/generate-redesign.js).
   const { system: unifiedDesignerBasePrompt } = buildMessages({
@@ -522,17 +532,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     contentSummary: '',
     currentFiles: [],
   })
-  const directorSystemPrompt = `${directorPromptRaw}\n\n${libTypography}\n\n${libColor}\n\n${libLayout}`
-  // Token Designer no longer authors fonts or fontSizes (chassis owns them),
-  // so library-typography.md is omitted from its system prompt — saves ~47 lines
-  // of dead context and prevents Haiku from reasoning about typography tokens
-  // that the orchestrator will overwrite anyway.
-  const tokenSystemPrompt = `${tokenPromptRaw}\n\n${libColor}`
-  // libTypography is omitted — unified-designer uses font tokens but does not
-  // choose fonts or scale ratios (chassis owns those). The pairing recipes and
-  // ratio table in library-typography.md are dead context here. Director still
-  // gets it for chassis-selection mood matching.
-  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}\n\n${libColor}\n\n${libLayout}\n\n${libComponents}`
+  // unified-designer writes the actual React/Panda implementation. Gets the
+  // typography/color/spatial/responsive design knowledge stack plus brand.
+  // interaction-design.md was previously loaded here but dropped after
+  // iter-2 (2026-04-28) produced a meta-response failure with ~60KB
+  // assembled system prompt — the portfolio is type-and-image driven,
+  // not form-driven, so interaction patterns earn their absence. Re-add
+  // when forms/focus-state UX surfaces become a genuine concern.
+  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}\n\n${refSpatial}\n\n${refResponsive}`
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')
@@ -711,94 +718,164 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   console.log(`  color-mandate: target ${colorMandate.targetHueRange[0]}-${colorMandate.targetHueRange[1]}°, ${colorMandate.forbiddenHues.length} forbidden zone(s)`)
 
   // -----------------------------------------------------------------------
-  // Phase 0: Design Director — produces a visual specification
+  // Phase 0+1: Art Director — single decision (hero copy, archetype,
+  // chassis, full preset.ts, visual spec). Replaces the historical
+  // Director + spec-critic gate + Token Designer trio.
   // -----------------------------------------------------------------------
-  console.log('\n[phase-0] Design Director')
+  console.log('\n[phase-0+1] Art Director')
 
-  const chassisCatalogBlock = '\n\n## Typography Chassis Catalog\n\n'
-    + 'Pick ONE chassis id from this table and emit it in the `===CHASSIS_ID===` block of your response. Match by archetype affinity first, then by mood.\n\n'
-    + formatChassisCatalogForPrompt(CHASSIS_CATALOG)
+  const chassisCatalogBlock = formatChassisCatalogForPrompt(CHASSIS_CATALOG)
+  const archetypeHistoryBlock = archetypeConstraintPrompt
+  const weightsBlock = `Signals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'BOLD, EXPERIMENTAL today. Push for a committed gesture.' : weights.risk <= 3 ? 'SAFE, POLISHED today. Proven patterns.' : 'Balanced.'}`
 
-  const directorUserPrompt = buildAgentPrompt('design-director', {
-    brief,
-    referenceFiles: [],
-    tokenContext: null,
-  }) + archetypeConstraintPrompt
-    + (recentBriefs ? '\n\n## Recent Archive Briefs\n' + recentBriefs : '')
-    + (references ? '\n\n## Design References\n\n' + references : '')
-    + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
-    + chassisCatalogBlock
-    + weightsPrompt
-    + '\n\n' + colorMandateSection
+  // Art Director system prompt: art-director.md + brand register +
+  // typography + color. Trim to brand+color+typography per spec to keep
+  // assembled prompt <= ~50KB (iter-2 failed at 60KB).
+  const artDirectorPromptRaw = await readFile(path.join(promptDir, 'art-director.md'), 'utf8')
+  const artDirectorSystemPrompt = `${artDirectorPromptRaw}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}`
 
-  let visualSpec = ''
-  let chosenArchetype = null
-  let chosenChassis = null
+  let artDirectorResult
+  const t0Director = Date.now()
   try {
-    const t0Director = Date.now()
-    let directorResult = await callAgent('design-director', directorSystemPrompt, directorUserPrompt)
-    visualSpec = directorResult._rawResponse || directorResult.rationale || ''
-    chosenArchetype = extractArchetypeFromText(visualSpec)
-    chosenChassis = resolveChassisFromDirectorOutput(visualSpec, CHASSIS_CATALOG)
-    console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${chosenArchetype ? ` | archetype: ${chosenArchetype}` : ''}${chosenChassis ? ` | chassis: ${chosenChassis.id}` : ''}`)
-
-    // Enforce the FORBIDDEN list programmatically. The prompt threatens
-    // "spec will be rejected" but until now nothing actually rejected it.
-    // Retry director once with an explicit "you violated the constraint"
-    // message; if the retry also picks a forbidden archetype, accept and
-    // log a warning rather than spinning forever.
-    if (chosenArchetype && forbiddenArchetypes.includes(chosenArchetype)) {
-      console.warn(`  ⚠ Director picked FORBIDDEN archetype "${chosenArchetype}" — retrying with stricter prompt`)
-      const stricterPrompt = `${directorUserPrompt}\n\n---\n\n## CONSTRAINT VIOLATION — RETRY REQUIRED\n\nYour previous response chose **${chosenArchetype}**, which is on the FORBIDDEN list (used in the last 3 days). Choose a different archetype from this exact set: **${allowedArchetypes.join(', ')}**. Any other choice fails the build. Re-emit the complete VISUAL_SPEC with a new archetype.`
-      directorResult = await callAgent('design-director', directorSystemPrompt, stricterPrompt)
-      visualSpec = directorResult._rawResponse || directorResult.rationale || ''
-      const retryArchetype = extractArchetypeFromText(visualSpec)
-      const retryChassis = resolveChassisFromDirectorOutput(visualSpec, CHASSIS_CATALOG)
-      console.log(`  retry visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB${retryArchetype ? ` | archetype: ${retryArchetype}` : ''}${retryChassis ? ` | chassis: ${retryChassis.id}` : ''}`)
-      if (retryArchetype && !forbiddenArchetypes.includes(retryArchetype)) {
-        chosenArchetype = retryArchetype
-      } else {
-        console.warn(`  ⚠ Director retry also picked forbidden/unknown archetype — proceeding with "${retryArchetype || chosenArchetype}"`)
-        chosenArchetype = retryArchetype || chosenArchetype
-      }
-      if (retryChassis) chosenChassis = retryChassis
-    }
-
-    // Fall back to first catalog entry if Director never produced a valid id.
-    // We log loudly but don't crash — the chassis is hand-curated, so any
-    // entry produces a working site, and the Token Designer can still
-    // author colors/spacing for the day.
-    if (!chosenChassis) {
-      chosenChassis = CHASSIS_CATALOG[0]
-      console.warn(`  ⚠ Director did not pick a valid chassis — falling back to "${chosenChassis.id}"`)
-    }
-
-    trace.addStep({
-      name: 'design-director',
-      phase: 1,
-      input: { archetypeConstraints: archetypeConstraintPrompt.slice(0, 500) },
-      output: {
-        archetype: chosenArchetype || 'unknown',
-        chassisId: chosenChassis?.id || 'unknown',
-        specLength: visualSpec.length,
-        specPreview: visualSpec.slice(0, 500),
-      },
-      durationMs: Date.now() - t0Director,
+    artDirectorResult = await runArtDirector({
+      signals,
+      contentSummary,
+      chassisCatalog: CHASSIS_CATALOG,
+      chassisCatalogBlock,
+      archetypeHistoryBlock,
+      recentBriefs,
+      recentRatings,
+      references,
+      colorMandateSection,
+      weightsBlock,
+      failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
+      systemPrompt: artDirectorSystemPrompt,
     })
   } catch (err) {
-    console.warn(`  Design Director failed (non-blocking): ${err.message}`)
-    console.warn('  Proceeding without visual spec — agents will use brief directly')
+    console.error(`  Art Director failed: ${err.message}`)
+    await restore(originalBackup)
+    throw new Error(`Art Director failed: ${err.message}`)
+  }
+
+  const chosenArchetype = artDirectorResult.archetype
+  let chosenChassis = CHASSIS_CATALOG.find(c => c.id === artDirectorResult.chassisId)
+  if (!chosenChassis) {
+    console.warn(`  ⚠ Art Director picked unknown chassis "${artDirectorResult.chassisId}" — falling back to "${CHASSIS_CATALOG[0].id}"`)
+    chosenChassis = CHASSIS_CATALOG[0]
+  }
+  const visualSpec = artDirectorResult.visualSpec
+  if (chosenArchetype && forbiddenArchetypes.includes(chosenArchetype)) {
+    console.log(`  ℹ Art Director reused recently-used archetype "${chosenArchetype}" — accepting (variance is advisory)`)
+  }
+  console.log(`  hero: "${artDirectorResult.heroCopy.slice(0, 60)}${artDirectorResult.heroCopy.length > 60 ? '...' : ''}"`)
+  console.log(`  archetype: ${chosenArchetype} | chassis: ${chosenChassis.id}`)
+  console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB`)
+
+  trace.addStep({
+    name: 'art-director',
+    phase: 1,
+    input: { archetypeConstraints: archetypeConstraintPrompt.slice(0, 500) },
+    output: {
+      hero_copy: artDirectorResult.heroCopy.slice(0, 200),
+      archetype: chosenArchetype || 'unknown',
+      chassisId: chosenChassis?.id || 'unknown',
+      specLength: visualSpec.length,
+      specPreview: visualSpec.slice(0, 500),
+      selfCheck: artDirectorResult.selfCheck.slice(0, 300),
+    },
+    durationMs: Date.now() - t0Director,
+  })
+
+  // Write the Art Director's preset.ts to disk
+  const presetFile = { path: 'elements/preset.ts', content: artDirectorResult.presetTs }
+  for (const p of await writeFiles([presetFile])) writtenPaths.add(p)
+
+  // Orchestrator generates the chassis preset (fonts + fontSizes) and
+  // __root.tsx (Google Fonts URL substituted into the frozen template).
+  // These two files are NEVER written by an agent.
+  try {
+    const chassisPresetSrc = renderChassisPresetFile(chosenChassis)
+    const chassisPresetPath = path.join(ROOT, 'elements/chassis-preset.ts')
+    await writeFile(chassisPresetPath, chassisPresetSrc, 'utf8')
+    writtenPaths.add('elements/chassis-preset.ts')
+    console.log(`  [chassis] wrote chassis-preset.ts (${chosenChassis.id})`)
+
+    const rootSrc = renderRootTemplate(buildGoogleFontsUrl(chosenChassis))
+    const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
+    await writeFile(rootPath, rootSrc, 'utf8')
+    writtenPaths.add('app/routes/__root.tsx')
+    console.log(`  [chassis] wrote __root.tsx from template`)
+  } catch (err) {
+    await cleanupOrphans(writtenPaths, originalBackup)
+    await restore(originalBackup)
+    throw new Error(`Chassis file generation failed: ${err.message}`)
+  }
+
+  // Write today's brief.md so the archive has a human-readable artifact
+  // (replaces the old signals/today.brief.md from interpret-signals.js).
+  try {
+    const briefArtifactPath = path.join(ROOT, 'signals', 'today.brief.md')
+    await writeFile(briefArtifactPath, `# Signals Brief — ${signals.date || 'today'}\n\n${artDirectorResult.brief}\n`, 'utf8')
+  } catch (err) {
+    console.warn(`  brief artifact write failed (non-blocking): ${err.message}`)
+  }
+
+  // Codegen on the Art Director's preset.ts
+  const codegenResult = validateCodegen()
+  if (!codegenResult.success) {
+    console.log('  codegen failed — retrying Art Director with error context...')
+    // Restore preset.ts before retry
+    const presetBackup = new Map()
+    for (const [k, v] of originalBackup.entries()) {
+      if (k === 'elements/preset.ts') presetBackup.set(k, v)
+    }
+    await restore(presetBackup)
+    try {
+      // Re-invoke Art Director with codegen error appended to context.
+      // The full Director re-run is expensive but rare — codegen failures
+      // are uncommon now that the Art Director sees PandaCSS rules.
+      artDirectorResult = await runArtDirector({
+        signals,
+        contentSummary,
+        chassisCatalog: CHASSIS_CATALOG,
+        chassisCatalogBlock,
+        archetypeHistoryBlock: archetypeHistoryBlock + `\n\n## Previous attempt failed codegen\n\n${codegenResult.error?.slice(0, 1500) || ''}`,
+        recentBriefs,
+        recentRatings,
+        references,
+        colorMandateSection,
+        weightsBlock,
+        failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
+        systemPrompt: artDirectorSystemPrompt,
+      })
+      const retryPresetFile = { path: 'elements/preset.ts', content: artDirectorResult.presetTs }
+      for (const p of await writeFiles([retryPresetFile])) writtenPaths.add(p)
+    } catch (err) {
+      await cleanupOrphans(writtenPaths, originalBackup)
+      await restore(originalBackup)
+      throw new Error(`Art Director codegen retry failed: ${err.message}`)
+    }
+    const retryCodegen = validateCodegen()
+    if (!retryCodegen.success) {
+      await cleanupOrphans(writtenPaths, originalBackup)
+      await restore(originalBackup)
+      throw new Error(`Codegen failed after Art Director retry: ${retryCodegen.error?.slice(0, 500)}`)
+    }
   }
 
   // -----------------------------------------------------------------------
-  // Spec Critic Gate — reviews visual spec for ambition and range
+  // Spec Critic Gate — Art Director self-check
   // -----------------------------------------------------------------------
   try {
-    console.log('\n[spec-critic] Reviewing visual spec...')
+    console.log('\n[spec-critic] Reviewing Art Director response...')
     const criticUserPrompt = [
-      '## Structured Brief\n\n' + brief,
-      archetypeConstraintPrompt ? '## Archetype Constraints\n' + archetypeConstraintPrompt : '',
+      '## Today\'s Signals\n\n```yaml\n' + JSON.stringify(signals, null, 2) + '\n```',
+      '## Hero Copy\n\n' + artDirectorResult.heroCopy,
+      '## Archetype\n\n' + chosenArchetype,
+      '## Chassis ID\n\n' + chosenChassis.id,
       '## Visual Specification\n\n' + visualSpec,
+      '## Self-Check\n\n' + artDirectorResult.selfCheck,
+      '## elements/preset.ts\n\n```typescript\n' + artDirectorResult.presetTs + '\n```',
       recentBriefs ? '## Recent Archive Briefs\n' + recentBriefs : '',
     ].filter(Boolean).join('\n\n---\n\n')
 
@@ -818,149 +895,31 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     })
 
     if (rawResponse.includes('REVISE')) {
-      const feedback = rawResponse.replace(/===VERDICT===/, '').replace(/===END===/, '').replace('REVISE', '').trim()
-      console.log(`  [spec-critic] REVISE: ${feedback.slice(0, 200)}...`)
-      console.log('\n[spec-critic] Design Director revising...')
-
-      // Re-run Design Director with critic feedback
-      const revisionPrompt = directorUserPrompt + '\n\n---\n\n## Critic Feedback (revise your spec)\n\n' + feedback
-      try {
-        const revisedResult = await callAgent('design-director', directorSystemPrompt, revisionPrompt)
-        visualSpec = revisedResult._rawResponse || revisedResult.rationale || visualSpec
-        console.log(`  [spec-critic] Revision complete. visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB`)
-      } catch (err) {
-        console.warn(`  [spec-critic] Director revision failed (non-blocking): ${err.message}`)
-      }
+      console.log(`  [spec-critic] REVISE — accepting and continuing (single point of failure: a full Art Director re-run is expensive; let the screenshot critic catch render failures)`)
     } else {
       console.log('  [spec-critic] APPROVED')
     }
   } catch (err) {
-    console.warn(`  [spec-critic] Critic failed (non-blocking): ${err.message}`)
-    console.warn('  Proceeding without spec review')
+    console.warn(`  [spec-critic] failed (non-blocking): ${err.message}`)
   }
 
-  // -----------------------------------------------------------------------
-  // Phase 1: Token Designer — uses visual spec if available
-  // -----------------------------------------------------------------------
-  console.log('\n[phase-1] Token Designer')
-
-  const tokenBrief = visualSpec
-    ? `## Visual Specification (from Design Director)\n\n${visualSpec}\n\n---\n\n## Original Creative Brief\n\n${brief}`
-    : brief
-
-  const tokenUserPrompt = buildAgentPrompt('token-designer', {
-    brief: tokenBrief,
-    referenceFiles: [],
-    tokenContext: null,
-  }) + '\n\n' + colorMandateSection
-
-  let tokenResult
-  const t0Token = Date.now()
-  try {
-    tokenResult = await callAgent('token-designer', tokenSystemPrompt, tokenUserPrompt, null, { model: 'haiku' })
-  } catch (err) {
-    console.error(`  Token Designer failed: ${err.message}`)
-    await restore(originalBackup)
-    throw new Error(`Token Designer failed: ${err.message}`)
-  }
-
-  // Token Designer no longer owns __root.tsx (orchestrator generates it
-  // from the chassis template). preset.ts is the only required output;
-  // anything else from the agent is silently ignored.
-  const hasPreset = tokenResult.files.some(f => f.path === 'elements/preset.ts')
-  if (!hasPreset) {
-    await restore(originalBackup)
-    throw new Error(`Token Designer missing required file elements/preset.ts. Got: ${tokenResult.files.map(f => f.path).join(', ')}`)
-  }
-
-  // Write token files (filter out anything outside TOKEN_FILES — e.g.,
-  // a stray __root.tsx the agent emitted out of habit).
-  const tokenFilesOnly = tokenResult.files.filter(f => TOKEN_FILES.includes(f.path))
-  for (const p of await writeFiles(tokenFilesOnly)) writtenPaths.add(p)
-
-  // Orchestrator generates the chassis preset (fonts + fontSizes) and
-  // __root.tsx (Google Fonts URL substituted into the frozen template).
-  // These two files are NEVER written by an agent in the chassis era.
-  try {
-    const chassisPresetSrc = renderChassisPresetFile(chosenChassis)
-    const chassisPresetPath = path.join(ROOT, 'elements/chassis-preset.ts')
-    await writeFile(chassisPresetPath, chassisPresetSrc, 'utf8')
-    writtenPaths.add('elements/chassis-preset.ts')
-    console.log(`  [chassis] wrote chassis-preset.ts (${chosenChassis.id})`)
-
-    const rootSrc = renderRootTemplate(buildGoogleFontsUrl(chosenChassis))
-    const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
-    await writeFile(rootPath, rootSrc, 'utf8')
-    writtenPaths.add('app/routes/__root.tsx')
-    console.log(`  [chassis] wrote __root.tsx from template`)
-  } catch (err) {
-    await cleanupOrphans(writtenPaths, originalBackup)
-    await restore(originalBackup)
-    throw new Error(`Chassis file generation failed: ${err.message}`)
-  }
-
-  trace.addStep({
-    name: 'token-designer',
-    phase: 2,
-    input: { briefLength: tokenBrief.length },
-    output: {
-      files: tokenResult.files.map(f => f.path),
-      rationale: (tokenResult.rationale || '').slice(0, 500),
-    },
-    durationMs: Date.now() - t0Token,
-  })
-
-  // Run codegen to regenerate styled-system
-  const codegenResult = validateCodegen()
-  if (!codegenResult.success) {
-    console.log('  codegen failed — retrying Token Designer with error context...')
-    // Restore token files before retry
-    const tokenBackup = new Map()
-    for (const [k, v] of originalBackup.entries()) {
-      if (TOKEN_FILES.includes(k)) tokenBackup.set(k, v)
-    }
-    await restore(tokenBackup)
-
-    try {
-      tokenResult = await callAgent('token-designer', tokenSystemPrompt, tokenUserPrompt, codegenResult.error, { model: 'haiku' })
-    } catch (err) {
-      await cleanupOrphans(writtenPaths, originalBackup)
-      await restore(originalBackup)
-      throw new Error(`Token Designer retry failed: ${err.message}`)
-    }
-
-    const tokenRetryFilesOnly = tokenResult.files.filter(f => TOKEN_FILES.includes(f.path))
-    for (const p of await writeFiles(tokenRetryFilesOnly)) writtenPaths.add(p)
-
-    const retryCodegen = validateCodegen()
-    if (!retryCodegen.success) {
-      await cleanupOrphans(writtenPaths, originalBackup)
-      await restore(originalBackup)
-      throw new Error(`Token Designer codegen failed after retry: ${retryCodegen.error?.slice(0, 500)}`)
-    }
-  }
-
-  // -----------------------------------------------------------------------
-  // Color scheme validation — warnings only, never fails the build.
-  // Runs once here after tokenResult is finalized (first pass or codegen
-  // retry), so we always validate the version that will actually ship.
-  // -----------------------------------------------------------------------
-  if (tokenResult.color_scheme && !tokenResult.color_scheme.__parse_error) {
+  // Color-scheme monitoring (warnings only)
+  if (artDirectorResult.colorScheme && !artDirectorResult.colorScheme.__parse_error) {
     const { detectCoffeeShopPalette, validateSchemeAgainstPreset, validateSchemeAgainstMandate } = await import('./utils/color-validation.js')
-    const presetSrc = tokenResult.files.find((f) => f.path === 'elements/preset.ts')?.content || ''
-
-    const consistency = validateSchemeAgainstPreset(tokenResult.color_scheme, presetSrc)
+    const consistency = validateSchemeAgainstPreset(artDirectorResult.colorScheme, artDirectorResult.presetTs)
     for (const w of consistency.warnings) console.warn(`[color-scheme] ${w}`)
-
-    const rut = detectCoffeeShopPalette(tokenResult.color_scheme, presetSrc)
+    const rut = detectCoffeeShopPalette(artDirectorResult.colorScheme, artDirectorResult.presetTs)
     for (const w of rut.warnings) console.warn(`[color-scheme] ${w}`)
-
-    const mandateCheck = validateSchemeAgainstMandate(tokenResult.color_scheme, colorMandate)
+    const mandateCheck = validateSchemeAgainstMandate(artDirectorResult.colorScheme, colorMandate)
     for (const w of mandateCheck.warnings) console.warn(`[color-scheme] ${w}`)
-  } else if (tokenResult.color_scheme && tokenResult.color_scheme.__parse_error) {
-    console.warn('[color-scheme] Token Designer emitted ===COLOR_SCHEME=== but JSON was unparseable; continuing.')
-  } else {
-    console.warn('[color-scheme] Token Designer did not emit ===COLOR_SCHEME===; palette monitoring will not fire for this build.')
+  }
+
+  // Synthetic tokenResult for the rest of the orchestrator (Phase 2 archive)
+  const tokenResult = {
+    files: [presetFile],
+    rationale: artDirectorResult.rationale,
+    design_brief: artDirectorResult.designBrief,
+    color_scheme: artDirectorResult.colorScheme,
   }
 
   // -----------------------------------------------------------------------
@@ -971,9 +930,19 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   console.log('\n[phase-2] Unified Designer')
 
-  const enrichedBrief = visualSpec
-    ? `## Visual Specification (from Design Director)\n\n${visualSpec}\n\n---\n\n## Original Creative Brief\n\n${brief}`
-    : brief
+  const enrichedBrief = [
+    `## Hero Copy (the page must execute this phrase at marquee scale)`,
+    artDirectorResult.heroCopy,
+    '',
+    `## Hero Rationale`,
+    artDirectorResult.heroRationale,
+    '',
+    `## Visual Specification (from the Art Director)`,
+    visualSpec,
+    '',
+    `## Art Director Rationale`,
+    artDirectorResult.rationale,
+  ].join('\n')
 
   // Responsive feedback loop: inject a cautionary lesson from a recent failing build
   // into the unified designer's prompt. Env-gated; non-blocking on failure.
@@ -1033,7 +1002,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       tokenContext,
       responsiveLesson,
     })
-    return messages[0].content
+    const archetypeBlock = buildArchetypeContractBlock(chosenArchetype)
+    return (archetypeBlock ? archetypeBlock + '\n\n' : '')
+      + messages[0].content
       + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
       + weightsPrompt
   }
@@ -1175,11 +1146,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         // unified-designer (Sonnet stalls at 0KB on unified-designer-class
         // prompts — see scripts/design-agents.js:1011 commentary).
         const agentConfig = {
-          'token-designer': {
-            prompt: tokenSystemPrompt,
-            user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) + '\n\n' + colorMandateSection,
-            options: { model: 'haiku' },
-          },
           'unified-designer': {
             prompt: unifiedDesignerSystemPrompt,
             user: buildUnifiedDesignerPrompt,
@@ -1264,10 +1230,17 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const failingAgent = identifyFailingAgent(buildResult.error)
   console.log(`  identified failing agent: ${failingAgent}`)
 
-  // Restore only the failing agent's files
+  // Restore only the failing agent's files. Art Director files are
+  // intentionally NEVER restored here — by design (see retryAgents comment
+  // below), build failures involving preset.ts are handled by the Unified
+  // Designer adapting to today's tokens, not by reverting the preset and
+  // re-running the Art Director. Reverting would leave preset.ts and
+  // styled-system/ incoherent (codegen is not re-run in Phase 5) and
+  // produce archive/disk-state divergence.
   const filesToRestore = new Map()
   for (const [filePath, content] of originalBackup.entries()) {
     const owner = FILE_OWNERSHIP[filePath]
+    if (owner === 'art-director') continue
     if (failingAgent === 'both' || owner === failingAgent) {
       filesToRestore.set(filePath, content)
     }
@@ -1280,11 +1253,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // of each agent (see scripts/design-agents.js:860 for token-designer and
   // :1011, :1035 for unified-designer).
   const agentConfig = {
-    'token-designer': {
-      prompt: tokenSystemPrompt,
-      user: () => buildAgentPrompt('token-designer', { brief: tokenBrief, referenceFiles: [], tokenContext: null }) + '\n\n' + colorMandateSection,
-      options: { model: 'haiku' },
-    },
     'unified-designer': {
       prompt: unifiedDesignerSystemPrompt,
       user: buildUnifiedDesignerPrompt,
@@ -1292,12 +1260,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     },
   }
 
-  const retryAgents = failingAgent === 'both'
-    ? ['unified-designer']
-    : [failingAgent]
-
-  // Track whether a token-designer retry ran so we know to re-run codegen
-  let tokenRetried = false
+  // Build failures are almost always in the Unified Designer's TSX.
+  // The Art Director's preset.ts is validated by codegen earlier in
+  // the pipeline, so a build failure on preset.ts at this stage means
+  // a downstream typing problem — best handled by Unified Designer
+  // retry rather than full Art Director re-run (which is more expensive).
+  const retryAgents = ['unified-designer']
 
   for (const agent of retryAgents) {
     const config = agentConfig[agent]
@@ -1308,10 +1276,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const retryResult = await callAgent(agent, config.prompt, config.user(), buildResult.error, config.options)
       for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
       // Update the result so the archive records the retry output, not stale originals
-      if (agent === 'token-designer') {
-        tokenResult = retryResult
-        tokenRetried = true
-      }
       if (agent === 'unified-designer') designerResult = retryResult
     } catch (err) {
       console.error(`  ${agent} retry failed: ${err.message}`)
@@ -1321,19 +1285,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       await cleanupOrphans(writtenPaths, originalBackup)
       await restore(originalBackup)
       throw new Error(`${agent} retry crashed: ${err.message}`)
-    }
-  }
-
-  // If token files changed, codegen must run before the build checks the
-  // new styled-system. Otherwise validateBuild can succeed on stale output
-  // or fail referencing tokens that exist in the new preset.
-  if (tokenRetried) {
-    console.log('  re-running codegen after token retry...')
-    const retryCodegen = validateCodegen()
-    if (!retryCodegen.success) {
-      await cleanupOrphans(writtenPaths, originalBackup)
-      await restore(originalBackup)
-      throw new Error(`Codegen failed after token retry: ${retryCodegen.error?.slice(0, 500)}`)
     }
   }
 

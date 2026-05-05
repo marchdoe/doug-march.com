@@ -1,0 +1,71 @@
+Error: Error transforming route file /Users/dougmarch/Projects/dougmarch/app/routes/work.$slug.tsx: SyntaxError: Unexpected token (250:1)
+    at file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/@tanstack+router-generator@1.166.32/node_modules/@tanstack/router-generator/dist/esm/generator.js:127:13
+    at async generate (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/@tanstack+router-plugin@1.167.22_@tanstack+react-router@1.168.22_react-dom@19.2.4_react_07e07269d3da6df9463da4599157688e/node_modules/@tanstack/router-plugin/dist/esm/core/router-generator-plugin.js:38:4)
+    at async BasicMinimalPluginContext.configResolved (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/@tanstack+router-plugin@1.167.22_@tanstack+react-router@1.168.22_react-dom@19.2.4_react_07e07269d3da6df9463da4599157688e/node_modules/@tanstack/router-plugin/dist/esm/core/router-generator-plugin.js:55:4)
+    at async Promise.all (index 3)
+    at async resolveConfig (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/vite@7.3.2_@types+node@25.5.2_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.0_tsx@4.21.0/node_modules/vite/dist/node/chunks/config.js:35686:2)
+    at async createBuilder (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/vite@7.3.2_@types+node@25.5.2_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.0_tsx@4.21.0/node_modules/vite/dist/node/chunks/config.js:33879:19)
+    at async CAC.<anonymous> (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/vite@7.3.2_@types+node@25.5.2_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.0_tsx@4.21.0/node_modules/vite/dist/node/cli.js:629:10)
+Error: Error transforming route file /Users/dougmarch/Projects/dougmarch/app/routes/work.$slug.tsx: SyntaxError: Unexpected token (250:1)
+    at file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/@tanstack+router-generator@1.166.32/node_modules/@tanstack/router-generator/dist/esm/generator.js:127:13
+    at async generate (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/@tanstack+router-plugin@1.167.22_@tanstack+react-router@1.168.22_react-dom@19.2.4_react_07e07269d3da6df9463da4599157688e/node_modules/@tanstack/router-plugin/dist/esm/core/router-generator-plugin.js:38:4)
+    at async BasicMinimalPluginContext.configResolved (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/@tanstack+router-plugin@1.167.22_@tanstack+react-router@1.168.22_react-dom@19.2.4_react_07e07269d3da6df9463da4599157688e/node_modules/@tanstack/router-plugin/dist/esm/core/router-generator-plugin.js:55:4)
+    at async Promise.all (index 3)
+    at async resolveConfig (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/vite@7.3.2_@types+node@25.5.2_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.0_tsx@4.21.0/node_modules/vite/dist/node/chunks/config.js:35686:2)
+    at async createBuilder (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/vite@7.3.2_@types+node@25.5.2_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.0_tsx@4.21.0/node_modules/vite/dist/node/chunks/config.js:33936:25)
+    at async CAC.<anonymous> (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/vite@7.3.2_@types+node@25.5.2_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.0_tsx@4.21.0/node_modules/vite/dist/node/cli.js:629:10)
+Error: Error transforming route file /Users/dougmarch/Projects/dougmarch/app/routes/work.$slug.tsx: SyntaxError: Unexpected token (250:1)
+    at file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/@tanstack+router-generator@1.166.32/node_modules/@tanstack/router-generator/dist/esm/generator.js:127:13
+    at async generate (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/@tanstack+router-plugin@1.167.22_@tanstack+react-router@1.168.22_react-dom@19.2.4_react_07e07269d3da6df9463da4599157688e/node_modules/@tanstack/router-plugin/dist/esm/core/router-generator-plugin.js:38:4)
+    at async BasicMinimalPluginContext.configResolved (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/@tanstack+router-plugin@1.167.22_@tanstack+react-router@1.168.22_react-dom@19.2.4_react_07e07269d3da6df9463da4599157688e/node_modules/@tanstack/router-plugin/dist/esm/core/router-generator-plugin.js:55:4)
+    at async Promise.all (index 3)
+    at async resolveConfig (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/vite@7.3.2_@types+node@25.5.2_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.0_tsx@4.21.0/node_modules/vite/dist/node/chunks/config.js:35686:2)
+    at async createBuilder (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/vite@7.3.2_@types+node@25.5.2_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.0_tsx@4.21.0/node_modules/vite/dist/node/chunks/config.js:33936:25)
+    at async CAC.<anonymous> (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/vite@7.3.2_@types+node@25.5.2_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.0_tsx@4.21.0/node_modules/vite/dist/node/cli.js:629:10)
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/index.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/index.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/ClientOnly.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/ClientOnly.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/useNavigate.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/useNavigate.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/RouterProvider.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/RouterProvider.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/useBlocker.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/useBlocker.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/useRouterState.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/useRouterState.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/HeadContent.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/HeadContent.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/useRouter.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/useRouter.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/CatchBoundary.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/CatchBoundary.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/useMatch.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/useMatch.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/Matches.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/Matches.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/utils.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/utils.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/routerContext.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/routerContext.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/link.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/link.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/matchContext.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/matchContext.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/Match.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/Match.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/Asset.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/Asset.js" was ignored.
+node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/Transitioner.js (1:0): Module level directives cause errors when bundled, "use client" in "node_modules/.pnpm/@tanstack+react-router@1.168.22_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/@tanstack/react-router/dist/esm/Transitioner.js" was ignored.
+✗ Build failed in 238ms
+error during build:
+[tanstack-start:route-tree-client-plugin] Could not load /Users/dougmarch/Projects/dougmarch/app/routeTree.gen.ts (imported by app/router.tsx): Crawling result not available
+    at Object.handler (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/@tanstack+start-plugin-core@1.167.35_@tanstack+react-router@1.168.22_react-dom@19.2.4_r_f06bdb68c76f7ada92c0d904e8dccad8/node_modules/@tanstack/start-plugin-core/dist/esm/vite/start-router-plugin/plugin.js:67:32)
+    at async PluginDriver.hookFirstAndGetPlugin (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/rollup@4.60.1/node_modules/rollup/dist/es/shared/node-entry.js:22849:28)
+    at async file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/rollup@4.60.1/node_modules/rollup/dist/es/shared/node-entry.js:21833:33
+    at async Queue.work (file:///Users/dougmarch/Projects/dougmarch/node_modules/.pnpm/rollup@4.60.1/node_modules/rollup/dist/es/shared/node-entry.js:23077:32)
+
+> dougmarch@ build /Users/dougmarch/Projects/dougmarch
+> panda codegen && node scripts/generate-archive-json.js && vite build
+
+✔️ `styled-system/css`: the css function to author styles
+✔️ `styled-system/tokens`: the css variables and js function to query your tokens
+✔️ `styled-system/patterns`: functions to implement and apply common layout patterns
+✔️ `styled-system/jsx`: styled jsx elements for react
+
+
+[generate-archive-json] Generating static archive data...
+  found 33 archive entries
+  wrote public/archive/_data.json
+  wrote 33 detail.json files
+[generate-archive-json] Done
+◇ injected env (0) from .env // tip: ⌘ suppress logs { quiet: true }
+◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+vite v7.3.2 building client environment for production...
+transforming...
+✓ 118 modules transformed.
+ ELIFECYCLE  Command failed with exit code 1.

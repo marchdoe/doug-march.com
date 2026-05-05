@@ -22,8 +22,6 @@ import path from 'path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
 
 import { execSync } from 'child_process'
-import { readFile } from 'fs/promises'
-import { existsSync } from 'fs'
 import { readContext } from './utils/site-context.js'
 import { runAgentSwarm } from './design-agents.js'
 
@@ -50,13 +48,6 @@ async function main() {
   const context = await readContext()
   console.log(`  signals date: ${context.signals.date}`)
   console.log(`  mutable files found: ${context.currentFiles.length}`)
-
-  // Check for interpreted brief (Stage 1 output)
-  const briefPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../signals/today.brief.md')
-  if (existsSync(briefPath)) {
-    context.brief = await readFile(briefPath, 'utf8')
-    console.log(`  using interpreted brief (${context.brief.length} chars)`)
-  }
 
   // Step 2: Run agent swarm (handles its own backup/restore/retry/archive)
   console.log('[2/3] Running agent swarm...')

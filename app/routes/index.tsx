@@ -1,226 +1,136 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex, VStack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
 function HomePage() {
   return (
-    <>
-      {/* Featured Project */}
-      {featuredProject && (
-        <Box pb="12" mb="12" borderBottom="1px solid" borderColor="border">
-          <Box
-            fontSize="2xs"
-            fontFamily="body"
-            fontWeight="semibold"
-            letterSpacing="wider"
-            textTransform="uppercase"
-            color="text-disabled"
-            mb="4"
-          >
-            Featured
-          </Box>
-          <a
-            href={featuredProject.externalUrl || `/work/${featuredProject.slug}`}
-            target={featuredProject.externalUrl ? '_blank' : undefined}
-            rel={featuredProject.externalUrl ? 'noopener noreferrer' : undefined}
+    <main
+      className={css({
+        position: 'relative',
+        minHeight: '100vh',
+        background: 'bg',
+        overflow: 'hidden',
+        paddingTop: { base: '88px', md: '96px' },
+        paddingBottom: { base: '72px', md: '88px' },
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+      })}
+    >
+      {/* Eyebrow — flush right at 6vw, the source + date label */}
+      <div
+        className={css({
+          paddingRight: '6vw',
+          paddingLeft: '6vw',
+          marginBottom: { base: '24px', md: '32px' },
+          textAlign: 'right',
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'warm.400',
+          letterSpacing: '0.20em',
+          textTransform: 'uppercase',
+        })}
+      >
+        Guided by Voices · May 5
+      </div>
+
+      {/* Hero stack — left / center / right cascade */}
+      <h1
+        className={css({
+          margin: '0',
+          padding: '0',
+          fontFamily: 'display',
+          color: 'hero',
+          lineHeight: '0.86',
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+        })}
+      >
+        <span
+          className={css({
+            display: 'flex',
+            justifyContent: 'flex-start',
+            paddingLeft: '6vw',
+            paddingRight: '6vw',
+          })}
+        >
+          <span
             className={css({
-              textDecoration: 'none',
-              display: 'block',
-              _hover: { '& .title': { color: 'accent' } },
-              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+              fontWeight: '800',
+              letterSpacing: '-0.02em',
+              fontSize: 'clamp(76px, 26vw, 380px)',
+              lineHeight: '0.86',
+              textTransform: 'uppercase',
+              display: 'inline-block',
             })}
           >
-            <Box
-              className="title"
-              fontSize="clamp(28px, 4vw, 42px)"
-              fontFamily="heading"
-              fontWeight="bold"
-              lineHeight="snug"
-              letterSpacing="tight"
-              color="text"
-              mb="4"
-              style={{ transition: 'color 0.15s ease' }}
-            >
-              {featuredProject.title}
-            </Box>
-          </a>
-          {featuredProject.problem && (
-            <Box
-              fontSize="base"
-              fontFamily="body"
-              color="text-secondary"
-              lineHeight="normal"
-              maxW="600px"
-            >
-              {featuredProject.problem}
-            </Box>
-          )}
-          <Flex gap="2" mt="4" flexWrap="wrap">
-            <Box fontSize="xs" fontFamily="body" color="text-muted">{featuredProject.type}</Box>
-            <Box fontSize="xs" color="text-disabled">·</Box>
-            <Box fontSize="xs" fontFamily="body" color="text-muted">{featuredProject.year}</Box>
-          </Flex>
-        </Box>
-      )}
-
-      {/* Selected Work */}
-      <Box mb="12">
-        <Flex align="center" gap="4" mb="6">
-          <Box
-            fontSize="2xs"
-            fontFamily="heading"
-            fontWeight="semibold"
-            letterSpacing="wider"
-            textTransform="uppercase"
-            color="text-disabled"
-            whiteSpace="nowrap"
-          >
-            Selected Work
-          </Box>
-          <Box flex="1" height="1px" background="border" />
-        </Flex>
-
-        <VStack gap="0" align="stretch">
-          {selectedWork.map((project) => (
-            <a
-              key={project.slug}
-              href={`/work/${project.slug}`}
-              className={css({
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                py: '5',
-                px: '3',
-                borderBottom: '1px solid',
-                borderColor: 'border',
-                borderRadius: 'base',
-                minHeight: '64px',
-                _hover: { background: 'accent-glow' },
-                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '-2px' },
-                '@media (max-width: 767px)': {
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  gap: '4px',
-                },
-              })}
-            >
-              <Box fontSize="base" fontFamily="heading" fontWeight="medium" color="text">
-                {project.title}
-              </Box>
-              <Flex gap="4" fontSize="xs" fontFamily="body" color="text-muted" flexShrink={0}>
-                <span>{project.type}</span>
-                <span>{project.year}</span>
-              </Flex>
-            </a>
-          ))}
-        </VStack>
-      </Box>
-
-      {/* Experiments */}
-      <Box mb="12">
-        <Flex align="center" gap="4" mb="6">
-          <Box
-            fontSize="2xs"
-            fontFamily="heading"
-            fontWeight="semibold"
-            letterSpacing="wider"
-            textTransform="uppercase"
-            color="text-disabled"
-            whiteSpace="nowrap"
-          >
-            Experiments
-          </Box>
-          <Box flex="1" height="1px" background="border" />
-        </Flex>
-
-        <VStack gap="0" align="stretch">
-          {experiments.map((project) => (
-            <a
-              key={project.slug}
-              href={project.externalUrl || `/work/${project.slug}`}
-              target={project.externalUrl ? '_blank' : undefined}
-              rel={project.externalUrl ? 'noopener noreferrer' : undefined}
-              className={css({
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                py: '5',
-                px: '3',
-                borderBottom: '1px solid',
-                borderColor: 'border',
-                borderRadius: 'base',
-                minHeight: '64px',
-                _hover: { background: 'accent-glow' },
-                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '-2px' },
-                '@media (max-width: 767px)': {
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  gap: '4px',
-                },
-              })}
-            >
-              <Box fontSize="base" fontFamily="heading" fontWeight="medium" color="text">
-                {project.title}
-              </Box>
-              <Flex gap="4" fontSize="xs" fontFamily="body" color="text-muted" flexShrink={0}>
-                <span>{project.type}</span>
-                <span>{project.year}</span>
-              </Flex>
-            </a>
-          ))}
-        </VStack>
-      </Box>
-
-      {/* Quote */}
-      <Box py="12" maxW="480px" mx="auto" textAlign="center">
-        <Box height="1px" background="accent-secondary" mb="12" />
-        <Box
-          fontSize="md"
-          fontFamily="heading"
-          fontWeight="normal"
-          color="text-muted"
-          lineHeight="normal"
-          px="4"
+            Guided
+          </span>
+        </span>
+        <span
+          className={css({
+            display: 'flex',
+            justifyContent: 'center',
+            paddingX: '6vw',
+            marginY: { base: '-4px', md: '-12px' },
+          })}
         >
-          The mind turned inward finds the still-point of peace.
-        </Box>
-        <Box
-          fontSize="xs"
-          fontFamily="body"
-          color="text-disabled"
-          mt="4"
-        >
-          Ming-Dao Deng
-        </Box>
-        <Box height="1px" background="accent-secondary" mt="12" />
-      </Box>
-
-      {/* Footer */}
-      <Box mt="12" pt="6" borderTop="1px solid" borderColor="border">
-        <Flex justify="space-between" align="center">
-          <Box fontSize="xs" fontFamily="body" color="text-disabled">
-            © 2026
-          </Box>
-          <a
-            href="/archive"
+          <span
             className={css({
-              fontSize: 'xs',
-              fontFamily: 'body',
-              color: 'text-disabled',
-              textDecoration: 'none',
-              _hover: { color: 'text-muted' },
-              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+              fontWeight: '300',
+              letterSpacing: '0.20em',
+              fontSize: 'clamp(34px, 8vw, 115px)',
+              lineHeight: '1',
+              textTransform: 'uppercase',
+              color: 'accent',
+              display: 'inline-block',
             })}
           >
-            Archive
-          </a>
-        </Flex>
-      </Box>
-    </>
+            By
+          </span>
+        </span>
+        <span
+          className={css({
+            display: 'flex',
+            justifyContent: 'flex-end',
+            paddingLeft: '6vw',
+            paddingRight: '6vw',
+          })}
+        >
+          <span
+            className={css({
+              fontWeight: '800',
+              letterSpacing: '-0.02em',
+              fontSize: 'clamp(76px, 26vw, 380px)',
+              lineHeight: '0.86',
+              textTransform: 'uppercase',
+              display: 'inline-block',
+            })}
+          >
+            Voices
+          </span>
+        </span>
+      </h1>
+
+      {/* Attribution — quote fragment, centered, italic, small */}
+      <p
+        className={css({
+          marginTop: { base: '28px', md: '40px' },
+          paddingX: '6vw',
+          textAlign: 'center',
+          fontFamily: 'body',
+          fontStyle: 'italic',
+          fontSize: { base: '13px', md: '14px' },
+          lineHeight: '1.5',
+          color: 'textMuted',
+          maxWidth: '70ch',
+          marginX: 'auto',
+        })}
+      >
+        “during times of adversity our true character will show”
+      </p>
+    </main>
   )
 }
