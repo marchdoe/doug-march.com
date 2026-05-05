@@ -255,6 +255,28 @@ export function identifyFailingAgent(errorOutput) {
   return [...agents][0]
 }
 
+/**
+ * Build an archetype-specific constraint block for injection into the Unified Designer prompt.
+ *
+ * For Specimen and Poster archetypes, returns a block that explicitly forbids
+ * rendering project cards or portfolio sections on the home page — only the
+ * hero phrase and navigation should appear.
+ *
+ * For all other archetypes, returns an empty string (no constraint).
+ *
+ * @param {string|null|undefined} archetype
+ * @returns {string}
+ */
+export function buildArchetypeContractBlock(archetype) {
+  if (archetype === 'Specimen' || archetype === 'Poster') {
+    return `⚠ ARCHETYPE CONTRACT — ${archetype.toUpperCase()}:
+Home page = hero phrase + navigation ONLY.
+Do NOT render project cards, featured project, experiments, or any portfolio section.
+index.tsx is a single-composition canvas today, not a portfolio hub.`
+  }
+  return ''
+}
+
 // ---------------------------------------------------------------------------
 // Internal: callAgent
 // ---------------------------------------------------------------------------
@@ -726,6 +748,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       references,
       colorMandateSection,
       weightsBlock,
+      failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
       systemPrompt: artDirectorSystemPrompt,
     })
   } catch (err) {
@@ -822,6 +845,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         references,
         colorMandateSection,
         weightsBlock,
+        failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
         systemPrompt: artDirectorSystemPrompt,
       })
       const retryPresetFile = { path: 'elements/preset.ts', content: artDirectorResult.presetTs }

@@ -6,6 +6,7 @@ import {
   extractArchetypeFromText,
   parseDelimiterResponse,
   resolveChassisFromDirectorOutput,
+  buildArchetypeContractBlock,
 } from '../../scripts/design-agents.js'
 
 describe('FILE_OWNERSHIP', () => {
@@ -351,5 +352,64 @@ describe('parseDelimiterResponse', () => {
     expect(r.files[0].path).toBe('elements/preset.ts')
     expect(r.rationale).toBe('Phrase → Specimen → big-shoulders → terracotta.')
     expect(r.design_brief).toBe('Terracotta marquee.')
+  })
+
+  it('strips outer markdown code fence so last block before closing fence is not contaminated', () => {
+    // If the model wraps its entire response in ```markdown...```, the lazy
+    // captureBlock regex extends past the closing fence into the sentinel,
+    // appending backtick chars to the last block before the fence.
+    const input = [
+      '```markdown',
+      '===HERO_COPY===',
+      'STAND UP TO YOUR FRIENDS.',
+      '===CHASSIS_ID===',
+      'big-shoulders-atkinson',
+      '```',
+      '',
+    ].join('\n')
+    const r = parseDelimiterResponse(input)
+    expect(r.hero_copy).toBe('STAND UP TO YOUR FRIENDS.')
+    expect(r.chassis_id).toBe('big-shoulders-atkinson')
+  })
+
+  it('strips outer plain code fence', () => {
+    const input = [
+      '```',
+      '===HERO_COPY===',
+      'No enemies, only rivals.',
+      '===ARCHETYPE===',
+      'Poster',
+      '```',
+      '',
+    ].join('\n')
+    const r = parseDelimiterResponse(input)
+    expect(r.hero_copy).toBe('No enemies, only rivals.')
+    expect(r.archetype).toBe('Poster')
+  })
+})
+
+describe('buildArchetypeContractBlock', () => {
+  it('returns override block for Specimen', () => {
+    const block = buildArchetypeContractBlock('Specimen')
+    expect(block).toContain('ARCHETYPE CONTRACT — SPECIMEN')
+    expect(block).toContain('hero phrase + navigation ONLY')
+    expect(block).toContain('Do NOT render project cards')
+  })
+
+  it('returns override block for Poster', () => {
+    const block = buildArchetypeContractBlock('Poster')
+    expect(block).toContain('ARCHETYPE CONTRACT — POSTER')
+    expect(block).toContain('hero phrase + navigation ONLY')
+  })
+
+  it('returns empty string for all other archetypes', () => {
+    expect(buildArchetypeContractBlock('Broadsheet')).toBe('')
+    expect(buildArchetypeContractBlock('Scroll')).toBe('')
+    expect(buildArchetypeContractBlock('Stack')).toBe('')
+    expect(buildArchetypeContractBlock('Gallery Wall')).toBe('')
+    expect(buildArchetypeContractBlock('Split')).toBe('')
+    expect(buildArchetypeContractBlock('Index')).toBe('')
+    expect(buildArchetypeContractBlock(undefined)).toBe('')
+    expect(buildArchetypeContractBlock(null)).toBe('')
   })
 })
