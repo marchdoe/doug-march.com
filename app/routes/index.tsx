@@ -1,54 +1,24 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { featuredProject, selectedWork, experiments } from '../content/projects'
-import { Box, Flex } from '../../styled-system/jsx'
+import { Box, Flex, VStack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
+import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
-
-function LangTag({ label }: { label: string }) {
-  return (
-    <Box
-      as="span"
-      className={css({
-        fontFamily: 'space-grotesk',
-        fontSize: '11px',
-        fontWeight: 'semibold',
-        letterSpacing: 'widest',
-        color: 'secondary',
-        background: 'rgba(126, 175, 196, 0.20)',
-        borderRadius: 'sm',
-        padding: '2px 6px',
-        display: 'inline-block',
-      })}
-    >
-      {label}
-    </Box>
-  )
-}
 
 function HomePage() {
   return (
     <>
       {/* Featured Project */}
       {featuredProject && (
-        <Box
-          className={css({
-            minHeight: '280px',
-            paddingBottom: '64px',
-            borderBottom: '1px solid',
-            borderColor: 'border',
-          })}
-        >
+        <Box pb="12" mb="12" borderBottom="1px solid" borderColor="border">
           <Box
-            className={css({
-              fontFamily: 'space-grotesk',
-              fontSize: '11px',
-              fontWeight: 'semibold',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'accent',
-              marginBottom: '16px',
-            })}
+            fontSize="2xs"
+            fontFamily="body"
+            fontWeight="semibold"
+            letterSpacing="wider"
+            textTransform="uppercase"
+            color="text-disabled"
+            mb="4"
           >
             Featured
           </Box>
@@ -59,235 +29,197 @@ function HomePage() {
             className={css({
               textDecoration: 'none',
               display: 'block',
-              _focus: {
-                outline: '2px solid',
-                outlineColor: 'accent',
-                outlineOffset: '4px',
-              },
+              _hover: { '& .title': { color: 'accent' } },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
             })}
           >
             <Box
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: 'clamp(24px, 3vw, 28px)',
-                fontWeight: 'bold',
-                lineHeight: 'snug',
-                letterSpacing: 'tight',
-                color: 'text-heading',
-                marginBottom: '16px',
-              })}
+              className="title"
+              fontSize="clamp(28px, 4vw, 42px)"
+              fontFamily="heading"
+              fontWeight="bold"
+              lineHeight="snug"
+              letterSpacing="tight"
+              color="text"
+              mb="4"
+              style={{ transition: 'color 0.15s ease' }}
             >
               {featuredProject.title}
             </Box>
           </a>
           {featuredProject.problem && (
             <Box
-              className={css({
-                fontFamily: 'work-sans',
-                fontSize: '16px',
-                lineHeight: 'normal',
-                color: 'text-secondary',
-                maxWidth: '560px',
-                marginBottom: '16px',
-              })}
+              fontSize="base"
+              fontFamily="body"
+              color="text-secondary"
+              lineHeight="normal"
+              maxW="600px"
             >
               {featuredProject.problem}
             </Box>
           )}
-          {featuredProject.stack && (
-            <Flex gap="6px" flexWrap="wrap">
-              {featuredProject.stack.map((t) => (
-                <LangTag key={t} label={t} />
-              ))}
-            </Flex>
-          )}
+          <Flex gap="2" mt="4" flexWrap="wrap">
+            <Box fontSize="xs" fontFamily="body" color="text-muted">{featuredProject.type}</Box>
+            <Box fontSize="xs" color="text-disabled">·</Box>
+            <Box fontSize="xs" fontFamily="body" color="text-muted">{featuredProject.year}</Box>
+          </Flex>
         </Box>
       )}
 
       {/* Selected Work */}
-      <Box mt="64px">
-        <Box
-          className={css({
-            fontFamily: 'space-grotesk',
-            fontSize: '11px',
-            fontWeight: 'semibold',
-            letterSpacing: 'widest',
-            textTransform: 'uppercase',
-            color: 'text-muted',
-            marginBottom: '24px',
-          })}
-        >
-          Selected Work
-        </Box>
-        {selectedWork.map((project) => (
-          <a
-            key={project.slug}
-            href={`/work/${project.slug}`}
-            className={css({
-              display: 'grid',
-              gridTemplateColumns: '1fr auto auto',
-              alignItems: 'center',
-              height: '56px',
-              borderBottom: '1px solid',
-              borderColor: 'border',
-              textDecoration: 'none',
-              borderLeft: '2px solid transparent',
-              paddingLeft: '12px',
-              transition: 'background 180ms ease, border-color 180ms ease',
-              _hover: {
-                background: 'bg-card',
-                borderLeftColor: 'accent',
-              },
-              _focus: {
-                outline: '2px solid',
-                outlineColor: 'accent',
-                outlineOffset: '-2px',
-              },
-              '@media (prefers-reduced-motion: reduce)': {
-                transition: 'none',
-              },
-            })}
+      <Box mb="12">
+        <Flex align="center" gap="4" mb="6">
+          <Box
+            fontSize="2xs"
+            fontFamily="heading"
+            fontWeight="semibold"
+            letterSpacing="wider"
+            textTransform="uppercase"
+            color="text-disabled"
+            whiteSpace="nowrap"
           >
-            <Box
+            Selected Work
+          </Box>
+          <Box flex="1" height="1px" background="border" />
+        </Flex>
+
+        <VStack gap="0" align="stretch">
+          {selectedWork.map((project) => (
+            <a
+              key={project.slug}
+              href={`/work/${project.slug}`}
               className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: 'clamp(16px, 2vw, 21px)',
-                fontWeight: 'medium',
-                color: 'text-secondary',
-                lineHeight: 'snug',
-                transition: 'color 180ms ease',
-                '@media (prefers-reduced-motion: reduce)': {
-                  transition: 'none',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                py: '5',
+                px: '3',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+                borderRadius: 'base',
+                minHeight: '64px',
+                _hover: { background: 'accent-glow' },
+                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '-2px' },
+                '@media (max-width: 767px)': {
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  gap: '4px',
                 },
               })}
             >
-              {project.title}
-            </Box>
-            <Flex gap="8px" align="center" mr="16px">
-              <Box
-                className={css({
-                  fontFamily: 'space-grotesk',
-                  fontSize: '13px',
-                  color: 'text-muted',
-                  fontVariantNumeric: 'tabular-nums',
-                })}
-              >
-                {project.year}
+              <Box fontSize="base" fontFamily="heading" fontWeight="medium" color="text">
+                {project.title}
               </Box>
-              <Box
-                className={css({
-                  fontFamily: 'space-grotesk',
-                  fontSize: '12px',
-                  color: 'text-light',
-                  letterSpacing: 'wide',
-                })}
-              >
-                {project.type}
-              </Box>
-            </Flex>
-            <Box
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: '14px',
-                color: 'text-light',
-              })}
-            >
-              →
-            </Box>
-          </a>
-        ))}
+              <Flex gap="4" fontSize="xs" fontFamily="body" color="text-muted" flexShrink={0}>
+                <span>{project.type}</span>
+                <span>{project.year}</span>
+              </Flex>
+            </a>
+          ))}
+        </VStack>
       </Box>
 
       {/* Experiments */}
-      <Box mt="64px">
+      <Box mb="12">
+        <Flex align="center" gap="4" mb="6">
+          <Box
+            fontSize="2xs"
+            fontFamily="heading"
+            fontWeight="semibold"
+            letterSpacing="wider"
+            textTransform="uppercase"
+            color="text-disabled"
+            whiteSpace="nowrap"
+          >
+            Experiments
+          </Box>
+          <Box flex="1" height="1px" background="border" />
+        </Flex>
+
+        <VStack gap="0" align="stretch">
+          {experiments.map((project) => (
+            <a
+              key={project.slug}
+              href={project.externalUrl || `/work/${project.slug}`}
+              target={project.externalUrl ? '_blank' : undefined}
+              rel={project.externalUrl ? 'noopener noreferrer' : undefined}
+              className={css({
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                py: '5',
+                px: '3',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+                borderRadius: 'base',
+                minHeight: '64px',
+                _hover: { background: 'accent-glow' },
+                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '-2px' },
+                '@media (max-width: 767px)': {
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  gap: '4px',
+                },
+              })}
+            >
+              <Box fontSize="base" fontFamily="heading" fontWeight="medium" color="text">
+                {project.title}
+              </Box>
+              <Flex gap="4" fontSize="xs" fontFamily="body" color="text-muted" flexShrink={0}>
+                <span>{project.type}</span>
+                <span>{project.year}</span>
+              </Flex>
+            </a>
+          ))}
+        </VStack>
+      </Box>
+
+      {/* Quote */}
+      <Box py="12" maxW="480px" mx="auto" textAlign="center">
+        <Box height="1px" background="accent-secondary" mb="12" />
         <Box
-          className={css({
-            fontFamily: 'space-grotesk',
-            fontSize: '11px',
-            fontWeight: 'semibold',
-            letterSpacing: 'widest',
-            textTransform: 'uppercase',
-            color: 'text-muted',
-            marginBottom: '24px',
-          })}
+          fontSize="md"
+          fontFamily="heading"
+          fontWeight="normal"
+          color="text-muted"
+          lineHeight="normal"
+          px="4"
         >
-          Experiments
+          The mind turned inward finds the still-point of peace.
         </Box>
-        {experiments.map((project) => (
+        <Box
+          fontSize="xs"
+          fontFamily="body"
+          color="text-disabled"
+          mt="4"
+        >
+          Ming-Dao Deng
+        </Box>
+        <Box height="1px" background="accent-secondary" mt="12" />
+      </Box>
+
+      {/* Footer */}
+      <Box mt="12" pt="6" borderTop="1px solid" borderColor="border">
+        <Flex justify="space-between" align="center">
+          <Box fontSize="xs" fontFamily="body" color="text-disabled">
+            © 2026
+          </Box>
           <a
-            key={project.slug}
-            href={project.externalUrl || `/work/${project.slug}`}
-            target={project.externalUrl ? '_blank' : undefined}
-            rel={project.externalUrl ? 'noopener noreferrer' : undefined}
+            href="/archive"
             className={css({
-              display: 'grid',
-              gridTemplateColumns: '1fr auto auto',
-              alignItems: 'center',
-              height: '56px',
-              borderBottom: '1px solid',
-              borderColor: 'border',
+              fontSize: 'xs',
+              fontFamily: 'body',
+              color: 'text-disabled',
               textDecoration: 'none',
-              borderLeft: '2px solid transparent',
-              paddingLeft: '12px',
-              transition: 'background 180ms ease, border-color 180ms ease',
-              _hover: {
-                background: 'bg-card',
-                borderLeftColor: 'accent',
-              },
-              _focus: {
-                outline: '2px solid',
-                outlineColor: 'accent',
-                outlineOffset: '-2px',
-              },
-              '@media (prefers-reduced-motion: reduce)': {
-                transition: 'none',
-              },
+              _hover: { color: 'text-muted' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
             })}
           >
-            <Box
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: 'clamp(16px, 2vw, 21px)',
-                fontWeight: 'medium',
-                color: 'text-secondary',
-                lineHeight: 'snug',
-              })}
-            >
-              {project.title}
-            </Box>
-            <Flex gap="8px" align="center" mr="16px">
-              <Box
-                className={css({
-                  fontFamily: 'space-grotesk',
-                  fontSize: '13px',
-                  color: 'text-muted',
-                  fontVariantNumeric: 'tabular-nums',
-                })}
-              >
-                {project.year}
-              </Box>
-              <Box
-                className={css({
-                  fontFamily: 'space-grotesk',
-                  fontSize: '12px',
-                  color: 'text-light',
-                  letterSpacing: 'wide',
-                })}
-              >
-                {project.type}
-              </Box>
-            </Flex>
-            <Box
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: '14px',
-                color: 'text-light',
-              })}
-            >
-              →
-            </Box>
+            Archive
           </a>
-        ))}
+        </Flex>
       </Box>
     </>
   )

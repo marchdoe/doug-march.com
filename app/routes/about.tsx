@@ -1,79 +1,67 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { identity, personal } from '../content/about'
-import { timeline, capabilities, education } from '../content/timeline'
 import { Box, Flex, VStack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
+import { identity, personal } from '../content/about'
+import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
   return (
     <>
-      {/* Identity Statement */}
-      <Box mb="64px">
+      {/* Identity */}
+      <Box mb="12" pb="12" borderBottom="1px solid" borderColor="border">
         <Box
-          className={css({
-            fontFamily: 'space-grotesk',
-            fontSize: 'clamp(24px, 3vw, 28px)',
-            fontWeight: 'bold',
-            lineHeight: 'snug',
-            letterSpacing: 'tight',
-            color: 'text-heading',
-            marginBottom: '16px',
-          })}
+          fontSize="clamp(28px, 4vw, 42px)"
+          fontFamily="heading"
+          fontWeight="bold"
+          lineHeight="snug"
+          letterSpacing="tight"
+          color="text"
+          mb="4"
         >
           {identity.name}
         </Box>
-        <Box
-          className={css({
-            fontFamily: 'space-grotesk',
-            fontSize: '13px',
-            letterSpacing: 'wide',
-            color: 'text-muted',
-            marginBottom: '24px',
-          })}
-        >
+        <Box fontSize="sm" fontFamily="body" color="text-muted" mb="6">
           {identity.role}
         </Box>
         <Box
-          className={css({
-            fontFamily: 'work-sans',
-            fontSize: '16px',
-            lineHeight: 'normal',
-            color: 'text-secondary',
-            maxWidth: '600px',
-          })}
+          fontSize="base"
+          fontFamily="body"
+          color="text-secondary"
+          lineHeight="normal"
+          maxW="600px"
         >
           {identity.statement}
         </Box>
       </Box>
 
       {/* Timeline */}
-      <Box mb="64px">
-        <Box
-          className={css({
-            fontFamily: 'space-grotesk',
-            fontSize: '11px',
-            fontWeight: 'semibold',
-            letterSpacing: 'widest',
-            textTransform: 'uppercase',
-            color: 'text-muted',
-            marginBottom: '24px',
-          })}
-        >
-          Experience
-        </Box>
+      <Box mb="12">
+        <Flex align="center" gap="4" mb="6">
+          <Box
+            fontSize="2xs"
+            fontFamily="heading"
+            fontWeight="semibold"
+            letterSpacing="wider"
+            textTransform="uppercase"
+            color="text-disabled"
+            whiteSpace="nowrap"
+          >
+            Experience
+          </Box>
+          <Box flex="1" height="1px" background="border" />
+        </Flex>
+
         <VStack gap="0" align="stretch">
           {timeline.map((entry, i) => (
             <Flex
-              key={`${entry.year}-${entry.company}-${i}`}
-              gap="24px"
+              key={`${entry.year}-${entry.company}`}
+              gap="6"
+              py="5"
+              borderBottom="1px solid"
+              borderColor="border"
               className={css({
-                paddingTop: '16px',
-                paddingBottom: '16px',
-                borderBottom: '1px solid',
-                borderColor: 'border',
-                flexDirection: 'row',
                 '@media (max-width: 767px)': {
                   flexDirection: 'column',
                   gap: '4px',
@@ -81,48 +69,22 @@ function AboutPage() {
               })}
             >
               <Box
-                className={css({
-                  fontFamily: 'space-grotesk',
-                  fontSize: '13px',
-                  color: 'text-muted',
-                  fontVariantNumeric: 'tabular-nums',
-                  minWidth: '120px',
-                  flexShrink: 0,
-                })}
+                fontSize="sm"
+                fontFamily="mono"
+                color="text-muted"
+                minW="120px"
+                flexShrink={0}
               >
                 {entry.year}
               </Box>
               <Box flex="1">
-                <Box
-                  className={css({
-                    fontFamily: 'space-grotesk',
-                    fontSize: '16px',
-                    fontWeight: 'medium',
-                    color: 'text-heading',
-                    lineHeight: 'snug',
-                  })}
-                >
+                <Box fontSize="base" fontFamily="heading" fontWeight="medium" color="text">
                   {entry.role}
                 </Box>
-                <Box
-                  className={css({
-                    fontFamily: 'work-sans',
-                    fontSize: '14px',
-                    color: 'text-muted',
-                    marginTop: '2px',
-                  })}
-                >
+                <Box fontSize="sm" fontFamily="body" color="text-secondary" mt="1">
                   {entry.company}
                 </Box>
-                <Box
-                  className={css({
-                    fontFamily: 'work-sans',
-                    fontSize: '14px',
-                    color: 'text-secondary',
-                    lineHeight: 'normal',
-                    marginTop: '8px',
-                  })}
-                >
+                <Box fontSize="sm" fontFamily="body" color="text-muted" mt="2" lineHeight="normal" maxW="520px">
                   {entry.description}
                 </Box>
               </Box>
@@ -132,91 +94,77 @@ function AboutPage() {
       </Box>
 
       {/* Education */}
-      <Box mb="64px">
-        <Box
+      <Box mb="12">
+        <Flex align="center" gap="4" mb="6">
+          <Box
+            fontSize="2xs"
+            fontFamily="heading"
+            fontWeight="semibold"
+            letterSpacing="wider"
+            textTransform="uppercase"
+            color="text-disabled"
+            whiteSpace="nowrap"
+          >
+            Education
+          </Box>
+          <Box flex="1" height="1px" background="border" />
+        </Flex>
+
+        <Flex gap="6" py="5" borderBottom="1px solid" borderColor="border"
           className={css({
-            fontFamily: 'space-grotesk',
-            fontSize: '11px',
-            fontWeight: 'semibold',
-            letterSpacing: 'widest',
-            textTransform: 'uppercase',
-            color: 'text-muted',
-            marginBottom: '24px',
+            '@media (max-width: 767px)': {
+              flexDirection: 'column',
+              gap: '4px',
+            },
           })}
         >
-          Education
-        </Box>
-        <Box
-          className={css({
-            paddingTop: '16px',
-            paddingBottom: '16px',
-            borderBottom: '1px solid',
-            borderColor: 'border',
-          })}
-        >
-          <Box
-            className={css({
-              fontFamily: 'space-grotesk',
-              fontSize: '16px',
-              fontWeight: 'medium',
-              color: 'text-heading',
-            })}
-          >
-            {education.school}
-          </Box>
-          <Box
-            className={css({
-              fontFamily: 'work-sans',
-              fontSize: '14px',
-              color: 'text-secondary',
-              marginTop: '4px',
-            })}
-          >
-            {education.degree} — {education.concentration}
-          </Box>
-          <Box
-            className={css({
-              fontFamily: 'space-grotesk',
-              fontSize: '13px',
-              color: 'text-muted',
-              fontVariantNumeric: 'tabular-nums',
-              marginTop: '4px',
-            })}
-          >
+          <Box fontSize="sm" fontFamily="mono" color="text-muted" minW="120px" flexShrink={0}>
             {education.years}
           </Box>
-        </Box>
+          <Box flex="1">
+            <Box fontSize="base" fontFamily="heading" fontWeight="medium" color="text">
+              {education.degree}
+            </Box>
+            <Box fontSize="sm" fontFamily="body" color="text-secondary" mt="1">
+              {education.school}
+            </Box>
+            <Box fontSize="sm" fontFamily="body" color="text-muted" mt="1">
+              {education.concentration}
+            </Box>
+          </Box>
+        </Flex>
       </Box>
 
       {/* Capabilities */}
-      <Box mb="64px">
-        <Box
-          className={css({
-            fontFamily: 'space-grotesk',
-            fontSize: '11px',
-            fontWeight: 'semibold',
-            letterSpacing: 'widest',
-            textTransform: 'uppercase',
-            color: 'text-muted',
-            marginBottom: '24px',
-          })}
-        >
-          Capabilities
-        </Box>
-        <Flex gap="8px" flexWrap="wrap">
+      <Box mb="12">
+        <Flex align="center" gap="4" mb="6">
+          <Box
+            fontSize="2xs"
+            fontFamily="heading"
+            fontWeight="semibold"
+            letterSpacing="wider"
+            textTransform="uppercase"
+            color="text-disabled"
+            whiteSpace="nowrap"
+          >
+            Capabilities
+          </Box>
+          <Box flex="1" height="1px" background="border" />
+        </Flex>
+
+        <Flex gap="2" flexWrap="wrap">
           {capabilities.map((cap) => (
             <Box
               key={cap}
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: '13px',
-                color: 'text-secondary',
-                background: 'bg-card',
-                border: '1px solid',
-                borderColor: 'border',
-                borderRadius: 'sm',
-                padding: '4px 12px',
-              })}
+              px="3"
+              py="1"
+              fontSize="xs"
+              fontFamily="body"
+              color="text-muted"
+              background="bg"
+              border="1px solid"
+              borderColor="border"
+              borderRadius="base"
             >
               {cap}
             </Box>
@@ -225,140 +173,60 @@ function AboutPage() {
       </Box>
 
       {/* Personal */}
-      <Box>
-        <Box
-          className={css({
-            fontFamily: 'space-grotesk',
-            fontSize: '11px',
-            fontWeight: 'semibold',
-            letterSpacing: 'widest',
-            textTransform: 'uppercase',
-            color: 'text-muted',
-            marginBottom: '24px',
-          })}
-        >
-          Personal
-        </Box>
+      <Box mb="12">
+        <Flex align="center" gap="4" mb="6">
+          <Box
+            fontSize="2xs"
+            fontFamily="heading"
+            fontWeight="semibold"
+            letterSpacing="wider"
+            textTransform="uppercase"
+            color="text-disabled"
+            whiteSpace="nowrap"
+          >
+            Personal
+          </Box>
+          <Box flex="1" height="1px" background="border" />
+        </Flex>
+
         <VStack gap="0" align="stretch">
-          <Flex
-            justify="space-between"
-            className={css({
-              paddingTop: '12px',
-              paddingBottom: '12px',
-              borderBottom: '1px solid',
-              borderColor: 'border',
-            })}
-          >
-            <Box
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: '14px',
-                color: 'text-muted',
-              })}
-            >
-              Holes in One
-            </Box>
-            <Box
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: '14px',
-                fontWeight: 'semibold',
-                color: 'text-heading',
-                fontVariantNumeric: 'tabular-nums',
-              })}
-            >
-              {personal.holesInOne}
-            </Box>
+          <Flex py="3" borderBottom="1px solid" borderColor="border" justify="space-between">
+            <Box fontSize="sm" fontFamily="body" color="text-muted">Holes in One</Box>
+            <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="text">{personal.holesInOne}</Box>
           </Flex>
-          <Flex
-            justify="space-between"
-            className={css({
-              paddingTop: '12px',
-              paddingBottom: '12px',
-              borderBottom: '1px solid',
-              borderColor: 'border',
-            })}
-          >
-            <Box
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: '14px',
-                color: 'text-muted',
-              })}
-            >
-              Sport
-            </Box>
-            <Box
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: '14px',
-                color: 'text-heading',
-              })}
-            >
-              {personal.sport}
-            </Box>
+          <Flex py="3" borderBottom="1px solid" borderColor="border" justify="space-between">
+            <Box fontSize="sm" fontFamily="body" color="text-muted">Sport</Box>
+            <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="text">{personal.sport}</Box>
           </Flex>
-          <Flex
-            justify="space-between"
-            align="flex-start"
-            className={css({
-              paddingTop: '12px',
-              paddingBottom: '12px',
-              borderBottom: '1px solid',
-              borderColor: 'border',
-            })}
-          >
-            <Box
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: '14px',
-                color: 'text-muted',
-              })}
-            >
-              Teams
-            </Box>
-            <Box
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: '14px',
-                color: 'text-heading',
-                textAlign: 'right',
-              })}
-            >
-              {personal.teams.join(', ')}
-            </Box>
+          <Flex py="3" borderBottom="1px solid" borderColor="border" justify="space-between">
+            <Box fontSize="sm" fontFamily="body" color="text-muted">Teams</Box>
+            <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="text">{personal.teams.join(', ')}</Box>
           </Flex>
-          <Flex
-            justify="space-between"
-            className={css({
-              paddingTop: '12px',
-              paddingBottom: '12px',
-              borderBottom: '1px solid',
-              borderColor: 'border',
-            })}
-          >
-            <Box
-              className={css({
-                fontFamily: 'space-grotesk',
-                fontSize: '14px',
-                color: 'text-muted',
-              })}
-            >
-              Current Focus
-            </Box>
-            <Box
-              className={css({
-                fontFamily: 'work-sans',
-                fontSize: '14px',
-                color: 'text-heading',
-                textAlign: 'right',
-                maxWidth: '300px',
-              })}
-            >
-              {personal.currentFocus}
-            </Box>
+          <Flex py="3" borderBottom="1px solid" borderColor="border" justify="space-between">
+            <Box fontSize="sm" fontFamily="body" color="text-muted">Current Focus</Box>
+            <Box fontSize="sm" fontFamily="heading" fontWeight="medium" color="text">{personal.currentFocus}</Box>
           </Flex>
         </VStack>
+      </Box>
+
+      {/* Footer */}
+      <Box mt="12" pt="6" borderTop="1px solid" borderColor="border">
+        <Flex justify="space-between" align="center">
+          <Box fontSize="xs" fontFamily="body" color="text-disabled">© 2026</Box>
+          <a
+            href="/archive"
+            className={css({
+              fontSize: 'xs',
+              fontFamily: 'body',
+              color: 'text-disabled',
+              textDecoration: 'none',
+              _hover: { color: 'text-muted' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+            })}
+          >
+            Archive
+          </a>
+        </Flex>
       </Box>
     </>
   )
