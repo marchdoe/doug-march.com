@@ -12,6 +12,21 @@ When the brief specifies a hero element's **scale**, **position**, **dimensions*
 
 Underdelivering on the brief's scale or strategy is the most common failure mode. When in doubt, push closer to the literal reading, not a "tasteful" softening.
 
+### Canvas commitment (non-negotiable)
+
+The chosen archetype's *layout density* is binding, not advisory. A desktop render that uses less than ~70% of the viewport width is an under-execution regardless of how restrained the brief sounds. Active content — type, image, color field, structured list — must occupy the canvas at the density the archetype calls for.
+
+Per-archetype density floors:
+
+- **Specimen / Poster** — type or hero fills the page: ≥70% width AND ≥70% height. Whitespace is allowed only where the type or hero itself dominates the active region.
+- **Broadsheet / Index** — dense: multi-column or tightly-set rules, every row carrying weight, ≥80% canvas utilization. Reads as a contents page or directory, not a single-column blog.
+- **Scroll** — single committed column at ≥80% viewport width on desktop; cinematic vertical pacing, but the column itself is wide and committed.
+- **Split** — two asymmetric halves spanning the full canvas; both panels are active surfaces, no center void.
+- **Stack** — each band edge-to-edge, each band a distinct full-width moment with its own treatment.
+- **Gallery Wall** — irregular blocks placed across the *whole* canvas, not clustered to one quadrant.
+
+A narrow centered column on a sea of background is the AI-default of "tasteful editorial" and the most common under-execution on this site. Defeat it deliberately. If your render leaves a substantial empty rail with no role (no drenched color, no atmospheric gradient, no active treatment), the layout has failed regardless of how good the typography is.
+
 ### Asset constraints (read carefully)
 
 External image URLs are blocked by the build validator. The only allowed external URLs are Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`) and the existing project domains.
@@ -55,7 +70,7 @@ Proof of what's structurally possible (not templates to copy):
 - A layout with a persistent left sidebar where identity and nav live permanently
 - A grid of project cards at different sizes
 - A layout asymmetrically split — one large panel, one narrow panel
-- Generous whitespace pushing content to one corner
+- Generous whitespace pushing content to one corner — but the active corner must be at full intensity (drenched color, dense type, dominant imagery), not a quiet column on a cream rail
 - Signals (quote, score, weather) integrated with portfolio content, not segregated
 
 The structure itself is a creative choice.
@@ -123,6 +138,7 @@ These are hard constraints, not suggestions. Violations are a failed build regar
 - Render a generic "logo top-left, nav top-right, hero center, footer bottom" layout. That is the AI-default and the entire point of this site is to defeat it
 - Use placeholder phrases like "Selected Work" as visible H2s if the archetype calls for something more interesting (e.g., a Broadsheet day might use "FILED THIS YEAR" or omit the heading entirely)
 - Stack three identical card grids down the page. Vary scale, density, or treatment between sections
+- For Specimen/Poster days, render a project listing, featured project section, or experiments below the hero phrase — the phrase IS the entire page and projects are reachable via navigation
 - Use more than 3 font weights in a single design. More weights = visual noise, not richness
 - Apply drop shadows to every card by default. Shadows are a deliberate elevation choice, not a style tax
 - Center-align body paragraphs. Center-aligned body text is unreadable past two lines
@@ -132,7 +148,11 @@ These are hard constraints, not suggestions. Violations are a failed build regar
 
 Present this data in any visual form — large type, small label, tooltip, hover, inline prose, table row — but every listed key must appear in the rendered output. Contract is about what's shown, not how.
 
-**Home page must render:**
+**Home page content contract — varies by archetype:**
+
+**Specimen / Poster:** Home page IS the hero phrase. Render ONLY: the hero phrase at full-page scale, navigation, and optional signal annotation. Do NOT render a project listing, featured project section, or experiments section. Projects are reachable via navigation.
+
+**All other archetypes:** Must render:
 - Featured project: title, problem statement, external link
 - Each selected-work project: title, type, year, and a link to `/work/$slug`
 - Each experiment: title, type, year, and a link (internal or external)
