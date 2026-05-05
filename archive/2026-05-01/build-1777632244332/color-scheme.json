@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 245,
+    "s": 8,
+    "l": 50,
+    "name": "indigo"
+  },
+  "secondary_accent": {
+    "h": 142,
+    "s": 70,
+    "l": 50,
+    "name": "spring green"
+  },
+  "neutral_family": {
+    "tinted_toward": "indigo 245°",
+    "name": "cool gray"
+  },
+  "mood_word": "poised",
+  "color_story": "Full moon at 0.999 illumination drives maximum contrast: indigo-tinted cool grays (H:245°, S:5–10%) create a near-monochromatic field of morning frost. Spring green (H:142°) appears once per viewport as the sole chromatic note — alive and undeniable against austere neutrals. No second accent; the palette's tension lives in restraint and that single saturated green."
+}

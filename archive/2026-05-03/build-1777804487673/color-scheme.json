@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 160,
+    "s": 65,
+    "l": 50,
+    "name": "cool spring mint"
+  },
+  "secondary_accent": {
+    "h": 35,
+    "s": 65,
+    "l": 45,
+    "name": "warm amber"
+  },
+  "neutral_family": {
+    "tinted_toward": "mint",
+    "name": "sage-grey"
+  },
+  "mood_word": "spacious",
+  "color_story": "Cool spring mint (H:160°, full saturation) as the single dominant accent carries interactive presence: links, nav focus, alert rings, the moon percentage. Warm amber (H:35°, 120° away) appears only in emotional signals—Tigers badge, Dickens border, lunar illumination label—earning attention through rarity and warmth contrast alone. Sage-grey neutrals (H:160°, S:5-8%) preserve crystalline clarity across the 13.7-hour May daylight without flattening. The waning gibbous moon (94.5%) drives tonal architecture: near-black Awwwards room cards burst against pale, nearly-white panels, creating sharp chiaroscuro and hard micro-shadows that echo the moon's drama. Spacing scale (4px base) honors Sunday's dual nature—generous panels (32-64px) permit leisurely browsing while tight rhythms (4-8px) signal craft precision. One hue anchors the system; one warm accent punctuates emotion; breathing room welcomes discovery; high tonal contrast creates visual presence without saturation."
+}

@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 128,
+    "s": 55,
+    "l": 37,
+    "name": "spring green"
+  },
+  "secondary_accent": {
+    "h": 200,
+    "s": 60,
+    "l": 45,
+    "name": "slate teal"
+  },
+  "neutral_family": {
+    "tinted_toward": "warm amber-gold (65°)",
+    "name": "cream and warm taupe"
+  },
+  "mood_word": "grounded",
+  "color_story": "Warm cream neutrals (65° amber-gold undertone) frame the page like late-spring daylight through curtains; spring green (128°) as the single dominant interactive force; cool slate teal (200°) for secondary structure and badges. High contrast (17:1 headings) lit by 88% gibbous moon—everything visible, nothing shadowed, warm not cold."
+}

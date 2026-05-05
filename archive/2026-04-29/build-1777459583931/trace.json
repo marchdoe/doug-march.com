@@ -1,0 +1,266 @@
+{
+  "date": "2026-04-29",
+  "startedAt": "2026-04-29T10:37:28.659Z",
+  "completedAt": "2026-04-29T10:46:25.674Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "The Push",
+              "description": "A complete digital platform for Australia's leading youth music charity. Built for four distinct audiences. Launched for their 40th anniversary.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69e56d45a215d092966355.png"
+            },
+            {
+              "title": "THE UN KNOWN ® Next-Gen Creative Consultancy",
+              "description": "Where strategy meets creativity, film & AI. THE UN KNOWN, a next-gen creative agency & consultancy helping brands redefine their category.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69e253b08f488423013134.jpg"
+            },
+            {
+              "title": "peace put Co., Ltd. Corporate Site",
+              "description": "peace put is a Japanese food company behind eight beloved brands — a site designed to carry their philosophy both inward and out.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69defaf3bbccf526788602.jpg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Wednesday",
+          "is_weekend": false,
+          "day_index": 3
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/mattpocock",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "sponsors/abhigyanpatwari",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "ComposioHQ/awesome-codex-skills/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "microsoft/VibeVoice/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "davila7/claude-code-templates/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Cadillac Championship",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Soft launch of open-source code platform for government",
+              "url": "https://www.nldigitalgovernment.nl/news/soft-launch-for-government-open-source-code-platform/",
+              "score": 53,
+              "by": "e12e"
+            },
+            {
+              "title": "Ghostty is leaving GitHub",
+              "url": "https://mitchellh.com/writing/ghostty-leaving-github",
+              "score": 2650,
+              "by": "WadeGrimridge"
+            },
+            {
+              "title": "Show HN: Rip.so – a graveyard for dead internet things",
+              "url": "https://rip.so",
+              "score": 33,
+              "by": "bozdemir"
+            },
+            {
+              "title": "Bugs Rust won't catch",
+              "url": "https://corrode.dev/blog/bugs-rust-wont-catch/",
+              "score": 313,
+              "by": "lwhsiao"
+            },
+            {
+              "title": "HardenedBSD Is Now Officially on Radicle",
+              "url": "https://hardenedbsd.org/article/shawn-webb/2026-04-26/hardenedbsd-officially-radicle",
+              "score": 72,
+              "by": "lftherios"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "full moon",
+          "illumination": 0.965,
+          "days_into_cycle": 13
+        },
+        "music": {
+          "bands": [
+            "Radiohead",
+            "Guided by Voices"
+          ]
+        },
+        "quote": {
+          "text": "Whenever people agree with me I always feel I must be wrong.",
+          "author": "Oscar Wilde"
+        },
+        "season": {
+          "season": "spring",
+          "month": 4,
+          "day": 29,
+          "day_of_year": 119,
+          "month_name": "April"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-04-28T23:15Z",
+              "result": "loss",
+              "score": "2-5"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:20",
+          "sunset": "18:55",
+          "daylight_hours": 13.6
+        },
+        "date": "2026-04-29"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-04-29T10:37:43.819Z"
+    },
+    {
+      "name": "brief-loaded",
+      "phase": 0,
+      "input": {},
+      "output": {
+        "brief": "# Signals Brief — 2026-04-29\n\n# Creative Brief: doug-march.com\n**April 29, 2026 | Wednesday | Full Moon (96.5% illumination)**\n\n---\n\n## Mood\n\nA night of maximum visibility meets the midweek grind. Spring's renewal energy is here, but it's Wednesday—the moon is nearly full and bright enough to cast shadows, yet we're in the thick of work, not celebration. There's a productive tension today: the Hacker News conversation around decentralization and platform independence (Ghostty leaving GitHub, Rad",
+        "charCount": 5335
+      },
+      "durationMs": 0,
+      "timestamp": "2026-04-29T10:37:43.819Z"
+    },
+    {
+      "name": "design-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — MANDATORY CONSTRAINT\n\nRecent archetype usage (newest first):\n  - 2026-04-28: Scroll\n  - 2026-04-27: Stack\n  - 2026-04-26: Poster\n  - 2026-04-20: Specimen\n  - 2026-04-19: Scroll\n  - 2026-04-18: Gallery Wall\n  - 2026-04-17: Index\n\n**FORBIDDEN TODAY** (used in the last 3 days): **Scroll, Stack, Poster**\n\nYou MUST choose from the remaining archetypes: Gallery Wall, Broadsheet, Specimen, Split, Index. Choosing a forbidden archetype is an error — the spec will be rejected and "
+      },
+      "output": {
+        "archetype": "Specimen",
+        "chassisId": "playfair-outfit",
+        "specLength": 14613,
+        "specPreview": "# Visual Specification — doug-march.com — 2026-04-29\n\n---\n\n## 1. Color Specification\n\n### Primary Hue: 280° (cool blue-violet)\n\nRationale: The full moon demands clarity without warmth. Hue 280° places the entire neutral system in a cool violet register — almost imperceptible at 5–8% saturation, but enough to make near-blacks read as deep space rather than muddy charcoal. It mirrors moonlight through spring air. All six recent builds occupied 22°–210°; this moves sharply to the opposite hemispher"
+      },
+      "durationMs": 234169,
+      "timestamp": "2026-04-29T10:41:37.991Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 14613
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 74592,
+      "timestamp": "2026-04-29T10:42:52.583Z"
+    },
+    {
+      "name": "token-designer",
+      "phase": 2,
+      "input": {
+        "briefLength": 20031
+      },
+      "output": {
+        "files": [
+          "elements/preset.ts"
+        ],
+        "rationale": "The full moon (96.5% illumination) and its demand for maximum clarity architect the entire token system. Hue 280° (cool violet) tints all neutrals at 5–8% saturation—imperceptible warmth, unifying the palette through a single hue family rather than temperature shifts. The result: #09080B page background against #F0EDF6 near-white text creates ~19:1 contrast, matching the high-visibility environment of a full moon night and mirroring the brief's \"lucid\" mood. Spring moss green (H 140°, S ~31%) is"
+      },
+      "durationMs": 91618,
+      "timestamp": "2026-04-29T10:44:24.201Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4549,
+        "briefLength": 20031
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 110586,
+      "timestamp": "2026-04-29T10:46:16.206Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-04-29T10:46:23.929Z"
+    }
+  ]
+}

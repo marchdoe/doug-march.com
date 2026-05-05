@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 38,
+    "s": 85,
+    "l": 50,
+    "name": "golden amber"
+  },
+  "secondary_accent": {
+    "h": 82,
+    "s": 58,
+    "l": 42,
+    "name": "warm sage"
+  },
+  "neutral_family": {
+    "tinted_toward": "amber",
+    "name": "cream stone"
+  },
+  "mood_word": "clarity",
+  "color_story": "Golden amber at full saturation anchors the leaderboard rank and active navigation—a single warm sun-glint on cream neutrals. Sage green whispers only in victory badges and code texture. The entire page breathes in 97.5%-lit stone: page background at #FAF8F2, card backgrounds at #F2ECE0, eliminating any cool gray contamination. Dark mode inverts to forest stone (800/900) with text lifted to cream, preserving warmth throughout."
+}

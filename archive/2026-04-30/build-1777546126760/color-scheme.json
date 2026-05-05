@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 340,
+    "s": 6,
+    "l": 96,
+    "name": "rose parchment"
+  },
+  "secondary_accent": {
+    "h": 120,
+    "s": 45,
+    "l": 50,
+    "name": "sage green"
+  },
+  "neutral_family": {
+    "tinted_toward": "rose",
+    "name": "parchment"
+  },
+  "mood_word": "illuminated",
+  "color_story": "Rose-parchment neutrals (H:340°) warm the gallery space; sage green (H:120°) curates emphasis on featured work borders and nav underlines; mustard (H:38°) punctuates signal moments (Pistons score, project highlights). The palette is lifted by full-moon contrast—16:1 text-background ratio—rather than color vibration, and breathing room (80px gutters, zero shadows) signals spring's airy return."
+}
