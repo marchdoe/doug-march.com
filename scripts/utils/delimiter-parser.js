@@ -26,7 +26,12 @@
 export function parseDelimiterResponse(result) {
   const files = []
   const sentinel = '\n===END_SENTINEL===\n'
-  const withSentinel = result + sentinel
+  // Strip outer markdown code fence if the model wraps its entire response.
+  // Without this, the last block before the closing ``` captures the fence
+  // markers as content (e.g. "Specimen\n```" instead of "Specimen").
+  const fenceMatch = /^```[^\n]*\n([\s\S]*)\n```\s*$/.exec(result.trim())
+  const src = fenceMatch ? fenceMatch[1] : result
+  const withSentinel = src + sentinel
   const filePattern = /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===HERO_COPY===|^===HERO_RATIONALE===|^===ARCHETYPE===|^===CHASSIS_ID===|^===VISUAL_SPEC===|^===SELF_CHECK===|^===END_SENTINEL===)/gm
   let match
   while ((match = filePattern.exec(withSentinel)) !== null) {

@@ -10,6 +10,7 @@
  * The orchestrator (scripts/design-agents.js) handles backup/restore,
  * Phase 2 (Unified Designer), build validation, and archive.
  */
+import { writeFile } from 'fs/promises'
 import { callClaudeCLI } from '../utils/claude-cli.js'
 import { parseDelimiterResponse } from '../utils/delimiter-parser.js'
 const ARCHETYPE_NAMES = new Set([
@@ -122,7 +123,18 @@ export async function runArtDirector(ctx) {
     throw new Error(`Art Director response unparseable: ${err.message}`)
   }
 
-  validateArtDirectorResult(parsed)
+  try {
+    validateArtDirectorResult(parsed)
+  } catch (err) {
+    const present = ['hero_copy', 'archetype', 'chassis_id', 'visual_spec', 'self_check'].filter(k => parsed[k])
+    const absent = ['hero_copy', 'archetype', 'chassis_id', 'visual_spec', 'self_check'].filter(k => !parsed[k])
+    console.error(`  [AD] validation failed — present: [${present.join(', ')}] absent: [${absent.join(', ')}]`)
+    console.error(`  [AD] response head: ${result.slice(0, 300).replace(/\n/g, '↵')}`)
+    if (ctx.failureDumpPath) {
+      try { await writeFile(ctx.failureDumpPath, result, 'utf8') } catch {}
+    }
+    throw err
+  }
 
   // Compose the human-readable brief used in archive/brief.md (the previous
   // pipeline produced this from interpret-signals.js; the Art Director must

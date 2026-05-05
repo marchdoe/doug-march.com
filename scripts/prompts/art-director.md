@@ -177,6 +177,8 @@ You will receive an "Archetype History" block with the last 5–7 days of usage.
 
 ## Response Format
 
+**Begin your response immediately with `===HERO_COPY===` — no preamble, no explanation, no reasoning text before the first block. Do not wrap your response in a code fence.**
+
 Respond using the exact delimiter blocks below, in this order. Write the COMPLETE file content after `===FILE:elements/preset.ts===` — no JSON wrapping, no code fences, just the raw TS source.
 
 ```
