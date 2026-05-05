@@ -1,0 +1,5 @@
+Art Director codegen retry failed: Art Director response missing or empty hero_copy (===HERO_COPY===)
+
+Error: Art Director codegen retry failed: Art Director response missing or empty hero_copy (===HERO_COPY===)
+    at runAgentSwarm (file:///Users/dougmarch/Projects/dougmarch/scripts/design-agents.js:832:13)
+    at async main (file:///Users/dougmarch/Projects/dougmarch/scripts/daily-redesign.js:56:14)

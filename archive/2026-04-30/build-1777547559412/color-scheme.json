@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 285,
+    "s": 70,
+    "l": 22,
+    "name": "walpurgis violet"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "violet",
+    "name": "violet-shadow"
+  },
+  "mood_word": "incandescent",
+  "color_story": "Deep violet darkness holds the full moon's moral declaration while gold fire breathes at the margins — Walpurgis Night rendered in type alone."
+}
