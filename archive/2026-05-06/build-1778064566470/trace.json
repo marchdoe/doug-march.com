@@ -1,0 +1,255 @@
+{
+  "date": "2026-05-06",
+  "startedAt": "2026-05-06T10:42:05.450Z",
+  "completedAt": "2026-05-06T10:49:28.175Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "The Presidency of Iceland",
+              "description": "Redesign and development of the President of Iceland’s website into a clear, accessible digital platform improving usability, storytelling, and public...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69ef7dcaa63ab787973421.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAK6/FJREFUeAHsnQegJUWV/r/zJicySBBUFCOoi4oIBlBU1pzTqrtrznnNWTFiwLS6/AXFLGAAJZgFMaIIBpAMknNm4q3/7e4K51RV3zcDyMz0+34673ZXV+rqruqmvj6nZNXK...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Kindred Of Ireland",
+              "description": "Kindred of Ireland partnered with Dash to transform their site into a bespoke, design-led experience; blending heritage, sustainability and craft with...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69e9e663689fe661796021.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAuEyBJREFUeAF0/W2CJDuOJAgCVHWPV+fb6a6qru49S15of+webipfuCm5RogIAFrk2MvICDc3U6WSICAQfND/f//f/88yvuac5mOYu9vzetl4/3v/2e/H6/3+/nm/1v7s/tzz...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "THE NO-CODE SHADER",
+              "description": "Learn-by-doing shader platform built on Unicorn Studio",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69f476fd76d32014543079.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAQD5pJREFUeAHs/V3MZcV1741WLTDNV0zjxkBOJOP4yLxRJNuNtIkSKZHhCEu2jEQjR0qOLR3Avkm4odlX2Vfgq2TfHOAmb3KxTfeRnNhb4QCSrdgKFiBbst9NJD4svUmwZAwX...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Wednesday",
+          "is_weekend": false,
+          "day_index": 3
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "Hmbown/DeepSeek-TUI/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "addyosmani/agent-skills/stargazers",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "PriorLabs/TabPFN/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "docusealco/docuseal/stargazers",
+              "description": "",
+              "language": "Ruby",
+              "stars": null
+            },
+            {
+              "name": "sponsors/LearningCircuit",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Truist Championship",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Agents can now create Cloudflare accounts, buy domains, and deploy",
+              "url": "https://blog.cloudflare.com/agents-stripe-projects/",
+              "score": 344,
+              "by": "rolph"
+            },
+            {
+              "title": "StarFighter 16-Inch",
+              "url": "https://us.starlabs.systems/pages/starfighter",
+              "score": 362,
+              "by": "signa11"
+            },
+            {
+              "title": "CARA 2.0 – “I Built a Better Robot Dog”",
+              "url": "https://www.aaedmusa.com/projects/cara2",
+              "score": 170,
+              "by": "hakonjdjohnsen"
+            },
+            {
+              "title": "Batteries Not Included, or Required, for These Smart Home Sensors",
+              "url": "https://coe.gatech.edu/news/2026/04/batteries-not-included-or-required-these-smart-home-sensors",
+              "score": 41,
+              "by": "gnabgib"
+            },
+            {
+              "title": "Knitting bullshit",
+              "url": "https://katedaviesdesigns.com/2026/04/29/knitting-bullshit/",
+              "score": 81,
+              "by": "ColinEberhardt"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Mother's Day",
+              "date": "2026-05-10",
+              "days_away": 4
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "waning gibbous",
+          "illumination": 0.72,
+          "days_into_cycle": 20
+        },
+        "music": {
+          "bands": [
+            "Radiohead",
+            "Tobin Sprout",
+            "Wet Leg"
+          ]
+        },
+        "quote": {
+          "text": "Every experience is a lesson. Every loss is a gain.",
+          "author": "Sathya Sai Baba"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 6,
+          "day_of_year": 126,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": "2026-05-05T23:00Z",
+              "result": "win",
+              "score": "111-101"
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-05T22:40Z",
+              "result": "loss",
+              "score": "3-10"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:11",
+          "sunset": "19:02",
+          "daylight_hours": 13.8
+        },
+        "date": "2026-05-06"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-06T10:42:20.602Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-05: Poster\n  - 2026-05-04: Index\n  - 2026-05-03: Stack\n  - 2026-05-02: Scroll\n  - 2026-05-01: Broadsheet\n  - 2026-04-30: Gallery Wall\n  - 2026-04-29: Specimen\n\n**Recently used** (last 3 days): Poster, Index, Stack\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or sign"
+      },
+      "output": {
+        "hero_copy": "Every loss is a gain.",
+        "archetype": "Specimen",
+        "chassisId": "bebas-plex",
+        "specLength": 5662,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue:** H:80° (acid chartreuse) — sits squarely within the open 68–98° window; chosen for maximum electric contrast against near-black, directly fulfilling the BOLD/EXPERIMENTAL 8/10 directive. This hue has appeared in zero of the last six days.\n- **Neutral palette (tinted toward H:80°):**\n  - 50: #F8FCED (near-white with faint chartreuse warmth)\n  - 100: #EFF7D8\n  - 200: #D9EBA8\n  - 300: #B5CC6E\n  - 400: #8EA640\n  - 500: #6B7F26\n  - 600: #505E19\n  - 700: #",
+        "selfCheck": "1. Hero quotability: Yes — \"Every loss is a gain\" is a standalone four-word maxim that simultaneously describes today's Tiger loss and Pistons win; screenshotable, poster-printable, quotable in complete isolation.\n2. Because-of chain: Yes — the declarative, philosophically-loaded maxim dictated Spec"
+      },
+      "durationMs": 287862,
+      "timestamp": "2026-05-06T10:47:08.467Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5662
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 37608,
+      "timestamp": "2026-05-06T10:47:47.477Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4680,
+        "briefLength": 8090
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 76059,
+      "timestamp": "2026-05-06T10:49:03.537Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-06T10:49:11.211Z"
+    }
+  ]
+}

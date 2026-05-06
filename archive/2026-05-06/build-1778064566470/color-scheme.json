@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 80,
+    "s": 100,
+    "l": 47,
+    "name": "acid chartreuse"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "yellow-green",
+    "name": "olive-black"
+  },
+  "mood_word": "electric",
+  "color_story": "Acid chartreuse on near-black turns a four-word maxim into high-voltage neon — a frequency that holds the Tigers' loss and Pistons' win in a single indifferent declaration, luminous and absolute."
+}

@@ -5,132 +5,98 @@ export const Route = createFileRoute('/')({ component: HomePage })
 
 function HomePage() {
   return (
-    <main
-      className={css({
-        position: 'relative',
-        minHeight: '100vh',
-        background: 'bg',
-        overflow: 'hidden',
-        paddingTop: { base: '88px', md: '96px' },
-        paddingBottom: { base: '72px', md: '88px' },
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-      })}
-    >
-      {/* Eyebrow — flush right at 6vw, the source + date label */}
+    <>
       <div
         className={css({
-          paddingRight: '6vw',
-          paddingLeft: '6vw',
-          marginBottom: { base: '24px', md: '32px' },
-          textAlign: 'right',
-          fontFamily: 'body',
-          fontSize: '12px',
-          color: 'warm.400',
-          letterSpacing: '0.20em',
-          textTransform: 'uppercase',
-        })}
-      >
-        Guided by Voices · May 5
-      </div>
-
-      {/* Hero stack — left / center / right cascade */}
-      <h1
-        className={css({
-          margin: '0',
-          padding: '0',
-          fontFamily: 'display',
-          color: 'hero',
-          lineHeight: '0.86',
+          position: 'relative',
           display: 'flex',
           flexDirection: 'column',
-          width: '100%',
+          justifyContent: 'center',
+          minHeight: 'calc(100vh - 48px)',
+          padding: '0 6vw',
+          overflow: 'hidden',
         })}
       >
-        <span
+        <h1
           className={css({
-            display: 'flex',
-            justifyContent: 'flex-start',
-            paddingLeft: '6vw',
-            paddingRight: '6vw',
+            fontFamily: 'display',
+            fontSize: 'clamp(60px, 16.5vw, 230px)',
+            fontWeight: '700',
+            lineHeight: '0.88',
+            letterSpacing: '-0.02em',
+            color: 'heroText',
+            textTransform: 'uppercase',
+            userSelect: 'none',
           })}
         >
-          <span
-            className={css({
-              fontWeight: '800',
-              letterSpacing: '-0.02em',
-              fontSize: 'clamp(76px, 26vw, 380px)',
-              lineHeight: '0.86',
-              textTransform: 'uppercase',
-              display: 'inline-block',
-            })}
-          >
-            Guided
-          </span>
-        </span>
-        <span
+          <span className={css({ display: 'block' })}>Every loss</span>
+          <span className={css({ display: 'block' })}>is a gain</span>
+        </h1>
+        <p
           className={css({
-            display: 'flex',
-            justifyContent: 'center',
-            paddingX: '6vw',
-            marginY: { base: '-4px', md: '-12px' },
+            fontFamily: 'body',
+            fontSize: '16px',
+            fontWeight: '400',
+            letterSpacing: '0.14em',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+            marginTop: '32px',
           })}
         >
-          <span
-            className={css({
-              fontWeight: '300',
-              letterSpacing: '0.20em',
-              fontSize: 'clamp(34px, 8vw, 115px)',
-              lineHeight: '1',
-              textTransform: 'uppercase',
-              color: 'accent',
-              display: 'inline-block',
-            })}
-          >
-            By
-          </span>
-        </span>
-        <span
-          className={css({
-            display: 'flex',
-            justifyContent: 'flex-end',
-            paddingLeft: '6vw',
-            paddingRight: '6vw',
-          })}
-        >
-          <span
-            className={css({
-              fontWeight: '800',
-              letterSpacing: '-0.02em',
-              fontSize: 'clamp(76px, 26vw, 380px)',
-              lineHeight: '0.86',
-              textTransform: 'uppercase',
-              display: 'inline-block',
-            })}
-          >
-            Voices
-          </span>
-        </span>
-      </h1>
+          — Sathya Sai Baba
+        </p>
+      </div>
 
-      {/* Attribution — quote fragment, centered, italic, small */}
-      <p
+      {/* Signal strip */}
+      <div
         className={css({
-          marginTop: { base: '28px', md: '40px' },
-          paddingX: '6vw',
-          textAlign: 'center',
-          fontFamily: 'body',
-          fontStyle: 'italic',
-          fontSize: { base: '13px', md: '14px' },
-          lineHeight: '1.5',
-          color: 'textMuted',
-          maxWidth: '70ch',
-          marginX: 'auto',
+          position: 'fixed',
+          bottom: '0',
+          left: '0',
+          right: '0',
+          height: '48px',
+          display: 'flex',
+          alignItems: 'center',
+          padding: '0 6vw',
+          gap: '24px',
+          borderTop: '1px solid',
+          borderColor: 'border',
+          background: 'bg',
+          zIndex: '100',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          whiteSpace: 'nowrap',
+          '@media (max-width: 640px)': {
+            gap: '16px',
+            padding: '0 4vw',
+          },
         })}
       >
-        “during times of adversity our true character will show”
-      </p>
-    </main>
+        <SignalItem color="signalLoss" label="DET 3 · PIT 10" />
+        <SignalItem color="signalWin" label="DET 111 · MIA 101" />
+        <SignalItem color="textMuted" label="◐ 72%" />
+        <SignalItem color="textMuted" label="☀ 13.8H" />
+        <SignalItem color="textMuted" label="MOTHER'S DAY — 4 DAYS" />
+        <SignalItem color="textMuted" label="AGENTS DEPLOY CLOUDFLARE ↑344" />
+      </div>
+    </>
+  )
+}
+
+function SignalItem({ color, label }: { color: string; label: string }) {
+  return (
+    <span
+      className={css({
+        fontFamily: 'mono',
+        fontSize: '12px',
+        fontWeight: '400',
+        letterSpacing: '0.10em',
+        textTransform: 'uppercase',
+        color: color,
+        flexShrink: 0,
+      })}
+    >
+      {label}
+    </span>
   )
 }
