@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 295,
+    "s": 82,
+    "l": 58,
+    "name": "vivid violet"
+  },
+  "secondary_accent": {
+    "h": 138,
+    "s": 74,
+    "l": 51,
+    "name": "spring grass"
+  },
+  "neutral_family": {
+    "tinted_toward": "violet",
+    "name": "nightshade"
+  },
+  "mood_word": "declarative",
+  "color_story": "The command 'TAKE CARE OF YOUR GRASS.' burns in vivid violet — deliberately not grass-green — except for the final word 'GRASS.' itself, which is colored exactly like what it names; the tension between what commands and what is commanded lives in the palette."
+}
