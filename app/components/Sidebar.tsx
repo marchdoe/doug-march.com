@@ -1,77 +1,105 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const navWrap = css({
-  display: 'flex',
+const mastheadCss = css({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(12, 1fr)',
+  columnGap: '24px',
+  padding: '0 4vw',
+  height: '64px',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  height: '60px',
-  padding: '0 24px',
-  borderBottom: '1px solid',
-  borderColor: 'border',
+  borderBottomWidth: '1px',
+  borderBottomStyle: 'solid',
+  borderBottomColor: 'border',
+  width: '100%',
 })
 
-const wordmark = css({
+const leftZoneCss = css({
+  gridColumn: { base: '1 / -1', md: '1 / 4' },
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+})
+
+const logoCss = css({
+  width: '28px',
+  height: '28px',
+  flexShrink: 0,
+})
+
+const nameCss = css({
   fontFamily: 'body',
+  fontWeight: 'semibold',
   fontSize: '11px',
-  fontWeight: '400',
-  letterSpacing: '0.20em',
+  letterSpacing: '0.10em',
   textTransform: 'uppercase',
-  color: 'textMuted',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
+  color: 'text',
+  textDecoration: 'none',
+  _hover: { color: 'accent', textDecoration: 'none' },
 })
 
-const logoImg = css({
-  width: '24px',
-  height: '24px',
-})
-
-const navLinks = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '20px',
-})
-
-const navLink = css({
-  fontFamily: 'body',
+const centerZoneCss = css({
+  gridColumn: { base: '1 / -1', md: '5 / 9' },
+  textAlign: 'center',
+  fontFamily: 'mono',
   fontSize: '11px',
-  fontWeight: '400',
-  letterSpacing: '0.20em',
+  letterSpacing: '0.08em',
+  color: 'textMuted',
+  display: { base: 'none', md: 'block' },
+})
+
+const rightZoneCss = css({
+  gridColumn: { base: '1 / -1', md: '10 / 13' },
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: { base: 'flex-start', md: 'flex-end' },
+  gap: '24px',
+})
+
+const navLinkCss = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '11px',
+  letterSpacing: '0.10em',
   textTransform: 'uppercase',
   color: 'textSecondary',
   textDecoration: 'none',
-  transition: 'color 0.2s ease',
   padding: '12px 0',
-  _hover: {
-    color: 'accentGlow',
-  },
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
+  _hover: { color: 'accent', textDecoration: 'none' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
-const separator = css({
-  color: 'textMuted',
-  fontSize: '11px',
-  userSelect: 'none',
+const mobileBarCss = css({
+  display: { base: 'flex', md: 'none' },
+  padding: '12px 4vw',
+  gap: '16px',
+  alignItems: 'center',
+  borderBottomWidth: '1px',
+  borderBottomStyle: 'solid',
+  borderBottomColor: 'border',
 })
 
 export function Sidebar() {
   return (
-    <nav className={navWrap} aria-label="Main navigation">
-      <a href="/" className={wordmark} aria-label="Doug March — Home">
-        <img src={logoSvg} alt="" className={logoImg} />
-        <span>Doug March</span>
-      </a>
-      <div className={navLinks}>
-        <a href="/" className={navLink}>Work</a>
-        <span className={separator} aria-hidden="true">·</span>
-        <a href="/about" className={navLink}>About</a>
+    <header>
+      <div className={mastheadCss}>
+        <div className={leftZoneCss}>
+          <img src={logoSvg} alt="Doug March logo" className={logoCss} />
+          <a href="/" className={nameCss}>Doug March</a>
+        </div>
+        <div className={centerZoneCss}>
+          May 8, 2026 — Broadsheet Edition
+        </div>
+        <nav className={rightZoneCss}>
+          <a href="/" className={navLinkCss}>Work</a>
+          <a href="/about" className={navLinkCss}>About</a>
+        </nav>
       </div>
-    </nav>
+      <div className={mobileBarCss}>
+        <span className={css({ fontFamily: 'mono', fontSize: '11px', color: 'textMuted', letterSpacing: '0.08em' })}>
+          May 8, 2026
+        </span>
+      </div>
+    </header>
   )
 }

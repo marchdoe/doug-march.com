@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 200,
+    "s": 70,
+    "l": 42,
+    "name": "deep teal"
+  },
+  "secondary_accent": {
+    "h": 28,
+    "s": 95,
+    "l": 54,
+    "name": "alert amber"
+  },
+  "neutral_family": {
+    "tinted_toward": "teal",
+    "name": "ink"
+  },
+  "mood_word": "terminal",
+  "color_story": "Institutional teal — the color of Bloomberg terminals, system readouts, and cyber-noir archives — dresses a dry security advisory in the authority of a crisis dashboard, with amber accents marking each breach and layoff like a priority flag in a live incident feed."
+}

@@ -1,283 +1,171 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Sidebar } from '../components/Sidebar'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const splitGrid = css({
+const canvasCss = css({
   display: 'grid',
-  gridTemplateColumns: '50fr 50fr',
-  minHeight: '100vh',
-  '@media (max-width: 768px)': {
-    gridTemplateColumns: '1fr',
-  },
+  gridTemplateColumns: { base: '1fr', md: 'repeat(12, 1fr)' },
+  columnGap: '24px',
+  padding: '0 4vw',
+  paddingTop: '48px',
+  paddingBottom: '48px',
 })
 
-const leftPanel = css({
-  background: '{colors.neutral.900}',
-  padding: '0 6vw',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  minHeight: '100vh',
-  position: 'sticky',
-  top: 0,
-  '@media (max-width: 768px)': {
-    position: 'relative',
-    minHeight: 'auto',
-    padding: '32px 6vw',
-  },
-})
-
-const rightPanel = css({
-  background: '{colors.neutral.800}',
-  borderLeft: '1px solid',
-  borderColor: 'border',
-  minHeight: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  '@media (max-width: 768px)': {
-    borderLeft: 'none',
-    borderTop: '1px solid',
-    minHeight: 'auto',
-  },
-})
-
-const projectTitle = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(48px, 8vw, 120px)',
-  fontWeight: '800',
-  lineHeight: '0.92',
-  letterSpacing: '-0.02em',
-  textTransform: 'uppercase',
-  color: 'accent',
-  marginBottom: '20px',
-})
-
-const projectType = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  fontWeight: '400',
-  letterSpacing: '0.20em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '8px',
-})
-
-const projectYear = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  color: 'textSecondary',
-  fontVariantNumeric: 'tabular-nums',
-})
-
-const contentArea = css({
-  padding: '24px 32px',
-  flex: 1,
-  overflowY: 'auto',
-})
-
-const sectionLabel = css({
+const eyebrowCss = css({
   fontFamily: 'body',
   fontSize: '10px',
-  fontWeight: '400',
-  letterSpacing: '0.20em',
   textTransform: 'uppercase',
-  color: 'textMuted',
-  paddingBottom: '8px',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  marginBottom: '12px',
-  marginTop: '28px',
-})
-
-const firstSection = css({
-  marginTop: '0',
-})
-
-const bodyText = css({
-  fontFamily: 'body',
-  fontSize: '15px',
-  lineHeight: '1.65',
-  color: '{colors.neutral.300}',
-  maxWidth: '55ch',
-})
-
-const stackGrid = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
-})
-
-const stackPill = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: 'textSecondary',
-  letterSpacing: '0.05em',
-  padding: '4px 10px',
-  border: '1px solid',
-  borderColor: 'border',
-  borderRadius: '2px',
-})
-
-const extLink = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  color: 'accent',
-  textDecoration: 'none',
   letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '6px',
-  padding: '10px 0',
-  transition: 'color 0.2s ease',
-  _hover: {
-    color: 'accentGlow',
-  },
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
+  color: 'textMuted',
+  marginBottom: '16px',
 })
 
-const footerBar = css({
-  padding: '0 32px',
-  borderTop: '1px solid',
-  borderColor: 'border',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  height: '48px',
-})
-
-const footerLink = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  color: '{colors.neutral.600}',
-  textDecoration: 'none',
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
-})
-
-const notFound = css({
-  fontFamily: 'body',
-  fontSize: '18px',
-  color: 'textSecondary',
-  padding: '64px 32px',
-})
-
-function WorkPage() {
+function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div className={splitGrid}>
-        <div className={leftPanel}>
-          <div className={projectTitle}>404</div>
-        </div>
-        <div className={rightPanel}>
-          <Sidebar />
-          <div className={notFound}>
-            Project not found. <a href="/" className={css({ color: 'accent' })}>Return home</a>
-          </div>
+      <div className={canvasCss}>
+        <div className={css({ gridColumn: '1 / -1' })}>
+          <h1 className={css({ fontFamily: 'display', fontWeight: 'bold', fontSize: '32px', color: 'text', marginBottom: '16px' })}>
+            Project not found
+          </h1>
+          <a href="/" className={css({ color: 'accent', fontFamily: 'mono', fontSize: '14px', _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' } })}>← Back to home</a>
         </div>
       </div>
     )
   }
 
   return (
-    <div className={splitGrid}>
-      <div className={leftPanel}>
-        <div className={projectType}>{project.type}</div>
-        <div className={projectTitle}>{project.title}</div>
-        <div className={projectYear}>{project.year}</div>
+    <div className={canvasCss}>
+      {/* Header zone */}
+      <div className={css({ gridColumn: { base: '1 / -1', md: '1 / 9' }, marginBottom: '48px' })}>
+        <div className={eyebrowCss}>{project.type} · {project.year}</div>
+        <h1 className={css({
+          fontFamily: 'display',
+          fontWeight: 'bold',
+          fontSize: 'clamp(32px, 3.5vw, 52px)',
+          lineHeight: 'snug',
+          letterSpacing: 'tight',
+          color: 'text',
+          marginBottom: '16px',
+        })}>
+          {project.title}
+        </h1>
+        {project.problem && (
+          <p className={css({
+            fontFamily: 'body',
+            fontSize: '18px',
+            lineHeight: 'normal',
+            color: 'textSecondary',
+            maxWidth: '60ch',
+          })}>
+            {project.problem}
+          </p>
+        )}
+        {project.description && !project.problem && (
+          <p className={css({
+            fontFamily: 'body',
+            fontSize: '18px',
+            lineHeight: 'normal',
+            color: 'textSecondary',
+            maxWidth: '60ch',
+          })}>
+            {project.description}
+          </p>
+        )}
       </div>
 
-      <div className={rightPanel}>
-        <Sidebar />
+      {/* Meta rail */}
+      <div className={css({
+        gridColumn: { base: '1 / -1', md: '9 / 13' },
+        borderLeftWidth: { base: '0', md: '1px' },
+        borderLeftStyle: 'solid',
+        borderLeftColor: 'border',
+        paddingLeft: { base: '0', md: '24px' },
+        marginBottom: '48px',
+      })}>
+        {project.role && (
+          <div className={css({ marginBottom: '20px' })}>
+            <div className={css({ fontFamily: 'mono', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.10em', color: 'textMuted', marginBottom: '4px' })}>Role</div>
+            <div className={css({ fontFamily: 'body', fontSize: '14px', color: 'textSecondary' })}>{project.role}</div>
+          </div>
+        )}
+        {project.stack && project.stack.length > 0 && (
+          <div className={css({ marginBottom: '20px' })}>
+            <div className={css({ fontFamily: 'mono', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.10em', color: 'textMuted', marginBottom: '4px' })}>Stack</div>
+            <div className={css({ fontFamily: 'mono', fontSize: '12px', color: 'textSecondary', lineHeight: 'normal' })}>
+              {project.stack.join(' · ')}
+            </div>
+          </div>
+        )}
+        {(project.externalUrl || project.liveUrl) && (
+          <div className={css({ marginBottom: '20px' })}>
+            <div className={css({ fontFamily: 'mono', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.10em', color: 'textMuted', marginBottom: '4px' })}>Link</div>
+            <a
+              href={project.externalUrl || project.liveUrl}
+              className={css({ fontFamily: 'mono', fontSize: '12px', color: 'accent', textDecoration: 'underline', _hover: { color: 'accentSubtle' }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' } })}
+            >
+              {(project.externalUrl || project.liveUrl || '').replace(/^https?:\/\//, '')} ↗
+            </a>
+          </div>
+        )}
+        {project.githubUrl && (
+          <div className={css({ marginBottom: '20px' })}>
+            <div className={css({ fontFamily: 'mono', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.10em', color: 'textMuted', marginBottom: '4px' })}>Source</div>
+            <a
+              href={project.githubUrl}
+              className={css({ fontFamily: 'mono', fontSize: '12px', color: 'accent', textDecoration: 'underline', _hover: { color: 'accentSubtle' }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' } })}
+            >
+              GitHub ↗
+            </a>
+          </div>
+        )}
+      </div>
 
-        <div className={contentArea}>
-          {project.problem && (
-            <>
-              <div className={`${sectionLabel} ${firstSection}`}>Problem</div>
-              <p className={bodyText}>{project.problem}</p>
-            </>
-          )}
-
-          {project.role && (
-            <>
-              <div className={sectionLabel}>Role</div>
-              <p className={bodyText}>{project.role}</p>
-            </>
-          )}
-
+      {/* Body — approach & outcome */}
+      {(project.approach || project.outcome) && (
+        <div className={css({ gridColumn: { base: '1 / -1', md: '1 / 9' }, marginBottom: '48px' })}>
           {project.approach && (
-            <>
-              <div className={sectionLabel}>Approach</div>
-              <p className={bodyText}>{project.approach}</p>
-            </>
+            <div className={css({ marginBottom: '32px' })}>
+              <div className={css({ fontFamily: 'body', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.10em', color: 'textMuted', marginBottom: '12px', paddingBottom: '8px', borderBottomWidth: '1px', borderBottomStyle: 'solid', borderBottomColor: 'border' })}>Approach</div>
+              <p className={css({ fontFamily: 'body', fontSize: '16px', lineHeight: 'normal', color: 'textSecondary', maxWidth: '65ch' })}>
+                {project.approach}
+              </p>
+            </div>
           )}
-
           {project.outcome && (
-            <>
-              <div className={sectionLabel}>Outcome</div>
-              <p className={bodyText}>{project.outcome}</p>
-            </>
-          )}
-
-          {project.description && (
-            <>
-              <div className={`${sectionLabel} ${!project.problem ? firstSection : ''}`}>About</div>
-              <p className={bodyText}>{project.description}</p>
-            </>
-          )}
-
-          {project.stack && project.stack.length > 0 && (
-            <>
-              <div className={sectionLabel}>Stack</div>
-              <div className={stackGrid}>
-                {project.stack.map((tech, i) => (
-                  <span key={i} className={stackPill}>{tech}</span>
-                ))}
-              </div>
-            </>
-          )}
-
-          {(project.externalUrl || project.liveUrl || project.githubUrl) && (
-            <>
-              <div className={sectionLabel}>Links</div>
-              <div className={css({ display: 'flex', flexDirection: 'column', gap: '8px' })}>
-                {project.externalUrl && (
-                  <a href={project.externalUrl} className={extLink}>
-                    Visit Site →
-                  </a>
-                )}
-                {project.liveUrl && project.liveUrl !== project.externalUrl && (
-                  <a href={project.liveUrl} className={extLink}>
-                    Live →
-                  </a>
-                )}
-                {project.githubUrl && (
-                  <a href={project.githubUrl} className={extLink}>
-                    GitHub →
-                  </a>
-                )}
-              </div>
-            </>
+            <div>
+              <div className={css({ fontFamily: 'body', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.10em', color: 'textMuted', marginBottom: '12px', paddingBottom: '8px', borderBottomWidth: '1px', borderBottomStyle: 'solid', borderBottomColor: 'border' })}>Outcome</div>
+              <p className={css({ fontFamily: 'body', fontSize: '16px', lineHeight: 'normal', color: 'textSecondary', maxWidth: '65ch' })}>
+                {project.outcome}
+              </p>
+            </div>
           )}
         </div>
+      )}
 
-        <div className={footerBar}>
-          <a href="/archive" className={footerLink}>Archive</a>
-          <a href="/" className={footerLink}>← Back</a>
-        </div>
+      {/* Footer nav */}
+      <div className={css({
+        gridColumn: '1 / -1',
+        display: 'flex',
+        justifyContent: 'space-between',
+        paddingTop: '16px',
+        borderTopWidth: '1px',
+        borderTopStyle: 'solid',
+        borderTopColor: 'border',
+        flexWrap: 'wrap',
+        gap: '8px',
+      })}>
+        <a href="/" className={css({ fontFamily: 'mono', fontSize: '12px', color: 'accent', textDecoration: 'none', _hover: { textDecoration: 'underline' }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' }, padding: '8px 0' })}>
+          ← All work
+        </a>
+        <a href="/archive" className={css({ fontFamily: 'mono', fontSize: '11px', color: 'textMuted', textDecoration: 'none', _hover: { color: 'accent', textDecoration: 'underline' }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' }, padding: '8px 0' })}>
+          Archive
+        </a>
       </div>
     </div>
   )

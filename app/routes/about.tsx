@@ -1,291 +1,207 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Sidebar } from '../components/Sidebar'
 import { css } from '../../styled-system/css'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const splitGrid = css({
+const canvasCss = css({
   display: 'grid',
-  gridTemplateColumns: '42fr 58fr',
-  minHeight: '100vh',
-  '@media (max-width: 768px)': {
-    gridTemplateColumns: '1fr',
-  },
+  gridTemplateColumns: { base: '1fr', md: 'repeat(12, 1fr)' },
+  columnGap: '24px',
+  padding: '0 4vw',
+  paddingTop: '48px',
+  paddingBottom: '48px',
 })
 
-const leftPanel = css({
-  background: '{colors.neutral.900}',
-  padding: '0 6vw',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  minHeight: '100vh',
-  position: 'sticky',
-  top: 0,
-  '@media (max-width: 768px)': {
-    position: 'relative',
-    minHeight: 'auto',
-    padding: '32px 6vw',
-  },
-})
-
-const rightPanel = css({
-  background: '{colors.neutral.800}',
-  borderLeft: '1px solid',
-  borderColor: 'border',
-  minHeight: '100vh',
-  display: 'flex',
-  flexDirection: 'column',
-  '@media (max-width: 768px)': {
-    borderLeft: 'none',
-    borderTop: '1px solid',
-    minHeight: 'auto',
-  },
-})
-
-const nameDisplay = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(48px, 8vw, 96px)',
-  fontWeight: '800',
-  lineHeight: '0.92',
-  letterSpacing: '-0.02em',
-  textTransform: 'uppercase',
-  color: 'accent',
-  marginBottom: '24px',
-})
-
-const roleLabel = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  letterSpacing: '0.20em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '24px',
-})
-
-const statementText = css({
-  fontFamily: 'body',
-  fontSize: '16px',
-  lineHeight: '1.65',
-  color: '{colors.neutral.300}',
-  maxWidth: '45ch',
-})
-
-const contentArea = css({
-  padding: '24px 32px',
-  flex: 1,
-  overflowY: 'auto',
-})
-
-const sectionLabel = css({
+const eyebrowCss = css({
   fontFamily: 'body',
   fontSize: '10px',
-  fontWeight: '400',
-  letterSpacing: '0.20em',
   textTransform: 'uppercase',
-  color: 'textMuted',
-  paddingBottom: '8px',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  marginBottom: '16px',
-  marginTop: '32px',
-})
-
-const firstSection = css({
-  marginTop: '0',
-})
-
-const timelineRow = css({
-  display: 'grid',
-  gridTemplateColumns: '120px 1fr',
-  gap: '16px',
-  padding: '10px 0',
-  borderBottom: '1px solid',
-  borderColor: '{colors.neutral.700}/30',
-  '@media (max-width: 500px)': {
-    gridTemplateColumns: '1fr',
-    gap: '4px',
-  },
-})
-
-const yearCol = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  color: 'textMuted',
-  letterSpacing: '0.05em',
-  minWidth: '120px',
-  fontVariantNumeric: 'tabular-nums',
-})
-
-const roleCol = css({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '2px',
-})
-
-const roleName = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  color: '{colors.neutral.200}',
-  fontWeight: '500',
-})
-
-const companyName = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  color: 'textSecondary',
-})
-
-const descText = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  color: 'textMuted',
-  lineHeight: '1.5',
-  marginTop: '4px',
-  maxWidth: '55ch',
-})
-
-const capsGrid = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
-})
-
-const capsPill = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: 'textSecondary',
-  letterSpacing: '0.05em',
-  padding: '4px 10px',
-  border: '1px solid',
-  borderColor: 'border',
-  borderRadius: '2px',
-})
-
-const personalBlock = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  lineHeight: '1.6',
-  color: '{colors.neutral.300}',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
-})
-
-const personalLabel = css({
-  color: 'textMuted',
-  fontSize: '12px',
   letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-})
-
-const eduBlock = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  color: '{colors.neutral.300}',
-  lineHeight: '1.5',
-})
-
-const eduMeta = css({
-  fontSize: '13px',
   color: 'textMuted',
-})
-
-const footerBar = css({
-  padding: '0 32px',
-  borderTop: '1px solid',
-  borderColor: 'border',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  height: '48px',
-})
-
-const footerLink = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  color: '{colors.neutral.600}',
-  textDecoration: 'none',
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
+  marginBottom: '16px',
+  paddingBottom: '8px',
+  borderBottomWidth: '1px',
+  borderBottomStyle: 'solid',
+  borderBottomColor: 'border',
 })
 
 function AboutPage() {
   return (
-    <div className={splitGrid}>
-      <div className={leftPanel}>
-        <div className={nameDisplay}>
-          {identity.name.split(' ').map((w, i) => (
-            <div key={i}>{w}</div>
-          ))}
-        </div>
-        <div className={roleLabel}>{identity.role}</div>
-        <p className={statementText}>{identity.statement}</p>
+    <div className={canvasCss}>
+      {/* Identity — large lede */}
+      <div className={css({ gridColumn: { base: '1 / -1', md: '1 / 9' }, marginBottom: '48px' })}>
+        <div className={eyebrowCss}>About</div>
+        <h1 className={css({
+          fontFamily: 'display',
+          fontWeight: 'bold',
+          fontSize: 'clamp(28px, 3vw, 44px)',
+          lineHeight: 'snug',
+          letterSpacing: 'tight',
+          color: 'text',
+          marginBottom: '24px',
+          maxWidth: '20ch',
+        })}>
+          {identity.name}
+        </h1>
+        <p className={css({
+          fontFamily: 'display',
+          fontSize: 'clamp(18px, 2vw, 24px)',
+          lineHeight: 'normal',
+          color: 'textSecondary',
+          marginBottom: '16px',
+        })}>
+          {identity.role}
+        </p>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '16px',
+          lineHeight: 'normal',
+          color: 'textSecondary',
+          maxWidth: '65ch',
+        })}>
+          {identity.statement}
+        </p>
       </div>
 
-      <div className={rightPanel}>
-        <Sidebar />
+      {/* Capabilities — right rail */}
+      <div className={css({
+        gridColumn: { base: '1 / -1', md: '9 / 13' },
+        borderLeftWidth: { base: '0', md: '1px' },
+        borderLeftStyle: 'solid',
+        borderLeftColor: 'border',
+        paddingLeft: { base: '0', md: '24px' },
+        marginBottom: '48px',
+      })}>
+        <div className={eyebrowCss}>Capabilities</div>
+        <ul className={css({ listStyle: 'none', padding: '0' })}>
+          {capabilities.map((c, i) => (
+            <li key={i} className={css({
+              fontFamily: 'body',
+              fontSize: '13px',
+              lineHeight: 'normal',
+              color: 'textSecondary',
+              paddingTop: '4px',
+              paddingBottom: '4px',
+              borderBottomWidth: '1px',
+              borderBottomStyle: 'solid',
+              borderBottomColor: 'border',
+            })}>
+              {c}
+            </li>
+          ))}
+        </ul>
+      </div>
 
-        <div className={contentArea}>
-          <div className={`${sectionLabel} ${firstSection}`}>Experience</div>
+      {/* Timeline — full width */}
+      <div className={css({ gridColumn: '1 / -1', marginBottom: '48px' })}>
+        <div className={eyebrowCss}>Experience</div>
+        <div className={css({ display: 'flex', flexDirection: 'column' })}>
           {timeline.map((entry, i) => (
-            <div key={i} className={timelineRow}>
-              <div className={yearCol}>{entry.year}</div>
-              <div className={roleCol}>
-                <div className={roleName}>{entry.role}</div>
-                <div className={companyName}>{entry.company}</div>
-                <div className={descText}>{entry.description}</div>
+            <div key={i} className={css({
+              display: 'grid',
+              gridTemplateColumns: { base: '1fr', md: '140px 200px 1fr' },
+              columnGap: '24px',
+              paddingTop: '10px',
+              paddingBottom: '10px',
+              borderBottomWidth: '1px',
+              borderBottomStyle: 'solid',
+              borderBottomColor: 'border',
+              alignItems: 'baseline',
+            })}>
+              <span className={css({
+                fontFamily: 'mono',
+                fontSize: '12px',
+                color: 'textMuted',
+                minWidth: '120px',
+                fontVariantNumeric: 'tabular-nums',
+              })}>
+                {entry.year}
+              </span>
+              <span className={css({
+                fontFamily: 'body',
+                fontWeight: 'semibold',
+                fontSize: '14px',
+                color: 'text',
+              })}>
+                {entry.role}
+              </span>
+              <div>
+                <span className={css({
+                  fontFamily: 'body',
+                  fontSize: '14px',
+                  color: 'accent',
+                })}>
+                  {entry.company}
+                </span>
+                <span className={css({
+                  fontFamily: 'body',
+                  fontSize: '13px',
+                  color: 'textMuted',
+                  marginLeft: '12px',
+                  display: { base: 'block', md: 'inline' },
+                })}>
+                  {entry.description}
+                </span>
               </div>
             </div>
           ))}
+        </div>
+      </div>
 
-          <div className={sectionLabel}>Education</div>
-          <div className={eduBlock}>
-            <div>{education.school}</div>
-            <div className={eduMeta}>
-              {education.degree} — {education.concentration} · {education.years}
-            </div>
+      {/* Education */}
+      <div className={css({ gridColumn: { base: '1 / -1', md: '1 / 7' }, marginBottom: '48px' })}>
+        <div className={eyebrowCss}>Education</div>
+        <div className={css({
+          fontFamily: 'body',
+          fontSize: '14px',
+          lineHeight: 'normal',
+          color: 'textSecondary',
+        })}>
+          <div className={css({ fontWeight: 'semibold', color: 'text', marginBottom: '4px' })}>{education.school}</div>
+          <div>{education.degree}, {education.concentration}</div>
+          <div className={css({ fontFamily: 'mono', fontSize: '12px', color: 'textMuted', marginTop: '4px' })}>{education.years}</div>
+        </div>
+      </div>
+
+      {/* Personal */}
+      <div className={css({ gridColumn: { base: '1 / -1', md: '7 / 13' }, marginBottom: '48px', borderLeftWidth: { base: '0', md: '1px' }, borderLeftStyle: 'solid', borderLeftColor: 'border', paddingLeft: { base: '0', md: '24px' } })}>
+        <div className={eyebrowCss}>Personal</div>
+        <div className={css({ display: 'grid', gridTemplateColumns: { base: '1fr', sm: '1fr 1fr' }, gap: '12px' })}>
+          <div>
+            <div className={css({ fontFamily: 'mono', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.10em', color: 'textMuted', marginBottom: '4px' })}>Holes in One</div>
+            <div className={css({ fontFamily: 'display', fontWeight: 'bold', fontSize: '28px', color: 'text' })}>{personal.holesInOne}</div>
           </div>
-
-          <div className={sectionLabel}>Capabilities</div>
-          <div className={capsGrid}>
-            {capabilities.map((cap, i) => (
-              <span key={i} className={capsPill}>{cap}</span>
-            ))}
+          <div>
+            <div className={css({ fontFamily: 'mono', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.10em', color: 'textMuted', marginBottom: '4px' })}>Sport</div>
+            <div className={css({ fontFamily: 'body', fontSize: '14px', color: 'textSecondary' })}>{personal.sport}</div>
           </div>
-
-          <div className={sectionLabel}>Personal</div>
-          <div className={personalBlock}>
-            <div>
-              <span className={personalLabel}>Holes in One: </span>
-              {personal.holesInOne}
-            </div>
-            <div>
-              <span className={personalLabel}>Sport: </span>
-              {personal.sport}
-            </div>
-            <div>
-              <span className={personalLabel}>Teams: </span>
-              {personal.teams.join(', ')}
-            </div>
-            <div>
-              <span className={personalLabel}>Current Focus: </span>
-              {personal.currentFocus}
-            </div>
+          <div>
+            <div className={css({ fontFamily: 'mono', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.10em', color: 'textMuted', marginBottom: '4px' })}>Teams</div>
+            <div className={css({ fontFamily: 'body', fontSize: '14px', color: 'textSecondary' })}>{personal.teams.join(', ')}</div>
+          </div>
+          <div>
+            <div className={css({ fontFamily: 'mono', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.10em', color: 'textMuted', marginBottom: '4px' })}>Current Focus</div>
+            <div className={css({ fontFamily: 'body', fontSize: '14px', color: 'textSecondary' })}>{personal.currentFocus}</div>
           </div>
         </div>
+      </div>
 
-        <div className={footerBar}>
-          <a href="/archive" className={footerLink}>Archive</a>
-          <span className={css({ fontFamily: 'body', fontSize: '11px', color: '{colors.neutral.600}' })}>
-            © {new Date().getFullYear()}
-          </span>
-        </div>
+      {/* Footer */}
+      <div className={css({
+        gridColumn: '1 / -1',
+        display: 'flex',
+        justifyContent: 'space-between',
+        paddingTop: '16px',
+        borderTopWidth: '1px',
+        borderTopStyle: 'solid',
+        borderTopColor: 'border',
+        flexWrap: 'wrap',
+        gap: '8px',
+      })}>
+        <span className={css({ fontFamily: 'mono', fontSize: '11px', color: 'textMuted' })}>© 2026 Doug March</span>
+        <a href="/archive" className={css({ fontFamily: 'mono', fontSize: '11px', color: 'textMuted', textDecoration: 'none', _hover: { color: 'accent', textDecoration: 'underline' }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' }, padding: '8px 0' })}>Archive</a>
       </div>
     </div>
   )
