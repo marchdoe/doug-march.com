@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 248,
+    "s": 82,
+    "l": 60,
+    "name": "electric indigo"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "indigo",
+    "name": "indigo-shadow"
+  },
+  "mood_word": "electric",
+  "color_story": "Electric indigo deepens the phrase's irony — the most unreasonable language burning in the most charged chromatic frequency, against a near-black field that is, itself, just HTML."
+}

@@ -1,105 +1,82 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const mastheadCss = css({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(12, 1fr)',
-  columnGap: '24px',
-  padding: '0 4vw',
-  height: '64px',
+const navWrap = css({
+  position: 'sticky',
+  top: 0,
+  zIndex: 100,
+  height: '44px',
+  display: 'flex',
   alignItems: 'center',
-  borderBottomWidth: '1px',
-  borderBottomStyle: 'solid',
-  borderBottomColor: 'border',
-  width: '100%',
+  justifyContent: 'space-between',
+  padding: '0 6vw 0 5vw',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  backdropFilter: 'blur(12px)',
+  WebkitBackdropFilter: 'blur(12px)',
+  background: 'rgba(12, 11, 30, 0.88)',
 })
 
-const leftZoneCss = css({
-  gridColumn: { base: '1 / -1', md: '1 / 4' },
+const leftGroup = css({
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
 })
 
-const logoCss = css({
-  width: '28px',
-  height: '28px',
-  flexShrink: 0,
+const logoStyle = css({
+  width: '22px',
+  height: '22px',
 })
 
-const nameCss = css({
+const nameStyle = css({
   fontFamily: 'body',
-  fontWeight: 'semibold',
-  fontSize: '11px',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
+  fontWeight: 'medium',
+  fontSize: '14px',
   color: 'text',
-  textDecoration: 'none',
-  _hover: { color: 'accent', textDecoration: 'none' },
+  letterSpacing: '0.01em',
 })
 
-const centerZoneCss = css({
-  gridColumn: { base: '1 / -1', md: '5 / 9' },
-  textAlign: 'center',
-  fontFamily: 'mono',
-  fontSize: '11px',
-  letterSpacing: '0.08em',
-  color: 'textMuted',
-  display: { base: 'none', md: 'block' },
-})
-
-const rightZoneCss = css({
-  gridColumn: { base: '1 / -1', md: '10 / 13' },
+const rightGroup = css({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: { base: 'flex-start', md: 'flex-end' },
   gap: '24px',
 })
 
-const navLinkCss = css({
+const navLink = css({
   fontFamily: 'body',
+  fontSize: '13px',
   fontWeight: 'normal',
-  fontSize: '11px',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  color: 'textSecondary',
+  color: 'textMuted',
   textDecoration: 'none',
-  padding: '12px 0',
-  _hover: { color: 'accent', textDecoration: 'none' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-})
-
-const mobileBarCss = css({
-  display: { base: 'flex', md: 'none' },
-  padding: '12px 4vw',
-  gap: '16px',
-  alignItems: 'center',
-  borderBottomWidth: '1px',
-  borderBottomStyle: 'solid',
-  borderBottomColor: 'border',
+  opacity: 0.65,
+  transition: 'opacity 0.15s ease, color 0.15s ease',
+  _hover: {
+    opacity: 1,
+    color: 'accentLight',
+  },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+    opacity: 1,
+  },
+  '&[aria-current="page"]': {
+    opacity: 1,
+    color: 'text',
+  },
 })
 
 export function Sidebar() {
   return (
-    <header>
-      <div className={mastheadCss}>
-        <div className={leftZoneCss}>
-          <img src={logoSvg} alt="Doug March logo" className={logoCss} />
-          <a href="/" className={nameCss}>Doug March</a>
-        </div>
-        <div className={centerZoneCss}>
-          May 8, 2026 — Broadsheet Edition
-        </div>
-        <nav className={rightZoneCss}>
-          <a href="/" className={navLinkCss}>Work</a>
-          <a href="/about" className={navLinkCss}>About</a>
-        </nav>
+    <nav className={navWrap} role="navigation" aria-label="Main navigation">
+      <div className={leftGroup}>
+        <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
+        <span className={nameStyle}>Doug March</span>
       </div>
-      <div className={mobileBarCss}>
-        <span className={css({ fontFamily: 'mono', fontSize: '11px', color: 'textMuted', letterSpacing: '0.08em' })}>
-          May 8, 2026
-        </span>
+      <div className={rightGroup}>
+        <a href="/" className={navLink}>Home</a>
+        <a href="/about" className={navLink}>About</a>
       </div>
-    </header>
+    </nav>
   )
 }
