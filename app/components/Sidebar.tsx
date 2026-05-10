@@ -2,41 +2,49 @@ import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
 const navWrap = css({
-  position: 'sticky',
-  top: 0,
-  zIndex: 100,
-  height: '44px',
+  position: 'absolute',
+  top: '0',
+  left: '0',
+  right: '0',
   display: 'flex',
-  alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '0 6vw 0 5vw',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  background: 'rgba(12, 11, 30, 0.88)',
+  alignItems: 'center',
+  padding: '28px 6vw',
+  zIndex: '10',
 })
 
-const leftGroup = css({
+const logoLink = css({
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
+  textDecoration: 'none',
+  color: '{colors.stone.400}',
+  opacity: '0.35',
+  _hover: {
+    opacity: '1',
+    color: '{colors.amber.300}',
+  },
+  _focus: {
+    opacity: '1',
+    outline: '2px solid {colors.amber.400}',
+    outlineOffset: '4px',
+  },
 })
 
-const logoStyle = css({
-  width: '22px',
-  height: '22px',
+const logoImg = css({
+  width: '20px',
+  height: '20px',
 })
 
-const nameStyle = css({
+const nameText = css({
   fontFamily: 'body',
+  fontSize: '12px',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
   fontWeight: 'medium',
-  fontSize: '14px',
-  color: 'text',
-  letterSpacing: '0.01em',
 })
 
-const rightGroup = css({
+const navLinks = css({
   display: 'flex',
   alignItems: 'center',
   gap: '24px',
@@ -44,37 +52,34 @@ const rightGroup = css({
 
 const navLink = css({
   fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: 'normal',
-  color: 'textMuted',
+  fontSize: '12px',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  fontWeight: 'medium',
+  color: '{colors.stone.400}',
+  opacity: '0.35',
   textDecoration: 'none',
-  opacity: 0.65,
-  transition: 'opacity 0.15s ease, color 0.15s ease',
+  padding: '12px 0',
   _hover: {
-    opacity: 1,
-    color: 'accentLight',
+    opacity: '1',
+    color: '{colors.amber.300}',
   },
   _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-    opacity: 1,
-  },
-  '&[aria-current="page"]': {
-    opacity: 1,
-    color: 'text',
+    opacity: '1',
+    outline: '2px solid {colors.amber.400}',
+    outlineOffset: '4px',
   },
 })
 
 export function Sidebar() {
   return (
-    <nav className={navWrap} role="navigation" aria-label="Main navigation">
-      <div className={leftGroup}>
-        <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
-        <span className={nameStyle}>Doug March</span>
-      </div>
-      <div className={rightGroup}>
-        <a href="/" className={navLink}>Home</a>
+    <nav className={navWrap}>
+      <a href="/" className={logoLink}>
+        <img src={logoSvg} alt="Doug March logo" className={logoImg} />
+        <span className={nameText}>Doug March</span>
+      </a>
+      <div className={navLinks}>
+        <a href="/" className={navLink}>Work</a>
         <a href="/about" className={navLink}>About</a>
       </div>
     </nav>

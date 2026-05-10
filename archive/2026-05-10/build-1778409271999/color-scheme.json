@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 35,
+    "s": 90,
+    "l": 40,
+    "name": "amber gold"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "amber",
+    "name": "warmstone"
+  },
+  "mood_word": "civilizational",
+  "color_story": "Amber on near-black: the color of candlelight on old vellum, gold leaf in an illuminated manuscript, a wax seal pressed into history — the palette makes 'civilizations' feel earned rather than merely declared, and lands squarely in the mandated 20°–50° window untouched by any of the last seven builds."
+}
