@@ -69,8 +69,13 @@
       "node-forge": ">=1.4.0",
       "path-to-regexp": ">=8.4.0",
       "esbuild": ">=0.25.0",
-      "hono": ">=4.12.14",
-      "@hono/node-server": ">=1.19.13"
+      "hono": ">=4.12.18",
+      "@hono/node-server": ">=1.19.13",
+      "fast-uri": ">=3.1.2",
+      "follow-redirects": ">=1.16.0",
+      "ip-address": ">=10.1.1",
+      "nitropack": ">=2.13.4",
+      "postcss": ">=8.5.10"
     }
   }
 }
