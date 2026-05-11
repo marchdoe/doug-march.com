@@ -3,8 +3,13 @@ import { Sidebar } from './Sidebar'
 import { css } from '../../styled-system/css'
 
 const layoutWrap = css({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100vw',
+  overflowX: 'hidden',
+  background: 'bg',
+  color: 'text',
   minHeight: '100vh',
-  position: 'relative',
 })
 
 export function Layout({ children }: { children: ReactNode }) {

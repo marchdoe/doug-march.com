@@ -1,0 +1,275 @@
+{
+  "date": "2026-05-11",
+  "startedAt": "2026-05-11T11:05:00.893Z",
+  "completedAt": "2026-05-11T11:12:37.706Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Pedal Mafia | Event Micro Site",
+              "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Renée Crown Wellness Institute",
+              "description": "Our objective is to establish the Crown Institute as the gold standard for science-backed, multidisciplinary approaches to mindfulness-based mental wellness...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/02/698bcba679e8c124826409.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQEBLAEsAAD/4gxYSUNDX1BST0ZJTEUAAQEAAAxITGlubwIQAABtbnRyUkdCIFhZWiAHzgACAAkABgAxAABhY3NwTVNGVAAAAABJRUMgc1JHQgAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLUhQICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFjcHJ0AAABUAAAADNkZXNjAAABhAAAAGx3dHB0AAAB8AAAABRia3B0...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The Kesey Signal",
+              "description": "A 1999 cyber-noir archive by Rob Ford. Uncover the soul of the early web through a terminal-driven mystery packed with hidden easter eggs. The first novel...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69efc1ebe3cca771371272.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFzGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgMTAuMC1jMDAwIDI1...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Monday",
+          "is_weekend": false,
+          "day_index": 1
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "bytedance/UI-TARS-desktop/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "CloakHQ/CloakBrowser/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "yikart/AiToEarn/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "playcanvas/supersplat/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "datawhalechina/easy-vibe/stargazers",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Truist Championship",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Kristoffer Reitan",
+              "position": "1",
+              "score": "-15"
+            },
+            {
+              "name": "Rickie Fowler",
+              "position": "2",
+              "score": "-13"
+            },
+            {
+              "name": "Nicolai Højgaard",
+              "position": "3",
+              "score": "-13"
+            },
+            {
+              "name": "Alex Fitzpatrick",
+              "position": "4",
+              "score": "-12"
+            },
+            {
+              "name": "J.J. Spaun",
+              "position": "5",
+              "score": "-11"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Hardware Attestation as Monopoly Enabler",
+              "url": "https://grapheneos.social/@GrapheneOS/116550899908879585",
+              "score": 1626,
+              "by": "ChuckMcM"
+            },
+            {
+              "title": "Local AI needs to be the norm",
+              "url": "https://unix.foo/posts/local-ai-needs-to-be-norm/",
+              "score": 1217,
+              "by": "cylo"
+            },
+            {
+              "title": "I'm going back to writing code by hand",
+              "url": "https://blog.k10s.dev/im-going-back-to-writing-code-by-hand/",
+              "score": 414,
+              "by": "dropbox_miner"
+            },
+            {
+              "title": "The greatest shot in television: James Burke had one chance to nail this scene (2024)",
+              "url": "https://www.openculture.com/2024/10/the-greatest-shot-in-television.html",
+              "score": 192,
+              "by": "susam"
+            },
+            {
+              "title": "Running local models on an M4 with 24GB memory",
+              "url": "https://jola.dev/posts/running-local-models-on-m4",
+              "score": 336,
+              "by": "shintoist"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waning crescent",
+          "illumination": 0.213,
+          "days_into_cycle": 25.02
+        },
+        "music": {
+          "bands": [
+            "Tobin Sprout",
+            "Wet Leg",
+            "The War on Drugs"
+          ]
+        },
+        "quote": {
+          "text": "The key to success is action.",
+          "author": "Brian Tracy"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 11,
+          "day_of_year": 131,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-10T23:20Z",
+              "result": "win",
+              "score": "6-3"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:06",
+          "sunset": "19:07",
+          "daylight_hours": 14
+        },
+        "date": "2026-05-11"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-11T11:05:15.962Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-10: Specimen\n  - 2026-05-09: Gallery Wall\n  - 2026-05-08: Broadsheet\n  - 2026-05-07: Split\n  - 2026-05-06: Specimen\n  - 2026-05-05: Poster\n  - 2026-05-04: Index\n\n**Recently used** (last 3 days): Specimen, Gallery Wall, Broadsheet\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If t"
+      },
+      "output": {
+        "hero_copy": "I'm going back to writing code by hand.",
+        "archetype": "Stack",
+        "chassisId": "bricolage-manrope",
+        "specLength": 5492,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue** — H:163° (aqua teal). Sits precisely in the 158°–170° mandate window, the only open zone after 7 days of palette avoidance. At full saturation on near-black, it reads as electric-craft: technical but warm, spring but purposeful.\n- **Neutral palette** — blue-slate family tinted toward H:200°:\n  - 50: `#EEF3F5`\n  - 100: `#D8E4E9`\n  - 200: `#B3C9D1`\n  - 300: `#8AADB9`\n  - 400: `#628F9F`\n  - 500: `#437282`\n  - 600: `#2E5666`\n  - 700: `#1E3D4E`\n  - 800: `",
+        "selfCheck": "1. Hero quotability: Yes — \"I'm going back to writing code by hand\" is a 414-point Hacker News headline that's a standalone manifesto; screenshot-worthy, provocative for a dev portfolio, and richly ironic on a site that redesigns itself daily via AI.\n2. Because-of chain: Yes — the craft/handmade eth"
+      },
+      "durationMs": 272699,
+      "timestamp": "2026-05-11T11:09:48.664Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5492
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 48052,
+      "timestamp": "2026-05-11T11:10:38.049Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4862,
+        "briefLength": 8409
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 95493,
+      "timestamp": "2026-05-11T11:12:13.544Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-11T11:12:20.952Z"
+    }
+  ]
+}

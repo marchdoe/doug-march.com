@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 163,
+    "s": 72,
+    "l": 52,
+    "name": "aqua teal"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "blue-green 200°",
+    "name": "deep slate"
+  },
+  "mood_word": "deliberate",
+  "color_story": "Aqua teal at H:163° — the narrow open window between all recent palette zones — reads as spring-fresh and precision-craft simultaneously: the color of a well-cleaned terminal, a soldering pen's glow, the exact hue of something made by hand with care."
+}

@@ -2,46 +2,41 @@ import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
 const navWrap = css({
-  position: 'absolute',
+  position: 'fixed',
   top: '0',
   left: '0',
   right: '0',
+  zIndex: '100',
   display: 'flex',
-  justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '28px 6vw',
-  zIndex: '10',
+  justifyContent: 'space-between',
+  height: '52px',
+  padding: '0 6vw',
+  background: 'transparent',
+  '@media (prefers-reduced-motion: reduce)': {
+    '& a': { transition: 'none' },
+  },
 })
 
-const logoLink = css({
+const logoArea = css({
   display: 'flex',
   alignItems: 'center',
-  gap: '12px',
-  textDecoration: 'none',
-  color: '{colors.stone.400}',
-  opacity: '0.35',
-  _hover: {
-    opacity: '1',
-    color: '{colors.amber.300}',
-  },
-  _focus: {
-    opacity: '1',
-    outline: '2px solid {colors.amber.400}',
-    outlineOffset: '4px',
-  },
+  gap: '10px',
 })
 
 const logoImg = css({
-  width: '20px',
-  height: '20px',
+  width: '28px',
+  height: '28px',
 })
 
-const nameText = css({
+const wordmark = css({
   fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
-  fontWeight: 'medium',
+  fontWeight: '500',
+  fontSize: '14px',
+  color: '{colors.neutral.300}',
+  letterSpacing: '0.02em',
+  textDecoration: 'none',
+  _hover: { color: 'accent' },
 })
 
 const navLinks = css({
@@ -52,31 +47,31 @@ const navLinks = css({
 
 const navLink = css({
   fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.12em',
+  fontWeight: '400',
+  fontSize: '13px',
+  color: '{colors.neutral.400}',
+  letterSpacing: '0.06em',
   textTransform: 'uppercase',
-  fontWeight: 'medium',
-  color: '{colors.stone.400}',
-  opacity: '0.35',
   textDecoration: 'none',
-  padding: '12px 0',
-  _hover: {
-    opacity: '1',
-    color: '{colors.amber.300}',
-  },
+  padding: '10px 4px',
+  minHeight: '44px',
+  display: 'flex',
+  alignItems: 'center',
+  transition: 'color 0.2s ease',
+  _hover: { color: 'accent' },
   _focus: {
-    opacity: '1',
-    outline: '2px solid {colors.amber.400}',
-    outlineOffset: '4px',
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
   },
 })
 
 export function Sidebar() {
   return (
-    <nav className={navWrap}>
-      <a href="/" className={logoLink}>
+    <nav className={navWrap} aria-label="Main navigation">
+      <a href="/" className={logoArea} style={{ textDecoration: 'none' }}>
         <img src={logoSvg} alt="Doug March logo" className={logoImg} />
-        <span className={nameText}>Doug March</span>
+        <span className={wordmark}>doug march</span>
       </a>
       <div className={navLinks}>
         <a href="/" className={navLink}>Work</a>
