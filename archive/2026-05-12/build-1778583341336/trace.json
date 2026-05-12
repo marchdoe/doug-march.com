@@ -1,0 +1,270 @@
+{
+  "date": "2026-05-12",
+  "startedAt": "2026-05-12T10:49:20.445Z",
+  "completedAt": "2026-05-12T10:55:42.832Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 13
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Pedal Mafia | Event Micro Site",
+              "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Renée Crown Wellness Institute",
+              "description": "Our objective is to establish the Crown Institute as the gold standard for science-backed, multidisciplinary approaches to mindfulness-based mental wellness...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/02/698bcba679e8c124826409.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQEBLAEsAAD/4gxYSUNDX1BST0ZJTEUAAQEAAAxITGlubwIQAABtbnRyUkdCIFhZWiAHzgACAAkABgAxAABhY3NwTVNGVAAAAABJRUMgc1JHQgAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLUhQICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFjcHJ0AAABUAAAADNkZXNjAAABhAAAAGx3dHB0AAAB8AAAABRia3B0...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The Kesey Signal",
+              "description": "A 1999 cyber-noir archive by Rob Ford. Uncover the soul of the early web through a terminal-driven mystery packed with hidden easter eggs. The first novel...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69efc1ebe3cca771371272.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFzGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgMTAuMC1jMDAwIDI1...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Tuesday",
+          "is_weekend": false,
+          "day_index": 2
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "bytedance/UI-TARS-desktop/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "CloakHQ/CloakBrowser/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "yikart/AiToEarn/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "playcanvas/supersplat/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "datawhalechina/easy-vibe/stargazers",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Truist Championship",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Kristoffer Reitan",
+              "position": "1",
+              "score": "-15"
+            },
+            {
+              "name": "Rickie Fowler",
+              "position": "2",
+              "score": "-13"
+            },
+            {
+              "name": "Nicolai Højgaard",
+              "position": "3",
+              "score": "-13"
+            },
+            {
+              "name": "Alex Fitzpatrick",
+              "position": "4",
+              "score": "-12"
+            },
+            {
+              "name": "J.J. Spaun",
+              "position": "5",
+              "score": "-11"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Learning Software Architecture",
+              "url": "https://matklad.github.io/2026/05/12/software-architecture.html",
+              "score": 65,
+              "by": "surprisetalk"
+            },
+            {
+              "title": "Postmortem: TanStack NPM supply-chain compromise",
+              "url": "https://tanstack.com/blog/npm-supply-chain-compromise-postmortem",
+              "score": 868,
+              "by": "varunsharma07"
+            },
+            {
+              "title": "Screenshots of Old Desktop OSes",
+              "url": "http://www.typewritten.org/Media/",
+              "score": 206,
+              "by": "adunk"
+            },
+            {
+              "title": "Toxicity on Social Media – The Noisy Room",
+              "url": "https://thenoisyroom.com",
+              "score": 35,
+              "by": "skm"
+            },
+            {
+              "title": "They Live (1988) inspired Adblocker",
+              "url": "https://github.com/davmlaw/they_live_adblocker",
+              "score": 262,
+              "by": "tokenburner"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waning crescent",
+          "illumination": 0.134,
+          "days_into_cycle": 26.01
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "Radiohead"
+          ]
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 12,
+          "day_of_year": 132,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": "2026-05-12T00:00Z",
+              "result": "loss",
+              "score": "103-112"
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:05",
+          "sunset": "19:07",
+          "daylight_hours": 14
+        },
+        "date": "2026-05-12"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-12T10:49:35.563Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-11: Stack\n  - 2026-05-10: Specimen\n  - 2026-05-09: Gallery Wall\n  - 2026-05-08: Broadsheet\n  - 2026-05-07: Split\n  - 2026-05-06: Specimen\n  - 2026-05-05: Poster\n\n**Recently used** (last 3 days): Stack, Specimen, Gallery Wall\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the br"
+      },
+      "output": {
+        "hero_copy": "PUT ON THE GLASSES.",
+        "archetype": "Poster",
+        "chassisId": "big-shoulders-atkinson",
+        "specLength": 6042,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue:** H:120°, the phosphor green of a monochrome terminal screen. Sits squarely within the mandated 110°–133° window. This is not a coincidence — the They Live aesthetic, old monitor glow, and the permitted hue range all converge at the same frequency.\n\n**Neutral palette** (tinted H:118° for atmospheric cohesion):\n- 50: `#EDFCEC`\n- 100: `#D1E8D0`\n- 200: `#AFCBAE`\n- 300: `#89AD88`\n- 400: `#648764`\n- 500: `#486748`\n- 600: `#344E34`\n- 700: `#223522`\n- 800: `#1",
+        "selfCheck": "1. Hero quotability: Yes — \"PUT ON THE GLASSES.\" works as a standalone poster line, a film reference, and a design manifesto fragment; someone would screenshot this without needing context.\n2. Because-of chain: Yes — the command register of the phrase required Poster (one phrase, full viewport); the"
+      },
+      "durationMs": 245076,
+      "timestamp": "2026-05-12T10:53:40.642Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 6042
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 25773,
+      "timestamp": "2026-05-12T10:54:07.776Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4667,
+        "briefLength": 9276
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 70785,
+      "timestamp": "2026-05-12T10:55:18.563Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-12T10:55:26.090Z"
+    }
+  ]
+}

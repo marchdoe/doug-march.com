@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 120,
+    "s": 60,
+    "l": 50,
+    "name": "phosphor green"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "green",
+    "name": "terminal void"
+  },
+  "mood_word": "revelatory",
+  "color_story": "Phosphor green H:120° is the exact frequency of a 1980s CRT terminal screen — the color the glasses reveal, the color of seeing through the signal noise, the only hue that earns the right to glow on near-black."
+}
