@@ -2,104 +2,100 @@ import type { ReactNode } from 'react'
 import { Sidebar } from './Sidebar'
 import { css } from '../../styled-system/css'
 
+const shellDesktop = css({
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  minHeight: '100vh',
+  maxWidth: 'none',
+
+  '@media (min-width: 768px)': {
+    gridTemplateColumns: '58fr 42fr',
+  },
+})
+
+const leftPanel = css({
+  background: 'bg',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  padding: '32px 24px 32px 24px',
+  minHeight: '70vh',
+  borderRight: 'none',
+  position: 'relative',
+
+  '@media (min-width: 768px)': {
+    position: 'sticky',
+    top: 0,
+    height: '100vh',
+    overflow: 'hidden',
+    padding: '64px 48px 64px 6vw',
+    borderRight: '1px solid',
+    borderColor: 'border',
+    minHeight: 'unset',
+  },
+})
+
+const openQuote = css({
+  fontFamily: 'display',
+  fontSize: '80px',
+  lineHeight: 1,
+  color: 'accent',
+  opacity: 0.2,
+  marginBottom: '4',
+  userSelect: 'none',
+
+  '@media (max-width: 767px)': {
+    fontSize: '48px',
+  },
+})
+
+const heroPhrase = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'clamp(36px, 5.8vw, 84px)',
+  lineHeight: 'tight',
+  letterSpacing: '-0.02em',
+  color: 'text',
+  maxWidth: '18ch',
+  textWrap: 'balance',
+})
+
+const attribution = css({
+  fontFamily: 'body',
+  fontSize: 'clamp(13px, 1vw, 15px)',
+  lineHeight: '1.3',
+  color: 'accent',
+  marginTop: '5',
+})
+
+const rightPanel = css({
+  background: 'bgCard',
+  minHeight: '100vh',
+  overflowY: 'auto',
+  padding: '32px 24px 80px 24px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '0',
+
+  '@media (min-width: 768px)': {
+    padding: '32px 6vw 80px 48px',
+  },
+})
+
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <div
-      className={css({
-        display: 'grid',
-        gridTemplateRows: '56px 1fr 48px',
-        gridTemplateColumns: '1fr',
-        minHeight: '100vh',
-        background: 'bg',
-        color: 'text',
-      })}
-    >
-      <Sidebar />
-      <main
-        className={css({
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '0',
-        })}
-      >
+    <div className={shellDesktop}>
+      <div className={leftPanel}>
+        <div className={openQuote} aria-hidden="true">"</div>
+        <h1 className={heroPhrase}>
+          We are willing to believe anything other than the truth.
+        </h1>
+        <p className={attribution}>— Carlos Ruiz Zafón</p>
+      </div>
+      <div className={rightPanel}>
+        <Sidebar />
         {children}
-      </main>
-      <footer
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingLeft: '6vw',
-          paddingRight: '6vw',
-          borderTop: '1px solid',
-          borderColor: 'border',
-          background: 'bg',
-          flexWrap: 'wrap',
-          gap: '8px',
-          fontSize: '12px',
-          fontFamily: 'body',
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-        })}
-      >
-        <div
-          className={css({
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            color: 'accent',
-            minHeight: '48px',
-          })}
-        >
-          <span>Truist Championship</span>
-          <span className={css({ color: 'border' })}>·</span>
-          <span>Reitan −15</span>
-        </div>
-        <div
-          className={css({
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            color: 'textDim',
-            minHeight: '48px',
-          })}
-        >
-          <span>DET 103</span>
-          <span className={css({ color: 'border' })}>·</span>
-          <span>OPP 112</span>
-        </div>
-        <div
-          className={css({
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            color: 'textSubtle',
-            minHeight: '48px',
-          })}
-        >
-          <span>🌘 13%</span>
-          <span className={css({ color: 'border' })}>·</span>
-          <span>Spring</span>
-          <span className={css({ color: 'border' })}>·</span>
-          <span>May 12</span>
-          <span className={css({ color: 'border' })}>·</span>
-          <a
-            href="/archive"
-            className={css({
-              color: 'textSubtle',
-              textDecoration: 'none',
-              _hover: { color: 'accent' },
-              _focus: {
-                outline: '2px solid',
-                outlineColor: 'accent',
-                outlineOffset: '2px',
-              },
-            })}
-          >
-            Archive
-          </a>
-        </div>
-      </footer>
+      </div>
     </div>
   )
 }

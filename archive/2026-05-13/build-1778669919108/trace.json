@@ -1,0 +1,249 @@
+{
+  "date": "2026-05-13",
+  "startedAt": "2026-05-13T10:51:56.789Z",
+  "completedAt": "2026-05-13T10:58:40.804Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pedal Mafia | Event Micro Site",
+              "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Renée Crown Wellness Institute",
+              "description": "Our objective is to establish the Crown Institute as the gold standard for science-backed, multidisciplinary approaches to mindfulness-based mental wellness...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/02/698bcba679e8c124826409.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQEBLAEsAAD/4gxYSUNDX1BST0ZJTEUAAQEAAAxITGlubwIQAABtbnRyUkdCIFhZWiAHzgACAAkABgAxAABhY3NwTVNGVAAAAABJRUMgc1JHQgAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLUhQICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFjcHJ0AAABUAAAADNkZXNjAAABhAAAAGx3dHB0AAAB8AAAABRia3B0...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Wednesday",
+          "is_weekend": false,
+          "day_index": 3
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "tinyhumansai/openhuman/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "sponsors/rohitg00",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/obra",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "yikart/AiToEarn/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "influxdata/telegraf/stargazers",
+              "description": "",
+              "language": "Go",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "PGA Championship",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Deterministic Fully-Static Whole-Binary Translation Without Heuristics",
+              "url": "https://arxiv.org/abs/2605.08419",
+              "score": 193,
+              "by": "matt_d"
+            },
+            {
+              "title": "Restore full BambuNetwork support for Bambu Lab printers",
+              "url": "https://github.com/FULU-Foundation/OrcaSlicer-bambulab",
+              "score": 454,
+              "by": "Murfalo"
+            },
+            {
+              "title": "Googlebook",
+              "url": "https://googlebook.google/",
+              "score": 798,
+              "by": "tambourine_man"
+            },
+            {
+              "title": "Show HN: Needle: We Distilled Gemini Tool Calling into a 26M Model",
+              "url": "https://github.com/cactus-compute/needle",
+              "score": 477,
+              "by": "HenryNdubuaku"
+            },
+            {
+              "title": "New stainless steel can survive conditions for hydrogen production in seawater",
+              "url": "https://www.sciencedaily.com/releases/2026/05/260510030950.htm",
+              "score": 61,
+              "by": "HardwareLust"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waning crescent",
+          "illumination": 0.07,
+          "days_into_cycle": 27.01
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "My Morning Jacket",
+            "The War on Drugs"
+          ]
+        },
+        "quote": {
+          "text": "We are willing to believe anything other than the truth.",
+          "author": "Carlos Ruiz Zafon"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 13,
+          "day_of_year": 133,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-12T23:10Z",
+              "result": "loss",
+              "score": "2-10"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:04",
+          "sunset": "19:08",
+          "daylight_hours": 14.1
+        },
+        "date": "2026-05-13"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-13T10:52:11.916Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-12: Poster\n  - 2026-05-11: Stack\n  - 2026-05-10: Specimen\n  - 2026-05-09: Gallery Wall\n  - 2026-05-08: Broadsheet\n  - 2026-05-07: Split\n  - 2026-05-06: Specimen\n\n**Recently used** (last 3 days): Poster, Stack, Specimen\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or"
+      },
+      "output": {
+        "hero_copy": "We are willing to believe anything other than the truth.",
+        "archetype": "Split",
+        "chassisId": "bricolage-manrope",
+        "specLength": 6234,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue** — H:345° (crimson/deep rose). Outside the forbidden 5°–325° zone. Chosen because truth and blood share a color; the Zafón quote is a wound, not a decoration.\n\n**Neutral palette** — cordovan stone, tinted H:340° throughout:\n- 50: `#FAF0F3`\n- 100: `#EDD8DF`\n- 200: `#D4B8C1`\n- 300: `#B594A0`\n- 400: `#91707E`\n- 500: `#6D4E5C`\n- 600: `#503543`\n- 700: `#371F2D`\n- 800: `#22101A`\n- 900: `#130910`\n\n**Accent color** — crimson:\n- light: `#FF7AAD` (crimson.300)\n- ",
+        "selfCheck": "1. Hero quotability: Yes — \"We are willing to believe anything other than the truth.\" is attributed to a major literary voice, stands entirely alone as an argument, and is the kind of line someone screenshots from a novel.\n2. Because-of chain: Yes — the aphorism's self-sufficiency demanded a panel t"
+      },
+      "durationMs": 211835,
+      "timestamp": "2026-05-13T10:55:43.754Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 6234
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "REVISE\n\n- **Preset typography tokens are incomplete.** Visual spec specifies line-height `1.3` (attribution) and `1.2` (signal labels), and letter-spacing `0.12em` (signal data headers). Preset defines only `tight: 0.93, snug: 1.1, normal: 1.55, loose: 1.8` and `tight: -0.03em, normal: 0em, wide: 0.05em, wider: 0.08em, widest: 0.15em`. Add these intermediate tokens to `lineHeights` and `letterSpacings` in the preset to match the visual spec exactly: `attribution: { value: '1.3' }`, `signalLabels"
+      },
+      "durationMs": 62984,
+      "timestamp": "2026-05-13T10:56:48.074Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 3988,
+        "briefLength": 8861
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 87868,
+      "timestamp": "2026-05-13T10:58:15.943Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-13T10:58:23.829Z"
+    }
+  ]
+}

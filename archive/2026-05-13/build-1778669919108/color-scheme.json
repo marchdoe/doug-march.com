@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 345,
+    "s": 72,
+    "l": 44,
+    "name": "crimson"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "rose-dark",
+    "name": "cordovan stone"
+  },
+  "mood_word": "unsparing",
+  "color_story": "Crimson is the color of the mark left in red ink — corrections, blood, the pen that writes what cannot be unwritten — and against near-black cordovan void it pulses like the truth itself: visible, uncomfortable, impossible to pretend away."
+}
