@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 72,
+    "s": 85,
+    "l": 50,
+    "name": "acid chartreuse"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "olive-green",
+    "name": "night olive"
+  },
+  "mood_word": "resolute",
+  "color_story": "Acid chartreuse on near-black is the color of a warning label printed on dark paper — appropriate for a phrase that locates defeat inside the self while the moon goes entirely dark."
+}

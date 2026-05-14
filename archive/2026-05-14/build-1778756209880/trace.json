@@ -1,0 +1,249 @@
+{
+  "date": "2026-05-14",
+  "startedAt": "2026-05-14T10:48:24.426Z",
+  "completedAt": "2026-05-14T10:56:51.581Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pedal Mafia | Event Micro Site",
+              "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Renée Crown Wellness Institute",
+              "description": "Our objective is to establish the Crown Institute as the gold standard for science-backed, multidisciplinary approaches to mindfulness-based mental wellness...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/02/698bcba679e8c124826409.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQEBLAEsAAD/4gxYSUNDX1BST0ZJTEUAAQEAAAxITGlubwIQAABtbnRyUkdCIFhZWiAHzgACAAkABgAxAABhY3NwTVNGVAAAAABJRUMgc1JHQgAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLUhQICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFjcHJ0AAABUAAAADNkZXNjAAABhAAAAGx3dHB0AAAB8AAAABRia3B0...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Thursday",
+          "is_weekend": false,
+          "day_index": 4
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "ruvnet/RuView/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "tinyhumansai/openhuman/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "sponsors/rohitg00",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/obra",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "K-Dense-AI/scientific-agent-skills/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "PGA Championship",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Claude for Small Business",
+              "url": "https://www.anthropic.com/news/claude-for-small-business",
+              "score": 271,
+              "by": "neilfrndes"
+            },
+            {
+              "title": "Scorched Earth 2000 – Web",
+              "url": "http://www.scorch2000.com/web/",
+              "score": 269,
+              "by": "meshko"
+            },
+            {
+              "title": "Linux gaming is faster because Windows APIs are becoming Linux kernel features",
+              "url": "https://www.xda-developers.com/linux-gaming-is-getting-faster-because-windows-apis-are-becoming-linux-kernel-features/",
+              "score": 752,
+              "by": "haunter"
+            },
+            {
+              "title": "Classic 7 is a Windows 10 LTSC mod to look 1:1 to Windows 7",
+              "url": "https://classic7.lol/",
+              "score": 61,
+              "by": "jandeboevrie"
+            },
+            {
+              "title": "Setting up a free *.city.state.us locality domain (2025)",
+              "url": "https://fredchan.org/blog/locality-domains-guide/",
+              "score": 565,
+              "by": "speckx"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "new moon",
+          "illumination": 0.026,
+          "days_into_cycle": 28.01
+        },
+        "music": {
+          "bands": [
+            "Wet Leg",
+            "Guided by Voices",
+            "My Morning Jacket"
+          ]
+        },
+        "quote": {
+          "text": "There is no failure except in no longer trying. There is no defeat except from within, no insurmountable barrier except our own inherent weakness of purpose.",
+          "author": "Elbert Hubbard"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 14,
+          "day_of_year": 134,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": "2026-05-14T00:00Z",
+              "result": "loss",
+              "score": "113-117"
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-13T23:10Z",
+              "result": "loss",
+              "score": "2-3"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:03",
+          "sunset": "19:09",
+          "daylight_hours": 14.1
+        },
+        "date": "2026-05-14"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-14T10:48:39.622Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-13: Split\n  - 2026-05-12: Poster\n  - 2026-05-11: Stack\n  - 2026-05-10: Specimen\n  - 2026-05-09: Gallery Wall\n  - 2026-05-08: Broadsheet\n  - 2026-05-07: Split\n\n**Recently used** (last 3 days): Split, Poster, Stack\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or signa"
+      },
+      "output": {
+        "hero_copy": "No defeat except from within.",
+        "archetype": "Broadsheet",
+        "chassisId": "spectral-albert",
+        "specLength": 6244,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue** — H:72° (chartreuse-yellow). This is the only remaining gap in the color mandate after eliminating 0°–65° and 90°–360°; at full saturation on a near-black ground it reads as acid, electric, and deliberately uncomfortable — the right register for a defiant persistence aphorism on a new-moon night.\n\n**Neutral palette** — Tinted toward H:72° (olive), dark-dominant:\n- 50: `#F0F0E8`\n- 100: `#DEDEDA`\n- 200: `#C4C4BA`\n- 300: `#A6A69A`\n- 400: `#888876`\n- 500: ",
+        "selfCheck": "1. Hero quotability: Yes — \"No defeat except from within.\" stands alone as a poster, a locker-room wall, a manifesto fragment; it needs no context to land.\n2. Because-of chain: Yes — the phrase demanded editorial authority (Broadsheet), which demanded a slab serif with newspaper gravity (spectral-al"
+      },
+      "durationMs": 287576,
+      "timestamp": "2026-05-14T10:53:27.201Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 6244
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 63211,
+      "timestamp": "2026-05-14T10:54:31.800Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 5308,
+        "briefLength": 9097
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 115089,
+      "timestamp": "2026-05-14T10:56:26.890Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-14T10:56:34.630Z"
+    }
+  ]
+}

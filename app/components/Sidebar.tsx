@@ -1,73 +1,110 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const navWrap = css({
-  display: 'flex',
+const mastheadStyle = css({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(12, 1fr)',
+  gap: '0 24px',
+  padding: '0 6vw',
+  height: '56px',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  paddingBottom: '6',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  marginBottom: '7',
+  borderBottom: '2px solid',
+  borderColor: 'accent',
+  position: 'relative',
+  zIndex: 10,
 })
 
-const logoArea = css({
+const logoZone = css({
+  gridColumn: '1 / 5',
   display: 'flex',
   alignItems: 'center',
-  gap: '3',
+  gap: '12px',
 })
 
 const logoImg = css({
-  width: '28px',
   height: '28px',
+  width: '28px',
 })
 
-const siteName = css({
-  fontFamily: 'body',
-  fontSize: 'sm',
-  fontWeight: 'medium',
-  color: 'text',
-  letterSpacing: 'wide',
+const nameStyle = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: '14px',
+  letterSpacing: '0.2em',
   textTransform: 'uppercase',
+  color: 'text',
 })
 
-const navLinks = css({
+const dateZone = css({
+  gridColumn: '5 / 9',
   display: 'flex',
-  gap: '6',
+  justifyContent: 'center',
   alignItems: 'center',
+  fontFamily: 'body',
+  fontSize: '11px',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  '@media (max-width: 767px)': {
+    display: 'none',
+  },
+})
+
+const navZone = css({
+  gridColumn: '9 / 13',
+  display: 'flex',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+  gap: '24px',
+  '@media (max-width: 767px)': {
+    gridColumn: '7 / 13',
+    gap: '16px',
+  },
 })
 
 const navLink = css({
   fontFamily: 'body',
   fontSize: '12px',
-  letterSpacing: '0.1em',
+  letterSpacing: '0.2em',
   textTransform: 'uppercase',
-  color: 'textMuted',
+  color: 'textSecondary',
   textDecoration: 'none',
-  transition: 'opacity 150ms ease',
-  padding: '2',
+  transition: 'color 0.2s',
+  padding: '12px 0',
   _hover: {
-    opacity: 1,
-    color: 'text',
+    color: 'accent',
+    textDecoration: 'none',
   },
-  _focus: {
+  '&:focus-visible': {
     outline: '2px solid',
     outlineColor: 'accent',
-    outlineOffset: '2px',
+    outlineOffset: '4px',
+  },
+})
+
+const mobileStyle = css({
+  '@media (max-width: 767px)': {
+    gridTemplateColumns: 'repeat(12, 1fr)',
+    gap: '0 12px',
+    padding: '0 16px',
+    height: '52px',
   },
 })
 
 export function Sidebar() {
   return (
-    <nav className={navWrap} aria-label="Site navigation">
-      <div className={logoArea}>
+    <header className={`${mastheadStyle} ${mobileStyle}`}>
+      <div className={logoZone}>
         <img src={logoSvg} alt="Doug March logo" className={logoImg} />
-        <span className={siteName}>Doug March</span>
+        <span className={nameStyle}>Doug March</span>
       </div>
-      <div className={navLinks}>
+      <div className={dateZone}>
+        May 14, 2026 · Thursday · Issue No. 134
+      </div>
+      <nav className={navZone} aria-label="Main navigation">
         <a href="/" className={navLink}>Work</a>
         <a href="/about" className={navLink}>About</a>
-      </div>
-    </nav>
+      </nav>
+    </header>
   )
 }
