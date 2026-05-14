@@ -95,7 +95,7 @@ test.describe('site health — content verification', () => {
     // Specimen/Poster days: phrase-only home page — no project listing, but h1 (hero phrase) is present.
     const projectNames = page.locator('body').filter({ hasText: /Spaceman|FishSticks|Doug March|Teeturn|Politweets/ })
     const heroPhrase = page.locator('h1')
-    await expect(projectNames.or(heroPhrase)).toBeVisible({ timeout: 15000 })
+    await expect(projectNames.or(heroPhrase).first()).toBeVisible({ timeout: 15000 })
   })
 
   test('about page shows real timeline content', async ({ page }) => {
