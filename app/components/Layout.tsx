@@ -2,17 +2,17 @@ import type { ReactNode } from 'react'
 import { Sidebar } from './Sidebar'
 import { css } from '../../styled-system/css'
 
-const layoutStyle = css({
-  minHeight: '100dvh',
-  background: 'bg',
-  color: 'text',
+const wrapper = css({
+  minHeight: '100vh',
+  background: '{colors.neutral.900}',
+  color: '{colors.neutral.50}',
 })
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className={layoutStyle}>
+    <div className={wrapper}>
       <Sidebar />
-      <main>{children}</main>
+      {children}
     </div>
   )
 }

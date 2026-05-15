@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 292,
+    "s": 72,
+    "l": 62,
+    "name": "violet-purple"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "violet",
+    "name": "night-violet"
+  },
+  "mood_word": "surveillance",
+  "color_story": "Violet-purple H:292° is the exact frequency of CCTV screens, night-vision camera glow, and the paranoid illumination of a new-moon sky — the color of watching in total darkness, which the hero command orders you to stop."
+}
