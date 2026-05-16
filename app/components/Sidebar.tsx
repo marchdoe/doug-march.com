@@ -3,84 +3,86 @@ import { css } from '../../styled-system/css'
 
 const navWrap = css({
   position: 'fixed',
-  top: 0,
-  left: 0,
-  width: '100vw',
-  height: '52px',
-  background: '{colors.neutral.900}',
-  borderBottom: '1px solid {colors.neutral.700}',
-  zIndex: 100,
+  top: '0',
+  left: '0',
+  width: '100%',
+  height: '64px',
+  background: 'bg',
+  borderBottom: '1px solid',
+  borderColor: 'border',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '0 4vw',
+  padding: '0 6vw',
+  zIndex: 100,
+  '@media (prefers-reduced-motion: reduce)': {
+    transition: 'none',
+  },
 })
 
-const leftGroup = css({
+const logoArea = css({
   display: 'flex',
   alignItems: 'center',
-  gap: '12px',
+  gap: '10px',
 })
 
-const logoStyle = css({
-  height: '24px',
-  width: '24px',
+const logoImg = css({
+  width: '28px',
+  height: '28px',
 })
 
-const nameStyle = css({
+const logotype = css({
   fontFamily: 'body',
-  fontSize: '11px',
-  fontWeight: '500',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  color: '{colors.neutral.300}',
+  fontWeight: 'bold',
+  fontSize: '15px',
+  color: 'text',
+  letterSpacing: 'normal',
+  textDecoration: 'none',
+  lineHeight: '1',
 })
 
 const navLinks = css({
   display: 'flex',
   alignItems: 'center',
-  gap: '8px',
-  fontFamily: 'body',
-  fontSize: '11px',
-  fontWeight: '500',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
+  gap: '24px',
 })
 
 const navLink = css({
-  color: '{colors.neutral.400}',
+  fontFamily: 'body',
+  fontSize: '14px',
+  fontWeight: 'normal',
+  color: 'textMuted',
+  letterSpacing: 'wide',
   textDecoration: 'none',
-  padding: '12px 8px',
-  transition: 'color 0.2s ease',
+  padding: '10px 4px',
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  transition: 'color 150ms ease',
   _hover: {
-    color: '{colors.neutral.50}',
-    textDecoration: 'none',
+    color: 'accent',
+    textDecoration: 'underline',
+    textUnderlineOffset: '4px',
+    textDecorationColor: 'accent',
   },
-  '&:focus-visible': {
-    outline: '2px solid {colors.primary.400}',
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
     outlineOffset: '2px',
+    borderRadius: 'sm',
   },
-})
-
-const dotSep = css({
-  width: '3px',
-  height: '3px',
-  borderRadius: '9999px',
-  background: '{colors.primary.400}',
-  flexShrink: 0,
 })
 
 export function Sidebar() {
   return (
     <nav className={navWrap} role="navigation" aria-label="Main navigation">
-      <div className={leftGroup}>
-        <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
-        <span className={nameStyle}>Doug March</span>
-      </div>
+      <a href="/" className={logoArea} aria-label="Doug March home">
+        <img src={logoSvg} alt="" className={logoImg} />
+        <span className={logotype}>doug march</span>
+      </a>
       <div className={navLinks}>
-        <a href="/" className={navLink}>Work</a>
-        <span className={dotSep} aria-hidden="true" />
-        <a href="/about" className={navLink}>About</a>
+        <a href="/" className={navLink}>work</a>
+        <a href="/about" className={navLink}>about</a>
       </div>
     </nav>
   )

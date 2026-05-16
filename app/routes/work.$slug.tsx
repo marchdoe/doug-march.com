@@ -4,137 +4,74 @@ import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const page = css({
-  padding: '4vw',
-  paddingTop: 'calc(4vw + 52px)',
-  display: 'grid',
-  gridTemplateColumns: 'repeat(12, 1fr)',
-  gap: '3vw',
-  minHeight: '100vh',
-  '@media (max-width: 768px)': {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px',
-    padding: '16px',
-    paddingTop: 'calc(16px + 52px)',
-  },
+const pageWrap = css({
+  padding: '80px 6vw',
+  minHeight: 'calc(100vh - 64px)',
+})
+
+const inner = css({
+  width: '88vw',
+  maxWidth: '88vw',
+  margin: '0 auto',
 })
 
 const backLink = css({
-  gridColumn: '1 / 13',
   fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: '500',
-  letterSpacing: '0.05em',
-  color: '{colors.neutral.500}',
+  fontSize: '14px',
+  color: 'textMuted',
   textDecoration: 'none',
-  padding: '8px 0',
-  _hover: {
-    color: '{colors.primary.400}',
-    textDecoration: 'underline',
-  },
-  '&:focus-visible': {
-    outline: '2px solid {colors.primary.400}',
+  display: 'inline-flex',
+  alignItems: 'center',
+  minHeight: '44px',
+  marginBottom: '48px',
+  _hover: { color: 'accent' },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
     outlineOffset: '2px',
+    borderRadius: 'sm',
   },
 })
 
-const heroSection = css({
-  gridColumn: '1 / 9',
-  paddingTop: '4vw',
-  '@media (max-width: 768px)': {
-    paddingTop: '0',
-  },
-})
-
-const projectTitle = css({
+const title = css({
   fontFamily: 'display',
-  fontSize: 'clamp(36px, 6vw, 96px)',
-  fontWeight: '700',
-  lineHeight: '0.95',
-  color: '{colors.neutral.50}',
-  textTransform: 'uppercase',
-  marginBottom: '16px',
+  fontWeight: 'black',
+  fontSize: 'clamp(36px, 5vw, 72px)',
+  lineHeight: 'tight',
+  letterSpacing: 'tight',
+  color: 'text',
 })
 
-const projectType = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: '500',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  color: '{colors.primary.400}',
-  marginBottom: '8px',
-})
-
-const projectYear = css({
-  fontFamily: 'mono',
-  fontSize: '14px',
-  color: '{colors.neutral.500}',
-  fontVariantNumeric: 'tabular-nums',
-})
-
-const metaSidebar = css({
-  gridColumn: '9 / 13',
-  paddingTop: '4vw',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-  '@media (max-width: 768px)': {
-    paddingTop: '0',
-  },
-})
-
-const metaBlock = css({
-  background: '{colors.neutral.800}',
-  border: '1px solid {colors.neutral.700}',
-  borderRadius: '2px',
-  padding: '16px',
-})
-
-const metaLabel = css({
-  fontFamily: 'body',
-  fontSize: '10px',
-  fontWeight: '600',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  color: '{colors.neutral.500}',
-  marginBottom: '6px',
-})
-
-const metaValue = css({
+const meta = css({
   fontFamily: 'body',
   fontSize: '14px',
-  lineHeight: '1.5',
-  color: '{colors.neutral.300}',
-  maxWidth: '55ch',
+  color: 'textMuted',
+  letterSpacing: 'wide',
+  marginTop: '8px',
 })
 
-const bodySection = css({
-  gridColumn: '1 / 9',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '32px',
-  '@media (max-width: 768px)': {
-    width: '100%',
-  },
+const sectionWrap = css({
+  marginTop: '48px',
+  paddingTop: '32px',
+  borderTop: '1px solid',
+  borderColor: 'border',
 })
 
 const sectionLabel = css({
   fontFamily: 'body',
-  fontSize: '11px',
-  fontWeight: '600',
-  letterSpacing: '0.10em',
+  fontSize: '12px',
+  fontWeight: 'semibold',
+  color: 'accent',
   textTransform: 'uppercase',
-  color: '{colors.neutral.500}',
-  marginBottom: '8px',
+  letterSpacing: 'wider',
+  marginBottom: '12px',
 })
 
-const bodyText = css({
+const sectionBody = css({
   fontFamily: 'body',
-  fontSize: '16px',
-  lineHeight: '1.55',
-  color: '{colors.neutral.300}',
+  fontSize: 'clamp(16px, 1.2vw, 18px)',
+  lineHeight: 'normal',
+  color: 'textSecondary',
   maxWidth: '65ch',
 })
 
@@ -142,56 +79,82 @@ const stackList = css({
   display: 'flex',
   flexWrap: 'wrap',
   gap: '8px',
+  marginTop: '8px',
 })
 
-const stackPill = css({
-  fontFamily: 'mono',
-  fontSize: '12px',
-  color: '{colors.neutral.400}',
-  background: '{colors.neutral.800}',
-  border: '1px solid {colors.neutral.700}',
-  borderRadius: '2px',
-  padding: '4px 10px',
-})
-
-const externalLink = css({
+const stackTag = css({
   fontFamily: 'body',
-  fontSize: '14px',
-  fontWeight: '600',
-  color: '{colors.primary.400}',
-  textDecoration: 'none',
+  fontSize: '13px',
+  fontWeight: 'medium',
+  color: 'textSecondary',
+  padding: '6px 12px',
+  background: 'bgCard',
+  borderRadius: 'sm',
+})
+
+const extLink = css({
   display: 'inline-flex',
   alignItems: 'center',
-  gap: '6px',
-  padding: '8px 0',
+  fontFamily: 'body',
+  fontSize: '14px',
+  fontWeight: 'semibold',
+  color: 'accent',
+  marginTop: '32px',
+  padding: '10px 0',
+  minHeight: '44px',
+  textDecoration: 'none',
   _hover: {
-    color: '{colors.primary.200}',
+    color: 'accentDark',
     textDecoration: 'underline',
+    textUnderlineOffset: '3px',
   },
-  '&:focus-visible': {
-    outline: '2px solid {colors.primary.400}',
-    outlineOffset: '4px',
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+    borderRadius: 'sm',
   },
 })
 
-const footerStyle = css({
-  gridColumn: '1 / 13',
-  marginTop: '4vw',
-  paddingTop: '16px',
-  borderTop: '1px solid {colors.neutral.700}',
+const footerWrap = css({
+  padding: '48px 6vw',
+  borderTop: '1px solid',
+  borderColor: 'border',
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingBottom: '4vw',
+  alignItems: 'baseline',
+  flexWrap: 'wrap',
+  gap: '16px',
+})
+
+const footerText = css({
   fontFamily: 'body',
-  fontSize: '12px',
-  color: '{colors.neutral.500}',
-  '@media (max-width: 768px)': {
-    flexDirection: 'column',
-    gap: '8px',
-    alignItems: 'flex-start',
-    marginTop: '32px',
+  fontSize: '13px',
+  color: 'textMuted',
+})
+
+const footerLink = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  color: 'textMuted',
+  textDecoration: 'none',
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  _hover: { color: 'accent' },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+    borderRadius: 'sm',
   },
+})
+
+const notFound = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: '24px',
+  color: 'text',
 })
 
 function ProjectPage() {
@@ -200,102 +163,89 @@ function ProjectPage() {
 
   if (!project) {
     return (
-      <div className={page}>
-        <div className={css({ gridColumn: '1 / 13', paddingTop: '8vw' })}>
-          <h1 className={projectTitle}>Not Found</h1>
-          <a href="/" className={backLink}>← Back to work</a>
+      <div className={pageWrap}>
+        <div className={inner}>
+          <a href="/" className={backLink}>← Back</a>
+          <p className={notFound}>Project not found.</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className={page}>
-      <a href="/" className={backLink}>← Back</a>
+    <>
+      <div className={pageWrap}>
+        <div className={inner}>
+          <a href="/" className={backLink}>← Back to work</a>
 
-      {/* Hero */}
-      <div className={heroSection}>
-        <p className={projectType}>{project.type} · {project.year}</p>
-        <h1 className={projectTitle}>{project.title}</h1>
-        {project.problem && <p className={bodyText}>{project.problem}</p>}
-      </div>
+          <h1 className={title}>{project.title}</h1>
+          <p className={meta}>{project.type} · {project.year}{project.role ? ` · ${project.role}` : ''}</p>
 
-      {/* Meta sidebar */}
-      <div className={metaSidebar}>
-        {project.role && (
-          <div className={metaBlock}>
-            <p className={metaLabel}>Role</p>
-            <p className={metaValue}>{project.role}</p>
-          </div>
-        )}
-        {project.externalUrl && (
-          <div className={metaBlock}>
-            <p className={metaLabel}>Live</p>
-            <a href={project.externalUrl} className={externalLink}>
-              Visit site ↗
-            </a>
-          </div>
-        )}
-        {project.liveUrl && (
-          <div className={metaBlock}>
-            <p className={metaLabel}>URL</p>
-            <a href={project.liveUrl} className={externalLink}>
-              {project.liveUrl.replace('https://', '')} ↗
-            </a>
-          </div>
-        )}
-        {project.githubUrl && (
-          <div className={metaBlock}>
-            <p className={metaLabel}>Source</p>
-            <a href={project.githubUrl} className={externalLink}>
-              GitHub ↗
-            </a>
-          </div>
-        )}
-      </div>
-
-      {/* Body content */}
-      <div className={bodySection}>
-        {project.approach && (
-          <div>
-            <p className={sectionLabel}>Approach</p>
-            <p className={bodyText}>{project.approach}</p>
-          </div>
-        )}
-        {project.outcome && (
-          <div>
-            <p className={sectionLabel}>Outcome</p>
-            <p className={bodyText}>{project.outcome}</p>
-          </div>
-        )}
-        {project.description && (
-          <div>
-            <p className={sectionLabel}>Description</p>
-            <p className={bodyText}>{project.description}</p>
-          </div>
-        )}
-        {project.stack && project.stack.length > 0 && (
-          <div>
-            <p className={sectionLabel}>Stack</p>
-            <div className={stackList}>
-              {project.stack.map((s, i) => (
-                <span key={i} className={stackPill}>{s}</span>
-              ))}
+          {project.problem && (
+            <div className={sectionWrap}>
+              <p className={sectionLabel}>Problem</p>
+              <p className={sectionBody}>{project.problem}</p>
             </div>
-          </div>
-        )}
+          )}
+
+          {project.approach && (
+            <div className={sectionWrap}>
+              <p className={sectionLabel}>Approach</p>
+              <p className={sectionBody}>{project.approach}</p>
+            </div>
+          )}
+
+          {project.outcome && (
+            <div className={sectionWrap}>
+              <p className={sectionLabel}>Outcome</p>
+              <p className={sectionBody}>{project.outcome}</p>
+            </div>
+          )}
+
+          {project.description && (
+            <div className={sectionWrap}>
+              <p className={sectionLabel}>Description</p>
+              <p className={sectionBody}>{project.description}</p>
+            </div>
+          )}
+
+          {project.stack && project.stack.length > 0 && (
+            <div className={sectionWrap}>
+              <p className={sectionLabel}>Stack</p>
+              <div className={stackList}>
+                {project.stack.map((tech) => (
+                  <span key={tech} className={stackTag}>{tech}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {(project.externalUrl || project.liveUrl || project.githubUrl) && (
+            <div style={{ marginTop: '32px' }}>
+              {project.externalUrl && (
+                <a href={project.externalUrl} className={extLink}>
+                  Visit Project →
+                </a>
+              )}
+              {project.liveUrl && !project.externalUrl && (
+                <a href={project.liveUrl} className={extLink}>
+                  View Live →
+                </a>
+              )}
+              {project.githubUrl && (
+                <a href={project.githubUrl} className={extLink} style={{ marginLeft: '24px' }}>
+                  GitHub →
+                </a>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Footer */}
-      <div className={footerStyle}>
-        <span>© 2026 Doug March</span>
-        <a href="/archive" className={css({
-          color: '{colors.neutral.500}',
-          textDecoration: 'none',
-          _hover: { color: '{colors.neutral.300}', textDecoration: 'underline' },
-          '&:focus-visible': { outline: '2px solid {colors.primary.400}', outlineOffset: '2px' },
-        })}>Archive</a>
-      </div>
-    </div>
+      <footer className={footerWrap}>
+        <span className={footerText}>Doug March · Product Designer & Developer</span>
+        <a href="/archive" className={footerLink}>Archive</a>
+      </footer>
+    </>
   )
 }

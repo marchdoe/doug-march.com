@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 205,
+    "s": 78,
+    "l": 42,
+    "name": "cerulean"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "cerulean",
+    "name": "warm sand"
+  },
+  "mood_word": "cultivation",
+  "color_story": "Cerulean — the exact blue of a clear spring sky at 6 AM, when a new moon has already set and 14 hours of light are promised — held against warm paper ground: the palette of a morning you decide to begin something."
+}

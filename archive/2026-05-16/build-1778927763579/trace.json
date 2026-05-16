@@ -1,0 +1,274 @@
+{
+  "date": "2026-05-16",
+  "startedAt": "2026-05-16T10:28:11.137Z",
+  "completedAt": "2026-05-16T10:36:05.283Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pedal Mafia | Event Micro Site",
+              "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Saturday",
+          "is_weekend": true,
+          "day_index": 6
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "tinyhumansai/openhuman/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "sponsors/obra",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "K-Dense-AI/scientific-agent-skills/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "supertone-inc/supertonic/stargazers",
+              "description": "",
+              "language": "Swift",
+              "stars": null
+            },
+            {
+              "name": "ruvnet/RuView/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "PGA Championship",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Maverick McNealy",
+              "position": "1",
+              "score": "-4"
+            },
+            {
+              "name": "Alex Smalley",
+              "position": "2",
+              "score": "-4"
+            },
+            {
+              "name": "Chris Gotterup",
+              "position": "3",
+              "score": "-3"
+            },
+            {
+              "name": "Hideki Matsuyama",
+              "position": "4",
+              "score": "-3"
+            },
+            {
+              "name": "Max Greyserman",
+              "position": "5",
+              "score": "-3"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Δ-Mem: Efficient Online Memory for Large Language Models",
+              "url": "https://arxiv.org/abs/2605.12357",
+              "score": 17,
+              "by": "44za12"
+            },
+            {
+              "title": "Project Gutenberg – keeps getting better",
+              "url": "https://www.gutenberg.org/",
+              "score": 951,
+              "by": "JSeiko"
+            },
+            {
+              "title": "Futhark by Example",
+              "url": "https://futhark-lang.org/examples.html",
+              "score": 5,
+              "by": "tosh"
+            },
+            {
+              "title": "Setting up an AI-native organization",
+              "url": "https://aweb.ai/blog/ai-first-company-howto",
+              "score": 3,
+              "by": "juanre"
+            },
+            {
+              "title": "Frontier AI has broken the open CTF format",
+              "url": "https://kabir.au/blog/the-ctf-scene-is-dead",
+              "score": 139,
+              "by": "frays"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "new moon",
+          "illumination": 0.002,
+          "days_into_cycle": 0.46
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "My Morning Jacket"
+          ]
+        },
+        "quote": {
+          "text": "Engage in those actions and thoughts that nurture the good qualities you want to have.",
+          "author": "Paramahansa Yogananda"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 16,
+          "day_of_year": 136,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": "2026-05-15T23:00Z",
+              "result": "win",
+              "score": "115-94"
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-15T22:40Z",
+              "result": "win",
+              "score": "3-2"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:01",
+          "sunset": "19:11",
+          "daylight_hours": 14.2
+        },
+        "date": "2026-05-16"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-16T10:28:26.225Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-15: Gallery Wall\n  - 2026-05-14: Broadsheet\n  - 2026-05-13: Split\n  - 2026-05-12: Poster\n  - 2026-05-11: Stack\n  - 2026-05-10: Specimen\n  - 2026-05-09: Gallery Wall\n\n**Recently used** (last 3 days): Gallery Wall, Broadsheet, Split\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If "
+      },
+      "output": {
+        "hero_copy": "\"Nurture the good qualities you want to have.\"",
+        "archetype": "Scroll",
+        "chassisId": "bricolage-manrope",
+        "specLength": 7401,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue — H:205° (cerulean)**\nChosen because H:205° sits cleanly in today's permitted zone (193°–218°), and is conceptually exact: the blue of still water and open sky, the color of clarity, of a spring morning with maximal daylight. It reads as purposeful without drama — the right register for a cultivation directive, not a command.\n\n**Neutral palette — warm sand (tinted toward H:205°)**\nA linen-warm off-white ground that participates in the cerulean palette th",
+        "selfCheck": "1. Hero quotability: Yes — \"Nurture the good qualities you want to have.\" is a complete, self-contained directive quotable and screenshot-worthy in isolation; it earns its marquee scale as aphorism, manifesto, and seasonal directive simultaneously.\n2. Because-of chain: Yes — new-moon/spring/growth e"
+      },
+      "durationMs": 285339,
+      "timestamp": "2026-05-16T10:33:11.567Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 7401
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "REVISE\n\n- **Missing letter-spacing token in preset.ts**: Visual spec specifies \"letter-spacing 0.10em\" for attribution and all-caps labels (stated explicitly: \"Attribution line below in cerulean.500, 13px, all-caps, letter-spacing 0.10em\" and \"All-caps labels / attribution: +0.10em\"). The preset.ts only defines `wide: 0.05em`, `wider: 0.08em`, and `widest: 0.12em` — no 0.10em token exists. Either add `wide10: { value: '0.10em' }` to `letterSpacings`, or revise the visual spec to use `wider: 0.08"
+      },
+      "durationMs": 43159,
+      "timestamp": "2026-05-16T10:33:56.083Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4589,
+        "briefLength": 10383
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 104659,
+      "timestamp": "2026-05-16T10:35:40.743Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-16T10:35:48.329Z"
+    }
+  ]
+}
