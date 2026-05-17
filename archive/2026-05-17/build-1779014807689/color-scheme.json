@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 245,
+    "s": 72,
+    "l": 18,
+    "name": "deep ocean indigo"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "indigo",
+    "name": "void indigo"
+  },
+  "mood_word": "oceanic",
+  "color_story": "The color mandate's only open window (235°–262°) is the exact frequency of deep ocean water at depth — pure serendipity for a surfing phrase; the dark indigo void becomes the wave face and the near-white text becomes foam at the crest."
+}

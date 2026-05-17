@@ -1,0 +1,275 @@
+{
+  "date": "2026-05-17",
+  "startedAt": "2026-05-17T10:31:11.709Z",
+  "completedAt": "2026-05-17T10:46:49.139Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pedal Mafia | Event Micro Site",
+              "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Sunday",
+          "is_weekend": true,
+          "day_index": 0
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "oven-sh/bun/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "K-Dense-AI/scientific-agent-skills/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/obra",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "Anil-matcha/Open-Generative-AI/stargazers",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "supertone-inc/supertonic/stargazers",
+              "description": "",
+              "language": "Swift",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "PGA Championship",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Alex Smalley",
+              "position": "1",
+              "score": "-6"
+            },
+            {
+              "name": "Matti Schmid",
+              "position": "2",
+              "score": "-4"
+            },
+            {
+              "name": "Nick Taylor",
+              "position": "3",
+              "score": "-4"
+            },
+            {
+              "name": "Aaron Rai",
+              "position": "4",
+              "score": "-4"
+            },
+            {
+              "name": "Jon Rahm",
+              "position": "5",
+              "score": "-4"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Zerostack – A Unix-inspired coding agent written in pure Rust",
+              "url": "https://crates.io/crates/zerostack/1.0.0",
+              "score": 403,
+              "by": "gidellav"
+            },
+            {
+              "title": "Mozilla to UK regulators: VPNs are essential privacy and security tools",
+              "url": "https://blog.mozilla.org/netpolicy/2026/05/15/mozilla-to-uk-regulators-vpns-are-essential-privacy-and-security-tools-and-should-not-be-undermined/",
+              "score": 217,
+              "by": "WithinReason"
+            },
+            {
+              "title": "A nicer voltmeter clock",
+              "url": "https://lcamtuf.substack.com/p/a-nicer-voltmeter-clock",
+              "score": 190,
+              "by": "surprisetalk"
+            },
+            {
+              "title": "Colossus: The Forbin Project",
+              "url": "https://en.wikipedia.org/wiki/Colossus:_The_Forbin_Project",
+              "score": 106,
+              "by": "doener"
+            },
+            {
+              "title": "Hosting a website on an 8-bit microcontroller",
+              "url": "https://maurycyz.com/projects/mcusite/",
+              "score": 133,
+              "by": "zdw"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "new moon",
+          "illumination": 0.024,
+          "days_into_cycle": 1.47
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "The War on Drugs",
+            "My Morning Jacket"
+          ]
+        },
+        "quote": {
+          "text": "Life comes at us in waves. We can't predict or control those waves, but we can learn to surf.",
+          "author": "Dan Millman"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 17,
+          "day_of_year": 137,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-16T17:10Z",
+              "result": "loss",
+              "score": "1-2"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:00",
+          "sunset": "19:12",
+          "daylight_hours": 14.2
+        },
+        "date": "2026-05-17"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-17T10:31:27.272Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-16: Scroll\n  - 2026-05-15: Gallery Wall\n  - 2026-05-14: Broadsheet\n  - 2026-05-13: Split\n  - 2026-05-12: Poster\n  - 2026-05-11: Stack\n  - 2026-05-10: Specimen\n\n**Recently used** (last 3 days): Scroll, Gallery Wall, Broadsheet\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the b"
+      },
+      "output": {
+        "hero_copy": "WE CAN LEARN TO SURF.",
+        "archetype": "Specimen",
+        "chassisId": "big-shoulders-atkinson",
+        "specLength": 5215,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue** — H:245° (deep ocean indigo). The color mandate permits only 235°–262°, which landed directly on the blue-indigo range of open-ocean depth. No creative deviation needed — the constraint IS the concept.\n\n**Neutral palette** (tinted toward H:245°, very low chroma, named \"void\"):\n- 50:  #F2F2FF\n- 100: #E0E0F8\n- 200: #BEBEDD\n- 300: #9494BB\n- 400: #686898\n- 500: #444472\n- 600: #2C2C54\n- 700: #1A1A38\n- 800: #0E0E24\n- 900: #060616\n\n**Accent color** (foam indi",
+        "selfCheck": "1. Hero quotability: Yes — \"WE CAN LEARN TO SURF.\" is a complete declarative sentence from a named author that stands alone as a poster, a manifesto, and a life stance; someone would screenshot this line.\n2. Because-of chain: Yes — phrase (waves/surfing) demanded Specimen (type fills the canvas like"
+      },
+      "durationMs": 782985,
+      "timestamp": "2026-05-17T10:44:30.261Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5215
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "REVISE\n\n- **Preset color families conflict with visual spec**: The preset.ts defines an unused `ocean` color family that directly contradicts the visual spec's explicit mandate: \"No secondary accent. One chromatic frequency, fully committed.\" The spec describes only two color families (void neutral palette + foam accent); the preset includes a third (`ocean`). Remove the entire `ocean` block from the colors definition. Keep only `void` and `foam`, which align perfectly with the spec and semantic"
+      },
+      "durationMs": 43716,
+      "timestamp": "2026-05-17T10:45:15.258Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4593,
+        "briefLength": 8067
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 69824,
+      "timestamp": "2026-05-17T10:46:25.084Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-17T10:46:32.461Z"
+    }
+  ]
+}

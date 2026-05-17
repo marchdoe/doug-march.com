@@ -1,88 +1,75 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const navWrap = css({
-  position: 'fixed',
-  top: '0',
-  left: '0',
-  width: '100%',
+const navClass = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
   height: '64px',
-  background: 'bg',
+  padding: '0 6vw',
   borderBottom: '1px solid',
   borderColor: 'border',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '0 6vw',
-  zIndex: 100,
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'none',
-  },
+  background: 'bg',
+  position: 'relative',
+  zIndex: 10,
 })
 
-const logoArea = css({
+const logoAreaClass = css({
   display: 'flex',
   alignItems: 'center',
-  gap: '10px',
+  gap: '12px',
 })
 
-const logoImg = css({
+const logoClass = css({
   width: '28px',
   height: '28px',
 })
 
-const logotype = css({
+const nameClass = css({
   fontFamily: 'body',
-  fontWeight: 'bold',
-  fontSize: '15px',
-  color: 'text',
-  letterSpacing: 'normal',
-  textDecoration: 'none',
-  lineHeight: '1',
+  fontSize: '13px',
+  fontWeight: '400',
+  letterSpacing: '0.1em',
+  color: 'textMuted',
+  textTransform: 'uppercase',
 })
 
-const navLinks = css({
+const linksClass = css({
   display: 'flex',
   alignItems: 'center',
-  gap: '24px',
+  gap: '32px',
 })
 
-const navLink = css({
+const linkClass = css({
   fontFamily: 'body',
-  fontSize: '14px',
-  fontWeight: 'normal',
-  color: 'textMuted',
-  letterSpacing: 'wide',
+  fontSize: '13px',
+  fontWeight: '400',
+  letterSpacing: '0.1em',
+  color: 'textDim',
   textDecoration: 'none',
-  padding: '10px 4px',
-  minHeight: '44px',
-  display: 'inline-flex',
-  alignItems: 'center',
+  textTransform: 'uppercase',
   transition: 'color 150ms ease',
+  padding: '10px 0',
   _hover: {
-    color: 'accent',
-    textDecoration: 'underline',
-    textUnderlineOffset: '4px',
-    textDecorationColor: 'accent',
+    color: 'text',
   },
-  _focus: {
+  '&:focus-visible': {
     outline: '2px solid',
     outlineColor: 'accent',
-    outlineOffset: '2px',
-    borderRadius: 'sm',
+    outlineOffset: '4px',
   },
 })
 
 export function Sidebar() {
   return (
-    <nav className={navWrap} role="navigation" aria-label="Main navigation">
-      <a href="/" className={logoArea} aria-label="Doug March home">
-        <img src={logoSvg} alt="" className={logoImg} />
-        <span className={logotype}>doug march</span>
-      </a>
-      <div className={navLinks}>
-        <a href="/" className={navLink}>work</a>
-        <a href="/about" className={navLink}>about</a>
+    <nav className={navClass} aria-label="Main navigation">
+      <div className={logoAreaClass}>
+        <img src={logoSvg} alt="Doug March logo" className={logoClass} />
+        <span className={nameClass}>Doug March</span>
+      </div>
+      <div className={linksClass}>
+        <a href="/" className={linkClass}>Work</a>
+        <a href="/about" className={linkClass}>About</a>
       </div>
     </nav>
   )
