@@ -1,75 +1,50 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const navClass = css({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  height: '64px',
-  padding: '0 6vw',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  background: 'bg',
-  position: 'relative',
-  zIndex: 10,
-})
-
-const logoAreaClass = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-})
-
-const logoClass = css({
-  width: '28px',
-  height: '28px',
-})
-
-const nameClass = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: '400',
-  letterSpacing: '0.1em',
-  color: 'textMuted',
-  textTransform: 'uppercase',
-})
-
-const linksClass = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '32px',
-})
-
-const linkClass = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: '400',
-  letterSpacing: '0.1em',
-  color: 'textDim',
-  textDecoration: 'none',
-  textTransform: 'uppercase',
-  transition: 'color 150ms ease',
-  padding: '10px 0',
-  _hover: {
-    color: 'text',
-  },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '4px',
-  },
-})
-
 export function Sidebar() {
   return (
-    <nav className={navClass} aria-label="Main navigation">
-      <div className={logoAreaClass}>
-        <img src={logoSvg} alt="Doug March logo" className={logoClass} />
-        <span className={nameClass}>Doug March</span>
+    <nav className={css({
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '0 6vw',
+      height: '48px',
+    })}>
+      <div className={css({ display: 'flex', alignItems: 'center', gap: '3' })}>
+        <a href="/" className={css({ display: 'flex', alignItems: 'center', gap: '3', textDecoration: 'none' })}>
+          <img src={logoSvg} alt="Doug March logo" className={css({ width: '20px', height: '20px' })} />
+          <span className={css({
+            fontFamily: 'body',
+            fontSize: '11px',
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color: 'textSecondary',
+          })}>DOUG MARCH</span>
+        </a>
       </div>
-      <div className={linksClass}>
-        <a href="/" className={linkClass}>Work</a>
-        <a href="/about" className={linkClass}>About</a>
+      <div className={css({ display: 'flex', alignItems: 'center', gap: '6' })}>
+        <a href="/" className={css({
+          fontFamily: 'body',
+          fontSize: '11px',
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          color: 'textSecondary',
+          textDecoration: 'none',
+          padding: '2',
+          _hover: { color: 'accentLight' },
+          _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+        })}>Work</a>
+        <a href="/about" className={css({
+          fontFamily: 'body',
+          fontSize: '11px',
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          color: 'textSecondary',
+          textDecoration: 'none',
+          padding: '2',
+          _hover: { color: 'accentLight' },
+          _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+        })}>About</a>
       </div>
     </nav>
   )
