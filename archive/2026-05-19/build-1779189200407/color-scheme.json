@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 162,
+    "s": 85,
+    "l": 34,
+    "name": "marine teal"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "teal",
+    "name": "teal-stone"
+  },
+  "mood_word": "luminous",
+  "color_story": "Teal at H:162° — the precise frequency of clear spring water and morning light refracted through glass — holds the measurement phrase at its maximum authority against a near-white field, delivering six consecutive dark builds their first full daylight reversal."
+}

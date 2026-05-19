@@ -1,0 +1,280 @@
+{
+  "date": "2026-05-19",
+  "startedAt": "2026-05-19T11:05:14.538Z",
+  "completedAt": "2026-05-19T11:13:22.125Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pedal Mafia | Event Micro Site",
+              "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Tuesday",
+          "is_weekend": false,
+          "day_index": 2
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "tinyhumansai/openhuman/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "HKUDS/CLI-Anything/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "Imbad0202/academic-research-skills/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/obra",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "anthropics/claude-plugins-official/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "PGA Championship",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Aaron Rai",
+              "position": "1",
+              "score": "-9"
+            },
+            {
+              "name": "Jon Rahm",
+              "position": "2",
+              "score": "-6"
+            },
+            {
+              "name": "Alex Smalley",
+              "position": "3",
+              "score": "-6"
+            },
+            {
+              "name": "Justin Thomas",
+              "position": "4",
+              "score": "-5"
+            },
+            {
+              "name": "Matti Schmid",
+              "position": "5",
+              "score": "-5"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Gaussian Splat of a Strawberry",
+              "url": "https://superspl.at/scene/84df8849",
+              "score": 11,
+              "by": "danybittel"
+            },
+            {
+              "title": "I Found Ultra-Pure Quantum Crystals in an Abandoned Mine in the Atacama Desert",
+              "url": "https://medium.com/@breid.at/ultra-pure-quantum-crystals-from-an-abandoned-mine-in-a-mysterious-desert-93cc87d12314",
+              "score": 74,
+              "by": "vi_sextus_vi"
+            },
+            {
+              "title": "Polypad",
+              "url": "https://polypad.amplify.com/",
+              "score": 81,
+              "by": "ivank"
+            },
+            {
+              "title": "Peter Neumann has died",
+              "url": "https://www.tuhs.org/pipermail/tuhs/2026-May/033748.html",
+              "score": 134,
+              "by": "pabs3"
+            },
+            {
+              "title": "The last six months in LLMs in five minutes",
+              "url": "https://simonwillison.net/2026/May/19/5-minute-llms/",
+              "score": 474,
+              "by": "yakkomajuri"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Memorial Day",
+              "date": "2026-05-25",
+              "days_away": 6
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "waxing crescent",
+          "illumination": 0.132,
+          "days_into_cycle": 3.49
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "My Morning Jacket"
+          ]
+        },
+        "quote": {
+          "text": "A pessimist sees the difficulty in every opportunity; an optimist sees the opportunity in every difficulty.",
+          "author": "Winston Churchill"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 19,
+          "day_of_year": 139,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-18T22:40Z",
+              "result": "loss",
+              "score": "2-8"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:59",
+          "sunset": "19:14",
+          "daylight_hours": 14.3
+        },
+        "date": "2026-05-19"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-19T11:05:29.723Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-18: Poster\n  - 2026-05-17: Specimen\n  - 2026-05-16: Scroll\n  - 2026-05-15: Gallery Wall\n  - 2026-05-14: Broadsheet\n  - 2026-05-13: Split\n  - 2026-05-12: Poster\n\n**Recently used** (last 3 days): Poster, Specimen, Scroll\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or"
+      },
+      "output": {
+        "hero_copy": "FOURTEEN HOURS OF LIGHT.",
+        "archetype": "Stack",
+        "chassisId": "big-shoulders-atkinson",
+        "specLength": 6835,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue** — H:162°, the exact chromatic midpoint of the color mandate's permitted window (150°–175°). Marine teal: the color of a glass of water held up to spring light, of tide-pool shallows, of calibration instruments. Not the over-used blue or the obvious green.\n\n- **Neutral palette** — teal-stone family, every step tinted H:162° at chroma ≈ 0.008–0.012 so surfaces participate in the palette without reading as colored:\n  - 50: `#F4F9F7`\n  - 100: `#E8F3EF`\n ",
+        "selfCheck": "1. Hero quotability: Yes — \"FOURTEEN HOURS OF LIGHT.\" is a complete, standalone declarative statement; the specificity of the measurement and the compression of \"OF LIGHT.\" make it poster-worthy and dissonant enough to earn a screenshot.\n2. Because-of chain: Yes — the phrase (a precise environmental"
+      },
+      "durationMs": 270831,
+      "timestamp": "2026-05-19T11:10:00.557Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 6835
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 50663,
+      "timestamp": "2026-05-19T11:10:52.637Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4346,
+        "briefLength": 9542
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 124401,
+      "timestamp": "2026-05-19T11:12:57.040Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-19T11:13:05.142Z"
+    }
+  ]
+}
