@@ -1,0 +1,254 @@
+{
+  "date": "2026-05-20",
+  "startedAt": "2026-05-20T11:02:54.711Z",
+  "completedAt": "2026-05-20T11:11:23.048Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pedal Mafia | Event Micro Site",
+              "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Wednesday",
+          "is_weekend": false,
+          "day_index": 3
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "colbymchenry/codegraph/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "Imbad0202/academic-research-skills/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "tinyhumansai/openhuman/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "multica-ai/andrej-karpathy-skills/stargazers",
+              "description": "",
+              "language": null,
+              "stars": null
+            },
+            {
+              "name": "sponsors/rohitg00",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "THE CJ CUP Byron Nelson",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Everything in C is undefined behavior",
+              "url": "https://blog.habets.se/2026/05/Everything-in-C-is-undefined-behavior.html",
+              "score": 213,
+              "by": "lycopodiopsida"
+            },
+            {
+              "title": "Learnings from 100K lines of Rust with AI (2025)",
+              "url": "https://zfhuang99.github.io/rust/claude%20code/codex/contracts/spec-driven%20development/2025/12/01/rust-with-ai.html",
+              "score": 24,
+              "by": "pramodbiligiri"
+            },
+            {
+              "title": "Gemini 3.5 Flash",
+              "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5/",
+              "score": 812,
+              "by": "spectraldrift"
+            },
+            {
+              "title": "FiveThirtyEight articles on the Internet Archive",
+              "url": "https://fivethirtyeightindex.com/",
+              "score": 215,
+              "by": "ChocMontePy"
+            },
+            {
+              "title": "I’ve built a virtual museum with nearly every operating system you can think of",
+              "url": "https://virtualosmuseum.org/",
+              "score": 801,
+              "by": "andreww591"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Memorial Day",
+              "date": "2026-05-25",
+              "days_away": 5
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "waxing crescent",
+          "illumination": 0.211,
+          "days_into_cycle": 4.49
+        },
+        "music": {
+          "bands": [
+            "Tobin Sprout",
+            "Wet Leg"
+          ]
+        },
+        "quote": {
+          "text": "People who are unable to motivate themselves must be content with mediocrity, no matter how impressive their other talents.",
+          "author": "Andrew Carnegie"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 20,
+          "day_of_year": 140,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-19T22:40Z",
+              "result": "loss",
+              "score": "3-4"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:58",
+          "sunset": "19:15",
+          "daylight_hours": 14.3
+        },
+        "date": "2026-05-20"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-20T11:03:10.179Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-19: Stack\n  - 2026-05-18: Poster\n  - 2026-05-17: Specimen\n  - 2026-05-16: Scroll\n  - 2026-05-15: Gallery Wall\n  - 2026-05-14: Broadsheet\n  - 2026-05-13: Split\n\n**Recently used** (last 3 days): Stack, Poster, Specimen\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or s"
+      },
+      "output": {
+        "hero_copy": "CONTENT WITH MEDIOCRITY.",
+        "archetype": "Split",
+        "chassisId": "bebas-plex",
+        "specLength": 5995,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue:** H:118° — precisely within the mandated 102°–132° permitted window; the green of new leaves in mid-May, not a soft sage but a committed, slightly electric spring green.\n- **Neutral palette (green-tinted, H:118°):**\n  - 50: `#F2F5F1`\n  - 100: `#E2EAE0`\n  - 200: `#C4D4C0`\n  - 300: `#9DB498`\n  - 400: `#728F6B`\n  - 500: `#527049`\n  - 600: `#3C5435`\n  - 700: `#283C22`\n  - 800: `#182616`\n  - 900: `#0D170A`\n  - 950: `#080E07`\n- **Accent color:**\n  - light: ",
+        "selfCheck": "1. Hero quotability: Yes — \"CONTENT WITH MEDIOCRITY.\" is a three-word gut-punch from Carnegie compressed to maximum confrontation; stands alone as an accusation and portfolio manifesto, screenshot-worthy in isolation.\n2. Because-of chain: Yes — Carnegie fragment → Split (left=dark condition, right=g"
+      },
+      "durationMs": 317496,
+      "timestamp": "2026-05-20T11:08:27.680Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5995
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 54515,
+      "timestamp": "2026-05-20T11:09:23.786Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4407,
+        "briefLength": 8884
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 94354,
+      "timestamp": "2026-05-20T11:10:58.141Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-20T11:11:05.907Z"
+    }
+  ]
+}

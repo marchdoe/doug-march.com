@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 118,
+    "s": 72,
+    "l": 45,
+    "name": "spring green"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "green",
+    "name": "forest neutral"
+  },
+  "mood_word": "confrontational",
+  "color_story": "The phrase bisects across a dark-void left and a saturated spring-green right — the condition lives in darkness, the thing being avoided is exposed in full May light."
+}

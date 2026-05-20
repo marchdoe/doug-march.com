@@ -1,99 +1,60 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
+const navWrap = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '24px',
+  position: 'relative',
+  zIndex: 10,
+})
+
+const logoStyle = css({
+  width: '28px',
+  height: '28px',
+  display: 'block',
+})
+
+const navLink = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: '{colors.cream.100}',
+  textDecoration: 'none',
+  lineHeight: 'snug',
+  padding: '10px 2px',
+  display: 'inline-block',
+  transition: 'color 150ms ease',
+  _hover: {
+    color: '{colors.lime.400}',
+    textDecoration: 'none',
+  },
+  _focus: {
+    outline: '2px solid {colors.lime.400}',
+    outlineOffset: '2px',
+  },
+  '@media (prefers-reduced-motion: reduce)': {
+    transition: 'none',
+  },
+})
+
+const sep = css({
+  color: '{colors.neutral.500}',
+  fontSize: '13px',
+  userSelect: 'none',
+})
+
 export function Sidebar() {
   return (
-    <nav
-      className={css({
-        position: 'absolute',
-        top: '0',
-        left: '0',
-        right: '0',
-        padding: '28px 6vw',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        zIndex: '10',
-      })}
-    >
-      <a
-        href="/"
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          textDecoration: 'none',
-          _hover: { textDecoration: 'none' },
-        })}
-      >
-        <img
-          src={logoSvg}
-          alt="Doug March logo"
-          className={css({ width: '28px', height: '28px' })}
-        />
-        <span
-          className={css({
-            fontSize: '13px',
-            letterSpacing: '0.1em',
-            fontWeight: 'semibold',
-            color: '{colors.stone.900}',
-            fontFamily: 'body',
-            textTransform: 'uppercase',
-          })}
-        >
-          Doug March
-        </span>
+    <nav className={navWrap} aria-label="Main navigation">
+      <a href="/" aria-label="Home">
+        <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
       </a>
-      <div
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          gap: '32px',
-        })}
-      >
-        <a
-          href="/"
-          className={css({
-            fontSize: '13px',
-            letterSpacing: '0.08em',
-            fontWeight: 'medium',
-            color: '{colors.stone.600}',
-            textDecoration: 'none',
-            textTransform: 'uppercase',
-            padding: '8px 0',
-            transition: 'color 0.2s ease',
-            _hover: { color: '{colors.teal.500}', textDecoration: 'none' },
-            '&:focus-visible': {
-              outline: '2px solid',
-              outlineColor: '{colors.teal.500}',
-              outlineOffset: '4px',
-            },
-          })}
-        >
-          Work
-        </a>
-        <a
-          href="/about"
-          className={css({
-            fontSize: '13px',
-            letterSpacing: '0.08em',
-            fontWeight: 'medium',
-            color: '{colors.stone.600}',
-            textDecoration: 'none',
-            textTransform: 'uppercase',
-            padding: '8px 0',
-            transition: 'color 0.2s ease',
-            _hover: { color: '{colors.teal.500}', textDecoration: 'none' },
-            '&:focus-visible': {
-              outline: '2px solid',
-              outlineColor: '{colors.teal.500}',
-              outlineOffset: '4px',
-            },
-          })}
-        >
-          About
-        </a>
-      </div>
+      <span className={sep}>·</span>
+      <a href="/" className={navLink}>Work</a>
+      <span className={sep}>·</span>
+      <a href="/about" className={navLink}>About</a>
     </nav>
   )
 }

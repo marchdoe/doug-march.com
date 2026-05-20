@@ -5,261 +5,246 @@ import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
+const splitGrid = css({
+  display: 'grid',
+  gridTemplateColumns: '45vw 55vw',
+  minHeight: '100vh',
+  maxWidth: 'none',
+  '@media (max-width: 768px)': {
+    gridTemplateColumns: '1fr',
+    minHeight: 'auto',
+  },
+})
+
+const leftPanel = css({
+  background: '{colors.neutral.950}',
+  padding: 'clamp(24px, 6vw, 96px) clamp(20px, 4vw, 64px) clamp(20px, 5vw, 80px) clamp(20px, 6vw, 96px)',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '32px',
+  '@media (max-width: 768px)': {
+    padding: '24px',
+    gap: '24px',
+  },
+})
+
+const rightPanel = css({
+  background: '{colors.lime.400}',
+  padding: 'clamp(20px, 5vw, 80px) clamp(20px, 6vw, 96px) clamp(20px, 5vw, 80px) clamp(20px, 5vw, 80px)',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  gap: '32px',
+  '@media (max-width: 768px)': {
+    padding: '24px',
+    gap: '24px',
+  },
+})
+
+const projectTitle = css({
+  fontFamily: 'display',
+  fontSize: 'clamp(48px, 5.5vw, 88px)',
+  lineHeight: '0.92',
+  letterSpacing: '0.04em',
+  color: '{colors.cream.100}',
+  textTransform: 'uppercase',
+  fontWeight: 'bold',
+})
+
+const metaLabel = css({
+  fontFamily: 'body',
+  fontSize: '11px',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: '{colors.neutral.500}',
+  marginBottom: '4px',
+  lineHeight: 'snug',
+})
+
+const metaValue = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: '{colors.cream.100}',
+  lineHeight: 'normal',
+  maxWidth: '55ch',
+})
+
+const metaBlock = css({
+  padding: '12px 0',
+  borderTop: '1px solid {colors.neutral.700}',
+})
+
+const greenLabel = css({
+  fontFamily: 'body',
+  fontSize: '11px',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: 'rgba(8, 14, 7, 0.5)',
+  marginBottom: '4px',
+  lineHeight: 'snug',
+})
+
+const greenValue = css({
+  fontFamily: 'body',
+  fontSize: '16px',
+  color: '{colors.neutral.950}',
+  lineHeight: 'normal',
+  maxWidth: '55ch',
+})
+
+const greenBlock = css({
+  padding: '16px 0',
+  borderTop: '1px solid rgba(8, 14, 7, 0.2)',
+})
+
+const stackTag = css({
+  fontFamily: 'body',
+  fontSize: '12px',
+  color: '{colors.neutral.950}',
+  background: 'rgba(8, 14, 7, 0.1)',
+  padding: '6px 12px',
+  lineHeight: 'snug',
+  display: 'inline-block',
+})
+
+const extLink = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  fontWeight: 'medium',
+  color: '{colors.neutral.950}',
+  textDecoration: 'underline',
+  padding: '8px 0',
+  display: 'inline-block',
+  _hover: {
+    color: '{colors.neutral.700}',
+  },
+  _focus: {
+    outline: '2px solid {colors.neutral.950}',
+    outlineOffset: '2px',
+  },
+})
+
+const backLink = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  color: '{colors.neutral.400}',
+  textDecoration: 'none',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  padding: '8px 0',
+  display: 'inline-block',
+  transition: 'color 150ms ease',
+  _hover: {
+    color: '{colors.cream.100}',
+    textDecoration: 'none',
+  },
+  _focus: {
+    outline: '2px solid {colors.lime.400}',
+    outlineOffset: '2px',
+  },
+  '@media (prefers-reduced-motion: reduce)': {
+    transition: 'none',
+  },
+})
+
 function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <section className={css({ padding: '160px 6vw', minHeight: '100vh', position: 'relative' })}>
-        <Sidebar />
-        <h1 className={css({ fontFamily: 'display', fontSize: '48px', color: '{colors.stone.900}', textTransform: 'uppercase' })}>
-          Project Not Found
-        </h1>
-        <a href="/" className={css({ color: '{colors.teal.500}', fontSize: '16px', fontFamily: 'body', marginTop: '24px', display: 'inline-block' })}>
-          ← Back to Home
-        </a>
-      </section>
+      <div className={splitGrid}>
+        <div className={leftPanel}>
+          <Sidebar />
+          <div className={projectTitle}>NOT FOUND</div>
+          <a href="/" className={backLink}>← Back</a>
+        </div>
+        <div className={rightPanel} />
+      </div>
     )
   }
 
   return (
-    <>
-      {/* Hero */}
-      <section
-        className={css({
-          position: 'relative',
-          width: '100%',
-          padding: '160px 6vw 80px',
-          background: '{colors.stone.50}',
-          minHeight: '60vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-        })}
-      >
+    <div className={splitGrid}>
+      {/* LEFT — title + metadata */}
+      <div className={leftPanel}>
         <Sidebar />
-        <div className={css({ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap' })}>
-          <span className={css({ fontSize: '13px', letterSpacing: '0.08em', color: '{colors.teal.500}', textTransform: 'uppercase', fontFamily: 'body', fontWeight: 'semibold' })}>
-            {project.type}
-          </span>
-          <span className={css({ fontSize: '13px', color: '{colors.stone.400}' })}>·</span>
-          <span className={css({ fontSize: '13px', fontVariantNumeric: 'tabular-nums', color: '{colors.stone.500}', fontFamily: 'mono' })}>
-            {project.year}
-          </span>
-        </div>
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontSize: 'clamp(48px, 8vw, 120px)',
-            lineHeight: '0.92',
-            fontWeight: 'bold',
-            color: '{colors.stone.900}',
-            textTransform: 'uppercase',
-            marginBottom: '32px',
-          })}
-        >
-          {project.title}
-        </h1>
-        <div className={css({ width: '40px', height: '2px', background: '{colors.teal.400}' })} />
-      </section>
 
-      {/* Signal strip */}
-      <div
-        className={css({
-          width: '100%',
-          padding: '20px 6vw',
-          background: '{colors.teal.800}',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '32px',
-          flexWrap: 'wrap',
-        })}
-      >
-        <span className={css({ fontSize: '13px', letterSpacing: '0.08em', color: '{colors.teal.100}' })}>
-          May 19, 2026
-        </span>
-        <span className={css({ fontSize: '13px', letterSpacing: '0.08em', color: '{colors.teal.300}' })}>
-          14.3h Daylight
-        </span>
+        <div className={projectTitle}>{project.title}</div>
+
+        <div>
+          <div className={metaBlock}>
+            <div className={metaLabel}>Type</div>
+            <div className={metaValue}>{project.type}</div>
+          </div>
+          <div className={metaBlock}>
+            <div className={metaLabel}>Year</div>
+            <div className={metaValue}>{project.year}</div>
+          </div>
+          {project.role && (
+            <div className={metaBlock}>
+              <div className={metaLabel}>Role</div>
+              <div className={metaValue}>{project.role}</div>
+            </div>
+          )}
+          {project.problem && (
+            <div className={metaBlock}>
+              <div className={metaLabel}>Problem</div>
+              <div className={metaValue}>{project.problem}</div>
+            </div>
+          )}
+        </div>
+
+        <a href="/" className={backLink}>← All Work</a>
       </div>
 
-      {/* Content */}
-      <section
-        className={css({
-          width: '100%',
-          padding: '96px 6vw',
-          background: '{colors.stone.50}',
-        })}
-      >
-        <div
-          className={css({
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            gap: '64px',
-            md: { gridTemplateColumns: '1fr 2fr', gap: '80px' },
-          })}
-        >
-          {/* Sidebar info */}
-          <div className={css({ display: 'flex', flexDirection: 'column', gap: '32px' })}>
-            {project.role && (
-              <div>
-                <span className={css({ fontSize: '13px', letterSpacing: '0.08em', color: '{colors.stone.500}', textTransform: 'uppercase', fontFamily: 'body', fontWeight: 'semibold', display: 'block', marginBottom: '8px' })}>
-                  Role
-                </span>
-                <span className={css({ fontSize: '16px', color: '{colors.stone.900}', fontFamily: 'body' })}>
-                  {project.role}
-                </span>
-              </div>
-            )}
-            {project.stack && project.stack.length > 0 && (
-              <div>
-                <span className={css({ fontSize: '13px', letterSpacing: '0.08em', color: '{colors.stone.500}', textTransform: 'uppercase', fontFamily: 'body', fontWeight: 'semibold', display: 'block', marginBottom: '12px' })}>
-                  Stack
-                </span>
-                <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '8px' })}>
-                  {project.stack.map((tech, i) => (
-                    <span
-                      key={i}
-                      className={css({
-                        fontSize: '13px',
-                        padding: '6px 12px',
-                        border: '1px solid',
-                        borderColor: '{colors.stone.200}',
-                        color: '{colors.stone.700}',
-                        fontFamily: 'mono',
-                      })}
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-            {(project.externalUrl || project.liveUrl) && (
-              <a
-                href={project.externalUrl || project.liveUrl}
-                className={css({
-                  display: 'inline-block',
-                  fontSize: '14px',
-                  letterSpacing: '0.06em',
-                  fontWeight: 'semibold',
-                  textTransform: 'uppercase',
-                  color: '{colors.teal.500}',
-                  border: '1px solid',
-                  borderColor: '{colors.teal.500}',
-                  padding: '12px 32px',
-                  textDecoration: 'none',
-                  textAlign: 'center',
-                  transition: 'all 0.2s ease',
-                  _hover: { background: '{colors.teal.500}', color: '{colors.stone.50}', textDecoration: 'none' },
-                  '&:focus-visible': { outline: '2px solid', outlineColor: '{colors.teal.500}', outlineOffset: '4px' },
-                })}
-              >
-                Visit Project →
-              </a>
-            )}
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                className={css({
-                  fontSize: '14px',
-                  color: '{colors.teal.600}',
-                  textDecoration: 'underline',
-                  fontFamily: 'body',
-                  '&:focus-visible': { outline: '2px solid', outlineColor: '{colors.teal.500}', outlineOffset: '4px' },
-                })}
-              >
-                View Source
-              </a>
-            )}
+      {/* RIGHT — approach, outcome, stack, links */}
+      <div className={rightPanel}>
+        {project.approach && (
+          <div className={greenBlock}>
+            <div className={greenLabel}>Approach</div>
+            <div className={greenValue}>{project.approach}</div>
           </div>
-
-          {/* Main content */}
-          <div className={css({ display: 'flex', flexDirection: 'column', gap: '48px' })}>
-            {project.problem && (
-              <div>
-                <span className={css({ fontSize: '13px', letterSpacing: '0.08em', color: '{colors.stone.500}', textTransform: 'uppercase', fontFamily: 'body', fontWeight: 'semibold', display: 'block', marginBottom: '16px' })}>
-                  Problem
-                </span>
-                <p className={css({ fontSize: '18px', lineHeight: '1.6', color: '{colors.stone.700}', fontFamily: 'body', maxWidth: '65ch' })}>
-                  {project.problem}
-                </p>
-              </div>
-            )}
-            {project.approach && (
-              <div>
-                <span className={css({ fontSize: '13px', letterSpacing: '0.08em', color: '{colors.stone.500}', textTransform: 'uppercase', fontFamily: 'body', fontWeight: 'semibold', display: 'block', marginBottom: '16px' })}>
-                  Approach
-                </span>
-                <p className={css({ fontSize: '18px', lineHeight: '1.6', color: '{colors.stone.700}', fontFamily: 'body', maxWidth: '65ch' })}>
-                  {project.approach}
-                </p>
-              </div>
-            )}
-            {project.outcome && (
-              <div>
-                <span className={css({ fontSize: '13px', letterSpacing: '0.08em', color: '{colors.stone.500}', textTransform: 'uppercase', fontFamily: 'body', fontWeight: 'semibold', display: 'block', marginBottom: '16px' })}>
-                  Outcome
-                </span>
-                <p className={css({ fontSize: '18px', lineHeight: '1.6', color: '{colors.stone.700}', fontFamily: 'body', maxWidth: '65ch' })}>
-                  {project.outcome}
-                </p>
-              </div>
-            )}
-            {project.description && (
-              <div>
-                <p className={css({ fontSize: '18px', lineHeight: '1.6', color: '{colors.stone.700}', fontFamily: 'body', maxWidth: '65ch' })}>
-                  {project.description}
-                </p>
-              </div>
-            )}
+        )}
+        {project.outcome && (
+          <div className={greenBlock}>
+            <div className={greenLabel}>Outcome</div>
+            <div className={greenValue}>{project.outcome}</div>
           </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <section
-        className={css({
-          width: '100%',
-          padding: '48px 6vw',
-          background: '{colors.teal.800}',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px',
-        })}
-      >
-        <a
-          href="/"
-          className={css({
-            fontSize: '14px',
-            letterSpacing: '0.06em',
-            color: '{colors.teal.300}',
-            textDecoration: 'none',
-            fontFamily: 'body',
-            _hover: { color: '{colors.teal.100}', textDecoration: 'underline' },
-            '&:focus-visible': { outline: '2px solid', outlineColor: '{colors.teal.400}', outlineOffset: '4px' },
-          })}
-        >
-          ← All Work
-        </a>
-        <a
-          href="/archive"
-          className={css({
-            fontSize: '13px',
-            letterSpacing: '0.06em',
-            color: '{colors.teal.400}',
-            fontFamily: 'body',
-            textDecoration: 'none',
-            _hover: { color: '{colors.teal.200}', textDecoration: 'underline' },
-            '&:focus-visible': { outline: '2px solid', outlineColor: '{colors.teal.400}', outlineOffset: '4px' },
-          })}
-        >
-          Archive
-        </a>
-      </section>
-    </>
+        )}
+        {project.description && (
+          <div className={greenBlock}>
+            <div className={greenLabel}>Description</div>
+            <div className={greenValue}>{project.description}</div>
+          </div>
+        )}
+        {project.stack && project.stack.length > 0 && (
+          <div className={greenBlock}>
+            <div className={greenLabel}>Stack</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+              {project.stack.map((s, i) => (
+                <span className={stackTag} key={i}>{s}</span>
+              ))}
+            </div>
+          </div>
+        )}
+        {(project.externalUrl || project.liveUrl || project.githubUrl) && (
+          <div className={greenBlock}>
+            <div className={greenLabel}>Links</div>
+            <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+              {project.externalUrl && (
+                <a href={project.externalUrl} className={extLink}>Visit Site →</a>
+              )}
+              {project.liveUrl && !project.externalUrl && (
+                <a href={project.liveUrl} className={extLink}>Live →</a>
+              )}
+              {project.githubUrl && (
+                <a href={project.githubUrl} className={extLink}>GitHub →</a>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
