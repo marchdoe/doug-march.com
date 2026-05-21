@@ -1,60 +1,89 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const navWrap = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '24px',
-  position: 'relative',
-  zIndex: 10,
-})
-
-const logoStyle = css({
-  width: '28px',
-  height: '28px',
-  display: 'block',
-})
-
-const navLink = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
-  color: '{colors.cream.100}',
-  textDecoration: 'none',
-  lineHeight: 'snug',
-  padding: '10px 2px',
-  display: 'inline-block',
-  transition: 'color 150ms ease',
-  _hover: {
-    color: '{colors.lime.400}',
-    textDecoration: 'none',
-  },
-  _focus: {
-    outline: '2px solid {colors.lime.400}',
-    outlineOffset: '2px',
-  },
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'none',
-  },
-})
-
-const sep = css({
-  color: '{colors.neutral.500}',
-  fontSize: '13px',
-  userSelect: 'none',
-})
-
 export function Sidebar() {
   return (
-    <nav className={navWrap} aria-label="Main navigation">
-      <a href="/" aria-label="Home">
-        <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
+    <nav
+      className={css({
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: '48px',
+        borderBottom: '1px solid',
+        borderColor: 'border',
+        padding: '0',
+        width: '100%',
+      })}
+    >
+      <a
+        href="/"
+        className={css({
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          textDecoration: 'none',
+          color: 'text',
+          _hover: { color: 'accent' },
+        })}
+      >
+        <img
+          src={logoSvg}
+          alt="Doug March logo"
+          className={css({ width: '20px', height: '20px' })}
+        />
+        <span
+          className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            fontWeight: 'medium',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+          })}
+        >
+          DOUGLAS MARCH
+        </span>
       </a>
-      <span className={sep}>·</span>
-      <a href="/" className={navLink}>Work</a>
-      <span className={sep}>·</span>
-      <a href="/about" className={navLink}>About</a>
+      <div
+        className={css({
+          display: 'flex',
+          alignItems: 'center',
+          gap: '20px',
+        })}
+      >
+        <a
+          href="/"
+          className={css({
+            fontFamily: 'body',
+            fontSize: '12px',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textSecondary',
+            textDecoration: 'none',
+            padding: '12px 0',
+            _hover: { color: 'accent' },
+            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+          })}
+        >
+          Work
+        </a>
+        <span className={css({ color: 'textMuted', fontSize: '12px' })}>·</span>
+        <a
+          href="/about"
+          className={css({
+            fontFamily: 'body',
+            fontSize: '12px',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textSecondary',
+            textDecoration: 'none',
+            padding: '12px 0',
+            _hover: { color: 'accent' },
+            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+          })}
+        >
+          About
+        </a>
+      </div>
     </nav>
   )
 }

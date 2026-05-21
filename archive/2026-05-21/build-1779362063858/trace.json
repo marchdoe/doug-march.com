@@ -1,0 +1,254 @@
+{
+  "date": "2026-05-21",
+  "startedAt": "2026-05-21T11:05:37.527Z",
+  "completedAt": "2026-05-21T11:14:25.564Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pedal Mafia | Event Micro Site",
+              "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Thursday",
+          "is_weekend": false,
+          "day_index": 4
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "anthropics/claude-plugins-official/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "colbymchenry/codegraph/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "multica-ai/andrej-karpathy-skills/stargazers",
+              "description": "",
+              "language": null,
+              "stars": null
+            },
+            {
+              "name": "dotnet/skills/stargazers",
+              "description": "",
+              "language": "C#",
+              "stars": null
+            },
+            {
+              "name": "sponsors/obra",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "THE CJ CUP Byron Nelson",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Google officially announces that ads will be included in AI Mode search results",
+              "url": "https://blog.google/products/ads-commerce/google-marketing-live-search-ads/",
+              "score": 64,
+              "by": "sofumel"
+            },
+            {
+              "title": "Show HN: Rmux – A programmable terminal multiplexer with a Playwright-style SDK",
+              "url": "https://github.com/helvesec/rmux",
+              "score": 42,
+              "by": "shideneyu"
+            },
+            {
+              "title": "An OpenAI model has disproved a central conjecture in discrete geometry",
+              "url": "https://openai.com/index/model-disproves-discrete-geometry-conjecture/",
+              "score": 1203,
+              "by": "tedsanders"
+            },
+            {
+              "title": "GitHub confirms breach of 3,800 repos via malicious VSCode extension",
+              "url": "https://www.bleepingcomputer.com/news/security/github-confirms-breach-of-3-800-repos-via-malicious-vscode-extension/",
+              "score": 873,
+              "by": "Timofeibu"
+            },
+            {
+              "title": "Show HN: I reverse engineered Apple's video wallpapers",
+              "url": "https://github.com/kageroumado/phosphene",
+              "score": 303,
+              "by": "kageroumado"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Memorial Day",
+              "date": "2026-05-25",
+              "days_away": 4
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "waxing crescent",
+          "illumination": 0.304,
+          "days_into_cycle": 5.49
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "My Morning Jacket"
+          ]
+        },
+        "quote": {
+          "text": "Anger exceeding limits causes fear and excessive kindness eliminates respect.",
+          "author": "Euripides"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 21,
+          "day_of_year": 141,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-20T22:40Z",
+              "result": "loss",
+              "score": "2-3"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:57",
+          "sunset": "19:16",
+          "daylight_hours": 14.3
+        },
+        "date": "2026-05-21"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-21T11:05:52.889Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-20: Split\n  - 2026-05-19: Stack\n  - 2026-05-18: Poster\n  - 2026-05-17: Specimen\n  - 2026-05-16: Scroll\n  - 2026-05-15: Gallery Wall\n  - 2026-05-14: Broadsheet\n\n**Recently used** (last 3 days): Split, Stack, Poster\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or sign"
+      },
+      "output": {
+        "hero_copy": "EXCESSIVE KINDNESS ELIMINATES RESPECT.",
+        "archetype": "Index",
+        "chassisId": "bebas-plex",
+        "specLength": 8058,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue:** H:350° — pompeian crimson, the open zone in the color mandate (322°–360°); the hue of authority, passion, and stated standards. The alignment between mandate and concept is not coincidental.\n- **Neutral palette (ink family, tinted toward H:350°):**\n  - 50: `#F5EEF0` — warm cream with a faint rose cast\n  - 100: `#E6D5DA`\n  - 200: `#C4A5AE`\n  - 300: `#9E7580`\n  - 400: `#7A5260`\n  - 500: `#5C3442`\n  - 600: `#421A28`\n  - 700: `#2C0E1A`\n  - 800: `#1A060F",
+        "selfCheck": "1. Hero quotability: Yes — \"EXCESSIVE KINDNESS ELIMINATES RESPECT.\" is Euripides standing alone; it would stop a scroll, generate a screenshot, and works as a portfolio manifesto without its first clause.\n2. Because-of chain: Yes — the classical statement demanded a catalog/index archetype (the port"
+      },
+      "durationMs": 352167,
+      "timestamp": "2026-05-21T11:11:45.060Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 8058
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 39857,
+      "timestamp": "2026-05-21T11:12:26.444Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 3759,
+        "briefLength": 10912
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 94713,
+      "timestamp": "2026-05-21T11:14:01.159Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-21T11:14:08.471Z"
+    }
+  ]
+}

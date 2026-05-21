@@ -1,378 +1,410 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Sidebar } from '../components/Sidebar'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
+import { timeline, capabilities } from '../content/timeline'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const splitGrid = css({
-  display: 'grid',
-  gridTemplateColumns: '45vw 55vw',
-  minHeight: '100vh',
-  maxWidth: 'none',
-  '@media (max-width: 768px)': {
-    gridTemplateColumns: '1fr',
-    minHeight: 'auto',
-  },
-})
-
-const leftPanel = css({
-  background: '{colors.neutral.950}',
-  padding: 'clamp(24px, 6vw, 96px) clamp(20px, 4vw, 64px) clamp(20px, 5vw, 80px) clamp(20px, 6vw, 96px)',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  position: 'relative',
-  minHeight: '100vh',
-  '@media (max-width: 768px)': {
-    minHeight: '55vh',
-    padding: '24px 24px 32px 24px',
-  },
-})
-
-const rightPanel = css({
-  background: '{colors.lime.400}',
-  padding: 'clamp(20px, 5vw, 80px) clamp(20px, 6vw, 96px) clamp(20px, 5vw, 80px) clamp(20px, 5vw, 80px)',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  position: 'relative',
-  minHeight: '100vh',
-  '@media (max-width: 768px)': {
-    minHeight: '45vh',
-    padding: '32px 24px 24px 24px',
-  },
-})
-
-const heroLeft = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(54px, 6.5vw, 100px)',
-  lineHeight: '0.92',
-  letterSpacing: '0.04em',
-  color: '{colors.cream.100}',
-  textTransform: 'uppercase',
-  fontWeight: 'bold',
-  maxWidth: '80%',
-  '@media (max-width: 768px)': {
-    fontSize: 'clamp(42px, 12vw, 64px)',
-    maxWidth: '100%',
-  },
-})
-
-const attribution = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: '{colors.neutral.400}',
-  letterSpacing: '0.08em',
-  marginTop: '24px',
-  lineHeight: 'normal',
-})
-
-const heroRight = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(58px, 7vw, 108px)',
-  lineHeight: '0.92',
-  letterSpacing: '0.04em',
-  color: '{colors.neutral.950}',
-  textTransform: 'uppercase',
-  fontWeight: 'bold',
-  maxWidth: '80%',
-  '@media (max-width: 768px)': {
-    fontSize: 'clamp(44px, 13vw, 68px)',
-    maxWidth: '100%',
-  },
-})
-
-const projectsSection = css({
-  marginTop: 'auto',
-  paddingTop: '48px',
-})
-
-const sectionLabel = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
-  color: '{colors.neutral.500}',
-  marginBottom: '16px',
-  lineHeight: 'snug',
-})
-
-const projectRow = css({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'baseline',
-  padding: '10px 0',
-  borderTop: '1px solid {colors.neutral.700}',
-  gap: '12px',
-})
-
-const projectTitle = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  fontWeight: 'medium',
-  color: '{colors.cream.100}',
-  textDecoration: 'none',
-  transition: 'color 150ms ease',
-  _hover: {
-    color: '{colors.lime.400}',
-    textDecoration: 'none',
-  },
-  _focus: {
-    outline: '2px solid {colors.lime.400}',
-    outlineOffset: '2px',
-  },
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'none',
-  },
-})
-
-const projectMeta = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: '{colors.neutral.400}',
-  letterSpacing: '0.04em',
-  whiteSpace: 'nowrap',
-})
-
-const featuredBlock = css({
-  marginBottom: '32px',
-})
-
-const featuredTitle = css({
-  fontFamily: 'body',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  color: '{colors.neutral.950}',
-  textDecoration: 'none',
-  display: 'inline-block',
-  padding: '4px 0',
-  transition: 'color 150ms ease',
-  _hover: {
-    color: '{colors.neutral.700}',
-    textDecoration: 'none',
-  },
-  _focus: {
-    outline: '2px solid {colors.neutral.950}',
-    outlineOffset: '2px',
-  },
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'none',
-  },
-})
-
-const featuredProblem = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  color: 'rgba(8, 14, 7, 0.75)',
-  lineHeight: 'normal',
-  maxWidth: '50ch',
-  marginTop: '6px',
-})
-
-const featuredLabel = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
-  color: 'rgba(8, 14, 7, 0.5)',
-  marginBottom: '8px',
-  lineHeight: 'snug',
-})
-
-const signalCluster = css({
-  borderTop: '1px solid rgba(8, 14, 7, 0.2)',
-  paddingTop: '20px',
-  marginTop: '32px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '6px',
-})
-
-const signalRow = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: '{colors.neutral.950}',
-  lineHeight: 'normal',
-  letterSpacing: '0.02em',
-  height: '28px',
-  display: 'flex',
-  alignItems: 'center',
-})
-
-const signalDim = css({
-  color: 'rgba(8, 14, 7, 0.55)',
-})
-
-const expSection = css({
-  borderTop: '1px solid rgba(8, 14, 7, 0.2)',
-  paddingTop: '16px',
-  marginTop: '16px',
-})
-
-const expRow = css({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'baseline',
-  padding: '6px 0',
-  gap: '8px',
-})
-
-const expTitle = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  color: '{colors.neutral.950}',
-  textDecoration: 'none',
-  fontWeight: 'medium',
-  padding: '4px 0',
-  transition: 'color 150ms ease',
-  _hover: {
-    color: '{colors.neutral.700}',
-    textDecoration: 'none',
-  },
-  _focus: {
-    outline: '2px solid {colors.neutral.950}',
-    outlineOffset: '2px',
-  },
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'none',
-  },
-})
-
-const expMeta = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  color: 'rgba(8, 14, 7, 0.5)',
-  whiteSpace: 'nowrap',
-  letterSpacing: '0.04em',
-})
-
-const footerArea = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  color: '{colors.neutral.500}',
-  letterSpacing: '0.04em',
-  marginTop: '24px',
-  display: 'flex',
-  gap: '16px',
-  alignItems: 'center',
-})
-
-const footerLink = css({
-  color: '{colors.neutral.500}',
-  textDecoration: 'none',
-  padding: '4px 0',
-  _hover: {
-    color: '{colors.cream.100}',
-  },
-  _focus: {
-    outline: '2px solid {colors.lime.400}',
-    outlineOffset: '2px',
-  },
-})
+function DotLeader() {
+  return (
+    <span
+      className={css({
+        flex: '1',
+        borderBottom: '1px dotted',
+        borderColor: '{colors.ink.600}',
+        margin: '0 8px',
+        minWidth: '16px',
+        alignSelf: 'flex-end',
+        marginBottom: '4px',
+      })}
+      aria-hidden="true"
+    />
+  )
+}
 
 function HomePage() {
+  const allWork = [
+    ...(featuredProject ? [featuredProject] : []),
+    ...selectedWork,
+    ...experiments,
+  ]
+
+  const signals = [
+    { label: 'AN AI MODEL DISPROVES', meta: 'HN #1' },
+    { label: '3,800 REPOS BREACHED', meta: 'SECURITY' },
+    { label: 'DETROIT TIGERS', meta: '2–3 L' },
+    { label: 'CJ CUP BYRON NELSON', meta: 'SCHEDULED' },
+    { label: 'GBV · MY MORNING JACKET', meta: 'LISTENING' },
+    { label: 'WAXING CRESCENT', meta: 'DAY 5.49' },
+    { label: '14.3H DAYLIGHT', meta: 'SPRING' },
+    { label: 'MEMORIAL DAY', meta: 'T–4 DAYS' },
+  ]
+
   return (
-    <div className={splitGrid}>
-      {/* LEFT PANEL — dark */}
-      <div className={leftPanel}>
-        <Sidebar />
-
-        <div>
-          <div className={heroLeft}>
-            CONTENT<br />WITH
-          </div>
-          <div className={attribution}>— Andrew Carnegie, 1896</div>
-        </div>
-
-        {/* Selected work listing on dark side */}
-        <div className={projectsSection}>
-          <div className={sectionLabel}>Selected Work</div>
-          {selectedWork.map((p) => (
-            <div className={projectRow} key={p.slug}>
-              <a href={`/work/${p.slug}`} className={projectTitle}>{p.title}</a>
-              <span className={projectMeta}>{p.type} · {p.year}</span>
-            </div>
-          ))}
-          <div className={footerArea}>
-            <a href="/archive" className={footerLink}>Archive</a>
-            <span>·</span>
-            <span>Doug March © 2026</span>
-          </div>
-        </div>
-      </div>
-
-      {/* RIGHT PANEL — spring green */}
-      <div className={rightPanel}>
-        <div>
-          <div className={heroRight}>MEDIOCRITY.</div>
-        </div>
-
-        {/* Featured project */}
-        <div className={featuredBlock}>
-          <div className={featuredLabel}>Featured</div>
-          {featuredProject && (
-            <>
-              <a
-                href={featuredProject.externalUrl || `/work/${featuredProject.slug}`}
-                className={featuredTitle}
-              >
-                {featuredProject.title} →
-              </a>
-              {featuredProject.problem && (
-                <div className={featuredProblem}>{featuredProject.problem}</div>
-              )}
-            </>
-          )}
-        </div>
-
-        {/* Experiments */}
-        <div className={expSection}>
-          <div className={css({
-            fontFamily: 'body',
-            fontSize: '11px',
-            letterSpacing: '0.12em',
+    <>
+      {/* Hero Zone */}
+      <section
+        className={css({
+          paddingTop: '48px',
+          paddingBottom: '32px',
+          minHeight: '28vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+        })}
+      >
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontSize: 'clamp(48px, 8.5vw, 122px)',
+            lineHeight: 'tight',
+            letterSpacing: '0.02em',
+            color: 'text',
             textTransform: 'uppercase',
-            color: 'rgba(8, 14, 7, 0.5)',
-            marginBottom: '8px',
-            lineHeight: 'snug',
-          })}>
-            Experiments
-          </div>
-          {experiments.map((e) => (
-            <div className={expRow} key={e.slug}>
-              <a
-                href={e.externalUrl || `/work/${e.slug}`}
-                className={expTitle}
-              >
-                {e.title}
-              </a>
-              <span className={expMeta}>{e.type} · {e.year}</span>
-            </div>
-          ))}
-        </div>
+            margin: '0',
+            padding: '0',
+          })}
+        >
+          EXCESSIVE KINDNESS
+          <br />
+          ELIMINATES RESPECT
+          <span className={css({ color: 'accent' })}>.</span>
+        </h1>
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            letterSpacing: '0.14em',
+            color: 'accent',
+            textTransform: 'uppercase',
+            marginTop: '16px',
+            textAlign: 'right',
+            maxWidth: 'clamp(300px, 60vw, 800px)',
+          })}
+        >
+          — EURIPIDES · 484–406 BC
+        </p>
+      </section>
 
-        {/* Signal cluster */}
-        <div className={signalCluster}>
-          <div className={signalRow}>
-            <span>▼ TIGERS 3–4</span>
-            <span className={signalDim} style={{ marginLeft: '12px' }}>Final</span>
+      {/* Catalog Section */}
+      <section
+        className={css({
+          borderTop: '1px solid',
+          borderColor: 'borderAccent',
+        })}
+      >
+        {/* Column Headers */}
+        <div
+          className={css({
+            display: 'grid',
+            gridTemplateColumns: '1fr',
+            gap: '0',
+            md: {
+              gridTemplateColumns: '44fr 31fr 25fr',
+            },
+          })}
+        >
+          {/* Column 1: Selected Work */}
+          <div
+            className={css({
+              borderRight: 'none',
+              md: {
+                borderRight: '1px solid',
+                borderColor: 'border',
+              },
+              paddingRight: '0',
+              md: { paddingRight: '16px' },
+            })}
+          >
+            <div
+              className={css({
+                fontFamily: 'body',
+                fontSize: '11px',
+                fontWeight: 'medium',
+                letterSpacing: 'widest',
+                color: 'accent',
+                textTransform: 'uppercase',
+                padding: '12px 0',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+              })}
+            >
+              SELECTED WORK
+            </div>
+            {allWork.map((project, i) => {
+              const num = String(i + 1).padStart(2, '0')
+              const href = project.depth === 'full'
+                ? `/work/${project.slug}`
+                : project.externalUrl || `/work/${project.slug}`
+              return (
+                <a
+                  key={project.slug}
+                  href={href}
+                  className={css({
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    padding: '10px 0',
+                    borderBottom: '0.5px solid',
+                    borderColor: 'border',
+                    textDecoration: 'none',
+                    color: 'text',
+                    transition: 'color 0.15s ease',
+                    _hover: {
+                      color: 'accent',
+                      textDecoration: 'underline',
+                      textDecorationColor: 'accent',
+                    },
+                    _focus: {
+                      outline: '2px solid',
+                      outlineColor: 'accent',
+                      outlineOffset: '2px',
+                    },
+                  })}
+                >
+                  <span
+                    className={css({
+                      fontFamily: 'mono',
+                      fontSize: '12px',
+                      color: 'textMuted',
+                      fontVariantNumeric: 'tabular-nums',
+                      marginRight: '8px',
+                      flexShrink: 0,
+                    })}
+                  >
+                    {num}
+                  </span>
+                  <span
+                    className={css({
+                      fontFamily: 'body',
+                      fontSize: '14px',
+                      fontWeight: 'normal',
+                      textTransform: 'uppercase',
+                      whiteSpace: 'nowrap',
+                    })}
+                  >
+                    {project.title}
+                  </span>
+                  <DotLeader />
+                  <span
+                    className={css({
+                      fontFamily: 'body',
+                      fontSize: '12px',
+                      color: 'textSecondary',
+                      letterSpacing: 'wide',
+                      fontVariantNumeric: 'tabular-nums',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0,
+                    })}
+                  >
+                    {project.type} / {project.year}
+                  </span>
+                </a>
+              )
+            })}
+            {/* Featured project problem statement */}
+            {featuredProject && (
+              <div
+                className={css({
+                  padding: '12px 0',
+                  borderBottom: '0.5px solid',
+                  borderColor: 'border',
+                })}
+              >
+                <p
+                  className={css({
+                    fontFamily: 'body',
+                    fontSize: '13px',
+                    color: 'textSecondary',
+                    lineHeight: 'normal',
+                    maxWidth: '55ch',
+                  })}
+                >
+                  {featuredProject.problem}
+                </p>
+                {featuredProject.externalUrl && (
+                  <a
+                    href={featuredProject.externalUrl}
+                    className={css({
+                      fontFamily: 'body',
+                      fontSize: '12px',
+                      letterSpacing: 'wide',
+                      color: 'accent',
+                      textDecoration: 'none',
+                      marginTop: '8px',
+                      display: 'inline-block',
+                      _hover: { textDecoration: 'underline' },
+                      _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+                    })}
+                  >
+                    {featuredProject.externalUrl} →
+                  </a>
+                )}
+              </div>
+            )}
           </div>
-          <div className={signalRow}>
-            <span>◐ Waxing crescent · 21%</span>
+
+          {/* Column 2: Timeline */}
+          <div
+            className={css({
+              borderRight: 'none',
+              md: {
+                borderRight: '1px solid',
+                borderColor: 'border',
+              },
+              paddingLeft: '0',
+              paddingRight: '0',
+              md: { paddingLeft: '16px', paddingRight: '16px' },
+              marginTop: '24px',
+              md: { marginTop: '0' },
+            })}
+          >
+            <div
+              className={css({
+                fontFamily: 'body',
+                fontSize: '11px',
+                fontWeight: 'medium',
+                letterSpacing: 'widest',
+                color: 'accent',
+                textTransform: 'uppercase',
+                padding: '12px 0',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+              })}
+            >
+              TIMELINE
+            </div>
+            {timeline.slice(0, 8).map((entry, i) => (
+              <div
+                key={`${entry.year}-${i}`}
+                className={css({
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  padding: '10px 0',
+                  borderBottom: '0.5px solid',
+                  borderColor: 'border',
+                })}
+              >
+                <span
+                  className={css({
+                    fontFamily: 'mono',
+                    fontSize: '12px',
+                    color: 'textMuted',
+                    fontVariantNumeric: 'tabular-nums',
+                    minWidth: '80px',
+                    flexShrink: 0,
+                  })}
+                >
+                  {entry.year}
+                </span>
+                <span
+                  className={css({
+                    fontFamily: 'body',
+                    fontSize: '13px',
+                    color: 'textSecondary',
+                    lineHeight: '1.35',
+                  })}
+                >
+                  {entry.role}
+                  <span className={css({ color: 'textMuted' })}> · </span>
+                  {entry.company}
+                </span>
+              </div>
+            ))}
           </div>
-          <div className={signalRow}>
-            <span>Memorial Day — 5 days</span>
-          </div>
-          <div className={signalRow}>
-            <span className={signalDim}>HN ·</span>
-            <span style={{ marginLeft: '4px' }}>Gemini 3.5 Flash — 812 pts</span>
-          </div>
-          <div className={signalRow}>
-            <span className={signalDim}>14.3h daylight · Sunrise 4:58</span>
+
+          {/* Column 3: Today */}
+          <div
+            className={css({
+              paddingLeft: '0',
+              md: { paddingLeft: '16px' },
+              marginTop: '24px',
+              md: { marginTop: '0' },
+            })}
+          >
+            <div
+              className={css({
+                fontFamily: 'body',
+                fontSize: '11px',
+                fontWeight: 'medium',
+                letterSpacing: 'widest',
+                color: 'accent',
+                textTransform: 'uppercase',
+                padding: '12px 0',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+              })}
+            >
+              TODAY
+            </div>
+            {signals.map((signal, i) => (
+              <div
+                key={i}
+                className={css({
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  padding: '10px 0',
+                  borderBottom: '0.5px solid',
+                  borderColor: 'border',
+                })}
+              >
+                <span
+                  className={css({
+                    fontFamily: 'body',
+                    fontSize: '13px',
+                    color: 'textSecondary',
+                    textTransform: 'uppercase',
+                    whiteSpace: 'nowrap',
+                  })}
+                >
+                  {signal.label}
+                </span>
+                <DotLeader />
+                <span
+                  className={css({
+                    fontFamily: 'body',
+                    fontSize: '12px',
+                    color: 'textSecondary',
+                    letterSpacing: 'wide',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
+                  })}
+                >
+                  {signal.meta}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      {/* Capabilities Band */}
+      <section
+        className={css({
+          borderTop: '1px solid',
+          borderColor: 'border',
+          padding: '16px 0',
+          marginTop: '0',
+        })}
+      >
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            color: 'textSecondary',
+            letterSpacing: 'wide',
+            lineHeight: 'normal',
+          })}
+        >
+          {capabilities.map((cap, i) => (
+            <span key={cap}>
+              {cap}
+              {i < capabilities.length - 1 && (
+                <span className={css({ color: 'textMuted' })}> · </span>
+              )}
+            </span>
+          ))}
+        </p>
+      </section>
+    </>
   )
 }

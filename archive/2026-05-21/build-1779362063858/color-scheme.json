@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 350,
+    "s": 82,
+    "l": 48,
+    "name": "pompeian crimson"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "crimson-rose",
+    "name": "ink"
+  },
+  "mood_word": "authoritative",
+  "color_story": "Pompeian crimson — the hue of wax seals, Roman authority, and classical theater — is the only color family the mandate leaves open (322°–360°), and it is the exact color Euripides' statement deserves: it does not ask permission."
+}
