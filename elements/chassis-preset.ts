@@ -1,7 +1,7 @@
 import { definePreset } from '@pandacss/dev'
 
 /**
- * Generated from elements/chassis/bebas-plex.js by scripts/utils/chassis.js.
+ * Generated from elements/chassis/spectral-albert.js by scripts/utils/chassis.js.
  * Listed LAST in panda.config.ts so its fonts + fontSizes win over any values
  * the Token Designer emits in elements/preset.ts.
  *
@@ -13,18 +13,18 @@ export const chassisPreset = definePreset({
     extend: {
       tokens: {
         fonts: {
-          display: { value: "\"Bebas Neue\", Oswald, Impact, sans-serif" },
-          body: { value: "\"IBM Plex Sans\", system-ui, -apple-system, sans-serif" },
+          display: { value: "Spectral, Georgia, \"Times New Roman\", serif" },
+          body: { value: "\"Albert Sans\", system-ui, -apple-system, sans-serif" },
         },
         fontSizes: {
           '2xs': { value: "0.625rem" },
           xs: { value: "0.625rem" },
-          sm: { value: "0.667rem" },
+          sm: { value: "0.75rem" },
           base: { value: "1rem" },
-          md: { value: "1.5rem" },
-          lg: { value: "2.25rem" },
-          xl: { value: "3.375rem" },
-          '2xl': { value: "5.063rem" },
+          md: { value: "1.333rem" },
+          lg: { value: "1.777rem" },
+          xl: { value: "2.369rem" },
+          '2xl': { value: "3.157rem" },
         },
       },
     },

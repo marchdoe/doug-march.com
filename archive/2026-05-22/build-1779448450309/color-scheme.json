@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 75,
+    "s": 88,
+    "l": 48,
+    "name": "acid chartreuse"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "yellow-green",
+    "name": "warm ink"
+  },
+  "mood_word": "phosphorescent",
+  "color_story": "Acid chartreuse at H:75° is the color of a May leaf held up to sunlight — aggressive, biological, alive — printed as headline ink on a page of near-black, making the Gibran phrase glow like a posted notice in a darkened room."
+}

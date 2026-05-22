@@ -1,88 +1,96 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
+const navWrap = css({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  height: '56px',
+  padding: '0 5vw',
+  background: 'bgSidebar',
+  borderBottom: '2px solid',
+  borderColor: 'borderAccent',
+  position: 'relative',
+  zIndex: 10,
+})
+
+const leftGroup = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+})
+
+const logoStyle = css({
+  width: '28px',
+  height: '28px',
+})
+
+const nameStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  lineHeight: 'snug',
+  '@media (max-width: 480px)': {
+    display: 'none',
+  },
+})
+
+const navLinks = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '24px',
+})
+
+const navLink = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  textDecoration: 'none',
+  lineHeight: 'snug',
+  padding: '12px 0',
+  transition: 'color 0.15s ease',
+  _hover: {
+    color: 'text',
+    textDecoration: 'none',
+  },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+  },
+})
+
+const dateLine = css({
+  fontFamily: 'body',
+  fontSize: '11px',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  display: 'none',
+  '@media (min-width: 768px)': {
+    display: 'block',
+  },
+})
+
 export function Sidebar() {
   return (
-    <nav
-      className={css({
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: '48px',
-        borderBottom: '1px solid',
-        borderColor: 'border',
-        padding: '0',
-        width: '100%',
-      })}
-    >
-      <a
-        href="/"
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          textDecoration: 'none',
-          color: 'text',
-          _hover: { color: 'accent' },
-        })}
-      >
-        <img
-          src={logoSvg}
-          alt="Doug March logo"
-          className={css({ width: '20px', height: '20px' })}
-        />
-        <span
-          className={css({
-            fontFamily: 'body',
-            fontSize: '13px',
-            fontWeight: 'medium',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-          })}
-        >
-          DOUGLAS MARCH
-        </span>
-      </a>
-      <div
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          gap: '20px',
-        })}
-      >
-        <a
-          href="/"
-          className={css({
-            fontFamily: 'body',
-            fontSize: '12px',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textSecondary',
-            textDecoration: 'none',
-            padding: '12px 0',
-            _hover: { color: 'accent' },
-            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-          })}
-        >
-          Work
+    <nav className={navWrap} role="navigation" aria-label="Main navigation">
+      <div className={leftGroup}>
+        <a href="/" aria-label="Home">
+          <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
         </a>
-        <span className={css({ color: 'textMuted', fontSize: '12px' })}>·</span>
-        <a
-          href="/about"
-          className={css({
-            fontFamily: 'body',
-            fontSize: '12px',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textSecondary',
-            textDecoration: 'none',
-            padding: '12px 0',
-            _hover: { color: 'accent' },
-            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-          })}
-        >
-          About
-        </a>
+        <span className={nameStyle}>Doug March</span>
+        <span className={dateLine}>May 22, 2026</span>
+      </div>
+      <div className={navLinks}>
+        <a href="/" className={navLink}>Work</a>
+        <a href="/about" className={navLink}>About</a>
       </div>
     </nav>
   )

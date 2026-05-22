@@ -1,410 +1,466 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
-import { timeline, capabilities } from '../content/timeline'
+import { timeline } from '../content/timeline'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-function DotLeader() {
+const pageWrap = css({
+  padding: '0 5vw',
+  display: 'flex',
+  flexDirection: 'column',
+  minHeight: 'calc(100vh - 58px)',
+})
+
+const mastheadZone = css({
+  padding: '32px 0 16px 0',
+  minHeight: '180px',
+})
+
+const heroPhrase = css({
+  fontFamily: 'display',
+  fontWeight: 'semibold',
+  fontStyle: 'italic',
+  fontSize: 'clamp(28px, 4.5vw, 64px)',
+  lineHeight: 'tight',
+  letterSpacing: 'tight',
+  color: 'accent',
+  maxWidth: '100%',
+  textWrap: 'balance',
+})
+
+const attribution = css({
+  fontFamily: 'body',
+  fontSize: '11px',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  paddingTop: '12px',
+})
+
+const mainRule = css({
+  border: 'none',
+  borderTop: '1px solid',
+  borderColor: 'border',
+  margin: '0',
+})
+
+const columnsGrid = css({
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  gap: '32px',
+  padding: '24px 0 64px 0',
+  '@media (min-width: 768px)': {
+    gridTemplateColumns: '1.25fr 1fr',
+  },
+  '@media (min-width: 1024px)': {
+    gridTemplateColumns: '1.25fr 1fr 0.85fr',
+  },
+})
+
+const sectionHeader = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  lineHeight: 'snug',
+  paddingBottom: '8px',
+  borderBottom: '2px solid',
+  borderColor: 'borderAccent',
+  marginBottom: '16px',
+})
+
+const projectRow = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  padding: '8px 0',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  transition: 'background 0.12s ease',
+  _hover: {
+    background: 'bgCard',
+  },
+})
+
+const projectTitle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '14px',
+  color: 'text',
+  letterSpacing: 'wide',
+  lineHeight: 'normal',
+})
+
+const projectMeta = css({
+  fontFamily: 'body',
+  fontSize: '12px',
+  color: 'textSecondary',
+  letterSpacing: 'wide',
+  whiteSpace: 'nowrap',
+  marginLeft: '12px',
+})
+
+const projectLink = css({
+  textDecoration: 'none',
+  color: 'accent',
+  _hover: {
+    textDecoration: 'underline',
+    textUnderlineOffset: '3px',
+    color: 'accentHover',
+  },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+  },
+})
+
+const featuredBlock = css({
+  padding: '16px 0',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  marginBottom: '16px',
+})
+
+const featuredTitle = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'clamp(20px, 2.5vw, 32px)',
+  lineHeight: 'snug',
+  color: 'text',
+  letterSpacing: 'tight',
+  marginBottom: '8px',
+})
+
+const featuredProblem = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  lineHeight: 'normal',
+  color: 'textSecondary',
+  maxWidth: '65ch',
+  marginBottom: '12px',
+})
+
+const featuredLink = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '12px',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  color: 'accent',
+  textDecoration: 'none',
+  _hover: {
+    textDecoration: 'underline',
+    textUnderlineOffset: '3px',
+    color: 'accentHover',
+  },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+  },
+})
+
+const timelineRow = css({
+  display: 'grid',
+  gridTemplateColumns: '90px 1fr',
+  gap: '12px',
+  padding: '6px 0',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  fontSize: '12px',
+  lineHeight: 'normal',
+  '@media (min-width: 768px)': {
+    gridTemplateColumns: '120px 1fr',
+  },
+})
+
+const timelineYear = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  color: 'textMuted',
+  letterSpacing: 'wide',
+  whiteSpace: 'nowrap',
+  minWidth: '90px',
+  '@media (min-width: 768px)': {
+    minWidth: '120px',
+  },
+})
+
+const timelineInfo = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  color: 'textSecondary',
+  lineHeight: 'normal',
+})
+
+const timelineRole = css({
+  color: 'text',
+  fontWeight: 'medium',
+})
+
+const signalSection = css({
+  marginBottom: '16px',
+})
+
+const signalRow = css({
+  fontFamily: 'body',
+  fontSize: '12px',
+  color: 'textSecondary',
+  letterSpacing: 'wide',
+  lineHeight: 'loose',
+  padding: '2px 0',
+})
+
+const signalMuted = css({
+  color: 'textMuted',
+})
+
+const leaderRow = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  fontFamily: 'body',
+  fontSize: '12px',
+  letterSpacing: 'wide',
+  padding: '3px 0',
+})
+
+const leaderName = css({
+  color: 'text',
+  fontWeight: 'medium',
+})
+
+const leaderNameAccent = css({
+  color: 'accent',
+  fontWeight: 'medium',
+})
+
+const leaderScore = css({
+  fontVariantNumeric: 'tabular-nums',
+  color: 'textSecondary',
+  textAlign: 'right',
+})
+
+const leaderScoreAccent = css({
+  fontVariantNumeric: 'tabular-nums',
+  color: 'accent',
+  textAlign: 'right',
+})
+
+const microRule = css({
+  border: 'none',
+  borderTop: '1px solid',
+  borderColor: 'border',
+  margin: '12px 0',
+})
+
+const footerWrap = css({
+  padding: '24px 5vw',
+  borderTop: '1px solid',
+  borderColor: 'border',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+})
+
+const footerText = css({
+  fontFamily: 'body',
+  fontSize: '11px',
+  color: 'textMuted',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
+})
+
+const footerLink = css({
+  fontFamily: 'body',
+  fontSize: '11px',
+  color: 'textMuted',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
+  textDecoration: 'none',
+  _hover: {
+    color: 'textSecondary',
+    textDecoration: 'underline',
+    textUnderlineOffset: '3px',
+  },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+  },
+})
+
+function HomePage() {
   return (
-    <span
-      className={css({
-        flex: '1',
-        borderBottom: '1px dotted',
-        borderColor: '{colors.ink.600}',
-        margin: '0 8px',
-        minWidth: '16px',
-        alignSelf: 'flex-end',
-        marginBottom: '4px',
-      })}
-      aria-hidden="true"
-    />
+    <>
+      <div className={pageWrap}>
+        {/* Masthead / Hero */}
+        <div className={mastheadZone}>
+          <h1 className={heroPhrase}>
+            You talk when you cease to be at peace with your thoughts.
+          </h1>
+          <p className={attribution}>— Kahlil Gibran</p>
+        </div>
+
+        <hr className={mainRule} />
+
+        {/* Three-column content */}
+        <div className={columnsGrid}>
+          {/* Column 1: Featured + Selected Work */}
+          <div>
+            {featuredProject && (
+              <>
+                <div className={sectionHeader}>Lead Story</div>
+                <div className={featuredBlock}>
+                  <h2 className={featuredTitle}>{featuredProject.title}</h2>
+                  {featuredProject.problem && (
+                    <p className={featuredProblem}>{featuredProject.problem}</p>
+                  )}
+                  {featuredProject.externalUrl && (
+                    <a href={featuredProject.externalUrl} className={featuredLink}>
+                      Visit Project →
+                    </a>
+                  )}
+                </div>
+              </>
+            )}
+
+            <div className={sectionHeader}>Selected Work</div>
+            {selectedWork.map((p) => (
+              <a href={`/work/${p.slug}`} key={p.slug} className={projectLink} style={{ display: 'block' }}>
+                <div className={projectRow}>
+                  <span className={projectTitle}>{p.title}</span>
+                  <span className={projectMeta}>{p.type} · {p.year}</span>
+                </div>
+              </a>
+            ))}
+
+            <div style={{ marginTop: '24px' }}>
+              <div className={sectionHeader}>Experiments</div>
+              {experiments.map((p) => (
+                <a
+                  href={p.externalUrl || `/work/${p.slug}`}
+                  key={p.slug}
+                  className={projectLink}
+                  style={{ display: 'block' }}
+                >
+                  <div className={projectRow}>
+                    <span className={projectTitle}>{p.title}</span>
+                    <span className={projectMeta}>{p.type} · {p.year}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Column 2: Timeline (recent) */}
+          <div>
+            <div className={sectionHeader}>Career Filed</div>
+            {timeline.slice(0, 8).map((entry, i) => (
+              <div className={timelineRow} key={i}>
+                <span className={timelineYear}>{entry.year}</span>
+                <div className={timelineInfo}>
+                  <span className={timelineRole}>{entry.role}</span>
+                  {' — '}
+                  {entry.company}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Column 3: Today's signals */}
+          <div>
+            <div className={sectionHeader}>Today</div>
+
+            {/* Golf */}
+            <div className={signalSection}>
+              <div className={css({
+                fontFamily: 'body',
+                fontSize: '11px',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                color: 'textMuted',
+                marginBottom: '8px',
+                fontWeight: 'medium',
+              })}>
+                CJ Cup Byron Nelson
+              </div>
+              <div className={leaderRow}>
+                <span className={leaderNameAccent}>T. Moore</span>
+                <span className={leaderScoreAccent}>−9</span>
+              </div>
+              <div className={leaderRow}>
+                <span className={leaderName}>B. Koepka</span>
+                <span className={leaderScore}>−8</span>
+              </div>
+              <div className={leaderRow}>
+                <span className={leaderName}>J. Svensson</span>
+                <span className={leaderScore}>−8</span>
+              </div>
+            </div>
+
+            <hr className={microRule} />
+
+            {/* Tigers */}
+            <div className={signalSection}>
+              <span className={css({
+                fontFamily: 'body',
+                fontSize: '12px',
+                color: 'textMuted',
+                letterSpacing: 'wide',
+              })}>
+                Detroit Tigers · L 1–3
+              </span>
+            </div>
+
+            <hr className={microRule} />
+
+            {/* Environmental signals */}
+            <div className={signalSection}>
+              <div className={signalRow}>◑ First Quarter — 40.5%</div>
+              <div className={signalRow}>☀ 14.3 Hours Daylight</div>
+              <div className={css({ ...signalRowBase, color: '{colors.ink.500}' })}>
+                <span className={signalMuted}>♫ Wet Leg · Radiohead</span>
+              </div>
+              <div className={signalRow}>⚑ Memorial Day in 3 Days</div>
+            </div>
+
+            <hr className={microRule} />
+
+            {/* HN */}
+            <div className={signalSection}>
+              <div className={css({
+                fontFamily: 'body',
+                fontSize: '11px',
+                color: 'textMuted',
+                letterSpacing: 'wide',
+                lineHeight: 'normal',
+              })}>
+                HN: Project Hail Mary — Stellar Navigation Chart
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className={footerWrap}>
+        <span className={footerText}>© 2026 Doug March</span>
+        <a href="/archive" className={footerLink}>Archive</a>
+      </footer>
+    </>
   )
 }
 
-function HomePage() {
-  const allWork = [
-    ...(featuredProject ? [featuredProject] : []),
-    ...selectedWork,
-    ...experiments,
-  ]
-
-  const signals = [
-    { label: 'AN AI MODEL DISPROVES', meta: 'HN #1' },
-    { label: '3,800 REPOS BREACHED', meta: 'SECURITY' },
-    { label: 'DETROIT TIGERS', meta: '2–3 L' },
-    { label: 'CJ CUP BYRON NELSON', meta: 'SCHEDULED' },
-    { label: 'GBV · MY MORNING JACKET', meta: 'LISTENING' },
-    { label: 'WAXING CRESCENT', meta: 'DAY 5.49' },
-    { label: '14.3H DAYLIGHT', meta: 'SPRING' },
-    { label: 'MEMORIAL DAY', meta: 'T–4 DAYS' },
-  ]
-
-  return (
-    <>
-      {/* Hero Zone */}
-      <section
-        className={css({
-          paddingTop: '48px',
-          paddingBottom: '32px',
-          minHeight: '28vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-        })}
-      >
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontSize: 'clamp(48px, 8.5vw, 122px)',
-            lineHeight: 'tight',
-            letterSpacing: '0.02em',
-            color: 'text',
-            textTransform: 'uppercase',
-            margin: '0',
-            padding: '0',
-          })}
-        >
-          EXCESSIVE KINDNESS
-          <br />
-          ELIMINATES RESPECT
-          <span className={css({ color: 'accent' })}>.</span>
-        </h1>
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontSize: '13px',
-            letterSpacing: '0.14em',
-            color: 'accent',
-            textTransform: 'uppercase',
-            marginTop: '16px',
-            textAlign: 'right',
-            maxWidth: 'clamp(300px, 60vw, 800px)',
-          })}
-        >
-          — EURIPIDES · 484–406 BC
-        </p>
-      </section>
-
-      {/* Catalog Section */}
-      <section
-        className={css({
-          borderTop: '1px solid',
-          borderColor: 'borderAccent',
-        })}
-      >
-        {/* Column Headers */}
-        <div
-          className={css({
-            display: 'grid',
-            gridTemplateColumns: '1fr',
-            gap: '0',
-            md: {
-              gridTemplateColumns: '44fr 31fr 25fr',
-            },
-          })}
-        >
-          {/* Column 1: Selected Work */}
-          <div
-            className={css({
-              borderRight: 'none',
-              md: {
-                borderRight: '1px solid',
-                borderColor: 'border',
-              },
-              paddingRight: '0',
-              md: { paddingRight: '16px' },
-            })}
-          >
-            <div
-              className={css({
-                fontFamily: 'body',
-                fontSize: '11px',
-                fontWeight: 'medium',
-                letterSpacing: 'widest',
-                color: 'accent',
-                textTransform: 'uppercase',
-                padding: '12px 0',
-                borderBottom: '1px solid',
-                borderColor: 'border',
-              })}
-            >
-              SELECTED WORK
-            </div>
-            {allWork.map((project, i) => {
-              const num = String(i + 1).padStart(2, '0')
-              const href = project.depth === 'full'
-                ? `/work/${project.slug}`
-                : project.externalUrl || `/work/${project.slug}`
-              return (
-                <a
-                  key={project.slug}
-                  href={href}
-                  className={css({
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    padding: '10px 0',
-                    borderBottom: '0.5px solid',
-                    borderColor: 'border',
-                    textDecoration: 'none',
-                    color: 'text',
-                    transition: 'color 0.15s ease',
-                    _hover: {
-                      color: 'accent',
-                      textDecoration: 'underline',
-                      textDecorationColor: 'accent',
-                    },
-                    _focus: {
-                      outline: '2px solid',
-                      outlineColor: 'accent',
-                      outlineOffset: '2px',
-                    },
-                  })}
-                >
-                  <span
-                    className={css({
-                      fontFamily: 'mono',
-                      fontSize: '12px',
-                      color: 'textMuted',
-                      fontVariantNumeric: 'tabular-nums',
-                      marginRight: '8px',
-                      flexShrink: 0,
-                    })}
-                  >
-                    {num}
-                  </span>
-                  <span
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: '14px',
-                      fontWeight: 'normal',
-                      textTransform: 'uppercase',
-                      whiteSpace: 'nowrap',
-                    })}
-                  >
-                    {project.title}
-                  </span>
-                  <DotLeader />
-                  <span
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: '12px',
-                      color: 'textSecondary',
-                      letterSpacing: 'wide',
-                      fontVariantNumeric: 'tabular-nums',
-                      whiteSpace: 'nowrap',
-                      flexShrink: 0,
-                    })}
-                  >
-                    {project.type} / {project.year}
-                  </span>
-                </a>
-              )
-            })}
-            {/* Featured project problem statement */}
-            {featuredProject && (
-              <div
-                className={css({
-                  padding: '12px 0',
-                  borderBottom: '0.5px solid',
-                  borderColor: 'border',
-                })}
-              >
-                <p
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '13px',
-                    color: 'textSecondary',
-                    lineHeight: 'normal',
-                    maxWidth: '55ch',
-                  })}
-                >
-                  {featuredProject.problem}
-                </p>
-                {featuredProject.externalUrl && (
-                  <a
-                    href={featuredProject.externalUrl}
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: '12px',
-                      letterSpacing: 'wide',
-                      color: 'accent',
-                      textDecoration: 'none',
-                      marginTop: '8px',
-                      display: 'inline-block',
-                      _hover: { textDecoration: 'underline' },
-                      _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-                    })}
-                  >
-                    {featuredProject.externalUrl} →
-                  </a>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Column 2: Timeline */}
-          <div
-            className={css({
-              borderRight: 'none',
-              md: {
-                borderRight: '1px solid',
-                borderColor: 'border',
-              },
-              paddingLeft: '0',
-              paddingRight: '0',
-              md: { paddingLeft: '16px', paddingRight: '16px' },
-              marginTop: '24px',
-              md: { marginTop: '0' },
-            })}
-          >
-            <div
-              className={css({
-                fontFamily: 'body',
-                fontSize: '11px',
-                fontWeight: 'medium',
-                letterSpacing: 'widest',
-                color: 'accent',
-                textTransform: 'uppercase',
-                padding: '12px 0',
-                borderBottom: '1px solid',
-                borderColor: 'border',
-              })}
-            >
-              TIMELINE
-            </div>
-            {timeline.slice(0, 8).map((entry, i) => (
-              <div
-                key={`${entry.year}-${i}`}
-                className={css({
-                  display: 'flex',
-                  alignItems: 'baseline',
-                  padding: '10px 0',
-                  borderBottom: '0.5px solid',
-                  borderColor: 'border',
-                })}
-              >
-                <span
-                  className={css({
-                    fontFamily: 'mono',
-                    fontSize: '12px',
-                    color: 'textMuted',
-                    fontVariantNumeric: 'tabular-nums',
-                    minWidth: '80px',
-                    flexShrink: 0,
-                  })}
-                >
-                  {entry.year}
-                </span>
-                <span
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '13px',
-                    color: 'textSecondary',
-                    lineHeight: '1.35',
-                  })}
-                >
-                  {entry.role}
-                  <span className={css({ color: 'textMuted' })}> · </span>
-                  {entry.company}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Column 3: Today */}
-          <div
-            className={css({
-              paddingLeft: '0',
-              md: { paddingLeft: '16px' },
-              marginTop: '24px',
-              md: { marginTop: '0' },
-            })}
-          >
-            <div
-              className={css({
-                fontFamily: 'body',
-                fontSize: '11px',
-                fontWeight: 'medium',
-                letterSpacing: 'widest',
-                color: 'accent',
-                textTransform: 'uppercase',
-                padding: '12px 0',
-                borderBottom: '1px solid',
-                borderColor: 'border',
-              })}
-            >
-              TODAY
-            </div>
-            {signals.map((signal, i) => (
-              <div
-                key={i}
-                className={css({
-                  display: 'flex',
-                  alignItems: 'baseline',
-                  padding: '10px 0',
-                  borderBottom: '0.5px solid',
-                  borderColor: 'border',
-                })}
-              >
-                <span
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '13px',
-                    color: 'textSecondary',
-                    textTransform: 'uppercase',
-                    whiteSpace: 'nowrap',
-                  })}
-                >
-                  {signal.label}
-                </span>
-                <DotLeader />
-                <span
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '12px',
-                    color: 'textSecondary',
-                    letterSpacing: 'wide',
-                    whiteSpace: 'nowrap',
-                    flexShrink: 0,
-                  })}
-                >
-                  {signal.meta}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Capabilities Band */}
-      <section
-        className={css({
-          borderTop: '1px solid',
-          borderColor: 'border',
-          padding: '16px 0',
-          marginTop: '0',
-        })}
-      >
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontSize: '13px',
-            color: 'textSecondary',
-            letterSpacing: 'wide',
-            lineHeight: 'normal',
-          })}
-        >
-          {capabilities.map((cap, i) => (
-            <span key={cap}>
-              {cap}
-              {i < capabilities.length - 1 && (
-                <span className={css({ color: 'textMuted' })}> · </span>
-              )}
-            </span>
-          ))}
-        </p>
-      </section>
-    </>
-  )
+const signalRowBase = {
+  fontFamily: 'body',
+  fontSize: '12px',
+  letterSpacing: 'wide',
+  lineHeight: 'loose',
+  padding: '2px 0',
 }
