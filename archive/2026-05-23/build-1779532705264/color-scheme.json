@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 290,
+    "s": 88,
+    "l": 62,
+    "name": "violet"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "violet",
+    "name": "ink-violet stone"
+  },
+  "mood_word": "sovereign",
+  "color_story": "Deep violet-black ground with a vivid amethyst accent illuminates both instances of PURPOSE — the chiasmus made visible by color, the reversal proven by the eye before the mind catches up."
+}
