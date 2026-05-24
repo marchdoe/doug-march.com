@@ -1,0 +1,281 @@
+{
+  "date": "2026-05-24",
+  "startedAt": "2026-05-24T10:33:38.484Z",
+  "completedAt": "2026-05-24T10:42:59.422Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pedal Mafia | Event Micro Site",
+              "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Sunday",
+          "is_weekend": true,
+          "day_index": 0
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "Lum1104/Understand-Anything/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "anthropics/claude-plugins-official/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "colbymchenry/codegraph/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/rohitg00",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/Fincept-Corporation",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "THE CJ CUP Byron Nelson",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Si Woo Kim",
+              "position": "1",
+              "score": "-21"
+            },
+            {
+              "name": "Scottie Scheffler",
+              "position": "2",
+              "score": "-19"
+            },
+            {
+              "name": "Wyndham Clark",
+              "position": "3",
+              "score": "-19"
+            },
+            {
+              "name": "Stephan Jaeger",
+              "position": "4",
+              "score": "-17"
+            },
+            {
+              "name": "Tom Hoge",
+              "position": "5",
+              "score": "-17"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Microsoft open-sources \"the earliest DOS source code discovered to date\"",
+              "url": "https://arstechnica.com/gadgets/2026/04/microsoft-open-sources-the-earliest-dos-source-code-discovered-to-date/",
+              "score": 264,
+              "by": "DamnInteresting"
+            },
+            {
+              "title": "Why is Vivado 2026.1 dropping Linux support for free tier?",
+              "url": "https://adaptivesupport.amd.com/s/question/0D5Pd00001YQLdMKAX/why-is-vivado-20261-dropping-linux-support-for-free-tier-?language=en_US",
+              "score": 168,
+              "by": "zdw"
+            },
+            {
+              "title": "Silk: Open-source cooperative fiber scheduler",
+              "url": "https://github.com/ClickHouse/silk",
+              "score": 31,
+              "by": "animetyan"
+            },
+            {
+              "title": "Wake up! 16b",
+              "url": "https://hellmood.111mb.de/wake_up_16b_writeup.html",
+              "score": 250,
+              "by": "MaximilianEmel"
+            },
+            {
+              "title": "I spent 50 hours drawing a line graph",
+              "url": "https://www.dougmacdowell.com/50-hours-to-draw-some-lines.html",
+              "score": 25,
+              "by": "dougdude3339"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Memorial Day",
+              "date": "2026-05-25",
+              "days_away": 1
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "first quarter",
+          "illumination": 0.614,
+          "days_into_cycle": 8.47
+        },
+        "music": {
+          "bands": [
+            "My Morning Jacket",
+            "Guided by Voices",
+            "The War on Drugs"
+          ]
+        },
+        "quote": {
+          "text": "Do not wait for leaders; do it alone, person to person.",
+          "author": "Mother Teresa"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 24,
+          "day_of_year": 144,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:55",
+          "sunset": "19:18",
+          "daylight_hours": 14.4
+        },
+        "date": "2026-05-24"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-24T10:33:53.921Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-23: Specimen\n  - 2026-05-22: Broadsheet\n  - 2026-05-21: Index\n  - 2026-05-20: Split\n  - 2026-05-19: Stack\n  - 2026-05-18: Poster\n  - 2026-05-17: Specimen\n\n**Recently used** (last 3 days): Specimen, Broadsheet, Index\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or si"
+      },
+      "output": {
+        "hero_copy": "DO NOT WAIT FOR LEADERS; DO IT ALONE, PERSON TO PERSON.",
+        "archetype": "Gallery Wall",
+        "chassisId": "big-shoulders-atkinson",
+        "specLength": 7141,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue:** H:205° (cyan-blue). Chosen because the command phrase needs a color that is already decided — not warm and persuasive, not aggressive and hot, but clear and settled. Aqua at H:205° is the color of a still surface that reflects sky. It fills the hero block as a drenched surface, not as an accent.\n\n**Neutral palette (stone, tinted H:205° chroma ≈0.01):**\n- 50:  #F5F8FA\n- 100: #E7EFF3\n- 200: #CCD9DF\n- 300: #9AB2BC\n- 400: #668A97\n- 500: #426878\n- 600: #2D",
+        "selfCheck": "1. Hero quotability: Yes — \"Do not wait for leaders; do it alone, person to person.\" stands completely alone as a quotable command; it requires no context, no attribution, and earns marquee scale because it is a founding principle with a semicolon-enforced structure that becomes architectural at dis"
+      },
+      "durationMs": 377264,
+      "timestamp": "2026-05-24T10:40:11.189Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 7141
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 39412,
+      "timestamp": "2026-05-24T10:40:52.163Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4957,
+        "briefLength": 9830
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 102934,
+      "timestamp": "2026-05-24T10:42:35.099Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-24T10:42:42.325Z"
+    }
+  ]
+}

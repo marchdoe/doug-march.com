@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 205,
+    "s": 78,
+    "l": 42,
+    "name": "clearwater aqua"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "cyan-blue H:205°",
+    "name": "abyssal stone"
+  },
+  "mood_word": "decisive",
+  "color_story": "The clear aqua of still water before you jump — saturated enough to be a commitment, cool enough to be a fact, the color that matches a command with no qualifiers."
+}

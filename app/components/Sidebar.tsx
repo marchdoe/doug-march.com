@@ -5,31 +5,72 @@ export function Sidebar() {
   return (
     <nav
       className={css({
-        position: 'fixed',
-        top: '6vh',
-        right: '5vw',
-        zIndex: 100,
         display: 'flex',
         alignItems: 'center',
-        gap: '6',
+        justifyContent: 'space-between',
+        padding: '12px 28px',
+        background: 'bgSignal',
       })}
     >
-      <a
-        href="/"
-        className={css({
-          display: 'block',
-          opacity: 0.5,
-          transition: 'opacity 0.2s ease',
-          _hover: { opacity: 1 },
-        })}
-        aria-label="Home"
-      >
+      <a href="/" className={css({
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        textDecoration: 'none',
+        _hover: { textDecoration: 'none' },
+      })}>
         <img
           src={logoSvg}
           alt="Doug March logo"
-          className={css({ width: '24px', height: '24px' })}
+          className={css({ width: '28px', height: '28px' })}
         />
+        <span className={css({
+          fontFamily: 'body',
+          fontSize: '12px',
+          fontWeight: 'medium',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: 'textMuted',
+        })}>
+          DOUG MARCH
+        </span>
       </a>
+      <div className={css({
+        display: 'flex',
+        gap: '24px',
+        alignItems: 'center',
+      })}>
+        {[
+          { label: 'WORK', href: '/' },
+          { label: 'ABOUT', href: '/about' },
+        ].map((item) => (
+          <a
+            key={item.label}
+            href={item.href}
+            className={css({
+              fontFamily: 'body',
+              fontSize: '12px',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: 'textMuted',
+              textDecoration: 'none',
+              transition: 'color 0.2s ease',
+              padding: '12px 4px',
+              _hover: {
+                color: 'text',
+                textDecoration: 'none',
+              },
+              _focus: {
+                outline: '2px solid',
+                outlineColor: 'accent',
+                outlineOffset: '2px',
+              },
+            })}
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
     </nav>
   )
 }

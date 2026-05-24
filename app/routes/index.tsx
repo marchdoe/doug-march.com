@@ -1,191 +1,367 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Box, Flex } from '../../styled-system/jsx'
+import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
 function HomePage() {
-  const specimenLine = css({
-    fontFamily: 'display',
-    fontSize: 'clamp(64px, 14vw, 210px)',
-    lineHeight: 'tight',
-    letterSpacing: 'wide',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-    color: '{colors.stone.50}',
-    margin: 0,
-    padding: 0,
-  })
-
-  const purposeHighlight = css({
-    color: '{colors.violet.400}',
-  })
-
-  const footerLabel = css({
-    fontFamily: 'mono',
-    fontSize: '11px',
-    letterSpacing: 'widest',
-    textTransform: 'uppercase',
-    color: '{colors.stone.500}',
-    lineHeight: 'normal',
-    transition: 'color 0.2s ease',
-  })
-
-  const footerLabelHover = css({
-    fontFamily: 'mono',
-    fontSize: '11px',
-    letterSpacing: 'widest',
-    textTransform: 'uppercase',
-    color: '{colors.stone.500}',
-    lineHeight: 'normal',
-    transition: 'color 0.2s ease',
-    _hover: { color: '{colors.stone.300}' },
-    display: 'inline-block',
-    minHeight: '44px',
-    minWidth: '44px',
-    paddingTop: '12px',
-    paddingBottom: '12px',
-  })
-
-  const scoreAccent = css({
-    color: '{colors.violet.400}',
-    fontVariantNumeric: 'tabular-nums',
-  })
-
-  const scoreMuted = css({
-    color: '{colors.stone.500}',
-    fontVariantNumeric: 'tabular-nums',
-  })
-
-  const whisper = css({
-    fontFamily: 'mono',
-    fontSize: '10px',
-    letterSpacing: 'wider',
-    textTransform: 'uppercase',
-    color: '{colors.stone.600}',
-    lineHeight: 'normal',
-  })
-
-  const attribution = css({
-    fontFamily: 'body',
-    fontSize: '11px',
-    fontStyle: 'italic',
-    color: '{colors.stone.500}',
-    lineHeight: 'normal',
-  })
+  const allProjects = [
+    ...(featuredProject ? [featuredProject] : []),
+    ...selectedWork,
+    ...experiments,
+  ]
 
   return (
-    <>
-      {/* Specimen Zone */}
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        minHeight="78vh"
-      >
-        <div aria-label="Hero phrase: The purpose of life is the life of purpose">
-          <p className={specimenLine}>
-            The <span className={purposeHighlight}>Purpose</span>
-          </p>
-          <p className={specimenLine}>
-            of life is
-          </p>
-          <p className={specimenLine}>
-            the life of
-          </p>
-          <p className={specimenLine}>
-            <span className={purposeHighlight}>Purpose.</span>
+    <div className={css({
+      display: 'grid',
+      gridTemplateColumns: '3fr 2fr',
+      gap: '16px',
+      padding: '0 16px 16px 16px',
+      minHeight: 'calc(100vh - 52px)',
+      '@media (max-width: 768px)': {
+        gridTemplateColumns: '1fr',
+        gap: '12px',
+        padding: '0 12px 12px 12px',
+      },
+    })}>
+      {/* Hero Block — Left Column */}
+      <div className={css({
+        gridColumn: '1',
+        gridRow: '1 / span 3',
+        minHeight: 'calc(100vh - 68px)',
+        background: 'bgHero',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '64px 6vw',
+        '@media (max-width: 768px)': {
+          gridColumn: '1',
+          gridRow: 'auto',
+          minHeight: '70vh',
+          padding: '48px 24px',
+        },
+      })}>
+        <h1 className={css({
+          fontFamily: 'display',
+          fontSize: 'clamp(48px, 7.5vw, 108px)',
+          fontWeight: 'bold',
+          lineHeight: '0.88',
+          letterSpacing: '0.02em',
+          textTransform: 'uppercase',
+          color: 'textOnHero',
+          textWrap: 'balance',
+          '@media (max-width: 768px)': {
+            fontSize: 'clamp(36px, 10vw, 64px)',
+          },
+        })}>
+          DO NOT WAIT FOR LEADERS; DO IT ALONE, PERSON TO PERSON.
+        </h1>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '14px',
+          fontWeight: 'light',
+          color: 'textOnHero',
+          marginTop: '32px',
+          letterSpacing: '0.02em',
+        })}>
+          — Mother Teresa
+        </p>
+      </div>
+
+      {/* Signal Block — Top Right */}
+      <div className={css({
+        gridColumn: '2',
+        gridRow: '1',
+        background: 'bgSignal',
+        padding: '28px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '24px',
+        '@media (max-width: 768px)': {
+          gridColumn: '1',
+          gridRow: 'auto',
+          padding: '24px 20px',
+        },
+      })}>
+        <div className={css({
+          fontFamily: 'body',
+          fontSize: '10px',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: 'textMuted',
+          marginBottom: '4px',
+        })}>
+          SIGNAL · TODAY
+        </div>
+
+        {/* Golf Leaderboard */}
+        <div>
+          <div className={css({
+            fontFamily: 'body',
+            fontSize: '10px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+            marginBottom: '12px',
+          })}>
+            CJ CUP BYRON NELSON
+          </div>
+          <div className={css({ display: 'flex', flexDirection: 'column', gap: '8px' })}>
+            <div className={css({ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' })}>
+              <span className={css({
+                fontFamily: 'body',
+                fontSize: '14px',
+                color: 'textSecondary',
+                fontWeight: 'medium',
+              })}>
+                SI WOO KIM
+              </span>
+              <span className={css({
+                fontFamily: 'display',
+                fontSize: '20px',
+                fontWeight: 'bold',
+                color: 'accentBright',
+              })}>
+                −21
+              </span>
+            </div>
+            <div className={css({ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' })}>
+              <span className={css({
+                fontFamily: 'body',
+                fontSize: '14px',
+                color: 'textMuted',
+              })}>
+                SCHEFFLER
+              </span>
+              <span className={css({
+                fontFamily: 'display',
+                fontSize: '16px',
+                fontWeight: 'bold',
+                color: 'textSecondary',
+              })}>
+                −19
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Memorial Day */}
+        <div>
+          <span className={css({
+            display: 'inline-block',
+            background: 'bgHero',
+            color: 'textOnHero',
+            fontFamily: 'body',
+            fontSize: '11px',
+            letterSpacing: '0.1em',
+            padding: '6px 12px',
+            fontWeight: 'medium',
+          })}>
+            MEMORIAL DAY TOMORROW
+          </span>
+        </div>
+
+        {/* Moon & Daylight */}
+        <div className={css({
+          display: 'flex',
+          gap: '20px',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+        })}>
+          <span className={css({
+            fontFamily: 'body',
+            fontSize: '11px',
+            color: 'textMuted',
+            letterSpacing: '0.05em',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+          })}>
+            <span className={css({ color: 'accent', fontSize: '16px' })}>◑</span>
+            FIRST QUARTER · 61%
+          </span>
+          <span className={css({
+            fontFamily: 'body',
+            fontSize: '11px',
+            color: 'textMuted',
+            letterSpacing: '0.05em',
+          })}>
+            14.4 HRS DAYLIGHT
+          </span>
+        </div>
+      </div>
+
+      {/* Projects Block — Middle Right */}
+      <div className={css({
+        gridColumn: '2',
+        gridRow: '2',
+        background: 'bgCard',
+        padding: '28px',
+        display: 'flex',
+        flexDirection: 'column',
+        '@media (max-width: 768px)': {
+          gridColumn: '1',
+          gridRow: 'auto',
+          padding: '24px 20px',
+        },
+      })}>
+        <div className={css({
+          fontFamily: 'body',
+          fontSize: '10px',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: 'textMuted',
+          marginBottom: '20px',
+        })}>
+          WORK
+        </div>
+        <div className={css({ display: 'flex', flexDirection: 'column', gap: '4px' })}>
+          {allProjects.map((project) => {
+            const href = project.depth === 'full'
+              ? `/work/${project.slug}`
+              : (project.externalUrl || `/work/${project.slug}`)
+            return (
+              <a
+                key={project.slug}
+                href={href}
+                className={css({
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'baseline',
+                  padding: '10px 0',
+                  textDecoration: 'none',
+                  borderBottom: '1px solid',
+                  borderColor: 'borderSubtle',
+                  transition: 'color 0.15s ease',
+                  _hover: {
+                    textDecoration: 'none',
+                    '& .project-title': {
+                      color: '{colors.pure.white}',
+                    },
+                    '& .project-type': {
+                      color: 'accentBright',
+                    },
+                  },
+                  _focus: {
+                    outline: '2px solid',
+                    outlineColor: 'accent',
+                    outlineOffset: '2px',
+                  },
+                })}
+              >
+                <div className={css({ display: 'flex', alignItems: 'baseline', gap: '12px' })}>
+                  <span className={`project-title ${css({
+                    fontFamily: 'body',
+                    fontSize: '15px',
+                    fontWeight: 'medium',
+                    color: 'text',
+                    transition: 'color 0.15s ease',
+                  })}`}>
+                    {project.title}
+                  </span>
+                  <span className={`project-type ${css({
+                    fontFamily: 'body',
+                    fontSize: '11px',
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    color: 'accent',
+                    transition: 'color 0.15s ease',
+                  })}`}>
+                    {project.type}
+                  </span>
+                </div>
+                <span className={css({
+                  fontFamily: 'body',
+                  fontSize: '12px',
+                  color: 'textMuted',
+                  flexShrink: 0,
+                })}>
+                  {project.year}
+                </span>
+              </a>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* About Block — Bottom Right */}
+      <div className={css({
+        gridColumn: '2',
+        gridRow: '3',
+        background: 'bg',
+        border: '1px solid',
+        borderColor: 'border',
+        padding: '28px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        gap: '20px',
+        '@media (max-width: 768px)': {
+          gridColumn: '1',
+          gridRow: 'auto',
+          padding: '24px 20px',
+        },
+      })}>
+        <div>
+          <div className={css({
+            fontFamily: 'body',
+            fontSize: '10px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+            marginBottom: '12px',
+          })}>
+            ABOUT
+          </div>
+          <p className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            lineHeight: '1.5',
+            color: 'textSecondary',
+            maxWidth: '50ch',
+          })}>
+            Product Designer & Developer building tools at the intersection of design and engineering. Solo-founded projects from concept to launch.
           </p>
         </div>
-      </Box>
 
-      {/* Signal Footer */}
-      <Box
-        borderTop="1px solid"
-        borderColor="border"
-        paddingTop="3vh"
-      >
-        {/* Desktop layout */}
-        <Flex
-          justifyContent="space-between"
-          alignItems="flex-end"
-          flexWrap="wrap"
-          gap="4"
-          display={{ base: 'none', md: 'flex' }}
-        >
-          {/* Left cluster: signals */}
-          <Flex alignItems="baseline" gap="3" flexWrap="wrap">
-            <span className={footerLabel}>Memorial Day Mon</span>
-            <span className={css({ color: '{colors.stone.700}' })}>·</span>
-            <span className={footerLabel}>
-              Si Woo Kim <span className={scoreAccent}>−18</span>
-            </span>
-            <span className={css({ color: '{colors.stone.700}' })}>·</span>
-            <span className={footerLabel}>
-              <span className={scoreMuted}>Tigers 4–7</span>
-            </span>
-            <span className={css({ color: '{colors.stone.700}' })}>·</span>
-            <span className={footerLabel}>◑ First Quarter</span>
-            <span className={css({ color: '{colors.stone.700}' })}>·</span>
-            <span className={footerLabel}>14.4h Daylight · 23 May 2026</span>
-          </Flex>
+        <div className={css({
+          fontFamily: 'body',
+          fontSize: '11px',
+          color: 'textMuted',
+          letterSpacing: '0.05em',
+          lineHeight: '1.6',
+        })}>
+          Design Systems · Product Strategy · React · TypeScript · Node · UI/UX · Prototyping
+        </div>
 
-          {/* Right cluster: nav + attribution + music */}
-          <Flex alignItems="flex-end" gap="6" flexDirection="column">
-            <Flex gap="6" alignItems="baseline">
-              <a href="/" className={footerLabelHover} aria-label="Home">Home</a>
-              <a href="/about" className={footerLabelHover} aria-label="About">About</a>
-              <a href="/archive" className={footerLabelHover} aria-label="Archive">Archive</a>
-            </Flex>
-            <Flex gap="4" alignItems="baseline">
-              <span className={whisper}>Guided by Voices · My Morning Jacket</span>
-              <span className={attribution}>— Robin Sharma</span>
-            </Flex>
-          </Flex>
-        </Flex>
+        <div>
+          <div className={css({
+            fontFamily: 'body',
+            fontSize: '10px',
+            color: '{colors.stone.500}',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+          })}>
+            MY MORNING JACKET · GUIDED BY VOICES · THE WAR ON DRUGS
+          </div>
+        </div>
 
-        {/* Mobile layout */}
-        <Box display={{ base: 'block', md: 'none' }}>
-          <Flex flexDirection="column" gap="4">
-            <Flex flexWrap="wrap" gap="2" alignItems="baseline">
-              <span className={footerLabel}>Memorial Day Mon</span>
-              <span className={css({ color: '{colors.stone.700}' })}>·</span>
-              <span className={footerLabel}>
-                Si Woo Kim <span className={scoreAccent}>−18</span>
-              </span>
-            </Flex>
-            <Flex flexWrap="wrap" gap="2" alignItems="baseline">
-              <span className={footerLabel}>
-                <span className={scoreMuted}>Tigers 4–7</span>
-              </span>
-              <span className={css({ color: '{colors.stone.700}' })}>·</span>
-              <span className={footerLabel}>◑ First Quarter</span>
-              <span className={css({ color: '{colors.stone.700}' })}>·</span>
-              <span className={footerLabel}>14.4h Daylight</span>
-            </Flex>
-            <Flex flexWrap="wrap" gap="2" alignItems="baseline">
-              <span className={footerLabel}>23 May 2026</span>
-            </Flex>
-
-            <Flex
-              gap="6"
-              alignItems="baseline"
-              paddingTop="2"
-              borderTop="1px solid"
-              borderColor="border"
-            >
-              <a href="/" className={footerLabelHover}>Home</a>
-              <a href="/about" className={footerLabelHover}>About</a>
-              <a href="/archive" className={footerLabelHover}>Archive</a>
-            </Flex>
-
-            <Flex justifyContent="space-between" alignItems="baseline">
-              <span className={whisper}>Guided by Voices · My Morning Jacket</span>
-              <span className={attribution}>— Robin Sharma</span>
-            </Flex>
-          </Flex>
-        </Box>
-      </Box>
-    </>
+        <div className={css({
+          fontFamily: 'body',
+          fontSize: '11px',
+          color: 'textMuted',
+          marginTop: '4px',
+        })}>
+          <a href="/archive" className={css({
+            color: 'textMuted',
+            textDecoration: 'none',
+            _hover: { textDecoration: 'underline', color: 'textSecondary' },
+            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+          })}>
+            Archive
+          </a>
+        </div>
+      </div>
+    </div>
   )
 }
