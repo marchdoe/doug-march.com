@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 245,
+    "s": 82,
+    "l": 55,
+    "name": "deep indigo"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "indigo",
+    "name": "ink"
+  },
+  "mood_word": "ceremonial",
+  "color_story": "Indigo — the color of the late-May sky at 19:19 as the light finally fails — carries the solemnity of Memorial Day and the depth implied by the phrase's claim on the present moment."
+}

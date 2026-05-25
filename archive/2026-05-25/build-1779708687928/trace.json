@@ -1,0 +1,274 @@
+{
+  "date": "2026-05-25",
+  "startedAt": "2026-05-25T11:23:26.423Z",
+  "completedAt": "2026-05-25T11:31:29.639Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pedal Mafia | Event Micro Site",
+              "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Monday",
+          "is_weekend": false,
+          "day_index": 1
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "Lum1104/Understand-Anything/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "anthropics/knowledge-work-plugins/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/rohitg00",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/affaan-m",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/mukul975",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "THE CJ CUP Byron Nelson",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Wyndham Clark",
+              "position": "1",
+              "score": "-30"
+            },
+            {
+              "name": "Si Woo Kim",
+              "position": "2",
+              "score": "-27"
+            },
+            {
+              "name": "Scottie Scheffler",
+              "position": "3",
+              "score": "-25"
+            },
+            {
+              "name": "Jackson Suber",
+              "position": "4",
+              "score": "-23"
+            },
+            {
+              "name": "Keith Mitchell",
+              "position": "5",
+              "score": "-22"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Magnifica Humanitas (Encyclical Letter)",
+              "url": "https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html",
+              "score": 71,
+              "by": "theletterf"
+            },
+            {
+              "title": "Didgeridoo playing as alternative treatment for obstructive sleep apnoea (2006)",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1360393/",
+              "score": 158,
+              "by": "kelseyfrog"
+            },
+            {
+              "title": "Show HN: Geomatic – a command-driven geometry studio enabled with autodiff",
+              "url": "https://www.tinyvolt.com/geomatic",
+              "score": 24,
+              "by": "nivter"
+            },
+            {
+              "title": "Show HN: Audiomass – a free, open-source multitrack audio editor for the web",
+              "url": "https://audiomass.co/?multitrack=1",
+              "score": 385,
+              "by": "pantelisk"
+            },
+            {
+              "title": "DeepSeek reasonix, DeepSeek native coding agent with high caching and low cost",
+              "url": "https://esengine.github.io/DeepSeek-Reasonix/",
+              "score": 581,
+              "by": "Alifatisk"
+            }
+          ]
+        },
+        "holidays": {
+          "today": "Memorial Day",
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waxing gibbous",
+          "illumination": 0.718,
+          "days_into_cycle": 9.5
+        },
+        "music": {
+          "bands": [
+            "The War on Drugs",
+            "Wet Leg"
+          ]
+        },
+        "quote": {
+          "text": "Be gentle with yourself. Think less and feel more. Be as happy as you can. You only have this moment.",
+          "author": "Dan Millman"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 25,
+          "day_of_year": 145,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-24T16:35Z",
+              "result": "loss",
+              "score": "3-5"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:54",
+          "sunset": "19:19",
+          "daylight_hours": 14.4
+        },
+        "date": "2026-05-25"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-25T11:23:41.726Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-24: Gallery Wall\n  - 2026-05-23: Specimen\n  - 2026-05-22: Broadsheet\n  - 2026-05-21: Index\n  - 2026-05-20: Split\n  - 2026-05-19: Stack\n  - 2026-05-18: Poster\n\n**Recently used** (last 3 days): Gallery Wall, Specimen, Broadsheet\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the "
+      },
+      "output": {
+        "hero_copy": "You only have this moment.",
+        "archetype": "Scroll",
+        "chassisId": "bricolage-manrope",
+        "specLength": 5513,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue:** H:245° (indigo). The permitted zone is 235°–260°; indigo at 245° is ceremonial, deep, and sky-register — the exact color of a long late-spring evening tilting into dark. It is neither corporate blue nor referential violet, but something between: the color of something about to be finished.\n- **Neutral palette (tinted toward H:245°, chroma ~0.008):**\n  - 50: `#F4F4FA`\n  - 100: `#E5E5F0`\n  - 200: `#C7C7DC`\n  - 300: `#A6A6C8`\n  - 400: `#7676A4`\n  - 500",
+        "selfCheck": "1. Hero quotability: Yes — \"You only have this moment.\" on Memorial Day 2026 is screenshot-worthy as an isolated fragment; the holiday context transforms a wellness aphorism into a memorial statement without requiring the page to explain it.\n2. Because-of chain: Yes — the phrase's quiet solemnity an"
+      },
+      "durationMs": 267592,
+      "timestamp": "2026-05-25T11:28:09.322Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5513
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 65432,
+      "timestamp": "2026-05-25T11:29:16.244Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4697,
+        "briefLength": 8207
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 109036,
+      "timestamp": "2026-05-25T11:31:05.282Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-25T11:31:12.533Z"
+    }
+  ]
+}
