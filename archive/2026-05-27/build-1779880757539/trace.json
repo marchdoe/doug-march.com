@@ -1,0 +1,245 @@
+{
+  "date": "2026-05-27",
+  "startedAt": "2026-05-27T11:13:14.075Z",
+  "completedAt": "2026-05-27T11:19:19.224Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 13
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Education Foundation of AACPS",
+              "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+              "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Wednesday",
+          "is_weekend": false,
+          "day_index": 3
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "Lum1104/Understand-Anything/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "hardikpandya/stop-slop/stargazers",
+              "description": "",
+              "language": null,
+              "stars": null
+            },
+            {
+              "name": "sponsors/affaan-m",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "anthropics/knowledge-work-plugins/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/Leonxlnx",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Charles Schwab Challenge",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Mini Micro Fantasy Computer",
+              "url": "https://miniscript.org/MiniMicro/index.html#about",
+              "score": 42,
+              "by": "nicoloren"
+            },
+            {
+              "title": "I'm Tired of Talking to AI",
+              "url": "https://orchidfiles.com/im-tired-of-ai-generated-answers/",
+              "score": 27,
+              "by": "theorchid"
+            },
+            {
+              "title": "The Melancholy of Slaying Monsters",
+              "url": "https://thereader.mitpress.mit.edu/the-strange-melancholy-of-slaying-monsters/",
+              "score": 115,
+              "by": "prismatic"
+            },
+            {
+              "title": "Raft Consensus with a Minority of Nodes",
+              "url": "https://padhye.org/raft-minority/",
+              "score": 34,
+              "by": "moarbugs"
+            },
+            {
+              "title": "BadHost – CVE-2026-48710: Starlette Host-Header Auth Bypass",
+              "url": "https://badhost.org/",
+              "score": 62,
+              "by": "ylk"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waxing gibbous",
+          "illumination": 0.884,
+          "days_into_cycle": 11.5
+        },
+        "music": {
+          "bands": [
+            "Wet Leg",
+            "The War on Drugs",
+            "My Morning Jacket"
+          ]
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 27,
+          "day_of_year": 147,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-26T22:40Z",
+              "result": "loss",
+              "score": "6-10"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:53",
+          "sunset": "19:21",
+          "daylight_hours": 14.5
+        },
+        "date": "2026-05-27"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-27T11:13:29.501Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-25: Scroll\n  - 2026-05-24: Gallery Wall\n  - 2026-05-23: Specimen\n  - 2026-05-22: Broadsheet\n  - 2026-05-21: Index\n  - 2026-05-20: Split\n  - 2026-05-19: Stack\n\n**Recently used** (last 3 days): Scroll, Gallery Wall, Specimen\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brie"
+      },
+      "output": {
+        "hero_copy": "the melancholy of slaying monsters",
+        "archetype": "Poster",
+        "chassisId": "bricolage-manrope",
+        "specLength": 5360,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue** — H:35° (amber gold). The color of candlelight, illuminated manuscripts, old adventurer's gold. Sits squarely in the mandated 20°–44° permitted zone. Nothing else in the recent palette history touches this zone.\n- **Neutral palette** — amber-tinted ink family; low chroma (~0.01) toward H:35°:\n  - 50: `#FDFAF2` | 100: `#F5EDDA` | 200: `#E2D4B4` | 300: `#C4B287`\n  - 400: `#A0895E` | 500: `#7D6642` | 600: `#5C4A2C` | 700: `#3D3018`\n  - 800: `#26200E` | ",
+        "selfCheck": "1. Hero quotability: Yes — \"the melancholy of slaying monsters\" is a standalone fragment that prompts a question (after what, exactly?) before it answers itself; someone would screenshot this line without context.\n2. Because-of chain: Yes — the phrase's candlelit-aftermath mood demanded the amber pa"
+      },
+      "durationMs": 221012,
+      "timestamp": "2026-05-27T11:17:10.517Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5360
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 29625,
+      "timestamp": "2026-05-27T11:17:41.638Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4245,
+        "briefLength": 8186
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 73499,
+      "timestamp": "2026-05-27T11:18:55.139Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-27T11:19:02.155Z"
+    }
+  ]
+}

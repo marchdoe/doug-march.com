@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 35,
+    "s": 95,
+    "l": 48,
+    "name": "amber gold"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "amber",
+    "name": "ink"
+  },
+  "mood_word": "candlelit",
+  "color_story": "Amber-gold drench on near-black ink: the color of a single lamp burning after the fight is over — warm, exhausted, earned."
+}
