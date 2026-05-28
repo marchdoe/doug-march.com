@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 158,
+    "s": 68,
+    "l": 43,
+    "name": "seafoam"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "seafoam teal",
+    "name": "stone-teal"
+  },
+  "mood_word": "emergent",
+  "color_story": "Seafoam at H:158° is the exact color of late-May biological urgency — not the serene aqua of May 24, not the corporate teal of a UI kit, but the specific charged green of new growth pushing against difficulty into the light; it drench-colors the signal band, it accent-fires the word 'opportunity', and it tints every neutral surface just enough to feel alive."
+}

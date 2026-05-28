@@ -1,89 +1,74 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
+const navWrap = css({
+  position: 'absolute',
+  top: '0',
+  left: '0',
+  width: '100%',
+  height: '56px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '0 6vw',
+  zIndex: 10,
+})
+
+const logoArea = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+})
+
+const logoImg = css({
+  width: '28px',
+  height: '28px',
+})
+
+const logoText = css({
+  fontFamily: 'display',
+  fontWeight: 'semibold',
+  fontSize: '18px',
+  color: '{colors.stone.50}',
+  letterSpacing: 'normal',
+})
+
+const navLinks = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '32px',
+})
+
+const navLink = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '14px',
+  color: '{colors.stone.400}',
+  letterSpacing: '0.05em',
+  textTransform: 'uppercase',
+  textDecoration: 'none',
+  transition: 'color 0.15s ease',
+  _hover: {
+    color: '{colors.seafoam.400}',
+  },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: '{colors.seafoam.400}',
+    outlineOffset: '4px',
+    borderRadius: 'sm',
+  },
+})
+
 export function Sidebar() {
   return (
-    <nav
-      className={css({
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '28px 8vw 0',
-        width: '100vw',
-        maxWidth: 'none',
-        position: 'relative',
-        zIndex: 10,
-      })}
-    >
-      <a
-        href="/"
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          textDecoration: 'none',
-          color: '{colors.ink.400}',
-          _hover: { color: '{colors.ink.50}' },
-          transition: 'color 200ms ease',
-        })}
-      >
-        <img
-          src={logoSvg}
-          alt="Doug March logo"
-          className={css({
-            width: '28px',
-            height: '28px',
-            opacity: 0.6,
-          })}
-        />
-        <span
-          className={css({
-            fontFamily: 'body',
-            fontSize: '13px',
-            fontWeight: '400',
-            letterSpacing: '0.05em',
-            textTransform: 'lowercase',
-          })}
-        >
-          doug march
-        </span>
+    <nav className={navWrap} aria-label="Main navigation">
+      <a href="/" className={logoArea} aria-label="Doug March home">
+        <img src={logoSvg} alt="" className={logoImg} />
+        <span className={logoText}>Doug March</span>
       </a>
-
-      <div
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          gap: '32px',
-        })}
-      >
-        {[
-          { label: 'work', href: '/' },
-          { label: 'about', href: '/about' },
-        ].map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            className={css({
-              fontFamily: 'body',
-              fontSize: '13px',
-              fontWeight: '400',
-              letterSpacing: '0.05em',
-              textTransform: 'lowercase',
-              color: '{colors.ink.500}',
-              textDecoration: 'none',
-              transition: 'color 200ms ease',
-              _hover: { color: '{colors.ink.50}' },
-              padding: '10px 0',
-              _focus: {
-                outline: '2px solid',
-                outlineColor: 'accent',
-                outlineOffset: '4px',
-              },
-            })}
-          >
-            {link.label}
-          </a>
-        ))}
+      <div className={navLinks}>
+        <a href="/" className={navLink}>Work</a>
+        <a href="/about" className={navLink}>About</a>
       </div>
     </nav>
   )

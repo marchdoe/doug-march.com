@@ -1,0 +1,248 @@
+{
+  "date": "2026-05-28",
+  "startedAt": "2026-05-28T11:13:10.792Z",
+  "completedAt": "2026-05-28T11:21:35.861Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Education Foundation of AACPS",
+              "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+              "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Thursday",
+          "is_weekend": false,
+          "day_index": 4
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "harry0703/MoneyPrinterTurbo/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/affaan-m",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/Leonxlnx",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "hardikpandya/stop-slop/stargazers",
+              "description": "",
+              "language": null,
+              "stars": null
+            },
+            {
+              "name": "twentyhq/twenty/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Charles Schwab Challenge",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "YouTube to automatically label AI-generated videos",
+              "url": "https://blog.youtube/news-and-events/improving-ai-labels-viewers-creators/",
+              "score": 928,
+              "by": "nopg"
+            },
+            {
+              "title": "A Eureka machine that thinks like nature and explores what AI cannot",
+              "url": "https://iisc.ac.in/a-eureka-machine-that-thinks-like-nature-and-explores-what-ai-cannot/",
+              "score": 80,
+              "by": "kunalsin9h"
+            },
+            {
+              "title": "I analysed 20 years of my chats",
+              "url": "https://drobinin.com/posts/am-i-a-bad-friend/",
+              "score": 152,
+              "by": "valzevul"
+            },
+            {
+              "title": "I think Anthropic and OpenAI have found product-market fit",
+              "url": "https://simonwillison.net/2026/May/27/product-market-fit/",
+              "score": 893,
+              "by": "simonw"
+            },
+            {
+              "title": "Hallucinate – Massively Multiplayer Online Rave",
+              "url": "https://hallucinate.site",
+              "score": 225,
+              "by": "stagas"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waxing gibbous",
+          "illumination": 0.943,
+          "days_into_cycle": 12.5
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "Wet Leg"
+          ]
+        },
+        "quote": {
+          "text": "In the middle of difficulty lies opportunity.",
+          "author": "Albert Einstein"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 28,
+          "day_of_year": 148,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-27T22:40Z",
+              "result": "win",
+              "score": "4-0"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:53",
+          "sunset": "19:21",
+          "daylight_hours": 14.5
+        },
+        "date": "2026-05-28"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-28T11:13:26.123Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-27: Poster\n  - 2026-05-25: Scroll\n  - 2026-05-24: Gallery Wall\n  - 2026-05-23: Specimen\n  - 2026-05-22: Broadsheet\n  - 2026-05-21: Index\n  - 2026-05-20: Split\n\n**Recently used** (last 3 days): Poster, Scroll, Gallery Wall\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief"
+      },
+      "output": {
+        "hero_copy": "In the middle of difficulty lies opportunity.",
+        "archetype": "Stack",
+        "chassisId": "bricolage-manrope",
+        "specLength": 7665,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue:** H:158°, seafoam-teal. This hue sits dead-center in the mandated 148°–175° window and carries exactly the right register for \"opportunity\" — biological, growing, charged. Not blue (corporate), not green (money), but the specific threshold between the two: the color of something pressing through toward light.\n\n**Neutral palette (stone-teal family, tinted toward H:158°):**\n- 50: `#F3F9F7`\n- 100: `#E4F0EC`\n- 200: `#CAE2D9`\n- 300: `#A4C5BC`\n- 400: `#7DA69C",
+        "selfCheck": "1. Hero quotability: Yes — \"In the middle of difficulty lies opportunity.\" is a standalone poster-phrase; the word \"opportunity.\" rendered in seafoam against a void makes it a screenshot-worthy visual object, not just body copy.\n2. Because-of chain: Yes — the phrase's temporal arc (descent → emergen"
+      },
+      "durationMs": 314978,
+      "timestamp": "2026-05-28T11:18:41.104Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 7665
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 40244,
+      "timestamp": "2026-05-28T11:19:22.516Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 6014,
+        "briefLength": 10898
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 110894,
+      "timestamp": "2026-05-28T11:21:13.411Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-28T11:21:19.324Z"
+    }
+  ]
+}
