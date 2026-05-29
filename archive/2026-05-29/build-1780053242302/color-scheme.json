@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 115,
+    "s": 72,
+    "l": 46,
+    "name": "electric lime"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "lime-green",
+    "name": "forest stone"
+  },
+  "mood_word": "electric",
+  "color_story": "The quote has two clauses — risk and discovery — and the palette splits with it: the risk clause lives in near-black forest void, the discovery clause detonates in full-saturation spring lime, the specific color of something that has forced its way through resistance into the open."
+}

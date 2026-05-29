@@ -5,257 +5,337 @@ import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const heroBand = css({
-  width: '100%',
-  minHeight: '50dvh',
-  background: '{colors.ink.900}',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  padding: '0 6vw',
-  paddingTop: '56px',
-  position: 'relative',
-})
-
-const eyebrow = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '12px',
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase',
-  color: '{colors.seafoam.400}',
-  marginBottom: '16px',
-})
-
-const title = css({
-  fontFamily: 'display',
-  fontWeight: 'extrabold',
-  fontSize: 'clamp(36px, 5vw, 72px)',
-  lineHeight: '0.95',
-  letterSpacing: '-0.03em',
-  color: '{colors.stone.50}',
-  marginBottom: '24px',
-})
-
-const problem = css({
-  fontFamily: 'body',
-  fontWeight: 'normal',
-  fontSize: '20px',
-  color: '{colors.stone.300}',
-  lineHeight: '1.6',
-  maxWidth: '60ch',
-})
-
-const detailBand = css({
-  width: '100%',
-  background: '{colors.stone.50}',
-  padding: '96px 6vw',
-})
-
-const detailGrid = css({
-  display: 'grid',
-  gridTemplateColumns: '200px 1fr',
-  gap: '24px 48px',
-  marginBottom: '48px',
-  '@media (max-width: 640px)': {
-    gridTemplateColumns: '1fr',
-    gap: '8px',
-    marginBottom: '32px',
-  },
-})
-
-const detailLabel = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '12px',
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase',
-  color: '{colors.stone.500}',
-  paddingTop: '4px',
-})
-
-const detailValue = css({
-  fontFamily: 'body',
-  fontWeight: 'normal',
-  fontSize: '16px',
-  color: '{colors.stone.900}',
-  lineHeight: '1.6',
-  maxWidth: '65ch',
-  paddingBottom: '24px',
-  borderBottom: '1px solid {colors.stone.200}',
-})
-
-const stackList = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
-  paddingBottom: '24px',
-  borderBottom: '1px solid {colors.stone.200}',
-})
-
-const stackTag = css({
-  fontFamily: 'mono',
-  fontWeight: 'normal',
-  fontSize: '13px',
-  color: '{colors.stone.700}',
-  background: '{colors.stone.100}',
-  borderRadius: 'sm',
-  padding: '4px 10px',
-  lineHeight: '1.4',
-})
-
-const linkBtn = css({
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '8px',
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '14px',
-  color: '{colors.stone.50}',
-  background: '{colors.seafoam.600}',
-  borderRadius: 'sm',
-  padding: '12px 24px',
-  textDecoration: 'none',
-  transition: 'background 0.15s ease',
-  _hover: { background: '{colors.seafoam.500}' },
-  _focus: { outline: '2px solid {colors.seafoam.400}', outlineOffset: '2px' },
-})
-
-const backLink = css({
-  display: 'inline-flex',
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '14px',
-  color: '{colors.stone.500}',
-  textDecoration: 'underline',
-  textUnderlineOffset: '3px',
-  marginTop: '48px',
-  _hover: { color: '{colors.stone.900}' },
-  _focus: { outline: '2px solid {colors.seafoam.400}', outlineOffset: '2px', borderRadius: 'sm' },
-})
-
-const footer = css({
-  width: '100%',
-  background: '{colors.ink.900}',
-  padding: '32px 6vw',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  flexWrap: 'wrap',
-  gap: '16px',
-})
-
-const footerText = css({
-  fontFamily: 'body',
-  fontWeight: 'normal',
-  fontSize: '13px',
-  color: '{colors.stone.500}',
-})
-
-const footerLink = css({
-  fontFamily: 'body',
-  fontWeight: 'normal',
-  fontSize: '13px',
-  color: '{colors.stone.500}',
-  textDecoration: 'underline',
-  textUnderlineOffset: '3px',
-  _hover: { color: '{colors.stone.300}' },
-  _focus: { outline: '2px solid {colors.seafoam.400}', outlineOffset: '2px', borderRadius: 'sm' },
-})
-
 function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <>
-        <section className={heroBand}>
-          <Sidebar />
-          <h1 className={title}>Project not found</h1>
-          <a href="/" className={css({ color: '{colors.seafoam.400}', fontFamily: 'body', fontSize: '16px', textDecoration: 'underline', _focus: { outline: '2px solid {colors.seafoam.400}', outlineOffset: '2px' } })}>Back to home</a>
-        </section>
-      </>
+      <div className={css({ padding: '96px 48px', textAlign: 'center' })}>
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            color: '{colors.stone.50}',
+          })}
+        >
+          Not Found
+        </h1>
+        <a
+          href="/"
+          className={css({
+            fontFamily: 'body',
+            fontSize: '1rem',
+            color: '{colors.lime.400}',
+            marginTop: '24px',
+            display: 'inline-block',
+            minHeight: '44px',
+            lineHeight: '44px',
+            _focusVisible: { outline: '2px solid', outlineColor: '{colors.lime.400}', outlineOffset: '2px' },
+          })}
+        >
+          Back to home
+        </a>
+      </div>
     )
   }
 
   return (
-    <>
-      {/* Hero */}
-      <section className={heroBand}>
+    <div
+      className={css({
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        minHeight: '100vh',
+        '@media (min-width: 768px)': {
+          gridTemplateColumns: '45fr 55fr',
+        },
+      })}
+    >
+      {/* LEFT — Project Identity */}
+      <div
+        className={css({
+          background: '{colors.stone.900}',
+          minHeight: '50vh',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '24px 24px 32px',
+          '@media (min-width: 768px)': {
+            padding: '48px 48px 48px 6vw',
+            position: 'sticky',
+            top: '0',
+            height: '100vh',
+          },
+        })}
+      >
         <Sidebar />
-        <span className={eyebrow}>{project.type} · {project.year}</span>
-        <h1 className={title}>{project.title}</h1>
-        {project.problem && <p className={problem}>{project.problem}</p>}
-      </section>
 
-      {/* Details */}
-      <section className={detailBand}>
-        {project.role && (
-          <div className={detailGrid}>
-            <span className={detailLabel}>Role</span>
-            <span className={detailValue}>{project.role}</span>
+        <div
+          className={css({
+            flex: '1',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: '24px',
+          })}
+        >
+          <div>
+            <span
+              className={css({
+                fontFamily: 'mono',
+                fontSize: '0.6875rem',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: '{colors.stone.400}',
+                display: 'block',
+                marginBottom: '8px',
+              })}
+            >
+              {project.type} · {project.year}
+            </span>
+            <h1
+              className={css({
+                fontFamily: 'display',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                lineHeight: '0.88',
+                letterSpacing: '-0.02em',
+                color: '{colors.stone.50}',
+                fontSize: 'clamp(48px, 6vw, 96px)',
+              })}
+            >
+              {project.title}
+            </h1>
           </div>
-        )}
 
-        {project.approach && (
-          <div className={detailGrid}>
-            <span className={detailLabel}>Approach</span>
-            <span className={detailValue}>{project.approach}</span>
-          </div>
-        )}
+          {project.role && (
+            <p className={css({ fontFamily: 'body', fontSize: '1rem', color: '{colors.lime.400}', letterSpacing: '0.05em' })}>
+              {project.role}
+            </p>
+          )}
 
-        {project.outcome && (
-          <div className={detailGrid}>
-            <span className={detailLabel}>Outcome</span>
-            <span className={detailValue}>{project.outcome}</span>
-          </div>
-        )}
-
-        {project.stack && project.stack.length > 0 && (
-          <div className={detailGrid}>
-            <span className={detailLabel}>Stack</span>
-            <div className={stackList}>
-              {project.stack.map((s) => (
-                <span key={s} className={stackTag}>{s}</span>
+          {project.stack && project.stack.length > 0 && (
+            <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '6px' })}>
+              {project.stack.map((tech) => (
+                <span
+                  key={tech}
+                  className={css({
+                    fontFamily: 'mono',
+                    fontSize: '0.75rem',
+                    color: '{colors.stone.200}',
+                    border: '1px solid',
+                    borderColor: '{colors.stone.700}',
+                    padding: '4px 10px',
+                    letterSpacing: '0.05em',
+                  })}
+                >
+                  {tech}
+                </span>
               ))}
             </div>
-          </div>
-        )}
+          )}
 
-        {project.description && (
-          <div className={detailGrid}>
-            <span className={detailLabel}>Description</span>
-            <span className={detailValue}>{project.description}</span>
+          <div className={css({ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '8px' })}>
+            {project.externalUrl && (
+              <a
+                href={project.externalUrl}
+                className={css({
+                  fontFamily: 'mono',
+                  fontSize: '0.875rem',
+                  color: '{colors.stone.900}',
+                  background: '{colors.lime.400}',
+                  padding: '10px 20px',
+                  borderRadius: '0',
+                  textDecoration: 'none',
+                  minHeight: '44px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  letterSpacing: '0.05em',
+                  _hover: { background: '{colors.lime.300}', textDecoration: 'none' },
+                  _focusVisible: { outline: '3px solid', outlineColor: '{colors.lime.400}', outlineOffset: '2px' },
+                })}
+              >
+                Visit Site ↗
+              </a>
+            )}
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                className={css({
+                  fontFamily: 'mono',
+                  fontSize: '0.875rem',
+                  color: '{colors.stone.300}',
+                  border: '1px solid',
+                  borderColor: '{colors.stone.700}',
+                  padding: '10px 20px',
+                  borderRadius: '0',
+                  textDecoration: 'none',
+                  minHeight: '44px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  letterSpacing: '0.05em',
+                  _hover: { borderColor: '{colors.lime.400}', color: '{colors.lime.400}', textDecoration: 'none' },
+                  _focusVisible: { outline: '3px solid', outlineColor: '{colors.lime.400}', outlineOffset: '2px' },
+                })}
+              >
+                GitHub
+              </a>
+            )}
           </div>
-        )}
-
-        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
-          {project.externalUrl && (
-            <a href={project.externalUrl} className={linkBtn}>
-              Visit Project ↗
-            </a>
-          )}
-          {project.liveUrl && !project.externalUrl && (
-            <a href={project.liveUrl} className={linkBtn}>
-              Live Site ↗
-            </a>
-          )}
-          {project.githubUrl && (
-            <a href={project.githubUrl} className={linkBtn}>
-              GitHub ↗
-            </a>
-          )}
         </div>
+      </div>
 
-        <a href="/" className={backLink}>← Back to all work</a>
-      </section>
+      {/* RIGHT — Project Details on lime */}
+      <div
+        className={css({
+          background: '{colors.lime.400}',
+          minHeight: '100vh',
+          padding: '24px 24px 48px',
+          '@media (min-width: 768px)': {
+            padding: '48px 6vw 48px 48px',
+          },
+        })}
+      >
+        <div
+          className={css({
+            paddingTop: '48px',
+            '@media (min-width: 768px)': {
+              paddingTop: '112px',
+            },
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '48px',
+          })}
+        >
+          {project.problem && (
+            <div>
+              <span
+                className={css({
+                  fontFamily: 'mono',
+                  fontSize: '0.6875rem',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: '{colors.stone.600}',
+                  display: 'block',
+                  marginBottom: '12px',
+                })}
+              >
+                Problem
+              </span>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: 'clamp(1.125rem, 1.5vw, 1.375rem)',
+                  lineHeight: '1.6',
+                  color: '{colors.stone.900}',
+                  maxWidth: '55ch',
+                })}
+              >
+                {project.problem}
+              </p>
+            </div>
+          )}
 
-      {/* Footer */}
-      <footer className={footer}>
-        <span className={footerText}>© 2026 Doug March</span>
-        <a href="/archive" className={footerLink}>Archive</a>
-      </footer>
-    </>
+          {project.approach && (
+            <div>
+              <span
+                className={css({
+                  fontFamily: 'mono',
+                  fontSize: '0.6875rem',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: '{colors.stone.600}',
+                  display: 'block',
+                  marginBottom: '12px',
+                })}
+              >
+                Approach
+              </span>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '1rem',
+                  lineHeight: '1.6',
+                  color: '{colors.stone.800}',
+                  maxWidth: '55ch',
+                })}
+              >
+                {project.approach}
+              </p>
+            </div>
+          )}
+
+          {project.outcome && (
+            <div>
+              <span
+                className={css({
+                  fontFamily: 'mono',
+                  fontSize: '0.6875rem',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: '{colors.stone.600}',
+                  display: 'block',
+                  marginBottom: '12px',
+                })}
+              >
+                Outcome
+              </span>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '1rem',
+                  lineHeight: '1.6',
+                  color: '{colors.stone.800}',
+                  maxWidth: '55ch',
+                })}
+              >
+                {project.outcome}
+              </p>
+            </div>
+          )}
+
+          {project.description && !project.problem && (
+            <div>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '1rem',
+                  lineHeight: '1.6',
+                  color: '{colors.stone.800}',
+                  maxWidth: '55ch',
+                })}
+              >
+                {project.description}
+              </p>
+            </div>
+          )}
+
+          <div
+            className={css({
+              borderTop: '1px solid rgba(13,18,9,0.2)',
+              paddingTop: '24px',
+            })}
+          >
+            <a
+              href="/"
+              className={css({
+                fontFamily: 'mono',
+                fontSize: '0.875rem',
+                color: '{colors.stone.700}',
+                textDecoration: 'none',
+                minHeight: '44px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                _hover: { color: '{colors.stone.900}', textDecoration: 'underline' },
+                _focusVisible: { outline: '2px solid', outlineColor: '{colors.stone.900}', outlineOffset: '2px' },
+              })}
+            >
+              ← All Projects
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

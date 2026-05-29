@@ -1,0 +1,275 @@
+{
+  "date": "2026-05-29",
+  "startedAt": "2026-05-29T11:06:19.566Z",
+  "completedAt": "2026-05-29T11:14:03.997Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Education Foundation of AACPS",
+              "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+              "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Friday",
+          "is_weekend": false,
+          "day_index": 5
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "harry0703/MoneyPrinterTurbo/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "microsoft/markitdown/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "EveryInc/compound-engineering-plugin/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "twentyhq/twenty/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "anthropics/claude-code/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Charles Schwab Challenge",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Ryan Gerard",
+              "position": "1",
+              "score": "-6"
+            },
+            {
+              "name": "Andrew Putnam",
+              "position": "2",
+              "score": "-6"
+            },
+            {
+              "name": "Tom Kim",
+              "position": "3",
+              "score": "-6"
+            },
+            {
+              "name": "J.J. Spaun",
+              "position": "4",
+              "score": "-6"
+            },
+            {
+              "name": "Matt McCarty",
+              "position": "5",
+              "score": "-6"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Claude Opus 4.8",
+              "url": "https://www.anthropic.com/news/claude-opus-4-8",
+              "score": 1558,
+              "by": "craigmart"
+            },
+            {
+              "title": "Bricks and Minifigs Stole a Man's $200k Lego Collection",
+              "url": "https://mybricklog.com/blog/bricks-minifigs-corporate-stole-old-mans-200000-lego-collection",
+              "score": 996,
+              "by": "philips"
+            },
+            {
+              "title": "Real-time LLM Inference on Standard GPUs: 3k tokens/s per request",
+              "url": "https://blog.kog.ai/real-time-llm-inference-on-standard-gpus-3-000-tokens-s-per-request/",
+              "score": 20,
+              "by": "NicoConstant"
+            },
+            {
+              "title": "I made a million dollar product from my dorm room (2025)",
+              "url": "https://nick.winans.io/blog/nice-nano/",
+              "score": 429,
+              "by": "mattrighetti"
+            },
+            {
+              "title": "Volkswagen blocks Home Assistant by requiring client assertion",
+              "url": "https://github.com/robinostlund/homeassistant-volkswagencarnet/issues/967",
+              "score": 191,
+              "by": "Kwastie"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "full moon",
+          "illumination": 0.982,
+          "days_into_cycle": 13.49
+        },
+        "music": {
+          "bands": [
+            "The War on Drugs",
+            "Tobin Sprout",
+            "Wet Leg"
+          ]
+        },
+        "quote": {
+          "text": "Only those who will risk going too far can possibly find out how far one can go.",
+          "author": "T.S. Eliot"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 29,
+          "day_of_year": 149,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-28T17:10Z",
+              "result": "loss",
+              "score": "1-7"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:52",
+          "sunset": "19:22",
+          "daylight_hours": 14.5
+        },
+        "date": "2026-05-29"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-29T11:06:35.001Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-28: Stack\n  - 2026-05-27: Poster\n  - 2026-05-25: Scroll\n  - 2026-05-24: Gallery Wall\n  - 2026-05-23: Specimen\n  - 2026-05-22: Broadsheet\n  - 2026-05-21: Index\n\n**Recently used** (last 3 days): Stack, Poster, Scroll\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or sig"
+      },
+      "output": {
+        "hero_copy": "Only those who will risk going too far can possibly find out how far one can go.",
+        "archetype": "Split",
+        "chassisId": "big-shoulders-atkinson",
+        "specLength": 7450,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue** — 115° (electric lime). Late May spring at full momentum: not the safety yellow of a warning, not the money green of commerce, but the specific charged lime of new growth pressing at maximum velocity against the end of spring. Falls squarely in the mandated 105°–128° window.\n\n**Neutral palette** — forest stone family, tinted toward H:115°:\n- stone.50: `#F5F8F0`\n- stone.100: `#E6EDE0`\n- stone.200: `#C8D4BC`\n- stone.300: `#A3B594`\n- stone.400: `#7C906A`\n",
+        "selfCheck": "1. Hero quotability: Yes — T.S. Eliot's risk-and-discovery line is a standalone cultural artifact; someone would screenshot exactly this line without context.\n2. Because-of chain: Yes — the two-clause sentence structure demanded Split; the \"going too far\" + risk-8/10 + full-moon demanded electric li"
+      },
+      "durationMs": 274868,
+      "timestamp": "2026-05-29T11:11:09.873Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 7450
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 43053,
+      "timestamp": "2026-05-29T11:11:54.439Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 5046,
+        "briefLength": 10459
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 105422,
+      "timestamp": "2026-05-29T11:13:39.863Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-29T11:13:46.920Z"
+    }
+  ]
+}
