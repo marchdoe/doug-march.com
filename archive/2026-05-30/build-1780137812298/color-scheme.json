@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 3,
+    "s": 93,
+    "l": 42,
+    "name": "crimson red"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "warm red",
+    "name": "warm stone"
+  },
+  "mood_word": "urgent",
+  "color_story": "Deep crimson on near-white paper puts the Will Rogers quote in the register of a railroad warning sign — suddenly the joke about getting run over is not a joke at all."
+}
