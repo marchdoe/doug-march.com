@@ -1,227 +1,361 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
+import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const heroStyle = css({
-  padding: '80px 6vw 48px',
-  flex: '1',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  '@media (min-width: 768px)': {
-    padding: '80px 6vw 48px',
-  },
-  '@media (max-width: 767px)': {
-    padding: '48px 5vw 32px',
-  },
-})
-
-const displayStyle = css({
+const heroKickerStyle = css({
   fontFamily: 'display',
-  fontSize: 'clamp(48px, 7.5vw, 108px)',
-  lineHeight: 'tight',
-  letterSpacing: 'normal',
+  fontSize: '13px',
   color: 'accent',
+  letterSpacing: 'widest',
   textTransform: 'uppercase',
-  fontWeight: 'bold',
-  maxWidth: 'none',
-  textWrap: 'balance',
-  '@media (max-width: 480px)': {
-    fontSize: 'clamp(36px, 12vw, 56px)',
-  },
+  marginBottom: '12px',
 })
 
-const attributionStyle = css({
-  padding: '24px 6vw 0',
-  textAlign: 'right',
-  fontFamily: 'body',
-  fontSize: 'clamp(15px, 1.2vw, 18px)',
-  fontWeight: 'normal',
-  lineHeight: 'normal',
-  color: 'textMuted',
-  '@media (max-width: 767px)': {
-    padding: '20px 5vw 0',
-  },
-})
-
-const signalSectionStyle = css({
-  padding: '64px 6vw 48px',
-  borderTop: '1px solid',
+const heroStyle = css({
+  padding: '32px 4vw 24px',
+  borderBottom: '1px solid',
   borderColor: 'border',
-  '@media (max-width: 767px)': {
-    padding: '40px 5vw 40px',
-  },
 })
 
-const datelineStyle = css({
-  fontFamily: 'body',
-  fontSize: '10px',
-  fontWeight: 'normal',
-  letterSpacing: '0.15em',
+const heroTextStyle = css({
+  fontFamily: 'display',
+  fontSize: 'clamp(42px, 6.5vw, 96px)',
+  lineHeight: 'tight',
+  letterSpacing: 'tight',
+  color: 'text',
   textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '32px',
-  lineHeight: 'normal',
+  maxWidth: '100%',
 })
 
-const signalGridStyle = css({
+const heroAccentLine = css({
+  color: 'accent',
+})
+
+const heroAttrStyle = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  color: 'textMuted',
+  letterSpacing: 'wide',
+  marginTop: '16px',
+})
+
+const contentGridStyle = css({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-  gap: '32px',
-  '@media (max-width: 480px)': {
-    gridTemplateColumns: '1fr',
-    gap: '24px',
-  },
+  gridTemplateColumns: { base: '1fr', md: '1fr 1fr', lg: '1fr 1fr 300px' },
+  gap: '0',
+  padding: '0 4vw',
+  minHeight: '60vh',
 })
 
-const signalCellStyle = css({
-  padding: '12px 0',
+const col1Style = css({
+  padding: { base: '24px 0', md: '32px 32px 32px 0' },
+  borderRight: { base: 'none', md: '1px solid' },
+  borderBottom: { base: '1px solid', md: 'none' },
+  borderColor: 'border',
 })
 
-const signalLabelStyle = css({
-  fontFamily: 'body',
-  fontSize: '9px',
-  fontWeight: 'medium',
-  letterSpacing: '0.15em',
+const col2Style = css({
+  padding: { base: '24px 0', md: '32px', lg: '32px' },
+  borderRight: { base: 'none', lg: '1px solid' },
+  borderBottom: { base: '1px solid', lg: 'none' },
+  borderColor: 'border',
+})
+
+const sidebarColStyle = css({
+  padding: { base: '24px 0', lg: '32px 0 32px 32px' },
+})
+
+const eyebrowStyle = css({
+  fontFamily: 'display',
+  fontSize: '13px',
+  color: 'accent',
+  letterSpacing: 'widest',
   textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '8px',
-  lineHeight: 'normal',
+  marginBottom: '16px',
 })
 
-const signalValueStyle = css({
+const featuredTitleStyle = css({
+  fontFamily: 'display',
+  fontSize: 'clamp(28px, 3vw, 42px)',
+  lineHeight: 'snug',
+  letterSpacing: 'tight',
+  textTransform: 'uppercase',
+  color: 'text',
+  marginBottom: '12px',
+})
+
+const bodyTextStyle = css({
   fontFamily: 'body',
-  fontSize: '15px',
-  fontWeight: 'bold',
+  fontSize: '16px',
+  lineHeight: 'normal',
+  color: 'text',
+  marginBottom: '16px',
+  maxWidth: '65ch',
+})
+
+const linkStyle = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'accent',
+  textDecoration: 'none',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
+  transition: 'color 0.15s ease',
+  padding: '4px 0',
+  display: 'inline-block',
+  _hover: { textDecoration: 'underline', opacity: 1 },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+})
+
+const projectRowStyle = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  padding: '14px 0',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  transition: 'background 0.15s ease',
+  gap: '12px',
+  _hover: { background: 'surface' },
+})
+
+const projectTitleLink = css({
+  fontFamily: 'body',
+  fontSize: '16px',
+  color: 'text',
+  textDecoration: 'none',
+  fontWeight: 'medium',
+  _hover: { color: 'accent', opacity: 1 },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+})
+
+const projectMetaStyle = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  color: 'textMuted',
+  letterSpacing: 'wide',
+  whiteSpace: 'nowrap',
+})
+
+const signalRowStyle = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  padding: '10px 0',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  gap: '8px',
+})
+
+const signalName = css({
+  fontFamily: 'body',
+  fontSize: '14px',
   color: 'text',
   lineHeight: 'snug',
-  marginBottom: '4px',
 })
 
-const signalDetailStyle = css({
+const signalScore = css({
   fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: 'normal',
+  fontSize: '14px',
+  color: 'accent',
+  whiteSpace: 'nowrap',
+})
+
+const signalDim = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'textMuted',
+})
+
+const quoteStyle = css({
+  borderLeft: '2px solid',
+  borderColor: 'accent',
+  paddingLeft: '16px',
+  marginTop: '32px',
+})
+
+const quoteTextStyle = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  fontStyle: 'italic',
   color: 'textSecondary',
   lineHeight: 'normal',
+  marginBottom: '8px',
 })
 
-const signalItalicStyle = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: 'normal',
-  fontStyle: 'italic',
+const quoteAttrStyle = css({
+  fontFamily: 'display',
+  fontSize: '11px',
   color: 'textMuted',
-  lineHeight: 'normal',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
 })
 
-const moonSymbolStyle = css({
-  fontSize: '24px',
-  color: 'text',
-  marginBottom: '4px',
-})
-
-const lossIndicatorStyle = css({
-  display: 'inline-block',
-  width: '8px',
-  height: '8px',
-  borderRadius: '9999px',
-  background: '{colors.red.400}',
-  marginRight: '6px',
-  verticalAlign: 'middle',
-})
-
-const hnScoreStyle = css({
-  fontWeight: 'bold',
-  color: 'accent',
+const sectionSpaceStyle = css({
+  marginTop: '32px',
 })
 
 const footerStyle = css({
-  padding: '24px 6vw',
+  padding: '24px 4vw',
   borderTop: '1px solid',
   borderColor: 'border',
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
+  alignItems: 'baseline',
+  flexWrap: 'wrap',
+  gap: '8px',
+})
+
+const footerTextStyle = css({
   fontFamily: 'body',
   fontSize: '12px',
   color: 'textMuted',
+  letterSpacing: 'wide',
 })
 
 const archiveLinkStyle = css({
+  fontFamily: 'body',
+  fontSize: '12px',
   color: 'textMuted',
+  letterSpacing: 'wide',
   textDecoration: 'none',
-  _hover: {
-    color: 'accent',
-    textDecoration: 'underline',
-  },
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
+  _hover: { color: 'accent', textDecoration: 'underline', opacity: 1 },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
 function HomePage() {
   return (
     <>
+      {/* Headline Band */}
       <div className={heroStyle}>
-        <h1 className={displayStyle}>
-          Even though you are on the right track — you will get run over if you just sit there.
+        <div className={heroKickerStyle}>HN Today — 605 Pts</div>
+        <h1 className={heroTextStyle}>
+          Domain expertise<br />
+          has always been<br />
+          <span className={heroAccentLine}>the real moat.</span>
         </h1>
+        <div className={heroAttrStyle}>— Hacker News, 605 Pts</div>
       </div>
 
-      <div className={attributionStyle}>
-        — Will Rogers, 1935
+      {/* Content Grid */}
+      <div className={contentGridStyle}>
+        {/* Column 1: Featured + Selected Work */}
+        <div className={col1Style}>
+          <div className={eyebrowStyle}>Featured</div>
+          {featuredProject && (
+            <>
+              <h2 className={featuredTitleStyle}>{featuredProject.title}</h2>
+              {featuredProject.problem && (
+                <p className={bodyTextStyle}>{featuredProject.problem}</p>
+              )}
+              {featuredProject.externalUrl && (
+                <a
+                  href={featuredProject.externalUrl}
+                  className={linkStyle}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Visit {featuredProject.title} →
+                </a>
+              )}
+            </>
+          )}
+
+          <div className={sectionSpaceStyle}>
+            <div className={eyebrowStyle}>Selected Work</div>
+            {selectedWork.map((p) => (
+              <div key={p.slug} className={projectRowStyle}>
+                <a href={`/work/${p.slug}`} className={projectTitleLink}>
+                  {p.title}
+                </a>
+                <span className={projectMetaStyle}>
+                  {p.type} · {p.year}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Column 2: Experiments + About teaser */}
+        <div className={col2Style}>
+          <div className={eyebrowStyle}>Experiments</div>
+          {experiments.map((e) => (
+            <div key={e.slug} className={projectRowStyle}>
+              <a
+                href={e.externalUrl || `/work/${e.slug}`}
+                className={projectTitleLink}
+                {...(e.externalUrl ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                {e.title}
+              </a>
+              <span className={projectMetaStyle}>
+                {e.type} · {e.year}
+              </span>
+            </div>
+          ))}
+
+          <div className={sectionSpaceStyle}>
+            <div className={eyebrowStyle}>About</div>
+            <p className={bodyTextStyle}>
+              Doug March is a Product Designer & Developer building at the intersection of design and engineering.
+            </p>
+            <a href="/about" className={linkStyle}>Read more →</a>
+          </div>
+
+          <div className={sectionSpaceStyle}>
+            <div className={eyebrowStyle}>Now Playing</div>
+            <div className={signalRowStyle}>
+              <span className={signalName}>The War on Drugs</span>
+            </div>
+            <div className={signalRowStyle}>
+              <span className={signalName}>My Morning Jacket</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar Column: Signals */}
+        <div className={sidebarColStyle}>
+          <div className={eyebrowStyle}>● Signals</div>
+
+          <div className={css({ marginBottom: '24px' })}>
+            <div className={css({ fontFamily: 'body', fontSize: '12px', color: 'textMuted', letterSpacing: 'wider', textTransform: 'uppercase', marginBottom: '8px' })}>
+              Charles Schwab Challenge
+            </div>
+            <div className={signalRowStyle}>
+              <span className={signalName}>Eric Cole</span>
+              <span className={signalScore}>–12</span>
+            </div>
+            <div className={signalRowStyle}>
+              <span className={signalName}>Ryan Gerard</span>
+              <span className={signalScore}>–11</span>
+            </div>
+            <div className={signalRowStyle}>
+              <span className={signalName}>Mac Meissner</span>
+              <span className={signalScore}>–10</span>
+            </div>
+          </div>
+
+          <div className={css({ marginBottom: '24px' })}>
+            <div className={signalRowStyle}>
+              <span className={signalName}>DET Tigers</span>
+              <span className={signalDim}>L 1–7</span>
+            </div>
+          </div>
+
+          <div className={quoteStyle}>
+            <p className={quoteTextStyle}>
+              "Be who you are and say what you feel, because those who mind don't matter, and those who matter don't mind."
+            </p>
+            <span className={quoteAttrStyle}>— Dr. Seuss</span>
+          </div>
+        </div>
       </div>
 
-      <section className={signalSectionStyle} aria-label="Signals">
-        <div className={datelineStyle}>
-          Saturday · Full Moon · 99.9% · May 30
-        </div>
-
-        <div className={signalGridStyle}>
-          <div className={signalCellStyle}>
-            <div className={signalLabelStyle}>Charles Schwab Challenge</div>
-            <div className={signalValueStyle}>Jordan Smith −10</div>
-            <div className={signalDetailStyle}>
-              Scheffler −9 · Homa −8 · Cantlay −7
-            </div>
-          </div>
-
-          <div className={signalCellStyle}>
-            <div className={signalLabelStyle}>Tigers</div>
-            <div className={signalValueStyle}>
-              <span className={css({ display: 'inline-block', width: '8px', height: '8px', borderRadius: '9999px', backgroundColor: '{colors.red.400}', marginRight: '6px', verticalAlign: 'middle' })} aria-hidden="true" />
-              DET 3 · OPP 4
-            </div>
-            <div className={signalDetailStyle}>May 29 · L</div>
-          </div>
-
-          <div className={signalCellStyle}>
-            <div className={signalLabelStyle}>Moon Phase</div>
-            <div className={moonSymbolStyle}>●</div>
-            <div className={signalDetailStyle}>Full Moon · 99.9%</div>
-          </div>
-
-          <div className={signalCellStyle}>
-            <div className={signalLabelStyle}>Hacker News</div>
-            <div className={signalDetailStyle}>
-              SQLite is all you need for durable workflows{' '}
-              <span className={hnScoreStyle}>546</span>
-            </div>
-          </div>
-
-          <div className={signalCellStyle}>
-            <div className={signalLabelStyle}>Listening</div>
-            <div className={signalItalicStyle}>Wet Leg · Guided by Voices</div>
-          </div>
-        </div>
-      </section>
-
+      {/* Footer */}
       <footer className={footerStyle}>
-        <span>© 2026 Doug March</span>
+        <span className={footerTextStyle}>© 2026 Doug March</span>
         <a href="/archive" className={archiveLinkStyle}>Archive</a>
       </footer>
     </>

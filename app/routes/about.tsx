@@ -6,251 +6,240 @@ import { timeline, capabilities, education } from '../content/timeline'
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
 const pageStyle = css({
-  padding: '64px 6vw 48px',
-  maxWidth: 'none',
-  '@media (max-width: 767px)': {
-    padding: '40px 5vw 40px',
-  },
+  padding: '0 4vw',
 })
 
-const sectionStyle = css({
-  marginBottom: '64px',
+const headlineBandStyle = css({
+  padding: '32px 4vw 24px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
 })
 
-const headingStyle = css({
+const pageTitle = css({
   fontFamily: 'display',
-  fontSize: 'clamp(32px, 4vw, 56px)',
-  lineHeight: 'snug',
+  fontSize: 'clamp(36px, 5vw, 72px)',
+  lineHeight: 'tight',
+  letterSpacing: 'tight',
+  textTransform: 'uppercase',
   color: 'text',
-  textTransform: 'uppercase',
-  fontWeight: 'bold',
-  marginBottom: '24px',
 })
 
-const subheadStyle = css({
-  fontFamily: 'body',
-  fontSize: '10px',
-  fontWeight: 'medium',
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '16px',
-  lineHeight: 'normal',
+const gridStyle = css({
+  display: 'grid',
+  gridTemplateColumns: { base: '1fr', lg: '2fr 1fr' },
+  gap: '0',
+  padding: '0 4vw',
+  minHeight: '60vh',
 })
 
-const statementStyle = css({
-  fontFamily: 'body',
-  fontSize: 'clamp(16px, 1.4vw, 20px)',
-  fontWeight: 'normal',
-  lineHeight: 'normal',
-  color: 'textSecondary',
-  maxWidth: '65ch',
-  marginBottom: '16px',
+const mainCol = css({
+  padding: { base: '24px 0', lg: '32px 32px 32px 0' },
+  borderRight: { base: 'none', lg: '1px solid' },
+  borderColor: 'border',
 })
 
-const roleStyle = css({
-  fontFamily: 'body',
-  fontSize: '15px',
-  fontWeight: 'medium',
+const sideCol = css({
+  padding: { base: '24px 0', lg: '32px 0 32px 32px' },
+})
+
+const eyebrowStyle = css({
+  fontFamily: 'display',
+  fontSize: '13px',
   color: 'accent',
-  marginBottom: '32px',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  marginBottom: '16px',
+})
+
+const bodyStyle = css({
+  fontFamily: 'body',
+  fontSize: '16px',
+  lineHeight: 'normal',
+  color: 'text',
+  marginBottom: '24px',
+  maxWidth: '65ch',
 })
 
 const timelineRowStyle = css({
   display: 'grid',
-  gridTemplateColumns: '140px 1fr',
-  gap: '16px',
-  padding: '16px 0',
+  gridTemplateColumns: { base: '1fr', sm: '120px 1fr' },
+  gap: { base: '4px', sm: '24px' },
+  padding: '14px 0',
   borderBottom: '1px solid',
   borderColor: 'border',
-  '@media (max-width: 600px)': {
-    gridTemplateColumns: '1fr',
-    gap: '4px',
-  },
+  alignItems: 'baseline',
 })
 
-const yearCellStyle = css({
-  fontFamily: 'mono',
+const yearStyle = css({
+  fontFamily: 'body',
   fontSize: '13px',
-  fontWeight: 'medium',
   color: 'textMuted',
+  letterSpacing: 'wide',
   minWidth: '120px',
-  lineHeight: 'normal',
   whiteSpace: 'nowrap',
 })
 
-const contentCellStyle = css({
+const roleStyle = css({
   fontFamily: 'body',
-  fontSize: '15px',
-  lineHeight: 'normal',
+  fontSize: '16px',
   color: 'text',
+  fontWeight: 'medium',
 })
 
 const companyStyle = css({
-  fontWeight: 'medium',
-  color: 'text',
-})
-
-const roleTextStyle = css({
-  color: 'textSecondary',
-  fontWeight: 'normal',
-})
-
-const descriptionStyle = css({
-  color: 'textSecondary',
+  fontFamily: 'body',
   fontSize: '14px',
-  marginTop: '4px',
-  maxWidth: '65ch',
+  color: 'textSecondary',
+  marginTop: '2px',
 })
 
-const capsGridStyle = css({
+const descStyle = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'textSecondary',
+  lineHeight: 'normal',
+  marginTop: '4px',
+  maxWidth: '60ch',
+})
+
+const capGrid = css({
   display: 'flex',
   flexWrap: 'wrap',
   gap: '8px',
+  marginBottom: '24px',
 })
 
-const capTagStyle = css({
+const capTag = css({
   fontFamily: 'body',
   fontSize: '13px',
-  fontWeight: 'normal',
-  color: 'textSecondary',
+  color: 'text',
+  letterSpacing: 'wide',
   padding: '6px 12px',
   border: '1px solid',
   borderColor: 'border',
-  borderRadius: 'none',
-  lineHeight: 'snug',
+  whiteSpace: 'nowrap',
 })
 
-const personalGridStyle = css({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-  gap: '24px',
-  '@media (max-width: 480px)': {
-    gridTemplateColumns: '1fr 1fr',
-  },
+const personalRow = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  padding: '10px 0',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  gap: '12px',
 })
 
-const personalLabelStyle = css({
+const personalLabel = css({
   fontFamily: 'body',
-  fontSize: '9px',
-  fontWeight: 'medium',
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
+  fontSize: '13px',
   color: 'textMuted',
-  marginBottom: '4px',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
 })
 
-const personalValueStyle = css({
+const personalValue = css({
   fontFamily: 'body',
-  fontSize: '15px',
-  fontWeight: 'normal',
+  fontSize: '14px',
   color: 'text',
-  lineHeight: 'normal',
+  textAlign: 'right',
 })
+
+const sectionSpace = css({ marginTop: '32px' })
 
 const footerStyle = css({
-  padding: '24px 6vw',
+  padding: '24px 4vw',
   borderTop: '1px solid',
   borderColor: 'border',
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
+  alignItems: 'baseline',
+  flexWrap: 'wrap',
+  gap: '8px',
+})
+
+const footerTextStyle = css({
   fontFamily: 'body',
   fontSize: '12px',
   color: 'textMuted',
-})
-
-const archiveLinkStyle = css({
-  color: 'textMuted',
-  textDecoration: 'none',
-  _hover: {
-    color: 'accent',
-    textDecoration: 'underline',
-  },
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
+  letterSpacing: 'wide',
 })
 
 function AboutPage() {
   return (
     <>
-      <div className={pageStyle}>
-        <section className={sectionStyle}>
-          <h1 className={headingStyle}>{identity.name}</h1>
-          <div className={roleStyle}>{identity.role}</div>
-          <p className={statementStyle}>{identity.statement}</p>
-        </section>
+      <div className={headlineBandStyle}>
+        <h1 className={pageTitle}>{identity.name}</h1>
+        <div className={css({ fontFamily: 'body', fontSize: '16px', color: 'textSecondary', marginTop: '8px' })}>
+          {identity.role}
+        </div>
+      </div>
 
-        <section className={sectionStyle}>
-          <div className={subheadStyle}>Experience</div>
-          {timeline.map((entry, i) => (
-            <div className={timelineRowStyle} key={i}>
-              <div className={yearCellStyle}>{entry.year}</div>
-              <div className={contentCellStyle}>
+      <div className={gridStyle}>
+        <div className={mainCol}>
+          <div className={eyebrowStyle}>About</div>
+          <p className={bodyStyle}>{identity.statement}</p>
+
+          <div className={sectionSpace}>
+            <div className={eyebrowStyle}>Experience</div>
+            {timeline.map((entry, i) => (
+              <div key={i} className={timelineRowStyle}>
+                <span className={yearStyle}>{entry.year}</span>
                 <div>
-                  <span className={companyStyle}>{entry.company}</span>
-                  {' — '}
-                  <span className={roleTextStyle}>{entry.role}</span>
+                  <div className={roleStyle}>{entry.role}</div>
+                  <div className={companyStyle}>{entry.company}</div>
+                  <div className={descStyle}>{entry.description}</div>
                 </div>
-                <div className={descriptionStyle}>{entry.description}</div>
               </div>
-            </div>
-          ))}
-        </section>
-
-        <section className={sectionStyle}>
-          <div className={subheadStyle}>Education</div>
-          <div className={timelineRowStyle}>
-            <div className={yearCellStyle}>{education.years}</div>
-            <div className={contentCellStyle}>
-              <div>
-                <span className={companyStyle}>{education.school}</span>
-                {' — '}
-                <span className={roleTextStyle}>{education.degree}</span>
-              </div>
-              <div className={descriptionStyle}>{education.concentration}</div>
-            </div>
-          </div>
-        </section>
-
-        <section className={sectionStyle}>
-          <div className={subheadStyle}>Capabilities</div>
-          <div className={capsGridStyle}>
-            {capabilities.map((cap, i) => (
-              <span className={capTagStyle} key={i}>{cap}</span>
             ))}
           </div>
-        </section>
 
-        <section className={sectionStyle}>
-          <div className={subheadStyle}>Personal</div>
-          <div className={personalGridStyle}>
-            <div>
-              <div className={personalLabelStyle}>Holes in One</div>
-              <div className={personalValueStyle}>{personal.holesInOne}</div>
-            </div>
-            <div>
-              <div className={personalLabelStyle}>Sport</div>
-              <div className={personalValueStyle}>{personal.sport}</div>
-            </div>
-            <div>
-              <div className={personalLabelStyle}>Teams</div>
-              <div className={personalValueStyle}>{personal.teams.join(', ')}</div>
-            </div>
-            <div>
-              <div className={personalLabelStyle}>Current Focus</div>
-              <div className={personalValueStyle}>{personal.currentFocus}</div>
+          <div className={sectionSpace}>
+            <div className={eyebrowStyle}>Education</div>
+            <div className={timelineRowStyle}>
+              <span className={yearStyle}>{education.years}</span>
+              <div>
+                <div className={roleStyle}>{education.degree}</div>
+                <div className={companyStyle}>{education.school}</div>
+                <div className={descStyle}>{education.concentration}</div>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+
+        <div className={sideCol}>
+          <div className={eyebrowStyle}>Capabilities</div>
+          <div className={capGrid}>
+            {capabilities.map((cap, i) => (
+              <span key={i} className={capTag}>{cap}</span>
+            ))}
+          </div>
+
+          <div className={sectionSpace}>
+            <div className={eyebrowStyle}>Personal</div>
+            <div className={personalRow}>
+              <span className={personalLabel}>Holes in One</span>
+              <span className={personalValue}>{personal.holesInOne}</span>
+            </div>
+            <div className={personalRow}>
+              <span className={personalLabel}>Sport</span>
+              <span className={personalValue}>{personal.sport}</span>
+            </div>
+            <div className={personalRow}>
+              <span className={personalLabel}>Teams</span>
+              <span className={personalValue}>{personal.teams.join(', ')}</span>
+            </div>
+            <div className={personalRow}>
+              <span className={personalLabel}>Current Focus</span>
+              <span className={personalValue}>{personal.currentFocus}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <footer className={footerStyle}>
-        <span>© 2026 Doug March</span>
-        <a href="/archive" className={archiveLinkStyle}>Archive</a>
+        <span className={footerTextStyle}>© 2026 Doug March</span>
+        <a href="/archive" className={css({ fontFamily: 'body', fontSize: '12px', color: 'textMuted', letterSpacing: 'wide', textDecoration: 'none', _hover: { color: 'accent', textDecoration: 'underline', opacity: 1 }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' } })}>Archive</a>
       </footer>
     </>
   )

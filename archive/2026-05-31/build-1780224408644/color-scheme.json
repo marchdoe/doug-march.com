@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 78,
+    "s": 100,
+    "l": 44,
+    "name": "acid chartreuse"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "yellow-green",
+    "name": "void"
+  },
+  "mood_word": "declarative",
+  "color_story": "Acid chartreuse on near-black void is the color of a warning posted somewhere you cannot ignore — the same register as the phrase, which is also a warning posted somewhere you cannot ignore."
+}

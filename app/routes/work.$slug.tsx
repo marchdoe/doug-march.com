@@ -2,254 +2,235 @@ import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetail })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const pageStyle = css({
-  padding: '64px 6vw 48px',
-  maxWidth: 'none',
-  '@media (max-width: 767px)': {
-    padding: '40px 5vw 40px',
-  },
+const headlineBandStyle = css({
+  padding: '32px 4vw 24px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
 })
 
 const titleStyle = css({
   fontFamily: 'display',
-  fontSize: 'clamp(40px, 5vw, 72px)',
-  lineHeight: 'snug',
-  color: 'text',
+  fontSize: 'clamp(36px, 5vw, 72px)',
+  lineHeight: 'tight',
+  letterSpacing: 'tight',
   textTransform: 'uppercase',
-  fontWeight: 'bold',
-  marginBottom: '8px',
+  color: 'text',
 })
 
-const metaRowStyle = css({
+const metaRow = css({
   display: 'flex',
   gap: '24px',
-  alignItems: 'center',
-  marginBottom: '40px',
+  marginTop: '12px',
   flexWrap: 'wrap',
 })
 
-const metaItemStyle = css({
-  fontFamily: 'mono',
+const metaItem = css({
+  fontFamily: 'body',
   fontSize: '13px',
-  fontWeight: 'medium',
   color: 'textMuted',
-  letterSpacing: '0.05em',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
 })
 
-const typeTagStyle = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  fontWeight: 'medium',
+const gridStyle = css({
+  display: 'grid',
+  gridTemplateColumns: { base: '1fr', lg: '2fr 1fr' },
+  gap: '0',
+  padding: '0 4vw',
+  minHeight: '50vh',
+})
+
+const mainCol = css({
+  padding: { base: '24px 0', lg: '32px 32px 32px 0' },
+  borderRight: { base: 'none', lg: '1px solid' },
+  borderColor: 'border',
+})
+
+const sideCol = css({
+  padding: { base: '24px 0', lg: '32px 0 32px 32px' },
+})
+
+const eyebrowStyle = css({
+  fontFamily: 'display',
+  fontSize: '13px',
   color: 'accent',
-  letterSpacing: '0.08em',
+  letterSpacing: 'widest',
   textTransform: 'uppercase',
+  marginBottom: '12px',
 })
 
-const sectionLabel = css({
-  fontFamily: 'body',
-  fontSize: '9px',
-  fontWeight: 'medium',
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '8px',
-  marginTop: '40px',
-})
-
-const bodyText = css({
+const bodyStyle = css({
   fontFamily: 'body',
   fontSize: '16px',
   lineHeight: 'normal',
-  color: 'textSecondary',
+  color: 'text',
+  marginBottom: '24px',
   maxWidth: '65ch',
-  marginBottom: '16px',
-})
-
-const stackList = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
-  marginTop: '8px',
-})
-
-const stackTag = css({
-  fontFamily: 'mono',
-  fontSize: '12px',
-  fontWeight: 'normal',
-  color: 'textSecondary',
-  padding: '4px 10px',
-  border: '1px solid',
-  borderColor: 'border',
-  borderRadius: 'none',
 })
 
 const linkStyle = css({
   fontFamily: 'body',
-  fontSize: '15px',
-  fontWeight: 'medium',
+  fontSize: '14px',
   color: 'accent',
   textDecoration: 'none',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
+  padding: '4px 0',
   display: 'inline-block',
-  marginTop: '32px',
-  padding: '12px 0',
-  _hover: {
-    textDecoration: 'underline',
-  },
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
+  _hover: { textDecoration: 'underline', opacity: 1 },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
-const backLinkStyle = css({
+const sideLabel = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  color: 'textMuted',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
+  marginBottom: '4px',
+})
+
+const sideValue = css({
   fontFamily: 'body',
   fontSize: '14px',
-  color: 'textMuted',
-  textDecoration: 'none',
-  display: 'inline-block',
-  marginBottom: '32px',
-  padding: '8px 0',
-  _hover: {
-    color: 'accent',
-    textDecoration: 'underline',
-  },
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
+  color: 'text',
+  marginBottom: '20px',
+  lineHeight: 'normal',
 })
 
-const notFoundStyle = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(32px, 4vw, 56px)',
-  color: 'textMuted',
-  textTransform: 'uppercase',
-  padding: '96px 6vw',
+const stackTag = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  color: 'text',
+  letterSpacing: 'wide',
+  padding: '6px 12px',
+  border: '1px solid',
+  borderColor: 'border',
+  display: 'inline-block',
+  marginRight: '8px',
+  marginBottom: '8px',
 })
 
 const footerStyle = css({
-  padding: '24px 6vw',
+  padding: '24px 4vw',
   borderTop: '1px solid',
   borderColor: 'border',
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
+  alignItems: 'baseline',
+  flexWrap: 'wrap',
+  gap: '8px',
+})
+
+const footerTextStyle = css({
   fontFamily: 'body',
   fontSize: '12px',
   color: 'textMuted',
-  marginTop: 'auto',
+  letterSpacing: 'wide',
 })
 
-const archiveLinkStyle = css({
-  color: 'textMuted',
-  textDecoration: 'none',
-  _hover: {
-    color: 'accent',
-    textDecoration: 'underline',
-  },
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
-})
-
-function WorkDetail() {
+function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <>
-        <div className={notFoundStyle}>Project not found</div>
-        <footer className={footerStyle}>
-          <span>© 2026 Doug March</span>
-          <a href="/archive" className={archiveLinkStyle}>Archive</a>
-        </footer>
-      </>
+      <div className={css({ padding: '64px 4vw', textAlign: 'center' })}>
+        <h1 className={titleStyle}>Project Not Found</h1>
+        <a href="/" className={linkStyle}>← Back to Home</a>
+      </div>
     )
   }
 
   return (
     <>
-      <div className={pageStyle}>
-        <a href="/" className={backLinkStyle}>← Back</a>
-
+      <div className={headlineBandStyle}>
         <h1 className={titleStyle}>{project.title}</h1>
-
-        <div className={metaRowStyle}>
-          <span className={typeTagStyle}>{project.type}</span>
-          <span className={metaItemStyle}>{project.year}</span>
-          {project.role && <span className={metaItemStyle}>{project.role}</span>}
+        <div className={metaRow}>
+          <span className={metaItem}>{project.type}</span>
+          <span className={metaItem}>{project.year}</span>
+          {project.role && <span className={metaItem}>{project.role}</span>}
         </div>
+      </div>
 
-        {project.problem && (
-          <>
-            <div className={sectionLabel}>Problem</div>
-            <p className={bodyText}>{project.problem}</p>
-          </>
-        )}
+      <div className={gridStyle}>
+        <div className={mainCol}>
+          {project.problem && (
+            <>
+              <div className={eyebrowStyle}>Problem</div>
+              <p className={bodyStyle}>{project.problem}</p>
+            </>
+          )}
+          {project.approach && (
+            <>
+              <div className={eyebrowStyle}>Approach</div>
+              <p className={bodyStyle}>{project.approach}</p>
+            </>
+          )}
+          {project.outcome && (
+            <>
+              <div className={eyebrowStyle}>Outcome</div>
+              <p className={bodyStyle}>{project.outcome}</p>
+            </>
+          )}
+          {project.description && (
+            <>
+              <div className={eyebrowStyle}>Description</div>
+              <p className={bodyStyle}>{project.description}</p>
+            </>
+          )}
 
-        {project.approach && (
-          <>
-            <div className={sectionLabel}>Approach</div>
-            <p className={bodyText}>{project.approach}</p>
-          </>
-        )}
-
-        {project.outcome && (
-          <>
-            <div className={sectionLabel}>Outcome</div>
-            <p className={bodyText}>{project.outcome}</p>
-          </>
-        )}
-
-        {project.description && (
-          <>
-            <div className={sectionLabel}>Description</div>
-            <p className={bodyText}>{project.description}</p>
-          </>
-        )}
-
-        {project.stack && project.stack.length > 0 && (
-          <>
-            <div className={sectionLabel}>Stack</div>
-            <div className={stackList}>
-              {project.stack.map((tech, i) => (
-                <span className={stackTag} key={i}>{tech}</span>
-              ))}
-            </div>
-          </>
-        )}
-
-        {(project.externalUrl || project.liveUrl || project.githubUrl) && (
-          <div>
+          <div className={css({ display: 'flex', gap: '16px', flexWrap: 'wrap', marginTop: '8px' })}>
             {project.externalUrl && (
               <a href={project.externalUrl} className={linkStyle} target="_blank" rel="noopener noreferrer">
-                Visit Project ↗
+                Visit Site →
               </a>
             )}
-            {project.liveUrl && !project.externalUrl && (
+            {project.liveUrl && (
               <a href={project.liveUrl} className={linkStyle} target="_blank" rel="noopener noreferrer">
-                Live Site ↗
+                Live →
               </a>
             )}
             {project.githubUrl && (
-              <a href={project.githubUrl} className={css({ marginLeft: '24px' }) + ' ' + linkStyle} target="_blank" rel="noopener noreferrer">
-                GitHub ↗
+              <a href={project.githubUrl} className={linkStyle} target="_blank" rel="noopener noreferrer">
+                GitHub →
               </a>
             )}
+            <a href="/" className={linkStyle}>← All Work</a>
           </div>
-        )}
+        </div>
+
+        <div className={sideCol}>
+          {project.role && (
+            <>
+              <div className={sideLabel}>Role</div>
+              <div className={sideValue}>{project.role}</div>
+            </>
+          )}
+          <div className={sideLabel}>Year</div>
+          <div className={sideValue}>{project.year}</div>
+          <div className={sideLabel}>Type</div>
+          <div className={sideValue}>{project.type}</div>
+          {project.stack && project.stack.length > 0 && (
+            <>
+              <div className={css({ ...Object.fromEntries(Object.entries({ fontFamily: 'body', fontSize: '13px', color: 'textMuted', letterSpacing: 'wide', textTransform: 'uppercase', marginBottom: '8px' }).map(([k,v]) => [k,v])) })}>
+                <div className={sideLabel}>Stack</div>
+              </div>
+              <div>
+                {project.stack.map((tech, i) => (
+                  <span key={i} className={stackTag}>{tech}</span>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       <footer className={footerStyle}>
-        <span>© 2026 Doug March</span>
-        <a href="/archive" className={archiveLinkStyle}>Archive</a>
+        <span className={footerTextStyle}>© 2026 Doug March</span>
+        <a href="/archive" className={css({ fontFamily: 'body', fontSize: '12px', color: 'textMuted', letterSpacing: 'wide', textDecoration: 'none', _hover: { color: 'accent', textDecoration: 'underline', opacity: 1 }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' } })}>Archive</a>
       </footer>
     </>
   )

@@ -1,21 +1,19 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const navStyle = css({
+const mastheadStyle = css({
   display: 'flex',
-  justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '0 6vw',
-  height: '56px',
+  justifyContent: 'space-between',
+  padding: '12px 4vw',
   borderBottom: '1px solid',
-  borderColor: 'border',
-  position: 'sticky',
-  top: '0',
-  background: 'bg',
-  zIndex: 10,
+  borderColor: 'borderAccent',
+  width: '100%',
+  flexWrap: 'wrap',
+  gap: '8px',
 })
 
-const leftStyle = css({
+const logoAreaStyle = css({
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
@@ -26,59 +24,71 @@ const logoStyle = css({
   height: '28px',
 })
 
-const nameStyle = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  fontWeight: 'normal',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  color: 'textSecondary',
+const siteNameStyle = css({
+  fontFamily: 'display',
+  fontSize: '20px',
+  color: 'accent',
+  letterSpacing: 'tight',
+  lineHeight: 'snug',
   textDecoration: 'none',
-  _hover: {
-    color: 'accent',
-    textDecoration: 'none',
-  },
+  _hover: { opacity: 1 },
 })
 
-const linksStyle = css({
+const datelineStyle = css({
+  fontFamily: 'body',
+  fontSize: '12px',
+  color: 'textMuted',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
+  display: { base: 'none', md: 'block' },
+  textAlign: 'center',
+  flex: '1',
+})
+
+const navAreaStyle = css({
   display: 'flex',
   alignItems: 'center',
-  gap: '32px',
+  gap: '16px',
 })
 
-const linkStyle = css({
+const moonStyle = css({
   fontFamily: 'body',
-  fontSize: '14px',
-  fontWeight: 'normal',
-  letterSpacing: '0.08em',
+  fontSize: '13px',
+  color: 'textSecondary',
+  letterSpacing: 'wide',
+  display: { base: 'none', md: 'inline' },
+})
+
+const navLinkStyle = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  color: 'textSecondary',
+  letterSpacing: 'wide',
   textTransform: 'uppercase',
-  color: 'textMuted',
   textDecoration: 'none',
-  padding: '12px 0',
-  _hover: {
-    color: 'accent',
-    textDecoration: 'underline',
-  },
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
+  padding: '12px 4px',
+  transition: 'color 0.15s ease',
+  _hover: { color: 'accent', opacity: 1 },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
 export function Sidebar() {
   return (
-    <nav className={navStyle} aria-label="Main navigation">
-      <div className={leftStyle}>
-        <a href="/" aria-label="Home">
-          <img src={logoSvg} alt="" className={logoStyle} />
+    <header className={mastheadStyle}>
+      <div className={logoAreaStyle}>
+        <a href="/" className={css({ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none', _hover: { opacity: 1 } })}>
+          <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
+          <span className={siteNameStyle}>doug-march.com</span>
         </a>
-        <a href="/" className={nameStyle}>Doug March</a>
       </div>
-      <div className={linksStyle}>
-        <a href="/" className={linkStyle}>Work</a>
-        <a href="/about" className={linkStyle}>About</a>
-      </div>
-    </nav>
+      <span className={datelineStyle}>
+        Sunday — May 31, 2026 — Last Day of Spring's Final Month
+      </span>
+      <nav className={navAreaStyle} aria-label="Main navigation">
+        <span className={moonStyle}>◉ Full Moon 99.4%</span>
+        <a href="/" className={navLinkStyle}>Work</a>
+        <a href="/about" className={navLinkStyle}>About</a>
+      </nav>
+    </header>
   )
 }

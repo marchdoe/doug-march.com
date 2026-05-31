@@ -2,15 +2,16 @@ import type { ReactNode } from 'react'
 import { Sidebar } from './Sidebar'
 import { css } from '../../styled-system/css'
 
-const shellStyle = css({
-  display: 'flex',
-  flexDirection: 'column',
+const layoutStyle = css({
   minHeight: '100vh',
+  background: 'bg',
+  color: 'text',
+  fontFamily: 'body',
 })
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className={shellStyle}>
+    <div className={layoutStyle}>
       <Sidebar />
       {children}
     </div>

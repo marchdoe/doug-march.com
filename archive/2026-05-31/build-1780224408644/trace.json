@@ -1,0 +1,274 @@
+{
+  "date": "2026-05-31",
+  "startedAt": "2026-05-31T10:39:17.186Z",
+  "completedAt": "2026-05-31T10:46:50.343Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Education Foundation of AACPS",
+              "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+              "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Sunday",
+          "is_weekend": true,
+          "day_index": 0
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "microsoft/markitdown/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "harry0703/MoneyPrinterTurbo/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "anthropics/claude-code/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "cursor/plugins/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "revfactory/harness/stargazers",
+              "description": "",
+              "language": "HTML",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Charles Schwab Challenge",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Eric Cole",
+              "position": "1",
+              "score": "-12"
+            },
+            {
+              "name": "Ryan Gerard",
+              "position": "2",
+              "score": "-11"
+            },
+            {
+              "name": "Mac Meissner",
+              "position": "3",
+              "score": "-10"
+            },
+            {
+              "name": "J.J. Spaun",
+              "position": "4",
+              "score": "-10"
+            },
+            {
+              "name": "Russell Henley",
+              "position": "5",
+              "score": "-9"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "The Website Specification",
+              "url": "https://specification.website/",
+              "score": 168,
+              "by": "k1m"
+            },
+            {
+              "title": "London's Free Roof Terraces",
+              "url": "https://diamondgeezer.blogspot.com/2026/05/londons-free-roof-terraces.html",
+              "score": 63,
+              "by": "zeristor"
+            },
+            {
+              "title": "Domain expertise has always been the real moat",
+              "url": "https://www.brethorsting.com/blog/2026/05/domain-expertise-has-always-been-the-real-moat/",
+              "score": 605,
+              "by": "aaronbrethorst"
+            },
+            {
+              "title": "Shantell Sans (2023)",
+              "url": "https://shantellsans.com/process",
+              "score": 262,
+              "by": "aleda145"
+            },
+            {
+              "title": "Avian Visitors",
+              "url": "https://theodore.net/projects/AvianVisitors/",
+              "score": 43,
+              "by": "fdb"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "full moon",
+          "illumination": 0.994,
+          "days_into_cycle": 15.47
+        },
+        "music": {
+          "bands": [
+            "The War on Drugs",
+            "My Morning Jacket"
+          ]
+        },
+        "quote": {
+          "text": "To the world you may be one person; but to one person you may be the world.",
+          "author": "Dr. Seuss"
+        },
+        "season": {
+          "season": "spring",
+          "month": 5,
+          "day": 31,
+          "day_of_year": 151,
+          "month_name": "May"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-30T18:10Z",
+              "result": "loss",
+              "score": "1-7"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:51",
+          "sunset": "19:24",
+          "daylight_hours": 14.5
+        },
+        "date": "2026-05-31"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-31T10:39:32.664Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-30: Specimen\n  - 2026-05-29: Split\n  - 2026-05-28: Stack\n  - 2026-05-27: Poster\n  - 2026-05-25: Scroll\n  - 2026-05-24: Gallery Wall\n  - 2026-05-23: Specimen\n\n**Recently used** (last 3 days): Specimen, Split, Stack\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or sign"
+      },
+      "output": {
+        "hero_copy": "Domain expertise has always been the real moat.",
+        "archetype": "Broadsheet",
+        "chassisId": "bebas-plex",
+        "specLength": 6701,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue** — H:78° (acid chartreuse/yellow-green). The hue of neon signage, tennis balls, phosphorescent paint — colors that demand to be read. Falls inside the open mandate zone (65°–85°). Chosen because \"the real moat\" is a declaration, not a suggestion; this is the color of declarations posted in places where obedience is expected.\n- **Neutral palette (void family — tinted toward H:78°)**:\n  - 50: `#F2F5E4`\n  - 100: `#E2E8C8`\n  - 200: `#C8D2A4`\n  - 300: `#AA",
+        "selfCheck": "1. Hero quotability: Yes — the phrase is independently circulating at 605 HN points, attributable to a real published essay, quotable and arguable in complete isolation from portfolio context.\n2. Because-of chain: Yes — the phrase is a declarative editorial thesis → Broadsheet (only archetype that e"
+      },
+      "durationMs": 278619,
+      "timestamp": "2026-05-31T10:44:11.287Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 6701
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 34321,
+      "timestamp": "2026-05-31T10:44:47.130Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 5235,
+        "briefLength": 9766
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 98909,
+      "timestamp": "2026-05-31T10:46:26.041Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-05-31T10:46:33.262Z"
+    }
+  ]
+}
