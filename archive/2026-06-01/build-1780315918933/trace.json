@@ -1,0 +1,274 @@
+{
+  "date": "2026-06-01",
+  "startedAt": "2026-06-01T11:59:52.310Z",
+  "completedAt": "2026-06-01T12:12:00.633Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Education Foundation of AACPS",
+              "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+              "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "Pillars Of Seven",
+              "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Power of Storytelling",
+              "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Monday",
+          "is_weekend": false,
+          "day_index": 1
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "microsoft/markitdown/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/nesquena",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "supermemoryai/supermemory/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "harry0703/MoneyPrinterTurbo/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/D4Vinci",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Charles Schwab Challenge",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Russell Henley",
+              "position": "1",
+              "score": "-13"
+            },
+            {
+              "name": "Eric Cole",
+              "position": "2",
+              "score": "-12"
+            },
+            {
+              "name": "Ben Griffin",
+              "position": "3",
+              "score": "-11"
+            },
+            {
+              "name": "Alex Smalley",
+              "position": "4",
+              "score": "-11"
+            },
+            {
+              "name": "Mac Meissner",
+              "position": "5",
+              "score": "-11"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "A 10 year old Xeon is all you need",
+              "url": "https://point.free/blog/gemma-4-on-a-2016-xeon/",
+              "score": 222,
+              "by": "cafkafk"
+            },
+            {
+              "title": "Tracing HTTP Requests with Go's net/HTTP/httptrace",
+              "url": "https://blainsmith.com/articles/httptrace-with-go/",
+              "score": 54,
+              "by": "speckx"
+            },
+            {
+              "title": "Benchmarking SurrealDB 3.x vs. Postgres, Mongo, Neo4j and Redis (With Fsync)",
+              "url": "https://surrealdb.com/blog/surrealdb-3-x-by-the-numbers",
+              "score": 30,
+              "by": "itsezc"
+            },
+            {
+              "title": "Chuwi Minibook X",
+              "url": "https://tylercipriani.com/blog/2026/05/28/chuwi-minibook-x/",
+              "score": 310,
+              "by": "thcipriani"
+            },
+            {
+              "title": "Cloudflare Turnstile requiring fingerprintable WebGL",
+              "url": "https://hacktivis.me/articles/cloudflare-turnstile-webgl-fingerprinting",
+              "score": 698,
+              "by": "HypnoticOcelot"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "full moon",
+          "illumination": 0.965,
+          "days_into_cycle": 16.53
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "My Morning Jacket"
+          ]
+        },
+        "quote": {
+          "text": "Many answers to what you seek don't lie 'out there'. If you look inwards, you'll find the answer has been in you all along.",
+          "author": "Celestine Chua"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 1,
+          "day_of_year": 152,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-05-31T18:10Z",
+              "result": "loss",
+              "score": "1-2"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:51",
+          "sunset": "19:24",
+          "daylight_hours": 14.6
+        },
+        "date": "2026-06-01"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-01T12:00:07.637Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-05-31: Broadsheet\n  - 2026-05-30: Specimen\n  - 2026-05-29: Split\n  - 2026-05-28: Stack\n  - 2026-05-27: Poster\n  - 2026-05-25: Scroll\n  - 2026-05-24: Gallery Wall\n\n**Recently used** (last 3 days): Broadsheet, Specimen, Split\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief "
+      },
+      "output": {
+        "hero_copy": "craft itself becomes the story",
+        "archetype": "Index",
+        "chassisId": "bebas-plex",
+        "specLength": 7723,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue:** H:305° (magenta-purple). Within the mandated 275°–333° available zone; no recent palette has used this hue family. This is the color of neon signage, late-night creative pressure, and June energy at maximum saturation.\n- **Neutral palette (amethyst stone — violet-tinted toward H:290°):**\n  - 50: `#FAF8FC`\n  - 100: `#F2EFF6`\n  - 200: `#E3DFEC`\n  - 300: `#CBBFDA`\n  - 400: `#B09EC3`\n  - 500: `#8B7AAA`\n  - 600: `#665888`\n  - 700: `#4A3D6A`\n  - 800: `#31",
+        "selfCheck": "1. Hero quotability: Yes — \"craft itself becomes the story\" is lifted from today's Awwwards signal data and stands fully alone as a declaration; a design practitioner would screenshot this line as a manifesto fragment, and the portfolio's daily-redesign conceit makes it immediately, visibly true on "
+      },
+      "durationMs": 553553,
+      "timestamp": "2026-06-01T12:09:21.195Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 7723
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 39386,
+      "timestamp": "2026-06-01T12:10:02.162Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 6408,
+        "briefLength": 10834
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 93694,
+      "timestamp": "2026-06-01T12:11:35.857Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-01T12:11:43.493Z"
+    }
+  ]
+}
