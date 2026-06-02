@@ -1,232 +1,317 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
+import { Sidebar } from '../components/Sidebar'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const pageMasthead = css({
-  background: '{colors.stone.900}',
-  padding: '36px 5vw 40px',
+const pageStyle = css({
+  width: '100vw',
+  maxWidth: 'none',
+  background: 'bg',
+  minHeight: '100vh',
 })
 
-const pageTitle = css({
+const navBarStyle = css({
+  padding: '52px 6vw 0',
+  '@media (max-width: 768px)': {
+    padding: '24px 24px 0',
+  },
+})
+
+const contentStyle = css({
+  padding: '96px 6vw 64px',
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '96px',
+  '@media (max-width: 768px)': {
+    padding: '48px 24px 40px',
+    gridTemplateColumns: '1fr',
+    gap: '48px',
+  },
+})
+
+const titleStyle = css({
   fontFamily: 'display',
+  fontWeight: 'bold',
   fontSize: 'clamp(36px, 4vw, 64px)',
-  letterSpacing: '0.06em',
-  lineHeight: '0.95',
-  color: '{colors.stone.50}',
+  lineHeight: 'snug',
+  letterSpacing: 'tight',
+  color: 'text',
+  marginBottom: '16px',
 })
 
-const metaLine = css({
+const typeYearStyle = css({
   fontFamily: 'body',
-  fontSize: '13px',
-  letterSpacing: '0.08em',
+  fontWeight: 'medium',
+  fontSize: '12px',
+  letterSpacing: '0.10em',
   textTransform: 'uppercase',
-  color: '{colors.stone.400}',
-  marginTop: '8px',
+  color: 'accent',
+  marginBottom: '32px',
 })
 
-const pageWrap = css({
-  padding: '0 5vw',
-  flex: 1,
+const bodyStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '16px',
+  lineHeight: 'normal',
+  color: 'textSecondary',
+  maxWidth: '55ch',
+  marginBottom: '24px',
 })
 
-const sectionHeader = css({
-  fontFamily: 'display',
-  fontSize: '13px',
-  letterSpacing: '0.15em',
-  color: '{colors.stone.500}',
+const labelStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: '0.10em',
   textTransform: 'uppercase',
-  padding: '8px 0',
-  borderBottom: '2px solid',
-  borderColor: '{colors.stone.900}',
+  color: 'textMuted',
+  marginBottom: '8px',
   marginTop: '32px',
 })
 
-const contentBlock = css({
-  fontFamily: 'body',
-  fontSize: '16px',
-  lineHeight: '1.5',
-  color: '{colors.stone.700}',
-  maxWidth: '65ch',
-  padding: '16px 0',
-  borderBottom: '1px solid',
-  borderColor: '{colors.stone.200}',
-})
-
-const stackRow = css({
+const stackListStyle = css({
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '0',
+  gap: '8px',
 })
 
-const stackItem = css({
+const stackTagStyle = css({
   fontFamily: 'body',
+  fontWeight: 'normal',
   fontSize: '13px',
-  letterSpacing: '0.05em',
-  textTransform: 'uppercase',
-  color: '{colors.stone.700}',
-  padding: '10px 16px',
-  borderBottom: '1px solid',
-  borderRight: '1px solid',
-  borderColor: '{colors.stone.200}',
+  color: 'textSecondary',
+  padding: '6px 16px',
+  background: 'bgCard',
 })
 
 const linkStyle = css({
   fontFamily: 'body',
+  fontWeight: 'medium',
   fontSize: '14px',
-  letterSpacing: '0.05em',
-  textTransform: 'uppercase',
-  color: '{colors.magenta.600}',
+  color: 'accent',
   textDecoration: 'none',
-  padding: '12px 0',
-  display: 'inline-block',
-  '&:hover': {
-    color: '{colors.magenta.400}',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '6px',
+  padding: '8px 0',
+  minHeight: '44px',
+  _hover: {
+    textDecoration: 'underline',
+    textUnderlineOffset: '4px',
+    textDecorationThickness: '2px',
   },
-  '&:focus-visible': {
+  _focus: {
     outline: '2px solid',
-    outlineColor: '{colors.magenta.400}',
+    outlineColor: 'accent',
     outlineOffset: '2px',
   },
 })
 
-const footerWrap = css({
-  padding: '16px 5vw',
-  borderTop: '1px solid',
-  borderColor: '{colors.stone.200}',
+const detailPanelStyle = css({
+  background: 'bgCard',
+  padding: '48px 40px',
+  alignSelf: 'start',
+  '@media (max-width: 768px)': {
+    padding: '32px 24px',
+  },
+})
+
+const detailRowStyle = css({
+  marginBottom: '24px',
+})
+
+const detailLabelStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '10px',
+  letterSpacing: '0.15em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginBottom: '6px',
+})
+
+const detailValueStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '15px',
+  lineHeight: 'normal',
+  color: 'text',
+})
+
+const backLinkStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '14px',
+  color: 'textMuted',
+  textDecoration: 'none',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '4px',
+  marginBottom: '48px',
+  minHeight: '44px',
+  _hover: {
+    color: 'accent',
+  },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+  },
+})
+
+const footerStyle = css({
+  padding: '24px 6vw',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  marginTop: 'auto',
-})
-
-const footerText = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: '{colors.stone.500}',
-  letterSpacing: '0.05em',
-  textTransform: 'uppercase',
-})
-
-const footerLink = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: '{colors.stone.500}',
-  letterSpacing: '0.05em',
-  textTransform: 'uppercase',
-  textDecoration: 'none !important',
-  '&:hover': {
-    color: '{colors.magenta.500} !important',
-  },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: '{colors.magenta.400}',
-    outlineOffset: '2px',
+  borderTop: '1px solid',
+  borderColor: 'border',
+  '@media (max-width: 768px)': {
+    padding: '24px',
+    flexDirection: 'column',
+    gap: '12px',
+    alignItems: 'flex-start',
   },
 })
 
-const notFound = css({
-  fontFamily: 'display',
-  fontSize: '24px',
-  letterSpacing: '0.06em',
-  color: '{colors.stone.500}',
-  padding: '48px 5vw',
+const footerTextStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '12px',
+  color: 'textMuted',
 })
 
-function WorkPage() {
+const footerLinkStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '12px',
+  color: 'textMuted',
+  textDecoration: 'underline',
+  textUnderlineOffset: '3px',
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  _hover: { color: 'accent' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+})
+
+function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <>
-        <div className={notFound}>PROJECT NOT FOUND</div>
-        <footer className={footerWrap}>
-          <span className={footerText}>© 2026 Doug March</span>
-          <a href="/archive" className={footerLink}>Archive</a>
-        </footer>
-      </>
+      <div className={pageStyle}>
+        <div className={navBarStyle}><Sidebar /></div>
+        <div style={{ padding: '96px 6vw' }}>
+          <h1 className={titleStyle}>Project not found</h1>
+          <a href="/" className={linkStyle}>← Back home</a>
+        </div>
+      </div>
     )
   }
 
   return (
-    <>
-      <div className={pageMasthead}>
-        <h1 className={pageTitle}>{project.title.toUpperCase()}</h1>
-        <p className={metaLine}>{project.type} · {project.year}{project.role ? ` · ${project.role}` : ''}</p>
+    <div className={pageStyle}>
+      <div className={navBarStyle}>
+        <Sidebar />
       </div>
 
-      <div className={pageWrap}>
-        {project.problem && (
-          <>
-            <div className={sectionHeader}>Problem</div>
-            <p className={contentBlock}>{project.problem}</p>
-          </>
-        )}
+      <div style={{ padding: '48px 6vw 0' }}>
+        <a href="/" className={backLinkStyle}>← Back</a>
+      </div>
 
-        {project.approach && (
-          <>
-            <div className={sectionHeader}>Approach</div>
-            <p className={contentBlock}>{project.approach}</p>
-          </>
-        )}
+      <div className={contentStyle}>
+        <div>
+          <h1 className={titleStyle}>{project.title}</h1>
+          <div className={typeYearStyle}>{project.type} · {project.year}</div>
 
-        {project.outcome && (
-          <>
-            <div className={sectionHeader}>Outcome</div>
-            <p className={contentBlock}>{project.outcome}</p>
-          </>
-        )}
+          {project.problem && (
+            <>
+              <div className={labelStyle}>Problem</div>
+              <p className={bodyStyle}>{project.problem}</p>
+            </>
+          )}
 
-        {project.description && !project.problem && (
-          <>
-            <div className={sectionHeader}>Description</div>
-            <p className={contentBlock}>{project.description}</p>
-          </>
-        )}
+          {project.approach && (
+            <>
+              <div className={labelStyle}>Approach</div>
+              <p className={bodyStyle}>{project.approach}</p>
+            </>
+          )}
 
-        {project.stack && project.stack.length > 0 && (
-          <>
-            <div className={sectionHeader}>Stack</div>
-            <div className={stackRow}>
-              {project.stack.map((s, i) => (
-                <div key={i} className={stackItem}>{s}</div>
-              ))}
+          {project.outcome && (
+            <>
+              <div className={labelStyle}>Outcome</div>
+              <p className={bodyStyle}>{project.outcome}</p>
+            </>
+          )}
+
+          {project.description && (
+            <p className={bodyStyle}>{project.description}</p>
+          )}
+
+          {project.stack && project.stack.length > 0 && (
+            <>
+              <div className={labelStyle}>Stack</div>
+              <div className={stackListStyle}>
+                {project.stack.map((tech, i) => (
+                  <span key={i} className={stackTagStyle}>{tech}</span>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        <div className={detailPanelStyle}>
+          {project.role && (
+            <div className={detailRowStyle}>
+              <div className={detailLabelStyle}>Role</div>
+              <div className={detailValueStyle}>{project.role}</div>
             </div>
-          </>
-        )}
-
-        <div style={{ padding: '24px 0' }}>
+          )}
+          <div className={detailRowStyle}>
+            <div className={detailLabelStyle}>Type</div>
+            <div className={detailValueStyle}>{project.type}</div>
+          </div>
+          <div className={detailRowStyle}>
+            <div className={detailLabelStyle}>Year</div>
+            <div className={detailValueStyle}>{project.year}</div>
+          </div>
+          {project.externalUrl && (
+            <div className={detailRowStyle}>
+              <div className={detailLabelStyle}>Link</div>
+              <a href={project.externalUrl} className={linkStyle}>
+                Visit site →
+              </a>
+            </div>
+          )}
           {project.liveUrl && (
-            <a href={project.liveUrl} className={linkStyle}>
-              View Live →
-            </a>
+            <div className={detailRowStyle}>
+              <div className={detailLabelStyle}>Live</div>
+              <a href={project.liveUrl} className={linkStyle}>
+                View live →
+              </a>
+            </div>
           )}
           {project.githubUrl && (
-            <>
-              {project.liveUrl && <span style={{ margin: '0 16px', color: '#E3DFEC' }}>|</span>}
+            <div className={detailRowStyle}>
+              <div className={detailLabelStyle}>Source</div>
               <a href={project.githubUrl} className={linkStyle}>
                 GitHub →
               </a>
-            </>
+            </div>
           )}
-          {project.externalUrl && !project.liveUrl && (
-            <a href={project.externalUrl} className={linkStyle}>
-              View Project →
-            </a>
-          )}
-        </div>
-
-        <div style={{ padding: '16px 0' }}>
-          <a href="/" className={linkStyle}>← Back to Index</a>
         </div>
       </div>
 
-      <footer className={footerWrap}>
-        <span className={footerText}>© 2026 Doug March</span>
-        <a href="/archive" className={footerLink}>Archive</a>
+      <footer className={footerStyle}>
+        <span className={footerTextStyle}>Doug March · Product Designer & Developer</span>
+        <a href="/archive" className={footerLinkStyle}>Archive</a>
       </footer>
-    </>
+    </div>
   )
 }

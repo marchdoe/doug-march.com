@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 200,
+    "s": 88,
+    "l": 48,
+    "name": "summer sky azure"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "warm ivory",
+    "name": "parchment"
+  },
+  "mood_word": "luminous",
+  "color_story": "Sky azure at H:200° is the color you encounter when you actually do stuff your eyes upward on a June afternoon — clear, saturated, infinite — fired against warm ivory parchment the way a cloudless sky meets old stone."
+}

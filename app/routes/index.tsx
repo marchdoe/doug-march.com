@@ -1,392 +1,523 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
+import { Sidebar } from '../components/Sidebar'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
-import { timeline, capabilities } from '../content/timeline'
-import { identity } from '../content/about'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const masthead = css({
-  background: '{colors.stone.900}',
-  padding: '36px 5vw 52px',
-  minHeight: '28vh',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-end',
-})
-
-const heroLine1 = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(48px, 5.8vw, 92px)',
-  letterSpacing: '0.06em',
-  lineHeight: '0.95',
-  color: '{colors.stone.50}',
-  margin: 0,
-})
-
-const heroLine2 = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(48px, 5.8vw, 92px)',
-  letterSpacing: '0.06em',
-  lineHeight: '0.95',
-  color: '{colors.magenta.400}',
-  margin: 0,
-})
-
-const tagline = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
-  color: '{colors.stone.400}',
-  marginTop: '12px',
-  lineHeight: 'normal',
-})
-
-const quoteStyle = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  fontStyle: 'italic',
-  color: '{colors.stone.500}',
-  marginTop: '8px',
-  lineHeight: 'normal',
-})
-
-/* Column headers */
-const headerRow = css({
+const galleryWallStyle = css({
   display: 'grid',
-  gridTemplateColumns: '2fr 1.5fr 1fr',
-  padding: '0 5vw',
-  borderBottom: '2px solid',
-  borderColor: '{colors.stone.900}',
-  '@media (max-width: 768px)': {
-    display: 'none',
-  },
-})
-
-const headerCell = css({
-  fontFamily: 'display',
-  fontSize: '13px',
-  letterSpacing: '0.15em',
-  color: '{colors.stone.500}',
-  textTransform: 'uppercase',
-  padding: '8px 16px',
-  lineHeight: '1.25',
-  height: '36px',
-  display: 'flex',
-  alignItems: 'center',
-  '&:not(:last-child)': {
-    borderRight: '1px solid',
-    borderColor: '{colors.stone.200}',
-  },
-})
-
-/* Index body */
-const indexBody = css({
-  display: 'grid',
-  gridTemplateColumns: '2fr 1.5fr 1fr',
-  padding: '0 5vw',
-  flex: 1,
+  gridTemplateColumns: 'repeat(12, 1fr)',
+  gridTemplateRows: 'auto auto',
+  width: '100vw',
+  maxWidth: 'none',
+  minHeight: '100vh',
   '@media (max-width: 768px)': {
     display: 'flex',
     flexDirection: 'column',
-    padding: '0',
   },
 })
 
-const column = css({
-  '&:not(:last-child)': {
-    borderRight: '1px solid',
-    borderColor: '{colors.stone.200}',
-  },
-  '@media (max-width: 768px)': {
-    borderRight: 'none !important',
-    borderBottom: '2px solid',
-    borderColor: '{colors.stone.900}',
-    padding: '0 5vw',
-  },
-})
-
-const mobileColHeader = css({
-  display: 'none',
-  '@media (max-width: 768px)': {
-    display: 'flex',
-    alignItems: 'center',
-    fontFamily: 'display',
-    fontSize: '13px',
-    letterSpacing: '0.15em',
-    color: '{colors.stone.500}',
-    textTransform: 'uppercase',
-    padding: '12px 16px',
-    borderBottom: '2px solid',
-    borderColor: '{colors.stone.900}',
-  },
-})
-
-const indexRow = css({
+const heroBlockStyle = css({
+  gridColumn: '1 / 9',
+  gridRow: '1',
+  minHeight: '80vh',
+  background: 'bg',
+  padding: '52px 72px 64px 6vw',
   display: 'flex',
-  alignItems: 'center',
-  height: '48px',
-  padding: '0 16px',
-  borderBottom: '1px solid',
-  borderColor: '{colors.stone.200}',
-  transition: 'background 80ms ease',
-  cursor: 'default',
-  gap: '8px',
-  _hover: {
-    background: '{colors.magenta.50}',
+  flexDirection: 'column',
+  '@media (max-width: 1024px)': {
+    padding: '40px 48px 48px 5vw',
   },
   '@media (max-width: 768px)': {
-    height: 'auto',
-    minHeight: '48px',
-    flexWrap: 'wrap',
-    padding: '10px 16px',
-    gap: '4px',
+    padding: '24px 24px 48px 24px',
+    minHeight: '70vh',
+    gridColumn: '1 / -1',
   },
 })
 
-const indexRowLink = css({
-  display: 'flex',
-  alignItems: 'center',
-  height: '48px',
-  padding: '0 16px',
-  borderBottom: '1px solid',
-  borderColor: '{colors.stone.200}',
-  transition: 'background 80ms ease',
-  cursor: 'pointer',
-  textDecoration: 'none !important',
-  gap: '8px',
-  color: 'inherit !important',
-  _hover: {
-    background: '{colors.magenta.50}',
-  },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: '{colors.magenta.400}',
-    outlineOffset: '-2px',
-  },
+const heroNavSpacerStyle = css({
+  marginBottom: '96px',
   '@media (max-width: 768px)': {
-    height: 'auto',
-    minHeight: '48px',
-    flexWrap: 'wrap',
-    padding: '10px 16px',
-    gap: '4px',
+    marginBottom: '48px',
   },
 })
 
-const rowName = css({
+const heroPhraseWrapperStyle = css({
+  marginTop: 'auto',
+  marginBottom: 'auto',
+  maxWidth: '90%',
+  '@media (max-width: 768px)': {
+    maxWidth: '100%',
+  },
+})
+
+const heroPhraseStyle = css({
   fontFamily: 'display',
-  fontSize: '18px',
-  letterSpacing: '0.08em',
-  color: '{colors.stone.900}',
-  lineHeight: '1.25',
-  whiteSpace: 'nowrap',
-  transition: 'color 80ms ease',
-  flexShrink: 0,
-  [`${indexRowLink}:hover &, ${indexRow}:hover &`]: {
-    color: '{colors.magenta.500}',
-  },
+  fontWeight: 'bold',
+  fontSize: 'clamp(48px, 6.5vw, 96px)',
+  lineHeight: 'tight',
+  letterSpacing: 'tight',
+  color: 'text',
+  textWrap: 'balance',
+  margin: 0,
 })
 
-const rowMeta = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.05em',
-  textTransform: 'uppercase',
-  color: '{colors.stone.500}',
-  lineHeight: '1.25',
-  whiteSpace: 'nowrap',
-  flexShrink: 0,
+const wonderWordStyle = css({
+  color: 'accentStrong',
 })
 
-const rowDesc = css({
+const attributionStyle = css({
   fontFamily: 'body',
-  fontSize: '13px',
-  letterSpacing: '0em',
-  color: '{colors.stone.700}',
-  lineHeight: '1.5',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  flex: 1,
-  minWidth: 0,
-  '@media (max-width: 768px)': {
-    whiteSpace: 'normal',
-    width: '100%',
-  },
-})
-
-const rowDescItalic = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  letterSpacing: '0em',
-  color: '{colors.stone.700}',
-  lineHeight: '1.5',
+  fontWeight: 'light',
   fontStyle: 'italic',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  flex: 1,
-  minWidth: 0,
+  fontSize: '14px',
+  color: 'textMuted',
+  letterSpacing: '0.02em',
+  marginTop: '32px',
 })
 
-const accentText = css({
-  color: '{colors.magenta.600}',
-  fontSize: '13px',
-  fontFamily: 'body',
-})
-
-const moonDot = css({
-  color: '{colors.magenta.400}',
-  fontSize: '10px',
-  marginRight: '4px',
-})
-
-const footerWrap = css({
-  padding: '16px 5vw',
-  borderTop: '1px solid',
-  borderColor: '{colors.stone.200}',
+const signalPanelStyle = css({
+  gridColumn: '9 / 13',
+  gridRow: '1 / 3',
+  background: 'bgInverse',
+  color: 'textInverse',
+  padding: '52px 40px 64px 32px',
   display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-})
-
-const footerText = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: '{colors.stone.500}',
-  letterSpacing: '0.05em',
-  textTransform: 'uppercase',
-})
-
-const footerLink = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: '{colors.stone.500}',
-  letterSpacing: '0.05em',
-  textTransform: 'uppercase',
-  textDecoration: 'none !important',
-  '&:hover': {
-    color: '{colors.magenta.500} !important',
+  flexDirection: 'column',
+  gap: '48px',
+  minHeight: '100vh',
+  '@media (max-width: 1024px)': {
+    padding: '40px 32px 48px 24px',
+    gap: '36px',
   },
-  '&:focus-visible': {
+  '@media (max-width: 768px)': {
+    gridColumn: '1 / -1',
+    gridRow: 'auto',
+    minHeight: 'auto',
+    padding: '40px 24px',
+    gap: '32px',
+  },
+})
+
+const signalLabelStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '10px',
+  letterSpacing: '0.15em',
+  textTransform: 'uppercase',
+  color: 'textInverseSecondary',
+  marginBottom: '8px',
+})
+
+const signalScoreStyle = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'clamp(28px, 2.5vw, 36px)',
+  lineHeight: '1.0',
+  color: 'accentOnDark',
+})
+
+const signalDetailStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '11px',
+  color: 'textInverseSecondary',
+  marginTop: '6px',
+})
+
+const signalMediumStyle = css({
+  fontFamily: 'display',
+  fontWeight: 'semibold',
+  fontSize: '20px',
+  lineHeight: '1.2',
+  color: 'accentOnDark',
+})
+
+const signalSmallListStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '12px',
+  color: 'textInverseSecondary',
+  marginTop: '4px',
+})
+
+const musicArtistStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '13px',
+  color: 'textInverseSecondary',
+  lineHeight: '1.6',
+})
+
+const hnStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontStyle: 'italic',
+  fontSize: '11px',
+  color: 'textInverseSecondary',
+  lineHeight: '1.5',
+})
+
+const daylightStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '10px',
+  letterSpacing: '0.15em',
+  textTransform: 'uppercase',
+  color: 'textInverseSecondary',
+  opacity: 0.7,
+})
+
+const projectsBlockStyle = css({
+  gridColumn: '1 / 7',
+  gridRow: '2',
+  background: 'bg',
+  padding: '48px 72px 56px 6vw',
+  minHeight: '320px',
+  '@media (max-width: 1024px)': {
+    padding: '40px 48px 48px 5vw',
+  },
+  '@media (max-width: 768px)': {
+    gridColumn: '1 / -1',
+    padding: '40px 24px',
+  },
+})
+
+const quoteBlockStyle = css({
+  gridColumn: '7 / 9',
+  gridRow: '2',
+  background: 'bgCard',
+  padding: '48px 40px',
+  minHeight: '320px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  '@media (max-width: 768px)': {
+    gridColumn: '1 / -1',
+    padding: '40px 24px',
+  },
+})
+
+const sectionLabelStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: '0.10em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginBottom: '32px',
+})
+
+const featuredTitleStyle = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'clamp(28px, 3vw, 42px)',
+  lineHeight: 'snug',
+  letterSpacing: 'tight',
+  color: 'text',
+  marginBottom: '12px',
+})
+
+const featuredProblemStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '16px',
+  lineHeight: 'normal',
+  color: 'textSecondary',
+  marginBottom: '20px',
+  maxWidth: '60ch',
+})
+
+const featuredLinkStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '14px',
+  color: 'accent',
+  textDecoration: 'none',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '6px',
+  padding: '8px 0',
+  minHeight: '44px',
+  _hover: {
+    textDecoration: 'underline',
+    textDecorationColor: 'accent',
+    textUnderlineOffset: '4px',
+    textDecorationThickness: '2px',
+  },
+  _focus: {
     outline: '2px solid',
-    outlineColor: '{colors.magenta.400}',
+    outlineColor: 'accent',
     outlineOffset: '2px',
   },
 })
 
-function HomePage() {
-  const allWork = [
-    ...(featuredProject ? [featuredProject] : []),
-    ...selectedWork,
-    ...experiments,
-  ]
+const projectListStyle = css({
+  marginTop: '40px',
+  display: 'flex',
+  flexDirection: 'column',
+})
 
+const projectRowStyle = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  padding: '16px 0',
+  borderTop: '1px solid',
+  borderColor: 'border',
+  gap: '16px',
+  _hover: {
+    '& a': {
+      color: 'accent',
+    },
+  },
+})
+
+const projectNameStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '16px',
+  color: 'text',
+  textDecoration: 'none',
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  _hover: {
+    color: 'accent',
+    textDecoration: 'underline',
+    textUnderlineOffset: '4px',
+    textDecorationThickness: '2px',
+  },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+  },
+})
+
+const projectMetaStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '12px',
+  color: 'textMuted',
+  whiteSpace: 'nowrap',
+})
+
+const quoteTextStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'light',
+  fontStyle: 'italic',
+  fontSize: '15px',
+  lineHeight: '1.6',
+  color: 'textSecondary',
+  maxWidth: '35ch',
+})
+
+const quoteAttributionStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '12px',
+  letterSpacing: '0.06em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginTop: '24px',
+})
+
+const footerStyle = css({
+  gridColumn: '1 / -1',
+  padding: '24px 6vw',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  borderTop: '1px solid',
+  borderColor: 'border',
+  background: 'bg',
+  '@media (max-width: 768px)': {
+    padding: '24px',
+    flexDirection: 'column',
+    gap: '12px',
+    alignItems: 'flex-start',
+  },
+})
+
+const footerTextStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '12px',
+  color: 'textMuted',
+})
+
+const footerLinkStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '12px',
+  color: 'textMuted',
+  textDecoration: 'underline',
+  textUnderlineOffset: '3px',
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  _hover: {
+    color: 'accent',
+  },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+  },
+})
+
+const signalBlockStyle = css({
+  display: 'flex',
+  flexDirection: 'column',
+})
+
+const signalFooterZone = css({
+  marginTop: 'auto',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+})
+
+const moonGlyphStyle = css({
+  fontSize: '18px',
+  color: 'accentOnDark',
+  display: 'inline',
+  marginRight: '8px',
+})
+
+function HomePage() {
   return (
     <>
-      {/* Masthead */}
-      <header className={masthead}>
-        <h1>
-          <span className={heroLine1}>CRAFT ITSELF</span>
-          <span className={heroLine2}>BECOMES THE STORY</span>
-        </h1>
-        <p className={tagline}>MON 01 JUNE 2026 · FIRST DAY OF SUMMER · FULL MOON 96.5%</p>
-        <p className={quoteStyle}>"If you look inwards, you'll find the answer has been in you all along."</p>
-      </header>
-
-      {/* Column headers — desktop */}
-      <div className={headerRow}>
-        <div className={headerCell}>Work</div>
-        <div className={headerCell}>Signals</div>
-        <div className={headerCell}>About</div>
-      </div>
-
-      {/* Index body */}
-      <div className={indexBody}>
-        {/* WORK COLUMN */}
-        <div className={column}>
-          <div className={mobileColHeader}>Work</div>
-          {allWork.map((p) => {
-            const href = p.depth === 'full' ? `/work/${p.slug}` : (p.externalUrl || `/work/${p.slug}`)
-            return (
-              <a key={p.slug} href={href} className={indexRowLink}>
-                <span className={rowName}>{p.title.toUpperCase()}</span>
-                <span className={rowMeta}>{p.type.toUpperCase()} · {p.year}</span>
-                <span className={rowDesc}>{p.problem || p.description || ''}</span>
-              </a>
-            )
-          })}
-        </div>
-
-        {/* SIGNALS COLUMN */}
-        <div className={column}>
-          <div className={mobileColHeader}>Signals</div>
-
-          <div className={indexRow}>
-            <span className={rowName}>SCHWAB CHALLENGE</span>
-            <span className={rowMeta}>RUSSELL HENLEY −13 · FINAL</span>
-            <span className={accentText}>→ 15TH CLUB</span>
+      <div className={galleryWallStyle}>
+        {/* HERO BLOCK — cols 1-8 */}
+        <div className={heroBlockStyle}>
+          <div className={heroNavSpacerStyle}>
+            <Sidebar />
           </div>
-
-          <div className={indexRow}>
-            <span className={rowName}>DETROIT TIGERS</span>
-            <span className={rowMeta}>1–2 LOSS · MAY 31</span>
-            <span className={rowDescItalic}>Close game, wrong side</span>
-          </div>
-
-          <div className={indexRow}>
-            <span className={rowName}><span className={moonDot}>●</span>FULL MOON</span>
-            <span className={rowMeta}>96.5% · DAY 16 OF CYCLE</span>
-          </div>
-
-          <div className={indexRow}>
-            <span className={rowName}>HN</span>
-            <span className={rowMeta}>CLOUDFLARE TURNSTILE WEBGL — 698 PTS</span>
-            <span className={rowDesc}>Fingerprinting concerns, 2026</span>
-          </div>
-
-          <div className={indexRow}>
-            <span className={rowName}>LISTENING</span>
-            <span className={rowMeta}>GUIDED BY VOICES · MY MORNING JACKET</span>
-          </div>
-
-          <div className={indexRow}>
-            <span className={rowName}>DAYLIGHT</span>
-            <span className={rowMeta}>14.6 HRS · SUNRISE 04:51 / SUNSET 19:24</span>
+          <div className={heroPhraseWrapperStyle}>
+            <h1 className={heroPhraseStyle}>
+              Stuff your eyes<br />
+              with <span className={wonderWordStyle}>wonder</span>
+            </h1>
+            <p className={attributionStyle}>— Ray Bradbury</p>
           </div>
         </div>
 
-        {/* ABOUT COLUMN */}
-        <div className={column}>
-          <div className={mobileColHeader}>About</div>
+        {/* SIGNAL PANEL — cols 9-12, spans 2 rows */}
+        <aside className={signalPanelStyle} aria-label="Daily signals">
+          {/* Tigers */}
+          <div className={signalBlockStyle}>
+            <div className={signalLabelStyle}>Detroit Tigers</div>
+            <div className={signalScoreStyle}>10 – 9</div>
+            <div className={signalDetailStyle}>W · Jun 1</div>
+          </div>
 
-          <a href="/about" className={indexRowLink}>
-            <span className={rowName}>{identity.name.toUpperCase()}</span>
-            <span className={rowMeta}>{identity.role.toUpperCase()}</span>
-          </a>
+          {/* Golf */}
+          <div className={signalBlockStyle}>
+            <div className={signalLabelStyle}>Schwab Challenge</div>
+            <div className={signalMediumStyle}>R. Henley −13</div>
+            <div className={signalSmallListStyle}>Cole −12 · Griffin −11</div>
+          </div>
 
-          {timeline.slice(0, 4).map((t, i) => (
-            <div key={i} className={indexRow}>
-              <span className={rowName}>{t.company.toUpperCase()}</span>
-              <span className={rowMeta}>{t.year}</span>
-              <span className={rowDesc}>{t.role}</span>
+          {/* Moon */}
+          <div className={signalBlockStyle}>
+            <div className={signalLabelStyle}>Waning Gibbous · Day 17.5</div>
+            <div>
+              <span className={moonGlyphStyle}>◐</span>
+              <span className={signalMediumStyle}>91.7%</span>
             </div>
-          ))}
+          </div>
 
-          <div className={indexRow}>
-            <span className={rowMeta} style={{ flex: 1 }}>
-              {capabilities.slice(0, 5).join(' · ').toUpperCase()}
-            </span>
+          {/* Music */}
+          <div className={signalBlockStyle}>
+            <div className={signalLabelStyle}>Now Listening</div>
+            <div className={musicArtistStyle}>
+              Guided by Voices<br />
+              Wet Leg<br />
+              Tobin Sprout
+            </div>
+          </div>
+
+          {/* Footer zone */}
+          <div className={signalFooterZone}>
+            <div className={hnStyle}>
+              HN #1: Instagram exploit, 1,874pts
+            </div>
+            <div className={daylightStyle}>
+              ☀ 14.6h daylight
+            </div>
+          </div>
+        </aside>
+
+        {/* PROJECTS BLOCK — cols 1-6, row 2 */}
+        <div className={projectsBlockStyle}>
+          <div className={sectionLabelStyle}>Featured</div>
+          {featuredProject && (
+            <div>
+              <h2 className={featuredTitleStyle}>{featuredProject.title}</h2>
+              <p className={featuredProblemStyle}>{featuredProject.problem}</p>
+              {featuredProject.externalUrl && (
+                <a href={featuredProject.externalUrl} className={featuredLinkStyle}>
+                  Visit {featuredProject.title} →
+                </a>
+              )}
+            </div>
+          )}
+
+          <div className={projectListStyle}>
+            <div className={sectionLabelStyle} style={{ marginBottom: '0', paddingBottom: '0' }}>Selected Work</div>
+            {selectedWork.map((project) => (
+              <div key={project.slug} className={projectRowStyle}>
+                <a href={`/work/${project.slug}`} className={projectNameStyle}>
+                  {project.title}
+                </a>
+                <span className={projectMetaStyle}>
+                  {project.type} · {project.year}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className={projectListStyle} style={{ marginTop: '32px' }}>
+            <div className={sectionLabelStyle} style={{ marginBottom: '0', paddingBottom: '0' }}>Experiments</div>
+            {experiments.map((project) => (
+              <div key={project.slug} className={projectRowStyle}>
+                <a
+                  href={project.externalUrl || `/work/${project.slug}`}
+                  className={projectNameStyle}
+                >
+                  {project.title}
+                </a>
+                <span className={projectMetaStyle}>
+                  {project.type} · {project.year}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
 
-      {/* Footer */}
-      <footer className={footerWrap}>
-        <span className={footerText}>© 2026 Doug March</span>
-        <a href="/archive" className={footerLink}>Archive</a>
-      </footer>
+        {/* QUOTE CONTEXT BLOCK — cols 7-8, row 2 */}
+        <div className={quoteBlockStyle}>
+          <blockquote>
+            <p className={quoteTextStyle}>
+              "Stuff your eyes with wonder, live as if you'd drop dead in ten seconds.
+              See the world. It's more fantastic than any dream made or paid for in factories.
+              Ask no guarantees, ask for no security, there never was such an animal.
+              And if there were, it would be related to the great sloth which hangs upside down
+              in a tree all day every day, sleeping its life away."
+            </p>
+            <footer className={quoteAttributionStyle}>— Ray Bradbury</footer>
+          </blockquote>
+        </div>
+
+        {/* FOOTER */}
+        <footer className={footerStyle}>
+          <span className={footerTextStyle}>Doug March · Product Designer & Developer</span>
+          <a href="/archive" className={footerLinkStyle}>Archive</a>
+        </footer>
+      </div>
     </>
   )
 }

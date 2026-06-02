@@ -1,0 +1,250 @@
+{
+  "date": "2026-06-02",
+  "startedAt": "2026-06-02T11:30:00.249Z",
+  "completedAt": "2026-06-02T11:39:25.762Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 13
+      },
+      "output": {
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Tuesday",
+          "is_weekend": false,
+          "day_index": 2
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "microsoft/markitdown/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/nesquena",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "supermemoryai/supermemory/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "harry0703/MoneyPrinterTurbo/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/D4Vinci",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Charles Schwab Challenge",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Russell Henley",
+              "position": "1",
+              "score": "-13"
+            },
+            {
+              "name": "Eric Cole",
+              "position": "2",
+              "score": "-12"
+            },
+            {
+              "name": "Ben Griffin",
+              "position": "3",
+              "score": "-11"
+            },
+            {
+              "name": "Alex Smalley",
+              "position": "4",
+              "score": "-11"
+            },
+            {
+              "name": "Mac Meissner",
+              "position": "5",
+              "score": "-11"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Why Janet? (2023)",
+              "url": "https://ianthehenry.com/posts/why-janet/",
+              "score": 136,
+              "by": "yacin"
+            },
+            {
+              "title": "Adafruit Receives Demand Letter from Fenwick Legal Counsel on Behalf of Flux.ai",
+              "url": "https://blog.adafruit.com/",
+              "score": 78,
+              "by": "semanser"
+            },
+            {
+              "title": "CSS-Native Parallax Effect",
+              "url": "https://dan-webnotes.com/posts/2026-06-02-css-native-parallax-effect/",
+              "score": 19,
+              "by": "dandep"
+            },
+            {
+              "title": "The newest Instagram “exploit” is the goofiest I've seen",
+              "url": "https://www.0xsid.com/blog/meta-account-takeover-fiasco",
+              "score": 1874,
+              "by": "ssiddharth"
+            },
+            {
+              "title": "Muxcard, a dyi credit card size computer",
+              "url": "https://github.com/krauseler/muxcard",
+              "score": 71,
+              "by": "sargstuff"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waning gibbous",
+          "illumination": 0.917,
+          "days_into_cycle": 17.51
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "Wet Leg",
+            "Tobin Sprout"
+          ]
+        },
+        "quote": {
+          "text": "Stuff your eyes with wonder... live as if you'd drop dead in ten seconds. See the world. It's more fantastic than any dream made or paid for in factories.",
+          "author": "Ray Bradbury"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 2,
+          "day_of_year": 153,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-01T22:40Z",
+              "result": "win",
+              "score": "10-9"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:51",
+          "sunset": "19:25",
+          "daylight_hours": 14.6
+        },
+        "date": "2026-06-02"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-02T11:30:15.791Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-01: Index\n  - 2026-05-31: Broadsheet\n  - 2026-05-30: Specimen\n  - 2026-05-29: Split\n  - 2026-05-28: Stack\n  - 2026-05-27: Poster\n  - 2026-05-25: Scroll\n\n**Recently used** (last 3 days): Index, Broadsheet, Specimen\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or sign"
+      },
+      "output": {
+        "hero_copy": "Stuff your eyes with wonder",
+        "archetype": "Gallery Wall",
+        "chassisId": "bricolage-manrope",
+        "specLength": 6607,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue** — H:200°, S:88%, L:48° (summer sky azure). The open color mandate zone is H:188°–215°; H:200° sits at its midpoint, which is the exact hue of a deep clear summer sky at 10am — not the cool tech-blue of corporate interfaces, not the cyan of terminals, but the azure that hits when you look up on a long June day.\n\n**Neutral palette** — warm ivory, barely tinted toward H:35° (parchment/linen quality):\n- 50: `#FAFAF7`\n- 100: `#F4F4EF`\n- 200: `#E8E8E2`\n- 300",
+        "selfCheck": "1. Hero quotability: Yes — \"Stuff your eyes with wonder\" is a Bradbury command physically strange enough to stop scrolling; it would read as a standalone poster without the source.\n2. Because-of chain: Yes — the stuffing-eyes conceit demanded Gallery Wall (multiple blocks = multiple things to see at"
+      },
+      "durationMs": 346681,
+      "timestamp": "2026-06-02T11:36:02.476Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 6607
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 58043,
+      "timestamp": "2026-06-02T11:37:02.088Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 5893,
+        "briefLength": 9727
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 119043,
+      "timestamp": "2026-06-02T11:39:01.133Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-02T11:39:08.663Z"
+    }
+  ]
+}
