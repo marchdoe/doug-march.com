@@ -1,73 +1,79 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const navWrapperStyle = css({
+const navWrap = css({
+  position: 'fixed',
+  top: '0',
+  left: '0',
+  right: '0',
+  height: '48px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  width: '100%',
+  padding: '0 5vw',
+  zIndex: 100,
+  transition: 'background 0.3s ease, border-color 0.3s ease',
 })
 
-const logoLinkStyle = css({
+const logoArea = css({
   display: 'flex',
   alignItems: 'center',
-  gap: '8px',
+  gap: '12px',
+})
+
+const logoImg = css({
+  width: '20px',
+  height: '20px',
+})
+
+const siteName = css({
+  fontFamily: 'display',
+  fontSize: '14px',
+  letterSpacing: '0.20em',
+  color: 'textMuted',
+  textTransform: 'uppercase',
+  fontWeight: 'bold',
   textDecoration: 'none',
-  color: 'text',
 })
 
-const logoImgStyle = css({
-  width: '28px',
-  height: '28px',
-})
-
-const nameStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '12px',
-  letterSpacing: '0.02em',
-  color: 'text',
-  textTransform: 'lowercase',
-})
-
-const navLinksStyle = css({
+const navLinks = css({
   display: 'flex',
-  gap: '24px',
   alignItems: 'center',
+  gap: '24px',
 })
 
-const navLinkStyle = css({
+const navLink = css({
   fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '11px',
+  fontSize: '12px',
   letterSpacing: '0.10em',
   textTransform: 'uppercase',
   color: 'textMuted',
   textDecoration: 'none',
-  padding: '8px 0',
-  minHeight: '44px',
-  display: 'flex',
-  alignItems: 'center',
+  transition: 'color 0.15s ease',
   _hover: {
-    color: 'accent',
+    color: 'accentLight',
   },
   _focus: {
     outline: '2px solid',
     outlineColor: 'accent',
-    outlineOffset: '2px',
+    outlineOffset: '4px',
   },
 })
 
 export function Sidebar() {
   return (
-    <nav className={navWrapperStyle} aria-label="Main navigation">
-      <a href="/" className={logoLinkStyle}>
-        <img src={logoSvg} alt="Doug March logo" className={logoImgStyle} />
-        <span className={nameStyle}>doug march</span>
-      </a>
-      <div className={navLinksStyle}>
-        <a href="/" className={navLinkStyle}>Work</a>
-        <a href="/about" className={navLinkStyle}>About</a>
+    <nav className={navWrap} aria-label="Main navigation">
+      <div className={logoArea}>
+        <a href="/" className={siteName} aria-label="Doug March home">
+          <img src={logoSvg} alt="" className={logoImg} />
+        </a>
+        <a href="/" className={siteName}>
+          Doug March
+        </a>
+      </div>
+      <div className={navLinks}>
+        <a href="/" className={navLink}>Work</a>
+        <a href="/about" className={navLink}>About</a>
       </div>
     </nav>
   )

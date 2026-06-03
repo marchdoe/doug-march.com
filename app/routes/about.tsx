@@ -1,315 +1,264 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Sidebar } from '../components/Sidebar'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const pageStyle = css({
-  width: '100vw',
-  maxWidth: 'none',
-  background: 'bg',
-  minHeight: '100vh',
+const page = css({
+  paddingTop: '96px',
+  paddingBottom: '80px',
+  paddingLeft: '5vw',
+  paddingRight: '5vw',
 })
 
-const navBarStyle = css({
-  padding: '52px 6vw 0',
-  '@media (max-width: 768px)': {
-    padding: '24px 24px 0',
-  },
-})
-
-const heroSectionStyle = css({
-  padding: '96px 6vw 64px',
-  display: 'grid',
-  gridTemplateColumns: '2fr 1fr',
-  gap: '64px',
-  '@media (max-width: 768px)': {
-    padding: '48px 24px 40px',
-    gridTemplateColumns: '1fr',
-    gap: '32px',
-  },
-})
-
-const nameStyle = css({
+const pageTitle = css({
   fontFamily: 'display',
+  fontSize: 'clamp(48px, 8vw, 120px)',
   fontWeight: 'bold',
-  fontSize: 'clamp(36px, 4vw, 56px)',
-  lineHeight: 'snug',
-  letterSpacing: 'tight',
+  lineHeight: 'tight',
+  letterSpacing: '-0.02em',
   color: 'text',
-  marginBottom: '8px',
-})
-
-const roleStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '14px',
-  letterSpacing: '0.06em',
   textTransform: 'uppercase',
-  color: 'accent',
-  marginBottom: '32px',
+  marginBottom: '48px',
 })
 
-const statementStyle = css({
+const sectionLabel = css({
   fontFamily: 'body',
-  fontWeight: 'normal',
-  fontSize: '18px',
-  lineHeight: 'normal',
-  color: 'textSecondary',
-  maxWidth: '55ch',
-})
-
-const personalCardStyle = css({
-  background: 'bgCard',
-  padding: '40px 32px',
-  alignSelf: 'start',
-  '@media (max-width: 768px)': {
-    padding: '32px 24px',
-  },
-})
-
-const personalLabelStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '10px',
-  letterSpacing: '0.15em',
+  fontSize: '12px',
+  letterSpacing: '0.20em',
   textTransform: 'uppercase',
   color: 'textMuted',
   marginBottom: '16px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  paddingBottom: '8px',
 })
 
-const personalItemStyle = css({
+const statement = css({
   fontFamily: 'body',
-  fontWeight: 'normal',
-  fontSize: '14px',
-  lineHeight: '1.7',
+  fontSize: 'clamp(16px, 2vw, 20px)',
+  lineHeight: 'normal',
   color: 'textSecondary',
+  maxWidth: '65ch',
+  marginBottom: '64px',
 })
 
-const personalHighlightStyle = css({
-  fontFamily: 'display',
-  fontWeight: 'bold',
-  fontSize: '32px',
-  lineHeight: '1.0',
-  color: 'accentStrong',
-  marginBottom: '4px',
+const sectionWrap = css({
+  marginBottom: '64px',
 })
 
-const sectionStyle = css({
-  padding: '0 6vw 64px',
-  '@media (max-width: 768px)': {
-    padding: '0 24px 48px',
-  },
-})
-
-const sectionLabelStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '11px',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '32px',
-})
-
-const timelineGridStyle = css({
-  display: 'flex',
-  flexDirection: 'column',
-})
-
-const timelineRowStyle = css({
+const timelineRow = css({
   display: 'grid',
-  gridTemplateColumns: '140px 200px 1fr',
+  gridTemplateColumns: '120px 1fr',
   gap: '24px',
   padding: '16px 0',
-  borderTop: '1px solid',
-  borderColor: 'border',
-  alignItems: 'baseline',
-  '@media (max-width: 768px)': {
-    gridTemplateColumns: '1fr',
-    gap: '4px',
-    padding: '20px 0',
+  borderBottom: '1px solid',
+  borderColor: 'borderSubtle',
+  _hover: {
+    borderColor: 'border',
   },
 })
 
-const timelineYearStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '13px',
+const timelineYear = css({
+  fontFamily: 'display',
+  fontSize: '14px',
+  letterSpacing: '0.10em',
   color: 'textMuted',
+  textTransform: 'uppercase',
   minWidth: '120px',
   whiteSpace: 'nowrap',
 })
 
-const timelineRoleStyle = css({
+const timelineContent = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+})
+
+const timelineRole = css({
   fontFamily: 'body',
-  fontWeight: 'medium',
   fontSize: '16px',
+  fontWeight: 'medium',
   color: 'text',
-})
-
-const timelineCompanyStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'normal',
-  fontSize: '14px',
-  color: 'textSecondary',
-  '@media (max-width: 768px)': {
-    marginBottom: '4px',
-  },
-})
-
-const timelineDescStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'normal',
-  fontSize: '14px',
   lineHeight: 'normal',
-  color: 'textSecondary',
-  maxWidth: '55ch',
 })
 
-const capGridStyle = css({
+const timelineCompany = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'accent',
+  lineHeight: 'normal',
+})
+
+const timelineDesc = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'textSecondary',
+  lineHeight: 'normal',
+  maxWidth: '60ch',
+})
+
+const capGrid = css({
   display: 'flex',
   flexWrap: 'wrap',
   gap: '8px',
 })
 
-const capTagStyle = css({
+const capItem = css({
   fontFamily: 'body',
-  fontWeight: 'normal',
   fontSize: '13px',
+  letterSpacing: '0.05em',
   color: 'textSecondary',
-  padding: '6px 16px',
-  background: 'bgCard',
-  whiteSpace: 'nowrap',
+  padding: '6px 12px',
+  border: '1px solid',
+  borderColor: 'border',
+  borderRadius: '0',
+  lineHeight: 'normal',
 })
 
-const eduRowStyle = css({
-  display: 'grid',
-  gridTemplateColumns: '140px 1fr',
-  gap: '24px',
-  alignItems: 'baseline',
-  '@media (max-width: 768px)': {
-    gridTemplateColumns: '1fr',
-    gap: '4px',
-  },
-})
-
-const eduDetailStyle = css({
+const eduBlock = css({
   fontFamily: 'body',
-  fontWeight: 'normal',
   fontSize: '16px',
-  lineHeight: '1.6',
+  color: 'textSecondary',
+  lineHeight: 'normal',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+})
+
+const eduBold = css({
+  fontWeight: 'medium',
   color: 'text',
 })
 
-const eduSubStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'normal',
-  fontSize: '14px',
-  color: 'textSecondary',
+const personalGrid = css({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+  gap: '24px',
 })
 
-const footerStyle = css({
-  padding: '24px 6vw',
+const personalCard = css({
   display: 'flex',
-  justifyContent: 'space-between',
+  flexDirection: 'column',
+  gap: '4px',
+})
+
+const personalLabel = css({
+  fontFamily: 'body',
+  fontSize: '12px',
+  letterSpacing: '0.15em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+})
+
+const personalValue = css({
+  fontFamily: 'body',
+  fontSize: '16px',
+  color: 'text',
+  lineHeight: 'normal',
+})
+
+const footerStrip = css({
+  padding: '24px 5vw',
+  display: 'flex',
   alignItems: 'center',
+  justifyContent: 'space-between',
   borderTop: '1px solid',
   borderColor: 'border',
-  '@media (max-width: 768px)': {
-    padding: '24px',
-    flexDirection: 'column',
-    gap: '12px',
-    alignItems: 'flex-start',
-  },
+  flexWrap: 'wrap',
+  gap: '12px',
+  marginTop: 'auto',
 })
 
-const footerTextStyle = css({
+const footerText = css({
   fontFamily: 'body',
-  fontWeight: 'normal',
   fontSize: '12px',
+  letterSpacing: '0.10em',
+  textTransform: 'uppercase',
   color: 'textMuted',
 })
 
-const footerLinkStyle = css({
+const footerLink = css({
   fontFamily: 'body',
-  fontWeight: 'normal',
   fontSize: '12px',
+  letterSpacing: '0.10em',
+  textTransform: 'uppercase',
   color: 'textMuted',
-  textDecoration: 'underline',
-  textUnderlineOffset: '3px',
-  minHeight: '44px',
-  display: 'inline-flex',
-  alignItems: 'center',
-  _hover: { color: 'accent' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+  textDecoration: 'none',
+  transition: 'color 0.15s ease',
+  _hover: { color: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
 })
 
 function AboutPage() {
   return (
-    <div className={pageStyle}>
-      <div className={navBarStyle}>
-        <Sidebar />
-      </div>
+    <>
+      <main className={page}>
+        <h1 className={pageTitle}>{identity.name}</h1>
 
-      <div className={heroSectionStyle}>
-        <div>
-          <h1 className={nameStyle}>{identity.name}</h1>
-          <div className={roleStyle}>{identity.role}</div>
-          <p className={statementStyle}>{identity.statement}</p>
-        </div>
-        <div className={personalCardStyle}>
-          <div className={personalLabelStyle}>Personal</div>
-          <div className={personalHighlightStyle}>{personal.holesInOne}</div>
-          <div className={personalItemStyle} style={{ marginBottom: '16px' }}>Holes in one</div>
-          <div className={personalItemStyle}>Sport: {personal.sport}</div>
-          <div className={personalItemStyle}>Teams: {personal.teams.join(', ')}</div>
-          <div className={personalItemStyle} style={{ marginTop: '16px' }}>Focus: {personal.currentFocus}</div>
-        </div>
-      </div>
+        <div className={sectionLabel}>{identity.role}</div>
+        <p className={statement}>{identity.statement}</p>
 
-      <div className={sectionStyle}>
-        <div className={sectionLabelStyle}>Experience</div>
-        <div className={timelineGridStyle}>
+        <div className={sectionWrap}>
+          <div className={sectionLabel}>Experience</div>
           {timeline.map((entry, i) => (
-            <div key={i} className={timelineRowStyle}>
-              <span className={timelineYearStyle}>{entry.year}</span>
-              <div>
-                <div className={timelineRoleStyle}>{entry.role}</div>
-                <div className={timelineCompanyStyle}>{entry.company}</div>
+            <div key={i} className={timelineRow}>
+              <span className={timelineYear}>{entry.year}</span>
+              <div className={timelineContent}>
+                <span className={timelineRole}>{entry.role}</span>
+                <span className={timelineCompany}>{entry.company}</span>
+                <span className={timelineDesc}>{entry.description}</span>
               </div>
-              <div className={timelineDescStyle}>{entry.description}</div>
             </div>
           ))}
         </div>
-      </div>
 
-      <div className={sectionStyle}>
-        <div className={sectionLabelStyle}>Education</div>
-        <div className={eduRowStyle}>
-          <span className={timelineYearStyle}>{education.years}</span>
-          <div>
-            <div className={eduDetailStyle}>{education.degree}, {education.concentration}</div>
-            <div className={eduSubStyle}>{education.school}</div>
+        <div className={sectionWrap}>
+          <div className={sectionLabel}>Education</div>
+          <div className={eduBlock}>
+            <span className={eduBold}>{education.school}</span>
+            <span>{education.degree} — {education.concentration}</span>
+            <span>{education.years}</span>
           </div>
         </div>
-      </div>
 
-      <div className={sectionStyle}>
-        <div className={sectionLabelStyle}>Capabilities</div>
-        <div className={capGridStyle}>
-          {capabilities.map((cap, i) => (
-            <span key={i} className={capTagStyle}>{cap}</span>
-          ))}
+        <div className={sectionWrap}>
+          <div className={sectionLabel}>Capabilities</div>
+          <div className={capGrid}>
+            {capabilities.map((cap, i) => (
+              <span key={i} className={capItem}>{cap}</span>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <footer className={footerStyle}>
-        <span className={footerTextStyle}>Doug March · Product Designer & Developer</span>
-        <a href="/archive" className={footerLinkStyle}>Archive</a>
+        <div className={sectionWrap}>
+          <div className={sectionLabel}>Personal</div>
+          <div className={personalGrid}>
+            <div className={personalCard}>
+              <span className={personalLabel}>Holes in One</span>
+              <span className={personalValue}>{personal.holesInOne}</span>
+            </div>
+            <div className={personalCard}>
+              <span className={personalLabel}>Sport</span>
+              <span className={personalValue}>{personal.sport}</span>
+            </div>
+            <div className={personalCard}>
+              <span className={personalLabel}>Teams</span>
+              <span className={personalValue}>{personal.teams.join(', ')}</span>
+            </div>
+            <div className={personalCard}>
+              <span className={personalLabel}>Current Focus</span>
+              <span className={personalValue}>{personal.currentFocus}</span>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer className={footerStrip}>
+        <span className={footerText}>Doug March — Product Designer &amp; Developer</span>
+        <a href="/archive" className={footerLink}>Archive</a>
       </footer>
-    </div>
+    </>
   )
 }

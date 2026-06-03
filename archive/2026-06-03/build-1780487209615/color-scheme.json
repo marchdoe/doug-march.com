@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 252,
+    "s": 88,
+    "l": 44,
+    "name": "deep indigo"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "indigo-violet",
+    "name": "void indigo"
+  },
+  "mood_word": "concentrated",
+  "color_story": "Deep indigo drench — the blue-hour hue of a mind that has stopped dividing its attention; the page itself becomes an act of concentration, background and phrase sharing the same chromatic world at opposite ends of its luminosity scale."
+}
