@@ -2,247 +2,199 @@ import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetail })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const page = css({
-  paddingTop: '96px',
-  paddingBottom: '80px',
-  paddingLeft: '5vw',
-  paddingRight: '5vw',
-  minHeight: '100vh',
+const pageStyles = css({
+  padding: '48px 6vw 80px',
+  gridRow: '2 / 4',
+  maxWidth: '900px',
 })
 
-const backLink = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
+const backLinkStyles = css({
+  fontSize: '0.875rem',
+  fontWeight: '500',
   color: 'textMuted',
   textDecoration: 'none',
-  marginBottom: '48px',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  fontFamily: 'body',
   display: 'inline-block',
-  transition: 'color 0.15s ease',
-  _hover: { color: 'accentLight' },
+  marginBottom: '32px',
+  padding: '10px 0',
+  _hover: { color: 'text' },
   _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+  transition: 'color 0.15s ease',
 })
 
-const projectTitle = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(48px, 10vw, 140px)',
-  fontWeight: 'bold',
-  lineHeight: 'tight',
+const titleStyles = css({
+  fontSize: 'clamp(2rem, 6vw, 4rem)',
+  fontWeight: '800',
+  lineHeight: '0.88',
   letterSpacing: '-0.02em',
   color: 'text',
+  fontFamily: 'display',
   textTransform: 'uppercase',
   marginBottom: '16px',
 })
 
-const metaRow = css({
+const metaRowStyles = css({
   display: 'flex',
   gap: '24px',
   marginBottom: '48px',
   flexWrap: 'wrap',
 })
 
-const metaItem = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
+const metaTagStyles = css({
+  fontSize: '0.875rem',
+  fontWeight: '500',
   color: 'textMuted',
+  fontFamily: 'body',
+  letterSpacing: '0.05em',
+  textTransform: 'uppercase',
+  lineHeight: '1.4',
 })
 
-const sectionLabel = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.20em',
+const sectionLabelStyles = css({
+  fontSize: '0.75rem',
+  fontWeight: '500',
+  letterSpacing: '0.1em',
   textTransform: 'uppercase',
   color: 'textMuted',
-  marginBottom: '12px',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  paddingBottom: '8px',
+  fontFamily: 'body',
+  marginBottom: '8px',
+  lineHeight: '1.4',
 })
 
-const bodyText = css({
+const sectionTextStyles = css({
+  fontSize: '1rem',
+  fontWeight: '400',
+  lineHeight: '1.55',
+  color: 'text',
   fontFamily: 'body',
-  fontSize: '16px',
-  lineHeight: 'normal',
-  color: 'textSecondary',
   maxWidth: '65ch',
-  marginBottom: '48px',
+  marginBottom: '32px',
 })
 
-const stackGrid = css({
+const stackListStyles = css({
   display: 'flex',
   flexWrap: 'wrap',
   gap: '8px',
-  marginBottom: '48px',
+  listStyle: 'none',
+  padding: '0',
+  margin: '0 0 32px',
 })
 
-const stackItem = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  letterSpacing: '0.05em',
+const stackItemStyles = css({
+  fontSize: '0.8125rem',
+  fontWeight: '500',
   color: 'textSecondary',
+  fontFamily: 'body',
   padding: '6px 12px',
   border: '1px solid',
   borderColor: 'border',
-  borderRadius: '0',
-  lineHeight: 'normal',
+  lineHeight: '1.4',
 })
 
-const extLink = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
+const extLinkStyles = css({
+  fontSize: '0.875rem',
+  fontWeight: '600',
   color: 'accent',
   textDecoration: 'none',
-  borderBottom: '1px solid',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  fontFamily: 'body',
+  padding: '12px 24px',
+  border: '1px solid',
   borderColor: 'accent',
-  paddingBottom: '2px',
+  display: 'inline-block',
+  _hover: { color: 'accentHover', borderColor: 'accentHover' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
   transition: 'color 0.15s ease, border-color 0.15s ease',
-  _hover: { color: 'accentLight', borderColor: 'accentLight' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+  lineHeight: '1.4',
 })
 
-const notFound = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(32px, 6vw, 64px)',
-  fontWeight: 'bold',
-  color: 'textMuted',
-  textTransform: 'uppercase',
-  letterSpacing: '-0.02em',
-})
-
-const footerStrip = css({
-  padding: '24px 5vw',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  borderTop: '1px solid',
-  borderColor: 'border',
-  flexWrap: 'wrap',
-  gap: '12px',
-  marginTop: 'auto',
-})
-
-const footerText = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-})
-
-const footerLink = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  textDecoration: 'none',
-  transition: 'color 0.15s ease',
-  _hover: { color: 'accentLight' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
-})
-
-function WorkDetail() {
+function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <>
-        <main className={page}>
-          <a href="/" className={backLink}>← Back</a>
-          <h1 className={notFound}>Project Not Found</h1>
-        </main>
-        <footer className={footerStrip}>
-          <span className={footerText}>Doug March</span>
-          <a href="/archive" className={footerLink}>Archive</a>
-        </footer>
-      </>
+      <main className={pageStyles}>
+        <a href="/" className={backLinkStyles}>← Back</a>
+        <h1 className={titleStyles}>Not Found</h1>
+        <p className={sectionTextStyles}>This project doesn't exist.</p>
+      </main>
     )
   }
 
   return (
-    <>
-      <main className={page}>
-        <a href="/" className={backLink}>← Back</a>
-        <h1 className={projectTitle}>{project.title}</h1>
+    <main className={pageStyles}>
+      <a href="/" className={backLinkStyles}>← Back</a>
+      <h1 className={titleStyles}>{project.title}</h1>
+      <div className={metaRowStyles}>
+        <span className={metaTagStyles}>{project.type}</span>
+        <span className={metaTagStyles}>{project.year}</span>
+        {project.role && <span className={metaTagStyles}>{project.role}</span>}
+      </div>
 
-        <div className={metaRow}>
-          <span className={metaItem}>{project.type}</span>
-          <span className={metaItem}>{project.year}</span>
-          {project.role && <span className={metaItem}>{project.role}</span>}
+      {project.problem && (
+        <div>
+          <p className={sectionLabelStyles}>Problem</p>
+          <p className={sectionTextStyles}>{project.problem}</p>
         </div>
+      )}
 
-        {project.problem && (
-          <div>
-            <div className={sectionLabel}>Problem</div>
-            <p className={bodyText}>{project.problem}</p>
-          </div>
-        )}
+      {project.approach && (
+        <div>
+          <p className={sectionLabelStyles}>Approach</p>
+          <p className={sectionTextStyles}>{project.approach}</p>
+        </div>
+      )}
 
-        {project.approach && (
-          <div>
-            <div className={sectionLabel}>Approach</div>
-            <p className={bodyText}>{project.approach}</p>
-          </div>
-        )}
+      {project.outcome && (
+        <div>
+          <p className={sectionLabelStyles}>Outcome</p>
+          <p className={sectionTextStyles}>{project.outcome}</p>
+        </div>
+      )}
 
-        {project.outcome && (
-          <div>
-            <div className={sectionLabel}>Outcome</div>
-            <p className={bodyText}>{project.outcome}</p>
-          </div>
-        )}
+      {project.description && (
+        <div>
+          <p className={sectionLabelStyles}>Description</p>
+          <p className={sectionTextStyles}>{project.description}</p>
+        </div>
+      )}
 
-        {project.description && (
-          <div>
-            <div className={sectionLabel}>Description</div>
-            <p className={bodyText}>{project.description}</p>
-          </div>
-        )}
+      {project.stack && project.stack.length > 0 && (
+        <div>
+          <p className={sectionLabelStyles}>Stack</p>
+          <ul className={stackListStyles}>
+            {project.stack.map((tech, i) => (
+              <li key={i} className={stackItemStyles}>{tech}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
-        {project.stack && project.stack.length > 0 && (
-          <div>
-            <div className={sectionLabel}>Stack</div>
-            <div className={stackGrid}>
-              {project.stack.map((tech, i) => (
-                <span key={i} className={stackItem}>{tech}</span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {(project.externalUrl || project.liveUrl || project.githubUrl) && (
-          <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-            {project.externalUrl && (
-              <a href={project.externalUrl} className={extLink} target="_blank" rel="noopener noreferrer">
-                Visit Site ↗
-              </a>
-            )}
-            {project.liveUrl && (
-              <a href={project.liveUrl} className={extLink} target="_blank" rel="noopener noreferrer">
-                Live ↗
-              </a>
-            )}
-            {project.githubUrl && (
-              <a href={project.githubUrl} className={extLink} target="_blank" rel="noopener noreferrer">
-                GitHub ↗
-              </a>
-            )}
-          </div>
-        )}
-      </main>
-
-      <footer className={footerStrip}>
-        <span className={footerText}>Doug March — Product Designer &amp; Developer</span>
-        <a href="/archive" className={footerLink}>Archive</a>
-      </footer>
-    </>
+      {(project.externalUrl || project.liveUrl || project.githubUrl) && (
+        <div className={css({ display: 'flex', gap: '16px', flexWrap: 'wrap' })}>
+          {project.externalUrl && (
+            <a href={project.externalUrl} className={extLinkStyles} target="_blank" rel="noopener noreferrer">
+              Visit Site →
+            </a>
+          )}
+          {project.liveUrl && (
+            <a href={project.liveUrl} className={extLinkStyles} target="_blank" rel="noopener noreferrer">
+              Live →
+            </a>
+          )}
+          {project.githubUrl && (
+            <a href={project.githubUrl} className={extLinkStyles} target="_blank" rel="noopener noreferrer">
+              GitHub →
+            </a>
+          )}
+        </div>
+      )}
+    </main>
   )
 }

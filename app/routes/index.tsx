@@ -3,162 +3,160 @@ import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const heroSection = css({
-  position: 'relative',
-  minHeight: '100vh',
+const heroSectionStyles = css({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
+  padding: '0 6vw',
+  position: 'relative',
+})
+
+const heroTextStyles = css({
+  fontSize: 'clamp(42px, 11vw, 162px)',
+  fontWeight: '800',
+  lineHeight: '0.88',
+  letterSpacing: '-0.02em',
+  color: 'text',
+  textTransform: 'uppercase',
+  fontFamily: 'display',
+  maxWidth: '95vw',
+  textWrap: 'balance',
+})
+
+const heroLineStyles = css({
+  display: 'block',
+})
+
+const attributionStyles = css({
+  marginTop: '32px',
+  fontSize: 'clamp(0.75rem, 1.2vw, 0.875rem)',
+  fontWeight: '500',
+  letterSpacing: '0.12em',
+  color: 'textMuted',
+  fontVariantCaps: 'all-small-caps',
+  fontFamily: 'body',
+  lineHeight: '1.4',
+})
+
+const signalStripStyles = css({
+  display: 'flex',
+  alignItems: 'center',
+  padding: '0 6vw',
+  gap: '32px',
+  borderTop: '1px solid',
+  borderColor: 'border',
   overflow: 'hidden',
-})
-
-const heroInner = css({
-  position: 'relative',
-  width: '100%',
-  padding: '0 5vw',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '0',
-  minHeight: '60vh',
-  justifyContent: 'center',
-})
-
-const line1 = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(48px, 11.5vw, 166px)',
-  fontWeight: 'bold',
-  lineHeight: 'tight',
-  letterSpacing: '-0.02em',
-  color: 'text',
-  textAlign: 'left',
-  textTransform: 'uppercase',
-  margin: '0',
-  padding: '0',
-  textWrap: 'nowrap',
-})
-
-const line2 = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(60px, 15vw, 216px)',
-  fontWeight: 'bold',
-  lineHeight: 'tight',
-  letterSpacing: '-0.02em',
-  color: 'text',
-  textAlign: 'right',
-  textTransform: 'uppercase',
-  margin: '0',
-  padding: '0',
-  textWrap: 'nowrap',
-})
-
-const signalBar = css({
-  position: 'absolute',
-  bottom: '0',
-  left: '0',
-  right: '0',
-  minHeight: '64px',
-  display: 'flex',
-  alignItems: 'center',
-  padding: '0 5vw',
-  borderTop: '1px solid',
-  borderColor: 'border',
-  gap: '8px',
   flexWrap: 'wrap',
 })
 
-const signalItem = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  letterSpacing: '0.20em',
-  textTransform: 'uppercase',
+const signalItemStyles = css({
+  fontSize: '0.75rem',
+  fontWeight: '400',
   color: 'textMuted',
-  whiteSpace: 'nowrap',
-  lineHeight: '1.5',
-})
-
-const signalAccent = css({
-  fontFamily: 'display',
-  fontSize: '11px',
-  letterSpacing: '0.20em',
-  textTransform: 'uppercase',
-  color: 'accentLight',
-  whiteSpace: 'nowrap',
-  lineHeight: '1.5',
-})
-
-const signalSep = css({
   fontFamily: 'body',
-  fontSize: '11px',
-  color: 'textMuted',
-  userSelect: 'none',
-})
-
-const footerStrip = css({
-  padding: '24px 5vw',
+  letterSpacing: '0.08em',
+  lineHeight: '1.4',
+  whiteSpace: 'nowrap',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  borderTop: '1px solid',
-  borderColor: 'border',
-  flexWrap: 'wrap',
-  gap: '12px',
+  gap: '6px',
 })
 
-const footerText = css({
+const signalScoreStyles = css({
+  fontSize: '0.875rem',
+  fontWeight: '600',
+  color: 'text',
   fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
+  fontVariantNumeric: 'tabular-nums',
+  letterSpacing: '0.02em',
 })
 
-const footerLink = css({
+const signalWinStyles = css({
+  fontSize: '0.75rem',
+  fontWeight: '600',
+  color: 'textSecondary',
   fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
+  marginLeft: '4px',
+})
+
+const signalStoryStyles = css({
+  fontSize: '0.75rem',
+  fontWeight: '400',
   color: 'textMuted',
-  textDecoration: 'none',
-  transition: 'color 0.15s ease',
-  _hover: {
-    color: 'accentLight',
-  },
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '4px',
+  fontFamily: 'body',
+  fontStyle: 'italic',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  maxWidth: '300px',
+})
+
+const signalStoryScoreStyles = css({
+  fontSize: '0.75rem',
+  fontWeight: '500',
+  color: 'textSecondary',
+  fontFamily: 'body',
+})
+
+const mobileHideStyles = css({
+  display: 'none',
+  '@media (min-width: 768px)': {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
   },
 })
 
 function HomePage() {
   return (
     <>
-      <section className={heroSection} aria-label="Hero">
-        <div className={heroInner}>
-          <h1>
-            <span className={line1}>Concentrate</span>
-            <span className={line2}>The Mind</span>
-          </h1>
+      <main className={heroSectionStyles}>
+        <h1 className={heroTextStyles}>
+          <span className={heroLineStyles}>Nothing</span>
+          <span className={heroLineStyles}>external to you</span>
+          <span className={heroLineStyles}>has any power</span>
+          <span className={heroLineStyles}>over you.</span>
+        </h1>
+        <p className={attributionStyles}>— Ralph Waldo Emerson</p>
+      </main>
+
+      <footer className={signalStripStyles} aria-label="Daily signals">
+        <div className={signalItemStyles}>
+          <span className={signalScoreStyles}>DET 7 · 2</span>
+          <span className={signalWinStyles}>W</span>
         </div>
 
-        <div className={signalBar} aria-label="Daily signals">
-          <span className={signalAccent}>Tigers 8–0</span>
-          <span className={signalSep} aria-hidden="true">·</span>
-          <span className={signalItem}>◑ 84.9%</span>
-          <span className={signalSep} aria-hidden="true">·</span>
-          <span className={signalItem}>Memorial TBD</span>
-          <span className={signalSep} aria-hidden="true">·</span>
-          <span className={signalItem}>14.6 Hrs Daylight</span>
-          <span className={signalSep} aria-hidden="true">·</span>
-          <span className={signalItem}>3 Jun 2026</span>
-          <span className={signalSep} aria-hidden="true">·</span>
-          <span className={signalItem}>— Buddha</span>
+        <div className={signalItemStyles}>
+          <span>◑ 76.8%</span>
         </div>
-      </section>
 
-      <footer className={footerStrip}>
-        <span className={footerText}>Doug March — Product Designer &amp; Developer</span>
-        <a href="/archive" className={footerLink}>Archive</a>
+        <div className={mobileHideStyles}>
+          <span className={signalStoryStyles}>"They're made out of weights"</span>
+          <span className={signalStoryScoreStyles}>755</span>
+        </div>
+
+        <div className={signalItemStyles}>
+          <span>☀ 14.6h</span>
+        </div>
+
+        <div className={css({ marginLeft: 'auto' })}>
+          <a
+            href="/archive"
+            className={css({
+              fontSize: '0.75rem',
+              color: 'textMuted',
+              textDecoration: 'none',
+              letterSpacing: '0.08em',
+              fontFamily: 'body',
+              padding: '10px 0',
+              _hover: { color: 'text' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+              transition: 'color 0.15s ease',
+            })}
+          >
+            Archive
+          </a>
+        </div>
       </footer>
     </>
   )

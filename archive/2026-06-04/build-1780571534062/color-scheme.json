@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 38,
+    "s": 100,
+    "l": 44,
+    "name": "amber gold"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "amber",
+    "name": "amber stone"
+  },
+  "mood_word": "torchlit",
+  "color_story": "Deep amber-walnut darkness holds a luminous gold proclamation like candlelight on old parchment — internal power made visible, a summer torch burning against the dark."
+}
