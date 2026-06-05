@@ -2,16 +2,16 @@ import type { ReactNode } from 'react'
 import { Sidebar } from './Sidebar'
 import { css } from '../../styled-system/css'
 
-const layoutStyles = css({
+const root = css({
+  width: '100%',
   minHeight: '100vh',
-  display: 'grid',
-  gridTemplateRows: '60px 1fr 80px',
-  maxWidth: 'none',
+  background: 'bg',
+  color: 'text',
 })
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className={layoutStyles}>
+    <div className={root}>
       <Sidebar />
       {children}
     </div>

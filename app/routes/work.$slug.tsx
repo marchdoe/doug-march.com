@@ -2,199 +2,273 @@ import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
+export const Route = createFileRoute('/work/$slug')({ component: WorkDetail })
 
-const pageStyles = css({
-  padding: '48px 6vw 80px',
-  gridRow: '2 / 4',
-  maxWidth: '900px',
+const scrollColumn = css({
+  width: '85vw',
+  margin: '0 auto',
 })
 
-const backLinkStyles = css({
-  fontSize: '0.875rem',
-  fontWeight: '500',
-  color: 'textMuted',
-  textDecoration: 'none',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
+const heroBlock = css({
+  minHeight: '70vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  paddingTop: 'calc(56px + 16vh)',
+  paddingBottom: '64px',
+})
+
+const eyebrow = css({
   fontFamily: 'body',
-  display: 'inline-block',
-  marginBottom: '32px',
-  padding: '10px 0',
-  _hover: { color: 'text' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
-  transition: 'color 0.15s ease',
-})
-
-const titleStyles = css({
-  fontSize: 'clamp(2rem, 6vw, 4rem)',
-  fontWeight: '800',
-  lineHeight: '0.88',
-  letterSpacing: '-0.02em',
-  color: 'text',
-  fontFamily: 'display',
+  fontSize: '11px',
   textTransform: 'uppercase',
+  letterSpacing: '0.14em',
+  color: 'textMuted',
   marginBottom: '16px',
 })
 
-const metaRowStyles = css({
+const titleStyle = css({
+  fontFamily: 'display',
+  fontWeight: 900,
+  fontSize: 'clamp(36px, 5vw, 72px)',
+  lineHeight: '0.92',
+  letterSpacing: '-0.03em',
+  color: 'text',
+  marginBottom: '16px',
+})
+
+const metaRow = css({
   display: 'flex',
   gap: '24px',
-  marginBottom: '48px',
   flexWrap: 'wrap',
+  marginBottom: '40px',
 })
 
-const metaTagStyles = css({
-  fontSize: '0.875rem',
-  fontWeight: '500',
-  color: 'textMuted',
+const metaItem = css({
   fontFamily: 'body',
-  letterSpacing: '0.05em',
+  fontSize: '12px',
   textTransform: 'uppercase',
-  lineHeight: '1.4',
-})
-
-const sectionLabelStyles = css({
-  fontSize: '0.75rem',
-  fontWeight: '500',
   letterSpacing: '0.1em',
-  textTransform: 'uppercase',
   color: 'textMuted',
-  fontFamily: 'body',
-  marginBottom: '8px',
-  lineHeight: '1.4',
 })
 
-const sectionTextStyles = css({
-  fontSize: '1rem',
-  fontWeight: '400',
-  lineHeight: '1.55',
-  color: 'text',
+const metaValue = css({
+  color: 'textSecondary',
+  marginLeft: '8px',
+})
+
+const sectionWrap = css({
+  padding: '64px 0',
+  borderTop: '1px solid',
+  borderColor: 'border',
+})
+
+const sectionLabel = css({
   fontFamily: 'body',
+  fontSize: '11px',
+  textTransform: 'uppercase',
+  letterSpacing: '0.14em',
+  color: 'textMuted',
+  marginBottom: '16px',
+})
+
+const sectionBody = css({
+  fontFamily: 'body',
+  fontSize: '16px',
+  lineHeight: '1.6',
+  color: 'textSecondary',
   maxWidth: '65ch',
-  marginBottom: '32px',
 })
 
-const stackListStyles = css({
+const stackGrid = css({
   display: 'flex',
   flexWrap: 'wrap',
   gap: '8px',
-  listStyle: 'none',
-  padding: '0',
-  margin: '0 0 32px',
 })
 
-const stackItemStyles = css({
-  fontSize: '0.8125rem',
-  fontWeight: '500',
-  color: 'textSecondary',
+const stackTag = css({
   fontFamily: 'body',
+  fontSize: '12px',
+  textTransform: 'uppercase',
+  letterSpacing: '0.1em',
+  color: 'textSecondary',
   padding: '6px 12px',
   border: '1px solid',
   borderColor: 'border',
-  lineHeight: '1.4',
+  borderRadius: '2px',
 })
 
-const extLinkStyles = css({
-  fontSize: '0.875rem',
-  fontWeight: '600',
+const linkRow = css({
+  display: 'flex',
+  gap: '24px',
+  flexWrap: 'wrap',
+  marginTop: '32px',
+})
+
+const projectLink = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  fontWeight: 500,
+  textTransform: 'uppercase',
+  letterSpacing: '0.08em',
   color: 'accent',
   textDecoration: 'none',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  fontFamily: 'body',
-  padding: '12px 24px',
-  border: '1px solid',
-  borderColor: 'accent',
-  display: 'inline-block',
-  _hover: { color: 'accentHover', borderColor: 'accentHover' },
+  padding: '12px 0',
+  borderBottom: '1px solid',
+  borderColor: 'borderAccent',
+  transition: 'color 150ms ease',
+  _hover: { color: 'accentLight' },
   _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
-  transition: 'color 0.15s ease, border-color 0.15s ease',
-  lineHeight: '1.4',
 })
 
-function ProjectPage() {
+const backLink = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'textMuted',
+  textDecoration: 'none',
+  padding: '12px 0',
+  display: 'inline-block',
+  marginTop: '64px',
+  _hover: { color: 'textSecondary' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+})
+
+const footerBar = css({
+  padding: '32px 0',
+  borderTop: '1px solid',
+  borderColor: 'border',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  gap: '16px',
+})
+
+const footerText = css({
+  fontFamily: 'body',
+  fontSize: '12px',
+  color: 'textMuted',
+  letterSpacing: '0.06em',
+})
+
+const archiveLink = css({
+  fontFamily: 'body',
+  fontSize: '12px',
+  color: 'textMuted',
+  textDecoration: 'none',
+  letterSpacing: '0.06em',
+  _hover: { color: 'textSecondary' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+})
+
+function WorkDetail() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <main className={pageStyles}>
-        <a href="/" className={backLinkStyles}>← Back</a>
-        <h1 className={titleStyles}>Not Found</h1>
-        <p className={sectionTextStyles}>This project doesn't exist.</p>
-      </main>
+      <div className={scrollColumn} style={{ paddingTop: '120px' }}>
+        <h1 className={titleStyle}>Project not found</h1>
+        <a href="/" className={backLink}>← Back home</a>
+      </div>
     )
   }
 
   return (
-    <main className={pageStyles}>
-      <a href="/" className={backLinkStyles}>← Back</a>
-      <h1 className={titleStyles}>{project.title}</h1>
-      <div className={metaRowStyles}>
-        <span className={metaTagStyles}>{project.type}</span>
-        <span className={metaTagStyles}>{project.year}</span>
-        {project.role && <span className={metaTagStyles}>{project.role}</span>}
-      </div>
+    <div>
+      <section className={heroBlock}>
+        <div className={scrollColumn}>
+          <p className={eyebrow}>{project.type} · {project.year}</p>
+          <h1 className={titleStyle}>{project.title}</h1>
+          <div className={metaRow}>
+            {project.role && (
+              <span className={metaItem}>Role<span className={metaValue}>{project.role}</span></span>
+            )}
+            {project.year && (
+              <span className={metaItem}>Year<span className={metaValue}>{project.year}</span></span>
+            )}
+          </div>
+        </div>
+      </section>
 
       {project.problem && (
-        <div>
-          <p className={sectionLabelStyles}>Problem</p>
-          <p className={sectionTextStyles}>{project.problem}</p>
-        </div>
+        <section className={sectionWrap}>
+          <div className={scrollColumn}>
+            <p className={sectionLabel}>Problem</p>
+            <p className={sectionBody}>{project.problem}</p>
+          </div>
+        </section>
       )}
 
       {project.approach && (
-        <div>
-          <p className={sectionLabelStyles}>Approach</p>
-          <p className={sectionTextStyles}>{project.approach}</p>
-        </div>
+        <section className={sectionWrap}>
+          <div className={scrollColumn}>
+            <p className={sectionLabel}>Approach</p>
+            <p className={sectionBody}>{project.approach}</p>
+          </div>
+        </section>
       )}
 
       {project.outcome && (
-        <div>
-          <p className={sectionLabelStyles}>Outcome</p>
-          <p className={sectionTextStyles}>{project.outcome}</p>
-        </div>
+        <section className={sectionWrap}>
+          <div className={scrollColumn}>
+            <p className={sectionLabel}>Outcome</p>
+            <p className={sectionBody}>{project.outcome}</p>
+          </div>
+        </section>
       )}
 
       {project.description && (
-        <div>
-          <p className={sectionLabelStyles}>Description</p>
-          <p className={sectionTextStyles}>{project.description}</p>
-        </div>
+        <section className={sectionWrap}>
+          <div className={scrollColumn}>
+            <p className={sectionLabel}>About</p>
+            <p className={sectionBody}>{project.description}</p>
+          </div>
+        </section>
       )}
 
       {project.stack && project.stack.length > 0 && (
-        <div>
-          <p className={sectionLabelStyles}>Stack</p>
-          <ul className={stackListStyles}>
-            {project.stack.map((tech, i) => (
-              <li key={i} className={stackItemStyles}>{tech}</li>
-            ))}
-          </ul>
-        </div>
+        <section className={sectionWrap}>
+          <div className={scrollColumn}>
+            <p className={sectionLabel}>Stack</p>
+            <div className={stackGrid}>
+              {project.stack.map((tech) => (
+                <span key={tech} className={stackTag}>{tech}</span>
+              ))}
+            </div>
+          </div>
+        </section>
       )}
 
-      {(project.externalUrl || project.liveUrl || project.githubUrl) && (
-        <div className={css({ display: 'flex', gap: '16px', flexWrap: 'wrap' })}>
+      <div className={scrollColumn}>
+        <div className={linkRow}>
           {project.externalUrl && (
-            <a href={project.externalUrl} className={extLinkStyles} target="_blank" rel="noopener noreferrer">
+            <a href={project.externalUrl} className={projectLink} target="_blank" rel="noopener noreferrer">
               Visit Site →
             </a>
           )}
           {project.liveUrl && (
-            <a href={project.liveUrl} className={extLinkStyles} target="_blank" rel="noopener noreferrer">
+            <a href={project.liveUrl} className={projectLink} target="_blank" rel="noopener noreferrer">
               Live →
             </a>
           )}
           {project.githubUrl && (
-            <a href={project.githubUrl} className={extLinkStyles} target="_blank" rel="noopener noreferrer">
+            <a href={project.githubUrl} className={projectLink} target="_blank" rel="noopener noreferrer">
               GitHub →
             </a>
           )}
         </div>
-      )}
-    </main>
+        <a href="/" className={backLink}>← Back to work</a>
+      </div>
+
+      <footer style={{ marginTop: '64px' }}>
+        <div className={scrollColumn}>
+          <div className={footerBar}>
+            <span className={footerText}>Doug March · Product Designer & Developer</span>
+            <a href="/archive" className={archiveLink}>Archive</a>
+          </div>
+        </div>
+      </footer>
+    </div>
   )
 }

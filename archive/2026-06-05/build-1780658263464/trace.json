@@ -1,0 +1,275 @@
+{
+  "date": "2026-06-05",
+  "startedAt": "2026-06-05T11:07:40.585Z",
+  "completedAt": "2026-06-05T11:17:45.159Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "21 Hrs On The Moon",
+              "description": "To mark the recent Artemis Moon Mission and honour the legacy of the first moon landing in 1969, we celebrate the experiments carried out in those historic...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0d7b8f419a3938435907.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAJulBJREFUeAHsvWmbXLeRJooqFjeRlERJFLVbsiTbsiXb8riX6Z62u9sz88ydb/f7PM/9MH9k/tD8gZ7rp6/b7rblRbJky63d2khKFPedrO0mTtUposBAIFbgJJmvVMzMk0BE...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "THE RED",
+              "description": "This is THE RED. Built to be bold. A historic landmark of character and color that has defined Chicago’s skyline since 1972.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1db853d921f825300359.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAFkXJJREFUeAHs/VeTbNmV54ktj4gbWssr8qbWSAAJUUB1tZpuMw7NSJqNGT8EX/kx+MxXfgPS+DrNmeZ0oapRlUBBFERKZCKBFFeE1lr5rP/xszx2nHCP8IgbwsPv72d2wj1c...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Education Foundation of AACPS",
+              "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+              "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Friday",
+          "is_weekend": false,
+          "day_index": 5
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/chopratejas",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "NousResearch/hermes-agent/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/affaan-m",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "PaddlePaddle/PaddleOCR/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "github/spec-kit/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "the Memorial Tournament pres. by Workday",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "J.J. Spaun",
+              "position": "1",
+              "score": "-5"
+            },
+            {
+              "name": "Wyndham Clark",
+              "position": "2",
+              "score": "-5"
+            },
+            {
+              "name": "Tommy Fleetwood",
+              "position": "3",
+              "score": "-5"
+            },
+            {
+              "name": "Ryan Gerard",
+              "position": "4",
+              "score": "-5"
+            },
+            {
+              "name": "Nick Taylor",
+              "position": "5",
+              "score": "-4"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Changing How We Develop Ladybird",
+              "url": "https://ladybird.org/posts/changing-how-we-develop-ladybird/",
+              "score": 332,
+              "by": "EdwinHoksberg"
+            },
+            {
+              "title": "Tracing a powerful GNSS interference source over Europe",
+              "url": "https://arxiv.org/abs/2606.03673",
+              "score": 71,
+              "by": "mimorigasaka"
+            },
+            {
+              "title": "Entanglement Builds Space-Time. Now \"Magic\" Gives It Gravity",
+              "url": "https://www.quantamagazine.org/entanglement-builds-space-time-now-magic-gives-it-gravity-20260603/",
+              "score": 26,
+              "by": "rbanffy"
+            },
+            {
+              "title": "databow: a Rust CLI to query any database with an ADBC driver",
+              "url": "https://columnar.tech/blog/introducing-databow//",
+              "score": 32,
+              "by": "hckshr"
+            },
+            {
+              "title": "Meta enables ADB on deprecated Portal devices [video]",
+              "url": "https://fb.watch/HxPu0fSyeH/",
+              "score": 233,
+              "by": "jenders"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "last quarter",
+          "illumination": 0.673,
+          "days_into_cycle": 20.49
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "Tobin Sprout",
+            "Radiohead"
+          ]
+        },
+        "quote": {
+          "text": "Getting over a painful experience is much like crossing monkey bars. You have to let go at some point in order to move forward.",
+          "author": "Unknown"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 5,
+          "day_of_year": 156,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:50",
+          "sunset": "19:27",
+          "daylight_hours": 14.6
+        },
+        "date": "2026-06-05"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-05T11:07:55.872Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-04: Poster\n  - 2026-06-03: Specimen\n  - 2026-06-02: Gallery Wall\n  - 2026-06-01: Index\n  - 2026-05-31: Broadsheet\n  - 2026-05-30: Specimen\n  - 2026-05-29: Split\n\n**Recently used** (last 3 days): Poster, Specimen, Gallery Wall\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the b"
+      },
+      "output": {
+        "hero_copy": "You have to let go at some point in order to move forward.",
+        "archetype": "Scroll",
+        "chassisId": "big-shoulders-atkinson",
+        "specLength": 7332,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue:** H:155° — forest teal-green. Not the reflex cyan (180°) or lime (120°), but the specific dark-water green of June forest floors. In the mandate target of 145°–170° and completely absent from the last seven palettes. The drench strategy: the entire page lives inside this hue family at varying depth.\n\n**Neutral palette** (tinted H:155°, chroma ~0.01):\n- 50: `#F2FAF5`\n- 100: `#E1F0E6`\n- 200: `#C2D8C9`\n- 300: `#98B8A0`\n- 400: `#6A9474`\n- 500: `#4A7053`\n- 6",
+        "selfCheck": "1. Hero quotability: Yes — the phrase demands a response from the reader and applies directly to the portfolio's operational logic (daily release); it would be screenshotted for the sentiment, not as navigation copy.\n2. Because-of chain: Yes — phrase demands physical, forward-motion energy → Scroll "
+      },
+      "durationMs": 390280,
+      "timestamp": "2026-06-05T11:14:26.155Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 7332
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 52244,
+      "timestamp": "2026-06-05T11:15:19.911Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 6456,
+        "briefLength": 10195
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 120783,
+      "timestamp": "2026-06-05T11:17:20.696Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-05T11:17:28.072Z"
+    }
+  ]
+}

@@ -5,225 +5,304 @@ import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const pageStyles = css({
-  padding: '48px 6vw 80px',
-  gridRow: '2 / 4',
-  maxWidth: '900px',
+const scrollColumn = css({
+  width: '85vw',
+  margin: '0 auto',
 })
 
-const sectionTitleStyles = css({
-  fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-  fontWeight: '800',
-  lineHeight: '0.88',
+const heroBlock = css({
+  minHeight: '80vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  paddingTop: 'calc(56px + 12vh)',
+  paddingBottom: '80px',
+})
+
+const nameDisplay = css({
+  fontFamily: 'display',
+  fontWeight: 900,
+  fontSize: 'clamp(40px, 5.5vw, 80px)',
+  lineHeight: '0.92',
+  letterSpacing: '-0.03em',
+  color: 'text',
+  marginBottom: '12px',
+})
+
+const roleDisplay = css({
+  fontFamily: 'body',
+  fontSize: '11px',
+  textTransform: 'uppercase',
+  letterSpacing: '0.14em',
+  color: 'textMuted',
+  marginBottom: '40px',
+})
+
+const statement = css({
+  fontFamily: 'body',
+  fontSize: 'clamp(16px, 1.8vw, 20px)',
+  lineHeight: '1.6',
+  color: 'textSecondary',
+  maxWidth: '65ch',
+})
+
+const sectionWrap = css({
+  padding: '80px 0',
+  borderTop: '1px solid',
+  borderColor: 'border',
+})
+
+const sectionHeading = css({
+  fontFamily: 'display',
+  fontWeight: 800,
+  fontSize: 'clamp(24px, 3vw, 44px)',
+  lineHeight: '1.0',
   letterSpacing: '-0.02em',
   color: 'text',
-  fontFamily: 'display',
-  marginBottom: '32px',
-  textTransform: 'uppercase',
+  marginBottom: '48px',
 })
 
-const statementStyles = css({
-  fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-  fontWeight: '400',
-  lineHeight: '1.55',
-  color: 'text',
-  fontFamily: 'body',
-  maxWidth: '65ch',
-  marginBottom: '64px',
-})
-
-const roleStyles = css({
-  fontSize: '0.875rem',
-  fontWeight: '500',
-  letterSpacing: '0.08em',
-  color: 'textMuted',
-  fontFamily: 'body',
-  textTransform: 'uppercase',
-  marginBottom: '16px',
-})
-
-const sectionSpacerStyles = css({
-  marginBottom: '64px',
-})
-
-const timelineRowStyles = css({
+const timelineRow = css({
   display: 'grid',
-  gridTemplateColumns: '140px 1fr',
-  gap: '16px',
-  paddingBottom: '24px',
-  marginBottom: '24px',
-  borderBottom: '1px solid',
-  borderColor: 'border',
+  gridTemplateColumns: '120px 1fr',
+  gap: '24px',
+  padding: '20px 0',
+  borderTop: '1px solid',
+  borderColor: 'borderSubtle',
+  '&:first-of-type': {
+    borderTop: 'none',
+  },
   '@media (max-width: 640px)': {
     gridTemplateColumns: '1fr',
     gap: '4px',
   },
 })
 
-const timelineYearStyles = css({
-  fontSize: '0.875rem',
-  fontWeight: '600',
-  color: 'textSecondary',
+const yearCol = css({
   fontFamily: 'body',
+  fontSize: '12px',
+  letterSpacing: '0.08em',
+  color: 'textMuted',
   fontVariantNumeric: 'tabular-nums',
   minWidth: '120px',
-  lineHeight: '1.55',
+  flexShrink: 0,
 })
 
-const timelineContentStyles = css({
-  lineHeight: '1.55',
-  fontFamily: 'body',
+const roleCol = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
 })
 
-const timelineRoleStyles = css({
-  fontSize: '1rem',
-  fontWeight: '600',
+const roleName = css({
+  fontFamily: 'display',
+  fontWeight: 700,
+  fontSize: '18px',
+  letterSpacing: '-0.01em',
   color: 'text',
-  marginBottom: '2px',
+  lineHeight: '1.2',
 })
 
-const timelineCompanyStyles = css({
-  fontSize: '0.875rem',
-  fontWeight: '400',
+const companyName = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'accent',
+  lineHeight: '1.3',
+})
+
+const roleDesc = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  lineHeight: '1.5',
   color: 'textSecondary',
-  marginBottom: '4px',
+  marginTop: '4px',
+  maxWidth: '60ch',
 })
 
-const timelineDescStyles = css({
-  fontSize: '0.875rem',
-  fontWeight: '400',
-  color: 'textMuted',
-  maxWidth: '55ch',
-})
-
-const capListStyles = css({
+const capGrid = css({
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '12px',
-  listStyle: 'none',
-  padding: '0',
-  margin: '0',
+  gap: '8px',
 })
 
-const capItemStyles = css({
-  fontSize: '0.875rem',
-  fontWeight: '500',
-  color: 'textSecondary',
+const capTag = css({
   fontFamily: 'body',
-  letterSpacing: '0.05em',
+  fontSize: '12px',
   textTransform: 'uppercase',
+  letterSpacing: '0.1em',
+  color: 'textSecondary',
   padding: '8px 16px',
   border: '1px solid',
   borderColor: 'border',
+  borderRadius: '2px',
+  lineHeight: '1.3',
+})
+
+const eduBlock = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+})
+
+const eduTitle = css({
+  fontFamily: 'display',
+  fontWeight: 700,
+  fontSize: '18px',
+  color: 'text',
+  lineHeight: '1.2',
+})
+
+const eduDetail = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'textSecondary',
   lineHeight: '1.4',
 })
 
-const personalGridStyles = css({
+const personalGrid = css({
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-  gap: '24px',
+  gap: '32px',
 })
 
-const personalItemStyles = css({
+const personalItem = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+})
+
+const personalLabel = css({
   fontFamily: 'body',
+  fontSize: '11px',
+  textTransform: 'uppercase',
+  letterSpacing: '0.14em',
+  color: 'textMuted',
 })
 
-const personalLabelStyles = css({
-  fontSize: '0.75rem',
-  fontWeight: '500',
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '4px',
+const personalValue = css({
+  fontFamily: 'body',
+  fontSize: '16px',
+  color: 'text',
   lineHeight: '1.4',
 })
 
-const personalValueStyles = css({
-  fontSize: '1rem',
-  fontWeight: '400',
-  color: 'text',
-  lineHeight: '1.55',
+const footerBar = css({
+  padding: '32px 0',
+  borderTop: '1px solid',
+  borderColor: 'border',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+  gap: '16px',
 })
 
-const eduStyles = css({
+const footerText = css({
   fontFamily: 'body',
-  marginBottom: '64px',
+  fontSize: '12px',
+  color: 'textMuted',
+  letterSpacing: '0.06em',
 })
 
-const eduSchoolStyles = css({
-  fontSize: '1rem',
-  fontWeight: '600',
-  color: 'text',
-  lineHeight: '1.55',
-})
-
-const eduDetailStyles = css({
-  fontSize: '0.875rem',
-  fontWeight: '400',
-  color: 'textSecondary',
-  lineHeight: '1.55',
+const archiveLink = css({
+  fontFamily: 'body',
+  fontSize: '12px',
+  color: 'textMuted',
+  textDecoration: 'none',
+  letterSpacing: '0.06em',
+  _hover: { color: 'textSecondary' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
 function AboutPage() {
   return (
-    <main className={pageStyles}>
-      <p className={roleStyles}>{identity.role}</p>
-      <h1 className={sectionTitleStyles}>{identity.name}</h1>
-      <p className={statementStyles}>{identity.statement}</p>
+    <div>
+      {/* ═══ HERO ═══ */}
+      <section className={heroBlock}>
+        <div className={scrollColumn}>
+          <h1 className={nameDisplay}>{identity.name}</h1>
+          <p className={roleDisplay}>{identity.role}</p>
+          <p className={statement}>{identity.statement}</p>
+        </div>
+      </section>
 
-      <section className={sectionSpacerStyles}>
-        <h2 className={sectionTitleStyles}>Experience</h2>
-        {timeline.map((entry, i) => (
-          <div key={i} className={timelineRowStyles}>
-            <span className={timelineYearStyles}>{entry.year}</span>
-            <div className={timelineContentStyles}>
-              <div className={timelineRoleStyles}>{entry.role}</div>
-              <div className={timelineCompanyStyles}>{entry.company}</div>
-              <div className={timelineDescStyles}>{entry.description}</div>
+      {/* ═══ TIMELINE ═══ */}
+      <section className={sectionWrap}>
+        <div className={scrollColumn}>
+          <h2 className={sectionHeading}>Experience</h2>
+          <div>
+            {timeline.map((entry, i) => (
+              <div key={i} className={timelineRow}>
+                <span className={yearCol}>{entry.year}</span>
+                <div className={roleCol}>
+                  <span className={roleName}>{entry.role}</span>
+                  <span className={companyName}>{entry.company}</span>
+                  <p className={roleDesc}>{entry.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ CAPABILITIES ═══ */}
+      <section className={sectionWrap}>
+        <div className={scrollColumn}>
+          <h2 className={sectionHeading}>Capabilities</h2>
+          <div className={capGrid}>
+            {capabilities.map((cap) => (
+              <span key={cap} className={capTag}>{cap}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ EDUCATION ═══ */}
+      <section className={sectionWrap}>
+        <div className={scrollColumn}>
+          <h2 className={sectionHeading}>Education</h2>
+          <div className={eduBlock}>
+            <span className={eduTitle}>{education.school}</span>
+            <span className={eduDetail}>{education.degree} — {education.concentration}</span>
+            <span className={eduDetail}>{education.years}</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ PERSONAL ═══ */}
+      <section className={sectionWrap}>
+        <div className={scrollColumn}>
+          <h2 className={sectionHeading}>Personal</h2>
+          <div className={personalGrid}>
+            <div className={personalItem}>
+              <span className={personalLabel}>Holes in One</span>
+              <span className={personalValue}>{personal.holesInOne}</span>
+            </div>
+            <div className={personalItem}>
+              <span className={personalLabel}>Sport</span>
+              <span className={personalValue}>{personal.sport}</span>
+            </div>
+            <div className={personalItem}>
+              <span className={personalLabel}>Teams</span>
+              <span className={personalValue}>{personal.teams.join(', ')}</span>
+            </div>
+            <div className={personalItem}>
+              <span className={personalLabel}>Current Focus</span>
+              <span className={personalValue}>{personal.currentFocus}</span>
             </div>
           </div>
-        ))}
-      </section>
-
-      <section className={sectionSpacerStyles}>
-        <h2 className={sectionTitleStyles}>Education</h2>
-        <div className={eduStyles}>
-          <div className={eduSchoolStyles}>{education.school}</div>
-          <div className={eduDetailStyles}>{education.degree} — {education.concentration}</div>
-          <div className={eduDetailStyles}>{education.years}</div>
         </div>
       </section>
 
-      <section className={sectionSpacerStyles}>
-        <h2 className={sectionTitleStyles}>Capabilities</h2>
-        <ul className={capListStyles}>
-          {capabilities.map((cap, i) => (
-            <li key={i} className={capItemStyles}>{cap}</li>
-          ))}
-        </ul>
-      </section>
-
-      <section className={sectionSpacerStyles}>
-        <h2 className={sectionTitleStyles}>Personal</h2>
-        <div className={personalGridStyles}>
-          <div className={personalItemStyles}>
-            <div className={personalLabelStyles}>Holes in One</div>
-            <div className={personalValueStyles}>{personal.holesInOne}</div>
-          </div>
-          <div className={personalItemStyles}>
-            <div className={personalLabelStyles}>Sport</div>
-            <div className={personalValueStyles}>{personal.sport}</div>
-          </div>
-          <div className={personalItemStyles}>
-            <div className={personalLabelStyles}>Teams</div>
-            <div className={personalValueStyles}>{personal.teams.join(', ')}</div>
-          </div>
-          <div className={personalItemStyles}>
-            <div className={personalLabelStyles}>Current Focus</div>
-            <div className={personalValueStyles}>{personal.currentFocus}</div>
+      {/* ═══ FOOTER ═══ */}
+      <footer>
+        <div className={scrollColumn}>
+          <div className={footerBar}>
+            <span className={footerText}>{identity.name} · {identity.role}</span>
+            <a href="/archive" className={archiveLink}>Archive</a>
           </div>
         </div>
-      </section>
-    </main>
+      </footer>
+    </div>
   )
 }

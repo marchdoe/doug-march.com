@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 155,
+    "s": 72,
+    "l": 38,
+    "name": "forest teal"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "teal-green",
+    "name": "forest neutral"
+  },
+  "mood_word": "release",
+  "color_story": "Deep forest teal — the dark standing-water color of depth before you cross it, vivid teal surfacing as accent like light breaking through canopy: a palette that holds the moment of suspension just before letting go."
+}

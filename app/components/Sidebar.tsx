@@ -1,68 +1,79 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const navStyles = css({
+const navWrap = css({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 100,
+  height: '56px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  height: '60px',
-  padding: '0 6vw',
-  position: 'relative',
-  zIndex: 10,
+  padding: '0 7.5vw',
+  background: 'rgba(6, 14, 9, 0.92)',
+  backdropFilter: 'blur(12px)',
+  WebkitBackdropFilter: 'blur(12px)',
 })
 
-const logoLinkStyles = css({
+const leftGroup = css({
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
-  textDecoration: 'none',
-  color: 'textMuted',
-  _hover: { color: 'text' },
-  transition: 'color 0.15s ease',
 })
 
-const logoImgStyles = css({
-  width: '28px',
+const logoStyle = css({
   height: '28px',
+  width: '28px',
 })
 
-const siteNameStyles = css({
-  fontSize: '0.875rem',
-  fontWeight: '500',
-  letterSpacing: '0.05em',
-  textTransform: 'uppercase',
-  fontFamily: 'body',
+const nameStyle = css({
+  fontFamily: 'display',
+  fontWeight: 700,
+  fontSize: '18px',
+  color: 'text',
+  textDecoration: 'none',
+  letterSpacing: '-0.01em',
+  lineHeight: '1',
 })
 
-const navLinksStyles = css({
+const rightGroup = css({
   display: 'flex',
   alignItems: 'center',
-  gap: '32px',
+  gap: '24px',
 })
 
-const navLinkStyles = css({
-  fontSize: '0.875rem',
-  fontWeight: '500',
-  letterSpacing: '0.05em',
+const navLink = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  fontWeight: 400,
   textTransform: 'uppercase',
-  color: 'textMuted',
+  letterSpacing: '0.1em',
+  color: 'textSecondary',
   textDecoration: 'none',
-  transition: 'color 0.15s ease',
-  padding: '10px 0',
-  _hover: { color: 'text' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+  padding: '12px 4px',
+  transition: 'color 150ms ease',
+  _hover: {
+    color: 'text',
+  },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+  },
 })
 
 export function Sidebar() {
   return (
-    <nav className={navStyles} aria-label="Main navigation">
-      <a href="/" className={logoLinkStyles}>
-        <img src={logoSvg} alt="Doug March logo" className={logoImgStyles} />
-        <span className={siteNameStyles}>Doug March</span>
-      </a>
-      <div className={navLinksStyles}>
-        <a href="/" className={navLinkStyles}>Work</a>
-        <a href="/about" className={navLinkStyles}>About</a>
+    <nav className={navWrap} role="navigation" aria-label="Main navigation">
+      <div className={leftGroup}>
+        <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
+        <a href="/" className={nameStyle}>Doug March</a>
+      </div>
+      <div className={rightGroup}>
+        <a href="/" className={navLink}>Work</a>
+        <a href="/about" className={navLink}>About</a>
       </div>
     </nav>
   )
