@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 112,
+    "s": 100,
+    "l": 55,
+    "name": "electric lime"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "lime-chartreuse",
+    "name": "void-forest"
+  },
+  "mood_word": "charged",
+  "color_story": "Electric chartreuse on void-green black — the specific hue of a golf fairway under full June sun, acid-bright against the darkest dark, the phrase glowing like a signal you can't miss."
+}

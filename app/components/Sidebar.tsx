@@ -1,80 +1,63 @@
 import logoSvg from '../assets/logo.svg'
-import { css } from '../../styled-system/css'
-
-const navWrap = css({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  right: 0,
-  zIndex: 100,
-  height: '56px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '0 7.5vw',
-  background: 'rgba(6, 14, 9, 0.92)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-})
-
-const leftGroup = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-})
-
-const logoStyle = css({
-  height: '28px',
-  width: '28px',
-})
-
-const nameStyle = css({
-  fontFamily: 'display',
-  fontWeight: 700,
-  fontSize: '18px',
-  color: 'text',
-  textDecoration: 'none',
-  letterSpacing: '-0.01em',
-  lineHeight: '1',
-})
-
-const rightGroup = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '24px',
-})
-
-const navLink = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: 400,
-  textTransform: 'uppercase',
-  letterSpacing: '0.1em',
-  color: 'textSecondary',
-  textDecoration: 'none',
-  padding: '12px 4px',
-  transition: 'color 150ms ease',
-  _hover: {
-    color: 'text',
-  },
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
-})
 
 export function Sidebar() {
   return (
-    <nav className={navWrap} role="navigation" aria-label="Main navigation">
-      <div className={leftGroup}>
-        <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
-        <a href="/" className={nameStyle}>Doug March</a>
+    <nav
+      style={{
+        position: 'absolute',
+        bottom: '48px',
+        left: '52px',
+        right: '52px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        zIndex: 10,
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+        <a href="/" aria-label="Home" style={{ display: 'block', width: '28px', height: '28px' }}>
+          <img src={logoSvg} alt="Doug March logo" width={28} height={28} />
+        </a>
+        <a
+          href="/"
+          style={{
+            fontFamily: "'IBM Plex Sans', sans-serif",
+            fontSize: '12px',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase' as const,
+            color: '#8EC864',
+            textDecoration: 'none',
+            padding: '10px 0',
+          }}
+        >
+          Work
+        </a>
+        <a
+          href="/about"
+          style={{
+            fontFamily: "'IBM Plex Sans', sans-serif",
+            fontSize: '12px',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase' as const,
+            color: '#8EC864',
+            textDecoration: 'none',
+            padding: '10px 0',
+          }}
+        >
+          About
+        </a>
       </div>
-      <div className={rightGroup}>
-        <a href="/" className={navLink}>Work</a>
-        <a href="/about" className={navLink}>About</a>
-      </div>
+      <span
+        style={{
+          fontFamily: "'IBM Plex Sans', sans-serif",
+          fontSize: '11px',
+          letterSpacing: '0.10em',
+          textTransform: 'uppercase' as const,
+          color: '#547828',
+        }}
+      >
+        D.M.
+      </span>
     </nav>
   )
 }
