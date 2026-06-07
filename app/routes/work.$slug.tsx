@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
+import { Sidebar } from '../components/Sidebar'
 import { projects } from '../content/projects'
-import logoSvg from '../assets/logo.svg'
 
 export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
@@ -11,426 +11,390 @@ function ProjectPage() {
 
   if (!project) {
     return (
-      <div
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '100vh',
-          background: '#080D02',
-        })}
-      >
-        <p
-          className={css({
-            fontFamily: "'IBM Plex Sans', sans-serif",
-            fontSize: '16px',
-            color: '#65A038',
-          })}
-        >
-          Project not found.
-        </p>
-      </div>
+      <>
+        <Sidebar />
+        <div className={css({ padding: '80px 6vw' })}>
+          <h1
+            className={css({
+              fontFamily: 'display',
+              fontWeight: 'bold',
+              fontSize: 'clamp(32px, 4vw, 56px)',
+              color: 'text',
+            })}
+          >
+            Project not found
+          </h1>
+          <a
+            href="/"
+            className={css({
+              fontFamily: 'body',
+              fontSize: '16px',
+              color: 'accent',
+              marginTop: '24px',
+              display: 'inline-block',
+              _hover: { color: 'accentLight' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+            })}
+          >
+            ← Back
+          </a>
+        </div>
+      </>
     )
   }
 
   return (
-    <div
-      className={css({
-        display: 'grid',
-        gridTemplateColumns: '1fr',
-        minHeight: '100vh',
-        width: '100%',
-        '@media (min-width: 768px)': {
-          gridTemplateColumns: '45fr 55fr',
-        },
-      })}
-    >
-      {/* LEFT PANEL — Project Identity */}
-      <div
+    <>
+      <Sidebar />
+
+      {/* Hero band */}
+      <section
         className={css({
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '48px 24px',
-          background: '#060B02',
-          minHeight: '50vh',
-          position: 'relative',
-          '@media (min-width: 768px)': {
-            padding: '80px 52px',
-            minHeight: '100vh',
-            position: 'sticky',
-            top: '0',
-          },
+          padding: '80px 6vw 64px',
+          background: 'bg',
+          borderBottom: '1px solid',
+          borderColor: 'border',
         })}
       >
-        {/* Nav */}
         <div
           className={css({
-            position: 'absolute',
-            top: '28px',
-            left: '24px',
-            right: '24px',
             display: 'flex',
-            alignItems: 'center',
-            gap: '24px',
-            '@media (min-width: 768px)': {
-              top: '48px',
-              left: '52px',
-              right: '52px',
-            },
-          })}
-        >
-          <a href="/" aria-label="Home">
-            <img src={logoSvg} alt="Doug March logo" width={28} height={28} />
-          </a>
-          <a
-            href="/"
-            className={css({
-              fontFamily: "'IBM Plex Sans', sans-serif",
-              fontSize: '12px',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#8EC864',
-              textDecoration: 'none',
-              padding: '10px 0',
-            })}
-          >
-            Work
-          </a>
-          <a
-            href="/about"
-            className={css({
-              fontFamily: "'IBM Plex Sans', sans-serif",
-              fontSize: '12px',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#8EC864',
-              textDecoration: 'none',
-              padding: '10px 0',
-            })}
-          >
-            About
-          </a>
-        </div>
-
-        <div
-          className={css({
-            flex: '1',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
+            alignItems: 'baseline',
             gap: '16px',
+            marginBottom: '16px',
+            flexWrap: 'wrap',
           })}
         >
           <span
             className={css({
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: '11px',
-              letterSpacing: '0.14em',
-              color: '#65A038',
+              fontFamily: 'body',
+              fontSize: '12px',
+              letterSpacing: 'wider',
               textTransform: 'uppercase',
-              lineHeight: '1.1',
+              color: 'textMuted',
             })}
           >
-            {project.type} · {project.year}
+            {project.type}
           </span>
-          <h1
+          <span
             className={css({
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: 'clamp(48px, 6vw, 80px)',
-              lineHeight: '0.88',
-              letterSpacing: '0.01em',
-              color: '#7AFF18',
-              textTransform: 'uppercase',
+              fontFamily: 'mono',
+              fontSize: '12px',
+              color: 'textMuted',
             })}
           >
-            {project.title}
-          </h1>
+            {project.year}
+          </span>
+        </div>
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: 'clamp(36px, 5vw, 72px)',
+            lineHeight: 'snug',
+            letterSpacing: 'tight',
+            color: 'text',
+            marginBottom: '24px',
+          })}
+        >
+          {project.title}
+        </h1>
+        {project.problem && (
+          <p
+            className={css({
+              fontFamily: 'body',
+              fontSize: 'clamp(16px, 1.3vw, 20px)',
+              lineHeight: 'normal',
+              color: 'textSecondary',
+              maxWidth: '65ch',
+            })}
+          >
+            {project.problem}
+          </p>
+        )}
+        {project.description && !project.problem && (
+          <p
+            className={css({
+              fontFamily: 'body',
+              fontSize: 'clamp(16px, 1.3vw, 20px)',
+              lineHeight: 'normal',
+              color: 'textSecondary',
+              maxWidth: '65ch',
+            })}
+          >
+            {project.description}
+          </p>
+        )}
+      </section>
+
+      {/* Detail band */}
+      <section
+        className={css({
+          padding: '64px 6vw',
+          background: 'bgCard',
+        })}
+      >
+        <div
+          className={css({
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '48px',
+            '@media (max-width: 768px)': {
+              gridTemplateColumns: '1fr',
+              gap: '32px',
+            },
+          })}
+        >
           {project.role && (
-            <span
-              className={css({
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                fontSize: '14px',
-                color: '#B8E090',
-                lineHeight: '1.5',
-                marginTop: '8px',
-              })}
-            >
-              {project.role}
-            </span>
+            <div>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '12px',
+                  letterSpacing: 'wider',
+                  textTransform: 'uppercase',
+                  color: 'textMuted',
+                  marginBottom: '8px',
+                })}
+              >
+                Role
+              </p>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '16px',
+                  lineHeight: 'normal',
+                  color: 'text',
+                  maxWidth: '50ch',
+                })}
+              >
+                {project.role}
+              </p>
+            </div>
           )}
-          {project.externalUrl && (
-            <a
-              href={project.externalUrl}
-              className={css({
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                fontSize: '13px',
-                letterSpacing: '0.04em',
-                color: '#7AFF18',
-                textDecoration: 'none',
-                marginTop: '16px',
-                padding: '10px 0',
-                display: 'inline-block',
-                _hover: { color: '#C3EE92' },
-              })}
-            >
-              Visit Site ↗
-            </a>
+          {project.approach && (
+            <div>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '12px',
+                  letterSpacing: 'wider',
+                  textTransform: 'uppercase',
+                  color: 'textMuted',
+                  marginBottom: '8px',
+                })}
+              >
+                Approach
+              </p>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '16px',
+                  lineHeight: 'normal',
+                  color: 'text',
+                  maxWidth: '50ch',
+                })}
+              >
+                {project.approach}
+              </p>
+            </div>
+          )}
+          {project.outcome && (
+            <div>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '12px',
+                  letterSpacing: 'wider',
+                  textTransform: 'uppercase',
+                  color: 'textMuted',
+                  marginBottom: '8px',
+                })}
+              >
+                Outcome
+              </p>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '16px',
+                  lineHeight: 'normal',
+                  color: 'text',
+                  maxWidth: '50ch',
+                })}
+              >
+                {project.outcome}
+              </p>
+            </div>
+          )}
+          {project.stack && project.stack.length > 0 && (
+            <div>
+              <p
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: '12px',
+                  letterSpacing: 'wider',
+                  textTransform: 'uppercase',
+                  color: 'textMuted',
+                  marginBottom: '8px',
+                })}
+              >
+                Stack
+              </p>
+              <div
+                className={css({
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '8px',
+                })}
+              >
+                {project.stack.map((tech) => (
+                  <span
+                    key={tech}
+                    className={css({
+                      fontFamily: 'mono',
+                      fontSize: '13px',
+                      color: 'textSecondary',
+                      padding: '4px 12px',
+                      border: '1px solid',
+                      borderColor: 'border',
+                    })}
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
           )}
         </div>
-      </div>
+      </section>
 
-      {/* RIGHT PANEL — Project Details */}
-      <div
+      {/* Links band */}
+      <section
         className={css({
+          padding: '48px 6vw',
+          background: 'bg',
           display: 'flex',
-          flexDirection: 'column',
-          padding: '48px 24px',
-          background: '#0D1404',
-          borderLeft: 'none',
-          '@media (min-width: 768px)': {
-            padding: '64px 52px',
-            borderLeft: '1px solid #182505',
+          gap: '24px',
+          flexWrap: 'wrap',
+        })}
+      >
+        {project.externalUrl && (
+          <a
+            href={project.externalUrl}
+            className={css({
+              fontFamily: 'body',
+              fontSize: '14px',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'accent',
+              padding: '12px 24px',
+              border: '1px solid',
+              borderColor: 'accent',
+              textDecoration: 'none',
+              _hover: { background: 'accent', color: 'textInverse' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+            })}
+          >
+            Visit Site →
+          </a>
+        )}
+        {project.liveUrl && !project.externalUrl && (
+          <a
+            href={project.liveUrl}
+            className={css({
+              fontFamily: 'body',
+              fontSize: '14px',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'accent',
+              padding: '12px 24px',
+              border: '1px solid',
+              borderColor: 'accent',
+              textDecoration: 'none',
+              _hover: { background: 'accent', color: 'textInverse' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+            })}
+          >
+            Live →
+          </a>
+        )}
+        {project.githubUrl && (
+          <a
+            href={project.githubUrl}
+            className={css({
+              fontFamily: 'body',
+              fontSize: '14px',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'textMuted',
+              padding: '12px 24px',
+              border: '1px solid',
+              borderColor: 'border',
+              textDecoration: 'none',
+              _hover: { color: 'accent', borderColor: 'accent' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+            })}
+          >
+            GitHub
+          </a>
+        )}
+        <a
+          href="/"
+          className={css({
+            fontFamily: 'body',
+            fontSize: '14px',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+            padding: '12px 24px',
+            textDecoration: 'none',
+            _hover: { color: 'accent' },
+            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+          })}
+        >
+          ← All Work
+        </a>
+      </section>
+
+      {/* Footer */}
+      <footer
+        className={css({
+          borderTop: '1px solid',
+          borderColor: 'border',
+          padding: '24px 6vw',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          '@media (max-width: 768px)': {
+            flexDirection: 'column',
+            gap: '12px',
+            alignItems: 'flex-start',
           },
         })}
       >
-        {/* Problem */}
-        {project.problem && (
-          <div className={css({ marginBottom: '48px' })}>
-            <span
-              className={css({
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: '11px',
-                letterSpacing: '0.14em',
-                color: '#7AFF18',
-                textTransform: 'uppercase',
-                lineHeight: '1.1',
-                display: 'block',
-                marginBottom: '16px',
-              })}
-            >
-              Problem
-            </span>
-            <p
-              className={css({
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                fontSize: '16px',
-                color: '#E6F9D2',
-                lineHeight: '1.5',
-                maxWidth: '55ch',
-              })}
-            >
-              {project.problem}
-            </p>
-          </div>
-        )}
-
-        {project.problem && (
-          <div className={css({ borderTop: '1px solid #182505', marginBottom: '32px' })} />
-        )}
-
-        {/* Approach */}
-        {project.approach && (
-          <div className={css({ marginBottom: '48px' })}>
-            <span
-              className={css({
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: '11px',
-                letterSpacing: '0.14em',
-                color: '#7AFF18',
-                textTransform: 'uppercase',
-                lineHeight: '1.1',
-                display: 'block',
-                marginBottom: '16px',
-              })}
-            >
-              Approach
-            </span>
-            <p
-              className={css({
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                fontSize: '16px',
-                color: '#E6F9D2',
-                lineHeight: '1.5',
-                maxWidth: '55ch',
-              })}
-            >
-              {project.approach}
-            </p>
-          </div>
-        )}
-
-        {project.approach && (
-          <div className={css({ borderTop: '1px solid #182505', marginBottom: '32px' })} />
-        )}
-
-        {/* Outcome */}
-        {project.outcome && (
-          <div className={css({ marginBottom: '48px' })}>
-            <span
-              className={css({
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: '11px',
-                letterSpacing: '0.14em',
-                color: '#7AFF18',
-                textTransform: 'uppercase',
-                lineHeight: '1.1',
-                display: 'block',
-                marginBottom: '16px',
-              })}
-            >
-              Outcome
-            </span>
-            <p
-              className={css({
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                fontSize: '16px',
-                color: '#E6F9D2',
-                lineHeight: '1.5',
-                maxWidth: '55ch',
-              })}
-            >
-              {project.outcome}
-            </p>
-          </div>
-        )}
-
-        {project.outcome && (
-          <div className={css({ borderTop: '1px solid #182505', marginBottom: '32px' })} />
-        )}
-
-        {/* Description (for experiments) */}
-        {project.description && !project.problem && (
-          <div className={css({ marginBottom: '48px' })}>
-            <span
-              className={css({
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: '11px',
-                letterSpacing: '0.14em',
-                color: '#7AFF18',
-                textTransform: 'uppercase',
-                lineHeight: '1.1',
-                display: 'block',
-                marginBottom: '16px',
-              })}
-            >
-              About
-            </span>
-            <p
-              className={css({
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                fontSize: '16px',
-                color: '#E6F9D2',
-                lineHeight: '1.5',
-                maxWidth: '55ch',
-              })}
-            >
-              {project.description}
-            </p>
-          </div>
-        )}
-
-        {/* Stack */}
-        {project.stack && project.stack.length > 0 && (
-          <div className={css({ marginBottom: '48px' })}>
-            <span
-              className={css({
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: '11px',
-                letterSpacing: '0.14em',
-                color: '#7AFF18',
-                textTransform: 'uppercase',
-                lineHeight: '1.1',
-                display: 'block',
-                marginBottom: '16px',
-              })}
-            >
-              Stack
-            </span>
-            <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '8px 16px' })}>
-              {project.stack.map((tech, i) => (
-                <span
-                  key={i}
-                  className={css({
-                    fontFamily: "'IBM Plex Sans', sans-serif",
-                    fontSize: '14px',
-                    color: '#B8E090',
-                    lineHeight: '1.5',
-                  })}
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Links */}
-        <div className={css({ display: 'flex', gap: '24px', marginTop: 'auto', paddingTop: '32px' })}>
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              className={css({
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                fontSize: '13px',
-                letterSpacing: '0.04em',
-                color: '#7AFF18',
-                textDecoration: 'none',
-                padding: '10px 0',
-                _hover: { color: '#C3EE92' },
-              })}
-            >
-              Live Site ↗
-            </a>
-          )}
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              className={css({
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                fontSize: '13px',
-                letterSpacing: '0.04em',
-                color: '#7AFF18',
-                textDecoration: 'none',
-                padding: '10px 0',
-                _hover: { color: '#C3EE92' },
-              })}
-            >
-              GitHub ↗
-            </a>
-          )}
-          <a
-            href="/"
-            className={css({
-              fontFamily: "'IBM Plex Sans', sans-serif",
-              fontSize: '13px',
-              letterSpacing: '0.04em',
-              color: '#65A038',
-              textDecoration: 'none',
-              padding: '10px 0',
-              _hover: { color: '#E6F9D2' },
-            })}
-          >
-            ← All Work
-          </a>
-        </div>
-
-        <div className={css({ marginTop: '24px' })}>
-          <a
-            href="/archive"
-            className={css({
-              fontFamily: "'IBM Plex Sans', sans-serif",
-              fontSize: '11px',
-              letterSpacing: '0.08em',
-              color: '#547828',
-              textDecoration: 'none',
-              textTransform: 'uppercase',
-            })}
-          >
-            Archive
-          </a>
-        </div>
-      </div>
-    </div>
+        <span
+          className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            color: 'textMuted',
+          })}
+        >
+          Doug March
+        </span>
+        <a
+          href="/archive"
+          className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            color: 'textMuted',
+            textDecoration: 'none',
+            _hover: { color: 'accent' },
+            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+          })}
+        >
+          Archive
+        </a>
+      </footer>
+    </>
   )
 }

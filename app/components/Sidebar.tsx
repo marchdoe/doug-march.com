@@ -1,63 +1,86 @@
 import logoSvg from '../assets/logo.svg'
+import { css } from '../../styled-system/css'
 
 export function Sidebar() {
   return (
     <nav
-      style={{
-        position: 'absolute',
-        bottom: '48px',
-        left: '52px',
-        right: '52px',
+      className={css({
         display: 'flex',
-        alignItems: 'center',
         justifyContent: 'space-between',
-        zIndex: 10,
-      }}
+        alignItems: 'center',
+        height: '64px',
+        padding: '0 6vw',
+        width: '100%',
+      })}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-        <a href="/" aria-label="Home" style={{ display: 'block', width: '28px', height: '28px' }}>
-          <img src={logoSvg} alt="Doug March logo" width={28} height={28} />
-        </a>
+      <a
+        href="/"
+        className={css({
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          textDecoration: 'none',
+          color: 'textMuted',
+          _hover: { color: 'accent' },
+        })}
+      >
+        <img
+          src={logoSvg}
+          alt="Doug March logo"
+          className={css({ width: '28px', height: '28px' })}
+        />
+        <span
+          className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            fontWeight: 'medium',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+          })}
+        >
+          Doug March
+        </span>
+      </a>
+      <div
+        className={css({
+          display: 'flex',
+          alignItems: 'center',
+          gap: '32px',
+        })}
+      >
         <a
           href="/"
-          style={{
-            fontFamily: "'IBM Plex Sans', sans-serif",
-            fontSize: '12px',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase' as const,
-            color: '#8EC864',
+          className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textMuted',
             textDecoration: 'none',
             padding: '10px 0',
-          }}
+            _hover: { color: 'accent' },
+            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+          })}
         >
           Work
         </a>
         <a
           href="/about"
-          style={{
-            fontFamily: "'IBM Plex Sans', sans-serif",
-            fontSize: '12px',
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase' as const,
-            color: '#8EC864',
+          className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textMuted',
             textDecoration: 'none',
             padding: '10px 0',
-          }}
+            _hover: { color: 'accent' },
+            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+          })}
         >
           About
         </a>
       </div>
-      <span
-        style={{
-          fontFamily: "'IBM Plex Sans', sans-serif",
-          fontSize: '11px',
-          letterSpacing: '0.10em',
-          textTransform: 'uppercase' as const,
-          color: '#547828',
-        }}
-      >
-        D.M.
-      </span>
     </nav>
   )
 }

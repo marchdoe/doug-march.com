@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 358,
+    "s": 82,
+    "l": 42,
+    "name": "aviation crimson"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "red-garnet",
+    "name": "garnet void"
+  },
+  "mood_word": "daring",
+  "color_story": "Deep crimson at H:358° — the red of early aircraft, of boundary-crossing courage — is the only hue completely unclaimed by the past seven palettes and the one color that answers Earhart's question without flinching."
+}

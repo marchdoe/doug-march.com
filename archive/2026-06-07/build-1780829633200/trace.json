@@ -1,0 +1,275 @@
+{
+  "date": "2026-06-07",
+  "startedAt": "2026-06-07T10:46:01.557Z",
+  "completedAt": "2026-06-07T10:53:54.899Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "21 Hrs On The Moon",
+              "description": "To mark the recent Artemis Moon Mission and honour the legacy of the first moon landing in 1969, we celebrate the experiments carried out in those historic...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0d7b8f419a3938435907.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAJulBJREFUeAHsvWmbXLeRJooqFjeRlERJFLVbsiTbsiXb8riX6Z62u9sz88ydb/f7PM/9MH9k/tD8gZ7rp6/b7rblRbJky63d2khKFPedrO0mTtUposBAIFbgJJmvVMzMk0BE...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "THE RED",
+              "description": "This is THE RED. Built to be bold. A historic landmark of character and color that has defined Chicago’s skyline since 1972.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1db853d921f825300359.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAFkXJJREFUeAHs/VeTbNmV54ktj4gbWssr8qbWSAAJUUB1tZpuMw7NSJqNGT8EX/kx+MxXfgPS+DrNmeZ0oapRlUBBFERKZCKBFFeE1lr5rP/xszx2nHCP8IgbwsPv72d2wj1c...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Education Foundation of AACPS",
+              "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+              "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Sunday",
+          "is_weekend": true,
+          "day_index": 0
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "mvanhorn/last30days-skill/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "CopilotKit/CopilotKit/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "MemPalace/mempalace/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/danielmiessler",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "openai/plugins/stargazers",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "the Memorial Tournament pres. by Workday",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Ryan Gerard",
+              "position": "1",
+              "score": "-9"
+            },
+            {
+              "name": "J.T. Poston",
+              "position": "2",
+              "score": "-9"
+            },
+            {
+              "name": "Sam Burns",
+              "position": "3",
+              "score": "-8"
+            },
+            {
+              "name": "Eric Cole",
+              "position": "4",
+              "score": "-6"
+            },
+            {
+              "name": "Keegan Bradley",
+              "position": "5",
+              "score": "-4"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "The 29th International Obfuscated C Code Contest (IOCCC) 2025 Winners",
+              "url": "https://www.ioccc.org/2025/",
+              "score": 175,
+              "by": "matt_d"
+            },
+            {
+              "title": "Speculative KV coding: losslessly compressing KV cache by up to ~4×",
+              "url": "https://fergusfinn.com/blog/kv-entropy-coder/",
+              "score": 45,
+              "by": "kkm"
+            },
+            {
+              "title": "Valve P2P networking broken for more than 2 months",
+              "url": "https://github.com/ValveSoftware/GameNetworkingSockets/issues/398",
+              "score": 174,
+              "by": "babuskov"
+            },
+            {
+              "title": "Win16 Memory Management",
+              "url": "http://www.os2museum.com/wp/win16-memory-management/",
+              "score": 26,
+              "by": "supermatou"
+            },
+            {
+              "title": "Field of clones: How horse replicas came to dominate polo",
+              "url": "https://knowablemagazine.org/content/article/technology/2026/cloned-polo-horses",
+              "score": 90,
+              "by": "gscott"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "last quarter",
+          "illumination": 0.465,
+          "days_into_cycle": 22.48
+        },
+        "music": {
+          "bands": [
+            "Tobin Sprout",
+            "The War on Drugs",
+            "Radiohead"
+          ]
+        },
+        "quote": {
+          "text": "Everyone has oceans to fly, if they have the heart to do it. Is it reckless? Maybe. But what do dreams know of boundaries.",
+          "author": "Amelia Earhart"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 7,
+          "day_of_year": 158,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-06T17:10Z",
+              "result": "loss",
+              "score": "0-4"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:49",
+          "sunset": "19:28",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-07"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-07T10:46:17.033Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-06: Split\n  - 2026-06-05: Scroll\n  - 2026-06-04: Poster\n  - 2026-06-03: Specimen\n  - 2026-06-02: Gallery Wall\n  - 2026-06-01: Index\n  - 2026-05-31: Broadsheet\n\n**Recently used** (last 3 days): Split, Scroll, Poster\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or sig"
+      },
+      "output": {
+        "hero_copy": "What do dreams know of boundaries?",
+        "archetype": "Stack",
+        "chassisId": "bricolage-manrope",
+        "specLength": 7123,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue:** H:358°, S:82%, L:42% — aviation crimson. The color of red biplanes, bold ambition, the particular daring required to cross an ocean alone. Completely outside the forbidden 8°–335° band. Every palette since May 31 has lived in the cool-to-warm spectrum; this is the first time the archive touches deep red. The hue earns its place on content as well as mandate.\n\n**Neutral palette** (garnet void — crimson-tinted toward near-black):\n- 50: `#FAF0F1`\n- 100: ",
+        "selfCheck": "1. Hero quotability: Yes — \"What do dreams know of boundaries?\" is a complete, confrontational rhetorical fragment that stands alone without context; it would be screenshotted.\n2. Because-of chain: Yes — Earhart's limit-challenging fragment → Stack (bands as flight log, the question at the top and t"
+      },
+      "durationMs": 277876,
+      "timestamp": "2026-06-07T10:50:54.915Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 7123
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "REVISE\n\n- **accentLight color mismatch:** Visual spec names accent light as `#F74D6E` (crimson.400), but preset.ts semantic token `accentLight` resolves to `#FF8096` (crimson.300) in dark mode (the `base` value applies in this dark-mode-primary design). Update the preset's `accentLight` definition from `{ base: '{colors.crimson.300}', _light: '{colors.crimson.400}' }` to `{ base: '{colors.crimson.400}', _light: '{colors.crimson.300}' }` to align with the spec, or update the visual spec to docume"
+      },
+      "durationMs": 39839,
+      "timestamp": "2026-06-07T10:51:36.288Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4945,
+        "briefLength": 10104
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 114021,
+      "timestamp": "2026-06-07T10:53:30.311Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-07T10:53:37.810Z"
+    }
+  ]
+}

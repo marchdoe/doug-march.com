@@ -1,181 +1,98 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
+import { Sidebar } from '../components/Sidebar'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
-import logoSvg from '../assets/logo.svg'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
   return (
-    <div
-      className={css({
-        display: 'grid',
-        gridTemplateColumns: '1fr',
-        minHeight: '100vh',
-        width: '100%',
-        '@media (min-width: 768px)': {
-          gridTemplateColumns: '45fr 55fr',
-        },
-      })}
-    >
-      {/* LEFT PANEL */}
-      <div
+    <>
+      {/* Nav band */}
+      <Sidebar />
+
+      {/* Identity band */}
+      <section
         className={css({
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '48px 24px',
-          background: '#060B02',
-          minHeight: '50vh',
-          position: 'relative',
-          '@media (min-width: 768px)': {
-            padding: '80px 52px',
-            minHeight: '100vh',
-            position: 'sticky',
-            top: '0',
-          },
+          padding: '80px 6vw 64px',
+          background: 'bg',
         })}
       >
-        {/* Logo */}
-        <a
-          href="/"
+        <h1
           className={css({
-            position: 'absolute',
-            top: '28px',
-            left: '24px',
-            '@media (min-width: 768px)': {
-              top: '48px',
-              left: '52px',
-            },
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: 'clamp(36px, 4.5vw, 64px)',
+            lineHeight: 'snug',
+            letterSpacing: 'tight',
+            color: 'text',
+            marginBottom: '16px',
           })}
-          aria-label="Home"
         >
-          <img src={logoSvg} alt="Doug March logo" width={28} height={28} />
-        </a>
+          {identity.name}
+        </h1>
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontSize: '14px',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'accent',
+            marginBottom: '32px',
+          })}
+        >
+          {identity.role}
+        </p>
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontSize: 'clamp(16px, 1.5vw, 20px)',
+            lineHeight: 'normal',
+            color: 'textSecondary',
+            maxWidth: '65ch',
+          })}
+        >
+          {identity.statement}
+        </p>
+      </section>
 
+      {/* Timeline band */}
+      <section
+        className={css({
+          padding: '64px 6vw',
+          background: 'bgCard',
+        })}
+      >
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontSize: '12px',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+            marginBottom: '32px',
+          })}
+        >
+          Timeline
+        </p>
         <div
           className={css({
-            flex: '1',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
-            gap: '24px',
           })}
         >
-          <h1
-            className={css({
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: 'clamp(48px, 6vw, 80px)',
-              lineHeight: '0.88',
-              letterSpacing: '0.01em',
-              color: '#7AFF18',
-              textTransform: 'uppercase',
-            })}
-          >
-            {identity.name}
-          </h1>
-          <span
-            className={css({
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: '11px',
-              letterSpacing: '0.14em',
-              color: '#65A038',
-              textTransform: 'uppercase',
-              lineHeight: '1.1',
-            })}
-          >
-            {identity.role}
-          </span>
-          <p
-            className={css({
-              fontFamily: "'IBM Plex Sans', sans-serif",
-              fontSize: '16px',
-              lineHeight: '1.5',
-              color: '#B8E090',
-              maxWidth: '45ch',
-              marginTop: '16px',
-            })}
-          >
-            {identity.statement}
-          </p>
-        </div>
-
-        {/* Nav */}
-        <div className={css({ display: 'flex', gap: '24px', marginTop: '32px' })}>
-          <a
-            href="/"
-            className={css({
-              fontFamily: "'IBM Plex Sans', sans-serif",
-              fontSize: '12px',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#8EC864',
-              textDecoration: 'none',
-              padding: '10px 0',
-            })}
-          >
-            Work
-          </a>
-          <a
-            href="/about"
-            className={css({
-              fontFamily: "'IBM Plex Sans', sans-serif",
-              fontSize: '12px',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#7AFF18',
-              textDecoration: 'none',
-              padding: '10px 0',
-            })}
-          >
-            About
-          </a>
-        </div>
-      </div>
-
-      {/* RIGHT PANEL */}
-      <div
-        className={css({
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '48px 24px',
-          background: '#0D1404',
-          borderLeft: 'none',
-          '@media (min-width: 768px)': {
-            padding: '64px 52px',
-            borderLeft: '1px solid #182505',
-          },
-        })}
-      >
-        {/* TIMELINE */}
-        <div className={css({ marginBottom: '48px' })}>
-          <span
-            className={css({
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: '11px',
-              letterSpacing: '0.14em',
-              color: '#7AFF18',
-              textTransform: 'uppercase',
-              lineHeight: '1.1',
-              display: 'block',
-              marginBottom: '24px',
-            })}
-          >
-            Timeline
-          </span>
-
           {timeline.map((entry, i) => (
             <div
               key={i}
               className={css({
                 display: 'grid',
-                gridTemplateColumns: '120px 1fr',
-                gap: '16px',
-                padding: '14px 0',
-                borderBottom: '1px solid #182505',
-                alignItems: 'baseline',
-                '@media (max-width: 480px)': {
+                gridTemplateColumns: '140px 1fr',
+                gap: '32px',
+                padding: '20px 0',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+                '@media (max-width: 768px)': {
                   gridTemplateColumns: '1fr',
                   gap: '4px',
                 },
@@ -183,11 +100,11 @@ function AboutPage() {
             >
               <span
                 className={css({
-                  fontFamily: "'IBM Plex Sans', sans-serif",
+                  fontFamily: 'mono',
                   fontSize: '13px',
-                  color: '#65A038',
-                  whiteSpace: 'nowrap',
-                  minWidth: '120px',
+                  color: 'textMuted',
+                  minWidth: '140px',
+                  flexShrink: 0,
                 })}
               >
                 {entry.year}
@@ -195,32 +112,32 @@ function AboutPage() {
               <div>
                 <span
                   className={css({
-                    fontFamily: "'IBM Plex Sans', sans-serif",
+                    fontFamily: 'body',
                     fontSize: '16px',
-                    color: '#E6F9D2',
-                    lineHeight: '1.5',
+                    fontWeight: 'medium',
+                    color: 'text',
                   })}
                 >
                   {entry.role}
                 </span>
                 <span
                   className={css({
-                    fontFamily: "'IBM Plex Sans', sans-serif",
-                    fontSize: '13px',
-                    color: '#65A038',
-                    marginLeft: '8px',
+                    fontFamily: 'body',
+                    fontSize: '14px',
+                    color: 'textMuted',
+                    marginLeft: '12px',
                   })}
                 >
                   {entry.company}
                 </span>
                 <p
                   className={css({
-                    fontFamily: "'IBM Plex Sans', sans-serif",
+                    fontFamily: 'body',
                     fontSize: '14px',
-                    color: '#B8E090',
-                    lineHeight: '1.5',
+                    lineHeight: 'normal',
+                    color: 'textSecondary',
                     marginTop: '4px',
-                    maxWidth: '55ch',
+                    maxWidth: '60ch',
                   })}
                 >
                   {entry.description}
@@ -229,235 +146,264 @@ function AboutPage() {
             </div>
           ))}
         </div>
+      </section>
 
-        {/* Hairline */}
-        <div className={css({ borderTop: '1px solid #182505', marginBottom: '32px' })} />
-
-        {/* CAPABILITIES */}
-        <div className={css({ marginBottom: '48px' })}>
-          <span
-            className={css({
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: '11px',
-              letterSpacing: '0.14em',
-              color: '#7AFF18',
-              textTransform: 'uppercase',
-              lineHeight: '1.1',
-              display: 'block',
-              marginBottom: '20px',
-            })}
-          >
-            Capabilities
-          </span>
-          <div
-            className={css({
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '8px 16px',
-            })}
-          >
-            {capabilities.map((cap, i) => (
-              <span
-                key={i}
-                className={css({
-                  fontFamily: "'IBM Plex Sans', sans-serif",
-                  fontSize: '14px',
-                  color: '#B8E090',
-                  lineHeight: '1.5',
-                  padding: '4px 0',
-                  borderBottom: '1px solid #182505',
-                })}
-              >
-                {cap}
-              </span>
-            ))}
-          </div>
+      {/* Capabilities band */}
+      <section
+        className={css({
+          padding: '64px 6vw',
+          background: 'bg',
+        })}
+      >
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontSize: '12px',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+            marginBottom: '24px',
+          })}
+        >
+          Capabilities
+        </p>
+        <div
+          className={css({
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '12px 32px',
+          })}
+        >
+          {capabilities.map((cap) => (
+            <span
+              key={cap}
+              className={css({
+                fontFamily: 'body',
+                fontSize: '15px',
+                color: 'textSecondary',
+                padding: '10px 0',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+              })}
+            >
+              {cap}
+            </span>
+          ))}
         </div>
+      </section>
 
-        {/* Hairline */}
-        <div className={css({ borderTop: '1px solid #182505', marginBottom: '32px' })} />
-
-        {/* EDUCATION */}
-        <div className={css({ marginBottom: '48px' })}>
-          <span
+      {/* Education band */}
+      <section
+        className={css({
+          padding: '64px 6vw',
+          background: 'bgCard',
+        })}
+      >
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontSize: '12px',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+            marginBottom: '24px',
+          })}
+        >
+          Education
+        </p>
+        <div>
+          <p
             className={css({
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: '11px',
-              letterSpacing: '0.14em',
-              color: '#7AFF18',
-              textTransform: 'uppercase',
-              lineHeight: '1.1',
-              display: 'block',
-              marginBottom: '20px',
+              fontFamily: 'body',
+              fontSize: '16px',
+              fontWeight: 'medium',
+              color: 'text',
             })}
           >
-            Education
-          </span>
-          <div className={css({ display: 'flex', flexDirection: 'column', gap: '4px' })}>
+            {education.school}
+          </p>
+          <p
+            className={css({
+              fontFamily: 'body',
+              fontSize: '15px',
+              color: 'textSecondary',
+              marginTop: '4px',
+            })}
+          >
+            {education.degree} — {education.concentration}
+          </p>
+          <p
+            className={css({
+              fontFamily: 'mono',
+              fontSize: '13px',
+              color: 'textMuted',
+              marginTop: '4px',
+            })}
+          >
+            {education.years}
+          </p>
+        </div>
+      </section>
+
+      {/* Personal band (crimson inversion) */}
+      <section
+        className={css({
+          padding: '64px 6vw',
+          background: 'bgInverse',
+        })}
+      >
+        <div
+          className={css({
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '32px',
+          })}
+        >
+          <div>
             <span
               className={css({
-                fontFamily: "'IBM Plex Sans', sans-serif",
+                fontFamily: 'body',
+                fontSize: '11px',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                color: 'textInverse',
+                opacity: 0.7,
+                display: 'block',
+                marginBottom: '8px',
+              })}
+            >
+              Holes in One
+            </span>
+            <span
+              className={css({
+                fontFamily: 'display',
+                fontWeight: 'bold',
+                fontSize: '48px',
+                color: 'textInverse',
+              })}
+            >
+              {personal.holesInOne}
+            </span>
+          </div>
+          <div>
+            <span
+              className={css({
+                fontFamily: 'body',
+                fontSize: '11px',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                color: 'textInverse',
+                opacity: 0.7,
+                display: 'block',
+                marginBottom: '8px',
+              })}
+            >
+              Sport
+            </span>
+            <span
+              className={css({
+                fontFamily: 'body',
+                fontSize: '18px',
+                color: 'textInverse',
+              })}
+            >
+              {personal.sport}
+            </span>
+          </div>
+          <div>
+            <span
+              className={css({
+                fontFamily: 'body',
+                fontSize: '11px',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                color: 'textInverse',
+                opacity: 0.7,
+                display: 'block',
+                marginBottom: '8px',
+              })}
+            >
+              Teams
+            </span>
+            <span
+              className={css({
+                fontFamily: 'body',
                 fontSize: '16px',
-                color: '#E6F9D2',
-                lineHeight: '1.5',
+                color: 'textInverse',
+                lineHeight: 'normal',
               })}
             >
-              {education.school}
+              {personal.teams.join(', ')}
+            </span>
+          </div>
+          <div>
+            <span
+              className={css({
+                fontFamily: 'body',
+                fontSize: '11px',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                color: 'textInverse',
+                opacity: 0.7,
+                display: 'block',
+                marginBottom: '8px',
+              })}
+            >
+              Current Focus
             </span>
             <span
               className={css({
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                fontSize: '14px',
-                color: '#B8E090',
-                lineHeight: '1.5',
+                fontFamily: 'body',
+                fontSize: '16px',
+                color: 'textInverse',
+                lineHeight: 'normal',
               })}
             >
-              {education.degree} · {education.concentration}
-            </span>
-            <span
-              className={css({
-                fontFamily: "'IBM Plex Sans', sans-serif",
-                fontSize: '13px',
-                color: '#65A038',
-              })}
-            >
-              {education.years}
+              {personal.currentFocus}
             </span>
           </div>
         </div>
+      </section>
 
-        {/* Hairline */}
-        <div className={css({ borderTop: '1px solid #182505', marginBottom: '32px' })} />
-
-        {/* PERSONAL */}
-        <div className={css({ marginBottom: '48px' })}>
-          <span
-            className={css({
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: '11px',
-              letterSpacing: '0.14em',
-              color: '#7AFF18',
-              textTransform: 'uppercase',
-              lineHeight: '1.1',
-              display: 'block',
-              marginBottom: '20px',
-            })}
-          >
-            Personal
-          </span>
-          <div className={css({ display: 'flex', flexDirection: 'column', gap: '12px' })}>
-            <div className={css({ display: 'flex', gap: '12px', alignItems: 'baseline' })}>
-              <span
-                className={css({
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: '11px',
-                  letterSpacing: '0.14em',
-                  color: '#65A038',
-                  textTransform: 'uppercase',
-                })}
-              >
-                Holes in One
-              </span>
-              <span
-                className={css({
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: '22px',
-                  letterSpacing: '0.04em',
-                  color: '#7AFF18',
-                })}
-              >
-                {personal.holesInOne}
-              </span>
-            </div>
-            <div className={css({ display: 'flex', gap: '12px', alignItems: 'baseline' })}>
-              <span
-                className={css({
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: '11px',
-                  letterSpacing: '0.14em',
-                  color: '#65A038',
-                  textTransform: 'uppercase',
-                })}
-              >
-                Sport
-              </span>
-              <span
-                className={css({
-                  fontFamily: "'IBM Plex Sans', sans-serif",
-                  fontSize: '16px',
-                  color: '#E6F9D2',
-                })}
-              >
-                {personal.sport}
-              </span>
-            </div>
-            <div className={css({ display: 'flex', flexDirection: 'column', gap: '4px' })}>
-              <span
-                className={css({
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: '11px',
-                  letterSpacing: '0.14em',
-                  color: '#65A038',
-                  textTransform: 'uppercase',
-                })}
-              >
-                Teams
-              </span>
-              <span
-                className={css({
-                  fontFamily: "'IBM Plex Sans', sans-serif",
-                  fontSize: '16px',
-                  color: '#E6F9D2',
-                  lineHeight: '1.5',
-                })}
-              >
-                {personal.teams.join(' · ')}
-              </span>
-            </div>
-            <div className={css({ display: 'flex', flexDirection: 'column', gap: '4px' })}>
-              <span
-                className={css({
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: '11px',
-                  letterSpacing: '0.14em',
-                  color: '#65A038',
-                  textTransform: 'uppercase',
-                })}
-              >
-                Current Focus
-              </span>
-              <span
-                className={css({
-                  fontFamily: "'IBM Plex Sans', sans-serif",
-                  fontSize: '16px',
-                  color: '#E6F9D2',
-                  lineHeight: '1.5',
-                  maxWidth: '55ch',
-                })}
-              >
-                {personal.currentFocus}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className={css({ marginTop: 'auto', paddingTop: '32px' })}>
-          <a
-            href="/archive"
-            className={css({
-              fontFamily: "'IBM Plex Sans', sans-serif",
-              fontSize: '11px',
-              letterSpacing: '0.08em',
-              color: '#547828',
-              textDecoration: 'none',
-              textTransform: 'uppercase',
-            })}
-          >
-            Archive
-          </a>
-        </div>
-      </div>
-    </div>
+      {/* Footer */}
+      <footer
+        className={css({
+          borderTop: '1px solid',
+          borderColor: 'border',
+          padding: '24px 6vw',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          '@media (max-width: 768px)': {
+            flexDirection: 'column',
+            gap: '12px',
+            alignItems: 'flex-start',
+          },
+        })}
+      >
+        <span
+          className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            color: 'textMuted',
+          })}
+        >
+          Doug March
+        </span>
+        <a
+          href="/archive"
+          className={css({
+            fontFamily: 'body',
+            fontSize: '13px',
+            color: 'textMuted',
+            textDecoration: 'none',
+            _hover: { color: 'accent' },
+            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+          })}
+        >
+          Archive
+        </a>
+      </footer>
+    </>
   )
 }

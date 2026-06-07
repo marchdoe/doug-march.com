@@ -6,9 +6,12 @@ export function Layout({ children }: { children: ReactNode }) {
   return (
     <div
       className={css({
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
         minHeight: '100vh',
-        background: '#080D02',
-        color: '#E6F9D2',
+        background: 'bg',
+        color: 'text',
       })}
     >
       {children}
