@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 75,
+    "s": 100,
+    "l": 50,
+    "name": "chartreuse"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "warm yellow-green",
+    "name": "newsprint"
+  },
+  "mood_word": "declarative",
+  "color_story": "Electric chartreuse on void-black newsprint: the mandate's open 68°–82° window lands on the hue of direction itself — a green light, the color of go, of June, of a paper that knows what it's printing before the ink hits."
+}

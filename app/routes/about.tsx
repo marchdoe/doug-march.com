@@ -1,409 +1,261 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Sidebar } from '../components/Sidebar'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
+const pageWrapStyle = css({
+  width: '100%',
+})
+
+const heroSectionStyle = css({
+  padding: { base: '32px 6vw 28px', md: '48px 6vw 40px' },
+  borderBottom: '1px solid token(colors.neutral.800)',
+})
+
+const nameStyle = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'clamp(32px, 4vw, 56px)',
+  lineHeight: '0.95',
+  color: 'text',
+  marginBottom: '8px',
+})
+
+const roleStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '14px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'accent',
+  marginBottom: '20px',
+})
+
+const statementStyle = css({
+  fontFamily: 'display',
+  fontSize: 'clamp(17px, 2vw, 22px)',
+  lineHeight: '1.55',
+  color: 'textSecondary',
+  maxWidth: '65ch',
+})
+
+const columnsStyle = css({
+  display: { base: 'flex', lg: 'grid' },
+  flexDirection: { base: 'column', lg: 'unset' },
+  gridTemplateColumns: { lg: '60fr 40fr' },
+  borderTop: '1px solid token(colors.neutral.800)',
+})
+
+const colMainStyle = css({
+  padding: { base: '24px 6vw', lg: '32px 3vw 40px 6vw' },
+  borderRight: { base: 'none', lg: '1px solid token(colors.neutral.800)' },
+  borderBottom: { base: '1px solid token(colors.neutral.800)', lg: 'none' },
+})
+
+const colSideStyle = css({
+  padding: { base: '24px 6vw', lg: '32px 4vw 40px 3vw' },
+})
+
+const eyebrowStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginBottom: '16px',
+})
+
+const timelineRowStyle = css({
+  display: 'flex',
+  gap: { base: '12px', md: '24px' },
+  padding: '12px 0',
+  borderBottom: '1px solid token(colors.neutral.800)',
+  alignItems: 'baseline',
+})
+
+const yearColStyle = css({
+  fontFamily: 'mono',
+  fontSize: '12px',
+  color: 'textMuted',
+  fontVariantNumeric: 'tabular-nums',
+  letterSpacing: '0.03em',
+  minWidth: '120px',
+  flexShrink: 0,
+})
+
+const roleCompanyStyle = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: '15px',
+  color: 'text',
+  lineHeight: '1.2',
+})
+
+const companyNameStyle = css({
+  color: 'textSecondary',
+  fontWeight: 'normal',
+})
+
+const descStyle = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  lineHeight: '1.55',
+  color: 'textSecondary',
+  marginTop: '4px',
+  maxWidth: '55ch',
+})
+
+const capListStyle = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '8px',
+  marginBottom: '28px',
+})
+
+const capItemStyle = css({
+  fontFamily: 'mono',
+  fontSize: '12px',
+  color: 'textSecondary',
+  letterSpacing: '0.03em',
+  padding: '4px 10px',
+  border: '1px solid token(colors.neutral.700)',
+})
+
+const personalBlockStyle = css({
+  marginBottom: '20px',
+})
+
+const personalLabelStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginBottom: '4px',
+})
+
+const personalValueStyle = css({
+  fontFamily: 'display',
+  fontSize: '16px',
+  color: 'text',
+  lineHeight: '1.4',
+})
+
+const eduBlockStyle = css({
+  marginBottom: '20px',
+})
+
+const footerBandStyle = css({
+  width: '100%',
+  padding: '20px 6vw',
+  borderTop: '1px solid token(colors.neutral.800)',
+  display: 'flex',
+  gap: '48px',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+})
+
+const footerTextStyle = css({
+  fontFamily: 'mono',
+  fontSize: '11px',
+  color: 'textMuted',
+  letterSpacing: '0.05em',
+})
+
+const footerLinkStyle = css({
+  fontFamily: 'mono',
+  fontSize: '11px',
+  color: 'textMuted',
+  textDecoration: 'none',
+  _hover: { color: 'accent' },
+  _focus: {
+    outline: '2px solid token(colors.chartreuse.400)',
+    outlineOffset: '2px',
+  },
+})
+
 function AboutPage() {
   return (
-    <>
-      {/* Nav band */}
-      <Sidebar />
+    <div className={pageWrapStyle}>
+      {/* Hero Identity */}
+      <div className={heroSectionStyle}>
+        <h1 className={nameStyle}>{identity.name}</h1>
+        <p className={roleStyle}>{identity.role}</p>
+        <p className={statementStyle}>{identity.statement}</p>
+      </div>
 
-      {/* Identity band */}
-      <section
-        className={css({
-          padding: '80px 6vw 64px',
-          background: 'bg',
-        })}
-      >
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'bold',
-            fontSize: 'clamp(36px, 4.5vw, 64px)',
-            lineHeight: 'snug',
-            letterSpacing: 'tight',
-            color: 'text',
-            marginBottom: '16px',
-          })}
-        >
-          {identity.name}
-        </h1>
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontSize: '14px',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'accent',
-            marginBottom: '32px',
-          })}
-        >
-          {identity.role}
-        </p>
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontSize: 'clamp(16px, 1.5vw, 20px)',
-            lineHeight: 'normal',
-            color: 'textSecondary',
-            maxWidth: '65ch',
-          })}
-        >
-          {identity.statement}
-        </p>
-      </section>
-
-      {/* Timeline band */}
-      <section
-        className={css({
-          padding: '64px 6vw',
-          background: 'bgCard',
-        })}
-      >
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontSize: '12px',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textMuted',
-            marginBottom: '32px',
-          })}
-        >
-          Timeline
-        </p>
-        <div
-          className={css({
-            display: 'flex',
-            flexDirection: 'column',
-          })}
-        >
+      {/* Two columns */}
+      <div className={columnsStyle}>
+        {/* Main: Timeline */}
+        <div className={colMainStyle}>
+          <p className={eyebrowStyle}>Record</p>
           {timeline.map((entry, i) => (
-            <div
-              key={i}
-              className={css({
-                display: 'grid',
-                gridTemplateColumns: '140px 1fr',
-                gap: '32px',
-                padding: '20px 0',
-                borderBottom: '1px solid',
-                borderColor: 'border',
-                '@media (max-width: 768px)': {
-                  gridTemplateColumns: '1fr',
-                  gap: '4px',
-                },
-              })}
-            >
-              <span
-                className={css({
-                  fontFamily: 'mono',
-                  fontSize: '13px',
-                  color: 'textMuted',
-                  minWidth: '140px',
-                  flexShrink: 0,
-                })}
-              >
-                {entry.year}
-              </span>
+            <div key={i} className={timelineRowStyle}>
+              <span className={yearColStyle}>{entry.year}</span>
               <div>
-                <span
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '16px',
-                    fontWeight: 'medium',
-                    color: 'text',
-                  })}
-                >
-                  {entry.role}
-                </span>
-                <span
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '14px',
-                    color: 'textMuted',
-                    marginLeft: '12px',
-                  })}
-                >
-                  {entry.company}
-                </span>
-                <p
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '14px',
-                    lineHeight: 'normal',
-                    color: 'textSecondary',
-                    marginTop: '4px',
-                    maxWidth: '60ch',
-                  })}
-                >
-                  {entry.description}
+                <p className={roleCompanyStyle}>
+                  {entry.role}{' '}
+                  <span className={companyNameStyle}>— {entry.company}</span>
+                  {entry.current && (
+                    <span className={css({ color: 'accent', fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', marginLeft: '8px', fontFamily: 'body' })}>
+                      Current
+                    </span>
+                  )}
                 </p>
+                <p className={descStyle}>{entry.description}</p>
               </div>
             </div>
           ))}
         </div>
-      </section>
 
-      {/* Capabilities band */}
-      <section
-        className={css({
-          padding: '64px 6vw',
-          background: 'bg',
-        })}
-      >
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontSize: '12px',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textMuted',
-            marginBottom: '24px',
-          })}
-        >
-          Capabilities
-        </p>
-        <div
-          className={css({
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '12px 32px',
-          })}
-        >
-          {capabilities.map((cap) => (
-            <span
-              key={cap}
-              className={css({
-                fontFamily: 'body',
-                fontSize: '15px',
-                color: 'textSecondary',
-                padding: '10px 0',
-                borderBottom: '1px solid',
-                borderColor: 'border',
-              })}
-            >
-              {cap}
-            </span>
-          ))}
-        </div>
-      </section>
+        {/* Side: Capabilities, Education, Personal */}
+        <div className={colSideStyle}>
+          <p className={eyebrowStyle}>Capabilities</p>
+          <div className={capListStyle}>
+            {capabilities.map((cap, i) => (
+              <span key={i} className={capItemStyle}>{cap}</span>
+            ))}
+          </div>
 
-      {/* Education band */}
-      <section
-        className={css({
-          padding: '64px 6vw',
-          background: 'bgCard',
-        })}
-      >
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontSize: '12px',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textMuted',
-            marginBottom: '24px',
-          })}
-        >
-          Education
-        </p>
-        <div>
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontSize: '16px',
-              fontWeight: 'medium',
-              color: 'text',
-            })}
-          >
-            {education.school}
-          </p>
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontSize: '15px',
-              color: 'textSecondary',
-              marginTop: '4px',
-            })}
-          >
-            {education.degree} — {education.concentration}
-          </p>
-          <p
-            className={css({
-              fontFamily: 'mono',
-              fontSize: '13px',
-              color: 'textMuted',
-              marginTop: '4px',
-            })}
-          >
-            {education.years}
-          </p>
-        </div>
-      </section>
+          <p className={eyebrowStyle}>Education</p>
+          <div className={eduBlockStyle}>
+            <p className={personalValueStyle}>{education.school}</p>
+            <p className={css({ fontFamily: 'body', fontSize: '14px', color: 'textSecondary', lineHeight: '1.4' })}>
+              {education.degree}, {education.concentration}
+            </p>
+            <p className={css({ fontFamily: 'mono', fontSize: '12px', color: 'textMuted' })}>
+              {education.years}
+            </p>
+          </div>
 
-      {/* Personal band (crimson inversion) */}
-      <section
-        className={css({
-          padding: '64px 6vw',
-          background: 'bgInverse',
-        })}
-      >
-        <div
-          className={css({
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '32px',
-          })}
-        >
-          <div>
-            <span
-              className={css({
-                fontFamily: 'body',
-                fontSize: '11px',
-                letterSpacing: 'widest',
-                textTransform: 'uppercase',
-                color: 'textInverse',
-                opacity: 0.7,
-                display: 'block',
-                marginBottom: '8px',
-              })}
-            >
-              Holes in One
-            </span>
-            <span
-              className={css({
-                fontFamily: 'display',
-                fontWeight: 'bold',
-                fontSize: '48px',
-                color: 'textInverse',
-              })}
-            >
-              {personal.holesInOne}
-            </span>
+          <p className={eyebrowStyle}>Personal</p>
+          <div className={personalBlockStyle}>
+            <p className={personalLabelStyle}>Holes in One</p>
+            <p className={personalValueStyle}>{personal.holesInOne}</p>
           </div>
-          <div>
-            <span
-              className={css({
-                fontFamily: 'body',
-                fontSize: '11px',
-                letterSpacing: 'widest',
-                textTransform: 'uppercase',
-                color: 'textInverse',
-                opacity: 0.7,
-                display: 'block',
-                marginBottom: '8px',
-              })}
-            >
-              Sport
-            </span>
-            <span
-              className={css({
-                fontFamily: 'body',
-                fontSize: '18px',
-                color: 'textInverse',
-              })}
-            >
-              {personal.sport}
-            </span>
+          <div className={personalBlockStyle}>
+            <p className={personalLabelStyle}>Sport</p>
+            <p className={personalValueStyle}>{personal.sport}</p>
           </div>
-          <div>
-            <span
-              className={css({
-                fontFamily: 'body',
-                fontSize: '11px',
-                letterSpacing: 'widest',
-                textTransform: 'uppercase',
-                color: 'textInverse',
-                opacity: 0.7,
-                display: 'block',
-                marginBottom: '8px',
-              })}
-            >
-              Teams
-            </span>
-            <span
-              className={css({
-                fontFamily: 'body',
-                fontSize: '16px',
-                color: 'textInverse',
-                lineHeight: 'normal',
-              })}
-            >
-              {personal.teams.join(', ')}
-            </span>
+          <div className={personalBlockStyle}>
+            <p className={personalLabelStyle}>Teams</p>
+            <p className={personalValueStyle}>{personal.teams.join(', ')}</p>
           </div>
-          <div>
-            <span
-              className={css({
-                fontFamily: 'body',
-                fontSize: '11px',
-                letterSpacing: 'widest',
-                textTransform: 'uppercase',
-                color: 'textInverse',
-                opacity: 0.7,
-                display: 'block',
-                marginBottom: '8px',
-              })}
-            >
-              Current Focus
-            </span>
-            <span
-              className={css({
-                fontFamily: 'body',
-                fontSize: '16px',
-                color: 'textInverse',
-                lineHeight: 'normal',
-              })}
-            >
-              {personal.currentFocus}
-            </span>
+          <div className={personalBlockStyle}>
+            <p className={personalLabelStyle}>Current Focus</p>
+            <p className={personalValueStyle}>{personal.currentFocus}</p>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Footer */}
-      <footer
-        className={css({
-          borderTop: '1px solid',
-          borderColor: 'border',
-          padding: '24px 6vw',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          '@media (max-width: 768px)': {
-            flexDirection: 'column',
-            gap: '12px',
-            alignItems: 'flex-start',
-          },
-        })}
-      >
-        <span
-          className={css({
-            fontFamily: 'body',
-            fontSize: '13px',
-            color: 'textMuted',
-          })}
-        >
-          Doug March
-        </span>
-        <a
-          href="/archive"
-          className={css({
-            fontFamily: 'body',
-            fontSize: '13px',
-            color: 'textMuted',
-            textDecoration: 'none',
-            _hover: { color: 'accent' },
-            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-          })}
-        >
-          Archive
-        </a>
+      <footer className={footerBandStyle}>
+        <span className={footerTextStyle}>© 2026 Doug March</span>
+        <a href="/archive" className={footerLinkStyle}>Archive</a>
       </footer>
-    </>
+    </div>
   )
 }

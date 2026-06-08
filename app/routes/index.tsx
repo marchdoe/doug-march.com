@@ -1,587 +1,491 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Sidebar } from '../components/Sidebar'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
-import { capabilities, timeline } from '../content/timeline'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-function HomePage() {
-  const allWork = [
-    ...(featuredProject ? [featuredProject] : []),
-    ...selectedWork,
-  ]
+const heroZoneStyle = css({
+  width: '100%',
+  minHeight: { base: 'auto', md: '32vh' },
+  padding: { base: '32px 6vw 28px', md: '48px 6vw 40px' },
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+})
 
+const heroTextStyle = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontStyle: 'italic',
+  fontSize: 'clamp(36px, 5.5vw, 80px)',
+  lineHeight: '0.93',
+  letterSpacing: '-0.01em',
+  color: 'text',
+  textWrap: 'balance',
+})
+
+const heroBreakStyle = css({
+  display: 'block',
+})
+
+const attributionStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '13px',
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginTop: '20px',
+})
+
+const dividerStyle = css({
+  width: '100%',
+  height: '1px',
+  background: 'borderStrong',
+  border: 'none',
+})
+
+const columnsStyle = css({
+  display: { base: 'flex', lg: 'grid' },
+  flexDirection: { base: 'column', lg: 'unset' },
+  gridTemplateColumns: { lg: '28fr 46fr 26fr' },
+  minHeight: { base: 'auto', lg: '52vh' },
+  borderTop: '1px solid token(colors.neutral.800)',
+})
+
+const colLeftStyle = css({
+  padding: { base: '24px 6vw', lg: '32px 3vw 40px 6vw' },
+  borderRight: { base: 'none', lg: '1px solid token(colors.neutral.800)' },
+  borderBottom: { base: '1px solid token(colors.neutral.800)', lg: 'none' },
+})
+
+const colCenterStyle = css({
+  padding: { base: '24px 6vw', lg: '32px 3vw 40px' },
+  borderRight: { base: 'none', lg: '1px solid token(colors.neutral.800)' },
+  borderBottom: { base: '1px solid token(colors.neutral.800)', lg: 'none' },
+})
+
+const colRightStyle = css({
+  padding: { base: '24px 6vw', lg: '32px 4vw 40px 3vw' },
+})
+
+const eyebrowStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginBottom: '16px',
+})
+
+const featuredTitleStyle = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'clamp(24px, 3vw, 36px)',
+  lineHeight: '1.0',
+  color: 'text',
+  marginBottom: '12px',
+})
+
+const featuredProblemStyle = css({
+  fontFamily: 'display',
+  fontSize: '16px',
+  lineHeight: '1.65',
+  color: 'textSecondary',
+  marginBottom: '16px',
+  maxWidth: '65ch',
+})
+
+const featuredLinkStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '13px',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'accent',
+  textDecoration: 'none',
+  transition: 'color 0.2s ease',
+  _hover: { color: 'text' },
+  _focus: {
+    outline: '2px solid token(colors.chartreuse.400)',
+    outlineOffset: '2px',
+  },
+})
+
+const projectRowStyle = css({
+  padding: '10px 0',
+  borderBottom: '1px solid token(colors.neutral.800)',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  gap: '12px',
+  transition: 'border-color 0.15s ease',
+  _hover: {
+    borderLeftWidth: '3px',
+    borderLeftStyle: 'solid',
+    borderLeftColor: 'accent',
+    paddingLeft: '8px',
+  },
+})
+
+const projectTitleLinkStyle = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: '16px',
+  lineHeight: '1.2',
+  color: 'text',
+  textDecoration: 'none',
+  _hover: { color: 'accent' },
+  _focus: {
+    outline: '2px solid token(colors.chartreuse.400)',
+    outlineOffset: '2px',
+  },
+})
+
+const projectMetaStyle = css({
+  fontFamily: 'mono',
+  fontSize: '12px',
+  color: 'textMuted',
+  whiteSpace: 'nowrap',
+  letterSpacing: '0.03em',
+  fontVariantNumeric: 'tabular-nums',
+})
+
+const navStackStyle = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+  marginBottom: '28px',
+})
+
+const navItemStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '14px',
+  color: 'textSecondary',
+  textDecoration: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  padding: '4px 0',
+  transition: 'color 0.15s ease',
+  _hover: { color: 'accent' },
+  _focus: {
+    outline: '2px solid token(colors.chartreuse.400)',
+    outlineOffset: '2px',
+  },
+})
+
+const bulletStyle = css({
+  color: 'accent',
+  fontSize: '10px',
+})
+
+const signalEyebrowStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginBottom: '14px',
+})
+
+const signalBlockStyle = css({
+  marginBottom: '20px',
+})
+
+const signalLabelStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginBottom: '4px',
+})
+
+const scoreLineStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'bold',
+  fontSize: '28px',
+  fontVariantNumeric: 'tabular-nums',
+  letterSpacing: '0.03em',
+  color: 'text',
+  lineHeight: '1.3',
+})
+
+const scoreAccentStyle = css({
+  color: 'accent',
+  fontWeight: 'bold',
+  textTransform: 'uppercase',
+  letterSpacing: '0.14em',
+  fontSize: '14px',
+})
+
+const leaderRowStyle = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  lineHeight: '1.3',
+  color: 'textSecondary',
+  display: 'flex',
+  justifyContent: 'space-between',
+  padding: '3px 0',
+})
+
+const leaderScoreStyle = css({
+  fontVariantNumeric: 'tabular-nums',
+  color: 'accent',
+  fontWeight: 'medium',
+})
+
+const hnStoryStyle = css({
+  fontFamily: 'body',
+  fontStyle: 'italic',
+  fontSize: '14px',
+  lineHeight: '1.45',
+  color: 'textSecondary',
+  marginBottom: '4px',
+})
+
+const hnScoreStyle = css({
+  fontFamily: 'mono',
+  fontSize: '13px',
+  color: 'accent',
+  fontWeight: 'medium',
+})
+
+const musicLineStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'token(colors.neutral.500)',
+})
+
+const moonLineStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '12px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+})
+
+const footerBandStyle = css({
+  width: '100%',
+  padding: '20px 6vw',
+  borderTop: '1px solid token(colors.neutral.800)',
+  display: 'flex',
+  gap: '48px',
+  alignItems: 'center',
+  flexWrap: 'wrap',
+})
+
+const footerTextStyle = css({
+  fontFamily: 'mono',
+  fontSize: '11px',
+  color: 'textMuted',
+  letterSpacing: '0.05em',
+})
+
+const footerLinkStyle = css({
+  fontFamily: 'mono',
+  fontSize: '11px',
+  color: 'textMuted',
+  textDecoration: 'none',
+  _hover: { color: 'accent' },
+  _focus: {
+    outline: '2px solid token(colors.chartreuse.400)',
+    outlineOffset: '2px',
+  },
+})
+
+const experimentsEyebrowStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginTop: '28px',
+  marginBottom: '12px',
+})
+
+function HomePage() {
   return (
     <>
-      {/* BAND 1 — Hero */}
-      <section
-        className={css({
-          minHeight: '90vh',
-          background: 'bg',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-          '@media (max-width: 768px)': {
-            minHeight: '80vh',
-          },
-        })}
-      >
-        <Sidebar />
-        <div
-          className={css({
-            flex: '1',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            padding: '0 6vw',
-            paddingBottom: '80px',
-          })}
-        >
-          <h1
-            className={css({
-              fontFamily: 'display',
-              fontWeight: 'bold',
-              fontSize: 'clamp(48px, 6.5vw, 96px)',
-              lineHeight: 'tight',
-              letterSpacing: 'tight',
-              color: 'text',
-              maxWidth: '1200px',
-              '@media (prefers-reduced-motion: reduce)': {
-                animation: 'none',
-              },
-            })}
-          >
-            What do dreams know
-            <br />
-            of boundaries?
-          </h1>
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontSize: 'clamp(12px, 1vw, 15px)',
-              fontWeight: 'normal',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'accent',
-              marginTop: '48px',
-            })}
-          >
-            — Amelia Earhart, 1928
-          </p>
-        </div>
-      </section>
+      {/* Hero Zone */}
+      <div className={heroZoneStyle}>
+        <h1 className={heroTextStyle}>
+          <span className={heroBreakStyle}>The world makes way</span>
+          <span className={heroBreakStyle}>for the man who knows</span>
+          <span className={heroBreakStyle}>where he is going.</span>
+        </h1>
+        <p className={attributionStyle}>— Ralph Waldo Emerson</p>
+      </div>
 
-      {/* BAND 2 — Selected Work */}
-      <section
-        className={css({
-          background: 'bgCard',
-          padding: '80px 6vw',
-          minHeight: '50vh',
-        })}
-      >
-        <div
-          className={css({
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1px',
-            background: 'border',
-            '@media (max-width: 900px)': {
-              gridTemplateColumns: '1fr',
-            },
-          })}
-        >
-          {allWork.slice(0, 3).map((project) => (
+      <hr className={dividerStyle} />
+
+      {/* Three-column broadsheet */}
+      <div className={columnsStyle}>
+        {/* LEFT COLUMN — Nav + Featured */}
+        <div className={colLeftStyle}>
+          <p className={eyebrowStyle}>Navigate</p>
+          <nav className={navStackStyle}>
+            <a href="/" className={navItemStyle}>
+              <span className={bulletStyle}>●</span> Work
+            </a>
+            <a href="/about" className={navItemStyle}>
+              <span className={bulletStyle}>●</span> About
+            </a>
+          </nav>
+
+          <p className={eyebrowStyle}>Featured</p>
+          {featuredProject && (
+            <div>
+              <h2 className={featuredTitleStyle}>{featuredProject.title}</h2>
+              {featuredProject.problem && (
+                <p className={featuredProblemStyle}>{featuredProject.problem}</p>
+              )}
+              {featuredProject.externalUrl && (
+                <a
+                  href={featuredProject.externalUrl}
+                  className={featuredLinkStyle}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Visit {featuredProject.title} →
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* CENTER COLUMN — Selected Work + Experiments */}
+        <div className={colCenterStyle}>
+          <p className={eyebrowStyle}>Filed This Year</p>
+
+          {selectedWork.map((project) => (
             <a
               key={project.slug}
-              href={project.featured && project.externalUrl ? project.externalUrl : `/work/${project.slug}`}
+              href={`/work/${project.slug}`}
               className={css({
-                display: 'block',
-                padding: '40px 32px',
-                background: 'bgCard',
                 textDecoration: 'none',
-                color: 'text',
-                borderLeft: '3px solid transparent',
-                transition: 'background 0.2s ease, border-color 0.2s ease',
-                _hover: {
-                  background: 'bgSubtle',
-                  borderLeftColor: 'accent',
-                },
-                _focus: {
-                  outline: '2px solid',
-                  outlineColor: 'accent',
-                  outlineOffset: '-2px',
-                },
-                '@media (prefers-reduced-motion: reduce)': {
-                  transition: 'none',
-                },
+                display: 'block',
               })}
             >
-              <div
-                className={css({
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'baseline',
-                  marginBottom: '16px',
-                })}
-              >
-                <span
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '12px',
-                    letterSpacing: 'wider',
-                    textTransform: 'uppercase',
-                    color: 'textMuted',
-                  })}
-                >
-                  {project.type}
-                </span>
-                <span
-                  className={css({
-                    fontFamily: 'mono',
-                    fontSize: '12px',
-                    color: 'textMuted',
-                  })}
-                >
-                  {project.year}
-                </span>
-              </div>
-              <h3
-                className={css({
+              <div className={projectRowStyle}>
+                <span className={css({
                   fontFamily: 'display',
                   fontWeight: 'bold',
-                  fontSize: 'clamp(22px, 2vw, 32px)',
-                  lineHeight: 'snug',
-                  marginBottom: '12px',
-                })}
-              >
-                {project.title}
-              </h3>
-              {project.problem && (
-                <p
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '15px',
-                    lineHeight: 'normal',
-                    color: 'textSecondary',
-                    maxWidth: '45ch',
-                  })}
-                >
-                  {project.problem}
-                </p>
-              )}
+                  fontSize: '16px',
+                  lineHeight: '1.2',
+                  color: 'text',
+                })}>
+                  {project.title}
+                </span>
+                <span className={projectMetaStyle}>
+                  {project.type} · {project.year}
+                </span>
+              </div>
+            </a>
+          ))}
+
+          <p className={experimentsEyebrowStyle}>Experiments</p>
+
+          {experiments.map((exp) => (
+            <a
+              key={exp.slug}
+              href={exp.externalUrl || `/work/${exp.slug}`}
+              className={css({
+                textDecoration: 'none',
+                display: 'block',
+              })}
+              {...(exp.externalUrl ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              <div className={projectRowStyle}>
+                <span className={css({
+                  fontFamily: 'display',
+                  fontWeight: 'medium',
+                  fontSize: '15px',
+                  lineHeight: '1.2',
+                  color: 'textSecondary',
+                })}>
+                  {exp.title}
+                </span>
+                <span className={projectMetaStyle}>
+                  {exp.type} · {exp.year}
+                </span>
+              </div>
             </a>
           ))}
         </div>
 
-        {/* Experiments row */}
-        <div
-          className={css({
-            marginTop: '48px',
-            borderTop: '1px solid',
-            borderColor: 'border',
-            paddingTop: '32px',
-          })}
-        >
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontSize: '12px',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'textMuted',
-              marginBottom: '20px',
-            })}
-          >
-            Experiments
-          </p>
-          <div
-            className={css({
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '24px',
-              '@media (max-width: 768px)': {
-                gridTemplateColumns: '1fr',
-                gap: '16px',
-              },
-            })}
-          >
-            {experiments.map((exp) => (
-              <a
-                key={exp.slug}
-                href={exp.externalUrl || `/work/${exp.slug}`}
-                className={css({
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'baseline',
-                  padding: '12px 0',
-                  textDecoration: 'none',
-                  color: 'textSecondary',
-                  borderBottom: '1px solid',
-                  borderColor: 'border',
-                  _hover: { color: 'accent' },
-                  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-                })}
-              >
-                <span
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '15px',
-                    fontWeight: 'medium',
-                  })}
-                >
-                  {exp.title}
-                </span>
-                <span
-                  className={css({
-                    fontFamily: 'mono',
-                    fontSize: '12px',
-                    color: 'textMuted',
-                    flexShrink: 0,
-                    marginLeft: '16px',
-                  })}
-                >
-                  {exp.type} · {exp.year}
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+        {/* RIGHT COLUMN — Signals */}
+        <div className={colRightStyle}>
+          <p className={signalEyebrowStyle}>Today's Field</p>
 
-      {/* BAND 3 — Signals Strip (crimson inversion) */}
-      <section
-        className={css({
-          background: 'bgInverse',
-          padding: '0 6vw',
-          minHeight: '200px',
-          display: 'flex',
-          alignItems: 'center',
-          overflow: 'hidden',
-          '@media (max-width: 768px)': {
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            padding: '32px 6vw',
-            gap: '24px',
-            minHeight: 'auto',
-          },
-        })}
-      >
-        {/* Golf */}
-        <div
-          className={css({
-            flexShrink: 0,
-            marginRight: '6vw',
-            '@media (max-width: 768px)': { marginRight: 0 },
-          })}
-        >
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontSize: '11px',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'textInverse',
-              opacity: 0.7,
-              display: 'block',
-              marginBottom: '6px',
-            })}
-          >
-            Memorial
-          </span>
-          <span
-            className={css({
-              fontFamily: 'display',
-              fontWeight: 'bold',
-              fontSize: 'clamp(20px, 2vw, 28px)',
-              color: 'textInverse',
-              fontVariantNumeric: 'tabular-nums',
-              whiteSpace: 'nowrap',
-            })}
-          >
-            Gerard −9 · Poston −9 · Burns −8
-          </span>
-        </div>
-
-        {/* Tigers */}
-        <div
-          className={css({
-            flexShrink: 0,
-            marginRight: '6vw',
-            '@media (max-width: 768px)': { marginRight: 0 },
-          })}
-        >
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontSize: '11px',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'textInverse',
-              opacity: 0.7,
-              display: 'block',
-              marginBottom: '6px',
-            })}
-          >
-            Tigers ↓
-          </span>
-          <span
-            className={css({
-              fontFamily: 'display',
-              fontWeight: 'bold',
-              fontSize: 'clamp(18px, 1.8vw, 24px)',
-              color: 'textInverse',
-              opacity: 0.6,
-            })}
-          >
-            DET 0 · OPP 4
-          </span>
-        </div>
-
-        {/* Moon */}
-        <div
-          className={css({
-            flexShrink: 0,
-            marginRight: '6vw',
-            '@media (max-width: 768px)': { marginRight: 0 },
-          })}
-        >
-          <span
-            className={css({
-              fontSize: '32px',
-              color: 'textInverse',
-              display: 'block',
-              lineHeight: '1',
-            })}
-          >
-            ◑
-          </span>
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontSize: '11px',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'textInverse',
-              opacity: 0.7,
-              marginTop: '4px',
-              display: 'block',
-            })}
-          >
-            Last Quarter · 46%
-          </span>
-        </div>
-
-        {/* Awwwards SOTD */}
-        <div
-          className={css({
-            flexShrink: 0,
-            marginRight: '6vw',
-            '@media (max-width: 768px)': { marginRight: 0 },
-          })}
-        >
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontSize: '13px',
-              letterSpacing: 'wide',
-              textTransform: 'uppercase',
-              color: 'textInverse',
-              fontStyle: 'italic',
-              opacity: 0.8,
-            })}
-          >
-            SOTD: 21 Hrs On The Moon
-          </span>
-        </div>
-
-        {/* Earhart context */}
-        <div
-          className={css({
-            flexShrink: 0,
-            '@media (max-width: 768px)': { marginRight: 0 },
-          })}
-        >
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontSize: '13px',
-              color: 'textInverse',
-              fontStyle: 'italic',
-              opacity: 0.7,
-              whiteSpace: 'nowrap',
-            })}
-          >
-            "Is it reckless? Maybe."
-          </span>
-        </div>
-      </section>
-
-      {/* BAND 4 — Capabilities & Timeline */}
-      <section
-        className={css({
-          background: 'bg',
-          padding: '80px 6vw 120px',
-          minHeight: '50vh',
-        })}
-      >
-        <div
-          className={css({
-            display: 'grid',
-            gridTemplateColumns: '2fr 1fr',
-            gap: '6vw',
-            '@media (max-width: 768px)': {
-              gridTemplateColumns: '1fr',
-              gap: '48px',
-            },
-          })}
-        >
-          {/* Capabilities */}
-          <div>
-            <p
-              className={css({
-                fontFamily: 'body',
-                fontSize: '12px',
-                letterSpacing: 'wider',
-                textTransform: 'uppercase',
-                color: 'textMuted',
-                marginBottom: '24px',
-              })}
-            >
-              Capabilities
+          {/* Tigers Score */}
+          <div className={signalBlockStyle}>
+            <p className={signalLabelStyle}>Detroit Tigers</p>
+            <p className={scoreLineStyle}>
+              <span className={scoreAccentStyle}>Win</span>{' '}
+              5 – 4
             </p>
-            <div
-              className={css({
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '12px 24px',
-              })}
-            >
-              {capabilities.map((cap) => (
-                <span
-                  key={cap}
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '15px',
-                    lineHeight: 'normal',
-                    color: 'textSecondary',
-                    padding: '8px 0',
-                    borderBottom: '1px solid',
-                    borderColor: 'border',
-                  })}
-                >
-                  {cap}
-                </span>
-              ))}
+          </div>
+
+          {/* Memorial Tournament */}
+          <div className={signalBlockStyle}>
+            <p className={signalLabelStyle}>Memorial Tournament · Final</p>
+            <div className={leaderRowStyle}>
+              <span>J.T. Poston</span>
+              <span className={leaderScoreStyle}>−12</span>
+            </div>
+            <div className={leaderRowStyle}>
+              <span>B. Gerard <span className={css({ color: 'textMuted', fontStyle: 'italic', fontSize: '12px' })}>(T2)</span></span>
+              <span className={leaderScoreStyle}>−12</span>
+            </div>
+            <div className={leaderRowStyle}>
+              <span>T. Fleetwood</span>
+              <span className={css({ fontVariantNumeric: 'tabular-nums', color: 'textSecondary' })}>−11</span>
+            </div>
+            <div className={leaderRowStyle}>
+              <span>W. Clark</span>
+              <span className={css({ fontVariantNumeric: 'tabular-nums', color: 'textSecondary' })}>−10</span>
             </div>
           </div>
 
-          {/* Timeline highlights */}
-          <div>
-            <p
-              className={css({
-                fontFamily: 'body',
-                fontSize: '12px',
-                letterSpacing: 'wider',
-                textTransform: 'uppercase',
-                color: 'textMuted',
-                marginBottom: '24px',
-              })}
-            >
-              Timeline
+          {/* HN Story */}
+          <div className={signalBlockStyle}>
+            <p className={signalLabelStyle}>From the Wire</p>
+            <p className={hnStoryStyle}>
+              Building from zero after addiction, prison, and a felony
             </p>
-            <div
-              className={css({
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-              })}
-            >
-              {timeline.slice(0, 5).map((entry, i) => (
-                <div
-                  key={i}
-                  className={css({
-                    paddingBottom: '16px',
-                    borderBottom: '1px solid',
-                    borderColor: 'border',
-                  })}
-                >
-                  <span
-                    className={css({
-                      fontFamily: 'mono',
-                      fontSize: '12px',
-                      color: 'textMuted',
-                      display: 'block',
-                      marginBottom: '4px',
-                    })}
-                  >
-                    {entry.year}
-                  </span>
-                  <span
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: '15px',
-                      fontWeight: 'medium',
-                      color: 'text',
-                    })}
-                  >
-                    {entry.role}
-                  </span>
-                  <span
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: '14px',
-                      color: 'textMuted',
-                      marginLeft: '8px',
-                    })}
-                  >
-                    {entry.company}
-                  </span>
-                </div>
-              ))}
-            </div>
+            <span className={hnScoreStyle}>669 pts</span>
+          </div>
+
+          {/* Moon */}
+          <div className={signalBlockStyle}>
+            <p className={moonLineStyle}>🌗 Last Quarter · 35.7%</p>
+          </div>
+
+          {/* Music */}
+          <div className={signalBlockStyle}>
+            <p className={musicLineStyle}>
+              The War on Drugs / Guided by Voices
+            </p>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Footer band */}
-      <footer
-        className={css({
-          borderTop: '1px solid',
-          borderColor: 'border',
-          padding: '24px 6vw',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          '@media (max-width: 768px)': {
-            flexDirection: 'column',
-            gap: '12px',
-            alignItems: 'flex-start',
-          },
-        })}
-      >
-        <span
-          className={css({
-            fontFamily: 'body',
-            fontSize: '13px',
-            color: 'textMuted',
-          })}
-        >
-          Doug March · Product Designer & Developer
-        </span>
-        <a
-          href="/archive"
-          className={css({
-            fontFamily: 'body',
-            fontSize: '13px',
-            color: 'textMuted',
-            textDecoration: 'none',
-            _hover: { color: 'accent' },
-            _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-          })}
-        >
-          Archive
-        </a>
+      {/* Footer */}
+      <footer className={footerBandStyle}>
+        <span className={footerTextStyle}>© 2026 Doug March</span>
+        <span className={footerTextStyle}>Product Designer & Developer</span>
+        <a href="/archive" className={footerLinkStyle}>Archive</a>
       </footer>
     </>
   )
