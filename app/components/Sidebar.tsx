@@ -1,93 +1,80 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const mastheadStyle = css({
+const navWrap = css({
+  position: 'sticky',
+  top: 0,
+  zIndex: 100,
   width: '100%',
-  height: '56px',
-  padding: '0 6vw',
+  height: '48px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  borderBottom: '2px solid token(colors.chartreuse.400)',
+  padding: '0 6vw',
   background: 'bg',
-  position: 'relative',
-  zIndex: 10,
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  '@media (prefers-reduced-motion: reduce)': {
+    transition: 'none',
+  },
 })
 
-const logoAreaStyle = css({
+const leftGroup = css({
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
 })
 
-const logoImgStyle = css({
-  height: '28px',
-  width: 'auto',
+const logoStyle = css({
+  width: '24px',
+  height: '24px',
 })
 
 const siteNameStyle = css({
-  fontFamily: 'body',
+  fontFamily: 'display',
+  fontSize: '18px',
   fontWeight: 'bold',
-  fontSize: '13px',
-  letterSpacing: '0.22em',
-  textTransform: 'uppercase',
+  letterSpacing: '0.05em',
   color: 'text',
+  textDecoration: 'none',
+  lineHeight: '1',
+  _hover: { color: 'accent' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
-const datelineStyle = css({
-  fontFamily: 'mono',
-  fontSize: '11px',
-  letterSpacing: '0.22em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  display: { base: 'none', md: 'block' },
-})
-
-const navAreaStyle = css({
+const navLinks = css({
   display: 'flex',
   alignItems: 'center',
   gap: '24px',
 })
 
-const navLinkStyle = css({
+const navLink = css({
   fontFamily: 'body',
-  fontWeight: 'medium',
   fontSize: '12px',
-  letterSpacing: '0.14em',
+  fontWeight: 'semibold',
+  letterSpacing: '0.10em',
   textTransform: 'uppercase',
-  color: 'textMuted',
+  color: 'textSecondary',
   textDecoration: 'none',
-  transition: 'color 0.2s ease',
   padding: '12px 0',
-  _hover: {
-    color: 'accent',
-  },
-  _focus: {
-    outline: '2px solid token(colors.chartreuse.400)',
-    outlineOffset: '2px',
-  },
+  minHeight: '44px',
+  display: 'flex',
+  alignItems: 'center',
+  _hover: { color: 'accent' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
 export function Sidebar() {
-  const today = new Date()
-  const dateStr = today.toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).toUpperCase()
-
   return (
-    <header className={mastheadStyle}>
-      <div className={logoAreaStyle}>
-        <img src={logoSvg} alt="Doug March logo" className={logoImgStyle} />
-        <span className={siteNameStyle}>Doug March</span>
-        <span className={datelineStyle}>{dateStr}</span>
+    <nav className={navWrap} aria-label="Main navigation">
+      <div className={leftGroup}>
+        <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
+        <a href="/" className={siteNameStyle}>DOUG MARCH</a>
       </div>
-      <nav className={navAreaStyle}>
-        <a href="/" className={navLinkStyle}>Work</a>
-        <a href="/about" className={navLinkStyle}>About</a>
-      </nav>
-    </header>
+      <div className={navLinks}>
+        <a href="/" className={navLink}>Work</a>
+        <a href="/about" className={navLink}>About</a>
+      </div>
+    </nav>
   )
 }

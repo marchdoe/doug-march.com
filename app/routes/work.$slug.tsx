@@ -2,267 +2,278 @@ import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetail })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const pageStyle = css({
-  width: '100%',
+const pageWrap = css({
+  padding: '0 6vw 80px',
 })
 
-const heroStyle = css({
-  padding: { base: '32px 6vw 28px', md: '48px 6vw 40px' },
-  borderBottom: '1px solid token(colors.neutral.800)',
-})
-
-const titleStyle = css({
-  fontFamily: 'display',
-  fontWeight: 'bold',
-  fontSize: 'clamp(32px, 5vw, 64px)',
-  lineHeight: '0.95',
-  color: 'text',
-  marginBottom: '12px',
-})
-
-const metaRowStyle = css({
+const heroArea = css({
+  padding: '48px 0 40px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  minHeight: '25vh',
   display: 'flex',
-  gap: '24px',
-  alignItems: 'baseline',
-  flexWrap: 'wrap',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
 })
 
-const metaItemStyle = css({
-  fontFamily: 'mono',
-  fontSize: '12px',
-  color: 'textMuted',
-  letterSpacing: '0.05em',
-  fontVariantNumeric: 'tabular-nums',
-})
-
-const metaAccentStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '13px',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  color: 'accent',
-})
-
-const columnsStyle = css({
-  display: { base: 'flex', lg: 'grid' },
-  flexDirection: { base: 'column', lg: 'unset' },
-  gridTemplateColumns: { lg: '60fr 40fr' },
-  borderTop: '1px solid token(colors.neutral.800)',
-})
-
-const colMainStyle = css({
-  padding: { base: '24px 6vw', lg: '32px 3vw 40px 6vw' },
-  borderRight: { base: 'none', lg: '1px solid token(colors.neutral.800)' },
-  borderBottom: { base: '1px solid token(colors.neutral.800)', lg: 'none' },
-})
-
-const colSideStyle = css({
-  padding: { base: '24px 6vw', lg: '32px 4vw 40px 3vw' },
-})
-
-const eyebrowStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '11px',
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '12px',
-})
-
-const bodyTextStyle = css({
+const projectTitle = css({
   fontFamily: 'display',
-  fontSize: '16px',
-  lineHeight: '1.65',
-  color: 'textSecondary',
-  maxWidth: '65ch',
+  fontSize: 'clamp(40px, 7vw, 96px)',
+  lineHeight: '0.92',
+  letterSpacing: '-0.01em',
+  color: 'accent',
+  fontWeight: 'bold',
+  textTransform: 'uppercase',
+})
+
+const projectType = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  letterSpacing: '0.10em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginTop: '16px',
+})
+
+const indexBody = css({
+  display: 'grid',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '0',
+  borderTop: '1px solid',
+  borderColor: 'border',
+  '@media (max-width: 768px)': {
+    gridTemplateColumns: '1fr',
+  },
+})
+
+const columnLeft = css({
+  borderRight: '1px solid',
+  borderColor: 'border',
+  paddingRight: '32px',
+  '@media (max-width: 768px)': {
+    borderRight: 'none',
+    paddingRight: '0',
+  },
+})
+
+const columnRight = css({
+  paddingLeft: '32px',
+  '@media (max-width: 768px)': {
+    paddingLeft: '0',
+    borderTop: '1px solid',
+    borderColor: 'border',
+  },
+})
+
+const sectionBlock = css({
+  padding: '48px 0',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  _last: { borderBottom: 'none' },
+})
+
+const sectionLabel = css({
+  fontFamily: 'display',
+  fontSize: '20px',
+  fontWeight: 'bold',
+  letterSpacing: '0.10em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  lineHeight: '1.1',
   marginBottom: '24px',
 })
 
-const stackListStyle = css({
+const bodyText = css({
+  fontFamily: 'body',
+  fontSize: '16px',
+  color: 'text',
+  lineHeight: '1.55',
+  maxWidth: '65ch',
+})
+
+const metaRow = css({
   display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
-  marginBottom: '20px',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  height: '48px',
+  padding: '0 8px',
+  borderBottom: '1px solid',
+  borderColor: 'borderSubtle',
+  _last: { borderBottom: 'none' },
 })
 
-const stackItemStyle = css({
-  fontFamily: 'mono',
-  fontSize: '12px',
-  color: 'textSecondary',
-  letterSpacing: '0.03em',
-  padding: '4px 10px',
-  border: '1px solid token(colors.neutral.700)',
-})
-
-const linkStyle = css({
+const metaLabel = css({
   fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '14px',
-  color: 'accent',
-  textDecoration: 'none',
-  display: 'inline-block',
-  padding: '8px 0',
-  transition: 'color 0.15s ease',
-  _hover: { color: 'text' },
-  _focus: {
-    outline: '2px solid token(colors.chartreuse.400)',
-    outlineOffset: '2px',
-  },
-})
-
-const backLinkStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
   fontSize: '13px',
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
   color: 'textMuted',
-  textDecoration: 'none',
-  padding: '12px 0',
-  _hover: { color: 'accent' },
-  _focus: {
-    outline: '2px solid token(colors.chartreuse.400)',
-    outlineOffset: '2px',
-  },
 })
 
-const footerBandStyle = css({
-  width: '100%',
-  padding: '20px 6vw',
-  borderTop: '1px solid token(colors.neutral.800)',
-  display: 'flex',
-  gap: '48px',
-  alignItems: 'center',
-  flexWrap: 'wrap',
+const metaValue = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'text',
+  textAlign: 'right',
 })
 
-const footerTextStyle = css({
+const stackTag = css({
   fontFamily: 'mono',
-  fontSize: '11px',
+  fontSize: '13px',
+  color: 'textSecondary',
+  padding: '8px',
+  borderBottom: '1px solid',
+  borderColor: 'borderSubtle',
+  _last: { borderBottom: 'none' },
+})
+
+const extLink = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'accent',
+  textDecoration: 'none',
+  display: 'inline-flex',
+  alignItems: 'center',
+  minHeight: '44px',
+  letterSpacing: '0.05em',
+  _hover: { color: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+})
+
+const backLink = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'textSecondary',
+  textDecoration: 'none',
+  display: 'inline-flex',
+  alignItems: 'center',
+  minHeight: '44px',
+  padding: '16px 0',
+  _hover: { color: 'accent' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+})
+
+const notFoundWrap = css({
+  padding: '96px 6vw',
+  textAlign: 'center',
+})
+
+const notFoundTitle = css({
+  fontFamily: 'display',
+  fontSize: 'clamp(32px, 5vw, 64px)',
   color: 'textMuted',
+  textTransform: 'uppercase',
   letterSpacing: '0.05em',
 })
 
-function WorkDetail() {
+function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div className={css({ padding: '48px 6vw' })}>
-        <h1 className={titleStyle}>Project not found</h1>
-        <a href="/" className={backLinkStyle}>← Back to work</a>
+      <div className={notFoundWrap}>
+        <h1 className={notFoundTitle}>Project Not Found</h1>
+        <a href="/" className={backLink}>← Back to index</a>
       </div>
     )
   }
 
   return (
-    <div className={pageStyle}>
+    <div className={pageWrap}>
       {/* Hero */}
-      <div className={heroStyle}>
-        <a href="/" className={backLinkStyle}>← Back</a>
-        <h1 className={titleStyle}>{project.title}</h1>
-        <div className={metaRowStyle}>
-          <span className={metaAccentStyle}>{project.type}</span>
-          <span className={metaItemStyle}>{project.year}</span>
-          {project.role && <span className={metaItemStyle}>{project.role}</span>}
-        </div>
-      </div>
+      <section className={heroArea}>
+        <h1 className={projectTitle}>{project.title}</h1>
+        <p className={projectType}>{project.type} · {project.year}</p>
+      </section>
 
-      {/* Content columns */}
-      <div className={columnsStyle}>
-        <div className={colMainStyle}>
+      {/* Body */}
+      <div className={indexBody}>
+        {/* Left — Content */}
+        <div className={columnLeft}>
           {project.problem && (
-            <>
-              <p className={eyebrowStyle}>Problem</p>
-              <p className={bodyTextStyle}>{project.problem}</p>
-            </>
+            <section className={sectionBlock}>
+              <h2 className={sectionLabel}>Problem</h2>
+              <p className={bodyText}>{project.problem}</p>
+            </section>
           )}
+
           {project.approach && (
-            <>
-              <p className={eyebrowStyle}>Approach</p>
-              <p className={bodyTextStyle}>{project.approach}</p>
-            </>
+            <section className={sectionBlock}>
+              <h2 className={sectionLabel}>Approach</h2>
+              <p className={bodyText}>{project.approach}</p>
+            </section>
           )}
+
           {project.outcome && (
-            <>
-              <p className={eyebrowStyle}>Outcome</p>
-              <p className={bodyTextStyle}>{project.outcome}</p>
-            </>
+            <section className={sectionBlock}>
+              <h2 className={sectionLabel}>Outcome</h2>
+              <p className={bodyText}>{project.outcome}</p>
+            </section>
           )}
-          {project.description && (
-            <>
-              <p className={eyebrowStyle}>Description</p>
-              <p className={bodyTextStyle}>{project.description}</p>
-            </>
+
+          {project.description && !project.problem && (
+            <section className={sectionBlock}>
+              <h2 className={sectionLabel}>About</h2>
+              <p className={bodyText}>{project.description}</p>
+            </section>
           )}
+
+          <div style={{ padding: '24px 0' }}>
+            <a href="/" className={backLink}>← Back to index</a>
+          </div>
         </div>
 
-        <div className={colSideStyle}>
-          {project.stack && project.stack.length > 0 && (
-            <>
-              <p className={eyebrowStyle}>Stack</p>
-              <div className={stackListStyle}>
-                {project.stack.map((tech, i) => (
-                  <span key={i} className={stackItemStyle}>{tech}</span>
-                ))}
+        {/* Right — Meta */}
+        <div className={columnRight}>
+          <section className={sectionBlock}>
+            <h2 className={sectionLabel}>Details</h2>
+            {project.role && (
+              <div className={metaRow}>
+                <span className={metaLabel}>Role</span>
+                <span className={metaValue}>{project.role}</span>
               </div>
-            </>
-          )}
+            )}
+            <div className={metaRow}>
+              <span className={metaLabel}>Year</span>
+              <span className={metaValue}>{project.year}</span>
+            </div>
+            <div className={metaRow}>
+              <span className={metaLabel}>Type</span>
+              <span className={metaValue}>{project.type}</span>
+            </div>
+            {project.externalUrl && (
+              <div className={metaRow}>
+                <span className={metaLabel}>Link</span>
+                <a href={project.externalUrl} className={extLink}>Visit →</a>
+              </div>
+            )}
+            {project.liveUrl && (
+              <div className={metaRow}>
+                <span className={metaLabel}>Live</span>
+                <a href={project.liveUrl} className={extLink}>View →</a>
+              </div>
+            )}
+            {project.githubUrl && (
+              <div className={metaRow}>
+                <span className={metaLabel}>Source</span>
+                <a href={project.githubUrl} className={extLink}>GitHub →</a>
+              </div>
+            )}
+          </section>
 
-          {project.externalUrl && (
-            <a
-              href={project.externalUrl}
-              className={linkStyle}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Visit Live Site →
-            </a>
-          )}
-
-          {project.liveUrl && !project.externalUrl && (
-            <a
-              href={project.liveUrl}
-              className={linkStyle}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Visit Live Site →
-            </a>
-          )}
-
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              className={linkStyle}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View Source →
-            </a>
+          {project.stack && project.stack.length > 0 && (
+            <section className={sectionBlock}>
+              <h2 className={sectionLabel}>Stack</h2>
+              {project.stack.map((tech, i) => (
+                <div key={i} className={stackTag}>{tech}</div>
+              ))}
+            </section>
           )}
         </div>
       </div>
-
-      <footer className={footerBandStyle}>
-        <span className={footerTextStyle}>© 2026 Doug March</span>
-        <a href="/archive" className={css({
-          fontFamily: 'mono',
-          fontSize: '11px',
-          color: 'textMuted',
-          textDecoration: 'none',
-          _hover: { color: 'accent' },
-          _focus: {
-            outline: '2px solid token(colors.chartreuse.400)',
-            outlineOffset: '2px',
-          },
-        })}>Archive</a>
-      </footer>
     </div>
   )
 }

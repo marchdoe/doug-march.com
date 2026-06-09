@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 295,
+    "s": 100,
+    "l": 65,
+    "name": "electric violet"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "violet",
+    "name": "ink"
+  },
+  "mood_word": "catalytic",
+  "color_story": "Electric violet on void near-black is the color of a mandate — not a suggestion, not a mood, but a declaration lighting up the dark at the exact frequency no recent palette has touched."
+}
