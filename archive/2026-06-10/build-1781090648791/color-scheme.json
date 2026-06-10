@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 198,
+    "s": 100,
+    "l": 44,
+    "name": "signal cyan"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "cyan",
+    "name": "deep slate"
+  },
+  "mood_word": "broadcast",
+  "color_story": "Radio-frequency electric cyan — the color of broadcast towers, clear-sky transmission, and a scoreboard that just hit double digits — against near-void navy so dark it has no bottom."
+}

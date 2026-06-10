@@ -2,79 +2,48 @@ import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
 const navWrap = css({
-  position: 'sticky',
-  top: 0,
-  zIndex: 100,
-  width: '100%',
-  height: '48px',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '0 6vw',
-  background: 'bg',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  '@media (prefers-reduced-motion: reduce)': {
-    transition: 'none',
-  },
-})
-
-const leftGroup = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
+  gap: '6',
+  paddingTop: 'clamp(16px, 2vw, 32px)',
+  paddingBottom: '4',
 })
 
 const logoStyle = css({
-  width: '24px',
-  height: '24px',
-})
-
-const siteNameStyle = css({
-  fontFamily: 'display',
-  fontSize: '18px',
-  fontWeight: 'bold',
-  letterSpacing: '0.05em',
-  color: 'text',
-  textDecoration: 'none',
-  lineHeight: '1',
-  _hover: { color: 'accent' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-})
-
-const navLinks = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '24px',
+  width: '28px',
+  height: '28px',
+  marginRight: '2',
 })
 
 const navLink = css({
   fontFamily: 'body',
   fontSize: '12px',
-  fontWeight: 'semibold',
-  letterSpacing: '0.10em',
+  letterSpacing: '0.12em',
   textTransform: 'uppercase',
-  color: 'textSecondary',
+  color: 'textMuted',
   textDecoration: 'none',
+  transition: 'color 0.15s ease',
   padding: '12px 0',
-  minHeight: '44px',
-  display: 'flex',
-  alignItems: 'center',
-  _hover: { color: 'accent' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+  _hover: {
+    color: 'accent',
+  },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '4px',
+  },
 })
 
 export function Sidebar() {
   return (
     <nav className={navWrap} aria-label="Main navigation">
-      <div className={leftGroup}>
+      <a href="/" aria-label="Home">
         <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
-        <a href="/" className={siteNameStyle}>DOUG MARCH</a>
-      </div>
-      <div className={navLinks}>
-        <a href="/" className={navLink}>Work</a>
-        <a href="/about" className={navLink}>About</a>
-      </div>
+      </a>
+      <a href="/" className={navLink}>Work</a>
+      <a href="/about" className={navLink}>About</a>
+      <a href="/about#timeline" className={navLink}>Timeline</a>
+      <a href="/archive" className={navLink}>Archive</a>
     </nav>
   )
 }
