@@ -14,14 +14,14 @@ Our autonomous design pipeline (`scripts/design-agents.js`) loads these referenc
 
 | Reference file | Used by |
 |---|---|
-| `color-and-contrast.md` | token-designer, unified-designer |
-| `typography.md` | token-designer, unified-designer |
-| `spatial-design.md` | unified-designer |
-| `interaction-design.md` | unified-designer |
-| `motion-design.md` | unified-designer |
-| `responsive-design.md` | unified-designer |
+| `color-and-contrast.md` | art-director, mockup-designer |
+| `typography.md` | art-director, mockup-designer |
+| `spatial-design.md` | mockup-designer |
+| `polish.md` | mockup-designer (user prompt — system prompt is at its size budget) |
+| `bolder.md` | mockup-designer (only on committed/drenched color days) |
+| `responsive-design.md` | not loaded directly — its rules are salvaged into mockup-designer.md's Responsive section |
 | `brand.md` | all design agents (we are brand register) |
-| `critique.md` | spec-critic, screenshot-critic |
+| `critique.md` | spec-critic, screenshot-critic, mockup-critic |
 
 ## What we don't use
 

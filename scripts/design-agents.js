@@ -4,11 +4,15 @@
  * Designer Agent Swarm Orchestrator
  *
  * Dispatches specialized Claude CLI agents sequentially:
- *   Phase 0: Design Director — visual specification
- *   Phase 1: Token Designer  — elements/preset.ts (orchestrator generates
+ *   Phase 0+1: Art Director   — hero copy, archetype, chassis, preset.ts,
+ *                                visual spec (orchestrator generates
  *                                __root.tsx + chassis-preset.ts deterministically
  *                                from the Director-chosen typography chassis)
- *   Phase 2: Unified Designer — all 15 remaining component/route files
+ *   Phase 2a:  Mockup Designer — one self-contained mockup.html (Opus)
+ *   Phase 2b:  Mockup Critic   — blocking vision gate over a screenshot of
+ *                                the mockup; ≤2 REVISE rounds back to 2a
+ *   Phase 2c:  React Engineer  — translates the approved mockup into the
+ *                                production TSX files (Sonnet)
  *
  * Each agent gets the creative brief, relevant reference files, and (after
  * Phase 1) the design tokens from preset.ts. Build validation and retry
@@ -35,7 +39,6 @@ import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-
 import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
 import { createTrace } from './utils/trace.js'
-import { buildMessages } from './utils/prompt-builder.js'
 import { selectSeed } from './utils/select-seed.js'
 import { CHASSIS_CATALOG } from '../elements/chassis/index.js'
 import {
@@ -57,14 +60,15 @@ export { parseDelimiterResponse }
  *  Token-designer ownership was removed in the Art Director pipeline —
  *  preset.ts is now written by the Art Director. The Art Director's
  *  files are not retried via this map; retries go through the
- *  Unified Designer (which is the only agent whose files can fail
+ *  React Engineer (which is the only agent whose files can fail
  *  build validation in the new pipeline — preset.ts is validated by
- *  codegen at write time).
+ *  codegen at write time, and the Mockup Designer's HTML never enters
+ *  the build).
  */
 export const FILE_OWNERSHIP = Object.fromEntries([
   ['elements/preset.ts', 'art-director'],
-  ...STRUCTURE_FILES.map(f => [f, 'unified-designer']),
-  ...COMPONENT_FILES.map(f => [f, 'unified-designer']),
+  ...STRUCTURE_FILES.map(f => [f, 'react-engineer']),
+  ...COMPONENT_FILES.map(f => [f, 'react-engineer']),
 ])
 
 // ---------------------------------------------------------------------------
@@ -213,7 +217,7 @@ export function buildAgentPrompt(agentName, { brief, referenceFiles, tokenContex
   // Section 1: Creative Brief
   sections.push(`## Creative Brief\n\n${brief}`)
 
-  // Section 2: Design Tokens (for unified-designer and downstream agents)
+  // Section 2: Design Tokens (for downstream agents that consume preset.ts)
   if (tokenContext) {
     sections.push(
       `## Design Tokens (from elements/preset.ts)\n\nUse these token names in your components. Do not invent new tokens — only reference what exists here.\n\n\`\`\`typescript\n${tokenContext}\n\`\`\``
@@ -239,7 +243,7 @@ ${fileBlocks.join('\n\n')}`)
  * Identify which agent's files appear in a build error.
  *
  * @param {string} errorOutput
- * @returns {'token-designer'|'unified-designer'|'both'}
+ * @returns {'art-director'|'react-engineer'|'both'}
  */
 export function identifyFailingAgent(errorOutput) {
   const agents = new Set()
@@ -256,7 +260,7 @@ export function identifyFailingAgent(errorOutput) {
 }
 
 /**
- * Build an archetype-specific constraint block for injection into the Unified Designer prompt.
+ * Build an archetype-specific constraint block for injection into the Mockup Designer prompt.
  *
  * For Specimen and Poster archetypes, returns a block that explicitly forbids
  * rendering project cards or portfolio sections on the home page — only the
@@ -396,10 +400,12 @@ function validateCodegen() {
 /**
  * Run the design agent swarm.
  *
- * Phase 0: Design Director — visual specification + typography chassis pick
- * Phase 1: Token Designer (preset.ts colors/spacing/semantics; orchestrator
- *          deterministically generates __root.tsx + chassis-preset.ts)
- * Phase 2: Unified Designer — all 15 remaining component/route files
+ * Phase 0+1: Art Director (hero copy, archetype, chassis, preset.ts,
+ *            visual spec; orchestrator deterministically generates
+ *            __root.tsx + chassis-preset.ts)
+ * Phase 2a: Mockup Designer — one self-contained mockup.html
+ * Phase 2b: Mockup Critic — blocking vision gate, ≤2 revision rounds
+ * Phase 2c: React Engineer — translates the approved mockup to TSX
  * Phase 4: Build validation
  * Phase 5: Retry on failure
  *
@@ -486,8 +492,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   let finalScreenshot = null
   try {
 
-  const weightsPrompt = `\n\n## Creative Weights (0-10, set by the site owner)\n\nSignals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'The owner wants BOLD, EXPERIMENTAL design today. Push boundaries.' : weights.risk <= 3 ? 'The owner wants SAFE, POLISHED design today. Proven patterns.' : ''}${weights.inspiration >= 7 ? '\nDesign references should HEAVILY influence your compositional choices.' : ''}${weights.signals <= 3 ? '\nSignals are background texture only — do NOT let weather or sports drive the design.' : ''}`
-
   // Read all prompts and design references.
   // Design references are vendored from pbakaus/impeccable (Apache 2.0) — see
   // scripts/prompts/impeccable/README.md. They replace the previous library-*.md
@@ -503,8 +507,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     refTypography,
     refColor,
     refSpatial,
-    refResponsive,
-    refInteraction,
     refCritique,
     brandContract,
   ] = await Promise.all([
@@ -515,8 +517,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     readFile(path.join(refDir, 'typography.md'), 'utf8'),
     readFile(path.join(refDir, 'color-and-contrast.md'), 'utf8'),
     readFile(path.join(refDir, 'spatial-design.md'), 'utf8'),
-    readFile(path.join(refDir, 'responsive-design.md'), 'utf8'),
-    readFile(path.join(refDir, 'interaction-design.md'), 'utf8'),
     readFile(path.join(refDir, 'critique.md'), 'utf8'),
     readFile(path.join(promptDir, 'brand-contract.md'), 'utf8'),
   ])
@@ -530,24 +530,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   const specCriticPrompt = `${specCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
   const screenshotCriticPrompt = `${screenshotCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
-
-  // Build system prompts with relevant references appended.
-  // unified-designer base prompt is loaded through buildMessages (single source
-  // of truth shared with local-dev path in scripts/generate-redesign.js).
-  const { system: unifiedDesignerBasePrompt } = buildMessages({
-    signals,
-    brief: '',
-    contentSummary: '',
-    currentFiles: [],
-  })
-  // unified-designer writes the actual React/Panda implementation. Gets the
-  // typography/color/spatial/responsive design knowledge stack plus brand.
-  // interaction-design.md was previously loaded here but dropped after
-  // iter-2 (2026-04-28) produced a meta-response failure with ~60KB
-  // assembled system prompt — the portfolio is type-and-image driven,
-  // not form-driven, so interaction patterns earn their absence. Re-add
-  // when forms/focus-state UX surfaces become a genuine concern.
-  const unifiedDesignerSystemPrompt = `${unifiedDesignerBasePrompt}\n\n${designSystemRef}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}\n\n${refSpatial}\n\n${refResponsive}`
 
   // Backup all mutable files
   console.log('\n[backup] Backing up mutable files...')
@@ -981,12 +963,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
 
   // -----------------------------------------------------------------------
-  // Phase 2: Unified Designer (reads tokens from disk, writes all 15 files)
+  // Phase 2: mockup pipeline (reads tokens from disk)
   // -----------------------------------------------------------------------
   const presetPath = path.join(ROOT, 'elements/preset.ts')
   const tokenContext = await readFile(presetPath, 'utf8')
-
-  console.log('\n[phase-2] Unified Designer')
 
   const enrichedBrief = [
     `## Hero Copy (the page must execute this phrase at marquee scale)`,
@@ -1003,7 +983,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   ].join('\n')
 
   // Responsive feedback loop: inject a cautionary lesson from a recent failing build
-  // into the unified designer's prompt. Env-gated; non-blocking on failure.
+  // into the React Engineer's prompt. Env-gated; non-blocking on failure.
   let responsiveLesson = null
   if (process.env.RESPONSIVE_FEEDBACK_LOOP === '1' && chosenArchetype) {
     try {
@@ -1042,71 +1022,189 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     }
   }
 
-  // Build the unified-designer user prompt via the shared prompt-builder so
-  // production matches local-dev byte-for-byte up to the production-only
-  // additions (ratings + creative weights) appended below.
-  const buildUnifiedDesignerPrompt = () => {
-    // Production's system prompt already includes the content contract and
-    // technical requirements via the library-* references appended above.
-    // Pass contentSummary: '' and currentFiles: [] so buildMessages skips
-    // the duplicate Site Content Reference / Technical Requirements /
-    // Current Component Files blocks — otherwise the user prompt balloons
-    // past ~60KB and the subprocess stalls.
-    const { messages } = buildMessages({
-      signals,
-      brief: enrichedBrief,
-      contentSummary: '',
-      currentFiles: [],
-      tokenContext,
-      responsiveLesson,
-    })
-    const archetypeBlock = buildArchetypeContractBlock(chosenArchetype)
-    return (archetypeBlock ? archetypeBlock + '\n\n' : '')
-      + messages[0].content
-      + (recentRatings ? '\n\n## User Design Ratings (learn from these)\n\nThe site owner rates each design after it ships. Higher scores = what they want to see more of. Notes explain what specifically worked or didn\'t.\n' + recentRatings : '')
-      + weightsPrompt
-  }
-  const designerUserPrompt = buildUnifiedDesignerPrompt()
+  // -----------------------------------------------------------------------
+  // Phase 2a: Mockup Designer → 2b: Mockup Critic loop (blocking, ≤2 revisions)
+  // -----------------------------------------------------------------------
+  console.log('\n[phase-2a] Mockup Designer')
+  const { runMockupDesigner } = await import('./agents/mockup-designer.js')
+  const { runMockupCritic } = await import('./agents/mockup-critic.js')
+  const { captureHtmlFileScreenshot } = await import('./utils/snapshot.js')
+  const { buildLessonsBlock } = await import('./utils/lessons.js')
 
-  // Inject today's archetype-matched seed into the unified-designer system
-  // prompt. The seed is an anchor reference — see scripts/prompts/seeds/.
+  const mockupDesignerPromptRaw = await readFile(path.join(promptDir, 'mockup-designer.md'), 'utf8')
+  const mockupCriticPromptRaw = await readFile(path.join(promptDir, 'mockup-critic.md'), 'utf8')
+  const mockupCriticSystemPrompt = `${mockupCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
+
+  // polish.md is ALWAYS loaded for the designer — but in the USER prompt
+  // (12.1KB; keeps the system prompt under the CLI 2.1.92 ~56KB failure
+  // zone). bolder.md is conditional on a committed/drenched color stance;
+  // overdrive.md is NOT loaded (size cap); refResponsive is NOT appended —
+  // its rules are already salvaged into mockup-designer.md's Responsive
+  // section.
+  const refPolish = await readFile(path.join(refDir, 'polish.md'), 'utf8')
+  const colorStory = JSON.stringify(artDirectorResult.colorScheme || {}).toLowerCase() + visualSpec.toLowerCase()
+  const isCommitted = /drench|committed|saturat|maximal/.test(colorStory)
+  const conditionalRefs = []
+  if (isCommitted) {
+    conditionalRefs.push(await readFile(path.join(refDir, 'bolder.md'), 'utf8'))
+  }
   const seedPath = selectSeed(chosenArchetype || 'stack')
   const seedContent = readFileSync(seedPath, 'utf8')
-  const unifiedDesignerSystemPromptWithSeed = unifiedDesignerSystemPrompt.replace('<!-- SEED_ANCHOR -->', seedContent)
-  console.log(`  injecting seed: ${path.basename(seedPath)} (${(seedContent.length / 1024).toFixed(1)}KB)`)
-
-  let designerResult
-  const t0Designer = Date.now()
-  try {
-    designerResult = await callAgent('unified-designer', unifiedDesignerSystemPromptWithSeed, designerUserPrompt, null, { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 }) // 30 min total, 25 min silent-thinking headroom — the CLI comment documents 9-12 min of silent thinking as normal; default 15 min was too tight
-  } catch (err) {
-    console.error(`  Unified Designer failed: ${err.message}`)
-    await restore(originalBackup)
-    throw new Error(`Unified Designer failed: ${err.message}`)
+  console.log(`  injecting seed: ${path.basename(seedPath)}; conditional refs: ${conditionalRefs.length}`)
+  const mockupDesignerSystemPrompt = [
+    mockupDesignerPromptRaw.replace('<!-- SEED_ANCHOR -->', seedContent),
+    brandRegisterDeclaration,
+    refTypography,
+    refColor,
+    refSpatial,
+    ...conditionalRefs,
+    brandContract,
+  ].join('\n\n')
+  console.log(`  mockup-designer system prompt: ${(mockupDesignerSystemPrompt.length / 1024).toFixed(0)}KB`)
+  if (mockupDesignerSystemPrompt.length > 54 * 1024) {
+    console.warn(`  ⚠ mockup-designer system prompt exceeds the 54KB guard (CLI 2.1.92 fails ~56KB)`)
   }
 
-  // Enforce that ALL five required files are present. The most common
-  // failure mode is the designer omitting Layout.tsx or Sidebar.tsx, which
-  // silently preserves yesterday's nav and causes the "designs all look
-  // the same" complaint. Retry once if either is missing.
+  // Calibration: best recent owner grade as a text note (screenshots would
+  // blow the prompt budget; the graded bar carries the value).
+  let calibrationNote = ''
+  try {
+    const { readRecentRatings } = await import('./utils/ratings.js')
+    const rated = readRecentRatings(path.join(ROOT, 'archive'), { lookbackDays: 30 })
+    const best = rated.find(r => r.grade === 'A') || rated.find(r => r.grade === 'B')
+    if (best) calibrationNote = `## Calibration\n\nThe owner graded ${best.date} an ${best.grade}${best.worked ? ` — what worked: ${best.worked}` : ''}. That is the execution bar.`
+  } catch { /* non-blocking */ }
+
+  const lessonsBlock = buildLessonsBlock(path.join(ROOT, 'archive'), { limit: 7 })
+  const archetypeContractBlock = buildArchetypeContractBlock(chosenArchetype) || ''
+  const brandSvg = await readFile(path.join(ROOT, 'app/assets/logo.svg'), 'utf8')
+  const brandMonoSvg = await readFile(path.join(ROOT, 'app/assets/logo-mono.svg'), 'utf8')
+  const googleFontsUrl = buildGoogleFontsUrl(chosenChassis)
+
+  const mockupPath = path.join(ROOT, 'signals', 'today.mockup.html')
+  const mockupCtxBase = {
+    enrichedBrief,
+    tokenContext,
+    contentSummary,
+    measurables: artDirectorResult.measurables,
+    shell: artDirectorResult.shell,
+    brandSvg,
+    brandMonoSvg,
+    googleFontsUrl,
+    lessonsBlock,
+    calibrationNote,
+    archetypeContractBlock,
+    polishRef: refPolish,
+    systemPrompt: mockupDesignerSystemPrompt,
+    failureDumpPath: path.join(ROOT, 'signals', 'mockup-designer-last-failed.txt'),
+  }
+
+  let mockup
+  let mockupScreenshot = null
+  let revisionFeedback = ''
+  const MAX_MOCKUP_REVISIONS = 2
+  for (let round = 0; round <= MAX_MOCKUP_REVISIONS; round++) {
+    const t0Mockup = Date.now()
+    try {
+      mockup = await runMockupDesigner({ ...mockupCtxBase, revisionFeedback })
+    } catch (err) {
+      console.error(`  Mockup Designer failed (round ${round}): ${err.message}`)
+      await restore(originalBackup)
+      throw new Error(`Mockup Designer failed: ${err.message}`)
+    }
+    await writeFile(mockupPath, mockup.mockupHtml, 'utf8')
+
+    console.log(`\n[phase-2b] Mockup Critic (round ${round})`)
+    try {
+      mockupScreenshot = await captureHtmlFileScreenshot(mockupPath, { width: 1440, height: 900 })
+    } catch (err) {
+      console.warn(`  mockup screenshot failed (non-blocking — skipping critic): ${err.message}`)
+      break
+    }
+    let critique
+    try {
+      critique = await runMockupCritic({
+        systemPrompt: mockupCriticSystemPrompt,
+        screenshotBuffer: mockupScreenshot,
+        enrichedBrief,
+        measurables: artDirectorResult.measurables,
+        shell: artDirectorResult.shell,
+      })
+    } catch (err) {
+      console.warn(`  mockup critic failed (non-blocking — accepting mockup): ${err.message}`)
+      break
+    }
+    verdicts.push({ critic: 'mockup-critic', round, verdict: critique.verdict, feedback: critique.feedback.slice(0, 2000), ts: Date.now() })
+    trace.addStep({
+      name: 'mockup-critic',
+      phase: 2,
+      input: { round },
+      output: { verdict: critique.verdict, feedback: critique.feedback.slice(0, 500) },
+      durationMs: Date.now() - t0Mockup,
+    })
+    if (critique.verdict === 'APPROVE') {
+      console.log('  [mockup-critic] APPROVE')
+      break
+    }
+    if (round === MAX_MOCKUP_REVISIONS) {
+      console.warn(`  [mockup-critic] still REVISE after ${MAX_MOCKUP_REVISIONS} revisions — proceeding with latest mockup; findings persist to lessons via verdicts.json`)
+      break
+    }
+    console.log(`  [mockup-critic] REVISE — feeding back to designer`)
+    revisionFeedback = critique.feedback
+  }
+
+  // -----------------------------------------------------------------------
+  // Phase 2c: React Engineer — translate the approved mockup to TSX
+  // -----------------------------------------------------------------------
+  console.log('\n[phase-2c] React Engineer')
+  const reactEngineerPromptRaw = await readFile(path.join(promptDir, 'react-engineer.md'), 'utf8')
+  const reactEngineerSystemPrompt = `${reactEngineerPromptRaw}\n\n${designSystemRef}${brandRegisterDeclaration}`
+
+  const buildEngineerUserPrompt = () => [
+    '## Approved Mockup (mockup.html — your fidelity target)\n\n```html\n' + mockup.mockupHtml + '\n```',
+    '## Interior Notes (how About/Work adapt the system)\n\n' + mockup.interiorNotes,
+    '## Design Tokens (elements/preset.ts)\n\n```typescript\n' + tokenContext + '\n```',
+    '## Hero Copy\n\n' + artDirectorResult.heroCopy,
+    '## Shell Declaration\n\n' + artDirectorResult.shell,
+    '## One-line Design Brief (for og:description context)\n\n' + (artDirectorResult.designBrief || ''),
+    responsiveLesson ? '## Responsive Lesson (recent failure to avoid)\n\n' + responsiveLesson : '',
+  ].filter(Boolean).join('\n\n---\n\n')
+  const engineerUserPrompt = buildEngineerUserPrompt()
+
+  let engineerResult
+  const t0Engineer = Date.now()
+  try {
+    engineerResult = await callAgent('react-engineer', reactEngineerSystemPrompt, engineerUserPrompt, null, { model: 'sonnet', timeoutMs: 1500000, stallTimeoutMs: 1200000 })
+  } catch (err) {
+    console.error(`  React Engineer failed: ${err.message}`)
+    await restore(originalBackup)
+    throw new Error(`React Engineer failed: ${err.message}`)
+  }
+
+  // Enforce that ALL required files are present. The most common failure
+  // mode is the engineer omitting Layout.tsx or Sidebar.tsx, which silently
+  // preserves yesterday's nav and causes the "designs all look the same"
+  // complaint. Retry once if any is missing.
   const REQUIRED_FILES = [
     'app/components/Layout.tsx',
     'app/components/Sidebar.tsx',
     'app/routes/index.tsx',
     'app/routes/about.tsx',
     'app/routes/work.$slug.tsx',
+    'app/routes/og.tsx',
   ]
-  const producedPaths = new Set(designerResult.files.map(f => f.path))
+  const producedPaths = new Set(engineerResult.files.map(f => f.path))
   const missing = REQUIRED_FILES.filter(p => !producedPaths.has(p))
   if (missing.length > 0) {
-    console.warn(`  ⚠ Unified Designer omitted required files: ${missing.join(', ')} — retrying with explicit reminder`)
-    const reminderPrompt = `${designerUserPrompt}\n\n---\n\n## REQUIRED FILES MISSING — RETRY\n\nYour previous response omitted these required files: ${missing.join(', ')}\n\nThis silently preserves yesterday's chrome and breaks the day's archetype. Re-emit your COMPLETE response. Every required file must appear, including these you missed:\n${missing.map(m => `- ${m}`).join('\n')}`
+    console.warn(`  ⚠ React Engineer omitted required files: ${missing.join(', ')} — retrying with explicit reminder`)
+    const reminderPrompt = `${engineerUserPrompt}\n\n---\n\n## REQUIRED FILES MISSING — RETRY\n\nYour previous response omitted these required files: ${missing.join(', ')}\n\nThis silently preserves yesterday's chrome and breaks the day's archetype. Re-emit your COMPLETE response. Every required file must appear, including these you missed:\n${missing.map(m => `- ${m}`).join('\n')}`
     try {
-      const retry = await callAgent('unified-designer', unifiedDesignerSystemPromptWithSeed, reminderPrompt, null, { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 })
+      const retry = await callAgent('react-engineer', reactEngineerSystemPrompt, reminderPrompt, null, { model: 'sonnet', timeoutMs: 1500000, stallTimeoutMs: 1200000 })
       const retryProduced = new Set(retry.files.map(f => f.path))
       const stillMissing = REQUIRED_FILES.filter(p => !retryProduced.has(p))
       if (stillMissing.length === 0) {
-        designerResult = retry
+        engineerResult = retry
         console.log(`  ✓ retry produced all required files`)
       } else {
         console.warn(`  ⚠ retry still missing ${stillMissing.join(', ')} — proceeding with original output`)
@@ -1117,17 +1215,17 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
 
   // Write all files
-  for (const p of await writeFiles(designerResult.files)) writtenPaths.add(p)
+  for (const p of await writeFiles(engineerResult.files)) writtenPaths.add(p)
 
   trace.addStep({
-    name: 'unified-designer',
+    name: 'react-engineer',
     phase: 3,
-    input: { tokenContext: tokenContext.length, briefLength: enrichedBrief.length },
+    input: { tokenContext: tokenContext.length, briefLength: enrichedBrief.length, mockupLength: mockup.mockupHtml.length },
     output: {
-      files: designerResult.files.map(f => f.path),
-      rationale: (designerResult.rationale || '').slice(0, 500),
+      files: engineerResult.files.map(f => f.path),
+      rationale: (engineerResult.rationale || '').slice(0, 500),
     },
-    durationMs: Date.now() - t0Designer,
+    durationMs: Date.now() - t0Engineer,
   })
 
   // Verify Layout.tsx was written (critical for the site to function)
@@ -1135,7 +1233,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   if (!existsSync(layoutPath)) {
     await cleanupOrphans(writtenPaths, originalBackup)
     await restore(originalBackup)
-    throw new Error('Unified Designer did not produce Layout.tsx — site cannot function without it')
+    throw new Error('React Engineer did not produce Layout.tsx — site cannot function without it')
   }
 
   // -----------------------------------------------------------------------
@@ -1173,6 +1271,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         '## Structured Brief\n\n' + brief,
         '## Visual Specification\n\n' + visualSpec,
         references ? '## Design References\n\n' + references : '',
+        mockupScreenshot
+          ? 'The APPROVED MOCKUP screenshot (fidelity target):\n\n![Mockup](data:image/png;base64,' + mockupScreenshot.toString('base64') + ')'
+          : '',
         '\n\nA screenshot of the rendered homepage is attached as a base64 PNG image below.\n\n' +
         '![Homepage Screenshot](data:image/png;base64,' + screenshotBuffer.toString('base64') + ')',
       ].filter(Boolean).join('\n\n---\n\n')
@@ -1201,21 +1302,20 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
       if (criticResponse.includes('REVISE')) {
         const agentMatch = criticResponse.match(/\*\*Responsible agent:\*\*\s*([\w-]+)/)
-        const responsibleAgent = agentMatch?.[1] || 'unified-designer'
+        const responsibleAgent = agentMatch?.[1] || 'react-engineer'
         const feedback = criticResponse.replace(/===VERDICT===/, '').replace(/===END===/, '').replace('REVISE', '').trim()
 
         console.log(`  [screenshot-critic] REVISE — responsible: ${responsibleAgent}`)
         console.log(`  feedback: ${feedback.slice(0, 200)}...`)
 
         // Per-agent options keep model/timeout choices next to the prompt so
-        // this retry path can't fall through to Sonnet defaults on the
-        // unified-designer (Sonnet stalls at 0KB on unified-designer-class
-        // prompts — see scripts/design-agents.js:1011 commentary).
+        // this retry path stays in sync with the primary react-engineer
+        // invocation (Phase 2c).
         const agentConfig = {
-          'unified-designer': {
-            prompt: unifiedDesignerSystemPrompt,
-            user: buildUnifiedDesignerPrompt,
-            options: { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 },
+          'react-engineer': {
+            prompt: reactEngineerSystemPrompt,
+            user: buildEngineerUserPrompt,
+            options: { model: 'sonnet', timeoutMs: 1500000, stallTimeoutMs: 1200000 },
           },
         }
 
@@ -1225,15 +1325,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           try {
             const retryResult = await callAgent(responsibleAgent, config.prompt, config.user(), feedback, config.options)
             for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
-
-            // Re-run codegen before validateBuild if token files changed,
-            // otherwise validateBuild sees stale styled-system output.
-            if (responsibleAgent === 'token-designer') {
-              const codegenAfterRetry = validateCodegen()
-              if (!codegenAfterRetry.success) {
-                console.warn(`  codegen failed after critic retry: ${codegenAfterRetry.error?.slice(0, 200)}`)
-              }
-            }
 
             const retryBuild = validateBuild()
             if (!retryBuild.success) {
@@ -1247,7 +1338,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
               }
               await cleanupOrphans(writtenPaths, originalBackup)
               await restore(filesToRestore)
-              if (responsibleAgent === 'token-designer') validateCodegen()
             } else {
               console.log('  post-critic revision build passed')
               // Re-capture so the persisted screenshot reflects the revised
@@ -1273,7 +1363,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     const allFiles = [
       ...tokenResult.files,
-      ...designerResult.files,
+      ...engineerResult.files,
     ]
     const changedPaths = allFiles.map(f => f.path)
 
@@ -1282,6 +1372,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null, {
       'screenshot.png': finalScreenshot,
+      'mockup.html': mockup?.mockupHtml ?? null,
+      'mockup-screenshot.png': mockupScreenshot,
       'verdicts.json': JSON.stringify(verdicts, null, 2),
       'shell.json': JSON.stringify(shellDecl, null, 2),
     })
@@ -1310,8 +1402,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   // Restore only the failing agent's files. Art Director files are
   // intentionally NEVER restored here — by design (see retryAgents comment
-  // below), build failures involving preset.ts are handled by the Unified
-  // Designer adapting to today's tokens, not by reverting the preset and
+  // below), build failures involving preset.ts are handled by the React
+  // Engineer adapting to today's tokens, not by reverting the preset and
   // re-running the Art Director. Reverting would leave preset.ts and
   // styled-system/ incoherent (codegen is not re-run in Phase 5) and
   // produce archive/disk-state divergence.
@@ -1328,22 +1420,21 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // Build agent lookup for retry. Per-agent `options` carry the model +
   // timeout overrides so new agents added later don't need re-wiring at the
   // callAgent site. Keep these options in sync with the primary invocation
-  // of each agent (see scripts/design-agents.js:860 for token-designer and
-  // :1011, :1035 for unified-designer).
+  // of each agent (the Phase 2c react-engineer call).
   const agentConfig = {
-    'unified-designer': {
-      prompt: unifiedDesignerSystemPrompt,
-      user: buildUnifiedDesignerPrompt,
-      options: { model: 'opus', timeoutMs: 1800000, stallTimeoutMs: 1500000 },
+    'react-engineer': {
+      prompt: reactEngineerSystemPrompt,
+      user: buildEngineerUserPrompt,
+      options: { model: 'sonnet', timeoutMs: 1500000, stallTimeoutMs: 1200000 },
     },
   }
 
-  // Build failures are almost always in the Unified Designer's TSX.
+  // Build failures are almost always in the React Engineer's TSX.
   // The Art Director's preset.ts is validated by codegen earlier in
   // the pipeline, so a build failure on preset.ts at this stage means
-  // a downstream typing problem — best handled by Unified Designer
+  // a downstream typing problem — best handled by React Engineer
   // retry rather than full Art Director re-run (which is more expensive).
-  const retryAgents = ['unified-designer']
+  const retryAgents = ['react-engineer']
 
   for (const agent of retryAgents) {
     const config = agentConfig[agent]
@@ -1354,7 +1445,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const retryResult = await callAgent(agent, config.prompt, config.user(), buildResult.error, config.options)
       for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
       // Update the result so the archive records the retry output, not stale originals
-      if (agent === 'unified-designer') designerResult = retryResult
+      if (agent === 'react-engineer') engineerResult = retryResult
     } catch (err) {
       console.error(`  ${agent} retry failed: ${err.message}`)
       // If the retry agent itself crashed, don't silently continue to
@@ -1373,7 +1464,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     const allFiles = [
       ...tokenResult.files,
-      ...designerResult.files,
+      ...engineerResult.files,
     ]
     const changedPaths = allFiles.map(f => f.path)
 
@@ -1382,6 +1473,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null, {
       'screenshot.png': finalScreenshot,
+      'mockup.html': mockup?.mockupHtml ?? null,
+      'mockup-screenshot.png': mockupScreenshot,
       'verdicts.json': JSON.stringify(verdicts, null, 2),
       'shell.json': JSON.stringify(shellDecl, null, 2),
     })

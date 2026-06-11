@@ -79,7 +79,7 @@ The chosen archetype's density floor must be visible in the render:
 
 A desktop render where active content occupies less than ~70% of the viewport width is an under-execution unless the empty space is *active* (drenched color field, atmospheric gradient, hero motion). A field of plain background color with no role is dead canvas.
 
-Failures: A 40%-wide column of body text on the left half of the page with a 60% empty cream rail on the right. Specimen archetype but headline rendered at body-article scale. Index archetype but only one list, narrow, in a single column. When this fails, owner is **unified-designer**.
+Failures: A 40%-wide column of body text on the left half of the page with a 60% empty cream rail on the right. Specimen archetype but headline rendered at body-article scale. Index archetype but only one list, narrow, in a single column. When this fails, owner is **react-engineer**.
 
 ### 7. Hero Phrase Execution
 
@@ -95,7 +95,7 @@ Failures:
 - The hero phrase appears, but only inside the sidebar.
 - The hero phrase is missing entirely from the rendered HTML.
 
-When this fails, owner is **unified-designer**.
+When this fails, owner is **react-engineer**.
 
 ### 8. Archetype Purity (Specimen / Poster days only)
 
@@ -107,17 +107,26 @@ Check:
 - Are any project cards, project titles, or a "Selected Work" / "Experiments" section visible on the home page?
 - Is any content other than the hero phrase, navigation, and optional signal annotation visible?
 
-If yes to either: REVISE. Responsible agent: unified-designer.
+If yes to either: REVISE. Responsible agent: react-engineer.
+
+### Mockup fidelity (replaces taste judgment)
+
+The user prompt includes the approved mockup screenshot alongside the
+rendered-page screenshot. The design was already approved at the mockup
+gate — your question is mechanical: does the built page match the mockup?
+Compare composition, hero scale, color application, shell. Divergence →
+REVISE with **Responsible agent:** react-engineer and a specific list of
+what diverged.
 
 ## Verdict Rules
 
-**SHIP** if: All applicable areas are acceptable — seven standard areas, plus Section 8 if the archetype is Specimen or Poster. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
+**SHIP** if: All applicable areas are acceptable — the seven standard areas plus mockup fidelity, plus Section 8 if the archetype is Specimen or Poster. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
 
 **REVISE** if: One or more areas have a clear, specific failure that meaningfully degrades the experience or contradicts the spec. Identify exactly what is wrong and who is responsible.
 
 ### Responsible Agents
 
-All revisions go to **unified-designer**. It owns the entire rendered output: color, fonts, layout structure, nav placement, component styling, hero phrase execution, and archetype purity.
+All revisions go to **react-engineer**. It owns the entire rendered output: color, fonts, layout structure, nav placement, component styling, hero phrase execution, and archetype purity.
 
 ## Feedback Quality Standard
 
