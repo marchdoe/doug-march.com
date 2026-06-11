@@ -37,6 +37,23 @@ describe('art-director.md output contract', () => {
   })
 })
 
+describe('mockup-designer.md load-bearing directives', () => {
+  const md = () => read('mockup-designer.md')
+  it('outputs a single self-contained mockup.html', () => {
+    expect(md()).toContain('===FILE:mockup.html===')
+    expect(md()).toContain('===INTERIOR_NOTES===')
+  })
+  it('contains the execution rubric with the dead-background metric', () => {
+    expect(md()).toMatch(/30%.*(dead|unused|untreated)/i)
+  })
+  it('has the seed anchor placeholder', () => {
+    expect(md()).toContain('<!-- SEED_ANCHOR -->')
+  })
+  it('forbids the generic shell', () => {
+    expect(md()).toMatch(/logo top-left.*nav top-right/i)
+  })
+})
+
 describe('logo-mono.svg', () => {
   it('exists and uses currentColor exclusively (no hardcoded colors)', () => {
     const svg = readFileSync(path.join(promptDir, '..', '..', 'app', 'assets', 'logo-mono.svg'), 'utf8')
