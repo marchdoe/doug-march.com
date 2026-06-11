@@ -38,4 +38,14 @@ describe('buildRecentRatingsBlock', () => {
     expect(rs[0].grade).toBe('B')   // normalized uppercase
     expect(rs[0].date).toBe('2026-06-10')
   })
+
+  it('counts at most one rating per date — newest file wins (double-harvest guard)', () => {
+    mkdirSync(path.join(archiveDir, '2026-06-10'), { recursive: true })
+    // two files for the same day (a close-after-write failure scenario)
+    writeFileSync(path.join(archiveDir, '2026-06-10', 'rating-100.json'), JSON.stringify({ grade: 'A', worked: 'first' }))
+    writeFileSync(path.join(archiveDir, '2026-06-10', 'rating-200.json'), JSON.stringify({ grade: 'A', worked: 'second' }))
+    const rs = readRecentRatings(archiveDir, { lookbackDays: 10 })
+    expect(rs).toHaveLength(1)
+    expect(rs[0].worked).toBe('second') // higher timestamp wins
+  })
 })

@@ -43,13 +43,15 @@ function harvest() {
   }
   let harvested = 0
   for (const issue of issues) {
-    const rating = parseRatingFromIssue(issue)
-    if (!rating) {
-      console.log(`[collect-ratings] #${issue.number} not yet filled — leaving open`)
-      continue
-    }
-    const dateDir = join(ROOT, 'archive', rating.date)
+    // Whole body in the try so even a parse throw can't escape harvest()
+    // and fail the run — this script's one promise is "never blocks".
     try {
+      const rating = parseRatingFromIssue(issue)
+      if (!rating) {
+        console.log(`[collect-ratings] #${issue.number} not yet filled — leaving open`)
+        continue
+      }
+      const dateDir = join(ROOT, 'archive', rating.date)
       mkdirSync(dateDir, { recursive: true })
       const ts = Date.now()
       writeFileSync(join(dateDir, `rating-${ts}.json`), JSON.stringify({ ...rating, timestamp: ts }, null, 2))
