@@ -24,10 +24,13 @@ Respond with ===FILE:...=== blocks for ALL of these, every time:
 
 plus any additional components the translation genuinely needs.
 
+Layout.tsx must use a named export (`export function Layout`), import and render Sidebar, and wrap `{children}` — __root.tsx imports it by name and passes the route outlet as children; forgetting `{children}` compiles but renders blank pages.
+
 ## Translation rules
 
 - Use the design tokens (elements/preset.ts) for every color — the mockup's
   hex values map 1:1 to token names; reference tokens, never raw hex.
+- If a mockup hex has no exact token match, use the perceptually nearest semantic token — never emit raw hex, never edit preset.ts. Note the substitution in a code comment.
 - Typography comes from the chassis tokens (fontSizes/fonts are generated —
   use the semantic scale steps that match the mockup's rendered sizes).
 - The mockup's home page maps to index.tsx + Layout.tsx + Sidebar.tsx.
@@ -42,14 +45,18 @@ plus any additional components the translation genuinely needs.
 ## app/routes/og.tsx — the share card
 
 A route rendering a fixed 1200×630 card (no scrolling, no responsiveness):
+- The route renders inside the site Layout like every other route. Your outer div must be `position: fixed; inset: 0; z-index: 9999` with an opaque background and its 1200×630 content centered — it must fully cover the day's shell so the headless 1200×630 capture sees ONLY the card.
 - A single outer div locked to exactly 1200×630 px.
 - Composition: today's hero phrase in the display face at poster scale,
   today's palette as the field, the brand lockup (same variant + color mode
   as the site shell) in a corner or anchored position.
 - It is screenshotted headlessly at 1200×630 — design for exactly that
   box. Keep it simpler than the home page: phrase + field + mark.
+- og.tsx is a capture target, not a destination — never link to it from nav or anywhere else.
 
 ## Technical requirements
+
+- NEVER emit `app/routes/__root.tsx`, `elements/preset.ts`, or `elements/chassis-preset.ts` — the orchestrator owns those. Do not define `theme.tokens.fonts` or `fontSizes` anywhere.
 
 ### Route file conventions
 
@@ -94,7 +101,8 @@ import { css } from '../../styled-system/css'
 - The `css()` function accepts token references as values: `color: 'text'`, `bg: 'bg.card'`, etc.
 - Never use raw hex values in TSX. Map every color to a token name. Raw hex in TSX is a defect.
 - Semantic token syntax: bare token name as string, e.g. `color: 'accent'`, `bg: 'bg.side'`.
-- Responsive values use the array syntax: `fontSize: { base: 'sm', md: 'lg' }`.
+- Responsive values use the conditional (object) syntax: `fontSize: { base: 'sm', md: 'lg' }`.
+- Translate the mockup's px media queries to Panda's base/md/lg conditions.
 - No inline `style` props. No Tailwind classes. PandaCSS only.
 
 ### Forbidden imports
@@ -164,6 +172,8 @@ WARNING: There is NO `bio` export. Use `identity`.
 NOTE: Import `education` from `'../content/timeline'` alongside `timeline` and `capabilities`.
 
 ### Data-render requirements
+
+The APPROVED MOCKUP wins every conflict with this list — it already passed the critic gate. Bind the data the mockup shows; do not re-add content the mockup deliberately excludes.
 
 Bind content from the content files. Every listed key must appear in the rendered output. Contract is about what's shown, not how.
 
