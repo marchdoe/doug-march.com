@@ -424,6 +424,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   }
   console.log(`  creative weights: signals=${weights.signals} inspiration=${weights.inspiration} ratings=${weights.ratings} risk=${weights.risk}`)
 
+  // Run-level deadline: per-call timeouts protect against hangs, not
+  // against an honest slow day blowing the Actions job timeout mid-run
+  // (which kills the process with no trace). Past the deadline we stop
+  // STARTING expensive optional work and ship what we have.
+  const runDeadline = Date.now() + (parseInt(process.env.RUN_BUDGET_MINUTES || '60') * 60000)
+  const pastDeadline = () => Date.now() > runDeadline
+
   const trace = createTrace(signals.date || new Date().toISOString().slice(0, 10), {
     onStep: (step) => {
       console.log(`[TRACE] ${JSON.stringify(step)}`)
@@ -1108,6 +1115,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     try {
       mockup = await runMockupDesigner({ ...mockupCtxBase, revisionFeedback })
     } catch (err) {
+      if (round > 0 && mockup) {
+        // A revision round crashed but a previous round produced a complete
+        // mockup — don't throw away a viable design over a failed polish
+        // pass. mockup/mockupScreenshot still hold the previous round.
+        console.warn(`  Mockup Designer revision failed (round ${round}, non-blocking — proceeding with previous mockup): ${err.message}`)
+        break
+      }
       console.error(`  Mockup Designer failed (round ${round}): ${err.message}`)
       await restore(originalBackup)
       throw new Error(`Mockup Designer failed: ${err.message}`)
@@ -1149,8 +1163,20 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       console.log('  [mockup-critic] APPROVE')
       break
     }
+    if (critique.verdict === 'REVISE' && critique.feedback.startsWith('malformed critic response')) {
+      // The critic's fail-closed REVISE on a malformed response carries no
+      // usable feedback — don't burn an Opus revision round on garbage.
+      // Treated like a critic crash: accept the mockup (the malformed
+      // response is still recorded in verdicts.json above).
+      console.warn('  [mockup-critic] malformed response (non-blocking — accepting mockup)')
+      break
+    }
     if (round === MAX_MOCKUP_REVISIONS) {
       console.warn(`  [mockup-critic] still REVISE after ${MAX_MOCKUP_REVISIONS} revisions — proceeding with latest mockup; findings persist to lessons via verdicts.json`)
+      break
+    }
+    if (pastDeadline()) {
+      console.warn('  [deadline] run budget exhausted — proceeding with latest mockup')
       break
     }
     console.log(`  [mockup-critic] REVISE — feeding back to designer`)
@@ -1173,6 +1199,16 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     '## One-line Design Brief (for og:description context)\n\n' + (artDirectorResult.designBrief || ''),
     responsiveLesson ? '## Responsive Lesson (recent failure to avoid)\n\n' + responsiveLesson : '',
   ].filter(Boolean).join('\n\n---\n\n')
+
+  // Single source of truth for invoking the React Engineer. The
+  // screenshot-critic retry and the Phase 5 retry both reference this, so
+  // model/timeout choices can't drift out of sync with each other.
+  const reactEngineerAgentConfig = {
+    prompt: reactEngineerSystemPrompt,
+    user: buildEngineerUserPrompt,
+    options: { model: 'sonnet', timeoutMs: 1500000, stallTimeoutMs: 1200000 },
+  }
+
   const engineerUserPrompt = buildEngineerUserPrompt()
 
   let engineerResult
@@ -1199,7 +1235,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   ]
   const producedPaths = new Set(engineerResult.files.map(f => f.path))
   const missing = REQUIRED_FILES.filter(p => !producedPaths.has(p))
-  if (missing.length > 0) {
+  if (missing.length > 0 && pastDeadline()) {
+    console.warn(`  ⚠ React Engineer omitted required files: ${missing.join(', ')} — [deadline] run budget exhausted, skipping retry and proceeding with original output`)
+  } else if (missing.length > 0) {
     console.warn(`  ⚠ React Engineer omitted required files: ${missing.join(', ')} — retrying with explicit reminder`)
     const reminderPrompt = `${engineerUserPrompt}\n\n---\n\n## REQUIRED FILES MISSING — RETRY\n\nYour previous response omitted these required files: ${missing.join(', ')}\n\nThis silently preserves yesterday's chrome and breaks the day's archetype. Re-emit your COMPLETE response. Every required file must appear, including these you missed:\n${missing.map(m => `- ${m}`).join('\n')}`
     try {
@@ -1256,8 +1294,49 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     durationMs: 0,
   })
 
+  // Shared success epilogue for the first-pass and Phase-5 retry paths:
+  // archive artifacts, persist the archetype, shape the return value.
+  // Behavior is identical between callers apart from the rationale suffix.
+  async function archiveAndReturn(filesResult, rationaleSuffix = '') {
+    const allFiles = [
+      ...tokenResult.files,
+      ...filesResult.files,
+    ]
+    const changedPaths = allFiles.map(f => f.path)
+
+    const rationale = tokenResult.rationale || `Agent swarm redesign${rationaleSuffix}`
+    const designBrief = tokenResult.design_brief || `Multi-agent redesign${rationaleSuffix}`
+
+    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null, {
+      'screenshot.png': finalScreenshot,
+      'mockup.html': mockup?.mockupHtml ?? null,
+      'mockup-screenshot.png': mockupScreenshot,
+      'verdicts.json': JSON.stringify(verdicts, null, 2),
+      'shell.json': JSON.stringify(shellDecl, null, 2),
+    })
+    archiveRan = true
+
+    // Save archetype for future anti-repetition enforcement
+    if (chosenArchetype && signals.date) {
+      try {
+        const datePath = path.join(ROOT, 'archive', signals.date)
+        await mkdir(datePath, { recursive: true })
+        await writeFile(path.join(datePath, 'archetype.txt'), chosenArchetype, 'utf8')
+        console.log(`  [archetype] saved: ${chosenArchetype}`)
+      } catch {}
+    }
+
+    return { rationale, design_brief: designBrief, files: allFiles }
+  }
+
   if (buildResult.success) {
     console.log('\n=== Build passed! ===')
+
+    // Snapshot the exact on-disk passing state (mutable files plus any
+    // extra paths the agents wrote). If the post-critic revision breaks
+    // the build we restore THIS — originalBackup holds YESTERDAY's files,
+    // which are incompatible with today's preset.ts.
+    const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])
 
     // -----------------------------------------------------------------
     // Screenshot Critic Gate
@@ -1311,36 +1390,47 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         console.log(`  [screenshot-critic] REVISE — responsible: ${responsibleAgent}`)
         console.log(`  feedback: ${feedback.slice(0, 200)}...`)
 
-        // Per-agent options keep model/timeout choices next to the prompt so
-        // this retry path stays in sync with the primary react-engineer
-        // invocation (Phase 2c).
+        // Shared reactEngineerAgentConfig keeps this retry path in sync
+        // with the primary react-engineer invocation (Phase 2c).
         const agentConfig = {
-          'react-engineer': {
-            prompt: reactEngineerSystemPrompt,
-            user: buildEngineerUserPrompt,
-            options: { model: 'sonnet', timeoutMs: 1500000, stallTimeoutMs: 1200000 },
-          },
+          'react-engineer': reactEngineerAgentConfig,
         }
 
         const config = agentConfig[responsibleAgent]
-        if (config) {
+        if (config && pastDeadline()) {
+          console.warn(`  [deadline] run budget exhausted — skipping ${responsibleAgent} revision, shipping as-is`)
+        } else if (config) {
           console.log(`  retrying ${responsibleAgent} with critic feedback...`)
+          // The retry result replaces engineerResult so the archive records
+          // what's actually on disk; keep the passing result to fall back to.
+          const passingEngineerResult = engineerResult
           try {
             const retryResult = await callAgent(responsibleAgent, config.prompt, config.user(), feedback, config.options)
             for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
+            engineerResult = retryResult
 
             const retryBuild = validateBuild()
             if (!retryBuild.success) {
-              console.warn('  post-critic revision broke the build — restoring pre-revision files')
-              const filesToRestore = new Map()
-              for (const [filePath, content] of originalBackup.entries()) {
-                const owner = FILE_OWNERSHIP[filePath]
-                if (owner === responsibleAgent) {
-                  filesToRestore.set(filePath, content)
-                }
+              console.warn('  post-critic revision broke the build — restoring known-passing state')
+              // Restore the snapshot taken right after the first passing
+              // build — NOT originalBackup. cleanupOrphans against the same
+              // snapshot deletes any paths the failed revision invented
+              // beyond it.
+              await cleanupOrphans(writtenPaths, passingBackup)
+              await restore(passingBackup)
+              engineerResult = passingEngineerResult
+
+              // Prove the restored state actually rebuilds — falling
+              // through to archive() on faith is how broken hybrids ship.
+              const restoredBuild = validateBuild()
+              if (!restoredBuild.success) {
+                await cleanupOrphans(writtenPaths, originalBackup)
+                await restore(originalBackup)
+                const fatal = new Error(`Restore of passing state failed to rebuild after post-critic revision. Error:\n${restoredBuild.error?.slice(0, 1000)}`)
+                fatal.fatal = true
+                throw fatal
               }
-              await cleanupOrphans(writtenPaths, originalBackup)
-              await restore(filesToRestore)
+              console.log('  known-passing state restored and re-validated')
             } else {
               console.log('  post-critic revision build passed')
               // Re-capture so the persisted screenshot reflects the revised
@@ -1353,46 +1443,25 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
               }
             }
           } catch (err) {
+            if (err.fatal) throw err
             console.warn(`  ${responsibleAgent} revision failed (non-blocking): ${err.message}`)
+            // A mid-batch writeFiles abort can leave a partial hybrid on
+            // disk — put the known-passing state back before shipping.
+            await cleanupOrphans(writtenPaths, passingBackup)
+            await restore(passingBackup)
+            engineerResult = passingEngineerResult
           }
         }
       } else {
         console.log('  [screenshot-critic] SHIP')
       }
     } catch (err) {
+      if (err.fatal) throw err
       console.warn(`  [screenshot-critic] Failed (non-blocking): ${err.message}`)
       console.warn('  Shipping without screenshot review')
     }
 
-    const allFiles = [
-      ...tokenResult.files,
-      ...engineerResult.files,
-    ]
-    const changedPaths = allFiles.map(f => f.path)
-
-    const rationale = tokenResult.rationale || 'Agent swarm redesign'
-    const designBrief = tokenResult.design_brief || 'Multi-agent redesign'
-
-    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null, {
-      'screenshot.png': finalScreenshot,
-      'mockup.html': mockup?.mockupHtml ?? null,
-      'mockup-screenshot.png': mockupScreenshot,
-      'verdicts.json': JSON.stringify(verdicts, null, 2),
-      'shell.json': JSON.stringify(shellDecl, null, 2),
-    })
-    archiveRan = true
-
-    // Save archetype for future anti-repetition enforcement
-    if (chosenArchetype && signals.date) {
-      try {
-        const datePath = path.join(ROOT, 'archive', signals.date)
-        await mkdir(datePath, { recursive: true })
-        await writeFile(path.join(datePath, 'archetype.txt'), chosenArchetype, 'utf8')
-        console.log(`  [archetype] saved: ${chosenArchetype}`)
-      } catch {}
-    }
-
-    return { rationale, design_brief: designBrief, files: allFiles }
+    return archiveAndReturn(engineerResult)
   }
 
   // -----------------------------------------------------------------------
@@ -1422,14 +1491,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   // Build agent lookup for retry. Per-agent `options` carry the model +
   // timeout overrides so new agents added later don't need re-wiring at the
-  // callAgent site. Keep these options in sync with the primary invocation
-  // of each agent (the Phase 2c react-engineer call).
+  // callAgent site. react-engineer shares reactEngineerAgentConfig with the
+  // primary Phase 2c invocation so the configs can't drift apart.
   const agentConfig = {
-    'react-engineer': {
-      prompt: reactEngineerSystemPrompt,
-      user: buildEngineerUserPrompt,
-      options: { model: 'sonnet', timeoutMs: 1500000, stallTimeoutMs: 1200000 },
-    },
+    'react-engineer': reactEngineerAgentConfig,
   }
 
   // Build failures are almost always in the React Engineer's TSX.
@@ -1464,36 +1529,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const retryBuild = validateBuild()
   if (retryBuild.success) {
     console.log('\n=== Retry build passed! ===')
-
-    const allFiles = [
-      ...tokenResult.files,
-      ...engineerResult.files,
-    ]
-    const changedPaths = allFiles.map(f => f.path)
-
-    const rationale = tokenResult.rationale || 'Agent swarm redesign (retry)'
-    const designBrief = tokenResult.design_brief || 'Multi-agent redesign (retry)'
-
-    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null, {
-      'screenshot.png': finalScreenshot,
-      'mockup.html': mockup?.mockupHtml ?? null,
-      'mockup-screenshot.png': mockupScreenshot,
-      'verdicts.json': JSON.stringify(verdicts, null, 2),
-      'shell.json': JSON.stringify(shellDecl, null, 2),
-    })
-    archiveRan = true
-
-    // Save archetype for future anti-repetition enforcement
-    if (chosenArchetype && signals.date) {
-      try {
-        const datePath = path.join(ROOT, 'archive', signals.date)
-        await mkdir(datePath, { recursive: true })
-        await writeFile(path.join(datePath, 'archetype.txt'), chosenArchetype, 'utf8')
-        console.log(`  [archetype] saved: ${chosenArchetype}`)
-      } catch {}
-    }
-
-    return { rationale, design_brief: designBrief, files: allFiles }
+    return archiveAndReturn(engineerResult, ' (retry)')
   }
 
   // All retries exhausted — restore everything and throw

@@ -20,7 +20,7 @@ concurrency:
 jobs:
   redesign:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 80  # mockup revision rounds add ~10-15m each; 45m could not absorb one
     permissions:
       contents: write
       issues: write  # for failure notification issues
