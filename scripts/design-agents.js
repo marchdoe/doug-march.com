@@ -506,6 +506,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     refResponsive,
     refInteraction,
     refCritique,
+    brandContract,
   ] = await Promise.all([
     readFile(path.join(promptDir, 'spec-critic.md'), 'utf8'),
     readFile(path.join(promptDir, 'screenshot-critic.md'), 'utf8'),
@@ -517,6 +518,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     readFile(path.join(refDir, 'responsive-design.md'), 'utf8'),
     readFile(path.join(refDir, 'interaction-design.md'), 'utf8'),
     readFile(path.join(refDir, 'critique.md'), 'utf8'),
+    readFile(path.join(promptDir, 'brand-contract.md'), 'utf8'),
   ])
 
   // Brand-register declaration. doug-march.com is BRAND register — a personal
@@ -723,6 +725,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const colorMandateSection = formatMandateForPrompt(colorMandate)
   console.log(`  color-mandate: target ${colorMandate.targetHueRange[0]}-${colorMandate.targetHueRange[1]}°, ${colorMandate.forbiddenHues.length} forbidden zone(s)`)
 
+  const { computeShellMandate, formatShellMandateForPrompt } = await import('./utils/shell-mandate.js')
+  let shellMandateSection = ''
+  try {
+    shellMandateSection = formatShellMandateForPrompt(computeShellMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 7 }))
+  } catch (err) {
+    console.warn(`[shell-mandate] computation failed (non-blocking): ${err.message}`)
+  }
+
   // -----------------------------------------------------------------------
   // Phase 0+1: Art Director — single decision (hero copy, archetype,
   // chassis, full preset.ts, visual spec). Replaces the historical
@@ -753,6 +763,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       recentRatings,
       references,
       colorMandateSection,
+      shellMandateSection,
+      brandContract,
       weightsBlock,
       failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
       systemPrompt: artDirectorSystemPrompt,
@@ -850,6 +862,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         recentRatings,
         references,
         colorMandateSection,
+        shellMandateSection,
+        brandContract,
         weightsBlock,
         failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
         systemPrompt: artDirectorSystemPrompt,
@@ -869,6 +883,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     }
   }
 
+  // Parse shell + measurables from the final settled artDirectorResult
+  // (computed here, after any codegen retry, so they always reflect the live result).
+  // shellDecl is also used as the shell.json archive artifact below.
+  const { parseShellBlock, parseMeasurablesBlock } = await import('./utils/spec-blocks.js')
+  const shellDecl = parseShellBlock(artDirectorResult.shell)
+  const measurablesDecl = parseMeasurablesBlock(artDirectorResult.measurables)
+  console.log(`  shell: nav=${shellDecl.nav} | footer=${shellDecl.footer} | lockup=${shellDecl.brand_lockup} (${shellDecl.brand_color_mode})`)
+  console.log(`  measurables: canvas>=${measurablesDecl.canvas_utilization_min}% color>=${measurablesDecl.color_coverage_min}% hero=${measurablesDecl.hero_scale}`)
+
   // -----------------------------------------------------------------------
   // Spec Critic Gate — Art Director self-check
   // -----------------------------------------------------------------------
@@ -881,6 +904,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       '## Chassis ID\n\n' + chosenChassis.id,
       '## Visual Specification\n\n' + visualSpec,
       '## Self-Check\n\n' + artDirectorResult.selfCheck,
+      '## Measurables (declared floors)\n\n' + artDirectorResult.measurables,
+      '## Shell Declaration\n\n' + artDirectorResult.shell,
       '## elements/preset.ts\n\n```typescript\n' + artDirectorResult.presetTs + '\n```',
       recentBriefs ? '## Recent Archive Briefs\n' + recentBriefs : '',
     ].filter(Boolean).join('\n\n---\n\n')
@@ -1238,6 +1263,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null, {
       'screenshot.png': finalScreenshot,
       'verdicts.json': JSON.stringify(verdicts, null, 2),
+      'shell.json': JSON.stringify(shellDecl, null, 2),
     })
     archiveRan = true
 
@@ -1337,6 +1363,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null, {
       'screenshot.png': finalScreenshot,
       'verdicts.json': JSON.stringify(verdicts, null, 2),
+      'shell.json': JSON.stringify(shellDecl, null, 2),
     })
     archiveRan = true
 

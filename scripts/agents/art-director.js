@@ -13,6 +13,7 @@
 import { writeFile } from 'fs/promises'
 import { callClaudeCLI } from '../utils/claude-cli.js'
 import { parseDelimiterResponse } from '../utils/delimiter-parser.js'
+import { parseMeasurablesBlock, parseShellBlock } from '../utils/spec-blocks.js'
 const ARCHETYPE_NAMES = new Set([
   'Gallery Wall', 'Broadsheet', 'Specimen', 'Poster', 'Scroll', 'Split', 'Stack', 'Index',
 ])
@@ -30,6 +31,8 @@ export function buildArtDirectorUserPrompt({
   recentRatings,
   references,
   colorMandateSection,
+  shellMandateSection,
+  brandContract,
   weightsBlock,
 }) {
   const sections = []
@@ -41,6 +44,8 @@ export function buildArtDirectorUserPrompt({
   if (recentRatings) sections.push(`## User Design Ratings (learn from these)\n\n${recentRatings}`)
   if (references) sections.push(`## Design References\n\n${references}`)
   if (colorMandateSection) sections.push(colorMandateSection)
+  if (shellMandateSection) sections.push(shellMandateSection)
+  if (brandContract) sections.push(brandContract)
   if (weightsBlock) sections.push(`## Creative Weights\n\n${weightsBlock}`)
   return sections.join('\n\n---\n\n')
 }
@@ -79,6 +84,23 @@ export function validateArtDirectorResult(parsed) {
   const presetFile = (parsed.files || []).find(f => f.path === 'elements/preset.ts')
   if (!presetFile || !presetFile.content) {
     throw new Error('Art Director response missing ===FILE:elements/preset.ts=== block')
+  }
+  if (!parsed.measurables) {
+    throw new Error('Art Director response missing ===MEASURABLES===')
+  }
+  const measurables = parseMeasurablesBlock(parsed.measurables)
+  if (measurables.canvas_utilization_min === null) {
+    throw new Error('MEASURABLES block missing numeric canvas_utilization_min')
+  }
+  if (!parsed.shell) {
+    throw new Error('Art Director response missing ===SHELL===')
+  }
+  const shell = parseShellBlock(parsed.shell)
+  for (const key of ['nav', 'footer', 'brand_lockup', 'brand_color_mode']) {
+    if (!shell[key]) throw new Error(`SHELL block missing ${key}`)
+  }
+  if (!['original', 'single-color'].includes(shell.brand_color_mode)) {
+    throw new Error(`SHELL brand_color_mode must be "original" or "single-color", got "${shell.brand_color_mode}"`)
   }
 }
 
@@ -126,8 +148,8 @@ export async function runArtDirector(ctx) {
   try {
     validateArtDirectorResult(parsed)
   } catch (err) {
-    const present = ['hero_copy', 'archetype', 'chassis_id', 'visual_spec', 'self_check'].filter(k => parsed[k])
-    const absent = ['hero_copy', 'archetype', 'chassis_id', 'visual_spec', 'self_check'].filter(k => !parsed[k])
+    const present = ['hero_copy', 'archetype', 'chassis_id', 'visual_spec', 'self_check', 'measurables', 'shell'].filter(k => parsed[k])
+    const absent = ['hero_copy', 'archetype', 'chassis_id', 'visual_spec', 'self_check', 'measurables', 'shell'].filter(k => !parsed[k])
     console.error(`  [AD] validation failed — present: [${present.join(', ')}] absent: [${absent.join(', ')}]`)
     console.error(`  [AD] response head: ${result.slice(0, 300).replace(/\n/g, '↵')}`)
     if (ctx.failureDumpPath) {
@@ -170,6 +192,8 @@ export async function runArtDirector(ctx) {
     presetTs: parsed.files.find(f => f.path === 'elements/preset.ts').content,
     visualSpec: parsed.visual_spec,
     selfCheck: parsed.self_check,
+    measurables: parsed.measurables,
+    shell: parsed.shell,
     rationale: parsed.rationale || '',
     designBrief: parsed.design_brief || '',
     colorScheme: parsed.color_scheme || null,

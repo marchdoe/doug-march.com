@@ -30,6 +30,8 @@ describe('validateArtDirectorResult', () => {
     chassis_id: 'big-shoulders-atkinson',
     visual_spec: '## Color\n- 18°',
     self_check: '1. Yes 2. Yes 3. Yes',
+    measurables: 'canvas_utilization_min: 70\nhero_scale: clamp(96px, 13vw, 200px)\ncolor_coverage_min: 60',
+    shell: 'nav: bottom rail\nfooter: data strip\nbrand_lockup: horizontal-md\nbrand_color_mode: original',
     files: [{ path: 'elements/preset.ts', content: "export const elementsPreset = 'stub'" }],
     rationale: 'r',
     design_brief: 'b',

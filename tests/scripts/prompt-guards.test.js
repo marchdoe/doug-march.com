@@ -25,6 +25,18 @@ describe('brand-contract.md load-bearing directives', () => {
   })
 })
 
+describe('art-director.md output contract', () => {
+  const ad = () => read('art-director.md')
+  it('requires the MEASURABLES block', () => {
+    expect(ad()).toContain('===MEASURABLES===')
+    expect(ad()).toContain('canvas_utilization_min')
+  })
+  it('requires the SHELL block', () => {
+    expect(ad()).toContain('===SHELL===')
+    expect(ad()).toContain('brand_color_mode')
+  })
+})
+
 describe('logo-mono.svg', () => {
   it('exists and uses currentColor exclusively (no hardcoded colors)', () => {
     const svg = readFileSync(path.join(promptDir, '..', '..', 'app', 'assets', 'logo-mono.svg'), 'utf8')
