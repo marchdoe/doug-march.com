@@ -769,10 +769,30 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
       systemPrompt: artDirectorSystemPrompt,
     })
-  } catch (err) {
-    console.error(`  Art Director failed: ${err.message}`)
-    await restore(originalBackup)
-    throw new Error(`Art Director failed: ${err.message}`)
+  } catch (firstErr) {
+    console.warn(`  Art Director failed (${firstErr.message}) — retrying once with error context`)
+    try {
+      artDirectorResult = await runArtDirector({
+        signals,
+        contentSummary,
+        chassisCatalog: CHASSIS_CATALOG,
+        chassisCatalogBlock,
+        archetypeHistoryBlock: archetypeHistoryBlock + `\n\n## Previous attempt was rejected\n\nYour previous response failed validation: ${firstErr.message}\nEmit ALL required blocks with exact delimiters and exact field formats this time.`,
+        recentBriefs,
+        recentRatings,
+        references,
+        colorMandateSection,
+        shellMandateSection,
+        brandContract,
+        weightsBlock,
+        failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
+        systemPrompt: artDirectorSystemPrompt,
+      })
+    } catch (err) {
+      console.error(`  Art Director failed after retry: ${err.message}`)
+      await restore(originalBackup)
+      throw new Error(`Art Director failed after retry: ${err.message}`)
+    }
   }
 
   const chosenArchetype = artDirectorResult.archetype

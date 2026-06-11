@@ -32,4 +32,14 @@ describe('validateArtDirectorResult — MEASURABLES + SHELL', () => {
     const r = valid(); r.shell = r.shell.replace('original', 'rainbow')
     expect(() => validateArtDirectorResult(r)).toThrow(/brand_color_mode/)
   })
+
+  it('does NOT throw for an off-contract brand_lockup (warn-only)', () => {
+    const r = valid(); r.shell = r.shell.replace('horizontal-md', 'diagonal-xl')
+    expect(() => validateArtDirectorResult(r)).not.toThrow()
+  })
+
+  it('accepts canvas_utilization_min: >=70 in MEASURABLES (passes validation)', () => {
+    const r = valid(); r.measurables = 'canvas_utilization_min: >=70\nhero_scale: clamp(96px, 13vw, 200px)\ncolor_coverage_min: 60'
+    expect(() => validateArtDirectorResult(r)).not.toThrow()
+  })
 })

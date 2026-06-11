@@ -16,8 +16,8 @@ function parseKeyValues(text) {
 }
 
 function toInt(v) {
-  const n = parseInt(v, 10)
-  return Number.isFinite(n) ? n : null
+  const m = /\d+/.exec(String(v ?? ''))
+  return m ? parseInt(m[0], 10) : null
 }
 
 /**
@@ -41,6 +41,6 @@ export function parseShellBlock(text) {
     nav: kv.nav ?? null,
     footer: kv.footer ?? null,
     brand_lockup: kv.brand_lockup ?? null,
-    brand_color_mode: kv.brand_color_mode ?? null,
+    brand_color_mode: kv.brand_color_mode ? kv.brand_color_mode.toLowerCase().trim() : null,
   }
 }

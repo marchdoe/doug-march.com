@@ -226,7 +226,7 @@ Respond using the exact delimiter blocks below, in this order. Write the COMPLET
 1. Hero quotability: Yes/No — <reason>
 2. Because-of chain: Yes/No — <reason>
 3. Render feasibility: Yes/No — <reason>
-4. Canvas floor feasible: Yes/No — can this archetype × chassis genuinely fill the declared canvas_utilization_min % of a 1440×900 viewport?
+4. Canvas floor feasible: Yes/No — <reason>
 
 ===MEASURABLES===
 canvas_utilization_min: <integer %>   # archetype floors: Specimen/Poster >=70, Broadsheet/Index >=80, others >=65

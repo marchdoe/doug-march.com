@@ -24,6 +24,11 @@ describe('parseMeasurablesBlock', () => {
     const m = parseMeasurablesBlock('not even close')
     expect(m.canvas_utilization_min).toBeNull()
   })
+
+  it('parses canvas_utilization_min from >=70 (lenient integer parsing)', () => {
+    const m = parseMeasurablesBlock('canvas_utilization_min: >=70')
+    expect(m.canvas_utilization_min).toBe(70)
+  })
 })
 
 describe('parseShellBlock', () => {
@@ -44,5 +49,10 @@ describe('parseShellBlock', () => {
     const s = parseShellBlock('nav: left spine')
     expect(s.nav).toBe('left spine')
     expect(s.footer).toBeNull()
+  })
+
+  it('normalizes brand_color_mode to lowercase (Single-Color → single-color)', () => {
+    const s = parseShellBlock('brand_color_mode: Single-Color')
+    expect(s.brand_color_mode).toBe('single-color')
   })
 })

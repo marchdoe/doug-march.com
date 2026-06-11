@@ -18,6 +18,10 @@ const ARCHETYPE_NAMES = new Set([
   'Gallery Wall', 'Broadsheet', 'Specimen', 'Poster', 'Scroll', 'Split', 'Stack', 'Index',
 ])
 
+const BRAND_LOCKUP_IDS = new Set([
+  'mark-only-sm', 'mark-only-md', 'horizontal-sm', 'horizontal-md', 'stacked-md', 'stacked-lg',
+])
+
 /**
  * Assemble the user prompt for the Art Director call.
  * Pure function — no I/O — so unit tests can drive it directly.
@@ -101,6 +105,9 @@ export function validateArtDirectorResult(parsed) {
   }
   if (!['original', 'single-color'].includes(shell.brand_color_mode)) {
     throw new Error(`SHELL brand_color_mode must be "original" or "single-color", got "${shell.brand_color_mode}"`)
+  }
+  if (!BRAND_LOCKUP_IDS.has(shell.brand_lockup)) {
+    console.warn(`  [AD] brand_lockup "${shell.brand_lockup}" is not a Brand Contract id — accepting (warn-only)`)
   }
 }
 
