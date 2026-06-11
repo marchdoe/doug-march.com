@@ -35,3 +35,12 @@ Whitespace is the design. Sections are full-viewport height; content is centered
 ## Mobile strategy
 
 Retains single dominant element on mobile — scale the hero via `clamp()`. Secondary info (nav, metadata, footer) stays anchored to the poster's bottom, not fighting the hero. If the hero needs to reflow (e.g. "DOUG / MARCH" instead of "DOUG MARCH"), the reflow should look intentional, not cramped.
+
+## This is one lane
+
+This seed describes ONE strong execution of this archetype — the default
+lane, not the only one. If today's signals and brief call for a radically
+different take (different palette family, inverted ground, another emotional
+register), take it: justify the deviation in your rationale and execute it
+with the same precision this seed demands. The anti-patterns above still
+apply; the specific colors, faces, and measurements do not bind you.

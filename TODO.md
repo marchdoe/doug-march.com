@@ -16,11 +16,11 @@ All three creative agents (interpret-signals, token-designer, unified-designer) 
 
 ---
 
-### 2. Split unified designer into Designer + React Engineer ✅ spec ready
+### 2. Split unified designer into Designer + React Engineer ✅ done
 
-→ [`docs/specs/02-designer-engineer-split.md`](./docs/specs/02-designer-engineer-split.md)
+→ [`docs/specs/02-designer-engineer-split.md`](./docs/specs/02-designer-engineer-split.md) (superseded — see feat/design-quality-pipeline)
 
-Mockup designer (Opus 4.7) → mockup-critic → React engineer (Sonnet 4.6). Standalone HTML/CSS mockup is naturally archive-friendly. Hard replace; cleans up orphan prompts from the previous component-level split.
+Implemented in feat/design-quality-pipeline: mockup-designer, mockup-critic, react-engineer agents wired through design-agents.js. Orphan prompts removed.
 
 ---
 
@@ -57,11 +57,11 @@ Owner direction (2026-06-11): main structure is correct (archive section + acces
 
 ## Pipeline polish
 
-### 6. Pipeline variance (instrumentation + soft guidance) ✅ spec ready
+### 6. Pipeline variance (instrumentation + soft guidance) 🟡 partial
 
 → [`docs/specs/06-pipeline-variance.md`](./docs/specs/06-pipeline-variance.md)
 
-Extends the existing `color-mandate.js` pattern with parallel utilities for archetype and chassis variance. Adds a `/dev/variance` dashboard mirroring the existing `/dev/responsive`. Soft guidance only — never blocks the model from picking what fits. "Fit > novelty" is the guiding principle, repeated in every variance prompt section.
+Shell/archetype variance shipped as `scripts/utils/shell-mandate.js` (feat/design-quality-pipeline, 2026-06). The `/dev/variance` dashboard remains unimplemented and parked.
 
 ---
 
@@ -93,6 +93,7 @@ Add `pnpm.overrides` entry pinning `follow-redirects` to `^1.16.0`. Verify with 
 
 ## Done (recent)
 
+- [x] Design-quality pipeline — mockup designer/critic/engineer split, shell mandate, GitHub-issue ratings, OG images (feat/design-quality-pipeline)
 - [x] Responsive design pipeline (PR #49, 2026-04-20)
 - [x] Interpret-signals false-positive in API mode (PR #55, 2026-04-26)
 - [x] CI security hardening (PR #41)

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { readFileSync } from 'fs'
+import { readFileSync, readdirSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -81,6 +81,18 @@ describe('react-engineer.md load-bearing directives', () => {
   })
   it('forbids raw hex in TSX', () => {
     expect(re()).toMatch(/raw hex|never.*hex|hex.*(token|never)/i)
+  })
+})
+
+describe('seed permission overrides', () => {
+  const seedDir = path.join(promptDir, 'seeds')
+  const seeds = readdirSync(seedDir).filter((f) => f.endsWith('.md') && f !== 'README.md')
+  it('every seed declares itself one lane, not the law', () => {
+    expect(seeds.length).toBeGreaterThanOrEqual(8)
+    for (const f of seeds) {
+      const content = readFileSync(path.join(seedDir, f), 'utf8')
+      expect(content, `${f} missing permission override`).toContain('## This is one lane')
+    }
   })
 })
 
