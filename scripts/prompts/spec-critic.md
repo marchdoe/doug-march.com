@@ -45,7 +45,7 @@ Failure example: archetype Specimen + chassis spectral-albert (1.333) → cannot
 
 ### 4. Self-check honesty
 
-The Art Director's `===SELF_CHECK===` block answers Yes/No to three questions. Do the answers match the evidence?
+The Art Director's `===SELF_CHECK===` block answers Yes/No to four questions. Do the answers match the evidence?
 
 - If the self-check says "Hero quotability: Yes" but the hero phrase is "Selected Work," that is dishonest.
 - If the self-check says "Render feasibility: Yes" but archetype × chassis is unrenderable, that is dishonest.
