@@ -1205,6 +1205,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
               if (responsibleAgent === 'token-designer') validateCodegen()
             } else {
               console.log('  post-critic revision build passed')
+              // Re-capture so the persisted screenshot reflects the revised
+              // render, not the pre-revision one the critic rejected.
+              try {
+                const { captureScreenshot: captureScreenshotAfterRevision } = await import('./utils/snapshot.js')
+                finalScreenshot = await captureScreenshotAfterRevision()
+              } catch (recapErr) {
+                console.warn(`  screenshot re-capture failed (non-blocking): ${recapErr.message}`)
+              }
             }
           } catch (err) {
             console.warn(`  ${responsibleAgent} revision failed (non-blocking): ${err.message}`)

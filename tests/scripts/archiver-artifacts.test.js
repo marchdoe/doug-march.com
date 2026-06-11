@@ -23,8 +23,14 @@ describe('writeArtifacts', () => {
   })
 
   it('skips null/undefined values and never throws on a bad entry', async () => {
-    await writeArtifacts(dir, { 'a.txt': null, 'b.txt': 'ok' })
+    await writeArtifacts(dir, {
+      'a.txt': null,
+      'b.txt': 'ok',
+      '../escape.txt': 'nope',
+      'missing-dir/x.txt': 'data',
+    })
     expect(existsSync(path.join(dir, 'a.txt'))).toBe(false)
     expect(existsSync(path.join(dir, 'b.txt'))).toBe(true)
+    expect(existsSync(path.join(path.dirname(dir), 'escape.txt'))).toBe(false)
   })
 })

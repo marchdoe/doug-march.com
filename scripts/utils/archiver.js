@@ -126,6 +126,10 @@ function formatSignalsMarkdown(signals) {
 export async function writeArtifacts(buildDir, artifacts = {}) {
   for (const [name, value] of Object.entries(artifacts)) {
     if (value === null || value === undefined) continue
+    if (name !== path.basename(name)) {
+      console.warn(`  artifact name rejected (must be a plain filename): ${name}`)
+      continue
+    }
     try {
       await writeFile(path.join(buildDir, name), value)
     } catch (err) {
