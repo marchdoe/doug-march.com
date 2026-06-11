@@ -1047,8 +1047,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     brandContract,
   ].join('\n\n')
   console.log(`  mockup-designer system prompt: ${(mockupDesignerSystemPrompt.length / 1024).toFixed(0)}KB`)
-  if (mockupDesignerSystemPrompt.length > 54 * 1024) {
-    console.warn(`  ⚠ mockup-designer system prompt exceeds the 54KB guard (CLI 2.1.92 fails ~56KB)`)
+  if (mockupDesignerSystemPrompt.length > 55 * 1024) {
+    // Fail fast rather than let the CLI emit a 0KB mockup near the ~56KB
+    // ceiling (the failure that pinned us to 2.1.92). Restore + throw so
+    // the day's run rolls back cleanly instead of shipping nothing.
+    await restore(originalBackup)
+    throw new Error(`mockup-designer system prompt is ${(mockupDesignerSystemPrompt.length / 1024).toFixed(0)}KB — over the 55KB ceiling (CLI 2.1.92 fails ~56KB). Trim a reference doc.`)
   }
 
   // Calibration: best recent owner grade as a text note (screenshots would
