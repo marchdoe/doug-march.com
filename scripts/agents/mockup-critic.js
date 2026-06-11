@@ -5,14 +5,20 @@
 import { callClaudeCLI } from '../utils/claude-cli.js'
 
 export function parseMockupCriticResponse(raw) {
-  const verdictMatch = /===VERDICT===\s*\n\s*(APPROVE|REVISE)/.exec(raw)
-  const feedbackMatch = /===FEEDBACK===\s*\n([\s\S]*?)===END===/.exec(raw)
-  if (!verdictMatch) {
+  // Verdict must sit alone on its line (rejects a literal echo of the
+  // template's "APPROVE | REVISE"), and the LAST occurrence wins so a
+  // quoted example earlier in the response can't shadow the real verdict.
+  const verdictMatches = [...String(raw ?? '').matchAll(/===VERDICT===\s*\r?\n\s*(APPROVE|REVISE)\s*$/gm)]
+  // Feedback tolerates a missing ===END=== (truncated responses) so a
+  // REVISE round never goes back to the designer with empty feedback.
+  // Last occurrence wins, mirroring the verdict rule.
+  const feedbackMatches = [...String(raw ?? '').matchAll(/===FEEDBACK===\s*\n([\s\S]*?)(?:===END===|$)/g)]
+  if (verdictMatches.length === 0) {
     return { verdict: 'REVISE', feedback: `malformed critic response: ${String(raw).slice(0, 300)}` }
   }
   return {
-    verdict: verdictMatch[1],
-    feedback: feedbackMatch ? feedbackMatch[1].trim() : '',
+    verdict: verdictMatches[verdictMatches.length - 1][1],
+    feedback: feedbackMatches.length ? feedbackMatches[feedbackMatches.length - 1][1].trim() : '',
   }
 }
 
