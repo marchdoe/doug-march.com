@@ -615,53 +615,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   } catch {}
 
   // -----------------------------------------------------------------------
-  // Read recent ratings for taste feedback
+  // Read recent ratings for taste feedback (new-schema GitHub-issue ratings)
   // -----------------------------------------------------------------------
-  let recentRatings = ''
-  try {
-    const ratingDirs = readdirSync(archiveDir)
-      .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
-      .sort()
-      .reverse()
-      .slice(0, 10)
-    for (const dir of ratingDirs) {
-      const dirPath = path.join(archiveDir, dir)
-      const briefPath = path.join(dirPath, 'brief.md')
-      const briefLine = existsSync(briefPath)
-        ? readFileSync(briefPath, 'utf8').match(/\*\*Design Brief:\*\*\s*(.+)/)?.[1] || ''
-        : ''
-
-      // Collect all ratings for this date (legacy + per-build)
-      const allRatings = []
-
-      // Legacy single rating.json
-      const legacyPath = path.join(dirPath, 'rating.json')
-      if (existsSync(legacyPath)) {
-        try {
-          const legacy = JSON.parse(readFileSync(legacyPath, 'utf8'))
-          allRatings.push({ ...legacy, timestamp: legacy.timestamp || 0 })
-        } catch {}
-      }
-
-      // Per-build rating-{timestamp}.json files
-      const ratingFiles = readdirSync(dirPath)
-        .filter(f => f.startsWith('rating-') && f.endsWith('.json'))
-        .sort()
-      for (const file of ratingFiles) {
-        try {
-          allRatings.push(JSON.parse(readFileSync(path.join(dirPath, file), 'utf8')))
-        } catch {}
-      }
-
-      for (const rating of allRatings) {
-        const ts = rating.timestamp ? new Date(rating.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : ''
-        const buildLabel = ts ? ` (build ${ts})` : ''
-        recentRatings += `\n### ${dir}${buildLabel} — "${briefLine}"\n`
-        recentRatings += `Scores: hierarchy=${rating.ratings?.hierarchy || '?'}/5, typography=${rating.ratings?.typography || '?'}/5, composition=${rating.ratings?.composition || '?'}/5, signals=${rating.ratings?.signalIntegration || '?'}/5, polish=${rating.ratings?.polish || '?'}/5\n`
-        if (rating.notes) recentRatings += `Notes: "${rating.notes}"\n`
-      }
-    }
-  } catch {}
+  const { buildRecentRatingsBlock } = await import('./utils/ratings.js')
+  const recentRatings = buildRecentRatingsBlock(path.join(ROOT, 'archive'), { lookbackDays: 10 })
 
   // -----------------------------------------------------------------------
   // Read design references (collected by collect-references.js)

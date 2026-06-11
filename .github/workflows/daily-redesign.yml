@@ -53,6 +53,11 @@ jobs:
         # See PR #40 for investigation. Bump after verifying in a test run.
         run: npm install -g @anthropic-ai/claude-code@2.1.92
 
+      - name: Harvest ratings from GitHub issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/collect-ratings.js
+
       - name: Collect signals
         env:
           WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
@@ -83,6 +88,7 @@ jobs:
           for d in archive/$TODAY/build-[0-9]*; do
             [ -d "$d" ] && git add "$d"
           done
+          git add archive/*/rating-*.json 2>/dev/null || true
           git add elements/ app/components/ app/routes/ public/archive/ signals/today.references.md
           git diff --cached --quiet || git commit -m "chore: daily redesign $TODAY"
           # Retry push up to 3 times in case of concurrent pushes to main
@@ -91,6 +97,43 @@ jobs:
             echo "push attempt $i failed, retrying in 10s..."
             sleep 10
           done
+
+      - name: Open today's rating issue
+        if: ${{ !inputs.dry_run && success() }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs')
+            const today = new Date().toISOString().slice(0, 10)
+            let brief = ''
+            try {
+              const briefMd = fs.readFileSync(`archive/${today}/brief.md`, 'utf8')
+              brief = briefMd.match(/\*\*Design Brief:\*\*\s*(.+)/)?.[1] || ''
+            } catch {}
+            const hero = brief.slice(0, 60) || today
+            const img = `https://raw.githubusercontent.com/${context.repo.owner}/${context.repo.repo}/main/public/archive/${today}.png`
+            const body = [
+              `![today's design](${img})`,
+              ``,
+              brief ? `> ${brief}` : '',
+              ``,
+              `Live: https://doug-march.com · [Archive entry](https://doug-march.com/archive/${today})`,
+              ``,
+              `Rate it (edit the YAML in a reply, ~2 min):`,
+              '```yaml',
+              'grade: B        # A-D',
+              'worked: ""',
+              `didnt: ""`,
+              'try: ""',
+              '```',
+            ].join('\n')
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Rate: ${today} — "${hero}"`,
+              body,
+              labels: ['daily-rating'],
+            })
 
       - name: Notify on failure
         if: failure()

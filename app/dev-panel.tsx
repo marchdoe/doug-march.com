@@ -2235,14 +2235,6 @@ function SuccessSection({ brief, timestamp, buildId, attemptNum, archive, totalM
   const today = new Date().toISOString().slice(0, 10)
   const ratingDate = signalDate || today
 
-  // Rating state
-  const [ratings, setRatings] = useState<Record<string, number>>({})
-  const [ratingNotes, setRatingNotes] = useState('')
-  const [ratingSaved, setRatingSaved] = useState(false)
-  const [ratingSaving, setRatingSaving] = useState(false)
-  const [ratingError, setRatingError] = useState('')
-  const [saveAsReference, setSaveAsReference] = useState(false)
-  const [referenceConfirmation, setReferenceConfirmation] = useState('')
   const [responsiveMetrics, setResponsiveMetrics] = useState<ResponsiveMetrics | null>(null)
 
   useEffect(() => {
@@ -2254,44 +2246,6 @@ function SuccessSection({ brief, timestamp, buildId, attemptNum, archive, totalM
     return () => { cancelled = true }
   }, [ratingDate, buildId])
 
-  // Each build starts fresh — no pre-population from previous ratings
-
-  const ratingCategories = [
-    { key: 'hierarchy', label: 'Visual Hierarchy' },
-    { key: 'typography', label: 'Typography' },
-    { key: 'composition', label: 'Composition' },
-    { key: 'signalIntegration', label: 'Signal Integration' },
-    { key: 'polish', label: 'Overall Polish' },
-  ]
-
-  const handleSaveRating = async () => {
-    setRatingSaving(true)
-    setRatingError('')
-    try {
-      const resp = await fetch('/api/dev-rate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date: ratingDate, buildId, ratings, notes: ratingNotes, timestamp: Date.now(), saveAsReference }),
-      })
-      const data = await resp.json()
-      if (resp.ok) {
-        setRatingSaved(true)
-        if (saveAsReference && data.referenceAdded) {
-          setReferenceConfirmation('Rating saved \u2713 \u2014 Design added to reference library')
-        } else if (saveAsReference && !data.referenceAdded) {
-          setReferenceConfirmation(`Rating saved \u2713 \u2014 Reference failed: ${data.error || 'unknown error'}`)
-        } else {
-          setReferenceConfirmation('')
-        }
-      } else {
-        setRatingError(`Save failed: ${data.error || resp.status}`)
-      }
-    } catch (err) {
-      setRatingError(`Save failed: ${err instanceof Error ? err.message : String(err)}`)
-    } finally {
-      setRatingSaving(false)
-    }
-  }
   const siteUrl = window.location.origin
 
   return (
@@ -2467,137 +2421,9 @@ function SuccessSection({ brief, timestamp, buildId, attemptNum, archive, totalM
         })}
       </div>
 
-      {/* Rating form */}
+      {/* Responsive metrics */}
       <div style={{ padding: '12px 16px', borderTop: `1px solid rgba(92,190,74,0.1)` }}>
         <ResponsiveCard metrics={responsiveMetrics} date={ratingDate} />
-        <div style={{
-          fontSize: '9px',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '.12em',
-          color: c.dim,
-          marginBottom: '10px',
-          fontFamily: c.font,
-        }}>Rate This Design</div>
-
-        {ratingCategories.map(({ key, label }) => (
-          <div key={key} style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '6px',
-          }}>
-            <span style={{ fontSize: '10px', color: c.secondary, fontFamily: c.font }}>{label}</span>
-            <div style={{ display: 'flex', gap: '4px' }}>
-              {[1, 2, 3, 4, 5].map(n => (
-                <button
-                  key={n}
-                  onClick={() => { setRatings(prev => ({ ...prev, [key]: n })); setRatingSaved(false) }}
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '3px',
-                    border: `1px solid ${ratings[key] === n ? c.cyan : c.border}`,
-                    background: ratings[key] === n ? 'rgba(0,229,255,0.15)' : c.cardBg,
-                    color: ratings[key] === n ? c.cyan : c.muted,
-                    fontSize: '10px',
-                    fontWeight: 700,
-                    fontFamily: c.font,
-                    cursor: 'pointer',
-                    padding: 0,
-                  }}
-                >
-                  {n}
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
-
-        <textarea
-          value={ratingNotes}
-          onChange={e => { setRatingNotes(e.target.value); setRatingSaved(false) }}
-          placeholder="Notes (optional) -- what worked, what didn't..."
-          style={{
-            width: '100%',
-            minHeight: '48px',
-            background: c.cardBg,
-            border: `1px solid ${c.border}`,
-            borderRadius: '4px',
-            color: c.primary,
-            fontSize: '10px',
-            fontFamily: c.font,
-            padding: '8px',
-            marginTop: '8px',
-            resize: 'vertical',
-            boxSizing: 'border-box',
-          }}
-        />
-
-        <div
-          onClick={() => { setSaveAsReference(!saveAsReference); setRatingSaved(false); setReferenceConfirmation('') }}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginTop: '10px',
-            cursor: 'pointer',
-            userSelect: 'none',
-          }}
-        >
-          <div style={{
-            width: '14px',
-            height: '14px',
-            borderRadius: '3px',
-            border: `1px solid ${saveAsReference ? c.cyan : c.ghost}`,
-            background: saveAsReference ? 'rgba(0,229,255,0.15)' : 'transparent',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '10px',
-            color: c.cyan,
-            fontFamily: c.font,
-            fontWeight: 700,
-            flexShrink: 0,
-          }}>
-            {saveAsReference ? '\u2713' : ''}
-          </div>
-          <span style={{ fontSize: '10px', color: saveAsReference ? c.secondary : c.muted, fontFamily: c.font }}>
-            Save this design as a reference for future runs
-          </span>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '8px' }}>
-          <button
-            onClick={handleSaveRating}
-            disabled={Object.keys(ratings).length === 0 || ratingSaving}
-            style={{
-              background: Object.keys(ratings).length === 0 || ratingSaving ? c.muted : c.cyan,
-              color: c.pageBg,
-              border: 'none',
-              borderRadius: '4px',
-              padding: '6px 14px',
-              fontSize: '10px',
-              fontWeight: 700,
-              fontFamily: c.font,
-              cursor: Object.keys(ratings).length === 0 || ratingSaving ? 'default' : 'pointer',
-              opacity: Object.keys(ratings).length === 0 || ratingSaving ? 0.5 : 1,
-              letterSpacing: '.05em',
-            }}
-          >
-            {ratingSaving ? 'SAVING...' : 'SAVE RATING'}
-          </button>
-          {ratingSaved && (
-            <span style={{ fontSize: '10px', color: c.green, fontFamily: c.font, fontWeight: 700 }}>
-              {referenceConfirmation || 'Rating saved \u2713'}
-            </span>
-          )}
-          {ratingError && (
-            <span style={{ fontSize: '10px', color: '#ef4444', fontFamily: c.font }}>
-              {ratingError}
-            </span>
-          )}
-        </div>
       </div>
     </div>
   )
