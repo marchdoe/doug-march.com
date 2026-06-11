@@ -111,11 +111,10 @@ test.describe('site health — share-sheet meta', () => {
     await page.goto('/')
     // A committed checkout (before the first pipeline run on this branch) has
     // no og meta in __root.tsx — skip rather than hard-fail in that case.
-    const ogImage = await page
-      .locator('meta[property="og:image"]')
-      .getAttribute('content')
-      .catch(() => null)
-    if (ogImage === null) test.skip(true, 'og meta not yet generated (pre-first-pipeline-run checkout)')
+    const ogMeta = page.locator('meta[property="og:image"]')
+    // Fast skip (no ~30s auto-wait) when the tag is absent on a pre-pipeline checkout.
+    if ((await ogMeta.count()) === 0) test.skip(true, 'og meta not yet generated (pre-first-pipeline-run checkout)')
+    const ogImage = await ogMeta.getAttribute('content')
     expect(ogImage).toMatch(/\/og\/\d{4}-\d{2}-\d{2}\.png$/)
     const card = await page.locator('meta[name="twitter:card"]').getAttribute('content')
     expect(card).toBe('summary_large_image')

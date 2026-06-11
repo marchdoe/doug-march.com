@@ -286,17 +286,24 @@ export async function captureRouteScreenshot(route, { port, width = 1200, height
     })
   }
 
+  let browser = null
   try {
-    const browser = await chromium.launch({ headless: true })
+    browser = await chromium.launch({ headless: true })
     const page = await browser.newPage({ viewport: { width, height } })
-    await page.goto(`http://localhost:${serverPort}${route}`, {
+    const response = await page.goto(`http://localhost:${serverPort}${route}`, {
       waitUntil: 'networkidle',
     })
+    // Guard against capturing a 404 page. /og is unlinked, so it is never
+    // prerendered or build-validated — if the engineer omitted og.tsx, the
+    // route serves the notFound component. Throwing here lets the caller's
+    // best-effort catch skip writing a broken share card.
+    if (response && !response.ok()) {
+      throw new Error(`route ${route} returned HTTP ${response.status()}`)
+    }
     await page.waitForTimeout(1000) // wait for fonts
-    const screenshot = await page.screenshot({ type: 'png', fullPage: false })
-    await browser.close()
-    return screenshot
+    return await page.screenshot({ type: 'png', fullPage: false })
   } finally {
+    if (browser) await browser.close()
     if (server) server.kill()
   }
 }
