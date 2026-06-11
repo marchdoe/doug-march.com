@@ -1183,6 +1183,7 @@ export function buildMockupDesignerUserPrompt({
   lessonsBlock,
   calibrationNote,
   archetypeContractBlock,
+  polishRef,
   revisionFeedback,
 }) {
   const sections = []
@@ -1196,6 +1197,9 @@ export function buildMockupDesignerUserPrompt({
   sections.push(`## Site Content (real content — render this, never placeholders)\n\n${contentSummary}`)
   if (lessonsBlock) sections.push(lessonsBlock)
   if (calibrationNote) sections.push(calibrationNote)
+  // polish.md rides in the user prompt — the system prompt is at its
+  // size budget (CLI 2.1.92 fails on ~56KB+ system prompts).
+  if (polishRef) sections.push(`## Execution Polish Reference (apply throughout)\n\n${polishRef}`)
   if (revisionFeedback) sections.push(`## CRITIC REVISION FEEDBACK — fix these before anything else\n\n${revisionFeedback}`)
   return sections.join('\n\n---\n\n')
 }
@@ -1802,31 +1806,38 @@ Delete the current Phase 2 section (the `enrichedBrief` construction stays; ever
   const mockupCriticPromptRaw = await readFile(path.join(promptDir, 'mockup-critic.md'), 'utf8')
   const mockupCriticSystemPrompt = `${mockupCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
 
-  // polish.md is ALWAYS loaded for the designer; bolder/overdrive are
-  // conditional on a committed/drenched color stance; delight on register.
+  // polish.md is ALWAYS loaded for the designer — but in the USER prompt
+  // (12.1KB; keeping the system prompt under the CLI 2.1.92 ~56KB failure
+  // zone — Task 8 review measured the system-prompt budget). bolder.md is
+  // conditional on a committed/drenched color stance; overdrive.md is NOT
+  // loaded (size cap); refResponsive is NOT appended — its rules are
+  // already salvaged into mockup-designer.md's Responsive section.
   const refPolish = await readFile(path.join(refDir, 'polish.md'), 'utf8')
   const colorStory = JSON.stringify(artDirectorResult.colorScheme || {}).toLowerCase() + visualSpec.toLowerCase()
   const isCommitted = /drench|committed|saturat|maximal/.test(colorStory)
   const conditionalRefs = []
   if (isCommitted) {
     conditionalRefs.push(await readFile(path.join(refDir, 'bolder.md'), 'utf8'))
-    conditionalRefs.push(await readFile(path.join(refDir, 'overdrive.md'), 'utf8'))
   }
   const seedPath = selectSeed(chosenArchetype || 'stack')
   const seedContent = readFileSync(seedPath, 'utf8')
-  console.log(`  injecting seed: ${path.basename(seedPath)}; polish.md loaded; conditional refs: ${conditionalRefs.length}`)
+  console.log(`  injecting seed: ${path.basename(seedPath)}; conditional refs: ${conditionalRefs.length}`)
   const mockupDesignerSystemPrompt = [
     mockupDesignerPromptRaw.replace('<!-- SEED_ANCHOR -->', seedContent),
     brandRegisterDeclaration,
     refTypography,
     refColor,
     refSpatial,
-    refResponsive,
-    refPolish,
     ...conditionalRefs,
     brandContract,
   ].join('\n\n')
   console.log(`  mockup-designer system prompt: ${(mockupDesignerSystemPrompt.length / 1024).toFixed(0)}KB`)
+  // Budget check: ~12KB prompt + 2.2 seed + 9.3 brand + 8.3 typography +
+  // 5.8 color + 3.5 spatial + 1.8 contract ≈ 43KB; +6.5 bolder on
+  // committed days ≈ 49KB. Hard-warn if it ever crosses 54KB.
+  if (mockupDesignerSystemPrompt.length > 54 * 1024) {
+    console.warn(`  ⚠ mockup-designer system prompt ${(mockupDesignerSystemPrompt.length / 1024).toFixed(0)}KB exceeds the 54KB guard (CLI 2.1.92 fails ~56KB)`)
+  }
 
   // Calibration: best past render of today's archetype (warms up as
   // screenshots accumulate from Task 1). Text note only — the screenshot
@@ -1859,6 +1870,7 @@ Delete the current Phase 2 section (the `enrichedBrief` construction stays; ever
     lessonsBlock,
     calibrationNote,
     archetypeContractBlock,
+    polishRef: refPolish,
     systemPrompt: mockupDesignerSystemPrompt,
     failureDumpPath: path.join(ROOT, 'signals', 'mockup-designer-last-failed.txt'),
   }
