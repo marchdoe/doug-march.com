@@ -26,11 +26,12 @@ which surfaces, which scale registers, what the nav/footer do there>
 ===RATIONALE===
 <2-3 sentences on the composition>
 
+No code fences anywhere — not around the response, not around the HTML inside the FILE block. No prose outside the three blocks.
+
 ## mockup.html requirements
 
-- Fully self-contained: one `<style>` block, no external CSS, no JavaScript.
-- Fonts: load the day's chassis faces via Google Fonts `<link>` tags (the
-  exact families arrive in your inputs). Use ONLY those families.
+- mockup.html is the COMPLETE HOME PAGE — full scroll depth as the archetype demands, nothing more. The About and Work pages are NOT in the mockup; describe how they adapt the system in ===INTERIOR_NOTES===.
+- Fully self-contained: one `<style>` block, no JavaScript, no external CSS — with ONE exception: the Google Fonts `<link>` tags for the day's chassis faces. Do not use `@import` for fonts. Use ONLY the font families declared in your inputs.
 - Colors: use ONLY hex values present in today's `elements/preset.ts` (in
   your inputs). You are executing the Art Director's palette, not authoring
   your own.
@@ -41,8 +42,6 @@ which surfaces, which scale registers, what the nav/footer do there>
   with the same rules as production (see Responsive section).
 - The document must render correctly from a `file://` URL (no absolute
   local paths, no same-origin fetches).
-
-## Brief fidelity
 
 ## Brief Fidelity (non-negotiable)
 
@@ -99,7 +98,7 @@ them too:
 
 - **The 45% page**: a narrow centered column of body text with a vast empty
   rail beside it. If more than 30% of the viewport is unused, untreated
-  background, revise before responding.
+  background, revise before responding (or whatever the declared canvas_utilization_min implies — the DECLARED floor wins when stricter).
 - **The timid drench**: spec says "drenched in emerald", page shows emerald
   in a button and a heading. Color strategy is coverage, not garnish.
 - **Marquee that isn't**: "phrase IS the page" rendered at 48px. Check your
@@ -124,16 +123,15 @@ For each mockup, make a deliberate choice across these axes of variation (not te
 - **Visual hierarchy** — What dominates the viewport? Featured project, name, signal element, negative space, a typographic statement?
 - **Density** — Dense and information-rich, or sparse and atmospheric? Newspaper or gallery wall?
 - **Typography scale** — Dramatic scale contrast or uniform sizing? Headings huge or whispered?
-- **Color approach** — Monochromatic, complementary, analogous, high-chroma, desaturated, dark-on-light, light-on-dark, colored backgrounds, gradients, or transparency?
+- **Color approach** — How the given palette is deployed: which surfaces drench, which whisper, whether backgrounds are dark or light, where gradients or transparency add depth. You execute the Art Director's palette; the axis is deployment, not authorship.
 - **Element character** — Sharp-edged or rounded, bordered or borderless, floating or grounded, overlapping or separated, shadowed or flat.
 
 ### What "Genuinely Different" Looks Like
 
 Proof of what's structurally possible (not templates to copy):
 
-- A layout where the nav is at the bottom and content reads bottom-to-top
+- Shell placement is declared in ===SHELL=== — your creative freedom is in how committedly you execute it.
 - A layout where the featured project fills the entire viewport and you scroll past it to reach the work list
-- A layout with a persistent left sidebar where identity and nav live permanently
 - A grid of project cards at different sizes
 - A layout asymmetrically split — one large panel, one narrow panel
 - Generous whitespace pushing content to one corner — but the active corner must be at full intensity (drenched color, dense type, dominant imagery), not a quiet column on a cream rail
@@ -154,12 +152,7 @@ Present this data in any visual form — large type, small label, tooltip, hover
 - Each selected-work project: title, type, year, and a link to the corresponding mockup section
 - Each experiment: title, type, year, and a link (internal or external)
 
-**About page section must render:**
-- The identity statement
-- Each timeline entry: year, role, company, description
-- All capability strings
-- Education: school, degree, concentration, years
-- Personal: holes in one count, sport, teams, current focus
+**About page (NOT in mockup.html):** The identity statement, timeline entries (year/role/company/description), capability strings, education (school/degree/concentration/years), and personal data (holes in one, sport, teams, current focus) are NOT rendered in the home-page mockup. Instead, ===INTERIOR_NOTES=== must state how the About page renders each of these items within the day's design system.
 
 **All sections:** Name, role, and nav links — rendered in whatever form today's archetype calls for (masthead, floating pills, bottom bar, corner mark, overlay menu, or classical sidebar).
 
