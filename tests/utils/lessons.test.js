@@ -31,7 +31,13 @@ describe('buildLessonsBlock', () => {
   })
 
   it('ignores SHIP/APPROVE verdicts and returns empty string with no material', () => {
-    seed(archiveDir, '2026-06-10', { verdicts: [{ critic: 'screenshot-critic', verdict: 'SHIP', feedback: 'fine' }] })
+    seed(archiveDir, '2026-06-10', {
+      verdicts: [
+        { critic: 'screenshot-critic', verdict: 'SHIP', feedback: 'fine' },
+        { critic: 'mockup-critic', verdict: 'APPROVE', feedback: 'strong' },
+        { critic: 'spec-critic', verdict: 'APPROVED', feedback: 'ok' },
+      ],
+    })
     expect(buildLessonsBlock(archiveDir, { limit: 7 })).toBe('')
   })
 
@@ -44,5 +50,24 @@ describe('buildLessonsBlock', () => {
     expect(block).toContain('flaw-9')
     expect(block).not.toContain('flaw-1')
     expect((block.match(/^- /gm) || []).length).toBe(3)
+  })
+
+  it('caps by ENTRY count, not date count — mixed sources on one date', () => {
+    seed(archiveDir, '2026-06-10', {
+      verdicts: [
+        { critic: 'mockup-critic', verdict: 'REVISE', feedback: 'round-0 utilization low' },
+        { critic: 'screenshot-critic', verdict: 'REVISE', feedback: 'render diverged from mockup' },
+      ],
+      rating: { grade: 'C', didnt: 'hero too quiet', try: '' },
+    })
+    seed(archiveDir, '2026-06-09', {
+      verdicts: [{ critic: 'mockup-critic', verdict: 'REVISE', feedback: 'older flaw' }],
+    })
+    const block = buildLessonsBlock(archiveDir, { limit: 3 })
+    // three entries from 06-10 fill the cap; 06-09's entry is cut
+    expect((block.match(/^- /gm) || []).length).toBe(3)
+    expect(block).toContain('hero too quiet')
+    expect(block).toContain('utilization low')
+    expect(block).not.toContain('older flaw')
   })
 })
