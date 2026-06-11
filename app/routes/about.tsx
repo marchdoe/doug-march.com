@@ -1,245 +1,197 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Sidebar } from '../components/Sidebar'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
 const page = css({
-  maxWidth: '1400px',
-  margin: '0 auto',
-  padding: '0 5vw',
   minHeight: '100vh',
+  paddingLeft: '4vw',
+  paddingRight: '4vw',
+  paddingTop: '96px',
+  paddingBottom: '128px',
 })
 
-const topGrid = css({
-  display: 'grid',
-  gridTemplateColumns: '58fr 42fr',
-  columnGap: '4vw',
-  paddingBottom: '16',
-  '@media (max-width: 768px)': {
-    gridTemplateColumns: '1fr',
-  },
-})
-
-const eyebrow = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.18em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '6',
-})
-
-const statementText = css({
+const pageTitle = css({
   fontFamily: 'display',
-  fontSize: 'clamp(32px, 5vw, 64px)',
-  fontWeight: '700',
-  lineHeight: '1.0',
-  letterSpacing: '-0.02em',
+  fontSize: 'clamp(48px, 8vw, 120px)',
+  lineHeight: '0.85',
+  textTransform: 'uppercase',
+  letterSpacing: '0.06em',
   color: 'text',
-  maxWidth: '65ch',
+  marginBottom: '64px',
 })
 
-const sectionBlock = css({
-  background: 'bgCard',
-  padding: 'clamp(24px, 3vw, 48px)',
-  borderTop: '1px solid',
-  borderTopColor: 'border',
-  marginBottom: '1px',
+const sectionLabel = css({
+  fontFamily: 'body',
+  fontSize: '11px',
+  fontWeight: '400',
+  textTransform: 'uppercase',
+  letterSpacing: '0.22em',
+  color: 'textMuted',
+  marginBottom: '24px',
+  display: 'block',
+})
+
+const statement = css({
+  fontFamily: 'body',
+  fontSize: 'clamp(16px, 2vw, 20px)',
+  lineHeight: '1.6',
+  color: 'textSecondary',
+  maxWidth: '65ch',
+  marginBottom: '96px',
+})
+
+const section = css({
+  marginBottom: '96px',
 })
 
 const timelineRow = css({
   display: 'grid',
-  gridTemplateColumns: '140px 1fr',
-  gap: '4',
-  padding: '4 0',
+  gridTemplateColumns: '120px 1fr',
+  gap: '24px',
+  paddingTop: '16px',
+  paddingBottom: '16px',
   borderBottom: '1px solid',
-  borderBottomColor: 'border',
-  '&:last-child': {
-    borderBottom: 'none',
-  },
-  '@media (max-width: 768px)': {
+  borderColor: 'border',
+  '@media (max-width: 640px)': {
     gridTemplateColumns: '1fr',
-    gap: '1',
+    gap: '4px',
   },
 })
 
 const yearCol = css({
-  fontFamily: 'body',
-  fontSize: '13px',
+  fontFamily: 'mono',
+  fontSize: '12px',
   color: 'textMuted',
-  fontVariantNumeric: 'tabular-nums',
+  letterSpacing: '0.06em',
   minWidth: '120px',
-  letterSpacing: '0.02em',
+  paddingTop: '3px',
 })
 
 const roleText = css({
   fontFamily: 'body',
   fontSize: '16px',
-  fontWeight: '500',
+  lineHeight: '1.6',
   color: 'text',
-  lineHeight: '1.55',
 })
 
 const companyText = css({
   fontFamily: 'body',
-  fontSize: '14px',
-  color: 'accent',
-  marginTop: '1',
+  fontSize: '16px',
+  lineHeight: '1.6',
+  color: 'textSecondary',
 })
 
 const descText = css({
   fontFamily: 'body',
-  fontSize: '16px',
-  lineHeight: '1.55',
-  color: 'textSecondary',
-  marginTop: '2',
+  fontSize: '14px',
+  lineHeight: '1.6',
+  color: 'textMuted',
+  marginTop: '4px',
   maxWidth: '65ch',
-  letterSpacing: '0.01em',
 })
 
 const capGrid = css({
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '2',
+  gap: '8px 16px',
 })
 
-const capTag = css({
-  fontFamily: 'body',
-  fontSize: '13px',
+const capItem = css({
+  fontFamily: 'mono',
+  fontSize: '12px',
   color: 'textSecondary',
-  background: '{colors.abyss.700}',
-  padding: '2 3',
-  borderRadius: 'sm',
-  letterSpacing: '0.02em',
+  letterSpacing: '0.06em',
+  padding: '8px 16px',
+  border: '1px solid',
+  borderColor: 'border',
+  whiteSpace: 'nowrap',
 })
 
-const personalGrid = css({
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: '6',
-  '@media (max-width: 768px)': {
-    gridTemplateColumns: '1fr',
-  },
+const personalBlock = css({
+  fontFamily: 'body',
+  fontSize: '16px',
+  lineHeight: '1.6',
+  color: 'textSecondary',
+  maxWidth: '65ch',
 })
 
 const personalLabel = css({
-  fontFamily: 'body',
+  color: 'textMuted',
+  fontFamily: 'mono',
   fontSize: '12px',
-  letterSpacing: '0.12em',
+  letterSpacing: '0.06em',
   textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '1',
-})
-
-const personalValue = css({
-  fontFamily: 'body',
-  fontSize: '16px',
-  color: 'text',
-  lineHeight: '1.55',
-})
-
-const footer = css({
-  padding: '6 0',
-  borderTop: '1px solid',
-  borderTopColor: 'border',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-})
-
-const footerText = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: 'textMuted',
+  display: 'block',
+  marginBottom: '4px',
+  marginTop: '24px',
 })
 
 function AboutPage() {
   return (
-    <div className={page}>
-      <Sidebar />
-      <div className={topGrid}>
-        <div className={css({ paddingTop: 'clamp(32px, 6vw, 96px)', paddingBottom: '12' })}>
-          <div className={eyebrow}>{identity.name} · {identity.role}</div>
-          <div className={statementText}>{identity.statement}</div>
-        </div>
-        <div className={css({
-          paddingTop: 'clamp(32px, 6vw, 96px)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          paddingBottom: '12',
-          '@media (max-width: 768px)': {
-            paddingTop: '0',
-            paddingBottom: '8',
-          },
-        })}>
-          <div className={eyebrow}>Capabilities</div>
-          <div className={capGrid}>
-            {capabilities.map((c) => (
-              <span key={c} className={capTag}>{c}</span>
-            ))}
-          </div>
-        </div>
-      </div>
+    <main className={page}>
+      <h1 className={pageTitle}>{identity.name}</h1>
 
-      {/* Timeline */}
-      <div id="timeline" className={sectionBlock}>
-        <div className={eyebrow}>Timeline</div>
+      <span className={sectionLabel}>{identity.role}</span>
+      <p className={statement}>{identity.statement}</p>
+
+      <div className={section}>
+        <span className={sectionLabel}>Timeline</span>
         {timeline.map((entry, i) => (
-          <div key={i} className={timelineRow}>
-            <div className={yearCol}>{entry.year}</div>
+          <div className={timelineRow} key={i}>
+            <span className={yearCol}>{entry.year}</span>
             <div>
-              <div className={roleText}>{entry.role}</div>
-              <div className={companyText}>{entry.company}</div>
-              <div className={descText}>{entry.description}</div>
+              <span className={roleText}>{entry.role}</span>
+              <span className={companyText}> — {entry.company}</span>
+              <p className={descText}>{entry.description}</p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Education */}
-      <div className={sectionBlock}>
-        <div className={eyebrow}>Education</div>
+      <div className={section}>
+        <span className={sectionLabel}>Education</span>
         <div className={timelineRow}>
-          <div className={yearCol}>{education.years}</div>
+          <span className={yearCol}>{education.years}</span>
           <div>
-            <div className={roleText}>{education.degree}</div>
-            <div className={companyText}>{education.school}</div>
-            <div className={descText}>{education.concentration}</div>
+            <span className={roleText}>{education.degree}</span>
+            <span className={companyText}> — {education.school}</span>
+            <p className={descText}>{education.concentration}</p>
           </div>
         </div>
       </div>
 
-      {/* Personal */}
-      <div className={sectionBlock}>
-        <div className={eyebrow}>Personal</div>
-        <div className={personalGrid}>
-          <div>
-            <div className={personalLabel}>Holes in One</div>
-            <div className={personalValue}>{personal.holesInOne}</div>
-          </div>
-          <div>
-            <div className={personalLabel}>Sport</div>
-            <div className={personalValue}>{personal.sport}</div>
-          </div>
-          <div>
-            <div className={personalLabel}>Teams</div>
-            <div className={personalValue}>{personal.teams.join(', ')}</div>
-          </div>
-          <div>
-            <div className={personalLabel}>Current Focus</div>
-            <div className={personalValue}>{personal.currentFocus}</div>
-          </div>
+      <div className={section}>
+        <span className={sectionLabel}>Capabilities</span>
+        <div className={capGrid}>
+          {capabilities.map((cap, i) => (
+            <span className={capItem} key={i}>{cap}</span>
+          ))}
         </div>
       </div>
 
-      <div className={footer}>
-        <span className={footerText}>Doug March · Product Designer & Developer</span>
-        <a href="/archive" className={footerText}>Archive</a>
+      <div className={section}>
+        <span className={sectionLabel}>Personal</span>
+        <div className={personalBlock}>
+          <span className={personalLabel}>Holes in One</span>
+          {personal.holesInOne}
+
+          <span className={personalLabel}>Sport</span>
+          {personal.sport}
+
+          <span className={personalLabel}>Teams</span>
+          {personal.teams.join(', ')}
+
+          <span className={personalLabel}>Current Focus</span>
+          {personal.currentFocus}
+        </div>
       </div>
-    </div>
+
+      <div style={{ marginTop: '96px', borderTop: '1px solid', borderColor: 'var(--colors-border)', paddingTop: '16px' }}>
+        <a href="/archive" className={css({ fontFamily: 'mono', fontSize: '12px', color: 'textMuted', letterSpacing: '0.06em', textDecoration: 'none', _hover: { color: 'accent' }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' } })}>Archive</a>
+      </div>
+    </main>
   )
 }

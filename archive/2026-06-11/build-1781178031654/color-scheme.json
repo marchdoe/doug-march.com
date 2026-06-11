@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 245,
+    "s": 82,
+    "l": 55,
+    "name": "electric indigo"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "indigo",
+    "name": "void indigo"
+  },
+  "mood_word": "inevitable",
+  "color_story": "H:245° indigo sits in the mandate's only open window and is the only hue that reads as mathematical certainty — the color of a CRT screen, a Cherenkov glow, the frequency of something that has always existed in the dark."
+}
