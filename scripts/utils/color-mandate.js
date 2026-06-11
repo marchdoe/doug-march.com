@@ -29,7 +29,7 @@ export function extractRecentPrimaryHues(archiveDir, lookbackDays) {
     let buildDirs
     try {
       buildDirs = readdirSync(datePath)
-        .filter((b) => b.startsWith('build-'))
+        .filter((b) => /^build-\d+$/.test(b))
         .sort()
         .reverse()
     } catch { continue }
