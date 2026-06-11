@@ -1197,11 +1197,27 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   let engineerResult
   const t0Engineer = Date.now()
   try {
-    engineerResult = await callAgent('react-engineer', reactEngineerSystemPrompt, engineerUserPrompt, null, { model: 'sonnet', timeoutMs: 1500000, stallTimeoutMs: 1200000 })
+    engineerResult = await callAgent('react-engineer', reactEngineerSystemPrompt, engineerUserPrompt, null, reactEngineerAgentConfig.options)
   } catch (err) {
-    console.error(`  React Engineer failed: ${err.message}`)
-    await restore(originalBackup)
-    throw new Error(`React Engineer failed: ${err.message}`)
+    // A 0KB stall is usually transient (a throttled account, a flaky CLI
+    // turn) rather than a bad prompt — it shouldn't throw away the whole
+    // run (AD + 3 mockup rounds) when one more attempt often succeeds.
+    // Retry ONCE on a stall, unless we're already past the run deadline.
+    const isStall = /stalled|0KB|no output/i.test(err.message)
+    if (isStall && !pastDeadline()) {
+      console.warn(`  React Engineer stalled (${err.message}) — retrying once`)
+      try {
+        engineerResult = await callAgent('react-engineer', reactEngineerSystemPrompt, engineerUserPrompt, null, reactEngineerAgentConfig.options)
+      } catch (retryErr) {
+        console.error(`  React Engineer failed after stall retry: ${retryErr.message}`)
+        await restore(originalBackup)
+        throw new Error(`React Engineer failed after stall retry: ${retryErr.message}`)
+      }
+    } else {
+      console.error(`  React Engineer failed: ${err.message}`)
+      await restore(originalBackup)
+      throw new Error(`React Engineer failed: ${err.message}`)
+    }
   }
 
   // Enforce that ALL required files are present. The most common failure
