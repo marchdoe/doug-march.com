@@ -3,6 +3,7 @@
  * self-contained mockup.html. The orchestrator screenshots it, the Mockup
  * Critic gates it, and only then does the React Engineer translate it.
  */
+import { writeFile } from 'fs/promises'
 import { callClaudeCLI } from '../utils/claude-cli.js'
 import { parseDelimiterResponse } from '../utils/delimiter-parser.js'
 
@@ -62,12 +63,15 @@ export async function runMockupDesigner(ctx) {
     stallTimeoutMs: 1200000, // 20 min silent-thinking headroom
     model: 'opus',
   })
-  const parsed = parseDelimiterResponse(result)
+  let parsed
   try {
+    parsed = parseDelimiterResponse(result)
     validateMockupResult(parsed)
   } catch (err) {
+    console.error(`  [mockup-designer] rejected: ${err.message}`)
+    console.error(`  [mockup-designer] response head: ${result.slice(0, 300).replace(/\n/g, '↵')}`)
     if (ctx.failureDumpPath) {
-      try { const { writeFile } = await import('fs/promises'); await writeFile(ctx.failureDumpPath, result, 'utf8') } catch {}
+      try { await writeFile(ctx.failureDumpPath, result, 'utf8') } catch {}
     }
     throw err
   }

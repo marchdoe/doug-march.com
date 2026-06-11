@@ -25,10 +25,14 @@ describe('buildMockupDesignerUserPrompt', () => {
     const p = buildMockupDesignerUserPrompt({
       enrichedBrief: 'B', tokenContext: 'T', contentSummary: 'C',
       measurables: 'M', shell: 'S', brandSvg: 'V', brandMonoSvg: 'W',
-      googleFontsUrl: 'G', revisionFeedback: 'utilization ~45% vs floor 70',
+      googleFontsUrl: 'G', lessonsBlock: 'LESSONS', calibrationNote: 'CALIBRATION',
+      polishRef: 'POLISH', revisionFeedback: 'utilization ~45% vs floor 70',
     })
     expect(p).toContain('CRITIC REVISION FEEDBACK')
-    expect(p.indexOf('utilization ~45%')).toBeGreaterThan(p.indexOf('Site Content'))
+    // genuinely last — after every optional section, not just Site Content
+    expect(p.indexOf('utilization ~45%')).toBeGreaterThan(p.indexOf('POLISH'))
+    expect(p.indexOf('POLISH')).toBeGreaterThan(p.indexOf('CALIBRATION'))
+    expect(p.indexOf('CALIBRATION')).toBeGreaterThan(p.indexOf('LESSONS'))
   })
 })
 
