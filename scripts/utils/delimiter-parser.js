@@ -21,6 +21,9 @@
  *   chassis_id?: string,
  *   visual_spec?: string,
  *   self_check?: string,
+ *   measurables?: string,
+ *   shell?: string,
+ *   interior_notes?: string,
  * }}
  */
 export function parseDelimiterResponse(result) {
@@ -32,7 +35,7 @@ export function parseDelimiterResponse(result) {
   const fenceMatch = /^```[^\n]*\n([\s\S]*)\n```\s*$/.exec(result.trim())
   const src = fenceMatch ? fenceMatch[1] : result
   const withSentinel = src + sentinel
-  const filePattern = /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===HERO_COPY===|^===HERO_RATIONALE===|^===ARCHETYPE===|^===CHASSIS_ID===|^===VISUAL_SPEC===|^===SELF_CHECK===|^===END_SENTINEL===)/gm
+  const filePattern = /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===HERO_COPY===|^===HERO_RATIONALE===|^===ARCHETYPE===|^===CHASSIS_ID===|^===VISUAL_SPEC===|^===SELF_CHECK===|^===MEASURABLES===|^===SHELL===|^===INTERIOR_NOTES===|^===END_SENTINEL===)/gm
   let match
   while ((match = filePattern.exec(withSentinel)) !== null) {
     const filePath = match[1].trim()
@@ -56,6 +59,9 @@ export function parseDelimiterResponse(result) {
   const chassis_id = captureBlock('CHASSIS_ID')
   const visual_spec = captureBlock('VISUAL_SPEC')
   const self_check = captureBlock('SELF_CHECK')
+  const measurables = captureBlock('MEASURABLES')
+  const shell = captureBlock('SHELL')
+  const interior_notes = captureBlock('INTERIOR_NOTES')
 
   let color_scheme
   const schemeRaw = captureBlock('COLOR_SCHEME')
@@ -78,5 +84,8 @@ export function parseDelimiterResponse(result) {
     chassis_id,
     visual_spec,
     self_check,
+    measurables,
+    shell,
+    interior_notes,
   }
 }
