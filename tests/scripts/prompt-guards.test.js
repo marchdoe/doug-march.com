@@ -29,6 +29,10 @@ describe('logo-mono.svg', () => {
   it('exists and uses currentColor exclusively (no hardcoded colors)', () => {
     const svg = readFileSync(path.join(promptDir, '..', '..', 'app', 'assets', 'logo-mono.svg'), 'utf8')
     expect(svg).toContain('currentColor')
-    expect(svg).not.toMatch(/#[0-9a-fA-F]{3,8}\b|rgb\(/)
+    // Allowlist: every paint value must be none or currentColor — catches
+    // named colors (fill="white") that a hex/rgb blocklist would miss.
+    const paints = [...svg.matchAll(/(?:fill|stroke)="([^"]+)"/g)].map(m => m[1])
+    expect(paints.length).toBeGreaterThan(0)
+    expect(paints.every(p => p === 'none' || p === 'currentColor')).toBe(true)
   })
 })
