@@ -221,3 +221,25 @@ export async function captureScreenshot(port) {
     if (server) server.kill()
   }
 }
+
+/**
+ * Screenshot a local self-contained HTML file (the Mockup Designer's
+ * mockup.html) without any server. External font links still load over
+ * the network.
+ *
+ * @param {string} filePath - absolute path to the HTML file
+ * @param {{ width?: number, height?: number }} [opts]
+ * @returns {Promise<Buffer>} PNG image buffer
+ */
+export async function captureHtmlFileScreenshot(filePath, { width = 1440, height = 900 } = {}) {
+  const { chromium } = await import('playwright')
+  const browser = await chromium.launch({ headless: true })
+  try {
+    const page = await browser.newPage({ viewport: { width, height } })
+    await page.goto(`file://${filePath}`, { waitUntil: 'networkidle' })
+    await page.waitForTimeout(1000) // fonts
+    return await page.screenshot({ type: 'png', fullPage: false })
+  } finally {
+    await browser.close()
+  }
+}

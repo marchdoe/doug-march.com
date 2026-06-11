@@ -54,6 +54,15 @@ describe('mockup-designer.md load-bearing directives', () => {
   })
 })
 
+describe('mockup-critic.md load-bearing directives', () => {
+  it('instructs numeric measurement of utilization and coverage', () => {
+    const c = read('mockup-critic.md')
+    expect(c).toContain('canvas_utilization_min')
+    expect(c).toContain('color_coverage_min')
+    expect(c).toMatch(/estimates as numbers/i)
+  })
+})
+
 describe('logo-mono.svg', () => {
   it('exists and uses currentColor exclusively (no hardcoded colors)', () => {
     const svg = readFileSync(path.join(promptDir, '..', '..', 'app', 'assets', 'logo-mono.svg'), 'utf8')
