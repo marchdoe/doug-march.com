@@ -63,6 +63,27 @@ describe('mockup-critic.md load-bearing directives', () => {
   })
 })
 
+describe('react-engineer.md load-bearing directives', () => {
+  const re = () => read('react-engineer.md')
+  it('defines fidelity as the contract', () => {
+    expect(re()).toMatch(/fidelity/i)
+    expect(re()).toContain('mockup.html')
+  })
+  it('requires all six files including og.tsx', () => {
+    const c = re()
+    for (const f of ['app/components/Layout.tsx', 'app/components/Sidebar.tsx', 'app/routes/index.tsx', 'app/routes/about.tsx', 'app/routes/work.$slug.tsx', 'app/routes/og.tsx']) {
+      expect(c).toContain(f)
+    }
+  })
+  it('specifies the OG card dimensions', () => {
+    expect(re()).toContain('1200')
+    expect(re()).toContain('630')
+  })
+  it('forbids raw hex in TSX', () => {
+    expect(re()).toMatch(/raw hex|never.*hex|hex.*(token|never)/i)
+  })
+})
+
 describe('logo-mono.svg', () => {
   it('exists and uses currentColor exclusively (no hardcoded colors)', () => {
     const svg = readFileSync(path.join(promptDir, '..', '..', 'app', 'assets', 'logo-mono.svg'), 'utf8')
