@@ -114,12 +114,17 @@ export function buildFontSizes(chassis) {
  * Read fresh on every call so a developer editing the template during a
  * dev loop sees changes without a node restart. Cost is negligible.
  */
-export function renderRootTemplate(googleFontsUrl) {
+export function renderRootTemplate(googleFontsUrl, ogMeta = '') {
   const template = readFileSync(TEMPLATE_PATH, 'utf8')
   if (!template.includes('{{GOOGLE_FONTS_URL}}')) {
     throw new Error('__root.tsx.template missing {{GOOGLE_FONTS_URL}} placeholder')
   }
-  return template.replace('{{GOOGLE_FONTS_URL}}', googleFontsUrl)
+  if (!template.includes('{{OG_META}}')) {
+    throw new Error('__root.tsx.template missing {{OG_META}} placeholder')
+  }
+  return template
+    .replace('{{GOOGLE_FONTS_URL}}', googleFontsUrl)
+    .replace('{{OG_META}}', ogMeta)
 }
 
 function parseRem(value) {

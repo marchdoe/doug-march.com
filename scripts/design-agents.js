@@ -784,7 +784,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     writtenPaths.add('elements/chassis-preset.ts')
     console.log(`  [chassis] wrote chassis-preset.ts (${chosenChassis.id})`)
 
-    const rootSrc = renderRootTemplate(buildGoogleFontsUrl(chosenChassis))
+    const { buildOgMetaEntries } = await import('./utils/og-meta.js')
+    const ogMeta = buildOgMetaEntries({
+      date: signals.date || new Date().toISOString().slice(0, 10),
+      heroCopy: artDirectorResult.heroCopy,
+      designBrief: artDirectorResult.designBrief,
+    })
+    const rootSrc = renderRootTemplate(buildGoogleFontsUrl(chosenChassis), ogMeta)
     const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
     await writeFile(rootPath, rootSrc, 'utf8')
     writtenPaths.add('app/routes/__root.tsx')
@@ -836,6 +842,22 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       })
       const retryPresetFile = { path: 'elements/preset.ts', content: artDirectorResult.presetTs }
       for (const p of await writeFiles([retryPresetFile])) writtenPaths.add(p)
+      // The codegen retry re-ran the Art Director, so heroCopy/designBrief may
+      // have changed since __root.tsx was first written. Regenerate it so the
+      // og:title/og:description reflect the settled result, not the stale one.
+      try {
+        const { buildOgMetaEntries } = await import('./utils/og-meta.js')
+        const retryOgMeta = buildOgMetaEntries({
+          date: signals.date || new Date().toISOString().slice(0, 10),
+          heroCopy: artDirectorResult.heroCopy,
+          designBrief: artDirectorResult.designBrief,
+        })
+        const retryRootSrc = renderRootTemplate(buildGoogleFontsUrl(chosenChassis), retryOgMeta)
+        await writeFile(path.join(ROOT, 'app/routes/__root.tsx'), retryRootSrc, 'utf8')
+        console.log('  [chassis] regenerated __root.tsx after codegen retry (og meta refreshed)')
+      } catch (rootErr) {
+        console.warn(`  __root.tsx og-meta refresh after retry failed (non-blocking): ${rootErr.message}`)
+      }
     } catch (err) {
       await cleanupOrphans(writtenPaths, originalBackup)
       await restore(originalBackup)
@@ -1255,6 +1277,22 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // archive artifacts, persist the archetype, shape the return value.
   // Behavior is identical between callers apart from the rationale suffix.
   async function archiveAndReturn(filesResult, rationaleSuffix = '') {
+    // Capture the runtime-generated /og card to public/og/<date>.png so it
+    // serves at the og:image URL injected into __root.tsx. Best-effort: a
+    // missing og.tsx or a capture failure must never block shipping.
+    if (signals.date) {
+      try {
+        const { captureRouteScreenshot } = await import('./utils/snapshot.js')
+        const ogBuffer = await captureRouteScreenshot('/og')
+        const ogDir = path.join(ROOT, 'public', 'og')
+        await mkdir(ogDir, { recursive: true })
+        await writeFile(path.join(ogDir, `${signals.date}.png`), ogBuffer)
+        console.log(`  [og] captured public/og/${signals.date}.png (${(ogBuffer.length / 1024).toFixed(0)}KB)`)
+      } catch (err) {
+        console.warn(`  [og] capture failed (non-blocking): ${err.message}`)
+      }
+    }
+
     const allFiles = [
       ...tokenResult.files,
       ...filesResult.files,

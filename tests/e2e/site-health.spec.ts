@@ -106,6 +106,22 @@ test.describe('site health — content verification', () => {
   })
 })
 
+test.describe('site health — share-sheet meta', () => {
+  test('shell HTML og meta is well-formed when present', async ({ page }) => {
+    await page.goto('/')
+    // A committed checkout (before the first pipeline run on this branch) has
+    // no og meta in __root.tsx — skip rather than hard-fail in that case.
+    const ogImage = await page
+      .locator('meta[property="og:image"]')
+      .getAttribute('content')
+      .catch(() => null)
+    if (ogImage === null) test.skip(true, 'og meta not yet generated (pre-first-pipeline-run checkout)')
+    expect(ogImage).toMatch(/\/og\/\d{4}-\d{2}-\d{2}\.png$/)
+    const card = await page.locator('meta[name="twitter:card"]').getAttribute('content')
+    expect(card).toBe('summary_large_image')
+  })
+})
+
 test.describe('site health — navigation', () => {
   test('can navigate between pages without errors', async ({ page }) => {
     // Start at home

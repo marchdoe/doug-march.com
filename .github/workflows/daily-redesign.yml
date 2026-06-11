@@ -89,7 +89,7 @@ jobs:
             [ -d "$d" ] && git add "$d"
           done
           git add archive/*/rating-*.json 2>/dev/null || true
-          git add elements/ app/components/ app/routes/ public/archive/ signals/today.references.md
+          git add elements/ app/components/ app/routes/ public/archive/ public/og/ signals/today.references.md
           git diff --cached --quiet || git commit -m "chore: daily redesign $TODAY"
           # Retry push up to 3 times in case of concurrent pushes to main
           for i in 1 2 3; do
