@@ -117,6 +117,24 @@ function formatSignalsMarkdown(signals) {
 }
 
 /**
+ * Write named artifacts (Buffer or string) into a build directory.
+ * Null/undefined values are skipped; individual write failures warn
+ * and continue — artifacts are never worth failing a run over.
+ * @param {string} buildDir
+ * @param {Record<string, Buffer|string|null|undefined>} artifacts
+ */
+export async function writeArtifacts(buildDir, artifacts = {}) {
+  for (const [name, value] of Object.entries(artifacts)) {
+    if (value === null || value === undefined) continue
+    try {
+      await writeFile(path.join(buildDir, name), value)
+    } catch (err) {
+      console.warn(`  artifact write failed (non-blocking): ${name}: ${err.message}`)
+    }
+  }
+}
+
+/**
  * Write an archive entry for the day's redesign.
  *
  * Creates `archive/YYYY-MM-DD/brief.md` with:
@@ -133,8 +151,9 @@ function formatSignalsMarkdown(signals) {
  * @param {object} [weights={}] - optional weighting overrides (signals, inspiration, ratings, risk)
  * @param {object|null} [colorScheme=null] - optional color scheme object emitted by the designer; written as color-scheme.json in the build dir
  * @param {string|null} [archetype=null] - the chosen archetype for this build (e.g. 'Specimen')
+ * @param {Record<string, Buffer|string|null|undefined>} [artifacts={}] - named artifacts to persist in the build dir (e.g. screenshot.png, verdicts.json)
  */
-export async function archive(date, signals, rationale, designBrief, changedFiles, weights = {}, colorScheme = null, archetype = null) {
+export async function archive(date, signals, rationale, designBrief, changedFiles, weights = {}, colorScheme = null, archetype = null, artifacts = {}) {
   const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : String(date)
   const buildId = String(Date.now())
   const dir = path.join(ROOT, 'archive', dateStr)
@@ -222,36 +241,10 @@ export async function archive(date, signals, rationale, designBrief, changedFile
     console.warn(`  snapshot failed (non-blocking): ${err.message}`)
   }
 
-  // Capture a thumbnail screenshot into the build directory (best-effort)
-  try {
-    const { spawnSync } = await import('child_process')
-    const net = await import('net')
-    const portOpen = await new Promise(resolve => {
-      const sock = new net.Socket()
-      sock.setTimeout(2000)
-      sock.once('connect', () => { sock.destroy(); resolve(true) })
-      sock.once('error', () => resolve(false))
-      sock.once('timeout', () => { sock.destroy(); resolve(false) })
-      sock.connect(5173, '127.0.0.1')
-    })
-    if (portOpen) {
-      const screenshotPath = path.join(buildDir, 'screenshot.png')
-      const result = spawnSync('node', [
-        path.join(ROOT, 'scripts', 'capture-reference.js'),
-        '--port=5173',
-        `--output=${screenshotPath}`,
-      ], { timeout: 45000 })
-      if (result.status === 0) {
-        console.log(`  screenshot saved to build-${buildId}/screenshot.png`)
-      } else {
-        console.warn(`  screenshot capture failed (non-blocking)`)
-      }
-    } else {
-      console.log(`  dev server not running, skipping screenshot`)
-    }
-  } catch (err) {
-    console.warn(`  screenshot failed (non-blocking): ${err.message}`)
-  }
+  // Write caller-supplied artifacts (screenshot.png, verdicts.json, etc.) into
+  // the build dir BEFORE copyToPublic so screenshot.png is available for
+  // public/archive/{date}.png copy.
+  await writeArtifacts(buildDir, artifacts)
 
   // Responsive measurement — soft-fail, non-blocking.
   // Only runs when the dev server is up (the only way we can point a

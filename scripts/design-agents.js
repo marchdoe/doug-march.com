@@ -478,6 +478,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // restore(originalBackup) only reverts paths in the backup; files created
   // by the AI outside that set would leak without this tracking.
   const writtenPaths = new Set()
+  // Critic verdicts collected across the run; persisted as verdicts.json
+  const verdicts = []
+  // Final-render screenshot captured by the screenshot critic; persisted
+  // as screenshot.png (also becomes public/archive/{date}.png and the
+  // calibration source for future runs).
+  let finalScreenshot = null
   try {
 
   const weightsPrompt = `\n\n## Creative Weights (0-10, set by the site owner)\n\nSignals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'The owner wants BOLD, EXPERIMENTAL design today. Push boundaries.' : weights.risk <= 3 ? 'The owner wants SAFE, POLISHED design today. Proven patterns.' : ''}${weights.inspiration >= 7 ? '\nDesign references should HEAVILY influence your compositional choices.' : ''}${weights.signals <= 3 ? '\nSignals are background texture only — do NOT let weather or sports drive the design.' : ''}`
@@ -894,6 +900,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       durationMs: Date.now() - t0Critic,
     })
 
+    verdicts.push({
+      critic: 'spec-critic',
+      verdict: rawResponse.includes('REVISE') ? 'REVISE' : 'APPROVED',
+      feedback: rawResponse.slice(0, 2000),
+      ts: Date.now(),
+    })
+
     if (rawResponse.includes('REVISE')) {
       console.log(`  [spec-critic] REVISE — accepting and continuing (single point of failure: a full Art Director re-run is expensive; let the screenshot critic catch render failures)`)
     } else {
@@ -1107,6 +1120,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       console.log('\n[screenshot-critic] Capturing screenshot...')
       const { captureScreenshot } = await import('./utils/snapshot.js')
       const screenshotBuffer = await captureScreenshot()
+      finalScreenshot = screenshotBuffer
       console.log(`  screenshot captured (${(screenshotBuffer.length / 1024).toFixed(0)}KB)`)
 
       console.log('[screenshot-critic] Evaluating design...')
@@ -1121,6 +1135,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const t0ScreenshotCritic = Date.now()
       const screenshotCriticResult = await callAgent('screenshot-critic', screenshotCriticPrompt, criticUserPrompt)
       const criticResponse = screenshotCriticResult._rawResponse || screenshotCriticResult.rationale || ''
+
+      verdicts.push({
+        critic: 'screenshot-critic',
+        verdict: criticResponse.includes('REVISE') ? 'REVISE' : 'SHIP',
+        feedback: criticResponse.slice(0, 2000),
+        ts: Date.now(),
+      })
 
       trace.addStep({
         name: 'screenshot-critic',
@@ -1206,7 +1227,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const rationale = tokenResult.rationale || 'Agent swarm redesign'
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign'
 
-    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null)
+    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null, {
+      'screenshot.png': finalScreenshot,
+      'verdicts.json': JSON.stringify(verdicts, null, 2),
+    })
     archiveRan = true
 
     // Save archetype for future anti-repetition enforcement
@@ -1302,7 +1326,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const rationale = tokenResult.rationale || 'Agent swarm redesign (retry)'
     const designBrief = tokenResult.design_brief || 'Multi-agent redesign (retry)'
 
-    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null)
+    await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null, {
+      'screenshot.png': finalScreenshot,
+      'verdicts.json': JSON.stringify(verdicts, null, 2),
+    })
     archiveRan = true
 
     // Save archetype for future anti-repetition enforcement
