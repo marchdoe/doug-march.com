@@ -1119,6 +1119,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       mockupScreenshot = await captureHtmlFileScreenshot(mockupPath, { width: 1440, height: 900 })
     } catch (err) {
       console.warn(`  mockup screenshot failed (non-blocking — skipping critic): ${err.message}`)
+      // Don't let an earlier round's screenshot masquerade as this mockup —
+      // a stale image would become the fidelity target and archive artifact.
+      mockupScreenshot = null
       break
     }
     let critique
