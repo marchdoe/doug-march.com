@@ -108,7 +108,30 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     let stderr = ''
     let lineBuffer = ''   // Buffer for incomplete JSON lines
     let charCount = 0     // Track characters received for progress
-    let lastOutputTime = Date.now()  // Track last output for stall detection
+    let lastOutputTime = Date.now()  // Track last TEXT output (stall detection)
+    let lastEventTime = Date.now()   // Track last stream-json event of ANY type
+    const eventCounts = Object.create(null) // {system: n, assistant: n, result: n}
+    const startTime = Date.now()
+    const debug = process.env.PIPELINE_DEBUG === '1'
+
+    // Diagnostic snapshot — answers "why did this call produce no text?".
+    // Distinguishes a throttled/queued CLI (system events arrived, no text)
+    // from a dead one (no events at all), and surfaces stderr, which the
+    // stall/timeout paths previously discarded. Appended to stall/timeout
+    // errors and written to signals/cli-diag-<agent>.txt for post-run review.
+    const diagnostics = () => {
+      const counts = Object.entries(eventCounts).map(([k, v]) => `${k}=${v}`).join(' ') || 'NONE'
+      const sinceEvent = Math.round((Date.now() - lastEventTime) / 1000)
+      const sinceText = Math.round((Date.now() - lastOutputTime) / 1000)
+      const err = stderr.trim() ? stderr.trim().slice(-1200) : '(stderr empty)'
+      return `events[${counts}] ${sinceEvent}s since last event, ${sinceText}s since last text\n  stderr: ${err}`
+    }
+    const dumpDiagnostics = async (reason) => {
+      try {
+        const body = `agent: ${agentName}\nreason: ${reason}\nelapsed: ${Math.round((Date.now() - startTime) / 1000)}s\nmodel: ${model}\npromptKB: ${(promptText.length / 1024).toFixed(0)}\n${diagnostics()}\n`
+        await writeFile(path.join(ROOT, 'signals', `cli-diag-${agentName}.txt`), body, 'utf8')
+      } catch {}
+    }
 
     // Pipe the prompt file to stdin, ignoring EPIPE if the child exits early
     const promptStream = createReadStream(promptPath)
@@ -125,6 +148,12 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
         if (!line.trim()) continue
         try {
           const event = JSON.parse(line)
+
+          // Track every event type + time, so a stall can report whether the
+          // CLI was emitting non-text events (throttled/thinking) or silent.
+          eventCounts[event.type] = (eventCounts[event.type] || 0) + 1
+          lastEventTime = Date.now()
+          if (debug) console.log(`  [${agentName}] «event» ${event.type}${event.subtype ? '/' + event.subtype : ''}`)
 
           if (event.type === 'assistant' && event.message?.content) {
             // Content block with text -- accumulate and show progress.
@@ -153,7 +182,13 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
       }
     })
 
-    child.stderr.on('data', (chunk) => { stderr += chunk.toString() })
+    child.stderr.on('data', (chunk) => {
+      const s = chunk.toString()
+      stderr += s
+      // Surface stderr live in debug mode — a rate-limit/overloaded notice
+      // is the thing we most want to see when a call is about to stall.
+      if (debug) process.stderr.write(`  [${agentName}:stderr] ${s}`)
+    })
 
     // The settled flag prevents multiple kill/reject attempts when timeout,
     // stall, and close handlers race with each other. Once any path fires,
@@ -185,7 +220,8 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
           extra = await onTimeout({ charCount }) || ''
         } catch {}
       }
-      reject(new Error(`[${agentName}] timed out after ${Math.round(timeoutMs / 60000)} minutes (generated ${(charCount / 1024).toFixed(0)}KB before timeout)${extra}`))
+      await dumpDiagnostics('timeout')
+      reject(new Error(`[${agentName}] timed out after ${Math.round(timeoutMs / 60000)} minutes (generated ${(charCount / 1024).toFixed(0)}KB before timeout)${extra}\n  ${diagnostics()}`))
     }, timeoutMs)
 
     // Stall detection: kill if no output for stallTimeoutMs (default 15 min).
@@ -199,7 +235,9 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
         cleanup()
         killHard()
         const stallMin = Math.round(stallDuration / 60000)
-        reject(new Error(`[${agentName}] stalled — no output for ${stallMin} minutes (generated ${(charCount / 1024).toFixed(0)}KB before stall)`))
+        dumpDiagnostics('stall').finally(() => {
+          reject(new Error(`[${agentName}] stalled — no output for ${stallMin} minutes (generated ${(charCount / 1024).toFixed(0)}KB before stall)\n  ${diagnostics()}`))
+        })
       }
     }, 30000)
 
