@@ -1191,7 +1191,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const reactEngineerAgentConfig = {
     prompt: reactEngineerSystemPrompt,
     user: buildEngineerUserPrompt,
-    options: { model: modelFor('react-engineer'), timeoutMs: 1500000, stallTimeoutMs: 1200000 },
+    options: { model: modelFor('react-engineer'), timeoutMs: 1800000, stallTimeoutMs: 480000 },
   }
 
   const engineerUserPrompt = buildEngineerUserPrompt()

@@ -141,8 +141,8 @@ export async function runArtDirector(ctx) {
   // unified-designer config (30 min total / 25 min stall) one register
   // tighter — the AD prompt is smaller and shouldn't need that much.
   const result = await callClaudeCLI('art-director', ctx.systemPrompt, userPrompt, {
-    timeoutMs: 1200000,
-    stallTimeoutMs: 900000,
+    timeoutMs: 1500000,     // 25 min hard cap — AD has run 8-17 min of extended thinking
+    stallTimeoutMs: 480000, // 8 min of TRUE silence (zero events) = dead process
     model: modelFor('art-director'),
   })
 

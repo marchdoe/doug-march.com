@@ -224,12 +224,16 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
       reject(new Error(`[${agentName}] timed out after ${Math.round(timeoutMs / 60000)} minutes (generated ${(charCount / 1024).toFixed(0)}KB before timeout)${extra}\n  ${diagnostics()}`))
     }, timeoutMs)
 
-    // Stall detection: kill if no output for stallTimeoutMs (default 15 min).
-    // The unified-designer routinely takes 9-12 min of silent "thinking"
-    // before streaming its first output, so this must be generous.
+    // Stall detection: kill only on TRUE silence — no stream event of ANY
+    // kind for stallTimeoutMs. Extended thinking emits system/thinking_tokens
+    // events the whole time it runs; keying off lastEventTime (not last TEXT)
+    // means a model that's actively thinking is NOT mistaken for a stall and
+    // killed mid-thought. A long-but-live thinking phase is bounded by the
+    // hard timeoutMs instead; only a genuinely dead/hung process (zero events)
+    // trips the stall.
     const stallCheck = setInterval(() => {
       if (settled) return
-      const stallDuration = Date.now() - lastOutputTime
+      const stallDuration = Date.now() - lastEventTime
       if (stallDuration > stallTimeoutMs) {
         settled = true
         cleanup()

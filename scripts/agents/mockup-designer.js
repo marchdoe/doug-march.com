@@ -60,8 +60,8 @@ export function validateMockupResult(parsed) {
 export async function runMockupDesigner(ctx) {
   const userPrompt = buildMockupDesignerUserPrompt(ctx)
   const result = await callClaudeCLI('mockup-designer', ctx.systemPrompt, userPrompt, {
-    timeoutMs: 1500000,      // 25 min — single HTML file is cheaper than 15 TSX files
-    stallTimeoutMs: 1200000, // 20 min silent-thinking headroom
+    timeoutMs: 1800000,     // 30 min hard cap — bounds long extended-thinking phases
+    stallTimeoutMs: 480000, // 8 min of TRUE silence (zero events) = dead process
     model: modelFor('mockup-designer'), // opus in prod, sonnet in dev
   })
   let parsed
