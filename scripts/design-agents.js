@@ -1346,18 +1346,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     return { rationale, design_brief: designBrief, files: allFiles }
   }
 
-  if (buildResult.success) {
-    console.log('\n=== Build passed! ===')
-
-    // Snapshot the exact on-disk passing state (mutable files plus any
-    // extra paths the agents wrote). If the post-critic revision breaks
-    // the build we restore THIS — originalBackup holds YESTERDAY's files,
-    // which are incompatible with today's preset.ts.
-    const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])
-
-    // -----------------------------------------------------------------
-    // Screenshot Critic Gate
-    // -----------------------------------------------------------------
+  // -----------------------------------------------------------------------
+  // Screenshot Critic Gate — shared by the first-pass and Phase-5 retry
+  // success paths. Mutates the enclosing `engineerResult` and
+  // `finalScreenshot` directly. `passingBackup` is the snapshot of the
+  // on-disk passing state to restore if a post-critic revision breaks the
+  // build (the caller takes it right after its successful build).
+  // -----------------------------------------------------------------------
+  async function runScreenshotCriticGate(passingBackup) {
     try {
       console.log('\n[screenshot-critic] Capturing screenshot...')
       const { captureScreenshot } = await import('./utils/snapshot.js')
@@ -1477,7 +1473,17 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       console.warn(`  [screenshot-critic] Failed (non-blocking): ${err.message}`)
       console.warn('  Shipping without screenshot review')
     }
+  }
 
+  if (buildResult.success) {
+    console.log('\n=== Build passed! ===')
+
+    // Snapshot the exact on-disk passing state (mutable files plus any extra
+    // paths the agents wrote). If a post-critic revision breaks the build we
+    // restore THIS — originalBackup holds yesterday's files, incompatible
+    // with today's preset.ts.
+    const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])
+    await runScreenshotCriticGate(passingBackup)
     return archiveAndReturn(engineerResult)
   }
 
@@ -1546,6 +1552,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const retryBuild = validateBuild()
   if (retryBuild.success) {
     console.log('\n=== Retry build passed! ===')
+    const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])
+    await runScreenshotCriticGate(passingBackup)
     return archiveAndReturn(engineerResult, ' (retry)')
   }
 
