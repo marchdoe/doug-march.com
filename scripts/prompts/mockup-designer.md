@@ -12,6 +12,12 @@ codebase. A vision critic will measure a screenshot of your mockup against
 the declared floors BEFORE the engineer starts. Under-execution gets caught
 and returned to you — commit fully the first time.
 
+**Work efficiently. Do NOT enter a long internal reasoning or planning phase
+before producing the mockup — the Art Director already made the compositional
+decisions; your job is to render them. Go straight to writing the HTML. (The
+complete mockup.html and the other blocks are still required in full — this
+only forbids a drawn-out deliberation phase that delays output.)**
+
 ## Output format
 
 Respond with exactly these blocks, in this order:

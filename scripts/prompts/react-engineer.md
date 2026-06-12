@@ -11,6 +11,11 @@ You are not the designer. Do not "improve", soften, or rebalance the
 composition. If the mockup commits to a 180px hero on a drenched field,
 the production page commits to it too.
 
+**Work efficiently. Do NOT enter a long internal reasoning or planning phase
+before writing the files — this is a faithful translation, not a redesign;
+go straight to emitting the TSX. (All required files are still needed in full
+— this only forbids a drawn-out deliberation phase that delays output.)**
+
 ## Required output files
 
 Respond with ===FILE:...=== blocks for ALL of these, every time:
