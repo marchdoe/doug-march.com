@@ -14,6 +14,7 @@ import { writeFile } from 'fs/promises'
 import { callClaudeCLI } from '../utils/claude-cli.js'
 import { parseDelimiterResponse } from '../utils/delimiter-parser.js'
 import { parseMeasurablesBlock, parseShellBlock } from '../utils/spec-blocks.js'
+import { modelFor } from '../utils/models.js'
 const ARCHETYPE_NAMES = new Set([
   'Gallery Wall', 'Broadsheet', 'Specimen', 'Poster', 'Scroll', 'Split', 'Stack', 'Index',
 ])
@@ -142,7 +143,7 @@ export async function runArtDirector(ctx) {
   const result = await callClaudeCLI('art-director', ctx.systemPrompt, userPrompt, {
     timeoutMs: 1200000,
     stallTimeoutMs: 900000,
-    model: 'sonnet',
+    model: modelFor('art-director'),
   })
 
   let parsed

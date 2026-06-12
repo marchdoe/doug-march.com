@@ -49,6 +49,7 @@ import {
   formatChassisCatalogForPrompt,
 } from './utils/chassis.js'
 import { parseDelimiterResponse } from './utils/delimiter-parser.js'
+import { modelFor, isDevModelTier } from './utils/models.js'
 import { runArtDirector } from './agents/art-director.js'
 export { parseDelimiterResponse }
 
@@ -423,6 +424,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     risk: parseInt(process.env.WEIGHT_RISK || '8'),
   }
   console.log(`  creative weights: signals=${weights.signals} inspiration=${weights.inspiration} ratings=${weights.ratings} risk=${weights.risk}`)
+  console.log(`  model tier: ${isDevModelTier() ? 'DEV (sonnet ceiling — local Max-plan, no Opus)' : 'PROD (best per job — opus mockup designer)'} | mockup-designer=${modelFor('mockup-designer')}`)
 
   // Run-level deadline: per-call timeouts protect against hangs, not
   // against an honest slow day blowing the Actions job timeout mid-run
@@ -899,7 +901,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     ].filter(Boolean).join('\n\n---\n\n')
 
     const t0Critic = Date.now()
-    const criticResult = await callAgent('spec-critic', specCriticPrompt, criticUserPrompt, null, { model: 'haiku' })
+    const criticResult = await callAgent('spec-critic', specCriticPrompt, criticUserPrompt, null, { model: modelFor('spec-critic') })
     const rawResponse = criticResult._rawResponse || criticResult.rationale || ''
 
     trace.addStep({
@@ -1189,7 +1191,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const reactEngineerAgentConfig = {
     prompt: reactEngineerSystemPrompt,
     user: buildEngineerUserPrompt,
-    options: { model: 'sonnet', timeoutMs: 1500000, stallTimeoutMs: 1200000 },
+    options: { model: modelFor('react-engineer'), timeoutMs: 1500000, stallTimeoutMs: 1200000 },
   }
 
   const engineerUserPrompt = buildEngineerUserPrompt()
@@ -1240,7 +1242,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     console.warn(`  ⚠ React Engineer omitted required files: ${missing.join(', ')} — retrying with explicit reminder`)
     const reminderPrompt = `${engineerUserPrompt}\n\n---\n\n## REQUIRED FILES MISSING — RETRY\n\nYour previous response omitted these required files: ${missing.join(', ')}\n\nThis silently preserves yesterday's chrome and breaks the day's archetype. Re-emit your COMPLETE response. Every required file must appear, including these you missed:\n${missing.map(m => `- ${m}`).join('\n')}`
     try {
-      const retry = await callAgent('react-engineer', reactEngineerSystemPrompt, reminderPrompt, null, { model: 'sonnet', timeoutMs: 1500000, stallTimeoutMs: 1200000 })
+      const retry = await callAgent('react-engineer', reactEngineerSystemPrompt, reminderPrompt, null, reactEngineerAgentConfig.options)
       const retryProduced = new Set(retry.files.map(f => f.path))
       const stillMissing = REQUIRED_FILES.filter(p => !retryProduced.has(p))
       if (stillMissing.length === 0) {

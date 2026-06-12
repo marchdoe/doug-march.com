@@ -6,6 +6,7 @@
 import { writeFile } from 'fs/promises'
 import { callClaudeCLI } from '../utils/claude-cli.js'
 import { parseDelimiterResponse } from '../utils/delimiter-parser.js'
+import { modelFor } from '../utils/models.js'
 
 export function buildMockupDesignerUserPrompt({
   enrichedBrief,
@@ -61,7 +62,7 @@ export async function runMockupDesigner(ctx) {
   const result = await callClaudeCLI('mockup-designer', ctx.systemPrompt, userPrompt, {
     timeoutMs: 1500000,      // 25 min — single HTML file is cheaper than 15 TSX files
     stallTimeoutMs: 1200000, // 20 min silent-thinking headroom
-    model: 'opus',
+    model: modelFor('mockup-designer'), // opus in prod, sonnet in dev
   })
   let parsed
   try {

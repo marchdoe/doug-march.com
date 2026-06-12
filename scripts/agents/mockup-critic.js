@@ -3,6 +3,7 @@
  * Fail-closed: malformed responses count as REVISE.
  */
 import { callClaudeCLI } from '../utils/claude-cli.js'
+import { modelFor } from '../utils/models.js'
 
 export function parseMockupCriticResponse(raw) {
   // Verdict must sit alone on its line (rejects a literal echo of the
@@ -38,7 +39,7 @@ export async function runMockupCritic(ctx) {
   const raw = await callClaudeCLI('mockup-critic', ctx.systemPrompt, userPrompt, {
     timeoutMs: 600000,
     stallTimeoutMs: 300000,
-    model: 'sonnet',
+    model: modelFor('mockup-critic'),
   })
   return parseMockupCriticResponse(raw)
 }
