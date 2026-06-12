@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 36,
+    "s": 85,
+    "l": 42,
+    "name": "observatory amber"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "amber",
+    "name": "parchment stone"
+  },
+  "mood_word": "luminous",
+  "color_story": "H:36° amber is the lamp you read star charts by — the warm functional tool-light inside the dome that makes observation possible, which is exactly the role imagination plays in Beecher's formulation; parchment stone neutrals place the declaration inside a scientific journal where every word has earned its position."
+}
