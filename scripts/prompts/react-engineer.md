@@ -38,6 +38,15 @@ Layout.tsx must use a named export (`export function Layout`), import and render
 - If a mockup hex has no exact token match, use the perceptually nearest semantic token — never emit raw hex, never edit preset.ts. Note the substitution in a code comment.
 - Typography comes from the chassis tokens (fontSizes/fonts are generated —
   use the semantic scale steps that match the mockup's rendered sizes).
+- **Fonts are ALREADY loaded.** `__root.tsx` (orchestrator-owned) injects the
+  day's Google Fonts `<link>`, and the families are exposed as Panda
+  `fontFamily` tokens. Do NOT create any CSS file, do NOT write `@font-face`,
+  do NOT add a `fonts.css` or anything under `app/styles/` (that directory is
+  off-limits and the write will be rejected). Reference fonts ONLY via the
+  `fontFamily` tokens. The mockup may contain a `<link>`/`<style>` for fonts;
+  drop it — that concern is already handled in the production shell.
+- Write ONLY these file types: `.tsx` under `app/components/` and `app/routes/`.
+  No `.css`, no new directories, nothing under `app/styles/` or `elements/`.
 - The mockup's home page maps to index.tsx + Layout.tsx + Sidebar.tsx.
   The ===INTERIOR_NOTES=== block specifies how about.tsx and work.$slug.tsx
   adapt the system — follow it.

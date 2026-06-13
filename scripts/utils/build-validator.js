@@ -352,6 +352,19 @@ export function validateBuild() {
   if (!smokeCheck.success) {
     console.log('  build output smoke check failed')
     for (const e of smokeCheck.errors) console.log(`  ✗ ${e}`)
+    // Build exited 0 but produced unusable output. Persist the full build log
+    // too — a status-0-but-no-shell failure is otherwise invisible (the
+    // non-zero path above is the only other place this gets written).
+    try {
+      const combined = (result.stderr ?? '') + (result.stdout ?? '')
+      const today = new Date().toISOString().slice(0, 10)
+      const outputDir = resolve(ROOT, 'archive', today)
+      mkdirSync(outputDir, { recursive: true })
+      writeFileSync(resolve(outputDir, 'last-build-output.txt'), combined, 'utf8')
+      console.log(`  full build output written to archive/${today}/last-build-output.txt (${combined.length} chars)`)
+    } catch (writeErr) {
+      console.warn(`  could not write full build output: ${writeErr.message}`)
+    }
     return { success: false, error: 'Build output smoke check failed:\n' + smokeCheck.errors.map(e => `  - ${e}`).join('\n') }
   }
 
