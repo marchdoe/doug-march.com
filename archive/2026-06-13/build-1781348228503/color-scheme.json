@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 162,
+    "s": 100,
+    "l": 42,
+    "name": "ocean teal"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "teal",
+    "name": "void sage"
+  },
+  "mood_word": "threshold",
+  "color_story": "Teal at H:162° is the exact color of bioluminescence in open water at night — what you see when you look ahead into darkness and something glows back, which is precisely what a new moon + Tolkien declaration demands."
+}
