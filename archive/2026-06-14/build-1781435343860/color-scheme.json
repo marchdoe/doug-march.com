@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 115,
+    "s": 90,
+    "l": 51,
+    "name": "acid signal"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "yellow-green",
+    "name": "void"
+  },
+  "mood_word": "electric",
+  "color_story": "Acid chartreuse at H:115° is what signal looks like when interference is removed — a terminal trace through the void, the specific green of clean data and warning labels."
+}

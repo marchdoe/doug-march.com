@@ -1,0 +1,285 @@
+{
+  "date": "2026-06-14",
+  "startedAt": "2026-06-14T10:59:12.860Z",
+  "completedAt": "2026-06-14T11:09:05.560Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "House of Honey",
+              "description": "House of Honey designs spaces with story. We built a sophisticated digital presence that mirrors this sensory philosophy through editorial elegance and...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1c09bf6c5f3457361940.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/CABEIBLAGQAMBEQACEQEDEQH/xAA6AAAABgMBAQEAAAAAAAAAAAADBAUGBwgAAQIJCgsBAAAH...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "Susie & Jay: A Journey of Love",
+              "description": "A cinematic wedding website using Three.js and GSAP for interactive 3D motion, featuring a serverless RSVP system and dynamic gallery built via Google...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a28042578834566909784.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYABAAAElEQVR4nJT9W3Msu64sjLWksbafHA4/2OH//xsdcY7PHC05CGQiM8HS3PvrteZQX6pYJIgbcf34f/4//u8/r4+P13mdf3/qf/2uvvv4xG/4XP/y2m99Y2O8fjhKj/Tdt9qoddF88/mBK8//axz+xmE/Xh8f+k7383W+x/2YaX3TX9XYnMvH51ff+3G+4z0Y8efc+VP///z8...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "An AI Portfolio in the cosmos",
+              "description": "Portfolio of an AI engineer - cosmos themed, alive background, ISS cursor, scroll-driven timeline. Craft as argument the site demonstrates how its author...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1aa6e70d512712791221.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAABYlAAAWJQFJUiTwAAAQAElEQVR4Adz9iZply1Gli5qlANFKQkiAaFUFou9BiGrOqXPf/5kufv9/mPtcc62IyMytgvPVdz18uJkNG2bu09eMyNi5t+BTVa2vQvdqtHdcdeT0zWm/CtYc0PfdmpPXfqT5gPcs4vN9efYWvUr7Ti97NPsfvNtv10Wrf/T4hzs2+7zudfTbFvbaR23gGQE9T+7qeeNO7j/L...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Sunday",
+          "is_weekend": true,
+          "day_index": 0
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "iptv-org/iptv/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/freeCodeCamp",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/pytest-dev",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/swc-project",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "sponsors/chatwoot",
+              "description": "",
+              "language": "Ruby",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "RBC Canadian Open",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Jackson Suber",
+              "position": "1",
+              "score": "-13"
+            },
+            {
+              "name": "Bud Cauley",
+              "position": "2",
+              "score": "-12"
+            },
+            {
+              "name": "Wyndham Clark",
+              "position": "3",
+              "score": "-11"
+            },
+            {
+              "name": "Tommy Fleetwood",
+              "position": "4",
+              "score": "-11"
+            },
+            {
+              "name": "Brice Garnett",
+              "position": "5",
+              "score": "-11"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Honda Civics and the Evil Valet",
+              "url": "https://juniperspring.org/posts/honda-evil-valet/",
+              "score": 282,
+              "by": "librick"
+            },
+            {
+              "title": "Free SQL→ER diagram tool, runs in the browser, nothing uploaded",
+              "url": "https://sqltoerdiagram.com/",
+              "score": 157,
+              "by": "robhati"
+            },
+            {
+              "title": "GLM 5.2 Is Out",
+              "url": "https://twitter.com/jietang/status/2065784751345287314",
+              "score": 603,
+              "by": "aloknnikhil"
+            },
+            {
+              "title": "Cooling in Space",
+              "url": "https://guille.site/posts/space-cooling/",
+              "score": 19,
+              "by": "LolWolf"
+            },
+            {
+              "title": "Noise infusion banned from statistical products published by Census Bureau",
+              "url": "https://desfontain.es/blog/banning-noise.html",
+              "score": 829,
+              "by": "nl"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Juneteenth",
+              "date": "2026-06-19",
+              "days_away": 5
+            },
+            {
+              "name": "Father's Day",
+              "date": "2026-06-21",
+              "days_away": 7
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "new moon",
+          "illumination": 0,
+          "days_into_cycle": 29.49
+        },
+        "music": {
+          "bands": [
+            "Radiohead",
+            "Guided by Voices"
+          ]
+        },
+        "quote": {
+          "text": "Life is just the same as learning to swim. Do not be afraid of making mistakes, for there is no other way of learning how to live!",
+          "author": "Alfred Adler"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 14,
+          "day_of_year": 165,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-13T20:10Z",
+              "result": "loss",
+              "score": "1-3"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:48",
+          "sunset": "19:32",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-14"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-14T10:59:28.274Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-13: Split\n  - 2026-06-12: Poster\n  - 2026-06-11: Specimen\n  - 2026-06-10: Gallery Wall\n  - 2026-06-09: Index\n  - 2026-06-08: Broadsheet\n  - 2026-06-07: Stack\n\n**Recently used** (last 3 days): Split, Poster, Specimen\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or si"
+      },
+      "output": {
+        "hero_copy": "BAN THE NOISE.",
+        "archetype": "Stack",
+        "chassisId": "anton-inter-tight",
+        "specLength": 7544,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue:** H:115° (yellow-green / acid chartreuse). This is the only substantial open zone in the mandate (105°–132°). Independently correct: it is the color of terminal output, signal-strength indicators, heat maps, oscilloscope traces — precision instruments reading clean data. The command \"BAN THE NOISE.\" demands a color that looks like a broadcast interruption, an alert state.\n\n**Neutral palette (void family — tinted toward H:115°):**\n- void.50:  `#E8F0E6`\n-",
+        "selfCheck": "1. Hero quotability: Yes — \"BAN THE NOISE.\" is a three-word command that functions as protest slogan, design manifesto, and system directive; it works completely isolated from the portfolio context.\n2. Because-of chain: Yes — the command phrase demands Stack (bands of structured evidence beneath the"
+      },
+      "durationMs": 391938,
+      "timestamp": "2026-06-14T11:06:00.219Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 7544
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 30393,
+      "timestamp": "2026-06-14T11:06:32.174Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4678,
+        "briefLength": 10594
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 128986,
+      "timestamp": "2026-06-14T11:08:41.162Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-14T11:08:48.477Z"
+    }
+  ]
+}

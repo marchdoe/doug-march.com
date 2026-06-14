@@ -1,80 +1,90 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const navWrap = css({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  height: '56px',
-  padding: '0 40px',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  width: '100%',
-  '@media (max-width: 767px)': {
-    padding: '0 20px',
-    height: '48px',
-  },
-})
-
-const wordmark = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
-})
-
-const logoImg = css({
-  width: '28px',
-  height: '28px',
-})
-
-const dmText = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: 'bold',
-  letterSpacing: '0.08em',
-  color: 'text',
-  textTransform: 'uppercase',
-})
-
-const navLinks = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '24px',
-  '@media (max-width: 480px)': {
-    gap: '16px',
-  },
-})
-
-const navLink = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  color: 'textSecondary',
-  textDecoration: 'none',
-  transition: 'color 0.18s ease',
-  padding: '10px 0',
-  _hover: {
-    color: 'accent',
-  },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
-})
-
 export function Sidebar() {
   return (
-    <nav className={navWrap} aria-label="Main navigation">
-      <div className={wordmark}>
-        <img src={logoSvg} alt="Doug March logo" className={logoImg} />
-        <span className={dmText}>DM</span>
-      </div>
-      <div className={navLinks}>
-        <a href="/" className={navLink}>Work</a>
-        <a href="/about" className={navLink}>About</a>
-        <a href="https://github.com" className={navLink}>Github</a>
+    <nav
+      className={css({
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '56px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 6vw',
+        background: 'rgba(13, 21, 9, 0.92)',
+        backdropFilter: 'blur(8px)',
+        borderBottom: '1px solid',
+        borderColor: 'border',
+        zIndex: 100,
+      })}
+    >
+      <a
+        href="/"
+        className={css({
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          textDecoration: 'none',
+          _hover: { textDecoration: 'none' },
+        })}
+      >
+        <img
+          src={logoSvg}
+          alt="Doug March logo"
+          className={css({ width: '28px', height: '28px' })}
+        />
+        <span
+          className={css({
+            fontFamily: 'body',
+            fontWeight: 'semibold',
+            fontSize: '14px',
+            color: 'accent',
+            letterSpacing: '0.02em',
+          })}
+        >
+          DM
+        </span>
+      </a>
+      <div
+        className={css({
+          display: 'flex',
+          alignItems: 'center',
+          gap: '32px',
+        })}
+      >
+        {[
+          { label: 'WORK', href: '/#work' },
+          { label: 'ABOUT', href: '/about' },
+        ].map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            className={css({
+              fontFamily: 'body',
+              fontSize: '11px',
+              fontWeight: 'medium',
+              color: 'textSecondary',
+              letterSpacing: '0.14em',
+              textDecoration: 'none',
+              padding: '12px 0',
+              transition: 'color 120ms ease-out',
+              _hover: {
+                color: 'text',
+                textDecoration: 'none',
+              },
+              _focus: {
+                outline: '2px solid',
+                outlineColor: 'accent',
+                outlineOffset: '4px',
+              },
+            })}
+          >
+            {link.label}
+          </a>
+        ))}
       </div>
     </nav>
   )
