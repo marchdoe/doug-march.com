@@ -4,587 +4,451 @@ import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
+const column = css({
+  width: '88vw',
+  maxWidth: '1440px',
+  margin: '0 auto',
+})
+
 function HomePage() {
-  const allWork = [...selectedWork, ...experiments]
-
   return (
-    <>
-      {/* Band 1 — Hero */}
-      <section
-        className={css({
-          minHeight: '100vh',
-          display: 'grid',
-          placeItems: 'center',
-          background: 'bgHero',
-          padding: '96px 6vw',
-          position: 'relative',
-        })}
-      >
-        <div className={css({ textAlign: 'center' })}>
-          <h1
-            className={css({
-              fontFamily: 'display',
-              fontSize: 'clamp(60px, 12vw, 172px)',
-              fontWeight: 'bold',
-              lineHeight: 'tight',
-              letterSpacing: '-0.03em',
-              color: 'bgHeroText',
-              whiteSpace: 'nowrap',
-            })}
-          >
-            BAN THE NOISE.
-          </h1>
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontSize: '11px',
-              fontWeight: 'medium',
-              letterSpacing: '0.18em',
-              color: 'bgHeroText',
-              marginTop: '40px',
-              textTransform: 'uppercase',
-            })}
-          >
-            HACKER NEWS · JUNE 14 · 829 PTS
-          </p>
-        </div>
-      </section>
-
-      {/* Band 2 — Signal Strip */}
-      <section
-        className={css({
-          display: 'grid',
-          gridTemplateColumns: 'repeat(6, 1fr)',
-          alignItems: 'center',
-          height: '108px',
-          padding: '0 6vw',
-          background: 'bgCard',
-          borderTop: '1px solid',
-          borderBottom: '1px solid',
-          borderColor: 'border',
-          '@media (max-width: 768px)': {
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            height: 'auto',
-            padding: '16px 6vw',
-            gap: '0',
-          },
-        })}
-      >
-        <SignalCell label="NEW MOON" value="CYCLE 29 ●" dimDot />
-        <SignalCell label="DAYLIGHT" value="14.7 HRS" />
-        <SignalCell label="RBC OPEN" value="SUBER −13" />
-        <SignalCell label="TIGERS" value="L 1–3" />
-        <SignalCell label="MUSIC" value="RADIOHEAD · GBV" />
-        <SignalCell label="JUNETEENTH" value="5 DAYS" highlight />
-      </section>
-
-      {/* Band 3 — Featured + Selected Work */}
-      <section
-        id="work"
-        className={css({
-          background: 'bg',
-          padding: '96px 6vw',
-        })}
-      >
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontSize: '11px',
-            fontWeight: 'medium',
-            letterSpacing: '0.18em',
-            color: 'textMuted',
-            textTransform: 'uppercase',
-            marginBottom: '48px',
-          })}
-        >
-          SELECTED WORK
-        </p>
-
-        {/* Featured Project */}
-        {featuredProject && (
-          <div
-            className={css({
-              marginBottom: '2px',
-              padding: '40px 32px',
-              background: 'bgCard',
-              borderTop: '1px solid',
-              borderColor: 'border',
-              transition: 'all 120ms ease-out',
-              _hover: {
-                borderColor: 'accent',
-                background: 'bgSubtle',
-              },
-              '@media (max-width: 768px)': {
-                padding: '24px 16px',
-              },
-            })}
-          >
-            <a
-              href={featuredProject.externalUrl || `/work/${featuredProject.slug}`}
-              className={css({
-                textDecoration: 'none',
-                display: 'block',
-                _hover: { textDecoration: 'none' },
-                _focus: {
-                  outline: '2px solid',
-                  outlineColor: 'accent',
-                  outlineOffset: '4px',
-                },
-              })}
-            >
-              <div
-                className={css({
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'baseline',
-                  marginBottom: '12px',
-                  flexWrap: 'wrap',
-                  gap: '8px',
-                })}
-              >
-                <h2
-                  className={css({
-                    fontFamily: 'display',
-                    fontSize: 'clamp(28px, 4vw, 48px)',
-                    fontWeight: 'bold',
-                    lineHeight: 'snug',
-                    color: 'text',
-                    transition: 'color 120ms ease-out',
-                  })}
-                >
-                  {featuredProject.title}
-                </h2>
-                <div
-                  className={css({
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '16px',
-                  })}
-                >
-                  <span
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: '11px',
-                      letterSpacing: '0.14em',
-                      color: 'accent',
-                      textTransform: 'uppercase',
-                      fontWeight: 'medium',
-                      padding: '4px 8px',
-                      border: '1px solid',
-                      borderColor: 'borderAccent',
-                      borderRadius: 'sm',
-                    })}
-                  >
-                    FEATURED
-                  </span>
-                  <span
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: '14px',
-                      color: 'textMuted',
-                    })}
-                  >
-                    {featuredProject.year}
-                  </span>
-                </div>
-              </div>
-              {featuredProject.problem && (
-                <p
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '16px',
-                    lineHeight: 'normal',
-                    color: 'textSecondary',
-                    maxWidth: '65ch',
-                    letterSpacing: '0.01em',
-                  })}
-                >
-                  {featuredProject.problem}
-                </p>
-              )}
-            </a>
-          </div>
-        )}
-
-        {/* Work Grid */}
-        <div
-          className={css({
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '2px',
-            '@media (max-width: 768px)': {
-              gridTemplateColumns: '1fr',
-            },
-          })}
-        >
-          {selectedWork.map((project) => (
-            <WorkCard key={project.slug} project={project} />
-          ))}
-          {experiments.map((project) => (
-            <WorkCard key={project.slug} project={project} isExperiment />
-          ))}
-        </div>
-      </section>
-
-      {/* Band 4 — About Preview / Capabilities */}
-      <section
-        className={css({
-          display: 'grid',
-          gridTemplateColumns: '55fr 45fr',
-          minHeight: '50vh',
-          background: 'bgCard',
-          '@media (max-width: 768px)': {
-            gridTemplateColumns: '1fr',
-          },
-        })}
-      >
-        <div
-          className={css({
-            padding: '80px 6vw',
-            borderRight: '1px solid',
-            borderColor: 'border',
-            '@media (max-width: 768px)': {
-              borderRight: 'none',
-              borderBottom: '1px solid',
-              borderColor: 'border',
-              padding: '48px 6vw',
-            },
-          })}
-        >
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontSize: '11px',
-              fontWeight: 'medium',
-              letterSpacing: '0.18em',
-              color: 'textMuted',
-              textTransform: 'uppercase',
-              marginBottom: '32px',
-            })}
-          >
-            DOUG MARCH
-          </p>
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontSize: '18px',
-              lineHeight: '1.65',
-              color: 'textSecondary',
-              maxWidth: '50ch',
-              letterSpacing: '0.01em',
-              marginBottom: '40px',
-            })}
-          >
-            Product Designer & Developer building tools at the intersection of
-            design and engineering. Focused on clarity, precision, and eliminating
-            noise from every surface.
-          </p>
-          <a
-            href="/about"
-            className={css({
-              fontFamily: 'body',
-              fontSize: '14px',
-              fontWeight: 'medium',
-              color: 'accent',
-              letterSpacing: '0.05em',
-              textDecoration: 'none',
-              padding: '12px 0',
-              _hover: { textDecoration: 'underline' },
-              _focus: {
-                outline: '2px solid',
-                outlineColor: 'accent',
-                outlineOffset: '4px',
-              },
-            })}
-          >
-            FULL BIO →
-          </a>
-        </div>
-        <div
-          className={css({
-            padding: '80px 6vw',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            '@media (max-width: 768px)': {
-              padding: '48px 6vw',
-            },
-          })}
-        >
-          <div
-            className={css({
-              borderLeft: '2px solid',
-              borderColor: 'accent',
-              paddingLeft: '24px',
-              marginBottom: '48px',
-            })}
-          >
-            <p
-              className={css({
-                fontFamily: 'body',
-                fontSize: '18px',
-                fontStyle: 'italic',
-                lineHeight: '1.6',
-                color: 'accentLight',
-                maxWidth: '40ch',
-              })}
-            >
-              Do not be afraid of making mistakes, for there is no other way of
-              learning how to live!
-            </p>
-            <p
-              className={css({
-                fontFamily: 'body',
-                fontSize: '14px',
-                color: 'textMuted',
-                marginTop: '16px',
-              })}
-            >
-              — Alfred Adler
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Band 5 — Footer */}
-      <footer
-        className={css({
-          height: '80px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 6vw',
-          background: 'bg',
-          borderTop: '1px solid',
-          borderColor: 'border',
-          flexWrap: 'wrap',
-          gap: '8px',
-          '@media (max-width: 768px)': {
-            height: 'auto',
-            padding: '16px 6vw',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-          },
-        })}
-      >
-        <div
-          className={css({
-            display: 'flex',
-            alignItems: 'center',
-            gap: '24px',
-          })}
-        >
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontSize: '11px',
-              letterSpacing: '0.14em',
-              color: 'textMuted',
-            })}
-          >
-            © 2026 DOUG MARCH
-          </span>
-          <a
-            href="/archive"
-            className={css({
-              fontFamily: 'body',
-              fontSize: '11px',
-              letterSpacing: '0.14em',
-              color: 'textMuted',
-              textDecoration: 'none',
-              _hover: { color: 'textSecondary', textDecoration: 'underline' },
-              _focus: {
-                outline: '2px solid',
-                outlineColor: 'accent',
-                outlineOffset: '4px',
-              },
-            })}
-          >
-            ARCHIVE
-          </a>
-        </div>
-        <span
-          className={css({
-            fontFamily: 'body',
-            fontSize: '10px',
-            letterSpacing: '0.15em',
-            color: 'textMuted',
-          })}
-        >
-          JUNETEENTH IN 5 · FATHER'S DAY IN 7
-        </span>
-      </footer>
-    </>
-  )
-}
-
-function SignalCell({
-  label,
-  value,
-  highlight,
-  dimDot,
-}: {
-  label: string
-  value: string
-  highlight?: boolean
-  dimDot?: boolean
-}) {
-  return (
-    <div
-      className={css({
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '6px',
-        padding: '16px 12px',
-        borderRight: '1px solid',
-        borderColor: 'border',
-        _last: { borderRight: 'none' },
-        '@media (max-width: 768px)': {
-          padding: '12px 8px',
-        },
-      })}
-    >
-      <span
-        className={css({
-          fontFamily: 'body',
-          fontSize: '10px',
-          fontWeight: 'medium',
-          letterSpacing: '0.18em',
-          color: 'textMuted',
-          textTransform: 'uppercase',
-        })}
-      >
-        {label}
-      </span>
-      <span
-        className={css({
-          fontFamily: 'body',
-          fontSize: 'clamp(13px, 1.2vw, 17px)',
-          fontWeight: 'medium',
-          color: highlight ? 'accentLight' : 'text',
-          letterSpacing: '0em',
-        })}
-      >
-        {value}
-      </span>
+    <div className={column}>
+      <HeroFold />
+      <SignalFold />
+      <WorkFold />
+      <ExperimentsFold />
+      <FooterFold />
     </div>
   )
 }
 
-function WorkCard({
-  project,
-  isExperiment,
-}: {
-  project: {
-    slug: string
-    title: string
-    type: string
-    year: number
-    externalUrl?: string
-    description?: string
-    problem?: string
-  }
-  isExperiment?: boolean
-}) {
-  const href = isExperiment
-    ? `/work/${project.slug}`
-    : project.externalUrl || `/work/${project.slug}`
-
+/* ─── HERO ─── */
+function HeroFold() {
   return (
-    <a
-      href={href}
-      className={css({
-        display: 'block',
-        padding: '32px',
-        background: 'bgCard',
-        borderTop: '1px solid',
-        borderColor: 'border',
-        textDecoration: 'none',
-        transition: 'all 120ms ease-out',
-        _hover: {
-          borderColor: 'accent',
-          background: 'bgSubtle',
-          textDecoration: 'none',
-          '& h3': { color: 'accent' },
-        },
-        _focus: {
-          outline: '2px solid',
-          outlineColor: 'accent',
-          outlineOffset: '-2px',
-        },
-        '@media (max-width: 768px)': {
-          padding: '24px 16px',
-        },
-      })}
-    >
-      <div
-        className={css({
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'baseline',
-          marginBottom: '8px',
-          gap: '8px',
-        })}
-      >
-        <h3
-          className={css({
-            fontFamily: 'heading',
-            fontSize: 'clamp(18px, 2vw, 24px)',
-            fontWeight: 'semibold',
-            lineHeight: 'snug',
-            color: 'text',
-            transition: 'color 120ms ease-out',
-          })}
-        >
-          {project.title}
-        </h3>
-        <span
-          className={css({
-            fontFamily: 'body',
-            fontSize: '13px',
-            color: 'textMuted',
-            flexShrink: 0,
-          })}
-        >
-          {project.year}
-        </span>
+    <section className={css({
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      paddingTop: '64px',
+      paddingBottom: '48px',
+    })}>
+      <div className={css({ maxWidth: '1200px' })}>
+        <h1 className={css({
+          fontFamily: 'display',
+          fontWeight: 'bold',
+          fontSize: 'clamp(44px, 5.8vw, 88px)',
+          lineHeight: 'tight',
+          letterSpacing: 'tight',
+          color: 'text',
+          textWrap: 'balance',
+        })}>
+          Do what you can,
+          <br />
+          with what you have,
+          <br />
+          where you are.
+        </h1>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '14px',
+          fontWeight: 'normal',
+          letterSpacing: 'wider',
+          textTransform: 'uppercase',
+          color: 'textSecondary',
+          marginTop: '32px',
+        })}>
+          — Colin R. Davis
+        </p>
+        <div className={css({
+          width: '100%',
+          height: '2px',
+          background: 'accent',
+          marginTop: '24px',
+        })} />
       </div>
-      <div
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-        })}
-      >
-        <span
-          className={css({
+    </section>
+  )
+}
+
+/* ─── SIGNALS ─── */
+function SignalFold() {
+  return (
+    <section className={css({
+      minHeight: '70vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      paddingTop: '96px',
+      paddingBottom: '96px',
+      borderTop: '1px solid',
+      borderColor: 'border',
+    })}>
+      <div className={css({
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '48px',
+        '@media (max-width: 768px)': {
+          gridTemplateColumns: '1fr',
+          gap: '48px',
+        },
+      })}>
+        {/* New Moon */}
+        <div className={css({ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' })}>
+          <span className={css({ fontSize: '64px', color: 'accent', lineHeight: '1', fontFamily: 'display' })}>○</span>
+          <span className={css({
+            fontFamily: 'body',
+            fontSize: '11px',
+            fontWeight: 'medium',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textSecondary',
+            marginTop: '16px',
+          })}>
+            New Moon · Cycle 1
+          </span>
+        </div>
+
+        {/* Daylight */}
+        <div className={css({ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' })}>
+          <span className={css({
+            fontFamily: 'display',
+            fontSize: 'clamp(36px, 3.2vw, 52px)',
+            fontWeight: 'semibold',
+            color: 'accent',
+            lineHeight: 'snug',
+          })}>14.7</span>
+          <span className={css({
             fontFamily: 'body',
             fontSize: '12px',
-            letterSpacing: '0.1em',
-            color: 'textMuted',
+            fontWeight: 'medium',
+            letterSpacing: 'wider',
             textTransform: 'uppercase',
-          })}
-        >
-          {project.type}
-        </span>
-        {isExperiment && (
-          <span
+            color: 'textSecondary',
+            marginTop: '8px',
+          })}>
+            Hours of Daylight
+          </span>
+          <span className={css({
+            fontFamily: 'body',
+            fontSize: '11px',
+            color: 'textMuted',
+            marginTop: '4px',
+          })}>
+            4:48 → 19:32
+          </span>
+        </div>
+
+        {/* Golf */}
+        <div className={css({ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' })}>
+          <span className={css({
+            fontFamily: 'body',
+            fontSize: '14px',
+            fontWeight: 'medium',
+            letterSpacing: 'wide',
+            textTransform: 'uppercase',
+            color: 'text',
+          })}>Bud Cauley</span>
+          <span className={css({
+            fontFamily: 'display',
+            fontSize: 'clamp(36px, 3.2vw, 48px)',
+            fontWeight: 'semibold',
+            color: 'accent',
+            lineHeight: 'snug',
+            marginTop: '4px',
+          })}>−17</span>
+          <span className={css({
+            fontFamily: 'body',
+            fontSize: '11px',
+            color: 'textMuted',
+            marginTop: '4px',
+          })}>
+            RBC Canadian Open · Final
+          </span>
+        </div>
+      </div>
+
+      <p className={css({
+        fontFamily: 'body',
+        fontSize: '12px',
+        color: 'textSecondary',
+        marginTop: '64px',
+      })}>
+        ○ Juneteenth in 4 days
+      </p>
+    </section>
+  )
+}
+
+/* ─── WORK ─── */
+function WorkFold() {
+  return (
+    <section id="work" className={css({
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      paddingTop: '96px',
+      paddingBottom: '96px',
+      borderTop: '1px solid',
+      borderColor: 'border',
+    })}>
+      {/* Featured */}
+      {featuredProject && (
+        <div className={css({ marginBottom: '64px' })}>
+          <span className={css({
+            fontFamily: 'body',
+            fontSize: '11px',
+            fontWeight: 'medium',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+            display: 'block',
+            marginBottom: '16px',
+          })}>Featured</span>
+          <a
+            href={featuredProject.externalUrl || `/work/${featuredProject.slug}`}
             className={css({
-              fontFamily: 'body',
-              fontSize: '10px',
-              letterSpacing: '0.14em',
-              color: 'textMuted',
-              textTransform: 'uppercase',
-              padding: '2px 6px',
-              border: '1px solid',
-              borderColor: 'border',
-              borderRadius: 'sm',
+              textDecoration: 'none',
+              display: 'block',
+              _focusVisible: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
             })}
           >
-            EXPERIMENT
-          </span>
-        )}
+            <div className={css({
+              background: 'bgCard',
+              borderRadius: 'md',
+              border: '1px solid',
+              borderColor: 'border',
+              padding: 'clamp(32px, 4vw, 64px)',
+              transition: 'transform 0.1s ease, box-shadow 0.15s ease',
+              boxShadow: '0 1px 4px rgba(26,26,20,0.07)',
+              _hover: { transform: 'translateY(-2px)', boxShadow: '0 4px 12px rgba(26,26,20,0.1)' },
+              '@media (prefers-reduced-motion: reduce)': {
+                transition: 'none',
+                _hover: { transform: 'none' },
+              },
+            })}>
+              <h2 className={css({
+                fontFamily: 'display',
+                fontSize: 'clamp(28px, 3vw, 48px)',
+                fontWeight: 'bold',
+                lineHeight: 'snug',
+                color: 'text',
+              })}>{featuredProject.title}</h2>
+              <p className={css({
+                fontFamily: 'body',
+                fontSize: '16px',
+                lineHeight: 'normal',
+                color: 'textSecondary',
+                marginTop: '16px',
+                maxWidth: '65ch',
+              })}>{featuredProject.problem}</p>
+              <div className={css({
+                display: 'flex',
+                gap: '16px',
+                alignItems: 'center',
+                marginTop: '24px',
+              })}>
+                <span className={css({
+                  fontFamily: 'body',
+                  fontSize: '12px',
+                  letterSpacing: 'wider',
+                  textTransform: 'uppercase',
+                  color: 'textMuted',
+                })}>{featuredProject.type} · {featuredProject.year}</span>
+                <span className={css({
+                  fontFamily: 'body',
+                  fontSize: '13px',
+                  fontWeight: 'medium',
+                  color: 'accent',
+                })}>View project →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      )}
+
+      {/* Selected Work */}
+      <div className={css({
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: '48px',
+        '@media (max-width: 640px)': {
+          gridTemplateColumns: '1fr',
+          gap: '32px',
+        },
+      })}>
+        {selectedWork.map((project) => (
+          <a
+            key={project.slug}
+            href={`/work/${project.slug}`}
+            className={css({
+              textDecoration: 'none',
+              display: 'block',
+              _focusVisible: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+            })}
+          >
+            <div className={css({
+              background: 'bgCard',
+              borderRadius: 'md',
+              border: '1px solid',
+              borderColor: 'border',
+              padding: '32px',
+              boxShadow: '0 1px 4px rgba(26,26,20,0.07)',
+              transition: 'transform 0.1s ease',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              _hover: { transform: 'translateY(-2px)' },
+              '@media (prefers-reduced-motion: reduce)': {
+                transition: 'none',
+                _hover: { transform: 'none' },
+              },
+            })}>
+              <div className={css({
+                width: '3px',
+                height: '24px',
+                background: 'accent',
+                borderRadius: 'sm',
+                marginBottom: '16px',
+              })} />
+              <h3 className={css({
+                fontFamily: 'display',
+                fontSize: '20px',
+                fontWeight: 'semibold',
+                lineHeight: 'snug',
+                color: 'text',
+              })}>{project.title}</h3>
+              <p className={css({
+                fontFamily: 'body',
+                fontSize: '14px',
+                color: 'textSecondary',
+                marginTop: '8px',
+                lineHeight: 'normal',
+                flex: 1,
+              })}>{project.problem || project.description}</p>
+              <span className={css({
+                fontFamily: 'body',
+                fontSize: '12px',
+                letterSpacing: 'wider',
+                textTransform: 'uppercase',
+                color: 'textMuted',
+                marginTop: '16px',
+              })}>{project.type} · {project.year}</span>
+            </div>
+          </a>
+        ))}
       </div>
-    </a>
+    </section>
+  )
+}
+
+/* ─── EXPERIMENTS ─── */
+function ExperimentsFold() {
+  return (
+    <section className={css({
+      paddingTop: '64px',
+      paddingBottom: '96px',
+      borderTop: '1px solid',
+      borderColor: 'border',
+    })}>
+      <span className={css({
+        fontFamily: 'body',
+        fontSize: '11px',
+        fontWeight: 'medium',
+        letterSpacing: 'wider',
+        textTransform: 'uppercase',
+        color: 'textMuted',
+        display: 'block',
+        marginBottom: '32px',
+      })}>Experiments</span>
+
+      <div className={css({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0',
+      })}>
+        {experiments.map((exp) => (
+          <a
+            key={exp.slug}
+            href={exp.externalUrl || `/work/${exp.slug}`}
+            className={css({
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'baseline',
+              justifyContent: 'space-between',
+              gap: '16px',
+              padding: '20px 0',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+              transition: 'color 0.15s ease',
+              _hover: { color: 'accent' },
+              _focusVisible: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '4px' },
+              flexWrap: 'wrap',
+            })}
+          >
+            <span className={css({
+              fontFamily: 'display',
+              fontSize: '18px',
+              fontWeight: 'semibold',
+              color: 'text',
+            })}>{exp.title}</span>
+            <span className={css({
+              fontFamily: 'body',
+              fontSize: '12px',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'textMuted',
+              whiteSpace: 'nowrap',
+            })}>{exp.type} · {exp.year}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+/* ─── FOOTER ─── */
+function FooterFold() {
+  return (
+    <footer className={css({
+      paddingTop: '48px',
+      paddingBottom: '48px',
+      borderTop: '1px solid',
+      borderColor: 'border',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%',
+      flexWrap: 'wrap',
+      gap: '16px',
+    })}>
+      <p className={css({
+        fontFamily: 'body',
+        fontSize: '12px',
+        color: 'textMuted',
+      })}>
+        ↪ Currently: Guided by Voices, My Morning Jacket
+      </p>
+      <div className={css({
+        display: 'flex',
+        gap: '24px',
+        alignItems: 'center',
+      })}>
+        <a href="/archive" className={css({
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'textMuted',
+          textDecoration: 'none',
+          _hover: { color: 'accent' },
+          _focusVisible: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+        })}>Archive</a>
+        <span className={css({
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'textMuted',
+        })}>Product Designer & Developer</span>
+      </div>
+    </footer>
   )
 }

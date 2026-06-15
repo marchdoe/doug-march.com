@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 350,
+    "s": 82,
+    "l": 41,
+    "name": "deep crimson"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "red-rose",
+    "name": "warm stone"
+  },
+  "mood_word": "declarative",
+  "color_story": "The color mandate's only open window is 325°–6°; crimson at H:350° was waiting there, and red is the only color appropriate for a three-word imperative delivered on a clean-slate Monday in peak summer."
+}
