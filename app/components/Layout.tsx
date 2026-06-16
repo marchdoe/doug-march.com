@@ -2,18 +2,20 @@ import type { ReactNode } from 'react'
 import { Sidebar } from './Sidebar'
 import { css } from '../../styled-system/css'
 
-const wrapper = css({
+const pageStyle = css({
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center',
   minHeight: '100vh',
+  padding: '0 6vw',
+  background: 'bg',
+  color: 'text',
 })
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className={wrapper}>
+    <div className={pageStyle}>
       <Sidebar />
-      {children}
+      <main>{children}</main>
     </div>
   )
 }

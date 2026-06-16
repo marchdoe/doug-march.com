@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 72,
+    "s": 73,
+    "l": 42,
+    "name": "lime"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "yellow-green",
+    "name": "warm newsprint"
+  },
+  "mood_word": "lucid",
+  "color_story": "Self-transparency earns the clearest, sharpest color in the mandate window — electric lime on newsprint cream, the frequency of honest light, a newspaper that prints what it actually sees."
+}
