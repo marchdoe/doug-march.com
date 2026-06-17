@@ -4,166 +4,120 @@ import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const headerStyle = css({
-  padding: '32px 0 20px',
+const pageWrap = css({
+  padding: '0 6vw 96px',
+  background: 'bg',
+  minHeight: '80vh',
+})
+
+const backLink = css({
+  display: 'inline-block',
+  fontFamily: 'body',
+  fontSize: '13px',
+  color: 'textMuted',
+  textDecoration: 'none',
+  letterSpacing: '0.06em',
+  textTransform: 'uppercase',
+  padding: '24px 0 32px',
+  _hover: { color: 'accent' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+})
+
+const projectTitle = css({
+  fontFamily: 'display',
+  fontSize: 'clamp(36px, 5vw, 72px)',
+  lineHeight: '0.92',
+  letterSpacing: '-0.01em',
+  color: 'accent',
+  textTransform: 'uppercase',
+  borderBottom: '2px solid',
+  borderColor: 'borderAccent',
+  paddingBottom: '16px',
+})
+
+const metaGrid = css({
+  display: 'grid',
+  gridTemplateColumns: '120px 1fr',
+  gap: '8px 24px',
+  padding: '24px 0',
   borderBottom: '1px solid',
+  borderColor: 'border',
+  '@media (max-width: 480px)': {
+    gridTemplateColumns: '1fr',
+    gap: '4px',
+  },
+})
+
+const metaLabel = css({
+  fontFamily: 'body',
+  fontSize: '12px',
+  color: 'textMuted',
+  textTransform: 'uppercase',
+  letterSpacing: '0.06em',
+})
+
+const metaValue = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  color: 'text',
+  lineHeight: '1.5',
+  maxWidth: '65ch',
+})
+
+const bodyText = css({
+  fontFamily: 'body',
+  fontSize: '16px',
+  color: 'textSecondary',
+  lineHeight: '1.5',
+  maxWidth: '65ch',
+  padding: '24px 0',
+})
+
+const stackList = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '8px',
+  padding: '8px 0 24px',
+})
+
+const stackTag = css({
+  fontFamily: 'mono',
+  fontSize: '12px',
+  color: 'textSecondary',
+  padding: '4px 8px',
+  border: '1px solid',
   borderColor: 'border',
 })
 
-const titleStyle = css({
-  fontFamily: 'display',
-  fontWeight: 'bold',
-  fontSize: 'clamp(28px, 3.5vw, 48px)',
-  lineHeight: '1.08',
-  letterSpacing: '-0.02em',
-  color: 'text',
-})
-
-const metaRowStyle = css({
-  display: 'flex',
-  gap: '16px',
-  flexWrap: 'wrap',
-  marginTop: '12px',
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-})
-
-const columnsStyle = css({
-  display: 'grid',
-  gridTemplateColumns: '1fr',
-  '@media (min-width: 768px)': {
-    gridTemplateColumns: '1.4fr 0.6fr',
-  },
-})
-
-const mainColStyle = css({
-  padding: '20px 0',
-  '@media (min-width: 768px)': {
-    padding: '20px 24px 20px 0',
-    borderRight: '1px solid',
-    borderRightColor: 'border',
-  },
-})
-
-const sideColStyle = css({
-  padding: '20px 0',
-  '@media (min-width: 768px)': {
-    padding: '20px 24px',
-  },
-})
-
-const sectionHeaderStyle = css({
-  fontFamily: 'body',
-  fontSize: '10px',
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase',
-  color: 'accentText',
-  marginBottom: '12px',
-  paddingBottom: '8px',
-  borderBottom: '1px solid',
-  borderColor: 'borderSubtle',
-})
-
-const bodyStyle = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  lineHeight: '1.5',
-  color: 'text',
-  maxWidth: '65ch',
-  marginBottom: '20px',
-})
-
-const sideDetailStyle = css({
-  padding: '8px 0',
-  borderBottom: '1px solid',
-  borderColor: 'borderSubtle',
-})
-
-const sideLabelStyle = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '4px',
-})
-
-const sideValueStyle = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  color: 'text',
-})
-
-const stackPillStyle = css({
+const extLink = css({
   display: 'inline-block',
   fontFamily: 'body',
-  fontSize: '11px',
-  padding: '3px 8px',
-  background: 'bgAccent',
-  color: 'accentDeep',
-  border: '1px solid',
-  borderColor: 'accentLight',
-  marginRight: '4px',
-  marginBottom: '4px',
-})
-
-const linkStyle = css({
-  fontFamily: 'body',
   fontSize: '14px',
-  color: 'accentText',
+  color: 'accent',
   textDecoration: 'none',
-  _hover: {
-    color: 'accentDeep',
-    textDecoration: 'underline',
-  },
-})
-
-const backLinkStyle = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  textDecoration: 'none',
-  marginBottom: '16px',
-  display: 'inline-block',
-  minHeight: '44px',
-  lineHeight: '44px',
-  _hover: {
-    color: 'accentDeep',
-    textDecoration: 'underline',
-  },
+  padding: '12px 0',
+  _hover: { color: 'accentHover' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
 const footerStyle = css({
-  padding: '16px 0',
+  padding: '32px 6vw',
   borderTop: '1px solid',
   borderColor: 'border',
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   fontFamily: 'body',
-  fontSize: '11px',
+  fontSize: '12px',
   color: 'textMuted',
-  marginTop: 'auto',
+  background: 'bg',
 })
 
-const footerLinkStyle = css({
+const footerLink = css({
   color: 'textMuted',
   textDecoration: 'none',
-  _hover: {
-    color: 'accentDeep',
-    textDecoration: 'underline',
-  },
-})
-
-const notFoundStyle = css({
-  padding: '64px 0',
-  fontFamily: 'display',
-  fontSize: '24px',
-  color: 'textSecondary',
+  _hover: { color: 'textSecondary' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
 function ProjectPage() {
@@ -172,112 +126,96 @@ function ProjectPage() {
 
   if (!project) {
     return (
-      <>
-        <a href="/" className={backLinkStyle}>← Back</a>
-        <div className={notFoundStyle}>Project not found.</div>
-      </>
+      <div className={pageWrap}>
+        <a href="/" className={backLink}>← Back</a>
+        <h1 className={projectTitle}>Not Found</h1>
+        <p className={bodyText}>This project doesn't exist.</p>
+      </div>
     )
   }
 
   return (
     <>
-      <a href="/" className={backLinkStyle}>← Back to work</a>
+      <div className={pageWrap}>
+        <a href="/" className={backLink}>← Back to index</a>
+        <h1 className={projectTitle}>{project.title}</h1>
 
-      <section className={headerStyle}>
-        <h1 className={titleStyle}>{project.title}</h1>
-        <div className={metaRowStyle}>
-          <span>{project.type}</span>
-          <span>{project.year}</span>
-          {project.role && <span>{project.role}</span>}
-        </div>
-      </section>
+        <div className={metaGrid}>
+          <span className={metaLabel}>Type</span>
+          <span className={metaValue}>{project.type}</span>
 
-      <div className={columnsStyle}>
-        <div className={mainColStyle}>
-          {project.problem && (
-            <>
-              <h2 className={sectionHeaderStyle}>Problem</h2>
-              <p className={bodyStyle}>{project.problem}</p>
-            </>
-          )}
-          {project.approach && (
-            <>
-              <h2 className={sectionHeaderStyle}>Approach</h2>
-              <p className={bodyStyle}>{project.approach}</p>
-            </>
-          )}
-          {project.outcome && (
-            <>
-              <h2 className={sectionHeaderStyle}>Outcome</h2>
-              <p className={bodyStyle}>{project.outcome}</p>
-            </>
-          )}
-          {project.description && (
-            <>
-              <h2 className={sectionHeaderStyle}>Description</h2>
-              <p className={bodyStyle}>{project.description}</p>
-            </>
-          )}
-        </div>
-
-        <div className={sideColStyle}>
-          {project.stack && project.stack.length > 0 && (
-            <>
-              <h2 className={sectionHeaderStyle}>Stack</h2>
-              <div className={css({ marginBottom: '20px' })}>
-                {project.stack.map((tech) => (
-                  <span key={tech} className={stackPillStyle}>{tech}</span>
-                ))}
-              </div>
-            </>
-          )}
+          <span className={metaLabel}>Year</span>
+          <span className={metaValue}>{project.year}</span>
 
           {project.role && (
-            <div className={sideDetailStyle}>
-              <div className={sideLabelStyle}>Role</div>
-              <div className={sideValueStyle}>{project.role}</div>
-            </div>
-          )}
-
-          <div className={sideDetailStyle}>
-            <div className={sideLabelStyle}>Year</div>
-            <div className={sideValueStyle}>{project.year}</div>
-          </div>
-
-          <div className={sideDetailStyle}>
-            <div className={sideLabelStyle}>Type</div>
-            <div className={sideValueStyle}>{project.type}</div>
-          </div>
-
-          {project.externalUrl && (
-            <div className={css({ marginTop: '16px' })}>
-              <a href={project.externalUrl} className={linkStyle}>
-                Visit project →
-              </a>
-            </div>
-          )}
-
-          {project.liveUrl && (
-            <div className={css({ marginTop: '8px' })}>
-              <a href={project.liveUrl} className={linkStyle}>
-                Live site →
-              </a>
-            </div>
-          )}
-
-          {project.githubUrl && (
-            <div className={css({ marginTop: '8px' })}>
-              <a href={project.githubUrl} className={linkStyle}>
-                GitHub →
-              </a>
-            </div>
+            <>
+              <span className={metaLabel}>Role</span>
+              <span className={metaValue}>{project.role}</span>
+            </>
           )}
         </div>
+
+        {project.problem && (
+          <>
+            <div className={metaGrid}>
+              <span className={metaLabel}>Problem</span>
+              <span className={metaValue}>{project.problem}</span>
+            </div>
+          </>
+        )}
+
+        {project.approach && (
+          <div className={metaGrid}>
+            <span className={metaLabel}>Approach</span>
+            <span className={metaValue}>{project.approach}</span>
+          </div>
+        )}
+
+        {project.outcome && (
+          <div className={metaGrid}>
+            <span className={metaLabel}>Outcome</span>
+            <span className={metaValue}>{project.outcome}</span>
+          </div>
+        )}
+
+        {project.description && (
+          <p className={bodyText}>{project.description}</p>
+        )}
+
+        {project.stack && project.stack.length > 0 && (
+          <>
+            <span className={metaLabel} style={{ display: 'block', paddingTop: '16px' }}>Stack</span>
+            <div className={stackList}>
+              {project.stack.map((tech, i) => (
+                <span key={i} className={stackTag}>{tech}</span>
+              ))}
+            </div>
+          </>
+        )}
+
+        {(project.externalUrl || project.liveUrl) && (
+          <a
+            href={project.externalUrl || project.liveUrl}
+            className={extLink}
+          >
+            Visit {project.title} →
+          </a>
+        )}
+
+        {project.githubUrl && (
+          <a
+            href={project.githubUrl}
+            className={extLink}
+            style={{ marginLeft: '24px' }}
+          >
+            GitHub →
+          </a>
+        )}
       </div>
 
       <footer className={footerStyle}>
         <span>© 2026 Doug March</span>
-        <a href="/archive" className={footerLinkStyle}>Archive</a>
+        <a href="/archive" className={footerLink}>Archive</a>
       </footer>
     </>
   )

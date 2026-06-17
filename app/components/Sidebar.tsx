@@ -1,114 +1,83 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const mastheadStyle = css({
+const navWrap = css({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  height: '60px',
-  borderBottom: '3px solid',
-  borderColor: 'accent',
-  padding: '0',
+  height: '48px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  padding: '0 6vw',
+  background: 'bgMasthead',
 })
 
-const nameStyle = css({
-  fontFamily: 'display',
-  fontWeight: 'bold',
-  fontSize: 'clamp(22px, 2.5vw, 32px)',
-  letterSpacing: '-0.02em',
-  color: 'text',
-  textDecoration: 'none',
+const leftGroup = css({
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
 })
 
 const logoStyle = css({
-  height: '28px',
-  width: 'auto',
+  width: '24px',
+  height: '24px',
 })
 
-const navStyle = css({
+const nameStyle = css({
+  fontFamily: 'display',
+  fontSize: '22px',
+  letterSpacing: '0.1em',
+  color: 'accent',
+  textDecoration: 'none',
+  lineHeight: '1',
+  _hover: { color: 'accentHover' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+})
+
+const navLinks = css({
   display: 'flex',
-  gap: '24px',
   alignItems: 'center',
+  gap: '24px',
 })
 
-const navLinkStyle = css({
+const navLink = css({
   fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.08em',
+  fontSize: '13px',
+  letterSpacing: '0.06em',
   textTransform: 'uppercase',
   color: 'textSecondary',
   textDecoration: 'none',
-  padding: '4px 0',
-  borderBottom: '2px solid transparent',
-  transition: 'border-color 0.15s, color 0.15s',
-  minHeight: '44px',
-  display: 'flex',
-  alignItems: 'center',
+  transition: 'letter-spacing 120ms ease, color 120ms ease',
+  padding: '12px 0',
   _hover: {
-    color: 'accentDeep',
-    borderBottomColor: 'accent',
+    letterSpacing: '0.09em',
+    color: 'text',
+  },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
   },
 })
 
-const taglineStyle = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  fontStyle: 'italic',
+const separator = css({
   color: 'textMuted',
-  display: 'none',
-  '@media (min-width: 768px)': {
-    display: 'block',
-  },
-})
-
-const datelineStyle = css({
-  display: 'flex',
-  gap: '8px',
-  alignItems: 'center',
-  padding: '8px 0',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  fontFamily: 'body',
-  fontSize: '10px',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  overflowX: 'auto',
-  whiteSpace: 'nowrap',
-  flexWrap: 'nowrap',
-})
-
-const dateSepStyle = css({
-  color: 'border',
+  fontSize: '13px',
   userSelect: 'none',
 })
 
 export function Sidebar() {
   return (
-    <header>
-      <nav className={mastheadStyle} aria-label="Main navigation">
-        <a href="/" className={nameStyle}>
-          <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
-          <span>DOUG MARCH</span>
-        </a>
-        <span className={taglineStyle}>Product Designer &amp; Developer</span>
-        <div className={navStyle}>
-          <a href="/about" className={navLinkStyle}>About</a>
-          <a href="/" className={navLinkStyle}>Work</a>
-        </div>
-      </nav>
-      <div className={datelineStyle}>
-        <span>Tuesday, June 16, 2026</span>
-        <span className={dateSepStyle}>·</span>
-        <span>☽ New Cycle Day 2 · 4.4% Lit</span>
-        <span className={dateSepStyle}>·</span>
-        <span>☀ 04:48 → 19:32 · 14.7 Hrs</span>
-        <span className={dateSepStyle}>·</span>
-        <span>Juneteenth in 3 Days</span>
+    <nav className={navWrap} role="navigation" aria-label="Main navigation">
+      <div className={leftGroup}>
+        <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
+        <a href="/" className={nameStyle}>DOUG MARCH</a>
       </div>
-    </header>
+      <div className={navLinks}>
+        <a href="/" className={navLink}>Work</a>
+        <span className={separator} aria-hidden="true">·</span>
+        <a href="/about" className={navLink}>About</a>
+      </div>
+    </nav>
   )
 }

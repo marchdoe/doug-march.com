@@ -1,0 +1,259 @@
+{
+  "date": "2026-06-17",
+  "startedAt": "2026-06-17T11:34:51.084Z",
+  "completedAt": "2026-06-17T11:44:33.389Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Arkansas Museum of Fine Art",
+              "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+              "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The Bend Club",
+              "description": "A luxury residence club that doesn't exist yet. Brand, logo, and investor site designed to make early buyers feel the place before the ground breaks....",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1cbcaa59c1c699174924.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAtF6hJREFUeAG0/dmTddl1H4ittc+9mfkN9VUVUCiAIAigAJIAOLTCImWpJdEPdqhNv7Yd7Rc/246ww3+D/w09OOzn9ovEsB9aUkeoW+rWALIlERBFECIxECAKKAwFVH1DZt6z...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "House of Honey",
+              "description": "House of Honey designs spaces with story. We built a sophisticated digital presence that mirrors this sensory philosophy through editorial elegance and...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1c09bf6c5f3457361940.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/CABEIBLAGQAMBEQACEQEDEQH/xAA6AAAABgMBAQEAAAAAAAAAAAADBAUGBwgAAQIJCgsBAAAH...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Wednesday",
+          "is_weekend": false,
+          "day_index": 3
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "DeusData/codebase-memory-mcp/stargazers",
+              "description": "",
+              "language": "C",
+              "stars": null
+            },
+            {
+              "name": "n0-computer/iroh/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "Panniantong/Agent-Reach/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "meshery/meshery/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/obra",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "U.S. Open",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "GLM-5.2 is the new leading open weights model on Artificial Analysis",
+              "url": "https://artificialanalysis.ai/articles/glm-5-2-is-the-new-leading-open-weights-model-on-the-artificial-analysis-intelligence-index",
+              "score": 158,
+              "by": "himata4113"
+            },
+            {
+              "title": "Show HN: High-Res Neural Cellular Automata",
+              "url": "https://cells2pixels.github.io/",
+              "score": 54,
+              "by": "esychology"
+            },
+            {
+              "title": "GrapheneOS has been ported to Android 17",
+              "url": "https://discuss.grapheneos.org/d/36469-grapheneos-has-been-ported-to-android-17-and-official-releases-are-coming-soon",
+              "score": 813,
+              "by": "Cider9986"
+            },
+            {
+              "title": "Running local models is good now",
+              "url": "https://vickiboykis.com/2026/06/15/running-local-models-is-good-now/",
+              "score": 1372,
+              "by": "jfb"
+            },
+            {
+              "title": "Hacker News but for Independent Blogs",
+              "url": "https://bubbles.town/",
+              "score": 142,
+              "by": "headalgorithm"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Juneteenth",
+              "date": "2026-06-19",
+              "days_away": 2
+            },
+            {
+              "name": "Father's Day",
+              "date": "2026-06-21",
+              "days_away": 4
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "waxing crescent",
+          "illumination": 0.097,
+          "days_into_cycle": 2.98
+        },
+        "music": {
+          "bands": [
+            "Tobin Sprout",
+            "My Morning Jacket"
+          ]
+        },
+        "quote": {
+          "text": "Wisdom is doing now what you are going to be happy with later on.",
+          "author": "Joyce Meyer"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 17,
+          "day_of_year": 168,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-17T00:10Z",
+              "result": "loss",
+              "score": "2-4"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:48",
+          "sunset": "19:33",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-17"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-17T11:35:06.517Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-16: Broadsheet\n  - 2026-06-15: Scroll\n  - 2026-06-14: Stack\n  - 2026-06-13: Split\n  - 2026-06-12: Poster\n  - 2026-06-11: Specimen\n  - 2026-06-10: Gallery Wall\n\n**Recently used** (last 3 days): Broadsheet, Scroll, Stack\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or"
+      },
+      "output": {
+        "hero_copy": "Wisdom is doing now what you are going to be happy with later on.",
+        "archetype": "Index",
+        "chassisId": "bebas-plex",
+        "specLength": 6977,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue** — H:292° (violet), sits dead-center in the mandated 275°–320° open corridor. This is the hue of twilight foresight and ultraviolet signal: warm enough to feel alive, cool enough to feel deliberate. Not the AI-default purple (H:260°), not magenta (H:320°) — the specific reading of H:292° is pre-storm sky.\n\n**Neutral palette** — violet-tinted dark scale (\"ink\"), H:270°, chroma 0.008–0.012:\n- 50: `#F0ECFF`\n- 100: `#E2DCFF`\n- 200: `#C8BAEA`\n- 300: `#A898D0",
+        "selfCheck": "1. Hero quotability: Yes — \"Wisdom is doing now what you are going to be happy with later on.\" is a complete standalone declaration by a named author; it functions as a poster inscription, not a UI label or descriptive heading.\n2. Because-of chain: Yes — the quote's declarative tone (catalog of evid"
+      },
+      "durationMs": 390816,
+      "timestamp": "2026-06-17T11:41:37.337Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 6977
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 52323,
+      "timestamp": "2026-06-17T11:42:31.256Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 6219,
+        "briefLength": 9880
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 97280,
+      "timestamp": "2026-06-17T11:44:08.537Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-17T11:44:16.267Z"
+    }
+  ]
+}

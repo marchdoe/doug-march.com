@@ -5,493 +5,410 @@ import { timeline, capabilities } from '../content/timeline'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const bannerStyle = css({
-  padding: '32px 0 20px',
-  borderBottom: '1px solid',
-  borderColor: 'border',
+const mastheadStyle = css({
+  background: 'bgMasthead',
+  padding: '24px 6vw 20px',
 })
 
-const heroStyle = css({
+const heroQuote = css({
   fontFamily: 'display',
-  fontWeight: 'bold',
-  fontStyle: 'italic',
-  fontSize: 'clamp(30px, 4.2vw, 56px)',
-  lineHeight: '1.08',
-  letterSpacing: '-0.02em',
-  color: 'text',
-  textWrap: 'balance',
-  maxWidth: '100%',
-})
-
-const attrRuleStyle = css({
-  width: '60px',
-  height: '1px',
-  background: 'accent',
-  margin: '12px 0',
-  border: 'none',
-})
-
-const attrStyle = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  letterSpacing: '0.10em',
-  fontVariantCaps: 'all-small-caps',
-  color: 'textSecondary',
-})
-
-const columnsStyle = css({
-  display: 'grid',
-  gridTemplateColumns: '1fr',
-  minHeight: 'auto',
-  '@media (min-width: 768px)': {
-    gridTemplateColumns: '1.15fr 1fr 0.85fr',
-    minHeight: 'calc(100vh - 380px)',
-  },
-})
-
-const colStyle = css({
-  padding: '20px 0',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  '@media (min-width: 768px)': {
-    padding: '20px 24px',
-    borderBottom: 'none',
-    borderRight: '1px solid',
-    borderRightColor: 'border',
-  },
-})
-
-const colLastStyle = css({
-  padding: '20px 0',
-  borderBottom: 'none',
-  '@media (min-width: 768px)': {
-    padding: '20px 24px',
-    borderRight: 'none',
-  },
-})
-
-const colFirstStyle = css({
-  padding: '20px 0',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  '@media (min-width: 768px)': {
-    padding: '20px 24px 20px 0',
-    borderBottom: 'none',
-    borderRight: '1px solid',
-    borderRightColor: 'border',
-  },
-})
-
-const sectionHeaderStyle = css({
-  fontFamily: 'body',
-  fontSize: '10px',
-  letterSpacing: '0.14em',
+  fontSize: 'clamp(48px, 6.5vw, 88px)',
+  lineHeight: '0.92',
+  letterSpacing: '-0.01em',
+  color: 'accent',
   textTransform: 'uppercase',
-  color: 'accentText',
-  marginBottom: '12px',
-  paddingBottom: '8px',
-  borderBottom: '1px solid',
-  borderColor: 'borderSubtle',
+  maxWidth: '100%',
+  textWrap: 'balance',
 })
 
-const projectEntryStyle = css({
-  padding: '12px 0',
-  borderBottom: '1px solid',
-  borderColor: 'borderSubtle',
+const attribution = css({
+  fontFamily: 'body',
+  fontSize: '15px',
+  fontStyle: 'italic',
+  color: 'textSecondary',
+  textAlign: 'right',
+  marginTop: '8px',
 })
 
-const projectTitleStyle = css({
-  fontFamily: 'display',
-  fontWeight: 'bold',
-  fontSize: '17px',
-  lineHeight: '1.2',
-  color: 'text',
-  textDecoration: 'none',
-  transition: 'color 0.15s',
-  _hover: {
-    color: 'accentDeep',
+const violetRule = css({
+  height: '2px',
+  background: 'borderAccent',
+  width: '100%',
+})
+
+/* ---- Catalog Grid ---- */
+
+const catalogGrid = css({
+  display: 'grid',
+  gridTemplateColumns: '1.2fr 1fr 1fr 0.9fr',
+  gap: '0',
+  padding: '0 6vw 96px',
+  background: 'bg',
+
+  '@media (max-width: 1023px)': {
+    gridTemplateColumns: '1fr 1fr',
+  },
+  '@media (max-width: 767px)': {
+    gridTemplateColumns: '1fr',
   },
 })
 
-const projectMetaStyle = css({
+const columnStyle = css({
+  padding: '0 28px 32px 0',
+  borderRight: '1px solid',
+  borderColor: 'border',
+  '&:last-child': {
+    borderRight: 'none',
+    paddingRight: '0',
+  },
+  '@media (max-width: 1023px)': {
+    borderRight: 'none',
+    paddingRight: '0',
+    paddingBottom: '32px',
+    borderBottom: '1px solid',
+    borderColor: 'border',
+    '&:last-child': { borderBottom: 'none' },
+  },
+})
+
+const colHeader = css({
+  fontFamily: 'display',
+  fontSize: '18px',
+  letterSpacing: '0.12em',
+  color: 'accent',
+  textTransform: 'uppercase',
+  borderBottom: '1px solid',
+  borderColor: 'borderAccent',
+  padding: '24px 0 8px',
+  marginBottom: '0',
+  lineHeight: '1',
+})
+
+const rowStyle = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  padding: '8px 0',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  transition: 'background 120ms ease',
+  _hover: { background: 'bgRowHover' },
+})
+
+const rowLink = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  width: '100%',
+  padding: '8px 4px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  textDecoration: 'none',
+  color: 'text',
+  transition: 'background 120ms ease, color 120ms ease',
+  _hover: {
+    background: 'bgRowHover',
+    color: 'accent',
+  },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '-2px',
+  },
+})
+
+const rowTitle = css({
+  fontFamily: 'body',
+  fontSize: '14px',
+  lineHeight: '1.5',
+})
+
+const rowMeta = css({
+  fontFamily: 'mono',
+  fontSize: '12px',
+  color: 'textMuted',
+  fontVariantNumeric: 'tabular-nums',
+  flexShrink: 0,
+  marginLeft: '8px',
+})
+
+const rowType = css({
   fontFamily: 'body',
   fontSize: '12px',
   color: 'textMuted',
-  marginTop: '4px',
-  fontVariantNumeric: 'tabular-nums',
+  textTransform: 'uppercase',
+  letterSpacing: '0.06em',
 })
 
-const projectDescStyle = css({
+const featuredLabel = css({
+  fontFamily: 'body',
+  fontSize: '11px',
+  color: 'accentDim',
+  textTransform: 'uppercase',
+  letterSpacing: '0.1em',
+  marginBottom: '2px',
+})
+
+const problemText = css({
+  fontFamily: 'body',
+  fontSize: '13px',
+  color: 'textSecondary',
+  lineHeight: '1.5',
+  padding: '4px 4px 8px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  maxWidth: '65ch',
+})
+
+/* ---- Signal rows ---- */
+
+const signalRow = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  padding: '6px 4px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  fontFamily: 'body',
+  fontSize: '12px',
+  lineHeight: '1.5',
+  color: 'textSecondary',
+  gap: '8px',
+})
+
+const signalHighlight = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  padding: '6px 4px 6px 10px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  borderLeft: '2px solid',
+  borderLeftColor: 'borderAccent',
+  fontFamily: 'body',
+  fontSize: '13px',
+  lineHeight: '1.5',
+  color: 'text',
+  gap: '8px',
+})
+
+const signalAccent = css({
+  color: 'accent',
+  fontVariantNumeric: 'tabular-nums',
+  flexShrink: 0,
+})
+
+const signalMuted = css({
+  color: 'textMuted',
+  flexShrink: 0,
+})
+
+/* ---- Career / Capabilities ---- */
+
+const careerRow = css({
+  display: 'flex',
+  flexDirection: 'column',
+  padding: '8px 4px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  gap: '2px',
+})
+
+const careerTitle = css({
   fontFamily: 'body',
   fontSize: '14px',
   lineHeight: '1.5',
   color: 'text',
-  marginTop: '6px',
-  maxWidth: '65ch',
 })
 
-const scoreBoxStyle = css({
-  display: 'flex',
-  alignItems: 'center',
-  padding: '10px 12px',
-  border: '1px solid',
-  borderColor: 'border',
-  borderLeft: '3px solid',
-  borderLeftColor: 'accent',
-  marginBottom: '12px',
-  fontFamily: 'body',
-  fontSize: '12px',
-  fontVariantNumeric: 'tabular-nums',
-  color: 'text',
-  gap: '8px',
-  justifyContent: 'space-between',
-})
-
-const winBadgeStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'bold',
-  fontSize: '11px',
-  color: 'accentText',
-})
-
-const golfTableStyle = css({
-  width: '100%',
-  fontFamily: 'body',
-  fontSize: '12px',
-  fontVariantNumeric: 'tabular-nums',
-  borderCollapse: 'collapse',
-  marginBottom: '16px',
-})
-
-const golfRowStyle = css({
-  borderBottom: '1px solid',
-  borderColor: 'borderSubtle',
-})
-
-const golfCellStyle = css({
-  padding: '6px 8px 6px 0',
-  color: 'text',
-})
-
-const golfScoreStyle = css({
-  padding: '6px 0',
-  textAlign: 'right',
-  fontWeight: 'bold',
-})
-
-const golfWinnerStyle = css({
-  fontWeight: 'bold',
-  color: 'accentText',
-})
-
-const hnEntryStyle = css({
-  padding: '12px 0',
-  borderBottom: '1px solid',
-  borderColor: 'borderSubtle',
-})
-
-const hnTitleStyle = css({
-  fontFamily: 'display',
-  fontStyle: 'italic',
-  fontSize: '15px',
-  lineHeight: '1.3',
-  color: 'text',
-})
-
-const hnMetaStyle = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  color: 'textMuted',
-  marginTop: '4px',
-})
-
-const capListStyle = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '6px',
-  marginBottom: '16px',
-})
-
-const capPillStyle = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  letterSpacing: '0.04em',
-  padding: '4px 10px',
-  background: 'bgAccent',
-  color: 'accentDeep',
-  border: '1px solid',
-  borderColor: 'accentLight',
-  whiteSpace: 'nowrap',
-})
-
-const timelineEntryStyle = css({
-  padding: '10px 0',
-  borderBottom: '1px solid',
-  borderColor: 'borderSubtle',
-})
-
-const timelineYearStyle = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  fontVariantNumeric: 'tabular-nums',
-  color: 'textMuted',
-  minWidth: '90px',
-  display: 'inline-block',
-})
-
-const timelineRoleStyle = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: 'semibold',
-  color: 'text',
-})
-
-const timelineCompanyStyle = css({
+const careerCompany = css({
   fontFamily: 'body',
   fontSize: '12px',
   color: 'textSecondary',
 })
 
+const careerYear = css({
+  fontFamily: 'mono',
+  fontSize: '12px',
+  color: 'textMuted',
+  fontVariantNumeric: 'tabular-nums',
+})
+
+const capTag = css({
+  display: 'inline-block',
+  fontFamily: 'body',
+  fontSize: '12px',
+  color: 'textSecondary',
+  padding: '4px 0',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  width: '100%',
+})
+
 const footerStyle = css({
-  padding: '16px 0',
+  padding: '32px 6vw',
   borderTop: '1px solid',
   borderColor: 'border',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   fontFamily: 'body',
-  fontSize: '11px',
+  fontSize: '12px',
   color: 'textMuted',
-  marginTop: 'auto',
+  background: 'bg',
 })
 
-const footerLinkStyle = css({
+const footerLink = css({
   color: 'textMuted',
   textDecoration: 'none',
-  _hover: {
-    color: 'accentDeep',
-    textDecoration: 'underline',
-  },
+  _hover: { color: 'textSecondary' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
 function HomePage() {
   return (
     <>
-      <section className={bannerStyle}>
-        <h1 className={heroStyle}>
-          We can see through others only when we can see through ourselves.
+      {/* Masthead */}
+      <div className={mastheadStyle}>
+        <h1 className={heroQuote}>
+          Wisdom is doing now what you are going to be happy with later on.
         </h1>
-        <hr className={attrRuleStyle} />
-        <p className={attrStyle}>— Bruce Lee</p>
-      </section>
+        <p className={attribution}>— Joyce Meyer</p>
+      </div>
 
-      <div className={columnsStyle}>
-        {/* Column 1: Work */}
-        <div className={colFirstStyle}>
-          <h2 className={sectionHeaderStyle}>Filed This Year</h2>
+      {/* Violet rule */}
+      <div className={violetRule} aria-hidden="true" />
+
+      {/* Catalog grid */}
+      <div className={catalogGrid}>
+        {/* Column 1: Projects */}
+        <div className={columnStyle}>
+          <h2 className={colHeader}>Projects</h2>
 
           {featuredProject && (
-            <div className={projectEntryStyle}>
+            <>
+              <div style={{ padding: '8px 4px 2px' }}>
+                <span className={featuredLabel}>Featured</span>
+              </div>
               <a
                 href={featuredProject.externalUrl || `/work/${featuredProject.slug}`}
-                className={projectTitleStyle}
+                className={rowLink}
               >
-                {featuredProject.title}
+                <span className={rowTitle}>{featuredProject.title}</span>
+                <span className={rowMeta}>{featuredProject.year}</span>
               </a>
-              <div className={projectMetaStyle}>
-                {featuredProject.type} · {featuredProject.year}
-                {featuredProject.featured && ' · Featured'}
-              </div>
               {featuredProject.problem && (
-                <p className={projectDescStyle}>{featuredProject.problem}</p>
+                <p className={problemText}>{featuredProject.problem}</p>
               )}
-            </div>
+            </>
           )}
 
-          <h2 className={css({
-            fontFamily: 'body',
-            fontSize: '10px',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'accentText',
-            marginTop: '20px',
-            marginBottom: '8px',
-          })}>
-            Selected Work
-          </h2>
-
-          {selectedWork.map((project) => (
-            <div key={project.slug} className={projectEntryStyle}>
-              <a href={`/work/${project.slug}`} className={projectTitleStyle}>
-                {project.title}
-              </a>
-              <div className={projectMetaStyle}>
-                {project.type} · {project.year}
-              </div>
-            </div>
+          {selectedWork.map((p) => (
+            <a key={p.slug} href={`/work/${p.slug}`} className={rowLink}>
+              <span>
+                <span className={rowTitle}>{p.title}</span>
+                <span className={rowType} style={{ marginLeft: '8px' }}>{p.type}</span>
+              </span>
+              <span className={rowMeta}>{p.year}</span>
+            </a>
           ))}
 
-          <h2 className={css({
-            fontFamily: 'body',
-            fontSize: '10px',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'accentText',
-            marginTop: '20px',
-            marginBottom: '8px',
-          })}>
-            Experiments
-          </h2>
-
-          {experiments.map((exp) => (
-            <div key={exp.slug} className={projectEntryStyle}>
-              <a
-                href={exp.externalUrl || `/work/${exp.slug}`}
-                className={projectTitleStyle}
-              >
-                {exp.title}
-              </a>
-              <div className={projectMetaStyle}>
-                {exp.type} · {exp.year}
-              </div>
-            </div>
+          {experiments.map((p) => (
+            <a
+              key={p.slug}
+              href={p.externalUrl || `/work/${p.slug}`}
+              className={rowLink}
+            >
+              <span>
+                <span className={rowTitle}>{p.title}</span>
+                <span className={rowType} style={{ marginLeft: '8px' }}>{p.type}</span>
+              </span>
+              <span className={rowMeta}>{p.year}</span>
+            </a>
           ))}
         </div>
 
-        {/* Column 2: Signals / News */}
-        <div className={colStyle}>
-          <h2 className={sectionHeaderStyle}>Today's Signals</h2>
-
-          {/* Tigers score */}
-          <div className={scoreBoxStyle}>
-            <span>DET &nbsp;9 · 3&nbsp; OPP</span>
-            <span className={winBadgeStyle}>W</span>
-          </div>
-
-          {/* Golf leaderboard */}
-          <div className={css({ marginBottom: '16px' })}>
-            <div className={css({
-              fontFamily: 'body',
-              fontSize: '10px',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: 'textMuted',
-              marginBottom: '8px',
-            })}>
-              RBC Canadian Open · Final
-            </div>
-            <table className={golfTableStyle}>
-              <tbody>
-                <tr className={golfRowStyle}>
-                  <td className={css({ ...Object.assign({}, { padding: '6px 8px 6px 0', fontWeight: 'bold', color: '{colors.lime.700}' }) })}>
-                    <span className={golfWinnerStyle}>🏆 Bud Cauley</span>
-                  </td>
-                  <td className={css({ padding: '6px 0', textAlign: 'right', fontWeight: 'bold', color: 'accentText' })}>−17</td>
-                </tr>
-                <tr className={golfRowStyle}>
-                  <td className={golfCellStyle}>Matt Fitzpatrick</td>
-                  <td className={golfScoreStyle}>−15</td>
-                </tr>
-                <tr className={golfRowStyle}>
-                  <td className={golfCellStyle}>Viktor Hovland</td>
-                  <td className={golfScoreStyle}>−14</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* HN stories */}
-          <h2 className={css({
-            fontFamily: 'body',
-            fontSize: '10px',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'accentText',
-            marginBottom: '8px',
-          })}>
-            From the Wire
-          </h2>
-
-          <div className={hnEntryStyle}>
-            <div className={hnTitleStyle}>
-              A backdoor in a LinkedIn job offer
-            </div>
-            <div className={hnMetaStyle}>
-              1,265 pts · devblogs
-            </div>
-          </div>
-
-          <div className={hnEntryStyle}>
-            <div className={css({
-              fontFamily: 'body',
-              fontSize: '13px',
-              lineHeight: '1.3',
-              color: 'text',
-            })}>
-              Carmack on Bellard
-            </div>
-            <div className={hnMetaStyle}>
-              Hacker News
-            </div>
-          </div>
-        </div>
-
-        {/* Column 3: Person / Capabilities */}
-        <div className={colLastStyle}>
-          <h2 className={sectionHeaderStyle}>Capabilities</h2>
-
-          <div className={capListStyle}>
-            {capabilities.map((cap) => (
-              <span key={cap} className={capPillStyle}>{cap}</span>
-            ))}
-          </div>
-
-          <h2 className={css({
-            fontFamily: 'body',
-            fontSize: '10px',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'accentText',
-            marginTop: '20px',
-            marginBottom: '8px',
-          })}>
-            Timeline
-          </h2>
-
-          {timeline.slice(0, 6).map((entry, i) => (
-            <div key={i} className={timelineEntryStyle}>
-              <span className={timelineYearStyle}>{entry.year}</span>
-              <div className={timelineRoleStyle}>{entry.role}</div>
-              <div className={timelineCompanyStyle}>{entry.company}</div>
+        {/* Column 2: Career */}
+        <div className={columnStyle}>
+          <h2 className={colHeader}>Career</h2>
+          {timeline.slice(0, 8).map((entry, i) => (
+            <div key={i} className={careerRow}>
+              <span className={careerTitle}>{entry.role}</span>
+              <span className={careerCompany}>{entry.company}</span>
+              <span className={careerYear}>{entry.year}</span>
             </div>
           ))}
+          <a href="/about" className={rowLink} style={{ marginTop: '4px' }}>
+            <span className={rowTitle} style={{ color: '#CC55F5' }}>View full timeline →</span>
+          </a>
+        </div>
 
-          <div className={css({
-            fontFamily: 'body',
-            fontSize: '11px',
-            color: 'textMuted',
-            marginTop: '12px',
-          })}>
-            <a href="/about" className={footerLinkStyle}>Full timeline →</a>
+        {/* Column 3: Capabilities */}
+        <div className={columnStyle}>
+          <h2 className={colHeader}>Capabilities</h2>
+          {capabilities.map((cap, i) => (
+            <div key={i} className={capTag}>{cap}</div>
+          ))}
+        </div>
+
+        {/* Column 4: Today */}
+        <div className={columnStyle}>
+          <h2 className={colHeader}>Today</h2>
+
+          {/* Juneteenth - highlighted */}
+          <div className={signalHighlight}>
+            <span>JUNETEENTH — 2 DAYS</span>
           </div>
 
-          <div className={css({
-            fontFamily: 'body',
-            fontSize: '11px',
-            color: 'textMuted',
-            marginTop: '24px',
-            paddingTop: '12px',
-            borderTop: '1px solid',
-            borderColor: 'borderSubtle',
-          })}>
-            Father's Day · Sunday
+          {/* Sports */}
+          <div className={signalRow}>
+            <span>⚾ DET Tigers</span>
+            <span>
+              <span className={css({ color: 'textSecondary' })}>2–4</span>
+              {' '}
+              <span className={signalMuted}>L</span>
+            </span>
+          </div>
+
+          <div className={signalRow}>
+            <span>⛳ U.S. Open</span>
+            <span className={signalMuted}>SCHEDULED</span>
+          </div>
+
+          {/* HN */}
+          <div className={signalRow}>
+            <span>Running Local Models Is Good Now</span>
+            <span className={signalAccent}>↑1372</span>
+          </div>
+
+          <div className={signalRow}>
+            <span>GrapheneOS → Android 17</span>
+            <span className={signalAccent}>↑813</span>
+          </div>
+
+          {/* Moon */}
+          <div className={signalRow}>
+            <span>🌙 Waxing Crescent</span>
+            <span className={signalMuted}>9.7%</span>
+          </div>
+
+          {/* Music */}
+          <div className={signalRow}>
+            <span>♫ Tobin Sprout / My Morning Jacket</span>
+          </div>
+
+          {/* Daylight */}
+          <div className={signalRow}>
+            <span>☀ 14.7h</span>
+            <span className={signalMuted}>04:48 → 19:33</span>
           </div>
         </div>
       </div>
 
+      {/* Footer */}
       <footer className={footerStyle}>
-        <span>© 2026 Doug March</span>
-        <a href="/archive" className={footerLinkStyle}>Archive</a>
+        <span>© 2026 Doug March · Product Designer & Developer</span>
+        <a href="/archive" className={footerLink}>Archive</a>
       </footer>
     </>
   )
