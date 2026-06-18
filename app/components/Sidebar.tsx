@@ -1,82 +1,129 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
-const navWrap = css({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  height: '48px',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  padding: '0 6vw',
-  background: 'bgMasthead',
-})
-
-const leftGroup = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-})
-
-const logoStyle = css({
-  width: '24px',
-  height: '24px',
-})
-
-const nameStyle = css({
-  fontFamily: 'display',
-  fontSize: '22px',
-  letterSpacing: '0.1em',
-  color: 'accent',
-  textDecoration: 'none',
-  lineHeight: '1',
-  _hover: { color: 'accentHover' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-})
-
-const navLinks = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '24px',
-})
-
-const navLink = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: 'textSecondary',
-  textDecoration: 'none',
-  transition: 'letter-spacing 120ms ease, color 120ms ease',
-  padding: '12px 0',
-  _hover: {
-    letterSpacing: '0.09em',
-    color: 'text',
-  },
-  _focus: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
-})
-
-const separator = css({
-  color: 'textMuted',
-  fontSize: '13px',
-  userSelect: 'none',
-})
-
 export function Sidebar() {
   return (
-    <nav className={navWrap} role="navigation" aria-label="Main navigation">
-      <div className={leftGroup}>
-        <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
-        <a href="/" className={nameStyle}>DOUG MARCH</a>
+    <nav
+      className={css({
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        height: '48px',
+        padding: '0 5vw',
+        borderBottom: '1px solid',
+        borderColor: 'border',
+        position: 'relative',
+        zIndex: 10,
+      })}
+      aria-label="Main navigation"
+    >
+      <div
+        className={css({
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+        })}
+      >
+        <a
+          href="/"
+          className={css({
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            minHeight: '44px',
+            minWidth: '44px',
+          })}
+          aria-label="Doug March home"
+        >
+          <img
+            src={logoSvg}
+            alt=""
+            className={css({ width: '20px', height: '20px' })}
+          />
+          <span
+            className={css({
+              fontFamily: 'body',
+              fontSize: '12px',
+              fontVariant: 'all-small-caps',
+              letterSpacing: '0.15em',
+              color: 'accent',
+              fontWeight: 'medium',
+            })}
+          >
+            doug-march
+          </span>
+        </a>
+        <div
+          className={css({
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            marginLeft: '8px',
+          })}
+        >
+          <a
+            href="/"
+            className={css({
+              fontFamily: 'body',
+              fontSize: '11px',
+              fontVariant: 'all-small-caps',
+              letterSpacing: '0.12em',
+              color: 'textMuted',
+              minHeight: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              padding: '0 4px',
+              _hover: { color: 'accentLight' },
+              transition: 'color 200ms ease',
+            })}
+          >
+            Work
+          </a>
+          <a
+            href="/about"
+            className={css({
+              fontFamily: 'body',
+              fontSize: '11px',
+              fontVariant: 'all-small-caps',
+              letterSpacing: '0.12em',
+              color: 'textMuted',
+              minHeight: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              padding: '0 4px',
+              _hover: { color: 'accentLight' },
+              transition: 'color 200ms ease',
+            })}
+          >
+            About
+          </a>
+        </div>
       </div>
-      <div className={navLinks}>
-        <a href="/" className={navLink}>Work</a>
-        <span className={separator} aria-hidden="true">·</span>
-        <a href="/about" className={navLink}>About</a>
+      <div
+        className={css({
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          fontFamily: 'mono',
+          fontSize: '11px',
+          color: 'textMuted',
+        })}
+      >
+        <span
+          className={css({
+            display: { base: 'none', md: 'inline' },
+          })}
+        >
+          2026·06·18
+        </span>
+        <span>🌒</span>
+        <span
+          className={css({
+            display: { base: 'none', sm: 'inline' },
+          })}
+        >
+          16.8%
+        </span>
       </div>
     </nav>
   )

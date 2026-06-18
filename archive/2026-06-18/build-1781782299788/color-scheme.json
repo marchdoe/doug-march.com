@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 203,
+    "s": 91,
+    "l": 56,
+    "name": "cerulean"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "cerulean",
+    "name": "midnight"
+  },
+  "mood_word": "unyielding",
+  "color_story": "Deep cerulean blazing on midnight ink — the color of sky at the horizon of its longest day, held against void so the declaration cannot be missed."
+}
