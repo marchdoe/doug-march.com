@@ -3,265 +3,154 @@ import { css } from '../../styled-system/css'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
+const heroZoneStyle = css({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'flex-start',
+  padding: '96px 6vw 48px',
+  minHeight: '100vh',
+  maxWidth: 'none',
+  position: 'relative',
+  overflow: 'hidden',
+})
+
+const eyebrowStyle = css({
+  fontFamily: 'heading',
+  fontSize: 'clamp(0.875rem, 1.75vw, 1.5rem)',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: '{colors.gold.400}',
+  fontWeight: '600',
+  lineHeight: '1.15',
+  marginBottom: '16px',
+})
+
+const goldRuleStyle = css({
+  width: '100%',
+  height: '1px',
+  background: '{colors.gold.400}',
+  border: 'none',
+  marginBottom: '32px',
+})
+
+const heroLineStyle = css({
+  fontFamily: 'heading',
+  fontSize: 'clamp(3.5rem, 18vw, 16rem)',
+  fontWeight: '800',
+  letterSpacing: '-0.01em',
+  lineHeight: '0.88',
+  color: '{colors.indigo.900}',
+  textTransform: 'uppercase',
+  margin: '0',
+  padding: '0',
+  textWrap: 'nowrap',
+})
+
+const heroLine2Style = css({
+  fontFamily: 'heading',
+  fontSize: 'clamp(3.5rem, 18vw, 16rem)',
+  fontWeight: '800',
+  letterSpacing: '-0.01em',
+  lineHeight: '0.88',
+  color: '{colors.indigo.900}',
+  textTransform: 'uppercase',
+  margin: '0',
+  padding: '0',
+  textWrap: 'nowrap',
+  marginTop: 'clamp(8px, 2vw, 24px)',
+})
+
+const signalFooterStyle = css({
+  position: 'fixed',
+  bottom: '0',
+  left: '0',
+  padding: '24px 6vw',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+  zIndex: 50,
+  '@media (max-width: 640px)': {
+    padding: '16px 6vw',
+  },
+})
+
+const signalLineStyle = css({
+  fontFamily: 'body',
+  fontSize: 'clamp(0.625rem, 1vw, 0.75rem)',
+  letterSpacing: '0.01em',
+  lineHeight: '1.5',
+  color: '{colors.parchment.600}',
+})
+
+const signalLineAccentStyle = css({
+  fontFamily: 'body',
+  fontSize: 'clamp(0.625rem, 1vw, 0.75rem)',
+  letterSpacing: '0.01em',
+  lineHeight: '1.5',
+  color: '{colors.indigo.700}',
+})
+
+const dateStampStyle = css({
+  position: 'fixed',
+  bottom: '0',
+  right: '0',
+  padding: '24px 6vw',
+  fontFamily: 'heading',
+  fontSize: 'clamp(0.75rem, 1vw, 0.875rem)',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: '{colors.parchment.400}',
+  zIndex: 50,
+  '@media (max-width: 640px)': {
+    padding: '16px 6vw',
+  },
+})
+
+const archiveLinkStyle = css({
+  fontFamily: 'body',
+  fontSize: 'clamp(0.625rem, 1vw, 0.75rem)',
+  letterSpacing: '0.01em',
+  lineHeight: '1.5',
+  color: '{colors.parchment.600}',
+  textDecoration: 'none',
+  _hover: {
+    textDecoration: 'underline',
+    color: '{colors.parchment.700}',
+  },
+  '&:focus-visible': {
+    outline: '2px solid {colors.gold.400}',
+    outlineOffset: '2px',
+  },
+})
+
 function HomePage() {
   return (
     <>
-      {/* Quote Stage */}
-      <div
-        className={css({
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          padding: '5vh 5vw',
-          minHeight: '76vh',
-        })}
-      >
-        <div
-          className={css({
-            maxWidth: '92vw',
-          })}
-        >
-          <h1
-            className={css({
-              fontFamily: 'display',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              lineHeight: 'tight',
-              color: 'text',
-              textWrap: 'balance',
-            })}
-          >
-            <span
-              className={css({
-                display: 'block',
-                fontSize: 'clamp(52px, 7.8vw, 112px)',
-                letterSpacing: '-0.02em',
-              })}
-            >
-              The harder you work,
-            </span>
-            <span
-              className={css({
-                display: 'block',
-                fontSize: 'clamp(52px, 7.8vw, 112px)',
-                letterSpacing: '-0.02em',
-              })}
-            >
-              the harder it is to
-            </span>
-            <span
-              className={css({
-                display: 'block',
-                fontSize: 'clamp(72px, 11.5vw, 165px)',
-                letterSpacing: '0.12em',
-                color: 'text',
-              })}
-            >
-              Surrender.
-            </span>
-          </h1>
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontSize: '13px',
-              fontVariant: 'all-small-caps',
-              letterSpacing: '0.15em',
-              color: 'textMuted',
-              marginTop: '24px',
-            })}
-          >
-            — Vince Lombardi
-          </p>
-        </div>
-      </div>
+      <main className={heroZoneStyle}>
+        <p className={eyebrowStyle} aria-label="June 19, 1865">
+          June 19, 1865
+        </p>
+        <hr className={goldRuleStyle} aria-hidden="true" />
+        <h1>
+          <span className={heroLineStyle}>The Word</span>
+          <span className={heroLine2Style}>Arrived.</span>
+        </h1>
+      </main>
 
-      {/* Signal Footer */}
-      <footer
-        className={css({
-          minHeight: '90px',
-          padding: '0 5vw',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0',
-          borderTop: '1px solid',
-          borderColor: 'border',
-          flexWrap: 'wrap',
-        })}
-      >
-        {/* U.S. Open */}
-        <div
-          className={css({
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '4px',
-            padding: '12px 0',
-            paddingRight: '32px',
-          })}
-        >
-          <span
-            className={css({
-              fontFamily: 'mono',
-              fontSize: '10px',
-              fontVariant: 'all-small-caps',
-              letterSpacing: '0.15em',
-              color: 'textMuted',
-            })}
-          >
-            U.S. Open
-          </span>
-          <span
-            className={css({
-              fontFamily: 'mono',
-              fontSize: '11px',
-              color: 'accent',
-              lineHeight: 'snug',
-            })}
-          >
-            Leader: E (5 tied)
-          </span>
-          <a
-            href="/work/15th-club"
-            className={css({
-              fontFamily: 'mono',
-              fontSize: '10px',
-              color: 'textMuted',
-              _hover: { color: 'accentLight' },
-              transition: 'color 200ms ease',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              minHeight: '44px',
-              marginTop: '-16px',
-              paddingTop: '16px',
-            })}
-          >
-            → 15th Club
-          </a>
-        </div>
-
-        {/* Divider */}
-        <div
-          className={css({
-            width: '1px',
-            height: '40px',
-            background: 'border',
-            flexShrink: 0,
-            display: { base: 'none', sm: 'block' },
-          })}
-        />
-
-        {/* Tigers */}
-        <div
-          className={css({
-            display: { base: 'none', sm: 'flex' },
-            flexDirection: 'column',
-            gap: '4px',
-            padding: '12px 32px',
-          })}
-        >
-          <span
-            className={css({
-              fontFamily: 'mono',
-              fontSize: '10px',
-              fontVariant: 'all-small-caps',
-              letterSpacing: '0.15em',
-              color: 'textMuted',
-            })}
-          >
-            MLB
-          </span>
-          <span
-            className={css({
-              fontFamily: 'mono',
-              fontSize: '11px',
-              color: 'textSecondary',
-              opacity: 0.7,
-            })}
-          >
-            DET 2 · 4
-          </span>
-        </div>
-
-        {/* Divider */}
-        <div
-          className={css({
-            width: '1px',
-            height: '40px',
-            background: 'border',
-            flexShrink: 0,
-            display: { base: 'none', md: 'block' },
-          })}
-        />
-
-        {/* HN */}
-        <div
-          className={css({
-            display: { base: 'none', md: 'flex' },
-            flexDirection: 'column',
-            gap: '4px',
-            padding: '12px 32px',
-          })}
-        >
-          <span
-            className={css({
-              fontFamily: 'mono',
-              fontSize: '10px',
-              fontVariant: 'all-small-caps',
-              letterSpacing: '0.15em',
-              color: 'textMuted',
-            })}
-          >
-            HN
-          </span>
-          <span
-            className={css({
-              fontFamily: 'mono',
-              fontSize: '10px',
-              color: 'textMuted',
-            })}
-          >
-            ↑834 — Midjourney Medical
-          </span>
-        </div>
-
-        {/* Spacer */}
-        <div className={css({ flex: 1 })} />
-
-        {/* Juneteenth badge */}
-        <div
-          className={css({
-            border: '1px solid',
-            borderColor: 'borderAccent',
-            padding: '6px 12px',
-            fontFamily: 'mono',
-            fontSize: '11px',
-            color: 'accentLight',
-            display: { base: 'none', sm: 'block' },
-            flexShrink: 0,
-          })}
-        >
-          Juneteenth ↑ tomorrow
-        </div>
-
-        {/* Archive link */}
-        <a
-          href="/archive"
-          className={css({
-            fontFamily: 'mono',
-            fontSize: '10px',
-            color: 'textMuted',
-            marginLeft: '32px',
-            _hover: { color: 'accentLight' },
-            transition: 'color 200ms ease',
-            minHeight: '44px',
-            display: 'flex',
-            alignItems: 'center',
-          })}
-        >
-          Archive
-        </a>
+      <footer className={signalFooterStyle} aria-label="Daily signals">
+        <span className={signalLineStyle}>☽ Waxing crescent · 25%</span>
+        <span className={signalLineAccentStyle}>
+          Wet Leg · My Morning Jacket · Guided by Voices
+        </span>
+        <span className={signalLineStyle}>Father's Day Sunday</span>
+        <span className={signalLineStyle}>HN: Project Valhalla lands in JDK 28</span>
+        <a href="/archive" className={archiveLinkStyle}>Archive</a>
       </footer>
+
+      <div className={dateStampStyle} aria-label="Today's date">
+        June 19, 2026
+      </div>
     </>
   )
 }

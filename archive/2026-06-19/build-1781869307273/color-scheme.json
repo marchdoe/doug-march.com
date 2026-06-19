@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 245,
+    "s": 65,
+    "l": 18,
+    "name": "proclamation indigo"
+  },
+  "secondary_accent": {
+    "h": 38,
+    "s": 72,
+    "l": 46,
+    "name": "document gold"
+  },
+  "neutral_family": {
+    "tinted_toward": "indigo",
+    "name": "parchment"
+  },
+  "mood_word": "monumental",
+  "color_story": "Proclamation indigo — the color of printed law, of ink on parchment, of the sky above Galveston on the evening of June 19, 1865 — fills the letters at monument scale against aged cream, while document gold marks the date as something worth striking."
+}

@@ -4,358 +4,236 @@ import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
+const pageStyle = css({
+  padding: '96px 6vw 64px',
+  minHeight: '100vh',
+  maxWidth: '960px',
+})
+
+const backLinkStyle = css({
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: '{colors.parchment.600}',
+  textDecoration: 'none',
+  display: 'inline-block',
+  marginBottom: '48px',
+  padding: '12px 0',
+  _hover: {
+    color: '{colors.indigo.900}',
+    textDecoration: 'underline',
+  },
+  '&:focus-visible': {
+    outline: '2px solid {colors.gold.400}',
+    outlineOffset: '4px',
+  },
+})
+
+const titleStyle = css({
+  fontFamily: 'heading',
+  fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+  fontWeight: '800',
+  letterSpacing: '-0.01em',
+  lineHeight: '0.88',
+  color: '{colors.indigo.900}',
+  textTransform: 'uppercase',
+  marginBottom: '16px',
+})
+
+const metaRowStyle = css({
+  display: 'flex',
+  gap: '24px',
+  marginBottom: '48px',
+  flexWrap: 'wrap',
+})
+
+const metaItemStyle = css({
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: '{colors.parchment.600}',
+})
+
+const sectionLabelStyle = css({
+  fontFamily: 'heading',
+  fontSize: '0.75rem',
+  fontWeight: '600',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: '{colors.gold.400}',
+  marginBottom: '12px',
+})
+
+const sectionTextStyle = css({
+  fontFamily: 'body',
+  fontSize: 'clamp(0.875rem, 1vw, 1rem)',
+  lineHeight: '1.6',
+  color: '{colors.indigo.700}',
+  maxWidth: '65ch',
+  marginBottom: '48px',
+})
+
+const stackListStyle = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '8px',
+  listStyle: 'none',
+  padding: '0',
+  margin: '0 0 48px 0',
+})
+
+const stackItemStyle = css({
+  fontFamily: 'body',
+  fontSize: '0.8rem',
+  color: '{colors.indigo.700}',
+  padding: '4px 12px',
+  border: '1px solid {colors.parchment.300}',
+})
+
+const externalLinkStyle = css({
+  fontFamily: 'body',
+  fontSize: '0.875rem',
+  letterSpacing: '0.04em',
+  textTransform: 'uppercase',
+  color: '{colors.gold.600}',
+  textDecoration: 'none',
+  padding: '12px 0',
+  display: 'inline-block',
+  borderBottom: '1px solid {colors.gold.400}',
+  _hover: {
+    color: '{colors.indigo.900}',
+    borderBottomColor: '{colors.indigo.900}',
+  },
+  '&:focus-visible': {
+    outline: '2px solid {colors.gold.400}',
+    outlineOffset: '4px',
+  },
+})
+
+const footerStyle = css({
+  marginTop: '96px',
+  paddingTop: '24px',
+  borderTop: '1px solid {colors.parchment.300}',
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  color: '{colors.parchment.500}',
+})
+
+const archiveLinkStyle = css({
+  color: '{colors.parchment.500}',
+  textDecoration: 'none',
+  _hover: {
+    textDecoration: 'underline',
+    color: '{colors.parchment.700}',
+  },
+  '&:focus-visible': {
+    outline: '2px solid {colors.gold.400}',
+    outlineOffset: '2px',
+  },
+})
+
+const notFoundStyle = css({
+  fontFamily: 'heading',
+  fontSize: 'clamp(2rem, 6vw, 4rem)',
+  fontWeight: '800',
+  color: '{colors.indigo.900}',
+  textTransform: 'uppercase',
+  letterSpacing: '-0.01em',
+  lineHeight: '0.88',
+})
+
 function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div className={css({ padding: '5vh 5vw' })}>
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontSize: 'clamp(48px, 7vw, 96px)',
-            fontWeight: 'bold',
-            textTransform: 'uppercase',
-            lineHeight: 'tight',
-            letterSpacing: '-0.02em',
-          })}
-        >
-          Not Found
-        </h1>
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontSize: '16px',
-            color: 'textSecondary',
-            marginTop: '24px',
-          })}
-        >
-          No project matches this slug.
-        </p>
-        <a
-          href="/"
-          className={css({
-            fontFamily: 'mono',
-            fontSize: '12px',
-            color: 'accent',
-            display: 'inline-flex',
-            alignItems: 'center',
-            minHeight: '44px',
-            marginTop: '16px',
-            _hover: { color: 'accentLight' },
-            transition: 'color 200ms ease',
-          })}
-        >
-          ← Back
-        </a>
-      </div>
+      <main className={pageStyle}>
+        <a href="/" className={backLinkStyle}>← Back</a>
+        <h1 className={notFoundStyle}>Project not found</h1>
+      </main>
     )
   }
 
   return (
-    <div className={css({ padding: '5vh 5vw', maxWidth: '1200px' })}>
-      {/* Header */}
-      <div className={css({ marginBottom: '64px' })}>
-        <a
-          href="/"
-          className={css({
-            fontFamily: 'mono',
-            fontSize: '11px',
-            color: 'textMuted',
-            display: 'inline-flex',
-            alignItems: 'center',
-            minHeight: '44px',
-            marginBottom: '24px',
-            _hover: { color: 'accentLight' },
-            transition: 'color 200ms ease',
-          })}
-        >
-          ← Back
-        </a>
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontSize: 'clamp(48px, 8vw, 112px)',
-            fontWeight: 'bold',
-            textTransform: 'uppercase',
-            lineHeight: 'tight',
-            letterSpacing: '-0.02em',
-            marginBottom: '16px',
-          })}
-        >
-          {project.title}
-        </h1>
-        <div
-          className={css({
-            display: 'flex',
-            gap: '16px',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-          })}
-        >
-          <span
-            className={css({
-              fontFamily: 'mono',
-              fontSize: '12px',
-              color: 'textMuted',
-            })}
-          >
-            {project.type}
-          </span>
-          <span
-            className={css({
-              fontFamily: 'mono',
-              fontSize: '12px',
-              color: 'textMuted',
-            })}
-          >
-            {project.year}
-          </span>
-          {project.externalUrl && (
-            <a
-              href={project.externalUrl}
-              className={css({
-                fontFamily: 'mono',
-                fontSize: '12px',
-                color: 'accent',
-                minHeight: '44px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                _hover: { color: 'accentLight' },
-                transition: 'color 200ms ease',
-              })}
-            >
-              Visit ↗
-            </a>
-          )}
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              className={css({
-                fontFamily: 'mono',
-                fontSize: '12px',
-                color: 'accent',
-                minHeight: '44px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                _hover: { color: 'accentLight' },
-                transition: 'color 200ms ease',
-              })}
-            >
-              Live ↗
-            </a>
-          )}
-        </div>
+    <main className={pageStyle}>
+      <a href="/" className={backLinkStyle}>← Back</a>
+
+      <h1 className={titleStyle}>{project.title}</h1>
+
+      <div className={metaRowStyle}>
+        <span className={metaItemStyle}>{project.type}</span>
+        <span className={metaItemStyle}>{project.year}</span>
+        {project.role && <span className={metaItemStyle}>{project.role}</span>}
       </div>
 
-      {/* Content Grid */}
-      <div
-        className={css({
-          display: 'grid',
-          gridTemplateColumns: { base: '1fr', md: '200px 1fr' },
-          gap: '48px',
-        })}
-      >
-        {/* Meta Column */}
-        <div className={css({ display: 'flex', flexDirection: 'column', gap: '32px' })}>
-          {project.role && (
-            <div>
-              <span
-                className={css({
-                  fontFamily: 'mono',
-                  fontSize: '10px',
-                  fontVariant: 'all-small-caps',
-                  letterSpacing: '0.12em',
-                  color: 'textMuted',
-                  display: 'block',
-                  marginBottom: '4px',
-                })}
-              >
-                Role
-              </span>
-              <span
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '14px',
-                  color: 'textSecondary',
-                })}
-              >
-                {project.role}
-              </span>
-            </div>
-          )}
-          {project.stack && project.stack.length > 0 && (
-            <div>
-              <span
-                className={css({
-                  fontFamily: 'mono',
-                  fontSize: '10px',
-                  fontVariant: 'all-small-caps',
-                  letterSpacing: '0.12em',
-                  color: 'textMuted',
-                  display: 'block',
-                  marginBottom: '8px',
-                })}
-              >
-                Stack
-              </span>
-              <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '8px' })}>
-                {project.stack.map((tech, i) => (
-                  <span
-                    key={i}
-                    className={css({
-                      fontFamily: 'mono',
-                      fontSize: '11px',
-                      color: 'textSecondary',
-                      border: '1px solid',
-                      borderColor: 'border',
-                      padding: '4px 8px',
-                    })}
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
+      {project.problem && (
+        <div>
+          <h2 className={sectionLabelStyle}>Problem</h2>
+          <p className={sectionTextStyle}>{project.problem}</p>
         </div>
+      )}
 
-        {/* Content Column */}
-        <div className={css({ display: 'flex', flexDirection: 'column', gap: '48px' })}>
-          {project.problem && (
-            <div>
-              <h2
-                className={css({
-                  fontFamily: 'mono',
-                  fontSize: '10px',
-                  fontVariant: 'all-small-caps',
-                  letterSpacing: '0.15em',
-                  color: 'textMuted',
-                  marginBottom: '12px',
-                  borderBottom: '1px solid',
-                  borderColor: 'border',
-                  paddingBottom: '8px',
-                })}
-              >
-                Problem
-              </h2>
-              <p
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  lineHeight: 'normal',
-                  color: 'textSecondary',
-                  maxWidth: '65ch',
-                })}
-              >
-                {project.problem}
-              </p>
-            </div>
-          )}
-          {project.approach && (
-            <div>
-              <h2
-                className={css({
-                  fontFamily: 'mono',
-                  fontSize: '10px',
-                  fontVariant: 'all-small-caps',
-                  letterSpacing: '0.15em',
-                  color: 'textMuted',
-                  marginBottom: '12px',
-                  borderBottom: '1px solid',
-                  borderColor: 'border',
-                  paddingBottom: '8px',
-                })}
-              >
-                Approach
-              </h2>
-              <p
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  lineHeight: 'normal',
-                  color: 'textSecondary',
-                  maxWidth: '65ch',
-                })}
-              >
-                {project.approach}
-              </p>
-            </div>
-          )}
-          {project.outcome && (
-            <div>
-              <h2
-                className={css({
-                  fontFamily: 'mono',
-                  fontSize: '10px',
-                  fontVariant: 'all-small-caps',
-                  letterSpacing: '0.15em',
-                  color: 'textMuted',
-                  marginBottom: '12px',
-                  borderBottom: '1px solid',
-                  borderColor: 'border',
-                  paddingBottom: '8px',
-                })}
-              >
-                Outcome
-              </h2>
-              <p
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  lineHeight: 'normal',
-                  color: 'textSecondary',
-                  maxWidth: '65ch',
-                })}
-              >
-                {project.outcome}
-              </p>
-            </div>
-          )}
-          {project.description && (
-            <div>
-              <p
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: '16px',
-                  lineHeight: 'normal',
-                  color: 'textSecondary',
-                  maxWidth: '65ch',
-                })}
-              >
-                {project.description}
-              </p>
-            </div>
-          )}
+      {project.approach && (
+        <div>
+          <h2 className={sectionLabelStyle}>Approach</h2>
+          <p className={sectionTextStyle}>{project.approach}</p>
         </div>
-      </div>
+      )}
 
-      {/* Footer */}
-      <footer
-        className={css({
-          borderTop: '1px solid',
-          borderColor: 'border',
-          paddingTop: '16px',
-          marginTop: '96px',
-        })}
-      >
+      {project.outcome && (
+        <div>
+          <h2 className={sectionLabelStyle}>Outcome</h2>
+          <p className={sectionTextStyle}>{project.outcome}</p>
+        </div>
+      )}
+
+      {project.description && (
+        <div>
+          <h2 className={sectionLabelStyle}>Description</h2>
+          <p className={sectionTextStyle}>{project.description}</p>
+        </div>
+      )}
+
+      {project.stack && project.stack.length > 0 && (
+        <div>
+          <h2 className={sectionLabelStyle}>Stack</h2>
+          <ul className={stackListStyle}>
+            {project.stack.map((tech, i) => (
+              <li key={i} className={stackItemStyle}>{tech}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {(project.externalUrl || project.liveUrl) && (
         <a
-          href="/archive"
-          className={css({
-            fontFamily: 'mono',
-            fontSize: '10px',
-            color: 'textMuted',
-            _hover: { color: 'accentLight' },
-            transition: 'color 200ms ease',
-            minHeight: '44px',
-            display: 'inline-flex',
-            alignItems: 'center',
-          })}
+          href={project.externalUrl || project.liveUrl}
+          className={externalLinkStyle}
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          Archive
+          Visit Project →
         </a>
+      )}
+
+      {project.githubUrl && (
+        <a
+          href={project.githubUrl}
+          className={externalLinkStyle}
+          style={{ marginLeft: '24px' }}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHub →
+        </a>
+      )}
+
+      <footer className={footerStyle}>
+        <a href="/archive" className={archiveLinkStyle}>Archive</a>
       </footer>
-    </div>
+    </main>
   )
 }

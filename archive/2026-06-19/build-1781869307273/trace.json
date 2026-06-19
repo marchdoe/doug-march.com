@@ -1,0 +1,255 @@
+{
+  "date": "2026-06-19",
+  "startedAt": "2026-06-19T11:33:03.885Z",
+  "completedAt": "2026-06-19T11:41:48.555Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Arkansas Museum of Fine Art",
+              "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+              "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The Bend Club",
+              "description": "A luxury residence club that doesn't exist yet. Brand, logo, and investor site designed to make early buyers feel the place before the ground breaks....",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1cbcaa59c1c699174924.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAtF6hJREFUeAG0/dmTddl1H4ittc+9mfkN9VUVUCiAIAigAJIAOLTCImWpJdEPdqhNv7Yd7Rc/246ww3+D/w09OOzn9ovEsB9aUkeoW+rWALIlERBFECIxECAKKAwFVH1DZt6z...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "House of Honey",
+              "description": "House of Honey designs spaces with story. We built a sophisticated digital presence that mirrors this sensory philosophy through editorial elegance and...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1c09bf6c5f3457361940.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/CABEIBLAGQAMBEQACEQEDEQH/xAA6AAAABgMBAQEAAAAAAAAAAAADBAUGBwgAAQIJCgsBAAAH...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Friday",
+          "is_weekend": false,
+          "day_index": 5
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "google-research/timesfm/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "n0-computer/iroh/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "sponsors/freeCodeCamp",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/obra",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "zai-org/GLM-5/stargazers",
+              "description": "",
+              "language": null,
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": null,
+          "status": "Unknown",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Project Valhalla, Explained: How a Decade of Work Arrives in JDK 28",
+              "url": "https://www.jvm-weekly.com/p/project-valhalla-explained-how-a",
+              "score": 184,
+              "by": "philonoist"
+            },
+            {
+              "title": "DuckDB Internals: Why Is DuckDB Fast? (Part 1)",
+              "url": "https://www.greybeam.ai/blog/duckdb-internals-part-1",
+              "score": 209,
+              "by": "marklit"
+            },
+            {
+              "title": "To study how chips work, MIT researchers built their own operating system",
+              "url": "https://news.mit.edu/2026/to-study-how-chips-really-work-mit-researchers-built-their-own-operating-system-0610",
+              "score": 205,
+              "by": "speckx"
+            },
+            {
+              "title": "So You Want to Define a Well-Known URI",
+              "url": "https://mnot.net/blog/2026/well_known_uris",
+              "score": 80,
+              "by": "ingve"
+            },
+            {
+              "title": "Ten years of ClickHouse in open source",
+              "url": "https://clickhouse.com/blog/open-source-10",
+              "score": 62,
+              "by": "saisrirampur"
+            }
+          ]
+        },
+        "holidays": {
+          "today": "Juneteenth",
+          "upcoming": [
+            {
+              "name": "Father's Day",
+              "date": "2026-06-21",
+              "days_away": 2
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "waxing crescent",
+          "illumination": 0.255,
+          "days_into_cycle": 4.98
+        },
+        "music": {
+          "bands": [
+            "Wet Leg",
+            "My Morning Jacket",
+            "Guided by Voices"
+          ]
+        },
+        "quote": {
+          "text": "Successful people are always looking for opportunities to help others. Unsuccessful people are always asking, 'What's in it for me?'",
+          "author": "Brian Tracy"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 19,
+          "day_of_year": 170,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:49",
+          "sunset": "19:33",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-19"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-19T11:33:19.226Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-18: Specimen\n  - 2026-06-17: Index\n  - 2026-06-16: Broadsheet\n  - 2026-06-15: Scroll\n  - 2026-06-14: Stack\n  - 2026-06-13: Split\n  - 2026-06-12: Poster\n\n**Recently used** (last 3 days): Specimen, Index, Broadsheet\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or sign"
+      },
+      "output": {
+        "hero_copy": "June 19, 1865. The word arrived.",
+        "archetype": "Poster",
+        "chassisId": "big-shoulders-atkinson",
+        "specLength": 6784,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue** — H:245° (deep proclamation indigo). This is the hue of institutional permanence: the ink a president uses, the color of law printed on the first official documents of a republic. Not the default AI indigo (H:260°) — this sits in the genuine blue-navy register, serious and load-bearing.\n\n**Neutral palette** — warm parchment, faint indigo tint (chroma ≈ 0.008) for cohesion with the type:\n- 50: `#FDFBF7`\n- 100: `#F7F3E9`\n- 200: `#EDE8D8`\n- 300: `#D8D2BF`",
+        "selfCheck": "1. Hero quotability: Yes — \"June 19, 1865. The word arrived.\" is a monument inscription; the compression of the Juneteenth delivery-of-news moment into eight words is quotable and screenshot-worthy in isolation without context.\n2. Because-of chain: Yes — Juneteenth's historical weight demands Poster"
+      },
+      "durationMs": 383339,
+      "timestamp": "2026-06-19T11:39:42.569Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 6784
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 27717,
+      "timestamp": "2026-06-19T11:40:11.473Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4379,
+        "briefLength": 10016
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 74692,
+      "timestamp": "2026-06-19T11:41:26.167Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-19T11:41:31.974Z"
+    }
+  ]
+}
