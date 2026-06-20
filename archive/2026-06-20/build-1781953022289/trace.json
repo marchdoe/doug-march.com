@@ -1,0 +1,281 @@
+{
+  "date": "2026-06-20",
+  "startedAt": "2026-06-20T10:48:38.921Z",
+  "completedAt": "2026-06-20T10:57:03.997Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Arkansas Museum of Fine Art",
+              "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+              "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The Bend Club",
+              "description": "A luxury residence club that doesn't exist yet. Brand, logo, and investor site designed to make early buyers feel the place before the ground breaks....",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1cbcaa59c1c699174924.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAtF6hJREFUeAG0/dmTddl1H4ittc+9mfkN9VUVUCiAIAigAJIAOLTCImWpJdEPdqhNv7Yd7Rc/246ww3+D/w09OOzn9ovEsB9aUkeoW+rWALIlERBFECIxECAKKAwFVH1DZt6z...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "House of Honey",
+              "description": "House of Honey designs spaces with story. We built a sophisticated digital presence that mirrors this sensory philosophy through editorial elegance and...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1c09bf6c5f3457361940.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/CABEIBLAGQAMBEQACEQEDEQH/xAA6AAAABgMBAQEAAAAAAAAAAAADBAUGBwgAAQIJCgsBAAAH...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Saturday",
+          "is_weekend": true,
+          "day_index": 6
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "DeusData/codebase-memory-mcp/stargazers",
+              "description": "",
+              "language": "C",
+              "stars": null
+            },
+            {
+              "name": "google-research/timesfm/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "palmier-io/palmier-pro/stargazers",
+              "description": "",
+              "language": "Swift",
+              "stars": null
+            },
+            {
+              "name": "koala73/worldmonitor/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "aishwaryanr/awesome-generative-ai-guide/stargazers",
+              "description": "",
+              "language": "HTML",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "U.S. Open",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Wyndham Clark",
+              "position": "1",
+              "score": "-7"
+            },
+            {
+              "name": "Xander Schauffele",
+              "position": "2",
+              "score": "-3"
+            },
+            {
+              "name": "Tom Kim",
+              "position": "3",
+              "score": "-3"
+            },
+            {
+              "name": "Sam Stevens",
+              "position": "4",
+              "score": "-3"
+            },
+            {
+              "name": "Matt Fitzpatrick",
+              "position": "5",
+              "score": "-3"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "I Stored a Website in a Favicon",
+              "url": "https://www.timwehrle.de/blog/i-stored-a-website-in-a-favicon/",
+              "score": 145,
+              "by": "theanonymousone"
+            },
+            {
+              "title": "Where to Find the Colors Your Screen Can't Show You",
+              "url": "https://moultano.wordpress.com/2026/06/19/where-to-find-the-colors-your-screen-cant-show-you/",
+              "score": 145,
+              "by": "moultano"
+            },
+            {
+              "title": "Data Compression Explained (2012)",
+              "url": "https://mattmahoney.net/dc/dce.html",
+              "score": 133,
+              "by": "mtdewcmu"
+            },
+            {
+              "title": "Can you see three trees?",
+              "url": "https://www.not-ship.com/can-you-see-three-trees/",
+              "score": 125,
+              "by": "Pamar"
+            },
+            {
+              "title": "There are no instances in ATProto",
+              "url": "https://overreacted.io/there-are-no-instances-in-atproto/",
+              "score": 454,
+              "by": "danabramov"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Father's Day",
+              "date": "2026-06-21",
+              "days_away": 1
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "first quarter",
+          "illumination": 0.35,
+          "days_into_cycle": 5.95
+        },
+        "music": {
+          "bands": [
+            "My Morning Jacket",
+            "Wet Leg",
+            "Radiohead"
+          ]
+        },
+        "quote": {
+          "text": "Within every obstacle is an opportunity to improve our condition.",
+          "author": "Ryan Holiday"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 20,
+          "day_of_year": 171,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-19T22:40Z",
+              "result": "win",
+              "score": "4-3"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:49",
+          "sunset": "19:34",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-20"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-20T10:48:54.348Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-19: Poster\n  - 2026-06-18: Specimen\n  - 2026-06-17: Index\n  - 2026-06-16: Broadsheet\n  - 2026-06-15: Scroll\n  - 2026-06-14: Stack\n  - 2026-06-13: Split\n\n**Recently used** (last 3 days): Poster, Specimen, Index\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or signals "
+      },
+      "output": {
+        "hero_copy": "THE LONGEST DAY.",
+        "archetype": "Gallery Wall",
+        "chassisId": "anton-inter-tight",
+        "specLength": 5842,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue:** H:28° (amber-orange). The mandate's only open corridor is 20°–42°; amber sits dead-center of it and is the literal color of the signal — peak summer sunlight at golden hour.\n\n**Neutral palette (warm charcoal, amber-tinted):**\n- 50: `#FAF5E8` — warm cream\n- 100: `#F0E6CC`\n- 200: `#D8C89A`\n- 300: `#BC9E68`\n- 400: `#9A7540`\n- 500: `#7A5020`\n- 600: `#5C3200`\n- 700: `#3D1C00`\n- 800: `#2A1000`\n- 900: `#140C00` — near-black with amber warmth\n\n**Accent color ",
+        "selfCheck": "1. Hero quotability: Yes — \"THE LONGEST DAY.\" is a three-word declaration referencing the June 20 solstice eve (14.7 hours of daylight), carries standalone cinematic weight as a cultural phrase, and would be screenshotted without context.\n2. Because-of chain: Yes — the phrase required Gallery Wall ("
+      },
+      "durationMs": 304049,
+      "timestamp": "2026-06-20T10:53:58.401Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5842
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 45533,
+      "timestamp": "2026-06-20T10:54:45.506Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 5524,
+        "briefLength": 8846
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 113492,
+      "timestamp": "2026-06-20T10:56:39.000Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-20T10:56:46.854Z"
+    }
+  ]
+}

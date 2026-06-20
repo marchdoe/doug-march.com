@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 28,
+    "s": 95,
+    "l": 54,
+    "name": "amber gold"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "amber-orange",
+    "name": "warm charcoal"
+  },
+  "mood_word": "luminous",
+  "color_story": "Amber blazing against near-black charcoal — the exact palette of summer afternoon light, earned by 14.7 hours of sun at its calendar maximum, and the only open hue zone (20°–42°) left untouched in the full seven-build archive."
+}
