@@ -1,0 +1,276 @@
+{
+  "date": "2026-06-21",
+  "startedAt": "2026-06-21T11:04:09.881Z",
+  "completedAt": "2026-06-21T11:14:38.741Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Pil Rebranding Site",
+              "description": "For 20 years, Pil has evolved with brands and people. Today, our new website reflects who we are: a living ecosystem of creativity, ideas, and innovation.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a218e4cb4e5a558333777.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAC4jAAAuIwF4pT92AAyc5UlEQVR4nOT9CbhuXVYWhu5v/+dvq6UKRYgFJXKhBJsgYJSIJgIShUSwQZ8bwaiJlhghCV4jT2wAIVHAgF41aIHm3muTqBhFYsRgg0piSyOKUIBGSqmGEqr+qr895+zvPnvN0bzvO8aca+19zl94n7sozv/tteaac8wxxxzjHWOOOdfpHW9768XFxcXp4uJ8YT8W19kKnLb/...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Arkansas Museum of Fine Art",
+              "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+              "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The Bend Club",
+              "description": "A luxury residence club that doesn't exist yet. Brand, logo, and investor site designed to make early buyers feel the place before the ground breaks....",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1cbcaa59c1c699174924.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAtF6hJREFUeAG0/dmTddl1H4ittc+9mfkN9VUVUCiAIAigAJIAOLTCImWpJdEPdqhNv7Yd7Rc/246ww3+D/w09OOzn9ovEsB9aUkeoW+rWALIlERBFECIxECAKKAwFVH1DZt6z...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Sunday",
+          "is_weekend": true,
+          "day_index": 0
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "palmier-io/palmier-pro/stargazers",
+              "description": "",
+              "language": "Swift",
+              "stars": null
+            },
+            {
+              "name": "calesthio/OpenMontage/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/chopratejas",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "tursodatabase/turso/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "penpot/penpot/stargazers",
+              "description": "",
+              "language": "Clojure",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "U.S. Open",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Wyndham Clark",
+              "position": "1",
+              "score": "-7"
+            },
+            {
+              "name": "Scottie Scheffler",
+              "position": "2",
+              "score": "-1"
+            },
+            {
+              "name": "Sahith Theegala",
+              "position": "3",
+              "score": "-1"
+            },
+            {
+              "name": "Tom Kim",
+              "position": "4",
+              "score": "-1"
+            },
+            {
+              "name": "Sam Stevens",
+              "position": "5",
+              "score": "-1"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Google Hits 50% IPv6",
+              "url": "https://blog.apnic.net/2026/04/28/google-hits-50-ipv6/",
+              "score": 127,
+              "by": "barqawiz"
+            },
+            {
+              "title": "A 3D voxel game engine written in APL",
+              "url": "https://github.com/namgyaaal/avoxelgame",
+              "score": 55,
+              "by": "sph"
+            },
+            {
+              "title": "Developers don't understand CORS (2019)",
+              "url": "https://fosterelli.co/developers-dont-understand-cors",
+              "score": 218,
+              "by": "toilet"
+            },
+            {
+              "title": "Zigzag Decoding with AVX-512",
+              "url": "https://zeux.io/2026/06/17/zigzag-decoding-avx512/",
+              "score": 77,
+              "by": "luu"
+            },
+            {
+              "title": "Loupe – A iOS app that raises awareness about what native apps can see",
+              "url": "https://github.com/mysk-research/loupe",
+              "score": 311,
+              "by": "Cider9986"
+            }
+          ]
+        },
+        "holidays": {
+          "today": "Father's Day",
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "first quarter",
+          "illumination": 0.455,
+          "days_into_cycle": 6.96
+        },
+        "music": {
+          "bands": [
+            "Tobin Sprout",
+            "The War on Drugs",
+            "Wet Leg"
+          ]
+        },
+        "quote": {
+          "text": "The best thing to hold onto in life is each other.",
+          "author": "Audrey Hepburn"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 21,
+          "day_of_year": 172,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-20T17:10Z",
+              "result": "win",
+              "score": "4-1"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:49",
+          "sunset": "19:34",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-21"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-21T11:04:25.277Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-20: Gallery Wall\n  - 2026-06-19: Poster\n  - 2026-06-18: Specimen\n  - 2026-06-17: Index\n  - 2026-06-16: Broadsheet\n  - 2026-06-15: Scroll\n  - 2026-06-14: Stack\n\n**Recently used** (last 3 days): Gallery Wall, Poster, Specimen\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the bri"
+      },
+      "output": {
+        "hero_copy": "The best thing to hold onto in life is each other.",
+        "archetype": "Split",
+        "chassisId": "bricolage-manrope",
+        "specLength": 5868,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue:** H:158° (teal-green) — falls cleanly in the mandate's open corridor 145°–173°. Summer water, deep shade, earned by the solstice and the emotional temperature of the quote.\n\n**Neutral palette (teal-stone, faint teal cast):**\n- 50: #F7F5F3\n- 100: #EEEAE5\n- 200: #DDD7D1\n- 300: #C2BBBA\n- 400: #9F9694\n- 500: #7D7472\n- 600: #5D5452\n- 700: #413C3A\n- 800: #29221F\n- 900: #141110\n\n**Accent color:**\n- Light: #38B5A3\n- Default: #0A7165\n- Dark: #063D37\n- Glow: rgba",
+        "selfCheck": "1. Hero quotability: Yes — \"The best thing to hold onto in life is each other.\" is a standalone Hepburn line that earns a screenshot on any day; on Father's Day and the Summer Solstice it carries double-weight without needing explanation.\n2. Because-of chain: Yes — warmth of the phrase on Father's D"
+      },
+      "durationMs": 338429,
+      "timestamp": "2026-06-21T11:10:03.710Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5868
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 75178,
+      "timestamp": "2026-06-21T11:11:20.386Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4643,
+        "briefLength": 8728
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 99977,
+      "timestamp": "2026-06-21T11:13:00.365Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": false,
+        "error": "Pre-build validation failed:\n  - app/routes/index.tsx: contains dangerouslySetInnerHTML (blocks XSS)"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-21T11:13:00.370Z"
+    }
+  ]
+}
