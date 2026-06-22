@@ -1,7 +1,7 @@
 import { definePreset } from '@pandacss/dev'
 
 /**
- * Generated from elements/chassis/bricolage-manrope.js by scripts/utils/chassis.js.
+ * Generated from elements/chassis/anton-inter-tight.js by scripts/utils/chassis.js.
  * Listed LAST in panda.config.ts so its fonts + fontSizes win over any values
  * the Token Designer emits in elements/preset.ts.
  *
@@ -13,8 +13,8 @@ export const chassisPreset = definePreset({
     extend: {
       tokens: {
         fonts: {
-          display: { value: "\"Bricolage Grotesque\", Georgia, serif" },
-          body: { value: "Manrope, system-ui, -apple-system, sans-serif" },
+          display: { value: "Anton, Impact, \"Arial Narrow\", sans-serif" },
+          body: { value: "\"Inter Tight\", system-ui, -apple-system, sans-serif" },
         },
         fontSizes: {
           '2xs': { value: "0.625rem" },

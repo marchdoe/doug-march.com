@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 115,
+    "s": 82,
+    "l": 48,
+    "name": "fairway"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "green (H:115°)",
+    "name": "ink"
+  },
+  "mood_word": "victorious",
+  "color_story": "The green of a well-kept U.S. Open fairway — vivid, almost electric on near-black turf soil — pressed into Anton condensed at 22vw, declaring the score."
+}
