@@ -5,288 +5,298 @@ import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const heroBand = css({
+const fold = css({
+  padding: '96px 6vw',
   width: '100%',
-  background: 'bg',
-  padding: '128px 6vw 72px',
-  minHeight: '50vh',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-end',
 })
 
-const heroName = css({
+const heroFold = css({
+  minHeight: '60vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  padding: '96px 6vw',
+  width: '100%',
+})
+
+const nameDisplay = css({
   fontFamily: 'display',
-  fontSize: 'clamp(48px, 12vw, 160px)',
-  lineHeight: '0.85',
+  fontWeight: 'bold',
+  fontSize: 'clamp(40px, 6vw, 80px)',
+  lineHeight: 'tight',
+  letterSpacing: 'tight',
   color: 'accent',
   marginBottom: '16px',
 })
 
-const heroRole = css({
+const roleDisplay = css({
   fontFamily: 'body',
-  fontSize: '14px',
-  letterSpacing: '0.14em',
+  fontWeight: 'medium',
+  fontSize: 'clamp(16px, 1.8vw, 22px)',
+  color: 'textMuted',
+  letterSpacing: 'wider',
   textTransform: 'uppercase',
+  marginBottom: '32px',
+})
+
+const statement = css({
+  fontFamily: 'display',
+  fontWeight: 'light',
+  fontSize: 'clamp(20px, 2.4vw, 34px)',
+  lineHeight: '1.35',
   color: 'textSecondary',
+  maxWidth: '55ch',
+})
+
+const eyebrow = css({
+  fontFamily: 'body',
+  fontWeight: 'semibold',
+  fontSize: '11px',
+  color: 'accentDark',
+  textTransform: 'uppercase',
+  letterSpacing: 'widest',
   marginBottom: '24px',
 })
 
-const heroStatement = css({
-  fontFamily: 'body',
-  fontSize: 'clamp(18px, 2.5vw, 24px)',
-  lineHeight: '1.5',
-  color: 'text',
-  maxWidth: '60ch',
-})
-
-const band = css({
+const divider = css({
   width: '100%',
-  padding: '72px 6vw',
-  borderTop: '1px solid',
-  borderColor: 'border',
-})
-
-const bandDark = css({
-  width: '100%',
-  padding: '72px 6vw',
-  borderTop: '1px solid',
-  borderColor: 'border',
-  background: 'bgCard',
-})
-
-const sectionLabel = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '32px',
+  height: '1px',
+  background: 'border',
+  border: 'none',
 })
 
 const timelineRow = css({
   display: 'grid',
   gridTemplateColumns: '120px 1fr',
   gap: '16px',
-  padding: '16px 0',
-  borderBottom: '1px solid',
+  padding: '20px 0',
+  borderTop: '1px solid',
   borderColor: 'border',
-  '@media (min-width: 768px)': {
-    gridTemplateColumns: '140px 200px 1fr',
+  '@media (max-width: 640px)': {
+    gridTemplateColumns: '1fr',
+    gap: '4px',
   },
 })
 
 const timelineYear = css({
-  fontFamily: 'mono',
-  fontSize: '13px',
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '14px',
   color: 'textMuted',
+  fontVariantNumeric: 'tabular-nums',
+  whiteSpace: 'nowrap',
   minWidth: '120px',
-  letterSpacing: '0.05em',
 })
 
+const timelineContent = css({})
+
 const timelineRole = css({
-  fontFamily: 'body',
-  fontSize: '16px',
-  fontWeight: 'medium',
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'clamp(16px, 1.5vw, 22px)',
+  lineHeight: 'snug',
   color: 'text',
 })
 
 const timelineCompany = css({
   fontFamily: 'body',
+  fontWeight: 'normal',
   fontSize: '14px',
   color: 'textSecondary',
-  display: 'none',
-  '@media (min-width: 768px)': {
-    display: 'block',
-  },
+  marginTop: '2px',
 })
 
 const timelineDesc = css({
   fontFamily: 'body',
-  fontSize: '14px',
+  fontWeight: 'normal',
+  fontSize: '16px',
+  lineHeight: 'normal',
   color: 'textSecondary',
-  lineHeight: '1.5',
+  marginTop: '8px',
   maxWidth: '60ch',
-})
-
-const timelineMobileCompany = css({
-  fontFamily: 'body',
-  fontSize: '13px',
-  color: 'textMuted',
-  marginTop: '2px',
-  '@media (min-width: 768px)': {
-    display: 'none',
-  },
 })
 
 const capGrid = css({
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '8px',
+  gap: '8px 16px',
 })
 
-const capTag = css({
+const capItem = css({
   fontFamily: 'body',
-  fontSize: '13px',
-  letterSpacing: '0.05em',
+  fontWeight: 'normal',
+  fontSize: '16px',
+  color: 'text',
+  lineHeight: '1.85',
+})
+
+const capSep = css({
+  color: 'textMuted',
+  margin: '0 4px',
+  userSelect: 'none',
+})
+
+const eduBlock = css({
+  marginBottom: '16px',
+})
+
+const eduTitle = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'clamp(16px, 1.5vw, 22px)',
+  lineHeight: 'snug',
+  color: 'text',
+})
+
+const eduMeta = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '16px',
   color: 'textSecondary',
-  padding: '8px 16px',
-  border: '1px solid',
-  borderColor: 'border',
-  lineHeight: '1.4',
+  marginTop: '4px',
 })
 
-const personalGrid = css({
+const personalRow = css({
   display: 'grid',
-  gridTemplateColumns: '1fr',
-  gap: '24px',
-  '@media (min-width: 768px)': {
-    gridTemplateColumns: '1fr 1fr',
+  gridTemplateColumns: '140px 1fr',
+  gap: '12px',
+  padding: '12px 0',
+  '@media (max-width: 640px)': {
+    gridTemplateColumns: '1fr',
+    gap: '2px',
   },
-})
-
-const personalItem = css({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '4px',
 })
 
 const personalLabel = css({
   fontFamily: 'body',
-  fontSize: '11px',
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase',
+  fontWeight: 'medium',
+  fontSize: '14px',
   color: 'textMuted',
+  textTransform: 'uppercase',
+  letterSpacing: 'wider',
 })
 
 const personalValue = css({
   fontFamily: 'body',
+  fontWeight: 'normal',
   fontSize: '16px',
   color: 'text',
-  lineHeight: '1.5',
+  lineHeight: 'normal',
 })
 
-const eduRow = css({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '4px',
-})
-
-const eduTitle = css({
-  fontFamily: 'body',
-  fontSize: '16px',
-  fontWeight: 'medium',
-  color: 'text',
-})
-
-const eduDetail = css({
-  fontFamily: 'body',
-  fontSize: '14px',
-  color: 'textSecondary',
-})
-
-const footerBand = css({
-  width: '100%',
-  background: 'bgCard',
+const footerWrap = css({
   padding: '48px 6vw',
   borderTop: '1px solid',
   borderColor: 'border',
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
+  alignItems: 'baseline',
   flexWrap: 'wrap',
-  gap: '16px',
+  gap: '12px',
+})
+
+const footerText = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '13px',
+  color: 'textMuted',
 })
 
 const footerLink = css({
   fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
+  fontWeight: 'normal',
+  fontSize: '13px',
   color: 'textMuted',
   textDecoration: 'none',
-  minHeight: '44px',
-  display: 'flex',
-  alignItems: 'center',
-  _hover: {
-    color: 'accent',
+  '&:hover': { color: 'textSecondary' },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
   },
 })
 
 function AboutPage() {
   return (
-    <>
-      {/* Hero band */}
-      <section className={heroBand}>
-        <h1 className={heroName}>{identity.name}</h1>
-        <p className={heroRole}>{identity.role}</p>
-        <p className={heroStatement}>{identity.statement}</p>
+    <div style={{ width: '100%' }}>
+      {/* Identity */}
+      <section className={heroFold} aria-label="Identity">
+        <h1 className={nameDisplay}>{identity.name}</h1>
+        <p className={roleDisplay}>{identity.role}</p>
+        <p className={statement}>{identity.statement}</p>
       </section>
 
-      {/* Timeline band */}
-      <section className={bandDark}>
-        <p className={sectionLabel}>Experience</p>
+      <hr className={divider} />
+
+      {/* Timeline */}
+      <section className={fold} aria-label="Experience">
+        <p className={eyebrow}>Experience</p>
         {timeline.map((entry, i) => (
           <div key={i} className={timelineRow}>
             <span className={timelineYear}>{entry.year}</span>
-            <span className={timelineCompany}>{entry.company}</span>
-            <div>
-              <p className={timelineRole}>{entry.role}</p>
-              <p className={timelineMobileCompany}>{entry.company}</p>
+            <div className={timelineContent}>
+              <div className={timelineRole}>{entry.role}</div>
+              <div className={timelineCompany}>{entry.company}</div>
               <p className={timelineDesc}>{entry.description}</p>
             </div>
           </div>
         ))}
       </section>
 
-      {/* Education band */}
-      <section className={band}>
-        <p className={sectionLabel}>Education</p>
-        <div className={eduRow}>
-          <p className={eduTitle}>{education.school}</p>
-          <p className={eduDetail}>{education.degree} — {education.concentration}</p>
-          <p className={eduDetail}>{education.years}</p>
+      <hr className={divider} />
+
+      {/* Education */}
+      <section className={fold} aria-label="Education">
+        <p className={eyebrow}>Education</p>
+        <div className={eduBlock}>
+          <div className={eduTitle}>{education.school}</div>
+          <p className={eduMeta}>{education.degree} — {education.concentration}</p>
+          <p className={eduMeta}>{education.years}</p>
         </div>
       </section>
 
-      {/* Capabilities band */}
-      <section className={bandDark}>
-        <p className={sectionLabel}>Capabilities</p>
+      <hr className={divider} />
+
+      {/* Capabilities */}
+      <section className={fold} aria-label="Capabilities">
+        <p className={eyebrow}>Capabilities</p>
         <div className={capGrid}>
-          {capabilities.map((cap) => (
-            <span key={cap} className={capTag}>{cap}</span>
+          {capabilities.map((cap, i) => (
+            <span key={i}>
+              <span className={capItem}>{cap}</span>
+              {i < capabilities.length - 1 && <span className={capSep}>·</span>}
+            </span>
           ))}
         </div>
       </section>
 
-      {/* Personal band */}
-      <section className={band}>
-        <p className={sectionLabel}>Personal</p>
-        <div className={personalGrid}>
-          <div className={personalItem}>
-            <span className={personalLabel}>Holes in One</span>
-            <span className={personalValue}>{personal.holesInOne}</span>
-          </div>
-          <div className={personalItem}>
-            <span className={personalLabel}>Sport</span>
-            <span className={personalValue}>{personal.sport}</span>
-          </div>
-          <div className={personalItem}>
-            <span className={personalLabel}>Teams</span>
-            <span className={personalValue}>{personal.teams.join(', ')}</span>
-          </div>
-          <div className={personalItem}>
-            <span className={personalLabel}>Current Focus</span>
-            <span className={personalValue}>{personal.currentFocus}</span>
-          </div>
+      <hr className={divider} />
+
+      {/* Personal */}
+      <section className={fold} aria-label="Personal">
+        <p className={eyebrow}>Personal</p>
+        <div className={personalRow}>
+          <span className={personalLabel}>Holes in One</span>
+          <span className={personalValue}>{personal.holesInOne}</span>
+        </div>
+        <div className={personalRow}>
+          <span className={personalLabel}>Sport</span>
+          <span className={personalValue}>{personal.sport}</span>
+        </div>
+        <div className={personalRow}>
+          <span className={personalLabel}>Teams</span>
+          <span className={personalValue}>{personal.teams.join(', ')}</span>
+        </div>
+        <div className={personalRow}>
+          <span className={personalLabel}>Current Focus</span>
+          <span className={personalValue}>{personal.currentFocus}</span>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className={footerBand}>
-        <a href="/" className={footerLink}>← Work</a>
+      <footer className={footerWrap}>
+        <span className={footerText}>Doug March · Product Designer & Developer</span>
         <a href="/archive" className={footerLink}>Archive</a>
       </footer>
-    </>
+    </div>
   )
 }

@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 340,
+    "s": 92,
+    "l": 58,
+    "name": "blazing rose"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "rose",
+    "name": "deep ink"
+  },
+  "mood_word": "austere",
+  "color_story": "Blazing rose-magenta — the color of exertion, of pressed lips, of deliberate effort — against near-void dark: the palette enacts the discipline the phrase demands."
+}

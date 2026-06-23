@@ -2,77 +2,77 @@ import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
 const navWrap = css({
-  position: 'fixed',
+  position: 'sticky',
   top: 0,
-  left: 0,
-  right: 0,
   zIndex: 100,
-  height: '64px',
+  width: '100%',
+  height: '48px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: '0 6vw',
-  background: 'transparent',
-  transition: 'background 0.3s ease, border-color 0.3s ease',
-  borderBottom: '1px solid transparent',
-  _hover: {
-    background: 'bg',
-    borderColor: 'border',
-  },
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  backdropFilter: 'blur(12px)',
+  background: 'rgba(15, 3, 8, 0.9)',
 })
 
 const logoArea = css({
   display: 'flex',
   alignItems: 'center',
-  gap: '12px',
+  gap: '10px',
 })
 
 const logoImg = css({
-  width: '28px',
-  height: '28px',
+  width: '22px',
+  height: '22px',
 })
 
-const logoText = css({
+const siteName = css({
   fontFamily: 'body',
-  fontSize: '13px',
-  fontWeight: 'medium',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  color: 'accent',
+  fontWeight: 'semibold',
+  fontSize: '14px',
+  color: 'text',
+  letterSpacing: 'normal',
   textDecoration: 'none',
+  '&:hover': { color: 'accent' },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+  },
 })
 
 const navLinks = css({
   display: 'flex',
   alignItems: 'center',
-  gap: '32px',
+  gap: '24px',
 })
 
 const navLink = css({
   fontFamily: 'body',
-  fontSize: '11px',
   fontWeight: 'medium',
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase',
-  color: 'textSecondary',
+  fontSize: '13px',
+  color: 'textMuted',
   textDecoration: 'none',
-  padding: '10px 0',
-  minHeight: '44px',
-  display: 'flex',
-  alignItems: 'center',
-  transition: 'color 0.2s ease',
-  _hover: {
-    color: 'accent',
-    textDecoration: 'none',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
+  transition: 'color 150ms ease',
+  padding: '12px 0',
+  '&:hover': { color: 'accent' },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
   },
 })
 
 export function Sidebar() {
   return (
     <nav className={navWrap} aria-label="Main navigation">
-      <a href="/" className={logoArea} style={{ textDecoration: 'none' }}>
-        <img src={logoSvg} alt="Doug March logo" className={logoImg} />
-        <span className={logoText}>Doug March</span>
+      <a href="/" className={logoArea} aria-label="Doug March — Home">
+        <img src={logoSvg} alt="" className={logoImg} />
+        <span className={siteName}>Doug March</span>
       </a>
       <div className={navLinks}>
         <a href="/" className={navLink}>Work</a>

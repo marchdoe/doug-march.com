@@ -1,0 +1,249 @@
+{
+  "date": "2026-06-23",
+  "startedAt": "2026-06-23T11:03:45.193Z",
+  "completedAt": "2026-06-23T11:12:38.848Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 13
+      },
+      "output": {
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Tuesday",
+          "is_weekend": false,
+          "day_index": 2
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "calesthio/OpenMontage/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "ZhuLinsen/daily_stock_analysis/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/mukul975",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "garrytan/gstack/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "bytedance/deer-flow/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "U.S. Open",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Wyndham Clark",
+              "position": "1",
+              "score": "-4"
+            },
+            {
+              "name": "Sam Burns",
+              "position": "2",
+              "score": "-3"
+            },
+            {
+              "name": "Tom Kim",
+              "position": "3",
+              "score": "-1"
+            },
+            {
+              "name": "J.T. Poston",
+              "position": "4",
+              "score": "E"
+            },
+            {
+              "name": "Keith Mitchell",
+              "position": "5",
+              "score": "E"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Crypto in 2026: Oh, This Is the Bad Place",
+              "url": "https://www.stephendiehl.com/posts/bad_place_2026/",
+              "score": 55,
+              "by": "ibobev"
+            },
+            {
+              "title": "Steam Machine launches today",
+              "url": "https://store.steampowered.com/news/group/45479024/view/685257114654870245",
+              "score": 1612,
+              "by": "theschwa"
+            },
+            {
+              "title": "The new HTTP QUERY method explained",
+              "url": "https://kreya.app/blog/new-http-query-method-explained/",
+              "score": 139,
+              "by": "CommonGuy"
+            },
+            {
+              "title": "Plotnine",
+              "url": "https://plotnine.org/",
+              "score": 53,
+              "by": "tosh"
+            },
+            {
+              "title": "Polymarket has flooded social media with deceptive videos by paid creators",
+              "url": "https://www.wsj.com/business/media/polymarket-social-media-bets-prediction-market-441cdeb5?st=HhTZY2",
+              "score": 332,
+              "by": "Vaslo"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "first quarter",
+          "illumination": 0.664,
+          "days_into_cycle": 8.96
+        },
+        "music": {
+          "bands": [
+            "Radiohead",
+            "Tobin Sprout"
+          ]
+        },
+        "quote": {
+          "text": "Watch what you say, and whatever you say, practice it.",
+          "author": "Soyen Shaku"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 23,
+          "day_of_year": 174,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-22T22:10Z",
+              "result": "win",
+              "score": "5-3"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:49",
+          "sunset": "19:34",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-23"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-23T11:04:00.519Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-22: Stack\n  - 2026-06-21: Split\n  - 2026-06-20: Gallery Wall\n  - 2026-06-19: Poster\n  - 2026-06-18: Specimen\n  - 2026-06-17: Index\n  - 2026-06-16: Broadsheet\n\n**Recently used** (last 3 days): Stack, Split, Gallery Wall\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or"
+      },
+      "output": {
+        "hero_copy": "Watch what you say,\nand whatever you say,\npractice it.",
+        "archetype": "Scroll",
+        "chassisId": "bricolage-manrope",
+        "specLength": 7700,
+        "specPreview": "### 1. Color Specification\n- **Primary hue:** H:340° — rose-magenta, within the mandate window (322°–358°). This hue sits between love and wound, warmth and severity — the precise emotional register of a Zen imperative about disciplined speech. Every recent build has avoided this corridor; it is untouched and earned.\n- **Neutral palette (ink family, rose-tinted throughout):**\n  - ink.50: #FDF5F7\n  - ink.100: #F5E8ED (primary dark-mode body text — 17.5:1 contrast on ink.900 ✓)\n  - ink.200: #E8D0D",
+        "selfCheck": "1. Hero quotability: Yes — Soyen Shaku's recursive three-clause directive earns standalone posting; the rhythm folds back on itself in a way that compels a second read and a screenshot.\n2. Because-of chain: Yes — Zen imperative of disciplined practice → Scroll (meditative descent mirrors the act of "
+      },
+      "durationMs": 346521,
+      "timestamp": "2026-06-23T11:09:47.045Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 7700
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 40784,
+      "timestamp": "2026-06-23T11:10:29.375Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4361,
+        "briefLength": 10525
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 104915,
+      "timestamp": "2026-06-23T11:12:14.291Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-23T11:12:21.762Z"
+    }
+  ]
+}

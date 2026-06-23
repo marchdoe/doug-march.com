@@ -4,150 +4,158 @@ import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkDetail })
 
-const heroBand = css({
-  width: '100%',
-  background: 'bg',
-  padding: '128px 6vw 72px',
-  minHeight: '50vh',
+const heroFold = css({
+  minHeight: '60vh',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'flex-end',
+  justifyContent: 'center',
+  padding: '96px 6vw',
+  width: '100%',
 })
 
-const heroTitle = css({
+const title = css({
   fontFamily: 'display',
-  fontSize: 'clamp(48px, 10vw, 128px)',
-  lineHeight: '0.85',
+  fontWeight: 'bold',
+  fontSize: 'clamp(40px, 6vw, 80px)',
+  lineHeight: 'tight',
+  letterSpacing: 'tight',
   color: 'accent',
   marginBottom: '16px',
 })
 
-const heroMeta = css({
+const metaRow = css({
+  display: 'flex',
+  gap: '24px',
+  flexWrap: 'wrap',
+  marginBottom: '32px',
+})
+
+const metaItem = css({
   fontFamily: 'body',
-  fontSize: '13px',
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase',
+  fontWeight: 'medium',
+  fontSize: '14px',
   color: 'textMuted',
+  textTransform: 'uppercase',
+  letterSpacing: 'wider',
 })
 
-const band = css({
+const divider = css({
   width: '100%',
-  padding: '72px 6vw',
-  borderTop: '1px solid',
-  borderColor: 'border',
+  height: '1px',
+  background: 'border',
+  border: 'none',
 })
 
-const bandDark = css({
+const fold = css({
+  padding: '96px 6vw',
   width: '100%',
-  padding: '72px 6vw',
-  borderTop: '1px solid',
-  borderColor: 'border',
-  background: 'bgCard',
 })
 
-const sectionLabel = css({
+const eyebrow = css({
   fontFamily: 'body',
+  fontWeight: 'semibold',
   fontSize: '11px',
-  letterSpacing: '0.14em',
+  color: 'accentDark',
   textTransform: 'uppercase',
-  color: 'textMuted',
+  letterSpacing: 'widest',
   marginBottom: '16px',
 })
 
 const bodyText = css({
   fontFamily: 'body',
-  fontSize: '16px',
-  lineHeight: '1.5',
-  color: 'text',
+  fontWeight: 'normal',
+  fontSize: '17px',
+  lineHeight: 'normal',
+  color: 'textSecondary',
   maxWidth: '60ch',
+  marginBottom: '32px',
 })
 
 const stackList = css({
   display: 'flex',
   flexWrap: 'wrap',
   gap: '8px',
-  marginTop: '16px',
 })
 
 const stackTag = css({
-  fontFamily: 'mono',
+  fontFamily: 'body',
+  fontWeight: 'medium',
   fontSize: '13px',
-  color: 'textSecondary',
+  color: 'text',
   padding: '6px 12px',
+  background: 'cardBg',
   border: '1px solid',
   borderColor: 'border',
 })
 
-const linkBtn = css({
-  display: 'inline-flex',
-  alignItems: 'center',
+const extLink = css({
   fontFamily: 'body',
-  fontSize: '14px',
   fontWeight: 'medium',
-  letterSpacing: '0.05em',
+  fontSize: '14px',
   color: 'accent',
   textDecoration: 'none',
-  padding: '12px 24px',
-  border: '1px solid',
-  borderColor: 'accent',
-  minHeight: '44px',
-  transition: 'background 0.2s ease, color 0.2s ease',
-  _hover: {
-    background: 'accent',
-    color: 'bg',
-    textDecoration: 'none',
+  display: 'inline-block',
+  padding: '12px 0',
+  borderBottom: '1px solid transparent',
+  transition: 'border-color 150ms ease, color 150ms ease',
+  '&:hover': {
+    color: 'accentBright',
+    borderBottomColor: 'accentBright',
+  },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
   },
 })
 
-const footerBand = css({
-  width: '100%',
-  background: 'bgCard',
+const backLink = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '14px',
+  color: 'textMuted',
+  textDecoration: 'none',
+  display: 'inline-block',
+  padding: '12px 0',
+  transition: 'color 150ms ease',
+  '&:hover': { color: 'text' },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+  },
+})
+
+const footerWrap = css({
   padding: '48px 6vw',
   borderTop: '1px solid',
   borderColor: 'border',
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
+  alignItems: 'baseline',
   flexWrap: 'wrap',
-  gap: '16px',
+  gap: '12px',
+})
+
+const footerText = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: '13px',
+  color: 'textMuted',
 })
 
 const footerLink = css({
   fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
+  fontWeight: 'normal',
+  fontSize: '13px',
   color: 'textMuted',
   textDecoration: 'none',
-  minHeight: '44px',
-  display: 'flex',
-  alignItems: 'center',
-  _hover: {
-    color: 'accent',
+  '&:hover': { color: 'textSecondary' },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
   },
-})
-
-const notFoundText = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(32px, 8vw, 96px)',
-  lineHeight: '0.85',
-  color: 'textMuted',
-  padding: '128px 6vw',
-})
-
-const detailGrid = css({
-  display: 'grid',
-  gridTemplateColumns: '1fr',
-  gap: '48px',
-  '@media (min-width: 768px)': {
-    gridTemplateColumns: '1fr 1fr',
-  },
-})
-
-const detailBlock = css({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
 })
 
 function WorkDetail() {
@@ -156,103 +164,87 @@ function WorkDetail() {
 
   if (!project) {
     return (
-      <>
-        <h1 className={notFoundText}>Project not found</h1>
-        <footer className={footerBand}>
-          <a href="/" className={footerLink}>← Work</a>
-        </footer>
-      </>
+      <div className={heroFold}>
+        <h1 className={title}>Not Found</h1>
+        <a href="/" className={backLink}>← Back to work</a>
+      </div>
     )
   }
 
   return (
-    <>
-      {/* Hero */}
-      <section className={heroBand}>
-        <p className={heroMeta}>{project.type} · {project.year}</p>
-        <h1 className={heroTitle}>{project.title}</h1>
+    <div style={{ width: '100%' }}>
+      <section className={heroFold}>
+        <h1 className={title}>{project.title}</h1>
+        <div className={metaRow}>
+          <span className={metaItem}>{project.type}</span>
+          <span className={metaItem}>{project.year}</span>
+          {project.role && <span className={metaItem}>{project.role}</span>}
+        </div>
+        <a href="/" className={backLink}>← Back to work</a>
       </section>
 
-      {/* Details */}
-      {project.depth === 'full' ? (
-        <>
-          <section className={bandDark}>
-            <div className={detailGrid}>
-              {project.role && (
-                <div className={detailBlock}>
-                  <p className={sectionLabel}>Role</p>
-                  <p className={bodyText}>{project.role}</p>
-                </div>
-              )}
-              {project.problem && (
-                <div className={detailBlock}>
-                  <p className={sectionLabel}>Problem</p>
-                  <p className={bodyText}>{project.problem}</p>
-                </div>
-              )}
-              {project.approach && (
-                <div className={detailBlock}>
-                  <p className={sectionLabel}>Approach</p>
-                  <p className={bodyText}>{project.approach}</p>
-                </div>
-              )}
-              {project.outcome && (
-                <div className={detailBlock}>
-                  <p className={sectionLabel}>Outcome</p>
-                  <p className={bodyText}>{project.outcome}</p>
-                </div>
-              )}
+      <hr className={divider} />
+
+      <section className={fold}>
+        {project.problem && (
+          <>
+            <p className={eyebrow}>Problem</p>
+            <p className={bodyText}>{project.problem}</p>
+          </>
+        )}
+
+        {project.approach && (
+          <>
+            <p className={eyebrow}>Approach</p>
+            <p className={bodyText}>{project.approach}</p>
+          </>
+        )}
+
+        {project.outcome && (
+          <>
+            <p className={eyebrow}>Outcome</p>
+            <p className={bodyText}>{project.outcome}</p>
+          </>
+        )}
+
+        {project.description && (
+          <p className={bodyText}>{project.description}</p>
+        )}
+
+        {project.stack && project.stack.length > 0 && (
+          <>
+            <p className={eyebrow}>Stack</p>
+            <div className={stackList}>
+              {project.stack.map((tech) => (
+                <span key={tech} className={stackTag}>{tech}</span>
+              ))}
             </div>
-          </section>
+          </>
+        )}
 
-          {project.stack && project.stack.length > 0 && (
-            <section className={band}>
-              <p className={sectionLabel}>Stack</p>
-              <div className={stackList}>
-                {project.stack.map((tech) => (
-                  <span key={tech} className={stackTag}>{tech}</span>
-                ))}
-              </div>
-            </section>
+        <div style={{ marginTop: '48px', display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+          {project.externalUrl && (
+            <a href={project.externalUrl} className={extLink} target="_blank" rel="noopener noreferrer">
+              Visit Site ↗
+            </a>
           )}
-        </>
-      ) : (
-        project.description && (
-          <section className={bandDark}>
-            <p className={sectionLabel}>About</p>
-            <p className={bodyText}>{project.description}</p>
-          </section>
-        )
-      )}
+          {project.liveUrl && (
+            <a href={project.liveUrl} className={extLink} target="_blank" rel="noopener noreferrer">
+              Live ↗
+            </a>
+          )}
+          {project.githubUrl && (
+            <a href={project.githubUrl} className={extLink} target="_blank" rel="noopener noreferrer">
+              GitHub ↗
+            </a>
+          )}
+        </div>
+      </section>
 
-      {/* Links */}
-      {(project.externalUrl || project.liveUrl || project.githubUrl) && (
-        <section className={band}>
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            {project.externalUrl && (
-              <a href={project.externalUrl} className={linkBtn} target="_blank" rel="noopener noreferrer">
-                Visit Site ↗
-              </a>
-            )}
-            {project.liveUrl && !project.externalUrl && (
-              <a href={project.liveUrl} className={linkBtn} target="_blank" rel="noopener noreferrer">
-                Live ↗
-              </a>
-            )}
-            {project.githubUrl && (
-              <a href={project.githubUrl} className={linkBtn} target="_blank" rel="noopener noreferrer">
-                GitHub ↗
-              </a>
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* Footer */}
-      <footer className={footerBand}>
-        <a href="/" className={footerLink}>← All Work</a>
+      <footer className={footerWrap}>
+        <span className={footerText}>Doug March · Product Designer & Developer</span>
         <a href="/archive" className={footerLink}>Archive</a>
       </footer>
-    </>
+    </div>
   )
 }
