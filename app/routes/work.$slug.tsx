@@ -2,249 +2,222 @@ import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetail })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const heroFold = css({
-  minHeight: '60vh',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  padding: '96px 6vw',
-  width: '100%',
+const pageHeader = css({
+  padding: '40px 5vw 28px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
 })
 
-const title = css({
-  fontFamily: 'display',
+const projectTitle = css({
+  fontFamily: 'heading',
   fontWeight: 'bold',
-  fontSize: 'clamp(40px, 6vw, 80px)',
-  lineHeight: 'tight',
-  letterSpacing: 'tight',
+  fontSize: 'clamp(28px, 4vw, 56px)',
+  lineHeight: '0.95',
+  letterSpacing: '-0.01em',
   color: 'accent',
-  marginBottom: '16px',
 })
 
-const metaRow = css({
-  display: 'flex',
-  gap: '24px',
-  flexWrap: 'wrap',
-  marginBottom: '32px',
-})
-
-const metaItem = css({
+const projectMeta = css({
   fontFamily: 'body',
   fontWeight: 'medium',
-  fontSize: '14px',
-  color: 'textMuted',
+  fontSize: 'clamp(11px, 0.8vw, 13px)',
+  letterSpacing: '0.12em',
   textTransform: 'uppercase',
-  letterSpacing: 'wider',
+  color: 'textMuted',
+  marginTop: '12px',
 })
 
-const divider = css({
-  width: '100%',
-  height: '1px',
-  background: 'border',
-  border: 'none',
+const contentGrid = css({
+  display: { base: 'flex', md: 'grid' },
+  flexDirection: { base: 'column', md: 'unset' },
+  gridTemplateColumns: { md: '2fr 1fr' },
+  gap: '0',
+  padding: '0 5vw',
 })
 
-const fold = css({
-  padding: '96px 6vw',
-  width: '100%',
+const mainCol = css({
+  padding: { base: '24px 0 32px', md: '24px 20px 32px 0' },
+  borderRight: { base: 'none', md: '1px solid' },
+  borderBottom: { base: '1px solid', md: 'none' },
+  borderColor: 'border',
 })
 
-const eyebrow = css({
+const sideCol = css({
+  padding: { base: '24px 0 32px', md: '24px 0 32px 20px' },
+})
+
+const sectionHead = css({
   fontFamily: 'body',
   fontWeight: 'semibold',
-  fontSize: '11px',
-  color: 'accentDark',
+  fontSize: 'clamp(11px, 0.9vw, 13px)',
+  letterSpacing: '0.12em',
   textTransform: 'uppercase',
-  letterSpacing: 'widest',
-  marginBottom: '16px',
+  color: 'accentDim',
+  marginBottom: '12px',
+  lineHeight: '1.2',
 })
 
 const bodyText = css({
   fontFamily: 'body',
   fontWeight: 'normal',
-  fontSize: '17px',
-  lineHeight: 'normal',
+  fontSize: 'clamp(14px, 1vw, 16px)',
+  lineHeight: '1.55',
   color: 'textSecondary',
-  maxWidth: '60ch',
-  marginBottom: '32px',
+  maxWidth: '65ch',
+  marginBottom: '20px',
 })
 
-const stackList = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
-})
-
-const stackTag = css({
+const detailLabel = css({
   fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '13px',
-  color: 'text',
-  padding: '6px 12px',
-  background: 'cardBg',
-  border: '1px solid',
-  borderColor: 'border',
+  fontWeight: 'semibold',
+  fontSize: '11px',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginBottom: '4px',
 })
 
-const extLink = css({
+const detailValue = css({
   fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '14px',
+  fontWeight: 'normal',
+  fontSize: 'clamp(13px, 0.95vw, 15px)',
+  color: 'textSecondary',
+  lineHeight: '1.55',
+  marginBottom: '16px',
+})
+
+const linkStyle = css({
   color: 'accent',
   textDecoration: 'none',
+  fontFamily: 'body',
+  fontWeight: 'bold',
+  fontSize: 'clamp(13px, 0.95vw, 15px)',
+  padding: '8px 0',
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  transition: 'color 0.15s ease',
+  _hover: { color: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+})
+
+const tagStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: '11px',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: '{colors.chartreuse.600}',
   display: 'inline-block',
-  padding: '12px 0',
-  borderBottom: '1px solid transparent',
-  transition: 'border-color 150ms ease, color 150ms ease',
-  '&:hover': {
-    color: 'accentBright',
-    borderBottomColor: 'accentBright',
-  },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
+  marginRight: '8px',
+  marginBottom: '4px',
 })
 
 const backLink = css({
+  color: 'textMuted',
+  textDecoration: 'none',
   fontFamily: 'body',
   fontWeight: 'medium',
-  fontSize: '14px',
-  color: 'textMuted',
-  textDecoration: 'none',
-  display: 'inline-block',
+  fontSize: '12px',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
   padding: '12px 0',
-  transition: 'color 150ms ease',
-  '&:hover': { color: 'text' },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  transition: 'color 0.15s ease',
+  _hover: { color: 'accent' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
-const footerWrap = css({
-  padding: '48px 6vw',
-  borderTop: '1px solid',
-  borderColor: 'border',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'baseline',
-  flexWrap: 'wrap',
-  gap: '12px',
-})
-
-const footerText = css({
-  fontFamily: 'body',
-  fontWeight: 'normal',
-  fontSize: '13px',
-  color: 'textMuted',
-})
-
-const footerLink = css({
-  fontFamily: 'body',
-  fontWeight: 'normal',
-  fontSize: '13px',
-  color: 'textMuted',
-  textDecoration: 'none',
-  '&:hover': { color: 'textSecondary' },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
-})
-
-function WorkDetail() {
+function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div className={heroFold}>
-        <h1 className={title}>Not Found</h1>
+      <div className={css({ padding: '40px 5vw' })}>
+        <h1 className={projectTitle}>Project not found</h1>
         <a href="/" className={backLink}>← Back to work</a>
       </div>
     )
   }
 
   return (
-    <div style={{ width: '100%' }}>
-      <section className={heroFold}>
-        <h1 className={title}>{project.title}</h1>
-        <div className={metaRow}>
-          <span className={metaItem}>{project.type}</span>
-          <span className={metaItem}>{project.year}</span>
-          {project.role && <span className={metaItem}>{project.role}</span>}
+    <>
+      <section className={pageHeader}>
+        <a href="/" className={backLink}>← Back</a>
+        <h1 className={projectTitle}>{project.title}</h1>
+        <div className={projectMeta}>
+          {project.type} · {project.year}
+          {project.role && <> · {project.role}</>}
         </div>
-        <a href="/" className={backLink}>← Back to work</a>
       </section>
 
-      <hr className={divider} />
-
-      <section className={fold}>
-        {project.problem && (
-          <>
-            <p className={eyebrow}>Problem</p>
-            <p className={bodyText}>{project.problem}</p>
-          </>
-        )}
-
-        {project.approach && (
-          <>
-            <p className={eyebrow}>Approach</p>
-            <p className={bodyText}>{project.approach}</p>
-          </>
-        )}
-
-        {project.outcome && (
-          <>
-            <p className={eyebrow}>Outcome</p>
-            <p className={bodyText}>{project.outcome}</p>
-          </>
-        )}
-
-        {project.description && (
-          <p className={bodyText}>{project.description}</p>
-        )}
-
-        {project.stack && project.stack.length > 0 && (
-          <>
-            <p className={eyebrow}>Stack</p>
-            <div className={stackList}>
-              {project.stack.map((tech) => (
-                <span key={tech} className={stackTag}>{tech}</span>
-              ))}
-            </div>
-          </>
-        )}
-
-        <div style={{ marginTop: '48px', display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-          {project.externalUrl && (
-            <a href={project.externalUrl} className={extLink} target="_blank" rel="noopener noreferrer">
-              Visit Site ↗
-            </a>
+      <div className={contentGrid}>
+        <div className={mainCol}>
+          {project.problem && (
+            <>
+              <h2 className={sectionHead}>Problem</h2>
+              <p className={bodyText}>{project.problem}</p>
+            </>
           )}
-          {project.liveUrl && (
-            <a href={project.liveUrl} className={extLink} target="_blank" rel="noopener noreferrer">
-              Live ↗
-            </a>
+
+          {project.approach && (
+            <>
+              <h2 className={sectionHead}>Approach</h2>
+              <p className={bodyText}>{project.approach}</p>
+            </>
           )}
+
+          {project.outcome && (
+            <>
+              <h2 className={sectionHead}>Outcome</h2>
+              <p className={bodyText}>{project.outcome}</p>
+            </>
+          )}
+
+          {project.description && !project.problem && (
+            <p className={bodyText}>{project.description}</p>
+          )}
+        </div>
+
+        <div className={sideCol}>
+          {project.stack && project.stack.length > 0 && (
+            <>
+              <h2 className={sectionHead}>Stack</h2>
+              <div className={css({ marginBottom: '20px' })}>
+                {project.stack.map((tech) => (
+                  <span key={tech} className={tagStyle}>{tech}</span>
+                ))}
+              </div>
+            </>
+          )}
+
+          {(project.liveUrl || project.externalUrl) && (
+            <>
+              <div className={detailLabel}>Live Site</div>
+              <a
+                href={project.liveUrl || project.externalUrl}
+                className={linkStyle}
+              >
+                Visit →
+              </a>
+            </>
+          )}
+
           {project.githubUrl && (
-            <a href={project.githubUrl} className={extLink} target="_blank" rel="noopener noreferrer">
-              GitHub ↗
-            </a>
+            <div className={css({ marginTop: '16px' })}>
+              <div className={detailLabel}>Source</div>
+              <a href={project.githubUrl} className={linkStyle}>
+                GitHub →
+              </a>
+            </div>
           )}
         </div>
-      </section>
-
-      <footer className={footerWrap}>
-        <span className={footerText}>Doug March · Product Designer & Developer</span>
-        <a href="/archive" className={footerLink}>Archive</a>
-      </footer>
-    </div>
+      </div>
+    </>
   )
 }

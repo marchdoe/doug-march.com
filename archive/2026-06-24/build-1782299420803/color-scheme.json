@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 72,
+    "s": 100,
+    "l": 47,
+    "name": "chartreuse"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "yellow-green",
+    "name": "ink"
+  },
+  "mood_word": "present",
+  "color_story": "Electric chartreuse — the exact color of summer light on a leaf at peak illumination — stamped onto near-void dark paper: a night-edition broadsheet that reads as both warning and celebration of this specific Wednesday."
+}

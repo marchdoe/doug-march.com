@@ -1,83 +1,79 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
+import { Flex, Box } from '../../styled-system/jsx'
 
-const navWrap = css({
-  position: 'sticky',
-  top: 0,
-  zIndex: 100,
-  width: '100%',
-  height: '48px',
+const mastheadStyle = css({
   display: 'flex',
-  alignItems: 'center',
+  alignItems: 'baseline',
   justifyContent: 'space-between',
-  padding: '0 6vw',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  backdropFilter: 'blur(12px)',
-  background: 'rgba(15, 3, 8, 0.9)',
+  padding: '14px 5vw',
+  background: 'bgMasthead',
+  borderBottom: '2px solid',
+  borderColor: 'borderAccent',
+  flexWrap: 'wrap',
+  gap: '8px',
 })
 
-const logoArea = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
-})
-
-const logoImg = css({
-  width: '22px',
-  height: '22px',
-})
-
-const siteName = css({
+const nameplateStyle = css({
   fontFamily: 'body',
-  fontWeight: 'semibold',
-  fontSize: '14px',
+  fontWeight: 'bold',
+  fontSize: 'clamp(14px, 1.6vw, 22px)',
+  letterSpacing: '0.10em',
+  textTransform: 'uppercase',
   color: 'text',
-  letterSpacing: 'normal',
   textDecoration: 'none',
-  '&:hover': { color: 'accent' },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
-})
-
-const navLinks = css({
   display: 'flex',
   alignItems: 'center',
-  gap: '24px',
+  gap: '12px',
+  _hover: { color: 'accent' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
-const navLink = css({
+const dateStyle = css({
+  fontFamily: 'body',
+  fontWeight: 'normal',
+  fontSize: 'clamp(10px, 0.8vw, 12px)',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  display: { base: 'none', md: 'block' },
+})
+
+const navStyle = css({
+  display: 'flex',
+  alignItems: 'baseline',
+  gap: '20px',
+})
+
+const navLinkStyle = css({
   fontFamily: 'body',
   fontWeight: 'medium',
-  fontSize: '13px',
-  color: 'textMuted',
-  textDecoration: 'none',
-  letterSpacing: 'wider',
+  fontSize: 'clamp(11px, 0.8vw, 13px)',
+  letterSpacing: '0.12em',
   textTransform: 'uppercase',
-  transition: 'color 150ms ease',
+  color: 'textSecondary',
+  textDecoration: 'none',
   padding: '12px 0',
-  '&:hover': { color: 'accent' },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  transition: 'color 0.15s ease',
+  _hover: { color: 'accent' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
 })
 
 export function Sidebar() {
   return (
-    <nav className={navWrap} aria-label="Main navigation">
-      <a href="/" className={logoArea} aria-label="Doug March — Home">
-        <img src={logoSvg} alt="" className={logoImg} />
-        <span className={siteName}>Doug March</span>
+    <header className={mastheadStyle}>
+      <a href="/" className={nameplateStyle}>
+        <img src={logoSvg} alt="Doug March logo" style={{ width: '28px', height: '28px' }} />
+        <span>Doug March</span>
       </a>
-      <div className={navLinks}>
-        <a href="/" className={navLink}>Work</a>
-        <a href="/about" className={navLink}>About</a>
-      </div>
-    </nav>
+      <span className={dateStyle}>Wed 24 June 2026</span>
+      <nav className={navStyle}>
+        <a href="/" className={navLinkStyle}>Work</a>
+        <a href="/about" className={navLinkStyle}>About</a>
+      </nav>
+    </header>
   )
 }
