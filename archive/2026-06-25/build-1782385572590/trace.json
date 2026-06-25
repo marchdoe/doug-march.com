@@ -1,0 +1,248 @@
+{
+  "date": "2026-06-25",
+  "startedAt": "2026-06-25T10:57:56.782Z",
+  "completedAt": "2026-06-25T11:06:14.280Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Himachal - The Experience",
+              "description": "Our Himachal web experience began as a simple desire, to capture the soul of Himachal beyond postcards and panoramas. We wanted people to feel the mist,...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a26737dd6af2719498604.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAgAINJREFUeAFs/V2iJLmOpAmCVDW/tcruyv+cWcXd2zzObCjjqJJzCMgHwKLas25FhPtxM1USBAQCATj+f//f/8++5jTb297f/53/G7//9/uvv7+3bM7LnufHzn+O3//d923j...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pil Rebranding Site",
+              "description": "For 20 years, Pil has evolved with brands and people. Today, our new website reflects who we are: a living ecosystem of creativity, ideas, and innovation.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a218e4cb4e5a558333777.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAC4jAAAuIwF4pT92AAyc5UlEQVR4nOT9CbhuXVYWhu5v/+dvq6UKRYgFJXKhBJsgYJSIJgIShUSwQZ8bwaiJlhghCV4jT2wAIVHAgF41aIHm3muTqBhFYsRgg0piSyOKUIBGSqmGEqr+qr895+zvPnvN0bzvO8aca+19zl94n7sozv/tteaac8wxxxzjHWOOOdfpHW9768XFxcXp4uJ8YT8W19kKnLb/...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Arkansas Museum of Fine Art",
+              "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+              "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Thursday",
+          "is_weekend": false,
+          "day_index": 4
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "google-labs-code/design.md/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/calesthio",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "xbtlin/ai-berkshire/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "mauriceboe/TREK/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "apple/container/stargazers",
+              "description": "",
+              "language": "Swift",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Travelers Championship",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Half-Life 2 in a Browser",
+              "url": "https://hl2.slqnt.dev/",
+              "score": 278,
+              "by": "panza"
+            },
+            {
+              "title": "Dolphin Emulator Progress Release 2606",
+              "url": "https://dolphin-emu.org/blog/2026/06/25/dolphin-progress-report-release-2606/",
+              "score": 8,
+              "by": "exploraz"
+            },
+            {
+              "title": "Anthropic says Alibaba illicitly extracted Claude AI model capabilities",
+              "url": "https://www.reuters.com/world/china/anthropic-says-alibaba-illicitly-extracted-claude-ai-model-capabilities-2026-06-24/",
+              "score": 443,
+              "by": "htrp"
+            },
+            {
+              "title": "OpenAI unveils its first custom chip, built by Broadcom",
+              "url": "https://techcrunch.com/2026/06/24/openai-unveils-its-first-custom-chip-built-by-broadcom/",
+              "score": 712,
+              "by": "jamdesk"
+            },
+            {
+              "title": "Cloudflare launched self-managed OAuth for all",
+              "url": "https://blog.cloudflare.com/oauth-for-all/",
+              "score": 176,
+              "by": "terryds"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waxing gibbous",
+          "illumination": 0.844,
+          "days_into_cycle": 10.95
+        },
+        "music": {
+          "bands": [
+            "The War on Drugs",
+            "Wet Leg"
+          ]
+        },
+        "quote": {
+          "text": "Winners don't Quit. That's why they Win.",
+          "author": "Unknown"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 25,
+          "day_of_year": 176,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-24T22:40Z",
+              "result": "loss",
+              "score": "2-4"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:50",
+          "sunset": "19:34",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-25"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-25T10:58:12.089Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-24: Broadsheet\n  - 2026-06-23: Scroll\n  - 2026-06-22: Stack\n  - 2026-06-21: Split\n  - 2026-06-20: Gallery Wall\n  - 2026-06-19: Poster\n  - 2026-06-18: Specimen\n\n**Recently used** (last 3 days): Broadsheet, Scroll, Stack\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or"
+      },
+      "output": {
+        "hero_copy": "Winners don't Quit. That's why they Win.",
+        "archetype": "Specimen",
+        "chassisId": "big-shoulders-atkinson",
+        "specLength": 5937,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue** — H:285° (deep violet). Open corridor 275°–310°, unvisited in all seven prior builds. Not blue (too common), not magenta (too effusive) — 285° is the specific shade of held resolve.\n- **Neutral palette** — violet-ink family, tinted H:285° at 0.5–1% chroma so every surface belongs to the same night:\n  - 50: `#F7F5FC` · 100: `#EDE9F5` · 200: `#D8D1E8` · 300: `#BEB4D5`\n  - 400: `#9F93BF` · 500: `#7E70A8` · 600: `#5E5088` · 700: `#423568`\n  - 800: `#281E",
+        "selfCheck": "1. Hero quotability: Yes — \"Winners don't Quit. That's why they Win.\" is a self-contained, recursive declaration; the tautological logic makes it screenshot-worthy independent of any context.\n2. Because-of chain: Yes — The phrase's declarative/recursive nature demanded Specimen (type as the complete"
+      },
+      "durationMs": 335566,
+      "timestamp": "2026-06-25T11:03:47.660Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5937
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 35280,
+      "timestamp": "2026-06-25T11:04:24.436Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4235,
+        "briefLength": 9074
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 85825,
+      "timestamp": "2026-06-25T11:05:50.262Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-25T11:05:57.208Z"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 285,
+    "s": 100,
+    "l": 60,
+    "name": "deep violet"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "violet",
+    "name": "violet ink"
+  },
+  "mood_word": "defiant",
+  "color_story": "Deep violet at H:285° sits in the only unvisited corridor (275°–310°) — rare, authoritative, and precisely the color of sustained conviction: not warm enough to comfort, not cold enough to distance, just the hue of something that refuses to quit."
+}
