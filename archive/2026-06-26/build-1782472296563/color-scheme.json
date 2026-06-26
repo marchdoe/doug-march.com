@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 200,
+    "s": 88,
+    "l": 55,
+    "name": "cerulean"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "cerulean",
+    "name": "ink"
+  },
+  "mood_word": "archival",
+  "color_story": "Cerulean H:200° is the color of museum conservation light, photographic archives, and deep water — the precise chromatic register of something ancient being illuminated for the first time."
+}

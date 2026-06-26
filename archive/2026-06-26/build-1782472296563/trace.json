@@ -1,0 +1,275 @@
+{
+  "date": "2026-06-26",
+  "startedAt": "2026-06-26T11:01:19.108Z",
+  "completedAt": "2026-06-26T11:11:38.271Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Himachal - The Experience",
+              "description": "Our Himachal web experience began as a simple desire, to capture the soul of Himachal beyond postcards and panoramas. We wanted people to feel the mist,...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a26737dd6af2719498604.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAgAINJREFUeAFs/V2iJLmOpAmCVDW/tcruyv+cWcXd2zzObCjjqJJzCMgHwKLas25FhPtxM1USBAQCATj+f//f/8++5jTb297f/53/G7//9/uvv7+3bM7LnufHzn+O3//d923j...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pil Rebranding Site",
+              "description": "For 20 years, Pil has evolved with brands and people. Today, our new website reflects who we are: a living ecosystem of creativity, ideas, and innovation.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a218e4cb4e5a558333777.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAC4jAAAuIwF4pT92AAyc5UlEQVR4nOT9CbhuXVYWhu5v/+dvq6UKRYgFJXKhBJsgYJSIJgIShUSwQZ8bwaiJlhghCV4jT2wAIVHAgF41aIHm3muTqBhFYsRgg0piSyOKUIBGSqmGEqr+qr895+zvPnvN0bzvO8aca+19zl94n7sozv/tteaac8wxxxzjHWOOOdfpHW9768XFxcXp4uJ8YT8W19kKnLb/...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Arkansas Museum of Fine Art",
+              "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+              "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Friday",
+          "is_weekend": false,
+          "day_index": 5
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "google-labs-code/design.md/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/calesthio",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "xbtlin/ai-berkshire/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "mauriceboe/TREK/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "apple/container/stargazers",
+              "description": "",
+              "language": "Swift",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Travelers Championship",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Eric Cole",
+              "position": "1",
+              "score": "-7"
+            },
+            {
+              "name": "Nico Echavarria",
+              "position": "2",
+              "score": "-6"
+            },
+            {
+              "name": "Ben Griffin",
+              "position": "3",
+              "score": "-6"
+            },
+            {
+              "name": "Matt Fitzpatrick",
+              "position": "4",
+              "score": "-6"
+            },
+            {
+              "name": "Kristoffer Reitan",
+              "position": "5",
+              "score": "-6"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "We All Depend on Open Source. We Will Defend It Together",
+              "url": "https://akrites.org/letter/",
+              "score": 163,
+              "by": "dhruv3006"
+            },
+            {
+              "title": "Om Malik has died",
+              "url": "https://om.co/2026/06/24/1966-2026/",
+              "score": 924,
+              "by": "minimaxir"
+            },
+            {
+              "title": "An entire Herculaneum scroll has been read for the first time",
+              "url": "https://scrollprize.org/firstscroll",
+              "score": 1327,
+              "by": "verditelabs"
+            },
+            {
+              "title": "Libre Barcode Project",
+              "url": "https://graphicore.github.io/librebarcode/",
+              "score": 166,
+              "by": "luu"
+            },
+            {
+              "title": "What happened after 2k people tried to hack my AI assistant",
+              "url": "https://www.fernandoi.cl/posts/hackmyclaw/",
+              "score": 183,
+              "by": "cuchoi"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waxing gibbous",
+          "illumination": 0.913,
+          "days_into_cycle": 11.96
+        },
+        "music": {
+          "bands": [
+            "Wet Leg",
+            "Tobin Sprout",
+            "My Morning Jacket"
+          ]
+        },
+        "quote": {
+          "text": "Failure is the key to success; each mistake teaches us something.",
+          "author": "Morihei Ueshiba"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 26,
+          "day_of_year": 177,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-25T22:40Z",
+              "result": "loss",
+              "score": "1-2"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:50",
+          "sunset": "19:35",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-26"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-26T11:01:34.528Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-25: Specimen\n  - 2026-06-24: Broadsheet\n  - 2026-06-23: Scroll\n  - 2026-06-22: Stack\n  - 2026-06-21: Split\n  - 2026-06-20: Gallery Wall\n  - 2026-06-19: Poster\n\n**Recently used** (last 3 days): Specimen, Broadsheet, Scroll\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief"
+      },
+      "output": {
+        "hero_copy": "SEALED FOR 2,000 YEARS.",
+        "archetype": "Index",
+        "chassisId": "bebas-plex",
+        "specLength": 7906,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue** — H:200° (cerulean); the mandate's open corridor is 188°–215° and this sits dead center. Cerulean reads as archaeological documentation: conservation-lab blue, darkroom print tones, the color of X-ray light that decoded the scroll.\n\n**Neutral palette (ink family, tinted toward H:200° with chroma 0.01–0.02):**\n- 50: #EBF2F6\n- 100: #D2E2EC\n- 200: #A9C5D8\n- 300: #7EA5BC\n- 400: #5787A0\n- 500: #3B6880\n- 600: #294E63\n- 700: #1A3648\n- 800: #0E2030\n- 900: #071",
+        "selfCheck": "1. Hero quotability: Yes — \"SEALED FOR 2,000 YEARS.\" is directly derived from the day's top story (1327 HN points); it stands alone, invites curiosity, and earns a screenshot without surrounding context.\n2. Because-of chain: Yes — the discovery/cataloging theme of the phrase dictated Index (the scro"
+      },
+      "durationMs": 435282,
+      "timestamp": "2026-06-26T11:08:49.814Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 7906
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 35368,
+      "timestamp": "2026-06-26T11:09:26.687Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4042,
+        "briefLength": 10645
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 107256,
+      "timestamp": "2026-06-26T11:11:13.945Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-26T11:11:21.182Z"
+    }
+  ]
+}
