@@ -1,0 +1,281 @@
+{
+  "date": "2026-06-27",
+  "startedAt": "2026-06-27T10:39:57.634Z",
+  "completedAt": "2026-06-27T10:48:29.056Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Himachal - The Experience",
+              "description": "Our Himachal web experience began as a simple desire, to capture the soul of Himachal beyond postcards and panoramas. We wanted people to feel the mist,...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a26737dd6af2719498604.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAgAINJREFUeAFs/V2iJLmOpAmCVDW/tcruyv+cWcXd2zzObCjjqJJzCMgHwKLas25FhPtxM1USBAQCATj+f//f/8++5jTb297f/53/G7//9/uvv7+3bM7LnufHzn+O3//d923j...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Pil Rebranding Site",
+              "description": "For 20 years, Pil has evolved with brands and people. Today, our new website reflects who we are: a living ecosystem of creativity, ideas, and innovation.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a218e4cb4e5a558333777.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAC4jAAAuIwF4pT92AAyc5UlEQVR4nOT9CbhuXVYWhu5v/+dvq6UKRYgFJXKhBJsgYJSIJgIShUSwQZ8bwaiJlhghCV4jT2wAIVHAgF41aIHm3muTqBhFYsRgg0piSyOKUIBGSqmGEqr+qr895+zvPnvN0bzvO8aca+19zl94n7sozv/tteaac8wxxxzjHWOOOdfpHW9768XFxcXp4uJ8YT8W19kKnLb/...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Arkansas Museum of Fine Art",
+              "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+              "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Saturday",
+          "is_weekend": true,
+          "day_index": 6
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/simplex-chat",
+              "description": "",
+              "language": "Haskell",
+              "stars": null
+            },
+            {
+              "name": "google-labs-code/design.md/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "commaai/openpilot/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "kunchenguid/no-mistakes/stargazers",
+              "description": "",
+              "language": "Go",
+              "stars": null
+            },
+            {
+              "name": "grafana/grafana/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Travelers Championship",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Scottie Scheffler",
+              "position": "1",
+              "score": "-16"
+            },
+            {
+              "name": "Viktor Hovland",
+              "position": "2",
+              "score": "-14"
+            },
+            {
+              "name": "Akshay Bhatia",
+              "position": "3",
+              "score": "-12"
+            },
+            {
+              "name": "Eric Cole",
+              "position": "4",
+              "score": "-12"
+            },
+            {
+              "name": "Bud Cauley",
+              "position": "5",
+              "score": "-10"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "DeepSeek open-sources inference optimizations with 60–85% faster generation [pdf]",
+              "url": "https://github.com/deepseek-ai/DeepSpec/blob/main/DSpark_paper.pdf",
+              "score": 184,
+              "by": "aurenvale"
+            },
+            {
+              "title": "Linux on Older Hardware: The Complete Revival Guide",
+              "url": "https://www.fosslinux.com/158206/linux-on-older-hardware-revival-guide.htm",
+              "score": 59,
+              "by": "tapanjk"
+            },
+            {
+              "title": "Previewing GPT‑5.6 Sol: a next-generation model",
+              "url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+              "score": 1014,
+              "by": "minimaxir"
+            },
+            {
+              "title": "Long Wave radio era set to end with switch-off",
+              "url": "https://www.economist.com/britain/2026/06/25/the-bbc-switches-off-its-oldest-service",
+              "score": 36,
+              "by": "edward"
+            },
+            {
+              "title": "Fintech Engineering Handbook",
+              "url": "https://w.pitula.me/fintech-engineering-handbook/",
+              "score": 3,
+              "by": "signa11"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Independence Day",
+              "date": "2026-07-04",
+              "days_away": 7
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "full moon",
+          "illumination": 0.963,
+          "days_into_cycle": 12.94
+        },
+        "music": {
+          "bands": [
+            "Wet Leg",
+            "Guided by Voices",
+            "Tobin Sprout"
+          ]
+        },
+        "quote": {
+          "text": "If you read a lot of books, you're considered well-read. But if you watch a lot of TV, you're not considered well-viewed.",
+          "author": "Lily Tomlin"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 27,
+          "day_of_year": 178,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-26T22:40Z",
+              "result": "win",
+              "score": "8-0"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:51",
+          "sunset": "19:35",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-27"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-27T10:40:13.098Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-26: Index\n  - 2026-06-25: Specimen\n  - 2026-06-24: Broadsheet\n  - 2026-06-23: Scroll\n  - 2026-06-22: Stack\n  - 2026-06-21: Split\n  - 2026-06-20: Gallery Wall\n\n**Recently used** (last 3 days): Index, Specimen, Broadsheet\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief o"
+      },
+      "output": {
+        "hero_copy": "well-viewed.",
+        "archetype": "Poster",
+        "chassisId": "bricolage-manrope",
+        "specLength": 5564,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue:** H:243°, the blue of cathode-ray light; saturated but not garish, cold but not clinical — the color of a screen watched carefully in the dark.\n- **Neutral palette** (indigo-tinted night slate):\n  - 50: `#F2F2FA`\n  - 100: `#E8E9F5`\n  - 200: `#D0D2E8`\n  - 300: `#B2B4D0`\n  - 400: `#8E91B5`\n  - 500: `#6B6E95`\n  - 600: `#484B70`\n  - 700: `#2D3052`\n  - 800: `#181B38`\n  - 900: `#0B0D1E`\n- **Accent color:** light `#9DA2F5` · default `#7179F0` · dark `#3744CC",
+        "selfCheck": "1. Hero quotability: Yes — \"well-viewed.\" stands entirely alone: a coined word that implies the full Tomlin critique in two syllables and a period, quotable without context.\n2. Because-of chain: Yes — Tomlin's invented suffix → Poster (the word fills the frame, nothing else needed) → bricolage-manro"
+      },
+      "durationMs": 346543,
+      "timestamp": "2026-06-27T10:45:59.644Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5564
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 42849,
+      "timestamp": "2026-06-27T10:46:44.068Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4090,
+        "briefLength": 8458
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 80210,
+      "timestamp": "2026-06-27T10:48:04.280Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-27T10:48:11.908Z"
+    }
+  ]
+}

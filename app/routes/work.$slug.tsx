@@ -1,268 +1,370 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
+import { Box, Flex } from '../../styled-system/jsx'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetail })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const pageWrap = css({
-  padding: '0 4vw',
-  minHeight: 'calc(100vh - 56px)',
-})
-
-const masthead = css({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-end',
-  paddingBottom: '32px',
-  paddingTop: '48px',
-  borderBottom: '1px solid',
-  borderColor: 'borderAccent',
-})
-
-const heroTitle = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(42px, 8vw, 120px)',
-  lineHeight: 'tight',
-  letterSpacing: '0.01em',
-  color: 'text',
-})
-
-const metaRow = css({
-  display: 'flex',
-  gap: '24px',
-  marginTop: '12px',
-  flexWrap: 'wrap',
-})
-
-const metaItem = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-})
-
-const metaValue = css({
-  color: 'accent',
-})
-
-const bodyGrid = css({
-  display: 'grid',
-  gridTemplateColumns: '1.5fr 1fr',
-  '@media (max-width: 767px)': {
-    gridTemplateColumns: '1fr',
-  },
-})
-
-const mainCol = css({
-  padding: '24px 24px 48px 0',
-  borderRight: '1px solid',
-  borderColor: 'border',
-  '@media (max-width: 767px)': {
-    borderRight: 'none',
-    padding: '24px 0 32px',
-    borderBottom: '1px solid',
-    borderColor: 'border',
-  },
-})
-
-const sideCol = css({
-  padding: '24px 0 48px 24px',
-  '@media (max-width: 767px)': {
-    padding: '24px 0 32px',
-  },
-})
-
-const sectionLabel = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(13px, 1.2vw, 18px)',
-  letterSpacing: '0.14em',
-  color: 'accent',
-  textTransform: 'uppercase',
-  lineHeight: '1',
-  paddingBottom: '16px',
-  borderBottom: '1px solid',
-  borderColor: 'borderAccent',
-  marginBottom: '0',
-})
-
-const firstSection = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(13px, 1.2vw, 18px)',
-  letterSpacing: '0.14em',
-  color: 'accent',
-  textTransform: 'uppercase',
-  lineHeight: '1',
-  paddingBottom: '16px',
-  borderBottom: '1px solid',
-  borderColor: 'borderAccent',
-  marginBottom: '0',
-  marginTop: '0',
-})
-
-const sectionAfter = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(13px, 1.2vw, 18px)',
-  letterSpacing: '0.14em',
-  color: 'accent',
-  textTransform: 'uppercase',
-  lineHeight: '1',
-  paddingBottom: '16px',
-  borderBottom: '1px solid',
-  borderColor: 'borderAccent',
-  marginBottom: '0',
-  marginTop: '32px',
-})
-
-const bodyText = css({
-  fontFamily: 'body',
-  fontSize: '16px',
-  color: 'textSecondary',
-  lineHeight: 'normal',
-  padding: '16px 0',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  maxWidth: '65ch',
-})
-
-const stackItem = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: 'textSecondary',
-  padding: '8px 0',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-})
-
-const linkStyle = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: '14px',
-  color: 'accent',
-  textDecoration: 'none',
-  padding: '12px 0',
-  display: 'inline-block',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  width: '100%',
-  _hover: { color: 'accentLight' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-})
-
-const backLink = css({
-  fontFamily: 'body',
-  fontSize: '12px',
-  color: 'textMuted',
-  textDecoration: 'none',
-  padding: '24px 0',
-  display: 'inline-block',
-  _hover: { color: 'text' },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-})
-
-const footerStyle = css({
-  padding: '24px 0',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  borderTop: '1px solid',
-  borderColor: 'border',
-})
-
-const footerText = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  color: 'textMuted',
-})
-
-function WorkDetail() {
+function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div className={pageWrap}>
-        <div className={masthead}>
-          <h1 className={heroTitle}>NOT FOUND</h1>
-        </div>
-        <a href="/" className={backLink}>← Back to index</a>
-      </div>
+      <Box padding="6vw" paddingTop="120px">
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: 'clamp(2rem, 6vw, 5rem)',
+            lineHeight: 'snug',
+            color: 'text',
+          })}
+        >
+          Not found.
+        </h1>
+      </Box>
     )
   }
 
   return (
-    <div className={pageWrap}>
-      <div className={masthead}>
-        <h1 className={heroTitle}>{project.title.toUpperCase()}</h1>
-        <div className={metaRow}>
-          <span className={metaItem}><span className={metaValue}>{project.type}</span></span>
-          <span className={metaItem}><span className={metaValue}>{project.year}</span></span>
-          {project.role && <span className={metaItem}>Role: <span className={metaValue}>{project.role}</span></span>}
-        </div>
-      </div>
+    <Box padding="6vw" paddingTop={{ base: '80px', md: '120px' }}>
+      {/* Header */}
+      <Box marginBottom={{ base: '48px', md: '96px' }}>
+        <Flex
+          gap="16px"
+          align="baseline"
+          marginBottom="16px"
+          wrap="wrap"
+        >
+          <span
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'normal',
+              fontSize: '14px',
+              color: 'textMuted',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+            })}
+          >
+            {project.type}
+          </span>
+          <span
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'normal',
+              fontSize: '14px',
+              color: 'textMuted',
+              letterSpacing: 'wider',
+            })}
+          >
+            {project.year}
+          </span>
+        </Flex>
 
-      <div className={bodyGrid}>
-        <div className={mainCol}>
-          {project.problem && (
-            <>
-              <div className={firstSection}>PROBLEM</div>
-              <p className={bodyText}>{project.problem}</p>
-            </>
-          )}
-          {project.description && !project.problem && (
-            <>
-              <div className={firstSection}>ABOUT</div>
-              <p className={bodyText}>{project.description}</p>
-            </>
-          )}
-          {project.approach && (
-            <>
-              <div className={sectionAfter}>APPROACH</div>
-              <p className={bodyText}>{project.approach}</p>
-            </>
-          )}
-          {project.outcome && (
-            <>
-              <div className={sectionAfter}>OUTCOME</div>
-              <p className={bodyText}>{project.outcome}</p>
-            </>
-          )}
-        </div>
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: 'clamp(2.5rem, 8vw, 7rem)',
+            lineHeight: 'snug',
+            letterSpacing: 'tight',
+            color: 'text',
+            marginBottom: '24px',
+          })}
+        >
+          {project.title}
+        </h1>
 
-        <div className={sideCol}>
-          {project.stack && project.stack.length > 0 && (
-            <>
-              <div className={firstSection}>STACK</div>
-              {project.stack.map((s, i) => (
-                <div className={stackItem} key={i}>{s}</div>
+        {project.role && (
+          <p
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'medium',
+              fontSize: '16px',
+              color: 'accent',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              marginBottom: '16px',
+            })}
+          >
+            {project.role}
+          </p>
+        )}
+      </Box>
+
+      {/* Content sections */}
+      <Box maxWidth="720px">
+        {project.problem && (
+          <Box marginBottom="48px">
+            <h2
+              className={css({
+                fontFamily: 'body',
+                fontWeight: 'semibold',
+                fontSize: '12px',
+                color: 'textMuted',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                marginBottom: '16px',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+                paddingBottom: '12px',
+              })}
+            >
+              PROBLEM
+            </h2>
+            <p
+              className={css({
+                fontFamily: 'body',
+                fontSize: '16px',
+                lineHeight: 'normal',
+                color: 'textSecondary',
+                maxWidth: '65ch',
+              })}
+            >
+              {project.problem}
+            </p>
+          </Box>
+        )}
+
+        {project.approach && (
+          <Box marginBottom="48px">
+            <h2
+              className={css({
+                fontFamily: 'body',
+                fontWeight: 'semibold',
+                fontSize: '12px',
+                color: 'textMuted',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                marginBottom: '16px',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+                paddingBottom: '12px',
+              })}
+            >
+              APPROACH
+            </h2>
+            <p
+              className={css({
+                fontFamily: 'body',
+                fontSize: '16px',
+                lineHeight: 'normal',
+                color: 'textSecondary',
+                maxWidth: '65ch',
+              })}
+            >
+              {project.approach}
+            </p>
+          </Box>
+        )}
+
+        {project.outcome && (
+          <Box marginBottom="48px">
+            <h2
+              className={css({
+                fontFamily: 'body',
+                fontWeight: 'semibold',
+                fontSize: '12px',
+                color: 'textMuted',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                marginBottom: '16px',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+                paddingBottom: '12px',
+              })}
+            >
+              OUTCOME
+            </h2>
+            <p
+              className={css({
+                fontFamily: 'body',
+                fontSize: '16px',
+                lineHeight: 'normal',
+                color: 'textSecondary',
+                maxWidth: '65ch',
+              })}
+            >
+              {project.outcome}
+            </p>
+          </Box>
+        )}
+
+        {project.description && (
+          <Box marginBottom="48px">
+            <p
+              className={css({
+                fontFamily: 'body',
+                fontSize: '16px',
+                lineHeight: 'normal',
+                color: 'textSecondary',
+                maxWidth: '65ch',
+              })}
+            >
+              {project.description}
+            </p>
+          </Box>
+        )}
+
+        {project.stack && project.stack.length > 0 && (
+          <Box marginBottom="48px">
+            <h2
+              className={css({
+                fontFamily: 'body',
+                fontWeight: 'semibold',
+                fontSize: '12px',
+                color: 'textMuted',
+                letterSpacing: 'widest',
+                textTransform: 'uppercase',
+                marginBottom: '16px',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+                paddingBottom: '12px',
+              })}
+            >
+              STACK
+            </h2>
+            <Flex wrap="wrap" gap="8px">
+              {project.stack.map((tech, i) => (
+                <span
+                  key={i}
+                  className={css({
+                    fontFamily: 'body',
+                    fontWeight: 'normal',
+                    fontSize: '14px',
+                    color: 'textSecondary',
+                    padding: '8px 16px',
+                    border: '1px solid',
+                    borderColor: 'border',
+                    letterSpacing: 'wide',
+                  })}
+                >
+                  {tech}
+                </span>
               ))}
-            </>
+            </Flex>
+          </Box>
+        )}
+
+        {/* Links */}
+        <Flex gap="24px" wrap="wrap" marginTop="48px">
+          {project.externalUrl && (
+            <a
+              href={project.externalUrl}
+              className={css({
+                fontFamily: 'body',
+                fontWeight: 'semibold',
+                fontSize: '14px',
+                color: 'accent',
+                letterSpacing: 'wider',
+                textTransform: 'uppercase',
+                padding: '12px 24px',
+                border: '1px solid',
+                borderColor: 'accent',
+                minHeight: '44px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                textDecoration: 'none',
+                _hover: { color: 'accentLight', borderColor: 'accentLight', textDecoration: 'underline' },
+                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+              })}
+            >
+              Visit Site ↗
+            </a>
           )}
-
-          {(project.liveUrl || project.externalUrl || project.githubUrl) && (
-            <>
-              <div className={sectionAfter}>LINKS</div>
-              {(project.liveUrl || project.externalUrl) && (
-                <a href={project.liveUrl || project.externalUrl} className={linkStyle}>
-                  Visit Site ↗
-                </a>
-              )}
-              {project.githubUrl && (
-                <a href={project.githubUrl} className={linkStyle}>
-                  GitHub ↗
-                </a>
-              )}
-            </>
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              className={css({
+                fontFamily: 'body',
+                fontWeight: 'semibold',
+                fontSize: '14px',
+                color: 'accent',
+                letterSpacing: 'wider',
+                textTransform: 'uppercase',
+                padding: '12px 24px',
+                border: '1px solid',
+                borderColor: 'accent',
+                minHeight: '44px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                textDecoration: 'none',
+                _hover: { color: 'accentLight', borderColor: 'accentLight', textDecoration: 'underline' },
+                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+              })}
+            >
+              Live ↗
+            </a>
           )}
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              className={css({
+                fontFamily: 'body',
+                fontWeight: 'semibold',
+                fontSize: '14px',
+                color: 'accent',
+                letterSpacing: 'wider',
+                textTransform: 'uppercase',
+                padding: '12px 24px',
+                border: '1px solid',
+                borderColor: 'accent',
+                minHeight: '44px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                textDecoration: 'none',
+                _hover: { color: 'accentLight', borderColor: 'accentLight', textDecoration: 'underline' },
+                _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+              })}
+            >
+              GitHub ↗
+            </a>
+          )}
+        </Flex>
+      </Box>
 
-          <a href="/" className={backLink}>← Back to index</a>
-        </div>
-      </div>
-
-      <div className={footerStyle}>
-        <span className={footerText}>Doug March · Product Designer & Developer</span>
-        <a href="/archive" className={css({ fontFamily: 'body', fontSize: '11px', color: 'textMuted', textDecoration: 'none', _hover: { color: 'textSecondary' }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' } })}>Archive</a>
-      </div>
-    </div>
+      {/* Footer */}
+      <Box
+        borderTop="1px solid"
+        borderColor="border"
+        paddingTop="16px"
+        marginTop="96px"
+      >
+        <Flex justify="space-between" align="center">
+          <a
+            href="/"
+            className={css({
+              fontFamily: 'body',
+              fontSize: '14px',
+              color: 'textMuted',
+              _hover: { color: 'accentLight', textDecoration: 'underline' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+              minHeight: '44px',
+              display: 'inline-flex',
+              alignItems: 'center',
+            })}
+          >
+            ← Back
+          </a>
+          <a
+            href="/archive"
+            className={css({
+              fontFamily: 'body',
+              fontSize: '12px',
+              color: 'textMuted',
+              letterSpacing: 'wider',
+              _hover: { color: 'accentLight', textDecoration: 'underline' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+              minHeight: '44px',
+              display: 'inline-flex',
+              alignItems: 'center',
+            })}
+          >
+            Archive
+          </a>
+        </Flex>
+      </Box>
+    </Box>
   )
 }

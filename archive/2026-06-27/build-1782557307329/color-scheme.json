@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 243,
+    "s": 72,
+    "l": 55,
+    "name": "TV indigo"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "indigo",
+    "name": "night slate"
+  },
+  "mood_word": "luminous",
+  "color_story": "Television-screen indigo — H:243°, the exact blue cast of a CRT in a darkened room — is the chromatic answer to Lily Tomlin's 'well-viewed.': the medium itself becomes the palette, honoring both the mandate's only open corridor (230°–255°) and the source material's medium."
+}
