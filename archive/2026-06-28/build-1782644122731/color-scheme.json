@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 22,
+    "s": 90,
+    "l": 55,
+    "name": "terracotta fire"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "orange",
+    "name": "warm taupe"
+  },
+  "mood_word": "confrontational",
+  "color_story": "Terracotta at H:22° is the color of heated iron and unfired clay — it burns without consuming, which is exactly the register Chodron's line inhabits: urgent awareness under a full moon, not panic."
+}
