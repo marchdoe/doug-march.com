@@ -1,0 +1,281 @@
+{
+  "date": "2026-06-29",
+  "startedAt": "2026-06-29T11:40:23.118Z",
+  "completedAt": "2026-06-29T11:48:26.945Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "day one® Run",
+              "description": "We built a website for the sports brand day one® to create a running hub that brings design and emotion together.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a2ed5efe286a107056525.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAcFa1JREFUeAHsvWGC5CqPJSo565tFdE/3Jt6v2V3vu28Fr8Ig6UhIQERm1q3bM1RF2sYghNCRBITD/P/9n//TmIlao5H0ZJs4XnPPaa29VvHOaO4aaTzpPq/luCQNZZdd+XUf...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Future In Black",
+              "description": "Cultural intelligence studio where AI artistry, storytelling, and Black futures intersect. Nine practices. One vision. By Joy Fennell. Built on Squarespace.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a29e0589921a737110042.jpg",
+              "screenshot_b64": "/9j/4QC8RXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAABgAAAAAQAAAGAAAAABAAAABgAAkAcABAAAADAyMTABkQcABAAAAAECAwAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAAEAGAAADoAQAAQAAALAEAAAAAAAA/+EOw2h0dHA6Ly9ucy5hZG9i...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "Future of Finance",
+              "description": "An interactive & immersive website for the Future of AI Finance.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3258a561627120723174.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXACONhUlEQVR4AYz9WZZs25Idhpmt7R5xzn0vAYmDhACKJEhiqBriYAHpgy1QS9SQ2xh9qAlqhkRwaKAgkiASBAmCKDKR7917wn2vRV9mc06zHee8TEbmfSfCfRersGU2rfb/4v/x/1xjHDbnsnEM+/j1V3N3s/2fLTte351zWlxzPl/XHPH9t19+b/f3L/b8+Ga3tzdby2w+H6/vb7Z/1pr2+Piw/Flxf37+utCmHbe3...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Monday",
+          "is_weekend": false,
+          "day_index": 1
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/simplex-chat",
+              "description": "",
+              "language": "Haskell",
+              "stars": null
+            },
+            {
+              "name": "sponsors/msitarzewski",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "sponsors/cupy",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/altic-dev",
+              "description": "",
+              "language": "Swift",
+              "stars": null
+            },
+            {
+              "name": "sponsors/soxoj",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Travelers Championship",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Scottie Scheffler",
+              "position": "1",
+              "score": "-21"
+            },
+            {
+              "name": "Viktor Hovland",
+              "position": "2",
+              "score": "-21"
+            },
+            {
+              "name": "Collin Morikawa",
+              "position": "3",
+              "score": "-20"
+            },
+            {
+              "name": "Matt Fitzpatrick",
+              "position": "4",
+              "score": "-19"
+            },
+            {
+              "name": "Wyndham Clark",
+              "position": "5",
+              "score": "-18"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "HackerRank open sourced its ATS. My resume scored 90/100. Oh wait 74. No – 88",
+              "url": "https://danunparsed.com/p/hackerrank-open-source-ats",
+              "score": 545,
+              "by": "sambellll"
+            },
+            {
+              "title": "GLM 5.2 beats Claude in our benchmarks",
+              "url": "https://semgrep.dev/blog/2026/we-have-mythos-at-home-glm-52-beats-claude-in-our-cyber-benchmarks/",
+              "score": 892,
+              "by": "jms703"
+            },
+            {
+              "title": "Pollen (CEO Negus-Fancey, CTO Wright) tried to remove article, and Google helped",
+              "url": "https://blog.pragmaticengineer.com/pollen-tried-to-remove-my-article-about-callum-negus-fancey-and-google-is-assisting-to-it/",
+              "score": 233,
+              "by": "taubek"
+            },
+            {
+              "title": "NUMA: Cores, memory, and the distance between them",
+              "url": "https://edera.dev/stories/numa-part-1-cores-memory-and-the-distance-between-them",
+              "score": 35,
+              "by": "sys_call"
+            },
+            {
+              "title": "Dissecting Apple's Sparse Image Format (ASIF)",
+              "url": "https://schamper.dev/dissecting-apples-sparse-image-format-asif/",
+              "score": 93,
+              "by": "supermatou"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Independence Day",
+              "date": "2026-07-04",
+              "days_away": 5
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "full moon",
+          "illumination": 0.999,
+          "days_into_cycle": 14.98
+        },
+        "music": {
+          "bands": [
+            "The War on Drugs",
+            "Guided by Voices",
+            "Radiohead"
+          ]
+        },
+        "quote": {
+          "text": "If you can't feed a hundred people, then feed just one.",
+          "author": "Mother Teresa"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 29,
+          "day_of_year": 180,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-28T17:40Z",
+              "result": "loss",
+              "score": "5-7"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:52",
+          "sunset": "19:35",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-29"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-29T11:40:38.575Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-28: Gallery Wall\n  - 2026-06-27: Poster\n  - 2026-06-26: Index\n  - 2026-06-25: Specimen\n  - 2026-06-24: Broadsheet\n  - 2026-06-23: Scroll\n  - 2026-06-22: Stack\n\n**Recently used** (last 3 days): Gallery Wall, Poster, Index\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief "
+      },
+      "output": {
+        "hero_copy": "90/100. Oh wait, 74. No — 88.",
+        "archetype": "Split",
+        "chassisId": "anton-inter-tight",
+        "specLength": 6508,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue** — H:155°, the only open corridor in the color mandate (145°–170°). Teal-green is the color of diagnostic terminals, calibration screens, and readout panels — the precise visual register of a scoring system producing contradictory numbers. The mandate compliance is also creative compliance.\n\n**Neutral palette** (tinted toward H:155°):\n- 50: `#F3F7F5`\n- 100: `#E5EDEA`\n- 200: `#C9D6D1`\n- 300: `#A4B4AF`\n- 400: `#7A8D88`\n- 500: `#5E6E6A`\n- 600: `#404F4B`\n- ",
+        "selfCheck": "1. Hero quotability: Yes — \"90/100. Oh wait, 74. No — 88.\" is immediately screenshot-worthy, requires zero context, and generates the specific laugh of recognition that makes a visitor stop scrolling; it would circulate on its own.\n2. Because-of chain: Yes — the phrase's three-beat contradictory seq"
+      },
+      "durationMs": 321760,
+      "timestamp": "2026-06-29T11:46:00.339Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 6508
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 39683,
+      "timestamp": "2026-06-29T11:46:41.577Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 5894,
+        "briefLength": 9549
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 80618,
+      "timestamp": "2026-06-29T11:48:02.197Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-29T11:48:09.780Z"
+    }
+  ]
+}

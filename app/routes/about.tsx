@@ -5,216 +5,178 @@ import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const pageWrap = css({
-  maxWidth: '960px',
-  paddingTop: '48px',
-  paddingBottom: '64px',
-})
-
-const heroName = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(2rem, 4vw, 4rem)',
-  fontWeight: 'bold',
-  lineHeight: 'snug',
-  textTransform: 'uppercase',
-  letterSpacing: 'tight',
-  color: 'text',
-  marginBottom: '8px',
-})
-
-const heroRole = css({
-  fontFamily: 'body',
-  fontSize: '0.75rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'accent',
-  marginBottom: '24px',
-})
-
-const statement = css({
-  fontFamily: 'body',
-  fontSize: '1rem',
-  lineHeight: 'normal',
-  color: 'textSecondary',
-  maxWidth: '60ch',
-  marginBottom: '64px',
-})
-
 const sectionLabel = css({
   fontFamily: 'body',
-  fontSize: '0.5625rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
+  fontSize: '0.6875rem',
+  letterSpacing: '0.15em',
   textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '16px',
-  paddingBottom: '8px',
-  borderBottom: '1px solid',
-  borderColor: 'borderSubtle',
+  color: 'accent',
+  marginBottom: '4',
+})
+
+const sectionWrap = css({
+  marginBottom: '6',
+})
+
+const statementText = css({
+  fontFamily: 'body',
+  fontSize: '0.9375rem',
+  lineHeight: 'normal',
+  color: 'text',
+  maxWidth: '65ch',
+  marginBottom: '6',
+})
+
+const roleTitle = css({
+  fontFamily: 'body',
+  fontSize: '0.9375rem',
+  fontWeight: 'medium',
+  color: 'text',
 })
 
 const timelineRow = css({
   display: 'grid',
   gridTemplateColumns: '120px 1fr',
-  gap: '16px',
-  padding: '12px 0',
+  gap: '4',
+  paddingTop: '3',
+  paddingBottom: '3',
   borderBottom: '1px solid',
   borderColor: 'borderSubtle',
-  _last: { borderBottom: 'none' },
-  '@media (min-width: 768px)': {
-    gridTemplateColumns: '140px 180px 1fr',
+  '@media (max-width: 480px)': {
+    gridTemplateColumns: '1fr',
+    gap: '1',
   },
 })
 
-const yearCol = css({
+const yearText = css({
   fontFamily: 'body',
   fontSize: '0.75rem',
-  fontWeight: 'semibold',
   color: 'textMuted',
-  letterSpacing: 'wide',
-  minWidth: '120px',
-  flexShrink: 0,
+  fontVariantNumeric: 'tabular-nums',
+  letterSpacing: '0.05em',
+  whiteSpace: 'nowrap',
 })
 
-const roleCol = css({
-  fontFamily: 'body',
-  fontSize: '0.875rem',
-  fontWeight: 'medium',
-  color: 'text',
-})
-
-const companyCol = css({
-  fontFamily: 'body',
-  fontSize: '0.875rem',
-  fontWeight: 'normal',
-  color: 'textSecondary',
-  display: 'none',
-  '@media (min-width: 768px)': {
-    display: 'block',
-  },
-})
-
-const descCol = css({
+const descText = css({
   fontFamily: 'body',
   fontSize: '0.8125rem',
-  color: 'textMuted',
+  color: 'textSecondary',
   lineHeight: 'normal',
-  marginTop: '4px',
-  gridColumn: '1 / -1',
-  '@media (min-width: 768px)': {
-    gridColumn: '3',
-    marginTop: '0',
-  },
-})
-
-const mobileCompany = css({
-  fontFamily: 'body',
-  fontSize: '0.75rem',
-  color: 'textMuted',
-  '@media (min-width: 768px)': {
-    display: 'none',
-  },
+  marginTop: '1',
+  maxWidth: '65ch',
 })
 
 const capGrid = css({
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '8px',
-  marginBottom: '64px',
+  gap: '2',
 })
 
 const capTag = css({
   fontFamily: 'body',
-  fontSize: '0.6875rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'wider',
-  textTransform: 'uppercase',
-  color: 'textSecondary',
+  fontSize: '0.75rem',
+  letterSpacing: '0.05em',
+  color: 'text',
   background: 'bgCard',
-  padding: '6px 12px',
+  padding: '4px 10px',
   borderRadius: 'sm',
 })
 
-const personalGrid = css({
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: '16px',
-  '@media (min-width: 768px)': {
-    gridTemplateColumns: '1fr 1fr 1fr 1fr',
-  },
+const personalRow = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  paddingTop: '2',
+  paddingBottom: '2',
+  borderBottom: '1px solid',
+  borderColor: 'borderSubtle',
 })
 
 const personalLabel = css({
   fontFamily: 'body',
-  fontSize: '0.5625rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
+  fontSize: '0.75rem',
   color: 'textMuted',
-  marginBottom: '4px',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
 })
 
 const personalValue = css({
   fontFamily: 'body',
-  fontSize: '0.875rem',
-  color: 'textSecondary',
-  lineHeight: 'normal',
+  fontSize: '0.9375rem',
+  color: 'text',
+  textAlign: 'right',
 })
 
-const sectionWrap = css({
-  marginBottom: '64px',
+const footerWrap = css({
+  marginTop: '8',
+  paddingTop: '4',
+  borderTop: '1px solid',
+  borderColor: 'borderSubtle',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
 })
 
-const eduRow = css({
-  display: 'grid',
-  gridTemplateColumns: '120px 1fr',
-  gap: '16px',
-  padding: '12px 0',
-  '@media (min-width: 768px)': {
-    gridTemplateColumns: '140px 1fr',
-  },
+const footerText = css({
+  fontFamily: 'body',
+  fontSize: '0.6875rem',
+  color: 'textMuted',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+})
+
+const archiveLink = css({
+  fontFamily: 'body',
+  fontSize: '0.6875rem',
+  color: 'textMuted',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  textDecoration: 'none',
+  _hover: { color: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
 })
 
 function AboutPage() {
   return (
-    <div className={pageWrap}>
-      <h1 className={heroName}>{identity.name}</h1>
-      <p className={heroRole}>{identity.role}</p>
-      <p className={statement}>{identity.statement}</p>
-
+    <>
+      {/* Identity */}
       <div className={sectionWrap}>
-        <h2 className={sectionLabel}>Experience</h2>
+        <p className={sectionLabel}>{identity.role}</p>
+        <p className={statementText}>{identity.statement}</p>
+      </div>
+
+      {/* Timeline */}
+      <div className={sectionWrap}>
+        <p className={sectionLabel}>Experience</p>
         {timeline.map((entry, i) => (
           <div key={i} className={timelineRow}>
-            <span className={yearCol}>{entry.year}</span>
-            <div className={companyCol}>{entry.company}</div>
+            <span className={yearText}>{entry.year}</span>
             <div>
-              <p className={roleCol}>
-                {entry.role}
-                <span className={mobileCompany}> · {entry.company}</span>
-              </p>
-              <p className={descCol}>{entry.description}</p>
+              <p className={roleTitle}>{entry.role} · {entry.company}</p>
+              <p className={descText}>{entry.description}</p>
             </div>
           </div>
         ))}
       </div>
 
+      {/* Education */}
       <div className={sectionWrap}>
-        <h2 className={sectionLabel}>Education</h2>
-        <div className={eduRow}>
-          <span className={yearCol}>{education.years}</span>
+        <p className={sectionLabel}>Education</p>
+        <div className={timelineRow}>
+          <span className={yearText}>{education.years}</span>
           <div>
-            <p className={roleCol}>{education.degree}</p>
-            <p className={css({ fontFamily: 'body', fontSize: '0.8125rem', color: 'textMuted', lineHeight: 'normal' })}>
-              {education.concentration} · {education.school}
-            </p>
+            <p className={roleTitle}>{education.school}</p>
+            <p className={descText}>{education.degree} · {education.concentration}</p>
           </div>
         </div>
       </div>
 
+      {/* Capabilities */}
       <div className={sectionWrap}>
-        <h2 className={sectionLabel}>Capabilities</h2>
+        <p className={sectionLabel}>Capabilities</p>
         <div className={capGrid}>
           {capabilities.map((cap) => (
             <span key={cap} className={capTag}>{cap}</span>
@@ -222,27 +184,32 @@ function AboutPage() {
         </div>
       </div>
 
+      {/* Personal */}
       <div className={sectionWrap}>
-        <h2 className={sectionLabel}>Personal</h2>
-        <div className={personalGrid}>
-          <div>
-            <p className={personalLabel}>Holes in One</p>
-            <p className={personalValue}>{personal.holesInOne}</p>
-          </div>
-          <div>
-            <p className={personalLabel}>Sport</p>
-            <p className={personalValue}>{personal.sport}</p>
-          </div>
-          <div>
-            <p className={personalLabel}>Teams</p>
-            <p className={personalValue}>{personal.teams.join(', ')}</p>
-          </div>
-          <div>
-            <p className={personalLabel}>Current Focus</p>
-            <p className={personalValue}>{personal.currentFocus}</p>
-          </div>
+        <p className={sectionLabel}>Personal</p>
+        <div className={personalRow}>
+          <span className={personalLabel}>Holes in One</span>
+          <span className={personalValue}>{personal.holesInOne}</span>
+        </div>
+        <div className={personalRow}>
+          <span className={personalLabel}>Sport</span>
+          <span className={personalValue}>{personal.sport}</span>
+        </div>
+        <div className={personalRow}>
+          <span className={personalLabel}>Teams</span>
+          <span className={personalValue}>{personal.teams.join(', ')}</span>
+        </div>
+        <div className={personalRow}>
+          <span className={personalLabel}>Current Focus</span>
+          <span className={personalValue}>{personal.currentFocus}</span>
         </div>
       </div>
-    </div>
+
+      {/* Footer */}
+      <div className={footerWrap}>
+        <span className={footerText}>© 2026</span>
+        <a href="/archive" className={archiveLink}>Archive</a>
+      </div>
+    </>
   )
 }

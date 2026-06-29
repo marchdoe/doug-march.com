@@ -2,207 +2,213 @@ import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetail })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const pageWrap = css({
-  maxWidth: '840px',
-  paddingTop: '48px',
-  paddingBottom: '64px',
+const sectionLabel = css({
+  fontFamily: 'body',
+  fontSize: '0.6875rem',
+  letterSpacing: '0.15em',
+  textTransform: 'uppercase',
+  color: 'accent',
+  marginBottom: '4',
 })
 
-const backLink = css({
-  fontFamily: 'body',
-  fontSize: '0.625rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  textDecoration: 'none',
-  display: 'inline-flex',
-  alignItems: 'center',
-  minHeight: '44px',
-  marginBottom: '32px',
-  _hover: { color: 'text', opacity: 1 },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+const sectionWrap = css({
+  marginBottom: '6',
 })
 
 const projectTitle = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(2rem, 4vw, 4.5rem)',
+  fontFamily: 'body',
+  fontSize: '1.5rem',
   fontWeight: 'bold',
-  lineHeight: 'snug',
-  textTransform: 'uppercase',
-  letterSpacing: 'tight',
   color: 'text',
-  marginBottom: '8px',
+  lineHeight: 'snug',
+  marginBottom: '2',
 })
 
 const metaRow = css({
   display: 'flex',
-  gap: '16px',
+  gap: '4',
   flexWrap: 'wrap',
-  marginBottom: '40px',
+  marginBottom: '5',
 })
 
 const metaTag = css({
   fontFamily: 'body',
-  fontSize: '0.625rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
+  fontSize: '0.75rem',
   color: 'textMuted',
-})
-
-const accentTag = css({
-  fontFamily: 'body',
-  fontSize: '0.625rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'accent',
-})
-
-const sectionLabel = css({
-  fontFamily: 'body',
-  fontSize: '0.5625rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '8px',
-  marginTop: '32px',
+  letterSpacing: '0.05em',
+  background: 'bgCard',
+  padding: '4px 10px',
+  borderRadius: 'sm',
 })
 
 const bodyText = css({
   fontFamily: 'body',
-  fontSize: '1rem',
+  fontSize: '0.9375rem',
   lineHeight: 'normal',
   color: 'textSecondary',
-  maxWidth: '60ch',
+  maxWidth: '65ch',
+  marginBottom: '4',
 })
 
-const stackList = css({
+const stackGrid = css({
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '8px',
-  marginTop: '8px',
+  gap: '2',
 })
 
 const stackTag = css({
   fontFamily: 'body',
   fontSize: '0.6875rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'wider',
+  color: 'accent',
+  letterSpacing: '0.1em',
   textTransform: 'uppercase',
-  color: 'textSecondary',
   background: 'bgCard',
-  padding: '6px 12px',
+  padding: '4px 8px',
   borderRadius: 'sm',
 })
 
 const extLink = css({
   fontFamily: 'body',
   fontSize: '0.75rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
+  letterSpacing: '0.1em',
   textTransform: 'uppercase',
   color: 'accent',
   textDecoration: 'none',
+  _hover: { color: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+  minHeight: '44px',
   display: 'inline-flex',
   alignItems: 'center',
-  minHeight: '44px',
-  marginTop: '32px',
-  _hover: { opacity: 0.75 },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+  marginRight: '4',
 })
 
-function WorkDetail() {
+const backLink = css({
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  color: 'textMuted',
+  textDecoration: 'none',
+  _hover: { color: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  marginBottom: '5',
+})
+
+const footerWrap = css({
+  marginTop: '8',
+  paddingTop: '4',
+  borderTop: '1px solid',
+  borderColor: 'borderSubtle',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+})
+
+const footerText = css({
+  fontFamily: 'body',
+  fontSize: '0.6875rem',
+  color: 'textMuted',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+})
+
+const archiveLink = css({
+  fontFamily: 'body',
+  fontSize: '0.6875rem',
+  color: 'textMuted',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  textDecoration: 'none',
+  _hover: { color: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+})
+
+function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div className={pageWrap}>
+      <>
         <a href="/" className={backLink}>← Back</a>
-        <h1 className={projectTitle}>Not Found</h1>
-        <p className={bodyText}>This project doesn't exist.</p>
-      </div>
+        <h1 className={projectTitle}>Project not found</h1>
+      </>
     )
   }
 
   return (
-    <div className={pageWrap}>
-      <a href="/" className={backLink}>← Back</a>
+    <>
+      <a href="/" className={backLink}>← Back to work</a>
 
       <h1 className={projectTitle}>{project.title}</h1>
 
       <div className={metaRow}>
-        <span className={accentTag}>{project.type}</span>
+        <span className={metaTag}>{project.type}</span>
         <span className={metaTag}>{project.year}</span>
         {project.role && <span className={metaTag}>{project.role}</span>}
       </div>
 
       {project.problem && (
-        <>
-          <h2 className={sectionLabel}>Problem</h2>
+        <div className={sectionWrap}>
+          <p className={sectionLabel}>Problem</p>
           <p className={bodyText}>{project.problem}</p>
-        </>
+        </div>
       )}
 
       {project.approach && (
-        <>
-          <h2 className={sectionLabel}>Approach</h2>
+        <div className={sectionWrap}>
+          <p className={sectionLabel}>Approach</p>
           <p className={bodyText}>{project.approach}</p>
-        </>
+        </div>
       )}
 
       {project.outcome && (
-        <>
-          <h2 className={sectionLabel}>Outcome</h2>
+        <div className={sectionWrap}>
+          <p className={sectionLabel}>Outcome</p>
           <p className={bodyText}>{project.outcome}</p>
-        </>
+        </div>
       )}
 
       {project.description && (
-        <>
-          <h2 className={sectionLabel}>About</h2>
+        <div className={sectionWrap}>
+          <p className={sectionLabel}>Description</p>
           <p className={bodyText}>{project.description}</p>
-        </>
+        </div>
       )}
 
       {project.stack && project.stack.length > 0 && (
-        <>
-          <h2 className={sectionLabel}>Stack</h2>
-          <div className={stackList}>
+        <div className={sectionWrap}>
+          <p className={sectionLabel}>Stack</p>
+          <div className={stackGrid}>
             {project.stack.map((s) => (
               <span key={s} className={stackTag}>{s}</span>
             ))}
           </div>
-        </>
-      )}
-
-      {(project.externalUrl || project.liveUrl || project.githubUrl) && (
-        <div>
-          {project.liveUrl && (
-            <a href={project.liveUrl} className={extLink}>
-              Visit Live ↗
-            </a>
-          )}
-          {project.externalUrl && !project.liveUrl && (
-            <a href={project.externalUrl} className={extLink}>
-              Visit Project ↗
-            </a>
-          )}
-          {project.githubUrl && (
-            <a href={project.githubUrl} className={css({
-              ...extLink,
-              marginLeft: '24px',
-            } as any)} style={{ marginLeft: '24px' }}>
-              GitHub ↗
-            </a>
-          )}
         </div>
       )}
-    </div>
+
+      <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
+        {project.externalUrl && (
+          <a href={project.externalUrl} className={extLink}>Visit Site ↗</a>
+        )}
+        {project.liveUrl && (
+          <a href={project.liveUrl} className={extLink}>Live ↗</a>
+        )}
+        {project.githubUrl && (
+          <a href={project.githubUrl} className={extLink}>GitHub ↗</a>
+        )}
+      </div>
+
+      <div className={footerWrap}>
+        <span className={footerText}>© 2026</span>
+        <a href="/archive" className={archiveLink}>Archive</a>
+      </div>
+    </>
   )
 }

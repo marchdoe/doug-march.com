@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 155,
+    "s": 72,
+    "l": 45,
+    "name": "summer teal"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "teal-green",
+    "name": "teal-stone"
+  },
+  "mood_word": "diagnostic",
+  "color_story": "Teal at H:155° is the exact color of a terminal readout, a diagnostic scan, a score report — the three beats of '90/100. Oh wait, 74. No — 88.' rendered as a saturated left-panel drench, making the unreliable machine legible at wall scale."
+}
