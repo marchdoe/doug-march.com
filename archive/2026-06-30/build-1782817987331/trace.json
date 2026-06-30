@@ -1,0 +1,280 @@
+{
+  "date": "2026-06-30",
+  "startedAt": "2026-06-30T11:02:21.800Z",
+  "completedAt": "2026-06-30T11:13:09.111Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "The Nosam Chronicles",
+              "description": "A beautifully crafted fantasy website that expands the world of Aegiron beyond the page, combining narrative, world-building, and immersive digital design.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3014fd53485939133056.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAAAXNSR0IArs4c6QAAAIRlWElmTU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABIAAAAAQAAAEgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAABkCgAwAEAAAAAQAABLAAAAAAaLKBfQAAAAlwSFlzAAALEwAACxMBAJqc...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "day one® Run",
+              "description": "We built a website for the sports brand day one® to create a running hub that brings design and emotion together.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a2ed5efe286a107056525.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAcFa1JREFUeAHsvWGC5CqPJSo565tFdE/3Jt6v2V3vu28Fr8Ig6UhIQERm1q3bM1RF2sYghNCRBITD/P/9n//TmIlao5H0ZJs4XnPPaa29VvHOaO4aaTzpPq/luCQNZZdd+XUf...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Future In Black",
+              "description": "Cultural intelligence studio where AI artistry, storytelling, and Black futures intersect. Nine practices. One vision. By Joy Fennell. Built on Squarespace.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a29e0589921a737110042.jpg",
+              "screenshot_b64": "/9j/4QC8RXhpZgAASUkqAAgAAAAGABIBAwABAAAAAQAAABoBBQABAAAAVgAAABsBBQABAAAAXgAAACgBAwABAAAAAgAAABMCAwABAAAAAQAAAGmHBAABAAAAZgAAAAAAAABgAAAAAQAAAGAAAAABAAAABgAAkAcABAAAADAyMTABkQcABAAAAAECAwAAoAcABAAAADAxMDABoAMAAQAAAP//AAACoAQAAQAAAEAGAAADoAQAAQAAALAEAAAAAAAA/+EOw2h0dHA6Ly9ucy5hZG9i...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Tuesday",
+          "is_weekend": false,
+          "day_index": 2
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "usestrix/strix/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/msitarzewski",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "sponsors/altic-dev",
+              "description": "",
+              "language": "Swift",
+              "stars": null
+            },
+            {
+              "name": "sponsors/diegosouzapw",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "browser-use/video-use/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Travelers Championship",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Viktor Hovland",
+              "position": "1",
+              "score": "-22"
+            },
+            {
+              "name": "Scottie Scheffler",
+              "position": "2",
+              "score": "-21"
+            },
+            {
+              "name": "Collin Morikawa",
+              "position": "3",
+              "score": "-20"
+            },
+            {
+              "name": "Matt Fitzpatrick",
+              "position": "4",
+              "score": "-19"
+            },
+            {
+              "name": "Wyndham Clark",
+              "position": "5",
+              "score": "-18"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Building a custom octocopter from scratch with no prior hardware experience",
+              "url": "https://karolina.mgdubiel.com/drone/",
+              "score": 45,
+              "by": "noleary"
+            },
+            {
+              "title": "Open Source Low Tech",
+              "url": "https://opensourcelowtech.org/",
+              "score": 281,
+              "by": "grep_it"
+            },
+            {
+              "title": "European digital ID wallets are a gift to Google and Apple",
+              "url": "https://waag.org/en/article/european-digital-id-wallets-are-gift-google-and-apple/",
+              "score": 8,
+              "by": "donohoe"
+            },
+            {
+              "title": "Antares Achieves Criticality of Mark-0 Reactor",
+              "url": "https://antaresindustries.com/updates/antares-achieves-criticality",
+              "score": 21,
+              "by": "clarionbell"
+            },
+            {
+              "title": "Qwen 3.6 27B is the sweet spot for local development",
+              "url": "https://quesma.com/blog/qwen-36-is-awesome/",
+              "score": 952,
+              "by": "stared"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Independence Day",
+              "date": "2026-07-04",
+              "days_away": 4
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "full moon",
+          "illumination": 0.984,
+          "days_into_cycle": 15.96
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "Wet Leg"
+          ]
+        },
+        "quote": {
+          "text": "Don't concern yourself with the money. Be of service. Build. Work. Dream. Create.",
+          "author": "Earl Nightingale"
+        },
+        "season": {
+          "season": "summer",
+          "month": 6,
+          "day": 30,
+          "day_of_year": 181,
+          "month_name": "June"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-06-29T23:05Z",
+              "result": "win",
+              "score": "7-3"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:52",
+          "sunset": "19:35",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-06-30"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-30T11:02:37.262Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-06-29: Split\n  - 2026-06-28: Gallery Wall\n  - 2026-06-27: Poster\n  - 2026-06-26: Index\n  - 2026-06-25: Specimen\n  - 2026-06-24: Broadsheet\n  - 2026-06-23: Scroll\n\n**Recently used** (last 3 days): Split, Gallery Wall, Poster\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief "
+      },
+      "output": {
+        "hero_copy": "Build. Work. Dream. Create.",
+        "archetype": "Stack",
+        "chassisId": "anton-inter-tight",
+        "specLength": 5739,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue:** H:117°, S:89%, L:45% — the lone corridor in the mandate (102°–125°) after six builds. Thematically exact: this is chlorophyll, growth, midsummer verdure. Not web-green (#00FF00), not sage — charged, alive, slightly acid.\n- **Neutral palette (forest-stone family, tinted H:120°, chroma ~0.01):**\n  - 50: `#F3FFF6` · 100: `#E2F5E8` · 200: `#C4E8CF` · 300: `#95CCB0` · 400: `#66AB90` · 500: `#44896E` · 600: `#2E6A52` · 700: `#1C4D3A` · 800: `#0F3325` · 90",
+        "selfCheck": "1. Hero quotability: Yes — \"Build. Work. Dream. Create.\" is four monosyllabic imperatives separated by full stops; it stands alone as a manifesto, demands no context, and earns a screenshot in isolation.\n2. Because-of chain: Yes — the four-word stacked structure demands Stack (four bands, one idea p"
+      },
+      "durationMs": 431235,
+      "timestamp": "2026-06-30T11:09:48.502Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5739
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "REVISE\n\n- **Archetype mismatch:** The Stack archetype is defined here as \"four horizontal full-width bands, each a distinct moment\" — one band per imperative. But the execution delivers three bands total (Hero, Work, Signals) with all four imperatives stacked within the Hero band. The archetype doesn't match the layout. Choose **Specimen** instead (this phrase is a self-contained statement that needs no supporting structure — it's the entire argument). Or redesign to deliver four actual page-lev"
+      },
+      "durationMs": 51660,
+      "timestamp": "2026-06-30T11:10:41.759Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 6560,
+        "briefLength": 8430
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 122308,
+      "timestamp": "2026-06-30T11:12:44.069Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-06-30T11:12:51.941Z"
+    }
+  ]
+}
