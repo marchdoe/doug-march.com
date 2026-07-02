@@ -1,98 +1,90 @@
 import logoSvg from '../assets/logo.svg'
 import { css } from '../../styled-system/css'
 
+const mastheadStyle = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  padding: '14px 0',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  flexWrap: 'wrap',
+  gap: '8px',
+})
+
+const logoAreaStyle = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+})
+
+const logoStyle = css({
+  width: '28px',
+  height: '28px',
+})
+
+const nameStyle = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'clamp(1rem, 2vw, 1.4rem)',
+  color: 'text',
+  letterSpacing: '-0.02em',
+  lineHeight: '1',
+  textDecoration: 'none !important',
+})
+
+const navStyle = css({
+  display: 'flex',
+  alignItems: 'baseline',
+  gap: '24px',
+  flexWrap: 'wrap',
+})
+
+const navLinkStyle = css({
+  fontFamily: 'body',
+  fontSize: '12px',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  textDecoration: 'none',
+  transition: 'color 120ms ease',
+  padding: '4px 0',
+  _hover: {
+    color: 'accent',
+    textDecoration: 'none',
+  },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '2px',
+  },
+})
+
+const countdownStyle = css({
+  fontFamily: 'body',
+  fontSize: '10px',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: 'accent',
+  whiteSpace: 'nowrap',
+})
+
 export function Sidebar() {
   return (
-    <nav
-      className={css({
-        position: 'fixed',
-        top: '0',
-        left: '0',
-        right: '0',
-        zIndex: '100',
-        height: '60px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 5vw',
-        borderBottom: '1px solid',
-        borderColor: 'rgba(255, 36, 114, 0.10)',
-        background: 'rgba(12, 6, 16, 0.85)',
-        backdropFilter: 'blur(8px)',
-      })}
-    >
-      <a
-        href="/"
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          textDecoration: 'none',
-          color: 'accent',
-          _focus: {
-            outline: '2px solid',
-            outlineColor: 'accent',
-            outlineOffset: '4px',
-          },
-        })}
-        aria-label="Doug March — Home"
-      >
-        <img
-          src={logoSvg}
-          alt=""
-          className={css({
-            width: '28px',
-            height: '28px',
-          })}
-        />
-        <span
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'bold',
-            fontSize: '14px',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-          })}
-        >
-          DM
-        </span>
-      </a>
-      <div
-        className={css({
-          display: 'flex',
-          alignItems: 'center',
-          gap: '32px',
-        })}
-      >
-        {[
-          { label: 'Work', href: '/' },
-          { label: 'About', href: '/about' },
-        ].map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            className={css({
-              fontFamily: 'body',
-              fontSize: '12px',
-              fontWeight: 'normal',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'textMuted',
-              textDecoration: 'none',
-              padding: '12px 0',
-              transition: 'color 0.2s ease',
-              _hover: { color: 'accent' },
-              _focus: {
-                outline: '2px solid',
-                outlineColor: 'accent',
-                outlineOffset: '4px',
-              },
-            })}
-          >
-            {link.label}
-          </a>
-        ))}
+    <header className={mastheadStyle}>
+      <div className={logoAreaStyle}>
+        <a href="/" aria-label="Home">
+          <img src={logoSvg} alt="Doug March logo" className={logoStyle} />
+        </a>
+        <a href="/" className={nameStyle}>
+          DOUG MARCH
+        </a>
       </div>
-    </nav>
+      <nav className={navStyle}>
+        <a href="/" className={navLinkStyle}>Work</a>
+        <a href="/about" className={navLinkStyle}>About</a>
+        <span className={countdownStyle}>T–2: Independence Day</span>
+      </nav>
+    </header>
   )
 }

@@ -1,0 +1,250 @@
+{
+  "date": "2026-07-02",
+  "startedAt": "2026-07-02T10:54:48.228Z",
+  "completedAt": "2026-07-02T11:03:51.253Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 13
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Mr Day",
+              "description": "Honoring a 40-year legacy, mrday.it merges a fully modular architecture with high-energy gaming culture. Dynamic UI animations and live contests turn...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3a42cfe3441238181530.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAWHDhJREFUeAHsnQeAZWV5/p9zzm1zp26vFCmygBhFQU2sgIoVsCQmUkTzV0Fji1FAE40NMWqiIrYoCmrsgNHYAEURFSxggaW37X36ref83/f9vnPnzuzM7uzM7E57fnD23jn3...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Nosam Chronicles",
+              "description": "A beautifully crafted fantasy website that expands the world of Aegiron beyond the page, combining narrative, world-building, and immersive digital design.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3014fd53485939133056.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAAAXNSR0IArs4c6QAAAIRlWElmTU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABIAAAAAQAAAEgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAABkCgAwAEAAAAAQAABLAAAAAAaLKBfQAAAAlwSFlzAAALEwAACxMBAJqc...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "day one® Run",
+              "description": "We built a website for the sports brand day one® to create a running hub that brings design and emotion together.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a2ed5efe286a107056525.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAcFa1JREFUeAHsvWGC5CqPJSo565tFdE/3Jt6v2V3vu28Fr8Ig6UhIQERm1q3bM1RF2sYghNCRBITD/P/9n//TmIlao5H0ZJs4XnPPaa29VvHOaO4aaTzpPq/luCQNZZdd+XUf...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Thursday",
+          "is_weekend": false,
+          "day_index": 4
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "usestrix/strix/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/JuliusBrussee",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/msitarzewski",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "hasaneyldrm/exercises-dataset/stargazers",
+              "description": "",
+              "language": "HTML",
+              "stars": null
+            },
+            {
+              "name": "sponsors/santifer",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "John Deere Classic",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "A new Android malware from Google",
+              "url": "https://f-droid.org/2026/07/01/adv-malware.html",
+              "score": 638,
+              "by": "drewfax"
+            },
+            {
+              "title": "Kimi K2.7 Code is generally available in GitHub Copilot",
+              "url": "https://github.blog/changelog/2026-07-01-kimi-k2-7-is-now-available-in-github-copilot/",
+              "score": 176,
+              "by": "unliftedq"
+            },
+            {
+              "title": "The Fall of the Theorem Economy",
+              "url": "https://davidbessis.substack.com/p/the-fall-of-the-theorem-economy",
+              "score": 60,
+              "by": "varjag"
+            },
+            {
+              "title": "Oomwoo, an open-source robot vacuum you build yourself",
+              "url": "https://makerspet.com/blog/building-an-open-source-robot-vacuum-meet-oomwoo/",
+              "score": 325,
+              "by": "devicelimit"
+            },
+            {
+              "title": "ZCode – Harness for GLM-5.2",
+              "url": "https://zcode.z.ai/en",
+              "score": 409,
+              "by": "chvid"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Independence Day",
+              "date": "2026-07-04",
+              "days_away": 2
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "waning gibbous",
+          "illumination": 0.889,
+          "days_into_cycle": 17.95
+        },
+        "music": {
+          "bands": [
+            "Wet Leg",
+            "My Morning Jacket"
+          ]
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 2,
+          "day_of_year": 183,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-07-01T17:35Z",
+              "result": "win",
+              "score": "6-2"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:53",
+          "sunset": "19:34",
+          "daylight_hours": 14.7
+        },
+        "date": "2026-07-02"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-02T10:55:03.551Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-01: Poster\n  - 2026-06-30: Stack\n  - 2026-06-29: Split\n  - 2026-06-28: Gallery Wall\n  - 2026-06-27: Poster\n  - 2026-06-26: Index\n  - 2026-06-25: Specimen\n\n**Recently used** (last 3 days): Poster, Stack, Split\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or signals g"
+      },
+      "output": {
+        "hero_copy": "Google ships the malware.",
+        "archetype": "Broadsheet",
+        "chassisId": "spectral-albert",
+        "specLength": 5605,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue:** H:72° (acid chartreuse) — mandatory compliance with the sole open corridor (52°–87° after eliminating all recent builds); chartreuse reads as hazard-tape, biohazard marker, terminal-printout warning, which is precisely the register of a trusted platform shipping malware.\n- **Neutral palette:** dark void-moss scale, every value carries a whisper of chartreuse chroma to maintain subconscious cohesion:\n  - 50: `#F4F4EC`\n  - 100: `#E8E9DB`\n  - 200: `#D0",
+        "selfCheck": "1. Hero quotability: Yes — \"Google ships the malware.\" is five words, a complete declarative sentence, earned by a 638-point HN incident advisory; would be screenshotted as an accusation regardless of context.\n2. Because-of chain: Yes — the phrase is a newspaper headline, so Broadsheet; a newspaper "
+      },
+      "durationMs": 357060,
+      "timestamp": "2026-07-02T11:01:00.616Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5605
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 43207,
+      "timestamp": "2026-07-02T11:01:45.312Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 5324,
+        "briefLength": 8166
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 101866,
+      "timestamp": "2026-07-02T11:03:27.179Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-02T11:03:34.168Z"
+    }
+  ]
+}
