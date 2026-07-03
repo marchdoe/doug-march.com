@@ -2,233 +2,182 @@ import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
+export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
 
-const heroStyle = css({
-  padding: '40px 0 28px',
-  borderBottom: '2px solid',
-  borderColor: 'accent',
+const page = css({
+  maxWidth: '860px',
+  margin: '0 auto',
+  padding: '96px 8vw 64px',
 })
 
-const eyebrowStyle = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '12px',
-})
-
-const titleStyle = css({
+const title = css({
   fontFamily: 'display',
-  fontSize: 'clamp(2rem, 5vw, 5rem)',
   fontWeight: 'bold',
+  fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+  lineHeight: '0.95',
+  letterSpacing: '-0.01em',
   color: 'text',
-  lineHeight: '0.88',
-  letterSpacing: '-0.02em',
-})
-
-const gridStyle = css({
-  display: 'grid',
-  gridTemplateColumns: '1fr',
-  '@media (min-width: 768px)': {
-    gridTemplateColumns: '2fr 1fr',
-  },
-})
-
-const mainColStyle = css({
-  padding: '28px 0',
-  '@media (min-width: 768px)': {
-    padding: '28px 20px 28px 0',
-    borderRight: '1px solid',
-    borderColor: 'border',
-  },
-})
-
-const sideColStyle = css({
-  padding: '28px 0',
-  '@media (min-width: 768px)': {
-    padding: '28px 0 28px 20px',
-  },
-})
-
-const sectionLabelStyle = css({
-  fontFamily: 'body',
-  fontSize: '10px',
-  letterSpacing: '0.12em',
   textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '8px',
-})
-
-const bodyTextStyle = css({
-  fontFamily: 'body',
-  fontSize: '15px',
-  color: 'textSecondary',
-  lineHeight: '1.55',
-  maxWidth: '65ch',
   marginBottom: '24px',
 })
 
-const metaRowStyle = css({
-  padding: '10px 0',
-  borderBottom: '1px solid',
-  borderColor: 'borderSubtle',
-  '&:last-child': {
-    borderBottom: 'none',
-  },
-})
-
-const metaLabelStyle = css({
-  fontFamily: 'body',
-  fontSize: '11px',
-  letterSpacing: '0.08em',
+const meta = css({
+  fontFamily: 'mono',
+  fontSize: '13px',
+  color: 'text.muted',
+  letterSpacing: '0.05em',
   textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '2px',
+  marginBottom: '48px',
+  display: 'flex',
+  gap: '16px',
+  flexWrap: 'wrap',
 })
 
-const metaValueStyle = css({
+const sectionLabel = css({
   fontFamily: 'body',
-  fontSize: '14px',
-  color: 'text',
-  lineHeight: '1.4',
+  fontSize: '12px',
+  fontWeight: 'medium',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: 'text.muted',
+  marginBottom: '12px',
+  marginTop: '40px',
 })
 
-const stackListStyle = css({
+const bodyText = css({
+  fontFamily: 'body',
+  fontSize: '17px',
+  lineHeight: '1.6',
+  color: 'text.secondary',
+  maxWidth: '60ch',
+  marginBottom: '16px',
+})
+
+const stackGrid = css({
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '6px',
-  marginTop: '4px',
+  gap: '8px',
+  marginTop: '8px',
 })
 
-const stackItemStyle = css({
+const stackTag = css({
   fontFamily: 'mono',
-  fontSize: '11px',
-  color: 'textSecondary',
-  padding: '3px 8px',
+  fontSize: '13px',
+  color: 'text.secondary',
+  letterSpacing: '0.02em',
+  padding: '4px 10px',
   border: '1px solid',
   borderColor: 'border',
-  borderRadius: '2px',
-  letterSpacing: '0.02em',
 })
 
 const linkStyle = css({
-  display: 'inline-block',
-  fontFamily: 'body',
-  fontSize: '12px',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
+  fontFamily: 'mono',
+  fontSize: '14px',
   color: 'accent',
+  letterSpacing: '0.03em',
   textDecoration: 'none',
-  padding: '8px 0',
   _hover: {
     textDecoration: 'underline',
+    opacity: '1',
   },
-  '&:focus-visible': {
+  _focus: {
     outline: '2px solid',
     outlineColor: 'accent',
     outlineOffset: '2px',
   },
 })
 
-const notFoundStyle = css({
-  padding: '80px 0',
-  textAlign: 'center',
-})
-
-function ProjectPage() {
+function WorkPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div className={notFoundStyle}>
-        <h1 className={css({ fontFamily: 'display', fontSize: '2rem', fontWeight: 'bold', color: 'text', marginBottom: '16px' })}>
-          Project not found
-        </h1>
-        <a href="/" className={linkStyle}>← Back to work</a>
+      <div className={page}>
+        <h1 className={title}>Not Found</h1>
+        <p className={bodyText}>Project not found.</p>
+        <a href="/" className={linkStyle}>← Back</a>
       </div>
     )
   }
 
   return (
-    <>
-      <div className={heroStyle}>
-        <p className={eyebrowStyle}>
-          {project.type} · {project.year}
-        </p>
-        <h1 className={titleStyle}>{project.title}</h1>
+    <div className={page}>
+      <h1 className={title}>{project.title}</h1>
+
+      <div className={meta}>
+        <span>{project.type}</span>
+        <span>·</span>
+        <span>{project.year}</span>
+        {project.role && (
+          <>
+            <span>·</span>
+            <span>{project.role}</span>
+          </>
+        )}
       </div>
 
-      <div className={gridStyle}>
-        <div className={mainColStyle}>
-          {project.problem && (
-            <>
-              <p className={sectionLabelStyle}>Problem</p>
-              <p className={bodyTextStyle}>{project.problem}</p>
-            </>
-          )}
-          {project.approach && (
-            <>
-              <p className={sectionLabelStyle}>Approach</p>
-              <p className={bodyTextStyle}>{project.approach}</p>
-            </>
-          )}
-          {project.outcome && (
-            <>
-              <p className={sectionLabelStyle}>Outcome</p>
-              <p className={bodyTextStyle}>{project.outcome}</p>
-            </>
-          )}
-          {project.description && (
-            <>
-              <p className={sectionLabelStyle}>Description</p>
-              <p className={bodyTextStyle}>{project.description}</p>
-            </>
-          )}
+      {project.problem && (
+        <>
+          <p className={sectionLabel}>Problem</p>
+          <p className={bodyText}>{project.problem}</p>
+        </>
+      )}
 
-          <div className={css({ marginTop: '12px', display: 'flex', gap: '20px', flexWrap: 'wrap' })}>
-            {project.externalUrl && (
-              <a href={project.externalUrl} className={linkStyle}>Visit Live →</a>
-            )}
-            {project.liveUrl && !project.externalUrl && (
-              <a href={project.liveUrl} className={linkStyle}>Visit Live →</a>
-            )}
-            {project.githubUrl && (
-              <a href={project.githubUrl} className={linkStyle}>Source →</a>
-            )}
-            <a href="/" className={linkStyle}>← All Work</a>
-          </div>
-        </div>
+      {project.approach && (
+        <>
+          <p className={sectionLabel}>Approach</p>
+          <p className={bodyText}>{project.approach}</p>
+        </>
+      )}
 
-        <div className={sideColStyle}>
-          <div className={metaRowStyle}>
-            <p className={metaLabelStyle}>Type</p>
-            <p className={metaValueStyle}>{project.type}</p>
+      {project.outcome && (
+        <>
+          <p className={sectionLabel}>Outcome</p>
+          <p className={bodyText}>{project.outcome}</p>
+        </>
+      )}
+
+      {project.description && (
+        <>
+          <p className={sectionLabel}>Description</p>
+          <p className={bodyText}>{project.description}</p>
+        </>
+      )}
+
+      {project.stack && project.stack.length > 0 && (
+        <>
+          <p className={sectionLabel}>Stack</p>
+          <div className={stackGrid}>
+            {project.stack.map((s, i) => (
+              <span key={i} className={stackTag}>{s}</span>
+            ))}
           </div>
-          <div className={metaRowStyle}>
-            <p className={metaLabelStyle}>Year</p>
-            <p className={metaValueStyle}>{project.year}</p>
-          </div>
-          {project.role && (
-            <div className={metaRowStyle}>
-              <p className={metaLabelStyle}>Role</p>
-              <p className={metaValueStyle}>{project.role}</p>
-            </div>
-          )}
-          {project.stack && project.stack.length > 0 && (
-            <div className={metaRowStyle}>
-              <p className={metaLabelStyle}>Stack</p>
-              <div className={stackListStyle}>
-                {project.stack.map((tech) => (
-                  <span key={tech} className={stackItemStyle}>{tech}</span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+        </>
+      )}
+
+      <div className={css({ marginTop: '48px', display: 'flex', gap: '24px', flexWrap: 'wrap' })}>
+        {project.externalUrl && (
+          <a href={project.externalUrl} className={linkStyle} target="_blank" rel="noopener noreferrer">
+            Visit Site ↗
+          </a>
+        )}
+        {project.liveUrl && (
+          <a href={project.liveUrl} className={linkStyle} target="_blank" rel="noopener noreferrer">
+            Live ↗
+          </a>
+        )}
+        {project.githubUrl && (
+          <a href={project.githubUrl} className={linkStyle} target="_blank" rel="noopener noreferrer">
+            GitHub ↗
+          </a>
+        )}
+        <a href="/" className={linkStyle}>← Back</a>
       </div>
-    </>
+
+      <footer className={css({ borderTop: '1px solid', borderColor: 'border', paddingTop: '16px', marginTop: '64px' })}>
+        <a href="/archive" className={css({ fontFamily: 'mono', fontSize: '13px', color: 'text.muted', letterSpacing: '0.05em', textDecoration: 'none', _hover: { color: 'accent', textDecoration: 'underline', opacity: '1' }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' } })}>Archive</a>
+      </footer>
+    </div>
   )
 }
