@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react'
-import { Sidebar } from './Sidebar'
 import { css } from '../../styled-system/css'
 
-const layoutStyle = css({
-  position: 'relative',
+const layoutWrap = css({
   minHeight: '100vh',
   background: 'bg',
   color: 'text',
@@ -11,8 +9,7 @@ const layoutStyle = css({
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className={layoutStyle}>
-      <Sidebar />
+    <div className={layoutWrap}>
       {children}
     </div>
   )
