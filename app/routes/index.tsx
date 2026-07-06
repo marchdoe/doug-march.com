@@ -4,278 +4,390 @@ import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const dateStamp = css({
+const scrollRoot = css({
+  display: 'flex',
+  flexDirection: 'column',
+  width: '100%',
+})
+
+const heroSection = css({
+  minHeight: '100svh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+  padding: '0 6vw',
+  paddingBottom: '10vh',
+  paddingTop: '52px',
+  position: 'relative',
+})
+
+const dateline = css({
+  color: 'textMuted',
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  fontWeight: 'medium',
+  letterSpacing: '0.20em',
+  textTransform: 'uppercase',
+  marginBottom: '48px',
+})
+
+const heroPhrase = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'clamp(3.5rem, 9.5vw, 13.5rem)',
+  lineHeight: '0.9',
+  letterSpacing: '-0.03em',
+  color: 'text',
+  textShadow: '0 0 80px rgba(255,147,48,0.15)',
+  maxWidth: '100%',
+})
+
+const attribution = css({
+  color: 'textMuted',
+  fontFamily: 'body',
+  fontSize: 'clamp(0.8125rem, 1.2vw, 0.9375rem)',
+  lineHeight: '1.55',
+  marginTop: '24px',
+  letterSpacing: '0.04em',
+})
+
+const dispatchBand = css({
+  width: '100%',
+  background: 'bgCard',
+  padding: '32px 6vw',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '24px',
+  flexWrap: 'wrap',
+  borderTop: '1px solid',
+  borderColor: 'border',
+})
+
+const dispatchItem = css({
+  fontFamily: 'body',
+  fontSize: '0.9375rem',
+  lineHeight: '1.4',
+  fontVariantNumeric: 'tabular-nums',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+})
+
+const dispatchDivider = css({
+  width: '1px',
+  height: '20px',
+  background: 'border',
+  display: 'block',
+  '@media (max-width: 640px)': { display: 'none' },
+})
+
+const resultBadge = css({
+  background: 'accent',
+  color: 'bg',
   fontFamily: 'body',
   fontSize: '0.6875rem',
-  textTransform: 'uppercase',
-  letterSpacing: '0.12em',
-  color: 'textMuted',
-  marginBottom: '12',
+  fontWeight: 'bold',
+  letterSpacing: '0.05em',
+  padding: '2px 6px',
+  borderRadius: '2px',
+  lineHeight: '1',
+})
+
+const sectionWrap = css({
+  width: '100%',
+  padding: '96px 6vw',
+  borderTop: '1px solid',
+  borderColor: 'border',
 })
 
 const sectionLabel = css({
   fontFamily: 'body',
-  fontSize: '0.6875rem',
-  textTransform: 'uppercase',
-  letterSpacing: '0.12em',
-  color: 'textMuted',
-  marginBottom: '4',
-})
-
-const sectionDivider = css({
-  borderTop: '1px solid',
-  borderColor: 'border',
-  paddingTop: '12',
-  marginBottom: '12',
-})
-
-const projectRow = css({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'baseline',
-  padding: '8px 0',
-  textDecoration: 'none',
-  color: 'textSecondary',
-  transition: 'color 0.2s ease, background 0.15s ease',
-  marginLeft: '-8px',
-  marginRight: '-8px',
-  paddingLeft: '8px',
-  paddingRight: '8px',
-  borderRadius: '0',
-  _hover: {
-    color: 'accentBright',
-  },
-  _focusVisible: {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '2px',
-  },
-})
-
-const projectTitle = css({
-  fontFamily: 'body',
-  fontSize: '0.9375rem',
+  fontSize: '0.75rem',
   fontWeight: 'medium',
-  lineHeight: '1.6',
-})
-
-const projectMeta = css({
-  fontFamily: 'body',
-  fontSize: '0.6875rem',
+  letterSpacing: '0.10em',
   textTransform: 'uppercase',
-  letterSpacing: '0.1em',
   color: 'textMuted',
-  whiteSpace: 'nowrap',
-  marginLeft: '4',
+  marginBottom: '48px',
 })
 
-const featuredBlock = css({
-  marginBottom: '12',
+const featuredCard = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '24px',
 })
 
 const featuredTitle = css({
-  fontFamily: 'body',
-  fontSize: '1.25rem',
+  fontFamily: 'display',
   fontWeight: 'bold',
-  lineHeight: '1.3',
+  fontSize: 'clamp(2.5rem, 5vw, 5rem)',
+  lineHeight: '1.1',
+  letterSpacing: '-0.02em',
   color: 'text',
-  marginBottom: '2',
 })
 
 const featuredProblem = css({
   fontFamily: 'body',
-  fontSize: '0.9375rem',
-  lineHeight: '1.6',
+  fontSize: 'clamp(1rem, 1.5vw, 1.1875rem)',
+  lineHeight: '1.55',
   color: 'textSecondary',
-  marginBottom: '4',
-  maxWidth: '55ch',
+  maxWidth: '72ch',
+})
+
+const accentRule = css({
+  width: '48px',
+  height: '2px',
+  background: 'accent',
+  borderRadius: 'full',
 })
 
 const featuredLink = css({
   fontFamily: 'body',
-  fontSize: '0.8125rem',
+  fontSize: '0.9375rem',
   fontWeight: 'medium',
+  letterSpacing: '0.05em',
   color: 'accent',
   textDecoration: 'none',
-  display: 'inline-block',
-  padding: '4px 0',
-  _hover: {
-    color: 'accentBright',
-  },
-  _focusVisible: {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '6px',
+  padding: '12px 0',
+  minHeight: '44px',
+  transition: 'color 0.18s ease',
+  '&:hover': { color: 'accentLight' },
+  '&:focus-visible': {
     outline: '2px solid',
     outlineColor: 'accent',
-    outlineOffset: '2px',
+    outlineOffset: '4px',
+    borderRadius: '2px',
   },
 })
 
-const signalBlock = css({
-  marginBottom: '12',
+const projectGrid = css({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+  gap: '24px',
 })
 
-const scoreRow = css({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'baseline',
-  padding: '3px 0',
-  fontFamily: 'body',
-  fontSize: '0.8125rem',
-  lineHeight: '1.5',
-  fontVariantNumeric: 'tabular-nums',
+const projectCard = css({
+  background: 'bgCard',
+  borderRadius: '4px',
+  padding: '32px',
+  borderTop: '2px solid',
+  borderColor: 'accent',
+  transition: 'background 0.18s ease, border-color 0.18s ease',
+  textDecoration: 'none',
+  display: 'block',
+  minHeight: '44px',
+  '&:hover': {
+    background: 'bgSurface',
+    borderColor: 'accentLight',
+  },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '4px',
+  },
 })
 
-const tigersScore = css({
-  fontFamily: 'body',
-  fontSize: '0.9375rem',
+const cardTitle = css({
+  fontFamily: 'display',
   fontWeight: 'bold',
-  color: 'accentBright',
-  fontVariantNumeric: 'tabular-nums',
-  marginBottom: '1',
+  fontSize: '1.25rem',
+  lineHeight: '1.1',
+  color: 'text',
+  marginBottom: '12px',
 })
 
-const tigersCaption = css({
+const cardMeta = css({
   fontFamily: 'body',
-  fontSize: '0.6875rem',
+  fontSize: '0.75rem',
+  fontWeight: 'medium',
+  letterSpacing: '0.10em',
+  textTransform: 'uppercase',
   color: 'textMuted',
 })
 
-const listeningLine = css({
-  fontFamily: 'body',
-  fontSize: '0.875rem',
-  fontStyle: 'italic',
-  color: 'textSecondary',
-  lineHeight: '1.6',
+const expList = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
 })
 
-const footerStyle = css({
+const expItem = css({
+  display: 'flex',
+  alignItems: 'baseline',
+  gap: '16px',
+  padding: '16px 0',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  flexWrap: 'wrap',
+})
+
+const expTitle = css({
+  fontFamily: 'display',
+  fontWeight: 'semibold',
+  fontSize: '1.0625rem',
+  color: 'text',
+  textDecoration: 'none',
+  transition: 'color 0.18s ease',
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  '&:hover': { color: 'accentLight' },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '4px',
+    borderRadius: '2px',
+  },
+})
+
+const expMeta = css({
+  fontFamily: 'body',
+  fontSize: '0.8125rem',
+  letterSpacing: '0.04em',
+  color: 'textMuted',
+})
+
+const footerWrap = css({
+  width: '100%',
+  padding: '48px 6vw',
   borderTop: '1px solid',
   borderColor: 'border',
-  paddingTop: '6',
-  marginTop: '12',
+  display: 'flex',
+  alignItems: 'baseline',
+  justifyContent: 'space-between',
+  flexWrap: 'wrap',
+  gap: '16px',
 })
 
 const footerText = css({
   fontFamily: 'body',
-  fontSize: '0.6875rem',
+  fontSize: '0.8125rem',
   color: 'textMuted',
-  letterSpacing: '0.05em',
+  letterSpacing: '0.04em',
+})
+
+const footerLink = css({
+  fontFamily: 'body',
+  fontSize: '0.8125rem',
+  color: 'textMuted',
+  letterSpacing: '0.04em',
+  textDecoration: 'none',
+  transition: 'color 0.18s ease',
+  padding: '8px 0',
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  '&:hover': { color: 'accentLight' },
+  '&:focus-visible': {
+    outline: '2px solid',
+    outlineColor: 'accent',
+    outlineOffset: '4px',
+    borderRadius: '2px',
+  },
 })
 
 function HomePage() {
-  const golfLeaders = [
-    { rank: 'T1', name: 'Lee Hodges', score: '−16', highlight: true },
-    { rank: 'T1', name: 'Lucas Glover', score: '−16', highlight: true },
-    { rank: '3', name: 'Denny McCarthy', score: '−14', highlight: false },
-    { rank: 'T4', name: 'Patrick Rodgers', score: '−13', highlight: false },
-    { rank: 'T4', name: 'Adam Schenk', score: '−13', highlight: false },
-  ]
-
   return (
-    <>
-      <div className={dateStamp}>Sunday, July 5, 2026</div>
+    <div className={scrollRoot}>
+      {/* Fold 1 — Hero */}
+      <section className={heroSection}>
+        <p className={dateline}>Mon 06 July 2026</p>
+        <h1 className={heroPhrase}>
+          Guided<br />by voices.
+        </h1>
+        <p className={attribution}>
+          Guided by Voices, est. Dayton OH<br />
+          with Tobin Sprout · My Morning Jacket
+        </p>
+      </section>
 
-      {/* Featured Project */}
+      {/* Fold 2 — Signal Dispatch */}
+      <div className={dispatchBand} role="complementary" aria-label="Today's signals">
+        <span className={dispatchItem} style={{ color: '#FFB862' }}>
+          DET 6 · 3 CIN{' '}
+          <span className={resultBadge}>W</span>
+        </span>
+        <span className={dispatchDivider} aria-hidden="true" />
+        <span className={dispatchItem} style={{ color: '#BCA882' }}>
+          Gotterup −20 · JD Classic Final
+        </span>
+        <span className={dispatchDivider} aria-hidden="true" />
+        <span className={dispatchItem} style={{ color: '#93785A', fontStyle: 'italic' }}>
+          ↓ Last Quarter · 52% lit
+        </span>
+      </div>
+
+      {/* Fold 3 — Featured Project */}
       {featuredProject && (
-        <div className={featuredBlock}>
-          <div className={sectionLabel}>Featured</div>
-          <h2 className={featuredTitle}>{featuredProject.title}</h2>
-          {featuredProject.problem && (
-            <p className={featuredProblem}>{featuredProject.problem}</p>
-          )}
-          {featuredProject.externalUrl && (
-            <a href={featuredProject.externalUrl} className={featuredLink}>
-              Visit {featuredProject.title} →
-            </a>
-          )}
-        </div>
+        <section className={sectionWrap}>
+          <p className={sectionLabel}>Featured</p>
+          <div className={featuredCard}>
+            <h2 className={featuredTitle}>{featuredProject.title}</h2>
+            <div className={accentRule} />
+            {featuredProject.problem && (
+              <p className={featuredProblem}>{featuredProject.problem}</p>
+            )}
+            {featuredProject.externalUrl && (
+              <a
+                href={featuredProject.externalUrl}
+                className={featuredLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Visit {featuredProject.title} →
+              </a>
+            )}
+          </div>
+        </section>
       )}
 
-      {/* Selected Work */}
-      <div className={sectionDivider}>
-        <div className={sectionLabel}>Selected Work</div>
-        {selectedWork.map((project) => (
-          <a
-            key={project.slug}
-            href={`/work/${project.slug}`}
-            className={projectRow}
-          >
-            <span className={projectTitle}>{project.title}</span>
-            <span className={projectMeta}>
-              {project.type} · {project.year}
-            </span>
-          </a>
-        ))}
-      </div>
-
-      {/* Experiments */}
-      <div className={sectionDivider}>
-        <div className={sectionLabel}>Experiments</div>
-        {experiments.map((project) => (
-          <a
-            key={project.slug}
-            href={project.externalUrl || `/work/${project.slug}`}
-            className={projectRow}
-          >
-            <span className={projectTitle}>{project.title}</span>
-            <span className={projectMeta}>
-              {project.type} · {project.year}
-            </span>
-          </a>
-        ))}
-      </div>
-
-      {/* Signals */}
-      <div className={sectionDivider}>
-        {/* Golf */}
-        <div className={signalBlock}>
-          <div className={sectionLabel}>John Deere Classic</div>
-          {golfLeaders.map((leader, i) => (
-            <div key={i} className={scoreRow}>
-              <span style={{ 
-                color: leader.highlight ? 'var(--colors-primary-300)' : 'var(--colors-neutral-300)',
-                minWidth: '28px',
-                fontWeight: leader.highlight ? 700 : 400,
-              }}>
-                {leader.rank}
+      {/* Fold 4 — Selected Work */}
+      <section className={sectionWrap}>
+        <p className={sectionLabel}>Selected Work</p>
+        <div className={projectGrid}>
+          {selectedWork.map((p) => (
+            <a
+              key={p.slug}
+              href={`/work/${p.slug}`}
+              className={projectCard}
+            >
+              <h3 className={cardTitle}>{p.title}</h3>
+              <span className={cardMeta}>
+                {p.type} · {p.year}
               </span>
-              <span style={{ 
-                flex: 1, 
-                color: leader.highlight ? 'var(--colors-primary-300)' : 'var(--colors-neutral-300)',
-                fontWeight: leader.highlight ? 700 : 400,
-              }}>
-                {leader.name}
-              </span>
-              <span style={{ 
-                color: leader.highlight ? 'var(--colors-primary-300)' : 'var(--colors-neutral-400)',
-                fontWeight: 700,
-              }}>
-                {leader.score}
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* Fold 5 — Experiments */}
+      <section className={sectionWrap}>
+        <p className={sectionLabel}>Experiments</p>
+        <div className={expList}>
+          {experiments.map((e) => (
+            <div key={e.slug} className={expItem}>
+              <a
+                href={e.externalUrl || `/work/${e.slug}`}
+                className={expTitle}
+                {...(e.externalUrl ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                {e.title}
+              </a>
+              <span className={expMeta}>
+                {e.type} · {e.year}
               </span>
             </div>
           ))}
         </div>
-
-        {/* Tigers */}
-        <div className={signalBlock}>
-          <div className={tigersScore}>⚾ DET 3 — 0 W</div>
-          <div className={tigersCaption}>Yesterday · Independence Day</div>
-        </div>
-
-        {/* Listening */}
-        <div className={signalBlock}>
-          <div className={sectionLabel}>Listening</div>
-          <div className={listeningLine}>
-            Wet Leg, Tobin Sprout, Radiohead
-          </div>
-        </div>
-      </div>
+      </section>
 
       {/* Footer */}
-      <footer className={footerStyle}>
-        <div className={footerText}>
-          Doug March · Product Designer & Developer · <a href="/archive" style={{ color: 'inherit', textDecoration: 'none' }}>Archive</a>
-        </div>
+      <footer className={footerWrap}>
+        <span className={footerText}>© 2026 Doug March</span>
+        <a href="/archive" className={footerLink}>Archive</a>
       </footer>
-    </>
+    </div>
   )
 }

@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 28,
+    "s": 92,
+    "l": 52,
+    "name": "amber-ember"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "amber-orange",
+    "name": "warm stone"
+  },
+  "mood_word": "incandescent",
+  "color_story": "Amber at H:28° is the exact color of the afternoon light at 4:55am sunrise stretching into 14.6-hour July days — not decorative warmth but the actual color of heat, of stage lights at a Guided by Voices show in a Dayton club, mandated by the only open hue corridor (5°–42°) and earned by the signal."
+}
