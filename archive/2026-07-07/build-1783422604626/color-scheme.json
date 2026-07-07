@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 158,
+    "s": 100,
+    "l": 46,
+    "name": "phosphor teal"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "teal-green",
+    "name": "void"
+  },
+  "mood_word": "terminal",
+  "color_story": "Phosphor teal on near-void black — the exact palette of a Bloomberg terminal at 3am announcing something irreversible."
+}

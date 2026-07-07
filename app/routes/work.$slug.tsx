@@ -2,94 +2,76 @@ import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
+export const Route = createFileRoute('/work/$slug')({ component: WorkDetail })
 
-const scrollRoot = css({
-  display: 'flex',
-  flexDirection: 'column',
+const heroBand = css({
   width: '100%',
-  paddingTop: '52px',
-})
-
-const heroSection = css({
-  padding: '96px 6vw',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-})
-
-const backLink = css({
-  fontFamily: 'body',
-  fontSize: '0.8125rem',
-  fontWeight: 'medium',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  textDecoration: 'none',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '6px',
-  marginBottom: '48px',
-  minHeight: '44px',
-  padding: '8px 0',
-  transition: 'color 0.18s ease',
-  '&:hover': { color: 'accentLight' },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '4px',
-    borderRadius: '2px',
+  padding: '120px 6vw 64px',
+  '@media (max-width: 768px)': {
+    padding: '64px 6vw 40px',
   },
 })
 
-const title = css({
+const projectTitle = css({
   fontFamily: 'display',
-  fontWeight: 'bold',
-  fontSize: 'clamp(2.5rem, 6vw, 6rem)',
-  lineHeight: '1.1',
-  letterSpacing: '-0.02em',
+  fontSize: 'clamp(2.5rem, 6vw, 7rem)',
+  textTransform: 'uppercase',
+  lineHeight: 'tight',
+  letterSpacing: 'tight',
   color: 'text',
   marginBottom: '16px',
 })
 
-const metaRow = css({
-  display: 'flex',
-  gap: '24px',
-  flexWrap: 'wrap',
-  alignItems: 'baseline',
-})
-
-const metaItem = css({
-  fontFamily: 'body',
-  fontSize: '0.8125rem',
-  fontWeight: 'medium',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-})
-
-const sectionWrap = css({
-  width: '100%',
-  padding: '64px 6vw',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-})
-
-const sectionLabel = css({
+const projectMeta = css({
   fontFamily: 'body',
   fontSize: '0.75rem',
-  fontWeight: 'medium',
-  letterSpacing: '0.10em',
+  color: 'textDim',
   textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '16px',
+  letterSpacing: 'wider',
+  marginBottom: '40px',
 })
 
-const bodyText = css({
+const rule = css({
+  width: '100%',
+  height: '1px',
+  background: 'borderAccent',
+})
+
+const contentBand = css({
+  width: '100%',
+  padding: '64px 6vw',
+  '@media (max-width: 768px)': {
+    padding: '40px 6vw',
+  },
+})
+
+const detailGrid = css({
+  display: 'grid',
+  gridTemplateColumns: '200px 1fr',
+  gap: '48px',
+  marginBottom: '48px',
+  '@media (max-width: 768px)': {
+    gridTemplateColumns: '1fr',
+    gap: '12px',
+    marginBottom: '32px',
+  },
+})
+
+const detailLabel = css({
   fontFamily: 'body',
-  fontSize: 'clamp(1rem, 1.3vw, 1.125rem)',
-  lineHeight: '1.55',
-  color: 'text',
-  maxWidth: '72ch',
+  fontSize: '0.65rem',
+  color: 'textDim',
+  textTransform: 'uppercase',
+  letterSpacing: '0.15em',
+  paddingTop: '4px',
+})
+
+const detailValue = css({
+  fontFamily: 'body',
+  fontSize: '1rem',
+  color: 'textSecondary',
+  lineHeight: 'normal',
+  maxWidth: '65ch',
 })
 
 const stackList = css({
@@ -98,169 +80,166 @@ const stackList = css({
   gap: '8px',
 })
 
-const stackTag = css({
-  fontFamily: 'body',
-  fontSize: '0.8125rem',
-  fontWeight: 'medium',
-  color: 'textSecondary',
-  background: 'bgCard',
-  padding: '8px 16px',
+const stackPill = css({
+  fontFamily: 'mono',
+  fontSize: '0.75rem',
+  color: 'accentLight',
+  padding: '4px 12px',
+  border: '1px solid',
+  borderColor: 'borderAccent',
   borderRadius: 'full',
 })
 
-const externalLink = css({
+const linkBtn = css({
   fontFamily: 'body',
-  fontSize: '0.9375rem',
-  fontWeight: 'medium',
+  fontSize: '0.8rem',
   color: 'accent',
+  textTransform: 'uppercase',
+  letterSpacing: 'wider',
   textDecoration: 'none',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '6px',
-  minHeight: '44px',
-  padding: '8px 0',
-  transition: 'color 0.18s ease',
-  '&:hover': { color: 'accentLight' },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '4px',
-    borderRadius: '2px',
-  },
+  display: 'inline-block',
+  padding: '12px 0',
+  marginRight: '32px',
+  _hover: { color: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accentLight', outlineOffset: '4px' },
 })
 
-const footerWrap = css({
+const backLink = css({
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  color: 'textDim',
+  textDecoration: 'none',
+  textTransform: 'uppercase',
+  letterSpacing: 'wider',
+  padding: '12px 0',
+  display: 'inline-block',
+  _hover: { color: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accentLight', outlineOffset: '4px' },
+})
+
+const footerBand = css({
   width: '100%',
-  padding: '48px 6vw',
-  borderTop: '1px solid',
-  borderColor: 'border',
+  padding: '32px 6vw',
   display: 'flex',
-  alignItems: 'baseline',
   justifyContent: 'space-between',
-  flexWrap: 'wrap',
-  gap: '16px',
+  alignItems: 'center',
+  borderTop: '1px solid',
+  borderColor: 'borderAccent',
+  '@media (max-width: 640px)': {
+    flexDirection: 'column',
+    gap: '12px',
+    alignItems: 'flex-start',
+  },
 })
 
 const footerText = css({
   fontFamily: 'body',
-  fontSize: '0.8125rem',
-  color: 'textMuted',
-  letterSpacing: '0.04em',
+  fontSize: '0.7rem',
+  color: 'textDim',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
 })
 
 const footerLink = css({
   fontFamily: 'body',
-  fontSize: '0.8125rem',
-  color: 'textMuted',
-  letterSpacing: '0.04em',
+  fontSize: '0.7rem',
+  color: 'textDim',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
   textDecoration: 'none',
-  transition: 'color 0.18s ease',
-  padding: '8px 0',
-  minHeight: '44px',
-  display: 'inline-flex',
-  alignItems: 'center',
-  '&:hover': { color: 'accentLight' },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '4px',
-    borderRadius: '2px',
-  },
+  padding: '10px 0',
+  _hover: { color: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accentLight', outlineOffset: '4px' },
 })
 
-function ProjectPage() {
+function WorkDetail() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div className={scrollRoot}>
-        <section className={heroSection}>
-          <a href="/" className={backLink}>← Back</a>
-          <h1 className={title}>Project not found</h1>
-        </section>
-      </div>
+      <section className={heroBand}>
+        <h1 className={projectTitle}>Not Found</h1>
+        <a href="/" className={backLink}>← Back to Work</a>
+      </section>
     )
   }
 
   return (
-    <div className={scrollRoot}>
-      <section className={heroSection}>
+    <>
+      <section className={heroBand}>
         <a href="/" className={backLink}>← Back</a>
-        <h1 className={title}>{project.title}</h1>
-        <div className={metaRow}>
-          <span className={metaItem}>{project.type}</span>
-          <span className={metaItem}>{project.year}</span>
-          {project.role && <span className={metaItem}>{project.role}</span>}
+        <h1 className={projectTitle}>{project.title}</h1>
+        <div className={projectMeta}>
+          {project.type} · {project.year}
+          {project.role && ` · ${project.role}`}
+        </div>
+        <div className={rule} />
+      </section>
+
+      <section className={contentBand}>
+        {project.problem && (
+          <div className={detailGrid}>
+            <div className={detailLabel}>Problem</div>
+            <div className={detailValue}>{project.problem}</div>
+          </div>
+        )}
+
+        {project.approach && (
+          <div className={detailGrid}>
+            <div className={detailLabel}>Approach</div>
+            <div className={detailValue}>{project.approach}</div>
+          </div>
+        )}
+
+        {project.outcome && (
+          <div className={detailGrid}>
+            <div className={detailLabel}>Outcome</div>
+            <div className={detailValue}>{project.outcome}</div>
+          </div>
+        )}
+
+        {project.description && (
+          <div className={detailGrid}>
+            <div className={detailLabel}>Description</div>
+            <div className={detailValue}>{project.description}</div>
+          </div>
+        )}
+
+        {project.stack && project.stack.length > 0 && (
+          <div className={detailGrid}>
+            <div className={detailLabel}>Stack</div>
+            <div className={stackList}>
+              {project.stack.map((tech) => (
+                <span key={tech} className={stackPill}>{tech}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div style={{ marginTop: '48px' }}>
+          {project.externalUrl && (
+            <a href={project.externalUrl} className={linkBtn}>
+              Visit Site →
+            </a>
+          )}
+          {project.liveUrl && (
+            <a href={project.liveUrl} className={linkBtn}>
+              Live →
+            </a>
+          )}
+          {project.githubUrl && (
+            <a href={project.githubUrl} className={linkBtn}>
+              GitHub →
+            </a>
+          )}
         </div>
       </section>
 
-      {project.problem && (
-        <section className={sectionWrap}>
-          <p className={sectionLabel}>Problem</p>
-          <p className={bodyText}>{project.problem}</p>
-        </section>
-      )}
-
-      {project.approach && (
-        <section className={sectionWrap}>
-          <p className={sectionLabel}>Approach</p>
-          <p className={bodyText}>{project.approach}</p>
-        </section>
-      )}
-
-      {project.outcome && (
-        <section className={sectionWrap}>
-          <p className={sectionLabel}>Outcome</p>
-          <p className={bodyText}>{project.outcome}</p>
-        </section>
-      )}
-
-      {project.description && (
-        <section className={sectionWrap}>
-          <p className={sectionLabel}>About</p>
-          <p className={bodyText}>{project.description}</p>
-        </section>
-      )}
-
-      {project.stack && project.stack.length > 0 && (
-        <section className={sectionWrap}>
-          <p className={sectionLabel}>Stack</p>
-          <div className={stackList}>
-            {project.stack.map((tech) => (
-              <span key={tech} className={stackTag}>{tech}</span>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {(project.externalUrl || project.liveUrl || project.githubUrl) && (
-        <section className={sectionWrap}>
-          <p className={sectionLabel}>Links</p>
-          <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-            {project.externalUrl && (
-              <a href={project.externalUrl} className={externalLink} target="_blank" rel="noopener noreferrer">
-                Visit site →
-              </a>
-            )}
-            {project.liveUrl && project.liveUrl !== project.externalUrl && (
-              <a href={project.liveUrl} className={externalLink} target="_blank" rel="noopener noreferrer">
-                Live →
-              </a>
-            )}
-            {project.githubUrl && (
-              <a href={project.githubUrl} className={externalLink} target="_blank" rel="noopener noreferrer">
-                GitHub →
-              </a>
-            )}
-          </div>
-        </section>
-      )}
-
-      <footer className={footerWrap}>
+      <footer className={footerBand}>
         <span className={footerText}>© 2026 Doug March</span>
         <a href="/archive" className={footerLink}>Archive</a>
       </footer>
-    </div>
+    </>
   )
 }

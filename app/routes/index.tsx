@@ -4,390 +4,490 @@ import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-const scrollRoot = css({
-  display: 'flex',
-  flexDirection: 'column',
+const heroBand = css({
   width: '100%',
-})
-
-const heroSection = css({
-  minHeight: '100svh',
+  minHeight: 'calc(90vh - 56px)',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-end',
-  padding: '0 6vw',
-  paddingBottom: '10vh',
-  paddingTop: '52px',
+  padding: '7vh 6vw 0',
   position: 'relative',
-})
-
-const dateline = css({
-  color: 'textMuted',
-  fontFamily: 'body',
-  fontSize: '0.75rem',
-  fontWeight: 'medium',
-  letterSpacing: '0.20em',
-  textTransform: 'uppercase',
-  marginBottom: '48px',
 })
 
 const heroPhrase = css({
   fontFamily: 'display',
-  fontWeight: 'bold',
-  fontSize: 'clamp(3.5rem, 9.5vw, 13.5rem)',
-  lineHeight: '0.9',
-  letterSpacing: '-0.03em',
+  fontSize: 'clamp(3rem, 8.5vw, 10.5rem)',
+  lineHeight: 'tight',
+  letterSpacing: 'tight',
+  textTransform: 'uppercase',
   color: 'text',
-  textShadow: '0 0 80px rgba(255,147,48,0.15)',
   maxWidth: '100%',
+  textWrap: 'balance',
 })
 
-const attribution = css({
-  color: 'textMuted',
-  fontFamily: 'body',
-  fontSize: 'clamp(0.8125rem, 1.2vw, 0.9375rem)',
-  lineHeight: '1.55',
-  marginTop: '24px',
-  letterSpacing: '0.04em',
-})
-
-const dispatchBand = css({
-  width: '100%',
-  background: 'bgCard',
-  padding: '32px 6vw',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '24px',
-  flexWrap: 'wrap',
-  borderTop: '1px solid',
-  borderColor: 'border',
-})
-
-const dispatchItem = css({
-  fontFamily: 'body',
-  fontSize: '0.9375rem',
-  lineHeight: '1.4',
-  fontVariantNumeric: 'tabular-nums',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-})
-
-const dispatchDivider = css({
-  width: '1px',
-  height: '20px',
-  background: 'border',
-  display: 'block',
-  '@media (max-width: 640px)': { display: 'none' },
-})
-
-const resultBadge = css({
-  background: 'accent',
-  color: 'bg',
-  fontFamily: 'body',
-  fontSize: '0.6875rem',
-  fontWeight: 'bold',
-  letterSpacing: '0.05em',
-  padding: '2px 6px',
-  borderRadius: '2px',
-  lineHeight: '1',
-})
-
-const sectionWrap = css({
-  width: '100%',
-  padding: '96px 6vw',
-  borderTop: '1px solid',
-  borderColor: 'border',
-})
-
-const sectionLabel = css({
+const heroAttribution = css({
   fontFamily: 'body',
   fontSize: '0.75rem',
-  fontWeight: 'medium',
-  letterSpacing: '0.10em',
+  color: 'textDim',
+  letterSpacing: 'wider',
   textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '48px',
+  marginTop: '32px',
+  paddingBottom: '24px',
+})
+
+const heroRule = css({
+  width: '100%',
+  height: '1px',
+  background: 'borderAccent',
+})
+
+const signalBand = css({
+  width: '100%',
+  minHeight: '160px',
+  padding: '0 6vw',
+  display: 'grid',
+  gridTemplateColumns: '1fr 1px 1.8fr 1px 1fr',
+  alignItems: 'center',
+  background: 'bgSignal',
+  '@media (max-width: 768px)': {
+    gridTemplateColumns: '1fr',
+    gap: '0',
+    padding: '24px 6vw',
+    minHeight: 'auto',
+  },
+})
+
+const signalDivider = css({
+  width: '1px',
+  height: '60%',
+  background: 'borderAccent',
+  alignSelf: 'center',
+  '@media (max-width: 768px)': {
+    width: '100%',
+    height: '1px',
+    margin: '16px 0',
+  },
+})
+
+const signalCol = css({
+  padding: '24px 24px',
+  '@media (max-width: 768px)': {
+    padding: '12px 0',
+  },
+})
+
+const signalEyebrow = css({
+  fontFamily: 'body',
+  fontSize: '0.65rem',
+  color: 'textDim',
+  textTransform: 'uppercase',
+  letterSpacing: '0.15em',
+  marginBottom: '8px',
+})
+
+const signalScore = css({
+  fontFamily: 'display',
+  fontSize: '2.5rem',
+  color: 'accentLight',
+  lineHeight: '0.9',
+})
+
+const signalName = css({
+  fontFamily: 'display',
+  fontSize: '1rem',
+  color: 'text',
+  textTransform: 'uppercase',
+})
+
+const signalSub = css({
+  fontFamily: 'body',
+  fontSize: '0.7rem',
+  color: 'textDim',
+  marginTop: '6px',
+  textTransform: 'uppercase',
+  letterSpacing: 'wider',
+})
+
+const hnEntry = css({
+  fontFamily: 'body',
+  fontSize: '0.8rem',
+  color: 'textSecondary',
+  lineHeight: '1.2',
+  marginBottom: '6px',
+})
+
+const hnScore = css({
+  fontWeight: 'bold',
+  color: 'accentLight',
+})
+
+const hnScoreGlow = css({
+  fontWeight: 'bold',
+  color: 'accentLight',
+  textShadow: '0 0 12px rgba(13,229,145,0.5)',
+})
+
+const workBandSection = css({
+  width: '100%',
+  padding: '80px 6vw',
+  '@media (max-width: 768px)': {
+    padding: '48px 6vw',
+  },
+})
+
+const workBandLabel = css({
+  fontFamily: 'body',
+  fontSize: '0.65rem',
+  color: 'textDim',
+  textTransform: 'uppercase',
+  letterSpacing: '0.15em',
+  marginBottom: '32px',
 })
 
 const featuredCard = css({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '24px',
+  background: 'bgCard',
+  padding: '48px',
+  borderLeft: '2px solid',
+  borderColor: 'accentLight',
+  marginBottom: '48px',
+  transition: 'background 0.2s ease, box-shadow 0.2s ease',
+  '@media (prefers-reduced-motion: reduce)': {
+    transition: 'none',
+  },
+  _hover: {
+    background: 'bgSubtle',
+    boxShadow: '-2px 0 16px rgba(13,229,145,0.25)',
+  },
+  '@media (max-width: 768px)': {
+    padding: '24px',
+  },
 })
 
 const featuredTitle = css({
   fontFamily: 'display',
-  fontWeight: 'bold',
-  fontSize: 'clamp(2.5rem, 5vw, 5rem)',
-  lineHeight: '1.1',
-  letterSpacing: '-0.02em',
+  fontSize: 'clamp(1.5rem, 3vw, 3rem)',
   color: 'text',
+  textTransform: 'uppercase',
+  lineHeight: 'snug',
+  marginBottom: '16px',
 })
 
 const featuredProblem = css({
   fontFamily: 'body',
-  fontSize: 'clamp(1rem, 1.5vw, 1.1875rem)',
-  lineHeight: '1.55',
+  fontSize: '1rem',
   color: 'textSecondary',
-  maxWidth: '72ch',
-})
-
-const accentRule = css({
-  width: '48px',
-  height: '2px',
-  background: 'accent',
-  borderRadius: 'full',
+  lineHeight: 'normal',
+  maxWidth: '65ch',
+  marginBottom: '20px',
 })
 
 const featuredLink = css({
   fontFamily: 'body',
-  fontSize: '0.9375rem',
-  fontWeight: 'medium',
-  letterSpacing: '0.05em',
+  fontSize: '0.8rem',
   color: 'accent',
+  textTransform: 'uppercase',
+  letterSpacing: 'wider',
   textDecoration: 'none',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '6px',
-  padding: '12px 0',
-  minHeight: '44px',
-  transition: 'color 0.18s ease',
-  '&:hover': { color: 'accentLight' },
-  '&:focus-visible': {
+  display: 'inline-block',
+  padding: '10px 0',
+  _hover: {
+    color: 'accentLight',
+  },
+  _focus: {
     outline: '2px solid',
-    outlineColor: 'accent',
+    outlineColor: 'accentLight',
     outlineOffset: '4px',
-    borderRadius: '2px',
   },
 })
 
-const projectGrid = css({
+const workGrid = css({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-  gap: '24px',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '1px',
+  background: 'borderAccent',
+  '@media (max-width: 1024px)': {
+    gridTemplateColumns: 'repeat(2, 1fr)',
+  },
+  '@media (max-width: 640px)': {
+    gridTemplateColumns: '1fr',
+  },
 })
 
-const projectCard = css({
+const workCard = css({
   background: 'bgCard',
-  borderRadius: '4px',
   padding: '32px',
-  borderTop: '2px solid',
-  borderColor: 'accent',
-  transition: 'background 0.18s ease, border-color 0.18s ease',
+  borderLeft: '2px solid transparent',
+  transition: 'background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
+  '@media (prefers-reduced-motion: reduce)': {
+    transition: 'none',
+  },
+  _hover: {
+    background: 'bgSubtle',
+    borderLeftColor: 'accentLight',
+    boxShadow: '-2px 0 12px rgba(13,229,145,0.3)',
+  },
+})
+
+const workCardLink = css({
   textDecoration: 'none',
   display: 'block',
+  color: 'inherit',
   minHeight: '44px',
-  '&:hover': {
-    background: 'bgSurface',
-    borderColor: 'accentLight',
-  },
-  '&:focus-visible': {
+  _focus: {
     outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '4px',
+    outlineColor: 'accentLight',
+    outlineOffset: '2px',
   },
 })
 
-const cardTitle = css({
-  fontFamily: 'display',
-  fontWeight: 'bold',
-  fontSize: '1.25rem',
-  lineHeight: '1.1',
-  color: 'text',
-  marginBottom: '12px',
+const workCardType = css({
+  fontFamily: 'body',
+  fontSize: '0.65rem',
+  color: 'textDim',
+  textTransform: 'uppercase',
+  letterSpacing: '0.15em',
+  marginBottom: '8px',
 })
 
-const cardMeta = css({
+const workCardTitle = css({
+  fontFamily: 'display',
+  fontSize: '1.25rem',
+  color: 'text',
+  textTransform: 'uppercase',
+  lineHeight: 'snug',
+  marginBottom: '4px',
+})
+
+const workCardYear = css({
   fontFamily: 'body',
   fontSize: '0.75rem',
-  fontWeight: 'medium',
-  letterSpacing: '0.10em',
-  textTransform: 'uppercase',
-  color: 'textMuted',
+  color: 'textDim',
+  letterSpacing: 'wider',
 })
 
-const expList = css({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
+const experimentsBand = css({
+  width: '100%',
+  padding: '64px 6vw',
+  background: 'bgCard',
+  '@media (max-width: 768px)': {
+    padding: '40px 6vw',
+  },
 })
 
-const expItem = css({
-  display: 'flex',
-  alignItems: 'baseline',
-  gap: '16px',
-  padding: '16px 0',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  flexWrap: 'wrap',
+const expGrid = css({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '32px',
+  '@media (max-width: 768px)': {
+    gridTemplateColumns: '1fr',
+    gap: '24px',
+  },
+})
+
+const expCard = css({
+  borderLeft: '1px solid',
+  borderColor: 'borderAccent',
+  paddingLeft: '20px',
 })
 
 const expTitle = css({
   fontFamily: 'display',
-  fontWeight: 'semibold',
-  fontSize: '1.0625rem',
+  fontSize: '1rem',
   color: 'text',
-  textDecoration: 'none',
-  transition: 'color 0.18s ease',
-  minHeight: '44px',
-  display: 'inline-flex',
-  alignItems: 'center',
-  '&:hover': { color: 'accentLight' },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '4px',
-    borderRadius: '2px',
-  },
+  textTransform: 'uppercase',
+  marginBottom: '4px',
 })
 
 const expMeta = css({
   fontFamily: 'body',
-  fontSize: '0.8125rem',
-  letterSpacing: '0.04em',
-  color: 'textMuted',
+  fontSize: '0.7rem',
+  color: 'textDim',
+  textTransform: 'uppercase',
+  letterSpacing: 'wider',
 })
 
-const footerWrap = css({
+const expLink = css({
+  textDecoration: 'none',
+  display: 'block',
+  color: 'inherit',
+  minHeight: '44px',
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accentLight',
+    outlineOffset: '4px',
+  },
+})
+
+const footerBand = css({
   width: '100%',
-  padding: '48px 6vw',
-  borderTop: '1px solid',
-  borderColor: 'border',
+  padding: '32px 6vw',
   display: 'flex',
-  alignItems: 'baseline',
   justifyContent: 'space-between',
-  flexWrap: 'wrap',
-  gap: '16px',
+  alignItems: 'center',
+  borderTop: '1px solid',
+  borderColor: 'borderAccent',
+  '@media (max-width: 640px)': {
+    flexDirection: 'column',
+    gap: '12px',
+    alignItems: 'flex-start',
+  },
 })
 
 const footerText = css({
   fontFamily: 'body',
-  fontSize: '0.8125rem',
-  color: 'textMuted',
-  letterSpacing: '0.04em',
+  fontSize: '0.7rem',
+  color: 'textDim',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
 })
 
 const footerLink = css({
   fontFamily: 'body',
-  fontSize: '0.8125rem',
-  color: 'textMuted',
-  letterSpacing: '0.04em',
+  fontSize: '0.7rem',
+  color: 'textDim',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
   textDecoration: 'none',
-  transition: 'color 0.18s ease',
-  padding: '8px 0',
-  minHeight: '44px',
-  display: 'inline-flex',
-  alignItems: 'center',
-  '&:hover': { color: 'accentLight' },
-  '&:focus-visible': {
-    outline: '2px solid',
-    outlineColor: 'accent',
-    outlineOffset: '4px',
-    borderRadius: '2px',
+  padding: '10px 0',
+  _hover: {
+    color: 'accentLight',
   },
+  _focus: {
+    outline: '2px solid',
+    outlineColor: 'accentLight',
+    outlineOffset: '4px',
+  },
+})
+
+const quoteFooter = css({
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  color: 'textDim',
+  fontStyle: 'italic',
+  padding: '0 6vw 24px',
+  maxWidth: '65ch',
 })
 
 function HomePage() {
   return (
-    <div className={scrollRoot}>
-      {/* Fold 1 — Hero */}
-      <section className={heroSection}>
-        <p className={dateline}>Mon 06 July 2026</p>
+    <>
+      {/* HERO BAND */}
+      <section className={heroBand}>
         <h1 className={heroPhrase}>
-          Guided<br />by voices.
+          the coming AI margin collapse
         </h1>
-        <p className={attribution}>
-          Guided by Voices, est. Dayton OH<br />
-          with Tobin Sprout · My Morning Jacket
+        <p className={heroAttribution}>
+          — Martin Alderson · Hacker News · 457 pts
         </p>
+        <div className={heroRule} />
       </section>
 
-      {/* Fold 2 — Signal Dispatch */}
-      <div className={dispatchBand} role="complementary" aria-label="Today's signals">
-        <span className={dispatchItem} style={{ color: '#FFB862' }}>
-          DET 6 · 3 CIN{' '}
-          <span className={resultBadge}>W</span>
-        </span>
-        <span className={dispatchDivider} aria-hidden="true" />
-        <span className={dispatchItem} style={{ color: '#BCA882' }}>
-          Gotterup −20 · JD Classic Final
-        </span>
-        <span className={dispatchDivider} aria-hidden="true" />
-        <span className={dispatchItem} style={{ color: '#93785A', fontStyle: 'italic' }}>
-          ↓ Last Quarter · 52% lit
-        </span>
-      </div>
+      {/* SIGNAL BAND */}
+      <section className={signalBand} aria-label="Daily signals">
+        <div className={signalCol}>
+          <div className={signalEyebrow}>John Deere Classic · Final</div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
+            <span className={signalName}>Gotterup</span>
+            <span className={signalScore}>−20</span>
+          </div>
+          <div className={signalSub}>Homa −19 · Kohles −18</div>
+        </div>
 
-      {/* Fold 3 — Featured Project */}
-      {featuredProject && (
-        <section className={sectionWrap}>
-          <p className={sectionLabel}>Featured</p>
+        <div className={signalDivider} />
+
+        <div className={signalCol}>
+          <div className={signalEyebrow}>Hacker News Today</div>
+          <div className={hnEntry}>
+            <span className={hnScoreGlow}>457</span> · AI Margin Collapse ↑
+          </div>
+          <div className={hnEntry}>
+            <span className={hnScore}>312</span> · Show HN: Open-source LLM benchmarks
+          </div>
+          <div className={hnEntry}>
+            <span className={hnScore}>289</span> · Why SQLite is taking over embedded
+          </div>
+        </div>
+
+        <div className={signalDivider} />
+
+        <div className={signalCol}>
+          <div className={signalEyebrow}>Dispatch</div>
+          <div className={signalSub} style={{ marginTop: 0 }}>
+            My Morning Jacket · Guided by Voices · Wet Leg
+          </div>
+          <div className={signalSub}>◑ Last Quarter 41%</div>
+          <div className={signalSub}>☀ 14.6h Daylight</div>
+          <div className={css({ fontFamily: 'body', fontSize: '0.7rem', color: 'textDim', fontStyle: 'italic', marginTop: '4px' })}>
+            All teams off season
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURED PROJECT */}
+      <section className={workBandSection}>
+        <div className={workBandLabel}>Featured</div>
+        {featuredProject && (
           <div className={featuredCard}>
             <h2 className={featuredTitle}>{featuredProject.title}</h2>
-            <div className={accentRule} />
             {featuredProject.problem && (
               <p className={featuredProblem}>{featuredProject.problem}</p>
             )}
             {featuredProject.externalUrl && (
-              <a
-                href={featuredProject.externalUrl}
-                className={featuredLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href={featuredProject.externalUrl} className={featuredLink}>
                 Visit {featuredProject.title} →
               </a>
             )}
           </div>
-        </section>
-      )}
+        )}
 
-      {/* Fold 4 — Selected Work */}
-      <section className={sectionWrap}>
-        <p className={sectionLabel}>Selected Work</p>
-        <div className={projectGrid}>
-          {selectedWork.map((p) => (
+        {/* SELECTED WORK GRID */}
+        <div className={workBandLabel}>Selected Work</div>
+        <div className={workGrid}>
+          {selectedWork.map((project) => (
             <a
-              key={p.slug}
-              href={`/work/${p.slug}`}
-              className={projectCard}
+              key={project.slug}
+              href={`/work/${project.slug}`}
+              className={workCardLink}
             >
-              <h3 className={cardTitle}>{p.title}</h3>
-              <span className={cardMeta}>
-                {p.type} · {p.year}
-              </span>
+              <div className={workCard}>
+                <div className={workCardType}>{project.type} · {project.year}</div>
+                <div className={workCardTitle}>{project.title}</div>
+                {project.role && (
+                  <div className={workCardYear}>{project.role}</div>
+                )}
+              </div>
             </a>
           ))}
         </div>
       </section>
 
-      {/* Fold 5 — Experiments */}
-      <section className={sectionWrap}>
-        <p className={sectionLabel}>Experiments</p>
-        <div className={expList}>
-          {experiments.map((e) => (
-            <div key={e.slug} className={expItem}>
-              <a
-                href={e.externalUrl || `/work/${e.slug}`}
-                className={expTitle}
-                {...(e.externalUrl ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              >
-                {e.title}
-              </a>
-              <span className={expMeta}>
-                {e.type} · {e.year}
-              </span>
-            </div>
+      {/* EXPERIMENTS BAND */}
+      <section className={experimentsBand}>
+        <div className={workBandLabel}>Experiments</div>
+        <div className={expGrid}>
+          {experiments.map((exp) => (
+            <a
+              key={exp.slug}
+              href={`/work/${exp.slug}`}
+              className={expLink}
+            >
+              <div className={expCard}>
+                <div className={expTitle}>{exp.title}</div>
+                <div className={expMeta}>{exp.type} · {exp.year}</div>
+              </div>
+            </a>
           ))}
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className={footerWrap}>
+      {/* FOOTER */}
+      <div className={quoteFooter}>
+        "Be the reason someone smiles. Be the reason someone feels loved and believes in the goodness in people." — Roy T. Bennett
+      </div>
+      <footer className={footerBand}>
         <span className={footerText}>© 2026 Doug March</span>
         <a href="/archive" className={footerLink}>Archive</a>
       </footer>
-    </div>
+    </>
   )
 }
