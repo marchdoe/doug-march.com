@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 105,
+    "s": 88,
+    "l": 42,
+    "name": "chartreuse-ink"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "yellow-green",
+    "name": "forest-ink"
+  },
+  "mood_word": "vigilant",
+  "color_story": "Chartreuse at H:105° is the only open corridor in the mandate and the exact color of a terminal waiting for input — appropriate for a day when AI agents are leaking secrets and obfuscated code ships in clothing; the Havel quote rendered in near-cream on near-void asks whether the certainty-merchants ever looked at their screen this carefully."
+}

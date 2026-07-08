@@ -1,245 +1,365 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetail })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const heroBand = css({
-  width: '100%',
-  padding: '120px 6vw 64px',
-  '@media (max-width: 768px)': {
-    padding: '64px 6vw 40px',
-  },
-})
-
-const projectTitle = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(2.5rem, 6vw, 7rem)',
-  textTransform: 'uppercase',
-  lineHeight: 'tight',
-  letterSpacing: 'tight',
-  color: 'text',
-  marginBottom: '16px',
-})
-
-const projectMeta = css({
-  fontFamily: 'body',
-  fontSize: '0.75rem',
-  color: 'textDim',
-  textTransform: 'uppercase',
-  letterSpacing: 'wider',
-  marginBottom: '40px',
-})
-
-const rule = css({
-  width: '100%',
-  height: '1px',
-  background: 'borderAccent',
-})
-
-const contentBand = css({
-  width: '100%',
-  padding: '64px 6vw',
-  '@media (max-width: 768px)': {
-    padding: '40px 6vw',
-  },
-})
-
-const detailGrid = css({
-  display: 'grid',
-  gridTemplateColumns: '200px 1fr',
-  gap: '48px',
-  marginBottom: '48px',
-  '@media (max-width: 768px)': {
-    gridTemplateColumns: '1fr',
-    gap: '12px',
-    marginBottom: '32px',
-  },
-})
-
-const detailLabel = css({
-  fontFamily: 'body',
-  fontSize: '0.65rem',
-  color: 'textDim',
-  textTransform: 'uppercase',
-  letterSpacing: '0.15em',
-  paddingTop: '4px',
-})
-
-const detailValue = css({
-  fontFamily: 'body',
-  fontSize: '1rem',
-  color: 'textSecondary',
-  lineHeight: 'normal',
-  maxWidth: '65ch',
-})
-
-const stackList = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
-})
-
-const stackPill = css({
-  fontFamily: 'mono',
-  fontSize: '0.75rem',
-  color: 'accentLight',
-  padding: '4px 12px',
-  border: '1px solid',
-  borderColor: 'borderAccent',
-  borderRadius: 'full',
-})
-
-const linkBtn = css({
-  fontFamily: 'body',
-  fontSize: '0.8rem',
-  color: 'accent',
-  textTransform: 'uppercase',
-  letterSpacing: 'wider',
-  textDecoration: 'none',
-  display: 'inline-block',
-  padding: '12px 0',
-  marginRight: '32px',
-  _hover: { color: 'accentLight' },
-  _focus: { outline: '2px solid', outlineColor: 'accentLight', outlineOffset: '4px' },
-})
-
-const backLink = css({
-  fontFamily: 'body',
-  fontSize: '0.75rem',
-  color: 'textDim',
-  textDecoration: 'none',
-  textTransform: 'uppercase',
-  letterSpacing: 'wider',
-  padding: '12px 0',
-  display: 'inline-block',
-  _hover: { color: 'accentLight' },
-  _focus: { outline: '2px solid', outlineColor: 'accentLight', outlineOffset: '4px' },
-})
-
-const footerBand = css({
-  width: '100%',
-  padding: '32px 6vw',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  borderTop: '1px solid',
-  borderColor: 'borderAccent',
-  '@media (max-width: 640px)': {
-    flexDirection: 'column',
-    gap: '12px',
-    alignItems: 'flex-start',
-  },
-})
-
-const footerText = css({
-  fontFamily: 'body',
-  fontSize: '0.7rem',
-  color: 'textDim',
-  letterSpacing: 'wider',
-  textTransform: 'uppercase',
-})
-
-const footerLink = css({
-  fontFamily: 'body',
-  fontSize: '0.7rem',
-  color: 'textDim',
-  letterSpacing: 'wider',
-  textTransform: 'uppercase',
-  textDecoration: 'none',
-  padding: '10px 0',
-  _hover: { color: 'accentLight' },
-  _focus: { outline: '2px solid', outlineColor: 'accentLight', outlineOffset: '4px' },
-})
-
-function WorkDetail() {
+function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <section className={heroBand}>
-        <h1 className={projectTitle}>Not Found</h1>
-        <a href="/" className={backLink}>← Back to Work</a>
-      </section>
+      <div style={{ padding: '64px 5vw', textAlign: 'center' }}>
+        <h1
+          style={{
+            fontFamily: "'Spectral', serif",
+            fontSize: '2rem',
+            color: '#f2f4f0',
+          }}
+        >
+          Project not found
+        </h1>
+        <a
+          href="/"
+          style={{
+            fontFamily: "'Albert Sans', sans-serif",
+            color: '#76e035',
+            fontSize: '0.9rem',
+            marginTop: '16px',
+            display: 'inline-block',
+          }}
+        >
+          ← Back to home
+        </a>
+      </div>
     )
   }
 
   return (
-    <>
-      <section className={heroBand}>
-        <a href="/" className={backLink}>← Back</a>
-        <h1 className={projectTitle}>{project.title}</h1>
-        <div className={projectMeta}>
+    <div style={{ padding: '0 5vw' }}>
+      {/* Project Header */}
+      <div
+        style={{
+          paddingTop: '48px',
+          paddingBottom: '32px',
+          borderBottom: '1px solid #2c362a',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "'Albert Sans', sans-serif",
+            fontSize: '0.8rem',
+            color: '#7d8c77',
+            margin: '0 0 12px',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+          }}
+        >
           {project.type} · {project.year}
-          {project.role && ` · ${project.role}`}
+        </p>
+        <h1
+          style={{
+            fontFamily: "'Spectral', serif",
+            fontStyle: 'italic',
+            fontSize: 'clamp(2rem, 4vw, 4.5rem)',
+            lineHeight: 1.1,
+            letterSpacing: '-0.01em',
+            color: '#f2f4f0',
+            margin: '0 0 16px',
+          }}
+        >
+          {project.title}
+        </h1>
+        {project.role && (
+          <p
+            style={{
+              fontFamily: "'Albert Sans', sans-serif",
+              fontSize: '0.875rem',
+              fontVariantCaps: 'all-small-caps',
+              letterSpacing: '0.12em',
+              color: '#76e035',
+              margin: 0,
+            }}
+          >
+            {project.role}
+          </p>
+        )}
+      </div>
+
+      {/* Project Body */}
+      <div className="project-body">
+        <div className="project-main" style={{ paddingTop: '32px' }}>
+          {project.problem && (
+            <div style={{ marginBottom: '32px' }}>
+              <p
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontWeight: 500,
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  color: '#a8b4a2',
+                  margin: '0 0 12px',
+                }}
+              >
+                PROBLEM
+              </p>
+              <p
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontSize: '1rem',
+                  lineHeight: 1.55,
+                  color: '#f2f4f0',
+                  margin: 0,
+                  maxWidth: '65ch',
+                }}
+              >
+                {project.problem}
+              </p>
+            </div>
+          )}
+
+          {project.approach && (
+            <div style={{ marginBottom: '32px' }}>
+              <p
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontWeight: 500,
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  color: '#a8b4a2',
+                  margin: '0 0 12px',
+                }}
+              >
+                APPROACH
+              </p>
+              <p
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontSize: '1rem',
+                  lineHeight: 1.55,
+                  color: '#f2f4f0',
+                  margin: 0,
+                  maxWidth: '65ch',
+                }}
+              >
+                {project.approach}
+              </p>
+            </div>
+          )}
+
+          {project.outcome && (
+            <div style={{ marginBottom: '32px' }}>
+              <p
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontWeight: 500,
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  color: '#a8b4a2',
+                  margin: '0 0 12px',
+                }}
+              >
+                OUTCOME
+              </p>
+              <p
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontSize: '1rem',
+                  lineHeight: 1.55,
+                  color: '#f2f4f0',
+                  margin: 0,
+                  maxWidth: '65ch',
+                }}
+              >
+                {project.outcome}
+              </p>
+            </div>
+          )}
+
+          {project.description && !project.problem && (
+            <div style={{ marginBottom: '32px' }}>
+              <p
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontSize: '1rem',
+                  lineHeight: 1.55,
+                  color: '#f2f4f0',
+                  margin: 0,
+                  maxWidth: '65ch',
+                }}
+              >
+                {project.description}
+              </p>
+            </div>
+          )}
         </div>
-        <div className={rule} />
-      </section>
 
-      <section className={contentBand}>
-        {project.problem && (
-          <div className={detailGrid}>
-            <div className={detailLabel}>Problem</div>
-            <div className={detailValue}>{project.problem}</div>
-          </div>
-        )}
-
-        {project.approach && (
-          <div className={detailGrid}>
-            <div className={detailLabel}>Approach</div>
-            <div className={detailValue}>{project.approach}</div>
-          </div>
-        )}
-
-        {project.outcome && (
-          <div className={detailGrid}>
-            <div className={detailLabel}>Outcome</div>
-            <div className={detailValue}>{project.outcome}</div>
-          </div>
-        )}
-
-        {project.description && (
-          <div className={detailGrid}>
-            <div className={detailLabel}>Description</div>
-            <div className={detailValue}>{project.description}</div>
-          </div>
-        )}
-
-        {project.stack && project.stack.length > 0 && (
-          <div className={detailGrid}>
-            <div className={detailLabel}>Stack</div>
-            <div className={stackList}>
-              {project.stack.map((tech) => (
-                <span key={tech} className={stackPill}>{tech}</span>
+        {/* Side meta */}
+        <div className="project-side" style={{ paddingTop: '32px' }}>
+          {project.stack && project.stack.length > 0 && (
+            <div style={{ marginBottom: '24px' }}>
+              <p
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontWeight: 500,
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  color: '#a8b4a2',
+                  margin: '0 0 12px',
+                }}
+              >
+                STACK
+              </p>
+              <div
+                style={{
+                  width: '100%',
+                  height: '1px',
+                  background: '#2c362a',
+                  marginBottom: '12px',
+                }}
+              />
+              {project.stack.map((tech, i) => (
+                <p
+                  key={i}
+                  style={{
+                    fontFamily: "'Albert Sans', sans-serif",
+                    fontSize: '0.85rem',
+                    color: '#f2f4f0',
+                    margin: '0 0 6px',
+                  }}
+                >
+                  {tech}
+                </p>
               ))}
             </div>
+          )}
+
+          {/* Links */}
+          <div>
+            <p
+              style={{
+                fontFamily: "'Albert Sans', sans-serif",
+                fontWeight: 500,
+                fontSize: '0.75rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: '#a8b4a2',
+                margin: '0 0 12px',
+              }}
+            >
+              LINKS
+            </p>
+            <div
+              style={{
+                width: '100%',
+                height: '1px',
+                background: '#2c362a',
+                marginBottom: '12px',
+              }}
+            />
+            {project.externalUrl && (
+              <a
+                href={project.externalUrl}
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontSize: '0.85rem',
+                  color: '#76e035',
+                  display: 'block',
+                  padding: '6px 0',
+                  textDecoration: 'none',
+                }}
+              >
+                Visit site ↗
+              </a>
+            )}
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontSize: '0.85rem',
+                  color: '#76e035',
+                  display: 'block',
+                  padding: '6px 0',
+                  textDecoration: 'none',
+                }}
+              >
+                Live ↗
+              </a>
+            )}
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontSize: '0.85rem',
+                  color: '#76e035',
+                  display: 'block',
+                  padding: '6px 0',
+                  textDecoration: 'none',
+                }}
+              >
+                GitHub ↗
+              </a>
+            )}
+            <a
+              href="/"
+              style={{
+                fontFamily: "'Albert Sans', sans-serif",
+                fontSize: '0.85rem',
+                color: '#a8b4a2',
+                display: 'block',
+                padding: '6px 0',
+                marginTop: '12px',
+                textDecoration: 'none',
+              }}
+            >
+              ← All work
+            </a>
           </div>
-        )}
-
-        <div style={{ marginTop: '48px' }}>
-          {project.externalUrl && (
-            <a href={project.externalUrl} className={linkBtn}>
-              Visit Site →
-            </a>
-          )}
-          {project.liveUrl && (
-            <a href={project.liveUrl} className={linkBtn}>
-              Live →
-            </a>
-          )}
-          {project.githubUrl && (
-            <a href={project.githubUrl} className={linkBtn}>
-              GitHub →
-            </a>
-          )}
         </div>
-      </section>
+      </div>
 
-      <footer className={footerBand}>
-        <span className={footerText}>© 2026 Doug March</span>
-        <a href="/archive" className={footerLink}>Archive</a>
-      </footer>
-    </>
+      <style>{`
+        .project-body {
+          display: grid;
+          grid-template-columns: 3fr 1fr;
+          gap: 0;
+        }
+        .project-main {
+          padding-right: 4vw;
+          border-right: 1px solid #2c362a;
+        }
+        .project-side {
+          padding-left: 4vw;
+        }
+        .project-side a:hover {
+          text-decoration: underline !important;
+        }
+        .project-side a:focus-visible {
+          outline: 2px solid #76e035;
+          outline-offset: 2px;
+        }
+
+        @media (max-width: 768px) {
+          .project-body {
+            grid-template-columns: 1fr;
+          }
+          .project-main {
+            padding-right: 0;
+            border-right: none;
+            border-bottom: 1px solid #2c362a;
+            padding-bottom: 32px;
+          }
+          .project-side {
+            padding-left: 0;
+          }
+        }
+      `}</style>
+    </div>
   )
 }

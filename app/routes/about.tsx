@@ -1,275 +1,351 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { css } from '../../styled-system/css'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const pageBand = css({
-  width: '100%',
-  padding: '80px 6vw',
-  '@media (max-width: 768px)': {
-    padding: '48px 6vw',
-  },
-})
-
-const pageTitle = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(2.5rem, 6vw, 6rem)',
-  textTransform: 'uppercase',
-  lineHeight: 'tight',
-  letterSpacing: 'tight',
-  color: 'text',
-  marginBottom: '32px',
-})
-
-const statement = css({
-  fontFamily: 'body',
-  fontSize: '1.125rem',
-  color: 'textSecondary',
-  lineHeight: 'normal',
-  maxWidth: '65ch',
-  marginBottom: '64px',
-})
-
-const sectionLabel = css({
-  fontFamily: 'body',
-  fontSize: '0.65rem',
-  color: 'textDim',
-  textTransform: 'uppercase',
-  letterSpacing: '0.15em',
-  marginBottom: '24px',
-  paddingBottom: '12px',
-  borderBottom: '1px solid',
-  borderColor: 'borderAccent',
-})
-
-const timelineRow = css({
-  display: 'grid',
-  gridTemplateColumns: '140px 1fr',
-  gap: '24px',
-  marginBottom: '24px',
-  paddingBottom: '24px',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  '@media (max-width: 640px)': {
-    gridTemplateColumns: '1fr',
-    gap: '4px',
-  },
-})
-
-const timelineYear = css({
-  fontFamily: 'mono',
-  fontSize: '0.8rem',
-  color: 'textDim',
-  letterSpacing: 'wide',
-  minWidth: '140px',
-  flexShrink: 0,
-})
-
-const timelineRole = css({
-  fontFamily: 'body',
-  fontSize: '1rem',
-  color: 'text',
-  fontWeight: 'medium',
-  lineHeight: 'snug',
-})
-
-const timelineCompany = css({
-  fontFamily: 'body',
-  fontSize: '0.875rem',
-  color: 'accentLight',
-  marginBottom: '4px',
-})
-
-const timelineDesc = css({
-  fontFamily: 'body',
-  fontSize: '0.875rem',
-  color: 'textSecondary',
-  lineHeight: 'normal',
-  maxWidth: '65ch',
-  marginTop: '4px',
-})
-
-const capGrid = css({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(4, 1fr)',
-  gap: '12px',
-  '@media (max-width: 1024px)': {
-    gridTemplateColumns: 'repeat(3, 1fr)',
-  },
-  '@media (max-width: 640px)': {
-    gridTemplateColumns: 'repeat(2, 1fr)',
-  },
-})
-
-const capPill = css({
-  fontFamily: 'body',
-  fontSize: '0.8rem',
-  color: 'textSecondary',
-  padding: '8px 16px',
-  borderLeft: '1px solid',
-  borderColor: 'borderAccent',
-})
-
-const personalBand = css({
-  width: '100%',
-  padding: '64px 6vw',
-  background: 'bgCard',
-  '@media (max-width: 768px)': {
-    padding: '40px 6vw',
-  },
-})
-
-const personalGrid = css({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(4, 1fr)',
-  gap: '32px',
-  '@media (max-width: 768px)': {
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '24px',
-  },
-})
-
-const personalLabel = css({
-  fontFamily: 'body',
-  fontSize: '0.65rem',
-  color: 'textDim',
-  textTransform: 'uppercase',
-  letterSpacing: '0.15em',
-  marginBottom: '8px',
-})
-
-const personalValue = css({
-  fontFamily: 'display',
-  fontSize: '1.25rem',
-  color: 'text',
-  textTransform: 'uppercase',
-  lineHeight: 'snug',
-})
-
-const personalValueSm = css({
-  fontFamily: 'body',
-  fontSize: '0.9rem',
-  color: 'textSecondary',
-  lineHeight: 'normal',
-})
-
-const eduBand = css({
-  width: '100%',
-  padding: '64px 6vw',
-  '@media (max-width: 768px)': {
-    padding: '40px 6vw',
-  },
-})
-
-const footerBand = css({
-  width: '100%',
-  padding: '32px 6vw',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  borderTop: '1px solid',
-  borderColor: 'borderAccent',
-  '@media (max-width: 640px)': {
-    flexDirection: 'column',
-    gap: '12px',
-    alignItems: 'flex-start',
-  },
-})
-
-const footerText = css({
-  fontFamily: 'body',
-  fontSize: '0.7rem',
-  color: 'textDim',
-  letterSpacing: 'wider',
-  textTransform: 'uppercase',
-})
-
-const footerLink = css({
-  fontFamily: 'body',
-  fontSize: '0.7rem',
-  color: 'textDim',
-  letterSpacing: 'wider',
-  textTransform: 'uppercase',
-  textDecoration: 'none',
-  padding: '10px 0',
-  _hover: { color: 'accentLight' },
-  _focus: { outline: '2px solid', outlineColor: 'accentLight', outlineOffset: '4px' },
-})
-
 function AboutPage() {
   return (
-    <>
-      <section className={pageBand}>
-        <h1 className={pageTitle}>{identity.name}</h1>
-        <p className={css({ fontFamily: 'body', fontSize: '0.8rem', color: 'accentLight', textTransform: 'uppercase', letterSpacing: 'wider', marginBottom: '16px' })}>
+    <div style={{ padding: '0 5vw' }}>
+      {/* Header */}
+      <div
+        style={{
+          display: 'grid',
+          gap: '0',
+          paddingTop: '48px',
+          paddingBottom: '32px',
+          borderBottom: '1px solid #2c362a',
+        }}
+        className="about-header"
+      >
+        <h1
+          style={{
+            fontFamily: "'Spectral', serif",
+            fontStyle: 'italic',
+            fontSize: 'clamp(2rem, 4vw, 4rem)',
+            lineHeight: 1.1,
+            letterSpacing: '-0.01em',
+            color: '#f2f4f0',
+            margin: '0 0 16px',
+          }}
+        >
+          {identity.name}
+        </h1>
+        <p
+          style={{
+            fontFamily: "'Albert Sans', sans-serif",
+            fontSize: '0.875rem',
+            fontVariantCaps: 'all-small-caps',
+            letterSpacing: '0.12em',
+            color: '#76e035',
+            margin: '0 0 24px',
+          }}
+        >
           {identity.role}
         </p>
-        <p className={statement}>{identity.statement}</p>
+        <p
+          style={{
+            fontFamily: "'Albert Sans', sans-serif",
+            fontSize: '1rem',
+            lineHeight: 1.55,
+            color: '#a8b4a2',
+            margin: 0,
+            maxWidth: '65ch',
+          }}
+        >
+          {identity.statement}
+        </p>
+      </div>
 
-        <div className={sectionLabel}>Experience</div>
-        {timeline.map((entry, i) => (
-          <div key={i} className={timelineRow}>
-            <div className={timelineYear}>{entry.year}</div>
-            <div>
-              <div className={timelineRole}>{entry.role}</div>
-              <div className={timelineCompany}>{entry.company}</div>
-              <div className={timelineDesc}>{entry.description}</div>
+      {/* Two-column body */}
+      <div className="about-body">
+        {/* Timeline */}
+        <div className="about-col-main" style={{ paddingTop: '32px' }}>
+          <p
+            style={{
+              fontFamily: "'Albert Sans', sans-serif",
+              fontWeight: 500,
+              fontSize: '0.75rem',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#a8b4a2',
+              margin: '0 0 16px',
+            }}
+          >
+            EXPERIENCE
+          </p>
+          <div
+            style={{
+              width: '100%',
+              height: '1px',
+              background: '#2c362a',
+              marginBottom: '0',
+            }}
+          />
+
+          {timeline.map((entry, i) => (
+            <div
+              key={i}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '140px 1fr',
+                gap: '24px',
+                padding: '16px 0',
+                borderBottom: '1px solid #1c241a',
+                alignItems: 'baseline',
+              }}
+              className="timeline-row"
+            >
+              <div
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontSize: '0.8rem',
+                  color: '#7d8c77',
+                  whiteSpace: 'nowrap',
+                  minWidth: '120px',
+                  letterSpacing: '0.02em',
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
+                {entry.year}
+              </div>
+              <div>
+                <p
+                  style={{
+                    fontFamily: "'Albert Sans', sans-serif",
+                    fontSize: '0.95rem',
+                    color: '#f2f4f0',
+                    margin: '0 0 2px',
+                    fontWeight: 500,
+                  }}
+                >
+                  {entry.role}
+                  {entry.current && (
+                    <span
+                      style={{
+                        color: '#76e035',
+                        fontSize: '0.75rem',
+                        marginLeft: '8px',
+                        fontWeight: 400,
+                      }}
+                    >
+                      current
+                    </span>
+                  )}
+                </p>
+                <p
+                  style={{
+                    fontFamily: "'Albert Sans', sans-serif",
+                    fontSize: '0.85rem',
+                    color: '#76e035',
+                    margin: '0 0 4px',
+                  }}
+                >
+                  {entry.company}
+                </p>
+                <p
+                  style={{
+                    fontFamily: "'Albert Sans', sans-serif",
+                    fontSize: '0.85rem',
+                    lineHeight: 1.5,
+                    color: '#a8b4a2',
+                    margin: 0,
+                    maxWidth: '55ch',
+                  }}
+                >
+                  {entry.description}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
-      </section>
-
-      <section className={pageBand} style={{ paddingTop: 0 }}>
-        <div className={sectionLabel}>Capabilities</div>
-        <div className={capGrid}>
-          {capabilities.map((cap, i) => (
-            <div key={i} className={capPill}>{cap}</div>
           ))}
         </div>
-      </section>
 
-      <section className={eduBand} style={{ background: 'var(--colors-void-800)' }}>
-        <div className={sectionLabel}>Education</div>
-        <div className={timelineRow} style={{ borderBottom: 'none', marginBottom: 0 }}>
-          <div className={timelineYear}>{education.years}</div>
-          <div>
-            <div className={timelineRole}>{education.degree}</div>
-            <div className={timelineCompany}>{education.school}</div>
-            <div className={timelineDesc}>{education.concentration}</div>
+        {/* Sidebar — Capabilities + Education + Personal */}
+        <div className="about-col-side" style={{ paddingTop: '32px' }}>
+          {/* Capabilities */}
+          <p
+            style={{
+              fontFamily: "'Albert Sans', sans-serif",
+              fontWeight: 500,
+              fontSize: '0.75rem',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#a8b4a2',
+              margin: '0 0 12px',
+            }}
+          >
+            CAPABILITIES
+          </p>
+          <div
+            style={{
+              width: '100%',
+              height: '1px',
+              background: '#2c362a',
+              marginBottom: '12px',
+            }}
+          />
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '0',
+            }}
+          >
+            {capabilities.map((cap, i) => (
+              <span
+                key={i}
+                style={{
+                  fontFamily: "'Albert Sans', sans-serif",
+                  fontSize: '0.85rem',
+                  color: '#f2f4f0',
+                  lineHeight: 1.8,
+                }}
+              >
+                {cap}
+                {i < capabilities.length - 1 && (
+                  <span style={{ color: '#566452', margin: '0 8px' }}>·</span>
+                )}
+              </span>
+            ))}
+          </div>
+
+          {/* Education */}
+          <p
+            style={{
+              fontFamily: "'Albert Sans', sans-serif",
+              fontWeight: 500,
+              fontSize: '0.75rem',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#a8b4a2',
+              margin: '32px 0 12px',
+            }}
+          >
+            EDUCATION
+          </p>
+          <div
+            style={{
+              width: '100%',
+              height: '1px',
+              background: '#2c362a',
+              marginBottom: '12px',
+            }}
+          />
+          <p
+            style={{
+              fontFamily: "'Albert Sans', sans-serif",
+              fontSize: '0.9rem',
+              color: '#f2f4f0',
+              margin: '0 0 4px',
+              fontWeight: 500,
+            }}
+          >
+            {education.school}
+          </p>
+          <p
+            style={{
+              fontFamily: "'Albert Sans', sans-serif",
+              fontSize: '0.85rem',
+              color: '#a8b4a2',
+              margin: '0 0 2px',
+            }}
+          >
+            {education.degree}, {education.concentration}
+          </p>
+          <p
+            style={{
+              fontFamily: "'Albert Sans', sans-serif",
+              fontSize: '0.8rem',
+              color: '#7d8c77',
+              margin: 0,
+            }}
+          >
+            {education.years}
+          </p>
+
+          {/* Personal */}
+          <p
+            style={{
+              fontFamily: "'Albert Sans', sans-serif",
+              fontWeight: 500,
+              fontSize: '0.75rem',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#a8b4a2',
+              margin: '32px 0 12px',
+            }}
+          >
+            PERSONAL
+          </p>
+          <div
+            style={{
+              width: '100%',
+              height: '1px',
+              background: '#2c362a',
+              marginBottom: '12px',
+            }}
+          />
+          <div style={{ fontSize: '0.85rem', lineHeight: 1.7, fontFamily: "'Albert Sans', sans-serif" }}>
+            <p style={{ margin: '0 0 8px', color: '#a8b4a2' }}>
+              <span style={{ color: '#7d8c77' }}>Holes in one:</span>{' '}
+              <span style={{ color: '#f2f4f0' }}>{personal.holesInOne}</span>
+            </p>
+            <p style={{ margin: '0 0 8px', color: '#a8b4a2' }}>
+              <span style={{ color: '#7d8c77' }}>Sport:</span>{' '}
+              <span style={{ color: '#f2f4f0' }}>{personal.sport}</span>
+            </p>
+            <p style={{ margin: '0 0 8px', color: '#a8b4a2' }}>
+              <span style={{ color: '#7d8c77' }}>Teams:</span>{' '}
+              <span style={{ color: '#f2f4f0' }}>{personal.teams.join(', ')}</span>
+            </p>
+            <p style={{ margin: '0', color: '#a8b4a2' }}>
+              <span style={{ color: '#7d8c77' }}>Focus:</span>{' '}
+              <span style={{ color: '#f2f4f0' }}>{personal.currentFocus}</span>
+            </p>
           </div>
         </div>
-      </section>
+      </div>
 
-      <section className={personalBand}>
-        <div className={sectionLabel}>Personal</div>
-        <div className={personalGrid}>
-          <div>
-            <div className={personalLabel}>Holes in One</div>
-            <div className={personalValue}>{personal.holesInOne}</div>
-          </div>
-          <div>
-            <div className={personalLabel}>Sport</div>
-            <div className={personalValue}>{personal.sport}</div>
-          </div>
-          <div>
-            <div className={personalLabel}>Teams</div>
-            <div className={personalValueSm}>
-              {personal.teams.join(', ')}
-            </div>
-          </div>
-          <div>
-            <div className={personalLabel}>Current Focus</div>
-            <div className={personalValueSm}>{personal.currentFocus}</div>
-          </div>
-        </div>
-      </section>
+      <style>{`
+        .about-body {
+          display: grid;
+          grid-template-columns: 3fr 1fr;
+          gap: 0;
+        }
+        .about-col-main {
+          padding-right: 4vw;
+          border-right: 1px solid #2c362a;
+        }
+        .about-col-side {
+          padding-left: 4vw;
+        }
+        .timeline-row {
+          transition: background 180ms ease;
+        }
 
-      <footer className={footerBand}>
-        <span className={footerText}>© 2026 Doug March</span>
-        <a href="/archive" className={footerLink}>Archive</a>
-      </footer>
-    </>
+        @media (max-width: 768px) {
+          .about-body {
+            grid-template-columns: 1fr;
+          }
+          .about-col-main {
+            padding-right: 0;
+            border-right: none;
+            border-bottom: 1px solid #2c362a;
+            padding-bottom: 32px;
+          }
+          .about-col-side {
+            padding-left: 0;
+          }
+          .timeline-row {
+            grid-template-columns: 1fr !important;
+            gap: 4px !important;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .timeline-row { transition: none !important; }
+        }
+      `}</style>
+    </div>
   )
 }
