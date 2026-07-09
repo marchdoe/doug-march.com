@@ -1,351 +1,187 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { css } from '../../styled-system/css'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
+const page = css({
+  padding: '80px 5vw 48px',
+  maxWidth: '960px',
+  margin: '0 auto',
+  width: '100%',
+})
+
+const pageTitle = css({
+  fontFamily: 'display',
+  fontWeight: 'black',
+  fontSize: 'clamp(2rem, 5vw, 4.5rem)',
+  lineHeight: 'tight',
+  textTransform: 'uppercase',
+  color: 'text',
+  marginBottom: '48px',
+  letterSpacing: '0.01em',
+})
+
+const statement = css({
+  fontFamily: 'body',
+  fontSize: 'clamp(1rem, 1.25vw, 1.25rem)',
+  lineHeight: 'normal',
+  color: 'textSecondary',
+  marginBottom: '64px',
+  maxWidth: '65ch',
+})
+
+const sectionLabel = css({
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  fontWeight: 'bold',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: 'accent',
+  marginBottom: '24px',
+})
+
+const timelineRow = css({
+  display: 'grid',
+  gridTemplateColumns: '120px 1fr',
+  gap: '16px',
+  paddingBottom: '24px',
+  marginBottom: '24px',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+
+  '@media (max-width: 640px)': {
+    gridTemplateColumns: '1fr',
+    gap: '4px',
+  },
+})
+
+const yearCol = css({
+  fontFamily: 'body',
+  fontSize: '0.875rem',
+  fontWeight: 'bold',
+  color: 'textMuted',
+  letterSpacing: '0.06em',
+  whiteSpace: 'nowrap',
+  minWidth: '120px',
+})
+
+const roleCompany = css({
+  fontFamily: 'body',
+  fontSize: '1rem',
+  fontWeight: 'bold',
+  color: 'text',
+  lineHeight: 'snug',
+})
+
+const roleDesc = css({
+  fontFamily: 'body',
+  fontSize: '1rem',
+  color: 'textSecondary',
+  lineHeight: 'normal',
+  marginTop: '4px',
+  maxWidth: '65ch',
+})
+
+const capGrid = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '8px',
+  marginBottom: '64px',
+})
+
+const capTag = css({
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  fontWeight: 'bold',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'text',
+  border: '1px solid',
+  borderColor: 'border',
+  padding: '8px 16px',
+})
+
+const personalSection = css({
+  marginTop: '64px',
+  marginBottom: '48px',
+})
+
+const personalItem = css({
+  fontFamily: 'body',
+  fontSize: '1rem',
+  lineHeight: 'loose',
+  color: 'textSecondary',
+  maxWidth: '65ch',
+})
+
+const personalHighlight = css({
+  color: 'accent',
+  fontWeight: 'bold',
+})
+
+const eduBlock = css({
+  marginTop: '64px',
+  marginBottom: '48px',
+})
+
 function AboutPage() {
   return (
-    <div style={{ padding: '0 5vw' }}>
-      {/* Header */}
-      <div
-        style={{
-          display: 'grid',
-          gap: '0',
-          paddingTop: '48px',
-          paddingBottom: '32px',
-          borderBottom: '1px solid #2c362a',
-        }}
-        className="about-header"
-      >
-        <h1
-          style={{
-            fontFamily: "'Spectral', serif",
-            fontStyle: 'italic',
-            fontSize: 'clamp(2rem, 4vw, 4rem)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.01em',
-            color: '#f2f4f0',
-            margin: '0 0 16px',
-          }}
-        >
-          {identity.name}
-        </h1>
-        <p
-          style={{
-            fontFamily: "'Albert Sans', sans-serif",
-            fontSize: '0.875rem',
-            fontVariantCaps: 'all-small-caps',
-            letterSpacing: '0.12em',
-            color: '#76e035',
-            margin: '0 0 24px',
-          }}
-        >
-          {identity.role}
-        </p>
-        <p
-          style={{
-            fontFamily: "'Albert Sans', sans-serif",
-            fontSize: '1rem',
-            lineHeight: 1.55,
-            color: '#a8b4a2',
-            margin: 0,
-            maxWidth: '65ch',
-          }}
-        >
-          {identity.statement}
-        </p>
-      </div>
+    <main className={page}>
+      <h1 className={pageTitle}>{identity.name}</h1>
+      <p className={statement}>{identity.statement}</p>
 
-      {/* Two-column body */}
-      <div className="about-body">
-        {/* Timeline */}
-        <div className="about-col-main" style={{ paddingTop: '32px' }}>
-          <p
-            style={{
-              fontFamily: "'Albert Sans', sans-serif",
-              fontWeight: 500,
-              fontSize: '0.75rem',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: '#a8b4a2',
-              margin: '0 0 16px',
-            }}
-          >
-            EXPERIENCE
-          </p>
-          <div
-            style={{
-              width: '100%',
-              height: '1px',
-              background: '#2c362a',
-              marginBottom: '0',
-            }}
-          />
-
-          {timeline.map((entry, i) => (
-            <div
-              key={i}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '140px 1fr',
-                gap: '24px',
-                padding: '16px 0',
-                borderBottom: '1px solid #1c241a',
-                alignItems: 'baseline',
-              }}
-              className="timeline-row"
-            >
-              <div
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontSize: '0.8rem',
-                  color: '#7d8c77',
-                  whiteSpace: 'nowrap',
-                  minWidth: '120px',
-                  letterSpacing: '0.02em',
-                  fontVariantNumeric: 'tabular-nums',
-                }}
-              >
-                {entry.year}
-              </div>
-              <div>
-                <p
-                  style={{
-                    fontFamily: "'Albert Sans', sans-serif",
-                    fontSize: '0.95rem',
-                    color: '#f2f4f0',
-                    margin: '0 0 2px',
-                    fontWeight: 500,
-                  }}
-                >
-                  {entry.role}
-                  {entry.current && (
-                    <span
-                      style={{
-                        color: '#76e035',
-                        fontSize: '0.75rem',
-                        marginLeft: '8px',
-                        fontWeight: 400,
-                      }}
-                    >
-                      current
-                    </span>
-                  )}
-                </p>
-                <p
-                  style={{
-                    fontFamily: "'Albert Sans', sans-serif",
-                    fontSize: '0.85rem',
-                    color: '#76e035',
-                    margin: '0 0 4px',
-                  }}
-                >
-                  {entry.company}
-                </p>
-                <p
-                  style={{
-                    fontFamily: "'Albert Sans', sans-serif",
-                    fontSize: '0.85rem',
-                    lineHeight: 1.5,
-                    color: '#a8b4a2',
-                    margin: 0,
-                    maxWidth: '55ch',
-                  }}
-                >
-                  {entry.description}
-                </p>
-              </div>
+      <div className={css({ marginBottom: '64px' })}>
+        <p className={sectionLabel}>Experience</p>
+        {timeline.map((entry, i) => (
+          <div key={i} className={timelineRow}>
+            <span className={yearCol}>{entry.year}</span>
+            <div>
+              <p className={roleCompany}>{entry.role} — {entry.company}</p>
+              <p className={roleDesc}>{entry.description}</p>
             </div>
-          ))}
-        </div>
-
-        {/* Sidebar — Capabilities + Education + Personal */}
-        <div className="about-col-side" style={{ paddingTop: '32px' }}>
-          {/* Capabilities */}
-          <p
-            style={{
-              fontFamily: "'Albert Sans', sans-serif",
-              fontWeight: 500,
-              fontSize: '0.75rem',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: '#a8b4a2',
-              margin: '0 0 12px',
-            }}
-          >
-            CAPABILITIES
-          </p>
-          <div
-            style={{
-              width: '100%',
-              height: '1px',
-              background: '#2c362a',
-              marginBottom: '12px',
-            }}
-          />
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '0',
-            }}
-          >
-            {capabilities.map((cap, i) => (
-              <span
-                key={i}
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontSize: '0.85rem',
-                  color: '#f2f4f0',
-                  lineHeight: 1.8,
-                }}
-              >
-                {cap}
-                {i < capabilities.length - 1 && (
-                  <span style={{ color: '#566452', margin: '0 8px' }}>·</span>
-                )}
-              </span>
-            ))}
           </div>
+        ))}
+      </div>
 
-          {/* Education */}
-          <p
-            style={{
-              fontFamily: "'Albert Sans', sans-serif",
-              fontWeight: 500,
-              fontSize: '0.75rem',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: '#a8b4a2',
-              margin: '32px 0 12px',
-            }}
-          >
-            EDUCATION
-          </p>
-          <div
-            style={{
-              width: '100%',
-              height: '1px',
-              background: '#2c362a',
-              marginBottom: '12px',
-            }}
-          />
-          <p
-            style={{
-              fontFamily: "'Albert Sans', sans-serif",
-              fontSize: '0.9rem',
-              color: '#f2f4f0',
-              margin: '0 0 4px',
-              fontWeight: 500,
-            }}
-          >
-            {education.school}
-          </p>
-          <p
-            style={{
-              fontFamily: "'Albert Sans', sans-serif",
-              fontSize: '0.85rem',
-              color: '#a8b4a2',
-              margin: '0 0 2px',
-            }}
-          >
-            {education.degree}, {education.concentration}
-          </p>
-          <p
-            style={{
-              fontFamily: "'Albert Sans', sans-serif",
-              fontSize: '0.8rem',
-              color: '#7d8c77',
-              margin: 0,
-            }}
-          >
-            {education.years}
-          </p>
+      <p className={sectionLabel}>Capabilities</p>
+      <div className={capGrid}>
+        {capabilities.map((cap, i) => (
+          <span key={i} className={capTag}>{cap}</span>
+        ))}
+      </div>
 
-          {/* Personal */}
-          <p
-            style={{
-              fontFamily: "'Albert Sans', sans-serif",
-              fontWeight: 500,
-              fontSize: '0.75rem',
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: '#a8b4a2',
-              margin: '32px 0 12px',
-            }}
-          >
-            PERSONAL
-          </p>
-          <div
-            style={{
-              width: '100%',
-              height: '1px',
-              background: '#2c362a',
-              marginBottom: '12px',
-            }}
-          />
-          <div style={{ fontSize: '0.85rem', lineHeight: 1.7, fontFamily: "'Albert Sans', sans-serif" }}>
-            <p style={{ margin: '0 0 8px', color: '#a8b4a2' }}>
-              <span style={{ color: '#7d8c77' }}>Holes in one:</span>{' '}
-              <span style={{ color: '#f2f4f0' }}>{personal.holesInOne}</span>
-            </p>
-            <p style={{ margin: '0 0 8px', color: '#a8b4a2' }}>
-              <span style={{ color: '#7d8c77' }}>Sport:</span>{' '}
-              <span style={{ color: '#f2f4f0' }}>{personal.sport}</span>
-            </p>
-            <p style={{ margin: '0 0 8px', color: '#a8b4a2' }}>
-              <span style={{ color: '#7d8c77' }}>Teams:</span>{' '}
-              <span style={{ color: '#f2f4f0' }}>{personal.teams.join(', ')}</span>
-            </p>
-            <p style={{ margin: '0', color: '#a8b4a2' }}>
-              <span style={{ color: '#7d8c77' }}>Focus:</span>{' '}
-              <span style={{ color: '#f2f4f0' }}>{personal.currentFocus}</span>
-            </p>
+      <div className={eduBlock}>
+        <p className={sectionLabel}>Education</p>
+        <div className={timelineRow}>
+          <span className={yearCol}>{education.years}</span>
+          <div>
+            <p className={roleCompany}>{education.degree} — {education.school}</p>
+            <p className={roleDesc}>{education.concentration}</p>
           </div>
         </div>
       </div>
 
-      <style>{`
-        .about-body {
-          display: grid;
-          grid-template-columns: 3fr 1fr;
-          gap: 0;
-        }
-        .about-col-main {
-          padding-right: 4vw;
-          border-right: 1px solid #2c362a;
-        }
-        .about-col-side {
-          padding-left: 4vw;
-        }
-        .timeline-row {
-          transition: background 180ms ease;
-        }
+      <div className={personalSection}>
+        <p className={sectionLabel}>Personal</p>
+        <p className={personalItem}>
+          Holes in one: <span className={personalHighlight}>{personal.holesInOne}</span>
+        </p>
+        <p className={personalItem}>
+          Sport: {personal.sport}
+        </p>
+        <p className={personalItem}>
+          Teams: {personal.teams.join(', ')}
+        </p>
+        <p className={personalItem}>
+          Current focus: {personal.currentFocus}
+        </p>
+      </div>
 
-        @media (max-width: 768px) {
-          .about-body {
-            grid-template-columns: 1fr;
-          }
-          .about-col-main {
-            padding-right: 0;
-            border-right: none;
-            border-bottom: 1px solid #2c362a;
-            padding-bottom: 32px;
-          }
-          .about-col-side {
-            padding-left: 0;
-          }
-          .timeline-row {
-            grid-template-columns: 1fr !important;
-            gap: 4px !important;
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .timeline-row { transition: none !important; }
-        }
-      `}</style>
-    </div>
+      <footer className={css({ borderTop: '1px solid', borderColor: 'border', paddingTop: '24px', paddingBottom: '24px' })}>
+        <a href="/archive" className={css({ fontSize: '0.75rem', color: 'textMuted', letterSpacing: '0.08em', textTransform: 'uppercase', textDecoration: 'none', _hover: { color: 'accentLight' }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' } })}>Archive</a>
+      </footer>
+    </main>
   )
 }

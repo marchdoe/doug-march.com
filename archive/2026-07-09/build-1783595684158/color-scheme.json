@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 330,
+    "s": 85,
+    "l": 45,
+    "name": "hot rose-magenta"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "rose-magenta",
+    "name": "void-rose"
+  },
+  "mood_word": "incisive",
+  "color_story": "Hot magenta on near-void rose-black — the color of a neon sign in a dark corridor, amplifying the Chesterton quote's wit-as-warning quality against the deep quiet of a waning crescent night."
+}

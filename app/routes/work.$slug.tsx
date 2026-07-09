@@ -1,7 +1,107 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
+
+const page = css({
+  padding: '80px 5vw 48px',
+  maxWidth: '960px',
+  margin: '0 auto',
+  width: '100%',
+})
+
+const backLink = css({
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  fontWeight: 'bold',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  textDecoration: 'none',
+  display: 'inline-block',
+  marginBottom: '48px',
+  padding: '12px 0',
+  _hover: { color: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+})
+
+const title = css({
+  fontFamily: 'display',
+  fontWeight: 'black',
+  fontSize: 'clamp(2rem, 5vw, 5rem)',
+  lineHeight: 'tight',
+  textTransform: 'uppercase',
+  color: 'text',
+  marginBottom: '16px',
+  letterSpacing: '0.01em',
+})
+
+const meta = css({
+  fontFamily: 'body',
+  fontSize: '0.875rem',
+  fontWeight: 'bold',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  marginBottom: '48px',
+})
+
+const sectionLabel = css({
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  fontWeight: 'bold',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: 'accent',
+  marginBottom: '12px',
+  marginTop: '48px',
+})
+
+const bodyText = css({
+  fontFamily: 'body',
+  fontSize: '1rem',
+  lineHeight: 'normal',
+  color: 'textSecondary',
+  maxWidth: '65ch',
+  marginBottom: '24px',
+})
+
+const stackList = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: '8px',
+  marginBottom: '48px',
+})
+
+const stackTag = css({
+  fontFamily: 'body',
+  fontSize: '0.75rem',
+  fontWeight: 'bold',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: 'text',
+  border: '1px solid',
+  borderColor: 'border',
+  padding: '8px 16px',
+})
+
+const extLink = css({
+  fontFamily: 'body',
+  fontSize: '0.875rem',
+  fontWeight: 'bold',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: 'accent',
+  textDecoration: 'none',
+  display: 'inline-block',
+  padding: '12px 24px',
+  border: '1px solid',
+  borderColor: 'accent',
+  marginTop: '24px',
+  _hover: { color: 'accentLight', borderColor: 'accentLight' },
+  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+})
 
 function ProjectPage() {
   const { slug } = Route.useParams()
@@ -9,357 +109,80 @@ function ProjectPage() {
 
   if (!project) {
     return (
-      <div style={{ padding: '64px 5vw', textAlign: 'center' }}>
-        <h1
-          style={{
-            fontFamily: "'Spectral', serif",
-            fontSize: '2rem',
-            color: '#f2f4f0',
-          }}
-        >
-          Project not found
-        </h1>
-        <a
-          href="/"
-          style={{
-            fontFamily: "'Albert Sans', sans-serif",
-            color: '#76e035',
-            fontSize: '0.9rem',
-            marginTop: '16px',
-            display: 'inline-block',
-          }}
-        >
-          ← Back to home
-        </a>
-      </div>
+      <main className={page}>
+        <a href="/" className={backLink}>← Back</a>
+        <h1 className={title}>Not Found</h1>
+        <p className={bodyText}>This project doesn't exist.</p>
+      </main>
     )
   }
 
   return (
-    <div style={{ padding: '0 5vw' }}>
-      {/* Project Header */}
-      <div
-        style={{
-          paddingTop: '48px',
-          paddingBottom: '32px',
-          borderBottom: '1px solid #2c362a',
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "'Albert Sans', sans-serif",
-            fontSize: '0.8rem',
-            color: '#7d8c77',
-            margin: '0 0 12px',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-          }}
-        >
-          {project.type} · {project.year}
-        </p>
-        <h1
-          style={{
-            fontFamily: "'Spectral', serif",
-            fontStyle: 'italic',
-            fontSize: 'clamp(2rem, 4vw, 4.5rem)',
-            lineHeight: 1.1,
-            letterSpacing: '-0.01em',
-            color: '#f2f4f0',
-            margin: '0 0 16px',
-          }}
-        >
-          {project.title}
-        </h1>
-        {project.role && (
-          <p
-            style={{
-              fontFamily: "'Albert Sans', sans-serif",
-              fontSize: '0.875rem',
-              fontVariantCaps: 'all-small-caps',
-              letterSpacing: '0.12em',
-              color: '#76e035',
-              margin: 0,
-            }}
-          >
-            {project.role}
-          </p>
-        )}
-      </div>
+    <main className={page}>
+      <a href="/" className={backLink}>← Back</a>
+      <h1 className={title}>{project.title}</h1>
+      <p className={meta}>{project.type} · {project.year}</p>
 
-      {/* Project Body */}
-      <div className="project-body">
-        <div className="project-main" style={{ paddingTop: '32px' }}>
-          {project.problem && (
-            <div style={{ marginBottom: '32px' }}>
-              <p
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontWeight: 500,
-                  fontSize: '0.75rem',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: '#a8b4a2',
-                  margin: '0 0 12px',
-                }}
-              >
-                PROBLEM
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontSize: '1rem',
-                  lineHeight: 1.55,
-                  color: '#f2f4f0',
-                  margin: 0,
-                  maxWidth: '65ch',
-                }}
-              >
-                {project.problem}
-              </p>
-            </div>
-          )}
+      {project.role && (
+        <>
+          <p className={sectionLabel}>Role</p>
+          <p className={bodyText}>{project.role}</p>
+        </>
+      )}
 
-          {project.approach && (
-            <div style={{ marginBottom: '32px' }}>
-              <p
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontWeight: 500,
-                  fontSize: '0.75rem',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: '#a8b4a2',
-                  margin: '0 0 12px',
-                }}
-              >
-                APPROACH
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontSize: '1rem',
-                  lineHeight: 1.55,
-                  color: '#f2f4f0',
-                  margin: 0,
-                  maxWidth: '65ch',
-                }}
-              >
-                {project.approach}
-              </p>
-            </div>
-          )}
+      {project.problem && (
+        <>
+          <p className={sectionLabel}>Problem</p>
+          <p className={bodyText}>{project.problem}</p>
+        </>
+      )}
 
-          {project.outcome && (
-            <div style={{ marginBottom: '32px' }}>
-              <p
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontWeight: 500,
-                  fontSize: '0.75rem',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: '#a8b4a2',
-                  margin: '0 0 12px',
-                }}
-              >
-                OUTCOME
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontSize: '1rem',
-                  lineHeight: 1.55,
-                  color: '#f2f4f0',
-                  margin: 0,
-                  maxWidth: '65ch',
-                }}
-              >
-                {project.outcome}
-              </p>
-            </div>
-          )}
+      {project.approach && (
+        <>
+          <p className={sectionLabel}>Approach</p>
+          <p className={bodyText}>{project.approach}</p>
+        </>
+      )}
 
-          {project.description && !project.problem && (
-            <div style={{ marginBottom: '32px' }}>
-              <p
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontSize: '1rem',
-                  lineHeight: 1.55,
-                  color: '#f2f4f0',
-                  margin: 0,
-                  maxWidth: '65ch',
-                }}
-              >
-                {project.description}
-              </p>
-            </div>
-          )}
-        </div>
+      {project.outcome && (
+        <>
+          <p className={sectionLabel}>Outcome</p>
+          <p className={bodyText}>{project.outcome}</p>
+        </>
+      )}
 
-        {/* Side meta */}
-        <div className="project-side" style={{ paddingTop: '32px' }}>
-          {project.stack && project.stack.length > 0 && (
-            <div style={{ marginBottom: '24px' }}>
-              <p
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontWeight: 500,
-                  fontSize: '0.75rem',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: '#a8b4a2',
-                  margin: '0 0 12px',
-                }}
-              >
-                STACK
-              </p>
-              <div
-                style={{
-                  width: '100%',
-                  height: '1px',
-                  background: '#2c362a',
-                  marginBottom: '12px',
-                }}
-              />
-              {project.stack.map((tech, i) => (
-                <p
-                  key={i}
-                  style={{
-                    fontFamily: "'Albert Sans', sans-serif",
-                    fontSize: '0.85rem',
-                    color: '#f2f4f0',
-                    margin: '0 0 6px',
-                  }}
-                >
-                  {tech}
-                </p>
-              ))}
-            </div>
-          )}
+      {project.description && (
+        <>
+          <p className={sectionLabel}>Description</p>
+          <p className={bodyText}>{project.description}</p>
+        </>
+      )}
 
-          {/* Links */}
-          <div>
-            <p
-              style={{
-                fontFamily: "'Albert Sans', sans-serif",
-                fontWeight: 500,
-                fontSize: '0.75rem',
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: '#a8b4a2',
-                margin: '0 0 12px',
-              }}
-            >
-              LINKS
-            </p>
-            <div
-              style={{
-                width: '100%',
-                height: '1px',
-                background: '#2c362a',
-                marginBottom: '12px',
-              }}
-            />
-            {project.externalUrl && (
-              <a
-                href={project.externalUrl}
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontSize: '0.85rem',
-                  color: '#76e035',
-                  display: 'block',
-                  padding: '6px 0',
-                  textDecoration: 'none',
-                }}
-              >
-                Visit site ↗
-              </a>
-            )}
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontSize: '0.85rem',
-                  color: '#76e035',
-                  display: 'block',
-                  padding: '6px 0',
-                  textDecoration: 'none',
-                }}
-              >
-                Live ↗
-              </a>
-            )}
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                style={{
-                  fontFamily: "'Albert Sans', sans-serif",
-                  fontSize: '0.85rem',
-                  color: '#76e035',
-                  display: 'block',
-                  padding: '6px 0',
-                  textDecoration: 'none',
-                }}
-              >
-                GitHub ↗
-              </a>
-            )}
-            <a
-              href="/"
-              style={{
-                fontFamily: "'Albert Sans', sans-serif",
-                fontSize: '0.85rem',
-                color: '#a8b4a2',
-                display: 'block',
-                padding: '6px 0',
-                marginTop: '12px',
-                textDecoration: 'none',
-              }}
-            >
-              ← All work
-            </a>
+      {project.stack && project.stack.length > 0 && (
+        <>
+          <p className={sectionLabel}>Stack</p>
+          <div className={stackList}>
+            {project.stack.map((s, i) => (
+              <span key={i} className={stackTag}>{s}</span>
+            ))}
           </div>
-        </div>
-      </div>
+        </>
+      )}
 
-      <style>{`
-        .project-body {
-          display: grid;
-          grid-template-columns: 3fr 1fr;
-          gap: 0;
-        }
-        .project-main {
-          padding-right: 4vw;
-          border-right: 1px solid #2c362a;
-        }
-        .project-side {
-          padding-left: 4vw;
-        }
-        .project-side a:hover {
-          text-decoration: underline !important;
-        }
-        .project-side a:focus-visible {
-          outline: 2px solid #76e035;
-          outline-offset: 2px;
-        }
+      {project.externalUrl && (
+        <a href={project.externalUrl} className={extLink} target="_blank" rel="noopener noreferrer">
+          Visit Project ↗
+        </a>
+      )}
+      {project.liveUrl && !project.externalUrl && (
+        <a href={project.liveUrl} className={extLink} target="_blank" rel="noopener noreferrer">
+          View Live ↗
+        </a>
+      )}
 
-        @media (max-width: 768px) {
-          .project-body {
-            grid-template-columns: 1fr;
-          }
-          .project-main {
-            padding-right: 0;
-            border-right: none;
-            border-bottom: 1px solid #2c362a;
-            padding-bottom: 32px;
-          }
-          .project-side {
-            padding-left: 0;
-          }
-        }
-      `}</style>
-    </div>
+      <footer className={css({ borderTop: '1px solid', borderColor: 'border', paddingTop: '24px', marginTop: '64px' })}>
+        <a href="/archive" className={css({ fontSize: '0.75rem', color: 'textMuted', letterSpacing: '0.08em', textTransform: 'uppercase', textDecoration: 'none', _hover: { color: 'accentLight' }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' } })}>Archive</a>
+      </footer>
+    </main>
   )
 }
