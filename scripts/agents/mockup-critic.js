@@ -32,8 +32,8 @@ export async function runMockupCritic(ctx) {
     '## Brief + Visual Specification\n\n' + ctx.enrichedBrief,
     '## Measurables (declared floors)\n\n' + ctx.measurables,
     '## Shell Declaration\n\n' + ctx.shell,
-    'A screenshot of the rendered mockup (1440×900) is attached as a base64 PNG image below.\n\n' +
-      '![Mockup Screenshot](data:image/png;base64,' + ctx.screenshotBuffer.toString('base64') + ')',
+    'A screenshot of the rendered mockup (1440×900) is attached as a base64 JPEG image below.\n\n' +
+      '![Mockup Screenshot](data:image/jpeg;base64,' + ctx.screenshotBuffer.toString('base64') + ')',
   ].join('\n\n---\n\n')
 
   const raw = await callClaudeCLI('mockup-critic', ctx.systemPrompt, userPrompt, {

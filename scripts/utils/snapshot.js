@@ -173,8 +173,13 @@ export async function captureSnapshot(date, buildId) {
  * Capture a PNG screenshot of the rendered homepage.
  * Spins up a Vite preview server and uses Playwright to render and screenshot.
  *
+ * Returns both encodings from one render: PNG for archive/public artifacts,
+ * JPEG (q70) for critic prompts. Gradient-heavy designs produce ~900KB PNGs;
+ * two of those base64'd made a 1.6MB critic prompt that the model answered
+ * with 0 bytes (2026-07-10 run 2). The JPEG is typically 5-10x smaller.
+ *
  * @param {number} [port] - Optional port if server is already running
- * @returns {Promise<Buffer>} PNG image buffer
+ * @returns {Promise<{png: Buffer, jpeg: Buffer}>} image buffers
  */
 export async function captureScreenshot(port) {
   const { chromium } = await import('playwright')
@@ -214,9 +219,10 @@ export async function captureScreenshot(port) {
       waitUntil: 'networkidle',
     })
     await page.waitForTimeout(1000) // wait for fonts
-    const screenshot = await page.screenshot({ type: 'png', fullPage: false })
+    const png = await page.screenshot({ type: 'png', fullPage: false })
+    const jpeg = await page.screenshot({ type: 'jpeg', quality: 70, fullPage: false })
     await browser.close()
-    return screenshot
+    return { png, jpeg }
   } finally {
     if (server) server.kill()
   }
@@ -229,7 +235,8 @@ export async function captureScreenshot(port) {
  *
  * @param {string} filePath - absolute path to the HTML file
  * @param {{ width?: number, height?: number }} [opts]
- * @returns {Promise<Buffer>} PNG image buffer
+ * @returns {Promise<{png: Buffer, jpeg: Buffer}>} image buffers — PNG for
+ *   archives, JPEG (q70) for critic prompts (see captureScreenshot)
  */
 export async function captureHtmlFileScreenshot(filePath, { width = 1440, height = 900 } = {}) {
   const { chromium } = await import('playwright')
@@ -238,7 +245,9 @@ export async function captureHtmlFileScreenshot(filePath, { width = 1440, height
     const page = await browser.newPage({ viewport: { width, height } })
     await page.goto(`file://${filePath}`, { waitUntil: 'networkidle' })
     await page.waitForTimeout(1000) // fonts
-    return await page.screenshot({ type: 'png', fullPage: false })
+    const png = await page.screenshot({ type: 'png', fullPage: false })
+    const jpeg = await page.screenshot({ type: 'jpeg', quality: 70, fullPage: false })
+    return { png, jpeg }
   } finally {
     await browser.close()
   }

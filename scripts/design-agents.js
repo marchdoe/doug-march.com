@@ -1150,7 +1150,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     try {
       critique = await runMockupCritic({
         systemPrompt: mockupCriticSystemPrompt,
-        screenshotBuffer: mockupScreenshot,
+        screenshotBuffer: mockupScreenshot.jpeg,
         enrichedBrief,
         measurables: artDirectorResult.measurables,
         shell: artDirectorResult.shell,
@@ -1348,9 +1348,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const designBrief = tokenResult.design_brief || `Multi-agent redesign${rationaleSuffix}`
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null, {
-      'screenshot.png': finalScreenshot,
+      'screenshot.png': finalScreenshot?.png ?? null,
       'mockup.html': mockup?.mockupHtml ?? null,
-      'mockup-screenshot.png': mockupScreenshot,
+      'mockup-screenshot.png': mockupScreenshot?.png ?? null,
       'verdicts.json': JSON.stringify(verdicts, null, 2),
       'shell.json': JSON.stringify(shellDecl, null, 2),
     })
@@ -1382,7 +1382,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const { captureScreenshot } = await import('./utils/snapshot.js')
       const screenshotBuffer = await captureScreenshot()
       finalScreenshot = screenshotBuffer
-      console.log(`  screenshot captured (${(screenshotBuffer.length / 1024).toFixed(0)}KB)`)
+      console.log(`  screenshot captured (png ${(screenshotBuffer.png.length / 1024).toFixed(0)}KB, jpeg ${(screenshotBuffer.jpeg.length / 1024).toFixed(0)}KB)`)
 
       console.log('[screenshot-critic] Evaluating design...')
       const criticUserPrompt = [
@@ -1390,10 +1390,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         '## Visual Specification\n\n' + visualSpec,
         references ? '## Design References\n\n' + references : '',
         mockupScreenshot
-          ? 'The APPROVED MOCKUP screenshot (fidelity target):\n\n![Mockup](data:image/png;base64,' + mockupScreenshot.toString('base64') + ')'
+          ? 'The APPROVED MOCKUP screenshot (fidelity target):\n\n![Mockup](data:image/jpeg;base64,' + mockupScreenshot.jpeg.toString('base64') + ')'
           : '',
-        '\n\nA screenshot of the rendered homepage is attached as a base64 PNG image below.\n\n' +
-        '![Homepage Screenshot](data:image/png;base64,' + screenshotBuffer.toString('base64') + ')',
+        '\n\nA screenshot of the rendered homepage is attached as a base64 JPEG image below.\n\n' +
+        '![Homepage Screenshot](data:image/jpeg;base64,' + screenshotBuffer.jpeg.toString('base64') + ')',
       ].filter(Boolean).join('\n\n---\n\n')
 
       const t0ScreenshotCritic = Date.now()
