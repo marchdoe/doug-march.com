@@ -5,183 +5,261 @@ import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const page = css({
-  padding: '80px 5vw 48px',
-  maxWidth: '960px',
-  margin: '0 auto',
-  width: '100%',
-})
-
-const pageTitle = css({
-  fontFamily: 'display',
-  fontWeight: 'black',
-  fontSize: 'clamp(2rem, 5vw, 4.5rem)',
-  lineHeight: 'tight',
-  textTransform: 'uppercase',
-  color: 'text',
-  marginBottom: '48px',
-  letterSpacing: '0.01em',
-})
-
-const statement = css({
-  fontFamily: 'body',
-  fontSize: 'clamp(1rem, 1.25vw, 1.25rem)',
-  lineHeight: 'normal',
-  color: 'textSecondary',
-  marginBottom: '64px',
-  maxWidth: '65ch',
-})
-
-const sectionLabel = css({
-  fontFamily: 'body',
-  fontSize: '0.75rem',
-  fontWeight: 'bold',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
-  color: 'accent',
-  marginBottom: '24px',
-})
-
-const timelineRow = css({
-  display: 'grid',
-  gridTemplateColumns: '120px 1fr',
-  gap: '16px',
-  paddingBottom: '24px',
-  marginBottom: '24px',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-
-  '@media (max-width: 640px)': {
-    gridTemplateColumns: '1fr',
-    gap: '4px',
-  },
-})
-
-const yearCol = css({
-  fontFamily: 'body',
-  fontSize: '0.875rem',
-  fontWeight: 'bold',
-  color: 'textMuted',
-  letterSpacing: '0.06em',
-  whiteSpace: 'nowrap',
-  minWidth: '120px',
-})
-
-const roleCompany = css({
-  fontFamily: 'body',
-  fontSize: '1rem',
-  fontWeight: 'bold',
-  color: 'text',
-  lineHeight: 'snug',
-})
-
-const roleDesc = css({
-  fontFamily: 'body',
-  fontSize: '1rem',
-  color: 'textSecondary',
-  lineHeight: 'normal',
-  marginTop: '4px',
-  maxWidth: '65ch',
-})
-
-const capGrid = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
-  marginBottom: '64px',
-})
-
-const capTag = css({
-  fontFamily: 'body',
-  fontSize: '0.75rem',
-  fontWeight: 'bold',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  color: 'text',
-  border: '1px solid',
-  borderColor: 'border',
-  padding: '8px 16px',
-})
-
-const personalSection = css({
-  marginTop: '64px',
-  marginBottom: '48px',
-})
-
-const personalItem = css({
-  fontFamily: 'body',
-  fontSize: '1rem',
-  lineHeight: 'loose',
-  color: 'textSecondary',
-  maxWidth: '65ch',
-})
-
-const personalHighlight = css({
-  color: 'accent',
-  fontWeight: 'bold',
-})
-
-const eduBlock = css({
-  marginTop: '64px',
-  marginBottom: '48px',
-})
-
 function AboutPage() {
   return (
-    <main className={page}>
-      <h1 className={pageTitle}>{identity.name}</h1>
-      <p className={statement}>{identity.statement}</p>
-
-      <div className={css({ marginBottom: '64px' })}>
-        <p className={sectionLabel}>Experience</p>
-        {timeline.map((entry, i) => (
-          <div key={i} className={timelineRow}>
-            <span className={yearCol}>{entry.year}</span>
-            <div>
-              <p className={roleCompany}>{entry.role} — {entry.company}</p>
-              <p className={roleDesc}>{entry.description}</p>
-            </div>
-          </div>
-        ))}
+    <div className={css({
+      minHeight: '100vh',
+      padding: '96px 5vw 96px',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(12, 1fr)',
+      columnGap: '16px',
+      rowGap: '0',
+    })}>
+      {/* Identity */}
+      <div className={css({
+        gridColumn: '1 / 7',
+        paddingBottom: '64px',
+        '@media (max-width: 768px)': {
+          gridColumn: '1 / 13',
+          paddingBottom: '40px',
+        },
+      })}>
+        <h1 className={css({
+          fontFamily: 'display',
+          fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+          fontWeight: '600',
+          color: 'text',
+          lineHeight: '1.12',
+          marginBottom: '16px',
+        })}>{identity.name}</h1>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '13px',
+          fontWeight: '500',
+          letterSpacing: '0.10em',
+          textTransform: 'uppercase',
+          color: 'textSecondary',
+          marginBottom: '24px',
+        })}>{identity.role}</p>
+        <p className={css({
+          fontFamily: 'display',
+          fontSize: 'clamp(1rem, 1.8vw, 1.25rem)',
+          fontStyle: 'italic',
+          color: 'text',
+          lineHeight: '1.6',
+          maxWidth: '55ch',
+        })}>{identity.statement}</p>
       </div>
 
-      <p className={sectionLabel}>Capabilities</p>
-      <div className={capGrid}>
-        {capabilities.map((cap, i) => (
-          <span key={i} className={capTag}>{cap}</span>
-        ))}
-      </div>
-
-      <div className={eduBlock}>
-        <p className={sectionLabel}>Education</p>
-        <div className={timelineRow}>
-          <span className={yearCol}>{education.years}</span>
+      {/* Personal — upper right */}
+      <div className={css({
+        gridColumn: '8 / 13',
+        paddingTop: '24px',
+        paddingBottom: '64px',
+        '@media (max-width: 768px)': {
+          gridColumn: '1 / 13',
+          paddingTop: '0',
+          paddingBottom: '40px',
+        },
+      })}>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '10px',
+          fontWeight: '500',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: 'textMuted',
+          marginBottom: '16px',
+        })}>Personal</p>
+        <div className={css({
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+        })}>
           <div>
-            <p className={roleCompany}>{education.degree} — {education.school}</p>
-            <p className={roleDesc}>{education.concentration}</p>
+            <p className={css({ fontFamily: 'body', fontSize: '12px', color: 'textMuted', letterSpacing: '0.05em', textTransform: 'uppercase' })}>Holes in One</p>
+            <p className={css({ fontFamily: 'display', fontSize: '24px', fontWeight: '600', color: 'accent', lineHeight: '1.2' })}>{personal.holesInOne}</p>
+          </div>
+          <div>
+            <p className={css({ fontFamily: 'body', fontSize: '12px', color: 'textMuted', letterSpacing: '0.05em', textTransform: 'uppercase' })}>Sport</p>
+            <p className={css({ fontFamily: 'body', fontSize: '16px', color: 'text', lineHeight: '1.4' })}>{personal.sport}</p>
+          </div>
+          <div>
+            <p className={css({ fontFamily: 'body', fontSize: '12px', color: 'textMuted', letterSpacing: '0.05em', textTransform: 'uppercase' })}>Teams</p>
+            <p className={css({ fontFamily: 'body', fontSize: '16px', color: 'text', lineHeight: '1.4' })}>{personal.teams.join(', ')}</p>
+          </div>
+          <div>
+            <p className={css({ fontFamily: 'body', fontSize: '12px', color: 'textMuted', letterSpacing: '0.05em', textTransform: 'uppercase' })}>Current Focus</p>
+            <p className={css({ fontFamily: 'body', fontSize: '16px', color: 'text', lineHeight: '1.4' })}>{personal.currentFocus}</p>
           </div>
         </div>
       </div>
 
-      <div className={personalSection}>
-        <p className={sectionLabel}>Personal</p>
-        <p className={personalItem}>
-          Holes in one: <span className={personalHighlight}>{personal.holesInOne}</span>
-        </p>
-        <p className={personalItem}>
-          Sport: {personal.sport}
-        </p>
-        <p className={personalItem}>
-          Teams: {personal.teams.join(', ')}
-        </p>
-        <p className={personalItem}>
-          Current focus: {personal.currentFocus}
-        </p>
+      {/* Timeline — full width */}
+      <div className={css({
+        gridColumn: '1 / 13',
+        paddingBottom: '64px',
+      })}>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '10px',
+          fontWeight: '500',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: 'textMuted',
+          marginBottom: '24px',
+        })}>Experience</p>
+        <div className={css({
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0',
+        })}>
+          {timeline.map((entry, i) => (
+            <div
+              key={i}
+              className={css({
+                display: 'grid',
+                gridTemplateColumns: '120px 200px 1fr',
+                gap: '16px',
+                padding: '16px 0',
+                borderTop: '1px solid',
+                borderColor: 'border',
+                alignItems: 'baseline',
+                '@media (max-width: 768px)': {
+                  gridTemplateColumns: '1fr',
+                  gap: '4px',
+                },
+              })}
+            >
+              <span className={css({
+                fontFamily: 'mono',
+                fontSize: '12px',
+                color: 'textMuted',
+                whiteSpace: 'nowrap',
+                minWidth: '120px',
+              })}>{entry.year}</span>
+              <span className={css({
+                fontFamily: 'body',
+                fontSize: '14px',
+                fontWeight: '600',
+                color: 'text',
+                lineHeight: '1.4',
+              })}>{entry.role} <span className={css({ color: 'textSecondary', fontWeight: '400' })}>· {entry.company}</span></span>
+              <span className={css({
+                fontFamily: 'body',
+                fontSize: '14px',
+                color: 'textSecondary',
+                lineHeight: '1.6',
+                maxWidth: '55ch',
+              })}>{entry.description}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <footer className={css({ borderTop: '1px solid', borderColor: 'border', paddingTop: '24px', paddingBottom: '24px' })}>
-        <a href="/archive" className={css({ fontSize: '0.75rem', color: 'textMuted', letterSpacing: '0.08em', textTransform: 'uppercase', textDecoration: 'none', _hover: { color: 'accentLight' }, _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' } })}>Archive</a>
-      </footer>
-    </main>
+      {/* Education */}
+      <div className={css({
+        gridColumn: '1 / 6',
+        paddingBottom: '64px',
+        '@media (max-width: 768px)': {
+          gridColumn: '1 / 13',
+        },
+      })}>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '10px',
+          fontWeight: '500',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: 'textMuted',
+          marginBottom: '16px',
+        })}>Education</p>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '16px',
+          fontWeight: '600',
+          color: 'text',
+          lineHeight: '1.4',
+        })}>{education.school}</p>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '14px',
+          color: 'textSecondary',
+          lineHeight: '1.5',
+        })}>{education.degree}, {education.concentration}</p>
+        <p className={css({
+          fontFamily: 'mono',
+          fontSize: '12px',
+          color: 'textMuted',
+          marginTop: '4px',
+        })}>{education.years}</p>
+      </div>
+
+      {/* Capabilities */}
+      <div className={css({
+        gridColumn: '6 / 13',
+        paddingBottom: '64px',
+        '@media (max-width: 768px)': {
+          gridColumn: '1 / 13',
+        },
+      })}>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '10px',
+          fontWeight: '500',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: 'textMuted',
+          marginBottom: '16px',
+        })}>Capabilities</p>
+        <div className={css({
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '8px',
+        })}>
+          {capabilities.map((cap, i) => (
+            <span
+              key={i}
+              className={css({
+                fontFamily: 'body',
+                fontSize: '13px',
+                color: 'textSecondary',
+                padding: '6px 12px',
+                background: 'bgCard',
+                lineHeight: '1.4',
+              })}
+            >{cap}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className={css({
+        gridColumn: '1 / 13',
+        paddingTop: '32px',
+        borderTop: '1px solid',
+        borderColor: 'border',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px',
+      })}>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'textMuted',
+        })}>Doug March · Product Designer & Developer</p>
+        <a href="/archive" className={css({
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'textMuted',
+          textDecoration: 'none',
+          padding: '10px 0',
+          _hover: { color: 'textSecondary' },
+          _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+        })}>Archive</a>
+      </div>
+    </div>
   )
 }

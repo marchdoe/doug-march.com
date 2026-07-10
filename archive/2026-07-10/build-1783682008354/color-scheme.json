@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 63,
+    "s": 88,
+    "l": 46,
+    "name": "Barcelona gold"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "warm amber",
+    "name": "aged stone"
+  },
+  "mood_word": "irreversible",
+  "color_story": "Chartreuse-gold on near-void warm black — the color of candlelight in an old bookshop at closing time, of Mediterranean sunlight cutting through shadow; the mandate's narrow 58°–75° corridor happens to land exactly where Zafón's Barcelona lives."
+}
