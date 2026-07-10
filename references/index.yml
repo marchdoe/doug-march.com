@@ -1,6 +1,12 @@
 # Curated Design Reference Library
 # Add screenshots to this directory and index them here.
-# The pipeline selects 3-5 relevant references based on the daily brief.
+# Entries are TEXT-ONLY as far as the models are concerned — the description
+# carries the entire taste signal, so write the concrete design move, not vibes.
+#
+# When a fresh brief exists, the pipeline scores entries against it and picks
+# the top 5. With no fresh brief (the normal case since the Art Director now
+# ingests raw signals directly), the whole library is handed to the AD to
+# select from.
 #
 # Tags:
 #   composition: poster | broadsheet | gallery | scroll | split | stack | specimen | index
@@ -8,11 +14,72 @@
 #   density: sparse | moderate | dense
 
 references:
-  # Example entry (uncomment and add your own):
-  # - file: editorial-01.png
-  #   url: https://example.com/inspiration
-  #   description: "Full-bleed editorial layout with oversized serif headings"
-  #   tags:
-  #     composition: poster
-  #     mood: dramatic
-  #     density: sparse
+  # --- Own archive gold standards (from recorded ratings) ---
+  - file: own-2026-04-28-terracotta-specimen.png
+    description: "OWN GOLD STANDARD (2026-04-28, risk 8): drenched terracotta Specimen — a single hue committed across ~70% of the viewport, type waterfall reversed out of the field, labels and size markers treated as design material. Rated the benchmark: committed gestures, not hedges."
+    tags:
+      composition: specimen
+      mood: warm
+      density: moderate
+  - file: own-2026-06-13-fairway-split.png
+    description: "OWN HIGH-WATER MARK (2026-06-13): Split as argument — left panel is the thesis (one enormous word, 178px Anton, fairway green drench), right panel is the evidence (clean cataloged rows in pine-white). The split earns itself because the two halves NEED each other; productive irony (the word for smallness is the biggest object on the page)."
+    tags:
+      composition: split
+      mood: energetic
+      density: moderate
+
+  # --- External references ---
+  - url: https://davidrudnick.org
+    description: "Poster logic taken literally: the page IS a typographic poster. One statement at viewport scale, type as image, zero supporting UI above the fold. The confidence comes from what is withheld."
+    tags:
+      composition: poster
+      mood: dramatic
+      density: sparse
+  - url: https://studiodumbar.com
+    description: "Studio Dumbar / DEMO energy: aggressive grotesk at full bleed, one accent color pushed to full saturation, rhythm from repetition of a single bold move rather than variety of small ones."
+    tags:
+      composition: poster
+      mood: energetic
+      density: moderate
+  - url: https://klim.co.nz
+    description: "Klim type specimens: a waterfall of the same face doing different jobs — display cut at 120px above dense text settings, with size labels, foundry numbers, and hairline rules doing the layout work. Dense but never messy because every element sits on the same strict grid."
+    tags:
+      composition: specimen
+      mood: serious
+      density: dense
+  - url: https://pangrampangram.com
+    description: "Pangram Pangram specimen pages: single-hue drenched field, type reversed out, weight changes (thin → black) used as the page's rhythm instead of imagery. Proof that a specimen can feel warm, not clinical."
+    tags:
+      composition: specimen
+      mood: warm
+      density: moderate
+  - url: https://www.nytimes.com
+    description: "Broadsheet discipline: hierarchy built from size ratios, decks, and kickers — not color. Hairline rules separate; small caps label; the reader always knows what matters most. Steal the ratio system (roughly 6:3:1 between hed, deck, body), not the look."
+    tags:
+      composition: broadsheet
+      mood: serious
+      density: dense
+  - url: https://ok-rm.co.uk
+    description: "Gallery restraint: images breathe inside generous whitespace, captions in one strict small-caps system, no decorative moves at all. Whitespace reads as luxury when the few elements present are impeccably aligned."
+    tags:
+      composition: gallery
+      mood: calm
+      density: sparse
+  - url: https://frankchimero.com
+    description: "Scroll as essay: one reading column, type at genuine reading sizes with generous leading, hierarchy from spacing rather than scale jumps. Restraint as confidence — nothing shouts, everything is considered."
+    tags:
+      composition: scroll
+      mood: calm
+      density: moderate
+  - url: https://cargo.site
+    description: "Stack of self-contained color fields: each section is its own poster with its own background commitment, so scrolling reads like flipping a deck. Works when each panel makes ONE move; fails when panels hedge."
+    tags:
+      composition: stack
+      mood: playful
+      density: moderate
+  - url: https://www.experimentaljetset.nl
+    description: "Index as interface: the entire archive is a typographic list — one row per project, no thumbnails, typography and numbering do all the work. Dense, fast, and confident; the anti-gallery."
+    tags:
+      composition: index
+      mood: minimal
+      density: dense
