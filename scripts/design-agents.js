@@ -1374,7 +1374,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       ].filter(Boolean).join('\n\n---\n\n')
 
       const t0ScreenshotCritic = Date.now()
-      const screenshotCriticResult = await callAgent('screenshot-critic', screenshotCriticPrompt, criticUserPrompt)
+      const screenshotCriticResult = await callAgent('screenshot-critic', screenshotCriticPrompt, criticUserPrompt, null, { model: modelFor('screenshot-critic') })
       const criticResponse = screenshotCriticResult._rawResponse || screenshotCriticResult.rationale || ''
 
       verdicts.push({
