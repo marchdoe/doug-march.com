@@ -71,6 +71,7 @@ A route rendering a fixed 1200×630 card (no scrolling, no responsiveness):
 ## Technical requirements
 
 - NEVER emit `app/routes/__root.tsx`, `elements/preset.ts`, or `elements/chassis-preset.ts` — the orchestrator owns those. Do not define `theme.tokens.fonts` or `fontSizes` anywhere.
+- **Every file you write is server-rendered.** The build prerenders the site, and the server bundle loads EVERY route and component module — one SSR-unsafe line in ANY file crashes the build for the whole site. Never touch `window`, `document`, `localStorage`, `sessionStorage`, `matchMedia`, or `navigator` at module scope or unconditionally during render. If you need them, guard with `typeof window !== 'undefined'` or move the access into `useEffect`. Prefer CSS (media queries, `prefers-reduced-motion`, `prefers-color-scheme`) over JS environment probes — CSS is always SSR-safe.
 
 ### Route file conventions
 

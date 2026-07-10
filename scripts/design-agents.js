@@ -24,7 +24,7 @@ import { fileURLToPath } from 'url'
 import path from 'path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
 
-import { readFile, writeFile, mkdir } from 'fs/promises'
+import { readFile, writeFile, mkdir, copyFile } from 'fs/promises'
 import { existsSync, readdirSync, readFileSync } from 'fs'
 import { spawnSync } from 'child_process'
 import { callClaudeCLI } from './utils/claude-cli.js'
@@ -484,6 +484,29 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       console.warn(`  trace save failed (non-blocking): ${err.message}`)
       // Last-ditch: emit to stdout so logs always have it
       try { console.log(`[TRACE-FINAL] ${trace.toJSON()}`) } catch {}
+    }
+  }
+
+  // Snapshot the agent-written files into the failure archive BEFORE
+  // restore() reverts them. Without this, a build failure destroys the only
+  // copy of the failing sources — error.txt tells you WHAT broke but the
+  // code that broke it is gone (every build-failed-* dir before 2026-07-10
+  // has exactly this gap).
+  async function archiveFailedSources(paths) {
+    try {
+      const dir = path.join(ROOT, 'archive', signals.date, `build-failed-sources-${Date.now()}`)
+      let count = 0
+      for (const relPath of paths) {
+        const abs = path.join(ROOT, relPath)
+        if (!existsSync(abs)) continue
+        const dest = path.join(dir, relPath)
+        await mkdir(path.dirname(dest), { recursive: true })
+        await copyFile(abs, dest)
+        count++
+      }
+      if (count > 0) console.log(`  failing sources (${count} files) archived to ${path.basename(dir)}/`)
+    } catch (err) {
+      console.warn(`  failed-source archive failed (non-blocking): ${err.message}`)
     }
   }
 
@@ -1542,6 +1565,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       // If the retry agent itself crashed, don't silently continue to
       // validateBuild — bail out with the real error so debugging points
       // at the actual cause (code review #14).
+      await archiveFailedSources(writtenPaths)
       await cleanupOrphans(writtenPaths, originalBackup)
       await restore(originalBackup)
       throw new Error(`${agent} retry crashed: ${err.message}`)
@@ -1557,10 +1581,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     return archiveAndReturn(engineerResult, ' (retry)')
   }
 
-  // All retries exhausted — restore everything and throw
+  // All retries exhausted — snapshot the failing sources, then restore and throw
+  await archiveFailedSources(writtenPaths)
   await cleanupOrphans(writtenPaths, originalBackup)
   await restore(originalBackup)
-  throw new Error(`Build failed after retry. Error:\n${retryBuild.error?.slice(0, 1000)}`)
+  throw new Error(`Build failed after retry. Error:\n${retryBuild.error?.slice(0, 2500)}`)
 
   } catch (err) {
     swarmError = err

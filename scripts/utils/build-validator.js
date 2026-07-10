@@ -352,11 +352,11 @@ export function validateBuild() {
   if (!smokeCheck.success) {
     console.log('  build output smoke check failed')
     for (const e of smokeCheck.errors) console.log(`  ✗ ${e}`)
+    const combined = (result.stderr ?? '') + (result.stdout ?? '')
     // Build exited 0 but produced unusable output. Persist the full build log
     // too — a status-0-but-no-shell failure is otherwise invisible (the
     // non-zero path above is the only other place this gets written).
     try {
-      const combined = (result.stderr ?? '') + (result.stdout ?? '')
       const today = new Date().toISOString().slice(0, 10)
       const outputDir = resolve(ROOT, 'archive', today)
       mkdirSync(outputDir, { recursive: true })
@@ -365,7 +365,29 @@ export function validateBuild() {
     } catch (writeErr) {
       console.warn(`  could not write full build output: ${writeErr.message}`)
     }
-    return { success: false, error: 'Build output smoke check failed:\n' + smokeCheck.errors.map(e => `  - ${e}`).join('\n') }
+    // A status-0 build with missing shell output almost always means the
+    // prerender step crashed — i.e. the app COMPILED but threw when
+    // server-rendered (2026-07-10: "Unhandled rejection: Failed to fetch /:
+    // Internal Server Error"). The retry agent can only fix what it can see,
+    // so surface the runtime error lines and the log tail, not just the
+    // missing-file symptom.
+    const runtimeErrorLines = combined
+      .split('\n')
+      .filter(l => /unhandled rejection|internal server error|prerender.*(fail|error)|^\s*error/i.test(l))
+      .slice(-6)
+    const errorParts = [
+      'Build output smoke check failed:',
+      smokeCheck.errors.map(e => `  - ${e}`).join('\n'),
+    ]
+    if (runtimeErrorLines.length) {
+      errorParts.push(
+        '\nThe build COMPILED but the app crashed during prerender (server-side render). Runtime error lines from the build log:',
+        runtimeErrorLines.join('\n'),
+        '\nThis usually means SSR-unsafe code (window/document/localStorage accessed at module scope or unconditionally during render) in a route or component file — the server bundle loads EVERY route module, so one unsafe file breaks every page.',
+      )
+    }
+    errorParts.push('\n--- last 1500 chars of build output ---\n' + combined.slice(-1500))
+    return { success: false, error: errorParts.join('\n') }
   }
 
   console.log('  build succeeded')
