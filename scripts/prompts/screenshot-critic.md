@@ -109,6 +109,14 @@ Check:
 
 If yes to either: REVISE. Responsible agent: react-engineer.
 
+### 9. Brand Lockup Fidelity
+
+The shell declares a brand lockup (mark + wordmark variant). Compare the render's lockup against the mockup's:
+- **Is the circular brand mark present** wherever the mockup shows it (nav rail, header, footer)? A render that keeps the wordmark text but drops the mark is a failure — the mark is the fixed element of the brand contract (2026-07-10: shipped a spine with text-only lockup while the approved mockup showed mark + wordmark).
+- Does the lockup match the mockup's variant (stacked vs inline) and color mode?
+
+When this fails, owner is **react-engineer**.
+
 ### Mockup fidelity (replaces taste judgment)
 
 The user prompt includes the approved mockup screenshot alongside the
