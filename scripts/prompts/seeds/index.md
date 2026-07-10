@@ -37,3 +37,12 @@ Tight vertical rhythm — rows are 32–40px tall. Horizontal columns aligned to
 ## Mobile strategy
 
 Table rows collapse to stacked cards at ≤ 768px. Year / role / description become inline labels within each card, not adjacent columns. The overall "index" character is preserved by keeping consistent row rhythm and visible row numbers or bullets.
+
+## This is one lane
+
+This seed describes ONE strong execution of this archetype — the default
+lane, not the only one. If today's signals and brief call for a radically
+different take (different palette family, inverted ground, another emotional
+register), take it: justify the deviation in your rationale and execute it
+with the same precision this seed demands. The anti-patterns above still
+apply; the specific colors, faces, and measurements do not bind you.

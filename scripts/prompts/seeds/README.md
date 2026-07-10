@@ -1,6 +1,6 @@
 # Archetype Seeds
 
-Concrete anchor references for the unified-designer prompt. Each file is a short, opinionated reframing of a real-world design system the archetype name is meant to evoke. The pipeline injects one seed per build, matched to the archetype the Design Director chose that day, replacing the `<!-- SEED_ANCHOR -->` marker in `unified-designer.md`.
+Concrete anchor references for the mockup-designer prompt. Each file is a short, opinionated reframing of a real-world design system the archetype name is meant to evoke. The pipeline injects one seed per build, matched to the archetype the Design Director chose that day, replacing the `<!-- SEED_ANCHOR -->` marker in `mockup-designer.md`.
 
 Seeds are **anchors, not templates**. The designer borrows rigor, restraint, and character — it does not copy tokens, fonts, or layouts verbatim. Today's signals and brief always override the seed where they conflict.
 

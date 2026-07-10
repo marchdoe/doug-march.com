@@ -37,3 +37,12 @@ Sections are 100vh or taller. Internal padding is generous: 80–160px vertical,
 ## Mobile strategy
 
 Already fluid by nature. Ensure signal marginalia (weather, scores, quotes) collapses to **inline** captions or small-caps labels, not floating pull-quotes. Don't place marginalia in the margin at 360px — there is no margin. Tuck them between content beats instead.
+
+## This is one lane
+
+This seed describes ONE strong execution of this archetype — the default
+lane, not the only one. If today's signals and brief call for a radically
+different take (different palette family, inverted ground, another emotional
+register), take it: justify the deviation in your rationale and execute it
+with the same precision this seed demands. The anti-patterns above still
+apply; the specific colors, faces, and measurements do not bind you.

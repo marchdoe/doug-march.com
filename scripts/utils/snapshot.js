@@ -173,8 +173,13 @@ export async function captureSnapshot(date, buildId) {
  * Capture a PNG screenshot of the rendered homepage.
  * Spins up a Vite preview server and uses Playwright to render and screenshot.
  *
+ * Returns both encodings from one render: PNG for archive/public artifacts,
+ * JPEG (q70) for critic prompts. Gradient-heavy designs produce ~900KB PNGs;
+ * two of those base64'd made a 1.6MB critic prompt that the model answered
+ * with 0 bytes (2026-07-10 run 2). The JPEG is typically 5-10x smaller.
+ *
  * @param {number} [port] - Optional port if server is already running
- * @returns {Promise<Buffer>} PNG image buffer
+ * @returns {Promise<{png: Buffer, jpeg: Buffer}>} image buffers
  */
 export async function captureScreenshot(port) {
   const { chromium } = await import('playwright')
@@ -214,10 +219,116 @@ export async function captureScreenshot(port) {
       waitUntil: 'networkidle',
     })
     await page.waitForTimeout(1000) // wait for fonts
-    const screenshot = await page.screenshot({ type: 'png', fullPage: false })
+    const png = await page.screenshot({ type: 'png', fullPage: false })
+    const jpeg = await page.screenshot({ type: 'jpeg', quality: 70, fullPage: false })
+
+    // Second capture with the OPPOSITE color scheme. The theme init script
+    // follows prefers-color-scheme, so a headless capture only ever showed
+    // the light variant — on days where the AD's canonical field is dark
+    // (2026-07-10 run 2: "teal glowing out of near-black"), the critic was
+    // judging a mode nobody art-directed. colorScheme must be set at page
+    // creation, before the init script reads matchMedia.
+    const darkPage = await browser.newPage({
+      viewport: { width: 1280, height: 900 },
+      colorScheme: 'dark',
+    })
+    await darkPage.goto(`http://localhost:${serverPort}/`, { waitUntil: 'networkidle' })
+    await darkPage.waitForTimeout(1000)
+    const darkPng = await darkPage.screenshot({ type: 'png', fullPage: false })
+    const darkJpeg = await darkPage.screenshot({ type: 'jpeg', quality: 70, fullPage: false })
+
     await browser.close()
-    return screenshot
+    return { png, jpeg, darkPng, darkJpeg }
   } finally {
+    if (server) server.kill()
+  }
+}
+
+/**
+ * Screenshot a local self-contained HTML file (the Mockup Designer's
+ * mockup.html) without any server. External font links still load over
+ * the network.
+ *
+ * @param {string} filePath - absolute path to the HTML file
+ * @param {{ width?: number, height?: number }} [opts]
+ * @returns {Promise<{png: Buffer, jpeg: Buffer}>} image buffers — PNG for
+ *   archives, JPEG (q70) for critic prompts (see captureScreenshot)
+ */
+export async function captureHtmlFileScreenshot(filePath, { width = 1440, height = 900 } = {}) {
+  const { chromium } = await import('playwright')
+  const browser = await chromium.launch({ headless: true })
+  try {
+    const page = await browser.newPage({ viewport: { width, height } })
+    await page.goto(`file://${filePath}`, { waitUntil: 'networkidle' })
+    await page.waitForTimeout(1000) // fonts
+    const png = await page.screenshot({ type: 'png', fullPage: false })
+    const jpeg = await page.screenshot({ type: 'jpeg', quality: 70, fullPage: false })
+    return { png, jpeg }
+  } finally {
+    await browser.close()
+  }
+}
+
+/**
+ * Capture a PNG screenshot of an arbitrary route on the built site.
+ *
+ * Spins up a Vite preview server (unless a port is supplied), renders the
+ * route at the given viewport, and screenshots it. Used to capture the
+ * runtime-generated /og card at the canonical 1200x630 OG dimensions.
+ *
+ * @param {string} route - route path, e.g. "/og"
+ * @param {{ port?: number, width?: number, height?: number }} [opts]
+ * @returns {Promise<Buffer>} PNG image buffer
+ */
+export async function captureRouteScreenshot(route, { port, width = 1200, height = 630 } = {}) {
+  const { chromium } = await import('playwright')
+
+  let server = null
+  let serverPort = port
+
+  if (!serverPort) {
+    serverPort = 14000 + Math.floor(Math.random() * 1000)
+    server = spawn('npx', ['vite', 'preview', '--port', String(serverPort)], {
+      cwd: ROOT,
+      stdio: 'pipe',
+    })
+
+    await new Promise((resolve, reject) => {
+      const timeout = setTimeout(
+        () => reject(new Error('Preview server timeout')),
+        15000
+      )
+      server.stdout.on('data', (chunk) => {
+        if (chunk.toString().includes('Local:')) {
+          clearTimeout(timeout)
+          resolve()
+        }
+      })
+      server.on('error', (err) => {
+        clearTimeout(timeout)
+        reject(err)
+      })
+    })
+  }
+
+  let browser = null
+  try {
+    browser = await chromium.launch({ headless: true })
+    const page = await browser.newPage({ viewport: { width, height } })
+    const response = await page.goto(`http://localhost:${serverPort}${route}`, {
+      waitUntil: 'networkidle',
+    })
+    // Guard against capturing a 404 page. /og is unlinked, so it is never
+    // prerendered or build-validated — if the engineer omitted og.tsx, the
+    // route serves the notFound component. Throwing here lets the caller's
+    // best-effort catch skip writing a broken share card.
+    if (response && !response.ok()) {
+      throw new Error(`route ${route} returned HTTP ${response.status()}`)
+    }
+    await page.waitForTimeout(1000) // wait for fonts
+    return await page.screenshot({ type: 'png', fullPage: false })
+  } finally {
+    if (browser) await browser.close()
     if (server) server.kill()
   }
 }

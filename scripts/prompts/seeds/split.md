@@ -36,3 +36,12 @@ Two halves in tension. One side is bold, saturated, gradient-lit — the other i
 ## Mobile strategy
 
 Two halves become two stacked sections on mobile. The divider becomes a horizontal rule (or negative space between sections). Asymmetry carries via aspect-ratio difference — the dominant half gets more vertical space. Avoid flipping which half dominates between viewports.
+
+## This is one lane
+
+This seed describes ONE strong execution of this archetype — the default
+lane, not the only one. If today's signals and brief call for a radically
+different take (different palette family, inverted ground, another emotional
+register), take it: justify the deviation in your rationale and execute it
+with the same precision this seed demands. The anti-patterns above still
+apply; the specific colors, faces, and measurements do not bind you.

@@ -25,6 +25,7 @@ export const MUTABLE_FILES = [
   'app/routes/index.tsx',
   'app/routes/about.tsx',
   'app/routes/work.$slug.tsx',
+  'app/routes/og.tsx',
   'elements/chassis-preset.ts',
 ]
 
@@ -50,6 +51,7 @@ export const LAYOUT_FILES = [
   'app/routes/index.tsx',
   'app/routes/about.tsx',
   'app/routes/work.$slug.tsx',
+  'app/routes/og.tsx',
 ]
 
 /** Files owned by the Sidebar Designer agent. */

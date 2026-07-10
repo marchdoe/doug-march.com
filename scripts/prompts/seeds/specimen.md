@@ -36,3 +36,12 @@ Spacing scale on a 4px grid (4, 8, 16, 24, 48, 96). Hero sections are type-only 
 ## Mobile strategy
 
 Specimen fills the full viewport width on mobile; the label block (metadata, callouts, signals) stacks **below** the specimen, not beside. Hero type uses `font-size: clamp(3rem, 14vw, 11.25rem)` so the specimen-scale character survives shrinking without overflow. The specimen element itself should be ≥ 60% of viewport height on mobile — don't let it collapse into something indistinguishable from normal body content.
+
+## This is one lane
+
+This seed describes ONE strong execution of this archetype — the default
+lane, not the only one. If today's signals and brief call for a radically
+different take (different palette family, inverted ground, another emotional
+register), take it: justify the deviation in your rationale and execute it
+with the same precision this seed demands. The anti-patterns above still
+apply; the specific colors, faces, and measurements do not bind you.

@@ -12,7 +12,7 @@
  */
 
 import { readFile, writeFile } from 'fs/promises'
-import { existsSync } from 'fs'
+import { existsSync, statSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import yaml from 'js-yaml'
@@ -44,7 +44,11 @@ function scoreReference(ref, briefLower) {
   return score
 }
 
-function selectCuratedReferences(references, briefText) {
+export function selectCuratedReferences(references, briefText) {
+  // No fresh brief (the normal case — the Art Director ingests raw signals
+  // directly and writes the brief AFTER deciding): hand over the whole
+  // library and let the AD select what serves today's direction.
+  if (!briefText) return references.slice(0, 12)
   const briefLower = briefText.toLowerCase()
   const scored = references
     .map((ref) => ({ ...ref, score: scoreReference(ref, briefLower) }))
@@ -58,15 +62,21 @@ function selectCuratedReferences(references, briefText) {
 
 function formatCuratedSection(refs) {
   if (!refs.length) return ''
-  const lines = ['## Curated References', '']
+  const scored = refs.some((ref) => ref.score !== undefined)
+  const lines = [
+    '## Curated References',
+    '',
+    ...(scored
+      ? []
+      : ['> Full library — select the 2-3 references that best serve today\'s direction; ignore the rest.', '']),
+  ]
   for (const ref of refs) {
     const tags = ref.tags ?? {}
     const tagStr = [tags.composition, tags.mood, tags.density].filter(Boolean).join(' / ')
     lines.push(`### ${ref.description ?? ref.file}`)
     if (ref.url) lines.push(`- **Source**: ${ref.url}`)
-    if (ref.file) lines.push(`- **File**: \`references/${ref.file}\``)
     lines.push(`- **Tags**: ${tagStr}`)
-    lines.push(`- **Match score**: ${ref.score}`)
+    if (ref.score !== undefined) lines.push(`- **Match score**: ${ref.score}`)
     lines.push('')
   }
   return lines.join('\n')
@@ -163,13 +173,20 @@ if (process.argv[1] && process.argv[1].endsWith('collect-references.js')) {
   const briefFlag = process.argv.indexOf('--brief')
   const briefPath = briefFlag !== -1 ? process.argv[briefFlag + 1] : BRIEF_PATH
 
-  if (!existsSync(briefPath)) {
-    console.error(`Brief not found: ${briefPath}`)
-    process.exit(1)
+  // The interpret-signals stage that wrote today.brief.md was removed
+  // (2026-04-29) — the file on disk is a stale leftover from an old run.
+  // Only score against it when it was actually written today (an explicit
+  // --brief path is always trusted); otherwise pass the full library through.
+  let briefText = null
+  if (existsSync(briefPath)) {
+    const writtenToday =
+      briefFlag !== -1 ||
+      statSync(briefPath).mtime.toISOString().slice(0, 10) === new Date().toISOString().slice(0, 10)
+    if (writtenToday) briefText = await readFile(briefPath, 'utf8')
+    else console.log(`  [curated] brief is stale (${briefPath}) — passing full library`)
   }
 
   console.log('Collecting design references...')
-  const briefText = await readFile(briefPath, 'utf8')
   const output = await collectReferences(briefText)
 
   if (!output) {
