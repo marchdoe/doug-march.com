@@ -1507,7 +1507,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // with today's preset.ts.
     const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])
     await runScreenshotCriticGate(passingBackup)
-    return archiveAndReturn(engineerResult)
+    // MUST await: a bare `return promise` inside this try/finally lets the
+    // finally (saveTrace) run while archiveAndReturn is still archiving —
+    // archiveRan is still false, so a successful run writes a phantom
+    // build-failed-* trace dir (observed 2026-07-10).
+    return await archiveAndReturn(engineerResult)
   }
 
   // -----------------------------------------------------------------------
@@ -1578,7 +1582,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     console.log('\n=== Retry build passed! ===')
     const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])
     await runScreenshotCriticGate(passingBackup)
-    return archiveAndReturn(engineerResult, ' (retry)')
+    return await archiveAndReturn(engineerResult, ' (retry)') // await required — see first-pass call site
   }
 
   // All retries exhausted — snapshot the failing sources, then restore and throw
