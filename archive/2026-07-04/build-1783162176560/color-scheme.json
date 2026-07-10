@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 200,
+    "s": 78,
+    "l": 44,
+    "name": "summer aqua"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "aqua-blue",
+    "name": "night sea"
+  },
+  "mood_word": "luminous",
+  "color_story": "The deep July night sky an hour before fireworks begin — saturated aqua starlight against near-void navy, the exact color of the Independence Day atmosphere this phrase inhabits."
+}

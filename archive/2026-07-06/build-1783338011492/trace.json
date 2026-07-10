@@ -1,0 +1,271 @@
+{
+  "date": "2026-07-06",
+  "startedAt": "2026-07-06T11:32:28.652Z",
+  "completedAt": "2026-07-06T11:40:13.205Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 13
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Dorot - The Jewish Timeline",
+              "description": "Dorot is an interactive visual and educational tool that brings to life 4,000 years of Jewish civilization - its history, creativity, and cultural diversity.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4a51ba9dae3158682251.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAQ8HtJREFUeAHs/duyNbtyJoYBqLH+tTZ7k2x2U1a3o6Voy6Fw+NJ+O9/5HfxwtkLWlaIlBdVNstmb5N5rjVHQrAOqCl8CSGQBqMOY4yP3+ueoQuGYSCSAPOj/z//7/2XVF7TW...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Mr Day",
+              "description": "Honoring a 40-year legacy, mrday.it merges a fully modular architecture with high-energy gaming culture. Dynamic UI animations and live contests turn...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3a42cfe3441238181530.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAWHDhJREFUeAHsnQeAZWV5/p9zzm1zp26vFCmygBhFQU2sgIoVsCQmUkTzV0Fji1FAE40NMWqiIrYoCmrsgNHYAEURFSxggaW37X36ref83/f9vnPnzuzM7uzM7E57fnD23jn3...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Nosam Chronicles",
+              "description": "A beautifully crafted fantasy website that expands the world of Aegiron beyond the page, combining narrative, world-building, and immersive digital design.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3014fd53485939133056.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAAAXNSR0IArs4c6QAAAIRlWElmTU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABIAAAAAQAAAEgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAABkCgAwAEAAAAAQAABLAAAAAAaLKBfQAAAAlwSFlzAAALEwAACxMBAJqc...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Monday",
+          "is_weekend": false,
+          "day_index": 1
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/asgeirtj",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "addyosmani/agent-skills/stargazers",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "sponsors/Zackriya-Solutions",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "ruvnet/RuView/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "sponsors/Leonxlnx",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "John Deere Classic",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Chris Gotterup",
+              "position": "1",
+              "score": "-20"
+            },
+            {
+              "name": "Max Homa",
+              "position": "2",
+              "score": "-19"
+            },
+            {
+              "name": "Ben Kohles",
+              "position": "3",
+              "score": "-18"
+            },
+            {
+              "name": "Lee Hodges",
+              "position": "4",
+              "score": "-18"
+            },
+            {
+              "name": "Lucas Glover",
+              "position": "5",
+              "score": "-18"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Real-time map of Great Britain's rail network",
+              "url": "https://www.map.signalbox.io",
+              "score": 107,
+              "by": "scrlk"
+            },
+            {
+              "title": "GPT-5.6 Sol Ultra will be in Codex",
+              "url": "https://twitter.com/thsottiaux/status/2073933490513752151",
+              "score": 309,
+              "by": "mfiguiere"
+            },
+            {
+              "title": "Has_not_been_viewed_much",
+              "url": "https://iamwillwang.com/notes/has-not-been-viewed-much/",
+              "score": 337,
+              "by": "wxw"
+            },
+            {
+              "title": "Organic Maps",
+              "url": "https://organicmaps.app/",
+              "score": 1037,
+              "by": "tosh"
+            },
+            {
+              "title": "Introduction to Genomics for Engineers",
+              "url": "https://learngenomics.dev/docs/biological-foundations/cells-genomes-dna-chromosomes/",
+              "score": 46,
+              "by": "yreg"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "last quarter",
+          "illumination": 0.518,
+          "days_into_cycle": 21.98
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "My Morning Jacket",
+            "Tobin Sprout"
+          ]
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 6,
+          "day_of_year": 187,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-07-05T19:30Z",
+              "result": "win",
+              "score": "6-3"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:55",
+          "sunset": "19:34",
+          "daylight_hours": 14.6
+        },
+        "date": "2026-07-06"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-06T11:32:44.081Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-05: Split\n  - 2026-07-04: Gallery Wall\n  - 2026-07-03: Specimen\n  - 2026-07-02: Broadsheet\n  - 2026-07-01: Poster\n  - 2026-06-30: Stack\n  - 2026-06-29: Split\n\n**Recently used** (last 3 days): Split, Gallery Wall, Specimen\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief"
+      },
+      "output": {
+        "hero_copy": "Guided by voices.",
+        "archetype": "Scroll",
+        "chassisId": "bricolage-manrope",
+        "specLength": 6123,
+        "specPreview": "### 1. Color Specification\n\n**Primary hue:** H:28° (amber-orange). This is the sole mandate corridor (5°–42°) and it is precisely correct: concert poster amber, July heat at hour 14 of sunlight, the color of incandescence. Not decorative warmth — structural warmth.\n\n**Neutral palette (amber-tinted stone):**\n- 50: `#FAF5EE`\n- 100: `#F0E8D8`\n- 200: `#DED0B8`\n- 300: `#BCA882`\n- 400: `#93785A`\n- 500: `#6C5135`\n- 600: `#4A3320`\n- 700: `#2E1D0E`\n- 800: `#1C1008`\n- 900: `#100904`\n- 950: `#090503`\n\n**Ac",
+        "selfCheck": "1. Hero quotability: Yes — \"Guided by voices.\" functions as both a band name from today's music signal and a three-word creative philosophy; it stands alone as a poster, earns a screenshot without context, and doubles as the site's own daily methodology.\n2. Because-of chain: Yes — phrase is ambient/"
+      },
+      "durationMs": 294334,
+      "timestamp": "2026-07-06T11:37:38.419Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 6123
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 29767,
+      "timestamp": "2026-07-06T11:38:09.708Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 5245,
+        "briefLength": 9107
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 99017,
+      "timestamp": "2026-07-06T11:39:48.727Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-06T11:39:56.094Z"
+    }
+  ]
+}

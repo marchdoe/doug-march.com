@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 335,
+    "s": 100,
+    "l": 57,
+    "name": "forensic rose"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "rose-purple",
+    "name": "void neutral"
+  },
+  "mood_word": "exposed",
+  "color_story": "Hot magenta at H:335° is the color of highlighter pen on a classified document — the exact forensic register of something hidden being made visible; against near-void dark, it glows like an evidence lamp."
+}

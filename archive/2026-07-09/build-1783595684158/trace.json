@@ -1,0 +1,274 @@
+{
+  "date": "2026-07-09",
+  "startedAt": "2026-07-09T11:06:40.719Z",
+  "completedAt": "2026-07-09T11:14:45.869Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Spin the Wheel",
+              "description": "SpinTheWheel.io lets anyone create, customise and share interactive spinning wheels for random choices, competitions and events. Ideal for teaching and...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3911ca65eb6086956411.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAKr2lDQ1BJQ0MgUHJvZmlsZQAASImVlwdUk9kSgO//pzdaINIJvUlvAaSEHor0KiohCRBKiIEgYgNkcQXWgooIqAu6KKDgqhRZCyKKbRFQ7LogoqCuiwUbKu8HDsHdd9575805k/kymTsz9557z5kAQKGzhcJUWAaANEGmKMTbjR4VHUPHPQdYQAU0QAJ2bE6GkBkU5A8QmbN/l/e3ADRtb5hM5/r33/+ryHJ5GRwA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Cloudstudio this site is awake",
+              "description": "An AI studio whose site is itself the demo: eight living particle drivers tour, narrate and re-theme the whole page, then dare you to beat them at their...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4bad57d1887955097327.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAQAElEQVR4nOz9B3xj6X0f/J5+cNB7Ze/kzHB62Zkts71o1SXLcizLNXFN3pvEeZ37Jrnpju34tR3bcYss27J6l1arXa22l+m9sfeO3oFT7/+Aq9nZKSRAgiRI/r8faAVyABA4wHnwPL+nMVrmDwmEEKphb50Y+8DHPw9X2rsf+L/+v88TCCFUw57/9n//wbd+F6783D//7c/81m8TCCFUw/71z3700qm34crP/+Xz...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Dorot - The Jewish Timeline",
+              "description": "Dorot is an interactive visual and educational tool that brings to life 4,000 years of Jewish civilization - its history, creativity, and cultural diversity.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4a51ba9dae3158682251.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAQ8HtJREFUeAHs/duyNbtyJoYBqLH+tTZ7k2x2U1a3o6Voy6Fw+NJ+O9/5HfxwtkLWlaIlBdVNstmb5N5rjVHQrAOqCl8CSGQBqMOY4yP3+ueoQuGYSCSAPOj/z//7/2XVF7TW...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Thursday",
+          "is_weekend": false,
+          "day_index": 4
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "MadsLorentzen/ai-job-search/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "SmartlyDressedGames/U3-SDK/stargazers",
+              "description": "",
+              "language": "C#",
+              "stars": null
+            },
+            {
+              "name": "addyosmani/agent-skills/stargazers",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/VoltAgent",
+              "description": "",
+              "language": null,
+              "stars": null
+            },
+            {
+              "name": "iOfficeAI/OfficeCLI/stargazers",
+              "description": "",
+              "language": "C#",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Genesis Scottish Open",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Bernd Wiesberger",
+              "position": "1",
+              "score": "-6"
+            },
+            {
+              "name": "Tom Kim",
+              "position": "2",
+              "score": "-5"
+            },
+            {
+              "name": "Min Woo Lee",
+              "position": "3",
+              "score": "-5"
+            },
+            {
+              "name": "Patrick Cantlay",
+              "position": "4",
+              "score": "-5"
+            },
+            {
+              "name": "Matt McCarty",
+              "position": "5",
+              "score": "-4"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "John Deere owners will get the right to repair equipment under FTC settlement",
+              "url": "https://apnews.com/article/john-deere-right-to-repair-agriculture-equipment-cb7514ffedb95c130a976af661f2bc02",
+              "score": 886,
+              "by": "djoldman"
+            },
+            {
+              "title": "Spider venom kills varroa mites without harming honeybees",
+              "url": "https://connectsci.au/news/news-parent/9703/Spider-venom-kills-varroa-mites-without-harming",
+              "score": 144,
+              "by": "Jedd"
+            },
+            {
+              "title": "Meta reuses old RAM in new servers with custom bridge chip",
+              "url": "https://www.networkworld.com/article/4192827/meta-reuses-old-ram-in-new-servers-with-custom-bridge-chip.html",
+              "score": 55,
+              "by": "ihsw"
+            },
+            {
+              "title": "Why developers are ditching GitHub for Codeberg and self-hosting alternatives",
+              "url": "https://www.howtogeek.com/why-developers-are-ditching-github-for-codeberg-and-self-hosting-alternatives/",
+              "score": 148,
+              "by": "Gedxx"
+            },
+            {
+              "title": "My Thoughts on the Bun Rust Rewrite",
+              "url": "https://andrewkelley.me/post/my-thoughts-bun-rust-rewrite.html",
+              "score": 64,
+              "by": "kristoff_it"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waning crescent",
+          "illumination": 0.218,
+          "days_into_cycle": 24.96
+        },
+        "music": {
+          "bands": [
+            "Wet Leg",
+            "The War on Drugs"
+          ]
+        },
+        "quote": {
+          "text": "Do not be so open-minded that your brains fall out.",
+          "author": "Gilbert Chesterton"
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 9,
+          "day_of_year": 190,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-07-08T22:40Z",
+              "result": "win",
+              "score": "6-1"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:57",
+          "sunset": "19:33",
+          "daylight_hours": 14.6
+        },
+        "date": "2026-07-09"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-09T11:06:55.818Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-08: Broadsheet\n  - 2026-07-07: Stack\n  - 2026-07-06: Scroll\n  - 2026-07-05: Split\n  - 2026-07-04: Gallery Wall\n  - 2026-07-03: Specimen\n  - 2026-07-02: Broadsheet\n\n**Recently used** (last 3 days): Broadsheet, Stack, Scroll\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brie"
+      },
+      "output": {
+        "hero_copy": "Do not be so open-minded that your brains fall out.",
+        "archetype": "Poster",
+        "chassisId": "big-shoulders-atkinson",
+        "specLength": 5505,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue:** H:330° (hot rose-magenta). Only open corridor after mandate exclusions (315°–358°). Rose-magenta is precisely the register for Chesterton's wit-as-warning: provocative, pointed, slightly dangerous.\n- **Neutral palette (void-rose, H:330° tinted):**\n  - 50: #FEF3F8 | 100: #FAEAF4 | 200: #F0CAE0 | 300: #D4A0BB | 400: #A8728F | 500: #7D4A68 | 600: #572D4A | 700: #38172E | 800: #220B1B | 900: #130009\n- **Accent color (hot magenta, H:330°, full saturation",
+        "selfCheck": "1. Hero quotability: Yes — \"Do not be so open-minded that your brains fall out.\" ends in a visceral punchline; it is screenshot-and-post material from Gilbert Chesterton, not a description of the page.\n2. Because-of chain: Yes — the phrase demanded a Poster (phrase IS the design), which required a 1"
+      },
+      "durationMs": 361165,
+      "timestamp": "2026-07-09T11:12:56.987Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5505
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 23522,
+      "timestamp": "2026-07-09T11:13:22.073Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4562,
+        "briefLength": 8124
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 59228,
+      "timestamp": "2026-07-09T11:14:21.303Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-09T11:14:28.760Z"
+    }
+  ]
+}

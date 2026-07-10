@@ -16,11 +16,11 @@ All three creative agents (interpret-signals, token-designer, unified-designer) 
 
 ---
 
-### 2. Split unified designer into Designer + React Engineer ✅ spec ready
+### 2. Split unified designer into Designer + React Engineer ✅ done
 
-→ [`docs/specs/02-designer-engineer-split.md`](./docs/specs/02-designer-engineer-split.md)
+→ [`docs/specs/02-designer-engineer-split.md`](./docs/specs/02-designer-engineer-split.md) (superseded — see feat/design-quality-pipeline)
 
-Mockup designer (Opus 4.7) → mockup-critic → React engineer (Sonnet 4.6). Standalone HTML/CSS mockup is naturally archive-friendly. Hard replace; cleans up orphan prompts from the previous component-level split.
+Implemented in feat/design-quality-pipeline: mockup-designer, mockup-critic, react-engineer agents wired through design-agents.js. Orphan prompts removed.
 
 ---
 
@@ -42,21 +42,26 @@ Skeleton rows on the index page, skeleton sections on the detail page. Plain CSS
 
 ---
 
-### 5. Archive visual redesign + mark-as-reference (owner-only) ✅ spec ready
+### 5. Archive section complete redesign ❓ needs new spec (supersedes old spec 05)
 
-→ [`docs/specs/05-archive-visual-redesign.md`](./docs/specs/05-archive-visual-redesign.md)
+→ old spec: [`docs/specs/05-archive-visual-redesign.md`](./docs/specs/05-archive-visual-redesign.md) (scope expanded 2026-06-11)
 
-Visual upgrade only — archive keeps its fixed identity, doesn't participate in the daily redesign. Index rows get thumbnail + text layout; detail page leads with hero screenshot. Brings back "Mark as reference" UI from commit `d91b3e1`, dev-mode-gated like the existing dev panel.
+Owner direction (2026-06-11): main structure is correct (archive section + access to historical designs stays), but the **index page content organization and the overall user experience need a full rethink** — not just the visual upgrade the old spec described. Known inputs for the new spec:
+
+- Index is currently a flat text list (archetype + truncated brief + date) — no visual representation of what are fundamentally *visual* artifacts, no grouping/browsing affordances, and the list grows unbounded (~80 entries and counting).
+- **Blocker to fix first: per-date screenshots have never existed in production.** `archiver.js` only captures `screenshot.png` when a dev server is on port 5173 (never true in CI), so `public/archive/{date}.png` is empty for every date and `hasScreenshot` is always false. The screenshot-critic already captures a PNG buffer in CI — persist it to the build dir so the archiver can publish it.
+- Old spec's still-valid pieces to carry forward: thumbnail+text rows, detail page leads with the screenshot, mark-as-reference (owner-only), fixed archive identity.
+- Consider: the archive as the *rating/curation surface* — the pipeline's ratings + reference channels are currently unfed (last rating 2026-03-26, references/index.yml empty), partly because there's no comfortable place to review designs visually.
 
 ---
 
 ## Pipeline polish
 
-### 6. Pipeline variance (instrumentation + soft guidance) ✅ spec ready
+### 6. Pipeline variance (instrumentation + soft guidance) 🟡 partial
 
 → [`docs/specs/06-pipeline-variance.md`](./docs/specs/06-pipeline-variance.md)
 
-Extends the existing `color-mandate.js` pattern with parallel utilities for archetype and chassis variance. Adds a `/dev/variance` dashboard mirroring the existing `/dev/responsive`. Soft guidance only — never blocks the model from picking what fits. "Fit > novelty" is the guiding principle, repeated in every variance prompt section.
+Shell/archetype variance shipped as `scripts/utils/shell-mandate.js` (feat/design-quality-pipeline, 2026-06). The `/dev/variance` dashboard remains unimplemented and parked.
 
 ---
 
@@ -88,6 +93,7 @@ Add `pnpm.overrides` entry pinning `follow-redirects` to `^1.16.0`. Verify with 
 
 ## Done (recent)
 
+- [x] Design-quality pipeline — mockup designer/critic/engineer split, shell mandate, GitHub-issue ratings, OG images (feat/design-quality-pipeline)
 - [x] Responsive design pipeline (PR #49, 2026-04-20)
 - [x] Interpret-signals false-positive in API mode (PR #55, 2026-04-26)
 - [x] CI security hardening (PR #41)

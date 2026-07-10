@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 72,
+    "s": 100,
+    "l": 41,
+    "name": "acid chartreuse"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "chartreuse",
+    "name": "void-moss"
+  },
+  "mood_word": "hazard",
+  "color_story": "Acid chartreuse on near-void dark is the color of a terminal printing a warning it was never supposed to print — the exact register of Google shipping the malware."
+}

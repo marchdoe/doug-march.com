@@ -79,7 +79,7 @@ The chosen archetype's density floor must be visible in the render:
 
 A desktop render where active content occupies less than ~70% of the viewport width is an under-execution unless the empty space is *active* (drenched color field, atmospheric gradient, hero motion). A field of plain background color with no role is dead canvas.
 
-Failures: A 40%-wide column of body text on the left half of the page with a 60% empty cream rail on the right. Specimen archetype but headline rendered at body-article scale. Index archetype but only one list, narrow, in a single column. When this fails, owner is **unified-designer**.
+Failures: A 40%-wide column of body text on the left half of the page with a 60% empty cream rail on the right. Specimen archetype but headline rendered at body-article scale. Index archetype but only one list, narrow, in a single column. When this fails, owner is **react-engineer**.
 
 ### 7. Hero Phrase Execution
 
@@ -95,7 +95,7 @@ Failures:
 - The hero phrase appears, but only inside the sidebar.
 - The hero phrase is missing entirely from the rendered HTML.
 
-When this fails, owner is **unified-designer**.
+When this fails, owner is **react-engineer**.
 
 ### 8. Archetype Purity (Specimen / Poster days only)
 
@@ -107,17 +107,45 @@ Check:
 - Are any project cards, project titles, or a "Selected Work" / "Experiments" section visible on the home page?
 - Is any content other than the hero phrase, navigation, and optional signal annotation visible?
 
-If yes to either: REVISE. Responsible agent: unified-designer.
+If yes to either: REVISE. Responsible agent: react-engineer.
+
+### 9. Brand Lockup Fidelity
+
+The shell declares a brand lockup (mark + wordmark variant). Compare the render's lockup against the mockup's:
+- **Is the circular brand mark present** wherever the mockup shows it (nav rail, header, footer)? A render that keeps the wordmark text but drops the mark is a failure — the mark is the fixed element of the brand contract (2026-07-10: shipped a spine with text-only lockup while the approved mockup showed mark + wordmark).
+- Does the lockup match the mockup's variant (stacked vs inline) and color mode?
+
+When this fails, owner is **react-engineer**.
+
+### Mockup fidelity (replaces taste judgment)
+
+The user prompt includes the approved mockup screenshot alongside the
+rendered-page screenshot. The design was already approved at the mockup
+gate — your question is mechanical: does the built page match the mockup?
+Compare composition, hero scale, color application, shell. Divergence →
+REVISE with **Responsible agent:** react-engineer and a specific list of
+what diverged.
+
+**Two color schemes.** You receive the rendered homepage in BOTH the light
+and dark scheme. The design has ONE canonical mode — the one the mockup
+shows. Judge fidelity against whichever scheme matches the mockup's field.
+The other scheme is an adaptation: it must remain a coherent, committed
+version of the same design — same compositional structure, same drench
+commitment (a dark drench adapts to a light drench, not to a washed-out
+near-white page), same typographic treatment. REVISE if NEITHER scheme
+matches the mockup, or if the adaptation abandons the design (2026-07-10:
+a near-black teal mockup shipped with a pale washed-out light mode that
+every first-time visitor saw).
 
 ## Verdict Rules
 
-**SHIP** if: All applicable areas are acceptable — seven standard areas, plus Section 8 if the archetype is Specimen or Poster. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
+**SHIP** if: All applicable areas are acceptable — the seven standard areas plus mockup fidelity, plus Section 8 if the archetype is Specimen or Poster. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
 
 **REVISE** if: One or more areas have a clear, specific failure that meaningfully degrades the experience or contradicts the spec. Identify exactly what is wrong and who is responsible.
 
 ### Responsible Agents
 
-All revisions go to **unified-designer**. It owns the entire rendered output: color, fonts, layout structure, nav placement, component styling, hero phrase execution, and archetype purity.
+All revisions go to **react-engineer**. It owns the entire rendered output: color, fonts, layout structure, nav placement, component styling, hero phrase execution, and archetype purity.
 
 ## Feedback Quality Standard
 

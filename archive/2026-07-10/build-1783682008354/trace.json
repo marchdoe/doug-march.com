@@ -1,0 +1,274 @@
+{
+  "date": "2026-07-10",
+  "startedAt": "2026-07-10T11:01:32.076Z",
+  "completedAt": "2026-07-10T11:13:29.727Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "21 Hrs On The Moon",
+              "description": "To mark the recent Artemis Moon Mission and honour the legacy of the first moon landing in 1969, we celebrate the experiments carried out in those historic...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0d7b8f419a3938435907.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAJulBJREFUeAHsvWmbXLeRJooqFjeRlERJFLVbsiTbsiXb8riX6Z62u9sz88ydb/f7PM/9MH9k/tD8gZ7rp6/b7rblRbJky63d2khKFPedrO0mTtUposBAIFbgJJmvVMzMk0BE...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Spin the Wheel",
+              "description": "SpinTheWheel.io lets anyone create, customise and share interactive spinning wheels for random choices, competitions and events. Ideal for teaching and...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3911ca65eb6086956411.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAKr2lDQ1BJQ0MgUHJvZmlsZQAASImVlwdUk9kSgO//pzdaINIJvUlvAaSEHor0KiohCRBKiIEgYgNkcQXWgooIqAu6KKDgqhRZCyKKbRFQ7LogoqCuiwUbKu8HDsHdd9575805k/kymTsz9557z5kAQKGzhcJUWAaANEGmKMTbjR4VHUPHPQdYQAU0QAJ2bE6GkBkU5A8QmbN/l/e3ADRtb5hM5/r33/+ryHJ5GRwA...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "Cloudstudio this site is awake",
+              "description": "An AI studio whose site is itself the demo: eight living particle drivers tour, narrate and re-theme the whole page, then dare you to beat them at their...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4bad57d1887955097327.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAQAElEQVR4nOz9B3xj6X0f/J5+cNB7Ze/kzHB62Zkts71o1SXLcizLNXFN3pvEeZ37Jrnpju34tR3bcYss27J6l1arXa22l+m9sfeO3oFT7/+Aq9nZKSRAgiRI/r8faAVyABA4wHnwPL+nMVrmDwmEEKphb50Y+8DHPw9X2rsf+L/+v88TCCFUw57/9n//wbd+F6783D//7c/81m8TCCFUw/71z3700qm34crP/+Xz...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Friday",
+          "is_weekend": false,
+          "day_index": 5
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/wonderwhy-er",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "oven-sh/bun/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "abseil/abseil-cpp/stargazers",
+              "description": "",
+              "language": "C++",
+              "stars": null
+            },
+            {
+              "name": "addyosmani/agent-skills/stargazers",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "jbeder/yaml-cpp/stargazers",
+              "description": "",
+              "language": "C++",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Genesis Scottish Open",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Jordan Smith",
+              "position": "1",
+              "score": "-8"
+            },
+            {
+              "name": "Danny Willett",
+              "position": "2",
+              "score": "-6"
+            },
+            {
+              "name": "Guido Migliozzi",
+              "position": "3",
+              "score": "-6"
+            },
+            {
+              "name": "Matt Fitzpatrick",
+              "position": "4",
+              "score": "-6"
+            },
+            {
+              "name": "Darius Van Driel",
+              "position": "5",
+              "score": "-5"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "GPT-5.6",
+              "url": "https://openai.com/index/gpt-5-6/",
+              "score": 1313,
+              "by": "logickkk1"
+            },
+            {
+              "title": "In Emacs, Everything Looks Like a Service",
+              "url": "http://yummymelon.com/devnull/in-emacs-everything-looks-like-a-service.html",
+              "score": 31,
+              "by": "kickingvegas"
+            },
+            {
+              "title": "Show HN: Getting GLM 5.2 running on my slow computer",
+              "url": "https://github.com/JustVugg/colibri",
+              "score": 706,
+              "by": "vforno"
+            },
+            {
+              "title": "EU Parliament greenlights Chat Control 1.0",
+              "url": "https://www.patrick-breyer.de/en/eu-parliament-greenlights-chat-control-1-0-breyer-our-children-lose-out/",
+              "score": 1421,
+              "by": "rapnie"
+            },
+            {
+              "title": "Train sim created by just one person is being called the best ever made",
+              "url": "https://kotaku.com/a-train-sim-created-by-just-one-person-is-being-called-the-best-ever-made-2000699429",
+              "score": 630,
+              "by": "oumua_don17"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waning crescent",
+          "illumination": 0.138,
+          "days_into_cycle": 25.96
+        },
+        "music": {
+          "bands": [
+            "Tobin Sprout",
+            "Guided by Voices"
+          ]
+        },
+        "quote": {
+          "text": "The moment you stop to think about whether you love someone, you've already stopped loving that person forever.",
+          "author": "Carlos Ruiz Zafon"
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 10,
+          "day_of_year": 191,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-07-09T22:40Z",
+              "result": "win",
+              "score": "4-1"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:57",
+          "sunset": "19:32",
+          "daylight_hours": 14.6
+        },
+        "date": "2026-07-10"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-10T11:01:47.452Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-09: Poster\n  - 2026-07-08: Broadsheet\n  - 2026-07-07: Stack\n  - 2026-07-06: Scroll\n  - 2026-07-05: Split\n  - 2026-07-04: Gallery Wall\n  - 2026-07-03: Specimen\n\n**Recently used** (last 3 days): Poster, Broadsheet, Stack\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or"
+      },
+      "output": {
+        "hero_copy": "The moment you stop to think about whether you love someone, you've already stopped loving that person forever.",
+        "archetype": "Gallery Wall",
+        "chassisId": "spectral-albert",
+        "specLength": 6334,
+        "specPreview": "### 1. Color Specification\n\n- **Primary hue:** H:63°, S:88%, L:46% — golden chartreuse, mathematically inside the mandate's only open corridor (58°–75°), and tonally precise for a July literary brief: the hue of sunlit limestone and printed pages held toward a window. Named \"Barcelona gold.\"\n- **Neutral palette** (warm-tinted toward amber, like aged paper and bookshelf stone):\n  - stone.50:  #FAFAF5\n  - stone.100: #F5F3E8\n  - stone.200: #E8E5D4\n  - stone.300: #CBC6B2\n  - stone.400: #9E9888\n  - s",
+        "selfCheck": "1. Hero quotability: Yes — Zafón's line from *The Shadow of the Wind* has circulated as a standalone screenshot-worthy quote for over a decade; it is complete, devastating, and fully legible without context.\n2. Because-of chain: Yes — the literary register of the quote demands Spectral Italic (not a"
+      },
+      "durationMs": 520917,
+      "timestamp": "2026-07-10T11:10:28.376Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 6334
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 45525,
+      "timestamp": "2026-07-10T11:11:15.247Z"
+    },
+    {
+      "name": "unified-designer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4689,
+        "briefLength": 9817
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 110905,
+      "timestamp": "2026-07-10T11:13:06.154Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-10T11:13:13.012Z"
+    }
+  ]
+}

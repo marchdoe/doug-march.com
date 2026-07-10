@@ -26,12 +26,13 @@ describe('file group constants', () => {
     ])
   })
 
-  it('LAYOUT_FILES contains Layout.tsx and 3 route files', () => {
+  it('LAYOUT_FILES contains Layout.tsx and 4 route files (og.tsx is the engineer-authored share card)', () => {
     expect(LAYOUT_FILES).toEqual([
       'app/components/Layout.tsx',
       'app/routes/index.tsx',
       'app/routes/about.tsx',
       'app/routes/work.$slug.tsx',
+      'app/routes/og.tsx',
     ])
   })
 

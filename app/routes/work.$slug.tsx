@@ -2,207 +2,215 @@ import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetail })
+export const Route = createFileRoute('/work/$slug')({ component: ProjectPage })
 
-const pageWrap = css({
-  maxWidth: '840px',
-  paddingTop: '48px',
-  paddingBottom: '64px',
-})
-
-const backLink = css({
-  fontFamily: 'body',
-  fontSize: '0.625rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  textDecoration: 'none',
-  display: 'inline-flex',
-  alignItems: 'center',
-  minHeight: '44px',
-  marginBottom: '32px',
-  _hover: { color: 'text', opacity: 1 },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-})
-
-const projectTitle = css({
-  fontFamily: 'display',
-  fontSize: 'clamp(2rem, 4vw, 4.5rem)',
-  fontWeight: 'bold',
-  lineHeight: 'snug',
-  textTransform: 'uppercase',
-  letterSpacing: 'tight',
-  color: 'text',
-  marginBottom: '8px',
-})
-
-const metaRow = css({
-  display: 'flex',
-  gap: '16px',
-  flexWrap: 'wrap',
-  marginBottom: '40px',
-})
-
-const metaTag = css({
-  fontFamily: 'body',
-  fontSize: '0.625rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-})
-
-const accentTag = css({
-  fontFamily: 'body',
-  fontSize: '0.625rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'accent',
-})
-
-const sectionLabel = css({
-  fontFamily: 'body',
-  fontSize: '0.5625rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  marginBottom: '8px',
-  marginTop: '32px',
-})
-
-const bodyText = css({
-  fontFamily: 'body',
-  fontSize: '1rem',
-  lineHeight: 'normal',
-  color: 'textSecondary',
-  maxWidth: '60ch',
-})
-
-const stackList = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
-  marginTop: '8px',
-})
-
-const stackTag = css({
-  fontFamily: 'body',
-  fontSize: '0.6875rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'wider',
-  textTransform: 'uppercase',
-  color: 'textSecondary',
-  background: 'bgCard',
-  padding: '6px 12px',
-  borderRadius: 'sm',
-})
-
-const extLink = css({
-  fontFamily: 'body',
-  fontSize: '0.75rem',
-  fontWeight: 'semibold',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'accent',
-  textDecoration: 'none',
-  display: 'inline-flex',
-  alignItems: 'center',
-  minHeight: '44px',
-  marginTop: '32px',
-  _hover: { opacity: 0.75 },
-  _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
-})
-
-function WorkDetail() {
+function ProjectPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <div className={pageWrap}>
-        <a href="/" className={backLink}>← Back</a>
-        <h1 className={projectTitle}>Not Found</h1>
-        <p className={bodyText}>This project doesn't exist.</p>
+      <div className={css({ padding: '96px 5vw', minHeight: '100vh' })}>
+        <h1 className={css({ fontFamily: 'display', fontSize: '2rem', color: 'text' })}>Project not found</h1>
+        <a href="/" className={css({ color: 'accent', fontSize: '14px', padding: '10px 0', display: 'inline-block' })}>← Back home</a>
       </div>
     )
   }
 
   return (
-    <div className={pageWrap}>
-      <a href="/" className={backLink}>← Back</a>
-
-      <h1 className={projectTitle}>{project.title}</h1>
-
-      <div className={metaRow}>
-        <span className={accentTag}>{project.type}</span>
-        <span className={metaTag}>{project.year}</span>
-        {project.role && <span className={metaTag}>{project.role}</span>}
+    <div className={css({
+      minHeight: '100vh',
+      padding: '96px 5vw 96px',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(12, 1fr)',
+      columnGap: '16px',
+      rowGap: '0',
+    })}>
+      {/* Title zone */}
+      <div className={css({
+        gridColumn: '1 / 8',
+        paddingBottom: '48px',
+        '@media (max-width: 768px)': {
+          gridColumn: '1 / 13',
+        },
+      })}>
+        <p className={css({
+          fontFamily: 'body',
+          fontSize: '10px',
+          fontWeight: '500',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: 'textMuted',
+          marginBottom: '12px',
+        })}>{project.type} · {project.year}</p>
+        <h1 className={css({
+          fontFamily: 'display',
+          fontSize: 'clamp(2rem, 4.5vw, 4rem)',
+          fontWeight: '600',
+          color: 'text',
+          lineHeight: '1.1',
+          marginBottom: '24px',
+        })}>{project.title}</h1>
+        {project.externalUrl && (
+          <a
+            href={project.externalUrl}
+            className={css({
+              fontFamily: 'body',
+              fontSize: '12px',
+              fontWeight: '500',
+              letterSpacing: '0.10em',
+              textTransform: 'uppercase',
+              color: 'accent',
+              textDecoration: 'none',
+              padding: '10px 0',
+              display: 'inline-block',
+              _hover: { textDecoration: 'underline' },
+              _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+            })}
+          >
+            Visit Site →
+          </a>
+        )}
       </div>
 
-      {project.problem && (
-        <>
-          <h2 className={sectionLabel}>Problem</h2>
-          <p className={bodyText}>{project.problem}</p>
-        </>
-      )}
-
-      {project.approach && (
-        <>
-          <h2 className={sectionLabel}>Approach</h2>
-          <p className={bodyText}>{project.approach}</p>
-        </>
-      )}
-
-      {project.outcome && (
-        <>
-          <h2 className={sectionLabel}>Outcome</h2>
-          <p className={bodyText}>{project.outcome}</p>
-        </>
-      )}
-
-      {project.description && (
-        <>
-          <h2 className={sectionLabel}>About</h2>
-          <p className={bodyText}>{project.description}</p>
-        </>
-      )}
-
-      {project.stack && project.stack.length > 0 && (
-        <>
-          <h2 className={sectionLabel}>Stack</h2>
-          <div className={stackList}>
-            {project.stack.map((s) => (
-              <span key={s} className={stackTag}>{s}</span>
-            ))}
+      {/* Meta — right column */}
+      <div className={css({
+        gridColumn: '9 / 13',
+        paddingBottom: '48px',
+        '@media (max-width: 768px)': {
+          gridColumn: '1 / 13',
+        },
+      })}>
+        {project.role && (
+          <div className={css({ marginBottom: '20px' })}>
+            <p className={css({ fontFamily: 'body', fontSize: '10px', fontWeight: '500', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4px' })}>Role</p>
+            <p className={css({ fontFamily: 'body', fontSize: '16px', color: 'text', lineHeight: '1.5' })}>{project.role}</p>
           </div>
-        </>
-      )}
+        )}
+        {project.stack && project.stack.length > 0 && (
+          <div className={css({ marginBottom: '20px' })}>
+            <p className={css({ fontFamily: 'body', fontSize: '10px', fontWeight: '500', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4px' })}>Stack</p>
+            <p className={css({ fontFamily: 'body', fontSize: '14px', color: 'textSecondary', lineHeight: '1.5' })}>{project.stack.join(', ')}</p>
+          </div>
+        )}
+      </div>
 
-      {(project.externalUrl || project.liveUrl || project.githubUrl) && (
-        <div>
-          {project.liveUrl && (
-            <a href={project.liveUrl} className={extLink}>
-              Visit Live ↗
-            </a>
-          )}
-          {project.externalUrl && !project.liveUrl && (
-            <a href={project.externalUrl} className={extLink}>
-              Visit Project ↗
-            </a>
-          )}
-          {project.githubUrl && (
-            <a href={project.githubUrl} className={css({
-              ...extLink,
-              marginLeft: '24px',
-            } as any)} style={{ marginLeft: '24px' }}>
-              GitHub ↗
-            </a>
-          )}
-        </div>
-      )}
+      {/* Content */}
+      <div className={css({
+        gridColumn: '1 / 8',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '40px',
+        paddingBottom: '64px',
+        '@media (max-width: 768px)': {
+          gridColumn: '1 / 13',
+        },
+      })}>
+        {project.problem && (
+          <div>
+            <p className={css({
+              fontFamily: 'body',
+              fontSize: '10px',
+              fontWeight: '500',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: 'textMuted',
+              marginBottom: '8px',
+            })}>Problem</p>
+            <p className={css({
+              fontFamily: 'body',
+              fontSize: '16px',
+              color: 'text',
+              lineHeight: '1.6',
+              maxWidth: '60ch',
+            })}>{project.problem}</p>
+          </div>
+        )}
+        {project.approach && (
+          <div>
+            <p className={css({
+              fontFamily: 'body',
+              fontSize: '10px',
+              fontWeight: '500',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: 'textMuted',
+              marginBottom: '8px',
+            })}>Approach</p>
+            <p className={css({
+              fontFamily: 'body',
+              fontSize: '16px',
+              color: 'text',
+              lineHeight: '1.6',
+              maxWidth: '60ch',
+            })}>{project.approach}</p>
+          </div>
+        )}
+        {project.outcome && (
+          <div>
+            <p className={css({
+              fontFamily: 'body',
+              fontSize: '10px',
+              fontWeight: '500',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: 'textMuted',
+              marginBottom: '8px',
+            })}>Outcome</p>
+            <p className={css({
+              fontFamily: 'body',
+              fontSize: '16px',
+              color: 'text',
+              lineHeight: '1.6',
+              maxWidth: '60ch',
+            })}>{project.outcome}</p>
+          </div>
+        )}
+        {project.description && (
+          <div>
+            <p className={css({
+              fontFamily: 'body',
+              fontSize: '16px',
+              color: 'text',
+              lineHeight: '1.6',
+              maxWidth: '60ch',
+            })}>{project.description}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Back link */}
+      <div className={css({
+        gridColumn: '1 / 13',
+        paddingTop: '32px',
+        borderTop: '1px solid',
+        borderColor: 'border',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px',
+      })}>
+        <a href="/" className={css({
+          fontFamily: 'body',
+          fontSize: '12px',
+          fontWeight: '500',
+          color: 'accent',
+          textDecoration: 'none',
+          padding: '10px 0',
+          _hover: { textDecoration: 'underline' },
+          _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+        })}>← All Work</a>
+        <a href="/archive" className={css({
+          fontFamily: 'body',
+          fontSize: '12px',
+          color: 'textMuted',
+          textDecoration: 'none',
+          padding: '10px 0',
+          _hover: { color: 'textSecondary' },
+          _focus: { outline: '2px solid', outlineColor: 'accent', outlineOffset: '2px' },
+        })}>Archive</a>
+      </div>
     </div>
   )
 }

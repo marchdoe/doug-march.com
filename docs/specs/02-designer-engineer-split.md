@@ -1,3 +1,5 @@
+> **SUPERSEDED** by docs/superpowers/specs/2026-06-11-design-quality-pipeline-design.md (implemented 2026-06).
+
 # Spec 02 — Designer / React Engineer split
 
 **Status:** ready to execute

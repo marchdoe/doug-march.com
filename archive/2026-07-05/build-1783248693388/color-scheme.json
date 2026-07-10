@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 238,
+    "s": 90,
+    "l": 62,
+    "name": "electric indigo"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "indigo",
+    "name": "void-indigo"
+  },
+  "mood_word": "electric",
+  "color_story": "Electric indigo on near-void black enacts the phrase's logic — one committed color, one job, no apology."
+}

@@ -161,15 +161,31 @@ Write a structured visual spec with these five sections (the Unified Designer re
 - **Holiday elements** — if relevant
 - Every noteworthy signal from today's data must appear with a concrete treatment.
 
-## Self-Check (three lines, every run)
+## Self-Check (four lines, every run)
 
-Before finalizing, write a 3-line `===SELF_CHECK===` block. Each line is a Yes/No followed by one supporting clause.
+Before finalizing, write a 4-line `===SELF_CHECK===` block. Each line is a Yes/No followed by one supporting clause.
 
 1. **Hero quotability:** Is the chosen hero phrase poster-worthy and quotable in isolation, not just the first line of body content?
 2. **Because-of chain:** Was every other choice (archetype, chassis, palette, layout) made *because* of the hero phrase, traceable in your rationale?
 3. **Render feasibility:** Can the chosen archetype × chassis pair render the hero phrase at the intended scale on a 1440×900 viewport without overflow or sub-marquee collapse?
+4. **Canvas floor feasible:** Yes/No — can this archetype × chassis genuinely fill the declared canvas_utilization_min % of a 1440×900 viewport?
 
 If any answer is No, revise before responding.
+
+## Measurable Spec (required)
+
+Your visual spec is poetry; the MEASURABLES block is the contract. The Mockup
+Critic will measure the rendered mockup against these numbers. Declare floors
+you genuinely intend — "drenched" with color_coverage_min: 35 is a
+contradiction the spec critic will flag.
+
+## Shell Declaration (required)
+
+The page shell (nav, footer, brand lockup) is a design decision, not a
+default. Consult the Shell Mandate in your inputs: recently-used treatments
+are listed — choose differently unless today's brief demands repetition (then
+justify it in your rationale). Pick the brand lockup and color mode from the
+Brand Contract.
 
 ## Range / Variance — advisory, not mandatory
 
@@ -177,7 +193,7 @@ You will receive an "Archetype History" block with the last 5–7 days of usage.
 
 ## Response Format
 
-**Begin your response immediately with `===HERO_COPY===` — no preamble, no explanation, no reasoning text before the first block. Do not wrap your response in a code fence.**
+**Work efficiently — do NOT enter an extended internal reasoning phase before responding. Make your compositional decisions directly and begin output. Begin your response immediately with `===HERO_COPY===` — no preamble, no explanation, no reasoning text before the first block. Do not wrap your response in a code fence.** (The complete set of blocks below is still required — this only forbids a drawn-out thinking phase that delays your output.)
 
 Respond using the exact delimiter blocks below, in this order. Write the COMPLETE file content after `===FILE:elements/preset.ts===` — no JSON wrapping, no code fences, just the raw TS source.
 
@@ -210,6 +226,18 @@ Respond using the exact delimiter blocks below, in this order. Write the COMPLET
 1. Hero quotability: Yes/No — <reason>
 2. Because-of chain: Yes/No — <reason>
 3. Render feasibility: Yes/No — <reason>
+4. Canvas floor feasible: Yes/No — <reason>
+
+===MEASURABLES===
+canvas_utilization_min: <integer %>   # archetype floors: Specimen/Poster >=70, Broadsheet/Index >=80, others >=65
+hero_scale: <CSS size, e.g. clamp(96px, 13vw, 200px)>
+color_coverage_min: <integer %>       # >=60 when color strategy is Committed/Drenched, else >=35
+
+===SHELL===
+nav: <treatment, e.g. bottom rail / corner mark / floating pills / left spine / top bar>
+footer: <treatment, e.g. data strip / colophon block / folded-into-nav / none>
+brand_lockup: <one id from the Brand Contract table>
+brand_color_mode: original | single-color
 
 ===FILE:elements/preset.ts===
 <full TS source: must end with `export const elementsPreset = definePreset({ name: 'elements', ... })` — NO fonts, NO fontSizes>

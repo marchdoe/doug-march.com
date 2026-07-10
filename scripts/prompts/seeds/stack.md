@@ -38,3 +38,12 @@ Vertical bands separated by 80–120px of padding. Each band has its own interna
 ## Mobile strategy
 
 Already naturally mobile-friendly. Use `min-height` tokens that scale down — no `height: 100vh` without a mobile fallback like `min-height: 500px`. Bands should stack with clear visual breaks at all widths.
+
+## This is one lane
+
+This seed describes ONE strong execution of this archetype — the default
+lane, not the only one. If today's signals and brief call for a radically
+different take (different palette family, inverted ground, another emotional
+register), take it: justify the deviation in your rationale and execute it
+with the same precision this seed demands. The anti-patterns above still
+apply; the specific colors, faces, and measurements do not bind you.
