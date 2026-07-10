@@ -126,6 +126,17 @@ Compare composition, hero scale, color application, shell. Divergence →
 REVISE with **Responsible agent:** react-engineer and a specific list of
 what diverged.
 
+**Two color schemes.** You receive the rendered homepage in BOTH the light
+and dark scheme. The design has ONE canonical mode — the one the mockup
+shows. Judge fidelity against whichever scheme matches the mockup's field.
+The other scheme is an adaptation: it must remain a coherent, committed
+version of the same design — same compositional structure, same drench
+commitment (a dark drench adapts to a light drench, not to a washed-out
+near-white page), same typographic treatment. REVISE if NEITHER scheme
+matches the mockup, or if the adaptation abandons the design (2026-07-10:
+a near-black teal mockup shipped with a pale washed-out light mode that
+every first-time visitor saw).
+
 ## Verdict Rules
 
 **SHIP** if: All applicable areas are acceptable — the seven standard areas plus mockup fidelity, plus Section 8 if the archetype is Specimen or Poster. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.

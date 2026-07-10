@@ -221,8 +221,24 @@ export async function captureScreenshot(port) {
     await page.waitForTimeout(1000) // wait for fonts
     const png = await page.screenshot({ type: 'png', fullPage: false })
     const jpeg = await page.screenshot({ type: 'jpeg', quality: 70, fullPage: false })
+
+    // Second capture with the OPPOSITE color scheme. The theme init script
+    // follows prefers-color-scheme, so a headless capture only ever showed
+    // the light variant — on days where the AD's canonical field is dark
+    // (2026-07-10 run 2: "teal glowing out of near-black"), the critic was
+    // judging a mode nobody art-directed. colorScheme must be set at page
+    // creation, before the init script reads matchMedia.
+    const darkPage = await browser.newPage({
+      viewport: { width: 1280, height: 900 },
+      colorScheme: 'dark',
+    })
+    await darkPage.goto(`http://localhost:${serverPort}/`, { waitUntil: 'networkidle' })
+    await darkPage.waitForTimeout(1000)
+    const darkPng = await darkPage.screenshot({ type: 'png', fullPage: false })
+    const darkJpeg = await darkPage.screenshot({ type: 'jpeg', quality: 70, fullPage: false })
+
     await browser.close()
-    return { png, jpeg }
+    return { png, jpeg, darkPng, darkJpeg }
   } finally {
     if (server) server.kill()
   }

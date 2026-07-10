@@ -1349,6 +1349,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     await archive(signals.date, signals, rationale, designBrief, changedPaths, {}, tokenResult.color_scheme ?? null, chosenArchetype ?? null, {
       'screenshot.png': finalScreenshot?.png ?? null,
+      'screenshot-dark.png': finalScreenshot?.darkPng ?? null,
       'mockup.html': mockup?.mockupHtml ?? null,
       'mockup-screenshot.png': mockupScreenshot?.png ?? null,
       'verdicts.json': JSON.stringify(verdicts, null, 2),
@@ -1392,8 +1393,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         mockupScreenshot
           ? 'The APPROVED MOCKUP screenshot (fidelity target):\n\n![Mockup](data:image/jpeg;base64,' + mockupScreenshot.jpeg.toString('base64') + ')'
           : '',
-        '\n\nA screenshot of the rendered homepage is attached as a base64 JPEG image below.\n\n' +
-        '![Homepage Screenshot](data:image/jpeg;base64,' + screenshotBuffer.jpeg.toString('base64') + ')',
+        '\n\nThe rendered homepage in BOTH color schemes is attached below. ONE of them (the design\'s canonical mode) must match the mockup; the other is an adaptation and must stay a coherent, committed version of the same design — never a washed-out inversion.\n\n' +
+        'LIGHT scheme:\n\n![Homepage Screenshot — light](data:image/jpeg;base64,' + screenshotBuffer.jpeg.toString('base64') + ')\n\n' +
+        'DARK scheme:\n\n![Homepage Screenshot — dark](data:image/jpeg;base64,' + screenshotBuffer.darkJpeg.toString('base64') + ')',
       ].filter(Boolean).join('\n\n---\n\n')
 
       const t0ScreenshotCritic = Date.now()
