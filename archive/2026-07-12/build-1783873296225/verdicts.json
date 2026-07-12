@@ -1,0 +1,8 @@
+[
+  {
+    "critic": "spec-critic",
+    "verdict": "REVISE",
+    "feedback": "REVISE\n\n- **Visual spec → preset mismatch on data strip background.** The color specification declares \"sidebar/strip bg `#22143d`\" but this exact hex is not defined anywhere in the preset.ts tokens. The violet scale runs 50–900 (`#f5f2fb`–`#1a1030`), and `#22143d` (H:275° S:50% L:15.9%) does not map to any token. It sits between violet.900 and violet.800 in darkness, with distinct saturation. Either (a) add `#22143d` to the violet scale as violet.850 or similar, or (b) clarify in the visual spec whether the data strip should use an existing token (violet.800 `#2b1f45`?) instead. The layout description says \"No sidebar\" but still names a strip bg color—that color must be in the preset or removed from the spec.",
+    "ts": 1783872931212
+  }
+]

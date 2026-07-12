@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 278,
+    "s": 62,
+    "l": 55,
+    "name": "moonless violet"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "violet",
+    "name": "night indigo"
+  },
+  "mood_word": "moonless",
+  "color_story": "A drenched deep-violet night sky with no moon in it — the single luminous lavender accent is the only light left, the promise of the crescent returning."
+}

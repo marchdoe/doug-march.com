@@ -1,0 +1,274 @@
+{
+  "date": "2026-07-12",
+  "startedAt": "2026-07-12T16:12:01.997Z",
+  "completedAt": "2026-07-12T16:21:37.956Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 13
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "The Watch",
+              "description": "The FS 60P is our take on showing a luxury watch at its best. A real-time WebGL piece that interacts with the content around it.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3d46eb879b8710119898.jpg",
+              "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/rNPpKUAIRAAAAAQAANPBqdW1iAAAAHmp1bWRjMnBhABEAEIAAAKoAOJtxA2MycGEAAAA0ymp1bWIAAABHanVtZGMybWEAEQAQgAAAqgA4m3EDdXJuOmMycGE6OTU1YTAwNTQtZjAwYy00NGU4LWFmMGMtY2U4YjQzMTVkYWZkAAAAAktqdW1iAAAAKWp1bWRjMmFzABEAEIAAAKoAOJtxA2MycGEuYXNzZXJ0aW9ucwAAAAFW...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The state of the gallery",
+              "description": "mesh3d - \"The state of the gallery\" is an overiew of the gallery in numbers and picks. What's catalogued, who is making the strongest Three.js work and...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3ea31c78f5b788025408.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAXC8JJREFUeAHsvYu2GzmuJBpQ3Vnz//97ZuNaSQQQAJmStu2q09XL6i5vKZME8QoEmEpJ9tf/+b9fWA/zHw/78YjX/jwmfzGO4zn0x5T8ezfnMG4+bteI55hr6iOO+cEGxGu1...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "21 Hrs On The Moon",
+              "description": "To mark the recent Artemis Moon Mission and honour the legacy of the first moon landing in 1969, we celebrate the experiments carried out in those historic...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0d7b8f419a3938435907.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAJulBJREFUeAHsvWmbXLeRJooqFjeRlERJFLVbsiTbsiXb8riX6Z62u9sz88ydb/f7PM/9MH9k/tD8gZ7rp6/b7rblRbJky63d2khKFPedrO0mTtUposBAIFbgJJmvVMzMk0BE...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Sunday",
+          "is_weekend": true,
+          "day_index": 0
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/Dicklesworthstone",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "sponsors/wonderwhy-er",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "HKUDS/Vibe-Trading/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "PrefectHQ/prefect/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "Shubhamsaboo/awesome-llm-apps/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Genesis Scottish Open",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Tom Kim",
+              "position": "1",
+              "score": "-14"
+            },
+            {
+              "name": "Min Woo Lee",
+              "position": "2",
+              "score": "-13"
+            },
+            {
+              "name": "Matt Fitzpatrick",
+              "position": "3",
+              "score": "-13"
+            },
+            {
+              "name": "Rory McIlroy",
+              "position": "4",
+              "score": "-12"
+            },
+            {
+              "name": "Si Woo Kim",
+              "position": "5",
+              "score": "-12"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Old and new apps, via modern coding agents by Terry Tao",
+              "url": "https://terrytao.wordpress.com/2026/07/11/old-and-new-apps-via-modern-coding-agents/",
+              "score": 237,
+              "by": "subset"
+            },
+            {
+              "title": "AI Boosts Research Careers but Flattens Scientific Discovery",
+              "url": "https://spectrum.ieee.org/ai-science-research-flattens-discovery",
+              "score": 66,
+              "by": "zaikunzhang"
+            },
+            {
+              "title": "Understanding the Odin Programming Language",
+              "url": "https://odinbook.com/",
+              "score": 75,
+              "by": "AlexeyBrin"
+            },
+            {
+              "title": "Ghostel.el: Terminal emulator powered by libghostty",
+              "url": "https://dakra.github.io/ghostel/",
+              "score": 133,
+              "by": "signa11"
+            },
+            {
+              "title": "Gina Gallery of International Naive Art",
+              "url": "https://www.ginagallery.com/",
+              "score": 17,
+              "by": "o4c"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "new moon",
+          "illumination": 0.021,
+          "days_into_cycle": 28.17
+        },
+        "music": {
+          "bands": [
+            "Tobin Sprout",
+            "Guided by Voices"
+          ]
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 12,
+          "day_of_year": 193,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "04:59",
+          "sunset": "19:32",
+          "daylight_hours": 14.5
+        },
+        "date": "2026-07-12"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-12T16:12:17.491Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-10: Gallery Wall\n  - 2026-07-09: Poster\n  - 2026-07-08: Broadsheet\n  - 2026-07-07: Stack\n  - 2026-07-06: Scroll\n  - 2026-07-05: Split\n  - 2026-07-04: Gallery Wall\n\n**Recently used** (last 3 days): Gallery Wall, Poster, Broadsheet\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If t"
+      },
+      "output": {
+        "hero_copy": "START OVER\nIN THE DARK",
+        "archetype": "Specimen",
+        "chassisId": "bebas-plex",
+        "specLength": 3779,
+        "specPreview": "### 1. Color Specification\n- **Primary hue** — 278° (violet). The only corridor left open by the mandate (269°–299°) and the exact color of a moonless summer night sky just after the light drains out — perfect for a new-moon brief.\n- **Neutral palette (violet-tinted \"night indigo\")** — 50 `#f5f2fb`, 100 `#eae4f6`, 200 `#d3c9ea`, 300 `#b3a6d6`, 400 `#8d7cb8`, 500 `#6f5c9c`, 600 `#574780`, 700 `#423463`, 800 `#2b1f45`, 900 `#1a1030`\n- **Accent color (luminous lavender)** — light `#c4aaff`, default",
+        "selfCheck": "1. Hero quotability: Yes — \"Start over in the dark\" is an imperative that stands alone and screenshots cleanly.\n2. Because-of chain: Yes — new-moon reset → darkness/renewal → Specimen type-as-night-sky → Bebas condensed marquee → drenched violet with a single lavender glow.\n3. Render feasibility: Ye"
+      },
+      "durationMs": 128368,
+      "timestamp": "2026-07-12T16:14:25.864Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 3779
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "REVISE\n\n- **Visual spec → preset mismatch on data strip background.** The color specification declares \"sidebar/strip bg `#22143d`\" but this exact hex is not defined anywhere in the preset.ts tokens. The violet scale runs 50–900 (`#f5f2fb`–`#1a1030`), and `#22143d` (H:275° S:50% L:15.9%) does not map to any token. It sits between violet.900 and violet.800 in darkness, with distinct saturation. Either (a) add `#22143d` to the violet scale as violet.850 or similar, or (b) clarify in the visual spe"
+      },
+      "durationMs": 63762,
+      "timestamp": "2026-07-12T16:15:31.212Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4074,
+        "briefLength": 5999,
+        "mockupLength": 9963
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/DataStrip.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 107676,
+      "timestamp": "2026-07-12T16:18:35.157Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": false,
+        "error": "Build output smoke check failed:\n  - dist/client/_shell.html and index.html are both missing\n\nThe build COMPILED but the app crashed during prerender (server-side render). Runtime error lines from the build log:\nError: Invalid tag: data:image/svg+xml,%3csvg%20width='71'%20height='59'%20viewBox='0%200%2071%2059'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M29.8925%200.440186C45.91%200.440257%2058.8956%2013.4256%2058.8965%2029.4431C58.8964%2045.4614%2045.9108%2058.4469%2029.8"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-12T16:18:42.528Z"
+    }
+  ]
+}

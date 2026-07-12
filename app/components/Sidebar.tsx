@@ -1,65 +1,74 @@
-import logoSvg from '../assets/logo.svg'
+import { css } from '../../styled-system/css'
+import logoMono from '../assets/logo-mono.svg'
 
 export function Sidebar() {
   return (
     <nav
-      className="site-nav"
-      style={{
-        position: 'fixed',
-        top: 0,
-        right: 0,
-        zIndex: 100,
-        padding: '24px 5vw',
+      className={css({
         display: 'flex',
         alignItems: 'center',
-        gap: '24px',
-      }}
+        justifyContent: 'space-between',
+        gap: '4',
+        padding: { base: '5 6', md: '5 16', lg: '5 24' },
+        borderBottom: '1px solid',
+        borderColor: 'border',
+        minHeight: '72px',
+      })}
     >
-      <a href="/" style={{ display: 'flex', alignItems: 'center' }}>
-        <img src={logoSvg} alt="Doug March" style={{ width: '28px', height: '28px' }} />
-      </a>
       <a
         href="/"
-        style={{
-          fontFamily: 'var(--fonts-body)',
-          fontSize: '11px',
-          fontWeight: 500,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase' as const,
-          color: 'var(--colors-stone-400)',
-          textDecoration: 'none',
-          padding: '10px 0',
-        }}
+        aria-label="Doug March — home"
+        className={css({ display: 'flex', alignItems: 'center', gap: '3' })}
       >
-        Work
+        <img
+          src={logoMono}
+          alt=""
+          className={css({ width: '26px', height: 'auto', display: 'block', color: 'accentGlow' })}
+        />
+        <span
+          className={css({
+            fontFamily: 'body',
+            fontWeight: 'medium',
+            fontSize: 'sm',
+            letterSpacing: 'wide',
+            color: 'text',
+          })}
+        >
+          Doug March
+        </span>
       </a>
-      <a
-        href="/about"
-        style={{
-          fontFamily: 'var(--fonts-body)',
-          fontSize: '11px',
-          fontWeight: 500,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase' as const,
-          color: 'var(--colors-stone-400)',
-          textDecoration: 'none',
-          padding: '10px 0',
-        }}
+      <ul
+        className={css({
+          display: 'flex',
+          alignItems: 'center',
+          gap: { base: '4', md: '8' },
+          listStyle: 'none',
+        })}
       >
-        About
-      </a>
-      <span
-        style={{
-          fontFamily: 'var(--fonts-body)',
-          fontSize: '11px',
-          fontWeight: 500,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase' as const,
-          color: 'var(--colors-stone-500)',
-        }}
-      >
-        Fri 10 Jul 2026
-      </span>
+        {[
+          { href: '/work', label: 'Work' },
+          { href: '/about', label: 'About' },
+          { href: '/#index', label: 'Index' },
+        ].map((item) => (
+          <li key={item.href}>
+            <a
+              href={item.href}
+              className={css({
+                fontSize: 'xs',
+                textTransform: 'uppercase',
+                letterSpacing: 'wider',
+                color: 'textSecondary',
+                position: 'relative',
+                padding: '1 0',
+                display: 'inline-block',
+                _hover: { color: 'accentGlow' },
+              })}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
     </nav>
   )
 }
