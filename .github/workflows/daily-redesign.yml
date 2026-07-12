@@ -98,12 +98,26 @@ jobs:
             git add "$p" 2>/dev/null || true
           done
           git diff --cached --quiet || git commit -m "chore: daily redesign $TODAY"
-          # Retry push up to 3 times in case of concurrent pushes to main
+          # Retry push up to 3 times in case of concurrent pushes to main.
+          # --autostash: the pipeline leaves runner-local modifications to
+          # tracked files (e.g. regenerated styled-system codegen) that
+          # otherwise make `pull --rebase` refuse to run.
+          pushed=false
           for i in 1 2 3; do
-            git pull --rebase origin main && git push origin main && break
+            if git pull --rebase --autostash origin main && git push origin main; then
+              pushed=true
+              break
+            fi
             echo "push attempt $i failed, retrying in 10s..."
             sleep 10
           done
+          # Fail loudly — a for-loop's exit status is its last command (sleep),
+          # which once let a run report success while the commit never left
+          # the runner.
+          if [ "$pushed" != "true" ]; then
+            echo "::error::push failed after 3 attempts — daily commit not on main"
+            exit 1
+          fi
 
       - name: Open today's rating issue
         if: ${{ !inputs.dry_run && success() }}
