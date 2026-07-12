@@ -91,7 +91,12 @@ jobs:
             [ -d "$d" ] && git add "$d"
           done
           git add archive/*/rating-*.json 2>/dev/null || true
-          git add elements/ app/components/ app/routes/ public/archive/ public/og/ signals/today.references.md
+          # Add each output path independently — some are absent on a given
+          # run (public/og/ only exists once OG generation works in CI), and
+          # under bash -e one unmatched pathspec would abort the whole push.
+          for p in elements/ app/components/ app/routes/ public/archive/ public/og/ signals/today.references.md; do
+            git add "$p" 2>/dev/null || true
+          done
           git diff --cached --quiet || git commit -m "chore: daily redesign $TODAY"
           # Retry push up to 3 times in case of concurrent pushes to main
           for i in 1 2 3; do
