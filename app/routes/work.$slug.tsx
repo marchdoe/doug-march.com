@@ -10,119 +10,152 @@ function WorkDetailPage() {
 
   if (!project) {
     return (
-      <div className={css({ padding: { base: '8 6', md: '16 24' } })}>
-        <p className={css({ color: 'textSecondary' })}>Project not found.</p>
-        <a href="/" className={css({ color: 'accentGlow' })}>
-          ← Back home
-        </a>
-      </div>
+      <section
+        className={css({
+          bg: 'bg',
+          padding: { base: '16 6', md: '20 7vw' },
+          minHeight: '60vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        })}
+      >
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            textTransform: 'lowercase',
+            fontSize: 'clamp(38px, 6vw, 76px)',
+            color: 'text',
+          })}
+        >
+          not found
+        </h1>
+        <p className={css({ color: 'textSecondary', marginTop: '4' })}>
+          There's no project here. <a href="/" className={css({ color: 'accent', fontWeight: 'bold' })}>Back home ↗</a>
+        </p>
+      </section>
     )
   }
 
-  const link = project.liveUrl || project.externalUrl || project.githubUrl
+  const link = project.liveUrl ?? project.externalUrl ?? project.githubUrl
 
   return (
-    <div className={css({ padding: { base: '8 6', md: '12 16', lg: '16 24' } })}>
-      <p
+    <>
+      <section
         className={css({
-          fontFamily: 'mono',
-          fontSize: 'xs',
-          textTransform: 'uppercase',
-          letterSpacing: 'wider',
-          color: 'textMuted',
-          marginBottom: '3',
+          bg: 'bg',
+          padding: { base: '14 6', md: '18 7vw' },
+          minHeight: '60vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          gap: '5',
         })}
       >
-        {project.type} · {project.year}
-      </p>
-      <h1
-        className={css({
-          fontFamily: 'display',
-          textTransform: 'uppercase',
-          color: 'text',
-          lineHeight: 'tight',
-          marginBottom: '8',
-        })}
-        style={{ fontSize: 'clamp(40px, 7vw, 88px)' }}
-      >
-        {project.title}
-      </h1>
-
-      <div
-        className={css({
-          display: 'grid',
-          gap: '8',
-          maxWidth: '68ch',
-          borderTop: '1px solid',
-          borderColor: 'border',
-          paddingTop: '8',
-        })}
-      >
+        <span className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'widest', color: 'accent', fontWeight: 'bold' })}>
+          {project.type} · {project.year}
+        </span>
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            textTransform: 'lowercase',
+            fontSize: 'clamp(56px, 10vw, 148px)',
+            lineHeight: 'tight',
+            letterSpacing: 'tight',
+            color: 'text',
+            maxWidth: '90%',
+          })}
+        >
+          {project.title}
+        </h1>
         {project.problem && (
+          <p className={css({ fontSize: 'md', color: 'textSecondary', maxWidth: '56ch', lineHeight: 'loose' })}>
+            {project.problem}
+          </p>
+        )}
+        {link && (
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener"
+            className={css({
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '2',
+              width: 'fit-content',
+              bg: 'accent',
+              color: 'cyan.50',
+              paddingX: '6',
+              paddingY: '3',
+              borderRadius: 'md',
+              minHeight: '44px',
+              fontWeight: 'bold',
+              fontSize: 'sm',
+              transition: 'background .2s ease, transform .2s ease',
+              _hover: { bg: 'spineBg', transform: 'translateY(-2px)' },
+            })}
+          >
+            Visit the project ↗
+          </a>
+        )}
+      </section>
+
+      <section className={css({ bg: 'cyan.200', padding: { base: '10 6', md: '14 7vw' }, display: 'grid', gap: '8' })}>
+        {project.role && (
           <div>
-            <h2 className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'wider', color: 'textMuted', marginBottom: '2' })}>
-              Problem
-            </h2>
-            <p className={css({ color: 'textSecondary', fontSize: 'md', lineHeight: 'normal' })}>{project.problem}</p>
+            <p className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'widest', color: 'cyan.800', fontWeight: 'bold', marginBottom: '3' })}>
+              Role
+            </p>
+            <p className={css({ fontSize: 'md', color: 'text', maxWidth: '60ch' })}>{project.role}</p>
           </div>
         )}
         {project.approach && (
           <div>
-            <h2 className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'wider', color: 'textMuted', marginBottom: '2' })}>
+            <p className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'widest', color: 'cyan.800', fontWeight: 'bold', marginBottom: '3' })}>
               Approach
-            </h2>
-            <p className={css({ color: 'textSecondary', fontSize: 'md', lineHeight: 'normal' })}>{project.approach}</p>
+            </p>
+            <p className={css({ fontSize: 'md', color: 'text', maxWidth: '60ch' })}>{project.approach}</p>
           </div>
         )}
         {project.outcome && (
           <div>
-            <h2 className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'wider', color: 'textMuted', marginBottom: '2' })}>
+            <p className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'widest', color: 'cyan.800', fontWeight: 'bold', marginBottom: '3' })}>
               Outcome
-            </h2>
-            <p className={css({ color: 'textSecondary', fontSize: 'md', lineHeight: 'normal' })}>{project.outcome}</p>
+            </p>
+            <p className={css({ fontSize: 'md', color: 'text', maxWidth: '60ch' })}>{project.outcome}</p>
           </div>
         )}
-      </div>
-
-      {project.stack && project.stack.length > 0 && (
-        <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '3', marginTop: '8' })}>
-          {project.stack.map((tech) => (
-            <span
-              key={tech}
-              className={css({
-                border: '1px solid',
-                borderColor: 'border',
-                borderRadius: 'full',
-                padding: '2 4',
-                fontSize: 'xs',
-                color: 'textSecondary',
-              })}
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {link && (
-        <a
-          href={link}
-          className={css({
-            display: 'inline-block',
-            marginTop: '10',
-            fontSize: 'sm',
-            textTransform: 'uppercase',
-            letterSpacing: 'wider',
-            color: 'accentGlow',
-            borderBottom: '1px solid',
-            borderColor: 'accent',
-            paddingBottom: '1',
-            _hover: { color: 'accent' },
-          })}
-        >
-          Visit ↗
-        </a>
-      )}
-    </div>
+        {project.stack && project.stack.length > 0 && (
+          <div>
+            <p className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'widest', color: 'cyan.800', fontWeight: 'bold', marginBottom: '3' })}>
+              Stack
+            </p>
+            <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '2' })}>
+              {project.stack.map((tech) => (
+                <span
+                  key={tech}
+                  className={css({
+                    fontSize: '2xs',
+                    textTransform: 'uppercase',
+                    letterSpacing: 'widest',
+                    fontWeight: 'bold',
+                    color: 'cyan.800',
+                    bg: 'cardBg',
+                    padding: '2 4',
+                    borderRadius: 'full',
+                    border: '1px solid',
+                    borderColor: 'cyan.500',
+                  })}
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
+    </>
   )
 }

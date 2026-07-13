@@ -21,63 +21,59 @@ function OgCard() {
         className={css({
           width: '1200px',
           height: '630px',
+          bg: 'cyan.200',
           position: 'relative',
           overflow: 'hidden',
-          bg: 'bg',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: '20',
+          padding: '80px 90px',
         })}
       >
         <p
           className={css({
-            fontSize: 'md',
+            fontSize: 'sm',
             textTransform: 'uppercase',
-            letterSpacing: 'wider',
-            color: 'textMuted',
-            marginBottom: '6',
+            letterSpacing: 'widest',
+            color: 'cyan.800',
+            fontWeight: 'bold',
+            margin: 0,
+            marginBottom: '10',
           })}
         >
-          New Moon · Day 28 <span className={css({ color: 'accentGlow' })}>◐</span>
+          Doug March · design &amp; product · 2026-07-13
         </p>
         <h1
           className={css({
             fontFamily: 'display',
-            textTransform: 'uppercase',
-            lineHeight: 'tight',
+            fontWeight: 'bold',
+            textTransform: 'lowercase',
+            fontSize: '132px',
+            lineHeight: '0.94',
+            letterSpacing: 'tight',
             color: 'text',
+            margin: 0,
+            maxWidth: '900px',
           })}
-          style={{ fontSize: '150px' }}
         >
-          <span className={css({ display: 'block' })}>Start Over</span>
+          <span className={css({ display: 'block' })}>we can</span>
           <span className={css({ display: 'block' })}>
-            In The <span className={css({ color: 'accent', textShadow: '0 0 48px {colors.accent.300}' })}>Dark</span>
+            <span className={css({ color: 'accent' })}>lose</span> our
           </span>
+          <span className={css({ display: 'block' })}>way</span>
         </h1>
 
         <div
           className={css({
             position: 'absolute',
-            bottom: '20',
-            right: '20',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '3',
+            bottom: '56px',
+            right: '90px',
+            display: 'inline-flex',
+            color: 'spineBg',
+            lineHeight: 0,
           })}
         >
-          <img src={logoMono} alt="" className={css({ width: '40px', height: 'auto', color: 'accentGlow' })} />
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'medium',
-              fontSize: 'lg',
-              letterSpacing: 'wide',
-              color: 'text',
-            })}
-          >
-            Doug March
-          </span>
+          <img src={logoMono} alt="Doug March" className={css({ width: '64px', height: 'auto', color: 'spineBg' })} />
         </div>
       </div>
     </div>

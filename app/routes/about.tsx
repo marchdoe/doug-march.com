@@ -1,86 +1,94 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
+import { Grid } from '../../styled-system/jsx'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
-  const words = identity.statement.split(' ')
-  const lastWord = words.pop()
-
   return (
-    <div className={css({ padding: { base: '8 6', md: '12 16', lg: '16 24' } })}>
-      <h1
+    <>
+      {/* IDENTITY */}
+      <section
         className={css({
-          fontFamily: 'display',
-          textTransform: 'uppercase',
-          lineHeight: 'tight',
-          color: 'text',
-          maxWidth: '18ch',
-          marginBottom: '6',
-        })}
-        style={{ fontSize: 'clamp(48px, 8vw, 96px)' }}
-      >
-        {words.join(' ')} <span className={css({ color: 'accent' })}>{lastWord}</span>
-      </h1>
-
-      <p
-        className={css({
-          fontSize: 'xs',
-          textTransform: 'uppercase',
-          letterSpacing: 'wider',
-          color: 'textMuted',
-          marginBottom: '12',
+          bg: 'bg',
+          padding: { base: '12 6', md: '16 7vw' },
+          minHeight: { base: 'auto', md: '60vh' },
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
         })}
       >
-        {identity.name} · {identity.role}
-      </p>
-
-      {/* Timeline */}
-      <section className={css({ marginBottom: '16' })}>
-        <h2
+        <p
           className={css({
             fontSize: 'xs',
             textTransform: 'uppercase',
-            letterSpacing: 'wider',
+            letterSpacing: 'widest',
             color: 'textMuted',
-            marginBottom: '4',
+            fontWeight: 'bold',
+            marginBottom: { base: '5', md: '8' },
           })}
         >
-          Timeline
-        </h2>
-        <div>
+          {identity.name} · {identity.role}
+        </p>
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            textTransform: 'lowercase',
+            fontSize: 'clamp(32px, 5vw, 64px)',
+            lineHeight: 'snug',
+            letterSpacing: 'tight',
+            color: 'text',
+            maxWidth: '46ch',
+            margin: 0,
+          })}
+        >
+          {identity.statement}
+        </h1>
+      </section>
+
+      {/* TIMELINE */}
+      <section className={css({ bg: 'bg', padding: { base: '0 6', md: '0 7vw' } })}>
+        <div className={css({ display: 'grid' })}>
           {timeline.map((entry, i) => (
             <div
               key={i}
               className={css({
-                display: 'flex',
-                gap: '6',
-                padding: '4 0',
-                borderTop: '1px solid',
+                display: 'grid',
+                gridTemplateColumns: { base: '96px 1fr', md: '120px 1fr' },
+                gap: '5',
+                padding: { base: '6 0', md: '8 0' },
+                borderBottom: '1px solid',
                 borderColor: 'border',
                 alignItems: 'baseline',
-                flexWrap: { base: 'wrap', md: 'nowrap' },
               })}
             >
               <span
                 className={css({
-                  flex: '0 0 120px',
-                  minWidth: '120px',
-                  fontFamily: 'mono',
+                  fontFamily: 'display',
+                  fontWeight: 'semibold',
                   fontVariantNumeric: 'tabular-nums',
-                  color: 'accentGlow',
-                  fontSize: 'sm',
+                  fontSize: 'md',
+                  color: entry.current ? 'accent' : 'textSecondary',
                 })}
               >
                 {entry.year}
               </span>
-              <div className={css({ flex: '1' })}>
-                <span className={css({ color: 'text', fontWeight: 'medium', fontSize: 'md' })}>
-                  {entry.role} · {entry.company}
-                </span>
-                <p className={css({ color: 'textSecondary', fontSize: 'sm', marginTop: '1' })}>
+              <div>
+                <div
+                  className={css({
+                    fontFamily: 'display',
+                    fontWeight: 'bold',
+                    fontSize: 'lg',
+                    color: 'text',
+                    letterSpacing: 'tight',
+                  })}
+                >
+                  {entry.role} <span className={css({ color: 'textMuted', fontWeight: 'normal' })}>· {entry.company}</span>
+                </div>
+                <p className={css({ fontSize: 'sm', color: 'textSecondary', marginTop: '2', maxWidth: '64ch' })}>
                   {entry.description}
                 </p>
               </div>
@@ -89,30 +97,40 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* Capabilities */}
-      <section className={css({ marginBottom: '16' })}>
-        <h2
+      {/* CAPABILITIES */}
+      <section
+        className={css({
+          bg: 'cyan.200',
+          padding: { base: '10 6', md: '12 7vw' },
+        })}
+      >
+        <p
           className={css({
             fontSize: 'xs',
             textTransform: 'uppercase',
-            letterSpacing: 'wider',
-            color: 'textMuted',
-            marginBottom: '4',
+            letterSpacing: 'widest',
+            color: 'cyan.800',
+            fontWeight: 'bold',
+            marginBottom: '6',
           })}
         >
           Capabilities
-        </h2>
+        </p>
         <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '3' })}>
           {capabilities.map((cap) => (
             <span
               key={cap}
               className={css({
-                border: '1px solid',
-                borderColor: 'border',
-                borderRadius: 'full',
+                fontSize: '2xs',
+                textTransform: 'uppercase',
+                letterSpacing: 'widest',
+                fontWeight: 'bold',
+                color: 'cyan.800',
+                bg: 'cardBg',
                 padding: '2 4',
-                fontSize: 'xs',
-                color: 'textSecondary',
+                borderRadius: 'full',
+                border: '1px solid',
+                borderColor: 'cyan.500',
               })}
             >
               {cap}
@@ -121,85 +139,93 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* Education */}
-      <section className={css({ marginBottom: '16' })}>
-        <h2
-          className={css({
-            fontSize: 'xs',
-            textTransform: 'uppercase',
-            letterSpacing: 'wider',
-            color: 'textMuted',
-            marginBottom: '4',
-          })}
-        >
-          Education
-        </h2>
+      {/* EDUCATION */}
+      <section className={css({ bg: 'bg', padding: { base: '10 6', md: '12 7vw' } })}>
         <div
           className={css({
-            display: 'flex',
-            gap: '6',
-            padding: '4 0',
-            borderTop: '1px solid',
-            borderColor: 'border',
-            alignItems: 'baseline',
-            flexWrap: { base: 'wrap', md: 'nowrap' },
+            bg: 'cardBg',
+            borderRadius: 'md',
+            padding: '6',
+            boxShadow: '0 20px 60px -24px rgba(16,107,118,0.28)',
+            maxWidth: '52ch',
           })}
         >
-          <span
-            className={css({
-              flex: '0 0 120px',
-              minWidth: '120px',
-              fontFamily: 'mono',
-              fontVariantNumeric: 'tabular-nums',
-              color: 'accentGlow',
-              fontSize: 'sm',
-            })}
-          >
-            {education.years}
-          </span>
-          <div>
-            <span className={css({ color: 'text', fontWeight: 'medium', fontSize: 'md' })}>
-              {education.school}
-            </span>
-            <p className={css({ color: 'textSecondary', fontSize: 'sm', marginTop: '1' })}>
-              {education.degree} · {education.concentration}
-            </p>
-          </div>
+          <p className={css({ fontFamily: 'display', fontWeight: 'bold', fontSize: 'lg', color: 'text', margin: 0 })}>
+            {education.school} — {education.degree}
+          </p>
+          <p className={css({ fontSize: 'sm', color: 'textSecondary', marginTop: '2' })}>
+            {education.concentration} · {education.years}
+          </p>
         </div>
       </section>
 
-      {/* Personal data strip */}
+      {/* PERSONAL EVIDENCE */}
       <section
         className={css({
-          display: 'grid',
-          gridTemplateColumns: { base: '1fr', md: 'repeat(3, 1fr)' },
-          gap: '6',
-          borderTop: '1px solid',
-          borderColor: 'border',
-          paddingTop: '6',
+          bg: 'spineBg',
+          color: 'textOnSpine',
+          padding: { base: '12 6', md: '16 7vw' },
         })}
       >
-        <div className={css({ display: 'flex', flexDirection: 'column', gap: '1' })}>
-          <span className={css({ fontSize: '2xs', textTransform: 'uppercase', letterSpacing: 'wider', color: 'textMuted' })}>
-            Holes In One
-          </span>
-          <span className={css({ fontFamily: 'display', fontSize: 'xl', color: 'text' })}>
-            {personal.holesInOne} <span className={css({ color: 'textSecondary', fontFamily: 'body', fontSize: 'sm' })}>· {personal.sport}</span>
-          </span>
-        </div>
-        <div className={css({ display: 'flex', flexDirection: 'column', gap: '1' })}>
-          <span className={css({ fontSize: '2xs', textTransform: 'uppercase', letterSpacing: 'wider', color: 'textMuted' })}>
-            Teams
-          </span>
-          <span className={css({ fontSize: 'sm', color: 'textSecondary' })}>{personal.teams.join(' · ')}</span>
-        </div>
-        <div className={css({ display: 'flex', flexDirection: 'column', gap: '1' })}>
-          <span className={css({ fontSize: '2xs', textTransform: 'uppercase', letterSpacing: 'wider', color: 'textMuted' })}>
-            Current Focus
-          </span>
-          <span className={css({ fontSize: 'sm', color: 'textSecondary' })}>{personal.currentFocus}</span>
-        </div>
+        <Grid gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap="4">
+          <article className={statCardClass}>
+            <span className={statTagClass}>Holes in one</span>
+            <div className={statScoreClass}>{personal.holesInOne}</div>
+            <span className={statCaptionClass}>{personal.sport}</span>
+          </article>
+          <article className={statCardClass}>
+            <span className={statTagClass}>Teams</span>
+            <div className={css({ fontFamily: 'display', fontWeight: 'bold', fontSize: 'lg', color: 'text' })}>
+              {personal.teams.join(' · ')}
+            </div>
+            <span className={statCaptionClass}>fandom</span>
+          </article>
+          <article className={statCardClass}>
+            <span className={statTagClass}>Current focus</span>
+            <div className={css({ fontSize: 'sm', color: 'textSecondary', marginTop: 'auto' })}>
+              {personal.currentFocus}
+            </div>
+          </article>
+        </Grid>
       </section>
-    </div>
+    </>
   )
 }
+
+const statCardClass = css({
+  bg: 'cardBg',
+  color: 'text',
+  borderRadius: 'md',
+  padding: '6',
+  boxShadow: '0 20px 60px -24px rgba(16,107,118,0.28)',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '3',
+  minHeight: '180px',
+})
+
+const statTagClass = css({
+  fontSize: '2xs',
+  textTransform: 'uppercase',
+  letterSpacing: 'widest',
+  color: 'textMuted',
+  fontWeight: 'bold',
+})
+
+const statScoreClass = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  letterSpacing: 'tight',
+  fontSize: 'clamp(48px, 7vw, 88px)',
+  lineHeight: '0.86',
+  color: 'accent',
+})
+
+const statCaptionClass = css({
+  fontSize: 'xs',
+  textTransform: 'uppercase',
+  letterSpacing: 'wide',
+  color: 'textMuted',
+  fontWeight: 'bold',
+  marginTop: 'auto',
+})

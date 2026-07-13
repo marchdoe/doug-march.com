@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 194,
+    "s": 82,
+    "l": 40,
+    "name": "glacial cyan"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "cyan",
+    "name": "cool fog"
+  },
+  "mood_word": "adrift",
+  "color_story": "A drenched glacial-cyan fog — the color of open water and low cloud where landmarks dissolve — so the whole page feels like the moment you realize you've lost the path."
+}
