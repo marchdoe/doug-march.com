@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 233,
+    "s": 78,
+    "l": 49,
+    "name": "Cobalt"
+  },
+  "secondary_accent": {
+    "h": 222,
+    "s": 100,
+    "l": 72,
+    "name": "Electric Sky"
+  },
+  "neutral_family": {
+    "tinted_toward": "blue",
+    "name": "Indigo Slate"
+  },
+  "mood_word": "candid",
+  "color_story": "Cobalt is corrective ink — the blue pen you drag across your own draft before anyone else can."
+}

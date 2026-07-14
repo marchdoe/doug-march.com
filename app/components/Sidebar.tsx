@@ -1,74 +1,128 @@
+import { Flex, Box } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import logoMono from '../assets/logo-mono.svg'
+import { identity } from '../content/about'
 
-const navLinkClass = css({
-  fontFamily: 'body',
-  fontWeight: 'bold',
-  fontSize: 'xs',
-  textTransform: 'uppercase',
-  letterSpacing: 'widest',
-  color: 'textOnSpine',
-  opacity: 0.8,
-  padding: { base: '2', md: '2' },
-  minHeight: '44px',
-  display: 'inline-flex',
-  alignItems: 'center',
-  writingMode: { base: 'horizontal-tb', md: 'vertical-rl' },
-  transform: { base: 'none', md: 'rotate(180deg)' },
-  transition: 'opacity .2s ease',
-  _hover: { opacity: 1 },
-})
+const navLinks = [
+  { label: 'Work', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Index', href: '/' },
+]
 
 export function Sidebar() {
   return (
-    <div
-      className={css({
-        bg: 'spineBg',
-        color: 'textOnSpine',
-        display: 'flex',
-        flexDirection: { base: 'row', md: 'column' },
-        alignItems: 'center',
-        justifyContent: { base: 'space-between', md: 'flex-start' },
-        padding: { base: '3', md: '5' },
-        gap: { base: '4', md: '0' },
-        position: 'sticky',
-        top: 0,
-        zIndex: 20,
-        width: { base: 'auto', md: '72px' },
-        height: { base: 'auto', md: '100vh' },
-      })}
-    >
+    <>
+      {/* brand lockup — top left, single-color cream */}
       <a
         href="/"
-        aria-label="Doug March — home"
-        className={css({ display: 'inline-flex', color: 'textOnSpine', lineHeight: 0 })}
+        aria-label={`${identity.name} — home`}
+        className={css({
+          position: 'fixed',
+          top: { base: '5', md: '6' },
+          left: { base: '5', md: '6' },
+          zIndex: 50,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '3',
+          color: 'text',
+        })}
       >
         <img
           src={logoMono}
-          alt="Doug March"
+          alt=""
           className={css({
-            width: { base: '44px', md: '40px' },
-            height: 'auto',
+            height: { base: '32px', md: '40px' },
+            width: 'auto',
             display: 'block',
-            color: 'textOnSpine',
+            color: 'text',
           })}
         />
+        <Flex direction="column" gap="0">
+          <span
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'semibold',
+              fontSize: 'sm',
+              letterSpacing: 'normal',
+              color: 'text',
+              whiteSpace: 'nowrap',
+            })}
+          >
+            {identity.name}
+          </span>
+          <span
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'medium',
+              fontSize: '2xs',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'textSecondary',
+              whiteSpace: 'nowrap',
+            })}
+          >
+            {identity.role}
+          </span>
+        </Flex>
       </a>
-      <nav
+
+      {/* nav pills — top right */}
+      <Flex
+        as="nav"
         aria-label="Primary"
         className={css({
-          display: 'flex',
-          flexDirection: { base: 'row', md: 'column' },
-          gap: { base: '1', md: '2' },
-          marginTop: { base: '0', md: 'auto' },
-          marginBottom: { base: '0', md: '2' },
-          alignItems: 'center',
+          position: 'fixed',
+          top: { base: '5', md: '6' },
+          right: { base: '4', md: '6' },
+          zIndex: 50,
+          gap: '2',
         })}
       >
-        <a href="/#work" className={navLinkClass}>work</a>
-        <a href="/about" className={navLinkClass}>about</a>
-        <a href="/" className={navLinkClass}>index</a>
-      </nav>
-    </div>
+        {navLinks.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'semibold',
+              fontSize: '2xs',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'text',
+              paddingX: '4',
+              minHeight: '44px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              border: '1px solid',
+              borderColor: 'border',
+              borderRadius: 'full',
+              background: 'transparent',
+              transition: 'background .15s ease, color .15s ease, border-color .15s ease',
+              _hover: { background: 'text', color: 'bg', borderColor: 'text' },
+            })}
+          >
+            {link.label}
+          </a>
+        ))}
+      </Flex>
+
+      {/* baseline stamp — bottom left, pinned to canvas */}
+      <Box
+        className={css({
+          position: 'fixed',
+          left: { base: '5', md: '6' },
+          bottom: { base: '4', md: '5' },
+          zIndex: 50,
+          fontFamily: 'body',
+          fontWeight: 'medium',
+          fontSize: '2xs',
+          letterSpacing: 'wider',
+          textTransform: 'uppercase',
+          color: 'textMuted',
+        })}
+      >
+        Summer · 14.5h daylight · Jul 14 2026
+      </Box>
+    </>
   )
 }

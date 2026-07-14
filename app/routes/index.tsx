@@ -1,294 +1,293 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Grid, Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Box, Grid } from '../../styled-system/jsx'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
-function HomePage() {
+function WorkRow({ title, type, year, href, external }: { title: string; type: string; year: number; href: string; external?: boolean }) {
   return (
-    <>
-      {/* FOLD 1 — HERO */}
-      <section
-        className={css({
-          padding: { base: '12 6', md: '16 7vw' },
-          minHeight: '88vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          position: 'relative',
-          paddingTop: { base: '16', md: '24' },
-        })}
-      >
-        <p
+    <a
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener' : undefined}
+      className={css({
+        display: 'grid',
+        gridTemplateColumns: '1fr auto',
+        alignItems: 'baseline',
+        gap: '3',
+        paddingY: '4',
+        borderBottom: '1px solid',
+        borderColor: 'border',
+        transition: 'padding-left .15s ease',
+        _hover: { paddingLeft: '2' },
+      })}
+    >
+      <span>
+        <span
           className={css({
-            fontSize: 'xs',
-            textTransform: 'uppercase',
-            letterSpacing: 'widest',
-            color: 'textMuted',
-            fontWeight: 'bold',
-            marginBottom: { base: '5', md: '10' },
+            display: 'block',
+            fontFamily: 'body',
+            fontWeight: 'semibold',
+            fontSize: 'md',
+            letterSpacing: 'normal',
+            color: 'text',
           })}
         >
-          Doug March · design &amp; product · 2026-07-13
-        </p>
+          {title}
+        </span>
+        <span
+          className={css({
+            display: 'block',
+            fontFamily: 'body',
+            fontSize: 'xs',
+            color: 'textMuted',
+            marginTop: '1',
+          })}
+        >
+          {type}
+        </span>
+      </span>
+      <span
+        className={css({
+          fontFamily: 'display',
+          fontWeight: 'normal',
+          fontSize: 'xl',
+          letterSpacing: 'normal',
+          color: 'textMuted',
+          whiteSpace: 'nowrap',
+        })}
+      >
+        {year}
+      </span>
+    </a>
+  )
+}
+
+function HomePage() {
+  return (
+    <Grid gridTemplateColumns={{ base: '1fr', md: '1.6fr 1fr' }} minH="100vh">
+      {/* LEFT: cobalt confession */}
+      <Box
+        position="relative"
+        bg="bg"
+        paddingX={{ base: '5', md: '9' }}
+        paddingTop={{ base: '20', md: '20' }}
+        paddingBottom={{ base: '12', md: '10' }}
+        minH={{ base: 'auto', md: '100vh' }}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+      >
+        <Flex
+          alignItems="center"
+          gap="3"
+          marginBottom={{ base: '5', md: '8' }}
+          className={css({
+            fontFamily: 'body',
+            fontWeight: 'semibold',
+            fontSize: '2xs',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textSecondary',
+          })}
+        >
+          <Box width={{ base: '28px', md: '54px' }} height="2px" background="accent" />
+          Today's read · Jul 14 2026
+        </Flex>
+
         <h1
           className={css({
             fontFamily: 'display',
-            fontWeight: 'bold',
-            textTransform: 'lowercase',
-            fontSize: 'clamp(56px, 10vw, 148px)',
+            fontWeight: 'normal',
+            fontSize: { base: '40px', md: '72px', lg: '112px' },
             lineHeight: 'tight',
             letterSpacing: 'tight',
+            textTransform: 'uppercase',
             color: 'text',
-            margin: 0,
-            maxWidth: { base: '100%', md: '82%' },
+            maxWidth: '14ch',
           })}
         >
-          <span className={css({ display: 'block' })}>we can</span>
-          <span className={css({ display: 'block' })}>
-            <span className={css({ color: 'accent' })}>lose</span> our
-          </span>
-          <span className={css({ display: 'block' })}>way</span>
+          It is better to point out your{' '}
+          <span className={css({ color: 'accent' })}>own mistakes</span> than have somebody else do it.
         </h1>
-        <span
-          className={css({
-            marginTop: { base: '8', md: '16' },
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '2',
-            fontSize: 'xs',
-            letterSpacing: 'wide',
-            color: 'accent',
-            textTransform: 'uppercase',
-            fontWeight: 'bold',
-            width: 'fit-content',
-          })}
-        >
-          <span
-            aria-hidden="true"
-            className={css({
-              width: '16px',
-              height: '16px',
-              borderRadius: 'full',
-              background:
-                'radial-gradient(circle at 68% 40%, {colors.cyan.400} 0.4%, {colors.cyan.800} 6%)',
-              border: '1px solid',
-              borderColor: 'accent',
-              boxShadow: '0 0 0 4px rgba(11,135,148,0.12)',
-            })}
-          />
-          new moon · 0.4% lit · no light to steer by
-        </span>
-        <div
-          className={css({
-            position: 'absolute',
-            bottom: { base: '6', md: '12' },
-            right: '7vw',
-            fontSize: '2xs',
-            textTransform: 'uppercase',
-            letterSpacing: 'widest',
-            color: 'textMuted',
-            fontWeight: 'bold',
-            display: { base: 'none', md: 'flex' },
-            gap: '2',
-            alignItems: 'center',
-          })}
-        >
-          scroll ↓
-        </div>
-      </section>
 
-      {/* FOLD 2 — QUOTE */}
-      <section
-        className={css({
-          bg: 'cyan.200',
-          minHeight: '80vh',
-          padding: { base: '12 6', md: '16 7vw' },
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        })}
-      >
         <p
           className={css({
-            fontSize: 'xs',
+            marginTop: { base: '6', md: '8' },
+            fontFamily: 'body',
+            fontWeight: 'medium',
+            fontSize: 'sm',
+            letterSpacing: 'wider',
             textTransform: 'uppercase',
-            letterSpacing: 'widest',
-            color: 'cyan.800',
-            fontWeight: 'bold',
-            marginBottom: { base: '6', md: '10' },
+            color: 'textSecondary',
           })}
         >
-          the whole of it
+          — Warren Buffett
         </p>
-        <blockquote
+      </Box>
+
+      {/* RIGHT: indigo ledger */}
+      <Box
+        bg="panel"
+        color="text"
+        paddingX={{ base: '5', md: '7' }}
+        paddingY={{ base: '8', md: '9' }}
+        display="flex"
+        flexDirection="column"
+        css={{ lineHeight: 'loose' }}
+      >
+        <h2
           className={css({
             fontFamily: 'display',
-            fontWeight: 'semibold',
-            fontSize: 'clamp(26px, 4.4vw, 54px)',
-            lineHeight: 'snug',
+            fontWeight: 'normal',
+            fontSize: { base: '30px', md: '40px' },
+            lineHeight: 'tight',
+            letterSpacing: 'normal',
+            textTransform: 'uppercase',
             color: 'text',
-            maxWidth: '22ch',
-            margin: 0,
+            marginBottom: '1',
           })}
         >
-          No matter how smart we may think we are, no matter how committed we are to our truth,{' '}
-          <span className={css({ color: 'accent' })}>we can lose our way.</span>
-        </blockquote>
+          Pointed Out Today
+        </h2>
         <p
           className={css({
-            marginTop: { base: '7', md: '12' },
-            fontSize: 'sm',
-            fontWeight: 'bold',
-            letterSpacing: 'wide',
-            color: 'cyan.800',
+            fontFamily: 'body',
+            fontSize: 'xs',
+            color: 'textMuted',
+            marginBottom: '7',
           })}
         >
-          — Kamal Ravikant
+          The day's honest self-reports, in the open.
         </p>
-      </section>
 
-      {/* FOLD 3 — EVIDENCE */}
-      <section
-        className={css({
-          bg: 'spineBg',
-          color: 'textOnSpine',
-          padding: { base: '12 6', md: '16 7vw' },
-        })}
-      >
-        <Box maxWidth="44ch" marginBottom={{ base: '8', md: '14' }}>
-          <h2
+        <Flex
+          alignSelf="flex-start"
+          alignItems="center"
+          gap="2"
+          background="surface"
+          borderRadius="sm"
+          paddingX="3"
+          paddingY="2"
+          marginBottom="8"
+          className={css({
+            fontFamily: 'body',
+            fontWeight: 'semibold',
+            fontSize: '2xs',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'text',
+          })}
+        >
+          <Box width="13px" height="13px" borderRadius="full" border="1.5px solid" borderColor="textMuted" />
+          New Moon · 0.2%
+        </Flex>
+
+        <Box marginBottom="10">
+          <Box
             className={css({
-              fontFamily: 'display',
+              fontFamily: 'body',
               fontWeight: 'bold',
-              textTransform: 'lowercase',
-              fontSize: 'clamp(30px, 4.6vw, 56px)',
-              lineHeight: 'snug',
-              letterSpacing: 'tight',
-              color: 'textOnSpine',
+              fontSize: '2xs',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'sky.300',
+              paddingBottom: '3',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+              marginBottom: '2',
             })}
           >
-            the certain, and the lost
-          </h2>
-          <p className={css({ color: 'cyan.200', fontSize: 'sm', marginTop: '4', maxWidth: '52ch' })}>
-            Today's evidence that conviction is no map. Some walked in with a plan and still ended
-            up in the fog — one didn't.
+            The Scoreline
+          </Box>
+
+          <Flex justify="space-between" align="baseline" gap="4" paddingY="4" borderBottom="1px solid" borderColor="border">
+            <Box>
+              <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'textMuted', marginBottom: '1' })}>
+                › MLB · Detroit
+              </Box>
+              <Box className={css({ fontFamily: 'body', fontWeight: 'medium', fontSize: 'sm', color: 'text' })}>
+                Tigers — shut out at home
+              </Box>
+            </Box>
+            <Box className={css({ fontFamily: 'display', fontSize: 'xl', color: 'text', whiteSpace: 'nowrap' })}>
+              0–5 <span className={css({ fontFamily: 'body', fontSize: 'xs', fontWeight: 'semibold', color: 'textMuted' })}>L</span>
+            </Box>
+          </Flex>
+
+          <Flex justify="space-between" align="baseline" gap="4" paddingY="4" borderBottom="1px solid" borderColor="border">
+            <Box>
+              <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'textMuted', marginBottom: '1' })}>
+                › Genesis Scottish Open
+              </Box>
+              <Box className={css({ fontFamily: 'body', fontWeight: 'medium', fontSize: 'sm', color: 'text' })}>
+                Tom Kim — the one clean card
+              </Box>
+            </Box>
+            <Box className={css({ fontFamily: 'display', fontSize: 'xl', color: 'accent', whiteSpace: 'nowrap' })}>
+              −17 <span className={css({ fontFamily: 'body', fontSize: 'xs', fontWeight: 'semibold', color: 'textMuted' })}>Final</span>
+            </Box>
+          </Flex>
+
+          <p
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'medium',
+              fontSize: 'xs',
+              letterSpacing: 'wide',
+              textTransform: 'uppercase',
+              color: 'textMuted',
+              paddingTop: '4',
+              lineHeight: 'loose',
+            })}
+          >
+            On: <b className={css({ color: 'textSecondary', fontWeight: 'semibold' })}>Guided by Voices</b> ·{' '}
+            <b className={css({ color: 'textSecondary', fontWeight: 'semibold' })}>My Morning Jacket</b> ·{' '}
+            <b className={css({ color: 'textSecondary', fontWeight: 'semibold' })}>Radiohead</b>
           </p>
         </Box>
-        <Grid gridTemplateColumns="repeat(auto-fit, minmax(240px, 1fr))" gap="4">
-          <article
-            className={css({
-              gridColumn: { base: 'auto', md: 'span 2' },
-              bg: 'cardBg',
-              color: 'text',
-              borderRadius: 'md',
-              padding: '6',
-              boxShadow: '0 20px 60px -24px rgba(16,107,118,0.28)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '3',
-              minHeight: '210px',
-            })}
-          >
-            <span className={css({ fontSize: '2xs', textTransform: 'uppercase', letterSpacing: 'widest', color: 'textMuted', fontWeight: 'bold' })}>
-              MLB · Detroit Tigers
-            </span>
-            <div className={css({ fontFamily: 'display', fontWeight: 'bold', letterSpacing: 'tight', fontSize: 'clamp(56px, 9vw, 104px)', lineHeight: '0.86', color: 'text' })}>
-              0<span className={css({ color: 'accent' })}>–</span>5
-            </div>
-            <span className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'wide', color: 'textMuted', fontWeight: 'bold', marginTop: 'auto' })}>
-              detroit, shut out despite the plan
-            </span>
-          </article>
-          <article
-            className={css({
-              bg: 'cardBg',
-              color: 'text',
-              borderRadius: 'md',
-              padding: '6',
-              boxShadow: '0 20px 60px -24px rgba(16,107,118,0.28)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '3',
-              minHeight: '210px',
-            })}
-          >
-            <span className={css({ fontSize: '2xs', textTransform: 'uppercase', letterSpacing: 'widest', color: 'textMuted', fontWeight: 'bold' })}>
-              Golf · Scottish Open
-            </span>
-            <div className={css({ fontFamily: 'display', fontWeight: 'bold', letterSpacing: 'tight', fontSize: 'clamp(56px, 9vw, 104px)', lineHeight: '0.86', color: 'text' })}>
-              −17
-            </div>
-            <span className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'wide', color: 'textMuted', fontWeight: 'bold', marginTop: 'auto' })}>
-              tom kim — someone who didn't
-            </span>
-          </article>
-          <article
-            className={css({
-              bg: 'cardBg',
-              color: 'text',
-              borderRadius: 'md',
-              padding: '6',
-              boxShadow: '0 20px 60px -24px rgba(16,107,118,0.28)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '3',
-              minHeight: '210px',
-            })}
-          >
-            <span className={css({ fontSize: '2xs', textTransform: 'uppercase', letterSpacing: 'widest', color: 'textMuted', fontWeight: 'bold' })}>
-              Hacker News · artifact
-            </span>
-            <h3 className={css({ fontFamily: 'display', fontWeight: 'bold', fontSize: 'lg', letterSpacing: 'tight', color: 'text' })}>
-              GhostLock
-            </h3>
-            <p className={css({ fontSize: 'sm', color: 'textSecondary', margin: 0 })}>
-              15 years unseen — code that ran, unread, in the dark. A way lost and only now found.
-            </p>
-            <span className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'wide', color: 'textMuted', fontWeight: 'bold', marginTop: 'auto' })}>
-              the long quiet drift
-            </span>
-          </article>
-        </Grid>
-      </section>
 
-      {/* FOLD 4 — WORK */}
-      <section id="work" className={css({ bg: 'bg', padding: { base: '12 6', md: '16 7vw' } })}>
         {featuredProject && (
-          <article
-            className={css({
-              bg: 'cardBg',
-              borderRadius: 'md',
-              boxShadow: '0 20px 60px -24px rgba(16,107,118,0.28)',
-              padding: { base: '6', md: '12' },
-              marginBottom: { base: '8', md: '14' },
-              display: 'grid',
-              gap: '5',
-            })}
-          >
-            <span className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'widest', color: 'accent', fontWeight: 'bold' })}>
+          <Box marginBottom="10">
+            <Box
+              className={css({
+                fontFamily: 'body',
+                fontWeight: 'bold',
+                fontSize: '2xs',
+                letterSpacing: 'wider',
+                textTransform: 'uppercase',
+                color: 'sky.300',
+                paddingBottom: '3',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+                marginBottom: '2',
+              })}
+            >
               Featured
-            </span>
-            <h2
+            </Box>
+            <p className={css({ fontFamily: 'body', fontSize: '2xs', letterSpacing: 'wider', textTransform: 'uppercase', color: 'sky.300', marginBottom: '2' })}>
+              {featuredProject.type} · {featuredProject.year}
+            </p>
+            <h3
               className={css({
                 fontFamily: 'display',
-                fontWeight: 'bold',
-                textTransform: 'lowercase',
-                fontSize: 'clamp(38px, 6vw, 76px)',
-                lineHeight: '0.94',
-                letterSpacing: 'tight',
+                fontWeight: 'normal',
+                fontSize: { base: '34px', md: '46px' },
+                lineHeight: 'tight',
+                letterSpacing: 'normal',
+                textTransform: 'uppercase',
                 color: 'text',
+                margin: '1 0',
               })}
             >
               {featuredProject.title}
-            </h2>
-            <p className={css({ fontSize: 'md', color: 'textSecondary', maxWidth: '56ch', lineHeight: 'loose' })}>
-              {featuredProject.problem}
-            </p>
-            <span className={css({ fontSize: 'xs', textTransform: 'uppercase', letterSpacing: 'wide', color: 'textMuted', fontWeight: 'bold' })}>
-              {featuredProject.type} · {featuredProject.year}
-            </span>
+            </h3>
+            {featuredProject.problem && (
+              <p className={css({ fontFamily: 'body', fontSize: 'sm', lineHeight: 'loose', color: 'textSecondary', maxWidth: '42ch', marginBottom: '4' })}>
+                {featuredProject.problem}
+              </p>
+            )}
             {featuredProject.externalUrl && (
               <a
                 href={featuredProject.externalUrl}
@@ -298,136 +297,76 @@ function HomePage() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '2',
-                  width: 'fit-content',
-                  bg: 'accent',
-                  color: 'cyan.50',
-                  paddingX: '6',
-                  paddingY: '3',
-                  borderRadius: 'md',
                   minHeight: '44px',
-                  fontWeight: 'bold',
-                  fontSize: 'sm',
-                  transition: 'background .2s ease, transform .2s ease',
-                  _hover: { bg: 'spineBg', transform: 'translateY(-2px)' },
+                  fontFamily: 'body',
+                  fontWeight: 'semibold',
+                  fontSize: 'xs',
+                  letterSpacing: 'wide',
+                  textTransform: 'uppercase',
+                  color: 'accent',
+                  borderBottom: '1px solid',
+                  borderColor: 'accent',
+                  paddingBottom: '1',
+                  _hover: { color: 'sky.300', borderColor: 'sky.300' },
                 })}
               >
-                Visit the project ↗
+                Visit the live site →
               </a>
             )}
-          </article>
+          </Box>
         )}
 
-        <p
-          className={css({
-            fontSize: 'xs',
-            textTransform: 'uppercase',
-            letterSpacing: 'widest',
-            color: 'textMuted',
-            fontWeight: 'bold',
-            margin: 0,
-            marginBottom: '5',
-            paddingBottom: '3',
-            borderBottom: '1px solid',
-            borderColor: 'border',
-          })}
-        >
-          Selected work
-        </p>
-        <div className={css({ display: 'grid', marginBottom: { base: '10', md: '16' } })}>
-          {selectedWork.map((project) => (
-            <a
-              key={project.slug}
-              href={`/work/${project.slug}`}
-              className={css({
-                display: 'grid',
-                gridTemplateColumns: '1fr auto auto',
-                alignItems: 'baseline',
-                gap: '4',
-                padding: '5 1',
-                borderBottom: '1px solid',
-                borderColor: 'border',
-                transition: 'padding-left .25s ease',
-                _hover: { paddingLeft: '3' },
-              })}
-            >
-              <span
-                className={css({
-                  fontFamily: 'display',
-                  fontWeight: 'bold',
-                  fontSize: 'clamp(22px, 3vw, 34px)',
-                  letterSpacing: 'tight',
-                  color: 'text',
-                  _groupHover: {},
-                })}
-              >
-                {project.title}
-              </span>
-              <span className={css({ fontSize: '2xs', textTransform: 'uppercase', letterSpacing: 'wide', color: 'textMuted', fontWeight: 'bold' })}>
-                {project.type}
-              </span>
-              <span className={css({ fontFamily: 'display', fontWeight: 'semibold', fontSize: 'sm', color: 'textSecondary' })}>
-                {project.year}
-              </span>
-            </a>
+        <Box marginBottom="10">
+          <Box
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: '2xs',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'sky.300',
+              paddingBottom: '3',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+              marginBottom: '2',
+            })}
+          >
+            Selected Work
+          </Box>
+          {selectedWork.map((p) => (
+            <WorkRow key={p.slug} title={p.title} type={p.type} year={p.year} href={`/work/${p.slug}`} />
           ))}
-        </div>
+        </Box>
 
-        <p
-          className={css({
-            fontSize: 'xs',
-            textTransform: 'uppercase',
-            letterSpacing: 'widest',
-            color: 'textMuted',
-            fontWeight: 'bold',
-            margin: 0,
-            marginBottom: '5',
-            paddingBottom: '3',
-            borderBottom: '1px solid',
-            borderColor: 'border',
-          })}
-        >
-          Experiments
-        </p>
-        <div className={css({ display: 'grid', marginBottom: { base: '10', md: '16' } })}>
-          {experiments.map((project) => (
-            <a
-              key={project.slug}
-              href={project.externalUrl ?? `/work/${project.slug}`}
-              target={project.externalUrl ? '_blank' : undefined}
-              rel={project.externalUrl ? 'noopener' : undefined}
-              className={css({
-                display: 'grid',
-                gridTemplateColumns: '1fr auto auto',
-                alignItems: 'baseline',
-                gap: '4',
-                padding: '5 1',
-                borderBottom: '1px solid',
-                borderColor: 'border',
-                transition: 'padding-left .25s ease',
-                _hover: { paddingLeft: '3' },
-              })}
-            >
-              <span
-                className={css({
-                  fontFamily: 'display',
-                  fontWeight: 'bold',
-                  fontSize: 'clamp(22px, 3vw, 34px)',
-                  letterSpacing: 'tight',
-                  color: 'text',
-                })}
-              >
-                {project.title}
-              </span>
-              <span className={css({ fontSize: '2xs', textTransform: 'uppercase', letterSpacing: 'wide', color: 'textMuted', fontWeight: 'bold' })}>
-                {project.type}
-              </span>
-              <span className={css({ fontFamily: 'display', fontWeight: 'semibold', fontSize: 'sm', color: 'textSecondary' })}>
-                {project.year}
-              </span>
-            </a>
+        <Box>
+          <Box
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: '2xs',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'sky.300',
+              paddingBottom: '3',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+              marginBottom: '2',
+            })}
+          >
+            Experiments
+          </Box>
+          {experiments.map((p) => (
+            <WorkRow
+              key={p.slug}
+              title={p.title}
+              type={p.type}
+              year={p.year}
+              href={p.externalUrl ?? `/work/${p.slug}`}
+              external={Boolean(p.externalUrl)}
+            />
           ))}
-        </div>
-      </section>
-    </>
+        </Box>
+      </Box>
+    </Grid>
   )
 }

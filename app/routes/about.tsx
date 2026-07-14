@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Grid, Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Grid } from '../../styled-system/jsx'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
@@ -8,224 +8,203 @@ export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
   return (
-    <>
-      {/* IDENTITY */}
-      <section
-        className={css({
-          bg: 'bg',
-          padding: { base: '12 6', md: '16 7vw' },
-          minHeight: { base: 'auto', md: '60vh' },
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        })}
+    <Grid gridTemplateColumns={{ base: '1fr', md: '1.6fr 1fr' }} minH="100vh">
+      {/* LEFT: cobalt identity statement */}
+      <Box
+        position="relative"
+        bg="bg"
+        paddingX={{ base: '5', md: '9' }}
+        paddingTop={{ base: '20', md: '20' }}
+        paddingBottom={{ base: '12', md: '10' }}
+        minH={{ base: 'auto', md: '100vh' }}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
       >
         <p
           className={css({
-            fontSize: 'xs',
+            fontFamily: 'body',
+            fontWeight: 'semibold',
+            fontSize: '2xs',
+            letterSpacing: 'wider',
             textTransform: 'uppercase',
-            letterSpacing: 'widest',
-            color: 'textMuted',
-            fontWeight: 'bold',
+            color: 'textSecondary',
             marginBottom: { base: '5', md: '8' },
           })}
         >
-          {identity.name} · {identity.role}
+          {identity.role}
         </p>
         <h1
           className={css({
             fontFamily: 'display',
-            fontWeight: 'bold',
-            textTransform: 'lowercase',
-            fontSize: 'clamp(32px, 5vw, 64px)',
-            lineHeight: 'snug',
+            fontWeight: 'normal',
+            fontSize: { base: '32px', md: '48px', lg: '80px' },
+            lineHeight: 'tight',
             letterSpacing: 'tight',
+            textTransform: 'uppercase',
             color: 'text',
-            maxWidth: '46ch',
-            margin: 0,
+            maxWidth: '16ch',
           })}
         >
           {identity.statement}
         </h1>
-      </section>
+      </Box>
 
-      {/* TIMELINE */}
-      <section className={css({ bg: 'bg', padding: { base: '0 6', md: '0 7vw' } })}>
-        <div className={css({ display: 'grid' })}>
+      {/* RIGHT: biographical ledger */}
+      <Box bg="panel" color="text" paddingX={{ base: '5', md: '7' }} paddingY={{ base: '8', md: '9' }}>
+        <Box marginBottom="10">
+          <Box
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: '2xs',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'sky.300',
+              paddingBottom: '3',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+              marginBottom: '2',
+            })}
+          >
+            Timeline
+          </Box>
           {timeline.map((entry, i) => (
-            <div
-              key={i}
-              className={css({
-                display: 'grid',
-                gridTemplateColumns: { base: '96px 1fr', md: '120px 1fr' },
-                gap: '5',
-                padding: { base: '6 0', md: '8 0' },
-                borderBottom: '1px solid',
-                borderColor: 'border',
-                alignItems: 'baseline',
-              })}
-            >
-              <span
-                className={css({
-                  fontFamily: 'display',
-                  fontWeight: 'semibold',
-                  fontVariantNumeric: 'tabular-nums',
-                  fontSize: 'md',
-                  color: entry.current ? 'accent' : 'textSecondary',
-                })}
+            <Flex key={i} gap="4" paddingY="4" borderBottom="1px solid" borderColor="border">
+              <Box
+                minWidth="120px"
+                flexShrink={0}
+                className={css({ fontFamily: 'display', fontSize: 'xl', color: 'textMuted', whiteSpace: 'nowrap' })}
               >
                 {entry.year}
-              </span>
-              <div>
-                <div
-                  className={css({
-                    fontFamily: 'display',
-                    fontWeight: 'bold',
-                    fontSize: 'lg',
-                    color: 'text',
-                    letterSpacing: 'tight',
-                  })}
-                >
+              </Box>
+              <Box>
+                <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: 'md', color: 'text' })}>
                   {entry.role} <span className={css({ color: 'textMuted', fontWeight: 'normal' })}>· {entry.company}</span>
-                </div>
-                <p className={css({ fontSize: 'sm', color: 'textSecondary', marginTop: '2', maxWidth: '64ch' })}>
+                </Box>
+                <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'textSecondary', marginTop: '1', lineHeight: 'loose' })}>
                   {entry.description}
-                </p>
-              </div>
-            </div>
+                </Box>
+              </Box>
+            </Flex>
           ))}
-        </div>
-      </section>
+        </Box>
 
-      {/* CAPABILITIES */}
-      <section
-        className={css({
-          bg: 'cyan.200',
-          padding: { base: '10 6', md: '12 7vw' },
-        })}
-      >
-        <p
-          className={css({
-            fontSize: 'xs',
-            textTransform: 'uppercase',
-            letterSpacing: 'widest',
-            color: 'cyan.800',
-            fontWeight: 'bold',
-            marginBottom: '6',
-          })}
-        >
-          Capabilities
-        </p>
-        <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '3' })}>
-          {capabilities.map((cap) => (
-            <span
-              key={cap}
-              className={css({
-                fontSize: '2xs',
-                textTransform: 'uppercase',
-                letterSpacing: 'widest',
-                fontWeight: 'bold',
-                color: 'cyan.800',
-                bg: 'cardBg',
-                padding: '2 4',
-                borderRadius: 'full',
-                border: '1px solid',
-                borderColor: 'cyan.500',
-              })}
-            >
-              {cap}
-            </span>
-          ))}
-        </div>
-      </section>
+        <Box marginBottom="10">
+          <Box
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: '2xs',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'sky.300',
+              paddingBottom: '3',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+              marginBottom: '3',
+            })}
+          >
+            Capabilities
+          </Box>
+          <Flex wrap="wrap" gap="2">
+            {capabilities.map((cap) => (
+              <Box
+                key={cap}
+                className={css({
+                  background: 'surface',
+                  borderRadius: 'sm',
+                  paddingX: '3',
+                  paddingY: '2',
+                  fontFamily: 'body',
+                  fontWeight: 'semibold',
+                  fontSize: '2xs',
+                  letterSpacing: 'wide',
+                  textTransform: 'uppercase',
+                  color: 'text',
+                })}
+              >
+                {cap}
+              </Box>
+            ))}
+          </Flex>
+        </Box>
 
-      {/* EDUCATION */}
-      <section className={css({ bg: 'bg', padding: { base: '10 6', md: '12 7vw' } })}>
-        <div
-          className={css({
-            bg: 'cardBg',
-            borderRadius: 'md',
-            padding: '6',
-            boxShadow: '0 20px 60px -24px rgba(16,107,118,0.28)',
-            maxWidth: '52ch',
-          })}
-        >
-          <p className={css({ fontFamily: 'display', fontWeight: 'bold', fontSize: 'lg', color: 'text', margin: 0 })}>
-            {education.school} — {education.degree}
-          </p>
-          <p className={css({ fontSize: 'sm', color: 'textSecondary', marginTop: '2' })}>
-            {education.concentration} · {education.years}
-          </p>
-        </div>
-      </section>
+        <Box marginBottom="10">
+          <Box
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: '2xs',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'sky.300',
+              paddingBottom: '3',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+              marginBottom: '2',
+            })}
+          >
+            Education
+          </Box>
+          <Flex justify="space-between" align="baseline" gap="4" paddingY="4" borderBottom="1px solid" borderColor="border">
+            <Box>
+              <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: 'md', color: 'text' })}>
+                {education.school}
+              </Box>
+              <Box className={css({ fontFamily: 'body', fontSize: 'xs', color: 'textMuted', marginTop: '1' })}>
+                {education.degree} · {education.concentration}
+              </Box>
+            </Box>
+            <Box className={css({ fontFamily: 'display', fontSize: 'lg', color: 'textMuted', whiteSpace: 'nowrap' })}>
+              {education.years}
+            </Box>
+          </Flex>
+        </Box>
 
-      {/* PERSONAL EVIDENCE */}
-      <section
-        className={css({
-          bg: 'spineBg',
-          color: 'textOnSpine',
-          padding: { base: '12 6', md: '16 7vw' },
-        })}
-      >
-        <Grid gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap="4">
-          <article className={statCardClass}>
-            <span className={statTagClass}>Holes in one</span>
-            <div className={statScoreClass}>{personal.holesInOne}</div>
-            <span className={statCaptionClass}>{personal.sport}</span>
-          </article>
-          <article className={statCardClass}>
-            <span className={statTagClass}>Teams</span>
-            <div className={css({ fontFamily: 'display', fontWeight: 'bold', fontSize: 'lg', color: 'text' })}>
+        <Box>
+          <Box
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: '2xs',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'sky.300',
+              paddingBottom: '3',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+              marginBottom: '2',
+            })}
+          >
+            Off the Clock
+          </Box>
+          <Flex justify="space-between" align="baseline" gap="4" paddingY="4" borderBottom="1px solid" borderColor="border">
+            <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'textMuted' })}>
+              Holes in one · {personal.sport}
+            </Box>
+            <Box className={css({ fontFamily: 'display', fontSize: 'xl', color: 'accent' })}>
+              {personal.holesInOne}
+            </Box>
+          </Flex>
+          <Flex justify="space-between" align="baseline" gap="4" paddingY="4" borderBottom="1px solid" borderColor="border">
+            <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'textMuted' })}>
+              Teams
+            </Box>
+            <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'text', textAlign: 'right' })}>
               {personal.teams.join(' · ')}
-            </div>
-            <span className={statCaptionClass}>fandom</span>
-          </article>
-          <article className={statCardClass}>
-            <span className={statTagClass}>Current focus</span>
-            <div className={css({ fontSize: 'sm', color: 'textSecondary', marginTop: 'auto' })}>
+            </Box>
+          </Flex>
+          <Flex justify="space-between" align="baseline" gap="4" paddingY="4">
+            <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'textMuted' })}>
+              Current focus
+            </Box>
+            <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'text', textAlign: 'right', maxWidth: '60%' })}>
               {personal.currentFocus}
-            </div>
-          </article>
-        </Grid>
-      </section>
-    </>
+            </Box>
+          </Flex>
+        </Box>
+      </Box>
+    </Grid>
   )
 }
-
-const statCardClass = css({
-  bg: 'cardBg',
-  color: 'text',
-  borderRadius: 'md',
-  padding: '6',
-  boxShadow: '0 20px 60px -24px rgba(16,107,118,0.28)',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '3',
-  minHeight: '180px',
-})
-
-const statTagClass = css({
-  fontSize: '2xs',
-  textTransform: 'uppercase',
-  letterSpacing: 'widest',
-  color: 'textMuted',
-  fontWeight: 'bold',
-})
-
-const statScoreClass = css({
-  fontFamily: 'display',
-  fontWeight: 'bold',
-  letterSpacing: 'tight',
-  fontSize: 'clamp(48px, 7vw, 88px)',
-  lineHeight: '0.86',
-  color: 'accent',
-})
-
-const statCaptionClass = css({
-  fontSize: 'xs',
-  textTransform: 'uppercase',
-  letterSpacing: 'wide',
-  color: 'textMuted',
-  fontWeight: 'bold',
-  marginTop: 'auto',
-})

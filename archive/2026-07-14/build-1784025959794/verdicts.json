@@ -1,0 +1,8 @@
+[
+  {
+    "critic": "spec-critic",
+    "verdict": "REVISE",
+    "feedback": "REVISE\n\n- **Preset colors don't match visual spec.** The spec declares secondary text `#c9cffb` and muted text `#9299d8` (on cobalt), but preset.ts assigns `textSecondary: cobalt.100` (#dde3ff) and `textMuted: cobalt.200` (#b8c4ff). These hex values do not exist in the preset and are significantly bluer than spec. Add `#c9cffb` and `#9299d8` as new color tokens (or find them in the existing palette), then update the semantic tokens to reference them. Also handle the dark-panel muted text `#8e91a8` separately (can use `neutral.400`).\n\n- **Semantic tokens lack context awareness.** Visual spec requires different text colors for two contexts: on cobalt (primary cream, secondary `#c9cffb`, muted `#9299d8`) vs. on dark panel (primary cream, muted `#8e91a8`). Preset has flat semantic tokens that can't vary by zone. Either create context-specific token families (`textMutedOnBg`, `textMutedOnPanel`) or use CSS conditions to assign colors conditionally.\n\n- **Render feasibility claim depends on undefined font variant.** Self-check says \"Bebas condensed at clamp(64–132px) stacks the quote across ~6 lines within a 55vw column.\" The preset references `bebas-plex` as chassis ID but does not explicitly declare that a Condensed weight is loaded. Verify the actual CSS/HTML font-family includes Bebas Neue Condensed, or recalculate the `clamp()` max-size for the default (non-condensed) weight to prevent overflow.",
+    "ts": 1784025395205
+  }
+]
