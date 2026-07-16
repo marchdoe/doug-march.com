@@ -1,128 +1,54 @@
-import { Flex, Box } from '../../styled-system/jsx'
+import { Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import logoMono from '../assets/logo-mono.svg'
-import { identity } from '../content/about'
 
-const navLinks = [
-  { label: 'Work', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Index', href: '/' },
-]
+const navLink = css({
+  fontSize: 'sm',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  color: 'text',
+  fontWeight: 'medium',
+  padding: '2 1',
+  lineHeight: 'tight',
+  _hover: { color: 'accent' },
+})
+
+const metaText = css({
+  fontSize: 'sm',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+  fontWeight: 'medium',
+  whiteSpace: 'nowrap',
+})
+
+const onAir = css({ color: 'textSecondary' })
 
 export function Sidebar() {
   return (
-    <>
-      {/* brand lockup — top left, single-color cream */}
-      <a
-        href="/"
-        aria-label={`${identity.name} — home`}
-        className={css({
-          position: 'fixed',
-          top: { base: '5', md: '6' },
-          left: { base: '5', md: '6' },
-          zIndex: 50,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '3',
-          color: 'text',
-        })}
-      >
-        <img
-          src={logoMono}
-          alt=""
-          className={css({
-            height: { base: '32px', md: '40px' },
-            width: 'auto',
-            display: 'block',
-            color: 'text',
-          })}
-        />
-        <Flex direction="column" gap="0">
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'semibold',
-              fontSize: 'sm',
-              letterSpacing: 'normal',
-              color: 'text',
-              whiteSpace: 'nowrap',
-            })}
-          >
-            {identity.name}
-          </span>
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'medium',
-              fontSize: '2xs',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'textSecondary',
-              whiteSpace: 'nowrap',
-            })}
-          >
-            {identity.role}
-          </span>
-        </Flex>
-      </a>
-
-      {/* nav pills — top right */}
-      <Flex
-        as="nav"
+    <Flex
+      as="footer"
+      bg="bgRail"
+      minHeight="64px"
+      align="center"
+      justify="space-between"
+      gap="4"
+      padding={{ base: '3 4', md: '3 6vw' }}
+      wrap="wrap"
+    >
+      <nav
         aria-label="Primary"
-        className={css({
-          position: 'fixed',
-          top: { base: '5', md: '6' },
-          right: { base: '4', md: '6' },
-          zIndex: 50,
-          gap: '2',
-        })}
+        className={css({ display: 'flex', gap: '6', alignItems: 'center', flexWrap: 'wrap' })}
       >
-        {navLinks.map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'semibold',
-              fontSize: '2xs',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'text',
-              paddingX: '4',
-              minHeight: '44px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              border: '1px solid',
-              borderColor: 'border',
-              borderRadius: 'full',
-              background: 'transparent',
-              transition: 'background .15s ease, color .15s ease, border-color .15s ease',
-              _hover: { background: 'text', color: 'bg', borderColor: 'text' },
-            })}
-          >
-            {link.label}
-          </a>
-        ))}
+        <a href="/work" className={navLink}>Work</a>
+        <a href="/about" className={navLink}>About</a>
+        <a href="/experiments" className={navLink}>Experiments</a>
+      </nav>
+      <Flex align="center" gap="4" wrap="wrap" justify="flex-end">
+        <span className={metaText}>
+          <span className={onAir}>On Air ·</span> My Morning Jacket / The War on Drugs
+        </span>
+        <span className={metaText}>Summer · Sunset 19:30 · Build 2026-07-16</span>
       </Flex>
-
-      {/* baseline stamp — bottom left, pinned to canvas */}
-      <Box
-        className={css({
-          position: 'fixed',
-          left: { base: '5', md: '6' },
-          bottom: { base: '4', md: '5' },
-          zIndex: 50,
-          fontFamily: 'body',
-          fontWeight: 'medium',
-          fontSize: '2xs',
-          letterSpacing: 'wider',
-          textTransform: 'uppercase',
-          color: 'textMuted',
-        })}
-      >
-        Summer · 14.5h daylight · Jul 14 2026
-      </Box>
-    </>
+    </Flex>
   )
 }

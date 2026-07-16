@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Grid, Box, Flex } from '../../styled-system/jsx'
+import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
@@ -11,201 +11,127 @@ function WorkDetailPage() {
 
   if (!project) {
     return (
-      <Box bg="panel" color="text" minH="100vh" display="flex" alignItems="center" justifyContent="center">
-        <p className={css({ fontFamily: 'body', fontSize: 'lg', color: 'textMuted' })}>Project not found.</p>
+      <Box padding={{ base: '6 4', md: '8 6vw' }}>
+        <p className={css({ fontSize: 'md', color: 'textSecondary' })}>Project not found.</p>
       </Box>
     )
   }
 
-  return (
-    <Grid gridTemplateColumns={{ base: '1fr', md: '0.7fr 1.3fr' }} minH="100vh">
-      {/* LEFT: narrow cobalt identity rail */}
-      <Box bg="bg" minH={{ base: '160px', md: '100vh' }} />
+  const titleWords = project.title.split(' ')
 
-      {/* RIGHT: wide indigo ledger, project detail */}
-      <Box bg="panel" color="text" paddingX={{ base: '5', md: '8' }} paddingY={{ base: '20', md: '9' }} overflowY="auto">
-        <Flex wrap="wrap" gap="2" marginBottom="6">
-          {project.role && (
-            <Box
+  return (
+    <Box padding={{ base: '6 4', md: '8 6vw' }} display="flex" flexDirection="column" gap="6">
+      <h1
+        className={css({
+          fontFamily: 'display',
+          textTransform: 'uppercase',
+          fontSize: 'clamp(40px, 9vw, 140px)',
+          lineHeight: 'tight',
+          letterSpacing: 'tight',
+          color: 'text',
+          maxWidth: '20ch',
+        })}
+      >
+        {titleWords.map((word, i) => (
+          <span key={`${word}-${i}`} className={i === titleWords.length - 1 ? css({ color: 'accent' }) : undefined}>
+            {i > 0 ? ' ' : ''}{word}
+          </span>
+        ))}
+      </h1>
+
+      <Flex gap="4" wrap="wrap" fontSize="xs" letterSpacing="widest" textTransform="uppercase" color="textMuted">
+        {project.role && <span>{project.role}</span>}
+        <span>{project.type}</span>
+        <span>{project.year}</span>
+      </Flex>
+
+      {project.problem && (
+        <p className={css({ fontSize: 'md', lineHeight: 'normal', color: 'textSecondary', maxWidth: '62ch' })}>
+          {project.problem}
+        </p>
+      )}
+
+      {project.approach && (
+        <Box>
+          <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '2' })}>
+            Approach
+          </h2>
+          <p className={css({ fontSize: 'base', lineHeight: 'normal', color: 'text', maxWidth: '62ch' })}>{project.approach}</p>
+        </Box>
+      )}
+
+      {project.outcome && (
+        <Box>
+          <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '2' })}>
+            Outcome
+          </h2>
+          <p className={css({ fontSize: 'base', lineHeight: 'normal', color: 'text', maxWidth: '62ch' })}>{project.outcome}</p>
+        </Box>
+      )}
+
+      {project.stack && project.stack.length > 0 && (
+        <Flex wrap="wrap" gap="2">
+          {project.stack.map((tech) => (
+            <span
+              key={tech}
               className={css({
-                background: 'surface',
-                borderRadius: 'sm',
-                paddingX: '3',
-                paddingY: '2',
-                fontFamily: 'body',
-                fontWeight: 'semibold',
                 fontSize: '2xs',
-                letterSpacing: 'wide',
+                letterSpacing: 'widest',
                 textTransform: 'uppercase',
                 color: 'text',
-              })}
-            >
-              {project.role}
-            </Box>
-          )}
-          <Box
-            className={css({
-              background: 'surface',
-              borderRadius: 'sm',
-              paddingX: '3',
-              paddingY: '2',
-              fontFamily: 'body',
-              fontWeight: 'semibold',
-              fontSize: '2xs',
-              letterSpacing: 'wide',
-              textTransform: 'uppercase',
-              color: 'text',
-            })}
-          >
-            {project.type}
-          </Box>
-          <Box
-            className={css({
-              background: 'surface',
-              borderRadius: 'sm',
-              paddingX: '3',
-              paddingY: '2',
-              fontFamily: 'body',
-              fontWeight: 'semibold',
-              fontSize: '2xs',
-              letterSpacing: 'wide',
-              textTransform: 'uppercase',
-              color: 'text',
-            })}
-          >
-            {project.year}
-          </Box>
-        </Flex>
-
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'normal',
-            fontSize: { base: '48px', md: '80px', lg: '104px' },
-            lineHeight: 'tight',
-            letterSpacing: 'normal',
-            textTransform: 'uppercase',
-            color: 'text',
-            marginBottom: '6',
-          })}
-        >
-          {project.title}
-        </h1>
-
-        {project.problem && (
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontSize: 'md',
-              lineHeight: 'loose',
-              color: 'textSecondary',
-              maxWidth: '52ch',
-              marginBottom: '5',
-            })}
-          >
-            {project.problem}
-          </p>
-        )}
-
-        {project.approach && (
-          <Box marginBottom="5">
-            <Box className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: '2xs', letterSpacing: 'wider', textTransform: 'uppercase', color: 'sky.300', marginBottom: '2' })}>
-              Approach
-            </Box>
-            <p className={css({ fontFamily: 'body', fontSize: 'sm', lineHeight: 'loose', color: 'textSecondary', maxWidth: '52ch' })}>
-              {project.approach}
-            </p>
-          </Box>
-        )}
-
-        {project.outcome && (
-          <Box marginBottom="7">
-            <Box className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: '2xs', letterSpacing: 'wider', textTransform: 'uppercase', color: 'sky.300', marginBottom: '2' })}>
-              Outcome
-            </Box>
-            <p className={css({ fontFamily: 'body', fontSize: 'sm', lineHeight: 'loose', color: 'textSecondary', maxWidth: '52ch' })}>
-              {project.outcome}
-            </p>
-          </Box>
-        )}
-
-        {project.stack && project.stack.length > 0 && (
-          <Flex wrap="wrap" gap="2" marginBottom="7">
-            {project.stack.map((tech) => (
-              <Box
-                key={tech}
-                className={css({
-                  border: '1px solid',
-                  borderColor: 'border',
-                  borderRadius: 'sm',
-                  paddingX: '3',
-                  paddingY: '1',
-                  fontFamily: 'body',
-                  fontSize: '2xs',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                  color: 'textMuted',
-                })}
-              >
-                {tech}
-              </Box>
-            ))}
-          </Flex>
-        )}
-
-        <Flex gap="6" wrap="wrap">
-          {(project.liveUrl || project.externalUrl) && (
-            <a
-              href={project.liveUrl ?? project.externalUrl}
-              target="_blank"
-              rel="noopener"
-              className={css({
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '2',
-                minHeight: '44px',
-                fontFamily: 'body',
-                fontWeight: 'semibold',
-                fontSize: 'xs',
-                letterSpacing: 'wide',
-                textTransform: 'uppercase',
-                color: 'accent',
-                borderBottom: '1px solid',
-                borderColor: 'accent',
-                paddingBottom: '1',
-                _hover: { color: 'sky.300', borderColor: 'sky.300' },
-              })}
-            >
-              Visit the live site →
-            </a>
-          )}
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener"
-              className={css({
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '2',
-                minHeight: '44px',
-                fontFamily: 'body',
-                fontWeight: 'semibold',
-                fontSize: 'xs',
-                letterSpacing: 'wide',
-                textTransform: 'uppercase',
-                color: 'textMuted',
-                borderBottom: '1px solid',
+                background: 'bgCard',
+                border: '1px solid',
                 borderColor: 'border',
-                paddingBottom: '1',
-                _hover: { color: 'text', borderColor: 'text' },
+                borderRadius: 'sm',
+                padding: '2 3',
               })}
             >
-              Source →
-            </a>
-          )}
+              {tech}
+            </span>
+          ))}
         </Flex>
-      </Box>
-    </Grid>
+      )}
+
+      <Flex gap="4" wrap="wrap">
+        {(project.liveUrl || project.externalUrl) && (
+          <a
+            href={project.liveUrl ?? project.externalUrl}
+            className={css({
+              display: 'inline-block',
+              fontSize: 'xs',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              color: 'accent',
+              border: '1px solid',
+              borderColor: 'border',
+              borderRadius: 'sm',
+              padding: '2 4',
+              _hover: { borderColor: 'accent' },
+            })}
+          >
+            Visit Live
+          </a>
+        )}
+        {project.githubUrl && (
+          <a
+            href={project.githubUrl}
+            className={css({
+              display: 'inline-block',
+              fontSize: 'xs',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              color: 'text',
+              border: '1px solid',
+              borderColor: 'border',
+              borderRadius: 'sm',
+              padding: '2 4',
+              _hover: { borderColor: 'accent', color: 'accent' },
+            })}
+          >
+            Source
+          </a>
+        )}
+      </Flex>
+    </Box>
   )
 }

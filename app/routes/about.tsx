@@ -1,210 +1,142 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Grid, Box, Flex } from '../../styled-system/jsx'
+import { Box, Flex, Grid } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
+const chip = css({
+  display: 'inline-block',
+  fontSize: '2xs',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  color: 'text',
+  background: 'bgCard',
+  border: '1px solid',
+  borderColor: 'border',
+  borderRadius: 'sm',
+  padding: '2 3',
+})
+
+const factLabel = css({
+  fontSize: '2xs',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+})
+
+const factValue = css({
+  fontSize: 'base',
+  color: 'text',
+})
+
 function AboutPage() {
   return (
-    <Grid gridTemplateColumns={{ base: '1fr', md: '1.6fr 1fr' }} minH="100vh">
-      {/* LEFT: cobalt identity statement */}
-      <Box
-        position="relative"
-        bg="bg"
-        paddingX={{ base: '5', md: '9' }}
-        paddingTop={{ base: '20', md: '20' }}
-        paddingBottom={{ base: '12', md: '10' }}
-        minH={{ base: 'auto', md: '100vh' }}
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-      >
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontWeight: 'semibold',
-            fontSize: '2xs',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textSecondary',
-            marginBottom: { base: '5', md: '8' },
-          })}
-        >
-          {identity.role}
-        </p>
+    <Box padding={{ base: '6 4', md: '8 6vw' }} display="flex" flexDirection="column" gap="8">
+      <Box>
         <h1
           className={css({
             fontFamily: 'display',
-            fontWeight: 'normal',
-            fontSize: { base: '32px', md: '48px', lg: '80px' },
+            textTransform: 'uppercase',
+            fontSize: 'clamp(40px, 8vw, 90px)',
             lineHeight: 'tight',
             letterSpacing: 'tight',
-            textTransform: 'uppercase',
             color: 'text',
-            maxWidth: '16ch',
+            maxWidth: '20ch',
           })}
         >
-          {identity.statement}
+          {identity.role.split(' ').map((word, i) =>
+            i === 1 ? (
+              <span key={word} className={css({ color: 'accent' })}> {word}</span>
+            ) : (
+              <span key={word}>{i === 0 ? word : ` ${word}`}</span>
+            )
+          )}
         </h1>
+        <p className={css({ marginTop: '4', fontSize: 'md', lineHeight: 'normal', color: 'textSecondary', maxWidth: '62ch' })}>
+          {identity.statement}
+        </p>
+        <p className={css({ marginTop: '2', fontSize: 'sm', letterSpacing: 'wide', color: 'textMuted', textTransform: 'uppercase' })}>
+          {identity.name}
+        </p>
       </Box>
 
-      {/* RIGHT: biographical ledger */}
-      <Box bg="panel" color="text" paddingX={{ base: '5', md: '7' }} paddingY={{ base: '8', md: '9' }}>
-        <Box marginBottom="10">
-          <Box
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'bold',
-              fontSize: '2xs',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'sky.300',
-              paddingBottom: '3',
-              borderBottom: '1px solid',
-              borderColor: 'border',
-              marginBottom: '2',
-            })}
-          >
-            Timeline
-          </Box>
-          {timeline.map((entry, i) => (
-            <Flex key={i} gap="4" paddingY="4" borderBottom="1px solid" borderColor="border">
+      <Box>
+        <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4' })}>
+          Timeline
+        </h2>
+        <Flex direction="column" gap="0">
+          {timeline.map((entry) => (
+            <Flex
+              key={`${entry.year}-${entry.role}`}
+              gap="4"
+              padding="3 4"
+              bg="bgCard"
+              borderBottom="1px solid"
+              borderColor="border"
+              align="baseline"
+              wrap="wrap"
+            >
               <Box
                 minWidth="120px"
                 flexShrink={0}
-                className={css({ fontFamily: 'display', fontSize: 'xl', color: 'textMuted', whiteSpace: 'nowrap' })}
+                fontVariantNumeric="tabular-nums"
+                color="accent"
+                fontWeight="bold"
+                fontSize="sm"
+                letterSpacing="wide"
               >
                 {entry.year}
               </Box>
-              <Box>
-                <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: 'md', color: 'text' })}>
-                  {entry.role} <span className={css({ color: 'textMuted', fontWeight: 'normal' })}>· {entry.company}</span>
+              <Box flex="1" minWidth="240px">
+                <Box fontSize="base" color="text" fontWeight="medium">
+                  {entry.role} <span className={css({ color: 'textSecondary' })}>· {entry.company}</span>
                 </Box>
-                <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'textSecondary', marginTop: '1', lineHeight: 'loose' })}>
+                <Box fontSize="sm" lineHeight="normal" color="textSecondary" marginTop="1">
                   {entry.description}
                 </Box>
               </Box>
             </Flex>
           ))}
-        </Box>
-
-        <Box marginBottom="10">
-          <Box
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'bold',
-              fontSize: '2xs',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'sky.300',
-              paddingBottom: '3',
-              borderBottom: '1px solid',
-              borderColor: 'border',
-              marginBottom: '3',
-            })}
-          >
-            Capabilities
-          </Box>
-          <Flex wrap="wrap" gap="2">
-            {capabilities.map((cap) => (
-              <Box
-                key={cap}
-                className={css({
-                  background: 'surface',
-                  borderRadius: 'sm',
-                  paddingX: '3',
-                  paddingY: '2',
-                  fontFamily: 'body',
-                  fontWeight: 'semibold',
-                  fontSize: '2xs',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                  color: 'text',
-                })}
-              >
-                {cap}
-              </Box>
-            ))}
-          </Flex>
-        </Box>
-
-        <Box marginBottom="10">
-          <Box
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'bold',
-              fontSize: '2xs',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'sky.300',
-              paddingBottom: '3',
-              borderBottom: '1px solid',
-              borderColor: 'border',
-              marginBottom: '2',
-            })}
-          >
-            Education
-          </Box>
-          <Flex justify="space-between" align="baseline" gap="4" paddingY="4" borderBottom="1px solid" borderColor="border">
-            <Box>
-              <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: 'md', color: 'text' })}>
-                {education.school}
-              </Box>
-              <Box className={css({ fontFamily: 'body', fontSize: 'xs', color: 'textMuted', marginTop: '1' })}>
-                {education.degree} · {education.concentration}
-              </Box>
-            </Box>
-            <Box className={css({ fontFamily: 'display', fontSize: 'lg', color: 'textMuted', whiteSpace: 'nowrap' })}>
-              {education.years}
-            </Box>
-          </Flex>
-        </Box>
-
-        <Box>
-          <Box
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'bold',
-              fontSize: '2xs',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'sky.300',
-              paddingBottom: '3',
-              borderBottom: '1px solid',
-              borderColor: 'border',
-              marginBottom: '2',
-            })}
-          >
-            Off the Clock
-          </Box>
-          <Flex justify="space-between" align="baseline" gap="4" paddingY="4" borderBottom="1px solid" borderColor="border">
-            <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'textMuted' })}>
-              Holes in one · {personal.sport}
-            </Box>
-            <Box className={css({ fontFamily: 'display', fontSize: 'xl', color: 'accent' })}>
-              {personal.holesInOne}
-            </Box>
-          </Flex>
-          <Flex justify="space-between" align="baseline" gap="4" paddingY="4" borderBottom="1px solid" borderColor="border">
-            <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'textMuted' })}>
-              Teams
-            </Box>
-            <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'text', textAlign: 'right' })}>
-              {personal.teams.join(' · ')}
-            </Box>
-          </Flex>
-          <Flex justify="space-between" align="baseline" gap="4" paddingY="4">
-            <Box className={css({ fontFamily: 'body', fontWeight: 'semibold', fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'textMuted' })}>
-              Current focus
-            </Box>
-            <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'text', textAlign: 'right', maxWidth: '60%' })}>
-              {personal.currentFocus}
-            </Box>
-          </Flex>
-        </Box>
+        </Flex>
       </Box>
-    </Grid>
+
+      <Box>
+        <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4' })}>
+          Capabilities
+        </h2>
+        <Flex wrap="wrap" gap="2">
+          {capabilities.map((cap) => (
+            <span key={cap} className={chip}>{cap}</span>
+          ))}
+        </Flex>
+      </Box>
+
+      <Grid columns={{ base: 1, md: 2 }} gap="6">
+        <Box>
+          <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4' })}>
+            Education
+          </h2>
+          <Flex direction="column" gap="2">
+            <Flex justify="space-between"><span className={factLabel}>School</span><span className={factValue}>{education.school}</span></Flex>
+            <Flex justify="space-between"><span className={factLabel}>Degree</span><span className={factValue}>{education.degree}</span></Flex>
+            <Flex justify="space-between"><span className={factLabel}>Concentration</span><span className={factValue}>{education.concentration}</span></Flex>
+            <Flex justify="space-between"><span className={factLabel}>Years</span><span className={factValue}>{education.years}</span></Flex>
+          </Flex>
+        </Box>
+        <Box>
+          <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4' })}>
+            Personal
+          </h2>
+          <Flex direction="column" gap="2">
+            <Flex justify="space-between"><span className={factLabel}>Holes in one</span><span className={factValue}>{personal.holesInOne}</span></Flex>
+            <Flex justify="space-between"><span className={factLabel}>Sport</span><span className={factValue}>{personal.sport}</span></Flex>
+            <Flex justify="space-between"><span className={factLabel}>Teams</span><span className={factValue}>{personal.teams.join(', ')}</span></Flex>
+            <Flex justify="space-between"><span className={factLabel}>Current focus</span><span className={factValue}>{personal.currentFocus}</span></Flex>
+          </Flex>
+        </Box>
+      </Grid>
+    </Box>
   )
 }

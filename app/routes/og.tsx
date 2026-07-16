@@ -2,87 +2,63 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Box } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import logoMono from '../assets/logo-mono.svg'
-import { identity } from '../content/about'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
 function OgCard() {
   return (
-    <Box position="fixed" inset="0" zIndex={9999} bg="bg" overflow="hidden">
+    <Box
+      position="fixed"
+      inset="0"
+      zIndex="9999"
+      bg="bg"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
       <Box
-        position="absolute"
-        top="50%"
-        left="50%"
         width="1200px"
         height="630px"
-        transform="translate(-50%, -50%)"
         bg="bg"
-        css={{
-          backgroundImage:
-            'radial-gradient(120% 90% at 12% 0%, {colors.cobalt.500} 0%, {colors.cobalt.600} 46%, {colors.cobalt.700} 100%)',
-        }}
+        position="relative"
+        overflow="hidden"
+        padding="64px"
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        paddingX="80px"
       >
-        <Box display="flex" alignItems="center" gap="3" position="absolute" top="48px" left="64px">
-          <img src={logoMono} alt="" className={css({ height: '48px', width: 'auto', display: 'block' })} />
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'semibold',
-              fontSize: 'lg',
-              color: 'text',
-              whiteSpace: 'nowrap',
-            })}
-          >
-            {identity.name}
-          </span>
-        </Box>
-
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontWeight: 'semibold',
-            fontSize: 'sm',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textSecondary',
-            marginBottom: '6',
-          })}
-        >
-          Today's read · Jul 14 2026
-        </p>
-
+        <img
+          src={logoMono}
+          alt="Doug March"
+          className={css({ position: 'absolute', top: '48px', left: '64px', height: '36px', width: 'auto', color: 'accent' })}
+        />
         <h1
           className={css({
             fontFamily: 'display',
-            fontWeight: 'normal',
-            fontSize: '108px',
+            textTransform: 'uppercase',
+            fontSize: '132px',
             lineHeight: 'tight',
             letterSpacing: 'tight',
-            textTransform: 'uppercase',
             color: 'text',
-            maxWidth: '13ch',
+            display: 'flex',
+            flexDirection: 'column',
           })}
         >
-          It is better to point out your{' '}
-          <span className={css({ color: 'accent' })}>own mistakes</span>.
+          <span>We <span className={css({ color: 'accent' })}>Win</span></span>
+          <span>By Helping</span>
+          <span>Each Other <span className={css({ color: 'accent' })}>Win</span></span>
         </h1>
-
         <p
           className={css({
-            marginTop: '7',
-            fontFamily: 'body',
-            fontWeight: 'medium',
-            fontSize: 'md',
-            letterSpacing: 'wider',
+            marginTop: '24px',
+            fontSize: '22px',
+            letterSpacing: 'widest',
             textTransform: 'uppercase',
-            color: 'textSecondary',
+            color: 'accent',
+            fontWeight: 'bold',
           })}
         >
-          — Warren Buffett
+          — Jack Butcher
         </p>
       </Box>
     </Box>

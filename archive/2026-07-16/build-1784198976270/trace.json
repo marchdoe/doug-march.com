@@ -1,0 +1,280 @@
+{
+  "date": "2026-07-16",
+  "startedAt": "2026-07-16T10:39:14.212Z",
+  "completedAt": "2026-07-16T10:49:37.988Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "The History of Muse Group",
+              "description": "SANDS STUDIO created an interactive website for Muse Group — a living digital archive connecting its music ecosystem, products, and nearly a century of...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a43c670e1dae067356082.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAMAAACU33alAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAJBQTFRFLCoq/v7+9/f37O3r1NTUUPP+9c0Cgv4EtbW1yqwmeMkxTb/GjJCQgYMlcGHyc17qdlzkeFnee1fYflXSflLLhE7FZGtqlTT97DQCmDuUnjaHojN+XEyppS91qStsridg6ws/th9OvRk/wxMwaCOzREZDSDluaCtPiR41Oi84JCQjSwkiHBwc...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Pop-Up Hotel",
+              "description": "WooCommerce site for The Pop-Up Hotel, bringing experiences to the Monaco, British and Italian Grand Prix, The Ryder Cup, and Glastonbury.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a4255722030b571601648.jpg",
+              "screenshot_b64": "/9j/4RmFRXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAAYgEbAAUAAAABAAAAagEoAAMAAAABAAIAAAExAAIAAAAhAAAAcgEyAAIAAAAUAAAAk4dpAAQAAAABAAAAqAAAANQACvyAAAAnEAAK/IAAACcQQWRvYmUgUGhvdG9zaG9wIDI3LjggKE1hY2ludG9zaCkAMjAyNjowNjoyOSAxMjoyMjo1NgAAAAOgAQADAAAAAQABAACgAgAEAAAAAQAABkCgAwAE...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "House of Honey",
+              "description": "House of Honey designs spaces with story. We built a sophisticated digital presence that mirrors this sensory philosophy through editorial elegance and...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1c09bf6c5f3457361940.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/CABEIBLAGQAMBEQACEQEDEQH/xAA6AAAABgMBAQEAAAAAAAAAAAADBAUGBwgAAQIJCgsBAAAH...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Thursday",
+          "is_weekend": false,
+          "day_index": 4
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/OpenCut-app",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "Nutlope/hallmark/stargazers",
+              "description": "",
+              "language": "CSS",
+              "stars": null
+            },
+            {
+              "name": "sponsors/mattpocock",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "moeru-ai/airi/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/Dicklesworthstone",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "The Open",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Scottie Scheffler",
+              "position": "1",
+              "score": "-4"
+            },
+            {
+              "name": "Thomas Detry",
+              "position": "2",
+              "score": "-3"
+            },
+            {
+              "name": "Robert MacIntyre",
+              "position": "3",
+              "score": "-3"
+            },
+            {
+              "name": "Sungjae Im",
+              "position": "4",
+              "score": "-3"
+            },
+            {
+              "name": "Alex Smalley",
+              "position": "5",
+              "score": "-3"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "The lost joy of music piracy",
+              "url": "https://www.pigeonsandplanes.com/read/music-piracy-what-cd-oink-nine-inch-nails-streaming",
+              "score": 358,
+              "by": "mcgin"
+            },
+            {
+              "title": "Inkling: Our Open-Weights Model",
+              "url": "https://thinkingmachines.ai/news/introducing-inkling/",
+              "score": 998,
+              "by": "vimarsh6739"
+            },
+            {
+              "title": "Where are YC founders now? OpenAI and Anthropic, mostly",
+              "url": "https://joinedanthropic.com",
+              "score": 34,
+              "by": "ohong"
+            },
+            {
+              "title": "If you want to create a button from scratch, you must first create the universe",
+              "url": "https://madcampos.dev/blog/2026/07/accessibility-from-scratch/",
+              "score": 143,
+              "by": "treve"
+            },
+            {
+              "title": "Teardown: A Generic 7-Port USB 3.0 Hub That Wasn't",
+              "url": "https://goughlui.com/2026/07/09/teardown-a-generic-7-port-usb-3-0-hub-that-wasnt/",
+              "score": 69,
+              "by": "speckx"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waxing crescent",
+          "illumination": 0.064,
+          "days_into_cycle": 2.41
+        },
+        "music": {
+          "bands": [
+            "My Morning Jacket",
+            "The War on Drugs"
+          ]
+        },
+        "quote": {
+          "text": "We win by helping each other win.",
+          "author": "Jack Butcher"
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 16,
+          "day_of_year": 197,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:02",
+          "sunset": "19:30",
+          "daylight_hours": 14.5
+        },
+        "date": "2026-07-16"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-16T10:39:29.377Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-14: Split\n  - 2026-07-13: Scroll\n  - 2026-07-12: Specimen\n  - 2026-07-10: Gallery Wall\n  - 2026-07-09: Poster\n  - 2026-07-08: Broadsheet\n  - 2026-07-07: Stack\n\n**Recently used** (last 3 days): Split, Scroll, Specimen\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or s"
+      },
+      "output": {
+        "hero_copy": "We win by helping each other win.",
+        "archetype": "Poster",
+        "chassisId": "anton-inter-tight",
+        "specLength": 4391,
+        "specPreview": "### 1. Color Specification\n- **Primary hue** — 14° (scarlet-vermilion). This sits inside the only clean corridor left by the mandate (0°–33°; recent palettes consumed 33°–360°). Red is the honest hue for triumph and mutual victory — a committed, celebratory warm that reads as a winner's banner, not the week's cool voids.\n- **Neutral palette** (warm red-tinted) — 50 `#FBF4F1`, 100 `#F3E7E2`, 200 `#E4CFC7`, 300 `#CDB0A6`, 400 `#B08E83`, 500 `#8E6D63`, 600 `#6E514A`, 700 `#513A35`, 800 `#372623`, 9",
+        "selfCheck": "1. Hero quotability: Yes — a self-contained Jack Butcher aphorism, screenshot-ready, not descriptive filler.\n2. Because-of chain: Yes — reciprocal maxim → Poster (closed WIN/WIN loop) → Anton (condensed all-caps banner) → scarlet drench + gold \"win\" pulse → left-aligned poster with corner signals.\n3"
+      },
+      "durationMs": 149219,
+      "timestamp": "2026-07-16T10:41:58.602Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 4391
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 39742,
+      "timestamp": "2026-07-16T10:42:39.921Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4029,
+        "briefLength": 7186,
+        "mockupLength": 10288
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Rail.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.index.tsx",
+          "app/routes/experiments.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 131350,
+      "timestamp": "2026-07-16T10:46:28.667Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": false,
+        "error": "Error: Error transforming route file /home/runner/work/doug-march.com/doug-march.com/app/routes/work.index.tsx: SyntaxError: Unexpected token (112:40)\n\n---\n(last 3000 chars of build output follows)\n---\n\ndown/dist/shared/error-BuvQYXuZ.mjs:48:18)\n    at unwrapBindingResult (file:///home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/rolldown@1.0.3/node_modules/rolldown/dist/shared/error-BuvQYXuZ.mjs:18:128)\n    at #build (file:///home/runner/work/doug-march.com/doug-march.com/node_m"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-16T10:46:31.563Z"
+    }
+  ]
+}

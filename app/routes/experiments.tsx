@@ -1,0 +1,60 @@
+import { createFileRoute } from '@tanstack/react-router'
+import { Box, Flex } from '../../styled-system/jsx'
+import { css } from '../../styled-system/css'
+import { experiments } from '../content/projects'
+
+export const Route = createFileRoute('/experiments')({ component: ExperimentsPage })
+
+const rowClass = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  gap: '4',
+  padding: '3 4',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  fontSize: 'base',
+  color: 'text',
+  _hover: { color: 'accent' },
+})
+
+const metaClass = css({
+  fontSize: 'xs',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  color: 'textMuted',
+})
+
+function ExperimentsPage() {
+  return (
+    <Box padding={{ base: '6 4', md: '8 6vw' }} display="flex" flexDirection="column" gap="6">
+      <h1
+        className={css({
+          fontFamily: 'display',
+          textTransform: 'uppercase',
+          fontSize: 'clamp(40px, 8vw, 100px)',
+          lineHeight: 'tight',
+          letterSpacing: 'tight',
+          color: 'text',
+        })}
+      >
+        Experi<span className={css({ color: 'accent' })}>ments</span>
+      </h1>
+      <Flex direction="column">
+        {experiments.map((project) => (
+          <a
+            key={project.slug}
+            href={project.externalUrl ?? `/work/${project.slug}`}
+            className={rowClass}
+          >
+            <span>{project.title}</span>
+            <Flex gap="4">
+              <span className={metaClass}>{project.type}</span>
+              <span className={metaClass}>{project.year}</span>
+            </Flex>
+          </a>
+        ))}
+      </Flex>
+    </Box>
+  )
+}

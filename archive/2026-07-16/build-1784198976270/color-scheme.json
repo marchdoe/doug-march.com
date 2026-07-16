@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 14,
+    "s": 82,
+    "l": 34,
+    "name": "scarlet-vermilion"
+  },
+  "secondary_accent": {
+    "h": 44,
+    "s": 95,
+    "l": 62,
+    "name": "medal gold"
+  },
+  "neutral_family": {
+    "tinted_toward": "warm red",
+    "name": "ember-warm neutral"
+  },
+  "mood_word": "triumphant",
+  "color_story": "A drenched scarlet field with a single medal-gold pulse on the word 'win' turns a mutual-victory maxim into a winner's banner."
+}

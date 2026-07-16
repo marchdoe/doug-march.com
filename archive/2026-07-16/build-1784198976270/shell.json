@@ -1,0 +1,6 @@
+{
+  "nav": "bottom rail (full-width 64px bar, inline caps links left, music + build note right)",
+  "footer": "folded-into-nav (rail carries build note; no separate footer)",
+  "brand_lockup": "mark-only-sm",
+  "brand_color_mode": "single-color"
+}
