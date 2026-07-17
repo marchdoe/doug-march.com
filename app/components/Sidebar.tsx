@@ -1,54 +1,41 @@
 import { Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
+import logoMono from '../assets/logo-mono.svg'
 
-const navLink = css({
-  fontSize: 'sm',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'text',
-  fontWeight: 'medium',
-  padding: '2 1',
-  lineHeight: 'tight',
-  _hover: { color: 'accent' },
-})
-
-const metaText = css({
-  fontSize: 'sm',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  fontWeight: 'medium',
-  whiteSpace: 'nowrap',
-})
-
-const onAir = css({ color: 'textSecondary' })
-
+// Brandbar / lockup — horizontal-sm, single-color (currentColor) mark per shell declaration.
+// Named "Sidebar" per contract even though visually it renders as the top brand bar,
+// matching the mockup's inline-in-hero nav shell (no vertical sidebar in this design).
 export function Sidebar() {
   return (
-    <Flex
-      as="footer"
-      bg="bgRail"
-      minHeight="64px"
-      align="center"
-      justify="space-between"
-      gap="4"
-      padding={{ base: '3 4', md: '3 6vw' }}
-      wrap="wrap"
-    >
-      <nav
-        aria-label="Primary"
-        className={css({ display: 'flex', gap: '6', alignItems: 'center', flexWrap: 'wrap' })}
+    <Flex align="center" gap="2" color="text" width="full">
+      <img
+        src={logoMono}
+        alt="Doug March mark"
+        className={css({ width: '24px', height: 'auto', flex: '0 0 auto', md: { width: '26px' } })}
+      />
+      <span
+        className={css({
+          fontFamily: 'body',
+          fontWeight: 'bold',
+          fontSize: 'md',
+          letterSpacing: 'normal',
+          color: 'text',
+        })}
       >
-        <a href="/work" className={navLink}>Work</a>
-        <a href="/about" className={navLink}>About</a>
-        <a href="/experiments" className={navLink}>Experiments</a>
-      </nav>
-      <Flex align="center" gap="4" wrap="wrap" justify="flex-end">
-        <span className={metaText}>
-          <span className={onAir}>On Air ·</span> My Morning Jacket / The War on Drugs
-        </span>
-        <span className={metaText}>Summer · Sunset 19:30 · Build 2026-07-16</span>
-      </Flex>
+        Doug March
+      </span>
+      <span
+        className={css({
+          marginLeft: 'auto',
+          fontSize: '2xs',
+          letterSpacing: 'widest',
+          textTransform: 'uppercase',
+          color: 'textMuted',
+          fontWeight: 'bold',
+        })}
+      >
+        Summer '26 · Rebuild 07·17
+      </span>
     </Flex>
   )
 }

@@ -1,0 +1,281 @@
+{
+  "date": "2026-07-17",
+  "startedAt": "2026-07-17T10:33:07.542Z",
+  "completedAt": "2026-07-17T10:41:44.350Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "The Record Institute",
+              "description": "A museum-grade digital archive dedicated to preserving pre-2000 print ephemera. Multilingual, meticulously catalogued, and free—safeguarding vintage advertising...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a44c228af614956383273.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADASIAAhEBAxEB/8QAHQAAAAcBAQEAAAAAAAAAAAAAAAECAwQFBgcICf/E...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The History of Muse Group",
+              "description": "SANDS STUDIO created an interactive website for Muse Group — a living digital archive connecting its music ecosystem, products, and nearly a century of...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a43c670e1dae067356082.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAMAAACU33alAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAJBQTFRFLCoq/v7+9/f37O3r1NTUUPP+9c0Cgv4EtbW1yqwmeMkxTb/GjJCQgYMlcGHyc17qdlzkeFnee1fYflXSflLLhE7FZGtqlTT97DQCmDuUnjaHojN+XEyppS91qStsridg6ws/th9OvRk/wxMwaCOzREZDSDluaCtPiR41Oi84JCQjSwkiHBwc...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Pop-Up Hotel",
+              "description": "WooCommerce site for The Pop-Up Hotel, bringing experiences to the Monaco, British and Italian Grand Prix, The Ryder Cup, and Glastonbury.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a4255722030b571601648.jpg",
+              "screenshot_b64": "/9j/4RmFRXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAAYgEbAAUAAAABAAAAagEoAAMAAAABAAIAAAExAAIAAAAhAAAAcgEyAAIAAAAUAAAAk4dpAAQAAAABAAAAqAAAANQACvyAAAAnEAAK/IAAACcQQWRvYmUgUGhvdG9zaG9wIDI3LjggKE1hY2ludG9zaCkAMjAyNjowNjoyOSAxMjoyMjo1NgAAAAOgAQADAAAAAQABAACgAgAEAAAAAQAABkCgAwAE...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Friday",
+          "is_weekend": false,
+          "day_index": 5
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "apache/ossie/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "Nutlope/hallmark/stargazers",
+              "description": "",
+              "language": "CSS",
+              "stars": null
+            },
+            {
+              "name": "sponsors/OpenCut-app",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "PostHog/posthog/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "openinterpreter/openinterpreter/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "The Open",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Lucas Herbert",
+              "position": "1",
+              "score": "-6"
+            },
+            {
+              "name": "Jackson Suber",
+              "position": "2",
+              "score": "-5"
+            },
+            {
+              "name": "Matt Wallace",
+              "position": "3",
+              "score": "-4"
+            },
+            {
+              "name": "Pierceson Coody",
+              "position": "4",
+              "score": "-4"
+            },
+            {
+              "name": "Bud Cauley",
+              "position": "5",
+              "score": "-4"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "EEG shows brain can simultaneous encode two speech streams",
+              "url": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3003876",
+              "score": 104,
+              "by": "giuliomagnifico"
+            },
+            {
+              "title": "Kimi K3: Open Frontier Intelligence",
+              "url": "https://www.kimi.com/blog/kimi-k3",
+              "score": 1660,
+              "by": "vincent_s"
+            },
+            {
+              "title": "Pebble Mega Update – July 2026",
+              "url": "https://repebble.com/blog/pebble-mega-update-july-2026",
+              "score": 126,
+              "by": "crazysaem"
+            },
+            {
+              "title": "How Has Roman Concrete Lasted for Millennia? 1,900-Year-Old Latrine Offers Clues",
+              "url": "https://www.smithsonianmag.com/smart-news/how-has-roman-concrete-lasted-for-millennia-a-1900-year-old-latrine-offers-new-clues-about-the-materials-impressive-durability-180989115/",
+              "score": 134,
+              "by": "divbzero"
+            },
+            {
+              "title": "Microsoft Comic Chat is now open source",
+              "url": "https://opensource.microsoft.com/blog/2026/07/16/microsoft-comic-chat-is-now-open-source/",
+              "score": 690,
+              "by": "jervant"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waxing crescent",
+          "illumination": 0.126,
+          "days_into_cycle": 3.41
+        },
+        "music": {
+          "bands": [
+            "The War on Drugs",
+            "My Morning Jacket",
+            "Radiohead"
+          ]
+        },
+        "quote": {
+          "text": "Every second you have on this planet is very precious and it's your responsibility that you're happy.",
+          "author": "Naval Ravikant"
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 17,
+          "day_of_year": 198,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:02",
+          "sunset": "19:29",
+          "daylight_hours": 14.4
+        },
+        "date": "2026-07-17"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-17T10:33:22.705Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-16: Poster\n  - 2026-07-14: Split\n  - 2026-07-13: Scroll\n  - 2026-07-12: Specimen\n  - 2026-07-10: Gallery Wall\n  - 2026-07-09: Poster\n  - 2026-07-08: Broadsheet\n\n**Recently used** (last 3 days): Poster, Split, Scroll\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or si"
+      },
+      "output": {
+        "hero_copy": "IT'S YOUR RESPONSIBILITY THAT YOU'RE HAPPY",
+        "archetype": "Specimen",
+        "chassisId": "big-shoulders-atkinson",
+        "specLength": 4037,
+        "specPreview": "### 1. Color Specification\n- **Primary hue** — 150° emerald green. It's the one open corridor in the mandate (135°–164°) and it's exactly right: high-summer growth, 14.4 hours of daylight, the color of a thing that is alive and chose to be. Not a constraint — the honest color for a happiness manifesto.\n- **Neutral palette (sage, green-tinted)** — 50 `#F5F8F5`, 100 `#E8EEE9`, 200 `#CFDAD1`, 300 `#ADBCAF`, 400 `#829387`, 500 `#5E6F62`, 600 `#47564B`, 700 `#354039`, 800 `#232B26`, 900 `#141814`\n- *",
+        "selfCheck": "1. Hero quotability: Yes — \"IT'S YOUR RESPONSIBILITY THAT YOU'RE HAPPY\" is a standalone imperative, quotable stripped of all context.\n2. Because-of chain: Yes — imperative manifesto → Specimen (type is the whole page) → Big Shoulders (condensed signage stacks it at 168px) → drenched emerald (summer/"
+      },
+      "durationMs": 135835,
+      "timestamp": "2026-07-17T10:35:38.545Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 4037
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 40076,
+      "timestamp": "2026-07-17T10:36:20.192Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4063,
+        "briefLength": 6553,
+        "mockupLength": 10306
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/HeroNav.tsx",
+          "app/components/Chip.tsx",
+          "app/components/CaptionBand.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.index.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 205468,
+      "timestamp": "2026-07-17T10:41:04.962Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-17T10:41:12.558Z"
+    }
+  ]
+}

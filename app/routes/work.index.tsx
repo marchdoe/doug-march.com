@@ -1,112 +1,174 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
+import { HeroNav } from '../components/HeroNav'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/work/')({ component: WorkIndexPage })
 
-const rowClass = css({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'baseline',
-  gap: '4',
-  padding: '3 4',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-  fontSize: 'base',
-  color: 'text',
-  _hover: { color: 'accent' },
-})
-
-const metaClass = css({
-  fontSize: 'xs',
+const label = css({
+  fontSize: '2xs',
   letterSpacing: 'widest',
   textTransform: 'uppercase',
   color: 'textMuted',
+  fontWeight: 'bold',
 })
 
 function WorkIndexPage() {
   return (
-    <Box padding={{ base: '6 4', md: '8 6vw' }} display="flex" flexDirection="column" gap="8">
+    <Box display="flex" flexDirection="column" gap={{ base: '8', md: '12' }} paddingY={{ base: '6', md: '8' }}>
+      <Box>
+        <span className={css({ ...label._important, display: 'block', marginBottom: '4' })}>01 · Work</span>
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: '900',
+            textTransform: 'uppercase',
+            lineHeight: 'tight',
+            letterSpacing: 'tight',
+            fontSize: 'clamp(40px, 6vw, 88px)',
+            color: 'text',
+          })}
+        >
+          Selected Work
+        </h1>
+        <Box marginTop="6">
+          <HeroNav active="work" />
+        </Box>
+      </Box>
+
       {featuredProject && (
         <Box>
-          <h1
-            className={css({
-              fontFamily: 'display',
-              textTransform: 'uppercase',
-              fontSize: 'clamp(40px, 8vw, 100px)',
-              lineHeight: 'tight',
-              letterSpacing: 'tight',
-              color: 'text',
-              maxWidth: '18ch',
-            })}
-          >
-            {featuredProject.title}
-          </h1>
-          {featuredProject.problem && (
-            <p className={css({ marginTop: '4', fontSize: 'md', lineHeight: 'normal', color: 'textSecondary', maxWidth: '62ch' })}>
-              {featuredProject.problem}
-            </p>
-          )}
-          {featuredProject.externalUrl && (
-            <a
-              href={featuredProject.externalUrl}
+          <span className={label}>Featured</span>
+          <Box marginTop="4">
+            <h2
               className={css({
-                display: 'inline-block',
-                marginTop: '4',
-                fontSize: 'xs',
-                letterSpacing: 'widest',
+                fontFamily: 'display',
+                fontWeight: '900',
                 textTransform: 'uppercase',
+                fontSize: 'clamp(32px, 5vw, 64px)',
                 color: 'accent',
-                border: '1px solid',
-                borderColor: 'border',
-                borderRadius: 'sm',
-                padding: '2 4',
-                _hover: { borderColor: 'accent' },
+                lineHeight: 'snug',
               })}
             >
-              Visit
-            </a>
-          )}
+              {featuredProject.title}
+            </h2>
+            {featuredProject.problem && (
+              <p className={css({ fontSize: 'base', color: 'textSecondary', marginTop: '2', maxWidth: '60ch' })}>
+                {featuredProject.problem}
+              </p>
+            )}
+            {featuredProject.externalUrl && (
+              <a
+                href={featuredProject.externalUrl}
+                className={css({
+                  display: 'inline-block',
+                  marginTop: '4',
+                  fontSize: 'sm',
+                  fontWeight: 'bold',
+                  color: 'accent',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '4px',
+                })}
+              >
+                Visit site ↗
+              </a>
+            )}
+          </Box>
         </Box>
       )}
 
       <Box>
-        <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4' })}>
-          Selected Work
-        </h2>
-        <Flex direction="column">
-          {selectedWork.map((project) => (
-            <a key={project.slug} href={`/work/${project.slug}`} className={rowClass}>
-              <span>{project.title}</span>
-              <Flex gap="4">
-                <span className={metaClass}>{project.type}</span>
-                <span className={metaClass}>{project.year}</span>
-              </Flex>
-            </a>
+        <span className={label}>Selected work</span>
+        <Box display="flex" flexDirection="column" marginTop="4">
+          {selectedWork.map((p, i) => (
+            <Flex
+              key={p.slug}
+              gap="6"
+              bg="cardBg"
+              borderBottom={i === selectedWork.length - 1 ? 'none' : '1px solid'}
+              borderColor="border"
+              paddingX="4"
+              paddingY="4"
+              align="baseline"
+              wrap="wrap"
+            >
+              <Box flex="1" minWidth="200px">
+                <a
+                  href={`/work/${p.slug}`}
+                  className={css({
+                    fontSize: 'md',
+                    fontWeight: 'bold',
+                    color: 'text',
+                    _hover: { color: 'accent', textDecoration: 'underline', textDecorationColor: 'accent' },
+                  })}
+                >
+                  {p.title}
+                </a>
+              </Box>
+              <span className={css({ fontSize: 'sm', color: 'textSecondary', flex: '0 0 140px' })}>{p.type}</span>
+              <span
+                className={css({
+                  fontSize: 'sm',
+                  color: 'textMuted',
+                  fontVariantNumeric: 'tabular-nums',
+                  flex: '0 0 60px',
+                })}
+              >
+                {p.year}
+              </span>
+            </Flex>
           ))}
-        </Flex>
+        </Box>
       </Box>
 
-      <Box>
-        <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4' })}>
-          Experiments
-        </h2>
-        <Flex direction="column">
-          {experiments.map((project) => (
-            <a
-              key={project.slug}
-              href={project.externalUrl ?? `/work/${project.slug}`}
-              className={rowClass}
-            >
-              <span>{project.title}</span>
-              <Flex gap="4">
-                <span className={metaClass}>{project.type}</span>
-                <span className={metaClass}>{project.year}</span>
+      <Box id="experiments">
+        <span className={label}>Experiments</span>
+        <Box display="flex" flexDirection="column" marginTop="4">
+          {experiments.map((p, i) => {
+            const href = p.liveUrl || p.githubUrl || p.externalUrl || `/work/${p.slug}`
+            return (
+              <Flex
+                key={p.slug}
+                gap="6"
+                bg="cardBg"
+                borderBottom={i === experiments.length - 1 ? 'none' : '1px solid'}
+                borderColor="border"
+                paddingX="4"
+                paddingY="4"
+                align="baseline"
+                wrap="wrap"
+              >
+                <Box flex="1" minWidth="200px">
+                  <a
+                    href={href}
+                    className={css({
+                      fontSize: 'md',
+                      fontWeight: 'bold',
+                      color: 'text',
+                      _hover: { color: 'accent', textDecoration: 'underline', textDecorationColor: 'accent' },
+                    })}
+                  >
+                    {p.title}
+                  </a>
+                </Box>
+                <span className={css({ fontSize: 'sm', color: 'textSecondary', flex: '0 0 140px' })}>
+                  {p.type}
+                </span>
+                <span
+                  className={css({
+                    fontSize: 'sm',
+                    color: 'textMuted',
+                    fontVariantNumeric: 'tabular-nums',
+                    flex: '0 0 60px',
+                  })}
+                >
+                  {p.year}
+                </span>
               </Flex>
-            </a>
-          ))}
-        </Flex>
+            )
+          })}
+        </Box>
       </Box>
     </Box>
   )

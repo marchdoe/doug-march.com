@@ -1,139 +1,130 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex, Grid } from '../../styled-system/jsx'
+import { Box, Flex, Grid, styled } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
+import { HeroNav } from '../components/HeroNav'
+import { Chip } from '../components/Chip'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const chip = css({
-  display: 'inline-block',
-  fontSize: '2xs',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'text',
-  background: 'bgCard',
-  border: '1px solid',
-  borderColor: 'border',
-  borderRadius: 'sm',
-  padding: '2 3',
-})
-
-const factLabel = css({
+const label = css({
   fontSize: '2xs',
   letterSpacing: 'widest',
   textTransform: 'uppercase',
   color: 'textMuted',
-})
-
-const factValue = css({
-  fontSize: 'base',
-  color: 'text',
+  fontWeight: 'bold',
 })
 
 function AboutPage() {
   return (
-    <Box padding={{ base: '6 4', md: '8 6vw' }} display="flex" flexDirection="column" gap="8">
+    <Box display="flex" flexDirection="column" gap={{ base: '8', md: '12' }} paddingY={{ base: '6', md: '8' }}>
       <Box>
+        <span className={css({ ...label._important, marginBottom: '4', display: 'block' })}>
+          02 · About
+        </span>
         <h1
           className={css({
             fontFamily: 'display',
+            fontWeight: '900',
             textTransform: 'uppercase',
-            fontSize: 'clamp(40px, 8vw, 90px)',
             lineHeight: 'tight',
             letterSpacing: 'tight',
+            fontSize: 'clamp(40px, 6vw, 88px)',
             color: 'text',
             maxWidth: '20ch',
           })}
         >
-          {identity.role.split(' ').map((word, i) =>
-            i === 1 ? (
-              <span key={word} className={css({ color: 'accent' })}> {word}</span>
-            ) : (
-              <span key={word}>{i === 0 ? word : ` ${word}`}</span>
-            )
-          )}
-        </h1>
-        <p className={css({ marginTop: '4', fontSize: 'md', lineHeight: 'normal', color: 'textSecondary', maxWidth: '62ch' })}>
           {identity.statement}
+        </h1>
+        <p className={css({ fontSize: 'base', color: 'textSecondary', marginTop: '4' })}>
+          {identity.name} — {identity.role}
         </p>
-        <p className={css({ marginTop: '2', fontSize: 'sm', letterSpacing: 'wide', color: 'textMuted', textTransform: 'uppercase' })}>
-          {identity.name}
-        </p>
+        <Box marginTop="6">
+          <HeroNav active="about" />
+        </Box>
       </Box>
 
       <Box>
-        <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4' })}>
-          Timeline
-        </h2>
-        <Flex direction="column" gap="0">
-          {timeline.map((entry) => (
+        <span className={label}>Timeline</span>
+        <Box display="flex" flexDirection="column" marginTop="4">
+          {timeline.map((entry, i) => (
             <Flex
-              key={`${entry.year}-${entry.role}`}
-              gap="4"
-              padding="3 4"
-              bg="bgCard"
-              borderBottom="1px solid"
+              key={i}
+              gap="6"
+              bg="cardBg"
+              borderBottom={i === timeline.length - 1 ? 'none' : '1px solid'}
               borderColor="border"
+              paddingX="4"
+              paddingY="4"
               align="baseline"
               wrap="wrap"
             >
-              <Box
-                minWidth="120px"
-                flexShrink={0}
-                fontVariantNumeric="tabular-nums"
-                color="accent"
-                fontWeight="bold"
-                fontSize="sm"
-                letterSpacing="wide"
+              <span
+                className={css({
+                  flex: '0 0 120px',
+                  minWidth: '120px',
+                  fontVariantNumeric: 'tabular-nums',
+                  fontSize: 'sm',
+                  color: 'accent',
+                  fontWeight: 'bold',
+                })}
               >
                 {entry.year}
-              </Box>
-              <Box flex="1" minWidth="240px">
-                <Box fontSize="base" color="text" fontWeight="medium">
-                  {entry.role} <span className={css({ color: 'textSecondary' })}>· {entry.company}</span>
-                </Box>
-                <Box fontSize="sm" lineHeight="normal" color="textSecondary" marginTop="1">
+              </span>
+              <Box flex="1" minWidth="200px">
+                <p className={css({ fontSize: 'base', color: 'text', fontWeight: 'bold' })}>
+                  {entry.role} · {entry.company}
+                </p>
+                <p className={css({ fontSize: 'sm', color: 'textSecondary', marginTop: '1' })}>
                   {entry.description}
-                </Box>
+                </p>
               </Box>
             </Flex>
           ))}
-        </Flex>
+        </Box>
       </Box>
 
       <Box>
-        <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4' })}>
-          Capabilities
-        </h2>
-        <Flex wrap="wrap" gap="2">
+        <span className={label}>Capabilities</span>
+        <Flex wrap="wrap" gap="2" marginTop="4">
           {capabilities.map((cap) => (
-            <span key={cap} className={chip}>{cap}</span>
+            <Chip key={cap}>{cap}</Chip>
           ))}
         </Flex>
       </Box>
 
-      <Grid columns={{ base: 1, md: 2 }} gap="6">
+      <Grid gridTemplateColumns={{ base: '1fr', md: '1fr 1fr' }} gap="8">
         <Box>
-          <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4' })}>
-            Education
-          </h2>
-          <Flex direction="column" gap="2">
-            <Flex justify="space-between"><span className={factLabel}>School</span><span className={factValue}>{education.school}</span></Flex>
-            <Flex justify="space-between"><span className={factLabel}>Degree</span><span className={factValue}>{education.degree}</span></Flex>
-            <Flex justify="space-between"><span className={factLabel}>Concentration</span><span className={factValue}>{education.concentration}</span></Flex>
-            <Flex justify="space-between"><span className={factLabel}>Years</span><span className={factValue}>{education.years}</span></Flex>
-          </Flex>
+          <span className={label}>Education</span>
+          <Box marginTop="4" display="flex" flexDirection="column" gap="1">
+            <p className={css({ fontSize: 'md', color: 'text', fontWeight: 'bold' })}>
+              {education.school}
+            </p>
+            <p className={css({ fontSize: 'sm', color: 'textSecondary' })}>
+              {education.degree} · {education.concentration}
+            </p>
+            <p
+              className={css({
+                fontSize: 'xs',
+                color: 'textMuted',
+                fontVariantNumeric: 'tabular-nums',
+              })}
+            >
+              {education.years}
+            </p>
+          </Box>
         </Box>
+
         <Box>
-          <h2 className={css({ fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '4' })}>
-            Personal
-          </h2>
-          <Flex direction="column" gap="2">
-            <Flex justify="space-between"><span className={factLabel}>Holes in one</span><span className={factValue}>{personal.holesInOne}</span></Flex>
-            <Flex justify="space-between"><span className={factLabel}>Sport</span><span className={factValue}>{personal.sport}</span></Flex>
-            <Flex justify="space-between"><span className={factLabel}>Teams</span><span className={factValue}>{personal.teams.join(', ')}</span></Flex>
-            <Flex justify="space-between"><span className={factLabel}>Current focus</span><span className={factValue}>{personal.currentFocus}</span></Flex>
+          <span className={label}>Off the clock</span>
+          <Flex wrap="wrap" gap="2" marginTop="4">
+            <Chip>{personal.holesInOne} holes-in-one</Chip>
+            <Chip>{personal.sport}</Chip>
+            {personal.teams.map((t) => (
+              <Chip key={t}>{t}</Chip>
+            ))}
+            <Chip>{personal.currentFocus}</Chip>
           </Flex>
         </Box>
       </Grid>

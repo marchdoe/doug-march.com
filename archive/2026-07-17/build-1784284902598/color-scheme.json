@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 150,
+    "s": 88,
+    "l": 24,
+    "name": "drenched emerald"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "green",
+    "name": "sage"
+  },
+  "mood_word": "alive",
+  "color_story": "A summer-drenched emerald field turns the imperative to be happy into a growing, sunlit green — optimism with weight, not decoration."
+}
