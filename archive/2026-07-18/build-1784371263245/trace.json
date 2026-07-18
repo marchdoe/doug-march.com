@@ -1,0 +1,278 @@
+{
+  "date": "2026-07-18",
+  "startedAt": "2026-07-18T10:28:50.282Z",
+  "completedAt": "2026-07-18T10:41:04.979Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "/zeroz Brand Site",
+              "description": "Brand site for /zeroz, a self-conditioning food born from Otsuka Pharmaceutical Co., Ltd.'s \"Active Inner Resource\" concept. Chapters unfold through 3DCG...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4687f45bf83853560900.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The Record Institute",
+              "description": "A museum-grade digital archive dedicated to preserving pre-2000 print ephemera. Multilingual, meticulously catalogued, and free—safeguarding vintage advertising...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a44c228af614956383273.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADASIAAhEBAxEB/8QAHQAAAAcBAQEAAAAAAAAAAAAAAAECAwQFBgcICf/E...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The History of Muse Group",
+              "description": "SANDS STUDIO created an interactive website for Muse Group — a living digital archive connecting its music ecosystem, products, and nearly a century of...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a43c670e1dae067356082.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAMAAACU33alAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAJBQTFRFLCoq/v7+9/f37O3r1NTUUPP+9c0Cgv4EtbW1yqwmeMkxTb/GjJCQgYMlcGHyc17qdlzkeFnee1fYflXSflLLhE7FZGtqlTT97DQCmDuUnjaHojN+XEyppS91qStsridg6ws/th9OvRk/wxMwaCOzREZDSDluaCtPiR41Oi84JCQjSwkiHBwc...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Saturday",
+          "is_weekend": true,
+          "day_index": 6
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "codecrafters-io/build-your-own-x/stargazers",
+              "description": "",
+              "language": "Markdown",
+              "stars": null
+            },
+            {
+              "name": "PostHog/posthog/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/HenryNdubuaku",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "Nutlope/hallmark/stargazers",
+              "description": "",
+              "language": "CSS",
+              "stars": null
+            },
+            {
+              "name": "github/copilot-sdk/stargazers",
+              "description": "",
+              "language": "Java",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "The Open",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Lucas Herbert",
+              "position": "1",
+              "score": "-8"
+            },
+            {
+              "name": "Cameron Young",
+              "position": "2",
+              "score": "-6"
+            },
+            {
+              "name": "Ryan Gerard",
+              "position": "3",
+              "score": "-6"
+            },
+            {
+              "name": "Jackson Suber",
+              "position": "4",
+              "score": "-6"
+            },
+            {
+              "name": "Sam Burns",
+              "position": "5",
+              "score": "-5"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Regressive JPEGs",
+              "url": "https://maurycyz.com/projects/bad_jpeg/",
+              "score": 362,
+              "by": "vitaut"
+            },
+            {
+              "title": "AWS: Inaccurate Estimated Billing Data – $1.7 billion",
+              "score": 1195,
+              "by": "nprateem"
+            },
+            {
+              "title": "Thanks HN for 15 years of support and helping me find my life's work",
+              "score": 610,
+              "by": "nicholasjbs"
+            },
+            {
+              "title": "Porting nanochat to a TPU: what carries over from PyTorch, and what breaks",
+              "url": "https://github.com/tucan9389/nanochat-jax/discussions/1",
+              "score": 35,
+              "by": "tucan9389"
+            },
+            {
+              "title": "Reviving a 15-year-old netbook with Arch Linux",
+              "url": "https://parksb.github.io/en/article/41.html",
+              "score": 112,
+              "by": "parksb"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waxing crescent",
+          "illumination": 0.204,
+          "days_into_cycle": 4.4
+        },
+        "music": {
+          "bands": [
+            "Tobin Sprout",
+            "Wet Leg",
+            "The War on Drugs"
+          ]
+        },
+        "quote": {
+          "text": "Better to light a candle than to curse the darkness.",
+          "author": "Chinese Proverb"
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 18,
+          "day_of_year": 199,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-07-18T01:38Z",
+              "result": "win",
+              "score": "2-1"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:03",
+          "sunset": "19:28",
+          "daylight_hours": 14.4
+        },
+        "date": "2026-07-18"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-18T10:29:05.428Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-17: Specimen\n  - 2026-07-16: Poster\n  - 2026-07-14: Split\n  - 2026-07-13: Scroll\n  - 2026-07-12: Specimen\n  - 2026-07-10: Gallery Wall\n  - 2026-07-09: Poster\n\n**Recently used** (last 3 days): Specimen, Poster, Split\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or si"
+      },
+      "output": {
+        "hero_copy": "Better to light a candle than to curse the darkness.",
+        "archetype": "Stack",
+        "chassisId": "bricolage-manrope",
+        "specLength": 4060,
+        "specPreview": "### 1. Color Specification\n- **Primary hue** — 98° (candle lime / acid chartreuse). The warm-flame corridor (30–55°) is inside the forbidden 0–93° zone; the only clean window the mandate leaves is 94–119°, and 98° reads as a candle's light *spilling* — a phosphor-lime glow rather than a literal orange flame. With risk at 8/10 this Liquid-Death-acid lane is the bolder, more distinctive call than a safe amber.\n- **Neutral palette (smoked olive black)** — 50 `#f6f8f0`, 100 `#ecefe0`, 200 `#d5dbc3`,",
+        "selfCheck": "1. Hero quotability: Yes — a complete standalone proverb anyone would screenshot.\n2. Because-of chain: Yes — the light/dark structure dictated Stack, warmth dictated Bricolage, the flame dictated lime-on-black, the arc dictated the band order.\n3. Render feasibility: Yes — the phrase splits naturally"
+      },
+      "durationMs": 163995,
+      "timestamp": "2026-07-18T10:31:49.429Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 4060
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 31087,
+      "timestamp": "2026-07-18T10:32:22.056Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4257,
+        "briefLength": 6858,
+        "mockupLength": 17655
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Footer.tsx",
+          "app/components/Layout.tsx",
+          "app/components/ProjectRow.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 161991,
+      "timestamp": "2026-07-18T10:37:20.663Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": false,
+        "error": "Build output smoke check failed:\n  - dist/client/_shell.html and index.html are both missing\n\nThe build COMPILED but the app crashed during prerender (server-side render). Runtime error lines from the build log:\nError: Invalid tag: data:image/svg+xml,%3csvg%20width='71'%20height='59'%20viewBox='0%200%2071%2059'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M29.8925%200.440186C45.91%200.440257%2058.8956%2013.4256%2058.8965%2029.4431C58.8964%2045.4614%2045.9108%2058.4469%2029.8"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-18T10:37:28.032Z"
+    }
+  ]
+}

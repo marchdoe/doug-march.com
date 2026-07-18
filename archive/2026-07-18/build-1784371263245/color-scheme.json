@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 98,
+    "s": 82,
+    "l": 51,
+    "name": "candle lime"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "chartreuse-green",
+    "name": "smoked olive black"
+  },
+  "mood_word": "defiant-hope",
+  "color_story": "A single acid-lime candle-band burns inside a smoked near-black field — the flame lit, the darkness demoted, exactly as the proverb instructs."
+}

@@ -1,127 +1,114 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex } from '../../styled-system/jsx'
+import { Box } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { HeroNav } from '../components/HeroNav'
-import { Chip } from '../components/Chip'
+import { Footer } from '../components/Footer'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
 
-const label = css({
-  fontSize: '2xs',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  fontWeight: 'bold',
-})
-
 function WorkDetailPage() {
   const { slug } = Route.useParams()
-  const project = projects.find((p) => p.slug === slug)
-
-  if (!project) {
-    return (
-      <Box paddingY="8">
-        <p className={css({ fontSize: 'lg', color: 'text' })}>Project not found.</p>
-      </Box>
-    )
-  }
+  const index = projects.findIndex((p) => p.slug === slug)
+  const project = index >= 0 ? projects[index] : projects[0]
+  const prev = projects[(index - 1 + projects.length) % projects.length]
+  const next = projects[(index + 1) % projects.length]
 
   return (
-    <Box display="flex" flexDirection="column" gap={{ base: '8', md: '12' }} paddingY={{ base: '6', md: '8' }}>
-      <Box>
-        <span className={css({ ...label._important, display: 'block', marginBottom: '4' })}>
-          01 · Work / {project.type}
-        </span>
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontWeight: '900',
-            textTransform: 'uppercase',
-            lineHeight: 'tight',
-            letterSpacing: 'tight',
-            fontSize: 'clamp(40px, 6vw, 88px)',
-            color: 'text',
-          })}
-        >
+    <>
+      {/* CANDLE BAND — title marquee */}
+      <Box
+        as="section"
+        minH="34vh"
+        padding={{ base: '10 6vw', md: 'clamp(40px,7vw,80px) 6vw' }}
+        bg="bgCandle"
+        color="textOnCandle"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        boxShadow="0 40px 120px token(colors.lime.400/35)"
+      >
+        <p className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'olive.700', marginBottom: '5' })}>
+          {project.type} · {project.year}
+        </p>
+        <h1 className={css({ fontFamily: 'display', fontWeight: 'bold', fontSize: 'clamp(48px,7vw,112px)', lineHeight: 'tight', letterSpacing: 'tight', maxWidth: '16ch' })}>
           {project.title}
         </h1>
-        <Flex gap="4" marginTop="4" wrap="wrap">
-          <Chip>{project.type}</Chip>
-          <Chip>{project.year}</Chip>
-          {project.role && <Chip>{project.role}</Chip>}
-        </Flex>
-        <Box marginTop="6">
-          <HeroNav active="work" />
+      </Box>
+
+      {/* DARKNESS BAND — problem statement */}
+      {project.problem && (
+        <Box as="section" minH="22vh" padding={{ base: '10 6vw', md: 'clamp(40px,6vw,72px) 6vw' }} bg="bg" display="flex" flexDirection="column" justifyContent="center">
+          <h2 className={css({ fontFamily: 'display', fontWeight: 'bold', fontSize: 'clamp(28px,4.5vw,56px)', lineHeight: 'tight', letterSpacing: 'tight', color: 'accent', maxWidth: '20ch' })}>
+            {project.problem}
+          </h2>
+        </Box>
+      )}
+
+      {/* WORK BAND — role / approach / outcome / link */}
+      <Box as="section" padding={{ base: '10 6vw', md: 'clamp(48px,7vw,88px) 6vw' }} bg="bgLedger" borderTop="1px solid" borderColor="border">
+        <Box display="flex" flexDirection="column" gap="6" maxW="70ch">
+          {project.role && (
+            <div>
+              <p className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '2' })}>Role</p>
+              <p className={css({ fontSize: 'md', color: 'text' })}>{project.role}</p>
+            </div>
+          )}
+          {project.approach && (
+            <div>
+              <p className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '2' })}>Approach</p>
+              <p className={css({ fontSize: 'md', color: 'textSecondary', lineHeight: 'loose' })}>{project.approach}</p>
+            </div>
+          )}
+          {project.outcome && (
+            <div>
+              <p className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted', marginBottom: '2' })}>Outcome</p>
+              <p className={css({ fontSize: 'md', color: 'accent', lineHeight: 'loose' })}>{project.outcome}</p>
+            </div>
+          )}
+          {project.stack && project.stack.length > 0 && (
+            <Box display="flex" flexWrap="wrap" gap="3">
+              {project.stack.map((tech) => (
+                <span key={tech} className={css({ fontSize: 'xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'textSecondary', border: '1px solid', borderColor: 'border', borderRadius: 'sm', padding: '1 3' })}>
+                  {tech}
+                </span>
+              ))}
+            </Box>
+          )}
+          {(project.liveUrl || project.externalUrl) && (
+            <a
+              href={project.liveUrl ?? project.externalUrl}
+              target="_blank"
+              rel="noopener"
+              className={css({
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '2',
+                width: 'max-content',
+                fontFamily: 'body',
+                fontWeight: 'bold',
+                fontSize: 'sm',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                color: 'olive.900',
+                background: 'accent',
+                padding: '3 5',
+                borderRadius: 'sm',
+                minH: '44px',
+                _hover: { background: 'lime.300' },
+              })}
+            >
+              Visit project <span aria-hidden="true">↗</span>
+            </a>
+          )}
         </Box>
       </Box>
 
-      <Box maxWidth="90%" display="flex" flexDirection="column" gap="6">
-        {project.problem && (
-          <Box>
-            <span className={label}>Problem</span>
-            <p className={css({ fontSize: 'base', color: 'textSecondary', marginTop: '2', maxWidth: '75ch' })}>
-              {project.problem}
-            </p>
-          </Box>
-        )}
-        {project.approach && (
-          <Box>
-            <span className={label}>Approach</span>
-            <p className={css({ fontSize: 'base', color: 'textSecondary', marginTop: '2', maxWidth: '75ch' })}>
-              {project.approach}
-            </p>
-          </Box>
-        )}
-        {project.outcome && (
-          <Box>
-            <span className={label}>Outcome</span>
-            <p className={css({ fontSize: 'base', color: 'textSecondary', marginTop: '2', maxWidth: '75ch' })}>
-              {project.outcome}
-            </p>
-          </Box>
-        )}
-        {project.stack && project.stack.length > 0 && (
-          <Box>
-            <span className={label}>Stack</span>
-            <Flex wrap="wrap" gap="2" marginTop="2">
-              {project.stack.map((s) => (
-                <Chip key={s}>{s}</Chip>
-              ))}
-            </Flex>
-          </Box>
-        )}
-        <Flex gap="6" wrap="wrap" marginTop="2">
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              className={css({
-                fontSize: 'sm',
-                fontWeight: 'bold',
-                color: 'accent',
-                textDecoration: 'underline',
-                textUnderlineOffset: '4px',
-              })}
-            >
-              Live site ↗
-            </a>
-          )}
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              className={css({
-                fontSize: 'sm',
-                fontWeight: 'bold',
-                color: 'accent',
-                textDecoration: 'underline',
-                textUnderlineOffset: '4px',
-              })}
-            >
-              Source ↗
-            </a>
-          )}
-        </Flex>
-      </Box>
-    </Box>
+      <Footer
+        extraNavLinks={[
+          { label: `← ${prev.title}`, href: `/work/${prev.slug}` },
+          { label: `${next.title} →`, href: `/work/${next.slug}` },
+        ]}
+      />
+    </>
   )
 }
