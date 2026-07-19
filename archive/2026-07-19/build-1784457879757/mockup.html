@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="base">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doug March — Late Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink:#ff3d86;
+    --pink-light:#ff5f9c;
+    --pink-50:#fff0f6;
+    --ink:#150a0f;
+    --ink-700:#31212c;
+    --ink-600:#4a3242;
+    --knock:#fff0f6;
+    --dark-accent:#b81456;
+    --rule:2px solid #150a0f;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--pink);
+    color:var(--ink);
+    font-family:"Atkinson Hyperlegible",system-ui,sans-serif;
+    font-variant-numeric:tabular-nums;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    min-height:100dvh;
+  }
+  .display{font-family:"Big Shoulders Display","Atkinson Hyperlegible",sans-serif;}
+  a{color:inherit;text-decoration:none;}
+
+  .sheet{
+    display:grid;
+    grid-template-rows:auto auto 1fr auto;
+    min-height:100dvh;
+  }
+
+  /* ---------- MASTHEAD ---------- */
+  .masthead{
+    background:var(--ink);
+    color:var(--knock);
+    border-bottom:4px solid var(--ink);
+    box-shadow:0 4px 0 0 var(--ink);
+  }
+  .masthead-inner{
+    min-height:64px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:8px clamp(24px,5vw,72px);
+    flex-wrap:wrap;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:var(--knock);
+    line-height:1;
+  }
+  .brand svg{width:auto;height:36px;display:block;color:var(--knock);}
+  .brand .name{
+    font-family:"Big Shoulders Display",sans-serif;
+    font-weight:900;
+    font-size:26px;
+    letter-spacing:0.02em;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .dateline{
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--knock);
+    text-align:center;
+    flex:1 1 auto;
+  }
+  .mast-nav{
+    display:flex;
+    gap:20px;
+  }
+  .mast-nav a{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    padding:8px 4px;
+    color:var(--knock);
+    transition:color .18s ease,background .18s ease;
+  }
+  .mast-nav a:hover{background:var(--pink);color:var(--ink);}
+
+  /* ---------- BANNER ---------- */
+  .banner{
+    background:var(--pink);
+    min-height:34vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:clamp(20px,4vw,44px) clamp(24px,5vw,72px);
+    border-bottom:var(--rule);
+  }
+  .kicker{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink-700);
+    margin-bottom:14px;
+    display:flex;
+    gap:16px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .kicker span.star{color:var(--dark-accent);}
+  .banner h1{
+    font-family:"Big Shoulders Display",sans-serif;
+    font-weight:900;
+    font-size:clamp(64px,11vw,168px);
+    line-height:0.85;
+    letter-spacing:-0.02em;
+    text-transform:uppercase;
+    color:var(--knock);
+    margin:0;
+    text-shadow:0 2px 0 rgba(21,10,15,0.18);
+  }
+  .banner .deck{
+    margin-top:16px;
+    font-size:clamp(15px,1.4vw,18px);
+    line-height:1.4;
+    color:var(--ink-700);
+    max-width:60ch;
+    font-style:italic;
+  }
+
+  /* ---------- COLUMNS ---------- */
+  .body-grid{
+    display:grid;
+    grid-template-columns:1.6fr 1fr 1fr;
+    min-height:52vh;
+  }
+  .col{
+    padding:clamp(20px,2.4vw,32px) clamp(20px,2.6vw,34px);
+  }
+  .col + .col{border-left:var(--rule);}
+
+  .eyebrow{
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--ink);
+    padding-bottom:8px;
+    margin-bottom:16px;
+    border-bottom:var(--rule);
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:12px;
+  }
+  .eyebrow .flag{color:var(--dark-accent);}
+
+  .lede{
+    font-family:"Big Shoulders Display",sans-serif;
+    font-weight:700;
+    font-size:clamp(24px,2.6vw,34px);
+    line-height:1.0;
+    text-transform:uppercase;
+    letter-spacing:-0.01em;
+    margin-bottom:18px;
+  }
+  .lede .drop{
+    font-size:1.32em;
+    color:var(--dark-accent);
+  }
+  p.body{
+    font-size:17px;
+    line-height:1.5;
+    color:var(--ink-700);
+    max-width:64ch;
+    margin-bottom:16px;
+  }
+  .attrib{
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin-bottom:24px;
+  }
+
+  .subhead{
+    font-family:"Big Shoulders Display",sans-serif;
+    font-weight:900;
+    font-size:20px;
+    letter-spacing:0.02em;
+    text-transform:uppercase;
+    margin:24px 0 10px;
+    padding-top:16px;
+    border-top:var(--rule);
+  }
+
+  /* manifesto capability run-on */
+  .manifesto{
+    font-size:16px;
+    line-height:1.55;
+    color:var(--ink-600);
+  }
+  .manifesto b{color:var(--ink);font-weight:700;}
+
+  /* featured / work list */
+  .feature-block{
+    background:var(--ink);
+    color:var(--pink-50);
+    padding:20px;
+    margin-top:8px;
+  }
+  .feature-block .tag{
+    font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--pink);font-weight:700;
+  }
+  .feature-block h3{
+    font-family:"Big Shoulders Display",sans-serif;
+    font-weight:900;font-size:32px;line-height:0.9;text-transform:uppercase;
+    margin:6px 0 10px;color:var(--pink-50);
+  }
+  .feature-block p{font-size:15px;line-height:1.45;color:#e0cbd7;margin-bottom:14px;}
+  .feature-block a.ext{
+    font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+    color:var(--pink);border-bottom:2px solid var(--pink);padding-bottom:2px;
+    transition:background .18s ease,color .18s ease;
+  }
+  .feature-block a.ext:hover{background:var(--pink);color:var(--ink);}
+
+  .worklist{list-style:none;margin:0;padding:0;}
+  .worklist li{
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    padding:11px 0;border-bottom:1px solid rgba(21,10,15,0.25);
+  }
+  .worklist li:first-child{border-top:1px solid rgba(21,10,15,0.25);}
+  .worklist a{
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;width:100%;
+    transition:background .16s ease,color .16s ease;padding:2px 4px;margin:-2px -4px;
+  }
+  .worklist a:hover{background:var(--ink);color:var(--pink-50);}
+  .worklist .wt{
+    font-family:"Big Shoulders Display",sans-serif;font-weight:700;font-size:20px;
+    text-transform:uppercase;letter-spacing:-0.01em;
+  }
+  .worklist .wm{
+    font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-600);white-space:nowrap;
+  }
+  .worklist a:hover .wm{color:var(--pink);}
+
+  /* leaderboard */
+  .board{list-style:none;margin:0;padding:0;font-size:16px;}
+  .board li{
+    display:grid;grid-template-columns:24px 1fr auto;gap:12px;align-items:baseline;
+    padding:9px 8px;line-height:1.35;border-bottom:1px solid rgba(21,10,15,0.25);
+  }
+  .board li .pos{font-weight:700;color:var(--ink-600);font-size:13px;}
+  .board li .plr{font-weight:700;}
+  .board li .scr{font-weight:700;letter-spacing:0.01em;color:var(--dark-accent);}
+  .board li.leader{background:var(--ink);color:var(--pink-50);}
+  .board li.leader .pos{color:var(--pink);}
+  .board li.leader .scr{color:var(--pink);font-size:19px;}
+  .board .through{
+    font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-600);margin-top:10px;
+  }
+
+  /* box score */
+  .boxscore{
+    background:var(--ink);color:var(--pink-50);padding:20px;margin-bottom:20px;
+    display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;
+  }
+  .boxscore .team{
+    font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:22px;
+    text-transform:uppercase;line-height:1;
+  }
+  .boxscore .team.win{color:var(--pink);}
+  .boxscore .team small{display:block;font-size:11px;letter-spacing:0.12em;color:#c3a4b6;font-weight:400;margin-top:4px;}
+  .boxscore .bignum{
+    font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:96px;line-height:0.8;
+    color:var(--pink);text-align:right;
+  }
+  .boxscore .bignum small{
+    display:block;font-size:26px;color:var(--pink-50);line-height:0.8;text-align:right;
+  }
+  .box-note{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-600);margin-bottom:24px;}
+
+  /* on the wire */
+  .wire{list-style:none;margin:0 0 10px;padding:0;}
+  .wire li{
+    padding:8px 0;border-bottom:1px solid rgba(21,10,15,0.25);
+    font-size:15px;line-height:1.4;
+  }
+  .wire li .art{font-weight:700;text-transform:uppercase;letter-spacing:0.02em;}
+  .wire li .tk{color:var(--ink-600);font-style:italic;}
+
+  /* ---------- FOLIO ---------- */
+  .folio{
+    background:var(--ink);
+    color:var(--pink-50);
+    padding:14px clamp(24px,5vw,72px);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    font-size:12px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    border-top:4px solid var(--ink);
+  }
+  .folio span b{color:var(--pink);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .body-grid{grid-template-columns:1fr;}
+    .col + .col{border-left:none;border-top:var(--rule);}
+  }
+  @media (max-width:640px){
+    .masthead-inner{flex-direction:column;align-items:center;text-align:center;gap:10px;padding:14px 20px;}
+    .brand{justify-content:center;}
+    .dateline{flex:none;}
+    .mast-nav{justify-content:center;}
+    .banner{min-height:30vh;padding:24px 20px;}
+    .boxscore .bignum{font-size:72px;}
+    p.body{font-size:16px;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="#" aria-label="Doug March — home">
+        <svg width="71" height="59" viewBox="0 0 71 59" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <path d="M29.8925 0.440186C45.91 0.440257 58.8956 13.4256 58.8965 29.4431C58.8964 45.4614 45.9108 58.4469 29.8925 58.447C13.8751 58.447 0.889689 45.4614 0.889618 29.4431C0.889618 13.4256 13.875 0.440186 29.8925 0.440186ZM29.8935 5.97729C16.9329 5.97729 6.42673 16.4841 6.42673 29.4431C6.4268 42.4021 16.9329 52.9099 29.8935 52.9099C42.8532 52.9098 53.3583 42.402 53.3584 29.4431C53.3584 16.4842 42.854 5.97745 29.8935 5.97729Z" fill="currentColor"/>
+          <circle cx="30.0829" cy="29.3002" r="0.98668" fill="currentColor"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M47.8611 29.3418C47.8611 39.1396 39.9198 47.0816 30.1214 47.0816C20.3244 47.0816 12.3823 39.1396 12.3823 29.3418C12.3823 19.5463 20.3244 11.6013 30.1214 11.6013C39.9198 11.6013 47.8611 19.5463 47.8611 29.3418Z" stroke="currentColor" stroke-width="0.25"/>
+          <circle cx="30.1217" cy="29.3415" r="18.8911" stroke="currentColor" stroke-width="0.25"/>
+          <circle cx="30.1217" cy="29.3416" r="20.033" stroke="currentColor" stroke-width="0.25"/>
+          <circle cx="30.1217" cy="29.3415" r="21.1098" stroke="currentColor" stroke-width="0.25"/>
+          <circle cx="30.1217" cy="29.3416" r="22.114" stroke="currentColor" stroke-width="0.25"/>
+          <path d="M68.9722 9.76277C68.1324 8.9222 66.8896 8.48386 65.2438 8.44856C65.2922 6.88646 64.8416 5.63053 63.8902 4.67997C62.9667 3.7565 61.8454 3.30913 60.523 3.33293C59.2022 3.35838 58.0612 3.85254 57.0967 4.81706L52.8331 9.08227L52.8134 9.06175L31.8666 30.0094C30.7215 31.1553 29.7373 31.317 28.914 30.4937C28.5708 30.1506 28.396 29.7385 28.387 29.2542C28.3787 28.7707 28.5413 28.3627 28.8721 28.0311C29.2169 27.6872 29.6281 27.5148 30.1108 27.5074C30.5918 27.5025 30.9989 27.665 31.333 27.9999C31.5957 28.2626 31.7599 28.6287 31.8239 29.0917L35.3553 25.5611C34.999 25.1499 34.7265 24.8494 34.5377 24.6631C33.3491 23.4737 31.8789 22.8835 30.1313 22.895C28.382 22.9056 26.9053 23.5139 25.7011 24.7181C24.4575 25.9625 23.8426 27.4508 23.8607 29.182C23.8788 30.9148 24.5248 32.4154 25.7988 33.6893C26.4399 34.3296 27.2024 34.8156 28.0923 35.1431C28.9821 35.4706 29.8604 35.5954 30.7297 35.5149C32.2385 35.3762 33.6487 34.653 34.958 33.3429L56.0247 12.2763L56.0091 12.2598L59.5298 8.73833C59.8647 8.40424 60.1569 8.21133 60.4138 8.14731C60.6987 8.03485 60.9425 8.07343 61.1403 8.27126C61.3332 8.46334 61.3997 8.66773 61.3389 8.8828C61.2774 9.09787 61.0705 9.38353 60.7143 9.7406L55.7398 14.7142C56.5213 16.0998 57.1944 17.552 57.7444 19.0664L63.8007 13.0101C64.1348 12.6752 64.4287 12.4807 64.6856 12.4199C64.9704 12.3074 65.2134 12.3444 65.4104 12.5414C65.6017 12.7302 65.6649 12.9338 65.5984 13.1423C65.5336 13.3541 65.3251 13.6381 64.9688 13.9943L58.2763 20.6868C58.7902 22.418 59.1513 24.2149 59.3336 26.0676L68.4796 16.9207C69.6436 15.7584 70.2757 14.6165 70.3734 13.501C70.5088 12.0768 70.0409 10.8307 68.9722 9.76277Z" fill="currentColor"/>
+        </svg>
+        <span class="name">Doug March</span>
+      </a>
+      <div class="dateline">Sunday · July 19 2026 · Late Edition</div>
+      <nav class="mast-nav" aria-label="Primary">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#index">Index</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BANNER -->
+  <section class="banner">
+    <div class="kicker">
+      <span>Front Page</span>
+      <span class="star">★</span>
+      <span>The Grind Report</span>
+      <span class="star">★</span>
+      <span>Vol. 26 · No. 200</span>
+    </div>
+    <h1 class="display">There Are No<br>Shortcuts.</h1>
+    <p class="deck">A portfolio that tears itself down and rebuilds from scratch every dawn — because the work is the only thing that pays.</p>
+  </section>
+
+  <!-- COLUMN BODY -->
+  <section class="body-grid">
+
+    <!-- COLUMN 1 — LEDE / MANIFESTO / WORK -->
+    <article class="col">
+      <div class="eyebrow"><span>The Lede</span><span class="flag">Editorial</span></div>
+      <p class="lede display"><span class="drop">“</span>If you do the work you get rewarded. There are no shortcuts in life.<span class="drop">”</span></p>
+      <p class="attrib">— Michael Jordan</p>
+      <p class="body">The line reads like a stencil painted over a locker-room door: flat, undeniable, and impossible to argue with. It is also the operating principle of this page, which refuses to reuse yesterday's build and grinds out a brand-new front section every single morning — new grid, new type, new ink.</p>
+
+      <h3 class="subhead">The Craft — On the Record</h3>
+      <p class="manifesto">Every edition is assembled by hand. <b>Product strategy</b> sets the story; <b>full-stack engineering</b> presses it; <b>design systems</b>, <b>interface design</b>, and <b>brand identity</b> hold the columns square; <b>AI &amp; applied ML</b> and <b>rapid prototyping</b> feed the wire. No templates, no reruns, no shortcuts — one clean stroke, one clean inning at a time.</p>
+
+      <h3 class="subhead" id="work">Featured — Front Page Story</h3>
+      <div class="feature-block">
+        <span class="tag">15th Club · AI · 2025</span>
+        <h3>15th Club</h3>
+        <p>Caddie-grade shot intelligence: turning raw round data into the one decision that matters on the tee. Built to answer "which club, which line" faster than a human caddie can read the wind.</p>
+        <a class="ext" href="https://15thclub.com" target="_blank" rel="noopener">Read the full story ↗</a>
+      </div>
+
+      <h3 class="subhead">Selected Work — The Section</h3>
+      <ul class="worklist">
+        <li><a href="#spaceman"><span class="wt">Spaceman</span><span class="wm">Founder · 2018</span></a></li>
+        <li><a href="#fishsticks"><span class="wt">FishSticks</span><span class="wm">SaaS · 2025</span></a></li>
+        <li><a href="#15th-club"><span class="wt">15th Club</span><span class="wm">AI · 2025</span></a></li>
+        <li><a href="#doug-march-dot-com"><span class="wt">doug-march.com</span><span class="wm">AI · 2026</span></a></li>
+      </ul>
+    </article>
+
+    <!-- COLUMN 2 — THE OPEN -->
+    <article class="col">
+      <div class="eyebrow"><span>The Open — Live</span><span class="flag">Golf</span></div>
+      <p class="body">Grinding it out at the 154th Open Championship. Wins get assembled one clean stroke at a time — and the leaders are proving it under a hard afternoon sky.</p>
+      <ol class="board">
+        <li class="leader"><span class="pos">1</span><span class="plr">Sam Burns</span><span class="scr">−10</span></li>
+        <li><span class="pos">2</span><span class="plr">Rory McIlroy</span><span class="scr">−8</span></li>
+        <li><span class="pos">T3</span><span class="plr">Scottie Scheffler</span><span class="scr">−7</span></li>
+        <li><span class="pos">T3</span><span class="plr">Xander Schauffele</span><span class="scr">−7</span></li>
+        <li><span class="pos">5</span><span class="plr">Tommy Fleetwood</span><span class="scr">−6</span></li>
+        <li><span class="pos">6</span><span class="plr">Viktor Hovland</span><span class="scr">−5</span></li>
+      </ol>
+      <p class="through">Final round in progress · Leaders through 12</p>
+
+      <h3 class="subhead">Almanac — The Light</h3>
+      <p class="manifesto">Sun up <b>05:04</b>, down <b>19:28</b> — <b>14h 24m</b> of daylight to bank. Moon: waxing crescent, <b>30%</b> illuminated. Long days reward long work.</p>
+    </article>
+
+    <!-- COLUMN 3 — TIGERS / WIRE / EXPERIMENTS -->
+    <article class="col">
+      <div class="eyebrow"><span>The Diamond</span><span class="flag">Baseball</span></div>
+      <div class="boxscore">
+        <div>
+          <div class="team win">Tigers <small>Detroit · Final</small></div>
+          <div class="team" style="margin-top:14px;">Visitors <small>Away · Final</small></div>
+        </div>
+        <div class="bignum display">7<small>0</small></div>
+      </div>
+      <p class="box-note">Shutout · Nine innings, none surrendered</p>
+
+      <h3 class="subhead">On the Wire — Now Playing</h3>
+      <ul class="wire">
+        <li><span class="art">The War on Drugs</span> — <span class="tk">“Red Eyes”</span></li>
+        <li><span class="art">Wet Leg</span> — <span class="tk">“Chaise Longue”</span></li>
+      </ul>
+
+      <h3 class="subhead" id="index">Experiments — The Back Page</h3>
+      <ul class="worklist">
+        <li><a href="#teeturn"><span class="wt">TeeTurn</span><span class="wm">Experiment · 2020</span></a></li>
+        <li><a href="#politweets"><span class="wt">Politweets</span><span class="wm">Experiment · 2008</span></a></li>
+        <li><a href="#twittertale"><span class="wt">Twittertale</span><span class="wm">Experiment · 2008</span></a></li>
+      </ul>
+    </article>
+
+  </section>
+
+  <!-- FOLIO -->
+  <footer class="folio" id="about">
+    <span>Doug March · Product &amp; Design Engineer</span>
+    <span>Moon <b>30%</b> waxing · Sun <b>05:04–19:28</b> · <b>14.4h</b></span>
+    <span>Rebuilt from scratch · Edition <b>200</b> · No shortcuts</span>
+  </footer>
+
+</div>
+</body>
+</html>

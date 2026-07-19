@@ -1,209 +1,440 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Box } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Footer } from '../components/Footer'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
+import { capabilities } from '../content/timeline'
 
 export const Route = createFileRoute('/')({ component: HomePage })
+
+const eyebrow = css({
+  fontSize: 'xs',
+  fontWeight: 'bold',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
+  color: 'text',
+  paddingBottom: '2',
+  marginBottom: '4',
+  borderBottom: '2px solid',
+  borderColor: 'border',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  gap: '3',
+})
+
+const subhead = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'md',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
+  margin: '6 0 3',
+  paddingTop: '4',
+  borderTop: '2px solid',
+  borderColor: 'border',
+})
+
+const bodyText = css({
+  fontSize: 'sm',
+  lineHeight: 'normal',
+  color: 'text',
+  maxWidth: '64ch',
+  marginBottom: '4',
+})
+
+const worklist = css({
+  listStyle: 'none',
+  margin: 0,
+  padding: 0,
+})
+
+const worklistItem = css({
+  borderBottom: '1px solid',
+  borderColor: 'border',
+  _first: { borderTop: '1px solid', borderColor: 'border' },
+})
+
+const worklistLink = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
+  gap: '3',
+  width: '100%',
+  padding: '2px 4px',
+  margin: '-2px -4px',
+  transition: 'background .16s ease, color .16s ease',
+  _hover: { bg: 'panel', color: 'knockout' },
+})
+
+const wt = css({
+  fontFamily: 'display',
+  fontWeight: 'bold',
+  fontSize: 'lg',
+  textTransform: 'uppercase',
+  letterSpacing: 'tight',
+})
+
+const wm = css({
+  fontSize: '2xs',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
+  color: 'text',
+})
 
 function HomePage() {
   return (
     <>
-      {/* CANDLE BAND */}
+      {/* BANNER */}
       <Box
-        as="section"
-        minH="38vh"
-        padding={{ base: '10 6vw', md: 'clamp(40px,7vw,80px) 6vw' }}
-        bg="bgCandle"
-        color="textOnCandle"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        position="relative"
-        zIndex={2}
-        boxShadow="0 40px 120px token(colors.lime.400/35)"
-        aria-label="Hero, first line"
-      >
-        <p className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'olive.700', marginBottom: { base: '4', md: 'clamp(16px,3vw,28px)' } })}>
-          Today's rebuild — 18 July 2026
-        </p>
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'bold',
-            fontSize: 'clamp(56px,8vw,128px)',
-            lineHeight: 'tight',
-            letterSpacing: 'tight',
-            maxWidth: '16ch',
-          })}
-        >
-          Better to light a candle
-        </h1>
-      </Box>
-
-      {/* DARKNESS BAND */}
-      <Box
-        as="section"
-        minH="30vh"
-        padding={{ base: '10 6vw 8', md: 'clamp(40px,6vw,72px) 6vw clamp(32px,5vw,56px)' }}
         bg="bg"
+        minH="34vh"
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        position="relative"
-        zIndex={1}
-        aria-label="Hero, second line"
+        px={{ base: '5', md: '12' }}
+        py={{ base: '5', md: '8' }}
+        borderBottom="2px solid"
+        borderColor="border"
       >
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'bold',
-            fontSize: 'clamp(56px,8vw,128px)',
-            lineHeight: 'tight',
-            letterSpacing: 'tight',
-            maxWidth: '18ch',
-            color: 'accent',
-          })}
+        <Box
+          fontSize="2xs"
+          fontWeight="bold"
+          letterSpacing="widest"
+          textTransform="uppercase"
+          color="text"
+          marginBottom="3"
+          display="flex"
+          gap="4"
+          alignItems="center"
+          flexWrap="wrap"
         >
-          than to curse <span className={css({ color: 'olive.400' })}>the darkness.</span>
-        </h1>
-        <p className={css({ marginTop: { base: '6', md: 'clamp(24px,4vw,40px)' }, fontFamily: 'body', fontWeight: 'bold', fontSize: 'sm', letterSpacing: 'wider', textTransform: 'uppercase', color: 'textMuted' })}>
-          — Chinese Proverb
-        </p>
+          <span>Front Page</span>
+          <span className={css({ color: 'accent' })}>★</span>
+          <span>The Grind Report</span>
+          <span className={css({ color: 'accent' })}>★</span>
+          <span>Vol. 26 · No. 200</span>
+        </Box>
+        <styled_h1 />
+        <Box
+          as="p"
+          marginTop="4"
+          fontSize={{ base: 'sm', md: 'md' }}
+          lineHeight="normal"
+          color="text"
+          maxWidth="60ch"
+          fontStyle="italic"
+        >
+          A portfolio that tears itself down and rebuilds from scratch every dawn — because the
+          work is the only thing that pays.
+        </Box>
       </Box>
 
-      {/* WORK BAND */}
-      <Box as="section" padding={{ base: '10 6vw', md: 'clamp(48px,7vw,88px) 6vw' }} bg="bgLedger" borderTop="1px solid" borderColor="border" aria-label="Selected work">
-        <Box display="flex" alignItems="baseline" justifyContent="space-between" gap="4" flexWrap="wrap" marginBottom={{ base: '8', md: 'clamp(28px,4vw,48px)' }}>
-          <h2 className={css({ fontSize: { base: 'xl', md: '2xl' }, letterSpacing: 'tight', color: 'text' })}>The work — one candle at a time</h2>
-          <span className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'accent' })}>
-            Featured · Selected · Experiments
-          </span>
-        </Box>
-
-        {featuredProject && (
+      {/* COLUMN BODY */}
+      <Box
+        display="grid"
+        gridTemplateColumns={{ base: '1fr', md: '1.6fr 1fr 1fr' }}
+        minH="52vh"
+      >
+        {/* COLUMN 1 */}
+        <Box
+          padding={{ base: '5', md: '6' }}
+          borderTop={{ base: '2px solid', md: 'none' }}
+          borderColor="border"
+        >
+          <Box className={eyebrow}>
+            <span>The Lede</span>
+            <span className={css({ color: 'accent' })}>Editorial</span>
+          </Box>
           <Box
-            display="grid"
-            gap={{ base: '6', md: 'clamp(20px,3vw,40px)' }}
-            padding={{ base: '6', md: 'clamp(28px,4vw,44px)' }}
-            bg="olive.900"
-            border="1px solid"
-            borderColor="border"
-            borderRadius="md"
-            marginBottom={{ base: '10', md: 'clamp(40px,5vw,64px)' }}
-            position="relative"
-            overflow="hidden"
-            borderLeft="6px solid"
-            borderLeftColor="accent"
+            className={css({
+              fontFamily: 'display',
+              fontWeight: 'bold',
+              fontSize: { base: 'xl', md: '2xl' },
+              lineHeight: 'tight',
+              textTransform: 'uppercase',
+              letterSpacing: 'tight',
+              marginBottom: '4',
+            })}
           >
-            <div>
-              <p className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textMuted' })}>
-                Featured · {featuredProject.type} · {featuredProject.year}
-              </p>
-              <h3 className={css({ fontSize: 'clamp(34px,5.5vw,72px)', letterSpacing: 'tight', color: 'accent', margin: '4 0 5' })}>
+            <span className={css({ color: 'accent', fontSize: '1.3em' })}>&ldquo;</span>
+            If you do the work you get rewarded. There are no shortcuts in life.
+            <span className={css({ color: 'accent', fontSize: '1.3em' })}>&rdquo;</span>
+          </Box>
+          <Box
+            fontSize="sm"
+            fontWeight="bold"
+            letterSpacing="wide"
+            textTransform="uppercase"
+            marginBottom="6"
+          >
+            — Michael Jordan
+          </Box>
+          <Box as="p" className={bodyText}>
+            The line reads like a stencil painted over a locker-room door: flat, undeniable, and
+            impossible to argue with. It is also the operating principle of this page, which
+            refuses to reuse yesterday&rsquo;s build and grinds out a brand-new front section
+            every single morning — new grid, new type, new ink.
+          </Box>
+
+          <Box as="h3" className={subhead}>
+            The Craft — On the Record
+          </Box>
+          <Box as="p" fontSize="sm" lineHeight="normal" color="text">
+            Every edition is assembled by hand.{' '}
+            {capabilities.map((cap, i) => (
+              <span key={cap}>
+                <b className={css({ color: 'text', fontWeight: 'bold' })}>{cap}</b>
+                {i < capabilities.length - 1 ? '; ' : '.'}
+              </span>
+            ))}{' '}
+            No templates, no reruns, no shortcuts — one clean stroke, one clean inning at a time.
+          </Box>
+
+          <Box as="h3" className={subhead} id="work">
+            Featured — Front Page Story
+          </Box>
+          {featuredProject && (
+            <Box bg="panel" color="knockout" padding="5" marginTop="2">
+              <Box
+                fontSize="2xs"
+                letterSpacing="widest"
+                textTransform="uppercase"
+                color="bg"
+                fontWeight="bold"
+              >
+                {featuredProject.type} · {featuredProject.year}
+              </Box>
+              <Box
+                as="h3"
+                fontFamily="display"
+                fontWeight="bold"
+                fontSize="xl"
+                lineHeight="tight"
+                textTransform="uppercase"
+                margin="2 0 3"
+                color="knockout"
+              >
                 {featuredProject.title}
-              </h3>
+              </Box>
               {featuredProject.problem && (
-                <p className={css({ fontSize: { base: 'base', md: 'md' }, lineHeight: 'loose', color: 'textSecondary', maxWidth: '60ch', marginBottom: '6' })}>
+                <Box as="p" fontSize="sm" lineHeight="normal" color="knockout" marginBottom="4">
                   {featuredProject.problem}
-                </p>
+                </Box>
               )}
-              {featuredProject.externalUrl && (
+              {(featuredProject.externalUrl || featuredProject.liveUrl) && (
                 <a
-                  href={featuredProject.externalUrl}
+                  href={featuredProject.externalUrl || featuredProject.liveUrl}
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                   className={css({
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '2',
-                    fontFamily: 'body',
+                    fontSize: 'xs',
                     fontWeight: 'bold',
-                    fontSize: 'sm',
                     letterSpacing: 'wide',
                     textTransform: 'uppercase',
-                    color: 'olive.900',
-                    background: 'accent',
-                    padding: '3 5',
-                    borderRadius: 'sm',
-                    minH: '44px',
-                    _hover: { background: 'lime.300' },
+                    color: 'bg',
+                    borderBottom: '2px solid',
+                    borderColor: 'bg',
+                    paddingBottom: '1px',
+                    transition: 'background .18s ease, color .18s ease',
+                    _hover: { bg: 'bg', color: 'panel' },
                   })}
                 >
-                  Visit the live rebuild <span aria-hidden="true">↗</span>
+                  Read the full story ↗
                 </a>
               )}
-            </div>
-          </Box>
-        )}
+            </Box>
+          )}
 
-        <Box display="grid" gridTemplateColumns="repeat(auto-fit, minmax(260px, 1fr))" gap="4">
-          {selectedWork.map((project) => (
-            <a
-              key={project.slug}
-              href={`/work/${project.slug}`}
-              className={css({
-                display: 'flex',
-                alignItems: 'baseline',
-                justifyContent: 'space-between',
-                gap: '4',
-                padding: '5 6',
-                border: '1px solid',
-                borderColor: 'border',
-                borderRadius: 'md',
-                bg: 'olive.900',
-                minH: '44px',
-                _hover: { bg: 'olive.700', borderColor: 'lime.600' },
-              })}
-            >
-              <span className={css({ fontFamily: 'display', fontWeight: 'semibold', fontSize: 'lg', letterSpacing: 'tight', color: 'text' })}>{project.title}</span>
-              <span className={css({ fontFamily: 'body', fontWeight: 'medium', fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'textMuted', textAlign: 'right', whiteSpace: 'nowrap' })}>
-                <b className={css({ display: 'block', color: 'accent', fontWeight: 'bold', fontSize: '2xs', marginBottom: '1' })}>{project.role ?? project.type}</b>
-                {project.year}
-              </span>
-            </a>
-          ))}
+          <Box as="h3" className={subhead}>
+            Selected Work — The Section
+          </Box>
+          <Box as="ul" className={worklist}>
+            {selectedWork.map((p) => (
+              <Box as="li" key={p.slug} className={worklistItem}>
+                <a href={`/work/${p.slug}`} className={worklistLink}>
+                  <span className={wt}>{p.title}</span>
+                  <span className={wm}>
+                    {p.type} · {p.year}
+                  </span>
+                </a>
+              </Box>
+            ))}
+          </Box>
         </Box>
 
-        <p className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase', color: 'textSecondary', margin: 'clamp(36px,5vw,56px) 0 4' })}>
-          Experiments — small flames
-        </p>
-        <Box display="grid" gridTemplateColumns="repeat(auto-fit, minmax(260px, 1fr))" gap="4">
-          {experiments.map((project) => {
-            const href = project.externalUrl ?? project.liveUrl ?? `/work/${project.slug}`
-            const external = Boolean(project.externalUrl ?? project.liveUrl)
-            return (
-              <a
-                key={project.slug}
-                href={href}
-                target={external ? '_blank' : undefined}
-                rel={external ? 'noopener' : undefined}
-                className={css({
-                  display: 'flex',
-                  alignItems: 'baseline',
-                  justifyContent: 'space-between',
-                  gap: '4',
-                  padding: '5 6',
-                  border: '1px solid',
-                  borderColor: 'border',
-                  borderRadius: 'md',
-                  bg: 'olive.900',
-                  minH: '44px',
-                  _hover: { bg: 'olive.700', borderColor: 'lime.600' },
-                })}
+        {/* COLUMN 2 */}
+        <Box
+          padding={{ base: '5', md: '6' }}
+          borderTop={{ base: '2px solid', md: 'none' }}
+          borderLeft={{ base: 'none', md: '2px solid' }}
+          borderColor="border"
+        >
+          <Box className={eyebrow}>
+            <span>The Open — Live</span>
+            <span className={css({ color: 'accent' })}>Golf</span>
+          </Box>
+          <Box as="p" className={bodyText}>
+            Grinding it out at the 154th Open Championship. Wins get assembled one clean stroke at
+            a time — and the leaders are proving it under a hard afternoon sky.
+          </Box>
+          <Box as="ol" listStyle="none" margin="0" padding="0" fontSize="sm">
+            {[
+              { pos: '1', plr: 'Sam Burns', scr: '−10', leader: true },
+              { pos: '2', plr: 'Rory McIlroy', scr: '−8' },
+              { pos: 'T3', plr: 'Scottie Scheffler', scr: '−7' },
+              { pos: 'T3', plr: 'Xander Schauffele', scr: '−7' },
+              { pos: '5', plr: 'Tommy Fleetwood', scr: '−6' },
+              { pos: '6', plr: 'Viktor Hovland', scr: '−5' },
+            ].map((row) => (
+              <Box
+                as="li"
+                key={row.plr}
+                display="grid"
+                style={{ gridTemplateColumns: '24px 1fr auto' }}
+                gap="3"
+                alignItems="baseline"
+                padding="2 2"
+                lineHeight="snug"
+                borderBottom="1px solid"
+                borderColor="border"
+                bg={row.leader ? 'panel' : undefined}
+                color={row.leader ? 'knockout' : undefined}
               >
-                <span className={css({ fontFamily: 'display', fontWeight: 'semibold', fontSize: 'lg', letterSpacing: 'tight', color: 'text' })}>{project.title}</span>
-                <span className={css({ fontFamily: 'body', fontWeight: 'medium', fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'textMuted', textAlign: 'right', whiteSpace: 'nowrap' })}>
-                  <b className={css({ display: 'block', color: 'accent', fontWeight: 'bold', fontSize: '2xs', marginBottom: '1' })}>Experiment</b>
-                  {project.year}
+                <span className={css({ fontWeight: 'bold', fontSize: 'xs', color: row.leader ? 'bg' : 'text' })}>
+                  {row.pos}
                 </span>
-              </a>
-            )
-          })}
+                <span className={css({ fontWeight: 'bold' })}>{row.plr}</span>
+                <span
+                  className={css({
+                    fontWeight: 'bold',
+                    letterSpacing: 'tight',
+                    color: row.leader ? 'bg' : 'accent',
+                    fontSize: row.leader ? 'md' : 'sm',
+                  })}
+                >
+                  {row.scr}
+                </span>
+              </Box>
+            ))}
+          </Box>
+          <Box fontSize="2xs" letterSpacing="wide" textTransform="uppercase" color="text" marginTop="3">
+            Final round in progress · Leaders through 12
+          </Box>
+
+          <Box as="h3" className={subhead}>
+            Almanac — The Light
+          </Box>
+          <Box as="p" fontSize="sm" lineHeight="normal" color="text">
+            Sun up <b>05:04</b>, down <b>19:28</b> — <b>14h 24m</b> of daylight to bank. Moon:
+            waxing crescent, <b>30%</b> illuminated. Long days reward long work.
+          </Box>
+        </Box>
+
+        {/* COLUMN 3 */}
+        <Box
+          padding={{ base: '5', md: '6' }}
+          borderTop={{ base: '2px solid', md: 'none' }}
+          borderLeft={{ base: 'none', md: '2px solid' }}
+          borderColor="border"
+        >
+          <Box className={eyebrow}>
+            <span>The Diamond</span>
+            <span className={css({ color: 'accent' })}>Baseball</span>
+          </Box>
+          <Box
+            bg="panel"
+            color="knockout"
+            padding="5"
+            marginBottom="5"
+            display="grid"
+            style={{ gridTemplateColumns: '1fr auto' }}
+            alignItems="center"
+            gap="3"
+          >
+            <Box>
+              <Box fontFamily="display" fontWeight="bold" fontSize="lg" textTransform="uppercase" lineHeight="1" color="accent">
+                Tigers
+                <Box as="small" display="block" fontSize="2xs" letterSpacing="wide" color="bg" fontWeight="normal" marginTop="1">
+                  Detroit · Final
+                </Box>
+              </Box>
+              <Box fontFamily="display" fontWeight="bold" fontSize="lg" textTransform="uppercase" lineHeight="1" marginTop="4">
+                Visitors
+                <Box as="small" display="block" fontSize="2xs" letterSpacing="wide" color="bg" fontWeight="normal" marginTop="1">
+                  Away · Final
+                </Box>
+              </Box>
+            </Box>
+            <Box fontFamily="display" fontWeight="bold" fontSize="4xl" lineHeight="1" color="accent" textAlign="right">
+              7
+              <Box as="small" display="block" fontSize="lg" color="knockout" lineHeight="1" textAlign="right">
+                0
+              </Box>
+            </Box>
+          </Box>
+          <Box fontSize="2xs" letterSpacing="wide" textTransform="uppercase" color="text" marginBottom="6">
+            Shutout · Nine innings, none surrendered
+          </Box>
+
+          <Box as="h3" className={subhead}>
+            On the Wire — Now Playing
+          </Box>
+          <Box as="ul" listStyle="none" margin="0 0 4" padding="0">
+            {[
+              { art: 'The War on Drugs', tk: 'Red Eyes' },
+              { art: 'Wet Leg', tk: 'Chaise Longue' },
+            ].map((w) => (
+              <Box as="li" key={w.art} padding="2 0" borderBottom="1px solid" borderColor="border" fontSize="sm" lineHeight="normal">
+                <span className={css({ fontWeight: 'bold', textTransform: 'uppercase' })}>{w.art}</span> —{' '}
+                <span className={css({ color: 'text', fontStyle: 'italic' })}>&ldquo;{w.tk}&rdquo;</span>
+              </Box>
+            ))}
+          </Box>
+
+          <Box as="h3" className={subhead} id="index">
+            Experiments — The Back Page
+          </Box>
+          <Box as="ul" className={worklist}>
+            {experiments.map((p) => (
+              <Box as="li" key={p.slug} className={worklistItem}>
+                <a
+                  href={p.externalUrl || p.liveUrl || `/work/${p.slug}`}
+                  target={p.externalUrl || p.liveUrl ? '_blank' : undefined}
+                  rel={p.externalUrl || p.liveUrl ? 'noopener noreferrer' : undefined}
+                  className={worklistLink}
+                >
+                  <span className={wt}>{p.title}</span>
+                  <span className={wm}>
+                    {p.type} · {p.year}
+                  </span>
+                </a>
+              </Box>
+            ))}
+          </Box>
         </Box>
       </Box>
-
-      <Footer />
     </>
+  )
+}
+
+// Inline banner headline component to keep responsive clamp-scale typography in one place.
+function styled_h1() {
+  return (
+    <Box
+      as="h1"
+      fontFamily="display"
+      fontWeight="bold"
+      fontSize={{ base: '4xl', md: '2xl' }}
+      lineHeight="tight"
+      letterSpacing="tight"
+      textTransform="uppercase"
+      color="knockout"
+      margin="0"
+      style={{ fontSize: 'clamp(64px, 11vw, 168px)' }}
+    >
+      There Are No
+      <br />
+      Shortcuts.
+    </Box>
   )
 }

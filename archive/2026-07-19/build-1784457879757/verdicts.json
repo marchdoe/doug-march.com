@@ -1,0 +1,8 @@
+[
+  {
+    "critic": "spec-critic",
+    "verdict": "REVISE",
+    "feedback": "REVISE\n\n- **Check 2 | Preset vs. Visual Spec Color Contradiction**: The visual specification explicitly states \"knockout text on ink blocks `#fff0f6`\" (primary.50, a magenta-tinted white), but elements/preset.ts defines `knockout.base: '{colors.neutral.50}'`, which resolves to `#fbf3f6` (a plum-tinted white). The preset's knockout should be `{colors.primary.50}` to match the spec. This matters because knockout text on the dark ink panels (#150a0f) needs to be the brightest, warmest off-white for legibility against the fluoro field.",
+    "ts": 1784457330586
+  }
+]

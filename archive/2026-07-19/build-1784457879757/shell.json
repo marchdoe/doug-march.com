@@ -1,0 +1,6 @@
+{
+  "nav": "top bar / nameplate masthead (brand left, dateline center, inline caps links right, 64px ink band)",
+  "footer": "folio bar (single baseline page-folio rule: edition + almanac (moon/sun) + build note, distinct from a data strip)",
+  "brand_lockup": "horizontal-md",
+  "brand_color_mode": "single-color"
+}
