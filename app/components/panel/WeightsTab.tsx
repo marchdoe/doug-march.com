@@ -28,18 +28,17 @@ export function WeightsTab({ initial }: { initial: Weights }) {
     <section>
       {ROWS.map(({ key, label, desc }) => (
         <div key={key} className={css({ marginBottom: '5' })}>
-          <div className={css({ display: 'flex', justifyContent: 'space-between' })}>
-            <label htmlFor={`weight-${key}`}>{label}</label>
-            <span>{weights[key]}</span>
-          </div>
           <Slider.Root
-            id={`weight-${key}`}
             min={0}
             max={10}
             step={1}
             value={weights[key]}
             onValueChange={(value) => setWeights((w) => ({ ...w, [key]: value }))}
           >
+            <div className={css({ display: 'flex', justifyContent: 'space-between' })}>
+              <Slider.Label>{label}</Slider.Label>
+              <span>{weights[key]}</span>
+            </div>
             <Slider.Control className={css({ display: 'flex', alignItems: 'center', height: '5' })}>
               <Slider.Track className={css({ height: '1', width: '100%', backgroundColor: 'currentColor', opacity: 0.2 })}>
                 <Slider.Indicator className={css({ backgroundColor: 'currentColor' })} />

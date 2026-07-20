@@ -9,17 +9,31 @@ interface ArchiveEntry {
   rating: { grade: string; worked: string; didnt: string; try: string } | null
 }
 
+type State =
+  | { kind: 'loading' }
+  | { kind: 'loaded'; entries: ArchiveEntry[] }
+  | { kind: 'error'; message: string }
+
 export function ArchiveTab() {
-  const [entries, setEntries] = useState<ArchiveEntry[] | null>(null)
+  const [state, setState] = useState<State>({ kind: 'loading' })
 
   useEffect(() => {
     fetch('/archive/_data.json')
-      .then((res) => (res.ok ? res.json() : []))
-      .then((data: ArchiveEntry[]) => setEntries(data))
-      .catch(() => setEntries([]))
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`Failed to load archive (${res.status})`)
+        const data = (await res.json()) as ArchiveEntry[]
+        setState({ kind: 'loaded', entries: data })
+      })
+      .catch((err: unknown) => {
+        setState({ kind: 'error', message: err instanceof Error ? err.message : 'Failed to load archive' })
+      })
   }, [])
 
-  if (!entries) return <p>Loading…</p>
+  if (state.kind === 'loading') return <p>Loading…</p>
+  if (state.kind === 'error') return <p role="alert">{state.message}</p>
+
+  const entries = state.entries
+  if (entries.length === 0) return <p>No archive entries yet.</p>
 
   return (
     <ul className={css({ listStyle: 'none', padding: 0 })}>
