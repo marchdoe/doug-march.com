@@ -10,7 +10,7 @@
     "dev": "panda codegen && vite",
     "build": "panda codegen && node scripts/generate-archive-json.js && vite build",
     "preview": "vite preview",
-    "test": "vitest run",
+    "test": "panda codegen && vitest run",
     "test:e2e:site": "playwright test --project=site-health",
     "test:e2e:dev": "playwright test --project=dev-panel",
     "test:e2e": "playwright test",
