@@ -22,11 +22,13 @@
     "pipeline:interpret": "MOCK_MODE=true node scripts/interpret-signals.js"
   },
   "dependencies": {
+    "@base-ui-components/react": "1.0.0-rc.0",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-router": "latest",
     "@tanstack/react-router-devtools": "latest",
     "@tanstack/react-start": "latest",
     "@tanstack/start-api-routes": "^1.120.19",
+    "@vercel/functions": "^3.7.5",
     "js-yaml": "^4.2.0",
     "lucide-react": "^1.16.0",
     "react": "^19.2.6",
