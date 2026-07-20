@@ -1,6 +1,6 @@
-import { requireAuth } from '../_lib/auth'
-import { json } from '../_lib/http'
-import { dispatchRun, GitHubError } from '../_lib/github'
+import { requireAuth } from '../_lib/auth.js'
+import { json } from '../_lib/http.js'
+import { dispatchRun, GitHubError } from '../_lib/github.js'
 
 export async function POST(request: Request): Promise<Response> {
   const denied = requireAuth(request)

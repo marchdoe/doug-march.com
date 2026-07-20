@@ -1,6 +1,6 @@
-import { requireAuth } from '../_lib/auth'
-import { json } from '../_lib/http'
-import { setWeights, GitHubError, type Weights } from '../_lib/github'
+import { requireAuth } from '../_lib/auth.js'
+import { json } from '../_lib/http.js'
+import { setWeights, GitHubError, type Weights } from '../_lib/github.js'
 
 const KEYS: Array<keyof Weights> = ['signals', 'inspiration', 'ratings', 'risk']
 
