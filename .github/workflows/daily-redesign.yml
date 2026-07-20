@@ -25,12 +25,15 @@ jobs:
       contents: write
       issues: write  # for failure notification issues
     env:
-      # Risk 8 is the new default after the 2026-04-28 iter-3 finding:
-      # iter-3's drenched terracotta Specimen happened at risk 8 and was
-      # the gold standard. Risk 7 sat noticeably below that. The Art
-      # Director's hero-phrase-first methodology benefits from a higher
-      # risk floor — committed gestures, not hedges.
-      WEIGHT_RISK: '8'
+      # Creative weights come from repo variables so the owner panel can
+      # adjust them (PUT /api/panel/weights → GitHub Actions variables).
+      # Fallbacks preserve the pre-panel defaults; risk 8 per the
+      # 2026-04-28 iter-3 finding (drenched terracotta Specimen was the
+      # gold standard — committed gestures, not hedges).
+      WEIGHT_SIGNALS: ${{ vars.WEIGHT_SIGNALS || '5' }}
+      WEIGHT_INSPIRATION: ${{ vars.WEIGHT_INSPIRATION || '5' }}
+      WEIGHT_RATINGS: ${{ vars.WEIGHT_RATINGS || '5' }}
+      WEIGHT_RISK: ${{ vars.WEIGHT_RISK || '8' }}
 
     steps:
       - uses: actions/checkout@v4
