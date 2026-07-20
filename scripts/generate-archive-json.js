@@ -13,6 +13,7 @@
 
 import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs'
 import { resolve, join } from 'path'
+import { readRatingForDate } from './utils/ratings.js'
 
 const ROOT = resolve(import.meta.dirname, '..')
 const ARCHIVE_PATH = resolve(ROOT, 'archive')
@@ -77,6 +78,7 @@ function generateIndex() {
         filesChanged,
         archetype,
         buildId,
+        rating: readRatingForDate(ARCHIVE_PATH, d.name),
       }
     })
     .filter(e => e !== null)
@@ -130,6 +132,7 @@ function generateDetail(date) {
   return {
     date, archetype, brief, signalsBrief, preset,
     rationale, filesChanged, hasScreenshot, buildId, trace,
+    rating: readRatingForDate(ARCHIVE_PATH, date),
   }
 }
 
