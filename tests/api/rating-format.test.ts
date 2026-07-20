@@ -44,4 +44,16 @@ describe('formatRatingComment', () => {
     const parsed = parseRatingFromIssue(issueWith(comment))
     expect(parsed).toEqual({ date: '2026-07-20', grade: 'D', worked: '', didnt: '', try: '' })
   })
+
+  it('survives backticks in notes without breaking the fence', () => {
+    const comment = formatRatingComment({
+      grade: 'C',
+      worked: '',
+      didnt: 'the ```code``` blocks clipped',
+      try: '',
+    })
+    const parsed = parseRatingFromIssue(issueWith(comment))
+    expect(parsed?.grade).toBe('C')
+    expect(parsed?.didnt).toBe("the '''code''' blocks clipped")
+  })
 })
