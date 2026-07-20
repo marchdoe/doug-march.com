@@ -1,210 +1,157 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box } from '../../styled-system/jsx'
+import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { projects, selectedWork, experiments } from '../content/projects'
+import { Badge } from '../components/Badge'
+import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
+export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
 
-const subhead = css({
-  fontFamily: 'display',
-  fontWeight: 'bold',
-  fontSize: 'md',
-  letterSpacing: 'wide',
-  textTransform: 'uppercase',
-  margin: '6 0 3',
-  paddingTop: '4',
-  borderTop: '2px solid',
-  borderColor: 'border',
-})
-
-function WorkPage() {
+function WorkDetailPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <Box padding="12" fontFamily="display" fontSize="xl" textTransform="uppercase">
-        Story Not Found
-      </Box>
+      <>
+        <Badge href="/" ariaLabel="Back to poster" kicker="Doug March" lead="Back to poster" sub="Not found" />
+        <Box as="main" padding={{ base: '0 6vw' }}>
+          <h1
+            className={css({
+              fontFamily: 'display',
+              textTransform: 'uppercase',
+              fontSize: 'clamp(40px, 6vw, 72px)',
+              color: 'text',
+            })}
+          >
+            Project not found
+          </h1>
+        </Box>
+      </>
     )
   }
 
-  const next = [...selectedWork, ...experiments].filter((p) => p.slug !== project.slug).slice(0, 4)
+  const link = project.liveUrl || project.externalUrl || project.githubUrl
 
   return (
     <>
-      {/* BANNER */}
+      <Badge
+        href="/"
+        ariaLabel="Back to poster"
+        kicker="Doug March · Invoice"
+        lead="Back to poster"
+        sub={`${project.type} · ${project.year}`}
+      />
+
       <Box
-        bg="bg"
-        minH="30vh"
+        as="main"
+        background="surface"
+        color="surfaceText"
+        flex="1"
         display="flex"
         flexDirection="column"
         justifyContent="center"
-        px={{ base: '5', md: '12' }}
-        py={{ base: '5', md: '8' }}
-        borderBottom="2px solid"
-        borderColor="border"
+        padding={{ base: '20 6vw 6', md: '0 6vw' }}
+        minHeight="60vh"
       >
-        <Box
-          fontSize="2xs"
-          fontWeight="bold"
-          letterSpacing="widest"
-          textTransform="uppercase"
-          color="text"
-          marginBottom="3"
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontWeight: 'bold',
+            fontSize: 'sm',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'primary.300',
+            marginBottom: '4',
+          })}
         >
           {project.type} · {project.year}
-        </Box>
-        <Box
-          as="h1"
-          fontFamily="display"
-          fontWeight="bold"
-          textTransform="uppercase"
-          color="knockout"
-          margin="0"
-          lineHeight="tight"
-          letterSpacing="tight"
-          style={{ fontSize: 'clamp(48px, 9vw, 128px)' }}
+        </p>
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'normal',
+            textTransform: 'uppercase',
+            letterSpacing: 'tight',
+            lineHeight: 'tight',
+            fontSize: 'clamp(44px, 8vw, 120px)',
+            color: 'surfaceText',
+            marginBottom: '8',
+          })}
         >
           {project.title}
-        </Box>
+        </h1>
+
+        {project.problem && (
+          <p className={css({ fontFamily: 'body', fontSize: { base: 'base', md: 'md' }, color: 'neutral.300', maxWidth: '65ch', marginBottom: '4' })}>
+            <strong className={css({ color: 'surfaceText' })}>Problem — </strong>
+            {project.problem}
+          </p>
+        )}
+        {project.approach && (
+          <p className={css({ fontFamily: 'body', fontSize: { base: 'base', md: 'md' }, color: 'neutral.300', maxWidth: '65ch', marginBottom: '4' })}>
+            <strong className={css({ color: 'surfaceText' })}>Approach — </strong>
+            {project.approach}
+          </p>
+        )}
+        {project.outcome && (
+          <p className={css({ fontFamily: 'body', fontSize: { base: 'base', md: 'md' }, color: 'neutral.300', maxWidth: '65ch', marginBottom: '6' })}>
+            <strong className={css({ color: 'surfaceText' })}>Outcome — </strong>
+            {project.outcome}
+          </p>
+        )}
+
+        {link && (
+          <a
+            href={link}
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: 'sm',
+              letterSpacing: 'wide',
+              textTransform: 'uppercase',
+              color: 'surfaceText',
+              borderBottom: '2px solid',
+              borderColor: 'primary.300',
+              display: 'inline-block',
+              width: 'fit-content',
+            })}
+          >
+            Visit project ↗
+          </a>
+        )}
       </Box>
 
-      <Box display="grid" gridTemplateColumns={{ base: '1fr', md: '1.6fr 1fr 1fr' }}>
-        <Box padding={{ base: '5', md: '6' }}>
-          {project.problem && (
-            <Box bg="panel" color="knockout" padding="5" marginBottom="6">
-              <Box fontSize="2xs" letterSpacing="widest" textTransform="uppercase" color="bg" fontWeight="bold">
-                The Problem
-              </Box>
-              <Box as="p" fontSize="md" lineHeight="normal" color="knockout" marginTop="2" marginBottom="4">
-                {project.problem}
-              </Box>
-              {(project.liveUrl || project.externalUrl) && (
-                <a
-                  href={project.liveUrl || project.externalUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={css({
-                    fontSize: 'xs',
-                    fontWeight: 'bold',
-                    letterSpacing: 'wide',
-                    textTransform: 'uppercase',
-                    color: 'bg',
-                    borderBottom: '2px solid',
-                    borderColor: 'bg',
-                    paddingBottom: '1px',
-                    transition: 'background .18s ease, color .18s ease',
-                    _hover: { bg: 'bg', color: 'panel' },
-                  })}
-                >
-                  Visit the live story ↗
-                </a>
-              )}
-            </Box>
-          )}
-
-          {project.approach && (
-            <>
-              <Box as="h3" className={subhead}>
-                The Approach
-              </Box>
-              <Box as="p" fontSize="sm" lineHeight="normal" color="text" marginBottom="4">
-                {project.approach}
-              </Box>
-            </>
-          )}
-
-          {project.outcome && (
-            <>
-              <Box as="h3" className={subhead}>
-                The Outcome
-              </Box>
-              <Box as="p" fontSize="sm" lineHeight="normal" color="text" marginBottom="4">
-                {project.outcome}
-              </Box>
-            </>
-          )}
-        </Box>
-
-        <Box
-          padding={{ base: '5', md: '6' }}
-          borderTop={{ base: '2px solid', md: 'none' }}
-          borderLeft={{ base: 'none', md: '2px solid' }}
-          borderColor="border"
-        >
-          {project.role && (
-            <>
-              <Box as="h3" className={subhead} style={{ marginTop: 0, paddingTop: 0, borderTop: 'none' }}>
-                Role
-              </Box>
-              <Box as="p" fontSize="sm" color="text" marginBottom="4">
-                {project.role}
-              </Box>
-            </>
-          )}
-          {project.stack && project.stack.length > 0 && (
-            <>
-              <Box as="h3" className={subhead}>
-                Stack
-              </Box>
-              <Box as="p" fontSize="sm" color="text">
-                {project.stack.join(' · ')}
-              </Box>
-            </>
-          )}
-        </Box>
-
-        <Box
-          padding={{ base: '5', md: '6' }}
-          borderTop={{ base: '2px solid', md: 'none' }}
-          borderLeft={{ base: 'none', md: '2px solid' }}
-          borderColor="border"
-        >
-          <Box as="h3" className={subhead} style={{ marginTop: 0, paddingTop: 0, borderTop: 'none' }}>
-            Next in the Section
-          </Box>
-          <Box as="ul" listStyle="none" margin="0" padding="0">
-            {next.map((p) => (
-              <Box
-                as="li"
-                key={p.slug}
-                borderBottom="1px solid"
-                borderColor="border"
-                _first={{ borderTop: '1px solid', borderColor: 'border' }}
+      <Box background="surface" color="surfaceText" borderTop="3px solid" borderColor="border" padding="8 6vw">
+        <Flex justify="space-between" wrap="wrap" gap="4" borderBottom="2px solid" className={css({ borderColor: 'accent' })} paddingBottom="3" marginBottom="2">
+          <span className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: 'xs', letterSpacing: 'widest', textTransform: 'uppercase' })}>
+            Line item — {project.slug}
+          </span>
+          <span className={css({ fontFamily: 'body', fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'neutral.400' })}>
+            {project.depth} · {project.year}
+          </span>
+        </Flex>
+        {project.stack && project.stack.length > 0 && (
+          <Flex wrap="wrap" gap="2" paddingY="2">
+            {project.stack.map((s) => (
+              <span
+                key={s}
+                className={css({
+                  fontFamily: 'body',
+                  fontWeight: 'medium',
+                  fontSize: '2xs',
+                  letterSpacing: 'wide',
+                  textTransform: 'uppercase',
+                  color: 'primary.300',
+                  border: '1px solid',
+                  borderColor: 'accent',
+                  padding: '1 2.5',
+                })}
               >
-                <a
-                  href={`/work/${p.slug}`}
-                  className={css({
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'baseline',
-                    gap: '3',
-                    padding: '2px 4px',
-                    margin: '-2px -4px',
-                    transition: 'background .16s ease, color .16s ease',
-                    _hover: { bg: 'panel', color: 'knockout' },
-                  })}
-                >
-                  <span
-                    className={css({
-                      fontFamily: 'display',
-                      fontWeight: 'bold',
-                      fontSize: 'lg',
-                      textTransform: 'uppercase',
-                      letterSpacing: 'tight',
-                    })}
-                  >
-                    {p.title}
-                  </span>
-                  <span className={css({ fontSize: '2xs', letterSpacing: 'wide', textTransform: 'uppercase', color: 'text' })}>
-                    {p.type} · {p.year}
-                  </span>
-                </a>
-              </Box>
+                {s}
+              </span>
             ))}
-          </Box>
-        </Box>
+          </Flex>
+        )}
       </Box>
     </>
   )

@@ -1,148 +1,169 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box } from '../../styled-system/jsx'
+import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
+import { Badge } from '../components/Badge'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const subhead = css({
-  fontFamily: 'display',
+const rowClass = css({
+  display: 'grid',
+  gridTemplateColumns: { base: '1fr', md: 'minmax(120px, 120px) minmax(0, 2fr) minmax(0, 3fr)' },
+  gap: '3',
+  alignItems: 'baseline',
+  paddingY: '3',
+  borderBottom: '1px solid rgba(255,196,0,0.18)',
+})
+
+const yearClass = css({
+  fontFamily: 'body',
   fontWeight: 'bold',
-  fontSize: 'md',
+  fontSize: 'sm',
+  color: 'primary.300',
+  fontVariantNumeric: 'tabular-nums',
+  minWidth: { base: 'auto', md: '120px' },
+})
+
+const roleClass = css({
+  fontFamily: 'body',
+  fontWeight: 'bold',
+  fontSize: 'sm',
+  color: 'surfaceText',
   letterSpacing: 'wide',
   textTransform: 'uppercase',
-  margin: '6 0 3',
-  paddingTop: '4',
-  borderTop: '2px solid',
-  borderColor: 'border',
+})
+
+const descClass = css({
+  fontFamily: 'body',
+  fontWeight: 'medium',
+  fontSize: 'sm',
+  color: 'neutral.300',
+  lineHeight: 'normal',
+})
+
+const sectionTitleClass = css({
+  fontFamily: 'body',
+  fontWeight: 'bold',
+  fontSize: 'xs',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  color: 'surfaceText',
+  borderBottom: '2px solid',
+  borderColor: 'accent',
+  paddingBottom: '3',
+  marginBottom: '2',
+  marginTop: '10',
 })
 
 function AboutPage() {
   return (
     <>
-      {/* BANNER */}
-      <Box
-        bg="bg"
-        minH="30vh"
-        display="flex"
-        alignItems="center"
-        px={{ base: '5', md: '12' }}
-        py={{ base: '5', md: '8' }}
-        borderBottom="2px solid"
-        borderColor="border"
-      >
-        <Box
-          as="h1"
-          fontFamily="display"
-          fontWeight="bold"
-          textTransform="uppercase"
-          color="knockout"
-          margin="0"
-          lineHeight="tight"
-          letterSpacing="tight"
-          style={{ fontSize: 'clamp(64px, 11vw, 168px)' }}
+      <Badge
+        href="/"
+        ariaLabel="Back to poster"
+        kicker="Doug March · Spec Sheet"
+        lead="Back to poster"
+        sub="Return to the daily build"
+      />
+
+      <Box as="main" className={css({ padding: { base: '0 6vw', md: '0 6vw' } })}>
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontWeight: 'bold',
+            fontSize: { base: 'xs', md: 'sm' },
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'textSecondary',
+            marginBottom: '4',
+          })}
         >
-          The Record.
-        </Box>
-      </Box>
+          {identity.role}
+        </p>
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'normal',
+            textTransform: 'uppercase',
+            letterSpacing: 'tight',
+            lineHeight: 'tight',
+            fontSize: 'clamp(40px, 7vw, 96px)',
+            color: 'text',
+            marginBottom: '6',
+          })}
+        >
+          {identity.name}
+        </h1>
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontWeight: 'medium',
+            fontSize: { base: 'base', md: 'md' },
+            color: 'textSecondary',
+            maxWidth: '65ch',
+            lineHeight: 'normal',
+            marginBottom: '12',
+          })}
+        >
+          {identity.statement}
+        </p>
 
-      <Box display="grid" gridTemplateColumns={{ base: '1fr', md: '2.6fr 1fr' }} minH="52vh">
-        {/* LEFT: identity + timeline + capabilities */}
-        <Box padding={{ base: '5', md: '6' }} borderColor="border">
-          <Box
-            fontFamily="display"
-            fontWeight="bold"
-            fontSize={{ base: 'xl', md: '2xl' }}
-            lineHeight="tight"
-            textTransform="uppercase"
-            letterSpacing="tight"
-            marginBottom="6"
-          >
-            {identity.statement}
-          </Box>
+        <Box background="surface" color="surfaceText" padding={{ base: '6', md: '8' }} borderTop="3px solid" borderColor="border">
+          <div className={sectionTitleClass}>Timeline</div>
+          {timeline.map((entry) => (
+            <div className={rowClass} key={`${entry.year}-${entry.company}`}>
+              <span className={yearClass}>{entry.year}</span>
+              <span className={roleClass}>
+                {entry.role} · {entry.company}
+                {entry.current ? ' — current' : ''}
+              </span>
+              <span className={descClass}>{entry.description}</span>
+            </div>
+          ))}
 
-          <Box as="h3" className={subhead}>
-            Timeline — The Standings
-          </Box>
-          <Box as="ol" listStyle="none" margin="0" padding="0">
-            {timeline.map((t, i) => (
-              <Box
-                key={`${t.year}-${i}`}
-                display="flex"
-                gap="4"
-                alignItems="baseline"
-                padding="3 0"
-                borderBottom="1px solid"
-                borderColor="border"
-                borderTop={i === 0 ? '1px solid' : undefined}
+          <div className={sectionTitleClass}>Capabilities</div>
+          <Flex wrap="wrap" gap="2" paddingBottom="4">
+            {capabilities.map((cap) => (
+              <span
+                key={cap}
+                className={css({
+                  fontFamily: 'body',
+                  fontWeight: 'bold',
+                  fontSize: '2xs',
+                  letterSpacing: 'wide',
+                  textTransform: 'uppercase',
+                  color: 'surfaceText',
+                  border: '1px solid',
+                  borderColor: 'accent',
+                  padding: '1.5 3',
+                })}
               >
-                <Box flex="0 0 120px" minWidth="120px" fontWeight="bold" fontSize="sm" color="accent">
-                  {t.year}
-                </Box>
-                <Box flex="1">
-                  <Box fontFamily="display" fontWeight="bold" fontSize="md" textTransform="uppercase" letterSpacing="tight">
-                    {t.role} — {t.company}
-                  </Box>
-                  <Box as="p" fontSize="sm" lineHeight="normal" color="text" marginTop="1">
-                    {t.description}
-                  </Box>
-                </Box>
-              </Box>
-            ))}
-          </Box>
-
-          <Box as="h3" className={subhead}>
-            The Craft — On the Record
-          </Box>
-          <Box fontSize="sm" lineHeight="normal" color="text">
-            {capabilities.map((cap, i) => (
-              <span key={cap}>
-                <b className={css({ fontWeight: 'bold', color: 'text' })}>{cap}</b>
-                {i < capabilities.length - 1 ? ' · ' : '.'}
+                {cap}
               </span>
             ))}
-          </Box>
-        </Box>
+          </Flex>
 
-        {/* RIGHT: education + off the clock */}
-        <Box
-          padding={{ base: '5', md: '6' }}
-          borderTop={{ base: '2px solid', md: 'none' }}
-          borderLeft={{ base: 'none', md: '2px solid' }}
-          borderColor="border"
-        >
-          <Box as="h3" className={subhead} style={{ marginTop: 0, paddingTop: 0, borderTop: 'none' }}>
-            Education
-          </Box>
-          <Box bg="panel" color="knockout" padding="5" marginBottom="6">
-            <Box fontFamily="display" fontWeight="bold" fontSize="lg" textTransform="uppercase" lineHeight="tight">
-              {education.school}
-            </Box>
-            <Box fontSize="sm" marginTop="2" color="knockout">
-              {education.degree}
-            </Box>
-            <Box fontSize="sm" color="bg" marginTop="1">
-              {education.concentration}
-            </Box>
-            <Box fontSize="2xs" letterSpacing="wide" textTransform="uppercase" color="knockout" marginTop="3">
-              {education.years}
-            </Box>
-          </Box>
+          <div className={sectionTitleClass}>Education</div>
+          <div className={rowClass} style={undefined}>
+            <span className={yearClass}>{education.years}</span>
+            <span className={roleClass}>
+              {education.school} · {education.degree}
+            </span>
+            <span className={descClass}>{education.concentration}</span>
+          </div>
 
-          <Box as="h3" className={subhead}>
-            Off the Clock — Almanac
-          </Box>
-          <Box fontSize="sm" lineHeight="normal" color="text">
-            Holes in one: <b className={css({ color: 'text', fontWeight: 'bold' })}>{personal.holesInOne}</b>
-            <br />
-            Sport: <b className={css({ color: 'text', fontWeight: 'bold' })}>{personal.sport}</b>
-            <br />
-            Teams: <b className={css({ color: 'text', fontWeight: 'bold' })}>{personal.teams.join(', ')}</b>
-            <br />
-            Current focus:{' '}
-            <b className={css({ color: 'text', fontWeight: 'bold' })}>{personal.currentFocus}</b>
-          </Box>
+          <div className={sectionTitleClass}>Personal</div>
+          <div className={rowClass}>
+            <span className={yearClass}>Holes-in-one</span>
+            <span className={roleClass}>{personal.holesInOne}</span>
+            <span className={descClass}>Sport: {personal.sport}</span>
+          </div>
+          <div className={rowClass}>
+            <span className={yearClass}>Teams</span>
+            <span className={roleClass}>{personal.teams.join(' · ')}</span>
+            <span className={descClass}>Current focus: {personal.currentFocus}</span>
+          </div>
         </Box>
       </Box>
     </>

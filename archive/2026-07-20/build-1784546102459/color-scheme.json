@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 46,
+    "s": 100,
+    "l": 50,
+    "name": "breadboard amber"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "amber/50°",
+    "name": "solder graphite"
+  },
+  "mood_word": "scrappy",
+  "color_story": "A drenched breadboard-amber field with black ink numerals turns the page into a caution-tape spec sheet — the color of jumper wires and LED glow behind a DIY triumph."
+}

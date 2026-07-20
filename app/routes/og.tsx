@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Box } from '../../styled-system/jsx'
-import logoMono from '../assets/logo-mono.svg'
+import { css } from '../../styled-system/css'
+import logo from '../assets/logo.svg'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
@@ -9,67 +10,72 @@ function OgCard() {
     <Box
       position="fixed"
       inset="0"
-      zIndex={9999}
-      bg="bg"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
+      zIndex="9999"
+      background="bg"
+      className={css({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}
     >
       <Box
         width="1200px"
         height="630px"
-        bg="bg"
+        background="bg"
         position="relative"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        padding="16"
         overflow="hidden"
+        className={css({ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px' })}
       >
-        <Box
-          fontSize="sm"
-          fontWeight="bold"
-          letterSpacing="widest"
-          textTransform="uppercase"
-          color="text"
-          marginBottom="6"
-          display="flex"
-          gap="4"
-          alignItems="center"
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontWeight: 'bold',
+            fontSize: 'md',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'textSecondary',
+            marginBottom: '8',
+          })}
         >
-          <span>Front Page</span>
-          <span>★</span>
-          <span>The Grind Report</span>
-        </Box>
-        <Box
-          as="h1"
-          fontFamily="display"
-          fontWeight="bold"
-          textTransform="uppercase"
-          color="knockout"
-          margin="0"
-          lineHeight="tight"
-          letterSpacing="tight"
-          fontSize="9xl"
-          style={{ fontSize: '128px' }}
+          #1 on Hacker News · 2,379 points
+        </p>
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'normal',
+            textTransform: 'uppercase',
+            letterSpacing: 'tight',
+            lineHeight: 'tight',
+          })}
         >
-          There Are No
-          <br />
-          Shortcuts.
-        </Box>
+          <span className={css({ display: 'block', fontSize: '96px', color: 'textSecondary' })}>
+            <span
+              className={css({
+                color: 'text',
+                WebkitTextFillColor: 'transparent',
+                WebkitTextStrokeWidth: '2px',
+                WebkitTextStrokeColor: 'currentColor',
+              })}
+            >
+              $120K
+            </span>{' '}
+            System.
+          </span>
+          <span className={css({ display: 'block', fontSize: '150px', color: 'text', marginTop: '0.04em' })}>
+            $1,600 in ESP32s.
+          </span>
+        </h1>
 
-        <Box position="absolute" bottom="16" right="16" display="flex" alignItems="center" gap="3">
-          <img src={logoMono} alt="" style={{ height: 48, width: 'auto' }} />
-          <Box
-            fontFamily="display"
-            fontWeight="bold"
-            fontSize="xl"
-            letterSpacing="wide"
-            textTransform="uppercase"
-            color="text"
+        <Box position="absolute" bottom="56px" left="80px" className={css({ display: 'flex', alignItems: 'center', gap: '3' })}>
+          <img src={logo} alt="Doug March" className={css({ height: '56px', width: 'auto', display: 'block' })} />
+          <span
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: 'lg',
+              letterSpacing: 'wide',
+              textTransform: 'uppercase',
+              color: 'text',
+            })}
           >
             Doug March
-          </Box>
+          </span>
         </Box>
       </Box>
     </Box>

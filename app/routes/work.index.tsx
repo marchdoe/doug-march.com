@@ -1,174 +1,156 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { HeroNav } from '../components/HeroNav'
+import { Box, Flex } from '../../styled-system/jsx'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 
-export const Route = createFileRoute('/work/')({ component: WorkIndexPage })
+export const Route = createFileRoute('/work/')({ component: WorkIndex })
 
-const label = css({
-  fontSize: '2xs',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'textMuted',
-  fontWeight: 'bold',
-})
+function WorkIndex() {
+  const rows = [...selectedWork, ...experiments]
 
-function WorkIndexPage() {
   return (
-    <Box display="flex" flexDirection="column" gap={{ base: '8', md: '12' }} paddingY={{ base: '6', md: '8' }}>
-      <Box>
-        <span className={css({ ...label._important, display: 'block', marginBottom: '4' })}>01 · Work</span>
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontWeight: '900',
-            textTransform: 'uppercase',
-            lineHeight: 'tight',
-            letterSpacing: 'tight',
-            fontSize: 'clamp(40px, 6vw, 88px)',
-            color: 'text',
-          })}
-        >
-          Selected Work
-        </h1>
-        <Box marginTop="6">
-          <HeroNav active="work" />
-        </Box>
-      </Box>
-
+    <Box>
       {featuredProject && (
-        <Box>
-          <span className={label}>Featured</span>
-          <Box marginTop="4">
-            <h2
+        <Box className={css({ padding: { base: '6 6vw', md: '4 6vw 8' } })}>
+          <p
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: 'xs',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              color: 'textSecondary',
+              marginBottom: '4',
+            })}
+          >
+            Featured build
+          </p>
+          <h1
+            className={css({
+              fontFamily: 'display',
+              fontWeight: 'normal',
+              fontSize: 'clamp(36px, 6vw, 84px)',
+              lineHeight: 'tight',
+              letterSpacing: 'tight',
+              textTransform: 'uppercase',
+              color: 'text',
+            })}
+          >
+            {featuredProject.title}
+          </h1>
+          {featuredProject.problem && (
+            <p
               className={css({
-                fontFamily: 'display',
-                fontWeight: '900',
-                textTransform: 'uppercase',
-                fontSize: 'clamp(32px, 5vw, 64px)',
-                color: 'accent',
-                lineHeight: 'snug',
+                fontFamily: 'body',
+                fontWeight: 'medium',
+                fontSize: { base: 'sm', md: 'md' },
+                color: 'textSecondary',
+                maxWidth: '65ch',
+                marginTop: '6',
+                lineHeight: 'normal',
               })}
             >
-              {featuredProject.title}
-            </h2>
-            {featuredProject.problem && (
-              <p className={css({ fontSize: 'base', color: 'textSecondary', marginTop: '2', maxWidth: '60ch' })}>
-                {featuredProject.problem}
-              </p>
-            )}
-            {featuredProject.externalUrl && (
-              <a
-                href={featuredProject.externalUrl}
-                className={css({
-                  display: 'inline-block',
-                  marginTop: '4',
-                  fontSize: 'sm',
-                  fontWeight: 'bold',
-                  color: 'accent',
-                  textDecoration: 'underline',
-                  textUnderlineOffset: '4px',
-                })}
-              >
-                Visit site ↗
-              </a>
-            )}
-          </Box>
+              {featuredProject.problem}
+            </p>
+          )}
+          {featuredProject.externalUrl && (
+            <a
+              href={featuredProject.externalUrl}
+              className={css({
+                display: 'inline-block',
+                marginTop: '4',
+                fontFamily: 'body',
+                fontWeight: 'bold',
+                fontSize: 'xs',
+                letterSpacing: 'wider',
+                textTransform: 'uppercase',
+                color: 'text',
+                borderBottom: '2px solid',
+                borderColor: 'text',
+              })}
+            >
+              View live →
+            </a>
+          )}
         </Box>
       )}
 
-      <Box>
-        <span className={label}>Selected work</span>
-        <Box display="flex" flexDirection="column" marginTop="4">
-          {selectedWork.map((p, i) => (
-            <Flex
-              key={p.slug}
-              gap="6"
-              bg="cardBg"
-              borderBottom={i === selectedWork.length - 1 ? 'none' : '1px solid'}
-              borderColor="border"
-              paddingX="4"
-              paddingY="4"
-              align="baseline"
-              wrap="wrap"
+      <Box className={css({ bg: 'surface', color: 'surfaceText', padding: '8 6vw 10', borderTop: '3px solid', borderColor: 'border' })}>
+        <div
+          className={css({
+            fontFamily: 'body',
+            fontWeight: 'bold',
+            fontSize: 'sm',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'surfaceText',
+            borderBottom: '2px solid',
+            borderColor: 'primary.600',
+            paddingBottom: '3',
+            marginBottom: '2',
+          })}
+        >
+          Invoice — Selected Work &amp; Experiments
+        </div>
+
+        {rows.map((project) => {
+          const href = project.externalUrl ?? `/work/${project.slug}`
+          return (
+            <a
+              key={project.slug}
+              href={href}
+              className={css({
+                display: 'grid',
+                gridTemplateColumns: { base: '1fr auto', sm: 'minmax(88px,1.3fr) minmax(0,3fr) minmax(90px,auto)' },
+                gap: '3',
+                alignItems: 'baseline',
+                padding: '3 0',
+                borderBottom: '1px solid',
+                borderColor: 'primary.800',
+                cursor: 'pointer',
+                '& .v': { borderBottom: '1px solid transparent' },
+                _hover: { '& .v': { borderColor: 'surfaceText' } },
+              })}
             >
-              <Box flex="1" minWidth="200px">
-                <a
-                  href={`/work/${p.slug}`}
-                  className={css({
-                    fontSize: 'md',
-                    fontWeight: 'bold',
-                    color: 'text',
-                    _hover: { color: 'accent', textDecoration: 'underline', textDecorationColor: 'accent' },
-                  })}
-                >
-                  {p.title}
-                </a>
-              </Box>
-              <span className={css({ fontSize: 'sm', color: 'textSecondary', flex: '0 0 140px' })}>{p.type}</span>
               <span
                 className={css({
-                  fontSize: 'sm',
-                  color: 'textMuted',
-                  fontVariantNumeric: 'tabular-nums',
-                  flex: '0 0 60px',
+                  gridColumn: { base: '1 / -1', sm: 'auto' },
+                  fontFamily: 'body',
+                  fontWeight: 'bold',
+                  fontSize: '2xs',
+                  letterSpacing: 'widest',
+                  textTransform: 'uppercase',
+                  color: 'neutral.400',
                 })}
               >
-                {p.year}
+                {project.type}
               </span>
-            </Flex>
-          ))}
-        </Box>
-      </Box>
-
-      <Box id="experiments">
-        <span className={label}>Experiments</span>
-        <Box display="flex" flexDirection="column" marginTop="4">
-          {experiments.map((p, i) => {
-            const href = p.liveUrl || p.githubUrl || p.externalUrl || `/work/${p.slug}`
-            return (
-              <Flex
-                key={p.slug}
-                gap="6"
-                bg="cardBg"
-                borderBottom={i === experiments.length - 1 ? 'none' : '1px solid'}
-                borderColor="border"
-                paddingX="4"
-                paddingY="4"
-                align="baseline"
-                wrap="wrap"
+              <span
+                className={css({
+                  fontFamily: 'body',
+                  fontWeight: 'medium',
+                  fontSize: 'sm',
+                  color: 'surfaceText',
+                })}
               >
-                <Box flex="1" minWidth="200px">
-                  <a
-                    href={href}
-                    className={css({
-                      fontSize: 'md',
-                      fontWeight: 'bold',
-                      color: 'text',
-                      _hover: { color: 'accent', textDecoration: 'underline', textDecorationColor: 'accent' },
-                    })}
-                  >
-                    {p.title}
-                  </a>
-                </Box>
-                <span className={css({ fontSize: 'sm', color: 'textSecondary', flex: '0 0 140px' })}>
-                  {p.type}
-                </span>
-                <span
-                  className={css({
-                    fontSize: 'sm',
-                    color: 'textMuted',
-                    fontVariantNumeric: 'tabular-nums',
-                    flex: '0 0 60px',
-                  })}
-                >
-                  {p.year}
-                </span>
-              </Flex>
-            )
-          })}
-        </Box>
+                <span className="v">{project.title}</span>
+              </span>
+              <span
+                className={css({
+                  fontFamily: 'body',
+                  fontWeight: 'bold',
+                  fontSize: 'sm',
+                  textAlign: 'right',
+                  color: 'primary.300',
+                  fontVariantNumeric: 'tabular-nums',
+                  whiteSpace: 'nowrap',
+                })}
+              >
+                {project.year}
+              </span>
+            </a>
+          )
+        })}
       </Box>
     </Box>
   )

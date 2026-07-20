@@ -1,0 +1,275 @@
+{
+  "date": "2026-07-20",
+  "startedAt": "2026-07-20T11:01:19.809Z",
+  "completedAt": "2026-07-20T11:15:03.968Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 13
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "/zeroz Brand Site",
+              "description": "Brand site for /zeroz, a self-conditioning food born from Otsuka Pharmaceutical Co., Ltd.'s \"Active Inner Resource\" concept. Chapters unfold through 3DCG...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4687f45bf83853560900.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The Record Institute",
+              "description": "A museum-grade digital archive dedicated to preserving pre-2000 print ephemera. Multilingual, meticulously catalogued, and free—safeguarding vintage advertising...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a44c228af614956383273.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADASIAAhEBAxEB/8QAHQAAAAcBAQEAAAAAAAAAAAAAAAECAwQFBgcICf/E...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The History of Muse Group",
+              "description": "SANDS STUDIO created an interactive website for Muse Group — a living digital archive connecting its music ecosystem, products, and nearly a century of...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a43c670e1dae067356082.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAMAAACU33alAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAJBQTFRFLCoq/v7+9/f37O3r1NTUUPP+9c0Cgv4EtbW1yqwmeMkxTb/GjJCQgYMlcGHyc17qdlzkeFnee1fYflXSflLLhE7FZGtqlTT97DQCmDuUnjaHojN+XEyppS91qStsridg6ws/th9OvRk/wxMwaCOzREZDSDluaCtPiR41Oi84JCQjSwkiHBwc...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Monday",
+          "is_weekend": false,
+          "day_index": 1
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/tirth8205",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "1jehuang/jcode/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "sponsors/diegosouzapw",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/rohitg00",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/msitarzewski",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "The Open",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Ryan Fox",
+              "position": "1",
+              "score": "-10"
+            },
+            {
+              "name": "Cameron Young",
+              "position": "2",
+              "score": "-9"
+            },
+            {
+              "name": "Sam Burns",
+              "position": "3",
+              "score": "-8"
+            },
+            {
+              "name": "Scottie Scheffler",
+              "position": "4",
+              "score": "-7"
+            },
+            {
+              "name": "Tommy Fleetwood",
+              "position": "5",
+              "score": "-7"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Exploit brokers pay $500k for WordPress RCEs. I found one with GPT5.6 and $25",
+              "url": "https://slcyber.io/research-center/exploit-brokers-pay-500000-for-a-wordpress-rce-i-found-one-with-gpt5-6/",
+              "score": 122,
+              "by": "infosecau"
+            },
+            {
+              "title": "Show HN: I replaced a $120k bowling center system with $1,600 in ESP32s",
+              "score": 2379,
+              "by": "section33"
+            },
+            {
+              "title": "Moonshine: Lets you stream games from your PC to any device running Moonlight",
+              "url": "https://github.com/hgaiser/moonshine",
+              "score": 202,
+              "by": "wertyk"
+            },
+            {
+              "title": "Sealed tomb filled with paintings and inscriptions discovered in Egypt",
+              "url": "https://www.labrujulaverde.com/en/2026/07/sealed-tomb-of-a-high-official-or-priest-filled-with-paintings-and-inscriptions-discovered-on-luxors-west-bank/",
+              "score": 51,
+              "by": "isaacfrond"
+            },
+            {
+              "title": "LoRA Speedrun – a public wall-clock leaderboard for fine-tuning techniques",
+              "url": "https://github.com/Saivineeth147/lora-speedrun",
+              "score": 88,
+              "by": "Vineeth147"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "first quarter",
+          "illumination": 0.399,
+          "days_into_cycle": 6.43
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "Wet Leg",
+            "My Morning Jacket"
+          ]
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 20,
+          "day_of_year": 201,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-07-19T20:07Z",
+              "result": "loss",
+              "score": "2-3"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:05",
+          "sunset": "19:27",
+          "daylight_hours": 14.4
+        },
+        "date": "2026-07-20"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-20T11:01:34.961Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-19: Broadsheet\n  - 2026-07-18: Stack\n  - 2026-07-17: Specimen\n  - 2026-07-16: Poster\n  - 2026-07-14: Split\n  - 2026-07-13: Scroll\n  - 2026-07-12: Specimen\n\n**Recently used** (last 3 days): Broadsheet, Stack, Specimen\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or s"
+      },
+      "output": {
+        "hero_copy": "$120K SYSTEM. $1,600 IN ESP32s.",
+        "archetype": "Poster",
+        "chassisId": "anton-inter-tight",
+        "specLength": 4206,
+        "specPreview": "### 1. Color Specification\n- **Primary hue** — 46° (breadboard amber). The color mandate leaves only the 45°–67° window clean after a week that scorched the rest of the wheel; 46° is exactly right for a DIY-electronics story — the yellow of breadboards, jumper wires, and status LEDs. Read at full saturation as poster/caution stock.\n- **Neutral palette** — warm-tinted toward 50°:\n  - 50 `#FAF8F1` · 100 `#F1EEE2` · 200 `#E0DBC9` · 300 `#C6BFA6` · 400 `#A39B7E` · 500 `#7C745A` · 600 `#5A5340` · 700",
+        "selfCheck": "1. Hero quotability: Yes — \"$120K SYSTEM. $1,600 IN ESP32s.\" is a self-contained brag, quotable with no context.\n2. Because-of chain: Yes — the price-ratio headline demands Poster (one dominant object), Anton (heavy condensed numerals), an amber drench (breadboard color, only clean hue window), corn"
+      },
+      "durationMs": 168398,
+      "timestamp": "2026-07-20T11:04:23.365Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 4206
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 34151,
+      "timestamp": "2026-07-20T11:04:58.967Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4187,
+        "briefLength": 6995,
+        "mockupLength": 12674
+      },
+      "output": {
+        "files": [
+          "app/components/Layout.tsx",
+          "app/components/Sidebar.tsx",
+          "app/components/BomFooter.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.index.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 230833,
+      "timestamp": "2026-07-20T11:10:28.113Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": false,
+        "error": "Build output smoke check failed:\n  - dist/client/_shell.html and index.html are both missing\n\nThe build COMPILED but the app crashed during prerender (server-side render). Runtime error lines from the build log:\nError: Invalid tag: data:image/svg+xml,%3csvg%20width='71'%20height='59'%20viewBox='0%200%2071%2059'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M29.8925%200.440186C45.91%200.440257%2058.8956%2013.4256%2058.8965%2029.4431C58.8964%2045.4614%2045.9108%2058.4469%2029.8"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-20T11:10:35.422Z"
+    }
+  ]
+}

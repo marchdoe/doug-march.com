@@ -1,117 +1,68 @@
-import { Flex, Box } from '../../styled-system/jsx'
+import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import logoMono from '../assets/logo-mono.svg'
+import logo from '../assets/logo.svg'
+
+const navLinkClass = css({
+  fontFamily: 'body',
+  fontWeight: 'bold',
+  fontSize: 'xs',
+  letterSpacing: 'widest',
+  textTransform: 'uppercase',
+  color: 'text',
+  paddingY: '1.5',
+  paddingX: '2',
+  marginLeft: '-2',
+  display: 'inline-block',
+  transition: 'background .18s ease, color .18s ease',
+  _hover: { background: 'surface', color: 'surfaceText' },
+})
 
 export function Sidebar() {
   return (
     <Box
       as="header"
-      bg="panel"
-      color="knockout"
-      borderBottom="4px solid"
-      borderColor="border"
+      position="fixed"
+      top={{ base: '3', md: '5' }}
+      left={{ base: '4', md: '6' }}
+      zIndex="50"
     >
-      <Flex
-        align="center"
-        justify="space-between"
-        gap="4"
-        wrap="wrap"
-        minH="64px"
-        px={{ base: '5', md: '12' }}
-        py="2"
-      >
+      <Flex direction="column" gap="3.5">
         <a
           href="/"
           aria-label="Doug March — home"
           className={css({
             display: 'flex',
-            alignItems: 'center',
-            gap: '3',
-            color: 'knockout',
-            lineHeight: '1',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            gap: '2',
+            color: 'text',
           })}
         >
           <img
-            src={logoMono}
-            alt=""
-            className={css({ height: '36px', width: 'auto', color: 'knockout' })}
+            src={logo}
+            alt="Doug March"
+            className={css({ height: { base: '40px', md: '48px' }, width: 'auto', display: 'block' })}
           />
-          <styled.span
+          <span
             className={css({
-              fontFamily: 'display',
+              fontFamily: 'body',
               fontWeight: 'bold',
-              fontSize: 'xl',
+              fontSize: 'sm',
               letterSpacing: 'wide',
               textTransform: 'uppercase',
-              whiteSpace: 'nowrap',
+              lineHeight: 'tight',
+              color: 'text',
             })}
           >
             Doug March
-          </styled.span>
+          </span>
         </a>
-
-        <Box
-          flex="1 1 auto"
-          textAlign="center"
-          fontSize="2xs"
-          letterSpacing="widest"
-          textTransform="uppercase"
-          color="knockout"
-        >
-          Sunday · July 19 2026 · Late Edition
-        </Box>
-
-        <Flex as="nav" gap="5" aria-label="Primary">
-          <a
-            href="/#work"
-            className={css({
-              fontSize: 'xs',
-              fontWeight: 'bold',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              padding: '2px 4px',
-              color: 'knockout',
-              transition: 'color .18s ease, background .18s ease',
-              _hover: { bg: 'bg', color: 'text' },
-            })}
-          >
-            Work
-          </a>
-          <a
-            href="/about"
-            className={css({
-              fontSize: 'xs',
-              fontWeight: 'bold',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              padding: '2px 4px',
-              color: 'knockout',
-              transition: 'color .18s ease, background .18s ease',
-              _hover: { bg: 'bg', color: 'text' },
-            })}
-          >
-            About
-          </a>
-          <a
-            href="/#index"
-            className={css({
-              fontSize: 'xs',
-              fontWeight: 'bold',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              padding: '2px 4px',
-              color: 'knockout',
-              transition: 'color .18s ease, background .18s ease',
-              _hover: { bg: 'bg', color: 'text' },
-            })}
-          >
-            Index
-          </a>
+        <Flex direction="column" gap="0.5">
+          <a href="/work" className={navLinkClass}>Work</a>
+          <a href="/about" className={navLinkClass}>About</a>
+          <a href="/" className={navLinkClass}>Log</a>
         </Flex>
       </Flex>
     </Box>
   )
 }
-
-// local import kept minimal; styled used only for the brand name span
-import { styled } from '../../styled-system/jsx'
