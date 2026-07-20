@@ -9,15 +9,34 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PanelRouteImport } from './routes/panel'
+import { Route as OgRouteImport } from './routes/og'
+import { Route as ExperimentsRouteImport } from './routes/experiments'
 import { Route as ElementsRouteImport } from './routes/elements'
 import { Route as DevRouteImport } from './routes/dev'
 import { Route as ArchiveRouteImport } from './routes/archive'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WorkIndexRouteImport } from './routes/work.index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
 import { Route as DevResponsiveRouteImport } from './routes/dev.responsive'
 import { Route as ArchiveDateRouteImport } from './routes/archive.$date'
 
+const PanelRoute = PanelRouteImport.update({
+  id: '/panel',
+  path: '/panel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OgRoute = OgRouteImport.update({
+  id: '/og',
+  path: '/og',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperimentsRoute = ExperimentsRouteImport.update({
+  id: '/experiments',
+  path: '/experiments',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ElementsRoute = ElementsRouteImport.update({
   id: '/elements',
   path: '/elements',
@@ -43,6 +62,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkIndexRoute = WorkIndexRouteImport.update({
+  id: '/work/',
+  path: '/work/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkSlugRoute = WorkSlugRouteImport.update({
   id: '/work/$slug',
   path: '/work/$slug',
@@ -65,9 +89,13 @@ export interface FileRoutesByFullPath {
   '/archive': typeof ArchiveRouteWithChildren
   '/dev': typeof DevRouteWithChildren
   '/elements': typeof ElementsRoute
+  '/experiments': typeof ExperimentsRoute
+  '/og': typeof OgRoute
+  '/panel': typeof PanelRoute
   '/archive/$date': typeof ArchiveDateRoute
   '/dev/responsive': typeof DevResponsiveRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/work/': typeof WorkIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,9 +103,13 @@ export interface FileRoutesByTo {
   '/archive': typeof ArchiveRouteWithChildren
   '/dev': typeof DevRouteWithChildren
   '/elements': typeof ElementsRoute
+  '/experiments': typeof ExperimentsRoute
+  '/og': typeof OgRoute
+  '/panel': typeof PanelRoute
   '/archive/$date': typeof ArchiveDateRoute
   '/dev/responsive': typeof DevResponsiveRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/work': typeof WorkIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,9 +118,13 @@ export interface FileRoutesById {
   '/archive': typeof ArchiveRouteWithChildren
   '/dev': typeof DevRouteWithChildren
   '/elements': typeof ElementsRoute
+  '/experiments': typeof ExperimentsRoute
+  '/og': typeof OgRoute
+  '/panel': typeof PanelRoute
   '/archive/$date': typeof ArchiveDateRoute
   '/dev/responsive': typeof DevResponsiveRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/work/': typeof WorkIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,9 +134,13 @@ export interface FileRouteTypes {
     | '/archive'
     | '/dev'
     | '/elements'
+    | '/experiments'
+    | '/og'
+    | '/panel'
     | '/archive/$date'
     | '/dev/responsive'
     | '/work/$slug'
+    | '/work/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -108,9 +148,13 @@ export interface FileRouteTypes {
     | '/archive'
     | '/dev'
     | '/elements'
+    | '/experiments'
+    | '/og'
+    | '/panel'
     | '/archive/$date'
     | '/dev/responsive'
     | '/work/$slug'
+    | '/work'
   id:
     | '__root__'
     | '/'
@@ -118,9 +162,13 @@ export interface FileRouteTypes {
     | '/archive'
     | '/dev'
     | '/elements'
+    | '/experiments'
+    | '/og'
+    | '/panel'
     | '/archive/$date'
     | '/dev/responsive'
     | '/work/$slug'
+    | '/work/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -129,11 +177,36 @@ export interface RootRouteChildren {
   ArchiveRoute: typeof ArchiveRouteWithChildren
   DevRoute: typeof DevRouteWithChildren
   ElementsRoute: typeof ElementsRoute
+  ExperimentsRoute: typeof ExperimentsRoute
+  OgRoute: typeof OgRoute
+  PanelRoute: typeof PanelRoute
   WorkSlugRoute: typeof WorkSlugRoute
+  WorkIndexRoute: typeof WorkIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/panel': {
+      id: '/panel'
+      path: '/panel'
+      fullPath: '/panel'
+      preLoaderRoute: typeof PanelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/og': {
+      id: '/og'
+      path: '/og'
+      fullPath: '/og'
+      preLoaderRoute: typeof OgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experiments': {
+      id: '/experiments'
+      path: '/experiments'
+      fullPath: '/experiments'
+      preLoaderRoute: typeof ExperimentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/elements': {
       id: '/elements'
       path: '/elements'
@@ -167,6 +240,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/': {
+      id: '/work/'
+      path: '/work'
+      fullPath: '/work/'
+      preLoaderRoute: typeof WorkIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/work/$slug': {
@@ -220,7 +300,11 @@ const rootRouteChildren: RootRouteChildren = {
   ArchiveRoute: ArchiveRouteWithChildren,
   DevRoute: DevRouteWithChildren,
   ElementsRoute: ElementsRoute,
+  ExperimentsRoute: ExperimentsRoute,
+  OgRoute: OgRoute,
+  PanelRoute: PanelRoute,
   WorkSlugRoute: WorkSlugRoute,
+  WorkIndexRoute: WorkIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

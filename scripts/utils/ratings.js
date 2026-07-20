@@ -2,6 +2,27 @@ import { readFileSync, readdirSync, existsSync } from 'fs'
 import path from 'path'
 
 /**
+ * Newest valid rating for one date dir, or null.
+ * @returns {{ grade: string, worked: string, didnt: string, try: string } | null}
+ */
+export function readRatingForDate(archiveDir, date) {
+  const dirPath = path.join(archiveDir, date)
+  let files
+  try {
+    files = readdirSync(dirPath).filter((f) => /^rating-\d+\.json$/.test(f)).sort().reverse()
+  } catch { return null }
+  for (const f of files) {
+    try {
+      const r = JSON.parse(readFileSync(path.join(dirPath, f), 'utf8'))
+      const grade = typeof r.grade === 'string' ? r.grade.trim().toUpperCase() : ''
+      if (!/^[A-D]$/.test(grade)) continue // legacy or malformed
+      return { grade, worked: r.worked || '', didnt: r.didnt || '', try: r.try || '' }
+    } catch { /* ignore malformed */ }
+  }
+  return null
+}
+
+/**
  * Read new-schema ratings ({ grade, worked, didnt, try }) from the archive.
  * Legacy 5-axis files (with a `ratings` object) are skipped — they predate
  * 2026-04 and fall outside any useful lookback window.
@@ -20,23 +41,9 @@ export function readRecentRatings(archiveDir, { lookbackDays = 10 } = {}) {
   } catch { return [] }
   const out = []
   for (const dateDir of dateDirs) {
-    const dirPath = path.join(archiveDir, dateDir)
-    let files
-    try {
-      files = readdirSync(dirPath).filter((f) => /^rating-\d+\.json$/.test(f)).sort().reverse()
-    } catch { continue }
-    // At most ONE rating per date — newest file wins. A close-after-write
-    // failure in collect-ratings.js can leave two rating files for the same
-    // day; without this cap that day's taste signal would count twice.
-    for (const f of files) {
-      try {
-        const r = JSON.parse(readFileSync(path.join(dirPath, f), 'utf8'))
-        const grade = typeof r.grade === 'string' ? r.grade.trim().toUpperCase() : ''
-        if (!/^[A-D]$/.test(grade)) continue // legacy or malformed
-        out.push({ date: dateDir, grade, worked: r.worked || '', didnt: r.didnt || '', try: r.try || '' })
-        break // newest valid rating for this date is enough
-      } catch { /* ignore malformed */ }
-    }
+    // At most ONE rating per date — newest file wins (see readRatingForDate).
+    const rating = readRatingForDate(archiveDir, dateDir)
+    if (rating) out.push({ date: dateDir, ...rating })
   }
   return out
 }
