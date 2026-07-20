@@ -8,6 +8,18 @@ import { ArchiveTab } from '../components/panel/ArchiveTab'
 import { WeightsTab } from '../components/panel/WeightsTab'
 import { RunTab } from '../components/panel/RunTab'
 
+// Theme-proof reset: /panel inherits the site's daily-changing theme tokens
+// (fonts, colors, type scale), which the pipeline redesigns every day. Raw
+// CSS values here (not theme tokens) keep the panel legible and stable
+// regardless of what today's theme looks like.
+const panelReset = {
+  fontFamily: 'system-ui, -apple-system, sans-serif',
+  fontSize: '16px',
+  lineHeight: '1.5',
+  color: '#1a1a1a',
+  backgroundColor: '#ffffff',
+} as const
+
 export const Route = createFileRoute('/panel')({
   component: PanelPage,
 })
@@ -23,12 +35,12 @@ function PanelPage() {
   }, [])
   useEffect(load, [load])
 
-  if (error) return <main className={css({ padding: '8' })}>{error}</main>
-  if (!status) return <main className={css({ padding: '8' })}>Loading…</main>
+  if (error) return <main className={css(panelReset, { padding: '8' })}>{error}</main>
+  if (!status) return <main className={css(panelReset, { padding: '8' })}>Loading…</main>
 
   return (
-    <main className={css({ maxWidth: '640px', margin: '0 auto', padding: '6' })}>
-      <h1 className={css({ fontSize: '2xl', marginBottom: '4' })}>Owner Panel</h1>
+    <main className={css(panelReset, { maxWidth: '640px', margin: '0 auto', padding: '6' })}>
+      <h1 className={css({ fontSize: '24px', marginBottom: '4' })}>Owner Panel</h1>
       <Tabs.Root defaultValue="rate">
         <Tabs.List className={css({ display: 'flex', gap: '4', marginBottom: '6' })}>
           <Tabs.Tab value="rate">Rate</Tabs.Tab>

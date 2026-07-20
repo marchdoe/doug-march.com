@@ -19,7 +19,7 @@ export function RunTab({ latestRun, onTriggered }: { latestRun: RunInfo | null; 
 
   return (
     <section>
-      <h2 className={css({ fontSize: 'lg', marginBottom: '3' })}>Latest run</h2>
+      <h2 className={css({ fontSize: '18px', marginBottom: '3' })}>Latest run</h2>
       {latestRun ? (
         <p className={css({ marginBottom: '5' })}>
           <a href={latestRun.url}>{latestRun.status}{latestRun.conclusion ? ` — ${latestRun.conclusion}` : ''}</a>

@@ -30,7 +30,7 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
 
   return (
     <section>
-      <h2 className={css({ fontSize: 'lg', marginBottom: '3' })}>Rate {activeDate}</h2>
+      <h2 className={css({ fontSize: '18px', marginBottom: '3' })}>Rate {activeDate}</h2>
       <div role="group" aria-label="grade" className={css({ display: 'flex', gap: '2', marginBottom: '4' })}>
         {(['A', 'B', 'C', 'D'] as const).map((g) => (
           <button
@@ -39,8 +39,9 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
             onClick={() => setGrade(g)}
             aria-pressed={grade === g}
             className={css({
-              width: '12', height: '12', fontSize: 'xl', cursor: 'pointer',
-              border: '2px solid', borderColor: grade === g ? 'currentColor' : 'transparent',
+              width: '48px', height: '48px', fontSize: '18px', lineHeight: '1', cursor: 'pointer',
+              border: '2px solid', borderColor: grade === g ? '#1a1a1a' : '#9ca3af',
+              borderRadius: '8px', background: 'white', color: '#1a1a1a',
             })}
           >
             {g}
@@ -66,7 +67,7 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
       {state.kind === 'error' && <p role="alert">{state.message}</p>}
       {unrated.length > 1 && (
         <aside className={css({ marginTop: '6' })}>
-          <h3>Also unrated</h3>
+          <h3 className={css({ fontSize: '16px', marginBottom: '2' })}>Also unrated</h3>
           <ul>
             {unrated.filter((i) => i.date !== activeDate).map((i) => (
               <li key={i.number}>
