@@ -279,3 +279,19 @@ export const archiveLink = css({
 export const ratingNotes = css({ fontSize: '12px', color: '#3f3f46', marginTop: '2px' })
 
 export const archiveRow = css({ padding: '10px 0', borderBottom: '1px solid #f4f4f5' })
+
+export const runStatusLine = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '7px',
+  fontSize: '13px',
+  fontWeight: '600',
+  color: '#18181b',
+})
+
+export const subtleLink = css({
+  color: '#18181b',
+  textDecoration: 'underline',
+  textUnderlineOffset: '2px',
+  '&:focus-visible': focusRing,
+})
