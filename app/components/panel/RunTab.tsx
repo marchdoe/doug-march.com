@@ -1,6 +1,24 @@
 import { useState } from 'react'
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
+import {
+  sectionTitle,
+  runBox,
+  statusDot,
+  mutedText,
+  runStatusLine,
+  subtleLink,
+  checkboxRow,
+  checkboxBox,
+  button,
+  errorText,
+  successText,
+} from './styles'
 import { triggerRun, type RunInfo } from './api'
+
+function runTone(run: RunInfo): 'success' | 'failure' | 'pending' {
+  if (!run.conclusion) return 'pending'
+  return run.conclusion === 'success' ? 'success' : 'failure'
+}
 
 export function RunTab({ latestRun, onTriggered }: { latestRun: RunInfo | null; onTriggered: () => void }) {
   const [dryRun, setDryRun] = useState(false)
@@ -19,24 +37,33 @@ export function RunTab({ latestRun, onTriggered }: { latestRun: RunInfo | null; 
 
   return (
     <section>
-      <h2 className={css({ fontSize: '18px', marginBottom: '3' })}>Latest run</h2>
+      <h2 className={sectionTitle}>Latest run</h2>
       {latestRun ? (
-        <p className={css({ marginBottom: '5' })}>
-          <a href={latestRun.url}>{latestRun.status}{latestRun.conclusion ? ` — ${latestRun.conclusion}` : ''}</a>
-          {' '}({new Date(latestRun.createdAt).toLocaleString()})
-        </p>
+        <div className={runBox}>
+          <div className={runStatusLine}>
+            <span className={statusDot({ tone: runTone(latestRun) })} />
+            {latestRun.status}
+            {latestRun.conclusion ? ` — ${latestRun.conclusion}` : ''}
+          </div>
+          <p className={cx(mutedText, css({ marginTop: '3px' }))}>
+            {new Date(latestRun.createdAt).toLocaleString()} ·{' '}
+            <a className={subtleLink} href={latestRun.url}>view on GitHub ↗</a>
+          </p>
+        </div>
       ) : (
-        <p className={css({ marginBottom: '5' })}>No runs found.</p>
+        <p className={cx(mutedText, css({ marginBottom: '14px' }))}>No runs found.</p>
       )}
-      <label className={css({ display: 'flex', gap: '2', alignItems: 'center', marginBottom: '4' })}>
-        <input type="checkbox" checked={dryRun} onChange={(e) => setDryRun(e.target.checked)} />
+      <label className={checkboxRow}>
+        <input type="checkbox" className={checkboxBox} checked={dryRun} onChange={(e) => setDryRun(e.target.checked)} />
         Dry run (build + verify, no commit)
       </label>
-      <button type="button" disabled={state === 'busy'} onClick={trigger}>
+      <button type="button" disabled={state === 'busy'} onClick={trigger} className={button({ kind: 'primary' })}>
         {state === 'busy' ? 'Dispatching…' : 'Trigger build'}
       </button>
-      {state === 'dispatched' && <p>Dispatched — refresh status in a minute.</p>}
-      {state !== 'idle' && state !== 'busy' && state !== 'dispatched' && <p role="alert">{state}</p>}
+      {state === 'dispatched' && <p className={cx(successText, css({ marginTop: '10px' }))}>Dispatched — refresh status in a minute.</p>}
+      {state !== 'idle' && state !== 'busy' && state !== 'dispatched' && (
+        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>{state}</p>
+      )}
     </section>
   )
 }

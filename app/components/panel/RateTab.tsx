@@ -1,8 +1,26 @@
 import { useState } from 'react'
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
+import {
+  sectionTitle,
+  mutedText,
+  fieldLabel,
+  field,
+  textArea,
+  button,
+  gradeButton,
+  errorText,
+  successText,
+  inlineLink,
+  dateMuted,
+} from './styles'
 import { submitRating, type RatingIssue } from './api'
 
-const field = css({ display: 'flex', flexDirection: 'column', gap: '1', marginBottom: '3' })
+function prettyDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00`)
+  return Number.isNaN(d.getTime())
+    ? iso
+    : d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
+}
 
 export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated: () => void }) {
   const [activeDate, setActiveDate] = useState(unrated[0]?.date ?? '')
@@ -13,7 +31,7 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
   const [state, setState] = useState<{ kind: 'idle' } | { kind: 'busy' } | { kind: 'done'; url: string } | { kind: 'error'; message: string }>({ kind: 'idle' })
 
   if (unrated.length === 0 && state.kind !== 'done') {
-    return <p>Nothing waiting for a rating. 🎉</p>
+    return <p className={mutedText}>Nothing waiting for a rating. 🎉</p>
   }
 
   const submit = async () => {
@@ -30,48 +48,71 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
 
   return (
     <section>
-      <h2 className={css({ fontSize: '18px', marginBottom: '3' })}>Rate {activeDate}</h2>
-      <div role="group" aria-label="grade" className={css({ display: 'flex', gap: '2', marginBottom: '4' })}>
+      <h2 className={sectionTitle}>
+        {prettyDate(activeDate)}{' '}
+        <span className={dateMuted}>· {activeDate}</span>
+      </h2>
+      <p className={fieldLabel} id="grade-label">Grade</p>
+      <div
+        role="group"
+        aria-labelledby="grade-label"
+        className={css({ display: 'flex', gap: '8px', marginBottom: '14px' })}
+      >
         {(['A', 'B', 'C', 'D'] as const).map((g) => (
           <button
             key={g}
             type="button"
             onClick={() => setGrade(g)}
             aria-pressed={grade === g}
-            className={css({
-              width: '48px', height: '48px', fontSize: '18px', lineHeight: '1', cursor: 'pointer',
-              border: '2px solid', borderColor: grade === g ? '#1a1a1a' : '#9ca3af',
-              borderRadius: '8px', background: 'white', color: '#1a1a1a',
-            })}
+            className={gradeButton}
           >
             {g}
           </button>
         ))}
       </div>
-      <label className={field}>
-        What worked
-        <textarea value={worked} onChange={(e) => setWorked(e.target.value)} rows={2} />
-      </label>
-      <label className={field}>
-        What didn't
-        <textarea value={didnt} onChange={(e) => setDidnt(e.target.value)} rows={2} />
-      </label>
-      <label className={field}>
-        Try next
-        <textarea value={tryNext} onChange={(e) => setTryNext(e.target.value)} rows={2} />
-      </label>
-      <button type="button" disabled={!grade || state.kind === 'busy'} onClick={submit}>
+      <div className={field}>
+        <label>
+          <span className={fieldLabel}>What worked</span>
+          <textarea className={textArea} value={worked} onChange={(e) => setWorked(e.target.value)} rows={2} />
+        </label>
+      </div>
+      <div className={field}>
+        <label>
+          <span className={fieldLabel}>What didn't</span>
+          <textarea className={textArea} value={didnt} onChange={(e) => setDidnt(e.target.value)} rows={2} />
+        </label>
+      </div>
+      <div className={field}>
+        <label>
+          <span className={fieldLabel}>Try next</span>
+          <textarea className={textArea} value={tryNext} onChange={(e) => setTryNext(e.target.value)} rows={2} />
+        </label>
+      </div>
+      <button
+        type="button"
+        disabled={!grade || state.kind === 'busy'}
+        onClick={submit}
+        className={cx(css({ width: '100%' }), button({ kind: 'primary' }))}
+      >
         {state.kind === 'busy' ? 'Submitting…' : 'Submit rating'}
       </button>
-      {state.kind === 'done' && <p>Saved — <a href={state.url}>view issue</a>. Harvested on the next run.</p>}
-      {state.kind === 'error' && <p role="alert">{state.message}</p>}
+      {state.kind === 'done' && (
+        <p className={cx(successText, css({ marginTop: '10px' }))}>
+          Saved — <a className={inlineLink} href={state.url}>view issue</a>. Harvested on the next run.
+        </p>
+      )}
+      {state.kind === 'error' && (
+        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>{state.message}</p>
+      )}
       {unrated.length > 1 && (
-        <aside className={css({ marginTop: '6' })}>
-          <h3 className={css({ fontSize: '16px', marginBottom: '2' })}>Also unrated</h3>
-          <ul>
+        <aside className={css({ marginTop: '20px' })}>
+          <h3 className={fieldLabel}>Also unrated</h3>
+          <ul className={css({ listStyle: 'none', padding: '0', display: 'flex', gap: '8px', flexWrap: 'wrap' })}>
             {unrated.filter((i) => i.date !== activeDate).map((i) => (
               <li key={i.number}>
-                <button type="button" onClick={() => setActiveDate(i.date)}>{i.date}</button>
+                <button type="button" className={button({ kind: 'secondary' })} onClick={() => setActiveDate(i.date)}>
+                  {i.date}
+                </button>
               </li>
             ))}
           </ul>
