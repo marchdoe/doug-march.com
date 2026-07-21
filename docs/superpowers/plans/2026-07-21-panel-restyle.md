@@ -591,7 +591,7 @@ git commit -m "feat(panel): restyle RateTab — labeled fields, 44px grade butto
 - Modify: `app/components/panel/ArchiveTab.tsx` (full replacement below)
 
 **Interfaces:**
-- Consumes from `./styles`: `badge`, `mutedText`, `errorText`, `archiveLink`, `ratingNotes` (last two added in this task).
+- Consumes from `./styles`: `badge`, `mutedText`, `errorText`, `archiveLink`, `ratingNotes`, `archiveRow` (last three added in this task).
 - Produces: same zero-prop component, same fetch behavior.
 
 - [ ] **Step 0: Add the `archiveLink` and `ratingNotes` exports** (append to `app/components/panel/styles.ts`):
@@ -607,6 +607,8 @@ export const archiveLink = css({
 })
 
 export const ratingNotes = css({ fontSize: '12px', color: '#3f3f46', marginTop: '2px' })
+
+export const archiveRow = css({ padding: '10px 0', borderBottom: '1px solid #f4f4f5' })
 ```
 
 - [ ] **Step 1: Replace the file**
@@ -615,7 +617,7 @@ export const ratingNotes = css({ fontSize: '12px', color: '#3f3f46', marginTop: 
 import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { css, cx } from '../../../styled-system/css'
-import { badge, mutedText, errorText, archiveLink, ratingNotes } from './styles'
+import { badge, mutedText, errorText, archiveLink, ratingNotes, archiveRow } from './styles'
 
 interface ArchiveEntry {
   date: string
@@ -653,7 +655,7 @@ export function ArchiveTab() {
   return (
     <ul className={css({ listStyle: 'none', padding: '0', margin: '0' })}>
       {entries.map((e) => (
-        <li key={e.date} className={css({ padding: '10px 0', borderBottom: '1px solid #f4f4f5' })}>
+        <li key={e.date} className={archiveRow}>
           <div className={css({ display: 'flex', gap: '8px', alignItems: 'center' })}>
             <Link
               to="/archive/$date"
