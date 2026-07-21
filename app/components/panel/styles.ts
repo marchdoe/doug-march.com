@@ -266,3 +266,14 @@ export const sliderThumb = css({
   boxShadow: '0 1px 3px rgba(0,0,0,.15)',
   '&:focus-visible': focusRing,
 })
+
+export const archiveLink = css({
+  fontSize: '13px',
+  color: '#18181b',
+  fontWeight: '600',
+  textDecoration: 'none',
+  '&:hover': { textDecoration: 'underline' },
+  '&:focus-visible': focusRing,
+})
+
+export const ratingNotes = css({ fontSize: '12px', color: '#3f3f46', marginTop: '2px' })

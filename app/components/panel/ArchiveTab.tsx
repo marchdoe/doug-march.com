@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
+import { badge, mutedText, errorText, archiveLink, ratingNotes } from './styles'
 
 interface ArchiveEntry {
   date: string
@@ -29,24 +30,32 @@ export function ArchiveTab() {
       })
   }, [])
 
-  if (state.kind === 'loading') return <p>Loading…</p>
-  if (state.kind === 'error') return <p role="alert">{state.message}</p>
+  if (state.kind === 'loading') return <p className={mutedText}>Loading…</p>
+  if (state.kind === 'error') return <p role="alert" className={errorText}>{state.message}</p>
 
   const entries = state.entries
-  if (entries.length === 0) return <p>No archive entries yet.</p>
+  if (entries.length === 0) return <p className={mutedText}>No archive entries yet.</p>
 
   return (
-    <ul className={css({ listStyle: 'none', padding: 0 })}>
+    <ul className={css({ listStyle: 'none', padding: '0', margin: '0' })}>
       {entries.map((e) => (
-        <li key={e.date} className={css({ marginBottom: '4', paddingBottom: '4', borderBottom: '1px solid', borderColor: 'currentColor' })}>
-          <div className={css({ display: 'flex', gap: '3', alignItems: 'baseline' })}>
-            <Link to="/archive/$date" params={{ date: e.date }}>{e.date}</Link>
-            <span className={css({ fontWeight: 'bold' })}>{e.rating?.grade ?? '—'}</span>
-            <span className={css({ fontSize: 'sm', opacity: 0.7 })}>{e.archetype}</span>
+        <li key={e.date} className={css({ padding: '10px 0', borderBottom: '1px solid #f4f4f5' })}>
+          <div className={css({ display: 'flex', gap: '8px', alignItems: 'center' })}>
+            <Link
+              to="/archive/$date"
+              params={{ date: e.date }}
+              className={archiveLink}
+            >
+              {e.date}
+            </Link>
+            <span className={badge({ kind: e.rating ? 'graded' : 'none' })}>
+              {e.rating?.grade ?? '—'}
+            </span>
+            <span className={mutedText}>{e.archetype}</span>
           </div>
-          <p className={css({ fontSize: 'sm' })}>{e.brief}</p>
+          <p className={cx(mutedText, css({ marginTop: '3px' }))}>{e.brief}</p>
           {e.rating && (e.rating.worked || e.rating.didnt || e.rating.try) && (
-            <p className={css({ fontSize: 'sm', opacity: 0.8 })}>
+            <p className={ratingNotes}>
               {e.rating.worked && <>✓ {e.rating.worked} </>}
               {e.rating.didnt && <>✗ {e.rating.didnt} </>}
               {e.rating.try && <>→ {e.rating.try}</>}
