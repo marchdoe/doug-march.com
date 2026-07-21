@@ -277,3 +277,5 @@ export const archiveLink = css({
 })
 
 export const ratingNotes = css({ fontSize: '12px', color: '#3f3f46', marginTop: '2px' })
+
+export const archiveRow = css({ padding: '10px 0', borderBottom: '1px solid #f4f4f5' })

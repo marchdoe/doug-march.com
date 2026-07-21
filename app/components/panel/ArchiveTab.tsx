@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { css, cx } from '../../../styled-system/css'
-import { badge, mutedText, errorText, archiveLink, ratingNotes } from './styles'
+import { badge, mutedText, errorText, archiveLink, ratingNotes, archiveRow } from './styles'
 
 interface ArchiveEntry {
   date: string
@@ -39,7 +39,7 @@ export function ArchiveTab() {
   return (
     <ul className={css({ listStyle: 'none', padding: '0', margin: '0' })}>
       {entries.map((e) => (
-        <li key={e.date} className={css({ padding: '10px 0', borderBottom: '1px solid #f4f4f5' })}>
+        <li key={e.date} className={archiveRow}>
           <div className={css({ display: 'flex', gap: '8px', alignItems: 'center' })}>
             <Link
               to="/archive/$date"
