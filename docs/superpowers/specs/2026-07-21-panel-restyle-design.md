@@ -68,7 +68,8 @@ color and font size becomes an explicit raw value.
 
 - **panel.tsx:** page gets `#fafafa` background; content in the `sheet` card,
   640px max-width, centered; `Tabs.List` becomes the segmented control using
-  Base UI's `data-selected` styling hook.
+  Base UI's `data-active` styling hook (verified against @base-ui/react 1.6:
+  the active tab carries `data-active`, not `data-selected`).
 - **RateTab:** date heading ("July 20 · 2026-07-20"); labeled grade group with
   44px buttons; labeled textareas; full-width primary submit; success/error
   lines in status colors. "Also unrated" list becomes secondary buttons.
