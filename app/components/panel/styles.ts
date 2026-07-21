@@ -186,8 +186,6 @@ export const mutedText = css({ fontSize: '12px', color: '#71717a' })
 
 export const dateMuted = css({ fontWeight: '400', color: '#71717a' })
 
-export const secondaryText = css({ fontSize: '13px', color: '#3f3f46' })
-
 export const errorText = css({ fontSize: '13px', color: '#dc2626' })
 
 export const successText = css({ fontSize: '13px', color: '#16a34a' })
@@ -211,6 +209,7 @@ export const checkboxRow = css({
   display: 'flex',
   gap: '8px',
   alignItems: 'center',
+  minHeight: '44px',
   fontSize: '13px',
   color: '#3f3f46',
   marginBottom: '14px',
@@ -264,7 +263,7 @@ export const sliderThumb = css({
   backgroundColor: '#ffffff',
   border: '1px solid #d4d4d8',
   boxShadow: '0 1px 3px rgba(0,0,0,.15)',
-  '&:focus-visible': focusRing,
+  '&:has(input:focus-visible)': focusRing,
 })
 
 export const archiveLink = css({
