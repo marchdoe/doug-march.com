@@ -184,6 +184,8 @@ export const statusDot = cva({
 
 export const mutedText = css({ fontSize: '12px', color: '#71717a' })
 
+export const dateMuted = css({ fontWeight: '400', color: '#71717a' })
+
 export const secondaryText = css({ fontSize: '13px', color: '#3f3f46' })
 
 export const errorText = css({ fontSize: '13px', color: '#dc2626' })

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
 import {
   sectionTitle,
   mutedText,
@@ -11,6 +11,7 @@ import {
   errorText,
   successText,
   inlineLink,
+  dateMuted,
 } from './styles'
 import { submitRating, type RatingIssue } from './api'
 
@@ -49,7 +50,7 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
     <section>
       <h2 className={sectionTitle}>
         {prettyDate(activeDate)}{' '}
-        <span className={css({ fontWeight: '400', color: '#71717a' })}>· {activeDate}</span>
+        <span className={dateMuted}>· {activeDate}</span>
       </h2>
       <p className={fieldLabel} id="grade-label">Grade</p>
       <div
@@ -91,17 +92,17 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
         type="button"
         disabled={!grade || state.kind === 'busy'}
         onClick={submit}
-        className={css({ width: '100%' }) + ' ' + button({ kind: 'primary' })}
+        className={cx(css({ width: '100%' }), button({ kind: 'primary' }))}
       >
         {state.kind === 'busy' ? 'Submitting…' : 'Submit rating'}
       </button>
       {state.kind === 'done' && (
-        <p className={successText + ' ' + css({ marginTop: '10px' })}>
+        <p className={cx(successText, css({ marginTop: '10px' }))}>
           Saved — <a className={inlineLink} href={state.url}>view issue</a>. Harvested on the next run.
         </p>
       )}
       {state.kind === 'error' && (
-        <p role="alert" className={errorText + ' ' + css({ marginTop: '10px' })}>{state.message}</p>
+        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>{state.message}</p>
       )}
       {unrated.length > 1 && (
         <aside className={css({ marginTop: '20px' })}>
