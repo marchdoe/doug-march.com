@@ -1,0 +1,278 @@
+{
+  "date": "2026-07-21",
+  "startedAt": "2026-07-21T10:43:02.985Z",
+  "completedAt": "2026-07-21T10:55:18.671Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "THE TRIADIC BALLET AI",
+              "description": "A digital reinterpretation of Oskar Schlemmer’s Triadic Ballet, blending AI imagery, motion and experimental web design.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a48decd9b68c655448713.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "/zeroz Brand Site",
+              "description": "Brand site for /zeroz, a self-conditioning food born from Otsuka Pharmaceutical Co., Ltd.'s \"Active Inner Resource\" concept. Chapters unfold through 3DCG...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4687f45bf83853560900.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "The Record Institute",
+              "description": "A museum-grade digital archive dedicated to preserving pre-2000 print ephemera. Multilingual, meticulously catalogued, and free—safeguarding vintage advertising...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a44c228af614956383273.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADASIAAhEBAxEB/8QAHQAAAAcBAQEAAAAAAAAAAAAAAAECAwQFBgcICf/E...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Tuesday",
+          "is_weekend": false,
+          "day_index": 2
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "bojieli/ai-agent-book/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/tirth8205",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "1jehuang/jcode/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "sponsors/diegosouzapw",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/rohitg00",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "The Open",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Ryan Fox",
+              "position": "1",
+              "score": "-10"
+            },
+            {
+              "name": "Cameron Young",
+              "position": "2",
+              "score": "-9"
+            },
+            {
+              "name": "Sam Burns",
+              "position": "3",
+              "score": "-8"
+            },
+            {
+              "name": "Scottie Scheffler",
+              "position": "4",
+              "score": "-7"
+            },
+            {
+              "name": "Tommy Fleetwood",
+              "position": "5",
+              "score": "-7"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Qwen-Image-3.0: Rich Content, Authentic Details, Deep Knowledge",
+              "url": "https://qwen.ai/blog?id=qwen-image-3.0",
+              "score": 108,
+              "by": "ilreb"
+            },
+            {
+              "title": "Incremental – A library for incremental computations",
+              "url": "https://github.com/janestreet/incremental",
+              "score": 214,
+              "by": "handfuloflight"
+            },
+            {
+              "title": "Who's afraid of Chinese models?",
+              "url": "https://stratechery.com/2026/whos-afraid-of-chinese-models/",
+              "score": 670,
+              "by": "mfiguiere"
+            },
+            {
+              "title": "Kimi Work",
+              "url": "https://www.kimi.com/products/kimi-work",
+              "score": 568,
+              "by": "ms7892"
+            },
+            {
+              "title": "Arduino Launches Plug-and-Play Modules for Long-Range Sensor Projects",
+              "url": "https://www.allaboutcircuits.com/news/arduino-launches-plug-and-play-modules-for-long-range-sensor-projects/",
+              "score": 19,
+              "by": "WaitWaitWha"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "first quarter",
+          "illumination": 0.503,
+          "days_into_cycle": 7.41
+        },
+        "music": {
+          "bands": [
+            "Radiohead",
+            "Guided by Voices",
+            "Tobin Sprout"
+          ]
+        },
+        "quote": {
+          "text": "Spend eighty percent of your time focusing on the opportunities of tomorrow rather than the problems of yesterday.",
+          "author": "Brian Tracy"
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 21,
+          "day_of_year": 202,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-07-21T00:05Z",
+              "result": "win",
+              "score": "8-6"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:06",
+          "sunset": "19:26",
+          "daylight_hours": 14.3
+        },
+        "date": "2026-07-21"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-21T10:43:18.421Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-20: Poster\n  - 2026-07-19: Broadsheet\n  - 2026-07-18: Stack\n  - 2026-07-17: Specimen\n  - 2026-07-16: Poster\n  - 2026-07-14: Split\n  - 2026-07-13: Scroll\n\n**Recently used** (last 3 days): Poster, Broadsheet, Stack\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or signa"
+      },
+      "output": {
+        "hero_copy": "EIGHTY PERCENT ON TOMORROW",
+        "archetype": "Split",
+        "chassisId": "bebas-plex",
+        "specLength": 4264,
+        "specPreview": "### 1. Color Specification\n- **Primary hue** — 276° electric violet. It is the sole clean corridor left by the mandate (264°–301°) AND the right emotional read: forward-leaning twilight/dawn optimism to match \"opportunities of tomorrow.\" Unused in the recent rotation.\n- **Neutral palette** (violet-tinted) — 50 `#f7f5fb`, 100 `#efecf5`, 200 `#ddd8e8`, 300 `#c3bcd3`, 400 `#9b93ac`, 500 `#736a86`, 600 `#554d67`, 700 `#3f384f`, 800 `#292236`, 900 `#16111f`\n- **Accent color** (lilac pulse) — light `#",
+        "selfCheck": "1. Hero quotability: Yes — \"EIGHTY PERCENT ON TOMORROW\" is a standalone aphorism, screenshot-worthy, not descriptive boilerplate.\n2. Because-of chain: Yes — the phrase's 80/20 arithmetic dictated the Split ratio; its optimism dictated the violet drench; its declarative caps dictated Bebas.\n3. Render"
+      },
+      "durationMs": 167776,
+      "timestamp": "2026-07-21T10:46:06.203Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 4264
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "REVISE\n\n- **Preset color mismatch on bgCard**: The visual spec declares \"card bg `#1e1830`\", but the `bgCard` semantic token in preset.ts resolves to `{colors.neutral.800}` = `#292236`. These are different colors. Either add `#1e1830` as a discrete color token and point bgCard to it, or clarify in the visual spec that cards use `#292236` (neutral.800). As written now, a card component will render in the wrong color."
+      },
+      "durationMs": 48999,
+      "timestamp": "2026-07-21T10:46:56.759Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4468,
+        "briefLength": 7223,
+        "mockupLength": 17834
+      },
+      "output": {
+        "files": [
+          "app/components/Nav.tsx",
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 306495,
+      "timestamp": "2026-07-21T10:54:38.894Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-21T10:54:46.888Z"
+    }
+  ]
+}

@@ -1,171 +1,123 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Badge } from '../components/Badge'
-import { identity, personal } from '../content/about'
-import { timeline, capabilities, education } from '../content/timeline'
+import { Nav, panelGradient } from '../components/Nav'
+import { identity } from '../content/about'
+import { timeline, capabilities } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
-const rowClass = css({
-  display: 'grid',
-  gridTemplateColumns: { base: '1fr', md: 'minmax(120px, 120px) minmax(0, 2fr) minmax(0, 3fr)' },
-  gap: '3',
-  alignItems: 'baseline',
-  paddingY: '3',
-  borderBottom: '1px solid rgba(255,196,0,0.18)',
-})
-
-const yearClass = css({
-  fontFamily: 'body',
-  fontWeight: 'bold',
-  fontSize: 'sm',
-  color: 'primary.300',
-  fontVariantNumeric: 'tabular-nums',
-  minWidth: { base: 'auto', md: '120px' },
-})
-
-const roleClass = css({
-  fontFamily: 'body',
-  fontWeight: 'bold',
-  fontSize: 'sm',
-  color: 'surfaceText',
-  letterSpacing: 'wide',
-  textTransform: 'uppercase',
-})
-
-const descClass = css({
-  fontFamily: 'body',
-  fontWeight: 'medium',
-  fontSize: 'sm',
-  color: 'neutral.300',
-  lineHeight: 'normal',
-})
-
-const sectionTitleClass = css({
-  fontFamily: 'body',
-  fontWeight: 'bold',
-  fontSize: 'xs',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'surfaceText',
-  borderBottom: '2px solid',
-  borderColor: 'accent',
-  paddingBottom: '3',
-  marginBottom: '2',
-  marginTop: '10',
-})
-
 function AboutPage() {
   return (
-    <>
-      <Badge
-        href="/"
-        ariaLabel="Back to poster"
-        kicker="Doug March · Spec Sheet"
-        lead="Back to poster"
-        sub="Return to the daily build"
-      />
+    <div className={css({
+      bg: 'bgPanel',
+      backgroundImage: panelGradient,
+      color: 'textOnPanel',
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh',
+    })}>
+      <Nav />
 
-      <Box as="main" className={css({ padding: { base: '0 6vw', md: '0 6vw' } })}>
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontWeight: 'bold',
-            fontSize: { base: 'xs', md: 'sm' },
-            letterSpacing: 'widest',
-            textTransform: 'uppercase',
-            color: 'textSecondary',
-            marginBottom: '4',
-          })}
-        >
+      <div className={css({ paddingInline: '6vw', paddingBlock: { base: '10', md: '14' } })}>
+        <p className={css({
+          fontFamily: 'body',
+          fontWeight: '600',
+          fontSize: 'xs',
+          letterSpacing: 'widest',
+          textTransform: 'uppercase',
+          color: 'accentGlow',
+          marginBottom: '6',
+        })}>
           {identity.role}
         </p>
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'normal',
-            textTransform: 'uppercase',
-            letterSpacing: 'tight',
-            lineHeight: 'tight',
-            fontSize: 'clamp(40px, 7vw, 96px)',
-            color: 'text',
-            marginBottom: '6',
-          })}
-        >
+        <h1 className={css({
+          fontFamily: 'display',
+          fontSize: { base: '40px', md: '64px', lg: '88px' },
+          lineHeight: 'tight',
+          letterSpacing: 'wide',
+          textTransform: 'uppercase',
+          color: 'textOnPanel',
+          maxWidth: '20ch',
+        })}>
           {identity.name}
         </h1>
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontWeight: 'medium',
-            fontSize: { base: 'base', md: 'md' },
-            color: 'textSecondary',
-            maxWidth: '65ch',
-            lineHeight: 'normal',
-            marginBottom: '12',
-          })}
-        >
+        <p className={css({
+          marginTop: '6',
+          maxWidth: '62ch',
+          fontSize: 'lg',
+          lineHeight: 'loose',
+          color: 'textSecondary',
+        })}>
           {identity.statement}
         </p>
+      </div>
 
-        <Box background="surface" color="surfaceText" padding={{ base: '6', md: '8' }} borderTop="3px solid" borderColor="border">
-          <div className={sectionTitleClass}>Timeline</div>
-          {timeline.map((entry) => (
-            <div className={rowClass} key={`${entry.year}-${entry.company}`}>
-              <span className={yearClass}>{entry.year}</span>
-              <span className={roleClass}>
-                {entry.role} · {entry.company}
-                {entry.current ? ' — current' : ''}
+      <div className={css({ paddingInline: '6vw', paddingBottom: { base: '10', md: '14' } })}>
+        <div className={css({ borderTop: '1px solid', borderColor: 'textOnPanel/24' })}>
+          {timeline.map((t) => (
+            <div
+              key={`${t.year}-${t.role}-${t.company}`}
+              className={css({
+                display: 'grid',
+                gridTemplateColumns: '120px 1fr',
+                gap: '6',
+                paddingBlock: '6',
+                paddingInline: '2',
+                borderBottom: '1px solid',
+                borderColor: 'textOnPanel/16',
+              })}
+            >
+              <span className={css({
+                fontFamily: 'body',
+                fontWeight: '500',
+                fontSize: 'sm',
+                fontVariantNumeric: 'tabular-nums',
+                color: 'accentGlow',
+              })}>
+                {t.year}
               </span>
-              <span className={descClass}>{entry.description}</span>
+              <div>
+                <div className={css({ fontFamily: 'body', fontWeight: '600', fontSize: 'md', color: 'textOnPanel' })}>
+                  {t.role} <span className={css({ color: 'textSecondary', fontWeight: '500' })}>· {t.company}</span>
+                </div>
+                <p className={css({ marginTop: '1', fontSize: 'base', lineHeight: 'normal', color: 'textSecondary' })}>
+                  {t.description}
+                </p>
+              </div>
             </div>
           ))}
+        </div>
+      </div>
 
-          <div className={sectionTitleClass}>Capabilities</div>
-          <Flex wrap="wrap" gap="2" paddingBottom="4">
-            {capabilities.map((cap) => (
-              <span
-                key={cap}
-                className={css({
-                  fontFamily: 'body',
-                  fontWeight: 'bold',
-                  fontSize: '2xs',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                  color: 'surfaceText',
-                  border: '1px solid',
-                  borderColor: 'accent',
-                  padding: '1.5 3',
-                })}
-              >
-                {cap}
-              </span>
-            ))}
-          </Flex>
-
-          <div className={sectionTitleClass}>Education</div>
-          <div className={rowClass} style={undefined}>
-            <span className={yearClass}>{education.years}</span>
-            <span className={roleClass}>
-              {education.school} · {education.degree}
-            </span>
-            <span className={descClass}>{education.concentration}</span>
-          </div>
-
-          <div className={sectionTitleClass}>Personal</div>
-          <div className={rowClass}>
-            <span className={yearClass}>Holes-in-one</span>
-            <span className={roleClass}>{personal.holesInOne}</span>
-            <span className={descClass}>Sport: {personal.sport}</span>
-          </div>
-          <div className={rowClass}>
-            <span className={yearClass}>Teams</span>
-            <span className={roleClass}>{personal.teams.join(' · ')}</span>
-            <span className={descClass}>Current focus: {personal.currentFocus}</span>
-          </div>
-        </Box>
-      </Box>
-    </>
+      <div className={css({
+        marginTop: 'auto',
+        paddingInline: '6vw',
+        paddingBlock: { base: '8', md: '10' },
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '2',
+      })}>
+        {capabilities.map((c) => (
+          <span
+            key={c}
+            className={css({
+              fontFamily: 'body',
+              fontWeight: '500',
+              fontSize: 'sm',
+              letterSpacing: 'wide',
+              textTransform: 'uppercase',
+              color: 'textOnPanel',
+              border: '1px solid',
+              borderColor: 'accent',
+              borderRadius: 'sm',
+              paddingBlock: '2',
+              paddingInline: '4',
+            })}
+          >
+            {c}
+          </span>
+        ))}
+      </div>
+    </div>
   )
 }

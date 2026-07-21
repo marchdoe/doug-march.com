@@ -1,32 +1,27 @@
 import type { ReactNode } from 'react'
-import { Box } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { Sidebar } from './Sidebar'
-import { Footer } from './Footer'
+
+const layoutClass = css({
+  display: 'grid',
+  gridTemplateColumns: { base: '1fr', md: '4fr 1fr' },
+  minHeight: '100vh',
+  bg: 'bg',
+})
+
+const mainColClass = css({
+  minWidth: 0,
+  borderRight: { base: 'none', md: '1px solid' },
+  borderColor: 'border',
+})
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <Box
-      className={css({
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        background: 'bg',
-        color: 'text',
-      })}
-    >
-      <Sidebar />
-      <Box
-        className={css({
-          flex: '1',
-          display: 'flex',
-          flexDirection: 'column',
-          paddingTop: { base: '24', md: '28' },
-        })}
-      >
+    <div className={layoutClass}>
+      <div className={mainColClass}>
         {children}
-      </Box>
-      <Footer />
-    </Box>
+      </div>
+      <Sidebar />
+    </div>
   )
 }

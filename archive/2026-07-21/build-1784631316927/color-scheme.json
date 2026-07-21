@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 276,
+    "s": 78,
+    "l": 51,
+    "name": "electric violet"
+  },
+  "secondary_accent": {
+    "h": 285,
+    "s": 100,
+    "l": 72,
+    "name": "lilac pulse"
+  },
+  "neutral_family": {
+    "tinted_toward": "violet",
+    "name": "violet-black"
+  },
+  "mood_word": "forward",
+  "color_story": "A drench of electric violet — the color of a first-quarter twilight tilting toward tomorrow — floods the 80% panel while yesterday's sliver falls to violet-black."
+}

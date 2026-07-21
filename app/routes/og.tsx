@@ -1,83 +1,84 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import logo from '../assets/logo.svg'
+import { panelGradient } from '../components/Nav'
+import logoMono from '../assets/logo-mono.svg'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
 function OgCard() {
   return (
-    <Box
-      position="fixed"
-      inset="0"
-      zIndex="9999"
-      background="bg"
-      className={css({ display: 'flex', alignItems: 'center', justifyContent: 'center' })}
-    >
-      <Box
-        width="1200px"
-        height="630px"
-        background="bg"
-        position="relative"
-        overflow="hidden"
-        className={css({ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px' })}
-      >
-        <p
-          className={css({
-            fontFamily: 'body',
-            fontWeight: 'bold',
-            fontSize: 'md',
-            letterSpacing: 'widest',
-            textTransform: 'uppercase',
-            color: 'textSecondary',
-            marginBottom: '8',
-          })}
-        >
-          #1 on Hacker News · 2,379 points
+    <div className={css({
+      position: 'fixed',
+      inset: 0,
+      zIndex: 9999,
+      bg: 'bgPanel',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    })}>
+      <div className={css({
+        width: '1200px',
+        height: '630px',
+        bg: 'bgPanel',
+        backgroundImage: panelGradient,
+        color: 'textOnPanel',
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        paddingInline: '96px',
+        paddingBlock: '80px',
+      })}>
+        <p className={css({
+          fontFamily: 'body',
+          fontWeight: '600',
+          fontSize: 'sm',
+          letterSpacing: 'widest',
+          textTransform: 'uppercase',
+          color: 'accentGlow',
+          marginBottom: '8',
+        })}>
+          Today&apos;s operating manifesto
         </p>
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'normal',
-            textTransform: 'uppercase',
-            letterSpacing: 'tight',
-            lineHeight: 'tight',
-          })}
-        >
-          <span className={css({ display: 'block', fontSize: '96px', color: 'textSecondary' })}>
-            <span
-              className={css({
-                color: 'text',
-                WebkitTextFillColor: 'transparent',
-                WebkitTextStrokeWidth: '2px',
-                WebkitTextStrokeColor: 'currentColor',
-              })}
-            >
-              $120K
-            </span>{' '}
-            System.
-          </span>
-          <span className={css({ display: 'block', fontSize: '150px', color: 'text', marginTop: '0.04em' })}>
-            $1,600 in ESP32s.
-          </span>
+        <h1 className={css({
+          fontFamily: 'display',
+          fontSize: '140px',
+          lineHeight: 'tight',
+          letterSpacing: 'wide',
+          textTransform: 'uppercase',
+          color: 'textOnPanel',
+        })}>
+          Eighty Percent<br />On <span className={css({ color: 'accent' })}>Tomorrow</span>
         </h1>
 
-        <Box position="absolute" bottom="56px" left="80px" className={css({ display: 'flex', alignItems: 'center', gap: '3' })}>
-          <img src={logo} alt="Doug March" className={css({ height: '56px', width: 'auto', display: 'block' })} />
-          <span
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'bold',
-              fontSize: 'lg',
-              letterSpacing: 'wide',
-              textTransform: 'uppercase',
-              color: 'text',
-            })}
-          >
+        <div className={css({
+          position: 'absolute',
+          bottom: '56px',
+          left: '96px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '3',
+        })}>
+          <span className={css({
+            display: 'inline-block',
+            width: '32px',
+            height: '32px',
+            bg: 'textOnPanel',
+            maskImage: `url(${logoMono})`,
+            maskSize: 'contain',
+            maskRepeat: 'no-repeat',
+            maskPosition: 'center',
+            WebkitMaskImage: `url(${logoMono})`,
+            WebkitMaskSize: 'contain',
+            WebkitMaskRepeat: 'no-repeat',
+            WebkitMaskPosition: 'center',
+          })} />
+          <span className={css({ fontFamily: 'body', fontWeight: '600', fontSize: 'lg', letterSpacing: 'wide', color: 'textOnPanel' })}>
             Doug March
           </span>
-        </Box>
-      </Box>
-    </Box>
+        </div>
+      </div>
+    </div>
   )
 }

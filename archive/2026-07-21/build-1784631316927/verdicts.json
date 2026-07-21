@@ -1,0 +1,8 @@
+[
+  {
+    "critic": "spec-critic",
+    "verdict": "REVISE",
+    "feedback": "REVISE\n\n- **Preset color mismatch on bgCard**: The visual spec declares \"card bg `#1e1830`\", but the `bgCard` semantic token in preset.ts resolves to `{colors.neutral.800}` = `#292236`. These are different colors. Either add `#1e1830` as a discrete color token and point bgCard to it, or clarify in the visual spec that cards use `#292236` (neutral.800). As written now, a card component will render in the wrong color.",
+    "ts": 1784630816760
+  }
+]
