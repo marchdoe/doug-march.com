@@ -16,7 +16,8 @@
 - **Shape:** 8px radius controls, 12px sheet; shadows `0 1px 3px rgba(0,0,0,.06)` (sheet), `0 1px 2px rgba(0,0,0,.08)` (active tab).
 - **Touch targets ≥44px**; every interactive element gets `&:focus-visible { outline: 2px solid #18181b; outline-offset: 2px }`.
 - **Base UI active tab attribute is `data-active`** (verified in `@base-ui/react` 1.6 docs) — not `data-selected`.
-- **No behavior changes:** component props, state machines, API calls, and aria attributes stay exactly as they are.
+- **No behavior changes:** component props, state machines, and API calls stay exactly as they are. Aria attributes stay except where the spec mandates otherwise (`role="alert"` on error messages; the RateTab grade-group label change in Task 3).
+- **Style hygiene:** color/font values live only in styles.ts — components may inline only layout-value `css()` calls (display/flex/gap/margin/padding/width). Combine recipe classes with `cx()` from `styled-system/css`, never manual string concatenation.
 - Test command: `pnpm test` (runs panda codegen then vitest). Typecheck: `pnpm exec tsc --noEmit`. All must pass before every commit.
 - `pnpm fallow --summary` appears in user rules but the CLI is not installed anywhere (verified 2026-07-20) — skip it, note in PR.
 - Branch: `feat/panel-restyle` (already created, spec committed).
@@ -427,14 +428,20 @@ git commit -m "feat(panel): sheet layout and segmented tab control on panel shel
 - Modify: `app/components/panel/RateTab.tsx` (full replacement below)
 
 **Interfaces:**
-- Consumes from `./styles`: `sectionTitle`, `mutedText`, `fieldLabel`, `field`, `textArea`, `button`, `gradeButton`, `errorText`, `successText`, `inlineLink`.
+- Consumes from `./styles`: `sectionTitle`, `mutedText`, `fieldLabel`, `field`, `textArea`, `button`, `gradeButton`, `errorText`, `successText`, `inlineLink`, `dateMuted` (added in this task).
 - Produces: same props (`unrated: RatingIssue[]`, `onRated: () => void`), same behavior.
+
+- [ ] **Step 0: Add the `dateMuted` export** (append to `app/components/panel/styles.ts`):
+
+```ts
+export const dateMuted = css({ fontWeight: '400', color: '#71717a' })
+```
 
 - [ ] **Step 1: Replace the file**
 
 ```tsx
 import { useState } from 'react'
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
 import {
   sectionTitle,
   mutedText,
@@ -446,6 +453,7 @@ import {
   errorText,
   successText,
   inlineLink,
+  dateMuted,
 } from './styles'
 import { submitRating, type RatingIssue } from './api'
 
@@ -484,7 +492,7 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
     <section>
       <h2 className={sectionTitle}>
         {prettyDate(activeDate)}{' '}
-        <span className={css({ fontWeight: '400', color: '#71717a' })}>· {activeDate}</span>
+        <span className={dateMuted}>· {activeDate}</span>
       </h2>
       <p className={fieldLabel} id="grade-label">Grade</p>
       <div
@@ -526,17 +534,17 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
         type="button"
         disabled={!grade || state.kind === 'busy'}
         onClick={submit}
-        className={css({ width: '100%' }) + ' ' + button({ kind: 'primary' })}
+        className={cx(css({ width: '100%' }), button({ kind: 'primary' }))}
       >
         {state.kind === 'busy' ? 'Submitting…' : 'Submit rating'}
       </button>
       {state.kind === 'done' && (
-        <p className={successText + ' ' + css({ marginTop: '10px' })}>
+        <p className={cx(successText, css({ marginTop: '10px' }))}>
           Saved — <a className={inlineLink} href={state.url}>view issue</a>. Harvested on the next run.
         </p>
       )}
       {state.kind === 'error' && (
-        <p role="alert" className={errorText + ' ' + css({ marginTop: '10px' })}>{state.message}</p>
+        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>{state.message}</p>
       )}
       {unrated.length > 1 && (
         <aside className={css({ marginTop: '20px' })}>
@@ -561,6 +569,7 @@ Behavior notes for the implementer:
 - `aria-pressed` drives the selected grade style (see `gradeButton` in styles.ts) — no conditional className needed.
 - The grade group's label moved from `aria-label="grade"` to a visible `<p id="grade-label">` + `aria-labelledby` — same accessible name, now visible. This is the only aria change in the plan and it is intentional (spec: labeled grade group).
 - Layout-only `css()` calls (flex/gap/margins) are allowed inline; anything with color or font must come from styles.ts.
+- Combine recipe classes with `cx(...)` from `styled-system/css` — never manual string concatenation.
 
 - [ ] **Step 2: Typecheck + tests**
 
@@ -570,7 +579,7 @@ Expected: both green.
 - [ ] **Step 3: Commit**
 
 ```bash
-git add app/components/panel/RateTab.tsx
+git add app/components/panel/RateTab.tsx app/components/panel/styles.ts
 git commit -m "feat(panel): restyle RateTab — labeled fields, 44px grade buttons, full-width submit"
 ```
 
@@ -582,16 +591,31 @@ git commit -m "feat(panel): restyle RateTab — labeled fields, 44px grade butto
 - Modify: `app/components/panel/ArchiveTab.tsx` (full replacement below)
 
 **Interfaces:**
-- Consumes from `./styles`: `badge`, `mutedText`, `secondaryText`, `errorText`, `inlineLink`.
+- Consumes from `./styles`: `badge`, `mutedText`, `errorText`, `archiveLink`, `ratingNotes` (last two added in this task).
 - Produces: same zero-prop component, same fetch behavior.
+
+- [ ] **Step 0: Add the `archiveLink` and `ratingNotes` exports** (append to `app/components/panel/styles.ts`):
+
+```ts
+export const archiveLink = css({
+  fontSize: '13px',
+  color: '#18181b',
+  fontWeight: '600',
+  textDecoration: 'none',
+  '&:hover': { textDecoration: 'underline' },
+  '&:focus-visible': focusRing,
+})
+
+export const ratingNotes = css({ fontSize: '12px', color: '#3f3f46', marginTop: '2px' })
+```
 
 - [ ] **Step 1: Replace the file**
 
 ```tsx
 import { useEffect, useState } from 'react'
 import { Link } from '@tanstack/react-router'
-import { css } from '../../../styled-system/css'
-import { badge, mutedText, secondaryText, errorText, inlineLink } from './styles'
+import { css, cx } from '../../../styled-system/css'
+import { badge, mutedText, errorText, archiveLink, ratingNotes } from './styles'
 
 interface ArchiveEntry {
   date: string
@@ -634,7 +658,7 @@ export function ArchiveTab() {
             <Link
               to="/archive/$date"
               params={{ date: e.date }}
-              className={inlineLink + ' ' + css({ fontSize: '13px', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } })}
+              className={archiveLink}
             >
               {e.date}
             </Link>
@@ -643,9 +667,9 @@ export function ArchiveTab() {
             </span>
             <span className={mutedText}>{e.archetype}</span>
           </div>
-          <p className={mutedText + ' ' + css({ marginTop: '3px' })}>{e.brief}</p>
+          <p className={cx(mutedText, css({ marginTop: '3px' }))}>{e.brief}</p>
           {e.rating && (e.rating.worked || e.rating.didnt || e.rating.try) && (
-            <p className={secondaryText + ' ' + css({ marginTop: '2px', fontSize: '12px' })}>
+            <p className={ratingNotes}>
               {e.rating.worked && <>✓ {e.rating.worked} </>}
               {e.rating.didnt && <>✗ {e.rating.didnt} </>}
               {e.rating.try && <>→ {e.rating.try}</>}
@@ -668,7 +692,7 @@ Expected: both green.
 - [ ] **Step 3: Commit**
 
 ```bash
-git add app/components/panel/ArchiveTab.tsx
+git add app/components/panel/ArchiveTab.tsx app/components/panel/styles.ts
 git commit -m "feat(panel): restyle ArchiveTab rows with grade badges; fix theme-leaking styles"
 ```
 
@@ -688,7 +712,7 @@ git commit -m "feat(panel): restyle ArchiveTab rows with grade badges; fix theme
 ```tsx
 import { useState } from 'react'
 import { Slider } from '@base-ui/react/slider'
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
 import {
   sliderRow,
   sliderLabelRow,
@@ -752,9 +776,9 @@ export function WeightsTab({ initial }: { initial: Weights }) {
       <button type="button" disabled={state === 'busy'} onClick={save} className={button({ kind: 'primary' })}>
         {state === 'busy' ? 'Saving…' : 'Save weights'}
       </button>
-      {state === 'saved' && <p className={successText + ' ' + css({ marginTop: '10px' })}>Saved — applies to the next run.</p>}
+      {state === 'saved' && <p className={cx(successText, css({ marginTop: '10px' }))}>Saved — applies to the next run.</p>}
       {state !== 'idle' && state !== 'busy' && state !== 'saved' && (
-        <p role="alert" className={errorText + ' ' + css({ marginTop: '10px' })}>{state}</p>
+        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>{state}</p>
       )}
     </section>
   )
@@ -781,27 +805,47 @@ git commit -m "feat(panel): restyle WeightsTab sliders — ink fill, bordered th
 - Modify: `app/components/panel/RunTab.tsx` (full replacement below)
 
 **Interfaces:**
-- Consumes from `./styles`: `sectionTitle`, `runBox`, `statusDot`, `mutedText`, `secondaryText`, `checkboxRow`, `checkboxBox`, `button`, `errorText`, `successText`, `inlineLink`.
+- Consumes from `./styles`: `sectionTitle`, `runBox`, `statusDot`, `mutedText`, `checkboxRow`, `checkboxBox`, `button`, `errorText`, `successText`, `runStatusLine`, `subtleLink` (last two added in this task).
 - Consumes from `./api`: `RunInfo` is `{ status: string; conclusion: string | null; url: string; createdAt: string }` (verified against `api.ts:15-20`).
 - Produces: same props, same trigger behavior.
+
+- [ ] **Step 0: Add the `runStatusLine` and `subtleLink` exports** (append to `app/components/panel/styles.ts`):
+
+```ts
+export const runStatusLine = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '7px',
+  fontSize: '13px',
+  fontWeight: '600',
+  color: '#18181b',
+})
+
+export const subtleLink = css({
+  color: '#18181b',
+  textDecoration: 'underline',
+  textUnderlineOffset: '2px',
+  '&:focus-visible': focusRing,
+})
+```
 
 - [ ] **Step 1: Replace the file**
 
 ```tsx
 import { useState } from 'react'
-import { css } from '../../../styled-system/css'
+import { css, cx } from '../../../styled-system/css'
 import {
   sectionTitle,
   runBox,
   statusDot,
   mutedText,
-  secondaryText,
+  runStatusLine,
+  subtleLink,
   checkboxRow,
   checkboxBox,
   button,
   errorText,
   successText,
-  inlineLink,
 } from './styles'
 import { triggerRun, type RunInfo } from './api'
 
@@ -830,18 +874,18 @@ export function RunTab({ latestRun, onTriggered }: { latestRun: RunInfo | null; 
       <h2 className={sectionTitle}>Latest run</h2>
       {latestRun ? (
         <div className={runBox}>
-          <div className={secondaryText + ' ' + css({ display: 'flex', alignItems: 'center', gap: '7px', fontWeight: '600', color: '#18181b' })}>
+          <div className={runStatusLine}>
             <span className={statusDot({ tone: runTone(latestRun) })} />
             {latestRun.status}
             {latestRun.conclusion ? ` — ${latestRun.conclusion}` : ''}
           </div>
-          <p className={mutedText + ' ' + css({ marginTop: '3px' })}>
+          <p className={cx(mutedText, css({ marginTop: '3px' }))}>
             {new Date(latestRun.createdAt).toLocaleString()} ·{' '}
-            <a className={inlineLink + ' ' + css({ fontWeight: '400' })} href={latestRun.url}>view on GitHub ↗</a>
+            <a className={subtleLink} href={latestRun.url}>view on GitHub ↗</a>
           </p>
         </div>
       ) : (
-        <p className={mutedText + ' ' + css({ marginBottom: '14px' })}>No runs found.</p>
+        <p className={cx(mutedText, css({ marginBottom: '14px' }))}>No runs found.</p>
       )}
       <label className={checkboxRow}>
         <input type="checkbox" className={checkboxBox} checked={dryRun} onChange={(e) => setDryRun(e.target.checked)} />
@@ -850,9 +894,9 @@ export function RunTab({ latestRun, onTriggered }: { latestRun: RunInfo | null; 
       <button type="button" disabled={state === 'busy'} onClick={trigger} className={button({ kind: 'primary' })}>
         {state === 'busy' ? 'Dispatching…' : 'Trigger build'}
       </button>
-      {state === 'dispatched' && <p className={successText + ' ' + css({ marginTop: '10px' })}>Dispatched — refresh status in a minute.</p>}
+      {state === 'dispatched' && <p className={cx(successText, css({ marginTop: '10px' }))}>Dispatched — refresh status in a minute.</p>}
       {state !== 'idle' && state !== 'busy' && state !== 'dispatched' && (
-        <p role="alert" className={errorText + ' ' + css({ marginTop: '10px' })}>{state}</p>
+        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>{state}</p>
       )}
     </section>
   )
@@ -867,7 +911,7 @@ Expected: both green.
 - [ ] **Step 3: Commit**
 
 ```bash
-git add app/components/panel/RunTab.tsx
+git add app/components/panel/RunTab.tsx app/components/panel/styles.ts
 git commit -m "feat(panel): restyle RunTab — status dot summary box, styled checkbox"
 ```
 
