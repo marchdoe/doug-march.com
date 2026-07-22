@@ -1,0 +1,251 @@
+{
+  "date": "2026-07-22",
+  "startedAt": "2026-07-22T10:43:39.814Z",
+  "completedAt": "2026-07-22T10:52:34.328Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "House Of Yellow",
+              "description": "HOY is a creative content agency that moves at the speed of your ambition. Build with firepower, we take ideas from concept to production and beyond....",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a5f39fc2e98e650890733.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAUIRpJREFUeAHs/QnQdsl1mIedvu+3/Ov8s2CAGWzEgBQgiiQgUrRoklotKSIt2pRKcqzIUqRQlm25krKcsuI4cllR5HLKomJXqhLbsRnHSVXCUqXiyFnFSJFILZZIiU6RIMEF...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Matter of Design",
+              "description": "Showcase the capabilities and case studies of The Matter of Design, a Chicago-based design studio. Built with Framer.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4d08654b622080956191.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAylpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBD...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "THE TRIADIC BALLET AI",
+              "description": "A digital reinterpretation of Oskar Schlemmer’s Triadic Ballet, blending AI imagery, motion and experimental web design.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a48decd9b68c655448713.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Wednesday",
+          "is_weekend": false,
+          "day_index": 3
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "koala73/worldmonitor/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "bojieli/ai-agent-book/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "sponsors/tirth8205",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "ayghri/i-have-adhd/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "earthtojake/text-to-cad/stargazers",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "3M Open",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "OpenAI and Hugging Face address security incident during model evaluation",
+              "url": "https://openai.com/index/hugging-face-model-evaluation-security-incident/",
+              "score": 1193,
+              "by": "mfiguiere"
+            },
+            {
+              "title": "Kimi K3 Is Competitive with Fable; Kimi K3 and Fable Is SoTA",
+              "url": "https://fireworks.ai/blog/kimik3-fable",
+              "score": 651,
+              "by": "piotrgrabowski"
+            },
+            {
+              "title": "Introduction to Formal Verification with Lean Part 1",
+              "url": "https://hashcloak.com/blog/tutorial-introduction-to-formal-verification-with-lean-(part-1)",
+              "score": 31,
+              "by": "badcryptobitch"
+            },
+            {
+              "title": "Intel Starts Shipping High-NA EUV Silicon",
+              "url": "https://morethanmoore.substack.com/p/intel-starts-shipping-high-na-euv",
+              "score": 89,
+              "by": "zdw"
+            },
+            {
+              "title": "Original Apollo 11 Guidance Computer source code for command and lunar modules",
+              "url": "https://github.com/chrislgarry/Apollo-11",
+              "score": 85,
+              "by": "noteness"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "first quarter",
+          "illumination": 0.609,
+          "days_into_cycle": 8.41
+        },
+        "music": {
+          "bands": [
+            "Wet Leg",
+            "Guided by Voices"
+          ]
+        },
+        "quote": {
+          "text": "When something comes from within, when it is a part of you, you have no choice but to live it, to express it.",
+          "author": "Kamal Ravikant"
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 22,
+          "day_of_year": 203,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-07-22T00:05Z",
+              "result": "loss",
+              "score": "2-11"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:06",
+          "sunset": "19:26",
+          "daylight_hours": 14.3
+        },
+        "date": "2026-07-22"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-22T10:43:55.120Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-21: Split\n  - 2026-07-20: Poster\n  - 2026-07-19: Broadsheet\n  - 2026-07-18: Stack\n  - 2026-07-17: Specimen\n  - 2026-07-16: Poster\n  - 2026-07-14: Split\n\n**Recently used** (last 3 days): Split, Poster, Broadsheet\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or signal"
+      },
+      "output": {
+        "hero_copy": "NO CHOICE BUT TO LIVE IT",
+        "archetype": "Specimen",
+        "chassisId": "bricolage-manrope",
+        "specLength": 4182,
+        "specPreview": "### 1. Color Specification\n- **Primary hue** — 190° teal. Deep water is the visual metaphor for \"comes from within\"; the mandate's only clean corridor (181°–202°) lands exactly here, so honoring the constraint and the concept coincide.\n- **Neutral palette (teal-tinted)** — 50 `#F2FBFB`, 100 `#E1F0F0`, 200 `#C4DCDD`, 300 `#9FBEC0`, 400 `#6F9497`, 500 `#4E7275`, 600 `#385659`, 700 `#274143`, 800 `#182E30`, 900 `#0D1E20`\n- **Accent color (electric aqua ~175°)** — light `#5CEBDD`, default `#1FDDCB`,",
+        "selfCheck": "1. Hero quotability: Yes — \"NO CHOICE BUT TO LIVE IT\" stands entirely alone as a manifesto line, not descriptive filler.\n2. Because-of chain: Yes — intimate interior imperative → Specimen (type is the page) → Bricolage (warm expressive display, not athletic shouting) → deep-water teal drench with on"
+      },
+      "durationMs": 136137,
+      "timestamp": "2026-07-22T10:46:11.262Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 4182
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "REVISE\n\n- **Color contradiction**: Visual spec declares card/panel bg as `#0F565C`, but preset.ts defines `bgCard` as `teal.700` which resolves to `#0C5A60`. These don't match. Either add the correct teal value `#0F565C` to the teal palette and map `bgCard` to it, or rewrite the visual spec to say card/panel bg is `#0C5A60` (teal.700) to align with the preset. The spec is the source of truth, so update the preset."
+      },
+      "durationMs": 55729,
+      "timestamp": "2026-07-22T10:47:08.603Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4330,
+        "briefLength": 6997,
+        "mockupLength": 11323
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/SignalMargin.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 178788,
+      "timestamp": "2026-07-22T10:51:54.819Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-22T10:52:02.520Z"
+    }
+  ]
+}

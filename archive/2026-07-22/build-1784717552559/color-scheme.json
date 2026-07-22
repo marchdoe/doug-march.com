@@ -1,0 +1,20 @@
+{
+  "primary_hue": {
+    "h": 190,
+    "s": 78,
+    "l": 17,
+    "name": "deep well teal"
+  },
+  "secondary_accent": {
+    "h": 175,
+    "s": 82,
+    "l": 49,
+    "name": "electric aqua"
+  },
+  "neutral_family": {
+    "tinted_toward": "teal",
+    "name": "tidewater neutral"
+  },
+  "mood_word": "welling",
+  "color_story": "A phrase about what rises 'from within' is drenched in deep-water teal so one lit-aqua 'LIVE IT' can surface like something you can't hold under."
+}

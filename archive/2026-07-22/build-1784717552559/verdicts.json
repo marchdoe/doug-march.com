@@ -1,0 +1,8 @@
+[
+  {
+    "critic": "spec-critic",
+    "verdict": "REVISE",
+    "feedback": "REVISE\n\n- **Color contradiction**: Visual spec declares card/panel bg as `#0F565C`, but preset.ts defines `bgCard` as `teal.700` which resolves to `#0C5A60`. These don't match. Either add the correct teal value `#0F565C` to the teal palette and map `bgCard` to it, or rewrite the visual spec to say card/panel bg is `#0C5A60` (teal.700) to align with the preset. The spec is the source of truth, so update the preset.",
+    "ts": 1784717228603
+  }
+]

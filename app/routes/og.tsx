@@ -1,84 +1,92 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { panelGradient } from '../components/Nav'
+import { Box } from '../../styled-system/jsx'
 import logoMono from '../assets/logo-mono.svg'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
 function OgCard() {
   return (
-    <div className={css({
-      position: 'fixed',
-      inset: 0,
-      zIndex: 9999,
-      bg: 'bgPanel',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    })}>
-      <div className={css({
-        width: '1200px',
-        height: '630px',
-        bg: 'bgPanel',
-        backgroundImage: panelGradient,
-        color: 'textOnPanel',
-        position: 'relative',
-        overflow: 'hidden',
+    <Box
+      className={css({
+        position: 'fixed',
+        inset: '0',
+        zIndex: 9999,
+        background: 'bg',
         display: 'flex',
-        flexDirection: 'column',
+        alignItems: 'center',
         justifyContent: 'center',
-        paddingInline: '96px',
-        paddingBlock: '80px',
-      })}>
-        <p className={css({
-          fontFamily: 'body',
-          fontWeight: '600',
-          fontSize: 'sm',
-          letterSpacing: 'widest',
-          textTransform: 'uppercase',
-          color: 'accentGlow',
-          marginBottom: '8',
-        })}>
-          Today&apos;s operating manifesto
+      })}
+    >
+      <Box
+        className={css({
+          width: '1200px',
+          height: '630px',
+          background: 'bg',
+          position: 'relative',
+          overflow: 'hidden',
+          padding: '16',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        })}
+      >
+        <p
+          className={css({
+            fontFamily: 'body',
+            fontWeight: 'bold',
+            fontSize: 'md',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+            marginBottom: '8',
+          })}
+        >
+          Doug March — Founder · Builder
         </p>
-        <h1 className={css({
-          fontFamily: 'display',
-          fontSize: '140px',
-          lineHeight: 'tight',
-          letterSpacing: 'wide',
-          textTransform: 'uppercase',
-          color: 'textOnPanel',
-        })}>
-          Eighty Percent<br />On <span className={css({ color: 'accent' })}>Tomorrow</span>
+
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: '112px',
+            lineHeight: 'tight',
+            letterSpacing: 'tight',
+            textTransform: 'uppercase',
+            color: 'text',
+            margin: '0',
+          })}
+        >
+          <span className={css({ display: 'block' })}>No Choice</span>
+          <span className={css({ display: 'block' })}>But To</span>
+          <span
+            className={css({
+              display: 'block',
+              color: 'accent',
+              textShadow: '0 0 40px {colors.accentGlow}',
+            })}
+          >
+            Live It
+          </span>
         </h1>
 
-        <div className={css({
-          position: 'absolute',
-          bottom: '56px',
-          left: '96px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '3',
-        })}>
-          <span className={css({
-            display: 'inline-block',
-            width: '32px',
-            height: '32px',
-            bg: 'textOnPanel',
-            maskImage: `url(${logoMono})`,
-            maskSize: 'contain',
-            maskRepeat: 'no-repeat',
-            maskPosition: 'center',
+        <Box
+          className={css({
+            position: 'absolute',
+            bottom: '10',
+            right: '10',
+            width: '64px',
+            height: '54px',
+            backgroundColor: 'textMuted',
             WebkitMaskImage: `url(${logoMono})`,
+            maskImage: `url(${logoMono})`,
             WebkitMaskSize: 'contain',
+            maskSize: 'contain',
             WebkitMaskRepeat: 'no-repeat',
-            WebkitMaskPosition: 'center',
-          })} />
-          <span className={css({ fontFamily: 'body', fontWeight: '600', fontSize: 'lg', letterSpacing: 'wide', color: 'textOnPanel' })}>
-            Doug March
-          </span>
-        </div>
-      </div>
-    </div>
+            maskRepeat: 'no-repeat',
+          })}
+        />
+      </Box>
+    </Box>
   )
 }

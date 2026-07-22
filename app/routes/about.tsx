@@ -1,123 +1,205 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Nav, panelGradient } from '../components/Nav'
-import { identity } from '../content/about'
-import { timeline, capabilities } from '../content/timeline'
+import { Box, Flex } from '../../styled-system/jsx'
+import { identity, personal } from '../content/about'
+import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
   return (
-    <div className={css({
-      bg: 'bgPanel',
-      backgroundImage: panelGradient,
-      color: 'textOnPanel',
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',
-    })}>
-      <Nav />
-
-      <div className={css({ paddingInline: '6vw', paddingBlock: { base: '10', md: '14' } })}>
-        <p className={css({
+    <Box
+      className={css({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '12',
+        padding: { base: '8', md: 'clamp(2rem, 5vw, 5rem)' },
+        maxWidth: '72ch',
+      })}
+    >
+      <p
+        className={css({
           fontFamily: 'body',
-          fontWeight: '600',
+          fontWeight: 'bold',
           fontSize: 'xs',
-          letterSpacing: 'widest',
+          letterSpacing: 'wider',
           textTransform: 'uppercase',
-          color: 'accentGlow',
-          marginBottom: '6',
-        })}>
+          color: 'textMuted',
+        })}
+      >
+        About
+      </p>
+
+      <Box>
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            lineHeight: 'snug',
+            letterSpacing: 'tight',
+            color: 'text',
+            margin: '0 0 1rem',
+          })}
+        >
+          {identity.statement}
+        </h1>
+        <p
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
+            color: 'accent',
+            textShadow: '0 0 40px {colors.accentGlow}',
+            margin: 0,
+          })}
+        >
           {identity.role}
         </p>
-        <h1 className={css({
-          fontFamily: 'display',
-          fontSize: { base: '40px', md: '64px', lg: '88px' },
-          lineHeight: 'tight',
-          letterSpacing: 'wide',
-          textTransform: 'uppercase',
-          color: 'textOnPanel',
-          maxWidth: '20ch',
-        })}>
-          {identity.name}
-        </h1>
-        <p className={css({
-          marginTop: '6',
-          maxWidth: '62ch',
-          fontSize: 'lg',
-          lineHeight: 'loose',
-          color: 'textSecondary',
-        })}>
-          {identity.statement}
-        </p>
-      </div>
+      </Box>
 
-      <div className={css({ paddingInline: '6vw', paddingBottom: { base: '10', md: '14' } })}>
-        <div className={css({ borderTop: '1px solid', borderColor: 'textOnPanel/24' })}>
-          {timeline.map((t) => (
-            <div
-              key={`${t.year}-${t.role}-${t.company}`}
-              className={css({
-                display: 'grid',
-                gridTemplateColumns: '120px 1fr',
-                gap: '6',
-                paddingBlock: '6',
-                paddingInline: '2',
-                borderBottom: '1px solid',
-                borderColor: 'textOnPanel/16',
-              })}
-            >
-              <span className={css({
-                fontFamily: 'body',
-                fontWeight: '500',
-                fontSize: 'sm',
-                fontVariantNumeric: 'tabular-nums',
-                color: 'accentGlow',
-              })}>
-                {t.year}
-              </span>
-              <div>
-                <div className={css({ fontFamily: 'body', fontWeight: '600', fontSize: 'md', color: 'textOnPanel' })}>
-                  {t.role} <span className={css({ color: 'textSecondary', fontWeight: '500' })}>· {t.company}</span>
-                </div>
-                <p className={css({ marginTop: '1', fontSize: 'base', lineHeight: 'normal', color: 'textSecondary' })}>
-                  {t.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className={css({
-        marginTop: 'auto',
-        paddingInline: '6vw',
-        paddingBlock: { base: '8', md: '10' },
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: '2',
-      })}>
-        {capabilities.map((c) => (
-          <span
-            key={c}
+      {/* Timeline */}
+      <Box as="section">
+        {timeline.map((entry, i) => (
+          <Flex
+            key={i}
+            gap="6"
             className={css({
-              fontFamily: 'body',
-              fontWeight: '500',
-              fontSize: 'sm',
-              letterSpacing: 'wide',
-              textTransform: 'uppercase',
-              color: 'textOnPanel',
-              border: '1px solid',
-              borderColor: 'accent',
-              borderRadius: 'sm',
-              paddingBlock: '2',
-              paddingInline: '4',
+              padding: '4 0',
+              borderBottom: '1px solid',
+              borderColor: 'border',
+              alignItems: 'baseline',
             })}
           >
-            {c}
+            <Box
+              className={css({
+                flex: '0 0 120px',
+                minWidth: '120px',
+                fontFamily: 'body',
+                fontWeight: 'semibold',
+                fontSize: 'xs',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                color: 'textMuted',
+                fontVariantNumeric: 'tabular-nums',
+              })}
+            >
+              {entry.year}
+            </Box>
+            <Box>
+              <Box
+                className={css({
+                  fontFamily: 'body',
+                  fontWeight: 'bold',
+                  fontSize: 'sm',
+                  color: 'text',
+                })}
+              >
+                {entry.role} · {entry.company}
+              </Box>
+              <Box
+                className={css({
+                  fontFamily: 'body',
+                  fontSize: 'sm',
+                  color: 'textSecondary',
+                  marginTop: '1',
+                })}
+              >
+                {entry.description}
+              </Box>
+            </Box>
+          </Flex>
+        ))}
+      </Box>
+
+      {/* Capabilities */}
+      <Box
+        as="section"
+        className={css({
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '4',
+          paddingTop: '4',
+          borderTop: '1px solid',
+          borderColor: 'border',
+        })}
+      >
+        {capabilities.map((cap) => (
+          <span
+            key={cap}
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'semibold',
+              fontSize: '2xs',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'textMuted',
+            })}
+          >
+            {cap}
           </span>
         ))}
-      </div>
-    </div>
+      </Box>
+
+      {/* Education */}
+      <Box
+        as="section"
+        className={css({
+          padding: '4 0',
+          borderTop: '1px solid',
+          borderColor: 'border',
+          fontVariantNumeric: 'tabular-nums',
+        })}
+      >
+        <Box className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: 'sm', color: 'text' })}>
+          {education.school}
+        </Box>
+        <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'textSecondary', marginTop: '1' })}>
+          {education.degree} — {education.concentration}
+        </Box>
+        <Box className={css({ fontFamily: 'body', fontSize: 'xs', color: 'textMuted', marginTop: '1' })}>
+          {education.years}
+        </Box>
+      </Box>
+
+      {/* Personal signals */}
+      <Box
+        as="section"
+        className={css({
+          padding: '6',
+          border: '1px solid',
+          borderColor: 'border',
+          background: 'bgCard',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '3',
+        })}
+      >
+        <Box
+          className={css({
+            fontFamily: 'body',
+            fontWeight: 'bold',
+            fontSize: '2xs',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+          })}
+        >
+          Off the Clock
+        </Box>
+        <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'textSecondary' })}>
+          Holes in one: <span className={css({ color: 'text', fontVariantNumeric: 'tabular-nums' })}>{personal.holesInOne}</span>
+        </Box>
+        <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'textSecondary' })}>
+          Sport: {personal.sport}
+        </Box>
+        <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'textSecondary' })}>
+          Teams: {personal.teams.join(' · ')}
+        </Box>
+        <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'accent' })}>
+          Current focus: {personal.currentFocus}
+        </Box>
+      </Box>
+    </Box>
   )
 }
