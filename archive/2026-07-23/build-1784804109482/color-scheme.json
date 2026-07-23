@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 232,
+    "s": 68,
+    "l": 37,
+    "name": "Klein electric ultramarine"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "ultramarine blue",
+    "name": "cobalt ink"
+  },
+  "mood_word": "electric",
+  "color_story": "PASSION IS ENERGY drenched in Yves-Klein ultramarine as pure charged pigment, one word lit in luminous voltage-white so the phrase reads as a current, not a slogan."
+}

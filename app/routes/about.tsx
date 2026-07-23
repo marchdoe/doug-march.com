@@ -1,205 +1,168 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Box, Grid, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Box, Flex } from '../../styled-system/jsx'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
+import { SmallCaps, TileBox, Chip } from '../components/Tile'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
-  return (
-    <Box
-      className={css({
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '12',
-        padding: { base: '8', md: 'clamp(2rem, 5vw, 5rem)' },
-        maxWidth: '72ch',
-      })}
-    >
-      <p
-        className={css({
-          fontFamily: 'body',
-          fontWeight: 'bold',
-          fontSize: 'xs',
-          letterSpacing: 'wider',
-          textTransform: 'uppercase',
-          color: 'textMuted',
-        })}
-      >
-        About
-      </p>
+  const words = identity.statement.split(' ')
+  const last = words.pop()
 
-      <Box>
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'bold',
-            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-            lineHeight: 'snug',
-            letterSpacing: 'tight',
-            color: 'text',
-            margin: '0 0 1rem',
-          })}
+  return (
+    <Grid
+      gridTemplateColumns={{ base: '1fr', md: 'repeat(12, 1fr)' }}
+      gridAutoRows={{ md: 'minmax(72px, auto)' }}
+      gap={{ base: '4', md: '6' }}
+    >
+      {/* STATEMENT HERO */}
+      <Box
+        className={css({ gridColumn: { md: '1 / 9' }, gridRow: { md: '1 / 4' } })}
+        background="radial-gradient(120% 120% at 22% 12%, {colors.brand.600} 0%, {colors.brand.800} 55%, {colors.brand.900} 100%)"
+        border="1px solid"
+        borderColor="border"
+        borderRadius="lg"
+        padding={{ base: '6', md: '10' }}
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        minH={{ base: '36vh', md: '40vh' }}
+        gap="6"
+      >
+        <SmallCaps color="accentGlow">{identity.role}</SmallCaps>
+        <Box
+          as="h1"
+          fontFamily="display"
+          fontSize="clamp(48px, 8vw, 96px)"
+          lineHeight="tight"
+          letterSpacing="tight"
+          textTransform="uppercase"
+          color="text"
         >
-          {identity.statement}
-        </h1>
-        <p
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'bold',
-            fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
-            color: 'accent',
-            textShadow: '0 0 40px {colors.accentGlow}',
-            margin: 0,
-          })}
-        >
-          {identity.role}
-        </p>
+          {words.join(' ')}{' '}
+          <Box as="span" color="accentGlow">
+            {last}
+          </Box>
+        </Box>
+        <Box fontSize="sm" color="textSecondary" maxW="60ch" lineHeight="loose">
+          {identity.name}
+        </Box>
       </Box>
 
-      {/* Timeline */}
-      <Box as="section">
-        {timeline.map((entry, i) => (
+      {/* THE CHARGE — personal signals */}
+      <TileBox
+        background="surfaceQuiet"
+        className={css({ gridColumn: { md: '9 / 13' }, gridRow: { md: '1 / 4' } })}
+        display="flex"
+        flexDirection="column"
+        gap="5"
+      >
+        <SmallCaps color="accentGlow">The charge</SmallCaps>
+        <Box borderTop="1px solid" borderColor="border" paddingTop="3">
+          <SmallCaps>Holes in one</SmallCaps>
+          <Box fontFamily="display" fontSize="3xl" color="text" letterSpacing="normal">
+            {personal.holesInOne}
+          </Box>
+        </Box>
+        <Box borderTop="1px solid" borderColor="border" paddingTop="3">
+          <SmallCaps>Sport</SmallCaps>
+          <Box fontSize="sm" color="textSecondary" mt="1">
+            {personal.sport}
+          </Box>
+        </Box>
+        <Box borderTop="1px solid" borderColor="border" paddingTop="3">
+          <SmallCaps>Teams</SmallCaps>
+          <Box fontSize="sm" color="textSecondary" mt="1">
+            {personal.teams.join(' · ')}
+          </Box>
+        </Box>
+        <Box borderTop="1px solid" borderColor="border" paddingTop="3">
+          <SmallCaps>Current focus</SmallCaps>
+          <Box fontSize="sm" color="textSecondary" mt="1" lineHeight="loose">
+            {personal.currentFocus}
+          </Box>
+        </Box>
+      </TileBox>
+
+      {/* TIMELINE */}
+      <TileBox
+        background="surfaceQuiet"
+        className={css({ gridColumn: { md: '1 / 9' }, gridRow: { md: '4 / 10' } })}
+        display="flex"
+        flexDirection="column"
+        gap="4"
+      >
+        <SmallCaps color="accentGlow">Timeline</SmallCaps>
+        {timeline.map((t) => (
           <Flex
-            key={i}
-            gap="6"
-            className={css({
-              padding: '4 0',
-              borderBottom: '1px solid',
-              borderColor: 'border',
-              alignItems: 'baseline',
-            })}
+            key={t.year + t.role}
+            gap="4"
+            borderTop="1px solid"
+            borderColor="border"
+            paddingTop="3"
+            align="baseline"
+            wrap="wrap"
           >
             <Box
-              className={css({
-                flex: '0 0 120px',
-                minWidth: '120px',
-                fontFamily: 'body',
-                fontWeight: 'semibold',
-                fontSize: 'xs',
-                letterSpacing: 'wide',
-                textTransform: 'uppercase',
-                color: 'textMuted',
-                fontVariantNumeric: 'tabular-nums',
-              })}
+              fontSize="sm"
+              color="accentGlow"
+              fontVariantNumeric="tabular-nums"
+              flex={{ md: '0 0 120px' }}
+              minW={{ md: '120px' }}
             >
-              {entry.year}
+              {t.year}
             </Box>
-            <Box>
-              <Box
-                className={css({
-                  fontFamily: 'body',
-                  fontWeight: 'bold',
-                  fontSize: 'sm',
-                  color: 'text',
-                })}
-              >
-                {entry.role} · {entry.company}
+            <Box flex="1" minW="200px">
+              <Box fontWeight="bold" fontSize="sm" color="text">
+                {t.role} · {t.company}
+                {t.current ? ' — current' : ''}
               </Box>
-              <Box
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: 'sm',
-                  color: 'textSecondary',
-                  marginTop: '1',
-                })}
-              >
-                {entry.description}
+              <Box fontSize="sm" color="textSecondary" lineHeight="loose" mt="1">
+                {t.description}
               </Box>
             </Box>
           </Flex>
         ))}
-      </Box>
+      </TileBox>
 
-      {/* Capabilities */}
-      <Box
-        as="section"
-        className={css({
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '4',
-          paddingTop: '4',
-          borderTop: '1px solid',
-          borderColor: 'border',
-        })}
+      {/* EDUCATION */}
+      <TileBox
+        className={css({ gridColumn: { md: '9 / 13' }, gridRow: { md: '4 / 6' } })}
+        display="flex"
+        flexDirection="column"
+        gap="3"
       >
-        {capabilities.map((cap) => (
-          <span
-            key={cap}
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'semibold',
-              fontSize: '2xs',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'textMuted',
-            })}
-          >
-            {cap}
-          </span>
-        ))}
-      </Box>
+        <SmallCaps color="accentGlow">Education</SmallCaps>
+        <Box>
+          <Box fontWeight="bold" fontSize="sm" color="text">
+            {education.school}
+          </Box>
+          <Box fontSize="sm" color="textSecondary" mt="1">
+            {education.degree} · {education.concentration}
+          </Box>
+          <Box fontSize="xs" color="textMuted" letterSpacing="wide" mt="1" fontVariantNumeric="tabular-nums">
+            {education.years}
+          </Box>
+        </Box>
+      </TileBox>
 
-      {/* Education */}
-      <Box
-        as="section"
-        className={css({
-          padding: '4 0',
-          borderTop: '1px solid',
-          borderColor: 'border',
-          fontVariantNumeric: 'tabular-nums',
-        })}
+      {/* CAPABILITIES */}
+      <TileBox
+        className={css({ gridColumn: { md: '9 / 13' }, gridRow: { md: '6 / 10' } })}
+        background="surfaceQuiet"
+        display="flex"
+        flexDirection="column"
+        gap="4"
       >
-        <Box className={css({ fontFamily: 'body', fontWeight: 'bold', fontSize: 'sm', color: 'text' })}>
-          {education.school}
-        </Box>
-        <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'textSecondary', marginTop: '1' })}>
-          {education.degree} — {education.concentration}
-        </Box>
-        <Box className={css({ fontFamily: 'body', fontSize: 'xs', color: 'textMuted', marginTop: '1' })}>
-          {education.years}
-        </Box>
-      </Box>
-
-      {/* Personal signals */}
-      <Box
-        as="section"
-        className={css({
-          padding: '6',
-          border: '1px solid',
-          borderColor: 'border',
-          background: 'bgCard',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '3',
-        })}
-      >
-        <Box
-          className={css({
-            fontFamily: 'body',
-            fontWeight: 'bold',
-            fontSize: '2xs',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textMuted',
-          })}
-        >
-          Off the Clock
-        </Box>
-        <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'textSecondary' })}>
-          Holes in one: <span className={css({ color: 'text', fontVariantNumeric: 'tabular-nums' })}>{personal.holesInOne}</span>
-        </Box>
-        <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'textSecondary' })}>
-          Sport: {personal.sport}
-        </Box>
-        <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'textSecondary' })}>
-          Teams: {personal.teams.join(' · ')}
-        </Box>
-        <Box className={css({ fontFamily: 'body', fontSize: 'sm', color: 'accent' })}>
-          Current focus: {personal.currentFocus}
-        </Box>
-      </Box>
-    </Box>
+        <SmallCaps color="accentGlow">Capabilities</SmallCaps>
+        <Flex wrap="wrap" gap="3">
+          {capabilities.map((c) => (
+            <Chip key={c}>{c}</Chip>
+          ))}
+        </Flex>
+      </TileBox>
+    </Grid>
   )
 }

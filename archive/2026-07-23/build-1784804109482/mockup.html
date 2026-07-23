@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doug March — Passion is Energy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton:wght@400&family=Inter+Tight:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand50:#eceffd;--brand100:#d6ddfb;--brand200:#aebbf6;--brand300:#8296ef;
+  --brand400:#5670e8;--brand500:#3550dd;--brand600:#2439c4;--brand700:#1e2fa0;
+  --brand800:#1a2780;--brand900:#131a4d;
+  --accent100:#d3ddff;--accent200:#9db4ff;--accent300:#6d8bff;--accent500:#3f5ce6;
+  --n50:#f6f7fc;--n100:#eceef6;--n200:#d6dae8;--n300:#b3b9d1;--n400:#868ead;--n500:#5c6486;
+  --sp2:8px;--sp4:16px;--sp6:24px;--sp8:32px;--sp12:48px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--brand700);
+  color:var(--n50);
+  font-family:"Inter Tight",system-ui,sans-serif;
+  letter-spacing:0.01em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{margin:0;line-height:0.85;}
+p{margin:0;text-wrap:pretty;}
+a{color:inherit;text-decoration:none;}
+.smallcaps{
+  font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--n300);
+}
+
+/* ---------- WALL ---------- */
+.wall{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:var(--sp4);
+  padding:clamp(20px,5vw,40px);
+  min-height:100dvh;
+}
+@media(min-width:900px){
+  .wall{
+    grid-template-columns:repeat(12,1fr);
+    grid-auto-rows:minmax(72px,auto);
+    gap:clamp(16px,2.4vw,40px);
+    padding:clamp(32px,5vw,80px);
+  }
+}
+
+/* ---------- BRAND ---------- */
+.brand{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp4);}
+.brand svg{width:auto;height:clamp(56px,7vw,84px);}
+.brand .name{
+  font-family:"Anton",sans-serif;
+  font-size:clamp(26px,3.2vw,40px);
+  letter-spacing:0.01em;line-height:0.9;color:var(--n50);
+}
+.brand .role{font-size:13px;color:var(--n300);letter-spacing:0.04em;}
+@media(min-width:900px){
+  .brand{grid-column:1/6;grid-row:1/2;align-items:center;flex-direction:row;}
+  .brand .lock{display:flex;flex-direction:column;gap:6px;}
+}
+
+/* ---------- NAV ---------- */
+.nav{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+@media(min-width:900px){
+  .nav{grid-column:9/13;grid-row:1/2;justify-self:end;align-self:center;}
+}
+.pill{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:44px;padding:0 20px;border-radius:9999px;
+  border:1px solid var(--accent300);
+  font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--n50);
+  transition:background .25s ease,color .25s ease,box-shadow .25s ease;
+}
+.pill:hover,.pill:focus-visible{
+  background:var(--accent300);color:var(--brand900);
+  box-shadow:0 0 0 2px var(--accent300);outline:none;
+}
+
+/* ---------- TILE base ---------- */
+.tile{
+  background:var(--brand800);
+  border:1px solid var(--brand500);
+  border-radius:10px;
+  padding:clamp(20px,2.4vw,32px);
+}
+
+/* ---------- HERO ---------- */
+.hero{
+  background:radial-gradient(120% 120% at 22% 12%,var(--brand600) 0%,var(--brand800) 55%,var(--brand900) 100%);
+  border:1px solid var(--brand500);
+  border-radius:20px;
+  padding:clamp(24px,3.5vw,52px);
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-height:56vh;gap:var(--sp8);
+}
+@media(min-width:900px){.hero{grid-column:1/9;grid-row:2/6;}}
+.hero .kicker{color:var(--accent200);}
+.hero h1{
+  font-family:"Anton",sans-serif;
+  font-size:clamp(84px,12vw,190px);
+  line-height:0.85;letter-spacing:-0.02em;text-transform:uppercase;
+  color:var(--n50);
+}
+.hero h1 .lit{color:var(--accent100);display:block;}
+.hero .heroFoot{display:flex;flex-wrap:wrap;gap:var(--sp6);align-items:flex-end;justify-content:space-between;}
+.hero .heroFoot .credit{font-size:13px;color:var(--n200);max-width:38ch;line-height:1.55;}
+
+/* ---------- QUOTE ---------- */
+.quote{background:var(--brand900);display:flex;flex-direction:column;justify-content:center;gap:var(--sp6);}
+@media(min-width:900px){.quote{grid-column:9/13;grid-row:2/4;}}
+.quote blockquote{
+  margin:0;font-family:"Inter Tight",sans-serif;font-weight:500;font-style:italic;
+  font-size:clamp(20px,2vw,27px);line-height:1.35;color:var(--n50);
+}
+.quote .attr{color:var(--accent200);}
+
+/* ---------- CHARGE (signals) ---------- */
+.charge{background:var(--brand900);display:flex;flex-direction:column;gap:var(--sp6);}
+@media(min-width:900px){.charge{grid-column:9/13;grid-row:4/9;}}
+.charge .hd{color:var(--accent200);}
+.charge .row{border-top:1px solid var(--brand500);padding-top:var(--sp4);}
+.score{font-family:"Anton",sans-serif;font-size:clamp(36px,4vw,44px);line-height:0.9;letter-spacing:0.01em;}
+.score .win{color:var(--accent100);}
+.score .loss{color:var(--n400);}
+.charge .meta{font-size:13px;color:var(--n200);line-height:1.55;margin-top:6px;font-variant-numeric:tabular-nums;}
+.moon{display:flex;align-items:center;gap:14px;}
+.moon .num{font-family:"Anton",sans-serif;font-size:32px;color:var(--n50);letter-spacing:0.01em;}
+
+/* ---------- FEATURED ---------- */
+.featured{background:var(--brand800);display:flex;flex-direction:column;gap:var(--sp6);justify-content:space-between;}
+@media(min-width:900px){.featured{grid-column:1/5;grid-row:6/9;}}
+.featured .tag{color:var(--accent200);}
+.featured h3{font-family:"Anton",sans-serif;font-size:clamp(34px,3.6vw,48px);letter-spacing:0.01em;text-transform:uppercase;color:var(--n50);line-height:0.9;}
+.featured p{font-size:15px;line-height:1.55;color:var(--n200);max-width:40ch;}
+.link{
+  display:inline-flex;align-items:center;gap:8px;min-height:44px;
+  font-weight:700;font-size:14px;letter-spacing:0.04em;color:var(--accent200);
+  transition:color .2s ease;
+}
+.link:hover{color:var(--accent100);}
+
+/* ---------- WORK DIRECTORY ---------- */
+.work{background:var(--brand900);display:flex;flex-direction:column;gap:var(--sp4);}
+@media(min-width:900px){.work{grid-column:5/9;grid-row:6/9;}}
+.work .hd{color:var(--accent200);margin-bottom:4px;}
+.wrow{
+  display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:12px;
+  padding:12px 12px;margin:0 -12px;border-radius:8px;min-height:44px;
+  border-top:1px solid var(--brand500);
+  transition:background .2s ease;
+}
+.wrow:hover{background:var(--brand600);}
+.wrow .t{font-weight:700;font-size:16px;color:var(--n50);}
+.wrow .m{font-size:12px;color:var(--n300);letter-spacing:0.04em;text-transform:uppercase;font-variant-numeric:tabular-nums;}
+.work .subhd{margin-top:var(--sp6);}
+
+/* ---------- CAPABILITIES ---------- */
+.caps{background:var(--brand800);display:flex;flex-direction:column;gap:var(--sp4);}
+@media(min-width:900px){.caps{grid-column:1/7;grid-row:9/10;}}
+.caps .hd{color:var(--accent200);}
+.capgrid{display:flex;flex-wrap:wrap;gap:10px;}
+.chip{
+  border:1px solid var(--brand500);border-radius:9999px;padding:8px 16px;
+  font-size:13px;font-weight:500;color:var(--n100);
+}
+
+/* ---------- COLOPHON ---------- */
+.colophon{background:var(--brand900);display:flex;flex-direction:column;justify-content:center;gap:var(--sp2);}
+@media(min-width:900px){.colophon{grid-column:7/13;grid-row:9/10;}}
+.colophon .stamp{font-size:13px;color:var(--n300);line-height:1.6;font-variant-numeric:tabular-nums;}
+.colophon .stamp strong{color:var(--accent200);font-weight:700;}
+
+/* ---------- MOTION ---------- */
+.tile,.hero,.brand,.nav{animation:rise .7s cubic-bezier(.2,.7,.2,1) both;}
+.hero{animation-delay:.05s;}.quote{animation-delay:.12s;}.charge{animation-delay:.18s;}
+.featured{animation-delay:.22s;}.work{animation-delay:.26s;}.caps{animation-delay:.3s;}.colophon{animation-delay:.34s;}
+@keyframes rise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+</style>
+</head>
+<body>
+<main class="wall">
+
+  <!-- BRAND: stacked-lg, original colors -->
+  <div class="brand">
+    <div class="lock">
+      <svg viewBox="0 0 71 59" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Doug March mark">
+        <path d="M29.8924 0.440186C13.8749 0.440186 0.889618 13.4254 0.889618 29.443C0.889618 45.4613 13.8749 58.4466 29.8924 58.4466C45.9108 58.4466 58.896 45.4613 58.896 29.443C58.8952 13.4254 45.91 0.440186 29.8924 0.440186Z" fill="white"/>
+        <path d="M29.8925 0.440186C45.91 0.440257 58.8956 13.4256 58.8965 29.4431C58.8964 45.4614 45.9108 58.4469 29.8925 58.447C13.8751 58.447 0.889689 45.4614 0.889618 29.4431C0.889618 13.4256 13.875 0.440186 29.8925 0.440186ZM29.8935 5.97729C16.9329 5.97729 6.42673 16.4841 6.42673 29.4431C6.4268 42.4021 16.9329 52.9099 29.8935 52.9099C42.8532 52.9098 53.3583 42.402 53.3584 29.4431C53.3584 16.4842 42.854 5.97745 29.8935 5.97729Z" fill="#7AC042"/>
+        <circle cx="30.0829" cy="29.3002" r="0.98668" fill="#BBBDBF"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M47.8611 29.3418C47.8611 39.1396 39.9198 47.0816 30.1214 47.0816C20.3244 47.0816 12.3823 39.1396 12.3823 29.3418C12.3823 19.5463 20.3244 11.6013 30.1214 11.6013C39.9198 11.6013 47.8611 19.5463 47.8611 29.3418Z" stroke="#DADADA" stroke-width="0.25"/>
+        <circle cx="30.1217" cy="29.3415" r="18.8911" stroke="#DADADA" stroke-width="0.25"/>
+        <circle cx="30.1217" cy="29.3416" r="20.033" stroke="#DADADA" stroke-width="0.25"/>
+        <circle cx="30.1217" cy="29.3415" r="21.1098" stroke="#DADADA" stroke-width="0.25"/>
+        <circle cx="30.1217" cy="29.3416" r="22.114" stroke="#DADADA" stroke-width="0.25"/>
+        <path d="M68.9722 9.76277C68.1324 8.9222 66.8896 8.48386 65.2438 8.44856C65.2922 6.88646 64.8416 5.63053 63.8902 4.67997C62.9667 3.7565 61.8454 3.30913 60.523 3.33293C59.2022 3.35838 58.0612 3.85254 57.0967 4.81706L52.8331 9.08227L52.8134 9.06175L31.8666 30.0094C30.7215 31.1553 29.7373 31.317 28.914 30.4937C28.5708 30.1506 28.396 29.7385 28.387 29.2542C28.3787 28.7707 28.5413 28.3627 28.8721 28.0311C29.2169 27.6872 29.6281 27.5148 30.1108 27.5074C30.5918 27.5025 30.9989 27.665 31.333 27.9999C31.5957 28.2626 31.7599 28.6287 31.8239 29.0917L35.3553 25.5611C34.999 25.1499 34.7265 24.8494 34.5377 24.6631C33.3491 23.4737 31.8789 22.8835 30.1313 22.895C28.382 22.9056 26.9053 23.5139 25.7011 24.7181C24.4575 25.9625 23.8426 27.4508 23.8607 29.182C23.8788 30.9148 24.5248 32.4154 25.7988 33.6893C26.4399 34.3296 27.2024 34.8156 28.0923 35.1431C28.9821 35.4706 29.8604 35.5954 30.7297 35.5149C32.2385 35.3762 33.6487 34.653 34.958 33.3429L56.0247 12.2763L56.0091 12.2598L59.5298 8.73833C59.8647 8.40424 60.1569 8.21133 60.4138 8.14731C60.6987 8.03485 60.9425 8.07343 61.1403 8.27126C61.3332 8.46334 61.3997 8.66773 61.3389 8.8828C61.2774 9.09787 61.0705 9.38353 60.7143 9.7406L55.7398 14.7142C56.5213 16.0998 57.1944 17.552 57.7444 19.0664L63.8007 13.0101C64.1348 12.6752 64.4287 12.4807 64.6856 12.4199C64.9704 12.3074 65.2134 12.3444 65.4104 12.5414C65.6017 12.7302 65.6649 12.9338 65.5984 13.1423C65.5336 13.3541 65.3251 13.6381 64.9688 13.9943L58.2763 20.6868C58.7902 22.418 59.1513 24.2149 59.3336 26.0676L68.4796 16.9207C69.6436 15.7584 70.2757 14.6165 70.3734 13.501C70.5088 12.0768 70.0409 10.8307 68.9722 9.76277Z" fill="#008ED3"/>
+      </svg>
+      <div>
+        <div class="name">Doug March</div>
+        <div class="role">Product builder · founder · designer</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV: floating pills -->
+  <nav class="nav" aria-label="Primary">
+    <a class="pill" href="#work">Work</a>
+    <a class="pill" href="#about">About</a>
+    <a class="pill" href="#charge">Signals</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="smallcaps kicker">Daily manifesto · 23 July 2026</span>
+    <h1>Passion&nbsp;is<span class="lit">Energy</span></h1>
+    <div class="heroFoot">
+      <p class="credit">A portfolio that tears itself down and rebuilds every dawn out of nothing but enthusiasm. Today the current runs electric ultramarine.</p>
+      <a class="link" href="#work">See the work ↗</a>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <aside class="tile quote">
+    <span class="smallcaps hd" style="color:var(--accent200)">The full charge</span>
+    <blockquote>“Feel the power that comes from focusing on what excites you.”</blockquote>
+    <span class="smallcaps attr">— Oprah Winfrey</span>
+  </aside>
+
+  <!-- CHARGE / SIGNALS -->
+  <aside class="tile charge" id="charge">
+    <span class="smallcaps hd">The day's charge</span>
+
+    <div class="row">
+      <span class="smallcaps">Detroit Tigers · win</span>
+      <div class="score"><span class="win">5</span> <span style="color:var(--n300);font-size:0.6em;">–</span> <span class="loss">1</span></div>
+      <p class="meta">DET 5 · OPP 1 · W — a small win, celebrated.</p>
+    </div>
+
+    <div class="row">
+      <span class="smallcaps">On heavy rotation</span>
+      <p class="meta">Tobin Sprout<br>The War on Drugs</p>
+    </div>
+
+    <div class="row">
+      <span class="smallcaps">Moon · waxing gibbous</span>
+      <div class="moon">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+          <circle cx="17" cy="17" r="15" fill="var(--brand900)" stroke="var(--brand500)" stroke-width="1"/>
+          <path d="M17 2a15 15 0 0 1 0 30 11 15 0 0 0 0-30Z" fill="var(--accent100)"/>
+        </svg>
+        <span class="num">71%</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- FEATURED -->
+  <section class="tile featured" id="featured">
+    <div>
+      <span class="smallcaps tag">Featured project · 2018</span>
+      <h3>Spaceman</h3>
+    </div>
+    <p>Founders drown in scattered ideas long before they ship one. Spaceman was the cockpit for going zero-to-one — turning raw enthusiasm into a launched product, fast.</p>
+    <a class="link" href="#" target="_blank" rel="noopener">Visit Spaceman ↗</a>
+  </section>
+
+  <!-- WORK DIRECTORY -->
+  <section class="tile work" id="work">
+    <span class="smallcaps hd">Selected work</span>
+    <a class="wrow" href="#featured"><span class="t">FishSticks</span><span class="m">SaaS · 2025</span></a>
+    <a class="wrow" href="#featured"><span class="t">15th Club</span><span class="m">AI · 2025</span></a>
+    <a class="wrow" href="#featured"><span class="t">doug-march.com</span><span class="m">AI · 2026</span></a>
+
+    <span class="smallcaps hd subhd">Experiments</span>
+    <a class="wrow" href="#" target="_blank" rel="noopener"><span class="t">TeeTurn</span><span class="m">Experiment · 2020</span></a>
+    <a class="wrow" href="#" target="_blank" rel="noopener"><span class="t">Politweets</span><span class="m">Experiment · 2008</span></a>
+    <a class="wrow" href="#" target="_blank" rel="noopener"><span class="t">Twittertale</span><span class="m">Experiment · 2008</span></a>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="tile caps">
+    <span class="smallcaps hd">Capabilities</span>
+    <div class="capgrid">
+      <span class="chip">Product Strategy</span>
+      <span class="chip">Full-Stack Engineering</span>
+      <span class="chip">Design Systems</span>
+      <span class="chip">AI / LLM Integration</span>
+      <span class="chip">Rapid Prototyping</span>
+      <span class="chip">Brand &amp; Identity</span>
+    </div>
+  </section>
+
+  <!-- COLOPHON / FOOTER -->
+  <footer class="tile colophon">
+    <p class="stamp"><strong>Rebuilt 2026-07-23</strong> — this site regenerates its own design every dawn.</p>
+    <p class="stamp">Doug March · Detroit · low-salience feeds (GitHub, HN, golf) quiet today.</p>
+  </footer>
+
+</main>
+</body>
+</html>
