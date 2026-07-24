@@ -1,62 +1,122 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box } from '../../styled-system/jsx'
-import logo from '../assets/logo.svg'
+import { css } from '../../styled-system/css'
+import { Logo } from '../components/Logo'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
 function OgCard() {
   return (
-    <Box position="fixed" inset="0" zIndex="9999" background="bg" overflow="hidden">
-      <Box
-        width="1200px"
-        height="630px"
-        margin="0 auto"
-        background="radial-gradient(120% 120% at 22% 12%, {colors.brand.600} 0%, {colors.brand.800} 55%, {colors.brand.900} 100%)"
-        border="1px solid"
-        borderColor="border"
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-        padding="10"
-        position="relative"
+    <div
+      className={css({
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        background: 'bg',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      })}
+    >
+      <div
+        className={css({
+          width: '1200px',
+          height: '630px',
+          position: 'relative',
+          background: 'bg',
+          overflow: 'hidden',
+        })}
       >
-        <Box
-          fontSize="2xs"
-          fontWeight="bold"
-          letterSpacing="widest"
-          textTransform="uppercase"
-          color="accentGlow"
+        <div
+          className={css({
+            position: 'absolute',
+            inset: 0,
+            background: 'surface',
+            opacity: 0.6,
+          })}
+        />
+        <div
+          className={css({
+            position: 'absolute',
+            top: '64px',
+            left: '72px',
+            right: '72px',
+            fontFamily: 'body',
+            fontSize: '20px',
+            fontWeight: 'semibold',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'accent',
+          })}
         >
-          Daily manifesto · 23 July 2026
-        </Box>
-
-        <Box
-          as="h1"
-          fontFamily="display"
-          fontSize="150px"
-          lineHeight="tight"
-          letterSpacing="tight"
-          textTransform="uppercase"
-          color="text"
+          Friday 24 July 2026 — rewritten by hand
+        </div>
+        <h1
+          className={css({
+            position: 'absolute',
+            top: '160px',
+            left: '72px',
+            right: '72px',
+            fontFamily: 'heading',
+            fontWeight: 'medium',
+            fontSize: '104px',
+            lineHeight: '1.0',
+            letterSpacing: 'tight',
+            color: 'text',
+            maxWidth: '13ch',
+          })}
         >
-          Passion&nbsp;is
-          <Box as="span" display="block" color="accentGlow">
-            Energy
-          </Box>
-        </Box>
-
-        <Box display="flex" alignItems="center" gap="4">
-          <img src={logo} alt="Doug March mark" height={64} width="auto" />
-          <Box>
-            <Box fontFamily="display" fontSize="lg" color="text" lineHeight="tight">
-              Doug March
-            </Box>
-            <Box fontSize="xs" color="textMuted" letterSpacing="wide">
-              Product builder · founder · designer
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+          Writing{' '}
+          <span
+            className={css({
+              fontStyle: 'italic',
+              color: 'accent',
+              borderBottom: '0.07em solid',
+              borderColor: 'accent',
+            })}
+          >
+            by hand
+          </span>{' '}
+          is good for your brain
+        </h1>
+        <div
+          className={css({
+            position: 'absolute',
+            bottom: '56px',
+            left: '72px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4',
+          })}
+        >
+          <Logo size={48} />
+          <span
+            className={css({
+              fontFamily: 'heading',
+              fontWeight: 'medium',
+              fontSize: '28px',
+              letterSpacing: 'tight',
+              color: 'text',
+            })}
+          >
+            Doug March
+          </span>
+        </div>
+        <div
+          className={css({
+            position: 'absolute',
+            bottom: '56px',
+            right: '72px',
+            fontFamily: 'body',
+            fontSize: '18px',
+            fontWeight: 'semibold',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+          })}
+        >
+          doug-march.com
+        </div>
+      </div>
+    </div>
   )
 }

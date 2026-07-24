@@ -1,148 +1,197 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Grid, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
+import { Fold, FoldGrid, RailTitle } from '../components/FoldGrid'
+import { Gloss } from '../components/Gloss'
 import { projects } from '../content/projects'
-import { SmallCaps, TileBox, LinkArrow, WRow } from '../components/Tile'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
+export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
 
-function WorkDetailPage() {
+function WorkPage() {
   const { slug } = Route.useParams()
-  const index = projects.findIndex((p) => p.slug === slug)
-  const project = projects[index] ?? projects[0]
-  const prev = projects[(index - 1 + projects.length) % projects.length]
-  const next = projects[(index + 1) % projects.length]
+  const project = projects.find((p) => p.slug === slug)
+
+  if (!project) {
+    return (
+      <section className={css({ paddingY: '9' })}>
+        <h1
+          className={css({
+            fontFamily: 'heading',
+            fontSize: '40px',
+            color: 'text',
+          })}
+        >
+          Not found
+        </h1>
+      </section>
+    )
+  }
 
   return (
-    <Grid
-      gridTemplateColumns={{ base: '1fr', md: 'repeat(12, 1fr)' }}
-      gridAutoRows={{ md: 'minmax(72px, auto)' }}
-      gap={{ base: '4', md: '6' }}
-    >
-      {/* HERO */}
-      <Box
-        className={css({ gridColumn: { md: '1 / 9' }, gridRow: { md: '1 / 4' } })}
-        background="radial-gradient(120% 120% at 22% 12%, {colors.brand.600} 0%, {colors.brand.800} 55%, {colors.brand.900} 100%)"
-        border="1px solid"
-        borderColor="border"
-        borderRadius="lg"
-        padding={{ base: '6', md: '10' }}
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-        minH={{ base: '38vh', md: '42vh' }}
-        gap="6"
+    <>
+      <section
+        className={css({
+          paddingTop: { base: '6', md: '8' },
+          paddingBottom: { base: '7', md: '9' },
+        })}
       >
-        <SmallCaps color="accentGlow">
+        <div
+          className={css({
+            fontFamily: 'body',
+            fontSize: 'xs',
+            fontWeight: 'semibold',
+            letterSpacing: 'wider',
+            textTransform: 'uppercase',
+            color: 'accent',
+            marginBottom: '5',
+          })}
+        >
           {project.type} · {project.year}
-        </SmallCaps>
-        <Box
-          as="h1"
-          fontFamily="display"
-          fontSize="clamp(48px, 9vw, 120px)"
-          lineHeight="tight"
-          letterSpacing="tight"
-          textTransform="uppercase"
-          color="text"
+        </div>
+        <h1
+          className={css({
+            fontFamily: 'heading',
+            fontWeight: 'medium',
+            fontSize: { base: '40px', md: '84px' },
+            lineHeight: 'tight',
+            letterSpacing: 'tight',
+            color: 'text',
+            marginBottom: '7',
+            maxWidth: '18ch',
+          })}
         >
           {project.title}
-        </Box>
-        <Flex wrap="wrap" gap="6" align="flex-end" justify="space-between">
-          {project.problem && (
-            <Box fontSize="sm" color="textSecondary" maxW="46ch" lineHeight="loose">
-              {project.problem}
-            </Box>
-          )}
-          {(project.liveUrl || project.externalUrl) && (
-            <LinkArrow href={project.liveUrl ?? project.externalUrl} target="_blank" rel="noopener">
-              Visit live ↗
-            </LinkArrow>
-          )}
-        </Flex>
-      </Box>
+        </h1>
+      </section>
 
-      {/* METADATA RAIL */}
-      <TileBox
-        background="surfaceQuiet"
-        className={css({ gridColumn: { md: '9 / 13' }, gridRow: { md: '1 / 4' } })}
-        display="flex"
-        flexDirection="column"
-        gap="5"
-      >
-        <SmallCaps color="accentGlow">Project charge</SmallCaps>
-        {project.role && (
-          <Box borderTop="1px solid" borderColor="border" paddingTop="3">
-            <SmallCaps>Role</SmallCaps>
-            <Box fontSize="sm" color="textSecondary" mt="1">
-              {project.role}
-            </Box>
-          </Box>
-        )}
-        <Box borderTop="1px solid" borderColor="border" paddingTop="3">
-          <SmallCaps>Type · Year</SmallCaps>
-          <Box fontSize="sm" color="textSecondary" mt="1" fontVariantNumeric="tabular-nums">
-            {project.type} · {project.year}
-          </Box>
-        </Box>
-        {project.stack && project.stack.length > 0 && (
-          <Box borderTop="1px solid" borderColor="border" paddingTop="3">
-            <SmallCaps>Stack</SmallCaps>
-            <Box fontSize="sm" color="textSecondary" mt="1">
-              {project.stack.join(' · ')}
-            </Box>
-          </Box>
-        )}
-        <Box borderTop="1px solid" borderColor="border" paddingTop="3">
-          <WRow href={`/work/${prev.slug}`}>
-            <Box fontWeight="bold" fontSize="sm" color="text">
-              ← {prev.title}
-            </Box>
-            <Box fontSize="xs" color="textMuted">
-              Prev
-            </Box>
-          </WRow>
-          <WRow href={`/work/${next.slug}`}>
-            <Box fontWeight="bold" fontSize="sm" color="text">
-              {next.title} →
-            </Box>
-            <Box fontSize="xs" color="textMuted">
-              Next
-            </Box>
-          </WRow>
-        </Box>
-      </TileBox>
+      <Fold id="problem">
+        <FoldGrid
+          main={
+            <div className={css({ maxWidth: '66ch' })}>
+              {project.problem && (
+                <>
+                  <div
+                    className={css({
+                      fontFamily: 'body',
+                      fontSize: 'xs',
+                      fontWeight: 'semibold',
+                      letterSpacing: 'wider',
+                      textTransform: 'uppercase',
+                      color: 'accent',
+                      marginBottom: '4',
+                    })}
+                  >
+                    The problem
+                  </div>
+                  <p
+                    className={css({
+                      fontFamily: 'heading',
+                      fontSize: 'md',
+                      lineHeight: 'normal',
+                      color: 'paper.800',
+                      marginBottom: '7',
+                    })}
+                  >
+                    {project.problem}
+                  </p>
+                </>
+              )}
+              {project.approach && (
+                <>
+                  <div
+                    className={css({
+                      fontFamily: 'body',
+                      fontSize: 'xs',
+                      fontWeight: 'semibold',
+                      letterSpacing: 'wider',
+                      textTransform: 'uppercase',
+                      color: 'accent',
+                      marginBottom: '4',
+                    })}
+                  >
+                    The approach
+                  </div>
+                  <p
+                    className={css({
+                      fontFamily: 'heading',
+                      fontSize: 'md',
+                      lineHeight: 'normal',
+                      color: 'paper.800',
+                    })}
+                  >
+                    {project.approach}
+                  </p>
+                </>
+              )}
+            </div>
+          }
+          rail={
+            <>
+              <RailTitle>Marginalia</RailTitle>
+              <Gloss label="Type">{project.type}</Gloss>
+              <Gloss label="Year">{project.year}</Gloss>
+              {project.role && <Gloss label="Role">{project.role}</Gloss>}
+              {project.stack && project.stack.length > 0 && (
+                <Gloss label="Stack">{project.stack.join(', ')}</Gloss>
+              )}
+              {(project.liveUrl || project.externalUrl) && (
+                <Gloss label="Link" note>
+                  <a
+                    href={project.liveUrl || project.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={css({
+                      color: 'accent',
+                      textDecoration: 'underline',
+                      textUnderlineOffset: '4px',
+                    })}
+                  >
+                    Visit the project →
+                  </a>
+                </Gloss>
+              )}
+            </>
+          }
+        />
+      </Fold>
 
-      {/* NARRATIVE */}
-      <TileBox
-        className={css({ gridColumn: { md: '1 / 9' }, gridRow: { md: '4 / 8' } })}
-        display="flex"
-        flexDirection="column"
-        gap="6"
-      >
-        <Box maxW="70ch">
-          {project.approach && (
-            <Box mb="6">
-              <SmallCaps color="accentGlow">Approach</SmallCaps>
-              <Box fontSize="md" color="textSecondary" lineHeight="loose" mt="2">
-                {project.approach}
-              </Box>
-            </Box>
-          )}
-          {project.outcome && (
-            <Box>
-              <SmallCaps color="accentGlow">Outcome</SmallCaps>
-              <Box fontSize="md" color="textSecondary" lineHeight="loose" mt="2">
-                {project.outcome}
-              </Box>
-            </Box>
-          )}
-          {!project.approach && !project.outcome && project.description && (
-            <Box fontSize="md" color="textSecondary" lineHeight="loose">
-              {project.description}
-            </Box>
-          )}
-        </Box>
-      </TileBox>
-    </Grid>
+      {project.outcome && (
+        <section
+          className={css({
+            background: 'accent',
+            color: 'paper.50',
+            marginX: { base: '-6', md: '-6vw' },
+            paddingX: { base: '6', md: '6vw' },
+            paddingY: { base: '8', md: '10' },
+            borderTop: '1px solid',
+            borderColor: 'ink.600',
+          })}
+        >
+          <div
+            className={css({
+              fontFamily: 'body',
+              fontSize: 'xs',
+              fontWeight: 'semibold',
+              letterSpacing: 'wider',
+              textTransform: 'uppercase',
+              color: 'paper.200',
+              marginBottom: '5',
+            })}
+          >
+            The outcome
+          </div>
+          <p
+            className={css({
+              fontFamily: 'heading',
+              fontSize: { base: '24px', md: '36px' },
+              lineHeight: 'snug',
+              maxWidth: '52ch',
+              color: 'paper.50',
+            })}
+          >
+            {project.outcome}
+          </p>
+        </section>
+      )}
+    </>
   )
 }

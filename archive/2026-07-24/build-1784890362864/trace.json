@@ -1,0 +1,276 @@
+{
+  "date": "2026-07-24",
+  "startedAt": "2026-07-24T10:41:15.715Z",
+  "completedAt": "2026-07-24T10:52:44.623Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 13
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "The Last Dance For Glory",
+              "description": "One golden object bends the gravity of an entire planet. A scroll-driven prophecy of the 2026 summer, half-written, beat-lit, and updating itself as the...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4d4c5462f7b393063956.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAQAElEQVR4nOz9CbS333UWhu19vk+WZdnIs42xMZ7wFBs8Ek8U2kUgCfMQCCTgsghlCglZhhUWIU1WmpY20KYuLBYBuhjCHEppYTmUycajPMS28CzbsoXBlkUDtmVJlnTP7n3PM+z93r+SBuyG0PVd6X+/e+/vHc7Zw7Ofvc/0/BUvf9fMiMyqetiP3yqu/z/+7/Fv11ddn0Y8/nWfH6+rz1fmWtcFsR8/vP57/Ns+...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "House Of Yellow",
+              "description": "HOY is a creative content agency that moves at the speed of your ambition. Build with firepower, we take ideas from concept to production and beyond....",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a5f39fc2e98e650890733.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAUIRpJREFUeAHs/QnQdsl1mIedvu+3/Ov8s2CAGWzEgBQgiiQgUrRoklotKSIt2pRKcqzIUqRQlm25krKcsuI4cllR5HLKomJXqhLbsRnHSVXCUqXiyFnFSJFILZZIiU6RIMEF...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Matter of Design",
+              "description": "Showcase the capabilities and case studies of The Matter of Design, a Chicago-based design studio. Built with Framer.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4d08654b622080956191.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAylpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBD...",
+              "screenshot_media_type": "image/png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Friday",
+          "is_weekend": false,
+          "day_index": 5
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "block/buzz/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "koala73/worldmonitor/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "shiyu-coder/Kronos/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "Pumpkin-MC/Pumpkin/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            },
+            {
+              "name": "citrolabs/ego-lite/stargazers",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "3M Open",
+          "status": "In Progress",
+          "leaders": [
+            {
+              "name": "Ben Kohles",
+              "position": "1",
+              "score": "-9"
+            },
+            {
+              "name": "Emiliano Grillo",
+              "position": "2",
+              "score": "-7"
+            },
+            {
+              "name": "Jackson Koivun",
+              "position": "3",
+              "score": "-7"
+            },
+            {
+              "name": "Gary Woodland",
+              "position": "4",
+              "score": "-7"
+            },
+            {
+              "name": "Scottie Scheffler",
+              "position": "5",
+              "score": "-6"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Flux 3 X Mimic: The Next Generation of Video-Action Models",
+              "url": "https://bfl.ai/blog/flux-3-mimic",
+              "score": 49,
+              "by": "kensai"
+            },
+            {
+              "title": "Flux 3",
+              "url": "https://bfl.ai/blog/flux-3",
+              "score": 308,
+              "by": "ThouYS"
+            },
+            {
+              "title": "It's getting harder to focus every day",
+              "url": "https://glyphack.com/attention/",
+              "score": 55,
+              "by": "peykar"
+            },
+            {
+              "title": "Writing by hand is good for your brain",
+              "url": "https://nealstephenson.substack.com/p/writing-by-hand-is-good-for-your",
+              "score": 1329,
+              "by": "dwwoelfel"
+            },
+            {
+              "title": "Startup founders urge U.S. government not to shut off Chinese open weight AI",
+              "url": "https://www.politico.com/news/2026/07/22/startup-founders-urge-trump-not-to-shut-off-chinese-open-weight-ai-01008992",
+              "score": 948,
+              "by": "theanonymousone"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "waxing gibbous",
+          "illumination": 0.8,
+          "days_into_cycle": 10.41
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "Wet Leg",
+            "Radiohead"
+          ]
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 24,
+          "day_of_year": 205,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-07-23T22:40Z",
+              "result": "win",
+              "score": "4-3"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:08",
+          "sunset": "19:24",
+          "daylight_hours": 14.3
+        },
+        "date": "2026-07-24"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-24T10:41:31.134Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-23: Gallery Wall\n  - 2026-07-22: Specimen\n  - 2026-07-21: Split\n  - 2026-07-20: Poster\n  - 2026-07-19: Broadsheet\n  - 2026-07-18: Stack\n  - 2026-07-17: Specimen\n\n**Recently used** (last 3 days): Gallery Wall, Specimen, Split\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the br"
+      },
+      "output": {
+        "hero_copy": "Writing by hand is good for your brain",
+        "archetype": "Scroll",
+        "chassisId": "spectral-albert",
+        "specLength": 4215,
+        "specPreview": "### 1. Color Specification\n- **Primary hue** — 8° vermillion red. This is the only clean corridor left by the mandate (2°–16°), and it happens to be the perfect reading of the phrase: red is the ink of the editor's hand, the fountain-pen correction, the marginal note. The literal color of writing by hand.\n- **Neutral palette** (warm, tinted toward the red) — 50 `#FBF6F0`, 100 `#F5EDE3`, 200 `#E9DDCE`, 300 `#D8C7B2`, 400 `#B5A08A`, 500 `#8A7663`, 600 `#665748`, 700 `#473B30`, 800 `#2E2621`, 900 `",
+        "selfCheck": "1. Hero quotability: Yes — it's a standalone argument someone would screenshot, not descriptive chrome.\n2. Because-of chain: Yes — reflective literary phrase → Scroll (read down a page) → Spectral (the serif of the page) → red ink on warm paper → single reading column with handwritten margin glosses"
+      },
+      "durationMs": 191756,
+      "timestamp": "2026-07-24T10:44:42.896Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 4215
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 58110,
+      "timestamp": "2026-07-24T10:45:42.615Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 4177,
+        "briefLength": 6941,
+        "mockupLength": 18981
+      },
+      "output": {
+        "files": [
+          "app/components/Logo.tsx",
+          "app/components/Gloss.tsx",
+          "app/components/FoldGrid.tsx",
+          "app/components/Sidebar.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 183197,
+      "timestamp": "2026-07-24T10:52:04.837Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-24T10:52:12.824Z"
+    }
+  ]
+}

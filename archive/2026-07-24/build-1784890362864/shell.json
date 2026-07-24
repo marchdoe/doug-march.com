@@ -1,0 +1,6 @@
+{
+  "nav": "bottom rail (fixed full-width 60px, flush radius-0, brand left / three all-caps links right, 1px ink top border)",
+  "footer": "folded-into-nav (colophon line folded into the bottom rail's left of links)",
+  "brand_lockup": "horizontal-md",
+  "brand_color_mode": "single-color"
+}

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doug March — Writing by hand is good for your brain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Albert+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper-50:#FBF6F0; --paper-100:#F5EDE3; --paper-200:#E9DDCE; --paper-300:#D8C7B2;
+    --paper-400:#B5A08A; --paper-500:#8A7663; --paper-600:#665748; --paper-700:#473B30;
+    --paper-800:#2E2621; --paper-900:#1A1512;
+    --ink-400:#DE5138; --ink-500:#CE2E1A; --ink-600:#A9210F; --ink-glow:#F07A5F;
+    --serif:"Spectral",Georgia,serif;
+    --sans:"Albert Sans",system-ui,sans-serif;
+    --nav-h:64px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;scroll-behavior:smooth;}
+  body{
+    background:var(--paper-50);
+    color:var(--paper-900);
+    font-family:var(--sans);
+    font-kerning:normal;
+    line-height:1.6;
+    padding-bottom:var(--nav-h);
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;transition:color 140ms ease,text-decoration-color 140ms ease;}
+
+  .page{padding:40px 6vw 0;}
+
+  /* ---------- shared gloss / marginalia ---------- */
+  .gloss{
+    font-family:var(--sans);
+    line-height:1.4;
+    padding-bottom:20px;
+    margin-bottom:20px;
+    border-bottom:1px solid var(--paper-300);
+  }
+  .gloss:last-child{border-bottom:0;}
+  .gloss .lab{
+    display:block;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink-500);
+    margin-bottom:6px;
+  }
+  .gloss .val{
+    font-size:15px;
+    color:var(--paper-800);
+    font-variant-numeric:tabular-nums;
+  }
+  .gloss .val .hot{color:var(--ink-500);font-weight:600;}
+  .gloss.note .val{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--paper-600);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:calc(88vh - var(--nav-h));
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:56px 0 40px;
+    background:
+      radial-gradient(120% 90% at 8% 0%, var(--paper-100) 0%, var(--paper-50) 55%);
+  }
+  .hero .eyebrow{
+    font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--paper-500);margin-bottom:28px;
+  }
+  .hero .eyebrow b{color:var(--paper-800);}
+  .phrase{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(56px,8.5vw,128px);
+    line-height:1.0;
+    letter-spacing:-0.015em;
+    color:var(--paper-900);
+    max-width:14ch;
+  }
+  .phrase .byhand{
+    font-style:italic;
+    font-weight:500;
+    color:var(--ink-500);
+    position:relative;
+    white-space:nowrap;
+  }
+  .phrase .byhand::after{
+    content:"";
+    position:absolute;
+    left:-.02em;right:-.02em;
+    bottom:.03em;
+    height:.07em;
+    background:var(--ink-500);
+  }
+  .kicker{
+    margin-top:clamp(32px,4vw,56px);
+    font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--paper-600);
+    display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;
+  }
+  .kicker .up{color:var(--ink-500);}
+  .kicker .sep{color:var(--paper-400);}
+
+  /* ---------- generic fold grid ---------- */
+  .fold{
+    border-top:1px solid var(--paper-300);
+    padding:clamp(64px,10vh,140px) 0;
+  }
+  .fold-grid{display:block;}
+  .rail-inline{margin-top:48px;}
+
+  .rail-title{
+    font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--paper-500);margin-bottom:24px;
+  }
+
+  /* section head */
+  .sec-eyebrow{
+    font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--ink-500);margin-bottom:20px;
+  }
+
+  /* manifesto prose */
+  .prose{max-width:66ch;}
+  .prose h2{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(28px,3.4vw,44px);line-height:1.1;letter-spacing:-0.015em;
+    color:var(--paper-900);margin-bottom:32px;
+  }
+  .prose p{
+    font-family:var(--serif);
+    font-size:19px;line-height:1.6;color:var(--paper-800);
+    margin-bottom:24px;max-width:64ch;
+  }
+  .prose p .dropcap{
+    float:left;
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:88px;
+    line-height:.78;
+    padding:6px 12px 0 0;
+    color:var(--ink-500);
+  }
+  .prose p a{color:var(--ink-500);text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--paper-300);}
+  .prose p a:hover{text-decoration-color:var(--ink-500);}
+
+  /* ---------- featured (vermillion drench) ---------- */
+  .featured{
+    background:var(--ink-500);
+    color:var(--paper-50);
+    margin:0 -6vw;
+    padding:clamp(64px,10vh,130px) 6vw;
+    border-top:1px solid var(--ink-600);
+  }
+  .featured .sec-eyebrow{color:var(--paper-200);}
+  .featured .feat-grid{max-width:1200px;}
+  .featured h2{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(40px,6vw,84px);line-height:1.0;letter-spacing:-0.015em;
+    margin-bottom:28px;
+  }
+  .featured .feat-body{
+    font-family:var(--serif);
+    font-size:clamp(19px,2vw,24px);line-height:1.5;
+    max-width:52ch;color:var(--paper-100);margin-bottom:36px;
+  }
+  .featured .meta{
+    display:flex;flex-wrap:wrap;gap:24px;align-items:center;
+    font-family:var(--sans);
+  }
+  .featured .meta .tag{
+    font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--paper-200);border:1px solid var(--ink-glow);padding:8px 14px;
+  }
+  .featured .feat-link{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:15px;font-weight:600;letter-spacing:0.02em;
+    color:var(--paper-50);
+    text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--ink-glow);
+    padding:8px 0;
+  }
+  .featured .feat-link:hover{text-decoration-color:var(--paper-50);}
+
+  /* ---------- work list ---------- */
+  .rows{border-top:1px solid var(--paper-300);}
+  .row{
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:baseline;
+    gap:16px;
+    padding:28px 0 28px 20px;
+    border-bottom:1px solid var(--paper-300);
+    border-left:1px solid var(--paper-300);
+    transition:border-left-color 140ms ease,border-left-width 140ms ease,padding-left 140ms ease;
+    min-height:64px;
+  }
+  .row:hover{border-left:3px solid var(--ink-500);padding-left:24px;}
+  .row .r-title{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(26px,3.4vw,40px);line-height:1.1;letter-spacing:-0.015em;
+    color:var(--paper-900);
+  }
+  .row:hover .r-title{color:var(--ink-500);}
+  .row .r-meta{
+    display:flex;gap:20px;align-items:baseline;
+    font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--paper-500);
+    font-variant-numeric:tabular-nums;
+  }
+  .row .r-meta .r-year{color:var(--paper-800);}
+
+  .fold h1.big{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(30px,4vw,52px);line-height:1.1;letter-spacing:-0.015em;
+    color:var(--paper-900);margin-bottom:40px;max-width:16ch;
+  }
+
+  /* ---------- bottom nav rail ---------- */
+  .navrail{
+    position:fixed;left:0;right:0;bottom:0;
+    height:var(--nav-h);
+    background:var(--paper-50);
+    border-top:1px solid var(--paper-900);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 6vw;
+    gap:16px;
+    z-index:50;
+  }
+  .brand{display:flex;align-items:center;gap:12px;color:var(--paper-900);}
+  .brand svg{width:34px;height:auto;display:block;flex:none;}
+  .brand .name{
+    font-family:var(--serif);font-weight:500;font-size:20px;letter-spacing:-0.01em;
+    color:var(--paper-900);
+  }
+  .navright{display:flex;align-items:center;gap:24px;}
+  .colophon{
+    font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--paper-500);
+    font-variant-numeric:tabular-nums;
+  }
+  .navlinks{display:flex;gap:20px;}
+  .navlinks a{
+    font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--paper-800);
+    display:inline-flex;align-items:center;
+    min-height:44px;
+  }
+  .navlinks a:hover{color:var(--ink-500);text-decoration:underline;text-underline-offset:4px;}
+
+  /* ---------- responsive: two-column manuscript at >=900 ---------- */
+  @media (min-width:900px){
+    .fold-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 240px;
+      column-gap:4vw;
+      align-items:start;
+    }
+    .rail-inline{margin-top:0;position:sticky;top:40px;padding-left:24px;border-left:1px solid var(--paper-300);}
+    .prose{grid-column:1;}
+    .work-main{grid-column:1;}
+    .hero{min-height:calc(88vh - var(--nav-h));}
+  }
+
+  @media (max-width:600px){
+    .page{padding:28px 24px 0;}
+    .featured{margin:0 -24px;padding:56px 24px;}
+    .navrail{padding:0 20px;}
+    .brand .name{display:none;}
+    .colophon{display:none;}
+    .navlinks{gap:14px;}
+    .navlinks a{letter-spacing:0.1em;font-size:11px;}
+    .row{padding-left:14px;}
+    .prose p .dropcap{font-size:64px;}
+  }
+
+  @media (prefers-reduced-motion:no-preference){
+    .hero .eyebrow,.phrase,.kicker{opacity:0;transform:translateY(14px);animation:rise .8s cubic-bezier(.22,1,.36,1) forwards;}
+    .phrase{animation-delay:.12s;}
+    .kicker{animation-delay:.28s;}
+    @keyframes rise{to{opacity:1;transform:none;}}
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="eyebrow">The site rewrites itself by hand each morning · <b>Friday 24 July 2026</b></div>
+    <h1 class="phrase">Writing <span class="byhand">by hand</span> is good for your brain</h1>
+    <div class="kicker">
+      <span>Neal Stephenson</span><span class="sep">·</span>
+      <span>Hacker News</span><span class="sep">·</span>
+      <span class="up">1,329&#8593;</span>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="fold" id="manifesto">
+    <div class="fold-grid">
+      <div class="prose">
+        <div class="sec-eyebrow">Colophon &mdash; today&rsquo;s argument</div>
+        <h2>A portfolio that tears itself down and re-writes itself every morning has no business defending the analog mind. So it does anyway.</h2>
+        <p><span class="dropcap">T</span>oday&rsquo;s number-one story argues that moving a pen across paper wires the brain in ways typing never will &mdash; the slow, deliberate placing of one word after another. One slot below it sits <a href="https://hn.algolia.com" target="_blank" rel="noopener">Flux 3</a>, a model that automates the moving image. The two headlines are quietly arguing with each other, and this page picks a side.</p>
+        <p>Doug March is a founder and designer who builds software the way you&rsquo;d hand-set a page: one considered decision at a time. This site is the running experiment &mdash; every build, a fresh manuscript in a different hand.</p>
+      </div>
+      <aside class="rail-inline">
+        <div class="rail-title">In the margin</div>
+        <div class="gloss"><span class="lab">Day</span><span class="val">Friday</span></div>
+        <div class="gloss"><span class="lab">Sun</span><span class="val">05:08 &rarr; 19:24</span></div>
+        <div class="gloss"><span class="lab">Moon</span><span class="val">Waxing gibbous <span class="hot">80%</span></span></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FEATURED (vermillion drench) -->
+  <section class="featured" id="featured">
+    <div class="feat-grid fold-grid">
+      <div>
+        <div class="sec-eyebrow">Featured work</div>
+        <h2>15th&nbsp;Club</h2>
+        <p class="feat-body">Tour-level strategy is locked inside caddies&rsquo; heads and a handful of pros. 15th Club is an AI caddie that reads a golf course the way a tour player would &mdash; turning shot data into the one deliberate decision that actually lowers a score.</p>
+        <div class="meta">
+          <span class="tag">AI &middot; 2025</span>
+          <a class="feat-link" href="https://15thclub.com" target="_blank" rel="noopener">Visit the project &rarr;</a>
+        </div>
+      </div>
+      <aside class="rail-inline">
+        <div class="rail-title" style="color:var(--paper-200)">Penciled today</div>
+        <div class="gloss" style="border-color:var(--ink-glow)"><span class="lab" style="color:var(--paper-200)">Tigers</span><span class="val" style="color:var(--paper-50)">TIGERS 4&ndash;3 <span class="hot" style="color:var(--paper-50);border-bottom:2px solid var(--paper-50)">W</span></span></div>
+        <div class="gloss" style="border-color:var(--ink-glow)"><span class="lab" style="color:var(--paper-200)">3M Open</span><span class="val" style="color:var(--paper-50)">Kohles <span class="hot" style="color:var(--paper-50)">&minus;9</span></span></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- SELECTED WORK -->
+  <section class="fold" id="work">
+    <div class="fold-grid">
+      <div class="work-main">
+        <h1 class="big">Selected work</h1>
+        <div class="rows">
+          <a class="row" href="#spaceman">
+            <span class="r-title">Spaceman</span>
+            <span class="r-meta"><span>Founder</span><span class="r-year">2018</span></span>
+          </a>
+          <a class="row" href="#fishsticks">
+            <span class="r-title">FishSticks</span>
+            <span class="r-meta"><span>SaaS</span><span class="r-year">2025</span></span>
+          </a>
+          <a class="row" href="#fifteenth">
+            <span class="r-title">15th Club</span>
+            <span class="r-meta"><span>AI</span><span class="r-year">2025</span></span>
+          </a>
+          <a class="row" href="#doug-march">
+            <span class="r-title">doug-march.com</span>
+            <span class="r-meta"><span>AI</span><span class="r-year">2026</span></span>
+          </a>
+        </div>
+      </div>
+      <aside class="rail-inline">
+        <div class="rail-title">Playing while I write</div>
+        <div class="gloss"><span class="lab">On rotation</span><span class="val">Guided by Voices / Wet Leg / Radiohead</span></div>
+        <div class="gloss note"><span class="lab">Marginal note</span><span class="val">&ldquo;on the same page: Flux 3&rdquo;</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- EXPERIMENTS -->
+  <section class="fold" id="experiments">
+    <div class="fold-grid">
+      <div class="work-main">
+        <h1 class="big">Experiments</h1>
+        <div class="rows">
+          <a class="row" href="#teeturn">
+            <span class="r-title">TeeTurn</span>
+            <span class="r-meta"><span>Experiment</span><span class="r-year">2020</span></span>
+          </a>
+          <a class="row" href="#politweets">
+            <span class="r-title">Politweets</span>
+            <span class="r-meta"><span>Experiment</span><span class="r-year">2008</span></span>
+          </a>
+          <a class="row" href="#twittertale">
+            <span class="r-title">Twittertale</span>
+            <span class="r-meta"><span>Experiment</span><span class="r-year">2008</span></span>
+          </a>
+        </div>
+      </div>
+      <aside class="rail-inline">
+        <div class="rail-title">Errata</div>
+        <div class="gloss note"><span class="lab">Hand of the day</span><span class="val">Set in Spectral, glossed in Albert Sans &mdash; one committed vermillion ink.</span></div>
+      </aside>
+    </div>
+  </section>
+
+</main>
+
+<!-- BOTTOM NAV RAIL -->
+<nav class="navrail">
+  <a class="brand" href="#top" aria-label="Doug March, home">
+    <svg viewBox="0 0 71 59" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" style="color:var(--paper-900)">
+      <path d="M29.8925 0.440186C45.91 0.440257 58.8956 13.4256 58.8965 29.4431C58.8964 45.4614 45.9108 58.4469 29.8925 58.447C13.8751 58.447 0.889689 45.4614 0.889618 29.4431C0.889618 13.4256 13.875 0.440186 29.8925 0.440186ZM29.8935 5.97729C16.9329 5.97729 6.42673 16.4841 6.42673 29.4431C6.4268 42.4021 16.9329 52.9099 29.8935 52.9099C42.8532 52.9098 53.3583 42.402 53.3584 29.4431C53.3584 16.4842 42.854 5.97745 29.8935 5.97729Z" fill="currentColor"/>
+      <circle cx="30.0829" cy="29.3002" r="0.98668" fill="currentColor"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M47.8611 29.3418C47.8611 39.1396 39.9198 47.0816 30.1214 47.0816C20.3244 47.0816 12.3823 39.1396 12.3823 29.3418C12.3823 19.5463 20.3244 11.6013 30.1214 11.6013C39.9198 11.6013 47.8611 19.5463 47.8611 29.3418Z" stroke="currentColor" stroke-width="0.25"/>
+      <circle cx="30.1217" cy="29.3415" r="18.8911" stroke="currentColor" stroke-width="0.25"/>
+      <circle cx="30.1217" cy="29.3416" r="20.033" stroke="currentColor" stroke-width="0.25"/>
+      <circle cx="30.1217" cy="29.3415" r="21.1098" stroke="currentColor" stroke-width="0.25"/>
+      <circle cx="30.1217" cy="29.3416" r="22.114" stroke="currentColor" stroke-width="0.25"/>
+      <path d="M68.9722 9.76277C68.1324 8.9222 66.8896 8.48386 65.2438 8.44856C65.2922 6.88646 64.8416 5.63053 63.8902 4.67997C62.9667 3.7565 61.8454 3.30913 60.523 3.33293C59.2022 3.35838 58.0612 3.85254 57.0967 4.81706L52.8331 9.08227L52.8134 9.06175L31.8666 30.0094C30.7215 31.1553 29.7373 31.317 28.914 30.4937C28.5708 30.1506 28.396 29.7385 28.387 29.2542C28.3787 28.7707 28.5413 28.3627 28.8721 28.0311C29.2169 27.6872 29.6281 27.5148 30.1108 27.5074C30.5918 27.5025 30.9989 27.665 31.333 27.9999C31.5957 28.2626 31.7599 28.6287 31.8239 29.0917L35.3553 25.5611C34.999 25.1499 34.7265 24.8494 34.5377 24.6631C33.3491 23.4737 31.8789 22.8835 30.1313 22.895C28.382 22.9056 26.9053 23.5139 25.7011 24.7181C24.4575 25.9625 23.8426 27.4508 23.8607 29.182C23.8788 30.9148 24.5248 32.4154 25.7988 33.6893C26.4399 34.3296 27.2024 34.8156 28.0923 35.1431C28.9821 35.4706 29.8604 35.5954 30.7297 35.5149C32.2385 35.3762 33.6487 34.653 34.958 33.3429L56.0247 12.2763L56.0091 12.2598L59.5298 8.73833C59.8647 8.40424 60.1569 8.21133 60.4138 8.14731C60.6987 8.03485 60.9425 8.07343 61.1403 8.27126C61.3332 8.46334 61.3997 8.66773 61.3389 8.8828C61.2774 9.09787 61.0705 9.38353 60.7143 9.7406L55.7398 14.7142C56.5213 16.0998 57.1944 17.552 57.7444 19.0664L63.8007 13.0101C64.1348 12.6752 64.4287 12.4807 64.6856 12.4199C64.9704 12.3074 65.2134 12.3444 65.4104 12.5414C65.6017 12.7302 65.6649 12.9338 65.5984 13.1423C65.5336 13.3541 65.3251 13.6381 64.9688 13.9943L58.2763 20.6868C58.7902 22.418 59.1513 24.2149 59.3336 26.0676L68.4796 16.9207C69.6436 15.7584 70.2757 14.6165 70.3734 13.501C70.5088 12.0768 70.0409 10.8307 68.9722 9.76277Z" fill="currentColor"/>
+    </svg>
+    <span class="name">Doug March</span>
+  </a>
+  <div class="navright">
+    <span class="colophon">Rewritten by hand &mdash; 24 Jul 2026</span>
+    <div class="navlinks">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="mailto:hello@doug-march.com">Contact</a>
+    </div>
+  </div>
+</nav>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 8,
+    "s": 78,
+    "l": 45,
+    "name": "vermillion ink"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "warm red / paper",
+    "name": "manuscript paper"
+  },
+  "mood_word": "handmade",
+  "color_story": "Vermillion fountain-pen ink bleeding into warm manuscript paper — the exact palette of a hand that still writes."
+}
