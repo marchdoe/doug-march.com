@@ -1,12 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Logo } from '../components/Logo'
+import { Box } from '../../styled-system/jsx'
+import { BrandMark } from '../components/BrandMark'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
 function OgCard() {
   return (
-    <div
+    <Box
       className={css({
         position: 'fixed',
         inset: 0,
@@ -17,106 +18,75 @@ function OgCard() {
         justifyContent: 'center',
       })}
     >
-      <div
+      <Box
         className={css({
           width: '1200px',
           height: '630px',
           position: 'relative',
           background: 'bg',
+          border: '1px solid',
+          borderColor: 'border',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          paddingX: '20',
           overflow: 'hidden',
         })}
       >
-        <div
+        <p
           className={css({
-            position: 'absolute',
-            inset: 0,
-            background: 'surface',
-            opacity: 0.6,
-          })}
-        />
-        <div
-          className={css({
-            position: 'absolute',
-            top: '64px',
-            left: '72px',
-            right: '72px',
-            fontFamily: 'body',
-            fontSize: '20px',
-            fontWeight: 'semibold',
+            fontSize: 'lg',
+            fontVariantCaps: 'all-small-caps',
+            textTransform: 'lowercase',
             letterSpacing: 'wider',
-            textTransform: 'uppercase',
             color: 'accent',
+            marginBottom: '6',
+            fontWeight: 'medium',
           })}
         >
-          Friday 24 July 2026 — rewritten by hand
-        </div>
+          a shell colon does nothing<span className={css({ color: 'accentBright' })}>.</span>
+        </p>
         <h1
           className={css({
-            position: 'absolute',
-            top: '160px',
-            left: '72px',
-            right: '72px',
-            fontFamily: 'heading',
-            fontWeight: 'medium',
-            fontSize: '104px',
-            lineHeight: '1.0',
-            letterSpacing: 'tight',
+            fontFamily: 'display',
+            fontWeight: 'normal',
+            fontSize: '9xl',
+            lineHeight: 'tight',
+            letterSpacing: 'normal',
+            textTransform: 'uppercase',
             color: 'text',
-            maxWidth: '13ch',
           })}
         >
-          Writing{' '}
-          <span
-            className={css({
-              fontStyle: 'italic',
-              color: 'accent',
-              borderBottom: '0.07em solid',
-              borderColor: 'accent',
-            })}
-          >
-            by hand
-          </span>{' '}
-          is good for your brain
+          Use it
+          <br />
+          <span className={css({ color: 'accent', textShadow: '0 0 24px {colors.emerald.400/50}' })}>
+            Anyway
+          </span>
         </h1>
-        <div
+
+        <Box
           className={css({
             position: 'absolute',
-            bottom: '56px',
-            left: '72px',
+            bottom: '48px',
+            right: '56px',
             display: 'flex',
             alignItems: 'center',
-            gap: '4',
+            gap: '3',
           })}
         >
-          <Logo size={48} />
+          <BrandMark size={30} />
           <span
             className={css({
-              fontFamily: 'heading',
-              fontWeight: 'medium',
-              fontSize: '28px',
-              letterSpacing: 'tight',
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: 'md',
               color: 'text',
             })}
           >
             Doug March
           </span>
-        </div>
-        <div
-          className={css({
-            position: 'absolute',
-            bottom: '56px',
-            right: '72px',
-            fontFamily: 'body',
-            fontSize: '18px',
-            fontWeight: 'semibold',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textMuted',
-          })}
-        >
-          doug-march.com
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   )
 }

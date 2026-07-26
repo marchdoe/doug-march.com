@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Fold, FoldGrid, RailTitle } from '../components/FoldGrid'
-import { Gloss } from '../components/Gloss'
+import { Box, Flex } from '../../styled-system/jsx'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
@@ -10,473 +9,381 @@ function HomePage() {
   return (
     <>
       {/* HERO */}
-      <section
-        id="top"
+      <Box
+        as="section"
         className={css({
-          minHeight: { base: '60vh', md: 'calc(88vh - 60px)' },
+          minHeight: { base: 'auto', md: '42vh' },
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           paddingY: { base: '8', md: '10' },
+          borderBottom: '1px solid',
+          borderColor: 'border',
         })}
       >
-        <div
+        <p
           className={css({
-            fontFamily: 'body',
-            fontSize: 'xs',
-            fontWeight: 'semibold',
+            fontSize: { base: 'sm', md: 'md' },
+            fontVariantCaps: 'all-small-caps',
+            textTransform: 'lowercase',
             letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textMuted',
-            marginBottom: '6',
+            color: 'accent',
+            marginBottom: '4',
+            fontWeight: 'medium',
           })}
         >
-          The site rewrites itself by hand each morning ·{' '}
-          <b className={css({ color: 'paper.800' })}>Friday 24 July 2026</b>
-        </div>
+          a shell colon does nothing
+          <span className={css({ color: 'accentBright' })}>.</span>
+        </p>
         <h1
           className={css({
-            fontFamily: 'heading',
-            fontWeight: 'medium',
-            fontSize: { base: '40px', md: '80px', lg: '128px' },
+            fontFamily: 'display',
+            fontWeight: 'normal',
+            fontSize: { base: '5xl', md: '8xl', lg: '9xl' },
             lineHeight: 'tight',
-            letterSpacing: 'tight',
-            color: 'text',
-            maxWidth: '14ch',
-          })}
-        >
-          Writing{' '}
-          <span
-            className={css({
-              fontStyle: 'italic',
-              fontWeight: 'medium',
-              color: 'accent',
-              position: 'relative',
-              whiteSpace: 'nowrap',
-              borderBottom: '0.07em solid',
-              borderColor: 'accent',
-            })}
-          >
-            by hand
-          </span>{' '}
-          is good for your brain
-        </h1>
-        <div
-          className={css({
-            marginTop: { base: '6', md: '8' },
-            fontFamily: 'body',
-            fontSize: 'sm',
-            fontWeight: 'semibold',
-            letterSpacing: 'wider',
+            letterSpacing: 'normal',
             textTransform: 'uppercase',
-            color: 'textMuted',
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '3',
-            alignItems: 'baseline',
+            color: 'text',
           })}
         >
-          <span>Neal Stephenson</span>
-          <span className={css({ color: 'paper.400' })}>·</span>
-          <span>Hacker News</span>
-          <span className={css({ color: 'paper.400' })}>·</span>
-          <span className={css({ color: 'accent' })}>1,329&#8593;</span>
-        </div>
-      </section>
+          Use it
+          <br />
+          <span className={css({ color: 'accent', textShadow: '0 0 24px {colors.emerald.400/50}' })}>
+            Anyway
+          </span>
+        </h1>
+        <Flex
+          gap="6"
+          wrap="wrap"
+          className={css({
+            marginTop: '6',
+            fontSize: '2xs',
+            color: 'textMuted',
+            letterSpacing: 'wide',
+          })}
+        >
+          <span><span className={css({ color: 'pine.400' })}>src:</span> hacker news · 209 points</span>
+          <span><span className={css({ color: 'pine.400' })}>this site:</span> demolished &amp; rebuilt nightly</span>
+          <span><span className={css({ color: 'pine.400' })}>exit status:</span> 0</span>
+        </Flex>
+      </Box>
 
-      {/* MANIFESTO */}
-      <Fold id="manifesto">
-        <FoldGrid
-          main={
-            <div className={css({ maxWidth: '66ch' })}>
-              <div
+      {/* INDEX BODY */}
+      <Box
+        as="main"
+        className={css({
+          display: 'grid',
+          gridTemplateColumns: { base: '1fr', md: '1.4fr 1fr 0.9fr' },
+          paddingY: '8',
+        })}
+      >
+        {/* WORK */}
+        <Box
+          as="section"
+          id="work"
+          className={css({
+            paddingX: { base: 0, md: '8' },
+            paddingTop: { base: '6', md: 0 },
+            borderTop: { base: '1px solid', md: 'none' },
+            borderColor: 'border',
+          })}
+        >
+          <ColHead title="Selected Work" count={`${String(selectedWork.length).padStart(2, '0')} dirs`} />
+
+          {featuredProject && (
+            <Box
+              className={css({
+                paddingY: '4',
+                borderBottom: '1px solid',
+                borderColor: 'border',
+                marginBottom: '2',
+              })}
+            >
+              <p
                 className={css({
-                  fontFamily: 'body',
-                  fontSize: 'xs',
-                  fontWeight: 'semibold',
+                  fontSize: '2xs',
                   letterSpacing: 'wider',
                   textTransform: 'uppercase',
                   color: 'accent',
-                  marginBottom: '5',
+                  marginBottom: '2',
+                  fontWeight: 'semibold',
                 })}
               >
-                Colophon — today&rsquo;s argument
-              </div>
-              <h2
+                ▸ featured — this machine
+              </p>
+              <h3
                 className={css({
-                  fontFamily: 'heading',
-                  fontWeight: 'medium',
-                  fontSize: { base: '28px', md: '44px' },
+                  fontFamily: 'display',
+                  fontSize: { base: '3xl', md: '5xl' },
                   lineHeight: 'snug',
-                  letterSpacing: 'tight',
+                  letterSpacing: 'normal',
                   color: 'text',
-                  marginBottom: '8',
+                  marginBottom: '3',
                 })}
               >
-                A portfolio that tears itself down and re-writes itself every morning has no
-                business defending the analog mind. So it does anyway.
-              </h2>
+                {featuredProject.title}
+              </h3>
               <p
                 className={css({
-                  fontFamily: 'heading',
-                  fontSize: 'md',
-                  lineHeight: 'normal',
-                  color: 'paper.800',
-                  marginBottom: '6',
-                  maxWidth: '64ch',
+                  fontSize: 'sm',
+                  lineHeight: 'loose',
+                  color: 'textSecondary',
+                  maxWidth: '60ch',
+                  marginBottom: '3',
                 })}
               >
-                <span
+                {featuredProject.problem}
+              </p>
+              {featuredProject.externalUrl && (
+                <a
+                  href={featuredProject.externalUrl}
+                  target="_blank"
+                  rel="noopener"
                   className={css({
-                    float: 'left',
-                    fontFamily: 'heading',
-                    fontWeight: 'bold',
-                    fontSize: '64px',
-                    lineHeight: '0.78',
-                    padding: '1 3 0 0',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '2',
+                    fontSize: 'xs',
+                    letterSpacing: 'normal',
                     color: 'accent',
+                    minHeight: '44px',
+                    _hover: { color: 'accentBright' },
                   })}
                 >
-                  T
-                </span>
-                oday&rsquo;s number-one story argues that moving a pen across paper wires the
-                brain in ways typing never will — the slow, deliberate placing of one word after
-                another. One slot below it sits{' '}
-                <span
-                  className={css({
-                    color: 'accent',
-                    textDecoration: 'underline',
-                    textUnderlineOffset: '4px',
-                    textDecorationColor: 'border',
-                  })}
-                >
-                  Flux 3
-                </span>
-                , a model that automates the moving image. The two headlines are quietly arguing
-                with each other, and this page picks a side.
-              </p>
-              <p
-                className={css({
-                  fontFamily: 'heading',
-                  fontSize: 'md',
-                  lineHeight: 'normal',
-                  color: 'paper.800',
-                  maxWidth: '64ch',
-                })}
-              >
-                Doug March is a founder and designer who builds software the way you&rsquo;d
-                hand-set a page: one considered decision at a time. This site is the running
-                experiment — every build, a fresh manuscript in a different hand.
-              </p>
-            </div>
-          }
-          rail={
-            <>
-              <RailTitle>In the margin</RailTitle>
-              <Gloss label="Day">Friday</Gloss>
-              <Gloss label="Sun">05:08 → 19:24</Gloss>
-              <Gloss label="Moon">
-                Waxing gibbous <span className={css({ color: 'accent', fontWeight: 'semibold' })}>80%</span>
-              </Gloss>
-            </>
-          }
-        />
-      </Fold>
+                  run {featuredProject.title} <span>→</span>
+                </a>
+              )}
+            </Box>
+          )}
 
-      {/* FEATURED — vermillion drench */}
-      {featuredProject && (
-        <section
-          id="featured"
+          <Box>
+            {selectedWork.map((proj, i) => (
+              <a
+                key={proj.slug}
+                href={`/work/${proj.slug}`}
+                className={css({
+                  display: 'grid',
+                  gridTemplateColumns: '26px 1fr auto',
+                  alignItems: 'baseline',
+                  gap: '3',
+                  paddingY: '3',
+                  borderBottom: '1px solid',
+                  borderColor: 'border',
+                  _hover: { background: 'rgba(41,206,127,0.03)' },
+                })}
+              >
+                <span className={css({ fontSize: '2xs', color: 'pine.400', letterSpacing: 'wide' })}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className={css({ fontSize: 'md', color: 'text', letterSpacing: 'normal' })}>
+                  {proj.title}
+                </span>
+                <span
+                  className={css({
+                    textAlign: 'right',
+                    fontSize: '2xs',
+                    letterSpacing: 'wide',
+                    color: 'textMuted',
+                    textTransform: 'uppercase',
+                    whiteSpace: 'nowrap',
+                  })}
+                >
+                  {proj.type}
+                  <span className={css({ color: 'pine.400', marginLeft: '2' })}>{proj.year}</span>
+                </span>
+              </a>
+            ))}
+          </Box>
+        </Box>
+
+        {/* EXPERIMENTS + COLOPHON */}
+        <Box
+          as="section"
+          id="experiments"
           className={css({
-            background: 'accent',
-            color: 'paper.50',
-            marginX: { base: '-6', md: '-6vw' },
-            paddingX: { base: '6', md: '6vw' },
-            paddingY: { base: '8', md: '10' },
+            paddingX: { base: 0, md: '8' },
+            paddingTop: { base: '6', md: 0 },
+            marginTop: { base: '6', md: 0 },
             borderTop: '1px solid',
-            borderColor: 'ink.600',
+            borderLeft: { base: 'none', md: '1px solid' },
+            borderColor: 'border',
           })}
         >
-          <FoldGrid
-            main={
-              <div>
-                <div
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: 'xs',
-                    fontWeight: 'semibold',
-                    letterSpacing: 'wider',
-                    textTransform: 'uppercase',
-                    color: 'paper.200',
-                    marginBottom: '5',
-                  })}
-                >
-                  Featured work
-                </div>
-                <h2
-                  className={css({
-                    fontFamily: 'heading',
-                    fontWeight: 'medium',
-                    fontSize: { base: '40px', md: '84px' },
-                    lineHeight: 'tight',
-                    letterSpacing: 'tight',
-                    marginBottom: '7',
-                  })}
-                >
-                  {featuredProject.title}
-                </h2>
-                <p
-                  className={css({
-                    fontFamily: 'heading',
-                    fontSize: { base: '19px', md: '24px' },
-                    lineHeight: 'snug',
-                    maxWidth: '52ch',
-                    color: 'paper.100',
-                    marginBottom: '8',
-                  })}
-                >
-                  {featuredProject.problem}
-                </p>
-                <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '6', alignItems: 'center' })}>
-                  <span
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: '2xs',
-                      fontWeight: 'semibold',
-                      letterSpacing: 'wider',
-                      textTransform: 'uppercase',
-                      color: 'paper.200',
-                      border: '1px solid',
-                      borderColor: 'ink.400',
-                      paddingX: '3',
-                      paddingY: '2',
-                    })}
-                  >
-                    {featuredProject.type} · {featuredProject.year}
-                  </span>
-                  {featuredProject.externalUrl && (
-                    <a
-                      href={featuredProject.externalUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={css({
-                        fontFamily: 'body',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '2',
-                        fontSize: 'sm',
-                        fontWeight: 'semibold',
-                        color: 'paper.50',
-                        textDecoration: 'underline',
-                        textUnderlineOffset: '5px',
-                        textDecorationColor: 'ink.400',
-                        _hover: { textDecorationColor: 'paper.50' },
-                      })}
-                    >
-                      Visit the project →
-                    </a>
+          <ColHead title="Experiments" count={`${String(experiments.length).padStart(2, '0')} dirs`} />
+          <Box>
+            {experiments.map((proj, i) => (
+              <a
+                key={proj.slug}
+                href={proj.externalUrl ?? `/work/${proj.slug}`}
+                target={proj.externalUrl ? '_blank' : undefined}
+                rel={proj.externalUrl ? 'noopener' : undefined}
+                className={css({
+                  display: 'grid',
+                  gridTemplateColumns: '26px 1fr auto',
+                  alignItems: 'baseline',
+                  gap: '3',
+                  paddingY: '3',
+                  borderBottom: '1px solid',
+                  borderColor: 'border',
+                  _hover: { background: 'rgba(41,206,127,0.03)' },
+                })}
+              >
+                <span className={css({ fontSize: '2xs', color: 'pine.400', letterSpacing: 'wide' })}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className={css({ fontSize: 'md', color: 'text', letterSpacing: 'normal' })}>
+                  {proj.title}
+                  {proj.externalUrl && (
+                    <span className={css({ color: 'pine.400', fontSize: '2xs', marginLeft: '2' })}>↗</span>
                   )}
-                </div>
-              </div>
-            }
-            rail={
-              <>
-                <div
+                </span>
+                <span
                   className={css({
-                    fontFamily: 'body',
-                    fontSize: 'xs',
-                    fontWeight: 'semibold',
-                    letterSpacing: 'wider',
+                    textAlign: 'right',
+                    fontSize: '2xs',
+                    letterSpacing: 'wide',
+                    color: 'textMuted',
                     textTransform: 'uppercase',
-                    color: 'paper.200',
-                    marginBottom: '4',
+                    whiteSpace: 'nowrap',
                   })}
                 >
-                  Penciled today
-                </div>
-                <Gloss label="Tigers" tone="inverse">
-                  TIGERS 4–3 <span className={css({ fontWeight: 'semibold', borderBottom: '2px solid', borderColor: 'paper.50' })}>W</span>
-                </Gloss>
-                <Gloss label="3M Open" tone="inverse">
-                  Kohles −9
-                </Gloss>
-              </>
-            }
-          />
-        </section>
-      )}
+                  {proj.type}
+                  <span className={css({ color: 'pine.400', marginLeft: '2' })}>{proj.year}</span>
+                </span>
+              </a>
+            ))}
+          </Box>
 
-      {/* SELECTED WORK */}
-      <Fold id="work">
-        <FoldGrid
-          main={
-            <div>
-              <h1
-                className={css({
-                  fontFamily: 'heading',
-                  fontWeight: 'medium',
-                  fontSize: { base: '30px', md: '52px' },
-                  lineHeight: 'snug',
-                  letterSpacing: 'tight',
-                  color: 'text',
-                  marginBottom: '8',
-                  maxWidth: '16ch',
-                })}
-              >
-                Selected work
-              </h1>
-              <div className={css({ borderTop: '1px solid', borderColor: 'border' })}>
-                {selectedWork.map((project) => (
-                  <a
-                    key={project.slug}
-                    href={`/work/${project.slug}`}
-                    className={css({
-                      display: 'grid',
-                      gridTemplateColumns: '1fr auto',
-                      alignItems: 'baseline',
-                      gap: '4',
-                      paddingY: '6',
-                      paddingLeft: '4',
-                      borderBottom: '1px solid',
-                      borderLeft: '1px solid',
-                      borderColor: 'border',
-                      minHeight: '64px',
-                      transition: 'border-left-color 140ms ease, padding-left 140ms ease',
-                      _hover: { borderLeftColor: 'accent', borderLeftWidth: '3px', paddingLeft: '5' },
-                    })}
-                  >
-                    <span
-                      className={css({
-                        fontFamily: 'heading',
-                        fontWeight: 'medium',
-                        fontSize: { base: '26px', md: '40px' },
-                        lineHeight: 'snug',
-                        letterSpacing: 'tight',
-                        color: 'text',
-                        _groupHover: { color: 'accent' },
-                      })}
-                    >
-                      {project.title}
-                    </span>
-                    <span
-                      className={css({
-                        display: 'flex',
-                        gap: '5',
-                        alignItems: 'baseline',
-                        fontFamily: 'body',
-                        fontSize: '2xs',
-                        fontWeight: 'semibold',
-                        letterSpacing: 'wide',
-                        textTransform: 'uppercase',
-                        color: 'textMuted',
-                        fontVariantNumeric: 'tabular-nums',
-                      })}
-                    >
-                      <span>{project.type}</span>
-                      <span className={css({ color: 'paper.800' })}>{project.year}</span>
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          }
-          rail={
-            <>
-              <RailTitle>Playing while I write</RailTitle>
-              <Gloss label="On rotation">Guided by Voices / Wet Leg / Radiohead</Gloss>
-              <Gloss label="Marginal note" note>
-                &ldquo;on the same page: Flux 3&rdquo;
-              </Gloss>
-            </>
-          }
-        />
-      </Fold>
+          <Box marginTop="8">
+            <ColHead title="Colophon" count="chassis" />
+            <Box className={css({ fontSize: 'xs', color: 'textMuted', letterSpacing: 'normal' })}>
+              <p className={css({ paddingY: '1' })}>display <span className={css({ color: 'accent' })}>::</span> Bebas Neue</p>
+              <p className={css({ paddingY: '1' })}>body <span className={css({ color: 'accent' })}>::</span> IBM Plex Sans</p>
+              <p className={css({ paddingY: '1' })}>hue <span className={css({ color: 'accent' })}>::</span> 150° phosphor emerald</p>
+              <p className={css({ paddingY: '1' })}>radius <span className={css({ color: 'accent' })}>::</span> 0 — hard corners only</p>
+            </Box>
+          </Box>
+        </Box>
 
-      {/* EXPERIMENTS */}
-      <Fold id="experiments">
-        <FoldGrid
-          main={
-            <div>
-              <h1
-                className={css({
-                  fontFamily: 'heading',
-                  fontWeight: 'medium',
-                  fontSize: { base: '30px', md: '52px' },
-                  lineHeight: 'snug',
-                  letterSpacing: 'tight',
-                  color: 'text',
-                  marginBottom: '8',
-                  maxWidth: '16ch',
-                })}
-              >
-                Experiments
-              </h1>
-              <div className={css({ borderTop: '1px solid', borderColor: 'border' })}>
-                {experiments.map((project) => (
-                  <a
-                    key={project.slug}
-                    href={project.liveUrl || project.externalUrl || `/work/${project.slug}`}
-                    target={project.liveUrl || project.externalUrl ? '_blank' : undefined}
-                    rel={project.liveUrl || project.externalUrl ? 'noopener noreferrer' : undefined}
-                    className={css({
-                      display: 'grid',
-                      gridTemplateColumns: '1fr auto',
-                      alignItems: 'baseline',
-                      gap: '4',
-                      paddingY: '6',
-                      paddingLeft: '4',
-                      borderBottom: '1px solid',
-                      borderLeft: '1px solid',
-                      borderColor: 'border',
-                      minHeight: '64px',
-                      transition: 'border-left-color 140ms ease, padding-left 140ms ease',
-                      _hover: { borderLeftColor: 'accent', borderLeftWidth: '3px', paddingLeft: '5' },
-                    })}
-                  >
-                    <span
-                      className={css({
-                        fontFamily: 'heading',
-                        fontWeight: 'medium',
-                        fontSize: { base: '26px', md: '40px' },
-                        lineHeight: 'snug',
-                        letterSpacing: 'tight',
-                        color: 'text',
-                      })}
-                    >
-                      {project.title}
-                    </span>
-                    <span
-                      className={css({
-                        display: 'flex',
-                        gap: '5',
-                        alignItems: 'baseline',
-                        fontFamily: 'body',
-                        fontSize: '2xs',
-                        fontWeight: 'semibold',
-                        letterSpacing: 'wide',
-                        textTransform: 'uppercase',
-                        color: 'textMuted',
-                        fontVariantNumeric: 'tabular-nums',
-                      })}
-                    >
-                      <span>{project.type}</span>
-                      <span className={css({ color: 'paper.800' })}>{project.year}</span>
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          }
-          rail={
-            <>
-              <RailTitle>Errata</RailTitle>
-              <Gloss label="Hand of the day" note>
-                Set in Spectral, glossed in Albert Sans — one committed vermillion ink.
-              </Gloss>
-            </>
-          }
-        />
-      </Fold>
+        {/* SIGNAL LOG */}
+        <Box
+          as="aside"
+          id="signal"
+          className={css({
+            paddingX: { base: 0, md: '8' },
+            paddingTop: { base: '6', md: 0 },
+            marginTop: { base: '6', md: 0 },
+            borderTop: '1px solid',
+            borderLeft: { base: 'none', md: '1px solid' },
+            borderColor: 'border',
+          })}
+        >
+          <ColHead title="Signal Log" count="live" />
+          <Box>
+            <LogGroup label="golf · 3M open">
+              <LogLine name="Jackson Koivun" value="−20" lit />
+              <LogLine name="Grillo / Kohles" value="−17" />
+            </LogGroup>
+            <LogGroup label="mlb · detroit">
+              <LogLine name="Tigers L" value="2–3" dim />
+            </LogGroup>
+            <LogGroup label="sky">
+              <LogLine name="Moon" value="waxing gibbous · 94%" />
+            </LogGroup>
+            <LogGroup label="now playing">
+              <LogLine name="Wet Leg" value="↻" />
+              <LogLine name="The War on Drugs" value="↻" />
+            </LogGroup>
+            <LogGroup label="source" last>
+              <p className={css({ fontSize: 'xs', color: 'textMuted', letterSpacing: 'normal' })}>
+                hn <span className={css({ color: 'accent' })}>·</span> 209{' '}
+                <span className={css({ color: 'accent' })}>·</span> use it anyway
+              </p>
+            </LogGroup>
+          </Box>
+        </Box>
+      </Box>
     </>
+  )
+}
+
+function ColHead({ title, count }: { title: string; count: string }) {
+  return (
+    <Flex
+      align="baseline"
+      justify="space-between"
+      className={css({
+        paddingBottom: '3',
+        marginBottom: '2',
+        borderBottom: '1px solid',
+        borderColor: 'pine.600',
+      })}
+    >
+      <h2
+        className={css({
+          fontFamily: 'display',
+          fontSize: 'xl',
+          lineHeight: 'snug',
+          letterSpacing: 'wide',
+          color: 'text',
+        })}
+      >
+        {title}
+      </h2>
+      <span
+        className={css({
+          fontSize: '2xs',
+          letterSpacing: 'wider',
+          color: 'pine.400',
+          textTransform: 'uppercase',
+        })}
+      >
+        {count}
+      </span>
+    </Flex>
+  )
+}
+
+function LogGroup({ label, children, last }: { label: string; children: React.ReactNode; last?: boolean }) {
+  return (
+    <Box
+      className={css({
+        paddingY: '3',
+        borderBottom: last ? 'none' : '1px solid',
+        borderColor: 'border',
+      })}
+    >
+      <p className={css({ fontSize: '2xs', letterSpacing: 'wider', textTransform: 'uppercase', color: 'pine.400', marginBottom: '2' })}>
+        {label}
+      </p>
+      {children}
+    </Box>
+  )
+}
+
+function LogLine({ name, value, lit, dim }: { name: string; value: string; lit?: boolean; dim?: boolean }) {
+  return (
+    <Flex
+      align="baseline"
+      justify="space-between"
+      gap="3"
+      className={css({
+        fontSize: 'sm',
+        lineHeight: 'normal',
+        paddingY: '1',
+        color: dim ? 'pine.400' : 'textSecondary',
+      })}
+    >
+      <span className={css({ color: lit ? 'text' : undefined })}>{name}</span>
+      <span
+        className={css({
+          whiteSpace: 'nowrap',
+          color: dim ? 'pine.400' : lit ? 'accent' : 'textMuted',
+          fontWeight: lit ? 'medium' : 'normal',
+        })}
+      >
+        {value}
+      </span>
+    </Flex>
   )
 }

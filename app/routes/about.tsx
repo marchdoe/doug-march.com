@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Fold, FoldGrid, RailTitle } from '../components/FoldGrid'
-import { Gloss } from '../components/Gloss'
+import { Box, Flex } from '../../styled-system/jsx'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
@@ -10,186 +9,245 @@ export const Route = createFileRoute('/about')({ component: AboutPage })
 function AboutPage() {
   return (
     <>
-      <section
+      {/* HERO */}
+      <Box
+        as="section"
         className={css({
-          paddingTop: { base: '6', md: '8' },
-          paddingBottom: { base: '7', md: '9' },
+          paddingY: { base: '8', md: '10' },
+          borderBottom: '1px solid',
+          borderColor: 'border',
         })}
       >
-        <div
+        <p
           className={css({
-            fontFamily: 'body',
-            fontSize: 'xs',
-            fontWeight: 'semibold',
+            fontSize: { base: 'sm', md: 'md' },
+            fontVariantCaps: 'all-small-caps',
+            textTransform: 'lowercase',
             letterSpacing: 'wider',
-            textTransform: 'uppercase',
             color: 'accent',
-            marginBottom: '5',
+            marginBottom: '4',
+            fontWeight: 'medium',
           })}
         >
           {identity.role}
-        </div>
+        </p>
         <h1
           className={css({
-            fontFamily: 'heading',
-            fontWeight: 'medium',
-            fontSize: { base: '40px', md: '72px' },
+            fontFamily: 'display',
+            fontWeight: 'normal',
+            fontSize: { base: '4xl', md: '6xl', lg: '7xl' },
             lineHeight: 'tight',
-            letterSpacing: 'tight',
+            letterSpacing: 'normal',
+            textTransform: 'uppercase',
             color: 'text',
-            marginBottom: '7',
-            maxWidth: '16ch',
-          })}
-        >
-          {identity.name}
-        </h1>
-        <p
-          className={css({
-            fontFamily: 'heading',
-            fontSize: { base: '19px', md: '24px' },
-            lineHeight: 'snug',
-            color: 'paper.800',
-            maxWidth: '68ch',
+            maxWidth: '18ch',
           })}
         >
           {identity.statement}
-        </p>
-      </section>
+        </h1>
+      </Box>
 
-      <Fold id="timeline">
-        <FoldGrid
-          main={
-            <div>
-              <h2
+      <Box
+        as="main"
+        className={css({
+          display: 'grid',
+          gridTemplateColumns: { base: '1fr', md: '1.6fr 1fr' },
+          paddingY: '8',
+        })}
+      >
+        {/* TIMELINE / CAPABILITIES / EDUCATION */}
+        <Box
+          className={css({
+            paddingX: { base: 0, md: '8' },
+            paddingLeft: 0,
+          })}
+        >
+          <ColHead title="Timeline" count={`${String(timeline.length).padStart(2, '0')} entries`} />
+          <Box>
+            {timeline.map((entry, i) => (
+              <Flex
+                key={`${entry.year}-${i}`}
+                gap="4"
+                align="baseline"
                 className={css({
-                  fontFamily: 'heading',
-                  fontWeight: 'medium',
-                  fontSize: { base: '28px', md: '44px' },
-                  lineHeight: 'snug',
-                  letterSpacing: 'tight',
-                  color: 'text',
-                  marginBottom: '8',
+                  paddingY: '3',
+                  borderBottom: '1px solid',
+                  borderColor: 'border',
                 })}
               >
-                Timeline
-              </h2>
-              <div className={css({ borderTop: '1px solid', borderColor: 'border' })}>
-                {timeline.map((entry, i) => (
-                  <div
-                    key={i}
+                <span
+                  className={css({
+                    flex: '0 0 120px',
+                    minWidth: '120px',
+                    fontSize: 'xs',
+                    color: 'accentBright',
+                    letterSpacing: 'wide',
+                  })}
+                >
+                  {entry.year}
+                </span>
+                <Box>
+                  <p className={css({ fontSize: 'md', color: 'text', letterSpacing: 'normal' })}>
+                    {entry.role} <span className={css({ color: 'textMuted' })}>·</span> {entry.company}
+                  </p>
+                  <p className={css({ fontSize: 'sm', lineHeight: 'normal', color: 'textSecondary', marginTop: '1' })}>
+                    {entry.description}
+                  </p>
+                </Box>
+              </Flex>
+            ))}
+          </Box>
+
+          <Box marginTop="8">
+            <ColHead title="Capabilities" count="log" />
+            <Box className={css({ fontSize: 'sm', color: 'textSecondary', letterSpacing: 'normal' })}>
+              <p className={css({ marginBottom: '2', fontSize: '2xs', letterSpacing: 'wider', color: 'pine.400', textTransform: 'uppercase' })}>
+                capabilities ::
+              </p>
+              <Flex wrap="wrap" gap="3">
+                {capabilities.map((cap) => (
+                  <span
+                    key={cap}
                     className={css({
-                      display: 'flex',
-                      gap: { base: '3', md: '6' },
-                      paddingY: '6',
-                      borderBottom: '1px solid',
+                      fontSize: 'xs',
+                      color: 'text',
+                      border: '1px solid',
                       borderColor: 'border',
-                      alignItems: 'baseline',
+                      paddingX: '2',
+                      paddingY: '1',
                     })}
                   >
-                    <span
-                      className={css({
-                        flex: 'none',
-                        width: '120px',
-                        fontFamily: 'body',
-                        fontSize: '2xs',
-                        fontWeight: 'semibold',
-                        letterSpacing: 'wide',
-                        textTransform: 'uppercase',
-                        color: 'textMuted',
-                        fontVariantNumeric: 'tabular-nums',
-                      })}
-                    >
-                      {entry.year}
-                    </span>
-                    <div>
-                      <div
-                        className={css({
-                          fontFamily: 'heading',
-                          fontWeight: 'medium',
-                          fontSize: 'lg',
-                          letterSpacing: 'tight',
-                          color: 'text',
-                          marginBottom: '2',
-                        })}
-                      >
-                        {entry.role} <span className={css({ color: 'textMuted' })}>— {entry.company}</span>
-                      </div>
-                      <p
-                        className={css({
-                          fontFamily: 'body',
-                          fontSize: 'sm',
-                          lineHeight: 'normal',
-                          color: 'paper.700',
-                          maxWidth: '60ch',
-                        })}
-                      >
-                        {entry.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          }
-          rail={
-            <>
-              <RailTitle>Capabilities</RailTitle>
-              <div
-                className={css({
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '2',
-                  fontFamily: 'body',
-                  fontSize: '2xs',
-                  fontWeight: 'semibold',
-                  letterSpacing: 'wide',
-                  textTransform: 'uppercase',
-                  color: 'paper.700',
-                  marginBottom: '6',
-                })}
-              >
-                {capabilities.map((cap, i) => (
-                  <span key={cap}>
                     {cap}
-                    {i < capabilities.length - 1 && <span className={css({ color: 'paper.400' })}> · </span>}
                   </span>
                 ))}
-              </div>
-              <Gloss label="Education">
-                {education.school} — {education.degree}, {education.concentration} ({education.years})
-              </Gloss>
-            </>
-          }
-        />
-      </Fold>
+              </Flex>
+            </Box>
+          </Box>
 
-      <Fold id="personal">
-        <FoldGrid
-          main={
-            <p
-              className={css({
-                fontFamily: 'heading',
-                fontSize: 'md',
-                lineHeight: 'normal',
-                color: 'paper.800',
-                maxWidth: '64ch',
-              })}
+          <Box marginTop="8">
+            <ColHead title="Education" count="01 dir" />
+            <Flex
+              justify="space-between"
+              align="baseline"
+              className={css({ paddingY: '3', borderBottom: '1px solid', borderColor: 'border' })}
             >
-              Currently focused on {personal.currentFocus}.
-            </p>
-          }
-          rail={
-            <>
-              <RailTitle>In the margin</RailTitle>
-              <Gloss label="Holes in one">{personal.holesInOne}</Gloss>
-              <Gloss label={personal.sport}>{personal.teams.join(' / ')}</Gloss>
-              <Gloss label="Current focus" note>
-                {personal.currentFocus}
-              </Gloss>
-            </>
-          }
-        />
-      </Fold>
+              <Box>
+                <p className={css({ fontSize: 'md', color: 'text' })}>{education.school}</p>
+                <p className={css({ fontSize: 'sm', color: 'textSecondary', marginTop: '1' })}>
+                  {education.degree} · {education.concentration}
+                </p>
+              </Box>
+              <span className={css({ fontSize: 'xs', color: 'pine.400', letterSpacing: 'wide', whiteSpace: 'nowrap' })}>
+                {education.years}
+              </span>
+            </Flex>
+          </Box>
+        </Box>
+
+        {/* SIGNAL LOG — personal */}
+        <Box
+          as="aside"
+          className={css({
+            paddingX: { base: 0, md: '8' },
+            paddingTop: { base: '6', md: 0 },
+            marginTop: { base: '6', md: 0 },
+            borderTop: '1px solid',
+            borderLeft: { base: 'none', md: '1px solid' },
+            borderColor: 'border',
+          })}
+        >
+          <ColHead title="Signal Log" count="live" />
+          <Box>
+            <LogGroup label="golf">
+              <LogLine name="Holes in one" value={String(personal.holesInOne)} lit />
+              <LogLine name="Sport" value={personal.sport} />
+            </LogGroup>
+            <LogGroup label="teams">
+              {personal.teams.map((team) => (
+                <LogLine key={team} name={team} value="↻" />
+              ))}
+            </LogGroup>
+            <LogGroup label="now" last>
+              <LogLine name="Current focus" value={personal.currentFocus} lit />
+            </LogGroup>
+          </Box>
+        </Box>
+      </Box>
     </>
+  )
+}
+
+function ColHead({ title, count }: { title: string; count: string }) {
+  return (
+    <Flex
+      align="baseline"
+      justify="space-between"
+      className={css({
+        paddingBottom: '3',
+        marginBottom: '2',
+        borderBottom: '1px solid',
+        borderColor: 'pine.600',
+      })}
+    >
+      <h2
+        className={css({
+          fontFamily: 'display',
+          fontSize: 'xl',
+          lineHeight: 'snug',
+          letterSpacing: 'wide',
+          color: 'text',
+        })}
+      >
+        {title}
+      </h2>
+      <span
+        className={css({
+          fontSize: '2xs',
+          letterSpacing: 'wider',
+          color: 'pine.400',
+          textTransform: 'uppercase',
+        })}
+      >
+        {count}
+      </span>
+    </Flex>
+  )
+}
+
+function LogGroup({ label, children, last }: { label: string; children: React.ReactNode; last?: boolean }) {
+  return (
+    <Box
+      className={css({
+        paddingY: '3',
+        borderBottom: last ? 'none' : '1px solid',
+        borderColor: 'border',
+      })}
+    >
+      <p className={css({ fontSize: '2xs', letterSpacing: 'wider', textTransform: 'uppercase', color: 'pine.400', marginBottom: '2' })}>
+        {label}
+      </p>
+      {children}
+    </Box>
+  )
+}
+
+function LogLine({ name, value, lit }: { name: string; value: string; lit?: boolean }) {
+  return (
+    <Flex
+      align="baseline"
+      justify="space-between"
+      gap="3"
+      className={css({
+        fontSize: 'sm',
+        lineHeight: 'normal',
+        paddingY: '1',
+        color: 'textSecondary',
+      })}
+    >
+      <span className={css({ color: lit ? 'text' : undefined })}>{name}</span>
+      <span className={css({ whiteSpace: 'nowrap', color: lit ? 'accent' : 'textMuted', fontWeight: lit ? 'medium' : 'normal' })}>
+        {value}
+      </span>
+    </Flex>
   )
 }

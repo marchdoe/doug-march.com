@@ -1,116 +1,108 @@
 import { css } from '../../styled-system/css'
-import { Logo } from './Logo'
+import { Flex } from '../../styled-system/jsx'
+import { BrandMark } from './BrandMark'
 
-// The mockup folds nav + footer into a single fixed bottom rail — this
-// component IS that rail. It is still named/exported as `Sidebar` per the
-// chassis contract; its role in this shell is the bottom navigation.
+// "Sidebar" here implements the mockup's top prompt bar — the shared
+// chrome rendered once by Layout across every route.
 export function Sidebar() {
   return (
-    <nav
+    <Flex
+      as="header"
+      align="center"
+      gap="4"
+      wrap="wrap"
       className={css({
-        position: 'fixed',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        height: '60px',
-        background: 'bg',
-        borderTop: '1px solid',
-        borderColor: 'text',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingX: { base: '5', md: '6' },
-        gap: '4',
-        zIndex: 50,
+        minHeight: '56px',
+        borderBottom: '1px solid',
+        borderColor: 'border',
+        paddingY: '3',
       })}
     >
       <a
         href="/"
-        aria-label="Doug March, home"
-        className={css({ display: 'flex', alignItems: 'center', gap: '3', color: 'text' })}
+        aria-label="Doug March home"
+        className={css({ display: 'flex', alignItems: 'center', gap: '2', flexShrink: 0 })}
       >
-        <Logo size={30} />
+        <BrandMark size={24} />
         <span
           className={css({
-            display: { base: 'none', md: 'inline' },
-            fontFamily: 'heading',
-            fontWeight: 'medium',
-            fontSize: 'md',
-            letterSpacing: 'tight',
+            fontFamily: 'body',
+            fontWeight: 'bold',
+            fontSize: 'sm',
+            letterSpacing: 'normal',
             color: 'text',
           })}
         >
           Doug March
         </span>
       </a>
-      <div className={css({ display: 'flex', alignItems: 'center', gap: '5' })}>
-        <span
+
+      <span
+        className={css({
+          fontFamily: 'body',
+          fontSize: 'xs',
+          letterSpacing: 'normal',
+          color: 'textMuted',
+          whiteSpace: 'nowrap',
+        })}
+      >
+        <span className={css({ color: 'pine.400' })}>~/doug-march</span> —
+      </span>
+
+      <nav
+        aria-label="Primary"
+        className={css({
+          marginLeft: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6',
+          fontSize: 'sm',
+        })}
+      >
+        <span className={css({ color: 'accent', fontWeight: 'bold' })}>$</span>
+        <a
+          href="/"
           className={css({
-            display: { base: 'none', md: 'inline' },
-            fontFamily: 'body',
-            fontSize: '2xs',
-            letterSpacing: 'wide',
-            textTransform: 'uppercase',
-            color: 'textMuted',
-            fontVariantNumeric: 'tabular-nums',
+            color: 'textSecondary',
+            paddingY: '2',
+            minHeight: '44px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            letterSpacing: 'normal',
+            _hover: { color: 'accentBright' },
           })}
         >
-          Rewritten by hand — 24 Jul 2026
-        </span>
-        <div className={css({ display: 'flex', gap: '4' })}>
-          <a
-            href="/#work"
-            className={css({
-              fontFamily: 'body',
-              fontSize: '2xs',
-              fontWeight: 'semibold',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'paper.800',
-              display: 'inline-flex',
-              alignItems: 'center',
-              minHeight: '44px',
-              _hover: { color: 'accent', textDecoration: 'underline' },
-            })}
-          >
-            Work
-          </a>
-          <a
-            href="/about"
-            className={css({
-              fontFamily: 'body',
-              fontSize: '2xs',
-              fontWeight: 'semibold',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'paper.800',
-              display: 'inline-flex',
-              alignItems: 'center',
-              minHeight: '44px',
-              _hover: { color: 'accent', textDecoration: 'underline' },
-            })}
-          >
-            About
-          </a>
-          <a
-            href="mailto:hello@doug-march.com"
-            className={css({
-              fontFamily: 'body',
-              fontSize: '2xs',
-              fontWeight: 'semibold',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'paper.800',
-              display: 'inline-flex',
-              alignItems: 'center',
-              minHeight: '44px',
-              _hover: { color: 'accent', textDecoration: 'underline' },
-            })}
-          >
-            Contact
-          </a>
-        </div>
-      </div>
-    </nav>
+          work
+        </a>
+        <a
+          href="/about"
+          className={css({
+            color: 'textSecondary',
+            paddingY: '2',
+            minHeight: '44px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            letterSpacing: 'normal',
+            _hover: { color: 'accentBright' },
+          })}
+        >
+          about
+        </a>
+        <a
+          href="mailto:hello@doug-march.com"
+          className={css({
+            color: 'textSecondary',
+            paddingY: '2',
+            minHeight: '44px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            letterSpacing: 'normal',
+            _hover: { color: 'accentBright' },
+          })}
+        >
+          contact
+        </a>
+      </nav>
+    </Flex>
   )
 }

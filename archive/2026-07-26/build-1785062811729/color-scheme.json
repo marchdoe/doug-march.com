@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 150,
+    "s": 67,
+    "l": 49,
+    "name": "phosphor emerald"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "green (150°)",
+    "name": "pine black"
+  },
+  "mood_word": "phosphor",
+  "color_story": "A line about a shell command lives on a shell screen — deep green-black canvas, one luminous phosphor emerald doing all the work, exactly the corridor the mandate left open."
+}

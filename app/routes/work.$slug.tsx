@@ -1,197 +1,210 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Fold, FoldGrid, RailTitle } from '../components/FoldGrid'
-import { Gloss } from '../components/Gloss'
+import { Box, Flex } from '../../styled-system/jsx'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
+export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
 
-function WorkPage() {
+function WorkDetailPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <section className={css({ paddingY: '9' })}>
-        <h1
-          className={css({
-            fontFamily: 'heading',
-            fontSize: '40px',
-            color: 'text',
-          })}
-        >
-          Not found
-        </h1>
-      </section>
+      <Box paddingY="12">
+        <p className={css({ fontSize: 'lg', color: 'text' })}>404 — no such directory.</p>
+        <a href="/" className={css({ color: 'accent', fontSize: 'sm' })}>cd ~/doug-march</a>
+      </Box>
     )
   }
 
+  const idx = projects.findIndex((p) => p.slug === slug)
+  const next = projects[(idx + 1) % projects.length]
+
   return (
     <>
-      <section
+      <p
         className={css({
-          paddingTop: { base: '6', md: '8' },
-          paddingBottom: { base: '7', md: '9' },
+          fontSize: 'xs',
+          color: 'textMuted',
+          letterSpacing: 'normal',
+          paddingTop: '4',
         })}
       >
-        <div
-          className={css({
-            fontFamily: 'body',
-            fontSize: 'xs',
-            fontWeight: 'semibold',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'accent',
-            marginBottom: '5',
-          })}
-        >
-          {project.type} · {project.year}
-        </div>
+        <span className={css({ color: 'pine.400' })}>~/doug-march/work/{project.slug}</span> —
+      </p>
+
+      {/* HERO */}
+      <Box
+        as="section"
+        className={css({
+          paddingY: { base: '8', md: '10' },
+          borderBottom: '1px solid',
+          borderColor: 'border',
+        })}
+      >
         <h1
           className={css({
-            fontFamily: 'heading',
-            fontWeight: 'medium',
-            fontSize: { base: '40px', md: '84px' },
+            fontFamily: 'display',
+            fontWeight: 'normal',
+            fontSize: { base: '4xl', md: '6xl', lg: '7xl' },
             lineHeight: 'tight',
-            letterSpacing: 'tight',
+            letterSpacing: 'normal',
+            textTransform: 'uppercase',
             color: 'text',
-            marginBottom: '7',
-            maxWidth: '18ch',
           })}
         >
           {project.title}
         </h1>
-      </section>
+        <Flex gap="4" className={css({ marginTop: '4', fontSize: '2xs', letterSpacing: 'wide', color: 'textMuted', textTransform: 'uppercase' })}>
+          <span>{project.type}</span>
+          <span className={css({ color: 'pine.400' })}>{project.year}</span>
+        </Flex>
+      </Box>
 
-      <Fold id="problem">
-        <FoldGrid
-          main={
-            <div className={css({ maxWidth: '66ch' })}>
-              {project.problem && (
-                <>
-                  <div
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: 'xs',
-                      fontWeight: 'semibold',
-                      letterSpacing: 'wider',
-                      textTransform: 'uppercase',
-                      color: 'accent',
-                      marginBottom: '4',
-                    })}
-                  >
-                    The problem
-                  </div>
-                  <p
-                    className={css({
-                      fontFamily: 'heading',
-                      fontSize: 'md',
-                      lineHeight: 'normal',
-                      color: 'paper.800',
-                      marginBottom: '7',
-                    })}
-                  >
-                    {project.problem}
-                  </p>
-                </>
-              )}
-              {project.approach && (
-                <>
-                  <div
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: 'xs',
-                      fontWeight: 'semibold',
-                      letterSpacing: 'wider',
-                      textTransform: 'uppercase',
-                      color: 'accent',
-                      marginBottom: '4',
-                    })}
-                  >
-                    The approach
-                  </div>
-                  <p
-                    className={css({
-                      fontFamily: 'heading',
-                      fontSize: 'md',
-                      lineHeight: 'normal',
-                      color: 'paper.800',
-                    })}
-                  >
-                    {project.approach}
-                  </p>
-                </>
-              )}
-            </div>
-          }
-          rail={
-            <>
-              <RailTitle>Marginalia</RailTitle>
-              <Gloss label="Type">{project.type}</Gloss>
-              <Gloss label="Year">{project.year}</Gloss>
-              {project.role && <Gloss label="Role">{project.role}</Gloss>}
-              {project.stack && project.stack.length > 0 && (
-                <Gloss label="Stack">{project.stack.join(', ')}</Gloss>
-              )}
-              {(project.liveUrl || project.externalUrl) && (
-                <Gloss label="Link" note>
-                  <a
-                    href={project.liveUrl || project.externalUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={css({
-                      color: 'accent',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '4px',
-                    })}
-                  >
-                    Visit the project →
-                  </a>
-                </Gloss>
-              )}
-            </>
-          }
-        />
-      </Fold>
+      <Box
+        as="main"
+        className={css({
+          display: 'grid',
+          gridTemplateColumns: { base: '1fr', md: '1.6fr 1fr' },
+          paddingY: '8',
+          gap: { base: '8', md: '0' },
+        })}
+      >
+        <Box className={css({ paddingX: { base: 0, md: '8' }, paddingLeft: 0 })}>
+          {project.problem && (
+            <Box marginBottom="8">
+              <SectionLabel>problem ::</SectionLabel>
+              <p className={css({ fontSize: 'md', lineHeight: 'loose', color: 'textSecondary', maxWidth: '70ch' })}>
+                {project.problem}
+              </p>
+            </Box>
+          )}
+          {project.approach && (
+            <Box marginBottom="8">
+              <SectionLabel>approach ::</SectionLabel>
+              <p className={css({ fontSize: 'md', lineHeight: 'loose', color: 'textSecondary', maxWidth: '70ch' })}>
+                {project.approach}
+              </p>
+            </Box>
+          )}
+          {project.outcome && (
+            <Box marginBottom="8">
+              <SectionLabel>outcome ::</SectionLabel>
+              <p className={css({ fontSize: 'md', lineHeight: 'loose', color: 'textSecondary', maxWidth: '70ch' })}>
+                {project.outcome}
+              </p>
+            </Box>
+          )}
+        </Box>
 
-      {project.outcome && (
-        <section
+        <Box
+          as="aside"
           className={css({
-            background: 'accent',
-            color: 'paper.50',
-            marginX: { base: '-6', md: '-6vw' },
-            paddingX: { base: '6', md: '6vw' },
-            paddingY: { base: '8', md: '10' },
-            borderTop: '1px solid',
-            borderColor: 'ink.600',
+            paddingX: { base: 0, md: '8' },
+            borderLeft: { base: 'none', md: '1px solid' },
+            borderColor: 'border',
           })}
         >
-          <div
-            className={css({
-              fontFamily: 'body',
-              fontSize: 'xs',
-              fontWeight: 'semibold',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'paper.200',
-              marginBottom: '5',
-            })}
-          >
-            The outcome
-          </div>
-          <p
-            className={css({
-              fontFamily: 'heading',
-              fontSize: { base: '24px', md: '36px' },
-              lineHeight: 'snug',
-              maxWidth: '52ch',
-              color: 'paper.50',
-            })}
-          >
-            {project.outcome}
-          </p>
-        </section>
-      )}
+          {project.role && (
+            <MetaRow label="role" value={project.role} />
+          )}
+          {project.stack && (
+            <MetaRow label="stack" value={project.stack.join(' · ')} />
+          )}
+          {(project.liveUrl || project.externalUrl) && (
+            <a
+              href={project.liveUrl ?? project.externalUrl}
+              target="_blank"
+              rel="noopener"
+              className={css({
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '2',
+                fontSize: 'xs',
+                color: 'accent',
+                paddingY: '3',
+                minHeight: '44px',
+                _hover: { color: 'accentBright' },
+              })}
+            >
+              visit live <span>→</span>
+            </a>
+          )}
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener"
+              className={css({
+                display: 'block',
+                fontSize: 'xs',
+                color: 'accent',
+                paddingY: '2',
+                _hover: { color: 'accentBright' },
+              })}
+            >
+              source →
+            </a>
+          )}
+
+          <Box marginTop="10">
+            <a
+              href={`/work/${next.slug}`}
+              className={css({
+                display: 'grid',
+                gridTemplateColumns: '26px 1fr auto',
+                alignItems: 'baseline',
+                gap: '3',
+                paddingY: '3',
+                borderTop: '1px solid',
+                borderColor: 'pine.600',
+                _hover: { background: 'rgba(41,206,127,0.03)' },
+              })}
+            >
+              <span className={css({ fontSize: '2xs', color: 'pine.400' })}>→</span>
+              <span className={css({ fontSize: 'md', color: 'text' })}>next dir · {next.title}</span>
+              <span className={css({ fontSize: '2xs', color: 'textMuted' })}>{next.year}</span>
+            </a>
+          </Box>
+        </Box>
+      </Box>
     </>
+  )
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className={css({
+        fontSize: '2xs',
+        letterSpacing: 'wider',
+        textTransform: 'uppercase',
+        color: 'pine.400',
+        marginBottom: '2',
+      })}
+    >
+      {children}
+    </p>
+  )
+}
+
+function MetaRow({ label, value }: { label: string; value: string }) {
+  return (
+    <Flex
+      justify="space-between"
+      gap="4"
+      className={css({
+        paddingY: '3',
+        borderBottom: '1px solid',
+        borderColor: 'border',
+        fontSize: 'sm',
+      })}
+    >
+      <span className={css({ color: 'pine.400', letterSpacing: 'wide', textTransform: 'uppercase', fontSize: '2xs' })}>
+        {label}
+      </span>
+      <span className={css({ color: 'textSecondary', textAlign: 'right' })}>{value}</span>
+    </Flex>
   )
 }

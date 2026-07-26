@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doug March — a shell colon does nothing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07120D;
+    --panel:#0E1D16;
+    --pine700:#182A21;
+    --pine600:#263C31;
+    --pine500:#3A5749;
+    --pine400:#587A69;
+    --pine300:#83A292;
+    --pine200:#B0C7BB;
+    --pine100:#D6E4DC;
+    --pine50:#EDF4F0;
+    --emerald-light:#4FDF97;
+    --emerald:#29CE7F;
+    --emerald-dark:#108C57;
+    --text:#EDF4F0;
+    --text-sec:#B0C7BB;
+    --text-muted:#83A292;
+    --border:#182A21;
+    --glow:0 0 24px rgba(41,206,127,0.5);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans',system-ui,sans-serif;
+    font-feature-settings:"kern","liga","tnum";
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
+    line-height:1.55;
+    min-height:100vh;
+  }
+  ::selection{background:var(--emerald);color:var(--bg);}
+  a{color:inherit;text-decoration:none;}
+  .tnum{font-variant-numeric:tabular-nums;}
+
+  .page{
+    display:grid;
+    grid-template-rows:auto auto 1fr auto;
+    min-height:100vh;
+    padding:24px 5vw 20px;
+    gap:0;
+  }
+
+  /* ---------- PROMPT BAR ---------- */
+  .prompt{
+    height:56px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    border-bottom:1px solid var(--border);
+    flex-wrap:wrap;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:var(--emerald);
+    flex-shrink:0;
+  }
+  .brand svg{width:24px;height:auto;display:block;filter:drop-shadow(0 0 8px rgba(41,206,127,0.35));}
+  .brand-name{
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:0.02em;
+    color:var(--text);
+  }
+  .path{
+    color:var(--text-muted);
+    font-size:13px;
+    letter-spacing:0.02em;
+    white-space:nowrap;
+  }
+  .path .tilde{color:var(--pine400);}
+  .prompt-links{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    font-size:14px;
+  }
+  .prompt-links .cash{color:var(--emerald);text-shadow:var(--glow);font-weight:700;}
+  .prompt-links a{
+    color:var(--text-sec);
+    padding:8px 2px;
+    min-height:44px;
+    display:inline-flex;
+    align-items:center;
+    position:relative;
+    letter-spacing:0.02em;
+    transition:color 120ms ease;
+  }
+  .prompt-links a::after{
+    content:"";position:absolute;left:0;bottom:8px;height:1px;width:0;
+    background:var(--emerald);transition:width 120ms ease;
+  }
+  .prompt-links a:hover{color:var(--emerald-light);}
+  .prompt-links a:hover::after{width:100%;}
+
+  /* ---------- HERO BANNER ---------- */
+  .hero{
+    min-height:42vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:44px 0 40px;
+    border-bottom:1px solid var(--border);
+  }
+  .kicker{
+    font-size:clamp(12px,1.05vw,15px);
+    font-variant-caps:all-small-caps;
+    text-transform:lowercase;
+    letter-spacing:0.14em;
+    color:var(--emerald);
+    margin-bottom:18px;
+    font-weight:500;
+  }
+  .kicker .colon{color:var(--emerald-light);text-shadow:var(--glow);}
+  .marquee{
+    font-family:'Bebas Neue',sans-serif;
+    font-weight:400;
+    font-size:clamp(84px,12vw,190px);
+    line-height:0.85;
+    letter-spacing:0.01em;
+    text-transform:uppercase;
+    color:var(--text);
+  }
+  .marquee .lit{
+    color:var(--emerald);
+    text-shadow:var(--glow);
+  }
+  .hero-meta{
+    margin-top:26px;
+    display:flex;
+    gap:24px;
+    flex-wrap:wrap;
+    font-size:12.5px;
+    color:var(--text-muted);
+    letter-spacing:0.06em;
+  }
+  .hero-meta .k{color:var(--pine400);}
+  .caret{
+    display:inline-block;width:0.5em;height:1em;background:var(--emerald);
+    margin-left:0.12em;vertical-align:-0.12em;
+    animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+  @media(prefers-reduced-motion:reduce){.caret{animation:none;}}
+
+  /* ---------- INDEX BODY ---------- */
+  .index{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 0.9fr;
+    gap:0;
+    padding:36px 0 12px;
+  }
+  .col{padding:0 40px;border-left:1px solid var(--border);}
+  .col:first-child{padding-left:0;border-left:none;}
+  .col-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    padding-bottom:14px;margin-bottom:8px;border-bottom:1px solid var(--pine600);
+  }
+  .col-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:26px;line-height:0.95;letter-spacing:0.04em;
+    color:var(--text);
+  }
+  .col-count{font-size:11px;letter-spacing:0.14em;color:var(--pine400);text-transform:uppercase;}
+
+  /* featured block */
+  .featured{
+    padding:16px 0 20px;border-bottom:1px solid var(--border);margin-bottom:6px;
+  }
+  .featured-tag{
+    font-size:10.5px;letter-spacing:0.16em;text-transform:uppercase;
+    color:var(--emerald);margin-bottom:10px;font-weight:600;
+  }
+  .featured-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(38px,4vw,58px);line-height:0.9;letter-spacing:0.02em;
+    color:var(--text);margin-bottom:12px;
+  }
+  .featured-problem{
+    font-size:15px;line-height:1.55;color:var(--text-sec);
+    max-width:60ch;margin-bottom:14px;
+  }
+  .featured-link{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;letter-spacing:0.04em;color:var(--emerald);
+    padding:6px 0;min-height:44px;transition:color 120ms ease;
+  }
+  .featured-link .arw{transition:transform 120ms ease;}
+  .featured-link:hover{color:var(--emerald-light);}
+  .featured-link:hover .arw{transform:translateX(3px);}
+
+  /* directory rows */
+  .rows{display:flex;flex-direction:column;}
+  .row{
+    display:grid;
+    grid-template-columns:26px 1fr auto;
+    align-items:baseline;
+    gap:12px;
+    padding:11px 0;
+    border-bottom:1px solid var(--border);
+    transition:background 120ms ease;
+  }
+  .row:hover{background:rgba(41,206,127,0.03);}
+  .row .num{
+    font-size:12px;color:var(--pine400);
+    font-variant-numeric:tabular-nums;letter-spacing:0.04em;
+    transition:color 120ms ease,text-shadow 120ms ease;
+  }
+  .row:hover .num{color:var(--emerald-light);text-shadow:var(--glow);}
+  .row .rtitle{
+    font-size:16px;color:var(--text);position:relative;
+    letter-spacing:0.01em;line-height:1.35;
+  }
+  .row .rtitle::after{
+    content:"";position:absolute;left:0;bottom:-2px;height:1px;width:0;
+    background:var(--emerald);transition:width 120ms ease;
+  }
+  .row:hover .rtitle{color:var(--emerald-light);}
+  .row:hover .rtitle::after{width:100%;}
+  .row .rmeta{
+    text-align:right;font-size:11.5px;letter-spacing:0.08em;
+    color:var(--text-muted);text-transform:uppercase;line-height:1.35;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+  .row .rmeta .yr{color:var(--pine400);margin-left:8px;}
+  .ext-flag{color:var(--pine400);font-size:10px;margin-left:6px;}
+
+  /* signal log */
+  .log{display:flex;flex-direction:column;}
+  .log-group{padding:10px 0 12px;border-bottom:1px solid var(--border);}
+  .log-group:last-child{border-bottom:none;}
+  .log-label{
+    font-size:10px;letter-spacing:0.16em;text-transform:uppercase;
+    color:var(--pine400);margin-bottom:8px;
+  }
+  .log-line{
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+    font-size:13px;line-height:1.35;padding:3px 0;
+    color:var(--text-sec);font-variant-numeric:tabular-nums;
+  }
+  .log-line .lname{color:var(--text-sec);}
+  .log-line .val{color:var(--text-muted);letter-spacing:0.03em;white-space:nowrap;}
+  .log-line.lit .lname{color:var(--text);}
+  .log-line.lit .val{color:var(--emerald);text-shadow:var(--glow);font-weight:500;}
+  .log-line.dim .lname,.log-line.dim .val{color:var(--pine400);}
+  .log-mono{font-size:12px;color:var(--text-muted);letter-spacing:0.02em;padding:3px 0;font-variant-numeric:tabular-nums;}
+  .log-mono .c{color:var(--emerald);}
+
+  /* ---------- FOOTER EXIT ---------- */
+  .exit{
+    margin-top:8px;padding-top:16px;border-top:1px solid var(--border);
+    font-size:12.5px;letter-spacing:0.04em;color:var(--pine400);
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .exit .comment{color:var(--pine500);}
+  .exit .code0{color:var(--emerald);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:900px){
+    .index{grid-template-columns:1fr;}
+    .col{padding:0;border-left:none;border-top:1px solid var(--border);padding-top:28px;margin-top:28px;}
+    .col:first-child{border-top:none;padding-top:0;margin-top:0;}
+  }
+  @media(max-width:560px){
+    .page{padding:20px 6vw 18px;}
+    .prompt{height:auto;padding:10px 0;gap:10px;}
+    .path{width:100%;order:3;}
+    .prompt-links{margin-left:0;width:100%;justify-content:flex-start;gap:16px;order:4;}
+    .hero{min-height:auto;padding:36px 0 30px;}
+    .hero-meta{gap:14px;flex-direction:column;}
+    .row{grid-template-columns:22px 1fr;}
+    .row .rmeta{grid-column:2;text-align:left;margin-top:2px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- PROMPT BAR -->
+  <header class="prompt">
+    <a class="brand" href="#" aria-label="Doug March home">
+      <svg viewBox="0 0 71 59" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M29.8925 0.440186C45.91 0.440257 58.8956 13.4256 58.8965 29.4431C58.8964 45.4614 45.9108 58.4469 29.8925 58.447C13.8751 58.447 0.889689 45.4614 0.889618 29.4431C0.889618 13.4256 13.875 0.440186 29.8925 0.440186ZM29.8935 5.97729C16.9329 5.97729 6.42673 16.4841 6.42673 29.4431C6.4268 42.4021 16.9329 52.9099 29.8935 52.9099C42.8532 52.9098 53.3583 42.402 53.3584 29.4431C53.3584 16.4842 42.854 5.97745 29.8935 5.97729Z" fill="currentColor"/>
+        <circle cx="30.0829" cy="29.3002" r="0.98668" fill="currentColor"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M47.8611 29.3418C47.8611 39.1396 39.9198 47.0816 30.1214 47.0816C20.3244 47.0816 12.3823 39.1396 12.3823 29.3418C12.3823 19.5463 20.3244 11.6013 30.1214 11.6013C39.9198 11.6013 47.8611 19.5463 47.8611 29.3418Z" stroke="currentColor" stroke-width="0.25"/>
+        <circle cx="30.1217" cy="29.3415" r="18.8911" stroke="currentColor" stroke-width="0.25"/>
+        <circle cx="30.1217" cy="29.3416" r="20.033" stroke="currentColor" stroke-width="0.25"/>
+        <circle cx="30.1217" cy="29.3415" r="21.1098" stroke="currentColor" stroke-width="0.25"/>
+        <circle cx="30.1217" cy="29.3416" r="22.114" stroke="currentColor" stroke-width="0.25"/>
+        <path d="M68.9722 9.76277C68.1324 8.9222 66.8896 8.48386 65.2438 8.44856C65.2922 6.88646 64.8416 5.63053 63.8902 4.67997C62.9667 3.7565 61.8454 3.30913 60.523 3.33293C59.2022 3.35838 58.0612 3.85254 57.0967 4.81706L52.8331 9.08227L52.8134 9.06175L31.8666 30.0094C30.7215 31.1553 29.7373 31.317 28.914 30.4937C28.5708 30.1506 28.396 29.7385 28.387 29.2542C28.3787 28.7707 28.5413 28.3627 28.8721 28.0311C29.2169 27.6872 29.6281 27.5148 30.1108 27.5074C30.5918 27.5025 30.9989 27.665 31.333 27.9999C31.5957 28.2626 31.7599 28.6287 31.8239 29.0917L35.3553 25.5611C34.999 25.1499 34.7265 24.8494 34.5377 24.6631C33.3491 23.4737 31.8789 22.8835 30.1313 22.895C28.382 22.9056 26.9053 23.5139 25.7011 24.7181C24.4575 25.9625 23.8426 27.4508 23.8607 29.182C23.8788 30.9148 24.5248 32.4154 25.7988 33.6893C26.4399 34.3296 27.2024 34.8156 28.0923 35.1431C28.9821 35.4706 29.8604 35.5954 30.7297 35.5149C32.2385 35.3762 33.6487 34.653 34.958 33.3429L56.0247 12.2763L56.0091 12.2598L59.5298 8.73833C59.8647 8.40424 60.1569 8.21133 60.4138 8.14731C60.6987 8.03485 60.9425 8.07343 61.1403 8.27126C61.3332 8.46334 61.3997 8.66773 61.3389 8.8828C61.2774 9.09787 61.0705 9.38353 60.7143 9.7406L55.7398 14.7142C56.5213 16.0998 57.1944 17.552 57.7444 19.0664L63.8007 13.0101C64.1348 12.6752 64.4287 12.4807 64.6856 12.4199C64.9704 12.3074 65.2134 12.3444 65.4104 12.5414C65.6017 12.7302 65.6649 12.9338 65.5984 13.1423C65.5336 13.3541 65.3251 13.6381 64.9688 13.9943L58.2763 20.6868C58.7902 22.418 59.1513 24.2149 59.3336 26.0676L68.4796 16.9207C69.6436 15.7584 70.2757 14.6165 70.3734 13.501C70.5088 12.0768 70.0409 10.8307 68.9722 9.76277Z" fill="currentColor"/>
+      </svg>
+      <span class="brand-name">Doug March</span>
+    </a>
+    <span class="path"><span class="tilde">~/doug-march</span> —</span>
+    <nav class="prompt-links" aria-label="Primary">
+      <span class="cash">$</span>
+      <a href="#work">work</a>
+      <a href="#about">about</a>
+      <a href="#contact">contact</a>
+    </nav>
+  </header>
+
+  <!-- HERO BANNER -->
+  <section class="hero">
+    <p class="kicker">a shell colon does nothing<span class="colon">.</span></p>
+    <h1 class="marquee">Use it<br><span class="lit">Anyway</span><span class="caret" aria-hidden="true"></span></h1>
+    <div class="hero-meta">
+      <span><span class="k">src:</span> hacker news · 209 points</span>
+      <span><span class="k">this site:</span> demolished &amp; rebuilt nightly</span>
+      <span><span class="k">exit status:</span> 0</span>
+    </div>
+  </section>
+
+  <!-- INDEX BODY -->
+  <main class="index">
+
+    <!-- WORK -->
+    <section class="col" id="work">
+      <div class="col-head">
+        <h2 class="col-title">Selected Work</h2>
+        <span class="col-count">04 dirs</span>
+      </div>
+
+      <div class="featured">
+        <p class="featured-tag">▸ featured — this machine</p>
+        <h3 class="featured-title">doug-march.com</h3>
+        <p class="featured-problem">A portfolio that tears itself down and rebuilds from scratch every single night — a machine whose entire premise is doing an ostensibly pointless thing beautifully, on purpose, again. A different design ships each dawn; the content is the only constant.</p>
+        <a class="featured-link" href="https://doug-march.com" target="_blank" rel="noopener">run doug-march.com <span class="arw">→</span></a>
+      </div>
+
+      <div class="rows">
+        <a class="row" href="#work-spaceman">
+          <span class="num tnum">01</span>
+          <span class="rtitle">Spaceman</span>
+          <span class="rmeta">Founder<span class="yr tnum">2018</span></span>
+        </a>
+        <a class="row" href="#work-fishsticks">
+          <span class="num tnum">02</span>
+          <span class="rtitle">FishSticks</span>
+          <span class="rmeta">SaaS<span class="yr tnum">2025</span></span>
+        </a>
+        <a class="row" href="#work-15th-club">
+          <span class="num tnum">03</span>
+          <span class="rtitle">15th Club</span>
+          <span class="rmeta">AI<span class="yr tnum">2025</span></span>
+        </a>
+        <a class="row" href="#work-doug-march">
+          <span class="num tnum">04</span>
+          <span class="rtitle">doug-march.com</span>
+          <span class="rmeta">AI<span class="yr tnum">2026</span></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- EXPERIMENTS -->
+    <section class="col" id="experiments">
+      <div class="col-head">
+        <h2 class="col-title">Experiments</h2>
+        <span class="col-count">03 dirs</span>
+      </div>
+      <div class="rows">
+        <a class="row" href="#exp-teeturn">
+          <span class="num tnum">01</span>
+          <span class="rtitle">TeeTurn<span class="ext-flag">↗</span></span>
+          <span class="rmeta">Experiment<span class="yr tnum">2020</span></span>
+        </a>
+        <a class="row" href="#exp-politweets">
+          <span class="num tnum">02</span>
+          <span class="rtitle">Politweets<span class="ext-flag">↗</span></span>
+          <span class="rmeta">Experiment<span class="yr tnum">2008</span></span>
+        </a>
+        <a class="row" href="#exp-twittertale">
+          <span class="num tnum">03</span>
+          <span class="rtitle">Twittertale<span class="ext-flag">↗</span></span>
+          <span class="rmeta">Experiment<span class="yr tnum">2008</span></span>
+        </a>
+      </div>
+      <div class="col-head" style="margin-top:34px;">
+        <h2 class="col-title">Colophon</h2>
+        <span class="col-count">chassis</span>
+      </div>
+      <div class="rows">
+        <div class="log-mono">display <span class="c">::</span> Bebas Neue</div>
+        <div class="log-mono">body <span class="c">::</span> IBM Plex Sans</div>
+        <div class="log-mono">hue <span class="c">::</span> 150° phosphor emerald</div>
+        <div class="log-mono">radius <span class="c">::</span> 0 — hard corners only</div>
+      </div>
+    </section>
+
+    <!-- SIGNAL LOG -->
+    <aside class="col" id="signal">
+      <div class="col-head">
+        <h2 class="col-title">Signal Log</h2>
+        <span class="col-count">live</span>
+      </div>
+      <div class="log">
+        <div class="log-group">
+          <p class="log-label">golf · 3M open</p>
+          <div class="log-line lit"><span class="lname">Jackson Koivun</span><span class="val">−20</span></div>
+          <div class="log-line"><span class="lname">Grillo / Kohles</span><span class="val">−17</span></div>
+        </div>
+        <div class="log-group">
+          <p class="log-label">mlb · detroit</p>
+          <div class="log-line dim"><span class="lname">Tigers L</span><span class="val">2–3</span></div>
+        </div>
+        <div class="log-group">
+          <p class="log-label">sky</p>
+          <div class="log-line"><span class="lname">Moon</span><span class="val">waxing gibbous · 94%</span></div>
+        </div>
+        <div class="log-group">
+          <p class="log-label">now playing</p>
+          <div class="log-line"><span class="lname">Wet Leg</span><span class="val">↻</span></div>
+          <div class="log-line"><span class="lname">The War on Drugs</span><span class="val">↻</span></div>
+        </div>
+        <div class="log-group">
+          <p class="log-label">source</p>
+          <div class="log-mono">hn <span class="c">·</span> 209 <span class="c">·</span> use it anyway</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- FOOTER EXIT -->
+  <footer class="exit">
+    <span class="comment"># </span>
+    <span>— rebuilt 2026-07-26 · exit <span class="code0">0</span></span>
+  </footer>
+
+</div>
+</body>
+</html>

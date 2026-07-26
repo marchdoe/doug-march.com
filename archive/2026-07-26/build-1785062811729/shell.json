@@ -1,0 +1,6 @@
+{
+  "nav": "prompt bar — single top line, 56px, no band: brand lockup left, dim `~/doug-march —` path, three lowercase links right with a phosphor `$` glyph",
+  "footer": "exit line — one dim phosphor comment row at page bottom, `— rebuilt 2026-07-26 · exit 0`",
+  "brand_lockup": "horizontal-sm",
+  "brand_color_mode": "single-color"
+}
