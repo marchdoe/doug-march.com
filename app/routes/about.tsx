@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Box, Flex, Stack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Box, Flex } from '../../styled-system/jsx'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
@@ -8,246 +8,184 @@ export const Route = createFileRoute('/about')({ component: AboutPage })
 
 function AboutPage() {
   return (
-    <>
-      {/* HERO */}
-      <Box
-        as="section"
-        className={css({
-          paddingY: { base: '8', md: '10' },
-          borderBottom: '1px solid',
-          borderColor: 'border',
-        })}
-      >
-        <p
-          className={css({
-            fontSize: { base: 'sm', md: 'md' },
-            fontVariantCaps: 'all-small-caps',
-            textTransform: 'lowercase',
-            letterSpacing: 'wider',
-            color: 'accent',
-            marginBottom: '4',
-            fontWeight: 'medium',
-          })}
-        >
-          {identity.role}
-        </p>
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'normal',
-            fontSize: { base: '4xl', md: '6xl', lg: '7xl' },
-            lineHeight: 'tight',
-            letterSpacing: 'normal',
-            textTransform: 'uppercase',
-            color: 'text',
-            maxWidth: '18ch',
-          })}
-        >
-          {identity.statement}
-        </h1>
-      </Box>
-
-      <Box
-        as="main"
-        className={css({
-          display: 'grid',
-          gridTemplateColumns: { base: '1fr', md: '1.6fr 1fr' },
-          paddingY: '8',
-        })}
-      >
-        {/* TIMELINE / CAPABILITIES / EDUCATION */}
-        <Box
-          className={css({
-            paddingX: { base: 0, md: '8' },
-            paddingLeft: 0,
-          })}
-        >
-          <ColHead title="Timeline" count={`${String(timeline.length).padStart(2, '0')} entries`} />
-          <Box>
-            {timeline.map((entry, i) => (
-              <Flex
-                key={`${entry.year}-${i}`}
-                gap="4"
-                align="baseline"
-                className={css({
-                  paddingY: '3',
-                  borderBottom: '1px solid',
-                  borderColor: 'border',
-                })}
-              >
-                <span
-                  className={css({
-                    flex: '0 0 120px',
-                    minWidth: '120px',
-                    fontSize: 'xs',
-                    color: 'accentBright',
-                    letterSpacing: 'wide',
-                  })}
-                >
-                  {entry.year}
-                </span>
-                <Box>
-                  <p className={css({ fontSize: 'md', color: 'text', letterSpacing: 'normal' })}>
-                    {entry.role} <span className={css({ color: 'textMuted' })}>·</span> {entry.company}
-                  </p>
-                  <p className={css({ fontSize: 'sm', lineHeight: 'normal', color: 'textSecondary', marginTop: '1' })}>
-                    {entry.description}
-                  </p>
-                </Box>
-              </Flex>
-            ))}
-          </Box>
-
-          <Box marginTop="8">
-            <ColHead title="Capabilities" count="log" />
-            <Box className={css({ fontSize: 'sm', color: 'textSecondary', letterSpacing: 'normal' })}>
-              <p className={css({ marginBottom: '2', fontSize: '2xs', letterSpacing: 'wider', color: 'pine.400', textTransform: 'uppercase' })}>
-                capabilities ::
-              </p>
-              <Flex wrap="wrap" gap="3">
-                {capabilities.map((cap) => (
-                  <span
-                    key={cap}
-                    className={css({
-                      fontSize: 'xs',
-                      color: 'text',
-                      border: '1px solid',
-                      borderColor: 'border',
-                      paddingX: '2',
-                      paddingY: '1',
-                    })}
-                  >
-                    {cap}
-                  </span>
-                ))}
-              </Flex>
-            </Box>
-          </Box>
-
-          <Box marginTop="8">
-            <ColHead title="Education" count="01 dir" />
-            <Flex
-              justify="space-between"
-              align="baseline"
-              className={css({ paddingY: '3', borderBottom: '1px solid', borderColor: 'border' })}
-            >
-              <Box>
-                <p className={css({ fontSize: 'md', color: 'text' })}>{education.school}</p>
-                <p className={css({ fontSize: 'sm', color: 'textSecondary', marginTop: '1' })}>
-                  {education.degree} · {education.concentration}
-                </p>
-              </Box>
-              <span className={css({ fontSize: 'xs', color: 'pine.400', letterSpacing: 'wide', whiteSpace: 'nowrap' })}>
-                {education.years}
-              </span>
-            </Flex>
-          </Box>
-        </Box>
-
-        {/* SIGNAL LOG — personal */}
-        <Box
-          as="aside"
-          className={css({
-            paddingX: { base: 0, md: '8' },
-            paddingTop: { base: '6', md: 0 },
-            marginTop: { base: '6', md: 0 },
-            borderTop: '1px solid',
-            borderLeft: { base: 'none', md: '1px solid' },
-            borderColor: 'border',
-          })}
-        >
-          <ColHead title="Signal Log" count="live" />
-          <Box>
-            <LogGroup label="golf">
-              <LogLine name="Holes in one" value={String(personal.holesInOne)} lit />
-              <LogLine name="Sport" value={personal.sport} />
-            </LogGroup>
-            <LogGroup label="teams">
-              {personal.teams.map((team) => (
-                <LogLine key={team} name={team} value="↻" />
-              ))}
-            </LogGroup>
-            <LogGroup label="now" last>
-              <LogLine name="Current focus" value={personal.currentFocus} lit />
-            </LogGroup>
-          </Box>
-        </Box>
-      </Box>
-    </>
-  )
-}
-
-function ColHead({ title, count }: { title: string; count: string }) {
-  return (
-    <Flex
-      align="baseline"
-      justify="space-between"
-      className={css({
-        paddingBottom: '3',
-        marginBottom: '2',
-        borderBottom: '1px solid',
-        borderColor: 'pine.600',
-      })}
-    >
-      <h2
-        className={css({
-          fontFamily: 'display',
-          fontSize: 'xl',
-          lineHeight: 'snug',
-          letterSpacing: 'wide',
-          color: 'text',
-        })}
-      >
-        {title}
-      </h2>
-      <span
-        className={css({
-          fontSize: '2xs',
-          letterSpacing: 'wider',
-          color: 'pine.400',
-          textTransform: 'uppercase',
-        })}
-      >
-        {count}
-      </span>
-    </Flex>
-  )
-}
-
-function LogGroup({ label, children, last }: { label: string; children: React.ReactNode; last?: boolean }) {
-  return (
     <Box
+      as="main"
       className={css({
-        paddingY: '3',
-        borderBottom: last ? 'none' : '1px solid',
-        borderColor: 'border',
+        paddingX: { base: '6', md: '12', lg: '24' },
+        paddingY: { base: '10', md: '14', lg: '20' },
       })}
     >
-      <p className={css({ fontSize: '2xs', letterSpacing: 'wider', textTransform: 'uppercase', color: 'pine.400', marginBottom: '2' })}>
-        {label}
-      </p>
-      {children}
-    </Box>
-  )
-}
+      {/* Identity statement — Bricolage block filling ~70% width */}
+      <h1
+        className={css({
+          fontFamily: 'heading',
+          fontWeight: 'bold',
+          fontSize: 'clamp(28px, 4vw, 56px)',
+          lineHeight: 'snug',
+          letterSpacing: 'tight',
+          color: 'text',
+          maxWidth: { base: '100%', lg: '70%' },
+          margin: '0 0 12',
+        })}
+      >
+        {identity.statement}
+      </h1>
 
-function LogLine({ name, value, lit }: { name: string; value: string; lit?: boolean }) {
-  return (
-    <Flex
-      align="baseline"
-      justify="space-between"
-      gap="3"
-      className={css({
-        fontSize: 'sm',
-        lineHeight: 'normal',
-        paddingY: '1',
-        color: 'textSecondary',
-      })}
-    >
-      <span className={css({ color: lit ? 'text' : undefined })}>{name}</span>
-      <span className={css({ whiteSpace: 'nowrap', color: lit ? 'accent' : 'textMuted', fontWeight: lit ? 'medium' : 'normal' })}>
-        {value}
-      </span>
-    </Flex>
+      <Box
+        className={css({
+          fontFamily: 'body',
+          fontSize: 'sm',
+          color: 'textSecondary',
+          marginBottom: '16',
+        })}
+      >
+        {identity.name} — {identity.role}
+      </Box>
+
+      {/* Timeline */}
+      <Stack
+        gap="0"
+        className={css({
+          borderTop: '1px solid',
+          borderColor: 'border',
+          marginBottom: '16',
+        })}
+      >
+        {timeline.map((entry, i) => (
+          <Flex
+            key={i}
+            align="baseline"
+            gap="6"
+            className={css({
+              borderBottom: '1px solid',
+              borderColor: 'border',
+              paddingY: '4',
+              bg: i % 2 === 0 ? 'bgDeep' : 'transparent',
+              paddingX: '4',
+              flexWrap: 'wrap',
+            })}
+          >
+            <Box
+              className={css({
+                minWidth: '120px',
+                flexShrink: '0',
+                fontFamily: 'body',
+                fontSize: 'sm',
+                fontWeight: 'semibold',
+                color: 'accent',
+                fontVariantNumeric: 'tabular-nums',
+              })}
+            >
+              {entry.year}
+            </Box>
+            <Box
+              className={css({
+                minWidth: { base: '100%', md: '260px' },
+                flexShrink: '0',
+                fontFamily: 'heading',
+                fontSize: 'md',
+                color: 'text',
+              })}
+            >
+              {entry.role} <span className={css({ color: 'textMuted' })}>· {entry.company}</span>
+            </Box>
+            <Box
+              className={css({
+                fontFamily: 'body',
+                fontSize: 'sm',
+                color: 'textSecondary',
+                flex: '1',
+                minWidth: '200px',
+              })}
+            >
+              {entry.description}
+            </Box>
+          </Flex>
+        ))}
+      </Stack>
+
+      {/* Capabilities */}
+      <Flex
+        wrap="wrap"
+        gap="4"
+        className={css({
+          marginBottom: '16',
+          fontFamily: 'body',
+          fontSize: 'xs',
+          fontWeight: 'medium',
+          letterSpacing: 'wider',
+          textTransform: 'uppercase',
+          color: 'textSecondary',
+        })}
+      >
+        {capabilities.map((cap) => (
+          <Box
+            key={cap}
+            className={css({
+              borderBottom: '1px solid',
+              borderColor: 'border',
+              paddingBottom: '1',
+            })}
+          >
+            {cap}
+          </Box>
+        ))}
+      </Flex>
+
+      {/* Education */}
+      <Box
+        className={css({
+          marginBottom: '16',
+          fontFamily: 'body',
+          fontSize: 'sm',
+          color: 'textSecondary',
+          lineHeight: 'normal',
+        })}
+      >
+        <Box className={css({ color: 'text', fontWeight: 'semibold' })}>
+          {education.school} — {education.degree}
+        </Box>
+        <Box>
+          {education.concentration} · {education.years}
+        </Box>
+      </Box>
+
+      {/* Personal data — second baseline strip echoing the home footer */}
+      <Flex
+        wrap="wrap"
+        gap="2"
+        columnGap="7"
+        className={css({
+          bg: 'bgDeep',
+          borderTop: '1px solid',
+          borderColor: 'border',
+          paddingX: '4',
+          paddingY: '4',
+          fontFamily: 'body',
+          fontSize: '2xs',
+          fontWeight: 'medium',
+          letterSpacing: 'wider',
+          textTransform: 'uppercase',
+          color: 'textSecondary',
+        })}
+      >
+        <span>
+          <span className={css({ color: 'textMuted' })}>HOLES IN ONE</span>{' '}
+          <span className={css({ color: 'accent' })}>{personal.holesInOne}</span>
+        </span>
+        <span className={css({ color: 'border' })}>/</span>
+        <span>
+          <span className={css({ color: 'textMuted' })}>SPORT</span> {personal.sport}
+        </span>
+        <span className={css({ color: 'border' })}>/</span>
+        <span>
+          <span className={css({ color: 'textMuted' })}>TEAMS</span> {personal.teams.join(', ')}
+        </span>
+        <span className={css({ color: 'border' })}>/</span>
+        <span>
+          <span className={css({ color: 'textMuted' })}>NOW</span> {personal.currentFocus}
+        </span>
+      </Flex>
+    </Box>
   )
 }

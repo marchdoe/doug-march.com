@@ -1,0 +1,278 @@
+{
+  "date": "2026-07-27",
+  "startedAt": "2026-07-27T11:04:07.096Z",
+  "completedAt": "2026-07-27T11:13:51.936Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Tabasco - The Root Of A Legacy",
+              "description": "Solo-built WebGL scrollytelling experience. The 155-year Tabasco story told through scroll-driven 3D. Pepper ripening, barrel aging, and a cinematic product...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a524632a9d45072322533.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfqBwsNIjnuRZQuAACAAElEQVR42uz9ebQ1S3YXBv525Ln3e99735tfVb2aXqlUc5VKUg0aSkNpYhBSg4xoTDcLWGpjFjQG2902Xq3upt20jbyARWND00Z4CTCDBQK3JHuBBBIIIRkhsEAS...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Tuscan Journey Begins",
+              "description": "MONOGRID created an interactive journey for Weekend Max Mara, transforming Italian craftsmanship into an immersive digital experience.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4f5b3f3e376480567855.jpg",
+              "screenshot_b64": "/9j/4R2tRXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAAYgEbAAUAAAABAAAAagEoAAMAAAABAAIAAAExAAIAAAAhAAAAcgEyAAIAAAAUAAAAk4dpAAQAAAABAAAAqAAAANQACvyAAAAnEAAK/IAAACcQQWRvYmUgUGhvdG9zaG9wIDI3LjIgKE1hY2ludG9zaCkAMjAyNjowNzowNyAxNDo0OToxNAAAAAOgAQADAAAAAQABAACgAgAEAAAAAQAABkCgAwAE...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "IKEA “Taking Apart the 30”",
+              "description": "It’s been 30 years since IKEA arrived in Spain, and we want to celebrate your journey with us and all the things we’ve built together to create a better...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a50f5516ead9193321829.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Monday",
+          "is_weekend": false,
+          "day_index": 1
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "permissionlesstech/bitchat/stargazers",
+              "description": "",
+              "language": "Swift",
+              "stars": null
+            },
+            {
+              "name": "amnezia-vpn/amnezia-client/stargazers",
+              "description": "",
+              "language": "C++",
+              "stars": null
+            },
+            {
+              "name": "moeru-ai/airi/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "yorukot/superfile/stargazers",
+              "description": "",
+              "language": "Go",
+              "stars": null
+            },
+            {
+              "name": "sponsors/NanmiCoder",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "3M Open",
+          "status": "Final",
+          "leaders": [
+            {
+              "name": "Jackson Koivun",
+              "position": "1",
+              "score": "-25"
+            },
+            {
+              "name": "Scottie Scheffler",
+              "position": "2",
+              "score": "-22"
+            },
+            {
+              "name": "Hideki Matsuyama",
+              "position": "3",
+              "score": "-20"
+            },
+            {
+              "name": "Brian Harman",
+              "position": "4",
+              "score": "-20"
+            },
+            {
+              "name": "Denny McCarthy",
+              "position": "5",
+              "score": "-20"
+            }
+          ]
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Kimi-K3 Releases on HuggingFace 7/27",
+              "url": "https://huggingface.co/moonshotai/Kimi-K3",
+              "score": 380,
+              "by": "nateb2022"
+            },
+            {
+              "title": "PGSimCity - How PostgreSQL Works",
+              "url": "https://nikolays.github.io/PGSimCity/",
+              "score": 656,
+              "by": "jonbaer"
+            },
+            {
+              "title": "Show HN: Physically accurate black hole you can put in your room",
+              "url": "https://blackhole.plav.in",
+              "score": 334,
+              "by": "aplavin"
+            },
+            {
+              "title": "Magnolias Are So Old That They're Pollinated by Beetles, Not Bees",
+              "url": "https://mymodernmet.com/magnolia-ancient-flowers-beetles/",
+              "score": 44,
+              "by": "speckx"
+            },
+            {
+              "title": "Scriptc by Vercel: TypeScript-to-Native compiler, no JavaScript engine in binary",
+              "url": "https://github.com/vercel-labs/scriptc",
+              "score": 203,
+              "by": "maxloh"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "full moon",
+          "illumination": 0.98,
+          "days_into_cycle": 13.43
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "Wet Leg"
+          ]
+        },
+        "quote": {
+          "text": "No snowflake ever falls in the wrong place.",
+          "author": "Zen Proverb"
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 27,
+          "day_of_year": 208,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-07-26T17:40Z",
+              "result": "loss",
+              "score": "4-5"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:11",
+          "sunset": "19:22",
+          "daylight_hours": 14.2
+        },
+        "date": "2026-07-27"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-27T11:04:22.407Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-26: Index\n  - 2026-07-24: Scroll\n  - 2026-07-23: Gallery Wall\n  - 2026-07-22: Specimen\n  - 2026-07-21: Split\n  - 2026-07-20: Poster\n  - 2026-07-19: Broadsheet\n\n**Recently used** (last 3 days): Index, Scroll, Gallery Wall\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief "
+      },
+      "output": {
+        "hero_copy": "No snowflake ever falls in the wrong place.",
+        "archetype": "Poster",
+        "chassisId": "bricolage-manrope",
+        "specLength": 4027,
+        "specPreview": "### 1. Color Specification\n- **Primary hue** — 118° (verdant green). The color mandate scorched everything except the narrow 76°–120° corridor; rather than fight it I read the proverb's \"right place\" as summer verdure — a field so alive that a single cold word falling into it looks perfectly, serenely placed. 118° sits just inside the legal edge and reads unambiguously green, not chartreuse.\n- **Neutral palette (Sage, green-tinted)** — 50 `#F3F7F3`, 100 `#E6EEE7`, 200 `#CBD8CC`, 300 `#A6B8A8`, 4",
+        "selfCheck": "1. Hero quotability: Yes — a standalone Zen proverb, poster-worthy and screenshot-ready on its own.\n2. Because-of chain: Yes — serene acceptance → Poster (one dominant line) → Bricolage (warm marquee, not shouty) → green drench (only legal corridor, read as verdure) → corner-mark poster layout with "
+      },
+      "durationMs": 157323,
+      "timestamp": "2026-07-27T11:06:59.737Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 4027
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 35517,
+      "timestamp": "2026-07-27T11:07:36.833Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 3901,
+        "briefLength": 6837,
+        "mockupLength": 9098
+      },
+      "output": {
+        "files": [
+          "app/components/Layout.tsx",
+          "app/components/Sidebar.tsx",
+          "app/components/SignalStrip.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 107958,
+      "timestamp": "2026-07-27T11:10:41.144Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": false,
+        "error": "Build output smoke check failed:\n  - dist/client/_shell.html and index.html are both missing\n\nThe build COMPILED but the app crashed during prerender (server-side render). Runtime error lines from the build log:\nError: Invalid tag: data:image/svg+xml,%3csvg%20width='71'%20height='59'%20viewBox='0%200%2071%2059'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M29.8925%200.440186C45.91%200.440257%2058.8956%2013.4256%2058.8965%2029.4431C58.8964%2045.4614%2045.9108%2058.4469%2029.8"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-27T11:10:48.605Z"
+    }
+  ]
+}

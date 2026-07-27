@@ -1,18 +1,20 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { css } from '../../styled-system/css'
 import { Box } from '../../styled-system/jsx'
-import { BrandMark } from '../components/BrandMark'
+import { css } from '../../styled-system/css'
+import { Logo } from '../components/Logo'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
+// Capture target — fixed 1200x630, no scroll, no responsiveness.
+// Covers the entire shell so the headless screenshot sees only the card.
 function OgCard() {
   return (
     <Box
       className={css({
         position: 'fixed',
-        inset: 0,
-        zIndex: 9999,
-        background: 'bg',
+        inset: '0',
+        zIndex: '9999',
+        bg: 'bgDeep',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -20,72 +22,78 @@ function OgCard() {
     >
       <Box
         className={css({
+          position: 'relative',
           width: '1200px',
           height: '630px',
-          position: 'relative',
-          background: 'bg',
-          border: '1px solid',
-          borderColor: 'border',
+          bg: 'bg',
+          overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          paddingX: '20',
-          overflow: 'hidden',
+          paddingX: '80px',
+          _before: {
+            content: '""',
+            position: 'absolute',
+            inset: '0',
+            background:
+              'radial-gradient(120% 90% at 88% 8%, rgba(34,160,79,0.32) 0%, rgba(14,74,38,0) 55%), radial-gradient(90% 80% at 12% 100%, rgba(10,46,24,0.6) 0%, rgba(14,74,38,0) 60%)',
+            pointerEvents: 'none',
+          },
         })}
       >
-        <p
-          className={css({
-            fontSize: 'lg',
-            fontVariantCaps: 'all-small-caps',
-            textTransform: 'lowercase',
-            letterSpacing: 'wider',
-            color: 'accent',
-            marginBottom: '6',
-            fontWeight: 'medium',
-          })}
-        >
-          a shell colon does nothing<span className={css({ color: 'accentBright' })}>.</span>
-        </p>
-        <h1
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'normal',
-            fontSize: '9xl',
-            lineHeight: 'tight',
-            letterSpacing: 'normal',
-            textTransform: 'uppercase',
-            color: 'text',
-          })}
-        >
-          Use it
-          <br />
-          <span className={css({ color: 'accent', textShadow: '0 0 24px {colors.emerald.400/50}' })}>
-            Anyway
-          </span>
-        </h1>
-
         <Box
           className={css({
             position: 'absolute',
-            bottom: '48px',
-            right: '56px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '3',
+            top: '56px',
+            left: '80px',
+            color: 'accentGlow',
+            zIndex: '1',
           })}
         >
-          <BrandMark size={30} />
+          <Logo className={css({ height: '48px', width: 'auto', display: 'block' })} />
+        </Box>
+
+        <h1
+          className={css({
+            position: 'relative',
+            zIndex: '1',
+            fontFamily: 'heading',
+            fontWeight: 'bold',
+            fontSize: '104px',
+            lineHeight: 'tight',
+            letterSpacing: 'tight',
+            color: 'text',
+            maxWidth: '18ch',
+            margin: '0',
+          })}
+        >
+          No{' '}
           <span
             className={css({
-              fontFamily: 'body',
-              fontWeight: 'bold',
-              fontSize: 'md',
-              color: 'text',
+              color: 'accentGlow',
+              textShadow: '0 0 32px rgba(164,230,180,0.35)',
             })}
           >
-            Doug March
-          </span>
-        </Box>
+            snowflake
+          </span>{' '}
+          ever falls in the wrong place.
+        </h1>
+
+        <p
+          className={css({
+            position: 'relative',
+            zIndex: '1',
+            marginTop: '32px',
+            fontFamily: 'body',
+            fontSize: '20px',
+            fontWeight: 'medium',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+          })}
+        >
+          — Zen Proverb
+        </p>
       </Box>
     </Box>
   )

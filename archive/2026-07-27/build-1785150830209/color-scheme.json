@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 118,
+    "s": 55,
+    "l": 42,
+    "name": "Verdant Green"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "green",
+    "name": "Sage"
+  },
+  "mood_word": "serene",
+  "color_story": "A deep summer-verdure drench turns the acceptance in the phrase into a living field — everything already in its right place — while one snowflake glows pale against it."
+}
