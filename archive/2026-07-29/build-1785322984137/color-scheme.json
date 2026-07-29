@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 328,
+    "s": 82,
+    "l": 55,
+    "name": "swagger magenta"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "magenta / plum",
+    "name": "plum ink"
+  },
+  "mood_word": "brash",
+  "color_story": "A drenched plum-black field lit by one unearned, self-assured magenta — the color of confidence you have before you understand the problem."
+}

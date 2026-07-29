@@ -1,100 +1,93 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Logo } from '../components/Logo'
+import logoMono from '../assets/logo-mono.svg'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
-// Capture target — fixed 1200x630, no scroll, no responsiveness.
-// Covers the entire shell so the headless screenshot sees only the card.
 function OgCard() {
   return (
-    <Box
+    <div
       className={css({
         position: 'fixed',
-        inset: '0',
-        zIndex: '9999',
-        bg: 'bgDeep',
+        inset: 0,
+        zIndex: 9999,
+        background: 'bg',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       })}
     >
-      <Box
+      <div
         className={css({
           position: 'relative',
           width: '1200px',
           height: '630px',
-          bg: 'bg',
-          overflow: 'hidden',
+          background: 'bg',
+          border: '3px double',
+          borderColor: 'border',
+          padding: '9',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          paddingX: '80px',
-          _before: {
-            content: '""',
-            position: 'absolute',
-            inset: '0',
-            background:
-              'radial-gradient(120% 90% at 88% 8%, rgba(34,160,79,0.32) 0%, rgba(14,74,38,0) 55%), radial-gradient(90% 80% at 12% 100%, rgba(10,46,24,0.6) 0%, rgba(14,74,38,0) 60%)',
-            pointerEvents: 'none',
-          },
+          overflow: 'hidden',
         })}
       >
-        <Box
+        <div
           className={css({
             position: 'absolute',
-            top: '56px',
-            left: '80px',
-            color: 'accentGlow',
-            zIndex: '1',
+            inset: 0,
+            background: 'accent',
+            opacity: 0.1,
+            pointerEvents: 'none',
+          })}
+        />
+
+        <div className={css({ position: 'relative', display: 'flex', alignItems: 'center', gap: '3', marginBottom: '6' })}>
+          <img src={logoMono} alt="" className={css({ height: '56px', width: 'auto', color: 'text' })} />
+          <span
+            className={css({
+              fontFamily: 'display',
+              fontWeight: 'bold',
+              fontSize: '2xl',
+              color: 'text',
+              letterSpacing: 'tight',
+            })}
+          >
+            Doug March
+          </span>
+        </div>
+
+        <div
+          className={css({
+            position: 'relative',
+            fontFamily: 'body',
+            fontSize: 'xs',
+            letterSpacing: 'widest',
+            textTransform: 'lowercase',
+            fontWeight: 'semibold',
+            color: 'accent',
+            marginBottom: '4',
           })}
         >
-          <Logo className={css({ height: '48px', width: 'auto', display: 'block' })} />
-        </Box>
+          The Front Page · Vol. MMXXVI · No. 210
+        </div>
 
         <h1
           className={css({
             position: 'relative',
-            zIndex: '1',
-            fontFamily: 'heading',
+            fontFamily: 'display',
             fontWeight: 'bold',
-            fontSize: '104px',
+            fontSize: 'clamp(3rem, 6vw, 5.5rem)',
             lineHeight: 'tight',
             letterSpacing: 'tight',
             color: 'text',
             maxWidth: '18ch',
-            margin: '0',
           })}
         >
-          No{' '}
-          <span
-            className={css({
-              color: 'accentGlow',
-              textShadow: '0 0 32px rgba(164,230,180,0.35)',
-            })}
-          >
-            snowflake
-          </span>{' '}
-          ever falls in the wrong place.
+          <span className={css({ color: 'accentGlow', fontStyle: 'italic' })}>Confidence</span> is
+          what you have before you understand the problem.
         </h1>
-
-        <p
-          className={css({
-            position: 'relative',
-            zIndex: '1',
-            marginTop: '32px',
-            fontFamily: 'body',
-            fontSize: '20px',
-            fontWeight: 'medium',
-            letterSpacing: 'widest',
-            textTransform: 'uppercase',
-            color: 'textMuted',
-          })}
-        >
-          — Zen Proverb
-        </p>
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }

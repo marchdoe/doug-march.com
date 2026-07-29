@@ -1,191 +1,183 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex, Stack } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
 
+const kickerCss = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4',
+  flexWrap: 'wrap',
+  color: 'accent',
+  fontFamily: 'body',
+  fontSize: 'xs',
+  letterSpacing: 'widest',
+  textTransform: 'lowercase',
+  fontWeight: 'semibold',
+  marginBottom: { base: '4', md: '5' },
+})
+
+const ruleCss = css({ flex: 1, height: '1px', background: 'border', minWidth: '10' })
+
+const sectHeadCss = css({
+  fontFamily: 'body',
+  fontSize: 'sm',
+  letterSpacing: 'widest',
+  textTransform: 'lowercase',
+  fontWeight: 'semibold',
+  color: 'accentGlow',
+  paddingBottom: '2',
+  marginBottom: '4',
+  borderBottom: '1px solid',
+  borderBottomColor: 'border',
+})
+
+const almanacItemCss = css({
+  paddingY: '3',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+})
+
+const kCss = css({
+  display: 'block',
+  marginBottom: '1',
+  fontFamily: 'body',
+  fontSize: '2xs',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
+  color: 'textSubtle',
+})
+
+const vCss = css({ fontFamily: 'display', fontSize: 'sm', lineHeight: 'loose', color: 'plum.200' })
+
 function AboutPage() {
   return (
-    <Box
-      as="main"
-      className={css({
-        paddingX: { base: '6', md: '12', lg: '24' },
-        paddingY: { base: '10', md: '14', lg: '20' },
-      })}
-    >
-      {/* Identity statement — Bricolage block filling ~70% width */}
-      <h1
+    <>
+      <section
         className={css({
-          fontFamily: 'heading',
-          fontWeight: 'bold',
-          fontSize: 'clamp(28px, 4vw, 56px)',
-          lineHeight: 'snug',
-          letterSpacing: 'tight',
-          color: 'text',
-          maxWidth: { base: '100%', lg: '70%' },
-          margin: '0 0 12',
+          minHeight: { base: 'auto', md: '36vh' },
+          padding: { base: '5', md: '7' },
+          paddingX: { base: '4', md: '8' },
+          borderBottom: '3px double',
+          borderBottomColor: 'border',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
         })}
       >
-        {identity.statement}
-      </h1>
+        <div className={kickerCss}>
+          <span>The Masthead</span>
+          <span className={ruleCss} />
+          <span>{identity.role}</span>
+        </div>
+        <h1
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: 'clamp(2rem, 5.5vw, 4.5rem)',
+            lineHeight: 'snug',
+            letterSpacing: 'tight',
+            color: 'accentGlow',
+            maxWidth: '22ch',
+          })}
+        >
+          {identity.statement}
+        </h1>
+      </section>
 
-      <Box
+      <main
         className={css({
-          fontFamily: 'body',
-          fontSize: 'sm',
-          color: 'textSecondary',
-          marginBottom: '16',
+          padding: { base: '5', md: '6' },
+          paddingX: { base: '4', md: '8' },
+          display: 'grid',
+          gridTemplateColumns: { base: '1fr', md: 'repeat(12, 1fr)' },
+          gap: '8',
         })}
       >
-        {identity.name} — {identity.role}
-      </Box>
+        <section className={css({ gridColumn: { base: '1/-1', md: '1 / span 8' } })}>
+          <h2 className={sectHeadCss}>The Record — Timeline</h2>
+          {timeline.map((t) => (
+            <div key={`${t.year}-${t.role}`} className={css({ paddingY: '4', borderBottom: '1px solid', borderColor: 'border' })}>
+              <div className={css({ display: 'flex', gap: '4', alignItems: 'baseline', flexWrap: 'wrap' })}>
+                <span
+                  className={css({
+                    minWidth: '120px',
+                    flex: 'none',
+                    fontFamily: 'body',
+                    fontSize: 'xs',
+                    letterSpacing: 'wider',
+                    textTransform: 'uppercase',
+                    color: t.current ? 'accentGlow' : 'textSubtle',
+                  })}
+                >
+                  {t.year}
+                </span>
+                <span className={css({ fontFamily: 'display', fontSize: 'lg', color: 'text' })}>
+                  {t.role} <span className={css({ color: 'textMuted' })}>— {t.company}</span>
+                </span>
+              </div>
+              <p className={css({ fontSize: 'sm', lineHeight: 'loose', color: 'plum.200', marginTop: '2', maxWidth: '60ch' })}>
+                {t.description}
+              </p>
+            </div>
+          ))}
+        </section>
 
-      {/* Timeline */}
-      <Stack
-        gap="0"
-        className={css({
-          borderTop: '1px solid',
-          borderColor: 'border',
-          marginBottom: '16',
-        })}
-      >
-        {timeline.map((entry, i) => (
-          <Flex
-            key={i}
-            align="baseline"
-            gap="6"
-            className={css({
-              borderBottom: '1px solid',
-              borderColor: 'border',
-              paddingY: '4',
-              bg: i % 2 === 0 ? 'bgDeep' : 'transparent',
-              paddingX: '4',
-              flexWrap: 'wrap',
-            })}
-          >
-            <Box
-              className={css({
-                minWidth: '120px',
-                flexShrink: '0',
-                fontFamily: 'body',
-                fontSize: 'sm',
-                fontWeight: 'semibold',
-                color: 'accent',
-                fontVariantNumeric: 'tabular-nums',
-              })}
-            >
-              {entry.year}
-            </Box>
-            <Box
-              className={css({
-                minWidth: { base: '100%', md: '260px' },
-                flexShrink: '0',
-                fontFamily: 'heading',
-                fontSize: 'md',
-                color: 'text',
-              })}
-            >
-              {entry.role} <span className={css({ color: 'textMuted' })}>· {entry.company}</span>
-            </Box>
-            <Box
-              className={css({
-                fontFamily: 'body',
-                fontSize: 'sm',
-                color: 'textSecondary',
-                flex: '1',
-                minWidth: '200px',
-              })}
-            >
-              {entry.description}
-            </Box>
-          </Flex>
-        ))}
-      </Stack>
+        <aside className={css({ gridColumn: { base: '1/-1', md: '9 / span 4' } })}>
+          <h2 className={sectHeadCss}>Standings &amp; Almanac</h2>
 
-      {/* Capabilities */}
-      <Flex
-        wrap="wrap"
-        gap="4"
-        className={css({
-          marginBottom: '16',
-          fontFamily: 'body',
-          fontSize: 'xs',
-          fontWeight: 'medium',
-          letterSpacing: 'wider',
-          textTransform: 'uppercase',
-          color: 'textSecondary',
-        })}
-      >
-        {capabilities.map((cap) => (
-          <Box
-            key={cap}
-            className={css({
-              borderBottom: '1px solid',
-              borderColor: 'border',
-              paddingBottom: '1',
-            })}
-          >
-            {cap}
-          </Box>
-        ))}
-      </Flex>
+          <div className={css({ marginBottom: '5' })}>
+            <span className={kCss}>Capabilities</span>
+            <ul className={css({ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: '2' })}>
+              {capabilities.map((c) => (
+                <li
+                  key={c}
+                  className={css({
+                    fontFamily: 'body',
+                    fontSize: '2xs',
+                    letterSpacing: 'wider',
+                    textTransform: 'lowercase',
+                    fontWeight: 'semibold',
+                    color: 'text',
+                    border: '1px solid',
+                    borderColor: 'border',
+                    paddingX: '2',
+                    paddingY: '1',
+                  })}
+                >
+                  {c}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-      {/* Education */}
-      <Box
-        className={css({
-          marginBottom: '16',
-          fontFamily: 'body',
-          fontSize: 'sm',
-          color: 'textSecondary',
-          lineHeight: 'normal',
-        })}
-      >
-        <Box className={css({ color: 'text', fontWeight: 'semibold' })}>
-          {education.school} — {education.degree}
-        </Box>
-        <Box>
-          {education.concentration} · {education.years}
-        </Box>
-      </Box>
+          <div className={almanacItemCss}>
+            <span className={kCss}>Education</span>
+            <span className={vCss}>
+              {education.school} — {education.degree}
+              <br />
+              {education.concentration} · {education.years}
+            </span>
+          </div>
 
-      {/* Personal data — second baseline strip echoing the home footer */}
-      <Flex
-        wrap="wrap"
-        gap="2"
-        columnGap="7"
-        className={css({
-          bg: 'bgDeep',
-          borderTop: '1px solid',
-          borderColor: 'border',
-          paddingX: '4',
-          paddingY: '4',
-          fontFamily: 'body',
-          fontSize: '2xs',
-          fontWeight: 'medium',
-          letterSpacing: 'wider',
-          textTransform: 'uppercase',
-          color: 'textSecondary',
-        })}
-      >
-        <span>
-          <span className={css({ color: 'textMuted' })}>HOLES IN ONE</span>{' '}
-          <span className={css({ color: 'accent' })}>{personal.holesInOne}</span>
-        </span>
-        <span className={css({ color: 'border' })}>/</span>
-        <span>
-          <span className={css({ color: 'textMuted' })}>SPORT</span> {personal.sport}
-        </span>
-        <span className={css({ color: 'border' })}>/</span>
-        <span>
-          <span className={css({ color: 'textMuted' })}>TEAMS</span> {personal.teams.join(', ')}
-        </span>
-        <span className={css({ color: 'border' })}>/</span>
-        <span>
-          <span className={css({ color: 'textMuted' })}>NOW</span> {personal.currentFocus}
-        </span>
-      </Flex>
-    </Box>
+          <div className={almanacItemCss}>
+            <span className={kCss}>Holes in one</span>
+            <span className={vCss}>
+              {personal.holesInOne} · {personal.sport}
+            </span>
+          </div>
+          <div className={almanacItemCss}>
+            <span className={kCss}>Teams</span>
+            <span className={vCss}>{personal.teams.join(' · ')}</span>
+          </div>
+          <div className={almanacItemCss}>
+            <span className={kCss}>Current focus</span>
+            <span className={vCss}>{personal.currentFocus}</span>
+          </div>
+        </aside>
+      </main>
+    </>
   )
 }

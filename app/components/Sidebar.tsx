@@ -1,70 +1,104 @@
-import { Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Logo } from './Logo'
+import logoMono from '../assets/logo-mono.svg'
 
 export function Sidebar() {
   return (
-    <Flex
-      as="header"
-      align="flex-start"
-      justify="space-between"
-      gap="6"
+    <header
       className={css({
-        paddingX: { base: '6', md: '12', lg: '24' },
-        paddingTop: { base: '8', md: '12', lg: '16' },
-        position: 'relative',
-        zIndex: '1',
-        flexDirection: { base: 'column', sm: 'row' },
+        background: 'panel',
+        borderTop: '3px double',
+        borderTopColor: 'border',
+        borderBottom: '3px double',
+        borderBottomColor: 'border',
+        paddingY: '3',
+        paddingX: { base: '4', md: '8' },
+        display: 'grid',
+        gridTemplateColumns: { base: '1fr', sm: '1fr auto 1fr' },
+        alignItems: 'center',
+        gap: '3',
+        minHeight: '96px',
       })}
     >
       <a
         href="/"
         aria-label="Doug March — home"
         className={css({
-          display: 'inline-flex',
-          alignItems: 'center',
-          color: 'accentGlow',
-          lineHeight: '0',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: { base: 'center', sm: 'flex-start' },
+          gap: '2',
         })}
       >
-        <Logo className={css({ height: { base: '32px', md: '44px', lg: '52px' }, width: 'auto', display: 'block' })} />
+        <img
+          src={logoMono}
+          alt=""
+          className={css({ height: '46px', width: 'auto', color: 'text' })}
+        />
+        <span
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: 'xl',
+            letterSpacing: 'tight',
+            lineHeight: 'tight',
+            color: 'text',
+          })}
+        >
+          Doug March
+        </span>
       </a>
-      <nav
-        aria-label="Primary"
+
+      <div
         className={css({
+          order: { base: 3, sm: 0 },
+          textAlign: 'center',
+          fontFamily: 'body',
+          fontSize: 'xs',
+          letterSpacing: 'widest',
+          textTransform: 'lowercase',
+          fontWeight: 'semibold',
+          color: 'textMuted',
+        })}
+      >
+        Wednesday <span className={css({ color: 'accentGlow' })}>·</span> July 29, 2026{' '}
+        <span className={css({ color: 'accentGlow' })}>·</span> Full Moon
+      </div>
+
+      <nav
+        aria-label="Sections"
+        className={css({
+          order: { base: 2, sm: 0 },
           display: 'flex',
-          gap: { base: '5', md: '8' },
-          alignItems: 'center',
-          paddingTop: '1',
+          justifyContent: { base: 'center', sm: 'flex-end' },
+          flexWrap: 'wrap',
+          gap: { base: '3', sm: '6' },
+          fontFamily: 'body',
         })}
       >
         {[
-          { href: '/work', label: 'work' },
-          { href: '/about', label: 'about' },
-          { href: '/contact', label: 'contact' },
-        ].map((link) => (
+          { href: '/', label: 'Work' },
+          { href: '/about', label: 'About' },
+          { href: 'mailto:hello@doug-march.com', label: 'Contact' },
+        ].map((l) => (
           <a
-            key={link.href}
-            href={link.href}
+            key={l.label}
+            href={l.href}
             className={css({
-              fontFamily: 'body',
-              fontSize: 'md',
-              fontWeight: 'medium',
-              color: 'textSecondary',
+              fontSize: 'xs',
+              letterSpacing: 'widest',
               textTransform: 'lowercase',
-              padding: '2',
-              lineHeight: '1',
-              _hover: {
-                color: 'accentGlow',
-                textDecoration: 'underline',
-                textUnderlineOffset: '6px',
-              },
+              fontWeight: 'semibold',
+              color: 'text',
+              minHeight: '44px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              _hover: { color: 'accent', textDecoration: 'underline' },
             })}
           >
-            {link.label}
+            {l.label}
           </a>
         ))}
       </nav>
-    </Flex>
+    </header>
   )
 }

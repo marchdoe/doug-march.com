@@ -1,0 +1,251 @@
+{
+  "date": "2026-07-29",
+  "startedAt": "2026-07-29T10:52:28.899Z",
+  "completedAt": "2026-07-29T11:03:05.939Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 14
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Portfolio of Daniela Muntyan",
+              "description": "Personal portfolio of Daniela Muntyan featuring selected work from Figma, Craft Docs, and independent design explorations.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a564e6618ba0829299459.png",
+              "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAPBr1JREFUeAHs/QmgJUlVJo6fyLzL29+rvaqreqVXaJruZqdZ3RBEHFFQFAR30cEFEBHmP4o7ouI+zn+UTdEBdRQBAQVkF2TrBrrpht7X2qveetfM+J1z4kRkZL5731JVr7vq...",
+              "screenshot_media_type": "image/png"
+            },
+            {
+              "title": "The Tie-break",
+              "description": "Play and explore the new New Balance x Miu Miu collection with Coco Gauff.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a47a79eb4dbe565070348.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+              "screenshot_media_type": "image/jpeg"
+            },
+            {
+              "title": "Everest · The Ascent",
+              "description": "Climb Everest in your browser. A cinematic WebGL ascent of 8,849m of real terrain, built solo with Three.js. It tunes its own quality to your machine.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a55cc829a434604910444.jpg",
+              "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+              "screenshot_media_type": "image/jpeg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Wednesday",
+          "is_weekend": false,
+          "day_index": 3
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/opengeos",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "moeru-ai/airi/stargazers",
+              "description": "",
+              "language": "TypeScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/affaan-m",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "huggingface/speech-to-speech/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "1jehuang/jcode/stargazers",
+              "description": "",
+              "language": "Rust",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Rocket Classic",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "More Tailscale tricks for your jailbroken Kindle",
+              "url": "https://tailscale.com/blog/jailbroken-kindle-proxy-tun-modes",
+              "score": 201,
+              "by": "Error6571"
+            },
+            {
+              "title": "User Interfaces of the Demo Scene",
+              "url": "https://www.datagubbe.se/scenegui/",
+              "score": 215,
+              "by": "zdw"
+            },
+            {
+              "title": "SQLite in Production: Optimizing WAL Mode, Concurrency, and VFS Layers",
+              "url": "https://micrologics.org/blog/sqlite-in-production-optimizing-wal-mode-concurrency-and-vfs-layers-for-low-latency-app-servers",
+              "score": 73,
+              "by": "ankitg12"
+            },
+            {
+              "title": "Lisp moving Forth moving Lisp",
+              "url": "https://letoverlambda.com/textmode.cl/guest/chap8.html",
+              "score": 31,
+              "by": "fallat"
+            },
+            {
+              "title": "Codex Security",
+              "url": "https://github.com/openai/codex-security",
+              "score": 510,
+              "by": "bakigul"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": []
+        },
+        "lunar": {
+          "phase": "full moon",
+          "illumination": 0.995,
+          "days_into_cycle": 15.42
+        },
+        "music": {
+          "bands": [
+            "Guided by Voices",
+            "My Morning Jacket"
+          ]
+        },
+        "quote": {
+          "text": "Confidence is what you have before you understand the problem.",
+          "author": "Woody Allen"
+        },
+        "season": {
+          "season": "summer",
+          "month": 7,
+          "day": 29,
+          "day_of_year": 210,
+          "month_name": "July"
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-07-28T22:40Z",
+              "result": "win",
+              "score": "14-0"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "05:12",
+          "sunset": "19:20",
+          "daylight_hours": 14.1
+        },
+        "date": "2026-07-29"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-29T10:52:44.017Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "archetypeConstraints": "\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n  - 2026-07-27: Poster\n  - 2026-07-26: Index\n  - 2026-07-24: Scroll\n  - 2026-07-23: Gallery Wall\n  - 2026-07-22: Specimen\n  - 2026-07-21: Split\n  - 2026-07-20: Poster\n\n**Recently used** (last 3 days): Poster, Index, Scroll\n\nVariance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n- If two archetypes fit equally well, prefer the one NOT in the recent list.\n- If the brief or signals"
+      },
+      "output": {
+        "hero_copy": "Confidence is what you have before you understand the problem.",
+        "archetype": "Broadsheet",
+        "chassisId": "spectral-albert",
+        "specLength": 4484,
+        "specPreview": "### 1. Color Specification\n- **Primary hue** — 328° magenta-rose. Confidence is hot, forward, a little unearned; a vivid magenta is swagger made pigment. It also honors the mandate: the only open corridors are 77–87° and 307–337°, and 328° sits cleanly inside the 307–337° window (chartreuse read as anxious/acid, wrong for confidence).\n- **Neutral palette (plum ink, magenta-tinted)** — 50 `#FBEAF2`, 100 `#F3D5E2`, 200 `#E3B0C8`, 300 `#CC86A8`, 400 `#A85C82`, 500 `#7E405E`, 600 `#5C2C44`, 700 `#42",
+        "selfCheck": "1. Hero quotability: Yes — a complete, wry aphorism that reads as a standalone poster line, not descriptive boilerplate.\n2. Because-of chain: Yes — aphorism → op-ed front page (Broadsheet) → literary transitional serif that reads without shouting (spectral-albert) → confident hot magenta drench → ma"
+      },
+      "durationMs": 152741,
+      "timestamp": "2026-07-29T10:55:16.764Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 4484
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "REVISE\n\n- **Color palette mismatch between visual spec and preset.ts**: Visual spec specifies accent magenta light as `#FF6FB5` (bright saturated pink), but preset.ts defines magenta.50 as `#FDE7F1` (pale off-white). These are visually distinct colors. Additionally, visual spec specifies magenta dark as `#A11056`, but preset.ts has magenta.600 as `#A81056` (slightly lighter). Correct the magenta palette in preset.ts to match the visual spec exactly, or update the visual spec to reflect the actua"
+      },
+      "durationMs": 51115,
+      "timestamp": "2026-07-29T10:56:09.675Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 3969,
+        "briefLength": 7284,
+        "mockupLength": 17574
+      },
+      "output": {
+        "files": [
+          "app/components/Sidebar.tsx",
+          "app/components/Footer.tsx",
+          "app/components/Layout.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 244810,
+      "timestamp": "2026-07-29T11:02:25.259Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-07-29T11:02:34.096Z"
+    }
+  ]
+}

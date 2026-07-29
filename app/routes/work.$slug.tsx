@@ -1,139 +1,208 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
+export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
 
-function WorkDetailPage() {
+const kickerCss = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4',
+  flexWrap: 'wrap',
+  color: 'accent',
+  fontFamily: 'body',
+  fontSize: 'xs',
+  letterSpacing: 'widest',
+  textTransform: 'lowercase',
+  fontWeight: 'semibold',
+  marginBottom: { base: '4', md: '5' },
+})
+
+const ruleCss = css({ flex: 1, height: '1px', background: 'border', minWidth: '10' })
+
+const sectHeadCss = css({
+  fontFamily: 'body',
+  fontSize: 'sm',
+  letterSpacing: 'widest',
+  textTransform: 'lowercase',
+  fontWeight: 'semibold',
+  color: 'accentGlow',
+  paddingBottom: '2',
+  marginBottom: '4',
+  borderBottom: '1px solid',
+  borderBottomColor: 'border',
+})
+
+const almanacItemCss = css({
+  paddingY: '3',
+  borderBottom: '1px solid',
+  borderColor: 'border',
+})
+
+const kCss = css({
+  display: 'block',
+  marginBottom: '1',
+  fontFamily: 'body',
+  fontSize: '2xs',
+  letterSpacing: 'wider',
+  textTransform: 'uppercase',
+  color: 'textSubtle',
+})
+
+const vCss = css({ fontFamily: 'display', fontSize: 'sm', lineHeight: 'loose', color: 'plum.200' })
+
+const bodyPCss = css({
+  fontFamily: 'display',
+  fontSize: 'md',
+  lineHeight: 'loose',
+  color: 'plum.200',
+  marginBottom: '4',
+  maxWidth: '66ch',
+})
+
+function WorkPage() {
   const { slug } = Route.useParams()
   const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
     return (
-      <Box
-        as="main"
-        className={css({
-          paddingX: { base: '6', md: '12', lg: '24' },
-          paddingY: '20',
-          fontFamily: 'body',
-          color: 'textSecondary',
-        })}
-      >
+      <div className={css({ padding: '8', paddingX: { base: '4', md: '8' }, color: 'text' })}>
         Project not found.
-      </Box>
+      </div>
     )
   }
 
   return (
-    <Box
-      as="main"
-      className={css({
-        paddingX: { base: '6', md: '12', lg: '24' },
-        paddingY: { base: '10', md: '14', lg: '20' },
-      })}
-    >
-      <Box
+    <>
+      <section
         className={css({
-          fontFamily: 'body',
-          fontSize: 'xs',
-          letterSpacing: 'wider',
-          textTransform: 'uppercase',
-          color: 'textMuted',
-          marginBottom: '4',
+          minHeight: { base: 'auto', md: '30vh' },
+          padding: { base: '5', md: '7' },
+          paddingX: { base: '4', md: '8' },
+          borderBottom: '3px double',
+          borderBottomColor: 'border',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
         })}
       >
-        {project.type} · {project.year}
-      </Box>
-
-      <h1
-        className={css({
-          fontFamily: 'heading',
-          fontWeight: 'bold',
-          fontSize: 'clamp(32px, 5.5vw, 80px)',
-          lineHeight: 'tight',
-          letterSpacing: 'tight',
-          color: 'text',
-          marginBottom: '8',
-        })}
-      >
-        {project.title}
-      </h1>
-
-      {project.problem && (
-        <p
+        <div className={kickerCss}>
+          <span>{project.type}</span>
+          <span className={ruleCss} />
+          <span>{project.year}</span>
+        </div>
+        <h1
           className={css({
-            fontFamily: 'heading',
-            fontWeight: 'semibold',
-            fontSize: { base: 'lg', md: 'xl' },
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: 'clamp(2rem, 5vw, 4rem)',
             lineHeight: 'snug',
-            color: 'accentGlow',
-            maxWidth: '60ch',
-            marginBottom: '10',
+            letterSpacing: 'tight',
+            color: 'text',
+            maxWidth: '20ch',
+            marginBottom: '4',
           })}
         >
-          {project.problem}
-        </p>
-      )}
-
-      {(project.liveUrl || project.externalUrl) && (
-        <a
-          href={project.liveUrl ?? project.externalUrl}
-          className={css({
-            display: 'inline-block',
-            border: '1px solid',
-            borderColor: 'border.accent',
-            borderRadius: '0',
-            padding: '3',
-            fontFamily: 'body',
-            fontSize: 'xs',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'accent',
-            marginBottom: '12',
-            _hover: { color: 'accentGlow', borderColor: 'accentGlow' },
-          })}
-        >
-          Visit live site ↗
-        </a>
-      )}
-
-      <Box className={css({ maxWidth: '65ch', color: 'textSecondary', fontFamily: 'body', fontSize: 'md', lineHeight: 'normal' })}>
-        {project.approach && (
-          <Box className={css({ marginBottom: '6' })}>
-            <Box className={css({ color: 'text', fontWeight: 'semibold', marginBottom: '1' })}>Approach</Box>
-            {project.approach}
-          </Box>
+          {project.title}
+        </h1>
+        {project.externalUrl && (
+          <a
+            href={project.externalUrl}
+            target="_blank"
+            rel="noopener"
+            className={css({
+              fontFamily: 'body',
+              fontSize: 'xs',
+              fontWeight: 'semibold',
+              letterSpacing: 'wide',
+              color: 'accentGlow',
+              textDecoration: 'underline',
+              _hover: { color: 'accent' },
+            })}
+          >
+            Visit ↗
+          </a>
         )}
-        {project.outcome && (
-          <Box className={css({ marginBottom: '6' })}>
-            <Box className={css({ color: 'text', fontWeight: 'semibold', marginBottom: '1' })}>Outcome</Box>
-            {project.outcome}
-          </Box>
-        )}
-      </Box>
+      </section>
 
-      {project.stack && project.stack.length > 0 && (
-        <Flex
-          wrap="wrap"
-          gap="4"
-          className={css({
-            marginTop: '10',
-            paddingTop: '4',
-            borderTop: '1px solid',
-            borderColor: 'border',
-            fontFamily: 'body',
-            fontSize: '2xs',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textMuted',
-          })}
-        >
-          {project.stack.map((tech) => (
-            <span key={tech}>{tech}</span>
-          ))}
-        </Flex>
-      )}
-    </Box>
+      <main
+        className={css({
+          padding: { base: '5', md: '6' },
+          paddingX: { base: '4', md: '8' },
+          display: 'grid',
+          gridTemplateColumns: { base: '1fr', md: 'repeat(12, 1fr)' },
+          gap: '8',
+        })}
+      >
+        <section className={css({ gridColumn: { base: '1/-1', md: '1 / span 8' } })}>
+          {project.problem && (
+            <p className={bodyPCss}>
+              <strong className={css({ color: 'accentGlow' })}>Problem.</strong> {project.problem}
+            </p>
+          )}
+          {project.approach && (
+            <p className={bodyPCss}>
+              <strong className={css({ color: 'accentGlow' })}>Approach.</strong> {project.approach}
+            </p>
+          )}
+          {project.outcome && (
+            <p className={bodyPCss}>
+              <strong className={css({ color: 'accentGlow' })}>Outcome.</strong> {project.outcome}
+            </p>
+          )}
+          {project.description && <p className={bodyPCss}>{project.description}</p>}
+        </section>
+
+        <aside className={css({ gridColumn: { base: '1/-1', md: '9 / span 4' } })}>
+          <h2 className={sectHeadCss}>Metadata</h2>
+          {project.role && (
+            <div className={almanacItemCss}>
+              <span className={kCss}>Role</span>
+              <span className={vCss}>{project.role}</span>
+            </div>
+          )}
+          <div className={almanacItemCss}>
+            <span className={kCss}>Year</span>
+            <span className={vCss}>{project.year}</span>
+          </div>
+          {project.stack && project.stack.length > 0 && (
+            <div className={almanacItemCss}>
+              <span className={kCss}>Stack</span>
+              <span className={vCss}>{project.stack.join(' · ')}</span>
+            </div>
+          )}
+          {project.liveUrl && (
+            <div className={almanacItemCss}>
+              <span className={kCss}>Live</span>
+              <span className={vCss}>
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener"
+                  className={css({ color: 'accentGlow', textDecoration: 'underline', _hover: { color: 'accent' } })}
+                >
+                  {project.liveUrl}
+                </a>
+              </span>
+            </div>
+          )}
+          {project.githubUrl && (
+            <div className={almanacItemCss}>
+              <span className={kCss}>Code</span>
+              <span className={vCss}>
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener"
+                  className={css({ color: 'accentGlow', textDecoration: 'underline', _hover: { color: 'accent' } })}
+                >
+                  {project.githubUrl}
+                </a>
+              </span>
+            </div>
+          )}
+        </aside>
+      </main>
+    </>
   )
 }
