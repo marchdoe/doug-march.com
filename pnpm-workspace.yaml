@@ -1,0 +1,32 @@
+onlyBuiltDependencies:
+  - esbuild
+  - lightningcss
+
+overrides:
+  picomatch: '>=4.0.4'
+  brace-expansion: '>=5.0.9'
+  h3: '>=2.0.1-rc.18'
+  h3-v2: 'npm:h3@>=2.0.1-rc.18'
+  defu: '>=6.1.5'
+  lodash: '>=4.18.0'
+  srvx: '>=0.11.13'
+  serialize-javascript: '>=7.0.3'
+  undici: '>=7.29.0 <8'
+  node-forge: '>=1.4.0'
+  path-to-regexp: '>=8.4.0'
+  esbuild: '>=0.28.1'
+  hono: '>=4.12.34'
+  '@hono/node-server': '>=2.0.10'
+  fast-uri: '>=3.1.5 <4'
+  follow-redirects: '>=1.16.0'
+  ip-address: '>=10.4.0'
+  nitropack: '>=2.13.4'
+  postcss: '>=8.5.23'
+  shell-quote: '>=1.8.4'
+  ws: '>=8.21.0'
+  tar: '>=7.5.16'
+  launch-editor: '>=2.14.1'
+  # Bounded to <8: @babel/core 8.x is ESM-only and drops the default export,
+  # which breaks @tanstack/start-plugin-core's `import babel from "@babel/core"`.
+  '@babel/core': '>=7.29.6 <8'
+  body-parser: '>=2.3.0'
