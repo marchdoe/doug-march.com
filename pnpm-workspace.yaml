@@ -1,0 +1,19 @@
+allowBuilds:
+  esbuild: true
+  lightningcss: true
+  # Native watcher pulled in transitively. Its build script was never run under
+  # the previous onlyBuiltDependencies allowlist and nothing depends on it, so
+  # keep it blocked.
+  '@parcel/watcher': false
+
+# Security overrides.
+#
+# Scoped with pnpm's `name@range` selector so each rule only rewrites the
+# versions that are actually vulnerable, leaving other majors in the tree
+# untouched (h3 2.x RC in particular). Re-derive this list with `pnpm audit`
+# after dependency bumps and delete entries that upstream has fixed — every
+# rule here should map to a live advisory.
+overrides:
+  'esbuild@<0.24.3': '>=0.24.3'
+  'h3@<1.15.9': '>=1.15.9'
+  'postcss@<8.5.23': '>=8.5.23'
