@@ -3,7 +3,7 @@ import { runCollector } from '../scripts/collect-signals.js'
 import { readFile, unlink } from 'fs/promises'
 import { existsSync } from 'fs'
 import path from 'path'
-import yaml from 'js-yaml'
+import * as yaml from 'js-yaml'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
 

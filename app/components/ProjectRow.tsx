@@ -1,5 +1,5 @@
 import { Box, Flex } from '../../styled-system/jsx'
-import type { Project } from '../content/projects'
+import type { Project } from '../content/types'
 
 interface ProjectRowProps {
   project: Project

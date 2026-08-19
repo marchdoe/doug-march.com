@@ -37,7 +37,7 @@ function generateIndex() {
         : ''
 
       const builds = readdirSync(dateDir, { withFileTypes: true })
-        .filter(b => b.isDirectory() && b.name.startsWith('build-'))
+        .filter(b => b.isDirectory() && /^build-\d+$/.test(b.name))
         .map(b => b.name)
         .sort()
         .reverse()
@@ -90,7 +90,7 @@ function generateDetail(date) {
   if (!existsSync(dateDir)) return null
 
   const builds = readdirSync(dateDir, { withFileTypes: true })
-    .filter(b => b.isDirectory() && b.name.startsWith('build-'))
+    .filter(b => b.isDirectory() && /^build-\d+$/.test(b.name))
     .map(b => b.name)
     .sort()
     .reverse()

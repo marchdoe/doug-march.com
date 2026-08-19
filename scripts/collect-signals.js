@@ -15,7 +15,7 @@ import { readFile, writeFile, readdir } from 'fs/promises'
 import { existsSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import yaml from 'js-yaml'
+import * as yaml from 'js-yaml'
 import { sanitizeSignals } from './utils/sanitize-signal.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
