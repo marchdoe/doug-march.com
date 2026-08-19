@@ -9,47 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PanelRouteImport } from './routes/panel'
-import { Route as OgRouteImport } from './routes/og'
-import { Route as ExperimentsRouteImport } from './routes/experiments'
-import { Route as ElementsRouteImport } from './routes/elements'
-import { Route as DevRouteImport } from './routes/dev'
-import { Route as ArchiveRouteImport } from './routes/archive'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ArchiveRouteImport } from './routes/archive'
+import { Route as DevRouteImport } from './routes/dev'
+import { Route as ElementsRouteImport } from './routes/elements'
+import { Route as ExperimentsRouteImport } from './routes/experiments'
+import { Route as OgRouteImport } from './routes/og'
+import { Route as PanelRouteImport } from './routes/panel'
+import { Route as ArchiveDateRouteImport } from './routes/archive.$date'
+import { Route as DevResponsiveRouteImport } from './routes/dev.responsive'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
-import { Route as DevResponsiveRouteImport } from './routes/dev.responsive'
-import { Route as ArchiveDateRouteImport } from './routes/archive.$date'
 
-const PanelRoute = PanelRouteImport.update({
-  id: '/panel',
-  path: '/panel',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OgRoute = OgRouteImport.update({
-  id: '/og',
-  path: '/og',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExperimentsRoute = ExperimentsRouteImport.update({
-  id: '/experiments',
-  path: '/experiments',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ElementsRoute = ElementsRouteImport.update({
-  id: '/elements',
-  path: '/elements',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DevRoute = DevRouteImport.update({
-  id: '/dev',
-  path: '/dev',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ArchiveRoute = ArchiveRouteImport.update({
-  id: '/archive',
-  path: '/archive',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -57,10 +32,45 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ArchiveRoute = ArchiveRouteImport.update({
+  id: '/archive',
+  path: '/archive',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DevRoute = DevRouteImport.update({
+  id: '/dev',
+  path: '/dev',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ElementsRoute = ElementsRouteImport.update({
+  id: '/elements',
+  path: '/elements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperimentsRoute = ExperimentsRouteImport.update({
+  id: '/experiments',
+  path: '/experiments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OgRoute = OgRouteImport.update({
+  id: '/og',
+  path: '/og',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PanelRoute = PanelRouteImport.update({
+  id: '/panel',
+  path: '/panel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArchiveDateRoute = ArchiveDateRouteImport.update({
+  id: '/$date',
+  path: '/$date',
+  getParentRoute: () => ArchiveRoute,
+} as any)
+const DevResponsiveRoute = DevResponsiveRouteImport.update({
+  id: '/responsive',
+  path: '/responsive',
+  getParentRoute: () => DevRoute,
 } as any)
 const WorkIndexRoute = WorkIndexRouteImport.update({
   id: '/work/',
@@ -71,16 +81,6 @@ const WorkSlugRoute = WorkSlugRouteImport.update({
   id: '/work/$slug',
   path: '/work/$slug',
   getParentRoute: () => rootRouteImport,
-} as any)
-const DevResponsiveRoute = DevResponsiveRouteImport.update({
-  id: '/responsive',
-  path: '/responsive',
-  getParentRoute: () => DevRoute,
-} as any)
-const ArchiveDateRoute = ArchiveDateRouteImport.update({
-  id: '/$date',
-  path: '/$date',
-  getParentRoute: () => ArchiveRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -186,46 +186,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/panel': {
-      id: '/panel'
-      path: '/panel'
-      fullPath: '/panel'
-      preLoaderRoute: typeof PanelRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/og': {
-      id: '/og'
-      path: '/og'
-      fullPath: '/og'
-      preLoaderRoute: typeof OgRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/experiments': {
-      id: '/experiments'
-      path: '/experiments'
-      fullPath: '/experiments'
-      preLoaderRoute: typeof ExperimentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/elements': {
-      id: '/elements'
-      path: '/elements'
-      fullPath: '/elements'
-      preLoaderRoute: typeof ElementsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev': {
-      id: '/dev'
-      path: '/dev'
-      fullPath: '/dev'
-      preLoaderRoute: typeof DevRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/archive': {
-      id: '/archive'
-      path: '/archive'
-      fullPath: '/archive'
-      preLoaderRoute: typeof ArchiveRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -235,12 +200,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/archive': {
+      id: '/archive'
+      path: '/archive'
+      fullPath: '/archive'
+      preLoaderRoute: typeof ArchiveRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dev': {
+      id: '/dev'
+      path: '/dev'
+      fullPath: '/dev'
+      preLoaderRoute: typeof DevRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/elements': {
+      id: '/elements'
+      path: '/elements'
+      fullPath: '/elements'
+      preLoaderRoute: typeof ElementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experiments': {
+      id: '/experiments'
+      path: '/experiments'
+      fullPath: '/experiments'
+      preLoaderRoute: typeof ExperimentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/og': {
+      id: '/og'
+      path: '/og'
+      fullPath: '/og'
+      preLoaderRoute: typeof OgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/panel': {
+      id: '/panel'
+      path: '/panel'
+      fullPath: '/panel'
+      preLoaderRoute: typeof PanelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/archive/$date': {
+      id: '/archive/$date'
+      path: '/$date'
+      fullPath: '/archive/$date'
+      preLoaderRoute: typeof ArchiveDateRouteImport
+      parentRoute: typeof ArchiveRoute
+    }
+    '/dev/responsive': {
+      id: '/dev/responsive'
+      path: '/responsive'
+      fullPath: '/dev/responsive'
+      preLoaderRoute: typeof DevResponsiveRouteImport
+      parentRoute: typeof DevRoute
     }
     '/work/': {
       id: '/work/'
@@ -255,20 +269,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/work/$slug'
       preLoaderRoute: typeof WorkSlugRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/dev/responsive': {
-      id: '/dev/responsive'
-      path: '/responsive'
-      fullPath: '/dev/responsive'
-      preLoaderRoute: typeof DevResponsiveRouteImport
-      parentRoute: typeof DevRoute
-    }
-    '/archive/$date': {
-      id: '/archive/$date'
-      path: '/$date'
-      fullPath: '/archive/$date'
-      preLoaderRoute: typeof ArchiveDateRouteImport
-      parentRoute: typeof ArchiveRoute
     }
   }
 }

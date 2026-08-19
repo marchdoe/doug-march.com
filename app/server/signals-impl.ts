@@ -2,7 +2,7 @@
 // Pure implementation — no server function wrappers, safe to import in tests
 import { readFileSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
-import yaml from 'js-yaml'
+import * as yaml from 'js-yaml'
 
 export const SIGNALS_PATH = resolve(process.cwd(), 'signals/today.yml')
 

@@ -15,7 +15,7 @@ import { readFile, writeFile } from 'fs/promises'
 import { existsSync, statSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import yaml from 'js-yaml'
+import * as yaml from 'js-yaml'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')

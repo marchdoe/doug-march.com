@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach } from 'vitest'
 import { writeFileSync, unlinkSync, readFileSync, mkdirSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
-import yaml from 'js-yaml'
+import * as yaml from 'js-yaml'
 import { _readSignalsHandler, _saveOverridesHandler } from '../../app/server/signals-impl.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))

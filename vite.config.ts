@@ -5,7 +5,7 @@ import { resolve } from 'path'
 import { spawn, spawnSync } from 'child_process'
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'fs'
 import { config } from 'dotenv'
-import yaml from 'js-yaml'
+import * as yaml from 'js-yaml'
 
 // @tanstack/start-storage-context uses AsyncLocalStorage (Node-only) and has no browser
 // export conditions. Alias it to a no-op stub for the client build so the /dev route
