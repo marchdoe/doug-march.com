@@ -13,7 +13,7 @@ export async function collect(_profile) {
       if (!res.ok) throw new Error(`HN item/${id} responded with ${res.status}`)
       const item = await res.json()
       return { title: item.title, url: item.url, score: item.score, by: item.by }
-    }),
+    })
   )
 
   return {

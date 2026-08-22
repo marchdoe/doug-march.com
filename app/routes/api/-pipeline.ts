@@ -1,6 +1,6 @@
 import { createAPIFileRoute } from '@tanstack/start-api-routes'
-import { spawn } from 'child_process'
-import { resolve } from 'path'
+import { spawn } from 'node:child_process'
+import { resolve } from 'node:path'
 
 const SCRIPT_PATH = resolve(process.cwd(), 'scripts/daily-redesign.js')
 const encoder = new TextEncoder()
@@ -27,7 +27,10 @@ export const APIRoute = createAPIFileRoute('/api/pipeline')({
         })
 
         const handleData = (chunk: Buffer) => {
-          const lines = chunk.toString().split('\n').filter(l => l.trim())
+          const lines = chunk
+            .toString()
+            .split('\n')
+            .filter((l) => l.trim())
           for (const line of lines) {
             controller.enqueue(sseEvent({ type: 'log', line }))
           }
@@ -40,7 +43,9 @@ export const APIRoute = createAPIFileRoute('/api/pipeline')({
           if (code === 0) {
             controller.enqueue(sseEvent({ type: 'done', success: true }))
           } else {
-            controller.enqueue(sseEvent({ type: 'done', success: false, error: `Process exited with code ${code}` }))
+            controller.enqueue(
+              sseEvent({ type: 'done', success: false, error: `Process exited with code ${code}` })
+            )
           }
           controller.close()
         })
@@ -56,7 +61,7 @@ export const APIRoute = createAPIFileRoute('/api/pipeline')({
       headers: {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
+        Connection: 'keep-alive',
       },
     })
   },

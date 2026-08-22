@@ -12,9 +12,9 @@
  * orchestrator share identical behavior.
  */
 
-import { readFileSync } from 'fs'
-import { dirname, resolve } from 'path'
-import { fileURLToPath } from 'url'
+import { readFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const TEMPLATE_PATH = resolve(__dirname, '../templates/__root.tsx.template')
@@ -43,7 +43,7 @@ const MIN_REM = 0.625
  * chassis. The validator allowlists fonts.googleapis.com only.
  */
 export function buildGoogleFontsUrl(chassis) {
-  const families = Object.values(chassis.fonts).map(font => {
+  const families = Object.values(chassis.fonts).map((font) => {
     const familyParam = font.family.replace(/\s+/g, '+')
     const weights = [...font.weights].sort((a, b) => a - b)
 
@@ -99,7 +99,7 @@ export function buildFontSizes(chassis) {
   const sizes = {}
   for (const step of RAMP_STEPS) {
     const offset = RAMP_OFFSETS[step]
-    const computed = baseRem * Math.pow(ratio, offset)
+    const computed = baseRem * ratio ** offset
     const clamped = Math.max(MIN_REM, computed)
     sizes[step] = { value: `${roundRem(clamped)}rem` }
   }
@@ -122,9 +122,7 @@ export function renderRootTemplate(googleFontsUrl, ogMeta = '') {
   if (!template.includes('{{OG_META}}')) {
     throw new Error('__root.tsx.template missing {{OG_META}} placeholder')
   }
-  return template
-    .replace('{{GOOGLE_FONTS_URL}}', googleFontsUrl)
-    .replace('{{OG_META}}', ogMeta)
+  return template.replace('{{GOOGLE_FONTS_URL}}', googleFontsUrl).replace('{{OG_META}}', ogMeta)
 }
 
 function parseRem(value) {
@@ -184,7 +182,7 @@ function formatTokenBlock(name, tokens, indent) {
 
 /** Look up a chassis by id. Returns undefined if not found. */
 export function getChassisById(catalog, id) {
-  return catalog.find(c => c.id === id)
+  return catalog.find((c) => c.id === id)
 }
 
 /**

@@ -20,6 +20,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Lint & format check (Biome)
+        run: pnpm lint
+
       - name: Install Playwright browsers
         # Must run before unit tests — the responsive-scorer + viewport-screenshotter
         # vitest suites launch real Chromium for accurate DOM measurements.

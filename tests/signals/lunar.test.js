@@ -7,7 +7,16 @@ describe('lunar provider', () => {
     expect(name).toBe('lunar')
     expect(result.data).toHaveProperty('phase')
     expect(result.data).toHaveProperty('illumination')
-    expect(['new moon','waxing crescent','first quarter','waxing gibbous','full moon','waning gibbous','last quarter','waning crescent']).toContain(result.data.phase)
+    expect([
+      'new moon',
+      'waxing crescent',
+      'first quarter',
+      'waxing gibbous',
+      'full moon',
+      'waning gibbous',
+      'last quarter',
+      'waning crescent',
+    ]).toContain(result.data.phase)
     expect(result.data.illumination).toBeGreaterThanOrEqual(0)
     expect(result.data.illumination).toBeLessThanOrEqual(1)
   })

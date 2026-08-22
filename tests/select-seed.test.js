@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { existsSync, readFileSync } from 'fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { selectSeed, KNOWN_ARCHETYPES } from '../scripts/utils/select-seed.js'
 
 describe('selectSeed', () => {

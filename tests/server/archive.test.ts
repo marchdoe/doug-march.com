@@ -1,14 +1,18 @@
 // tests/server/archive.test.ts
 import { describe, it, expect, afterEach } from 'vitest'
-import { mkdirSync, writeFileSync, rmSync } from 'fs'
-import { resolve, dirname } from 'path'
-import { fileURLToPath } from 'url'
+import { mkdirSync, writeFileSync, rmSync } from 'node:fs'
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { _readArchiveHandler } from '../../app/server/archive-impl.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const FIXTURES_DIR = resolve(__dirname, '../fixtures/archive')
 
-function writeArchiveEntry(date: string, brief: string, opts?: { archetype?: string; buildId?: string }) {
+function writeArchiveEntry(
+  date: string,
+  brief: string,
+  opts?: { archetype?: string; buildId?: string }
+) {
   const dir = resolve(FIXTURES_DIR, date)
   mkdirSync(dir, { recursive: true })
 
@@ -28,7 +32,11 @@ function writeArchiveEntry(date: string, brief: string, opts?: { archetype?: str
 }
 
 afterEach(() => {
-  try { rmSync(FIXTURES_DIR, { recursive: true }) } catch { /* ok */ }
+  try {
+    rmSync(FIXTURES_DIR, { recursive: true })
+  } catch {
+    /* ok */
+  }
 })
 
 describe('_readArchiveHandler', () => {
@@ -70,7 +78,10 @@ describe('_readArchiveHandler', () => {
   })
 
   it('includes archetype and buildId fields', () => {
-    writeArchiveEntry('2026-03-14', 'Brutalist design', { archetype: 'Specimen', buildId: '1234567890' })
+    writeArchiveEntry('2026-03-14', 'Brutalist design', {
+      archetype: 'Specimen',
+      buildId: '1234567890',
+    })
     const result = _readArchiveHandler(FIXTURES_DIR)
     expect(result[0].archetype).toBe('Specimen')
     expect(result[0].buildId).toBe('1234567890')

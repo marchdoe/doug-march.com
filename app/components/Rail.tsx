@@ -37,13 +37,20 @@ export function Rail() {
       css={{ paddingInline: '6vw' }}
     >
       <HStack as="nav" aria-label="Primary" gap="7">
-        <a href="/work" className={navLinkClass}>Work</a>
-        <a href="/about" className={navLinkClass}>About</a>
-        <a href="/experiments" className={navLinkClass}>Experiments</a>
+        <a href="/work" className={navLinkClass}>
+          Work
+        </a>
+        <a href="/about" className={navLinkClass}>
+          About
+        </a>
+        <a href="/experiments" className={navLinkClass}>
+          Experiments
+        </a>
       </HStack>
       <Flex align="center" gap="4" wrap="wrap" justify="flex-end">
         <span className={metaClass}>
-          <span className={css({ color: 'textSecondary' })}>On Air ·</span> My Morning Jacket / The War on Drugs
+          <span className={css({ color: 'textSecondary' })}>On Air ·</span> My Morning Jacket / The
+          War on Drugs
         </span>
         <span className={metaClass}>Summer · Sunset 19:30 · Build 2026-07-16</span>
       </Flex>

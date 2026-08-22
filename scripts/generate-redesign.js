@@ -8,5 +8,7 @@
  * (Mockup Designer → Mockup Critic → React Engineer) in design-agents.js.
  */
 
-console.error('generate-redesign is superseded by the mockup pipeline — run scripts/run-pipeline.js')
+console.error(
+  'generate-redesign is superseded by the mockup pipeline — run scripts/run-pipeline.js'
+)
 process.exit(1)

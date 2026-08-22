@@ -21,15 +21,15 @@ export async function collect(_profile) {
   // Map days into cycle to one of 8 named phases
   const fraction = daysIntoCycle / SYNODIC_PERIOD // 0–1
   let phase
-  if (fraction < 0.0625)       phase = 'new moon'
-  else if (fraction < 0.1875)  phase = 'waxing crescent'
-  else if (fraction < 0.3125)  phase = 'first quarter'
-  else if (fraction < 0.4375)  phase = 'waxing gibbous'
-  else if (fraction < 0.5625)  phase = 'full moon'
-  else if (fraction < 0.6875)  phase = 'waning gibbous'
-  else if (fraction < 0.8125)  phase = 'last quarter'
-  else if (fraction < 0.9375)  phase = 'waning crescent'
-  else                          phase = 'new moon'
+  if (fraction < 0.0625) phase = 'new moon'
+  else if (fraction < 0.1875) phase = 'waxing crescent'
+  else if (fraction < 0.3125) phase = 'first quarter'
+  else if (fraction < 0.4375) phase = 'waxing gibbous'
+  else if (fraction < 0.5625) phase = 'full moon'
+  else if (fraction < 0.6875) phase = 'waning gibbous'
+  else if (fraction < 0.8125) phase = 'last quarter'
+  else if (fraction < 0.9375) phase = 'waning crescent'
+  else phase = 'new moon'
 
   return {
     data: {

@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { runCollector } from '../scripts/collect-signals.js'
-import { readFile, unlink } from 'fs/promises'
-import { existsSync } from 'fs'
-import path from 'path'
+import { readFile, unlink } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
+import path from 'node:path'
 import * as yaml from 'js-yaml'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
@@ -25,7 +25,9 @@ describe('collect-signals orchestrator', () => {
       {
         name: 'test-fail',
         timeout: 1000,
-        collect: async () => { throw new Error('API down') },
+        collect: async () => {
+          throw new Error('API down')
+        },
       },
     ]
 
@@ -45,7 +47,7 @@ describe('collect-signals orchestrator', () => {
         name: 'test-slow',
         timeout: 100,
         collect: async () => {
-          await new Promise(r => setTimeout(r, 5000))
+          await new Promise((r) => setTimeout(r, 5000))
           return { data: {}, meta: {} }
         },
       },

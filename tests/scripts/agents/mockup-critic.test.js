@@ -3,12 +3,16 @@ import { parseMockupCriticResponse } from '../../../scripts/agents/mockup-critic
 
 describe('parseMockupCriticResponse', () => {
   it('parses APPROVE', () => {
-    const r = parseMockupCriticResponse('===VERDICT===\nAPPROVE\n===FEEDBACK===\nStrong drench.\n===END===')
+    const r = parseMockupCriticResponse(
+      '===VERDICT===\nAPPROVE\n===FEEDBACK===\nStrong drench.\n===END==='
+    )
     expect(r.verdict).toBe('APPROVE')
     expect(r.feedback).toBe('Strong drench.')
   })
   it('parses REVISE with feedback', () => {
-    const r = parseMockupCriticResponse('===VERDICT===\nREVISE\n===FEEDBACK===\n1. utilization ~45% vs floor 70\n===END===')
+    const r = parseMockupCriticResponse(
+      '===VERDICT===\nREVISE\n===FEEDBACK===\n1. utilization ~45% vs floor 70\n===END==='
+    )
     expect(r.verdict).toBe('REVISE')
     expect(r.feedback).toContain('45%')
   })
@@ -18,7 +22,9 @@ describe('parseMockupCriticResponse', () => {
     expect(r.feedback).toContain('malformed')
   })
   it('rejects a literal echo of the template line (fail-closed)', () => {
-    const r = parseMockupCriticResponse('===VERDICT===\nAPPROVE | REVISE\n===FEEDBACK===\nx\n===END===')
+    const r = parseMockupCriticResponse(
+      '===VERDICT===\nAPPROVE | REVISE\n===FEEDBACK===\nx\n===END==='
+    )
     expect(r.verdict).toBe('REVISE')
     expect(r.feedback).toContain('malformed')
   })
@@ -29,7 +35,9 @@ describe('parseMockupCriticResponse', () => {
     expect(r.verdict).toBe('REVISE')
   })
   it('keeps feedback when ===END=== is truncated away', () => {
-    const r = parseMockupCriticResponse('===VERDICT===\nREVISE\n===FEEDBACK===\n1. hero too small at ~60px')
+    const r = parseMockupCriticResponse(
+      '===VERDICT===\nREVISE\n===FEEDBACK===\n1. hero too small at ~60px'
+    )
     expect(r.verdict).toBe('REVISE')
     expect(r.feedback).toContain('hero too small')
   })

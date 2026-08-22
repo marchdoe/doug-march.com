@@ -11,7 +11,13 @@ const LEAGUE_TO_SPORT = {
 async function fetchTeamResult(team) {
   const sport = LEAGUE_TO_SPORT[team.league.toUpperCase()]
   if (!sport) {
-    return { name: team.name, league: team.league, last_game: null, result: 'unknown league', score: null }
+    return {
+      name: team.name,
+      league: team.league,
+      last_game: null,
+      result: 'unknown league',
+      score: null,
+    }
   }
 
   const league = team.league.toLowerCase()
@@ -30,7 +36,7 @@ async function fetchTeamResult(team) {
 
     const competitors = competition.competitors ?? []
     const match = competitors.find(
-      c => c.team?.displayName?.toLowerCase() === team.name.toLowerCase()
+      (c) => c.team?.displayName?.toLowerCase() === team.name.toLowerCase()
     )
 
     if (!match) continue
@@ -38,7 +44,7 @@ async function fetchTeamResult(team) {
     const completed = competition.status?.type?.completed ?? false
     if (!completed) continue
 
-    const opponent = competitors.find(c => c !== match)
+    const opponent = competitors.find((c) => c !== match)
     const teamScore = match.score
     const opponentScore = opponent?.score ?? '?'
     const result = match.winner ? 'win' : 'loss'
@@ -49,18 +55,30 @@ async function fetchTeamResult(team) {
   }
 
   // No recent completed game found
-  return { name: team.name, league: team.league, last_game: null, result: 'off season', score: null }
+  return {
+    name: team.name,
+    league: team.league,
+    last_game: null,
+    result: 'off season',
+    score: null,
+  }
 }
 
 export async function collect(profile) {
   const teams = profile?.sports?.teams ?? []
 
   const results = await Promise.all(
-    teams.map(async team => {
+    teams.map(async (team) => {
       try {
         return await fetchTeamResult(team)
       } catch {
-        return { name: team.name, league: team.league, last_game: null, result: 'error', score: null }
+        return {
+          name: team.name,
+          league: team.league,
+          last_game: null,
+          result: 'error',
+          score: null,
+        }
       }
     })
   )

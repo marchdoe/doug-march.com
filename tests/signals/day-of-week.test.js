@@ -7,7 +7,15 @@ describe('day-of-week provider', () => {
     expect(name).toBe('day_of_week')
     expect(result.data).toHaveProperty('day')
     expect(result.data).toHaveProperty('is_weekend')
-    expect(['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']).toContain(result.data.day)
+    expect([
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ]).toContain(result.data.day)
     expect(typeof result.data.is_weekend).toBe('boolean')
   })
 })

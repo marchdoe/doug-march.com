@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 
 // Precondition: at least one build in archive/ must have responsive-metrics.json.
 // If none exists, skip — the card only appears inside SuccessSection after a real pipeline run.

@@ -26,17 +26,27 @@ export function hexToHsl(hex) {
   }
   if ([r, g, b].some((v) => Number.isNaN(v))) return null
 
-  const rN = r / 255, gN = g / 255, bN = b / 255
-  const max = Math.max(rN, gN, bN), min = Math.min(rN, gN, bN)
-  let h = 0, s = 0
+  const rN = r / 255,
+    gN = g / 255,
+    bN = b / 255
+  const max = Math.max(rN, gN, bN),
+    min = Math.min(rN, gN, bN)
+  let h = 0,
+    s = 0
   const l = (max + min) / 2
   if (max !== min) {
     const d = max - min
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
     switch (max) {
-      case rN: h = ((gN - bN) / d + (gN < bN ? 6 : 0)); break
-      case gN: h = ((bN - rN) / d + 2); break
-      case bN: h = ((rN - gN) / d + 4); break
+      case rN:
+        h = (gN - bN) / d + (gN < bN ? 6 : 0)
+        break
+      case gN:
+        h = (bN - rN) / d + 2
+        break
+      case bN:
+        h = (rN - gN) / d + 4
+        break
     }
     h *= 60
   }
@@ -61,7 +71,9 @@ export function hueDistance(a, b) {
  * @returns {string | null}
  */
 export function extractAccentHex(presetSrc) {
-  const match = presetSrc.match(/accent\s*:\s*\{[^}]*?DEFAULT\s*:\s*\{\s*value:\s*['"](#[0-9a-f]{3,6})['"]/i)
+  const match = presetSrc.match(
+    /accent\s*:\s*\{[^}]*?DEFAULT\s*:\s*\{\s*value:\s*['"](#[0-9a-f]{3,6})['"]/i
+  )
   return match ? match[1] : null
 }
 
@@ -78,13 +90,15 @@ export function extractAccentHex(presetSrc) {
  */
 export function detectCoffeeShopPalette(scheme, presetSrc) {
   const warnings = []
-  if (!scheme || !scheme.primary_hue) return { ok: true, warnings }
+  if (!scheme?.primary_hue) return { ok: true, warnings }
 
   const { h, s } = scheme.primary_hue
   const warmHue = h >= 10 && h <= 50
   const mutedAccent = s < 50
 
-  const neutralMatch = presetSrc.match(/neutral\s*:\s*\{[^}]*?500\s*:\s*\{\s*value:\s*['"](#[0-9a-f]{3,6})['"]/i)
+  const neutralMatch = presetSrc.match(
+    /neutral\s*:\s*\{[^}]*?500\s*:\s*\{\s*value:\s*['"](#[0-9a-f]{3,6})['"]/i
+  )
   let neutralLowSat = false
   if (neutralMatch) {
     const hsl = hexToHsl(neutralMatch[1])
@@ -110,7 +124,7 @@ export function detectCoffeeShopPalette(scheme, presetSrc) {
  */
 export function validateSchemeAgainstPreset(scheme, presetSrc) {
   const warnings = []
-  if (!scheme || !scheme.primary_hue) return { ok: true, warnings }
+  if (!scheme?.primary_hue) return { ok: true, warnings }
 
   const accentHex = extractAccentHex(presetSrc)
   if (!accentHex) return { ok: true, warnings }
@@ -122,7 +136,7 @@ export function validateSchemeAgainstPreset(scheme, presetSrc) {
   if (dist > 15) {
     warnings.push(
       `COLOR_SCHEME stated hue ${scheme.primary_hue.h}° (${scheme.primary_hue.name}) ` +
-      `but actual hue from preset accent is ${actualHsl.h}° (distance ${dist}°).`
+        `but actual hue from preset accent is ${actualHsl.h}° (distance ${dist}°).`
     )
   }
   return { ok: warnings.length === 0, warnings }

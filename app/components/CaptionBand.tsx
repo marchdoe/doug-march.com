@@ -63,15 +63,40 @@ export function CaptionBand() {
           <Flex
             wrap="wrap"
             gap="2"
-            className={css({ fontVariantNumeric: 'tabular-nums', fontSize: 'base', lineHeight: 'normal' })}
+            className={css({
+              fontVariantNumeric: 'tabular-nums',
+              fontSize: 'base',
+              lineHeight: 'normal',
+            })}
           >
-            <span className={css({ display: 'inline-flex', gap: '2', alignItems: 'baseline', color: 'accent' })}>
+            <span
+              className={css({
+                display: 'inline-flex',
+                gap: '2',
+                alignItems: 'baseline',
+                color: 'accent',
+              })}
+            >
               Lucas Herbert <b className={css({ fontWeight: 'bold', color: 'accent' })}>−6</b>
             </span>
-            <span className={css({ display: 'inline-flex', gap: '2', alignItems: 'baseline', color: 'textSecondary' })}>
+            <span
+              className={css({
+                display: 'inline-flex',
+                gap: '2',
+                alignItems: 'baseline',
+                color: 'textSecondary',
+              })}
+            >
               Suber <b className={css({ fontWeight: 'bold' })}>−5</b>
             </span>
-            <span className={css({ display: 'inline-flex', gap: '2', alignItems: 'baseline', color: 'textSecondary' })}>
+            <span
+              className={css({
+                display: 'inline-flex',
+                gap: '2',
+                alignItems: 'baseline',
+                color: 'textSecondary',
+              })}
+            >
               Wallace <b className={css({ fontWeight: 'bold' })}>−4</b>
             </span>
           </Flex>

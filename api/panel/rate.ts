@@ -1,7 +1,12 @@
 import { requireAuth } from '../_lib/auth.js'
 import { json } from '../_lib/http.js'
 import { formatRatingComment, type Grade } from '../_lib/rating-format.js'
-import { findOpenRatingIssue, commentOnIssue, createRatingIssue, GitHubError } from '../_lib/github.js'
+import {
+  findOpenRatingIssue,
+  commentOnIssue,
+  createRatingIssue,
+  GitHubError,
+} from '../_lib/github.js'
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 const GRADE_RE = /^[A-D]$/
@@ -41,7 +46,8 @@ export async function POST(request: Request): Promise<Response> {
     const created = await createRatingIssue(date, comment)
     return json({ ok: true, issueUrl: created.url })
   } catch (err) {
-    if (err instanceof GitHubError) return json({ error: `GitHub error (${err.status}) — try again` }, 502)
+    if (err instanceof GitHubError)
+      return json({ error: `GitHub error (${err.status}) — try again` }, 502)
     throw err
   }
 }

@@ -26,12 +26,20 @@ export function ArchiveTab() {
         setState({ kind: 'loaded', entries: data })
       })
       .catch((err: unknown) => {
-        setState({ kind: 'error', message: err instanceof Error ? err.message : 'Failed to load archive' })
+        setState({
+          kind: 'error',
+          message: err instanceof Error ? err.message : 'Failed to load archive',
+        })
       })
   }, [])
 
   if (state.kind === 'loading') return <p className={mutedText}>Loading…</p>
-  if (state.kind === 'error') return <p role="alert" className={errorText}>{state.message}</p>
+  if (state.kind === 'error')
+    return (
+      <p role="alert" className={errorText}>
+        {state.message}
+      </p>
+    )
 
   const entries = state.entries
   if (entries.length === 0) return <p className={mutedText}>No archive entries yet.</p>
@@ -41,11 +49,7 @@ export function ArchiveTab() {
       {entries.map((e) => (
         <li key={e.date} className={archiveRow}>
           <div className={css({ display: 'flex', gap: '8px', alignItems: 'center' })}>
-            <Link
-              to="/archive/$date"
-              params={{ date: e.date }}
-              className={archiveLink}
-            >
+            <Link to="/archive/$date" params={{ date: e.date }} className={archiveLink}>
               {e.date}
             </Link>
             <span className={badge({ kind: e.rating ? 'graded' : 'none' })}>

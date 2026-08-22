@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest'
 import { writeFiles, validateWritePath, ROOT } from '../../scripts/utils/file-manager.js'
-import { existsSync, rmSync, readFileSync } from 'fs'
-import path from 'path'
+import { existsSync, rmSync, readFileSync } from 'node:fs'
+import path from 'node:path'
 
 describe('validateWritePath', () => {
   describe('allowlist — permits legitimate writes', () => {
@@ -47,9 +47,7 @@ describe('validateWritePath', () => {
 
     it('rejects lateral escape into protected dir via ..', () => {
       // app/components/../content/projects.ts normalizes to app/content/projects.ts
-      expect(() => validateWritePath('app/components/../content/projects.ts')).toThrow(
-        /Forbidden/
-      )
+      expect(() => validateWritePath('app/components/../content/projects.ts')).toThrow(/Forbidden/)
     })
   })
 
@@ -107,7 +105,9 @@ describe('validateWritePath', () => {
     })
 
     it('rejects node_modules', () => {
-      expect(() => validateWritePath('node_modules/react/index.js')).toThrow(/not in write allowlist/)
+      expect(() => validateWritePath('node_modules/react/index.js')).toThrow(
+        /not in write allowlist/
+      )
     })
   })
 
@@ -151,20 +151,14 @@ describe('file-manager writeFiles', () => {
   })
 
   it('throws on disallowed paths', async () => {
-    await expect(
-      writeFiles([{ path: 'package.json', content: '{}' }])
-    ).rejects.toThrow()
+    await expect(writeFiles([{ path: 'package.json', content: '{}' }])).rejects.toThrow()
   })
 
   it('throws on traversal attempts', async () => {
-    await expect(
-      writeFiles([{ path: '../../../etc/passwd', content: 'bad' }])
-    ).rejects.toThrow()
+    await expect(writeFiles([{ path: '../../../etc/passwd', content: 'bad' }])).rejects.toThrow()
   })
 
   it('throws on .env writes', async () => {
-    await expect(
-      writeFiles([{ path: '.env', content: 'STOLEN=1' }])
-    ).rejects.toThrow(/Dotfile/)
+    await expect(writeFiles([{ path: '.env', content: 'STOLEN=1' }])).rejects.toThrow(/Dotfile/)
   })
 })

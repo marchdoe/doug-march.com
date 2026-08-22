@@ -13,7 +13,9 @@ export function parseHTML(html) {
     const repoName = hrefMatch[1].trim()
 
     // Description
-    const descMatch = article.match(/<p class="col-9 color-fg-muted my-1 pr-4"[^>]*>([\s\S]*?)<\/p>/)
+    const descMatch = article.match(
+      /<p class="col-9 color-fg-muted my-1 pr-4"[^>]*>([\s\S]*?)<\/p>/
+    )
     const description = descMatch ? descMatch[1].trim() : ''
 
     // Language

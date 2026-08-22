@@ -1,13 +1,23 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import {
-  listOpenRatingIssues, findOpenRatingIssue, commentOnIssue, createRatingIssue,
-  getWeights, setWeights, dispatchRun, latestRun, GitHubError,
+  listOpenRatingIssues,
+  findOpenRatingIssue,
+  commentOnIssue,
+  createRatingIssue,
+  getWeights,
+  setWeights,
+  dispatchRun,
+  latestRun,
+  GitHubError,
 } from '../../api/_lib/github'
 
 const fetchMock = vi.fn()
 
 function jsonRes(data: unknown, status = 200) {
-  return new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json' } })
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'content-type': 'application/json' },
+  })
 }
 
 beforeEach(() => {
@@ -19,15 +29,28 @@ afterEach(() => vi.unstubAllGlobals())
 
 describe('listOpenRatingIssues', () => {
   it('maps issues and extracts dates from titles', async () => {
-    fetchMock.mockResolvedValueOnce(jsonRes([
-      { number: 82, title: 'Rate: 2026-07-20 — "Breadboard"', html_url: 'https://github.com/x/82' },
-      { number: 99, title: 'unrelated title', html_url: 'https://github.com/x/99' },
-    ]))
+    fetchMock.mockResolvedValueOnce(
+      jsonRes([
+        {
+          number: 82,
+          title: 'Rate: 2026-07-20 — "Breadboard"',
+          html_url: 'https://github.com/x/82',
+        },
+        { number: 99, title: 'unrelated title', html_url: 'https://github.com/x/99' },
+      ])
+    )
     const issues = await listOpenRatingIssues()
     expect(fetchMock.mock.calls[0][0]).toBe(
       'https://api.github.com/repos/marchdoe/doug-march.com/issues?labels=daily-rating&state=open&per_page=30'
     )
-    expect(issues).toEqual([{ number: 82, date: '2026-07-20', title: 'Rate: 2026-07-20 — "Breadboard"', url: 'https://github.com/x/82' }])
+    expect(issues).toEqual([
+      {
+        number: 82,
+        date: '2026-07-20',
+        title: 'Rate: 2026-07-20 — "Breadboard"',
+        url: 'https://github.com/x/82',
+      },
+    ])
   })
   it('sends the token as a Bearer header', async () => {
     fetchMock.mockResolvedValueOnce(jsonRes([]))
@@ -64,11 +87,17 @@ describe('commentOnIssue / createRatingIssue', () => {
     expect(JSON.parse(init.body as string)).toEqual({ body: 'hello' })
   })
   it('creates a labeled issue titled Rate: {date}', async () => {
-    fetchMock.mockResolvedValueOnce(jsonRes({ number: 90, title: 'Rate: 2026-07-19', html_url: 'u' }, 201))
+    fetchMock.mockResolvedValueOnce(
+      jsonRes({ number: 90, title: 'Rate: 2026-07-19', html_url: 'u' }, 201)
+    )
     const issue = await createRatingIssue('2026-07-19', 'body')
     const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit]
     expect(url).toBe('https://api.github.com/repos/marchdoe/doug-march.com/issues')
-    expect(JSON.parse(init.body as string)).toEqual({ title: 'Rate: 2026-07-19', body: 'body', labels: ['daily-rating'] })
+    expect(JSON.parse(init.body as string)).toEqual({
+      title: 'Rate: 2026-07-19',
+      body: 'body',
+      labels: ['daily-rating'],
+    })
     expect(issue).toEqual({ number: 90, date: '2026-07-19', title: 'Rate: 2026-07-19', url: 'u' })
   })
 })
@@ -76,7 +105,8 @@ describe('commentOnIssue / createRatingIssue', () => {
 describe('getWeights', () => {
   it('reads the four variables, defaulting missing ones', async () => {
     fetchMock.mockImplementation((url: string) => {
-      if (url.endsWith('/WEIGHT_SIGNALS')) return Promise.resolve(jsonRes({ name: 'WEIGHT_SIGNALS', value: '7' }))
+      if (url.endsWith('/WEIGHT_SIGNALS'))
+        return Promise.resolve(jsonRes({ name: 'WEIGHT_SIGNALS', value: '7' }))
       return Promise.resolve(jsonRes({ message: 'Not Found' }, 404))
     })
     expect(await getWeights()).toEqual({ signals: 7, inspiration: 5, ratings: 5, risk: 8 })
@@ -86,13 +116,19 @@ describe('getWeights', () => {
 describe('setWeights', () => {
   it('PATCHes existing variables and POSTs missing ones', async () => {
     fetchMock.mockImplementation((url: string, init?: RequestInit) => {
-      if (init?.method === 'PATCH' && url.endsWith('/WEIGHT_RISK')) return Promise.resolve(jsonRes({ message: 'Not Found' }, 404))
+      if (init?.method === 'PATCH' && url.endsWith('/WEIGHT_RISK'))
+        return Promise.resolve(jsonRes({ message: 'Not Found' }, 404))
       return Promise.resolve(new Response(null, { status: 204 }))
     })
     await setWeights({ signals: 5, inspiration: 5, ratings: 9, risk: 8 })
-    const posts = fetchMock.mock.calls.filter(([, init]) => (init as RequestInit)?.method === 'POST')
+    const posts = fetchMock.mock.calls.filter(
+      ([, init]) => (init as RequestInit)?.method === 'POST'
+    )
     expect(posts).toHaveLength(1)
-    expect(JSON.parse((posts[0][1] as RequestInit).body as string)).toEqual({ name: 'WEIGHT_RISK', value: '8' })
+    expect(JSON.parse((posts[0][1] as RequestInit).body as string)).toEqual({
+      name: 'WEIGHT_RISK',
+      value: '8',
+    })
   })
 })
 
@@ -101,12 +137,25 @@ describe('dispatchRun / latestRun', () => {
     fetchMock.mockResolvedValueOnce(new Response(null, { status: 204 }))
     await dispatchRun(true)
     const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit]
-    expect(url).toBe('https://api.github.com/repos/marchdoe/doug-march.com/actions/workflows/daily-redesign.yml/dispatches')
+    expect(url).toBe(
+      'https://api.github.com/repos/marchdoe/doug-march.com/actions/workflows/daily-redesign.yml/dispatches'
+    )
     expect(JSON.parse(init.body as string)).toEqual({ ref: 'main', inputs: { dry_run: 'true' } })
   })
   it('returns the latest run info or null', async () => {
-    fetchMock.mockResolvedValueOnce(jsonRes({ workflow_runs: [{ status: 'completed', conclusion: 'success', html_url: 'u', created_at: 't' }] }))
-    expect(await latestRun()).toEqual({ status: 'completed', conclusion: 'success', url: 'u', createdAt: 't' })
+    fetchMock.mockResolvedValueOnce(
+      jsonRes({
+        workflow_runs: [
+          { status: 'completed', conclusion: 'success', html_url: 'u', created_at: 't' },
+        ],
+      })
+    )
+    expect(await latestRun()).toEqual({
+      status: 'completed',
+      conclusion: 'success',
+      url: 'u',
+      createdAt: 't',
+    })
     fetchMock.mockResolvedValueOnce(jsonRes({ workflow_runs: [] }))
     expect(await latestRun()).toBeNull()
   })

@@ -7,8 +7,7 @@ export type { ArchiveEntry } from './archive-impl'
 export type { ArchiveDetail } from './archive-detail-impl'
 export type { ResponsiveMetrics } from './archive-impl'
 
-export const readArchive = createServerFn({ method: 'GET' })
-  .handler(() => _readArchiveHandler())
+export const readArchive = createServerFn({ method: 'GET' }).handler(() => _readArchiveHandler())
 
 export const readArchiveDetail = createServerFn({ method: 'GET' })
   .inputValidator((d: unknown) => {

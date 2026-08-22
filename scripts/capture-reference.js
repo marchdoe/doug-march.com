@@ -10,10 +10,10 @@
  */
 
 import { chromium } from '@playwright/test'
-import { writeFileSync } from 'fs'
+import { writeFileSync } from 'node:fs'
 
 const args = Object.fromEntries(
-  process.argv.slice(2).map(a => {
+  process.argv.slice(2).map((a) => {
     const [k, v] = a.replace(/^--/, '').split('=')
     return [k, v]
   })

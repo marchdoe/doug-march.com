@@ -25,8 +25,8 @@ export function Footer() {
         unread by morning
       </span>
       <span>
-        Build 2026.07.29 <span className={css({ color: 'accent' })}>·</span> Spectral / Albert
-        Sans <span className={css({ color: 'accent' })}>·</span> hello@doug-march.com
+        Build 2026.07.29 <span className={css({ color: 'accent' })}>·</span> Spectral / Albert Sans{' '}
+        <span className={css({ color: 'accent' })}>·</span> hello@doug-march.com
       </span>
     </footer>
   )

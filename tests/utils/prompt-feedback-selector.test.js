@@ -15,7 +15,11 @@ function build(overrides) {
 
 describe('selectRecentFailure', () => {
   it('returns null on cold-start (<3 builds)', () => {
-    const r = selectRecentFailure({ history: [build({}), build({})], todayArchetype: 'Specimen', today: '2026-04-17' })
+    const r = selectRecentFailure({
+      history: [build({}), build({})],
+      todayArchetype: 'Specimen',
+      today: '2026-04-17',
+    })
     expect(r.lesson).toBeNull()
   })
 

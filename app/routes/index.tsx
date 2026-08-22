@@ -117,20 +117,50 @@ function HomePage() {
             <span className={css({ color: 'accentGlow' })}>Doug March</span> designs and builds
             software, then hands it to a machine that redraws it every night on nerve alone.
           </p>
-          <p className={css({ fontSize: 'sm', lineHeight: 'loose', color: 'plum.200', marginBottom: '3', maxWidth: '34ch' })}>
+          <p
+            className={css({
+              fontSize: 'sm',
+              lineHeight: 'loose',
+              color: 'plum.200',
+              marginBottom: '3',
+              maxWidth: '34ch',
+            })}
+          >
             This portfolio demolishes and rebuilds its own design every single day — new palette,
             new archetype, new composition — with total swagger and zero certainty about what
             tomorrow&rsquo;s page will be. Today it is a front page.
           </p>
-          <p className={css({ fontSize: 'sm', lineHeight: 'loose', color: 'plum.200', marginBottom: '3', maxWidth: '34ch' })}>
-            The premise runs entirely on the aphorism above it: the confidence to ship precedes
-            the understanding of the problem. See the full record on the{' '}
-            <a href="/about" className={css({ color: 'accentGlow', textDecoration: 'underline', _hover: { color: 'accent' } })}>
+          <p
+            className={css({
+              fontSize: 'sm',
+              lineHeight: 'loose',
+              color: 'plum.200',
+              marginBottom: '3',
+              maxWidth: '34ch',
+            })}
+          >
+            The premise runs entirely on the aphorism above it: the confidence to ship precedes the
+            understanding of the problem. See the full record on the{' '}
+            <a
+              href="/about"
+              className={css({
+                color: 'accentGlow',
+                textDecoration: 'underline',
+                _hover: { color: 'accent' },
+              })}
+            >
               About page
             </a>{' '}
             or the Work index below.
           </p>
-          <div className={css({ marginTop: '5', paddingTop: '3', borderTop: '1px solid', borderTopColor: 'border' })}>
+          <div
+            className={css({
+              marginTop: '5',
+              paddingTop: '3',
+              borderTop: '1px solid',
+              borderTopColor: 'border',
+            })}
+          >
             <span
               className={css({
                 display: 'block',
@@ -190,11 +220,26 @@ function HomePage() {
               >
                 Featured · {featuredProject.type} · {featuredProject.year}
               </span>
-              <h3 className={css({ fontFamily: 'display', fontWeight: 'bold', fontSize: 'xl', lineHeight: 'snug', marginBottom: '2' })}>
+              <h3
+                className={css({
+                  fontFamily: 'display',
+                  fontWeight: 'bold',
+                  fontSize: 'xl',
+                  lineHeight: 'snug',
+                  marginBottom: '2',
+                })}
+              >
                 {featuredProject.title}
               </h3>
               {featuredProject.problem && (
-                <p className={css({ fontSize: 'sm', lineHeight: 'loose', color: 'plum.200', marginBottom: '3' })}>
+                <p
+                  className={css({
+                    fontSize: 'sm',
+                    lineHeight: 'loose',
+                    color: 'plum.200',
+                    marginBottom: '3',
+                  })}
+                >
                   {featuredProject.problem}
                 </p>
               )}
@@ -221,7 +266,10 @@ function HomePage() {
 
           <ul className={css({ listStyle: 'none' })}>
             {selectedWork.map((p) => (
-              <li key={p.slug} className={css({ borderBottom: '1px solid', borderColor: 'border' })}>
+              <li
+                key={p.slug}
+                className={css({ borderBottom: '1px solid', borderColor: 'border' })}
+              >
                 <a
                   href={`/work/${p.slug}`}
                   className={css({
@@ -233,7 +281,9 @@ function HomePage() {
                     _hover: { color: 'accent' },
                   })}
                 >
-                  <span className={css({ fontFamily: 'display', fontSize: 'lg', color: 'text' })}>{p.title}</span>
+                  <span className={css({ fontFamily: 'display', fontSize: 'lg', color: 'text' })}>
+                    {p.title}
+                  </span>
                   <span
                     className={css({
                       fontFamily: 'body',
@@ -267,7 +317,10 @@ function HomePage() {
           </h3>
           <ul className={css({ listStyle: 'none' })}>
             {experiments.map((p) => (
-              <li key={p.slug} className={css({ borderBottom: '1px solid', borderColor: 'border' })}>
+              <li
+                key={p.slug}
+                className={css({ borderBottom: '1px solid', borderColor: 'border' })}
+              >
                 <a
                   href={p.externalUrl ?? p.liveUrl ?? `/work/${p.slug}`}
                   target={p.externalUrl || p.liveUrl ? '_blank' : undefined}
@@ -281,7 +334,9 @@ function HomePage() {
                     _hover: { color: 'accent' },
                   })}
                 >
-                  <span className={css({ fontFamily: 'display', fontSize: 'lg', color: 'text' })}>{p.title}</span>
+                  <span className={css({ fontFamily: 'display', fontSize: 'lg', color: 'text' })}>
+                    {p.title}
+                  </span>
                   <span
                     className={css({
                       fontFamily: 'body',
@@ -315,8 +370,17 @@ function HomePage() {
               borderColor: 'border',
             })}
           >
-            <div className={css({ position: 'relative', width: '46px', height: '46px', flex: 'none' })}>
-              <div className={css({ position: 'absolute', inset: 0, borderRadius: 'full', background: 'accent' })} />
+            <div
+              className={css({ position: 'relative', width: '46px', height: '46px', flex: 'none' })}
+            >
+              <div
+                className={css({
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: 'full',
+                  background: 'accent',
+                })}
+              />
               <div
                 className={css({
                   position: 'absolute',
@@ -342,7 +406,10 @@ function HomePage() {
             >
               Tonight&rsquo;s sky
               <br />
-              <strong className={css({ color: 'accentGlow', fontWeight: 'semibold' })}>Full Moon · 99%</strong> illumination
+              <strong className={css({ color: 'accentGlow', fontWeight: 'semibold' })}>
+                Full Moon · 99%
+              </strong>{' '}
+              illumination
             </span>
           </div>
 
@@ -371,7 +438,15 @@ function HomePage() {
             </span>
             <span className={css({ fontFamily: 'display', fontSize: 'lg', color: 'text' })}>
               DET{' '}
-              <span className={css({ fontSize: '2xl', fontWeight: 'bold', color: 'accentGlow', display: 'block', lineHeight: 'tight' })}>
+              <span
+                className={css({
+                  fontSize: '2xl',
+                  fontWeight: 'bold',
+                  color: 'accentGlow',
+                  display: 'block',
+                  lineHeight: 'tight',
+                })}
+              >
                 14
               </span>{' '}
               CWS · 0
@@ -396,7 +471,10 @@ function HomePage() {
             { k: 'Golf watch', v: 'Rocket Classic · scheduled' },
             { k: 'Weather of the desk', v: 'Confident. Highs of swagger, lows of understanding.' },
           ].map((item) => (
-            <div key={item.k} className={css({ paddingY: '3', borderBottom: '1px solid', borderColor: 'border' })}>
+            <div
+              key={item.k}
+              className={css({ paddingY: '3', borderBottom: '1px solid', borderColor: 'border' })}
+            >
               <span
                 className={css({
                   display: 'block',
@@ -410,7 +488,16 @@ function HomePage() {
               >
                 {item.k}
               </span>
-              <span className={css({ fontFamily: 'display', fontSize: 'sm', lineHeight: 'loose', color: 'plum.200' })}>{item.v}</span>
+              <span
+                className={css({
+                  fontFamily: 'display',
+                  fontSize: 'sm',
+                  lineHeight: 'loose',
+                  color: 'plum.200',
+                })}
+              >
+                {item.v}
+              </span>
             </div>
           ))}
         </aside>

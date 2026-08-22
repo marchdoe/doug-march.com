@@ -17,11 +17,11 @@
  */
 
 import { config } from 'dotenv'
-import { fileURLToPath } from 'url'
-import path from 'path'
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
 
-import { execSync } from 'child_process'
+import { execSync } from 'node:child_process'
 import { readContext } from './utils/site-context.js'
 import { runAgentSwarm } from './design-agents.js'
 

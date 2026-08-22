@@ -66,11 +66,16 @@ export function DataStrip() {
             minH: '38px',
           })}
         >
-          <span className={css({ color: 'accent', fontSize: 'sm' })}>◐</span> New Moon · 2% Lit · Day 28
+          <span className={css({ color: 'accent', fontSize: 'sm' })}>◐</span> New Moon · 2% Lit ·
+          Day 28
         </span>
       </Flex>
 
-      <Flex direction="column" align={{ base: 'flex-start', md: 'flex-end' }} textAlign={{ md: 'right' }}>
+      <Flex
+        direction="column"
+        align={{ base: 'flex-start', md: 'flex-end' }}
+        textAlign={{ md: 'right' }}
+      >
         <span
           className={css({
             fontSize: '2xs',
@@ -83,7 +88,8 @@ export function DataStrip() {
           On Repeat
         </span>
         <span className={css({ fontSize: 'xs', color: 'textSecondary' })}>
-          Guided by Voices <span className={css({ fontStyle: 'italic', color: 'text' })}>· Tobin Sprout</span>
+          Guided by Voices{' '}
+          <span className={css({ fontStyle: 'italic', color: 'text' })}>· Tobin Sprout</span>
         </span>
       </Flex>
     </Grid>

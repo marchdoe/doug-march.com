@@ -41,10 +41,13 @@ describe('github provider', () => {
   })
 
   it('fetches from GitHub trending', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce({
-      ok: true,
-      text: async () => MOCK_HTML,
-    }))
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValueOnce({
+        ok: true,
+        text: async () => MOCK_HTML,
+      })
+    )
 
     const result = await collect({})
     expect(result.data.repos.length).toBeGreaterThanOrEqual(1)

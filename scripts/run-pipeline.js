@@ -12,9 +12,9 @@
  * pipeline (2026-04-29) — the Art Director ingests raw signals directly.
  */
 
-import { execSync } from 'child_process'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { execSync } from 'node:child_process'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')

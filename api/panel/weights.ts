@@ -29,7 +29,8 @@ export async function PUT(request: Request): Promise<Response> {
     await setWeights(weights)
     return json({ ok: true })
   } catch (err) {
-    if (err instanceof GitHubError) return json({ error: `GitHub error (${err.status}) — try again` }, 502)
+    if (err instanceof GitHubError)
+      return json({ error: `GitHub error (${err.status}) — try again` }, 502)
     throw err
   }
 }

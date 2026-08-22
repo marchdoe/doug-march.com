@@ -7,9 +7,9 @@
  * @module
  */
 
-import { spawn } from 'child_process'
-import { mkdir, writeFile, readFile } from 'fs/promises'
-import path from 'path'
+import { spawn } from 'node:child_process'
+import { mkdir, writeFile, readFile } from 'node:fs/promises'
+import path from 'node:path'
 import { ROOT } from './file-manager.js'
 
 /**
@@ -21,8 +21,7 @@ import { ROOT } from './file-manager.js'
 async function processHtml(html, baseUrl) {
   // 1. Inline CSS: find <link rel="stylesheet" href="..."> tags
   //    Fetch each CSS URL from the running server, replace <link> with <style>
-  const cssLinkRegex =
-    /<link\s+[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["'][^>]*\/?>/gi
+  const cssLinkRegex = /<link\s+[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["'][^>]*\/?>/gi
   let processed = html
   const cssLinks = [...html.matchAll(cssLinkRegex)]
   for (const match of cssLinks) {
@@ -40,18 +39,12 @@ async function processHtml(html, baseUrl) {
   }
 
   // 2. Remove all <script> tags and their contents
-  processed = processed.replace(
-    /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-    ''
-  )
+  processed = processed.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
 
   // 3. Rewrite nav links for self-contained browsing
   processed = processed.replace(/href="\/"(?=[^a-z])/g, 'href="index.html"')
   processed = processed.replace(/href="\/about"/g, 'href="about.html"')
-  processed = processed.replace(
-    /href="\/work\/([^"]+)"/g,
-    'href="work/$1.html"'
-  )
+  processed = processed.replace(/href="\/work\/([^"]+)"/g, 'href="work/$1.html"')
 
   return processed
 }
@@ -102,13 +95,8 @@ export async function captureSnapshot(date, buildId) {
     await waitForServer(`${baseUrl}/`)
 
     // Read project slugs from the source file
-    const projectsSrc = await readFile(
-      path.join(ROOT, 'app/content/projects.ts'),
-      'utf8'
-    )
-    const slugs = [...projectsSrc.matchAll(/slug:\s*'([^']+)'/g)].map(
-      (m) => m[1]
-    )
+    const projectsSrc = await readFile(path.join(ROOT, 'app/content/projects.ts'), 'utf8')
+    const slugs = [...projectsSrc.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1])
 
     const routes = [
       { url: '/', file: 'index.html' },
@@ -121,9 +109,7 @@ export async function captureSnapshot(date, buildId) {
       try {
         const resp = await fetch(`${baseUrl}${route.url}`)
         if (!resp.ok) {
-          console.warn(
-            `  snapshot: skipping ${route.url} (HTTP ${resp.status})`
-          )
+          console.warn(`  snapshot: skipping ${route.url} (HTTP ${resp.status})`)
           route.html = null
           continue
         }
@@ -195,10 +181,7 @@ export async function captureScreenshot(port) {
     })
 
     await new Promise((resolve, reject) => {
-      const timeout = setTimeout(
-        () => reject(new Error('Preview server timeout')),
-        15000
-      )
+      const timeout = setTimeout(() => reject(new Error('Preview server timeout')), 15000)
       server.stdout.on('data', (chunk) => {
         if (chunk.toString().includes('Local:')) {
           clearTimeout(timeout)
@@ -294,10 +277,7 @@ export async function captureRouteScreenshot(route, { port, width = 1200, height
     })
 
     await new Promise((resolve, reject) => {
-      const timeout = setTimeout(
-        () => reject(new Error('Preview server timeout')),
-        15000
-      )
+      const timeout = setTimeout(() => reject(new Error('Preview server timeout')), 15000)
       server.stdout.on('data', (chunk) => {
         if (chunk.toString().includes('Local:')) {
           clearTimeout(timeout)

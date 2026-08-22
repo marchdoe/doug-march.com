@@ -14,17 +14,21 @@ describe('golf provider', () => {
     fetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
-        events: [{
-          name: 'The Masters',
-          status: { type: { description: 'In Progress', state: 'in' } },
-          competitions: [{
-            competitors: [
-              { order: 2, athlete: { displayName: 'Rory McIlroy' }, score: '-8' },
-              { order: 1, athlete: { displayName: 'Scottie Scheffler' }, score: '-12' },
-              { order: 3, athlete: { displayName: 'Collin Morikawa' }, score: '-6' },
+        events: [
+          {
+            name: 'The Masters',
+            status: { type: { description: 'In Progress', state: 'in' } },
+            competitions: [
+              {
+                competitors: [
+                  { order: 2, athlete: { displayName: 'Rory McIlroy' }, score: '-8' },
+                  { order: 1, athlete: { displayName: 'Scottie Scheffler' }, score: '-12' },
+                  { order: 3, athlete: { displayName: 'Collin Morikawa' }, score: '-6' },
+                ],
+              },
             ],
-          }],
-        }],
+          },
+        ],
       }),
     })
 
@@ -43,16 +47,20 @@ describe('golf provider', () => {
     fetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({
-        events: [{
-          name: 'Houston Open',
-          status: { type: { description: 'Scheduled', state: 'pre' } },
-          competitions: [{
-            competitors: [
-              { order: 1, athlete: { displayName: 'Player A' }, score: 'E' },
-              { order: 2, athlete: { displayName: 'Player B' }, score: 'E' },
+        events: [
+          {
+            name: 'Houston Open',
+            status: { type: { description: 'Scheduled', state: 'pre' } },
+            competitions: [
+              {
+                competitors: [
+                  { order: 1, athlete: { displayName: 'Player A' }, score: 'E' },
+                  { order: 2, athlete: { displayName: 'Player B' }, score: 'E' },
+                ],
+              },
             ],
-          }],
-        }],
+          },
+        ],
       }),
     })
 

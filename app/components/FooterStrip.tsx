@@ -17,11 +17,32 @@ export function FooterStrip() {
         padding: { base: '6', md: '6 16', lg: '6 24' },
       })}
     >
-      <div className={css({ display: 'flex', flexDirection: 'column', gap: '1.5', lineHeight: 'snug' })}>
-        <span className={css({ fontSize: '2xs', textTransform: 'uppercase', letterSpacing: 'wider', color: 'textMuted' })}>
+      <div
+        className={css({
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.5',
+          lineHeight: 'snug',
+        })}
+      >
+        <span
+          className={css({
+            fontSize: '2xs',
+            textTransform: 'uppercase',
+            letterSpacing: 'wider',
+            color: 'textMuted',
+          })}
+        >
           Scottish Open · In Progress
         </span>
-        <span className={css({ fontFamily: 'display', fontSize: 'xl', letterSpacing: 'wide', color: 'text' })}>
+        <span
+          className={css({
+            fontFamily: 'display',
+            fontSize: 'xl',
+            letterSpacing: 'wide',
+            color: 'text',
+          })}
+        >
           Tom Kim <span className={css({ color: 'accentGlow' })}>−14</span>
         </span>
         <span className={css({ fontSize: 'xs', color: 'textSecondary' })}>
@@ -53,7 +74,8 @@ export function FooterStrip() {
             whiteSpace: 'nowrap',
           })}
         >
-          <span className={css({ color: 'accent', fontSize: 'sm' })}>◐</span> New Moon · 2% Lit · Day 28
+          <span className={css({ color: 'accent', fontSize: 'sm' })}>◐</span> New Moon · 2% Lit ·
+          Day 28
         </span>
       </div>
 
@@ -66,11 +88,19 @@ export function FooterStrip() {
           alignItems: { base: 'flex-start', md: 'flex-end' },
         })}
       >
-        <span className={css({ fontSize: '2xs', textTransform: 'uppercase', letterSpacing: 'wider', color: 'textMuted' })}>
+        <span
+          className={css({
+            fontSize: '2xs',
+            textTransform: 'uppercase',
+            letterSpacing: 'wider',
+            color: 'textMuted',
+          })}
+        >
           On Repeat
         </span>
         <span className={css({ fontSize: 'xs', color: 'textSecondary' })}>
-          Guided by Voices <em className={css({ fontStyle: 'italic', color: 'text' })}>· Tobin Sprout</em>
+          Guided by Voices{' '}
+          <em className={css({ fontStyle: 'italic', color: 'text' })}>· Tobin Sprout</em>
         </span>
       </div>
     </footer>

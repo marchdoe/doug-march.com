@@ -71,7 +71,9 @@ export function Experiments() {
                     >
                       {project.year}
                     </Box>
-                    <Box fontSize="xs" fontFamily="body" color="accent">→</Box>
+                    <Box fontSize="xs" fontFamily="body" color="accent">
+                      →
+                    </Box>
                   </Flex>
                 </Flex>
               </Box>

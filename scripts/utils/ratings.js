@@ -1,5 +1,5 @@
-import { readFileSync, readdirSync, existsSync } from 'fs'
-import path from 'path'
+import { readFileSync, readdirSync, existsSync } from 'node:fs'
+import path from 'node:path'
 
 /**
  * Newest valid rating for one date dir, or null.
@@ -9,15 +9,22 @@ export function readRatingForDate(archiveDir, date) {
   const dirPath = path.join(archiveDir, date)
   let files
   try {
-    files = readdirSync(dirPath).filter((f) => /^rating-\d+\.json$/.test(f)).sort().reverse()
-  } catch { return null }
+    files = readdirSync(dirPath)
+      .filter((f) => /^rating-\d+\.json$/.test(f))
+      .sort()
+      .reverse()
+  } catch {
+    return null
+  }
   for (const f of files) {
     try {
       const r = JSON.parse(readFileSync(path.join(dirPath, f), 'utf8'))
       const grade = typeof r.grade === 'string' ? r.grade.trim().toUpperCase() : ''
       if (!/^[A-D]$/.test(grade)) continue // legacy or malformed
       return { grade, worked: r.worked || '', didnt: r.didnt || '', try: r.try || '' }
-    } catch { /* ignore malformed */ }
+    } catch {
+      /* ignore malformed */
+    }
   }
   return null
 }
@@ -38,7 +45,9 @@ export function readRecentRatings(archiveDir, { lookbackDays = 10 } = {}) {
       .sort()
       .reverse()
       .slice(0, lookbackDays)
-  } catch { return [] }
+  } catch {
+    return []
+  }
   const out = []
   for (const dateDir of dateDirs) {
     // At most ONE rating per date — newest file wins (see readRatingForDate).

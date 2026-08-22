@@ -89,7 +89,12 @@ describe('validateSchemeAgainstPreset', () => {
 describe('validateSchemeAgainstMandate', () => {
   it('passes when primary hue is inside target range and outside forbidden zones', () => {
     const scheme = { primary_hue: { h: 215, s: 70, l: 50, name: 'ocean' } }
-    const mandate = { targetHueRange: [195, 240], forbiddenHues: [[0, 60]], recentPrimaryHues: [30], rationale: '' }
+    const mandate = {
+      targetHueRange: [195, 240],
+      forbiddenHues: [[0, 60]],
+      recentPrimaryHues: [30],
+      rationale: '',
+    }
     const result = validateSchemeAgainstMandate(scheme, mandate)
     expect(result.ok).toBe(true)
     expect(result.warnings).toEqual([])
@@ -97,7 +102,12 @@ describe('validateSchemeAgainstMandate', () => {
 
   it('warns when primary hue falls inside a forbidden zone', () => {
     const scheme = { primary_hue: { h: 30, s: 70, l: 50, name: 'amber' } }
-    const mandate = { targetHueRange: [0, 360], forbiddenHues: [[0, 60]], recentPrimaryHues: [30], rationale: '' }
+    const mandate = {
+      targetHueRange: [0, 360],
+      forbiddenHues: [[0, 60]],
+      recentPrimaryHues: [30],
+      rationale: '',
+    }
     const result = validateSchemeAgainstMandate(scheme, mandate)
     expect(result.ok).toBe(false)
     expect(result.warnings[0]).toMatch(/forbidden zone/i)
@@ -105,7 +115,12 @@ describe('validateSchemeAgainstMandate', () => {
 
   it('warns when primary hue falls outside target range', () => {
     const scheme = { primary_hue: { h: 30, s: 70, l: 50, name: 'amber' } }
-    const mandate = { targetHueRange: [195, 240], forbiddenHues: [], recentPrimaryHues: [], rationale: '' }
+    const mandate = {
+      targetHueRange: [195, 240],
+      forbiddenHues: [],
+      recentPrimaryHues: [],
+      rationale: '',
+    }
     const result = validateSchemeAgainstMandate(scheme, mandate)
     expect(result.ok).toBe(false)
     expect(result.warnings[0]).toMatch(/outside target range/i)
@@ -113,7 +128,12 @@ describe('validateSchemeAgainstMandate', () => {
 
   it('accepts the permissive-default mandate (0-360 range, no forbidden)', () => {
     const scheme = { primary_hue: { h: 30, s: 70, l: 50, name: 'amber' } }
-    const mandate = { targetHueRange: [0, 360], forbiddenHues: [], recentPrimaryHues: [], rationale: '' }
+    const mandate = {
+      targetHueRange: [0, 360],
+      forbiddenHues: [],
+      recentPrimaryHues: [],
+      rationale: '',
+    }
     const result = validateSchemeAgainstMandate(scheme, mandate)
     expect(result.ok).toBe(true)
   })

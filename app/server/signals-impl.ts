@@ -1,7 +1,7 @@
 // app/server/signals-impl.ts
 // Pure implementation — no server function wrappers, safe to import in tests
-import { readFileSync, writeFileSync } from 'fs'
-import { resolve } from 'path'
+import { readFileSync, writeFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import * as yaml from 'js-yaml'
 
 export const SIGNALS_PATH = resolve(process.cwd(), 'signals/today.yml')

@@ -30,10 +30,10 @@ if (!arg || arg === '--list' || arg === '-l') {
   process.exit(0)
 }
 
-const chassis = CHASSIS_CATALOG.find(c => c.id === arg)
+const chassis = CHASSIS_CATALOG.find((c) => c.id === arg)
 if (!chassis) {
   console.error(`Unknown chassis: ${arg}`)
-  console.error(`Available: ${CHASSIS_CATALOG.map(c => c.id).join(', ')}`)
+  console.error(`Available: ${CHASSIS_CATALOG.map((c) => c.id).join(', ')}`)
   process.exit(1)
 }
 

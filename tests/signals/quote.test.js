@@ -13,7 +13,9 @@ describe('quote provider', () => {
   it('returns a quote from the API', async () => {
     fetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => [{ q: 'The only way to do great work is to love what you do.', a: 'Steve Jobs' }],
+      json: async () => [
+        { q: 'The only way to do great work is to love what you do.', a: 'Steve Jobs' },
+      ],
     })
 
     const result = await collect({})

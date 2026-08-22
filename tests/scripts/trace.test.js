@@ -25,11 +25,29 @@ describe('trace collector', () => {
 
   it('records multiple steps in order', () => {
     const trace = createTrace('2026-03-27')
-    trace.addStep({ name: 'signals', phase: 0, input: {}, output: { date: '2026-03-27' }, durationMs: 100 })
-    trace.addStep({ name: 'interpret', phase: 1, input: {}, output: { brief: '...' }, durationMs: 200 })
-    trace.addStep({ name: 'director', phase: 2, input: {}, output: { spec: '...' }, durationMs: 5000 })
+    trace.addStep({
+      name: 'signals',
+      phase: 0,
+      input: {},
+      output: { date: '2026-03-27' },
+      durationMs: 100,
+    })
+    trace.addStep({
+      name: 'interpret',
+      phase: 1,
+      input: {},
+      output: { brief: '...' },
+      durationMs: 200,
+    })
+    trace.addStep({
+      name: 'director',
+      phase: 2,
+      input: {},
+      output: { spec: '...' },
+      durationMs: 5000,
+    })
     expect(trace.steps).toHaveLength(3)
-    expect(trace.steps.map(s => s.name)).toEqual(['signals', 'interpret', 'director'])
+    expect(trace.steps.map((s) => s.name)).toEqual(['signals', 'interpret', 'director'])
   })
 
   it('calls onStep listener when step is added', () => {

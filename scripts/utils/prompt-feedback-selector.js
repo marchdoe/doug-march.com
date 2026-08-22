@@ -25,15 +25,17 @@ export function selectRecentFailure({ history, todayArchetype, today }) {
   const recent = history.slice(0, 7)
   if (recent.length < 3) return { lesson: null, selectedBuildId: null }
 
-  const eligible = recent.filter(b =>
-    typeof b.overallScore === 'number' && b.overallScore <= 3 &&
-    (Array.isArray(b.usedInPromptFor) ? b.usedInPromptFor.length < 2 : true) &&
-    b.worstFailure
+  const eligible = recent.filter(
+    (b) =>
+      typeof b.overallScore === 'number' &&
+      b.overallScore <= 3 &&
+      (Array.isArray(b.usedInPromptFor) ? b.usedInPromptFor.length < 2 : true) &&
+      b.worstFailure
   )
   if (eligible.length === 0) return { lesson: null, selectedBuildId: null }
 
   // Prefer matching archetype
-  const matching = eligible.find(b => b.archetype === todayArchetype)
+  const matching = eligible.find((b) => b.archetype === todayArchetype)
   const chosen = matching || eligible[0]
 
   return { lesson: formatLesson(chosen), selectedBuildId: chosen.buildId }

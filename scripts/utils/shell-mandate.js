@@ -1,5 +1,5 @@
-import { readFileSync, readdirSync, existsSync } from 'fs'
-import path from 'path'
+import { readFileSync, readdirSync, existsSync } from 'node:fs'
+import path from 'node:path'
 
 /**
  * Shell variance mandate — structural clone of color-mandate.js applied to
@@ -23,7 +23,9 @@ export function extractRecentShells(archiveDir, lookbackDays) {
       .sort()
       .reverse()
       .slice(0, lookbackDays)
-  } catch { return [] }
+  } catch {
+    return []
+  }
 
   const shells = []
   for (const dateDir of dateDirs) {
@@ -34,14 +36,23 @@ export function extractRecentShells(archiveDir, lookbackDays) {
         .filter((b) => /^build-\d+$/.test(b))
         .sort()
         .reverse()
-    } catch { continue }
+    } catch {
+      continue
+    }
     if (buildDirs.length === 0) continue
     const shellPath = path.join(datePath, buildDirs[0], 'shell.json')
     if (!existsSync(shellPath)) continue
     try {
       const s = JSON.parse(readFileSync(shellPath, 'utf8'))
-      shells.push({ date: dateDir, nav: s.nav ?? null, footer: s.footer ?? null, brand_lockup: s.brand_lockup ?? null })
-    } catch { /* ignore malformed */ }
+      shells.push({
+        date: dateDir,
+        nav: s.nav ?? null,
+        footer: s.footer ?? null,
+        brand_lockup: s.brand_lockup ?? null,
+      })
+    } catch {
+      /* ignore malformed */
+    }
   }
   return shells
 }
@@ -62,9 +73,18 @@ function lastDistinct(values, n) {
 export function computeShellMandate({ archiveDir, lookbackDays = 7 }) {
   const recentShells = extractRecentShells(archiveDir, lookbackDays)
   const softForbidden = {
-    nav: lastDistinct(recentShells.map((s) => s.nav), 3),
-    footer: lastDistinct(recentShells.map((s) => s.footer), 3),
-    brand_lockup: lastDistinct(recentShells.map((s) => s.brand_lockup), 3),
+    nav: lastDistinct(
+      recentShells.map((s) => s.nav),
+      3
+    ),
+    footer: lastDistinct(
+      recentShells.map((s) => s.footer),
+      3
+    ),
+    brand_lockup: lastDistinct(
+      recentShells.map((s) => s.brand_lockup),
+      3
+    ),
   }
   const rationale = recentShells.length
     ? `Last ${recentShells.length} shells: ${recentShells.map((s) => `${s.date}: nav=${s.nav}, footer=${s.footer}, lockup=${s.brand_lockup}`).join(' | ')}`
@@ -83,16 +103,24 @@ export function formatShellMandateForPrompt(mandate) {
     `Computed from recent builds. The page shell (nav placement, footer treatment, brand lockup) must be a DECLARED choice, not a default. Treat this as strong guidance, not law.`,
     ``,
   ]
-  const label = { nav: 'Nav treatments', footer: 'Footer treatments', brand_lockup: 'Brand lockups' }
+  const label = {
+    nav: 'Nav treatments',
+    footer: 'Footer treatments',
+    brand_lockup: 'Brand lockups',
+  }
   for (const key of ['nav', 'footer', 'brand_lockup']) {
     const used = mandate.softForbidden[key]
-    lines.push(used.length
-      ? `- **${label[key]} used recently (avoid):** ${used.join(', ')}`
-      : `- **${label[key]}:** no recent history.`)
+    lines.push(
+      used.length
+        ? `- **${label[key]} used recently (avoid):** ${used.join(', ')}`
+        : `- **${label[key]}:** no recent history.`
+    )
   }
   lines.push(``)
   lines.push(`- **Rationale:** ${mandate.rationale}`)
   lines.push(``)
-  lines.push(`If today's brief genuinely calls for a recently-used treatment, you may reuse it — justify why in your rationale. Fit > novelty.`)
+  lines.push(
+    `If today's brief genuinely calls for a recently-used treatment, you may reuse it — justify why in your rationale. Fit > novelty.`
+  )
   return lines.join('\n')
 }

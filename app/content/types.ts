@@ -5,14 +5,7 @@ export type Client = {
   description?: string
 }
 
-export type ProjectType =
-  | 'SaaS'
-  | 'Design'
-  | 'Product'
-  | 'Founder'
-  | 'AI'
-  | 'OSS'
-  | 'Experiment'
+export type ProjectType = 'SaaS' | 'Design' | 'Product' | 'Founder' | 'AI' | 'OSS' | 'Experiment'
 
 export type Project = {
   slug: string

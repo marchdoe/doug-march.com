@@ -19,8 +19,22 @@ describe('product-hunt provider', () => {
         data: {
           posts: {
             edges: [
-              { node: { name: 'Cool App', tagline: 'Does cool stuff', votesCount: 500, url: 'https://www.producthunt.com/posts/cool-app' } },
-              { node: { name: 'Nice Tool', tagline: 'A nice tool', votesCount: 300, url: 'https://www.producthunt.com/posts/nice-tool' } },
+              {
+                node: {
+                  name: 'Cool App',
+                  tagline: 'Does cool stuff',
+                  votesCount: 500,
+                  url: 'https://www.producthunt.com/posts/cool-app',
+                },
+              },
+              {
+                node: {
+                  name: 'Nice Tool',
+                  tagline: 'A nice tool',
+                  votesCount: 300,
+                  url: 'https://www.producthunt.com/posts/nice-tool',
+                },
+              },
             ],
           },
         },

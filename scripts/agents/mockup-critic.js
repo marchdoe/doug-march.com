@@ -9,13 +9,20 @@ export function parseMockupCriticResponse(raw) {
   // Verdict must sit alone on its line (rejects a literal echo of the
   // template's "APPROVE | REVISE"), and the LAST occurrence wins so a
   // quoted example earlier in the response can't shadow the real verdict.
-  const verdictMatches = [...String(raw ?? '').matchAll(/===VERDICT===\s*\r?\n\s*(APPROVE|REVISE)\s*$/gm)]
+  const verdictMatches = [
+    ...String(raw ?? '').matchAll(/===VERDICT===\s*\r?\n\s*(APPROVE|REVISE)\s*$/gm),
+  ]
   // Feedback tolerates a missing ===END=== (truncated responses) so a
   // REVISE round never goes back to the designer with empty feedback.
   // Last occurrence wins, mirroring the verdict rule.
-  const feedbackMatches = [...String(raw ?? '').matchAll(/===FEEDBACK===\s*\n([\s\S]*?)(?:===END===|$)/g)]
+  const feedbackMatches = [
+    ...String(raw ?? '').matchAll(/===FEEDBACK===\s*\n([\s\S]*?)(?:===END===|$)/g),
+  ]
   if (verdictMatches.length === 0) {
-    return { verdict: 'REVISE', feedback: `malformed critic response: ${String(raw).slice(0, 300)}` }
+    return {
+      verdict: 'REVISE',
+      feedback: `malformed critic response: ${String(raw).slice(0, 300)}`,
+    }
   }
   return {
     verdict: verdictMatches[verdictMatches.length - 1][1],
@@ -29,11 +36,13 @@ export function parseMockupCriticResponse(raw) {
  */
 export async function runMockupCritic(ctx) {
   const userPrompt = [
-    '## Brief + Visual Specification\n\n' + ctx.enrichedBrief,
-    '## Measurables (declared floors)\n\n' + ctx.measurables,
-    '## Shell Declaration\n\n' + ctx.shell,
+    `## Brief + Visual Specification\n\n${ctx.enrichedBrief}`,
+    `## Measurables (declared floors)\n\n${ctx.measurables}`,
+    `## Shell Declaration\n\n${ctx.shell}`,
     'A screenshot of the rendered mockup (1440×900) is attached as a base64 JPEG image below.\n\n' +
-      '![Mockup Screenshot](data:image/jpeg;base64,' + ctx.screenshotBuffer.toString('base64') + ')',
+      '![Mockup Screenshot](data:image/jpeg;base64,' +
+      ctx.screenshotBuffer.toString('base64') +
+      ')',
   ].join('\n\n---\n\n')
 
   const raw = await callClaudeCLI('mockup-critic', ctx.systemPrompt, userPrompt, {

@@ -1,5 +1,5 @@
-import { readFileSync, readdirSync, existsSync } from 'fs'
-import path from 'path'
+import { readFileSync, readdirSync, existsSync } from 'node:fs'
+import path from 'node:path'
 import { hexToHsl } from './color-validation.js'
 
 /**
@@ -21,7 +21,9 @@ export function extractRecentPrimaryHues(archiveDir, lookbackDays) {
       .sort()
       .reverse()
       .slice(0, lookbackDays)
-  } catch { return [] }
+  } catch {
+    return []
+  }
 
   const hues = []
   for (const dateDir of dateDirs) {
@@ -32,7 +34,9 @@ export function extractRecentPrimaryHues(archiveDir, lookbackDays) {
         .filter((b) => /^build-\d+$/.test(b))
         .sort()
         .reverse()
-    } catch { continue }
+    } catch {
+      continue
+    }
 
     if (buildDirs.length === 0) continue
     const latestBuild = path.join(datePath, buildDirs[0])
@@ -45,19 +49,25 @@ export function extractRecentPrimaryHues(archiveDir, lookbackDays) {
           hues.push(scheme.primary_hue.h)
           continue
         }
-      } catch { /* fall through to preset.ts */ }
+      } catch {
+        /* fall through to preset.ts */
+      }
     }
 
     const presetPath = path.join(latestBuild, 'preset.ts')
     if (existsSync(presetPath)) {
       try {
         const src = readFileSync(presetPath, 'utf8')
-        const match = src.match(/accent\s*:\s*\{[^}]*?DEFAULT\s*:\s*\{\s*value:\s*['"](#[0-9a-f]{3,6})['"]/i)
+        const match = src.match(
+          /accent\s*:\s*\{[^}]*?DEFAULT\s*:\s*\{\s*value:\s*['"](#[0-9a-f]{3,6})['"]/i
+        )
         if (match) {
           const hsl = hexToHsl(match[1])
           if (hsl) hues.push(hsl.h)
         }
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
     }
   }
   return hues
@@ -73,13 +83,13 @@ export function mapSignalsToTargetHue(signals) {
 
   const rules = [
     { match: /cold|winter|snow|ice|frost/, range: [195, 240], label: 'cool blue' },
-    { match: /warm spring|coral|blossom/,   range: [5, 35],    label: 'warm coral' },
-    { match: /summer|bright|sunny/,          range: [40, 80],   label: 'warm sunny' },
-    { match: /autumn|fall|burn|rust/,        range: [15, 40],   label: 'rust/terracotta' },
-    { match: /energetic|electric|vivid/,     range: [280, 340], label: 'electric magenta' },
-    { match: /calm|misty|overcast/,          range: [140, 180], label: 'muted cyan-green' },
-    { match: /moody|dark|sombre/,            range: [230, 280], label: 'deep indigo/violet' },
-    { match: /celebratory|party|upbeat/,     range: [320, 360], label: 'hot pink' },
+    { match: /warm spring|coral|blossom/, range: [5, 35], label: 'warm coral' },
+    { match: /summer|bright|sunny/, range: [40, 80], label: 'warm sunny' },
+    { match: /autumn|fall|burn|rust/, range: [15, 40], label: 'rust/terracotta' },
+    { match: /energetic|electric|vivid/, range: [280, 340], label: 'electric magenta' },
+    { match: /calm|misty|overcast/, range: [140, 180], label: 'muted cyan-green' },
+    { match: /moody|dark|sombre/, range: [230, 280], label: 'deep indigo/violet' },
+    { match: /celebratory|party|upbeat/, range: [320, 360], label: 'hot pink' },
   ]
 
   for (const rule of rules) {
@@ -177,6 +187,8 @@ export function formatMandateForPrompt(mandate) {
   }
   lines.push(`- **Rationale:** ${mandate.rationale}`)
   lines.push(``)
-  lines.push(`If your chosen primary hue falls outside the target range or inside a forbidden zone, justify why in your color story.`)
+  lines.push(
+    `If your chosen primary hue falls outside the target range or inside a forbidden zone, justify why in your color story.`
+  )
   return lines.join('\n')
 }

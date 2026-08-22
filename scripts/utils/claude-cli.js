@@ -5,10 +5,10 @@
  * the stream-json parsing, timeout handling, and stdin piping code.
  */
 
-import path from 'path'
-import { writeFile, unlink } from 'fs/promises'
-import { createReadStream } from 'fs'
-import { spawn } from 'child_process'
+import path from 'node:path'
+import { writeFile, unlink } from 'node:fs/promises'
+import { createReadStream } from 'node:fs'
+import { spawn } from 'node:child_process'
 import { ROOT } from './file-manager.js'
 
 /**
@@ -37,7 +37,9 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
   // contain shell-special characters. All current callers pass plain
   // ASCII names like 'token-designer', so this is strictly tightening.
   if (typeof agentName !== 'string' || !/^[a-z0-9][a-z0-9-]{0,50}$/i.test(agentName)) {
-    throw new Error(`Invalid agentName: ${JSON.stringify(agentName)} (must match /^[a-z0-9][a-z0-9-]{0,50}$/i)`)
+    throw new Error(
+      `Invalid agentName: ${JSON.stringify(agentName)} (must match /^[a-z0-9][a-z0-9-]{0,50}$/i)`
+    )
   }
 
   const {
@@ -65,13 +67,19 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
   const cliArgs = [
     '-p',
     '--verbose',
-    '--output-format', 'stream-json',
-    '--max-turns', '1',
-    '--model', model,
-    '--tools', '',
+    '--output-format',
+    'stream-json',
+    '--max-turns',
+    '1',
+    '--model',
+    model,
+    '--tools',
+    '',
     '--disable-slash-commands',
-    '--settings', PIPELINE_SETTINGS,
-    '--system-prompt', systemPrompt,
+    '--settings',
+    PIPELINE_SETTINGS,
+    '--system-prompt',
+    systemPrompt,
     ...extraCliArgs,
   ]
 
@@ -103,13 +111,13 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
       env: cliEnv,
     })
 
-    let fullText = ''     // Accumulated response text from content blocks
-    let finalResult = ''  // The result field from the final message
+    let fullText = '' // Accumulated response text from content blocks
+    let finalResult = '' // The result field from the final message
     let stderr = ''
-    let lineBuffer = ''   // Buffer for incomplete JSON lines
-    let charCount = 0     // Track characters received for progress
-    let lastOutputTime = Date.now()  // Track last TEXT output (stall detection)
-    let lastEventTime = Date.now()   // Track last stream-json event of ANY type
+    let lineBuffer = '' // Buffer for incomplete JSON lines
+    let charCount = 0 // Track characters received for progress
+    let lastOutputTime = Date.now() // Track last TEXT output (stall detection)
+    let lastEventTime = Date.now() // Track last stream-json event of ANY type
     const eventCounts = Object.create(null) // {system: n, assistant: n, result: n}
     const startTime = Date.now()
     const debug = process.env.PIPELINE_DEBUG === '1'
@@ -120,7 +128,10 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     // stall/timeout paths previously discarded. Appended to stall/timeout
     // errors and written to signals/cli-diag-<agent>.txt for post-run review.
     const diagnostics = () => {
-      const counts = Object.entries(eventCounts).map(([k, v]) => `${k}=${v}`).join(' ') || 'NONE'
+      const counts =
+        Object.entries(eventCounts)
+          .map(([k, v]) => `${k}=${v}`)
+          .join(' ') || 'NONE'
       const sinceEvent = Math.round((Date.now() - lastEventTime) / 1000)
       const sinceText = Math.round((Date.now() - lastOutputTime) / 1000)
       const err = stderr.trim() ? stderr.trim().slice(-1200) : '(stderr empty)'
@@ -153,7 +164,10 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
           // CLI was emitting non-text events (throttled/thinking) or silent.
           eventCounts[event.type] = (eventCounts[event.type] || 0) + 1
           lastEventTime = Date.now()
-          if (debug) console.log(`  [${agentName}] «event» ${event.type}${event.subtype ? '/' + event.subtype : ''}`)
+          if (debug)
+            console.log(
+              `  [${agentName}] «event» ${event.type}${event.subtype ? `/${event.subtype}` : ''}`
+            )
 
           if (event.type === 'assistant' && event.message?.content) {
             // Content block with text -- accumulate and show progress.
@@ -167,7 +181,9 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
                 lastOutputTime = Date.now()
                 // Log progress every ~2000 chars so the SSE stream shows activity
                 if (charCount > 0 && charCount % 2000 < newChars) {
-                  console.log(`  [${agentName}] ... generating (${(charCount / 1024).toFixed(0)}KB)`)
+                  console.log(
+                    `  [${agentName}] ... generating (${(charCount / 1024).toFixed(0)}KB)`
+                  )
                 }
               }
             }
@@ -203,9 +219,13 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     const killHard = () => {
       // SIGTERM first (default), then SIGKILL after 5s if still alive.
       // The Claude CLI occasionally ignores SIGTERM on stream-json hangs.
-      try { child.kill('SIGTERM') } catch {}
+      try {
+        child.kill('SIGTERM')
+      } catch {}
       setTimeout(() => {
-        try { child.kill('SIGKILL') } catch {}
+        try {
+          child.kill('SIGKILL')
+        } catch {}
       }, 5000).unref?.()
     }
 
@@ -217,11 +237,15 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
       let extra = ''
       if (onTimeout) {
         try {
-          extra = await onTimeout({ charCount }) || ''
+          extra = (await onTimeout({ charCount })) || ''
         } catch {}
       }
       await dumpDiagnostics('timeout')
-      reject(new Error(`[${agentName}] timed out after ${Math.round(timeoutMs / 60000)} minutes (generated ${(charCount / 1024).toFixed(0)}KB before timeout)${extra}\n  ${diagnostics()}`))
+      reject(
+        new Error(
+          `[${agentName}] timed out after ${Math.round(timeoutMs / 60000)} minutes (generated ${(charCount / 1024).toFixed(0)}KB before timeout)${extra}\n  ${diagnostics()}`
+        )
+      )
     }, timeoutMs)
 
     // Stall detection: kill only on TRUE silence — no stream event of ANY
@@ -240,7 +264,11 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
         killHard()
         const stallMin = Math.round(stallDuration / 60000)
         dumpDiagnostics('stall').finally(() => {
-          reject(new Error(`[${agentName}] stalled — no output for ${stallMin} minutes (generated ${(charCount / 1024).toFixed(0)}KB before stall)\n  ${diagnostics()}`))
+          reject(
+            new Error(
+              `[${agentName}] stalled — no output for ${stallMin} minutes (generated ${(charCount / 1024).toFixed(0)}KB before stall)\n  ${diagnostics()}`
+            )
+          )
         })
       }
     }, 30000)
@@ -286,7 +314,9 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     // Always clean up the temp file, even if the Promise rejected.
     // Previously unlink() was after `await` with no try/finally — a
     // rejection would leave .agent-prompt-*.tmp files in the repo root.
-    try { await unlink(promptPath) } catch {}
+    try {
+      await unlink(promptPath)
+    } catch {}
   }
 
   return result

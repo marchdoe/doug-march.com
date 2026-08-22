@@ -1,8 +1,8 @@
 // tests/server/signals.test.ts
 import { describe, it, expect, afterEach } from 'vitest'
-import { writeFileSync, unlinkSync, readFileSync, mkdirSync } from 'fs'
-import { resolve, dirname } from 'path'
-import { fileURLToPath } from 'url'
+import { writeFileSync, unlinkSync, readFileSync, mkdirSync } from 'node:fs'
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import * as yaml from 'js-yaml'
 import { _readSignalsHandler, _saveOverridesHandler } from '../../app/server/signals-impl.js'
 
@@ -24,7 +24,11 @@ function writeYaml(data: object) {
 }
 
 afterEach(() => {
-  try { unlinkSync(TEST_PATH) } catch { /* ok */ }
+  try {
+    unlinkSync(TEST_PATH)
+  } catch {
+    /* ok */
+  }
 })
 
 describe('_readSignalsHandler', () => {

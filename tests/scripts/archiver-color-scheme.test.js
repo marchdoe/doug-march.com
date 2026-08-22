@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
-import { readFile, rm } from 'fs/promises'
-import path from 'path'
-import { existsSync } from 'fs'
+import { readFile, rm } from 'node:fs/promises'
+import path from 'node:path'
+import { existsSync } from 'node:fs'
 
 // Stub captureSnapshot — it spawns `vite preview` which takes longer
 // than the per-test timeout on CI. This test is about archive() side
@@ -37,7 +37,7 @@ describe('archive() — color scheme persistence', () => {
 
     const dir = path.join(ROOT, 'archive', date)
     createdDir = dir
-    const { readdirSync } = await import('fs')
+    const { readdirSync } = await import('node:fs')
     const buildDirs = readdirSync(dir).filter((f) => f.startsWith('build-'))
     expect(buildDirs.length).toBeGreaterThan(0)
 
@@ -54,7 +54,7 @@ describe('archive() — color scheme persistence', () => {
 
     const dir = path.join(ROOT, 'archive', date)
     createdDir = dir
-    const { readdirSync } = await import('fs')
+    const { readdirSync } = await import('node:fs')
     const buildDirs = readdirSync(dir).filter((f) => f.startsWith('build-'))
     const schemePath = path.join(dir, buildDirs[0], 'color-scheme.json')
     expect(existsSync(schemePath)).toBe(false)

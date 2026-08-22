@@ -16,7 +16,7 @@ export const Route = createFileRoute('/archive')({
 
 function truncate(text: string, max: number) {
   if (text.length <= max) return text
-  return text.slice(0, max).replace(/\s+\S*$/, '') + '...'
+  return `${text.slice(0, max).replace(/\s+\S*$/, '')}...`
 }
 
 function ArchivePage() {
@@ -26,8 +26,11 @@ function ArchivePage() {
 
   useEffect(() => {
     fetch('/archive/_data.json')
-      .then(res => res.ok ? res.json() : [])
-      .then(data => { setEntries(data); setLoaded(true) })
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        setEntries(data)
+        setLoaded(true)
+      })
       .catch(() => setLoaded(true))
   }, [])
 
@@ -76,8 +79,8 @@ function ArchivePage() {
             maxWidth: 520,
           }}
         >
-          Every morning a multi-agent pipeline redesigns this site from scratch.
-          Each entry below is one day's output.
+          Every morning a multi-agent pipeline redesigns this site from scratch. Each entry below is
+          one day's output.
         </p>
       </section>
 
@@ -95,11 +98,7 @@ function ArchivePage() {
           </p>
         ) : (
           entries.map((entry, i) => (
-            <ArchiveRow
-              key={entry.date}
-              entry={entry}
-              isLast={i === entries.length - 1}
-            />
+            <ArchiveRow key={entry.date} entry={entry} isLast={i === entries.length - 1} />
           ))
         )}
       </section>
@@ -107,13 +106,7 @@ function ArchivePage() {
   )
 }
 
-function ArchiveRow({
-  entry,
-  isLast,
-}: {
-  entry: ArchiveEntry
-  isLast: boolean
-}) {
+function ArchiveRow({ entry, isLast }: { entry: ArchiveEntry; isLast: boolean }) {
   return (
     <Link
       to="/archive/$date"
@@ -123,9 +116,7 @@ function ArchiveRow({
         alignItems: 'baseline',
         gap: 24,
         padding: '20px 12px',
-        borderBottom: isLast
-          ? 'none'
-          : '1px solid var(--colors-border, #e0e0e0)',
+        borderBottom: isLast ? 'none' : '1px solid var(--colors-border, #e0e0e0)',
         textDecoration: 'none',
         color: 'inherit',
         transition: 'background 150ms ease',

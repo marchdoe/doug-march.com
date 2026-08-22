@@ -36,10 +36,10 @@ export async function collect(_profile) {
   // then take the top 5.
   const sorted = [...competitors].sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
 
-  const leaders = sorted.slice(0, 5).map(c => ({
+  const leaders = sorted.slice(0, 5).map((c) => ({
     name: c.athlete?.displayName || 'Unknown',
     position: String(c.order ?? '?'),
-    score: typeof c.score === 'string' ? c.score : (c.score?.displayValue || 'E'),
+    score: typeof c.score === 'string' ? c.score : c.score?.displayValue || 'E',
   }))
 
   return {

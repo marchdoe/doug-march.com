@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest'
-import { writeFileSync, mkdirSync, rmSync, existsSync } from 'fs'
-import { resolve, dirname } from 'path'
-import { fileURLToPath } from 'url'
+import { writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs'
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { validateGenerated } from '../../scripts/utils/build-validator.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -10,9 +10,7 @@ const ROOT = resolve(__dirname, '../..')
 // We test the scanner by creating temporary test files and running
 // validateGenerated against the real ROOT. To avoid polluting the real
 // files, we snapshot and restore the files we touch.
-const TEST_FILES = [
-  'app/components/__scanner_test.tsx',
-]
+const TEST_FILES = ['app/components/__scanner_test.tsx']
 
 function writeTestFile(relPath, content) {
   const abs = resolve(ROOT, relPath)
@@ -59,10 +57,7 @@ describe('build validator content scanner', () => {
   })
 
   it('flags eval()', async () => {
-    writeTestFile(
-      'app/components/__scanner_test.tsx',
-      `const x = eval('alert(1)')`
-    )
+    writeTestFile('app/components/__scanner_test.tsx', `const x = eval('alert(1)')`)
     const result = await runValidator()
     expect(result.success).toBe(false)
     expect(result.error).toContain('eval()')
@@ -89,20 +84,14 @@ describe('build validator content scanner', () => {
   })
 
   it('flags new Function()', async () => {
-    writeTestFile(
-      'app/components/__scanner_test.tsx',
-      `const f = new Function('return 1')`
-    )
+    writeTestFile('app/components/__scanner_test.tsx', `const f = new Function('return 1')`)
     const result = await runValidator()
     expect(result.success).toBe(false)
     expect(result.error).toContain('new Function()')
   })
 
   it('flags disallowed external URLs', async () => {
-    writeTestFile(
-      'app/components/__scanner_test.tsx',
-      `const url = 'https://evil.com/steal'`
-    )
+    writeTestFile('app/components/__scanner_test.tsx', `const url = 'https://evil.com/steal'`)
     const result = await runValidator()
     expect(result.success).toBe(false)
     expect(result.error).toContain('evil.com')
@@ -148,10 +137,7 @@ describe('build validator content scanner', () => {
   })
 
   it('flags document.write', async () => {
-    writeTestFile(
-      'app/components/__scanner_test.tsx',
-      `document.write('<p>bad</p>')`
-    )
+    writeTestFile('app/components/__scanner_test.tsx', `document.write('<p>bad</p>')`)
     const result = await runValidator()
     expect(result.success).toBe(false)
     expect(result.error).toContain('document.write')

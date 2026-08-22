@@ -43,27 +43,27 @@ describe('FILE_OWNERSHIP', () => {
 
 describe('identifyFailingAgent', () => {
   it('identifies react-engineer from a build error mentioning Layout.tsx', () => {
-    const error = "app/components/Layout.tsx(15,7): error TS2322"
+    const error = 'app/components/Layout.tsx(15,7): error TS2322'
     expect(identifyFailingAgent(error)).toBe('react-engineer')
   })
 
   it('identifies react-engineer from a build error mentioning Bio.tsx', () => {
-    const error = "app/components/Bio.tsx(8,3): error TS2304"
+    const error = 'app/components/Bio.tsx(8,3): error TS2304'
     expect(identifyFailingAgent(error)).toBe('react-engineer')
   })
 
   it('identifies art-director from error mentioning preset', () => {
-    const error = "Error in elements/preset.ts: invalid token"
+    const error = 'Error in elements/preset.ts: invalid token'
     expect(identifyFailingAgent(error)).toBe('art-director')
   })
 
   it('returns react-engineer when errors span multiple react-engineer files', () => {
-    const error = "app/components/Layout.tsx(15,7): error\napp/components/Bio.tsx(8,3): error"
+    const error = 'app/components/Layout.tsx(15,7): error\napp/components/Bio.tsx(8,3): error'
     expect(identifyFailingAgent(error)).toBe('react-engineer')
   })
 
   it('returns "both" when no file can be identified', () => {
-    const error = "Unknown build error"
+    const error = 'Unknown build error'
     expect(identifyFailingAgent(error)).toBe('both')
   })
 })
@@ -109,7 +109,9 @@ describe('buildAgentPrompt', () => {
   it('includes anti-anchoring instructions when reference files are present', () => {
     const prompt = buildAgentPrompt('structure-agent', {
       brief: 'brief text',
-      referenceFiles: [{ path: 'app/components/Layout.tsx', content: 'export function Layout() {}' }],
+      referenceFiles: [
+        { path: 'app/components/Layout.tsx', content: 'export function Layout() {}' },
+      ],
       tokenContext: 'tokens',
     })
     expect(prompt).toContain('Do NOT use these as a design starting point')
@@ -162,7 +164,8 @@ You MUST choose from: Broadsheet, Poster, Scroll, Split, Stack, Index.
   })
 
   it('falls back to last-match when structured line is absent', () => {
-    const spec = 'FORBIDDEN: Gallery Wall, Specimen\n\nThis uses the Stack approach with horizontal bands.'
+    const spec =
+      'FORBIDDEN: Gallery Wall, Specimen\n\nThis uses the Stack approach with horizontal bands.'
     expect(extractArchetypeFromText(spec)).toBe('Stack')
   })
 
@@ -211,11 +214,7 @@ describe('resolveChassisFromDirectorOutput', () => {
 
 describe('parseDelimiterResponse', () => {
   it('parses a single file', () => {
-    const input = [
-      '===FILE:app/components/Foo.tsx===',
-      'export const x = 42',
-      '',
-    ].join('\n')
+    const input = ['===FILE:app/components/Foo.tsx===', 'export const x = 42', ''].join('\n')
     const { files } = parseDelimiterResponse(input)
     expect(files).toHaveLength(1)
     expect(files[0].path).toBe('app/components/Foo.tsx')
@@ -311,13 +310,7 @@ describe('parseDelimiterResponse', () => {
   })
 
   it('ignores files with empty paths or content', () => {
-    const input = [
-      '===FILE: ===',
-      'content',
-      '===FILE:valid.tsx===',
-      'const x = 1',
-      '',
-    ].join('\n')
+    const input = ['===FILE: ===', 'content', '===FILE:valid.tsx===', 'const x = 1', ''].join('\n')
     const { files } = parseDelimiterResponse(input)
     expect(files).toHaveLength(1)
     expect(files[0].path).toBe('valid.tsx')

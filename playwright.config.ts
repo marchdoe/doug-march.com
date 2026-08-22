@@ -16,12 +16,14 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   // Dev server for dev-panel tests (site-health uses PREVIEW_URL instead)
-  webServer: process.env.CI ? undefined : {
-    command: `pnpm exec vite --port ${DEV_PORT}`,
-    port: DEV_PORT,
-    reuseExistingServer: true,
-    timeout: 60000,
-  },
+  webServer: process.env.CI
+    ? undefined
+    : {
+        command: `pnpm exec vite --port ${DEV_PORT}`,
+        port: DEV_PORT,
+        reuseExistingServer: true,
+        timeout: 60000,
+      },
   projects: [
     {
       name: 'site-health',
@@ -32,13 +34,21 @@ export default defineConfig({
       },
     },
     // Dev-panel tests are local-only — the /dev route is infrastructure, not deployed
-    ...(process.env.CI ? [] : [{
-      name: 'dev-panel',
-      testMatch: ['**/dev-panel.spec.ts', '**/dev-responsive-panel.spec.ts', '**/dev-responsive-trend.spec.ts'],
-      use: {
-        ...devices['Desktop Chrome'],
-        baseURL: DEV_URL,
-      },
-    }]),
+    ...(process.env.CI
+      ? []
+      : [
+          {
+            name: 'dev-panel',
+            testMatch: [
+              '**/dev-panel.spec.ts',
+              '**/dev-responsive-panel.spec.ts',
+              '**/dev-responsive-trend.spec.ts',
+            ],
+            use: {
+              ...devices['Desktop Chrome'],
+              baseURL: DEV_URL,
+            },
+          },
+        ]),
   ],
 })

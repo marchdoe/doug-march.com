@@ -1,7 +1,7 @@
 // app/server/archive-detail-impl.ts
 // Pure implementation — no server function wrappers, safe to import in tests
-import { readFileSync, existsSync, readdirSync } from 'fs'
-import { join } from 'path'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
 import { ARCHIVE_PATH } from './archive-impl'
 
 export interface ArchiveDetail {
@@ -21,12 +21,12 @@ export function _readArchiveDetail(date: string, archivePath = ARCHIVE_PATH): Ar
   const dateDir = join(archivePath, date)
   if (!existsSync(dateDir)) return null
 
-  const readSafe = (p: string) => existsSync(p) ? readFileSync(p, 'utf8') : ''
+  const readSafe = (p: string) => (existsSync(p) ? readFileSync(p, 'utf8') : '')
 
   // Find latest build directory
   const builds = readdirSync(dateDir, { withFileTypes: true })
-    .filter(b => b.isDirectory() && b.name.startsWith('build-'))
-    .map(b => b.name)
+    .filter((b) => b.isDirectory() && b.name.startsWith('build-'))
+    .map((b) => b.name)
     .sort()
     .reverse()
   const latestBuild = builds[0]
@@ -47,16 +47,22 @@ export function _readArchiveDetail(date: string, archivePath = ARCHIVE_PATH): Ar
 
   // Parse brief.md
   const lines = briefContent.split('\n')
-  const briefLine = lines.find(l => l.startsWith('**Design Brief:** '))
+  const briefLine = lines.find((l) => l.startsWith('**Design Brief:** '))
   const brief = briefLine?.slice('**Design Brief:** '.length).trim() ?? ''
 
   let rationale = ''
-  const rationaleStart = lines.findIndex(l => l.startsWith("## Claude's Rationale"))
-  const filesChangedStart = lines.findIndex(l => l.startsWith('## Files Changed'))
+  const rationaleStart = lines.findIndex((l) => l.startsWith("## Claude's Rationale"))
+  const filesChangedStart = lines.findIndex((l) => l.startsWith('## Files Changed'))
   if (rationaleStart !== -1 && filesChangedStart !== -1) {
-    rationale = lines.slice(rationaleStart + 1, filesChangedStart).join('\n').trim()
+    rationale = lines
+      .slice(rationaleStart + 1, filesChangedStart)
+      .join('\n')
+      .trim()
   } else if (rationaleStart !== -1) {
-    rationale = lines.slice(rationaleStart + 1).join('\n').trim()
+    rationale = lines
+      .slice(rationaleStart + 1)
+      .join('\n')
+      .trim()
   }
 
   const filesChanged: string[] = []
@@ -68,7 +74,15 @@ export function _readArchiveDetail(date: string, archivePath = ARCHIVE_PATH): Ar
   }
 
   return {
-    date, archetype, brief, signalsBrief, preset,
-    rationale, filesChanged, hasScreenshot, buildId, trace,
+    date,
+    archetype,
+    brief,
+    signalsBrief,
+    preset,
+    rationale,
+    filesChanged,
+    hasScreenshot,
+    buildId,
+    trace,
   }
 }

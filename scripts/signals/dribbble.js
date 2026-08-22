@@ -12,13 +12,16 @@ function parseRssItems(xml) {
     const block = match[1]
 
     const title = (/<title><!\[CDATA\[(.*?)\]\]><\/title>/.exec(block) ||
-                   /<title>(.*?)<\/title>/.exec(block) || [])[1]?.trim()
+      /<title>(.*?)<\/title>/.exec(block) ||
+      [])[1]?.trim()
 
     const link = (/<link>(.*?)<\/link>/.exec(block) ||
-                  /<guid[^>]*>(.*?)<\/guid>/.exec(block) || [])[1]?.trim()
+      /<guid[^>]*>(.*?)<\/guid>/.exec(block) ||
+      [])[1]?.trim()
 
     const creator = (/<dc:creator><!\[CDATA\[(.*?)\]\]><\/dc:creator>/.exec(block) ||
-                     /<dc:creator>(.*?)<\/dc:creator>/.exec(block) || [])[1]?.trim()
+      /<dc:creator>(.*?)<\/dc:creator>/.exec(block) ||
+      [])[1]?.trim()
 
     if (title && link) {
       items.push({ title, link, creator: creator ?? null })
@@ -50,7 +53,8 @@ export async function collect(_profile) {
   }
 
   const all = parseRssItems(xml)
-  if (all.length === 0) throw new Error('Dribbble RSS parsed zero items — feed structure may have changed')
+  if (all.length === 0)
+    throw new Error('Dribbble RSS parsed zero items — feed structure may have changed')
   const trending = all.slice(0, 7)
 
   return {

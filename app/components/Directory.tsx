@@ -73,7 +73,14 @@ export function ColHead({ title, count }: { title: string; count: string }) {
       >
         {title}
       </h2>
-      <span className={css({ fontSize: '2xs', letterSpacing: '0.14em', color: 'pine.400', textTransform: 'uppercase' })}>
+      <span
+        className={css({
+          fontSize: '2xs',
+          letterSpacing: '0.14em',
+          color: 'pine.400',
+          textTransform: 'uppercase',
+        })}
+      >
         {count}
       </span>
     </div>

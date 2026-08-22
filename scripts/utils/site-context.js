@@ -1,6 +1,6 @@
-import { readFile } from 'fs/promises'
-import { existsSync } from 'fs'
-import path from 'path'
+import { readFile } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
+import path from 'node:path'
 import * as yaml from 'js-yaml'
 import { ROOT } from './file-manager.js'
 
@@ -30,9 +30,7 @@ export const MUTABLE_FILES = [
 ]
 
 /** Files owned by the Token Designer agent. */
-export const TOKEN_FILES = [
-  'elements/preset.ts',
-]
+export const TOKEN_FILES = ['elements/preset.ts']
 
 /**
  * Files owned by the orchestrator (generated deterministically from the
@@ -40,10 +38,7 @@ export const TOKEN_FILES = [
  * MUTABLE_FILES so backup/restore covers them, but kept out of TOKEN_FILES
  * so the Token Designer is never asked to author them.
  */
-export const ORCHESTRATOR_FILES = [
-  'app/routes/__root.tsx',
-  'elements/chassis-preset.ts',
-]
+export const ORCHESTRATOR_FILES = ['app/routes/__root.tsx', 'elements/chassis-preset.ts']
 
 /** Files owned by the Layout Architect agent. */
 export const LAYOUT_FILES = [
@@ -55,19 +50,13 @@ export const LAYOUT_FILES = [
 ]
 
 /** Files owned by the Sidebar Designer agent. */
-export const SIDEBAR_FILES = [
-  'app/components/Sidebar.tsx',
-]
+export const SIDEBAR_FILES = ['app/components/Sidebar.tsx']
 
 /** Files owned by the Footer Designer agent (currently empty). */
 export const FOOTER_FILES = []
 
 /** All structure files (Layout + Sidebar) for backwards compat. */
-export const STRUCTURE_FILES = [
-  ...LAYOUT_FILES,
-  ...SIDEBAR_FILES,
-  ...FOOTER_FILES,
-]
+export const STRUCTURE_FILES = [...LAYOUT_FILES, ...SIDEBAR_FILES, ...FOOTER_FILES]
 
 /** Files owned by the Component Agent. */
 export const COMPONENT_FILES = [
@@ -125,8 +114,12 @@ async function buildContentSummary() {
 
   lines.push('')
   lines.push('## Timeline (from app/content/timeline.ts)')
-  lines.push('Exports: `timeline` (array of career entries), `capabilities` (array of skill strings)')
-  lines.push('These are imported by app/components/Timeline.tsx and app/components/Capabilities.tsx — preserve those import statements.')
+  lines.push(
+    'Exports: `timeline` (array of career entries), `capabilities` (array of skill strings)'
+  )
+  lines.push(
+    'These are imported by app/components/Timeline.tsx and app/components/Capabilities.tsx — preserve those import statements.'
+  )
 
   return lines.join('\n')
 }

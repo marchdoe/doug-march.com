@@ -85,21 +85,10 @@ export function Personal() {
         </Box>
         <Box height="1px" background="borderMuted" marginBottom="3" />
         <Flex align="baseline" gap="2">
-          <Box
-            fontFamily="heading"
-            fontWeight="bold"
-            fontSize="md"
-            lineHeight="tight"
-            color="text"
-          >
+          <Box fontFamily="heading" fontWeight="bold" fontSize="md" lineHeight="tight" color="text">
             {personal.holesInOne}
           </Box>
-          <Box
-            fontSize="xs"
-            fontFamily="body"
-            fontWeight="regular"
-            color="textMuted"
-          >
+          <Box fontSize="xs" fontFamily="body" fontWeight="regular" color="textMuted">
             career hole{personal.holesInOne !== 1 ? 's' : ''}-in-one
           </Box>
         </Flex>

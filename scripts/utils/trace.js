@@ -11,9 +11,15 @@ export function createTrace(date, options = {}) {
   const startedAt = new Date().toISOString()
 
   return {
-    get date() { return date },
-    get steps() { return steps },
-    get startedAt() { return startedAt },
+    get date() {
+      return date
+    },
+    get steps() {
+      return steps
+    },
+    get startedAt() {
+      return startedAt
+    },
 
     addStep(step) {
       const entry = {
@@ -25,12 +31,16 @@ export function createTrace(date, options = {}) {
     },
 
     toJSON() {
-      return JSON.stringify({
-        date,
-        startedAt,
-        completedAt: new Date().toISOString(),
-        steps,
-      }, null, 2)
+      return JSON.stringify(
+        {
+          date,
+          startedAt,
+          completedAt: new Date().toISOString(),
+          steps,
+        },
+        null,
+        2
+      )
     },
   }
 }
