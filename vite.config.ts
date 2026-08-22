@@ -270,14 +270,18 @@ function pipelineApiPlugin(): Plugin {
       // Pipeline process state — lives in the Vite server, survives HMR page reloads.
       // The child process is decoupled from any single SSE connection so that
       // Vite HMR (triggered when agents write files) doesn't kill the pipeline.
-      let pipelineChild: ReturnType<typeof spawn> | null = null
-      let pipelineLog: Array<{ type: string; line?: string; success?: boolean; error?: string }> =
-        []
-      let pipelineDone = false
-      const pipelineListeners = new Set<(data: object) => void>()
+      type PipelineEvent =
+        | { type: 'log'; line: string }
+        | { type: 'trace'; step: unknown }
+        | { type: 'done'; success: boolean; error?: string }
 
-      function broadcastPipeline(data: object) {
-        pipelineLog.push(data as any)
+      let pipelineChild: ReturnType<typeof spawn> | null = null
+      let pipelineLog: PipelineEvent[] = []
+      let pipelineDone = false
+      const pipelineListeners = new Set<(data: PipelineEvent) => void>()
+
+      function broadcastPipeline(data: PipelineEvent) {
+        pipelineLog.push(data)
         for (const listener of pipelineListeners) {
           try {
             listener(data)

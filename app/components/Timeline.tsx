@@ -23,7 +23,9 @@ export function Timeline() {
                 fontWeight="regular"
                 color="textMuted"
                 letterSpacing="normal"
-                style={{ fontVariantNumeric: 'tabular-nums', minWidth: '44px', flexShrink: 0 }}
+                fontVariantNumeric="tabular-nums"
+                minWidth="44px"
+                flexShrink="0"
               >
                 {entry.year}
               </Box>

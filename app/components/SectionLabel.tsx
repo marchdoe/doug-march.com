@@ -41,7 +41,7 @@ export function SectionLabel({
           fontWeight="normal"
           letterSpacing="widest"
           color="textRightMuted"
-          style={{ fontVariantNumeric: 'tabular-nums' }}
+          fontVariantNumeric="tabular-nums"
         >
           {count}
         </Box>

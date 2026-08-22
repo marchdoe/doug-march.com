@@ -1,5 +1,8 @@
+import { css } from '../../styled-system/css'
 import { Box, Flex } from '../../styled-system/jsx'
 import { featuredProject } from '../content/projects'
+
+const plainLink = css({ textDecoration: 'none' })
 
 export function FeaturedProject() {
   if (!featuredProject) return null
@@ -24,7 +27,7 @@ export function FeaturedProject() {
 
       {/* Headline */}
       {href ? (
-        <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+        <a href={href} target="_blank" rel="noopener noreferrer" className={plainLink}>
           <Box
             fontFamily="heading"
             fontWeight="black"
@@ -33,13 +36,13 @@ export function FeaturedProject() {
             letterSpacing="tight"
             color="text"
             marginBottom="4"
-            style={{ transition: 'color 0.15s ease' }}
+            transition="color 0.15s ease"
           >
             {featuredProject.title}
           </Box>
         </a>
       ) : (
-        <a href={`/work/${featuredProject.slug}`} style={{ textDecoration: 'none' }}>
+        <a href={`/work/${featuredProject.slug}`} className={plainLink}>
           <Box
             fontFamily="heading"
             fontWeight="black"
@@ -48,7 +51,7 @@ export function FeaturedProject() {
             letterSpacing="tight"
             color="text"
             marginBottom="4"
-            style={{ transition: 'color 0.15s ease' }}
+            transition="color 0.15s ease"
           >
             {featuredProject.title}
           </Box>
@@ -112,7 +115,7 @@ export function FeaturedProject() {
 
       {/* CTA */}
       {href ? (
-        <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+        <a href={href} target="_blank" rel="noopener noreferrer" className={plainLink}>
           <Box
             fontSize="xs"
             fontFamily="body"
@@ -130,7 +133,7 @@ export function FeaturedProject() {
           </Box>
         </a>
       ) : (
-        <a href={`/work/${featuredProject.slug}`} style={{ textDecoration: 'none' }}>
+        <a href={`/work/${featuredProject.slug}`} className={plainLink}>
           <Box
             fontSize="xs"
             fontFamily="body"

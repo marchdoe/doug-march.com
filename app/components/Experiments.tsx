@@ -1,3 +1,4 @@
+import { css } from '../../styled-system/css'
 import { Box, Flex } from '../../styled-system/jsx'
 import { SectionHead } from './SectionHead'
 import { experiments } from '../content/projects'
@@ -16,7 +17,7 @@ export function Experiments() {
               href={href}
               target={isExternal ? '_blank' : undefined}
               rel={isExternal ? 'noopener noreferrer' : undefined}
-              style={{ textDecoration: 'none', display: 'block' }}
+              className={css({ textDecoration: 'none', display: 'block' })}
             >
               <Box
                 paddingTop="3"
@@ -24,7 +25,7 @@ export function Experiments() {
                 borderBottomWidth="1px"
                 borderBottomStyle="solid"
                 borderBottomColor="border"
-                style={{ transition: 'background 0.15s ease' }}
+                transition="background 0.15s ease"
               >
                 <Flex align="baseline" justify="space-between">
                   <Flex align="baseline" gap="3" flex="1">
@@ -34,7 +35,8 @@ export function Experiments() {
                       fontWeight="semibold"
                       color="textMuted"
                       letterSpacing="widest"
-                      style={{ fontVariantNumeric: 'tabular-nums', minWidth: '20px' }}
+                      fontVariantNumeric="tabular-nums"
+                      minWidth="20px"
                     >
                       E{String(index + 1).padStart(2, '0')}
                     </Box>

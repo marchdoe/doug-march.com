@@ -1,3 +1,4 @@
+import { css } from '../../styled-system/css'
 import { Box, Flex } from '../../styled-system/jsx'
 import type { Project } from '../content/types'
 
@@ -15,7 +16,7 @@ export function ProjectRow({ project, index }: ProjectRowProps) {
       href={href}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
-      style={{ textDecoration: 'none', display: 'block' }}
+      className={css({ textDecoration: 'none', display: 'block' })}
     >
       <Box
         paddingTop="3"
@@ -23,7 +24,7 @@ export function ProjectRow({ project, index }: ProjectRowProps) {
         borderBottomWidth="1px"
         borderBottomStyle="solid"
         borderBottomColor="border"
-        style={{ transition: 'background 0.15s ease' }}
+        transition="background 0.15s ease"
       >
         <Flex align="baseline" gap="3" marginBottom="1">
           <Box
@@ -32,7 +33,8 @@ export function ProjectRow({ project, index }: ProjectRowProps) {
             fontWeight="semibold"
             color="textMuted"
             letterSpacing="widest"
-            style={{ fontVariantNumeric: 'tabular-nums', minWidth: '20px' }}
+            fontVariantNumeric="tabular-nums"
+            minWidth="20px"
           >
             {String(index + 1).padStart(2, '0')}
           </Box>

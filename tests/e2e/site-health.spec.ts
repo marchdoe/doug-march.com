@@ -1,10 +1,10 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 
 // Runs against PREVIEW_URL (Vercel preview deploy, or localhost dev server)
 // Usage: PREVIEW_URL=https://your-preview.vercel.app pnpm test:e2e:site
 
 // Helper: check page loads with HTTP 200 and renders content
-async function expectPageLoads(page: any, path: string) {
+async function expectPageLoads(page: Page, path: string) {
   const response = await page.goto(path)
   expect(response?.status()).toBeLessThan(500)
   await expect(page).not.toHaveURL(/\/error/)
