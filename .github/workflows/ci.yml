@@ -5,8 +5,8 @@ on:
     branches: [main]
 
 jobs:
-  test:
-    name: Unit & E2E Tests
+  lint:
+    name: Lint (Biome)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,6 +22,21 @@ jobs:
 
       - name: Lint & format check (Biome)
         run: pnpm lint
+
+  test:
+    name: Unit & E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
 
       - name: Install Playwright browsers
         # Must run before unit tests — the responsive-scorer + viewport-screenshotter
