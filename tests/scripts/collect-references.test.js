@@ -2,7 +2,10 @@ import { describe, it, expect } from 'vitest'
 import { selectCuratedReferences } from '../../scripts/collect-references.js'
 
 const LIB = [
-  { description: 'split ref', tags: { composition: 'split', mood: 'dramatic', density: 'moderate' } },
+  {
+    description: 'split ref',
+    tags: { composition: 'split', mood: 'dramatic', density: 'moderate' },
+  },
   { description: 'poster ref', tags: { composition: 'poster', mood: 'calm', density: 'sparse' } },
   { description: 'index ref', tags: { composition: 'index', mood: 'minimal', density: 'dense' } },
 ]

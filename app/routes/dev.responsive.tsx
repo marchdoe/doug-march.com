@@ -17,7 +17,16 @@ export const Route = createFileRoute('/dev/responsive')({
 function ResponsivePage() {
   const { history } = Route.useLoaderData()
   return (
-    <div style={{ padding: 16, fontFamily: 'JetBrains Mono, monospace', fontSize: 12, background: '#0e1014', color: '#dce0e6', minHeight: '100vh' }}>
+    <div
+      style={{
+        padding: 16,
+        fontFamily: 'JetBrains Mono, monospace',
+        fontSize: 12,
+        background: '#0e1014',
+        color: '#dce0e6',
+        minHeight: '100vh',
+      }}
+    >
       <h1 style={{ fontSize: 14, marginBottom: 16 }}>Responsive — last 30 builds</h1>
       <ResponsiveTrend history={history} />
     </div>

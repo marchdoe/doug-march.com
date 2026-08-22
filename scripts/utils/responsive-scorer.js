@@ -1,8 +1,7 @@
 import { chromium } from '@playwright/test'
 
 const CHECKS = {
-  horizontalScroll: () =>
-    document.documentElement.scrollWidth > window.innerWidth,
+  horizontalScroll: () => document.documentElement.scrollWidth > window.innerWidth,
   clippedElements: () => {
     const vw = window.innerWidth
     const out = []
@@ -22,17 +21,18 @@ const CHECKS = {
   headerOverlap: () => {
     const header = document.querySelector('header') || document.querySelector('nav')
     if (!header) return []
-    const kids = [...header.children].map(el => ({ el, r: el.getBoundingClientRect() }))
+    const kids = [...header.children].map((el) => ({ el, r: el.getBoundingClientRect() }))
     const overlaps = []
     for (let i = 0; i < kids.length; i++) {
       for (let j = i + 1; j < kids.length; j++) {
-        const a = kids[i].r, b = kids[j].r
+        const a = kids[i].r,
+          b = kids[j].r
         const xOverlap = !(a.right <= b.left || b.right <= a.left)
         const yOverlap = !(a.bottom <= b.top || b.bottom <= a.top)
         if (xOverlap && yOverlap) {
           overlaps.push({
-            a: kids[i].el.tagName + (kids[i].el.className ? '.' + kids[i].el.className : ''),
-            b: kids[j].el.tagName + (kids[j].el.className ? '.' + kids[j].el.className : ''),
+            a: kids[i].el.tagName + (kids[i].el.className ? `.${kids[i].el.className}` : ''),
+            b: kids[j].el.tagName + (kids[j].el.className ? `.${kids[j].el.className}` : ''),
           })
         }
       }
@@ -81,8 +81,7 @@ const CHECKS = {
       const text = (p.textContent || '').trim()
       if (text.length < 100) continue
       const cs = getComputedStyle(p)
-      const lh = parseFloat(cs.lineHeight) ||
-                 (parseFloat(cs.fontSize) * 1.5)
+      const lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.5
       const lines = Math.max(1, Math.round(p.clientHeight / lh))
       const avgChars = text.length / lines
       if (avgChars > 75) {
@@ -182,7 +181,7 @@ export async function scoreResponsive(url, viewports, opts = {}) {
         checks[name] = await page.evaluate(
           ([fnStr, vw]) => {
             // eslint-disable-next-line no-new-func
-            const f = new Function('return ' + fnStr)()
+            const f = new Function(`return ${fnStr}`)()
             return f(vw)
           },
           [fn.toString(), vp.width]
@@ -197,13 +196,10 @@ export async function scoreResponsive(url, viewports, opts = {}) {
       }
     }
 
-    const overallScore = Math.min(
-      ...Object.values(viewportResults).map(v => v.score)
-    )
+    const overallScore = Math.min(...Object.values(viewportResults).map((v) => v.score))
 
     let worstFailure = null
-    const worstVp = Object.entries(viewportResults)
-      .sort(([, a], [, b]) => a.score - b.score)[0]
+    const worstVp = Object.entries(viewportResults).sort(([, a], [, b]) => a.score - b.score)[0]
     if (worstVp && worstVp[1].score < 5) {
       const [vpName, vpResult] = worstVp
       const check = firstFailingCheck(vpResult.checks)

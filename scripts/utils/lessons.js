@@ -1,5 +1,5 @@
-import { readFileSync, readdirSync, existsSync } from 'fs'
-import path from 'path'
+import { readFileSync, readdirSync, existsSync } from 'node:fs'
+import path from 'node:path'
 import { readRecentRatings } from './ratings.js'
 
 /**
@@ -25,23 +25,36 @@ export function buildLessonsBlock(archiveDir, { limit = 7, lookbackDays = 14 } =
         .sort()
         .reverse()
         .slice(0, lookbackDays)
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
     for (const dateDir of dateDirs) {
       const datePath = path.join(archiveDir, dateDir)
       let buildDirs = []
       try {
-        buildDirs = readdirSync(datePath).filter((b) => /^build-\d+$/.test(b)).sort().reverse()
-      } catch { continue }
+        buildDirs = readdirSync(datePath)
+          .filter((b) => /^build-\d+$/.test(b))
+          .sort()
+          .reverse()
+      } catch {
+        continue
+      }
       if (buildDirs.length === 0) continue
       const verdictsPath = path.join(datePath, buildDirs[0], 'verdicts.json')
       if (!existsSync(verdictsPath)) continue
       try {
         for (const v of JSON.parse(readFileSync(verdictsPath, 'utf8'))) {
           if (v.verdict === 'REVISE' && v.feedback) {
-            entries.push({ date: dateDir, source: v.critic, text: String(v.feedback).slice(0, 400) })
+            entries.push({
+              date: dateDir,
+              source: v.critic,
+              text: String(v.feedback).slice(0, 400),
+            })
           }
         }
-      } catch { /* ignore malformed */ }
+      } catch {
+        /* ignore malformed */
+      }
     }
   }
 

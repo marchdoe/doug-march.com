@@ -20,7 +20,13 @@ function runTone(run: RunInfo): 'success' | 'failure' | 'pending' {
   return run.conclusion === 'success' ? 'success' : 'failure'
 }
 
-export function RunTab({ latestRun, onTriggered }: { latestRun: RunInfo | null; onTriggered: () => void }) {
+export function RunTab({
+  latestRun,
+  onTriggered,
+}: {
+  latestRun: RunInfo | null
+  onTriggered: () => void
+}) {
   const [dryRun, setDryRun] = useState(false)
   const [state, setState] = useState<'idle' | 'busy' | 'dispatched' | string>('idle')
 
@@ -47,22 +53,40 @@ export function RunTab({ latestRun, onTriggered }: { latestRun: RunInfo | null; 
           </div>
           <p className={cx(mutedText, css({ marginTop: '3px' }))}>
             {new Date(latestRun.createdAt).toLocaleString()} ·{' '}
-            <a className={subtleLink} href={latestRun.url}>view on GitHub ↗</a>
+            <a className={subtleLink} href={latestRun.url}>
+              view on GitHub ↗
+            </a>
           </p>
         </div>
       ) : (
         <p className={cx(mutedText, css({ marginBottom: '14px' }))}>No runs found.</p>
       )}
       <label className={checkboxRow}>
-        <input type="checkbox" className={checkboxBox} checked={dryRun} onChange={(e) => setDryRun(e.target.checked)} />
+        <input
+          type="checkbox"
+          className={checkboxBox}
+          checked={dryRun}
+          onChange={(e) => setDryRun(e.target.checked)}
+        />
         Dry run (build + verify, no commit)
       </label>
-      <button type="button" disabled={state === 'busy'} onClick={trigger} className={button({ kind: 'primary' })}>
+      <button
+        type="button"
+        disabled={state === 'busy'}
+        onClick={trigger}
+        className={button({ kind: 'primary' })}
+      >
         {state === 'busy' ? 'Dispatching…' : 'Trigger build'}
       </button>
-      {state === 'dispatched' && <p className={cx(successText, css({ marginTop: '10px' }))}>Dispatched — refresh status in a minute.</p>}
+      {state === 'dispatched' && (
+        <p className={cx(successText, css({ marginTop: '10px' }))}>
+          Dispatched — refresh status in a minute.
+        </p>
+      )}
       {state !== 'idle' && state !== 'busy' && state !== 'dispatched' && (
-        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>{state}</p>
+        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>
+          {state}
+        </p>
       )}
     </section>
   )

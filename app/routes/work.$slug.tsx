@@ -179,7 +179,11 @@ function WorkPage() {
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener"
-                  className={css({ color: 'accentGlow', textDecoration: 'underline', _hover: { color: 'accent' } })}
+                  className={css({
+                    color: 'accentGlow',
+                    textDecoration: 'underline',
+                    _hover: { color: 'accent' },
+                  })}
                 >
                   {project.liveUrl}
                 </a>
@@ -194,7 +198,11 @@ function WorkPage() {
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener"
-                  className={css({ color: 'accentGlow', textDecoration: 'underline', _hover: { color: 'accent' } })}
+                  className={css({
+                    color: 'accentGlow',
+                    textDecoration: 'underline',
+                    _hover: { color: 'accent' },
+                  })}
                 >
                   {project.githubUrl}
                 </a>

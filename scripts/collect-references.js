@@ -11,10 +11,10 @@
  * Exports collectReferences(briefText) for programmatic use.
  */
 
-import { readFile, writeFile } from 'fs/promises'
-import { existsSync, statSync } from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { readFile, writeFile } from 'node:fs/promises'
+import { existsSync, statSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import * as yaml from 'js-yaml'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -68,7 +68,10 @@ function formatCuratedSection(refs) {
     '',
     ...(scored
       ? []
-      : ['> Full library — select the 2-3 references that best serve today\'s direction; ignore the rest.', '']),
+      : [
+          "> Full library — select the 2-3 references that best serve today's direction; ignore the rest.",
+          '',
+        ]),
   ]
   for (const ref of refs) {
     const tags = ref.tags ?? {}
@@ -169,7 +172,7 @@ export async function collectReferences(briefText) {
 
 // --- CLI ---
 
-if (process.argv[1] && process.argv[1].endsWith('collect-references.js')) {
+if (process.argv[1]?.endsWith('collect-references.js')) {
   const briefFlag = process.argv.indexOf('--brief')
   const briefPath = briefFlag !== -1 ? process.argv[briefFlag + 1] : BRIEF_PATH
 

@@ -13,7 +13,8 @@ export async function collect(_profile) {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      query: '{ posts(order: RANKING, first: 3) { edges { node { name tagline votesCount url } } } }',
+      query:
+        '{ posts(order: RANKING, first: 3) { edges { node { name tagline votesCount url } } } }',
     }),
   })
   if (!res.ok) throw new Error(`Product Hunt API responded with ${res.status}`)

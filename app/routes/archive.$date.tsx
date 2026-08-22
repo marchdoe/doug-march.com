@@ -105,7 +105,7 @@ function parseSignals(md: string): SignalSection[] {
 
 function formatDate(date: string): string {
   try {
-    const d = new Date(date + 'T12:00:00')
+    const d = new Date(`${date}T12:00:00`)
     return d.toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
@@ -128,8 +128,11 @@ function ArchiveDetailPage() {
 
   useEffect(() => {
     fetch(`/archive/${date}/_detail.json`)
-      .then(res => res.ok ? res.json() : null)
-      .then(data => { if (data) setDetail(data); else setError(true) })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) setDetail(data)
+        else setError(true)
+      })
       .catch(() => setError(true))
   }, [date])
 

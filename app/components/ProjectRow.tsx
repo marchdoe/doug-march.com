@@ -56,11 +56,7 @@ export function ProjectRow({ project, index }: ProjectRowProps) {
           >
             {project.year}
           </Box>
-          <Box
-            fontSize="xs"
-            fontFamily="body"
-            color="accent"
-          >
+          <Box fontSize="xs" fontFamily="body" color="accent">
             →
           </Box>
         </Flex>

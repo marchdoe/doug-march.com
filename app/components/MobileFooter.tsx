@@ -38,9 +38,13 @@ export function MobileFooter() {
       zIndex={50}
     >
       <Flex align="stretch" width="100%">
-        <a href="/" className={mobileLinkClass}>Home</a>
+        <a href="/" className={mobileLinkClass}>
+          Home
+        </a>
         <Box width="1px" background="border" flexShrink={0} />
-        <a href="/about" className={mobileLinkClass}>About</a>
+        <a href="/about" className={mobileLinkClass}>
+          About
+        </a>
       </Flex>
     </Box>
   )

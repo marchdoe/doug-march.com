@@ -1,9 +1,9 @@
 import { defineConfig, type Plugin } from 'vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import { resolve } from 'path'
-import { spawn, spawnSync } from 'child_process'
-import { readFileSync, writeFileSync, existsSync, readdirSync } from 'fs'
+import { resolve } from 'node:path'
+import { spawn, spawnSync } from 'node:child_process'
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs'
 import { config } from 'dotenv'
 import * as yaml from 'js-yaml'
 
@@ -34,7 +34,7 @@ function pipelineApiPlugin(): Plugin {
   // with live secrets. Anyone on the network could trigger pipeline runs
   // or write files without this check. DNS-rebinding attacks are also
   // possible without an explicit Origin check.
-  const MAX_BODY_SIZE = 64 * 1024  // 64KB limit on request bodies
+  const MAX_BODY_SIZE = 64 * 1024 // 64KB limit on request bodies
 
   function isLocalRequest(req: import('http').IncomingMessage): boolean {
     const addr = req.socket.remoteAddress
@@ -58,7 +58,10 @@ function pipelineApiPlugin(): Plugin {
     }
   }
 
-  function guardRequest(req: import('http').IncomingMessage, res: import('http').ServerResponse): boolean {
+  function guardRequest(
+    req: import('http').IncomingMessage,
+    res: import('http').ServerResponse
+  ): boolean {
     if (!isLocalRequest(req)) {
       res.writeHead(403, { 'Content-Type': 'application/json' })
       res.end(JSON.stringify({ error: 'Forbidden: dev API is localhost-only' }))
@@ -100,11 +103,14 @@ function pipelineApiPlugin(): Plugin {
         if (!guardRequest(req, res)) return
         if (req.url && req.url !== '/' && !req.url.startsWith('/?')) return next()
         const htmlPath = resolve('app/dev-panel.html')
-        let html = readFileSync(htmlPath, 'utf8')
-        server.transformIndexHtml('/dev', html).then(transformed => {
-          res.writeHead(200, { 'Content-Type': 'text/html' })
-          res.end(transformed)
-        }).catch(next)
+        const html = readFileSync(htmlPath, 'utf8')
+        server
+          .transformIndexHtml('/dev', html)
+          .then((transformed) => {
+            res.writeHead(200, { 'Content-Type': 'text/html' })
+            res.end(transformed)
+          })
+          .catch(next)
       })
 
       // API: read signals + archive
@@ -139,14 +145,23 @@ function pipelineApiPlugin(): Plugin {
           }
 
           const archiveDir = resolve('archive')
-          const archive: Array<{ date: string; buildId: string; timestamp: number; brief: string; weights?: Record<string, number> }> = []
+          const archive: Array<{
+            date: string
+            buildId: string
+            timestamp: number
+            brief: string
+            weights?: Record<string, number>
+          }> = []
           if (existsSync(archiveDir)) {
-            const dateDirs = readdirSync(archiveDir).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort().reverse()
+            const dateDirs = readdirSync(archiveDir)
+              .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))
+              .sort()
+              .reverse()
             for (const dir of dateDirs) {
               const datePath = resolve('archive', dir)
               // Enumerate per-build subdirs (build-{timestamp})
               const buildDirs = readdirSync(datePath)
-                .filter(d => /^build-\d+$/.test(d))
+                .filter((d) => /^build-\d+$/.test(d))
                 .sort()
                 .reverse()
               if (buildDirs.length > 0) {
@@ -156,14 +171,25 @@ function pipelineApiPlugin(): Plugin {
                   if (existsSync(buildJsonPath)) {
                     try {
                       const meta = JSON.parse(readFileSync(buildJsonPath, 'utf8'))
-                      archive.push({ date: dir, buildId: meta.buildId, timestamp: meta.timestamp, brief: meta.brief, weights: meta.weights })
+                      archive.push({
+                        date: dir,
+                        buildId: meta.buildId,
+                        timestamp: meta.timestamp,
+                        brief: meta.brief,
+                        weights: meta.weights,
+                      })
                     } catch {}
                   } else if (existsSync(briefPath)) {
                     // Legacy build dir without build.json
                     const md = readFileSync(briefPath, 'utf8')
                     const briefMatch = md.match(/\*\*Design Brief:\*\*\s*(.+)/)
                     const buildId = buildDir.replace('build-', '')
-                    archive.push({ date: dir, buildId, timestamp: parseInt(buildId), brief: briefMatch?.[1] ?? '' })
+                    archive.push({
+                      date: dir,
+                      buildId,
+                      timestamp: parseInt(buildId, 10),
+                      brief: briefMatch?.[1] ?? '',
+                    })
                   }
                 }
               } else {
@@ -172,7 +198,12 @@ function pipelineApiPlugin(): Plugin {
                 if (existsSync(briefPath)) {
                   const md = readFileSync(briefPath, 'utf8')
                   const briefMatch = md.match(/\*\*Design Brief:\*\*\s*(.+)/)
-                  archive.push({ date: dir, buildId: '', timestamp: 0, brief: briefMatch?.[1] ?? '' })
+                  archive.push({
+                    date: dir,
+                    buildId: '',
+                    timestamp: 0,
+                    brief: briefMatch?.[1] ?? '',
+                  })
                 }
               }
             }
@@ -197,7 +228,11 @@ function pipelineApiPlugin(): Plugin {
       // API: save overrides to signals YAML
       server.middlewares.use('/api/dev-overrides', async (req, res) => {
         if (!guardRequest(req, res)) return
-        if (req.method !== 'POST') { res.writeHead(405); res.end(); return }
+        if (req.method !== 'POST') {
+          res.writeHead(405)
+          res.end()
+          return
+        }
         try {
           const body = await readBodyLimited(req)
           const { moodOverride, notes } = JSON.parse(body)
@@ -236,21 +271,28 @@ function pipelineApiPlugin(): Plugin {
       // The child process is decoupled from any single SSE connection so that
       // Vite HMR (triggered when agents write files) doesn't kill the pipeline.
       let pipelineChild: ReturnType<typeof spawn> | null = null
-      let pipelineLog: Array<{ type: string; line?: string; success?: boolean; error?: string }> = []
+      let pipelineLog: Array<{ type: string; line?: string; success?: boolean; error?: string }> =
+        []
       let pipelineDone = false
       const pipelineListeners = new Set<(data: object) => void>()
 
       function broadcastPipeline(data: object) {
         pipelineLog.push(data as any)
         for (const listener of pipelineListeners) {
-          try { listener(data) } catch {}
+          try {
+            listener(data)
+          } catch {}
         }
       }
 
       // POST /api/pipeline/start — launch the pipeline (if not already running)
       server.middlewares.use('/api/pipeline/start', async (req, res) => {
         if (!guardRequest(req, res)) return
-        if (req.method !== 'POST') { res.writeHead(405); res.end(); return }
+        if (req.method !== 'POST') {
+          res.writeHead(405)
+          res.end()
+          return
+        }
 
         if (pipelineChild && !pipelineDone) {
           res.writeHead(409, { 'Content-Type': 'application/json' })
@@ -269,13 +311,19 @@ function pipelineApiPlugin(): Plugin {
 
         let parsed: Record<string, unknown> = {}
         if (body) {
-          try { parsed = JSON.parse(body) } catch {
+          try {
+            parsed = JSON.parse(body)
+          } catch {
             res.writeHead(400, { 'Content-Type': 'application/json' })
             res.end(JSON.stringify({ error: 'Invalid JSON' }))
             return
           }
         }
-        const { dryRun = false, mock = true, weights = {} } = parsed as { dryRun?: boolean; mock?: boolean; weights?: Record<string, number> }
+        const {
+          dryRun = false,
+          mock = true,
+          weights = {},
+        } = parsed as { dryRun?: boolean; mock?: boolean; weights?: Record<string, number> }
 
         // Reset state
         pipelineLog = []
@@ -298,7 +346,10 @@ function pipelineApiPlugin(): Plugin {
         })
 
         const handleData = (chunk: Buffer) => {
-          const lines = chunk.toString().split('\n').filter((l: string) => l.trim())
+          const lines = chunk
+            .toString()
+            .split('\n')
+            .filter((l: string) => l.trim())
           for (const line of lines) {
             if (line.startsWith('[TRACE] ')) {
               try {
@@ -319,7 +370,11 @@ function pipelineApiPlugin(): Plugin {
         pipelineChild.on('close', (code) => {
           if (pipelineDone) return
           pipelineDone = true
-          broadcastPipeline({ type: 'done', success: code === 0, ...(code !== 0 ? { error: `Process exited with code ${code}` } : {}) })
+          broadcastPipeline({
+            type: 'done',
+            success: code === 0,
+            ...(code !== 0 ? { error: `Process exited with code ${code}` } : {}),
+          })
           pipelineChild = null
         })
 
@@ -344,11 +399,13 @@ function pipelineApiPlugin(): Plugin {
         res.writeHead(200, {
           'Content-Type': 'text/event-stream',
           'Cache-Control': 'no-cache',
-          'Connection': 'keep-alive',
+          Connection: 'keep-alive',
         })
 
         const send = (data: object) => {
-          try { res.write(`data: ${JSON.stringify(data)}\n\n`) } catch {}
+          try {
+            res.write(`data: ${JSON.stringify(data)}\n\n`)
+          } catch {}
         }
 
         // Replay buffered log so reconnecting clients catch up
@@ -379,7 +436,11 @@ function pipelineApiPlugin(): Plugin {
         //   /api/archive-preview/2026-03-16/index.html               (legacy date-level)
         const buildMatch = req.url?.match(/^\/(\d{4}-\d{2}-\d{2})\/(build-\d+)\/(.+)$/)
         const legacyMatch = !buildMatch && req.url?.match(/^\/(\d{4}-\d{2}-\d{2})\/(.+)$/)
-        if (!buildMatch && !legacyMatch) { res.writeHead(404); res.end('Not found'); return }
+        if (!buildMatch && !legacyMatch) {
+          res.writeHead(404)
+          res.end('Not found')
+          return
+        }
 
         let fullPath: string
         let filePath: string
@@ -394,8 +455,10 @@ function pipelineApiPlugin(): Plugin {
         }
 
         const archiveBase = resolve('archive')
-        if (!fullPath.startsWith(archiveBase + '/')) {
-          res.writeHead(403); res.end('Forbidden'); return
+        if (!fullPath.startsWith(`${archiveBase}/`)) {
+          res.writeHead(403)
+          res.end('Forbidden')
+          return
         }
 
         if (!existsSync(fullPath)) {
@@ -406,7 +469,8 @@ function pipelineApiPlugin(): Plugin {
 
         const content = readFileSync(fullPath, 'utf8')
         const ext = filePath.split('.').pop()
-        const contentType = ext === 'html' ? 'text/html' : ext === 'css' ? 'text/css' : 'application/octet-stream'
+        const contentType =
+          ext === 'html' ? 'text/html' : ext === 'css' ? 'text/css' : 'application/octet-stream'
         res.writeHead(200, { 'Content-Type': contentType })
         res.end(content)
       })

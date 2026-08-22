@@ -1,7 +1,17 @@
 import type { ReactNode } from 'react'
 import { Flex, Box } from '../../styled-system/jsx'
 
-export function SectionLabel({ children, count, marginTop = '32px', topRule = true }: { children: ReactNode; count?: string; marginTop?: string; topRule?: boolean }) {
+export function SectionLabel({
+  children,
+  count,
+  marginTop = '32px',
+  topRule = true,
+}: {
+  children: ReactNode
+  count?: string
+  marginTop?: string
+  topRule?: boolean
+}) {
   return (
     <Flex
       align="baseline"

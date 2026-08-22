@@ -14,10 +14,7 @@ export const Route = createFileRoute('/dev')({
     }
   },
   loader: async () => {
-    const [signals, archive] = await Promise.all([
-      readSignals(),
-      readArchive(),
-    ])
+    const [signals, archive] = await Promise.all([readSignals(), readArchive()])
     return { signals, archive }
   },
   component: DevPanel,
@@ -46,12 +43,12 @@ interface Phase {
 }
 
 const INITIAL_PHASES: Phase[] = [
-  { label: 'Read signals',    pattern: '[1/4] Reading site context', status: 'pending' },
-  { label: 'Build prompt',    pattern: '[2/4] Building Claude prompt', status: 'pending' },
+  { label: 'Read signals', pattern: '[1/4] Reading site context', status: 'pending' },
+  { label: 'Build prompt', pattern: '[2/4] Building Claude prompt', status: 'pending' },
   { label: 'Claude thinking', pattern: 'calling Claude API', status: 'pending' },
-  { label: 'Write files',     pattern: 'writing files', status: 'pending' },
-  { label: 'Build & validate',pattern: 'running pnpm build', status: 'pending' },
-  { label: 'Archive & commit',pattern: '=== Build passed!', status: 'pending' },
+  { label: 'Write files', pattern: 'writing files', status: 'pending' },
+  { label: 'Build & validate', pattern: 'running pnpm build', status: 'pending' },
+  { label: 'Archive & commit', pattern: '=== Build passed!', status: 'pending' },
 ]
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
@@ -120,21 +117,117 @@ const s = {
   } as React.CSSProperties,
 
   // Existing component styles (dark theme)
-  title: { fontSize: '15px', fontWeight: 700, color: '#e0e6ed', margin: 0, fontFamily: '"Space Mono", monospace' } as React.CSSProperties,
+  title: {
+    fontSize: '15px',
+    fontWeight: 700,
+    color: '#e0e6ed',
+    margin: 0,
+    fontFamily: '"Space Mono", monospace',
+  } as React.CSSProperties,
   meta: { fontSize: '12px', color: '#6b7b8d', marginTop: '0' } as React.CSSProperties,
-  badge: { display: 'inline-flex', alignItems: 'center', gap: '5px', background: 'rgba(34,197,94,0.1)', color: '#4ade80', border: '1px solid rgba(34,197,94,0.2)', borderRadius: '20px', padding: '4px 10px', fontSize: '11px', fontWeight: 500, fontFamily: '"Space Mono", monospace' } as React.CSSProperties,
-  sectionLabel: { fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' },
-  signalsGrid: { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px', marginBottom: '20px' } as React.CSSProperties,
-  signalCard: { background: '#151b23', border: '1px solid #1e2633', borderRadius: '8px', padding: '12px' } as React.CSSProperties,
-  signalLabel: { fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', marginBottom: '6px', fontFamily: '"Space Mono", monospace' },
-  signalMain: { fontSize: '12px', fontWeight: 500, color: '#e0e6ed', lineHeight: '1.4' } as React.CSSProperties,
-  signalSub: { fontSize: '11px', color: '#8b98a5', marginTop: '2px', lineHeight: '1.3' } as React.CSSProperties,
-  overridesRow: { display: 'flex', gap: '12px', marginBottom: '20px', alignItems: 'flex-end' } as React.CSSProperties,
+  badge: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '5px',
+    background: 'rgba(34,197,94,0.1)',
+    color: '#4ade80',
+    border: '1px solid rgba(34,197,94,0.2)',
+    borderRadius: '20px',
+    padding: '4px 10px',
+    fontSize: '11px',
+    fontWeight: 500,
+    fontFamily: '"Space Mono", monospace',
+  } as React.CSSProperties,
+  sectionLabel: {
+    fontSize: '11px',
+    fontWeight: 600,
+    textTransform: 'uppercase' as const,
+    letterSpacing: '.07em',
+    color: '#6b7b8d',
+    fontFamily: '"Space Mono", monospace',
+  },
+  signalsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(5, 1fr)',
+    gap: '10px',
+    marginBottom: '20px',
+  } as React.CSSProperties,
+  signalCard: {
+    background: '#151b23',
+    border: '1px solid #1e2633',
+    borderRadius: '8px',
+    padding: '12px',
+  } as React.CSSProperties,
+  signalLabel: {
+    fontSize: '10px',
+    fontWeight: 600,
+    textTransform: 'uppercase' as const,
+    letterSpacing: '.07em',
+    color: '#6b7b8d',
+    marginBottom: '6px',
+    fontFamily: '"Space Mono", monospace',
+  },
+  signalMain: {
+    fontSize: '12px',
+    fontWeight: 500,
+    color: '#e0e6ed',
+    lineHeight: '1.4',
+  } as React.CSSProperties,
+  signalSub: {
+    fontSize: '11px',
+    color: '#8b98a5',
+    marginTop: '2px',
+    lineHeight: '1.3',
+  } as React.CSSProperties,
+  overridesRow: {
+    display: 'flex',
+    gap: '12px',
+    marginBottom: '20px',
+    alignItems: 'flex-end',
+  } as React.CSSProperties,
   fieldGroup: { display: 'flex', flexDirection: 'column' as const, gap: '5px' },
-  fieldLabel: { fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' },
-  select: { border: '1px solid #1e2633', borderRadius: '6px', padding: '7px 10px', fontSize: '12px', color: '#e0e6ed', background: '#151b23', fontFamily: '"Space Mono", monospace', minWidth: '160px' } as React.CSSProperties,
-  textarea: { border: '1px solid #1e2633', borderRadius: '6px', padding: '7px 10px', fontSize: '12px', color: '#e0e6ed', background: '#151b23', fontFamily: '"Space Mono", monospace', resize: 'none' as const, height: '56px', width: '340px' } as React.CSSProperties,
-  saveBtn: { background: '#151b23', border: '1px solid #1e2633', borderRadius: '6px', padding: '7px 14px', fontSize: '12px', fontWeight: 500, color: '#8b98a5', cursor: 'pointer', height: '34px', fontFamily: '"Space Mono", monospace' } as React.CSSProperties,
+  fieldLabel: {
+    fontSize: '11px',
+    fontWeight: 600,
+    textTransform: 'uppercase' as const,
+    letterSpacing: '.07em',
+    color: '#6b7b8d',
+    fontFamily: '"Space Mono", monospace',
+  },
+  select: {
+    border: '1px solid #1e2633',
+    borderRadius: '6px',
+    padding: '7px 10px',
+    fontSize: '12px',
+    color: '#e0e6ed',
+    background: '#151b23',
+    fontFamily: '"Space Mono", monospace',
+    minWidth: '160px',
+  } as React.CSSProperties,
+  textarea: {
+    border: '1px solid #1e2633',
+    borderRadius: '6px',
+    padding: '7px 10px',
+    fontSize: '12px',
+    color: '#e0e6ed',
+    background: '#151b23',
+    fontFamily: '"Space Mono", monospace',
+    resize: 'none' as const,
+    height: '56px',
+    width: '340px',
+  } as React.CSSProperties,
+  saveBtn: {
+    background: '#151b23',
+    border: '1px solid #1e2633',
+    borderRadius: '6px',
+    padding: '7px 14px',
+    fontSize: '12px',
+    fontWeight: 500,
+    color: '#8b98a5',
+    cursor: 'pointer',
+    height: '34px',
+    fontFamily: '"Space Mono", monospace',
+  } as React.CSSProperties,
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -165,11 +258,17 @@ function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useL
   const esRef = useRef<EventSource | null>(null)
   const logEndRef = useRef<HTMLDivElement>(null)
   const [attemptNum, setAttemptNum] = useState(1)
-  const [result, setResult] = useState<{ brief?: string; timestamp?: string; error?: string } | null>(null)
+  const [result, setResult] = useState<{
+    brief?: string
+    timestamp?: string
+    error?: string
+  } | null>(null)
 
   // ── EventSource cleanup on unmount ──────────────────────────────────────────
   useEffect(() => {
-    return () => { esRef.current?.close() }
+    return () => {
+      esRef.current?.close()
+    }
   }, [])
 
   // ── Auto-scroll log pane ────────────────────────────────────────────────────
@@ -207,7 +306,7 @@ function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useL
         | { type: 'trace'; step: any }
 
       if (event.type === 'trace') {
-        setTraceSteps(prev => [...prev, event.step])
+        setTraceSteps((prev) => [...prev, event.step])
         return
       }
 
@@ -219,16 +318,20 @@ function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useL
         if (line.includes('--- Attempt')) {
           const match = line.match(/Attempt (\d+)/)
           if (match) setAttemptNum(Number(match[1]))
-          setPhases(prev => prev.map((p, i) =>
-            i < 2 ? { ...p, status: 'done' } :
-            i === 2 ? { ...p, status: 'active' } :
-            { ...p, status: 'pending' }
-          ))
+          setPhases((prev) =>
+            prev.map((p, i) =>
+              i < 2
+                ? { ...p, status: 'done' }
+                : i === 2
+                  ? { ...p, status: 'active' }
+                  : { ...p, status: 'pending' }
+            )
+          )
           return
         }
 
-        setPhases(prev => {
-          const matchIdx = prev.findIndex(p => line.includes(p.pattern))
+        setPhases((prev) => {
+          const matchIdx = prev.findIndex((p) => line.includes(p.pattern))
           if (matchIdx === -1) return prev
           return prev.map((p, i) => {
             if (i < matchIdx) return { ...p, status: 'done' }
@@ -241,9 +344,15 @@ function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useL
       if (event.type === 'done') {
         es.close()
         if (event.success) {
-          setPhases(prev => prev.map(p => ({ ...p, status: 'done' })))
-          const briefLine = [...logAccumRef.current].reverse().find(l => l.includes('design_brief:'))
-          const timestamp = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+          setPhases((prev) => prev.map((p) => ({ ...p, status: 'done' })))
+          const briefLine = [...logAccumRef.current]
+            .reverse()
+            .find((l) => l.includes('design_brief:'))
+          const timestamp = new Date().toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          })
           setPipelineStatus('success')
           setResult({ brief: briefLine?.split('design_brief: ')[1] ?? 'Run complete', timestamp })
         } else {
@@ -263,7 +372,6 @@ function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useL
   // ── Render ──────────────────────────────────────────────────────────────────
   return (
     <div style={s.page}>
-
       {/* Top Bar */}
       <div style={s.topBar}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
@@ -272,14 +380,21 @@ function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useL
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={s.badge}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80' }} />
+            <span
+              style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80' }}
+            />
             dev server running
           </div>
           <a
             href="http://localhost:3000"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ fontSize: '12px', color: '#22d3ee', textDecoration: 'none', fontFamily: '"Space Mono", monospace' }}
+            style={{
+              fontSize: '12px',
+              color: '#22d3ee',
+              textDecoration: 'none',
+              fontFamily: '"Space Mono", monospace',
+            }}
           >
             Open Site &#8599;
           </a>
@@ -288,7 +403,6 @@ function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useL
 
       {/* Layout: Sidebar + Content */}
       <div style={s.layout}>
-
         {/* Sidebar */}
         <nav style={s.sidebar}>
           <div style={{ flex: 1 }}>
@@ -317,9 +431,19 @@ function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useL
               icon="\u2699"
               active={activePane === 'run'}
               onClick={() => setActivePane('run')}
-              trailing={pipelineStatus === 'running' ? (
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b', flexShrink: 0 }} />
-              ) : undefined}
+              trailing={
+                pipelineStatus === 'running' ? (
+                  <span
+                    style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      background: '#f59e0b',
+                      flexShrink: 0,
+                    }}
+                  />
+                ) : undefined
+              }
             />
           </div>
         </nav>
@@ -338,9 +462,7 @@ function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useL
               onSaveOverrides={handleSaveOverrides}
             />
           )}
-          {activePane === 'archive' && (
-            <ArchivePane archive={archive as ArchiveEntry[]} />
-          )}
+          {activePane === 'archive' && <ArchivePane archive={archive as ArchiveEntry[]} />}
           {activePane === 'inspector' && (
             <InspectorPane traceSteps={traceSteps} archive={archive as ArchiveEntry[]} />
           )}
@@ -359,7 +481,6 @@ function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useL
             />
           )}
         </div>
-
       </div>
     </div>
   )
@@ -367,7 +488,13 @@ function DevPanelBody({ loaderData }: { loaderData: ReturnType<typeof Route.useL
 
 // ─── Sidebar Item ─────────────────────────────────────────────────────────────
 
-function SidebarItem({ label, icon, active, onClick, trailing }: {
+function SidebarItem({
+  label,
+  icon,
+  active,
+  onClick,
+  trailing,
+}: {
   label: string
   icon: string
   active: boolean
@@ -391,7 +518,16 @@ function SidebarItem({ label, icon, active, onClick, trailing }: {
 
 // ─── Pipeline Pane ────────────────────────────────────────────────────────────
 
-function PipelinePane({ signals, archive, moodOverride, notes, savingOverrides, onMoodOverrideChange, onNotesChange, onSaveOverrides }: {
+function PipelinePane({
+  signals,
+  archive,
+  moodOverride,
+  notes,
+  savingOverrides,
+  onMoodOverrideChange,
+  onNotesChange,
+  onSaveOverrides,
+}: {
   signals: Signals
   archive: ArchiveEntry[]
   moodOverride: string
@@ -405,26 +541,55 @@ function PipelinePane({ signals, archive, moodOverride, notes, savingOverrides, 
   return (
     <>
       {/* Section: Signals */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '10px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+          marginBottom: '10px',
+        }}
+      >
         <div style={s.sectionLabel}>// SIGNALS</div>
-        <div style={{ fontSize: '11px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' }} data-testid="signals-date">{signals.date}</div>
+        <div
+          style={{ fontSize: '11px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' }}
+          data-testid="signals-date"
+        >
+          {signals.date}
+        </div>
       </div>
       <div style={s.signalsGrid} data-testid="signals-grid">
-        <SignalCard label="Weather" icon="\u{1F326}\uFE0F"
+        <SignalCard
+          label="Weather"
+          icon="\u{1F326}\uFE0F"
           main={signals.weather?.location ?? '\u2014'}
-          sub={signals.weather ? `${signals.weather.conditions} \u00b7 ${signals.weather.feel}` : ''} />
-        <SignalCard label="Sports" icon="\u{1F3C0}"
+          sub={
+            signals.weather ? `${signals.weather.conditions} \u00b7 ${signals.weather.feel}` : ''
+          }
+        />
+        <SignalCard
+          label="Sports"
+          icon="\u{1F3C0}"
           main={signals.sports?.[0] ? `${signals.sports[0].team}` : '\u2014'}
-          sub={signals.sports?.[0]?.result ?? ''} />
-        <SignalCard label="Golf" icon="\u26F3"
+          sub={signals.sports?.[0]?.result ?? ''}
+        />
+        <SignalCard
+          label="Golf"
+          icon="\u26F3"
           main={signals.golf?.[0]?.slice(0, 30) ?? '\u2014'}
-          sub={signals.golf?.[1] ?? ''} />
-        <SignalCard label="GitHub" icon="\u2B50"
+          sub={signals.golf?.[1] ?? ''}
+        />
+        <SignalCard
+          label="GitHub"
+          icon="\u2B50"
           main={signals.github_trending?.[0]?.repo ?? '\u2014'}
-          sub={`${signals.github_trending?.[0]?.stars?.toLocaleString() ?? '?'} stars`} />
-        <SignalCard label="News" icon="\u{1F4F0}"
+          sub={`${signals.github_trending?.[0]?.stars?.toLocaleString() ?? '?'} stars`}
+        />
+        <SignalCard
+          label="News"
+          icon="\u{1F4F0}"
           main={signals.news?.[0]?.slice(0, 40) ?? '\u2014'}
-          sub={signals.news?.[1]?.slice(0, 40) ?? ''} />
+          sub={signals.news?.[1]?.slice(0, 40) ?? ''}
+        />
       </div>
 
       {/* Section: Overrides */}
@@ -432,7 +597,12 @@ function PipelinePane({ signals, archive, moodOverride, notes, savingOverrides, 
       <div style={s.overridesRow}>
         <div style={s.fieldGroup}>
           <div style={s.fieldLabel}>Mood Override</div>
-          <select style={s.select} value={moodOverride} onChange={e => onMoodOverrideChange(e.target.value)} data-testid="mood-override-input">
+          <select
+            style={s.select}
+            value={moodOverride}
+            onChange={(e) => onMoodOverrideChange(e.target.value)}
+            data-testid="mood-override-input"
+          >
             <option value="">— none (Claude decides) —</option>
             <option value="dark">dark</option>
             <option value="celebratory">celebratory</option>
@@ -445,11 +615,16 @@ function PipelinePane({ signals, archive, moodOverride, notes, savingOverrides, 
           <textarea
             style={s.textarea}
             value={notes}
-            onChange={e => onNotesChange(e.target.value)}
+            onChange={(e) => onNotesChange(e.target.value)}
             placeholder="Optional extra context, e.g. 'I just got a hole in one'"
           />
         </div>
-        <button style={s.saveBtn} onClick={onSaveOverrides} disabled={savingOverrides} data-testid="save-overrides-btn">
+        <button
+          style={s.saveBtn}
+          onClick={onSaveOverrides}
+          disabled={savingOverrides}
+          data-testid="save-overrides-btn"
+        >
           {savingOverrides ? 'Saving...' : 'Save overrides'}
         </button>
       </div>
@@ -458,14 +633,51 @@ function PipelinePane({ signals, archive, moodOverride, notes, savingOverrides, 
       {lastRun && (
         <>
           <div style={{ ...s.sectionLabel, marginBottom: '10px' }}>// LAST RUN</div>
-          <div style={{ background: '#151b23', border: '1px solid #1e2633', borderRadius: '8px', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#4ade80', flexShrink: 0 }} />
+          <div
+            style={{
+              background: '#151b23',
+              border: '1px solid #1e2633',
+              borderRadius: '8px',
+              padding: '14px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+            }}
+          >
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                background: '#4ade80',
+                flexShrink: 0,
+              }}
+            />
             <div>
-              <span style={{ fontSize: '13px', fontWeight: 600, color: '#e0e6ed' }}>{lastRun.date}</span>
-              <span style={{ fontSize: '12px', color: '#6b7b8d', fontStyle: 'italic', marginLeft: '12px' }}>{lastRun.brief.slice(0, 80)}{lastRun.brief.length > 80 ? '\u2026' : ''}</span>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: '#e0e6ed' }}>
+                {lastRun.date}
+              </span>
+              <span
+                style={{
+                  fontSize: '12px',
+                  color: '#6b7b8d',
+                  fontStyle: 'italic',
+                  marginLeft: '12px',
+                }}
+              >
+                {lastRun.brief.slice(0, 80)}
+                {lastRun.brief.length > 80 ? '\u2026' : ''}
+              </span>
             </div>
             {lastRun.filesChanged && lastRun.filesChanged.length > 0 && (
-              <span style={{ marginLeft: 'auto', fontSize: '11px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' }}>
+              <span
+                style={{
+                  marginLeft: 'auto',
+                  fontSize: '11px',
+                  color: '#6b7b8d',
+                  fontFamily: '"Space Mono", monospace',
+                }}
+              >
                 {lastRun.filesChanged.length} files
               </span>
             )}
@@ -484,9 +696,18 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '16px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+          marginBottom: '16px',
+        }}
+      >
         <div style={s.sectionLabel}>// ARCHIVE</div>
-        <div style={{ fontSize: '11px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' }}>{archive.length} entries</div>
+        <div style={{ fontSize: '11px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' }}>
+          {archive.length} entries
+        </div>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
@@ -508,14 +729,39 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
                   marginBottom: isExpanded ? '0' : '6px',
                 }}
               >
-                <span style={{ fontSize: '13px', fontWeight: 600, color: isToday ? '#22d3ee' : '#e0e6ed', minWidth: '95px', fontFamily: '"Space Mono", monospace' }}>
+                <span
+                  style={{
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    color: isToday ? '#22d3ee' : '#e0e6ed',
+                    minWidth: '95px',
+                    fontFamily: '"Space Mono", monospace',
+                  }}
+                >
                   {entry.date}
                 </span>
-                <span style={{ fontSize: '12px', color: isToday ? '#8b98a5' : '#6b7b8d', fontStyle: 'italic', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <span
+                  style={{
+                    fontSize: '12px',
+                    color: isToday ? '#8b98a5' : '#6b7b8d',
+                    fontStyle: 'italic',
+                    flex: 1,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {entry.brief}
                 </span>
                 {entry.filesChanged.length > 0 && (
-                  <span style={{ fontSize: '11px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace', flexShrink: 0 }}>
+                  <span
+                    style={{
+                      fontSize: '11px',
+                      color: '#6b7b8d',
+                      fontFamily: '"Space Mono", monospace',
+                      flexShrink: 0,
+                    }}
+                  >
                     {entry.filesChanged.length} files
                   </span>
                 )}
@@ -539,29 +785,69 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
                 )}
               </div>
               {isExpanded && entry.rationale && (
-                <div style={{
-                  background: '#0a0e14',
-                  border: '1px solid',
-                  borderColor: isToday ? 'rgba(34,211,238,0.15)' : '#1e2633',
-                  borderTop: 'none',
-                  borderRadius: '0 0 8px 8px',
-                  padding: '14px 16px',
-                  marginBottom: '6px',
-                }}>
-                  <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.07em', color: '#6b7b8d', marginBottom: '8px', fontFamily: '"Space Mono", monospace' }}>
+                <div
+                  style={{
+                    background: '#0a0e14',
+                    border: '1px solid',
+                    borderColor: isToday ? 'rgba(34,211,238,0.15)' : '#1e2633',
+                    borderTop: 'none',
+                    borderRadius: '0 0 8px 8px',
+                    padding: '14px 16px',
+                    marginBottom: '6px',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      textTransform: 'uppercase',
+                      letterSpacing: '.07em',
+                      color: '#6b7b8d',
+                      marginBottom: '8px',
+                      fontFamily: '"Space Mono", monospace',
+                    }}
+                  >
                     Claude's Rationale
                   </div>
-                  <div style={{ fontSize: '12px', color: '#8b98a5', lineHeight: '1.7', whiteSpace: 'pre-wrap' }}>
+                  <div
+                    style={{
+                      fontSize: '12px',
+                      color: '#8b98a5',
+                      lineHeight: '1.7',
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
                     {entry.rationale}
                   </div>
                   {entry.filesChanged.length > 0 && (
                     <>
-                      <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.07em', color: '#6b7b8d', marginTop: '14px', marginBottom: '6px', fontFamily: '"Space Mono", monospace' }}>
+                      <div
+                        style={{
+                          fontSize: '10px',
+                          fontWeight: 600,
+                          textTransform: 'uppercase',
+                          letterSpacing: '.07em',
+                          color: '#6b7b8d',
+                          marginTop: '14px',
+                          marginBottom: '6px',
+                          fontFamily: '"Space Mono", monospace',
+                        }}
+                      >
                         Files Changed
                       </div>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-                        {entry.filesChanged.map(f => (
-                          <span key={f} style={{ fontSize: '11px', color: '#22d3ee', background: 'rgba(34,211,238,0.08)', padding: '2px 8px', borderRadius: '3px', fontFamily: '"Space Mono", monospace' }}>
+                        {entry.filesChanged.map((f) => (
+                          <span
+                            key={f}
+                            style={{
+                              fontSize: '11px',
+                              color: '#22d3ee',
+                              background: 'rgba(34,211,238,0.08)',
+                              padding: '2px 8px',
+                              borderRadius: '3px',
+                              fontFamily: '"Space Mono", monospace',
+                            }}
+                          >
                             {f}
                           </span>
                         ))}
@@ -580,7 +866,7 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
 
 // ─── Inspector Pane ───────────────────────────────────────────────────────────
 
-function InspectorPane({ traceSteps, archive }: { traceSteps: any[], archive: ArchiveEntry[] }) {
+function InspectorPane({ traceSteps, archive }: { traceSteps: any[]; archive: ArchiveEntry[] }) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [savedTrace, setSavedTrace] = useState<any[] | null>(null)
   const [expandedSteps, setExpandedSteps] = useState<Set<number>>(new Set())
@@ -600,11 +886,11 @@ function InspectorPane({ traceSteps, archive }: { traceSteps: any[], archive: Ar
     }
   }
 
-  const displaySteps = selectedDate ? (savedTrace || []) : traceSteps
+  const displaySteps = selectedDate ? savedTrace || [] : traceSteps
   const isLive = !selectedDate && traceSteps.length > 0
 
   const toggleStep = (idx: number) => {
-    setExpandedSteps(prev => {
+    setExpandedSteps((prev) => {
       const next = new Set(prev)
       next.has(idx) ? next.delete(idx) : next.add(idx)
       return next
@@ -618,7 +904,10 @@ function InspectorPane({ traceSteps, archive }: { traceSteps: any[], archive: Ar
       {/* Date selector */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
         <button
-          onClick={() => { setSelectedDate(null); setSavedTrace(null) }}
+          onClick={() => {
+            setSelectedDate(null)
+            setSavedTrace(null)
+          }}
           style={{
             ...s.saveBtn,
             ...(selectedDate === null ? { color: '#22d3ee', borderColor: '#22d3ee' } : {}),
@@ -626,7 +915,7 @@ function InspectorPane({ traceSteps, archive }: { traceSteps: any[], archive: Ar
         >
           Live
         </button>
-        {archive.slice(0, 10).map(entry => (
+        {archive.slice(0, 10).map((entry) => (
           <button
             key={entry.date}
             onClick={() => loadTrace(entry.date)}
@@ -643,7 +932,9 @@ function InspectorPane({ traceSteps, archive }: { traceSteps: any[], archive: Ar
       {/* Live indicator */}
       {isLive && (
         <div style={{ ...s.badge, marginBottom: '16px' }}>
-          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b' }} />
+          <span
+            style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b' }}
+          />
           streaming {traceSteps.length} steps
         </div>
       )}
@@ -672,8 +963,16 @@ function InspectorPane({ traceSteps, archive }: { traceSteps: any[], archive: Ar
   )
 }
 
-function TraceStepCard({ step, index, expanded, onToggle }: {
-  step: any, index: number, expanded: boolean, onToggle: () => void
+function TraceStepCard({
+  step,
+  index,
+  expanded,
+  onToggle,
+}: {
+  step: any
+  index: number
+  expanded: boolean
+  onToggle: () => void
 }) {
   const phaseColors: Record<number, string> = {
     0: '#6b7b8d',
@@ -706,58 +1005,98 @@ function TraceStepCard({ step, index, expanded, onToggle }: {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{
-            fontSize: '9px', color, fontWeight: 700,
-            fontFamily: '"Space Mono", monospace',
-            letterSpacing: '0.05em',
-            background: `${color}15`,
-            padding: '2px 6px',
-            borderRadius: '3px',
-          }}>
+          <span
+            style={{
+              fontSize: '9px',
+              color,
+              fontWeight: 700,
+              fontFamily: '"Space Mono", monospace',
+              letterSpacing: '0.05em',
+              background: `${color}15`,
+              padding: '2px 6px',
+              borderRadius: '3px',
+            }}
+          >
             {phaseNames[step.phase] || `P${step.phase}`}
           </span>
-          <span style={{ fontSize: '13px', color: '#e0e6ed', fontWeight: 600 }}>
-            {step.name}
-          </span>
+          <span style={{ fontSize: '13px', color: '#e0e6ed', fontWeight: 600 }}>{step.name}</span>
           {step.durationMs > 0 && (
             <span style={{ fontSize: '11px', color: '#6b7b8d' }}>
               {step.durationMs > 60000
                 ? `${(step.durationMs / 60000).toFixed(1)}m`
                 : step.durationMs > 1000
-                ? `${(step.durationMs / 1000).toFixed(1)}s`
-                : `${step.durationMs}ms`}
+                  ? `${(step.durationMs / 1000).toFixed(1)}s`
+                  : `${step.durationMs}ms`}
             </span>
           )}
         </div>
-        <span style={{ fontSize: '11px', color: '#6b7b8d' }}>
-          {expanded ? '▾' : '▸'}
-        </span>
+        <span style={{ fontSize: '11px', color: '#6b7b8d' }}>{expanded ? '▾' : '▸'}</span>
       </div>
 
       {expanded && (
         <div style={{ marginTop: '12px' }}>
           {step.input && Object.keys(step.input).length > 0 && (
             <div style={{ marginBottom: '8px' }}>
-              <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', fontFamily: '"Space Mono", monospace', marginBottom: '4px' }}>INPUT</div>
-              <pre style={{
-                fontSize: '11px', color: '#8b98a5', background: '#0e1117',
-                padding: '8px', borderRadius: '4px', overflow: 'auto',
-                maxHeight: '200px', whiteSpace: 'pre-wrap' as const, margin: 0,
-                fontFamily: '"Space Mono", monospace',
-              }}>
+              <div
+                style={{
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '.07em',
+                  color: '#6b7b8d',
+                  fontFamily: '"Space Mono", monospace',
+                  marginBottom: '4px',
+                }}
+              >
+                INPUT
+              </div>
+              <pre
+                style={{
+                  fontSize: '11px',
+                  color: '#8b98a5',
+                  background: '#0e1117',
+                  padding: '8px',
+                  borderRadius: '4px',
+                  overflow: 'auto',
+                  maxHeight: '200px',
+                  whiteSpace: 'pre-wrap' as const,
+                  margin: 0,
+                  fontFamily: '"Space Mono", monospace',
+                }}
+              >
                 {JSON.stringify(step.input, null, 2)}
               </pre>
             </div>
           )}
           {step.output && Object.keys(step.output).length > 0 && (
             <div>
-              <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', fontFamily: '"Space Mono", monospace', marginBottom: '4px' }}>OUTPUT</div>
-              <pre style={{
-                fontSize: '11px', color: '#8b98a5', background: '#0e1117',
-                padding: '8px', borderRadius: '4px', overflow: 'auto',
-                maxHeight: '300px', whiteSpace: 'pre-wrap' as const, margin: 0,
-                fontFamily: '"Space Mono", monospace',
-              }}>
+              <div
+                style={{
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  textTransform: 'uppercase' as const,
+                  letterSpacing: '.07em',
+                  color: '#6b7b8d',
+                  fontFamily: '"Space Mono", monospace',
+                  marginBottom: '4px',
+                }}
+              >
+                OUTPUT
+              </div>
+              <pre
+                style={{
+                  fontSize: '11px',
+                  color: '#8b98a5',
+                  background: '#0e1117',
+                  padding: '8px',
+                  borderRadius: '4px',
+                  overflow: 'auto',
+                  maxHeight: '300px',
+                  whiteSpace: 'pre-wrap' as const,
+                  margin: 0,
+                  fontFamily: '"Space Mono", monospace',
+                }}
+              >
                 {JSON.stringify(step.output, null, 2)}
               </pre>
             </div>
@@ -770,7 +1109,18 @@ function TraceStepCard({ step, index, expanded, onToggle }: {
 
 // ─── Run Pane ─────────────────────────────────────────────────────────────────
 
-function RunPane({ pipelineStatus, dryRun, onDryRunChange, onRun, phases, logLines, attemptNum, result, logEndRef, archive }: {
+function RunPane({
+  pipelineStatus,
+  dryRun,
+  onDryRunChange,
+  onRun,
+  phases,
+  logLines,
+  attemptNum,
+  result,
+  logEndRef,
+  archive,
+}: {
   pipelineStatus: PipelineStatus
   dryRun: boolean
   onDryRunChange: (v: boolean) => void
@@ -806,14 +1156,32 @@ function RunPane({ pipelineStatus, dryRun, onDryRunChange, onRun, phases, logLin
         >
           {pipelineStatus === 'running' ? 'Running...' : 'Run Pipeline'}
         </button>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#6b7b8d', fontFamily: '"Space Mono", monospace' }}>
-          <input type="checkbox" checked={dryRun} onChange={e => onDryRunChange(e.target.checked)} />
+        <label
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '12px',
+            color: '#6b7b8d',
+            fontFamily: '"Space Mono", monospace',
+          }}
+        >
+          <input
+            type="checkbox"
+            checked={dryRun}
+            onChange={(e) => onDryRunChange(e.target.checked)}
+          />
           Dry run (no commit)
         </label>
       </div>
 
       {/* Progress tracker - always visible */}
-      <ProgressSection phases={phases} logLines={logLines} attemptNum={attemptNum} logEndRef={logEndRef} />
+      <ProgressSection
+        phases={phases}
+        logLines={logLines}
+        attemptNum={attemptNum}
+        logEndRef={logEndRef}
+      />
 
       {/* Success panel */}
       {pipelineStatus === 'success' && result && (
@@ -835,7 +1203,17 @@ function RunPane({ pipelineStatus, dryRun, onDryRunChange, onRun, phases, logLin
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function SignalCard({ label, icon, main, sub }: { label: string; icon: string; main: string; sub: string }) {
+function SignalCard({
+  label,
+  icon,
+  main,
+  sub,
+}: {
+  label: string
+  icon: string
+  main: string
+  sub: string
+}) {
   return (
     <div style={s.signalCard}>
       <div style={s.signalLabel}>{label}</div>
@@ -846,35 +1224,109 @@ function SignalCard({ label, icon, main, sub }: { label: string; icon: string; m
   )
 }
 
-function ProgressSection({ phases, logLines, attemptNum, logEndRef }: { phases: Phase[]; logLines: string[]; attemptNum: number; logEndRef: React.RefObject<HTMLDivElement | null> }) {
-  const isRunning = phases.some(p => p.status === 'active')
+function ProgressSection({
+  phases,
+  logLines,
+  attemptNum,
+  logEndRef,
+}: {
+  phases: Phase[]
+  logLines: string[]
+  attemptNum: number
+  logEndRef: React.RefObject<HTMLDivElement | null>
+}) {
+  const isRunning = phases.some((p) => p.status === 'active')
   return (
-    <div style={{ border: '1px solid #1e2633', borderRadius: '8px', overflow: 'hidden', marginBottom: '16px' }}>
-      <div style={{ background: '#151b23', borderBottom: '1px solid #1e2633', padding: '10px 14px', fontSize: '12px', fontWeight: 600, color: '#8b98a5', display: 'flex', justifyContent: 'space-between', fontFamily: '"Space Mono", monospace' }}>
+    <div
+      style={{
+        border: '1px solid #1e2633',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        marginBottom: '16px',
+      }}
+    >
+      <div
+        style={{
+          background: '#151b23',
+          borderBottom: '1px solid #1e2633',
+          padding: '10px 14px',
+          fontSize: '12px',
+          fontWeight: 600,
+          color: '#8b98a5',
+          display: 'flex',
+          justifyContent: 'space-between',
+          fontFamily: '"Space Mono", monospace',
+        }}
+      >
         <span>Pipeline &middot; Attempt {attemptNum} of 3</span>
         {isRunning && <span style={{ color: '#f59e0b' }}>&#9679; running</span>}
-        {!isRunning && phases.every(p => p.status === 'done') && <span style={{ color: '#4ade80' }}>&#9679; complete</span>}
-        {!isRunning && phases.every(p => p.status === 'pending') && <span style={{ color: '#6b7b8d' }}>&#9679; idle</span>}
+        {!isRunning && phases.every((p) => p.status === 'done') && (
+          <span style={{ color: '#4ade80' }}>&#9679; complete</span>
+        )}
+        {!isRunning && phases.every((p) => p.status === 'pending') && (
+          <span style={{ color: '#6b7b8d' }}>&#9679; idle</span>
+        )}
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr' }}>
         {/* Phase tracker */}
-        <div style={{ padding: '14px', borderRight: '1px solid #1e2633', display: 'flex', flexDirection: 'column', gap: '9px' }}>
-          {phases.map(p => (
+        <div
+          style={{
+            padding: '14px',
+            borderRight: '1px solid #1e2633',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '9px',
+          }}
+        >
+          {phases.map((p) => (
             <div key={p.label} style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
               <PhaseDot status={p.status} />
-              <span style={{ fontSize: '11px', color: p.status === 'pending' ? '#3d4a5c' : p.status === 'done' ? '#6b7b8d' : '#e0e6ed', fontWeight: p.status === 'active' ? 600 : 400, textDecoration: p.status === 'done' ? 'line-through' : 'none', fontFamily: '"Space Mono", monospace' }}>
+              <span
+                style={{
+                  fontSize: '11px',
+                  color:
+                    p.status === 'pending'
+                      ? '#3d4a5c'
+                      : p.status === 'done'
+                        ? '#6b7b8d'
+                        : '#e0e6ed',
+                  fontWeight: p.status === 'active' ? 600 : 400,
+                  textDecoration: p.status === 'done' ? 'line-through' : 'none',
+                  fontFamily: '"Space Mono", monospace',
+                }}
+              >
                 {p.label}
               </span>
             </div>
           ))}
         </div>
         {/* Log pane */}
-        <div style={{ background: '#0a0e14', padding: '14px', fontFamily: '"Space Mono", monospace', fontSize: '11px', lineHeight: '1.7', color: '#6b7b8d', minHeight: '180px', maxHeight: '280px', overflowY: 'auto' }}>
+        <div
+          style={{
+            background: '#0a0e14',
+            padding: '14px',
+            fontFamily: '"Space Mono", monospace',
+            fontSize: '11px',
+            lineHeight: '1.7',
+            color: '#6b7b8d',
+            minHeight: '180px',
+            maxHeight: '280px',
+            overflowY: 'auto',
+          }}
+        >
           {logLines.length === 0 && (
             <div style={{ color: '#3d4a5c' }}>Waiting for pipeline to start...</div>
           )}
           {logLines.map((line, i) => (
-            <div key={i} style={{ color: line.includes('===') || line.includes('calling Claude') ? '#fbbf24' : '#6b7b8d' }}>{line}</div>
+            <div
+              key={i}
+              style={{
+                color:
+                  line.includes('===') || line.includes('calling Claude') ? '#fbbf24' : '#6b7b8d',
+              }}
+            >
+              {line}
+            </div>
           ))}
           {logLines.length > 0 && <span style={{ color: '#22d3ee' }}>&#9612;</span>}
           <div ref={logEndRef} />
@@ -885,13 +1337,28 @@ function ProgressSection({ phases, logLines, attemptNum, logEndRef }: { phases: 
 }
 
 function PhaseDot({ status }: { status: 'pending' | 'active' | 'done' }) {
-  const base = { width: '16px', height: '16px', borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '9px' } as React.CSSProperties
-  if (status === 'done') return <div style={{ ...base, background: '#22c55e', color: 'white' }}>&#10003;</div>
+  const base = {
+    width: '16px',
+    height: '16px',
+    borderRadius: '50%',
+    flexShrink: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '9px',
+  } as React.CSSProperties
+  if (status === 'done')
+    return <div style={{ ...base, background: '#22c55e', color: 'white' }}>&#10003;</div>
   if (status === 'active') return <div style={{ ...base, background: '#f59e0b' }} />
   return <div style={{ ...base, background: '#1e2633' }} />
 }
 
-function SuccessSection({ brief, timestamp, attemptNum, archive }: {
+function SuccessSection({
+  brief,
+  timestamp,
+  attemptNum,
+  archive,
+}: {
   brief: string
   timestamp: string
   attemptNum: number
@@ -899,33 +1366,122 @@ function SuccessSection({ brief, timestamp, attemptNum, archive }: {
 }) {
   const today = new Date().toISOString().slice(0, 10)
   return (
-    <div style={{ border: '1px solid rgba(34,197,94,0.3)', borderRadius: '8px', background: 'rgba(34,197,94,0.05)', overflow: 'hidden' }}>
-      <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid rgba(34,197,94,0.15)' }}>
-        <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', flexShrink: 0 }}>&#10003;</div>
+    <div
+      style={{
+        border: '1px solid rgba(34,197,94,0.3)',
+        borderRadius: '8px',
+        background: 'rgba(34,197,94,0.05)',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        style={{
+          padding: '14px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          borderBottom: '1px solid rgba(34,197,94,0.15)',
+        }}
+      >
+        <div
+          style={{
+            width: '24px',
+            height: '24px',
+            borderRadius: '50%',
+            background: '#22c55e',
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '13px',
+            flexShrink: 0,
+          }}
+        >
+          &#10003;
+        </div>
         <div>
-          <div style={{ fontSize: '13px', fontWeight: 600, color: '#4ade80' }}>Build passed &middot; committed</div>
+          <div style={{ fontSize: '13px', fontWeight: 600, color: '#4ade80' }}>
+            Build passed &middot; committed
+          </div>
           <div style={{ fontSize: '12px', color: '#6b7b8d', fontStyle: 'italic' }}>"{brief}"</div>
         </div>
-        <div style={{ marginLeft: 'auto', fontSize: '11px', color: '#4ade80', textAlign: 'right' as const, fontFamily: '"Space Mono", monospace' }}>
+        <div
+          style={{
+            marginLeft: 'auto',
+            fontSize: '11px',
+            color: '#4ade80',
+            textAlign: 'right' as const,
+            fontFamily: '"Space Mono", monospace',
+          }}
+        >
           {timestamp} &middot; {attemptNum} attempt{attemptNum !== 1 ? 's' : ''}
         </div>
         <button
           onClick={() => window.open('http://localhost:3000', '_blank')}
-          style={{ background: '#22c55e', color: '#0e1117', border: 'none', borderRadius: '5px', padding: '5px 12px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', flexShrink: 0, fontFamily: '"Space Mono", monospace' }}
+          style={{
+            background: '#22c55e',
+            color: '#0e1117',
+            border: 'none',
+            borderRadius: '5px',
+            padding: '5px 12px',
+            fontSize: '11px',
+            fontWeight: 600,
+            cursor: 'pointer',
+            flexShrink: 0,
+            fontFamily: '"Space Mono", monospace',
+          }}
         >
           Open site &#8599;
         </button>
       </div>
       <div style={{ padding: '10px 16px' }}>
-        <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '.07em', color: '#6b7b8d', marginBottom: '8px', fontFamily: '"Space Mono", monospace' }}>Recent designs</div>
+        <div
+          style={{
+            fontSize: '10px',
+            fontWeight: 600,
+            textTransform: 'uppercase' as const,
+            letterSpacing: '.07em',
+            color: '#6b7b8d',
+            marginBottom: '8px',
+            fontFamily: '"Space Mono", monospace',
+          }}
+        >
+          Recent designs
+        </div>
         {archive.map((entry, i) => {
           const isToday = entry.date === today
           return (
-            <div key={entry.date} style={{ display: 'flex', gap: '10px', padding: '6px 0', borderBottom: i < archive.length - 1 ? '1px solid rgba(34,197,94,0.1)' : 'none' }}>
-              <span style={{ fontSize: '11px', fontWeight: isToday ? 700 : 600, color: isToday ? '#22d3ee' : '#4ade80', minWidth: '85px', fontFamily: '"Space Mono", monospace' }}>
-                {entry.date}{isToday ? ' *' : ''}
+            <div
+              key={entry.date}
+              style={{
+                display: 'flex',
+                gap: '10px',
+                padding: '6px 0',
+                borderBottom: i < archive.length - 1 ? '1px solid rgba(34,197,94,0.1)' : 'none',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: '11px',
+                  fontWeight: isToday ? 700 : 600,
+                  color: isToday ? '#22d3ee' : '#4ade80',
+                  minWidth: '85px',
+                  fontFamily: '"Space Mono", monospace',
+                }}
+              >
+                {entry.date}
+                {isToday ? ' *' : ''}
               </span>
-              <span style={{ fontSize: '11px', color: isToday ? '#e0e6ed' : '#6b7b8d', fontStyle: 'italic', fontWeight: isToday ? 600 : 400 }}>{entry.brief}</span>
+              <span
+                style={{
+                  fontSize: '11px',
+                  color: isToday ? '#e0e6ed' : '#6b7b8d',
+                  fontStyle: 'italic',
+                  fontWeight: isToday ? 600 : 400,
+                }}
+              >
+                {entry.brief}
+              </span>
             </div>
           )
         })}
@@ -936,15 +1492,40 @@ function SuccessSection({ brief, timestamp, attemptNum, archive }: {
 
 function ErrorSection({ error, onRetry }: { error: string; onRetry: () => void }) {
   return (
-    <div style={{ border: '1px solid rgba(220,38,38,0.3)', borderRadius: '8px', background: 'rgba(220,38,38,0.05)', padding: '16px', display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+    <div
+      style={{
+        border: '1px solid rgba(220,38,38,0.3)',
+        borderRadius: '8px',
+        background: 'rgba(220,38,38,0.05)',
+        padding: '16px',
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '12px',
+      }}
+    >
       <div style={{ color: '#ef4444', fontSize: '18px', flexShrink: 0 }}>&#10005;</div>
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: '13px', fontWeight: 600, color: '#ef4444', marginBottom: '4px' }}>Pipeline failed</div>
-        <div style={{ fontSize: '11px', color: '#f87171', fontFamily: '"Space Mono", monospace' }}>{error}</div>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: '#ef4444', marginBottom: '4px' }}>
+          Pipeline failed
+        </div>
+        <div style={{ fontSize: '11px', color: '#f87171', fontFamily: '"Space Mono", monospace' }}>
+          {error}
+        </div>
       </div>
       <button
         onClick={onRetry}
-        style={{ background: '#ef4444', color: 'white', border: 'none', borderRadius: '6px', padding: '7px 14px', fontSize: '12px', fontWeight: 500, cursor: 'pointer', flexShrink: 0, fontFamily: '"Space Mono", monospace' }}
+        style={{
+          background: '#ef4444',
+          color: 'white',
+          border: 'none',
+          borderRadius: '6px',
+          padding: '7px 14px',
+          fontSize: '12px',
+          fontWeight: 500,
+          cursor: 'pointer',
+          flexShrink: 0,
+          fontFamily: '"Space Mono", monospace',
+        }}
       >
         Retry
       </button>

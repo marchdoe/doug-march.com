@@ -6,9 +6,9 @@
  * GH_TOKEN (the workflow's GITHUB_TOKEN). Degrades to a no-op locally or
  * when gh is unavailable. Never fails the run.
  */
-import { execFileSync } from 'child_process'
-import { writeFileSync, mkdirSync } from 'fs'
-import { resolve, join } from 'path'
+import { execFileSync } from 'node:child_process'
+import { writeFileSync, mkdirSync } from 'node:fs'
+import { resolve, join } from 'node:path'
 
 const ROOT = resolve(import.meta.dirname, '..')
 
@@ -26,7 +26,13 @@ export function parseRatingFromIssue(issue) {
       if (m) kv[m[1]] = m[2].replace(/^["']|["']$/g, '')
     }
     if (kv.grade && /^[A-Da-d]$/.test(kv.grade)) {
-      return { date, grade: kv.grade.toUpperCase(), worked: kv.worked || '', didnt: kv.didnt || '', try: kv.try || '' }
+      return {
+        date,
+        grade: kv.grade.toUpperCase(),
+        worked: kv.worked || '',
+        didnt: kv.didnt || '',
+        try: kv.try || '',
+      }
     }
   }
   return null
@@ -35,10 +41,27 @@ export function parseRatingFromIssue(issue) {
 function harvest() {
   let issues
   try {
-    const raw = execFileSync('gh', ['issue', 'list', '--label', 'daily-rating', '--state', 'open', '--json', 'number,title,body,comments', '--limit', '30'], { encoding: 'utf8' })
+    const raw = execFileSync(
+      'gh',
+      [
+        'issue',
+        'list',
+        '--label',
+        'daily-rating',
+        '--state',
+        'open',
+        '--json',
+        'number,title,body,comments',
+        '--limit',
+        '30',
+      ],
+      { encoding: 'utf8' }
+    )
     issues = JSON.parse(raw)
   } catch (err) {
-    console.log(`[collect-ratings] gh unavailable or no issues (non-blocking): ${err.message.split('\n')[0]}`)
+    console.log(
+      `[collect-ratings] gh unavailable or no issues (non-blocking): ${err.message.split('\n')[0]}`
+    )
     return
   }
   let harvested = 0
@@ -54,12 +77,25 @@ function harvest() {
       const dateDir = join(ROOT, 'archive', rating.date)
       mkdirSync(dateDir, { recursive: true })
       const ts = Date.now()
-      writeFileSync(join(dateDir, `rating-${ts}.json`), JSON.stringify({ ...rating, timestamp: ts }, null, 2))
-      execFileSync('gh', ['issue', 'close', String(issue.number), '--comment', `Harvested: grade ${rating.grade}. This feeds tomorrow's run.`])
+      writeFileSync(
+        join(dateDir, `rating-${ts}.json`),
+        JSON.stringify({ ...rating, timestamp: ts }, null, 2)
+      )
+      execFileSync('gh', [
+        'issue',
+        'close',
+        String(issue.number),
+        '--comment',
+        `Harvested: grade ${rating.grade}. This feeds tomorrow's run.`,
+      ])
       harvested++
-      console.log(`[collect-ratings] #${issue.number} → archive/${rating.date}/rating-${ts}.json (grade ${rating.grade})`)
+      console.log(
+        `[collect-ratings] #${issue.number} → archive/${rating.date}/rating-${ts}.json (grade ${rating.grade})`
+      )
     } catch (err) {
-      console.warn(`[collect-ratings] #${issue.number} harvest failed (non-blocking): ${err.message}`)
+      console.warn(
+        `[collect-ratings] #${issue.number} harvest failed (non-blocking): ${err.message}`
+      )
     }
   }
   console.log(`[collect-ratings] harvested ${harvested} rating(s)`)

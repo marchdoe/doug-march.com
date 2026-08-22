@@ -75,8 +75,8 @@ export async function collect(profile) {
   // Approximate local time: offset from UTC using longitude (15 deg = 1 hr)
   // Round to nearest whole hour for a reasonable local approximation
   const localOffsetHours = Math.round(lng / 15)
-  const sunriseLocal = ((sunriseUTC + localOffsetHours) % 24 + 24) % 24
-  const sunsetLocal = ((sunsetUTC + localOffsetHours) % 24 + 24) % 24
+  const sunriseLocal = (((sunriseUTC + localOffsetHours) % 24) + 24) % 24
+  const sunsetLocal = (((sunsetUTC + localOffsetHours) % 24) + 24) % 24
 
   return {
     data: {

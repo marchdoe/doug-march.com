@@ -99,8 +99,18 @@ function AboutPage() {
         <section className={css({ gridColumn: { base: '1/-1', md: '1 / span 8' } })}>
           <h2 className={sectHeadCss}>The Record — Timeline</h2>
           {timeline.map((t) => (
-            <div key={`${t.year}-${t.role}`} className={css({ paddingY: '4', borderBottom: '1px solid', borderColor: 'border' })}>
-              <div className={css({ display: 'flex', gap: '4', alignItems: 'baseline', flexWrap: 'wrap' })}>
+            <div
+              key={`${t.year}-${t.role}`}
+              className={css({ paddingY: '4', borderBottom: '1px solid', borderColor: 'border' })}
+            >
+              <div
+                className={css({
+                  display: 'flex',
+                  gap: '4',
+                  alignItems: 'baseline',
+                  flexWrap: 'wrap',
+                })}
+              >
                 <span
                   className={css({
                     minWidth: '120px',
@@ -118,7 +128,15 @@ function AboutPage() {
                   {t.role} <span className={css({ color: 'textMuted' })}>— {t.company}</span>
                 </span>
               </div>
-              <p className={css({ fontSize: 'sm', lineHeight: 'loose', color: 'plum.200', marginTop: '2', maxWidth: '60ch' })}>
+              <p
+                className={css({
+                  fontSize: 'sm',
+                  lineHeight: 'loose',
+                  color: 'plum.200',
+                  marginTop: '2',
+                  maxWidth: '60ch',
+                })}
+              >
                 {t.description}
               </p>
             </div>

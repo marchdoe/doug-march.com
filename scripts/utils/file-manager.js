@@ -1,7 +1,7 @@
-import { readFile, writeFile, mkdir, unlink } from 'fs/promises'
-import { existsSync } from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { readFile, writeFile, mkdir, unlink } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export const ROOT = path.resolve(__dirname, '../..')
@@ -14,7 +14,7 @@ const ALLOWED_WRITE_PREFIXES = [
   'app/components/',
   'app/routes/',
   'app/stubs/',
-  'elements/',  // only preset.ts; further restricted by ALLOWED_EXACT below
+  'elements/', // only preset.ts; further restricted by ALLOWED_EXACT below
 ]
 
 // Exact paths allowed for writes outside the prefix list.
@@ -24,16 +24,14 @@ const ALLOWED_EXACT = new Set()
 // Within allowed prefixes, these exact files are still forbidden.
 // Protects generated files (routeTree.gen.ts) and content files that
 // ship real hand-maintained data (projects, timeline).
-const FORBIDDEN_EXACT = new Set([
-  'app/routeTree.gen.ts',
-])
+const FORBIDDEN_EXACT = new Set(['app/routeTree.gen.ts'])
 
 const FORBIDDEN_PREFIXES = [
-  'app/content/',     // projects.ts, timeline.ts — hand-maintained
-  'app/server/',      // server functions — hand-maintained
-  'app/styles/',      // panda css base styles
-  'app/assets/',      // static assets
-  'elements/theme/',  // canonical theme files
+  'app/content/', // projects.ts, timeline.ts — hand-maintained
+  'app/server/', // server functions — hand-maintained
+  'app/styles/', // panda css base styles
+  'app/assets/', // static assets
+  'elements/theme/', // canonical theme files
 ]
 
 /**
@@ -84,15 +82,13 @@ export function validateWritePath(relPath) {
   }
 
   // Must match allowlist
-  const inAllowedPrefix = ALLOWED_WRITE_PREFIXES.some((prefix) =>
-    normalized.startsWith(prefix)
-  )
+  const inAllowedPrefix = ALLOWED_WRITE_PREFIXES.some((prefix) => normalized.startsWith(prefix))
   const inAllowedExact = ALLOWED_EXACT.has(normalized)
 
   if (!inAllowedPrefix && !inAllowedExact) {
     throw new Error(
       `Path not in write allowlist: ${normalized}. ` +
-      `Allowed prefixes: ${ALLOWED_WRITE_PREFIXES.join(', ')}`
+        `Allowed prefixes: ${ALLOWED_WRITE_PREFIXES.join(', ')}`
     )
   }
 
@@ -190,7 +186,7 @@ export async function restore(backupMap) {
 export async function cleanupOrphans(writtenPaths, backupMap) {
   const paths = writtenPaths instanceof Set ? writtenPaths : new Set(writtenPaths)
   for (const relPath of paths) {
-    if (backupMap.has(relPath)) continue  // covered by restore()
+    if (backupMap.has(relPath)) continue // covered by restore()
     const absPath = path.join(ROOT, relPath)
     if (existsSync(absPath)) {
       try {

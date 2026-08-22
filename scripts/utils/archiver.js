@@ -1,6 +1,6 @@
-import { mkdir, writeFile, readFile, copyFile, readdir } from 'fs/promises'
-import { existsSync } from 'fs'
-import path from 'path'
+import { mkdir, writeFile, readFile, copyFile, readdir } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
+import path from 'node:path'
 import { ROOT } from './file-manager.js'
 import { captureSnapshot } from './snapshot.js'
 
@@ -157,7 +157,17 @@ export async function writeArtifacts(buildDir, artifacts = {}) {
  * @param {string|null} [archetype=null] - the chosen archetype for this build (e.g. 'Specimen')
  * @param {Record<string, Buffer|string|null|undefined>} [artifacts={}] - named artifacts to persist in the build dir (e.g. screenshot.png, verdicts.json)
  */
-export async function archive(date, signals, rationale, designBrief, changedFiles, weights = {}, colorScheme = null, archetype = null, artifacts = {}) {
+export async function archive(
+  date,
+  signals,
+  rationale,
+  designBrief,
+  changedFiles,
+  weights = {},
+  colorScheme = null,
+  archetype = null,
+  artifacts = {}
+) {
   const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : String(date)
   const buildId = String(Date.now())
   const dir = path.join(ROOT, 'archive', dateStr)
@@ -172,7 +182,7 @@ export async function archive(date, signals, rationale, designBrief, changedFile
     '## Signals',
     '',
     formatSignalsMarkdown(signals),
-    '## Claude\'s Rationale',
+    "## Claude's Rationale",
     '',
     rationale,
     '',
@@ -190,7 +200,7 @@ export async function archive(date, signals, rationale, designBrief, changedFile
   const buildMeta = {
     buildId,
     date: dateStr,
-    timestamp: parseInt(buildId),
+    timestamp: parseInt(buildId, 10),
     brief: designBrief,
     weights: {
       signals: weights.signals ?? 5,
@@ -208,7 +218,9 @@ export async function archive(date, signals, rationale, designBrief, changedFile
     try {
       const signalsBrief = await readFile(signalsBriefSrc, 'utf8')
       await writeFile(path.join(buildDir, 'signals-brief.md'), signalsBrief, 'utf8')
-    } catch { /* signals brief read failed — non-blocking */ }
+    } catch {
+      /* signals brief read failed — non-blocking */
+    }
   }
 
   // Save the design tokens preset
@@ -217,7 +229,9 @@ export async function archive(date, signals, rationale, designBrief, changedFile
     try {
       const preset = await readFile(presetSrc, 'utf8')
       await writeFile(path.join(buildDir, 'preset.ts'), preset, 'utf8')
-    } catch { /* preset read failed — non-blocking */ }
+    } catch {
+      /* preset read failed — non-blocking */
+    }
   }
 
   // Save the color scheme JSON artifact, if provided
@@ -254,21 +268,27 @@ export async function archive(date, signals, rationale, designBrief, changedFile
   // Only runs when the dev server is up (the only way we can point a
   // headless browser at the built site).
   try {
-    const net = await import('net')
-    const portOpen = await new Promise(resolve => {
+    const net = await import('node:net')
+    const portOpen = await new Promise((resolve) => {
       const sock = new net.Socket()
       sock.setTimeout(2000)
-      sock.once('connect', () => { sock.destroy(); resolve(true) })
+      sock.once('connect', () => {
+        sock.destroy()
+        resolve(true)
+      })
       sock.once('error', () => resolve(false))
-      sock.once('timeout', () => { sock.destroy(); resolve(false) })
+      sock.once('timeout', () => {
+        sock.destroy()
+        resolve(false)
+      })
       sock.connect(5173, '127.0.0.1')
     })
     if (portOpen) {
       const previewUrl = 'http://localhost:5173/'
       const viewports = [
-        { name: 'mobile',  width: 360,  height: 640 },
-        { name: 'tablet',  width: 768,  height: 1024 },
-        { name: 'laptop',  width: 1024, height: 768 },
+        { name: 'mobile', width: 360, height: 640 },
+        { name: 'tablet', width: 768, height: 1024 },
+        { name: 'laptop', width: 1024, height: 768 },
         { name: 'desktop', width: 1440, height: 900 },
       ]
       const { chromium } = await import('@playwright/test')

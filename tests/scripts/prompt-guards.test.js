@@ -1,9 +1,15 @@
 import { describe, it, expect } from 'vitest'
-import { readFileSync, readdirSync } from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { readFileSync, readdirSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const promptDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'scripts', 'prompts')
+const promptDir = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+  '..',
+  'scripts',
+  'prompts'
+)
 const read = (f) => readFileSync(path.join(promptDir, f), 'utf8')
 
 describe('brand-contract.md load-bearing directives', () => {
@@ -71,7 +77,14 @@ describe('react-engineer.md load-bearing directives', () => {
   })
   it('requires all six files including og.tsx', () => {
     const c = re()
-    for (const f of ['app/components/Layout.tsx', 'app/components/Sidebar.tsx', 'app/routes/index.tsx', 'app/routes/about.tsx', 'app/routes/work.$slug.tsx', 'app/routes/og.tsx']) {
+    for (const f of [
+      'app/components/Layout.tsx',
+      'app/components/Sidebar.tsx',
+      'app/routes/index.tsx',
+      'app/routes/about.tsx',
+      'app/routes/work.$slug.tsx',
+      'app/routes/og.tsx',
+    ]) {
       expect(c).toContain(f)
     }
   })
@@ -98,12 +111,15 @@ describe('seed permission overrides', () => {
 
 describe('logo-mono.svg', () => {
   it('exists and uses currentColor exclusively (no hardcoded colors)', () => {
-    const svg = readFileSync(path.join(promptDir, '..', '..', 'app', 'assets', 'logo-mono.svg'), 'utf8')
+    const svg = readFileSync(
+      path.join(promptDir, '..', '..', 'app', 'assets', 'logo-mono.svg'),
+      'utf8'
+    )
     expect(svg).toContain('currentColor')
     // Allowlist: every paint value must be none or currentColor — catches
     // named colors (fill="white") that a hex/rgb blocklist would miss.
-    const paints = [...svg.matchAll(/(?:fill|stroke)="([^"]+)"/g)].map(m => m[1])
+    const paints = [...svg.matchAll(/(?:fill|stroke)="([^"]+)"/g)].map((m) => m[1])
     expect(paints.length).toBeGreaterThan(0)
-    expect(paints.every(p => p === 'none' || p === 'currentColor')).toBe(true)
+    expect(paints.every((p) => p === 'none' || p === 'currentColor')).toBe(true)
   })
 })

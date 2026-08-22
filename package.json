@@ -14,6 +14,9 @@
     "test:e2e:site": "playwright test --project=site-health",
     "test:e2e:dev": "playwright test --project=dev-panel",
     "test:e2e": "playwright test",
+    "lint": "biome ci .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
     "codegen": "panda codegen",
     "codegen:watch": "panda codegen --watch",
     "pipeline": "MOCK_MODE=true node scripts/run-pipeline.js",
@@ -36,6 +39,7 @@
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.117.1",
+    "@biomejs/biome": "^2.5.9",
     "@pandacss/dev": "^1.12.0",
     "@playwright/test": "^1.62.1",
     "@tanstack/devtools-vite": "latest",

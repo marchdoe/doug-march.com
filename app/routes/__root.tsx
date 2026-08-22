@@ -1,5 +1,12 @@
 import '../styles/panda.css'
-import { createRootRoute, Link, Outlet, HeadContent, ScrollRestoration, Scripts } from '@tanstack/react-router'
+import {
+  createRootRoute,
+  Link,
+  Outlet,
+  HeadContent,
+  ScrollRestoration,
+  Scripts,
+} from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { styled } from '../../styled-system/jsx'
 import type { ReactNode } from 'react'
@@ -15,16 +22,26 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { property: 'og:title', content: "Confidence is what you have before you understand the problem." },
-        { property: 'og:description', content: "Front-page swagger — Woody Allen's confidence aphorism as a Spectral broadsheet lead, drenched in plum-black and hot magenta, the Tigers' 14–0 shutout pinned in the almanac column." },
-        { property: 'og:image', content: "https://doug-march.com/og/2026-07-29.png" },
-        { property: 'og:image:width', content: '1200' },
-        { property: 'og:image:height', content: '630' },
-        { property: 'og:url', content: "https://doug-march.com" },
-        { property: 'og:type', content: 'website' },
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: "Confidence is what you have before you understand the problem." },
-        { name: 'twitter:image', content: "https://doug-march.com/og/2026-07-29.png" },
+      {
+        property: 'og:title',
+        content: 'Confidence is what you have before you understand the problem.',
+      },
+      {
+        property: 'og:description',
+        content:
+          "Front-page swagger — Woody Allen's confidence aphorism as a Spectral broadsheet lead, drenched in plum-black and hot magenta, the Tigers' 14–0 shutout pinned in the almanac column.",
+      },
+      { property: 'og:image', content: 'https://doug-march.com/og/2026-07-29.png' },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { property: 'og:url', content: 'https://doug-march.com' },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      {
+        name: 'twitter:title',
+        content: 'Confidence is what you have before you understand the problem.',
+      },
+      { name: 'twitter:image', content: 'https://doug-march.com/og/2026-07-29.png' },
     ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import { mkdtempSync, rmSync, existsSync, readFileSync, readdirSync } from 'fs'
-import { tmpdir } from 'os'
-import path from 'path'
+import { mkdtempSync, rmSync, existsSync, readFileSync, readdirSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import path from 'node:path'
 
 // archive() writes under ROOT (repo root). We can't relocate ROOT, so test
 // the new helper writeArtifacts() directly — it owns the new behavior.
@@ -9,8 +9,12 @@ import { writeArtifacts } from '../../scripts/utils/archiver.js'
 
 describe('writeArtifacts', () => {
   let dir
-  beforeEach(() => { dir = mkdtempSync(path.join(tmpdir(), 'artifacts-')) })
-  afterEach(() => { rmSync(dir, { recursive: true, force: true }) })
+  beforeEach(() => {
+    dir = mkdtempSync(path.join(tmpdir(), 'artifacts-'))
+  })
+  afterEach(() => {
+    rmSync(dir, { recursive: true, force: true })
+  })
 
   it('writes Buffer and string artifacts into the build dir', async () => {
     await writeArtifacts(dir, {

@@ -14,17 +14,31 @@ describe('sports provider', () => {
     fetch.mockResolvedValue({
       ok: true,
       json: async () => ({
-        events: [{
-          competitions: [{
-            competitors: [
-              { team: { displayName: 'Detroit Lions' }, score: '24', winner: true, homeAway: 'home' },
-              { team: { displayName: 'Chicago Bears' }, score: '17', winner: false, homeAway: 'away' },
+        events: [
+          {
+            competitions: [
+              {
+                competitors: [
+                  {
+                    team: { displayName: 'Detroit Lions' },
+                    score: '24',
+                    winner: true,
+                    homeAway: 'home',
+                  },
+                  {
+                    team: { displayName: 'Chicago Bears' },
+                    score: '17',
+                    winner: false,
+                    homeAway: 'away',
+                  },
+                ],
+                status: { type: { completed: true } },
+              },
             ],
-            status: { type: { completed: true } },
-          }],
-          name: 'Chicago Bears at Detroit Lions',
-          date: '2026-03-10T00:00Z',
-        }],
+            name: 'Chicago Bears at Detroit Lions',
+            date: '2026-03-10T00:00Z',
+          },
+        ],
       }),
     })
 

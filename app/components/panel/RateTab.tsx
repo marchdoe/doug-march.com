@@ -28,7 +28,12 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
   const [worked, setWorked] = useState('')
   const [didnt, setDidnt] = useState('')
   const [tryNext, setTryNext] = useState('')
-  const [state, setState] = useState<{ kind: 'idle' } | { kind: 'busy' } | { kind: 'done'; url: string } | { kind: 'error'; message: string }>({ kind: 'idle' })
+  const [state, setState] = useState<
+    | { kind: 'idle' }
+    | { kind: 'busy' }
+    | { kind: 'done'; url: string }
+    | { kind: 'error'; message: string }
+  >({ kind: 'idle' })
 
   if (unrated.length === 0 && state.kind !== 'done') {
     return <p className={mutedText}>Nothing waiting for a rating. 🎉</p>
@@ -49,10 +54,11 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
   return (
     <section>
       <h2 className={sectionTitle}>
-        {prettyDate(activeDate)}{' '}
-        <span className={dateMuted}>· {activeDate}</span>
+        {prettyDate(activeDate)} <span className={dateMuted}>· {activeDate}</span>
       </h2>
-      <p className={fieldLabel} id="grade-label">Grade</p>
+      <p className={fieldLabel} id="grade-label">
+        Grade
+      </p>
       <div
         role="group"
         aria-labelledby="grade-label"
@@ -73,19 +79,34 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
       <div className={field}>
         <label>
           <span className={fieldLabel}>What worked</span>
-          <textarea className={textArea} value={worked} onChange={(e) => setWorked(e.target.value)} rows={2} />
+          <textarea
+            className={textArea}
+            value={worked}
+            onChange={(e) => setWorked(e.target.value)}
+            rows={2}
+          />
         </label>
       </div>
       <div className={field}>
         <label>
           <span className={fieldLabel}>What didn't</span>
-          <textarea className={textArea} value={didnt} onChange={(e) => setDidnt(e.target.value)} rows={2} />
+          <textarea
+            className={textArea}
+            value={didnt}
+            onChange={(e) => setDidnt(e.target.value)}
+            rows={2}
+          />
         </label>
       </div>
       <div className={field}>
         <label>
           <span className={fieldLabel}>Try next</span>
-          <textarea className={textArea} value={tryNext} onChange={(e) => setTryNext(e.target.value)} rows={2} />
+          <textarea
+            className={textArea}
+            value={tryNext}
+            onChange={(e) => setTryNext(e.target.value)}
+            rows={2}
+          />
         </label>
       </div>
       <button
@@ -98,23 +119,43 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
       </button>
       {state.kind === 'done' && (
         <p className={cx(successText, css({ marginTop: '10px' }))}>
-          Saved — <a className={inlineLink} href={state.url}>view issue</a>. Harvested on the next run.
+          Saved —{' '}
+          <a className={inlineLink} href={state.url}>
+            view issue
+          </a>
+          . Harvested on the next run.
         </p>
       )}
       {state.kind === 'error' && (
-        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>{state.message}</p>
+        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>
+          {state.message}
+        </p>
       )}
       {unrated.length > 1 && (
         <aside className={css({ marginTop: '20px' })}>
           <h3 className={fieldLabel}>Also unrated</h3>
-          <ul className={css({ listStyle: 'none', padding: '0', display: 'flex', gap: '8px', flexWrap: 'wrap' })}>
-            {unrated.filter((i) => i.date !== activeDate).map((i) => (
-              <li key={i.number}>
-                <button type="button" className={button({ kind: 'secondary' })} onClick={() => setActiveDate(i.date)}>
-                  {i.date}
-                </button>
-              </li>
-            ))}
+          <ul
+            className={css({
+              listStyle: 'none',
+              padding: '0',
+              display: 'flex',
+              gap: '8px',
+              flexWrap: 'wrap',
+            })}
+          >
+            {unrated
+              .filter((i) => i.date !== activeDate)
+              .map((i) => (
+                <li key={i.number}>
+                  <button
+                    type="button"
+                    className={button({ kind: 'secondary' })}
+                    onClick={() => setActiveDate(i.date)}
+                  >
+                    {i.date}
+                  </button>
+                </li>
+              ))}
           </ul>
         </aside>
       )}

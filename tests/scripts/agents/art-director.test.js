@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import { buildArtDirectorUserPrompt, validateArtDirectorResult } from '../../../scripts/agents/art-director.js'
+import {
+  buildArtDirectorUserPrompt,
+  validateArtDirectorResult,
+} from '../../../scripts/agents/art-director.js'
 
 describe('buildArtDirectorUserPrompt', () => {
   it('includes signals YAML, content summary, chassis catalog, weights, color mandate', () => {
@@ -30,8 +33,10 @@ describe('validateArtDirectorResult', () => {
     chassis_id: 'big-shoulders-atkinson',
     visual_spec: '## Color\n- 18°',
     self_check: '1. Yes 2. Yes 3. Yes',
-    measurables: 'canvas_utilization_min: 70\nhero_scale: clamp(96px, 13vw, 200px)\ncolor_coverage_min: 60',
-    shell: 'nav: bottom rail\nfooter: data strip\nbrand_lockup: horizontal-md\nbrand_color_mode: original',
+    measurables:
+      'canvas_utilization_min: 70\nhero_scale: clamp(96px, 13vw, 200px)\ncolor_coverage_min: 60',
+    shell:
+      'nav: bottom rail\nfooter: data strip\nbrand_lockup: horizontal-md\nbrand_color_mode: original',
     files: [{ path: 'elements/preset.ts', content: "export const elementsPreset = 'stub'" }],
     rationale: 'r',
     design_brief: 'b',
@@ -42,22 +47,20 @@ describe('validateArtDirectorResult', () => {
   })
 
   it('throws when hero_copy is missing', () => {
-    expect(() => validateArtDirectorResult({ ...valid, hero_copy: undefined }))
-      .toThrow(/hero_copy/)
+    expect(() => validateArtDirectorResult({ ...valid, hero_copy: undefined })).toThrow(/hero_copy/)
   })
 
   it('throws when archetype is unrecognized', () => {
-    expect(() => validateArtDirectorResult({ ...valid, archetype: 'Cinema' }))
-      .toThrow(/archetype/)
+    expect(() => validateArtDirectorResult({ ...valid, archetype: 'Cinema' })).toThrow(/archetype/)
   })
 
   it('throws when preset.ts is missing from files', () => {
-    expect(() => validateArtDirectorResult({ ...valid, files: [] }))
-      .toThrow(/elements\/preset\.ts/)
+    expect(() => validateArtDirectorResult({ ...valid, files: [] })).toThrow(/elements\/preset\.ts/)
   })
 
   it('throws when chassis_id is missing', () => {
-    expect(() => validateArtDirectorResult({ ...valid, chassis_id: undefined }))
-      .toThrow(/chassis_id/)
+    expect(() => validateArtDirectorResult({ ...valid, chassis_id: undefined })).toThrow(
+      /chassis_id/
+    )
   })
 })

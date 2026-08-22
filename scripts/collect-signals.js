@@ -11,10 +11,10 @@
  */
 
 import { config } from 'dotenv'
-import { readFile, writeFile, readdir } from 'fs/promises'
-import { existsSync } from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { readFile, writeFile, readdir } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import * as yaml from 'js-yaml'
 import { sanitizeSignals } from './utils/sanitize-signal.js'
 
@@ -116,8 +116,8 @@ process.on('unhandledRejection', (reason) => {
 })
 
 export async function runCollector(providerOverrides, profileOverride) {
-  const profile = profileOverride ?? await loadProfile()
-  const providers = providerOverrides ?? await discoverProviders()
+  const profile = profileOverride ?? (await loadProfile())
+  const providers = providerOverrides ?? (await discoverProviders())
 
   console.log(`Collecting from ${providers.length} providers...`)
   const startTime = Date.now()
@@ -144,9 +144,15 @@ export async function runCollector(providerOverrides, profileOverride) {
       // a crafted HN title or news headline could steer the AI output.
       signals[r.name] = sanitizeSignals(r.data)
     }
-    sources[r.name] = r.status === 'ok'
-      ? { status: 'ok', source: r.meta.source ?? r.name, latency_ms: r.meta.latency_ms, items: r.meta.items ?? 0 }
-      : { status: r.status, reason: r.reason, latency_ms: r.meta.latency_ms }
+    sources[r.name] =
+      r.status === 'ok'
+        ? {
+            status: 'ok',
+            source: r.meta.source ?? r.name,
+            latency_ms: r.meta.latency_ms,
+            items: r.meta.items ?? 0,
+          }
+        : { status: r.status, reason: r.reason, latency_ms: r.meta.latency_ms }
   }
 
   signals.date = new Date().toISOString().slice(0, 10)
@@ -155,8 +161,8 @@ export async function runCollector(providerOverrides, profileOverride) {
     collected_at: new Date().toISOString(),
     duration_ms: totalMs,
     providers_total: providers.length,
-    providers_ok: Object.values(sources).filter(s => s.status === 'ok').length,
-    providers_failed: Object.values(sources).filter(s => s.status !== 'ok').length,
+    providers_ok: Object.values(sources).filter((s) => s.status === 'ok').length,
+    providers_failed: Object.values(sources).filter((s) => s.status !== 'ok').length,
     sources,
   }
 
@@ -174,7 +180,7 @@ async function writeOutputs(signals, meta) {
   console.log(`Written: signals/today.meta.yml (${meta.providers_ok}/${meta.providers_total} ok)`)
 }
 
-if (process.argv[1] && process.argv[1].endsWith('collect-signals.js')) {
+if (process.argv[1]?.endsWith('collect-signals.js')) {
   const { signals, meta } = await runCollector()
   await writeOutputs(signals, meta)
   console.log(`\nDone in ${meta.duration_ms}ms.`)

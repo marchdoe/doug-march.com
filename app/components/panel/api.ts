@@ -48,8 +48,14 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
 
 export const fetchStatus = () => request<PanelStatus>('/api/panel/status')
 export const submitRating = (r: RatingSubmission) =>
-  request<{ ok: true; issueUrl: string }>('/api/panel/rate', { method: 'POST', body: JSON.stringify(r) })
+  request<{ ok: true; issueUrl: string }>('/api/panel/rate', {
+    method: 'POST',
+    body: JSON.stringify(r),
+  })
 export const saveWeights = (w: Weights) =>
   request<{ ok: true }>('/api/panel/weights', { method: 'PUT', body: JSON.stringify(w) })
 export const triggerRun = (dryRun: boolean) =>
-  request<{ ok: true }>('/api/panel/run', { method: 'POST', body: JSON.stringify({ dry_run: dryRun }) })
+  request<{ ok: true }>('/api/panel/run', {
+    method: 'POST',
+    body: JSON.stringify({ dry_run: dryRun }),
+  })

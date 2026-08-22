@@ -44,7 +44,9 @@ describe('requireAuth', () => {
     process.env.PANEL_PASSWORD = 's3cret'
   })
   it('returns null when authorized', () => {
-    const req = new Request('https://x/api/panel/status', { headers: { authorization: header('doug', 's3cret') } })
+    const req = new Request('https://x/api/panel/status', {
+      headers: { authorization: header('doug', 's3cret') },
+    })
     expect(requireAuth(req)).toBeNull()
   })
   it('returns 401 Response when unauthorized', () => {

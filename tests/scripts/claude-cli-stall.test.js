@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { EventEmitter } from 'events'
-import { Readable } from 'stream'
+import { EventEmitter } from 'node:events'
+import { Readable } from 'node:stream'
 
 // We need to mock child_process.spawn before importing claude-cli.js
 // so the spawn call inside resolves to our fake child process.
@@ -19,8 +19,12 @@ vi.mock('child_process', () => ({
       on: EventEmitter.prototype.on.bind(child.stdin ?? new EventEmitter()),
     })
     // Simpler: use a proper Writable stream
-    const { Writable } = require('stream')
-    child.stdin = new Writable({ write(chunk, enc, cb) { cb() } })
+    const { Writable } = require('node:stream')
+    child.stdin = new Writable({
+      write(chunk, enc, cb) {
+        cb()
+      },
+    })
     child.stdin.on('error', () => {})
     child.kill = vi.fn((signal) => {
       // Simulate a process that ignores SIGTERM but responds to SIGKILL
@@ -70,8 +74,8 @@ describe('claude-cli stall detection', () => {
     const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
 
     const promise = callClaudeCLI('test-agent', 'system', 'user prompt', {
-      timeoutMs: 60 * 60 * 1000,    // 1 hour — much longer than stall
-      stallTimeoutMs: 1000,          // 1 second stall timeout for the test
+      timeoutMs: 60 * 60 * 1000, // 1 hour — much longer than stall
+      stallTimeoutMs: 1000, // 1 second stall timeout for the test
     })
 
     // Attach rejection handler immediately so unhandled rejection doesn't fail
@@ -99,7 +103,7 @@ describe('claude-cli stall detection', () => {
 
     const promise = callClaudeCLI('test-agent', 'system', 'user prompt', {
       timeoutMs: 60 * 60 * 1000,
-      stallTimeoutMs: 10000,  // 10s stall
+      stallTimeoutMs: 10000, // 10s stall
     })
 
     const rejected = promise.catch((err) => err)
@@ -116,7 +120,7 @@ describe('claude-cli stall detection', () => {
         type: 'assistant',
         message: { content: [{ type: 'text', text: 'content chunk' }] },
       }
-      child.stdout.emit('data', Buffer.from(JSON.stringify(event) + '\n'))
+      child.stdout.emit('data', Buffer.from(`${JSON.stringify(event)}\n`))
     }
 
     // At this point 15 seconds have passed but the content kept arriving.

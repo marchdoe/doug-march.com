@@ -1,5 +1,5 @@
 import { chromium } from '@playwright/test'
-import path from 'path'
+import path from 'node:path'
 
 /**
  * Screenshot a URL at multiple viewports.

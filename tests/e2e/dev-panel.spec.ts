@@ -6,7 +6,7 @@ import { test, expect } from '@playwright/test'
 test.describe('/dev panel', () => {
   test('loads without console errors', async ({ page }) => {
     const errors: string[] = []
-    page.on('console', msg => {
+    page.on('console', (msg) => {
       if (msg.type() === 'error') errors.push(msg.text())
     })
 

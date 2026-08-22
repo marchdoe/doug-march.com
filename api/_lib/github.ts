@@ -3,7 +3,10 @@ const REPO = 'marchdoe/doug-march.com'
 const WORKFLOW = 'daily-redesign.yml'
 
 export class GitHubError extends Error {
-  constructor(message: string, readonly status: number) {
+  constructor(
+    message: string,
+    readonly status: number
+  ) {
     super(message)
     this.name = 'GitHubError'
   }
@@ -22,7 +25,8 @@ async function gh(path: string, init: RequestInit = {}): Promise<unknown> {
     },
   })
   if (res.status === 204) return null
-  if (!res.ok) throw new GitHubError(`GitHub ${init.method ?? 'GET'} ${path} → ${res.status}`, res.status)
+  if (!res.ok)
+    throw new GitHubError(`GitHub ${init.method ?? 'GET'} ${path} → ${res.status}`, res.status)
   return res.json()
 }
 
@@ -36,7 +40,9 @@ export interface RatingIssue {
 const DATE_RE = /Rate:\s*(\d{4}-\d{2}-\d{2})/
 
 export async function listOpenRatingIssues(): Promise<RatingIssue[]> {
-  const raw = (await gh(`/repos/${REPO}/issues?labels=daily-rating&state=open&per_page=30`)) as Array<Record<string, unknown>>
+  const raw = (await gh(
+    `/repos/${REPO}/issues?labels=daily-rating&state=open&per_page=30`
+  )) as Array<Record<string, unknown>>
   const issues: RatingIssue[] = []
   for (const issue of raw) {
     const title = typeof issue.title === 'string' ? issue.title : ''
@@ -92,7 +98,10 @@ export async function getWeights(): Promise<Weights> {
   await Promise.all(
     WEIGHT_VARS.map(async ({ key, name, fallback }) => {
       try {
-        const raw = (await gh(`/repos/${REPO}/actions/variables/${name}`)) as Record<string, unknown>
+        const raw = (await gh(`/repos/${REPO}/actions/variables/${name}`)) as Record<
+          string,
+          unknown
+        >
         const parsed = parseInt(String(raw.value), 10)
         weights[key] = Number.isNaN(parsed) ? fallback : parsed
       } catch (err) {
@@ -139,7 +148,10 @@ export interface RunInfo {
 }
 
 export async function latestRun(): Promise<RunInfo | null> {
-  const raw = (await gh(`/repos/${REPO}/actions/workflows/${WORKFLOW}/runs?per_page=1`)) as Record<string, unknown>
+  const raw = (await gh(`/repos/${REPO}/actions/workflows/${WORKFLOW}/runs?per_page=1`)) as Record<
+    string,
+    unknown
+  >
   const runs = raw.workflow_runs as Array<Record<string, unknown>>
   const run = runs[0]
   if (!run) return null

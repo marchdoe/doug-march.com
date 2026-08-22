@@ -67,26 +67,26 @@ function mastersTournamentDate(year) {
 function getHolidays(year) {
   return [
     { name: "New Year's Day", date: new Date(year, 0, 1) },
-    { name: "Martin Luther King Jr. Day", date: nthWeekdayOfMonth(year, 1, 1, 3) },
-    { name: "Super Bowl Sunday", date: superBowlDate(year) },
+    { name: 'Martin Luther King Jr. Day', date: nthWeekdayOfMonth(year, 1, 1, 3) },
+    { name: 'Super Bowl Sunday', date: superBowlDate(year) },
     { name: "Valentine's Day", date: new Date(year, 1, 14) },
     { name: "Presidents' Day", date: nthWeekdayOfMonth(year, 2, 1, 3) },
     { name: "St. Patrick's Day", date: new Date(year, 2, 17) },
-    { name: "Opening Day (MLB)", date: openingDayDate(year) },
-    { name: "Easter", date: easterDate(year) },
-    { name: "Masters Tournament", date: mastersTournamentDate(year) },
+    { name: 'Opening Day (MLB)', date: openingDayDate(year) },
+    { name: 'Easter', date: easterDate(year) },
+    { name: 'Masters Tournament', date: mastersTournamentDate(year) },
     { name: "Mother's Day", date: nthWeekdayOfMonth(year, 5, 0, 2) },
-    { name: "Memorial Day", date: lastWeekdayOfMonth(year, 5, 1) },
-    { name: "Juneteenth", date: new Date(year, 5, 19) },
+    { name: 'Memorial Day', date: lastWeekdayOfMonth(year, 5, 1) },
+    { name: 'Juneteenth', date: new Date(year, 5, 19) },
     { name: "Father's Day", date: nthWeekdayOfMonth(year, 6, 0, 3) },
-    { name: "Independence Day", date: new Date(year, 6, 4) },
-    { name: "Labor Day", date: nthWeekdayOfMonth(year, 9, 1, 1) },
-    { name: "Columbus Day", date: nthWeekdayOfMonth(year, 10, 1, 2) },
-    { name: "Halloween", date: new Date(year, 9, 31) },
-    { name: "Veterans Day", date: new Date(year, 10, 11) },
-    { name: "Thanksgiving", date: nthWeekdayOfMonth(year, 11, 4, 4) },
-    { name: "Christmas", date: new Date(year, 11, 25) },
-  ].filter(h => h.date !== null)
+    { name: 'Independence Day', date: new Date(year, 6, 4) },
+    { name: 'Labor Day', date: nthWeekdayOfMonth(year, 9, 1, 1) },
+    { name: 'Columbus Day', date: nthWeekdayOfMonth(year, 10, 1, 2) },
+    { name: 'Halloween', date: new Date(year, 9, 31) },
+    { name: 'Veterans Day', date: new Date(year, 10, 11) },
+    { name: 'Thanksgiving', date: nthWeekdayOfMonth(year, 11, 4, 4) },
+    { name: 'Christmas', date: new Date(year, 11, 25) },
+  ].filter((h) => h.date !== null)
 }
 
 // Returns YYYY-MM-DD string in local time.
@@ -118,12 +118,12 @@ export async function collect(_profile) {
   const msPerDay = 24 * 60 * 60 * 1000
   const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate())
   const upcoming = holidays
-    .map(h => {
+    .map((h) => {
       const holidayMidnight = new Date(h.date.getFullYear(), h.date.getMonth(), h.date.getDate())
       const daysAway = Math.round((holidayMidnight - todayMidnight) / msPerDay)
       return { name: h.name, date: toDateString(h.date), days_away: daysAway }
     })
-    .filter(h => h.days_away > 0 && h.days_away <= 7)
+    .filter((h) => h.days_away > 0 && h.days_away <= 7)
     .sort((a, b) => a.days_away - b.days_away)
 
   return {

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import { mkdtemp, rm, mkdir, writeFile } from 'fs/promises'
-import { tmpdir } from 'os'
-import path from 'path'
+import { mkdtemp, rm, mkdir, writeFile } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import path from 'node:path'
 import { readResponsiveHistory } from '../../scripts/utils/read-responsive-history.js'
 
 describe('readResponsiveHistory', () => {
@@ -28,7 +28,7 @@ describe('readResponsiveHistory', () => {
     await plantBuild('2026-04-12', '2', { buildId: '2', overallScore: 5 })
     await plantBuild('2026-04-11', '3', { buildId: '3', overallScore: 4 })
     const h = await readResponsiveHistory({ root, limit: 10 })
-    expect(h.map(m => m.buildId)).toEqual(['2', '3', '1'])
+    expect(h.map((m) => m.buildId)).toEqual(['2', '3', '1'])
   })
 
   it('respects limit', async () => {

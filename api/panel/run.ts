@@ -18,7 +18,8 @@ export async function POST(request: Request): Promise<Response> {
     await dispatchRun(dryRun)
     return json({ ok: true })
   } catch (err) {
-    if (err instanceof GitHubError) return json({ error: `GitHub error (${err.status}) — try again` }, 502)
+    if (err instanceof GitHubError)
+      return json({ error: `GitHub error (${err.status}) — try again` }, 502)
     throw err
   }
 }

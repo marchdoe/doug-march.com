@@ -25,9 +25,11 @@ function PanelPage() {
   const [error, setError] = useState<string | null>(null)
 
   const load = useCallback(() => {
-    fetchStatus().then(setStatus).catch((err: unknown) => {
-      setError(err instanceof Error ? err.message : 'Failed to load')
-    })
+    fetchStatus()
+      .then(setStatus)
+      .catch((err: unknown) => {
+        setError(err instanceof Error ? err.message : 'Failed to load')
+      })
   }, [])
   useEffect(load, [load])
 
@@ -36,7 +38,9 @@ function PanelPage() {
       <main className={page}>
         <div className={sheet}>
           <h1 className={pageTitle}>Owner Panel</h1>
-          <p role="alert" className={errorText}>{error}</p>
+          <p role="alert" className={errorText}>
+            {error}
+          </p>
         </div>
       </main>
     )
@@ -58,15 +62,31 @@ function PanelPage() {
         <h1 className={pageTitle}>Owner Panel</h1>
         <Tabs.Root defaultValue="rate">
           <Tabs.List className={segTabs}>
-            <Tabs.Tab value="rate" className={segTab}>Rate</Tabs.Tab>
-            <Tabs.Tab value="archive" className={segTab}>Archive</Tabs.Tab>
-            <Tabs.Tab value="weights" className={segTab}>Weights</Tabs.Tab>
-            <Tabs.Tab value="run" className={segTab}>Run</Tabs.Tab>
+            <Tabs.Tab value="rate" className={segTab}>
+              Rate
+            </Tabs.Tab>
+            <Tabs.Tab value="archive" className={segTab}>
+              Archive
+            </Tabs.Tab>
+            <Tabs.Tab value="weights" className={segTab}>
+              Weights
+            </Tabs.Tab>
+            <Tabs.Tab value="run" className={segTab}>
+              Run
+            </Tabs.Tab>
           </Tabs.List>
-          <Tabs.Panel value="rate"><RateTab unrated={status.unrated} onRated={load} /></Tabs.Panel>
-          <Tabs.Panel value="archive"><ArchiveTab /></Tabs.Panel>
-          <Tabs.Panel value="weights"><WeightsTab initial={status.weights} /></Tabs.Panel>
-          <Tabs.Panel value="run"><RunTab latestRun={status.latestRun} onTriggered={load} /></Tabs.Panel>
+          <Tabs.Panel value="rate">
+            <RateTab unrated={status.unrated} onRated={load} />
+          </Tabs.Panel>
+          <Tabs.Panel value="archive">
+            <ArchiveTab />
+          </Tabs.Panel>
+          <Tabs.Panel value="weights">
+            <WeightsTab initial={status.weights} />
+          </Tabs.Panel>
+          <Tabs.Panel value="run">
+            <RunTab latestRun={status.latestRun} onTriggered={load} />
+          </Tabs.Panel>
         </Tabs.Root>
       </div>
     </main>

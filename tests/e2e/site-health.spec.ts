@@ -93,7 +93,9 @@ test.describe('site health — content verification', () => {
 
     // Non-Specimen/Poster days: project names appear in the listing.
     // Specimen/Poster days: phrase-only home page — no project listing, but h1 (hero phrase) is present.
-    const projectNames = page.locator('body').filter({ hasText: /Spaceman|FishSticks|Doug March|Teeturn|Politweets/ })
+    const projectNames = page
+      .locator('body')
+      .filter({ hasText: /Spaceman|FishSticks|Doug March|Teeturn|Politweets/ })
     const heroPhrase = page.locator('h1')
     await expect(projectNames.or(heroPhrase).first()).toBeVisible({ timeout: 15000 })
   })
@@ -102,7 +104,9 @@ test.describe('site health — content verification', () => {
     await page.goto('/about')
 
     // Wait for content to hydrate by checking for real timeline content
-    await expect(page.locator('body')).toContainText(/LivingSocial|iCapital|Doug March/, { timeout: 15000 })
+    await expect(page.locator('body')).toContainText(/LivingSocial|iCapital|Doug March/, {
+      timeout: 15000,
+    })
   })
 })
 
@@ -113,7 +117,8 @@ test.describe('site health — share-sheet meta', () => {
     // no og meta in __root.tsx — skip rather than hard-fail in that case.
     const ogMeta = page.locator('meta[property="og:image"]')
     // Fast skip (no ~30s auto-wait) when the tag is absent on a pre-pipeline checkout.
-    if ((await ogMeta.count()) === 0) test.skip(true, 'og meta not yet generated (pre-first-pipeline-run checkout)')
+    if ((await ogMeta.count()) === 0)
+      test.skip(true, 'og meta not yet generated (pre-first-pipeline-run checkout)')
     const ogImage = await ogMeta.getAttribute('content')
     expect(ogImage).toMatch(/\/og\/\d{4}-\d{2}-\d{2}\.png$/)
     const card = await page.locator('meta[name="twitter:card"]').getAttribute('content')

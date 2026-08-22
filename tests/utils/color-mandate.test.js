@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import {
   computeColorMandate,
   extractRecentPrimaryHues,
@@ -57,7 +57,10 @@ describe('computeForbiddenZones', () => {
 
   it('keeps non-overlapping zones separate', () => {
     const zones = computeForbiddenZones([30, 200], 20)
-    expect(zones).toEqual([[10, 50], [180, 220]])
+    expect(zones).toEqual([
+      [10, 50],
+      [180, 220],
+    ])
   })
 
   it('handles wraparound at 0/360', () => {

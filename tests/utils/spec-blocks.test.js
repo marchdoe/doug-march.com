@@ -3,11 +3,13 @@ import { parseMeasurablesBlock, parseShellBlock } from '../../scripts/utils/spec
 
 describe('parseMeasurablesBlock', () => {
   it('parses the three measurable fields', () => {
-    const m = parseMeasurablesBlock([
-      'canvas_utilization_min: 70',
-      'hero_scale: clamp(96px, 13vw, 200px)',
-      'color_coverage_min: 60',
-    ].join('\n'))
+    const m = parseMeasurablesBlock(
+      [
+        'canvas_utilization_min: 70',
+        'hero_scale: clamp(96px, 13vw, 200px)',
+        'color_coverage_min: 60',
+      ].join('\n')
+    )
     expect(m.canvas_utilization_min).toBe(70)
     expect(m.hero_scale).toBe('clamp(96px, 13vw, 200px)')
     expect(m.color_coverage_min).toBe(60)
@@ -33,12 +35,14 @@ describe('parseMeasurablesBlock', () => {
 
 describe('parseShellBlock', () => {
   it('parses the four shell fields', () => {
-    const s = parseShellBlock([
-      'nav: bottom rail',
-      'footer: data strip',
-      'brand_lockup: horizontal-md',
-      'brand_color_mode: single-color',
-    ].join('\n'))
+    const s = parseShellBlock(
+      [
+        'nav: bottom rail',
+        'footer: data strip',
+        'brand_lockup: horizontal-md',
+        'brand_color_mode: single-color',
+      ].join('\n')
+    )
     expect(s.nav).toBe('bottom rail')
     expect(s.footer).toBe('data strip')
     expect(s.brand_lockup).toBe('horizontal-md')

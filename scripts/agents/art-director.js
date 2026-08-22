@@ -10,17 +10,29 @@
  * The orchestrator (scripts/design-agents.js) handles backup/restore,
  * Phase 2 (Unified Designer), build validation, and archive.
  */
-import { writeFile } from 'fs/promises'
+import { writeFile } from 'node:fs/promises'
 import { callClaudeCLI } from '../utils/claude-cli.js'
 import { parseDelimiterResponse } from '../utils/delimiter-parser.js'
 import { parseMeasurablesBlock, parseShellBlock } from '../utils/spec-blocks.js'
 import { modelFor } from '../utils/models.js'
 const ARCHETYPE_NAMES = new Set([
-  'Gallery Wall', 'Broadsheet', 'Specimen', 'Poster', 'Scroll', 'Split', 'Stack', 'Index',
+  'Gallery Wall',
+  'Broadsheet',
+  'Specimen',
+  'Poster',
+  'Scroll',
+  'Split',
+  'Stack',
+  'Index',
 ])
 
 const BRAND_LOCKUP_IDS = new Set([
-  'mark-only-sm', 'mark-only-md', 'horizontal-sm', 'horizontal-md', 'stacked-md', 'stacked-lg',
+  'mark-only-sm',
+  'mark-only-md',
+  'horizontal-sm',
+  'horizontal-md',
+  'stacked-md',
+  'stacked-lg',
 ])
 
 /**
@@ -58,7 +70,7 @@ export function buildArtDirectorUserPrompt({
 function formatSignalsAsYaml(signals) {
   return Object.entries(signals)
     .filter(([, v]) => v !== undefined)
-    .map(([k, v]) => typeof v === 'string' ? `${k}: '${v}'` : `${k}: ${JSON.stringify(v)}`)
+    .map(([k, v]) => (typeof v === 'string' ? `${k}: '${v}'` : `${k}: ${JSON.stringify(v)}`))
     .join('\n')
 }
 
@@ -75,7 +87,9 @@ export function validateArtDirectorResult(parsed) {
     throw new Error('Art Director response missing ===ARCHETYPE===')
   }
   if (!ARCHETYPE_NAMES.has(parsed.archetype)) {
-    throw new Error(`Art Director archetype "${parsed.archetype}" is not in the allowed set: ${[...ARCHETYPE_NAMES].join(', ')}`)
+    throw new Error(
+      `Art Director archetype "${parsed.archetype}" is not in the allowed set: ${[...ARCHETYPE_NAMES].join(', ')}`
+    )
   }
   if (!parsed.chassis_id) {
     throw new Error('Art Director response missing chassis_id (===CHASSIS_ID===)')
@@ -86,8 +100,8 @@ export function validateArtDirectorResult(parsed) {
   if (!parsed.self_check) {
     throw new Error('Art Director response missing ===SELF_CHECK===')
   }
-  const presetFile = (parsed.files || []).find(f => f.path === 'elements/preset.ts')
-  if (!presetFile || !presetFile.content) {
+  const presetFile = (parsed.files || []).find((f) => f.path === 'elements/preset.ts')
+  if (!presetFile?.content) {
     throw new Error('Art Director response missing ===FILE:elements/preset.ts=== block')
   }
   if (!parsed.measurables) {
@@ -105,10 +119,14 @@ export function validateArtDirectorResult(parsed) {
     if (!shell[key]) throw new Error(`SHELL block missing ${key}`)
   }
   if (!['original', 'single-color'].includes(shell.brand_color_mode)) {
-    throw new Error(`SHELL brand_color_mode must be "original" or "single-color", got "${shell.brand_color_mode}"`)
+    throw new Error(
+      `SHELL brand_color_mode must be "original" or "single-color", got "${shell.brand_color_mode}"`
+    )
   }
   if (!BRAND_LOCKUP_IDS.has(shell.brand_lockup)) {
-    console.warn(`  [AD] brand_lockup "${shell.brand_lockup}" is not a Brand Contract id — accepting (warn-only)`)
+    console.warn(
+      `  [AD] brand_lockup "${shell.brand_lockup}" is not a Brand Contract id — accepting (warn-only)`
+    )
   }
 }
 
@@ -141,7 +159,7 @@ export async function runArtDirector(ctx) {
   // unified-designer config (30 min total / 25 min stall) one register
   // tighter — the AD prompt is smaller and shouldn't need that much.
   const result = await callClaudeCLI('art-director', ctx.systemPrompt, userPrompt, {
-    timeoutMs: 1500000,     // 25 min hard cap — AD has run 8-17 min of extended thinking
+    timeoutMs: 1500000, // 25 min hard cap — AD has run 8-17 min of extended thinking
     stallTimeoutMs: 480000, // 8 min of TRUE silence (zero events) = dead process
     model: modelFor('art-director'),
   })
@@ -156,12 +174,32 @@ export async function runArtDirector(ctx) {
   try {
     validateArtDirectorResult(parsed)
   } catch (err) {
-    const present = ['hero_copy', 'archetype', 'chassis_id', 'visual_spec', 'self_check', 'measurables', 'shell'].filter(k => parsed[k])
-    const absent = ['hero_copy', 'archetype', 'chassis_id', 'visual_spec', 'self_check', 'measurables', 'shell'].filter(k => !parsed[k])
-    console.error(`  [AD] validation failed — present: [${present.join(', ')}] absent: [${absent.join(', ')}]`)
+    const present = [
+      'hero_copy',
+      'archetype',
+      'chassis_id',
+      'visual_spec',
+      'self_check',
+      'measurables',
+      'shell',
+    ].filter((k) => parsed[k])
+    const absent = [
+      'hero_copy',
+      'archetype',
+      'chassis_id',
+      'visual_spec',
+      'self_check',
+      'measurables',
+      'shell',
+    ].filter((k) => !parsed[k])
+    console.error(
+      `  [AD] validation failed — present: [${present.join(', ')}] absent: [${absent.join(', ')}]`
+    )
     console.error(`  [AD] response head: ${result.slice(0, 300).replace(/\n/g, '↵')}`)
     if (ctx.failureDumpPath) {
-      try { await writeFile(ctx.failureDumpPath, result, 'utf8') } catch {}
+      try {
+        await writeFile(ctx.failureDumpPath, result, 'utf8')
+      } catch {}
     }
     throw err
   }
@@ -197,7 +235,7 @@ export async function runArtDirector(ctx) {
     heroRationale: parsed.hero_rationale || '',
     archetype: parsed.archetype,
     chassisId: parsed.chassis_id,
-    presetTs: parsed.files.find(f => f.path === 'elements/preset.ts').content,
+    presetTs: parsed.files.find((f) => f.path === 'elements/preset.ts').content,
     visualSpec: parsed.visual_spec,
     selfCheck: parsed.self_check,
     measurables: parsed.measurables,

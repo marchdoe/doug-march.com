@@ -1,7 +1,7 @@
 // tests/server/archive-detail.test.ts
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { mkdirSync, writeFileSync, rmSync } from 'fs'
-import { join } from 'path'
+import { mkdirSync, writeFileSync, rmSync } from 'node:fs'
+import { join } from 'node:path'
 import { _readArchiveDetail } from '../../app/server/archive-detail-impl'
 
 const TEST_ARCHIVE = join(process.cwd(), 'archive', '__test-detail__')
@@ -17,29 +17,46 @@ describe('archive detail', () => {
   beforeAll(() => {
     mkdirSync(buildDir, { recursive: true })
     writeFileSync(join(dateDir, 'archetype.txt'), 'Specimen')
-    writeFileSync(join(buildDir, 'brief.md'), [
-      '# 2099-01-01', '',
-      '**Design Brief:** Test brief content', '',
-      '## Signals', '',
-      "## Claude's Rationale", '',
-      'Test rationale paragraph.', '',
-      '## Files Changed', '',
-      '- app/routes/index.tsx',
-      '- elements/preset.ts',
-    ].join('\n'))
+    writeFileSync(
+      join(buildDir, 'brief.md'),
+      [
+        '# 2099-01-01',
+        '',
+        '**Design Brief:** Test brief content',
+        '',
+        '## Signals',
+        '',
+        "## Claude's Rationale",
+        '',
+        'Test rationale paragraph.',
+        '',
+        '## Files Changed',
+        '',
+        '- app/routes/index.tsx',
+        '- elements/preset.ts',
+      ].join('\n')
+    )
     writeFileSync(join(buildDir, 'signals-brief.md'), '# Signals Brief\n\n## Mood\nTest mood')
     writeFileSync(join(buildDir, 'preset.ts'), 'export const preset = {}')
 
     mkdirSync(dateDirNoBuild, { recursive: true })
     writeFileSync(join(dateDirNoBuild, 'archetype.txt'), 'Poster')
-    writeFileSync(join(dateDirNoBuild, 'brief.md'), [
-      '# 2099-01-02', '',
-      '**Design Brief:** Old format brief', '',
-      "## Claude's Rationale", '',
-      'Old rationale.', '',
-      '## Files Changed', '',
-      '- app/routes/index.tsx',
-    ].join('\n'))
+    writeFileSync(
+      join(dateDirNoBuild, 'brief.md'),
+      [
+        '# 2099-01-02',
+        '',
+        '**Design Brief:** Old format brief',
+        '',
+        "## Claude's Rationale",
+        '',
+        'Old rationale.',
+        '',
+        '## Files Changed',
+        '',
+        '- app/routes/index.tsx',
+      ].join('\n')
+    )
   })
 
   afterAll(() => {

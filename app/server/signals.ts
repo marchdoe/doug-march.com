@@ -3,8 +3,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { _readSignalsHandler, _saveOverridesHandler } from './signals-impl'
 
-export const readSignals = createServerFn({ method: 'GET' })
-  .handler(() => _readSignalsHandler())
+export const readSignals = createServerFn({ method: 'GET' }).handler(() => _readSignalsHandler())
 
 export const saveOverrides = createServerFn({ method: 'POST' })
   .inputValidator((d: unknown) => {

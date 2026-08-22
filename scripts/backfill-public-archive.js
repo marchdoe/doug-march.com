@@ -6,8 +6,8 @@
  * Usage: node scripts/backfill-public-archive.js
  */
 
-import { readdirSync, existsSync, cpSync, mkdirSync } from 'fs'
-import { join } from 'path'
+import { readdirSync, existsSync, cpSync, mkdirSync } from 'node:fs'
+import { join } from 'node:path'
 
 const ROOT = process.cwd()
 const archiveDir = join(ROOT, 'archive')
@@ -16,8 +16,8 @@ const publicArchive = join(ROOT, 'public', 'archive')
 mkdirSync(publicArchive, { recursive: true })
 
 const dates = readdirSync(archiveDir, { withFileTypes: true })
-  .filter(d => d.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(d.name))
-  .map(d => d.name)
+  .filter((d) => d.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(d.name))
+  .map((d) => d.name)
   .sort()
 
 for (const date of dates) {
@@ -25,8 +25,8 @@ for (const date of dates) {
 
   // Find latest build directory
   const builds = readdirSync(dateDir, { withFileTypes: true })
-    .filter(b => b.isDirectory() && b.name.startsWith('build-'))
-    .map(b => b.name)
+    .filter((b) => b.isDirectory() && b.name.startsWith('build-'))
+    .map((b) => b.name)
     .sort()
     .reverse()
 
@@ -40,11 +40,12 @@ for (const date of dates) {
   }
 
   // Copy site HTML — prefer build dir, fall back to date-level site/
-  const siteSrc = buildDir && existsSync(join(buildDir, 'site'))
-    ? join(buildDir, 'site')
-    : existsSync(join(dateDir, 'site'))
-      ? join(dateDir, 'site')
-      : null
+  const siteSrc =
+    buildDir && existsSync(join(buildDir, 'site'))
+      ? join(buildDir, 'site')
+      : existsSync(join(dateDir, 'site'))
+        ? join(dateDir, 'site')
+        : null
 
   if (siteSrc) {
     const dest = join(publicArchive, date)

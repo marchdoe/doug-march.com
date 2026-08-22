@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'fs'
-import { tmpdir } from 'os'
-import { join } from 'path'
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { readRatingForDate, readRecentRatings } from '../../scripts/utils/ratings.js'
 
 let dir
@@ -20,7 +20,12 @@ describe('readRatingForDate', () => {
   it('returns the newest valid rating for a date', () => {
     writeRating('2026-07-12', 1, { grade: 'C', worked: 'old', didnt: '', try: '' })
     writeRating('2026-07-12', 2, { grade: 'B', worked: 'new', didnt: '', try: '' })
-    expect(readRatingForDate(dir, '2026-07-12')).toEqual({ grade: 'B', worked: 'new', didnt: '', try: '' })
+    expect(readRatingForDate(dir, '2026-07-12')).toEqual({
+      grade: 'B',
+      worked: 'new',
+      didnt: '',
+      try: '',
+    })
   })
   it('skips malformed grades and returns null when nothing is valid', () => {
     writeRating('2026-07-12', 1, { grade: 'Z' })

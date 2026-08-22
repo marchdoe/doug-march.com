@@ -21,9 +21,9 @@ const INJECTION_PATTERNS = [
   /(?:new|updated)\s+(?:instructions|rules|system\s+prompt)/i,
   /you\s+(?:are|will|must)\s+now\s+(?:be|act|behave|pretend)/i,
   /from\s+now\s+on,?\s+you/i,
-  /\{\{[^}]*\}\}/,  // template injection attempts
-  /\[INST\]|\[\/INST\]/i,  // Llama-style prompt markers
-  /<\|.*?\|>/,  // ChatML-style markers
+  /\{\{[^}]*\}\}/, // template injection attempts
+  /\[INST\]|\[\/INST\]/i, // Llama-style prompt markers
+  /<\|.*?\|>/, // ChatML-style markers
   /###\s*(?:system|instruction|user|assistant)/i,
 ]
 
@@ -34,8 +34,8 @@ const HTML_PATTERNS = [
   /<img[^>]*onerror/i,
   /<iframe/i,
   /javascript:/i,
-  /data:(?!image\/)/i,  // allow data:image but not data:text/html
-  /\bon\w+\s*=/i,  // onclick=, onerror=, etc
+  /data:(?!image\/)/i, // allow data:image but not data:text/html
+  /\bon\w+\s*=/i, // onclick=, onerror=, etc
 ]
 
 /**
@@ -72,7 +72,7 @@ export function sanitizeString(value) {
 
   // Length limit
   if (clean.length > MAX_STRING_LENGTH) {
-    clean = clean.slice(0, MAX_STRING_LENGTH) + '...'
+    clean = `${clean.slice(0, MAX_STRING_LENGTH)}...`
   }
 
   return clean

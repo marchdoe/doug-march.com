@@ -3,8 +3,16 @@ import type { Project, Client } from './types'
 const spacemanClients: Client[] = [
   { name: 'Jeffrey Zeldman', url: 'https://studio.zeldman.com' },
   { name: 'Rolex', logo: '/clients/rolex.svg', url: 'https://rolex.com' },
-  { name: 'The Nature Conservancy', logo: '/clients/nature-conservancy.svg', url: 'https://nature.org' },
-  { name: 'Sapient Razorfish', logo: '/clients/sapient-razorfish.svg', url: 'https://publicissapient.com' },
+  {
+    name: 'The Nature Conservancy',
+    logo: '/clients/nature-conservancy.svg',
+    url: 'https://nature.org',
+  },
+  {
+    name: 'Sapient Razorfish',
+    logo: '/clients/sapient-razorfish.svg',
+    url: 'https://publicissapient.com',
+  },
   { name: 'bswift', logo: '/clients/bswift.svg', url: 'https://bswift.com' },
   { name: 'RTIC Coolers', logo: '/clients/rtic.svg', url: 'https://rticoutdoors.com' },
   { name: 'Framebridge', logo: '/clients/framebridge.png', url: 'https://framebridge.com' },
@@ -25,9 +33,9 @@ export const projects: Project[] = [
     timeline: '2018 — Present',
     status: 'Active',
     problem:
-      'Independent design and engineering work doesn\'t always fit neatly inside a company. Some of the best work happens at the edges — between studios, between disciplines, between what a client thinks they need and what they actually need.',
+      "Independent design and engineering work doesn't always fit neatly inside a company. Some of the best work happens at the edges — between studios, between disciplines, between what a client thinks they need and what they actually need.",
     approach:
-      'Spaceman is the LLC I\'ve operated under for the past decade, partnering with companies and studios across industries. The work spans product design, frontend engineering, design systems, and brand — sometimes as a solo contributor, sometimes embedded in a larger team. Clients have included Jeffrey Zeldman, Rolex, The Nature Conservancy, Sapient Razorfish, bswift, RTIC Coolers, Framebridge, Intuit, LastPass, and WorkAround, among others.',
+      "Spaceman is the LLC I've operated under for the past decade, partnering with companies and studios across industries. The work spans product design, frontend engineering, design systems, and brand — sometimes as a solo contributor, sometimes embedded in a larger team. Clients have included Jeffrey Zeldman, Rolex, The Nature Conservancy, Sapient Razorfish, bswift, RTIC Coolers, Framebridge, Intuit, LastPass, and WorkAround, among others.",
     outcome:
       'Ten years in, Spaceman is still the vehicle for independent work and new experiments. The practice has shaped how I think about the gap between design and engineering — and made me better at closing it.',
     liveUrl: 'https://spaceman.llc',
@@ -42,9 +50,12 @@ export const projects: Project[] = [
     role: 'Founder & Builder',
     timeline: 'Ongoing',
     status: 'Live',
-    problem: 'Kids struggle to practice spelling lists from school — the tools that exist are either boring, require a parent to quiz them, or don\'t work with the actual word lists teachers send home.',
-    approach: 'Built a simple import flow that reads PDFs from school (automatically finding the bold words teachers typically use), paired with voice pronunciation and adaptive quiz modes so kids can practice independently.',
-    outcome: 'Live product with free and one-time $10 premium tier. Thousands of kids practicing daily.',
+    problem:
+      "Kids struggle to practice spelling lists from school — the tools that exist are either boring, require a parent to quiz them, or don't work with the actual word lists teachers send home.",
+    approach:
+      'Built a simple import flow that reads PDFs from school (automatically finding the bold words teachers typically use), paired with voice pronunciation and adaptive quiz modes so kids can practice independently.',
+    outcome:
+      'Live product with free and one-time $10 premium tier. Thousands of kids practicing daily.',
     stack: ['SvelteKit', 'TypeScript', 'Vercel'],
     liveUrl: 'https://getfishsticks.com',
   },
@@ -57,8 +68,10 @@ export const projects: Project[] = [
     role: 'Founder & Builder',
     timeline: 'Ongoing',
     status: 'In Development',
-    problem: 'Golf is full of data, ritual, and decision-making — and almost none of it has been meaningfully touched by AI. Most golf apps are just digital scorecards.',
-    approach: 'A platform for AI experiments through the lens of golf. The scorecard is the first experiment — shareable, real-time, no app install required. More experiments to follow.',
+    problem:
+      'Golf is full of data, ritual, and decision-making — and almost none of it has been meaningfully touched by AI. Most golf apps are just digital scorecards.',
+    approach:
+      'A platform for AI experiments through the lens of golf. The scorecard is the first experiment — shareable, real-time, no app install required. More experiments to follow.',
     outcome: 'In active development.',
     stack: ['React', 'TypeScript', 'Supabase', 'Vercel'],
     liveUrl: 'https://15th.club',
@@ -87,7 +100,8 @@ export const projects: Project[] = [
     type: 'Experiment',
     year: 2020,
     depth: 'lightweight',
-    description: 'A mobile-first cross-platform golf app that lets players track the progress of a round in real-time. Responsible for product direction and strategy.',
+    description:
+      'A mobile-first cross-platform golf app that lets players track the progress of a round in real-time. Responsible for product direction and strategy.',
   },
   {
     slug: 'politweets',
@@ -95,7 +109,8 @@ export const projects: Project[] = [
     type: 'Experiment',
     year: 2008,
     depth: 'lightweight',
-    description: 'Built over a weekend with the Character140 collective — a group of DC-area developers and designers. Politweets scraped Twitter\'s public timeline for presidential candidate mentions and displayed them in real time, homepage styled like a digital newspaper. Went live just before the New Hampshire primaries. Covered by HuffPost, Mashable, ZDNet, and ReadWriteWeb. Six to nine months later, Twitter shipped their own version at election.twitter.com.',
+    description:
+      "Built over a weekend with the Character140 collective — a group of DC-area developers and designers. Politweets scraped Twitter's public timeline for presidential candidate mentions and displayed them in real time, homepage styled like a digital newspaper. Went live just before the New Hampshire primaries. Covered by HuffPost, Mashable, ZDNet, and ReadWriteWeb. Six to nine months later, Twitter shipped their own version at election.twitter.com.",
   },
   {
     slug: 'twittertale',
@@ -103,7 +118,8 @@ export const projects: Project[] = [
     type: 'Experiment',
     year: 2008,
     depth: 'lightweight',
-    description: 'One of the earliest experiments using the Twitter API to track keywords across the public timeline — built with Jason Garber and the Character140 crew initially just to entertain friends. Twittertale scanned every public tweet for swear words and ranked which users had the biggest potty mouth. Covered by Mashable. The same keyword-tracking mechanic became the foundation for Politweets a few weeks later.',
+    description:
+      'One of the earliest experiments using the Twitter API to track keywords across the public timeline — built with Jason Garber and the Character140 crew initially just to entertain friends. Twittertale scanned every public tweet for swear words and ranked which users had the biggest potty mouth. Covered by Mashable. The same keyword-tracking mechanic became the foundation for Politweets a few weeks later.',
   },
 ]
 

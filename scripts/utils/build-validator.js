@@ -1,6 +1,6 @@
-import { spawnSync } from 'child_process'
-import { readFileSync, readdirSync, existsSync, statSync, writeFileSync, mkdirSync } from 'fs'
-import { resolve } from 'path'
+import { spawnSync } from 'node:child_process'
+import { readFileSync, readdirSync, existsSync, statSync, writeFileSync, mkdirSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { ROOT } from './file-manager.js'
 import { MUTABLE_FILES } from './site-context.js'
 
@@ -46,7 +46,10 @@ export function validateGenerated() {
           for (let i = catMatch.index + catMatch[0].length - 1; i < semanticSection.length; i++) {
             if (semanticSection[i] === '{') depth++
             if (semanticSection[i] === '}') depth--
-            if (depth === 0) { blockEnd = i; break }
+            if (depth === 0) {
+              blockEnd = i
+              break
+            }
           }
           const block = semanticSection.slice(blockStart, blockEnd + 1)
 
@@ -57,7 +60,9 @@ export function validateGenerated() {
             const tokenName = refMatch[1]
             // Check if this token name appears as a key in this block
             if (block.match(new RegExp(`${tokenName}\\s*:`))) {
-              errors.push(`Circular token: semanticTokens.${category}.${tokenName} references '{${category}.${tokenName}}' (self-reference breaks PandaCSS)`)
+              errors.push(
+                `Circular token: semanticTokens.${category}.${tokenName} references '{${category}.${tokenName}}' (self-reference breaks PandaCSS)`
+              )
             }
           }
         }
@@ -73,13 +78,22 @@ export function validateGenerated() {
   let componentFiles = []
   try {
     componentFiles = readdirSync(resolve(ROOT, 'app/components'))
-      .filter(f => f.endsWith('.tsx'))
-      .map(f => `app/components/${f}`)
+      .filter((f) => f.endsWith('.tsx'))
+      .map((f) => `app/components/${f}`)
   } catch {
     componentFiles = ['app/components/Layout.tsx', 'app/components/Sidebar.tsx']
   }
 
-  const reactTypes = ['ReactNode', 'ReactElement', 'FC', 'PropsWithChildren', 'CSSProperties', 'MouseEvent', 'ChangeEvent', 'FormEvent']
+  const reactTypes = [
+    'ReactNode',
+    'ReactElement',
+    'FC',
+    'PropsWithChildren',
+    'CSSProperties',
+    'MouseEvent',
+    'ChangeEvent',
+    'FormEvent',
+  ]
 
   for (const file of componentFiles) {
     try {
@@ -92,10 +106,12 @@ export function validateGenerated() {
       const importRegex = /^import\s+\{([^}]+)\}\s+from\s+['"]react['"]/gm
       let importMatch
       while ((importMatch = importRegex.exec(content)) !== null) {
-        const imports = importMatch[1].split(',').map(s => s.trim())
-        const typeImports = imports.filter(i => reactTypes.includes(i))
+        const imports = importMatch[1].split(',').map((s) => s.trim())
+        const typeImports = imports.filter((i) => reactTypes.includes(i))
         if (typeImports.length > 0) {
-          errors.push(`${file}: import { ${typeImports.join(', ')} } from 'react' must use 'import type' — breaks SSR`)
+          errors.push(
+            `${file}: import { ${typeImports.join(', ')} } from 'react' must use 'import type' — breaks SSR`
+          )
         }
       }
     } catch {
@@ -111,28 +127,38 @@ export function validateGenerated() {
   try {
     const rootContent = readFileSync(resolve(ROOT, 'app/routes/__root.tsx'), 'utf8')
     // Must import Scripts from the router package (not a fake local definition)
-    const routerImport = rootContent.match(/import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]@tanstack\/react-router['"]/)
+    const routerImport = rootContent.match(
+      /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]@tanstack\/react-router['"]/
+    )
     if (!routerImport) {
       errors.push('app/routes/__root.tsx: no import from @tanstack/react-router')
     } else {
-      const imports = routerImport[1].split(',').map(s => s.trim())
+      const imports = routerImport[1].split(',').map((s) => s.trim())
       if (!imports.includes('Scripts')) {
-        errors.push('app/routes/__root.tsx: Scripts not imported from @tanstack/react-router — client JS will not load and routes will render empty')
+        errors.push(
+          'app/routes/__root.tsx: Scripts not imported from @tanstack/react-router — client JS will not load and routes will render empty'
+        )
       }
     }
     // Must render <Scripts /> or <Scripts/> somewhere (JSX usage)
     if (!/<Scripts\s*\/?>/m.test(rootContent)) {
-      errors.push('app/routes/__root.tsx: <Scripts /> not rendered in JSX — client JS will not load')
+      errors.push(
+        'app/routes/__root.tsx: <Scripts /> not rendered in JSX — client JS will not load'
+      )
     }
     // Reject fake local definitions that satisfy other checks
     if (/function\s+Scripts\s*\(\s*\)/.test(rootContent)) {
-      errors.push('app/routes/__root.tsx: has a local `function Scripts()` definition — must use the import from @tanstack/react-router')
+      errors.push(
+        'app/routes/__root.tsx: has a local `function Scripts()` definition — must use the import from @tanstack/react-router'
+      )
     }
     // head() must declare UTF-8 charset. Without it, em-dashes, smart
     // quotes, and other non-ASCII bytes from signals/briefs render as
     // Mojibake (`â€"` etc.) in the browser.
     if (!/charSet\s*:\s*['"]utf-8['"]/i.test(rootContent)) {
-      errors.push('app/routes/__root.tsx: head() missing meta charSet "utf-8" — non-ASCII characters will render as Mojibake')
+      errors.push(
+        'app/routes/__root.tsx: head() missing meta charSet "utf-8" — non-ASCII characters will render as Mojibake'
+      )
     }
   } catch {}
 
@@ -143,14 +169,16 @@ export function validateGenerated() {
   try {
     const routesDir = resolve(ROOT, 'app/routes')
     const routeFiles = readdirSync(routesDir)
-      .filter(f => f.endsWith('.tsx') && f !== '__root.tsx')
-      .map(f => `app/routes/${f}`)
+      .filter((f) => f.endsWith('.tsx') && f !== '__root.tsx')
+      .map((f) => `app/routes/${f}`)
 
     for (const file of routeFiles) {
       try {
         const content = readFileSync(resolve(ROOT, file), 'utf8')
         if (/from\s+['"]\.\.\/components\/Layout['"]/.test(content)) {
-          errors.push(`${file}: imports Layout — routes must NOT import Layout (already provided by __root.tsx). This creates a double header.`)
+          errors.push(
+            `${file}: imports Layout — routes must NOT import Layout (already provided by __root.tsx). This creates a double header.`
+          )
         }
       } catch {}
     }
@@ -163,21 +191,49 @@ export function validateGenerated() {
   // signal sanitization in collect-signals.js.
   const DANGEROUS_PATTERNS = [
     { name: 'fetch() call', regex: /\bfetch\s*\(/, severity: 'blocks network exfiltration' },
-    { name: 'XMLHttpRequest', regex: /\bXMLHttpRequest\b/, severity: 'blocks network exfiltration' },
-    { name: 'sendBeacon', regex: /\bnavigator\.sendBeacon\b/, severity: 'blocks network exfiltration' },
+    {
+      name: 'XMLHttpRequest',
+      regex: /\bXMLHttpRequest\b/,
+      severity: 'blocks network exfiltration',
+    },
+    {
+      name: 'sendBeacon',
+      regex: /\bnavigator\.sendBeacon\b/,
+      severity: 'blocks network exfiltration',
+    },
     { name: 'WebSocket', regex: /\bnew\s+WebSocket\b/, severity: 'blocks network exfiltration' },
-    { name: 'EventSource', regex: /\bnew\s+EventSource\b/, severity: 'blocks network exfiltration' },
+    {
+      name: 'EventSource',
+      regex: /\bnew\s+EventSource\b/,
+      severity: 'blocks network exfiltration',
+    },
     { name: 'eval()', regex: /\beval\s*\(/, severity: 'blocks arbitrary code execution' },
-    { name: 'new Function()', regex: /\bnew\s+Function\s*\(/, severity: 'blocks arbitrary code execution' },
-    { name: 'dynamic import()', regex: /\bimport\s*\(\s*[`'"]/, severity: 'blocks arbitrary module loading' },
+    {
+      name: 'new Function()',
+      regex: /\bnew\s+Function\s*\(/,
+      severity: 'blocks arbitrary code execution',
+    },
+    {
+      name: 'dynamic import()',
+      regex: /\bimport\s*\(\s*[`'"]/,
+      severity: 'blocks arbitrary module loading',
+    },
     { name: 'dangerouslySetInnerHTML', regex: /dangerouslySetInnerHTML/, severity: 'blocks XSS' },
     { name: 'document.write', regex: /document\.write\s*\(/, severity: 'blocks XSS' },
     { name: 'innerHTML assignment', regex: /\.innerHTML\s*=/, severity: 'blocks XSS' },
     { name: 'script tag', regex: /<script[\s>]/i, severity: 'blocks inline scripts' },
     { name: 'javascript: URL', regex: /javascript:/i, severity: 'blocks XSS via URL' },
     // onerror/onclick as HTML attributes only (not JS property assignments like es.onerror = fn)
-    { name: 'inline onerror attribute', regex: /\sonerror\s*=\s*["']/i, severity: 'blocks inline event handlers' },
-    { name: 'inline onclick attribute', regex: /\sonclick\s*=\s*["']/i, severity: 'blocks inline event handlers' },
+    {
+      name: 'inline onerror attribute',
+      regex: /\sonerror\s*=\s*["']/i,
+      severity: 'blocks inline event handlers',
+    },
+    {
+      name: 'inline onclick attribute',
+      regex: /\sonclick\s*=\s*["']/i,
+      severity: 'blocks inline event handlers',
+    },
     { name: 'atob/btoa', regex: /\b(?:atob|btoa)\s*\(/, severity: 'blocks obfuscated payloads' },
   ]
 
@@ -239,8 +295,8 @@ export function validateGenerated() {
     // avoid breaking URLs like https:// — a trailing comment rarely contains
     // a dangerous pattern that isn't also in the code itself.
     const stripped = content
-      .replace(/\/\*[\s\S]*?\*\//g, '')    // block comments
-      .replace(/^\s*\/\/[^\n]*/gm, '')     // standalone line comments only
+      .replace(/\/\*[\s\S]*?\*\//g, '') // block comments
+      .replace(/^\s*\/\/[^\n]*/gm, '') // standalone line comments only
 
     const fileExceptions = PATTERN_EXCEPTIONS[file] || []
 
@@ -256,13 +312,15 @@ export function validateGenerated() {
     for (const match of urlMatches) {
       const host = match[1].toLowerCase()
       if (!ALLOWED_URL_HOSTS.has(host)) {
-        errors.push(`${file}: contains disallowed URL to ${host} (only ${[...ALLOWED_URL_HOSTS].join(', ')} are allowed)`)
+        errors.push(
+          `${file}: contains disallowed URL to ${host} (only ${[...ALLOWED_URL_HOSTS].join(', ')} are allowed)`
+        )
       }
     }
   }
 
   if (errors.length > 0) {
-    const errorMsg = 'Pre-build validation failed:\n' + errors.map(e => `  - ${e}`).join('\n')
+    const errorMsg = `Pre-build validation failed:\n${errors.map((e) => `  - ${e}`).join('\n')}`
     console.log('  pre-build validation failed')
     for (const e of errors) console.log(`  ✗ ${e}`)
     return { success: false, error: errorMsg }
@@ -318,7 +376,9 @@ export function validateBuild() {
     try {
       mkdirSync(outputDir, { recursive: true })
       writeFileSync(outputPath, combined, 'utf8')
-      console.log(`  full build output written to archive/${today}/last-build-output.txt (${combined.length} chars)`)
+      console.log(
+        `  full build output written to archive/${today}/last-build-output.txt (${combined.length} chars)`
+      )
     } catch (writeErr) {
       console.warn(`  could not write full build output to ${outputPath}: ${writeErr.message}`)
     }
@@ -361,7 +421,9 @@ export function validateBuild() {
       const outputDir = resolve(ROOT, 'archive', today)
       mkdirSync(outputDir, { recursive: true })
       writeFileSync(resolve(outputDir, 'last-build-output.txt'), combined, 'utf8')
-      console.log(`  full build output written to archive/${today}/last-build-output.txt (${combined.length} chars)`)
+      console.log(
+        `  full build output written to archive/${today}/last-build-output.txt (${combined.length} chars)`
+      )
     } catch (writeErr) {
       console.warn(`  could not write full build output: ${writeErr.message}`)
     }
@@ -373,20 +435,22 @@ export function validateBuild() {
     // missing-file symptom.
     const runtimeErrorLines = combined
       .split('\n')
-      .filter(l => /unhandled rejection|internal server error|prerender.*(fail|error)|^\s*error/i.test(l))
+      .filter((l) =>
+        /unhandled rejection|internal server error|prerender.*(fail|error)|^\s*error/i.test(l)
+      )
       .slice(-6)
     const errorParts = [
       'Build output smoke check failed:',
-      smokeCheck.errors.map(e => `  - ${e}`).join('\n'),
+      smokeCheck.errors.map((e) => `  - ${e}`).join('\n'),
     ]
     if (runtimeErrorLines.length) {
       errorParts.push(
         '\nThe build COMPILED but the app crashed during prerender (server-side render). Runtime error lines from the build log:',
         runtimeErrorLines.join('\n'),
-        '\nThis usually means SSR-unsafe code (window/document/localStorage accessed at module scope or unconditionally during render) in a route or component file — the server bundle loads EVERY route module, so one unsafe file breaks every page.',
+        '\nThis usually means SSR-unsafe code (window/document/localStorage accessed at module scope or unconditionally during render) in a route or component file — the server bundle loads EVERY route module, so one unsafe file breaks every page.'
       )
     }
-    errorParts.push('\n--- last 1500 chars of build output ---\n' + combined.slice(-1500))
+    errorParts.push(`\n--- last 1500 chars of build output ---\n${combined.slice(-1500)}`)
     return { success: false, error: errorParts.join('\n') }
   }
 
@@ -431,7 +495,9 @@ export function validateBuildOutput() {
   }
 
   if (shellHtml.length < 500) {
-    errors.push(`SPA shell HTML is suspiciously small (${shellHtml.length} bytes) — likely empty or malformed`)
+    errors.push(
+      `SPA shell HTML is suspiciously small (${shellHtml.length} bytes) — likely empty or malformed`
+    )
   }
 
   // Must load client JS for hydration
@@ -448,8 +514,8 @@ export function validateBuildOutput() {
   const assetsDir = resolve(distClient, 'assets')
   try {
     const assets = readdirSync(assetsDir)
-    const hasJS = assets.some(f => f.endsWith('.js'))
-    const cssFiles = assets.filter(f => f.endsWith('.css'))
+    const hasJS = assets.some((f) => f.endsWith('.js'))
+    const cssFiles = assets.filter((f) => f.endsWith('.css'))
     if (!hasJS) errors.push('dist/client/assets/ has no .js bundles')
     if (cssFiles.length === 0) {
       errors.push('dist/client/assets/ has no .css bundles')
@@ -467,7 +533,7 @@ export function validateBuildOutput() {
       if (totalCssBytes < MIN_CSS_BYTES) {
         errors.push(
           `CSS bundles total only ${totalCssBytes} bytes (minimum ${MIN_CSS_BYTES}). ` +
-          'The preset likely produced no globalCss or semanticTokens — site will render unstyled.'
+            'The preset likely produced no globalCss or semanticTokens — site will render unstyled.'
         )
       }
     }

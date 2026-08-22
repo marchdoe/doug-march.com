@@ -6,8 +6,9 @@ const BASE_URL = 'https://www.awwwards.com'
 const MAX_SITES = 3
 
 const HEADERS = {
-  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'User-Agent':
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+  Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 }
 
 /**
@@ -17,7 +18,7 @@ const HEADERS = {
 function extractSlugs(html) {
   const slugs = []
   // Match href="/sites/slug" patterns — these are the individual SOTD links
-  const pattern = /href="\/sites\/([a-z0-9][a-z0-9\-]*)"/gi
+  const pattern = /href="\/sites\/([a-z0-9][a-z0-9-]*)"/gi
   let match
   while ((match = pattern.exec(html)) !== null) {
     const slug = match[1]
@@ -136,10 +137,12 @@ async function fetchSitePage(slug) {
       title: meta.title || slug,
       description: meta.description || '',
       screenshot_url: meta.screenshot_url,
-      ...(bytes ? {
-        screenshot_b64: bytes.data,
-        screenshot_media_type: bytes.media_type,
-      } : {}),
+      ...(bytes
+        ? {
+            screenshot_b64: bytes.data,
+            screenshot_media_type: bytes.media_type,
+          }
+        : {}),
     }
   } catch {
     return null
@@ -171,7 +174,9 @@ export async function collect() {
 
   if (sites.length === 0) {
     return {
-      data: { note: 'Awwwards slugs found but could not extract OG metadata from individual pages' },
+      data: {
+        note: 'Awwwards slugs found but could not extract OG metadata from individual pages',
+      },
       meta: { source: LISTING_URL, items: 0 },
     }
   }

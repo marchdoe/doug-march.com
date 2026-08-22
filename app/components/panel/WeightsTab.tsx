@@ -61,12 +61,23 @@ export function WeightsTab({ initial }: { initial: Weights }) {
           <p className={mutedText}>{desc}</p>
         </div>
       ))}
-      <button type="button" disabled={state === 'busy'} onClick={save} className={button({ kind: 'primary' })}>
+      <button
+        type="button"
+        disabled={state === 'busy'}
+        onClick={save}
+        className={button({ kind: 'primary' })}
+      >
         {state === 'busy' ? 'Saving…' : 'Save weights'}
       </button>
-      {state === 'saved' && <p className={cx(successText, css({ marginTop: '10px' }))}>Saved — applies to the next run.</p>}
+      {state === 'saved' && (
+        <p className={cx(successText, css({ marginTop: '10px' }))}>
+          Saved — applies to the next run.
+        </p>
+      )}
       {state !== 'idle' && state !== 'busy' && state !== 'saved' && (
-        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>{state}</p>
+        <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>
+          {state}
+        </p>
       )}
     </section>
   )

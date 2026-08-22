@@ -104,10 +104,7 @@ describe('sanitizeSignals', () => {
 
   it('handles arrays', () => {
     const input = {
-      stories: [
-        { title: 'Safe title' },
-        { title: '<script>bad</script>' },
-      ],
+      stories: [{ title: 'Safe title' }, { title: '<script>bad</script>' }],
     }
     const result = sanitizeSignals(input)
     expect(result.stories[0].title).toBe('Safe title')

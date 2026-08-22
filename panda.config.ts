@@ -24,8 +24,8 @@ export default defineConfig({
   },
   conditions: {
     extend: {
-      light:  '.light &, [data-theme=light] &',
-      dark:   '.dark &,  [data-theme=dark] &',
+      light: '.light &, [data-theme=light] &',
+      dark: '.dark &,  [data-theme=dark] &',
       mobile: '@media (max-width: 767px)',
     },
   },

@@ -42,8 +42,20 @@ function OgCard() {
           })}
         />
 
-        <div className={css({ position: 'relative', display: 'flex', alignItems: 'center', gap: '3', marginBottom: '6' })}>
-          <img src={logoMono} alt="" className={css({ height: '56px', width: 'auto', color: 'text' })} />
+        <div
+          className={css({
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '3',
+            marginBottom: '6',
+          })}
+        >
+          <img
+            src={logoMono}
+            alt=""
+            className={css({ height: '56px', width: 'auto', color: 'text' })}
+          />
           <span
             className={css({
               fontFamily: 'display',

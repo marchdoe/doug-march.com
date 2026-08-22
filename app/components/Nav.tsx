@@ -87,9 +87,15 @@ export function Nav() {
         <span className={wordmarkClass}>Doug March</span>
       </a>
       <div className={linksClass}>
-        <a href="/#work" className={navLinkClass}>Work</a>
-        <a href="/about" className={navLinkClass}>About</a>
-        <a href="/#log" className={navLinkClass}>Log</a>
+        <a href="/#work" className={navLinkClass}>
+          Work
+        </a>
+        <a href="/about" className={navLinkClass}>
+          About
+        </a>
+        <a href="/#log" className={navLinkClass}>
+          Log
+        </a>
       </div>
     </nav>
   )

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { chromium } from '@playwright/test'
-import { fileURLToPath } from 'url'
-import path from 'path'
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
 import { scoreResponsive } from '../../scripts/utils/responsive-scorer.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

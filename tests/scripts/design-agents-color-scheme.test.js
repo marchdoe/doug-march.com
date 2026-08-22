@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { parseDelimiterResponse } from '../../scripts/design-agents.js'
-import { detectCoffeeShopPalette, validateSchemeAgainstPreset } from '../../scripts/utils/color-validation.js'
+import {
+  detectCoffeeShopPalette,
+  validateSchemeAgainstPreset,
+} from '../../scripts/utils/color-validation.js'
 
 describe('parseDelimiterResponse — COLOR_SCHEME block', () => {
   it('extracts a well-formed COLOR_SCHEME JSON block', () => {

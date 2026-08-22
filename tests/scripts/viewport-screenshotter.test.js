@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { mkdtemp, rm, stat } from 'fs/promises'
-import { tmpdir } from 'os'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { mkdtemp, rm, stat } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { screenshotViewports } from '../../scripts/utils/viewport-screenshotter.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

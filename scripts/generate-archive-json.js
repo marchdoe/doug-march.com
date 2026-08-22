@@ -11,8 +11,8 @@
  * without server functions.
  */
 
-import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs'
-import { resolve, join } from 'path'
+import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs'
+import { resolve, join } from 'node:path'
 import { readRatingForDate } from './utils/ratings.js'
 
 const ROOT = resolve(import.meta.dirname, '..')
@@ -27,18 +27,16 @@ function generateIndex() {
   if (!existsSync(ARCHIVE_PATH)) return []
 
   return readdirSync(ARCHIVE_PATH, { withFileTypes: true })
-    .filter(d => d.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(d.name))
-    .map(d => {
+    .filter((d) => d.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(d.name))
+    .map((d) => {
       const dateDir = join(ARCHIVE_PATH, d.name)
 
       const archetypePath = join(dateDir, 'archetype.txt')
-      const archetype = existsSync(archetypePath)
-        ? readFileSync(archetypePath, 'utf8').trim()
-        : ''
+      const archetype = existsSync(archetypePath) ? readFileSync(archetypePath, 'utf8').trim() : ''
 
       const builds = readdirSync(dateDir, { withFileTypes: true })
-        .filter(b => b.isDirectory() && /^build-\d+$/.test(b.name))
-        .map(b => b.name)
+        .filter((b) => b.isDirectory() && /^build-\d+$/.test(b.name))
+        .map((b) => b.name)
         .sort()
         .reverse()
       const latestBuild = builds[0]
@@ -50,17 +48,23 @@ function generateIndex() {
       if (!existsSync(briefPath)) return null
       const content = readFileSync(briefPath, 'utf8')
       const lines = content.split('\n')
-      const dateLine = lines.find(l => l.startsWith('# '))
-      const briefLine = lines.find(l => l.startsWith('**Design Brief:** '))
+      const dateLine = lines.find((l) => l.startsWith('# '))
+      const briefLine = lines.find((l) => l.startsWith('**Design Brief:** '))
       if (!dateLine || !briefLine) return null
 
       let rationale = ''
-      const rationaleStart = lines.findIndex(l => l.startsWith("## Claude's Rationale"))
-      const filesChangedStart = lines.findIndex(l => l.startsWith('## Files Changed'))
+      const rationaleStart = lines.findIndex((l) => l.startsWith("## Claude's Rationale"))
+      const filesChangedStart = lines.findIndex((l) => l.startsWith('## Files Changed'))
       if (rationaleStart !== -1 && filesChangedStart !== -1) {
-        rationale = lines.slice(rationaleStart + 1, filesChangedStart).join('\n').trim()
+        rationale = lines
+          .slice(rationaleStart + 1, filesChangedStart)
+          .join('\n')
+          .trim()
       } else if (rationaleStart !== -1) {
-        rationale = lines.slice(rationaleStart + 1).join('\n').trim()
+        rationale = lines
+          .slice(rationaleStart + 1)
+          .join('\n')
+          .trim()
       }
 
       const filesChanged = []
@@ -81,7 +85,7 @@ function generateIndex() {
         rating: readRatingForDate(ARCHIVE_PATH, d.name),
       }
     })
-    .filter(e => e !== null)
+    .filter((e) => e !== null)
     .sort((a, b) => b.date.localeCompare(a.date))
 }
 
@@ -90,8 +94,8 @@ function generateDetail(date) {
   if (!existsSync(dateDir)) return null
 
   const builds = readdirSync(dateDir, { withFileTypes: true })
-    .filter(b => b.isDirectory() && /^build-\d+$/.test(b.name))
-    .map(b => b.name)
+    .filter((b) => b.isDirectory() && /^build-\d+$/.test(b.name))
+    .map((b) => b.name)
     .sort()
     .reverse()
   const latestBuild = builds[0]
@@ -109,16 +113,22 @@ function generateDetail(date) {
   const archetype = readSafe(join(dateDir, 'archetype.txt')).trim()
 
   const lines = briefContent.split('\n')
-  const briefLine = lines.find(l => l.startsWith('**Design Brief:** '))
+  const briefLine = lines.find((l) => l.startsWith('**Design Brief:** '))
   const brief = briefLine?.slice('**Design Brief:** '.length).trim() ?? ''
 
   let rationale = ''
-  const rationaleStart = lines.findIndex(l => l.startsWith("## Claude's Rationale"))
-  const filesChangedStart = lines.findIndex(l => l.startsWith('## Files Changed'))
+  const rationaleStart = lines.findIndex((l) => l.startsWith("## Claude's Rationale"))
+  const filesChangedStart = lines.findIndex((l) => l.startsWith('## Files Changed'))
   if (rationaleStart !== -1 && filesChangedStart !== -1) {
-    rationale = lines.slice(rationaleStart + 1, filesChangedStart).join('\n').trim()
+    rationale = lines
+      .slice(rationaleStart + 1, filesChangedStart)
+      .join('\n')
+      .trim()
   } else if (rationaleStart !== -1) {
-    rationale = lines.slice(rationaleStart + 1).join('\n').trim()
+    rationale = lines
+      .slice(rationaleStart + 1)
+      .join('\n')
+      .trim()
   }
 
   const filesChanged = []
@@ -130,8 +140,16 @@ function generateDetail(date) {
   }
 
   return {
-    date, archetype, brief, signalsBrief, preset,
-    rationale, filesChanged, hasScreenshot, buildId, trace,
+    date,
+    archetype,
+    brief,
+    signalsBrief,
+    preset,
+    rationale,
+    filesChanged,
+    hasScreenshot,
+    buildId,
+    trace,
     rating: readRatingForDate(ARCHIVE_PATH, date),
   }
 }
@@ -144,11 +162,7 @@ console.log(`  found ${entries.length} archive entries`)
 
 // Write index.json
 mkdirSync(PUBLIC_ARCHIVE, { recursive: true })
-writeFileSync(
-  join(PUBLIC_ARCHIVE, '_data.json'),
-  JSON.stringify(entries),
-  'utf8'
-)
+writeFileSync(join(PUBLIC_ARCHIVE, '_data.json'), JSON.stringify(entries), 'utf8')
 console.log('  wrote public/archive/_data.json')
 
 // Write per-date detail.json
@@ -158,11 +172,7 @@ for (const entry of entries) {
   if (detail) {
     const dateDir = join(PUBLIC_ARCHIVE, entry.date)
     mkdirSync(dateDir, { recursive: true })
-    writeFileSync(
-      join(dateDir, '_detail.json'),
-      JSON.stringify(detail),
-      'utf8'
-    )
+    writeFileSync(join(dateDir, '_detail.json'), JSON.stringify(detail), 'utf8')
     detailCount++
   }
 }

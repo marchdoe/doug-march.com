@@ -14,16 +14,11 @@ import {
 
 describe('file group constants', () => {
   it('TOKEN_FILES contains only preset.ts (chassis owns __root.tsx + chassis-preset.ts)', () => {
-    expect(TOKEN_FILES).toEqual([
-      'elements/preset.ts',
-    ])
+    expect(TOKEN_FILES).toEqual(['elements/preset.ts'])
   })
 
   it('ORCHESTRATOR_FILES contains __root.tsx and chassis-preset.ts (generated, never agent-authored)', () => {
-    expect(ORCHESTRATOR_FILES).toEqual([
-      'app/routes/__root.tsx',
-      'elements/chassis-preset.ts',
-    ])
+    expect(ORCHESTRATOR_FILES).toEqual(['app/routes/__root.tsx', 'elements/chassis-preset.ts'])
   })
 
   it('LAYOUT_FILES contains Layout.tsx and 4 route files (og.tsx is the engineer-authored share card)', () => {

@@ -9,7 +9,7 @@ function safeEqual(a: string, b: string): boolean {
 }
 
 export function checkBasicAuth(header: string | null, user: string, pass: string): boolean {
-  if (!header || !header.startsWith('Basic ')) return false
+  if (!header?.startsWith('Basic ')) return false
   let decoded: string
   try {
     decoded = atob(header.slice(6))
