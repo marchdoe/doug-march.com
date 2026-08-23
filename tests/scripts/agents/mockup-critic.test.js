@@ -1,5 +1,8 @@
-import { describe, it, expect } from 'vitest'
-import { parseMockupCriticResponse } from '../../../scripts/agents/mockup-critic.js'
+import { describe, expect, it } from 'vitest'
+import {
+  buildMockupCriticBlocks,
+  parseMockupCriticResponse,
+} from '../../../scripts/agents/mockup-critic.js'
 
 describe('parseMockupCriticResponse', () => {
   it('parses APPROVE', () => {
@@ -40,5 +43,36 @@ describe('parseMockupCriticResponse', () => {
     )
     expect(r.verdict).toBe('REVISE')
     expect(r.feedback).toContain('hero too small')
+  })
+})
+
+describe('buildMockupCriticBlocks', () => {
+  const ctx = {
+    enrichedBrief: 'the brief',
+    measurables: 'floors',
+    shell: 'shell decl',
+    screenshotBuffer: Buffer.from([0xff, 0xd8, 0xff]),
+  }
+
+  it('ends with a real image block carrying the JPEG bytes', () => {
+    const blocks = buildMockupCriticBlocks(ctx)
+    const last = blocks[blocks.length - 1]
+    expect(last).toEqual({
+      type: 'image',
+      source: { type: 'base64', media_type: 'image/jpeg', data: '/9j/' },
+    })
+    expect(blocks.filter((b) => b.type === 'image')).toHaveLength(1)
+  })
+
+  it('carries brief, measurables and shell as text blocks', () => {
+    const text = buildMockupCriticBlocks(ctx)
+      .filter((b) => b.type === 'text')
+      .map((b) => b.text)
+      .join('\n')
+    expect(text).toContain('the brief')
+    expect(text).toContain('floors')
+    expect(text).toContain('shell decl')
+    // The screenshot must never ride along as a data-URI in text.
+    expect(text).not.toContain('base64')
   })
 })
