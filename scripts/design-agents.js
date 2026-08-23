@@ -1000,7 +1000,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         specCriticPrompt,
         criticUserPrompt,
         null,
-        { model: modelFor('spec-critic') }
+        // Explicit stallTimeoutMs below the 10m hard timeout (same 10m/5m
+        // proportion as mockup-critic) — the claude-cli.js default (15m)
+        // exceeds this call's hard timeout, so a throttled-but-alive run
+        // could never trip the stall check and would just ride to the cap.
+        { model: modelFor('spec-critic'), stallTimeoutMs: 300000 }
       )
       const rawResponse = criticResult._rawResponse || criticResult.rationale || ''
       const { verdict: specVerdict } = parseCriticVerdict(rawResponse, 'APPROVED')
@@ -1573,7 +1577,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           screenshotCriticPrompt,
           criticUserPrompt,
           null,
-          { model: modelFor('screenshot-critic') }
+          // See spec-critic above: explicit stallTimeoutMs below the 10m
+          // hard timeout so a throttled-but-alive call can't ride the
+          // claude-cli.js default (15m) stall window past its own cap.
+          { model: modelFor('screenshot-critic'), stallTimeoutMs: 300000 }
         )
         const criticResponse =
           screenshotCriticResult._rawResponse || screenshotCriticResult.rationale || ''
