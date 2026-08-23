@@ -68,12 +68,25 @@ describe('recordUsage', () => {
     expect(rec.source).toBe('sdk')
   })
 
-  it('records a call with no usage at all without throwing', () => {
+  it('prices a call with no usage at all as unpriceable, not free', () => {
+    // A crashed CLI call (non-zero exit, no result event) hits this path.
+    // Pricing it as $0 would read as "this call was free" and vanish from
+    // the run's total instead of flagging the gap.
     const rec = recordUsage({ agent: 'react-engineer', model: 'claude-sonnet-5' })
-    expect(rec.cost_usd).toBe(0)
+    expect(rec.cost_usd).toBeNull()
+    expect(rec.estimated).toBe(false)
     expect(rec.input).toBeNull()
     expect(rec.output).toBeNull()
     expect(getUsageRecords()).toHaveLength(1)
+  })
+
+  it('does not estimate from cache tokens alone — a stalled call can log cache activity with no completion', () => {
+    const rec = recordUsage({
+      agent: 'art-director',
+      model: 'claude-opus-4-8',
+      usage: { cache_read_input_tokens: 50_000, input_tokens: 0, output_tokens: 0 },
+    })
+    expect(rec.cost_usd).toBeNull()
   })
 
   it('coerces a non-object usage and a missing agent', () => {

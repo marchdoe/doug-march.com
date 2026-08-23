@@ -1862,6 +1862,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
             )
           } else if (config) {
             console.log(`  retrying ${responsibleAgent} with critic feedback...`)
+            noteRetry()
             // The retry result replaces engineerResult so the archive records
             // what's actually on disk; keep the passing result to fall back to.
             const passingEngineerResult = engineerResult
@@ -1996,6 +1997,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       if (!config) continue
 
       console.log(`\n  retrying ${agent} with build error context...`)
+      noteRetry()
       try {
         const retryResult = await callAgent(
           agent,
