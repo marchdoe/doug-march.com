@@ -1,0 +1,39 @@
+---
+id: arc-browser
+register: playful-gradient-blob
+affinity: two-asymmetric, broken, field-dominant, drenched
+---
+
+**Lane: Vibrant Gradient-Blob Split**
+
+> Source: consumer app launch pages (Arc Browser and similar) — general genre characteristics of playful gradient-blob marketing pages, not a specific copyrighted layout. Use as anchor reference, not copy target.
+
+## Atmosphere
+Playful, saturated, almost toylike confidence — one zone is a soft gradient-blob field with rounded organic shapes, the other is clean functional white space. Feels like a consumer product launch, not enterprise software.
+
+## Color roles
+- bg (bold zone): animated-feeling gradient field — e.g. linear-gradient(135deg, #FF6B9D, #C239B3, #7B2FF7)
+- bg (quiet zone): #FAFAFA — warm neutral, not stark white
+- text (on bold zone): #FFFFFF
+- text (on quiet zone): #17171A
+- accent: #FF6B9D — highlight/glow on interactive marks in the quiet zone
+- border: none in the bold zone; 1px #EAEAEA in the quiet zone
+
+## Typography
+- Display: whatever the chassis provides at 600–700, scale ratio 1.5, rounded/soft numerals if the chassis has them
+- Body: 400, 16px, line-height 1.5
+- Mono: not used in this lane
+
+## Component cues
+- Buttons: fully rounded pill in both zones — bold-zone buttons are translucent/glass, quiet-zone buttons are solid filled
+- Cards: quiet zone uses soft-shadow floating cards (12–16px radius); bold zone has no cards — organic blob shapes substitute for containers
+- Nav: logo mark sits at the seam between the two zones, straddling both
+
+## Anti-patterns specific to this style
+- DO NOT use a static flat color in the bold zone — it must read as a gradient/blob field, not a color block
+- DO NOT use sharp corners anywhere in this lane
+- DO NOT make the quiet zone feel corporate-cold — keep it warm neutral, not stark white
+- DO NOT let the seam be a hard straight line — at least one shape crosses it
+
+## Mobile strategy
+The bold zone becomes a shorter gradient band at the top (not a full section) with the hero phrase overlaid. The quiet zone becomes the scrollable body beneath it, proportionally larger than on desktop so content isn't crowded out by the gradient band.
