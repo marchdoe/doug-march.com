@@ -687,6 +687,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const recentRatings = buildRecentRatingsBlock(path.join(ROOT, 'archive'), { lookbackDays: 10 })
 
     // -----------------------------------------------------------------------
+    // Owner-curated permanent taste memory (signals/taste.md) — unlike the
+    // 10-build ratings window above, this is hand-maintained and all-time.
+    // Fed to both the Art Director and the Mockup Designer.
+    // -----------------------------------------------------------------------
+    const { buildTasteMemoryBlock } = await import('./utils/taste-memory.js')
+    const tasteMemoryBlock = buildTasteMemoryBlock(ROOT)
+
+    // -----------------------------------------------------------------------
     // Read design references (collected by collect-references.js)
     // -----------------------------------------------------------------------
     const referencesPath = path.resolve(ROOT, 'signals/today.references.md')
@@ -784,6 +792,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         shellMandateSection,
         brandContract,
         weightsBlock,
+        tasteMemoryBlock,
         failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
         systemPrompt: artDirectorSystemPrompt,
       })
@@ -805,6 +814,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           shellMandateSection,
           brandContract,
           weightsBlock,
+          tasteMemoryBlock,
           failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
           systemPrompt: artDirectorSystemPrompt,
         })
@@ -923,6 +933,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           shellMandateSection,
           brandContract,
           weightsBlock,
+          tasteMemoryBlock,
           failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
           systemPrompt: artDirectorSystemPrompt,
         })
@@ -1208,6 +1219,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       lessonsBlock,
       calibrationNote,
       archetypeContractBlock,
+      tasteMemoryBlock,
       polishRef: refPolish,
       systemPrompt: mockupDesignerSystemPrompt,
       failureDumpPath: path.join(ROOT, 'signals', 'mockup-designer-last-failed.txt'),
@@ -1324,6 +1336,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         responsiveLesson
           ? `## Responsive Lesson (recent failure to avoid)\n\n${responsiveLesson}`
           : '',
+        // The engineer previously received zero historical feedback despite
+        // being the agent screenshot-critic failures usually blame — same
+        // capped block the mockup designer sees.
+        lessonsBlock,
       ]
         .filter(Boolean)
         .join('\n\n---\n\n')

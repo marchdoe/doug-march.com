@@ -51,6 +51,7 @@ export function buildArtDirectorUserPrompt({
   shellMandateSection,
   brandContract,
   weightsBlock,
+  tasteMemoryBlock,
 }) {
   const sections = []
   sections.push(`## Today's Raw Signals\n\n\`\`\`yaml\n${formatSignalsAsYaml(signals)}\n\`\`\``)
@@ -64,6 +65,7 @@ export function buildArtDirectorUserPrompt({
   if (shellMandateSection) sections.push(shellMandateSection)
   if (brandContract) sections.push(brandContract)
   if (weightsBlock) sections.push(`## Creative Weights\n\n${weightsBlock}`)
+  if (tasteMemoryBlock) sections.push(tasteMemoryBlock)
   return sections.join('\n\n---\n\n')
 }
 
@@ -144,6 +146,7 @@ export function validateArtDirectorResult(parsed) {
  *   references: string,
  *   colorMandateSection: string,
  *   weightsBlock: string,
+ *   tasteMemoryBlock: string,
  *   systemPrompt: string,
  *   designReferenceImages?: Array<{ data: string, media_type: string, title?: string }>,
  * }} ctx
