@@ -27,14 +27,19 @@ jobs:
     env:
       # Creative weights come from repo variables so the owner panel can
       # adjust them (PUT /api/panel/weights → GitHub Actions variables).
-      # Fallbacks preserve the pre-panel defaults; risk 8 per the
-      # 2026-04-28 iter-3 finding (drenched terracotta Specimen was the
-      # gold standard — committed gestures, not hedges).
+      # Fallbacks preserve the pre-panel defaults.
       # Uses empty-check idiom so a weight of 0 survives set variable values.
       WEIGHT_SIGNALS: ${{ vars.WEIGHT_SIGNALS == '' && '5' || vars.WEIGHT_SIGNALS }}
       WEIGHT_INSPIRATION: ${{ vars.WEIGHT_INSPIRATION == '' && '5' || vars.WEIGHT_INSPIRATION }}
       WEIGHT_RATINGS: ${{ vars.WEIGHT_RATINGS == '' && '5' || vars.WEIGHT_RATINGS }}
-      WEIGHT_RISK: ${{ vars.WEIGHT_RISK == '' && '8' || vars.WEIGHT_RISK }}
+      # No constant fallback (was '8', 2026-04-28 iter-3 finding). '' flows
+      # through as absent — design-agents.js derives risk 3-10 from the
+      # build date when WEIGHT_RISK is unset, instead of a fixed value that
+      # produced the same "BOLD" prompt sentence every day. A set repo var
+      # still wins: the left branch of the idiom only fires when
+      # vars.WEIGHT_RISK IS the empty string (i.e. genuinely unset), same
+      # short-circuit shape as the other three lines above.
+      WEIGHT_RISK: ${{ vars.WEIGHT_RISK == '' && '' || vars.WEIGHT_RISK }}
 
     steps:
       - uses: actions/checkout@v4

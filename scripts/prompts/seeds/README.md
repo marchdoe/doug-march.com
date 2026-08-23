@@ -1,22 +1,24 @@
 # Archetype Seeds
 
-Concrete anchor references for the mockup-designer prompt. Each file is a short, opinionated reframing of a real-world design system the archetype name is meant to evoke. The pipeline injects one seed per build, matched to the archetype the Design Director chose that day, replacing the `<!-- SEED_ANCHOR -->` marker in `mockup-designer.md`.
+Concrete anchor references for the mockup-designer prompt. Each file holds 2-3 **lanes** — distinct aesthetic references for the same archetype. `scripts/utils/select-seed.js` deterministically picks one lane per day (hashed from the build date + archetype, so a given day always re-derives the same lane) and injects only that lane's content, replacing the `<!-- SEED_ANCHOR -->` marker in `mockup-designer.md`. The other lanes stay on disk, unread, until their date comes up.
 
 Seeds are **anchors, not templates**. The designer borrows rigor, restraint, and character — it does not copy tokens, fonts, or layouts verbatim. Today's signals and brief always override the seed where they conflict.
 
-## Archetype → Exemplar mapping
+## Archetype → lanes
 
-| Archetype | Seed file | Exemplar | Character |
+| Archetype | Seed file | Lanes | Character |
 |---|---|---|---|
-| Poster | `poster.md` | Tesla / SpaceX | Radical subtraction, full-bleed photography, single dominant element |
-| Broadsheet | `broadsheet.md` | WIRED | Paper-white density, custom serif, multi-column, ink-blue links |
-| Specimen | `specimen.md` | Vercel / Geist | Black-and-white precision, type IS the page |
-| Split | `split.md` | Framer / Stripe | Bold halves with gradient tension |
-| Scroll | `scroll.md` | Apple | Cinematic verticality, full-viewport sections |
-| Index | `index.md` | Linear | Ultra-minimal table/list density, tabular numerals |
-| Gallery Wall | `gallery-wall.md` | Pinterest | Masonry, image-first, red accent |
-| Stack | `stack.md` | Notion / Mintlify | Soft surfaces, banded sections, warm minimalism |
+| Poster | `poster.md` | Tesla/SpaceX · Swiss International Style · Psychedelic gig-poster | Radical subtraction / grid rigor / maximalist ornament |
+| Broadsheet | `broadsheet.md` | WIRED · The Economist | Paper-white columnar density / data-driven editorial confidence |
+| Specimen | `specimen.md` | Vercel/Geist · Independent type-foundry specimen | Black-and-white dev precision / warm-paper foundry annotation |
+| Split | `split.md` | Framer/Stripe · Vibrant gradient-blob split | Structural corporate tension / playful consumer-app energy |
+| Scroll | `scroll.md` | Apple · Kinetic sport scroll | Near-monochrome cinematic verticality / high-contrast color-block motion |
+| Index | `index.md` | Linear · Warm-paper collector's catalog | Dark keyboard-first app density / unhurried paper ledger |
+| Gallery Wall | `gallery-wall.md` | Pinterest · Black-canvas portfolio grid | Light masonry mosaic / dark regular-grid case-study presentation |
+| Stack | `stack.md` | Notion/Mintlify · Bold saturated stack | Soft warm minimalism / chunky high-saturation color blocking |
+
+Each seed file's lanes are delimited with HTML comments (`<!-- LANE:id -->` … `<!-- /LANE -->`), parsed by `scripts/utils/select-seed.js`. See `parseSeedLanes` and `selectSeedContent` there for the extraction logic, and `tests/select-seed.test.js` for the reproducibility guarantees (same date+archetype → same lane; different dates → distributes across lanes).
 
 ## Licensing
 
-Paraphrased from publicly-known brand characteristics, inspired in structure by VoltAgent/awesome-design-md (MIT). No DESIGN.md files are copied verbatim; tokens here are opinionated approximations for use as design anchors only.
+Paraphrased from publicly-known brand and genre characteristics, inspired in structure by VoltAgent/awesome-design-md (MIT). No DESIGN.md files are copied verbatim; tokens here are opinionated approximations for use as design anchors only. Lanes referencing historical movements (Swiss International Style, 1960s gig-poster tradition) or platform genres (portfolio grids, collector's catalogs) describe general, long-established style characteristics rather than any specific living brand or copyrighted work.

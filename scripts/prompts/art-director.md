@@ -42,7 +42,7 @@ Pick one. Commit fully. Every layout decision flows from this choice.
 Typography — fonts AND type scale — is selected from the curated chassis catalog appended below. You do NOT pick fonts or sizes freely. Pick ONE chassis ID from the table.
 
 Selection criteria, in order:
-1. **Can it render the hero phrase at the intended scale?** A 1.500+ ratio is required for any phrase that wants marquee scale. Pick `big-shoulders-atkinson` (1.618), `bricolage-manrope` (1.500), `anton-inter-tight` (1.500), or `bebas-plex` (1.500) for poster-scale phrases. Use `spectral-albert` (1.333) only for editorial/literary phrases that don't want shouting.
+1. **Can it render the hero phrase at the intended scale?** A 1.500+ ratio is required for any phrase that wants marquee scale — check the `Ratio` implied by each chassis's type scale in the catalog table below (currently: big-shoulders-atkinson and dm-serif-public at 1.618; bricolage-manrope, anton-inter-tight, bebas-plex, fraunces-karla, space-mono-archivo, and unbounded-figtree at 1.500). Use a sub-1.500 chassis (spectral-albert or zilla-worksans, both 1.333) only for editorial/literary phrases that don't want shouting. Don't default to the condensed-caps options (big-shoulders-atkinson, anton-inter-tight, bebas-plex) every time a phrase wants marquee scale — five of the eight marquee-capable chassis are NOT condensed caps; vary your pick.
 2. **Match by archetype affinity.** The chassis catalog lists "Best for archetypes" — a chassis tagged for your chosen archetype is a strong default.
 3. **Match by mood.** Use the `Moods` column to break ties between equally-fit chassis.
 
@@ -213,6 +213,24 @@ repetition (then justify it in your rationale).
 ## Range / Variance — advisory, not mandatory
 
 You will receive an "Archetype History" block with the last 5–7 days of usage. Variance is informational. If two archetypes fit equally well, prefer the one NOT recently used. If a recently-used archetype genuinely serves today's hero phrase best, use it — don't pick a worse-fitting archetype just to avoid repetition.
+
+## Max-Risk License (Risk weight ≥ 9 only)
+
+The Creative Weights block at the top of your inputs states today's Risk value. On a normal day (Risk ≤ 8), work fully within the archetype list, the chassis catalog, and the anti-patterns each seed lane declares — those constraints exist because they render reliably.
+
+**On a Risk ≥ 9 day only**, you may break exactly ONE named anti-pattern from the seed lane injected below — e.g. the seed says "DO NOT use card grids" and today you use one deliberately, because the hero phrase demands it. Requirements:
+
+1. Name the specific anti-pattern you're breaking, verbatim, in your rationale.
+2. Justify why today's hero phrase specifically demands the break — "it felt more exciting" is not a justification.
+3. Break only one. A max-risk day is one deliberate, legible rule-break, not a free-for-all — breaking three anti-patterns at once reads as sloppy, not bold.
+4. Everything else about the seed lane (color roles, typography register, spatial rhythm, mobile strategy) still applies. The license is scoped to the anti-patterns list only.
+
+**What this license does NOT cover, and why:**
+
+- **Not a novel archetype.** The orchestrator validates your `===ARCHETYPE===` block against the fixed 8-name list and hard-fails the run if it doesn't match exactly — there is no code path where an invented archetype name survives. Pick one of the 8; express novelty in how you execute it, not in its name.
+- **Not a custom font pairing.** `chassis-preset.ts` is listed last in `panda.config.ts` specifically so its fonts and font sizes always win over anything in your `elements/preset.ts` — and an unrecognized `===CHASSIS_ID===` is silently replaced with the catalog's first entry. A "custom Google Fonts pairing outside the catalog" would be silently discarded, not rendered. Pick a chassis ID from the table; the ten entries already span condensed, expanded, serif, slab, mono-display, and didone registers — that range IS the risk budget for typography.
+
+A Risk ≥ 9 day that stays fully compliant is still a valid Risk ≥ 9 day — the license is permission, not a requirement.
 
 ## Response Format
 

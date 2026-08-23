@@ -1,4 +1,9 @@
-# Seed: poster — inspired by Tesla / SpaceX
+# Seed: poster
+
+Three lanes anchor this archetype: Tesla / SpaceX (radical subtraction), Swiss International Style (grid rigor, zero ornament), and psychedelic gig-poster (maximalist ornament, saturated clash). The pipeline deterministically picks one per day by date hash — the lane below is the only one injected into this prompt.
+
+<!-- LANE:tesla-spacex -->
+**Lane: Tesla / SpaceX**
 
 > Source: Tesla / SpaceX via VoltAgent/awesome-design-md (MIT). Paraphrased from public brand characteristics. Use as anchor reference, not copy target — borrow the rigor and reinterpret it through today's signals and brief.
 
@@ -33,8 +38,85 @@ Whitespace is the design. Sections are full-viewport height; content is centered
 - DO NOT use more than two type sizes on the hero viewport
 
 ## Mobile strategy
-
 Retains single dominant element on mobile — scale the hero via `clamp()`. Secondary info (nav, metadata, footer) stays anchored to the poster's bottom, not fighting the hero. If the hero needs to reflow (e.g. "DOUG / MARCH" instead of "DOUG MARCH"), the reflow should look intentional, not cramped.
+<!-- /LANE -->
+
+<!-- LANE:swiss-poster -->
+**Lane: Swiss International Style**
+
+> Source: International Typographic Style (Müller-Brockmann, Ruder, Hofmann lineage) — general historical movement characteristics, not a specific living brand or copyrighted work. Use as anchor reference, not copy target.
+
+## Atmosphere
+Grid-locked objectivity. A single strong diagonal or oversized numeral is the one permitted gesture; everything else obeys a strict modular grid. Sans-serif, asymmetric layout, flush-left ragged-right text, hard-cropped photography. Function over decoration — the opposite mood from the Tesla lane's soft cinematic void, but equally confident.
+
+## Color roles
+- bg: #FFFFFF — pure, no warmth
+- text: #000000 — pure, no softening
+- accent: #E30613 (signal red) — the only color besides black and white
+- accent.secondary: #005EB8 (data blue) — reserve for chart/data marks only, never decorative
+- border: #000000 — thin, precise hairline rules only, never rgba-softened
+
+## Typography
+- Display: a grotesk at 700, scale ratio ~1.618, set to a visible baseline grid
+- Body: same grotesk family at 400, 16px, line-height 1.4, ragged right — never justified, never centered
+- Mono: not used in this lane
+
+## Component cues
+- Buttons: none — links are bold black text with a red underline rule, no border, no fill
+- Cards: none — content lives in grid cells separated by thin black rules
+- Nav: a single horizontal rule; flush-left wordmark, flush-right minimal text links
+
+## Spatial rhythm
+Strict modular grid (6 or 12 columns), baseline grid governs all vertical rhythm. Margins are asymmetric — wide on one side, tight on the other — never centered. The one permitted "gesture" (a rotated numeral, a diagonal rule) breaks the grid deliberately and is the only place tension is allowed.
+
+## Anti-patterns specific to this style
+- DO NOT center anything — asymmetry is the grid's whole point
+- DO NOT use a third color beyond black, white, and signal red
+- DO NOT use gradients, drop shadows, or rounded corners anywhere
+- DO NOT use a serif typeface
+- DO NOT soften the grid with organic or freeform shapes
+
+## Mobile strategy
+The grid collapses to a single column but keeps its asymmetric margin (never re-centers to compensate for the lost columns). The one rotated/diagonal gesture element scales via `clamp()` but stays off-axis — it must never straighten out to fit.
+<!-- /LANE -->
+
+<!-- LANE:psychedelic-gig-poster -->
+**Lane: Psychedelic Gig Poster**
+
+> Source: 1960s Fillmore/Avalon gig-poster tradition (Wes Wilson, Victor Moscoso, Bonnie MacLean lineage) — general historical style characteristics, not a specific living brand or copyrighted work. Use as anchor reference, not copy target.
+
+## Atmosphere
+Maximalist ornament, hand-lettered energy, clashing complementary colors, warped and interlocking type, dense layered illustration. Loud, joyful, unapologetic collision of color and pattern — the deliberate opposite of the Tesla lane's subtraction and the Swiss lane's restraint.
+
+## Color roles
+- bg: one saturated field, no neutral — e.g. #FF2E9A (hot pink) or #FF6B00 (acid orange)
+- text: a complementary clash color — e.g. #00FF85 (electric green) or #7B2FF7 (violet)
+- accent: a third clashing hue, used in outline/glow treatments around shapes
+- border: none — shapes overlap directly, no separating rules
+
+## Typography
+- Display: pushed to the chassis's largest available step, with extreme letter-spacing swings to simulate warped/bulging letterforms
+- Body: kept small and genuinely legible — high contrast against the loud field so it survives the density
+- Mono: not used in this lane
+
+## Component cues
+- Buttons: blob/pill shape with a thick hard-offset double outline (e.g. 4px offset in a third clashing color) — never a soft grey drop shadow
+- Cards: none — illustration-first, text floats directly over art
+- Nav: a small corner badge or stamp, not a bar
+
+## Spatial rhythm
+No grid — deliberately overlapping, layered, collaged. Type interlocks with illustrated shapes rather than sitting in a clean zone. Dense on the hero viewport, with exactly one reserved breathing gap so the composition doesn't collapse into pure noise.
+
+## Anti-patterns specific to this style
+- DO NOT use a neutral or grey background — one saturated hue only
+- DO NOT align text to a strict grid — this lane is collage, not structure
+- DO NOT use a soft grey drop shadow — hard offset outlines only
+- DO NOT let body copy shrink below legible size chasing density
+- DO NOT restrain more than one element (e.g. the CTA) — maximalism is the point everywhere else
+
+## Mobile strategy
+The collage simplifies to 2-3 layered elements instead of the desktop's full density — keep the boldest shape, the hero phrase, and one supporting mark; drop the rest rather than shrinking everything proportionally. A uniformly-shrunk collage reads as clutter, not energy.
+<!-- /LANE -->
 
 ## This is one lane
 

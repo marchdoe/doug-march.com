@@ -39,7 +39,8 @@ import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-
 import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
 import { createTrace } from './utils/trace.js'
-import { selectSeed } from './utils/select-seed.js'
+import { selectSeedContent } from './utils/select-seed.js'
+import { hashToRange } from './utils/deterministic-hash.js'
 import { CHASSIS_CATALOG } from '../elements/chassis/index.js'
 import {
   buildGoogleFontsUrl,
@@ -88,6 +89,29 @@ const ARCHETYPE_NAMES = [
   'Stack',
   'Index',
 ]
+
+/**
+ * Resolve the WEIGHT_RISK creative weight. An explicitly-set env value
+ * (anything other than undefined or the empty string — including '0',
+ * which is falsy in JS but not "unset") always wins. Otherwise risk is
+ * derived deterministically from the build date via {@link hashToRange},
+ * range 3-10 inclusive — same date always derives the same risk (a
+ * re-run of today's build doesn't change today's risk), different dates
+ * spread across the range instead of a fixed constant.
+ *
+ * Before this, the fallback was a constant '8', which meant every day the
+ * owner panel left WEIGHT_RISK unset produced the exact same risk value
+ * and therefore the exact same Creative Weights prompt sentence.
+ *
+ * @param {string|undefined} envValue - raw process.env.WEIGHT_RISK
+ * @param {string} date - build date, 'YYYY-MM-DD'
+ * @returns {{ risk: number, explicitlySet: boolean }}
+ */
+export function resolveRiskWeight(envValue, date) {
+  const explicitlySet = envValue !== undefined && envValue !== ''
+  const risk = explicitlySet ? parseInt(envValue, 10) : hashToRange(`risk:${date}`, 3, 10)
+  return { risk, explicitlySet }
+}
 
 /**
  * Extract the chosen archetype from a visual spec or block of text.
@@ -215,6 +239,38 @@ function buildArchetypeConstraintPrompt(history) {
 
   // `forbidden` retained for trace logging only — no longer enforced.
   return { block, forbidden: last3, allowed: [...ARCHETYPE_NAMES] }
+}
+
+/**
+ * Render the Creative Weights risk sentence for the Art Director prompt.
+ * Four distinct buckets (3-4 / 5-6 / 7-8 / 9-10) so risk is a real dial —
+ * previously only 3 buckets existed and the >=7 sentence ("BOLD,
+ * EXPERIMENTAL") fired for every risk value from 7 through 10, including
+ * the constant risk=8 default that ran every day before WEIGHT_RISK
+ * started varying by date.
+ *
+ * risk >= 9 references the Max-Risk License in art-director.md — the one
+ * day the Art Director may deliberately break a single named anti-pattern
+ * from the chosen seed lane. (Not a novel archetype or a custom chassis:
+ * the orchestrator hard-validates ARCHETYPE against the fixed 8-name set
+ * and throws if it doesn't match, and CHASSIS_ID outside the catalog is
+ * silently replaced with CHASSIS_CATALOG[0] — neither deviation would
+ * survive the run, so the license targets the one lever that does.)
+ *
+ * @param {number} risk
+ * @returns {string}
+ */
+export function describeRiskTier(risk) {
+  if (risk >= 9) {
+    return 'MAXIMUM RISK today. You may invoke the Max-Risk License below (break exactly ONE named anti-pattern from the seed lane) if the hero phrase genuinely demands it. Using it is optional — a strong, fully-compliant execution is still a valid MAXIMUM RISK day. Do not hedge: whatever you choose, commit harder than a normal day would.'
+  }
+  if (risk >= 7) {
+    return 'BOLD today. Push for a committed gesture — fuller color saturation, a more aggressive archetype commitment, less hedging toward the safe middle.'
+  }
+  if (risk >= 5) {
+    return 'Balanced. Mix proven patterns with one deliberate point of risk — not maximum safety, not maximum novelty.'
+  }
+  return 'SAFE, POLISHED today. Proven patterns, minimal deviation from what has worked before.'
 }
 
 // ---------------------------------------------------------------------------
@@ -448,15 +504,28 @@ function validateCodegen() {
 export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const { signals, brief, contentSummary, currentFiles = [] } = context
 
-  // Read creative weights from environment
+  // Read creative weights from environment. WEIGHT_RISK is the one dial
+  // that varies by date rather than falling back to a constant: a fixed
+  // fallback (the old default was '8') meant every day the owner panel
+  // left WEIGHT_RISK unset rendered the exact same "BOLD" prompt sentence
+  // below. When the env var is absent or empty (the owner panel writes a
+  // real value when it wants to override), derive risk 3-10 from the
+  // build date instead — reproducible per day, varied across days. An
+  // explicitly-set repo var (including '0', which is falsy in JS but not
+  // "unset") always wins over the derived value.
+  const today = signals.date || new Date().toISOString().slice(0, 10)
+  const { risk: riskWeight, explicitlySet: riskExplicitlySet } = resolveRiskWeight(
+    process.env.WEIGHT_RISK,
+    today
+  )
   const weights = {
     signals: parseInt(process.env.WEIGHT_SIGNALS || '5', 10),
     inspiration: parseInt(process.env.WEIGHT_INSPIRATION || '5', 10),
     ratings: parseInt(process.env.WEIGHT_RATINGS || '5', 10),
-    risk: parseInt(process.env.WEIGHT_RISK || '8', 10),
+    risk: riskWeight,
   }
   console.log(
-    `  creative weights: signals=${weights.signals} inspiration=${weights.inspiration} ratings=${weights.ratings} risk=${weights.risk}`
+    `  creative weights: signals=${weights.signals} inspiration=${weights.inspiration} ratings=${weights.ratings} risk=${weights.risk}${riskExplicitlySet ? '' : ' (derived from date — WEIGHT_RISK unset)'}`
   )
   console.log(
     `  model tier: ${isDevModelTier() ? 'DEV (sonnet ceiling — local Max-plan, no Opus)' : 'PROD (best per job — opus mockup designer)'} | mockup-designer=${modelFor('mockup-designer')}`
@@ -818,7 +887,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     const chassisCatalogBlock = formatChassisCatalogForPrompt(CHASSIS_CATALOG)
     const archetypeHistoryBlock = archetypeConstraintPrompt
-    const weightsBlock = `Signals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${weights.risk >= 7 ? 'BOLD, EXPERIMENTAL today. Push for a committed gesture.' : weights.risk <= 3 ? 'SAFE, POLISHED today. Proven patterns.' : 'Balanced.'}`
+    const weightsBlock = `Signals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${describeRiskTier(weights.risk)}`
 
     // Art Director system prompt: art-director.md + brand register +
     // typography + color. Trim to brand+color+typography per spec to keep
@@ -1238,10 +1307,19 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     if (isCommitted) {
       conditionalRefs.push(await readFile(path.join(refDir, 'bolder.md'), 'utf8'))
     }
-    const seedPath = selectSeed(chosenArchetype || 'stack')
-    const seedContent = readFileSync(seedPath, 'utf8')
+    const {
+      path: seedPath,
+      content: seedContent,
+      laneId: seedLaneId,
+      laneCount: seedLaneCount,
+    } = selectSeedContent(
+      chosenArchetype || 'stack',
+      signals.date || new Date().toISOString().slice(0, 10)
+    )
     console.log(
-      `  injecting seed: ${path.basename(seedPath)}; conditional refs: ${conditionalRefs.length}`
+      `  injecting seed: ${path.basename(seedPath)}` +
+        (seedLaneId ? ` (lane: ${seedLaneId}, ${seedLaneCount} lanes)` : '') +
+        `; conditional refs: ${conditionalRefs.length}`
     )
     const mockupDesignerSystemPrompt = [
       mockupDesignerPromptRaw.replace('<!-- SEED_ANCHOR -->', seedContent),
