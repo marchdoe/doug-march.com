@@ -51,4 +51,18 @@ describe('validateArtDirectorResult — MEASURABLES + SHELL', () => {
       'canvas_utilization_min: >=70\nhero_scale: clamp(96px, 13vw, 200px)\ncolor_coverage_min: 60'
     expect(() => validateArtDirectorResult(r)).not.toThrow()
   })
+
+  it('does NOT throw when hero_source and layout_signature are absent (optional variance fields)', () => {
+    const r = valid()
+    expect(r.hero_source).toBeUndefined()
+    expect(r.layout_signature).toBeUndefined()
+    expect(() => validateArtDirectorResult(r)).not.toThrow()
+  })
+
+  it('does NOT throw when SHELL is missing ground_strategy (optional field, old-shaped SHELL)', () => {
+    const r = valid()
+    // shell already has no ground_strategy line — confirms it's not required
+    expect(r.shell).not.toContain('ground_strategy')
+    expect(() => validateArtDirectorResult(r)).not.toThrow()
+  })
 })

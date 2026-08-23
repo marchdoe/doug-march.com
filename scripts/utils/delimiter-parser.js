@@ -24,6 +24,8 @@
  *   measurables?: string,
  *   shell?: string,
  *   interior_notes?: string,
+ *   hero_source?: string,
+ *   layout_signature?: string,
  * }}
  */
 export function parseDelimiterResponse(result) {
@@ -36,7 +38,7 @@ export function parseDelimiterResponse(result) {
   const src = fenceMatch ? fenceMatch[1] : result
   const withSentinel = src + sentinel
   const filePattern =
-    /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===HERO_COPY===|^===HERO_RATIONALE===|^===ARCHETYPE===|^===CHASSIS_ID===|^===VISUAL_SPEC===|^===SELF_CHECK===|^===MEASURABLES===|^===SHELL===|^===INTERIOR_NOTES===|^===END_SENTINEL===)/gm
+    /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===HERO_COPY===|^===HERO_RATIONALE===|^===HERO_SOURCE===|^===ARCHETYPE===|^===CHASSIS_ID===|^===VISUAL_SPEC===|^===SELF_CHECK===|^===MEASURABLES===|^===SHELL===|^===LAYOUT_SIGNATURE===|^===INTERIOR_NOTES===|^===END_SENTINEL===)/gm
   let match
   while ((match = filePattern.exec(withSentinel)) !== null) {
     const filePath = match[1].trim()
@@ -56,12 +58,14 @@ export function parseDelimiterResponse(result) {
   const design_brief = captureBlock('DESIGN_BRIEF')
   const hero_copy = captureBlock('HERO_COPY')
   const hero_rationale = captureBlock('HERO_RATIONALE')
+  const hero_source = captureBlock('HERO_SOURCE')
   const archetype = captureBlock('ARCHETYPE')
   const chassis_id = captureBlock('CHASSIS_ID')
   const visual_spec = captureBlock('VISUAL_SPEC')
   const self_check = captureBlock('SELF_CHECK')
   const measurables = captureBlock('MEASURABLES')
   const shell = captureBlock('SHELL')
+  const layout_signature = captureBlock('LAYOUT_SIGNATURE')
   const interior_notes = captureBlock('INTERIOR_NOTES')
 
   let color_scheme
@@ -81,12 +85,14 @@ export function parseDelimiterResponse(result) {
     color_scheme,
     hero_copy,
     hero_rationale,
+    hero_source,
     archetype,
     chassis_id,
     visual_spec,
     self_check,
     measurables,
     shell,
+    layout_signature,
     interior_notes,
   }
 }

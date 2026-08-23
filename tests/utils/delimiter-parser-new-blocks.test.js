@@ -33,4 +33,46 @@ describe('parseDelimiterResponse — new blocks', () => {
     expect(p.files[0].content).toBe('<html></html>')
     expect(p.interior_notes).toBe('notes')
   })
+
+  it('captures HERO_SOURCE and LAYOUT_SIGNATURE (variance mandate blocks)', () => {
+    const raw = [
+      '===HERO_COPY===',
+      'FOURTEEN HOURS OF LIGHT',
+      '===HERO_SOURCE===',
+      'composed',
+      '===LAYOUT_SIGNATURE===',
+      'columns: 2',
+      'axis: vertical',
+      'symmetry: asymmetric',
+      'hero_zone: left',
+      '===RATIONALE===',
+      'because',
+    ].join('\n')
+    const p = parseDelimiterResponse(raw)
+    expect(p.hero_source).toBe('composed')
+    expect(p.layout_signature).toContain('columns: 2')
+    expect(p.rationale).toBe('because')
+  })
+
+  it('does not fail when HERO_SOURCE and LAYOUT_SIGNATURE are absent (optional blocks)', () => {
+    const raw = [
+      '===HERO_COPY===',
+      'FOURTEEN HOURS OF LIGHT',
+      '===ARCHETYPE===',
+      'Specimen',
+      '===RATIONALE===',
+      'because',
+    ].join('\n')
+    const p = parseDelimiterResponse(raw)
+    expect(p.hero_source).toBeUndefined()
+    expect(p.layout_signature).toBeUndefined()
+    expect(p.hero_copy).toBe('FOURTEEN HOURS OF LIGHT')
+  })
+
+  it('still terminates a FILE block at HERO_SOURCE and LAYOUT_SIGNATURE', () => {
+    const raw = ['===FILE:mockup.html===', '<html></html>', '===HERO_SOURCE===', 'quote'].join('\n')
+    const p = parseDelimiterResponse(raw)
+    expect(p.files[0].content).toBe('<html></html>')
+    expect(p.hero_source).toBe('quote')
+  })
 })
