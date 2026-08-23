@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { ResponsiveCard } from './components/responsive-card'
-import { readResponsiveMetrics } from './server/archive'
+import { readResponsiveMetrics, readArchiveDetail } from './server/archive'
 import type { ResponsiveMetrics } from './server/archive'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -35,6 +35,18 @@ interface ArchiveEntry {
   timestamp: number
   brief: string
   weights?: { signals: number; inspiration: number; ratings: number; risk: number }
+  rationale?: string
+  filesChanged?: string[]
+}
+
+// One step of the pipeline trace, as emitted on the SSE stream ({ type:
+// 'trace', step }) and persisted in each build's trace.json.
+interface TraceStep {
+  name: string
+  phase: number
+  input?: Record<string, unknown>
+  output?: Record<string, unknown>
+  durationMs?: number
 }
 
 type PipelineStatus = 'idle' | 'running' | 'success' | 'error' | 'cooldown'
@@ -197,6 +209,8 @@ export function DevPanel() {
   const [phases, setPhases] = useState<Phase[]>(makePhases())
   const [logLines, setLogLines] = useState<string[]>([])
   const logAccumRef = useRef<string[]>([])
+  const [traceSteps, setTraceSteps] = useState<TraceStep[]>([])
+  const traceAccumRef = useRef<TraceStep[]>([])
   const esRef = useRef<EventSource | null>(null)
   const logEndRef = useRef<HTMLDivElement>(null)
   const [attemptNum, setAttemptNum] = useState(1)
@@ -320,7 +334,14 @@ export function DevPanel() {
       reconnectAttemptsRef.current = 0
       const event = JSON.parse(e.data) as
         | { type: 'log'; line: string }
+        | { type: 'trace'; step: TraceStep }
         | { type: 'done'; success: boolean; error?: string }
+
+      if (event.type === 'trace') {
+        traceAccumRef.current.push(event.step)
+        setTraceSteps([...traceAccumRef.current])
+        return
+      }
 
       if (event.type === 'log') {
         const line = event.line
@@ -447,6 +468,10 @@ export function DevPanel() {
       setPipelineStatus('running')
       setPhases(makePhases())
       logAccumRef.current = []
+      // The SSE stream replays the full buffered event log (trace included)
+      // on reconnect, so start from empty to avoid duplicate steps.
+      traceAccumRef.current = []
+      setTraceSteps([])
 
       if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
       elapsedTimerRef.current = setInterval(() => {
@@ -466,6 +491,8 @@ export function DevPanel() {
     setPhases(makePhases())
     setLogLines([])
     logAccumRef.current = []
+    setTraceSteps([])
+    traceAccumRef.current = []
     setAttemptNum(1)
     setResult(null)
     setElapsedMs(0)
@@ -647,12 +674,12 @@ export function DevPanel() {
               onClick={() => setActivePane('archive')}
               badge={archive.length > 0 ? String(archive.length) : undefined}
             />
-            {/* Prompt Inspector — coming soon, see backlog */}
-            {/* <SidebarItem
+            <SidebarItem
               label="Prompt Inspector"
               active={activePane === 'inspector'}
               onClick={() => setActivePane('inspector')}
-            /> */}
+              badge={traceSteps.length > 0 ? String(traceSteps.length) : undefined}
+            />
           </div>
         </nav>
 
@@ -672,7 +699,9 @@ export function DevPanel() {
             />
           )}
           {activePane === 'archive' && <ArchivePane archive={archive} />}
-          {activePane === 'inspector' && <InspectorPane />}
+          {activePane === 'inspector' && (
+            <InspectorPane traceSteps={traceSteps} archive={archive} />
+          )}
           {activePane === 'run' && (
             <RunPane
               pipelineStatus={pipelineStatus}
@@ -971,6 +1000,7 @@ function PipelinePane({
 
 function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
   const today = new Date().toISOString().slice(0, 10)
+  const [expandedBuild, setExpandedBuild] = useState<string | null>(null)
 
   function previewUrl(entry: ArchiveEntry) {
     if (entry.buildId) return `/api/archive-preview/${entry.date}/build-${entry.buildId}/index.html`
@@ -1012,6 +1042,7 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
         const isToday = entry.date === today
         const time = buildTime(entry)
         const w = entry.weights
+        const entryKey = entry.buildId || entry.date + i
         return (
           <div
             key={entry.buildId || entry.date + i}
@@ -1098,6 +1129,69 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
                 ))}
               </div>
             )}
+            {(entry.rationale || (entry.filesChanged?.length ?? 0) > 0) && (
+              <div style={{ marginTop: '6px' }}>
+                <button
+                  type="button"
+                  onClick={() => setExpandedBuild(expandedBuild === entryKey ? null : entryKey)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    fontSize: '9px',
+                    color: c.dim,
+                    cursor: 'pointer',
+                    fontFamily: c.font,
+                  }}
+                >
+                  {expandedBuild === entryKey ? '▾ Hide Brief' : '▸ View Brief'}
+                </button>
+                {expandedBuild === entryKey && (
+                  <div
+                    style={{
+                      marginTop: '8px',
+                      paddingTop: '8px',
+                      borderTop: `1px solid ${c.border}`,
+                    }}
+                  >
+                    {entry.rationale && (
+                      <div
+                        style={{
+                          fontSize: '11px',
+                          color: c.secondary,
+                          fontFamily: c.font,
+                          lineHeight: '1.6',
+                          whiteSpace: 'pre-wrap',
+                          marginBottom: (entry.filesChanged?.length ?? 0) > 0 ? '8px' : 0,
+                        }}
+                      >
+                        {entry.rationale}
+                      </div>
+                    )}
+                    {(entry.filesChanged?.length ?? 0) > 0 && (
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                        {entry.filesChanged?.map((f) => (
+                          <span
+                            key={f}
+                            style={{
+                              fontSize: '9px',
+                              color: c.dim,
+                              fontFamily: c.font,
+                              background: c.pageBg,
+                              border: `1px solid ${c.border}`,
+                              borderRadius: '3px',
+                              padding: '2px 6px',
+                            }}
+                          >
+                            {f}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )
       })}
@@ -1107,7 +1201,62 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
 
 // ─── Inspector Pane ──────────────────────────────────────────────────────────
 
-function InspectorPane() {
+function InspectorPane({
+  traceSteps,
+  archive,
+}: {
+  traceSteps: TraceStep[]
+  archive: ArchiveEntry[]
+}) {
+  const [selectedDate, setSelectedDate] = useState<string | null>(null)
+  const [savedTrace, setSavedTrace] = useState<TraceStep[] | null>(null)
+  const [expandedSteps, setExpandedSteps] = useState<Set<number>>(new Set())
+
+  // One button per date (archive lists every build; traces load per date)
+  const dates = [...new Set(archive.map((e) => e.date))].slice(0, 10)
+
+  const loadTrace = async (date: string) => {
+    setSelectedDate(date)
+    setExpandedSteps(new Set())
+    try {
+      const detail = await readArchiveDetail({ data: date })
+      if (detail?.trace) {
+        const parsed = JSON.parse(detail.trace) as { steps?: TraceStep[] }
+        setSavedTrace(parsed.steps || [])
+      } else {
+        setSavedTrace([])
+      }
+    } catch {
+      setSavedTrace([])
+    }
+  }
+
+  const displaySteps = selectedDate ? savedTrace || [] : traceSteps
+  const isLive = !selectedDate && traceSteps.length > 0
+
+  const toggleStep = (idx: number) => {
+    setExpandedSteps((prev) => {
+      const next = new Set(prev)
+      if (next.has(idx)) {
+        next.delete(idx)
+      } else {
+        next.add(idx)
+      }
+      return next
+    })
+  }
+
+  const pickerBtn = (active: boolean): React.CSSProperties => ({
+    background: active ? 'rgba(0,229,255,0.08)' : c.cardBg,
+    border: `1px solid ${active ? c.cyan : c.border}`,
+    borderRadius: '3px',
+    padding: '4px 10px',
+    fontSize: '10px',
+    color: active ? c.cyan : c.secondary,
+    cursor: 'pointer',
+    fontFamily: c.font,
+  })
+
   return (
     <>
       <h2
@@ -1123,17 +1272,195 @@ function InspectorPane() {
       >
         // PROMPT INSPECTOR
       </h2>
-      <p
+
+      {/* Source selector: live stream vs saved traces */}
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedDate(null)
+            setSavedTrace(null)
+            setExpandedSteps(new Set())
+          }}
+          style={pickerBtn(selectedDate === null)}
+        >
+          Live
+        </button>
+        {dates.map((date) => (
+          <button
+            type="button"
+            key={date}
+            onClick={() => loadTrace(date)}
+            style={pickerBtn(selectedDate === date)}
+          >
+            {date}
+          </button>
+        ))}
+      </div>
+
+      {isLive && (
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '10px',
+            color: c.orange,
+            fontFamily: c.font,
+            marginBottom: '16px',
+          }}
+        >
+          <span
+            style={{ width: '6px', height: '6px', borderRadius: '50%', background: c.orange }}
+          />
+          streaming {traceSteps.length} steps
+        </div>
+      )}
+
+      {displaySteps.length === 0 ? (
+        <div
+          style={{
+            background: c.cardBg,
+            border: `1px solid ${c.border}`,
+            borderRadius: '4px',
+            padding: '40px',
+            textAlign: 'center',
+            fontSize: '11px',
+            color: c.muted,
+            fontFamily: c.font,
+          }}
+        >
+          {selectedDate
+            ? 'No trace data available for this build.'
+            : 'Run the pipeline to see trace data here.'}
+        </div>
+      ) : (
+        displaySteps.map((step, i) => (
+          <TraceStepCard
+            key={`${step.name}-${i}`}
+            step={step}
+            expanded={expandedSteps.has(i)}
+            onToggle={() => toggleStep(i)}
+          />
+        ))
+      )}
+    </>
+  )
+}
+
+const TRACE_PHASES: Record<number, { name: string; color: string }> = {
+  0: { name: 'SETUP', color: c.muted },
+  1: { name: 'DIRECTION', color: c.cyan },
+  2: { name: 'TOKENS', color: '#a78bfa' },
+  3: { name: 'DESIGN', color: c.orange },
+  4: { name: 'VALIDATION', color: c.green },
+}
+
+function fmtStepDuration(ms: number): string {
+  if (ms > 60000) return `${(ms / 60000).toFixed(1)}m`
+  if (ms > 1000) return `${(ms / 1000).toFixed(1)}s`
+  return `${ms}ms`
+}
+
+function TraceJsonBlock({ label, value }: { label: string; value: Record<string, unknown> }) {
+  return (
+    <div style={{ marginBottom: '8px' }}>
+      <div
         style={{
-          fontSize: '11px',
+          fontSize: '9px',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '.07em',
           color: c.muted,
           fontFamily: c.font,
-          lineHeight: '1.6',
+          marginBottom: '4px',
         }}
       >
-        Available when agent swarm is active.
-      </p>
-    </>
+        {label}
+      </div>
+      <pre
+        style={{
+          fontSize: '10px',
+          color: c.secondary,
+          background: c.pageBg,
+          padding: '8px',
+          borderRadius: '4px',
+          overflow: 'auto',
+          maxHeight: label === 'INPUT' ? '200px' : '300px',
+          whiteSpace: 'pre-wrap',
+          margin: 0,
+          fontFamily: c.font,
+        }}
+      >
+        {JSON.stringify(value, null, 2)}
+      </pre>
+    </div>
+  )
+}
+
+function TraceStepCard({
+  step,
+  expanded,
+  onToggle,
+}: {
+  step: TraceStep
+  expanded: boolean
+  onToggle: () => void
+}) {
+  const phase = TRACE_PHASES[step.phase] || { name: `P${step.phase}`, color: c.muted }
+
+  return (
+    <div
+      style={{
+        background: c.cardBg,
+        border: `1px solid ${c.border}`,
+        borderLeft: `3px solid ${phase.color}`,
+        borderRadius: '4px',
+        padding: '10px 12px',
+        marginBottom: '6px',
+        cursor: 'pointer',
+      }}
+      onClick={onToggle}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span
+            style={{
+              fontSize: '9px',
+              color: phase.color,
+              fontWeight: 700,
+              fontFamily: c.font,
+              letterSpacing: '0.05em',
+              background: `${phase.color}18`,
+              padding: '2px 6px',
+              borderRadius: '3px',
+            }}
+          >
+            {phase.name}
+          </span>
+          <span style={{ fontSize: '12px', color: c.primary, fontWeight: 700, fontFamily: c.font }}>
+            {step.name}
+          </span>
+          {(step.durationMs ?? 0) > 0 && (
+            <span style={{ fontSize: '10px', color: c.muted, fontFamily: c.font }}>
+              {fmtStepDuration(step.durationMs ?? 0)}
+            </span>
+          )}
+        </div>
+        <span style={{ fontSize: '11px', color: c.muted }}>{expanded ? '▾' : '▸'}</span>
+      </div>
+
+      {expanded && (
+        <div style={{ marginTop: '12px' }}>
+          {step.input && Object.keys(step.input).length > 0 && (
+            <TraceJsonBlock label="INPUT" value={step.input} />
+          )}
+          {step.output && Object.keys(step.output).length > 0 && (
+            <TraceJsonBlock label="OUTPUT" value={step.output} />
+          )}
+        </div>
+      )}
+    </div>
   )
 }
 
