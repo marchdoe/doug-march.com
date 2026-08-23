@@ -288,7 +288,7 @@ hero_scale: <CSS size, e.g. clamp(96px, 13vw, 200px)>
 color_coverage_min: <integer %>       # >=60 when color strategy is Committed/Drenched, else >=35
 
 ===SHELL===
-nav: <treatment, e.g. bottom rail / corner mark / floating pills / left spine / top bar>
+nav: <treatment, e.g. bottom rail / corner mark / floating pills / left spine / top bar / none — must be "none" when COMPOSITION's shell_posture is "none"; the two fields describe the same nav and must not contradict each other>
 footer: <treatment, e.g. data strip / colophon block / folded-into-nav / none>
 brand_lockup: <one id from the Brand Contract table>
 brand_color_mode: original | single-color

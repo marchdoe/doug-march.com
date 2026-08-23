@@ -56,6 +56,7 @@ import { modelFor, isDevModelTier } from './utils/models.js'
 import { runArtDirector } from './agents/art-director.js'
 import { parseCompositionBlock } from './utils/spec-blocks.js'
 import { formatTuple } from './utils/composition-grammar.js'
+import { findShellPostureViolation } from './utils/shell-posture-check.js'
 export { parseDelimiterResponse }
 
 // ---------------------------------------------------------------------------
@@ -1520,6 +1521,45 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         } else {
           console.warn(
             `  ⚠ retry still missing ${stillMissing.join(', ')} — proceeding with original output`
+          )
+        }
+      } catch (err) {
+        console.warn(`  ⚠ retry failed: ${err.message} — proceeding with original output`)
+      }
+    }
+
+    // shell_posture: none means "no nav element at all" (see
+    // utils/composition-grammar.js) — a structural declaration, not a
+    // suggestion. The React Engineer can still emit a <nav> out of habit;
+    // catch it deterministically rather than trusting the prompt alone.
+    const postureViolation = findShellPostureViolation(
+      engineerResult.files,
+      chosenComposition.shell_posture
+    )
+    if (postureViolation && pastDeadline()) {
+      console.warn(`  ⚠ ${postureViolation} — [deadline] run budget exhausted, skipping retry`)
+    } else if (postureViolation) {
+      console.warn(`  ⚠ ${postureViolation} — retrying with explicit reminder`)
+      noteRetry()
+      const postureReminderPrompt = `${engineerUserPrompt}\n\n---\n\n## SHELL POSTURE VIOLATION — RETRY\n\n${postureViolation}\n\n\`shell_posture: none\` means no <nav> element anywhere in the output — navigation happens through in-content links only. Re-emit your COMPLETE response with every <nav> removed.`
+      try {
+        const retry = await callAgent(
+          'react-engineer',
+          reactEngineerSystemPrompt,
+          postureReminderPrompt,
+          null,
+          reactEngineerAgentConfig.options
+        )
+        const stillViolating = findShellPostureViolation(
+          retry.files,
+          chosenComposition.shell_posture
+        )
+        if (!stillViolating) {
+          engineerResult = retry
+          console.log(`  ✓ retry removed the nav element`)
+        } else {
+          console.warn(
+            `  ⚠ retry still violates shell_posture: none — proceeding with original output`
           )
         }
       } catch (err) {
