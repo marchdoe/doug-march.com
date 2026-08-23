@@ -2,9 +2,9 @@
  * Mockup Critic — blocking vision gate over the mockup screenshot.
  * Fail-closed: malformed responses count as REVISE.
  */
-import { callClaudeCLI } from '../utils/claude-cli.js'
+import { imageBlock, textBlock } from '../utils/claude-sdk.js'
 import { parseCriticVerdict } from '../utils/critic-verdict.js'
-import { modelFor } from '../utils/models.js'
+import { callVisionAgent } from '../utils/vision-router.js'
 
 export function parseMockupCriticResponse(raw) {
   const { verdict, malformed } = parseCriticVerdict(raw, 'APPROVE')
@@ -31,20 +31,29 @@ export function parseMockupCriticResponse(raw) {
  * @returns {Promise<{ verdict: 'APPROVE'|'REVISE', feedback: string }>}
  */
 export async function runMockupCritic(ctx) {
-  const userPrompt = [
-    `## Brief + Visual Specification\n\n${ctx.enrichedBrief}`,
-    `## Measurables (declared floors)\n\n${ctx.measurables}`,
-    `## Shell Declaration\n\n${ctx.shell}`,
-    'A screenshot of the rendered mockup (1440×900) is attached as a base64 JPEG image below.\n\n' +
-      '![Mockup Screenshot](data:image/jpeg;base64,' +
-      ctx.screenshotBuffer.toString('base64') +
-      ')',
-  ].join('\n\n---\n\n')
-
-  const raw = await callClaudeCLI('mockup-critic', ctx.systemPrompt, userPrompt, {
+  const raw = await callVisionAgent({
+    agentName: 'mockup-critic',
+    systemPrompt: ctx.systemPrompt,
+    contentBlocks: buildMockupCriticBlocks(ctx),
     timeoutMs: 600000,
     stallTimeoutMs: 300000,
-    model: modelFor('mockup-critic'),
   })
   return parseMockupCriticResponse(raw)
+}
+
+/**
+ * Assemble the critic's user turn: the declared intent as text, then the
+ * rendered mockup as a real image block. Exported for tests.
+ *
+ * @param {{ screenshotBuffer: Buffer, enrichedBrief: string, measurables: string, shell: string }} ctx
+ * @returns {Array<{type: string, text?: string, source?: object}>}
+ */
+export function buildMockupCriticBlocks(ctx) {
+  return [
+    textBlock(`## Brief + Visual Specification\n\n${ctx.enrichedBrief}`),
+    textBlock(`## Measurables (declared floors)\n\n${ctx.measurables}`),
+    textBlock(`## Shell Declaration\n\n${ctx.shell}`),
+    textBlock('The screenshot of the rendered mockup (1440×900) follows:'),
+    imageBlock(ctx.screenshotBuffer),
+  ]
 }

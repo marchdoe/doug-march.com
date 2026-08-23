@@ -1654,41 +1654,40 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         )
 
         console.log('[screenshot-critic] Evaluating design...')
-        const criticUserPrompt = [
+        // Real image blocks via the SDK when an API key is present. Inlining
+        // these JPEGs as base64 data-URIs in a CLI text prompt billed ~300k
+        // tokens per image and the model never saw the pixels (a solid-red
+        // probe read back as "light gray"). Three image blocks are ~5k tokens.
+        const { imageBlock, textBlock } = await import('./utils/claude-sdk.js')
+        const { callVisionAgent } = await import('./utils/vision-router.js')
+        const criticBlocks = [
           // enrichedBrief carries hero copy, rationale, and the full visual
           // spec. The nightly context has no `brief` key, so the old
           // `${brief}` here rendered the literal string "undefined".
-          `## Structured Brief\n\n${enrichedBrief}`,
-          references ? `## Design References\n\n${references}` : '',
-          mockupScreenshot
-            ? 'The APPROVED MOCKUP screenshot (fidelity target):\n\n![Mockup](data:image/jpeg;base64,' +
-              mockupScreenshot.jpeg.toString('base64') +
-              ')'
-            : '',
-          "\n\nThe rendered homepage in BOTH color schemes is attached below. ONE of them (the design's canonical mode) must match the mockup; the other is an adaptation and must stay a coherent, committed version of the same design — never a washed-out inversion.\n\n" +
-            'LIGHT scheme:\n\n![Homepage Screenshot — light](data:image/jpeg;base64,' +
-            screenshotBuffer.jpeg.toString('base64') +
-            ')\n\n' +
-            'DARK scheme:\n\n![Homepage Screenshot — dark](data:image/jpeg;base64,' +
-            screenshotBuffer.darkJpeg.toString('base64') +
-            ')',
-        ]
-          .filter(Boolean)
-          .join('\n\n---\n\n')
+          textBlock(`## Structured Brief\n\n${enrichedBrief}`),
+          references ? textBlock(`## Design References\n\n${references}`) : null,
+          mockupScreenshot ? textBlock('The APPROVED MOCKUP screenshot (fidelity target):') : null,
+          mockupScreenshot ? imageBlock(mockupScreenshot.jpeg) : null,
+          textBlock(
+            "The rendered homepage in BOTH color schemes follows. ONE of them (the design's canonical mode) must match the mockup; the other is an adaptation and must stay a coherent, committed version of the same design — never a washed-out inversion.\n\nLIGHT scheme:"
+          ),
+          imageBlock(screenshotBuffer.jpeg),
+          textBlock('DARK scheme:'),
+          imageBlock(screenshotBuffer.darkJpeg),
+        ].filter(Boolean)
 
         const t0ScreenshotCritic = Date.now()
-        const screenshotCriticResult = await callAgent(
-          'screenshot-critic',
-          screenshotCriticPrompt,
-          criticUserPrompt,
-          null,
+        const criticResponse = await callVisionAgent({
+          agentName: 'screenshot-critic',
+          systemPrompt: screenshotCriticPrompt,
+          contentBlocks: criticBlocks,
           // See spec-critic above: explicit stallTimeoutMs below the 10m
-          // hard timeout so a throttled-but-alive call can't ride the
+          // hard timeout so the CLI fallback path can't ride the
           // claude-cli.js default (15m) stall window past its own cap.
-          { model: modelFor('screenshot-critic'), stallTimeoutMs: 300000 }
-        )
-        const criticResponse =
-          screenshotCriticResult._rawResponse || screenshotCriticResult.rationale || ''
+          // The SDK path uses timeoutMs only.
+          timeoutMs: 600000,
+          stallTimeoutMs: 300000,
+        })
         const { verdict: screenshotVerdict } = parseCriticVerdict(criticResponse, 'SHIP')
 
         verdicts.push({
