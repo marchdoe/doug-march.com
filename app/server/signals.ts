@@ -1,9 +1,13 @@
 // app/server/signals.ts
 'use server'
 import { createServerFn } from '@tanstack/react-start'
+import { assertDevOnly } from './dev-only'
 import { _readSignalsHandler, _saveOverridesHandler } from './signals-impl'
 
-export const readSignals = createServerFn({ method: 'GET' }).handler(() => _readSignalsHandler())
+export const readSignals = createServerFn({ method: 'GET' }).handler(() => {
+  assertDevOnly()
+  return _readSignalsHandler()
+})
 
 export const saveOverrides = createServerFn({ method: 'POST' })
   .inputValidator((d: unknown) => {
@@ -15,6 +19,7 @@ export const saveOverrides = createServerFn({ method: 'POST' })
     }
   })
   .handler(({ data }) => {
+    assertDevOnly()
     _saveOverridesHandler(data)
     return { ok: true }
   })

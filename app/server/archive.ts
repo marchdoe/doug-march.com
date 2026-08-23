@@ -1,13 +1,17 @@
 // app/server/archive.ts
 'use server'
 import { createServerFn } from '@tanstack/react-start'
+import { assertDevOnly } from './dev-only'
 import { _readArchiveHandler, _readResponsiveMetrics, _readResponsiveHistory } from './archive-impl'
 import { _readArchiveDetail } from './archive-detail-impl'
 export type { ArchiveEntry } from './archive-impl'
 export type { ArchiveDetail } from './archive-detail-impl'
 export type { ResponsiveMetrics } from './archive-impl'
 
-export const readArchive = createServerFn({ method: 'GET' }).handler(() => _readArchiveHandler())
+export const readArchive = createServerFn({ method: 'GET' }).handler(() => {
+  assertDevOnly()
+  return _readArchiveHandler()
+})
 
 export const readArchiveDetail = createServerFn({ method: 'GET' })
   .inputValidator((d: unknown) => {
@@ -16,6 +20,7 @@ export const readArchiveDetail = createServerFn({ method: 'GET' })
     return s
   })
   .handler(async ({ data: date }) => {
+    assertDevOnly()
     return _readArchiveDetail(date)
   })
 
@@ -29,6 +34,7 @@ export const readResponsiveMetrics = createServerFn({ method: 'GET' })
     return { date, buildId }
   })
   .handler(async ({ data }) => {
+    assertDevOnly()
     return _readResponsiveMetrics(data.date, data.buildId)
   })
 
@@ -40,5 +46,6 @@ export const readResponsiveHistory = createServerFn({ method: 'GET' })
     return { limit }
   })
   .handler(async ({ data }) => {
+    assertDevOnly()
     return _readResponsiveHistory(data.limit)
   })
