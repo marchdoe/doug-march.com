@@ -33,9 +33,10 @@ function LineChart({
     <div style={{ marginBottom: 16 }}>
       <div style={{ fontSize: 11, color: COLORS.muted, marginBottom: 4 }}>{label}</div>
       <svg width={W} height={H} style={{ border: `1px solid ${COLORS.border}` }}>
+        <title>{label}</title>
         <polyline points={poly} fill="none" stroke={COLORS.cyan} strokeWidth={1.5} />
-        {data.map((d, i) => (
-          <circle key={i} cx={sx(d.x)} cy={sy(d.y)} r={2.5} fill={COLORS.cyan}>
+        {data.map((d) => (
+          <circle key={d.x} cx={sx(d.x)} cy={sy(d.y)} r={2.5} fill={COLORS.cyan}>
             <title>{`${d.labelX || d.x}: ${d.y}/5`}</title>
           </circle>
         ))}

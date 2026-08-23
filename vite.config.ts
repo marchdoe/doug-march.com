@@ -376,6 +376,11 @@ function pipelineApiPlugin(): Plugin {
           env: pipelineEnv,
           cwd: process.cwd(),
         })
+        // spawn() defaults to stdio: 'pipe' for stdout/stderr (never overridden
+        // above), so both are always present — this narrows the type once
+        // instead of asserting on every access below.
+        const { stdout, stderr } = pipelineChild
+        if (!stdout || !stderr) throw new Error('pipeline child process missing stdout/stderr')
 
         const handleData = (chunk: Buffer) => {
           const lines = chunk
@@ -396,8 +401,8 @@ function pipelineApiPlugin(): Plugin {
           }
         }
 
-        pipelineChild.stdout!.on('data', handleData)
-        pipelineChild.stderr!.on('data', handleData)
+        stdout.on('data', handleData)
+        stderr.on('data', handleData)
 
         pipelineChild.on('close', (code) => {
           if (pipelineDone) return
