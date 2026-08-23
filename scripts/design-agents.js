@@ -38,6 +38,7 @@ import {
 import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-manager.js'
 import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
+import { resetLedger, noteRetry } from './utils/cost-ledger.js'
 import { createTrace } from './utils/trace.js'
 import { selectSeedContent } from './utils/select-seed.js'
 import { hashToRange } from './utils/deterministic-hash.js'
@@ -504,6 +505,11 @@ function validateCodegen() {
 export async function runAgentSwarm(context, { onTraceStep } = {}) {
   const { signals, brief, contentSummary, currentFiles = [] } = context
 
+  // Start this run's cost accounting from zero. The ledger is module-level,
+  // so a second swarm in the same process (the dev panel's Run button) would
+  // otherwise bill the previous run's calls to this one.
+  resetLedger()
+
   // Read creative weights from environment. WEIGHT_RISK is the one dial
   // that varies by date rather than falling back to a constant: a fixed
   // fallback (the old default was '8') meant every day the owner panel
@@ -920,6 +926,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       })
     } catch (firstErr) {
       console.warn(`  Art Director failed (${firstErr.message}) — retrying once with error context`)
+      noteRetry()
       try {
         artDirectorResult = await runArtDirector({
           signals,
@@ -1033,6 +1040,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const codegenResult = validateCodegen()
     if (!codegenResult.success) {
       console.log('  codegen failed — retrying Art Director with error context...')
+      noteRetry()
       // Restore preset.ts before retry
       const presetBackup = new Map()
       for (const [k, v] of originalBackup.entries()) {
@@ -1548,6 +1556,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const isStall = /stalled|0KB|no output/i.test(err.message)
       if (isStall && !pastDeadline()) {
         console.warn(`  React Engineer stalled (${err.message}) — retrying once`)
+        noteRetry()
         try {
           engineerResult = await callAgent(
             'react-engineer',
@@ -1590,6 +1599,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       console.warn(
         `  ⚠ React Engineer omitted required files: ${missing.join(', ')} — retrying with explicit reminder`
       )
+      noteRetry()
       const reminderPrompt = `${engineerUserPrompt}\n\n---\n\n## REQUIRED FILES MISSING — RETRY\n\nYour previous response omitted these required files: ${missing.join(', ')}\n\nThis silently preserves yesterday's chrome and breaks the day's archetype. Re-emit your COMPLETE response. Every required file must appear, including these you missed:\n${missing.map((m) => `- ${m}`).join('\n')}`
       try {
         const retry = await callAgent(

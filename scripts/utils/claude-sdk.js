@@ -17,6 +17,7 @@
 
 import Anthropic from '@anthropic-ai/sdk'
 import { modelFor } from './models.js'
+import { recordUsage } from './cost-ledger.js'
 
 /**
  * @typedef {{ type: 'text', text: string }} TextBlock
@@ -131,8 +132,14 @@ export async function callClaudeSDK(agentName, systemPrompt, contentBlocks, opts
     .join('')
 
   const usage = response.usage ?? {}
+  const elapsedMs = Date.now() - started
+  // The API returns token counts and no price; the ledger prices these from
+  // its own table and marks them estimated.
+  try {
+    recordUsage({ agent: agentName, model, source: 'sdk', usage, ms: elapsedMs })
+  } catch {}
   console.log(
-    `  [${agentName}] SDK finished in ${Math.round((Date.now() - started) / 1000)}s ` +
+    `  [${agentName}] SDK finished in ${Math.round(elapsedMs / 1000)}s ` +
       `(in=${usage.input_tokens ?? '?'}, out=${usage.output_tokens ?? '?'}, stop=${response.stop_reason ?? '?'}, ${(text.length / 1024).toFixed(0)}KB text)`
   )
 

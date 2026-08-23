@@ -23,6 +23,30 @@ function readSafe(p) {
   return existsSync(p) ? readFileSync(p, 'utf8') : ''
 }
 
+/**
+ * Read a build's cost.json. Returns null for the ~122 builds archived before
+ * cost telemetry existed, and for anything unparseable — the archive must
+ * keep rendering either way.
+ */
+function readCost(buildDir) {
+  if (!buildDir) return null
+  const p = join(buildDir, 'cost.json')
+  if (!existsSync(p)) return null
+  try {
+    const parsed = JSON.parse(readFileSync(p, 'utf8'))
+    return {
+      totalUsd: typeof parsed.total_usd === 'number' ? parsed.total_usd : null,
+      estimated: Boolean(parsed.estimated),
+      partial: Boolean(parsed.partial),
+      calls: typeof parsed.calls === 'number' ? parsed.calls : 0,
+      retries: typeof parsed.retries === 'number' ? parsed.retries : 0,
+      byAgent: Array.isArray(parsed.byAgent) ? parsed.byAgent : [],
+    }
+  } catch {
+    return null
+  }
+}
+
 function generateIndex() {
   if (!existsSync(ARCHIVE_PATH)) return []
 
@@ -82,6 +106,12 @@ function generateIndex() {
         filesChanged,
         archetype,
         buildId,
+        // Index carries the headline number only; the per-agent breakdown
+        // lives in detail.json so _data.json stays small.
+        cost: (() => {
+          const c = readCost(latestBuild ? join(dateDir, latestBuild) : null)
+          return c ? { totalUsd: c.totalUsd, estimated: c.estimated, retries: c.retries } : null
+        })(),
         rating: readRatingForDate(ARCHIVE_PATH, d.name),
       }
     })
@@ -150,6 +180,7 @@ function generateDetail(date) {
     hasScreenshot,
     buildId,
     trace,
+    cost: readCost(buildDir),
     rating: readRatingForDate(ARCHIVE_PATH, date),
   }
 }

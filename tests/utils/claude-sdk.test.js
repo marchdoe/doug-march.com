@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { callClaudeSDK, hasApiKey, imageBlock, textBlock } from '../../scripts/utils/claude-sdk.js'
+import { resetLedger, getUsageRecords } from '../../scripts/utils/cost-ledger.js'
 
 /** Minimal stand-in for the Anthropic client — never touches the network. */
 function stubClient(response) {
@@ -141,5 +142,35 @@ describe('callClaudeSDK', () => {
     await expect(
       callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], { client })
     ).rejects.toThrow(/rate_limit/)
+  })
+
+  describe('cost telemetry', () => {
+    beforeEach(() => {
+      resetLedger()
+    })
+
+    it('books the call against the cost ledger with an estimated price', async () => {
+      const { client } = stubClient(OK)
+      await callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], { client })
+
+      const [record, ...rest] = getUsageRecords()
+      expect(rest).toHaveLength(0)
+      expect(record.agent).toBe('mockup-critic')
+      expect(record.source).toBe('sdk')
+      expect(record.model).toBe('claude-haiku-4-5')
+      expect(record.input).toBe(5000)
+      expect(record.output).toBe(400)
+      // No price comes back from the API, so the ledger prices it itself.
+      expect(record.estimated).toBe(true)
+      expect(record.cost_usd).toBeCloseTo(5000 / 1e6 + (400 * 5) / 1e6, 9)
+    })
+
+    it('books nothing when the call throws', async () => {
+      const client = { messages: { create: vi.fn().mockRejectedValue(new Error('boom')) } }
+      await expect(
+        callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], { client })
+      ).rejects.toThrow()
+      expect(getUsageRecords()).toHaveLength(0)
+    })
   })
 })
