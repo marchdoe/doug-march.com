@@ -195,8 +195,9 @@ export async function captureScreenshot(port) {
     })
   }
 
+  let browser = null
   try {
-    const browser = await chromium.launch({ headless: true })
+    browser = await chromium.launch({ headless: true })
     const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
     await page.goto(`http://localhost:${serverPort}/`, {
       waitUntil: 'networkidle',
@@ -220,9 +221,12 @@ export async function captureScreenshot(port) {
     const darkPng = await darkPage.screenshot({ type: 'png', fullPage: false })
     const darkJpeg = await darkPage.screenshot({ type: 'jpeg', quality: 70, fullPage: false })
 
-    await browser.close()
     return { png, jpeg, darkPng, darkJpeg }
   } finally {
+    // Close in finally so a throw from page.goto / screenshot (dead preview
+    // server, networkidle timeout) can't orphan the headless Chromium — the
+    // critic gate calls this up to 3× per run, so leaks accumulate and OOM.
+    if (browser) await browser.close()
     if (server) server.kill()
   }
 }
