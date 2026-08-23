@@ -331,10 +331,18 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
   let parsed
 
   if (result.includes('===VERDICT===')) {
-    // Critic response (spec-critic, screenshot-critic) — extract verdict and feedback
+    // Critic response (spec-critic, screenshot-critic) — extract verdict and feedback.
+    // _fullResponse keeps the undelimited text: parseCriticVerdict anchors on the
+    // ===VERDICT=== block, so it must see the full response, not the stripped body.
     const verdictMatch = result.match(/===VERDICT===([\s\S]*?)===END===/)
     const verdictBody = verdictMatch ? verdictMatch[1].trim() : result.trim()
-    parsed = { files: [], rationale: verdictBody, design_brief: '', _rawResponse: verdictBody }
+    parsed = {
+      files: [],
+      rationale: verdictBody,
+      design_brief: '',
+      _rawResponse: verdictBody,
+      _fullResponse: result,
+    }
   } else if (result.includes('===VISUAL_SPEC===')) {
     // Design Director response — the entire content after the delimiter is the spec
     const specMatch = result.match(/===VISUAL_SPEC===([\s\S]*)/)
@@ -687,6 +695,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const recentRatings = buildRecentRatingsBlock(path.join(ROOT, 'archive'), { lookbackDays: 10 })
 
     // -----------------------------------------------------------------------
+    // Owner-curated permanent taste memory (signals/taste.md) — unlike the
+    // 10-build ratings window above, this is hand-maintained and all-time.
+    // Fed to both the Art Director and the Mockup Designer.
+    // -----------------------------------------------------------------------
+    const { buildTasteMemoryBlock } = await import('./utils/taste-memory.js')
+    const tasteMemoryBlock = buildTasteMemoryBlock(ROOT)
+
+    // -----------------------------------------------------------------------
     // Read design references (collected by collect-references.js)
     // -----------------------------------------------------------------------
     const referencesPath = path.resolve(ROOT, 'signals/today.references.md')
@@ -751,6 +767,48 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       console.warn(`[shell-mandate] computation failed (non-blocking): ${err.message}`)
     }
 
+    // Anti-sameness mandates (2026-08-23 audit): palette FORMULA (not just
+    // hue), hero-source rotation, and layout composition. Same soft-forbid
+    // shape as color/shell mandates above — deterministic, zero-LLM,
+    // advisory only. Each formatter returns '' when there's no history to
+    // react to (old archives predate these fields), so the section is
+    // simply omitted from the prompt rather than showing empty guidance.
+    const { computePaletteFormulaMandate, formatPaletteFormulaMandateForPrompt } = await import(
+      './utils/palette-formula-mandate.js'
+    )
+    let paletteFormulaMandateSection = ''
+    try {
+      paletteFormulaMandateSection = formatPaletteFormulaMandateForPrompt(
+        computePaletteFormulaMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 7 })
+      )
+    } catch (err) {
+      console.warn(`[palette-formula-mandate] computation failed (non-blocking): ${err.message}`)
+    }
+
+    const { computeHeroSourceMandate, formatHeroSourceMandateForPrompt } = await import(
+      './utils/hero-source-mandate.js'
+    )
+    let heroSourceMandateSection = ''
+    try {
+      heroSourceMandateSection = formatHeroSourceMandateForPrompt(
+        computeHeroSourceMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 7 })
+      )
+    } catch (err) {
+      console.warn(`[hero-source-mandate] computation failed (non-blocking): ${err.message}`)
+    }
+
+    const { computeLayoutSignatureMandate, formatLayoutSignatureMandateForPrompt } = await import(
+      './utils/layout-signature-mandate.js'
+    )
+    let layoutSignatureMandateSection = ''
+    try {
+      layoutSignatureMandateSection = formatLayoutSignatureMandateForPrompt(
+        computeLayoutSignatureMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 7 })
+      )
+    } catch (err) {
+      console.warn(`[layout-signature-mandate] computation failed (non-blocking): ${err.message}`)
+    }
+
     // -----------------------------------------------------------------------
     // Phase 0+1: Art Director — single decision (hero copy, archetype,
     // chassis, full preset.ts, visual spec). Replaces the historical
@@ -782,8 +840,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         references,
         colorMandateSection,
         shellMandateSection,
+        paletteFormulaMandateSection,
+        heroSourceMandateSection,
+        layoutSignatureMandateSection,
         brandContract,
         weightsBlock,
+        tasteMemoryBlock,
         failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
         systemPrompt: artDirectorSystemPrompt,
       })
@@ -803,8 +865,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           references,
           colorMandateSection,
           shellMandateSection,
+          paletteFormulaMandateSection,
+          heroSourceMandateSection,
+          layoutSignatureMandateSection,
           brandContract,
           weightsBlock,
+          tasteMemoryBlock,
           failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
           systemPrompt: artDirectorSystemPrompt,
         })
@@ -921,8 +987,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           references,
           colorMandateSection,
           shellMandateSection,
+          paletteFormulaMandateSection,
+          heroSourceMandateSection,
+          layoutSignatureMandateSection,
           brandContract,
           weightsBlock,
+          tasteMemoryBlock,
           failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
           systemPrompt: artDirectorSystemPrompt,
         })
@@ -961,18 +1031,27 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       }
     }
 
-    // Parse shell + measurables from the final settled artDirectorResult
-    // (computed here, after any codegen retry, so they always reflect the live result).
-    // shellDecl is also used as the shell.json archive artifact below.
-    const { parseShellBlock, parseMeasurablesBlock } = await import('./utils/spec-blocks.js')
+    // Parse shell + measurables + layout signature from the final settled
+    // artDirectorResult (computed here, after any codegen retry, so they
+    // always reflect the live result). shellDecl (which carries
+    // ground_strategy — see SHELL block) and layoutSignatureDecl are also
+    // used as archive artifacts below (shell.json, layout-signature.json).
+    const { parseShellBlock, parseMeasurablesBlock, parseLayoutSignatureBlock } = await import(
+      './utils/spec-blocks.js'
+    )
     const shellDecl = parseShellBlock(artDirectorResult.shell)
     const measurablesDecl = parseMeasurablesBlock(artDirectorResult.measurables)
+    const layoutSignatureDecl = parseLayoutSignatureBlock(artDirectorResult.layoutSignature)
     console.log(
-      `  shell: nav=${shellDecl.nav} | footer=${shellDecl.footer} | lockup=${shellDecl.brand_lockup} (${shellDecl.brand_color_mode})`
+      `  shell: nav=${shellDecl.nav} | footer=${shellDecl.footer} | lockup=${shellDecl.brand_lockup} (${shellDecl.brand_color_mode}) | ground=${shellDecl.ground_strategy}`
     )
     console.log(
       `  measurables: canvas>=${measurablesDecl.canvas_utilization_min}% color>=${measurablesDecl.color_coverage_min}% hero=${measurablesDecl.hero_scale}`
     )
+    console.log(
+      `  layout-signature: columns=${layoutSignatureDecl.columns} | axis=${layoutSignatureDecl.axis} | symmetry=${layoutSignatureDecl.symmetry} | hero_zone=${layoutSignatureDecl.hero_zone}`
+    )
+    console.log(`  hero-source: ${artDirectorResult.heroSource || '(none declared)'}`)
 
     // -----------------------------------------------------------------------
     // Spec Critic Gate — Art Director self-check
@@ -1000,10 +1079,20 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         specCriticPrompt,
         criticUserPrompt,
         null,
-        { model: modelFor('spec-critic') }
+        // Explicit stallTimeoutMs below the 10m hard timeout (same 10m/5m
+        // proportion as mockup-critic) — the claude-cli.js default (15m)
+        // exceeds this call's hard timeout, so a throttled-but-alive run
+        // could never trip the stall check and would just ride to the cap.
+        { model: modelFor('spec-critic'), stallTimeoutMs: 300000 }
       )
       const rawResponse = criticResult._rawResponse || criticResult.rationale || ''
-      const { verdict: specVerdict } = parseCriticVerdict(rawResponse, 'APPROVED')
+      // Parse from the full response — _rawResponse has the ===VERDICT=== block
+      // stripped, which parseCriticVerdict anchors on (it would fail closed to
+      // REVISE on every response otherwise).
+      const { verdict: specVerdict } = parseCriticVerdict(
+        criticResult._fullResponse || rawResponse,
+        'APPROVED'
+      )
 
       trace.addStep({
         name: 'spec-critic',
@@ -1208,6 +1297,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       lessonsBlock,
       calibrationNote,
       archetypeContractBlock,
+      tasteMemoryBlock,
       polishRef: refPolish,
       systemPrompt: mockupDesignerSystemPrompt,
       failureDumpPath: path.join(ROOT, 'signals', 'mockup-designer-last-failed.txt'),
@@ -1324,6 +1414,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         responsiveLesson
           ? `## Responsive Lesson (recent failure to avoid)\n\n${responsiveLesson}`
           : '',
+        // The engineer previously received zero historical feedback despite
+        // being the agent screenshot-critic failures usually blame — same
+        // capped block the mockup designer sees.
+        lessonsBlock,
       ]
         .filter(Boolean)
         .join('\n\n---\n\n')
@@ -1510,6 +1604,21 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           'mockup-screenshot.png': mockupScreenshot?.png ?? null,
           'verdicts.json': JSON.stringify(verdicts, null, 2),
           'shell.json': JSON.stringify(shellDecl, null, 2),
+          'hero-source.json': JSON.stringify(
+            { source: artDirectorResult.heroSource || null },
+            null,
+            2
+          ),
+          'layout-signature.json': JSON.stringify(
+            {
+              columns: layoutSignatureDecl.columns,
+              axis: layoutSignatureDecl.axis,
+              symmetry: layoutSignatureDecl.symmetry,
+              hero_zone: layoutSignatureDecl.hero_zone,
+            },
+            null,
+            2
+          ),
         }
       )
       archiveRan = true
@@ -1572,6 +1681,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           agentName: 'screenshot-critic',
           systemPrompt: screenshotCriticPrompt,
           contentBlocks: criticBlocks,
+          // See spec-critic above: explicit stallTimeoutMs below the 10m
+          // hard timeout so the CLI fallback path can't ride the
+          // claude-cli.js default (15m) stall window past its own cap.
+          // The SDK path uses timeoutMs only.
+          timeoutMs: 600000,
+          stallTimeoutMs: 300000,
         })
         const { verdict: screenshotVerdict } = parseCriticVerdict(criticResponse, 'SHIP')
 

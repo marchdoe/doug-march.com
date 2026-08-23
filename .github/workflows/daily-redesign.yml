@@ -81,6 +81,14 @@ jobs:
           PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}
         run: node scripts/collect-signals.js
 
+      - name: Collect references
+        # Curated library (references/index.yml) + trending signals from the
+        # step above, written to signals/today.references.md for the Art
+        # Director. Reads only local files (no network calls of its own) and
+        # never exits non-zero — provider/parse failures are caught and
+        # logged internally, same non-blocking contract as collect-signals.js.
+        run: node scripts/collect-references.js
+
       - name: Run daily redesign
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

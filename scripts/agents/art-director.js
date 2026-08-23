@@ -49,8 +49,12 @@ export function buildArtDirectorUserPrompt({
   references,
   colorMandateSection,
   shellMandateSection,
+  paletteFormulaMandateSection,
+  heroSourceMandateSection,
+  layoutSignatureMandateSection,
   brandContract,
   weightsBlock,
+  tasteMemoryBlock,
 }) {
   const sections = []
   sections.push(`## Today's Raw Signals\n\n\`\`\`yaml\n${formatSignalsAsYaml(signals)}\n\`\`\``)
@@ -62,8 +66,12 @@ export function buildArtDirectorUserPrompt({
   if (references) sections.push(`## Design References\n\n${references}`)
   if (colorMandateSection) sections.push(colorMandateSection)
   if (shellMandateSection) sections.push(shellMandateSection)
+  if (paletteFormulaMandateSection) sections.push(paletteFormulaMandateSection)
+  if (heroSourceMandateSection) sections.push(heroSourceMandateSection)
+  if (layoutSignatureMandateSection) sections.push(layoutSignatureMandateSection)
   if (brandContract) sections.push(brandContract)
   if (weightsBlock) sections.push(`## Creative Weights\n\n${weightsBlock}`)
+  if (tasteMemoryBlock) sections.push(tasteMemoryBlock)
   return sections.join('\n\n---\n\n')
 }
 
@@ -143,11 +151,16 @@ export function validateArtDirectorResult(parsed) {
  *   recentRatings: string,
  *   references: string,
  *   colorMandateSection: string,
+ *   shellMandateSection?: string,
+ *   paletteFormulaMandateSection?: string,
+ *   heroSourceMandateSection?: string,
+ *   layoutSignatureMandateSection?: string,
  *   weightsBlock: string,
+ *   tasteMemoryBlock: string,
  *   systemPrompt: string,
  *   designReferenceImages?: Array<{ data: string, media_type: string, title?: string }>,
  * }} ctx
- * @returns {Promise<{ heroCopy: string, heroRationale: string, archetype: string, chassisId: string, presetTs: string, visualSpec: string, selfCheck: string, rationale: string, designBrief: string, colorScheme: object|null, brief: string }>}
+ * @returns {Promise<{ heroCopy: string, heroRationale: string, heroSource: string, archetype: string, chassisId: string, presetTs: string, visualSpec: string, selfCheck: string, rationale: string, designBrief: string, colorScheme: object|null, shell: string, layoutSignature: string, brief: string }>}
  */
 export async function runArtDirector(ctx) {
   const userPrompt = buildArtDirectorUserPrompt(ctx)
@@ -233,6 +246,7 @@ export async function runArtDirector(ctx) {
   return {
     heroCopy: parsed.hero_copy,
     heroRationale: parsed.hero_rationale || '',
+    heroSource: parsed.hero_source || '',
     archetype: parsed.archetype,
     chassisId: parsed.chassis_id,
     presetTs: parsed.files.find((f) => f.path === 'elements/preset.ts').content,
@@ -240,6 +254,7 @@ export async function runArtDirector(ctx) {
     selfCheck: parsed.self_check,
     measurables: parsed.measurables,
     shell: parsed.shell,
+    layoutSignature: parsed.layout_signature || '',
     rationale: parsed.rationale || '',
     designBrief: parsed.design_brief || '',
     colorScheme: parsed.color_scheme || null,

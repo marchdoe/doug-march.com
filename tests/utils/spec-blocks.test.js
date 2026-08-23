@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest'
-import { parseMeasurablesBlock, parseShellBlock } from '../../scripts/utils/spec-blocks.js'
+import {
+  parseMeasurablesBlock,
+  parseShellBlock,
+  parseLayoutSignatureBlock,
+} from '../../scripts/utils/spec-blocks.js'
 
 describe('parseMeasurablesBlock', () => {
   it('parses the three measurable fields', () => {
@@ -58,5 +62,40 @@ describe('parseShellBlock', () => {
   it('normalizes brand_color_mode to lowercase (Single-Color → single-color)', () => {
     const s = parseShellBlock('brand_color_mode: Single-Color')
     expect(s.brand_color_mode).toBe('single-color')
+  })
+
+  it('parses ground_strategy and normalizes to lowercase', () => {
+    const s = parseShellBlock('ground_strategy: Dark-Void')
+    expect(s.ground_strategy).toBe('dark-void')
+  })
+
+  it('returns null ground_strategy for old-shaped SHELL blocks missing the field', () => {
+    const s = parseShellBlock(
+      ['nav: bottom rail', 'footer: data strip', 'brand_lockup: horizontal-md'].join('\n')
+    )
+    expect(s.ground_strategy).toBeNull()
+  })
+})
+
+describe('parseLayoutSignatureBlock', () => {
+  it('parses the four layout signature fields', () => {
+    const s = parseLayoutSignatureBlock(
+      ['columns: 2', 'axis: vertical', 'symmetry: asymmetric', 'hero_zone: left'].join('\n')
+    )
+    expect(s.columns).toBe('2')
+    expect(s.axis).toBe('vertical')
+    expect(s.symmetry).toBe('asymmetric')
+    expect(s.hero_zone).toBe('left')
+  })
+
+  it('returns nulls for missing fields', () => {
+    const s = parseLayoutSignatureBlock('columns: asym')
+    expect(s.columns).toBe('asym')
+    expect(s.axis).toBeNull()
+  })
+
+  it('normalizes values to lowercase', () => {
+    const s = parseLayoutSignatureBlock('symmetry: Symmetric')
+    expect(s.symmetry).toBe('symmetric')
   })
 })
