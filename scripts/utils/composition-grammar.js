@@ -1,0 +1,195 @@
+/**
+ * The composition grammar — eight independent axes the Art Director
+ * composes from, replacing the fixed eight-name archetype shortlist.
+ *
+ * The archetype Set gave the pipeline exactly 8 silhouettes, so one
+ * recurred every ~8 days; the 2026-08-23 audit of 122 archived builds found
+ * even rotation across all eight and an owner rating calling the output
+ * "still cycling through 4 or 5 different templates". Naming a silhouette
+ * also fused two unrelated decisions: what the page's structure is, and
+ * what its aesthetic register is. Here they are separate — this module owns
+ * structure, `scripts/prompts/lanes/` owns register.
+ *
+ * Values are compositional, not stylistic: nothing here names a typeface, a
+ * palette, or a mood. An axis value must be something you could measure off
+ * a screenshot.
+ *
+ * @module
+ */
+
+/**
+ * The axes and their permitted values. 6·4·5·6·4·4·5·4 = 230,400 tuples.
+ *
+ * Order matters only for display — tuples are keyed objects, never
+ * positional arrays, so adding an axis later doesn't shift anything.
+ *
+ * @type {Record<string, string[]>}
+ */
+export const COMPOSITION_AXES = {
+  columns: ['single', 'two-asymmetric', 'two-equal', 'three', 'irregular-twelve', 'masonry'],
+  axis: ['vertical', 'horizontal', 'diagonal', 'radial'],
+  symmetry: ['symmetric', 'left-weighted', 'right-weighted', 'broken', 'mirrored'],
+  hero_zone: ['full-bleed', 'upper-left', 'center', 'lower-third', 'edge-bound', 'interleaved'],
+  density: ['sparse', 'measured', 'dense', 'crowded'],
+  rhythm: ['even', 'accelerating', 'syncopated', 'interrupted'],
+  shell_posture: ['standard', 'marginal', 'none', 'folded-into-hero', 'footer-only'],
+  field_ratio: ['type-dominant', 'balanced', 'field-dominant', 'drenched'],
+}
+
+/** Axis names in canonical order. @type {string[]} */
+export const AXIS_NAMES = Object.keys(COMPOSITION_AXES)
+
+/**
+ * One sentence per axis value, written for the Art Director. This prose is
+ * what replaces the 5–8KB of canned archetype mechanics the seed files used
+ * to supply: enough to make the value actionable, short enough that eight of
+ * them together read as a brief rather than a template.
+ *
+ * @type {Record<string, Record<string, string>>}
+ */
+const AXIS_VALUE_DESCRIPTIONS = {
+  columns: {
+    single:
+      'One column carries everything; width is set by the measure of the text, not the viewport.',
+    'two-asymmetric':
+      'Two columns of deliberately unequal width — the narrow one is a margin that holds content, not whitespace.',
+    'two-equal':
+      'Two columns of matched width, so neither reads as primary and the eye must choose.',
+    three:
+      'Three columns, close to newspaper measure, which forces short paragraphs and hard editing.',
+    'irregular-twelve':
+      'A twelve-unit grid whose spans change per block, so no two rows align the same way.',
+    masonry: 'Blocks of differing heights packed by column, leaving a ragged bottom edge.',
+  },
+  axis: {
+    vertical: 'The eye travels top to bottom; structure is built from stacked horizontal bands.',
+    horizontal:
+      'The eye travels left to right along a dominant band; the page reads as a strip, not a stack.',
+    diagonal: 'The primary reading path cuts a corner-to-corner line across the layout.',
+    radial: 'Content orbits a single anchor point; position is read as distance from that center.',
+  },
+  symmetry: {
+    symmetric: 'Balanced about the vertical center line; weight matches on both sides.',
+    'left-weighted': 'Visual mass gathers left, leaving the right side open.',
+    'right-weighted':
+      'Visual mass gathers right, so the page resolves against the reading direction.',
+    broken:
+      'A near-symmetry deliberately violated in one place, and that violation is the focal point.',
+    mirrored: 'One arrangement repeated in reflection, so the repeat itself is the structure.',
+  },
+  hero_zone: {
+    'full-bleed':
+      'The hero occupies the entire first screen, edge to edge, with nothing beside it.',
+    'upper-left':
+      'The hero sits in the upper-left quadrant and everything else arranges around it.',
+    center: 'The hero is centered in the viewport with clearance on all four sides.',
+    'lower-third': 'The upper two-thirds are held nearly empty; the hero lands low.',
+    'edge-bound': 'The hero is pinned against one edge and cropped by it.',
+    interleaved:
+      'There is no single hero block — the hero phrase is broken up and threaded through the content.',
+  },
+  density: {
+    sparse: 'Very few elements, very large intervals; the page is mostly field.',
+    measured: 'Even breathing room; nothing crowds, nothing floats.',
+    dense: 'Elements packed close, small gutters, information-forward.',
+    crowded: 'Deliberate over-packing to the edge of legibility, treated as texture.',
+  },
+  rhythm: {
+    even: 'One repeating interval throughout; the spacing itself is invisible.',
+    accelerating: 'Intervals shrink as the page descends, so it reads faster toward the bottom.',
+    syncopated: 'Two alternating intervals, off-beat against each other.',
+    interrupted: 'A regular interval broken once by a much larger gap that acts as a caesura.',
+  },
+  shell_posture: {
+    standard: 'A conventional top nav and a footer, present and legible as chrome.',
+    marginal:
+      'Navigation lives in a margin — a vertical rail or a rotated edge strip, not a top bar.',
+    none: 'No nav element at all; the page navigates through in-content links only.',
+    'folded-into-hero': 'Navigation is set inside the hero composition and reads as part of it.',
+    'footer-only': 'Nothing at the top; all navigation is deferred to the foot of the page.',
+  },
+  field_ratio: {
+    'type-dominant': 'Type is the image; color and shape stay subordinate to it.',
+    balanced: 'Type and field carry roughly equal visual weight.',
+    'field-dominant': 'Large areas of color or shape lead, with type placed into them.',
+    drenched: 'Color or texture floods the full surface; type sits on top of it as an overlay.',
+  },
+}
+
+/**
+ * One-sentence compositional meaning of an axis value.
+ *
+ * @param {string} axis
+ * @param {string} value
+ * @returns {string|null} the description, or null for an unknown axis/value
+ */
+export function describeAxisValue(axis, value) {
+  return AXIS_VALUE_DESCRIPTIONS[axis]?.[value] ?? null
+}
+
+/**
+ * Validate a composition tuple: every axis present, every value permitted.
+ * Deliberately has no name check — accepting a novel composition is the
+ * entire point of this module.
+ *
+ * @param {object} tuple
+ * @returns {{ valid: boolean, errors: string[] }}
+ */
+export function isValidTuple(tuple) {
+  const errors = []
+  if (!tuple || typeof tuple !== 'object' || Array.isArray(tuple)) {
+    return { valid: false, errors: ['composition must be an object of axis → value'] }
+  }
+  for (const axis of AXIS_NAMES) {
+    const value = tuple[axis]
+    if (value === undefined || value === null || value === '') {
+      errors.push(`missing axis: ${axis}`)
+    } else if (!COMPOSITION_AXES[axis].includes(value)) {
+      errors.push(
+        `invalid ${axis}: "${value}" (expected one of: ${COMPOSITION_AXES[axis].join(', ')})`
+      )
+    }
+  }
+  for (const key of Object.keys(tuple)) {
+    if (!AXIS_NAMES.includes(key)) errors.push(`unknown axis: ${key}`)
+  }
+  return { valid: errors.length === 0, errors }
+}
+
+/** @returns {number} the size of the tuple space */
+export function tupleSpaceSize() {
+  return AXIS_NAMES.reduce((n, axis) => n * COMPOSITION_AXES[axis].length, 1)
+}
+
+/**
+ * Render a tuple as the `===COMPOSITION===` block body — the same
+ * `key: value` shape the Art Director emits, so what we send and what we
+ * parse back are one format.
+ *
+ * @param {object} tuple
+ * @returns {string}
+ */
+export function formatTuple(tuple) {
+  return AXIS_NAMES.map((axis) => `${axis}: ${tuple?.[axis] ?? '?'}`).join('\n')
+}
+
+/**
+ * Build the prompt block that explains the grammar and spells out what
+ * today's tuple means, value by value.
+ *
+ * @param {object} tuple
+ * @returns {string} markdown, or '' when the tuple is unusable
+ */
+export function formatCompositionForPrompt(tuple) {
+  if (!isValidTuple(tuple).valid) return ''
+  const rows = AXIS_NAMES.map(
+    (axis) => `- **${axis}: \`${tuple[axis]}\`** — ${describeAxisValue(axis, tuple[axis])}`
+  )
+  return [
+    '## Composition',
+    '',
+    'These eight axes describe the page structure, and nothing about its aesthetic register — that comes from the lane. Compose from the axes; do not reach for a named layout and work backwards.',
+    '',
+    ...rows,
+  ].join('\n')
+}

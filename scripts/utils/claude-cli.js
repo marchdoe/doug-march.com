@@ -10,6 +10,27 @@ import { writeFile, unlink } from 'node:fs/promises'
 import { createReadStream } from 'node:fs'
 import { spawn } from 'node:child_process'
 import { ROOT } from './file-manager.js'
+import { recordUsage } from './cost-ledger.js'
+
+/**
+ * Pull cost and token counts out of a stream-json `result` event.
+ *
+ * The CLI reports `total_cost_usd` itself, which beats anything we could
+ * price locally. Pins older than the fields return an object of nulls — the
+ * absence of telemetry is never a reason to fail a call.
+ *
+ * @param {object} event - a parsed `type: 'result'` event
+ * @returns {{costUsd: number|null, usage: object, ms: number|null, numTurns: number|null}}
+ */
+export function extractResultUsage(event = {}) {
+  const num = (v) => (typeof v === 'number' && Number.isFinite(v) ? v : null)
+  return {
+    costUsd: num(event.total_cost_usd),
+    usage: event.usage && typeof event.usage === 'object' ? event.usage : {},
+    ms: num(event.duration_ms),
+    numTurns: num(event.num_turns),
+  }
+}
 
 /**
  * Spawn a `claude` CLI process and return the raw text response.
@@ -113,6 +134,9 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
 
     let fullText = '' // Accumulated response text from content blocks
     let finalResult = '' // The result field from the final message
+    // Cost/usage from the result event. Older CLI pins omit these fields —
+    // stays null rather than throwing, and the ledger records what it got.
+    let resultUsage = null
     let stderr = ''
     let lineBuffer = '' // Buffer for incomplete JSON lines
     let charCount = 0 // Track characters received for progress
@@ -190,6 +214,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
           } else if (event.type === 'result') {
             // Final result -- this is the complete response
             finalResult = event.result || ''
+            resultUsage = extractResultUsage(event)
             lastOutputTime = Date.now()
           }
         } catch {
@@ -281,7 +306,10 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
       if (lineBuffer.trim()) {
         try {
           const event = JSON.parse(lineBuffer)
-          if (event.type === 'result') finalResult = event.result || ''
+          if (event.type === 'result') {
+            finalResult = event.result || ''
+            resultUsage = extractResultUsage(event)
+          }
           if (event.type === 'assistant' && event.message?.content) {
             for (const block of event.message.content) {
               if (block.type === 'text') fullText += block.text
@@ -290,6 +318,22 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
         } catch {}
       }
       console.log(`  [${agentName}] finished (${(charCount / 1024).toFixed(0)}KB total)`)
+
+      // Book the call. Only calls that reach `close` are recorded — a call
+      // killed by the timeout or stall path never emitted a result event, so
+      // there is nothing to book beyond the retry the caller will count.
+      try {
+        recordUsage({
+          agent: agentName,
+          model,
+          source: 'cli',
+          usage: resultUsage?.usage,
+          costUsd: resultUsage?.costUsd ?? undefined,
+          ms: resultUsage?.ms ?? Date.now() - startTime,
+          numTurns: resultUsage?.numTurns ?? undefined,
+        })
+      } catch {}
+
       if (code !== 0 && !finalResult && !fullText) {
         console.error(`  [${agentName}] stderr: ${stderr.slice(0, 500)}`)
         reject(new Error(`[${agentName}] claude exited with code ${code}: ${stderr.slice(0, 500)}`))

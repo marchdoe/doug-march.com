@@ -3,6 +3,7 @@ import { existsSync } from 'node:fs'
 import path from 'node:path'
 import { ROOT } from './file-manager.js'
 import { captureSnapshot } from './snapshot.js'
+import { summarizeLedger } from './cost-ledger.js'
 
 /**
  * Copy key archive artifacts to public/archive/ for static serving.
@@ -211,6 +212,18 @@ export async function archive(
   }
   await writeFile(path.join(buildDir, 'build.json'), JSON.stringify(buildMeta, null, 2), 'utf8')
   console.log(`  archived to archive/${dateStr}/build-${buildId}/`)
+
+  // What the run cost, per agent. Non-blocking: telemetry never fails a build.
+  try {
+    const cost = summarizeLedger()
+    await writeFile(path.join(buildDir, 'cost.json'), JSON.stringify(cost, null, 2), 'utf8')
+    const shown = cost.total_usd === null ? 'unpriced' : `$${cost.total_usd.toFixed(4)}`
+    console.log(
+      `  run cost: ${shown} across ${cost.calls} call(s)${cost.retries ? `, ${cost.retries} retr${cost.retries === 1 ? 'y' : 'ies'}` : ''}${cost.estimated ? ' (partly estimated)' : ''}`
+    )
+  } catch (err) {
+    console.warn(`  warning: could not write cost.json: ${err.message}`)
+  }
 
   // Save the interpreted signals brief if it exists
   const signalsBriefSrc = path.join(ROOT, 'signals', 'today.brief.md')

@@ -57,14 +57,25 @@ export function parseShellBlock(text) {
  * come back null so old archives and non-compliant responses degrade
  * gracefully instead of failing the run.
  *
- * @returns {{ columns: string|null, axis: string|null, symmetry: string|null, hero_zone: string|null }}
+ * Widened to all eight composition axes (see utils/composition-grammar.js).
+ * The ~15 `layout-signature.json` files written under the original four-key
+ * shape still parse: the four new keys simply come back null, which the
+ * per-axis mandate treats as "no history for this axis" rather than an
+ * error.
+ *
+ * @returns {Record<'columns'|'axis'|'symmetry'|'hero_zone'|'density'|'rhythm'|'shell_posture'|'field_ratio', string|null>}
  */
 export function parseLayoutSignatureBlock(text) {
   const kv = parseKeyValues(text)
+  const norm = (v) => (v ? v.toLowerCase().trim() : null)
   return {
-    columns: kv.columns ? kv.columns.toLowerCase().trim() : null,
-    axis: kv.axis ? kv.axis.toLowerCase().trim() : null,
-    symmetry: kv.symmetry ? kv.symmetry.toLowerCase().trim() : null,
-    hero_zone: kv.hero_zone ? kv.hero_zone.toLowerCase().trim() : null,
+    columns: norm(kv.columns),
+    axis: norm(kv.axis),
+    symmetry: norm(kv.symmetry),
+    hero_zone: norm(kv.hero_zone),
+    density: norm(kv.density),
+    rhythm: norm(kv.rhythm),
+    shell_posture: norm(kv.shell_posture),
+    field_ratio: norm(kv.field_ratio),
   }
 }
