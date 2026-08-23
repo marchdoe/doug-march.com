@@ -28,6 +28,14 @@ styled-system/
 signals/today.yml
 signals/today.meta.yml
 signals/today.brief.md
+signals/today.mockup.html
+signals/cli-diag-*.txt
+signals/*-last-failed.txt
+
+# Failed/interim build dirs from local pipeline runs — CI's push step already
+# excludes these; this covers a local `git add -A`
+archive/*/build-failed-*
+archive/*/build-pre-*
 
 references/*.png
 references/*.jpg
