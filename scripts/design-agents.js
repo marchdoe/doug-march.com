@@ -40,7 +40,7 @@ import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
 import { resetLedger, noteRetry } from './utils/cost-ledger.js'
 import { createTrace } from './utils/trace.js'
-import { selectSeedContent } from './utils/select-seed.js'
+import { selectLane } from './utils/select-lane.js'
 import { hashToRange } from './utils/deterministic-hash.js'
 import { CHASSIS_CATALOG } from '../elements/chassis/index.js'
 import {
@@ -54,6 +54,8 @@ import { parseDelimiterResponse } from './utils/delimiter-parser.js'
 import { parseCriticVerdict } from './utils/critic-verdict.js'
 import { modelFor, isDevModelTier } from './utils/models.js'
 import { runArtDirector } from './agents/art-director.js'
+import { parseCompositionBlock } from './utils/spec-blocks.js'
+import { formatTuple } from './utils/composition-grammar.js'
 export { parseDelimiterResponse }
 
 // ---------------------------------------------------------------------------
@@ -74,22 +76,6 @@ export const FILE_OWNERSHIP = Object.fromEntries([
   ...STRUCTURE_FILES.map((f) => [f, 'react-engineer']),
   ...COMPONENT_FILES.map((f) => [f, 'react-engineer']),
 ])
-
-// ---------------------------------------------------------------------------
-// Archetype tracking helpers
-// ---------------------------------------------------------------------------
-
-/** Canonical archetype names — Gallery Wall before Broadsheet to avoid partial match on "Wall" */
-const ARCHETYPE_NAMES = [
-  'Gallery Wall',
-  'Broadsheet',
-  'Specimen',
-  'Poster',
-  'Scroll',
-  'Split',
-  'Stack',
-  'Index',
-]
 
 /**
  * Resolve the WEIGHT_RISK creative weight. An explicitly-set env value
@@ -112,42 +98,6 @@ export function resolveRiskWeight(envValue, date) {
   const explicitlySet = envValue !== undefined && envValue !== ''
   const risk = explicitlySet ? parseInt(envValue, 10) : hashToRange(`risk:${date}`, 3, 10)
   return { risk, explicitlySet }
-}
-
-/**
- * Extract the chosen archetype from a visual spec or block of text.
- *
- * First tries to match the structured declaration line (e.g., "**Archetype:** The Broadsheet").
- * Falls back to finding the last archetype mention in the text, which avoids
- * false matches from the forbidden-archetype constraint block that appears early.
- *
- * @param {string} text
- * @returns {string|null}
- */
-export function extractArchetypeFromText(text) {
-  // Strategy 1: Match the structured "**Archetype:**" declaration line
-  for (const name of ARCHETYPE_NAMES) {
-    const pattern = new RegExp(
-      `\\*\\*Archetype:\\*\\*\\s*(?:The\\s+)?${name.replace(' ', '\\s+')}`,
-      'i'
-    )
-    if (pattern.test(text)) return name
-  }
-
-  // Strategy 2: Find the last mention of any archetype name in the text.
-  // The chosen archetype appears in the spec body; forbidden names appear
-  // earlier in the echoed constraint block.
-  let latest = null
-  for (const name of ARCHETYPE_NAMES) {
-    const pattern = new RegExp(`\\b${name.replace(' ', '\\s+')}\\b`, 'gi')
-    let m
-    while ((m = pattern.exec(text)) !== null) {
-      if (!latest || m.index > latest.index) {
-        latest = { name, index: m.index }
-      }
-    }
-  }
-  return latest?.name ?? null
 }
 
 /**
@@ -182,67 +132,6 @@ export function resolveChassisFromDirectorOutput(text, catalog) {
 }
 
 /**
- * Read archetype history from the last N archive date directories.
- * Prefers archetype.txt (written by this pipeline); falls back to parsing brief.md.
- * @param {string} archiveDir
- * @param {string[]} recentDirs - sorted newest-first
- * @returns {Array<{date: string, archetype: string}>}
- */
-function buildArchetypeHistory(archiveDir, recentDirs) {
-  const history = []
-  for (const dir of recentDirs) {
-    const archetypeFile = path.join(archiveDir, dir, 'archetype.txt')
-    if (existsSync(archetypeFile)) {
-      const name = readFileSync(archetypeFile, 'utf8').trim()
-      if (name) {
-        history.push({ date: dir, archetype: name })
-        continue
-      }
-    }
-    const briefPath = path.join(archiveDir, dir, 'brief.md')
-    if (existsSync(briefPath)) {
-      const text = readFileSync(briefPath, 'utf8')
-      const name = extractArchetypeFromText(text)
-      if (name) history.push({ date: dir, archetype: name })
-    }
-  }
-  return history
-}
-
-/**
- * Build the archetype-history advisory block to inject into the Design Director prompt.
- *
- * Variance is informational, not a hard constraint. iter-1 (2026-04-28) showed
- * the failure mode of hard rules: the brief called for Poster but the 3-day
- * lockout forbade it, so the Director picked Scroll — variance over fit. The
- * brief's hero "full-bleed moon" intent suffered. Soft guidance lets fit win
- * when the signals genuinely demand a recently-used archetype, while still
- * nudging toward diversity when two archetypes fit equally well.
- *
- * @param {Array<{date: string, archetype: string}>} history
- * @returns {{ block: string, forbidden: string[], allowed: string[] }}
- */
-function buildArchetypeConstraintPrompt(history) {
-  if (history.length === 0) return { block: '', forbidden: [], allowed: [...ARCHETYPE_NAMES] }
-
-  const lines = history.map((h) => `  - ${h.date}: ${h.archetype}`).join('\n')
-  const last3 = [...new Set(history.slice(0, 3).map((h) => h.archetype))]
-
-  let block = `\n\n## Archetype History — informational\n\nRecent archetype usage (newest first):\n${lines}\n\n`
-
-  if (last3.length > 0) {
-    block += `**Recently used** (last 3 days): ${last3.join(', ')}\n\n`
-    block += `Variance is informational, not a constraint. Choose what FITS today's brief and signals best.\n\n`
-    block += `- If two archetypes fit equally well, prefer the one NOT in the recent list.\n`
-    block += `- If the brief or signals genuinely call for a recently-used archetype, use it. Don't pick a worse-fitting archetype just to avoid repetition.\n`
-    block += `- If you do pick a recently-used archetype, the visual spec should make the execution materially different from the prior run (different palette commitment, different chassis register, different content emphasis).`
-  }
-
-  // `forbidden` retained for trace logging only — no longer enforced.
-  return { block, forbidden: last3, allowed: [...ARCHETYPE_NAMES] }
-}
-
-/**
  * Render the Creative Weights risk sentence for the Art Director prompt.
  * Four distinct buckets (3-4 / 5-6 / 7-8 / 9-10) so risk is a real dial —
  * previously only 3 buckets existed and the >=7 sentence ("BOLD,
@@ -252,18 +141,22 @@ function buildArchetypeConstraintPrompt(history) {
  *
  * risk >= 9 references the Max-Risk License in art-director.md — the one
  * day the Art Director may deliberately break a single named anti-pattern
- * from the chosen seed lane. (Not a novel archetype or a custom chassis:
- * the orchestrator hard-validates ARCHETYPE against the fixed 8-name set
- * and throws if it doesn't match, and CHASSIS_ID outside the catalog is
- * silently replaced with CHASSIS_CATALOG[0] — neither deviation would
- * survive the run, so the license targets the one lever that does.)
+ * from the chosen lane, or land one composition axis on a value the
+ * Composition Mandate soft-forbade. (Not a custom chassis: an unrecognized
+ * CHASSIS_ID is silently replaced with CHASSIS_CATALOG[0], so that
+ * deviation would never survive the run — the license targets levers that
+ * actually do. Composition itself is no longer a hard-validated fixed set
+ * the way it was when this comment described an 8-name ARCHETYPE
+ * whitelist — every axis VALUE is still validated against its own fixed
+ * vocabulary, but the tuple of values is open, so "invent a value" was
+ * never the risk this license needed to cover in the first place.)
  *
  * @param {number} risk
  * @returns {string}
  */
 export function describeRiskTier(risk) {
   if (risk >= 9) {
-    return 'MAXIMUM RISK today. You may invoke the Max-Risk License below (break exactly ONE named anti-pattern from the seed lane) if the hero phrase genuinely demands it. Using it is optional — a strong, fully-compliant execution is still a valid MAXIMUM RISK day. Do not hedge: whatever you choose, commit harder than a normal day would.'
+    return 'MAXIMUM RISK today. You may invoke the Max-Risk License below (break exactly ONE named anti-pattern from the lane, or land one composition axis on a soft-forbidden value) if the hero phrase genuinely demands it. Using it is optional — a strong, fully-compliant execution is still a valid MAXIMUM RISK day. Do not hedge: whatever you choose, commit harder than a normal day would.'
   }
   if (risk >= 7) {
     return 'BOLD today. Push for a committed gesture — fuller color saturation, a more aggressive archetype commitment, less hedging toward the safe middle.'
@@ -334,20 +227,30 @@ export function identifyFailingAgent(errorOutput) {
 }
 
 /**
- * Build an archetype-specific constraint block for injection into the Mockup Designer prompt.
+ * Build a composition-driven constraint block for injection into the Mockup
+ * Designer prompt: on a genuinely sparse composition, forbid rendering
+ * project cards or portfolio sections on the home page — only the hero
+ * phrase and navigation should appear.
  *
- * For Specimen and Poster archetypes, returns a block that explicitly forbids
- * rendering project cards or portfolio sections on the home page — only the
- * hero phrase and navigation should appear.
+ * Successor to buildArchetypeContractBlock(archetype), which fired on the
+ * literal strings 'Specimen' and 'Poster'. Re-expressed against the
+ * composition tuple instead of a name (composition-grammar arc, Task 4):
+ * `density: sparse` is composition-grammar.js's own definition of "very
+ * few elements, very large intervals; the page is mostly field" — a
+ * project-card grid directly contradicts that regardless of which
+ * field_ratio or hero_zone accompanies it. (Deviation from the task's
+ * draft wording, which suggested `density: sparse` AND `field_ratio:
+ * drenched` specifically: narrowing to density alone is more faithful to
+ * the original rule's purpose — Poster's sparseness and Specimen's
+ * type-as-canvas both violate "no cards" for the same underlying reason,
+ * independent of field_ratio.)
  *
- * For all other archetypes, returns an empty string (no constraint).
- *
- * @param {string|null|undefined} archetype
+ * @param {Record<string, string>|null|undefined} tuple - the day's composition tuple
  * @returns {string}
  */
-export function buildArchetypeContractBlock(archetype) {
-  if (archetype === 'Specimen' || archetype === 'Poster') {
-    return `⚠ ARCHETYPE CONTRACT — ${archetype.toUpperCase()}:
+export function buildCompositionContractBlock(tuple) {
+  if (tuple?.density === 'sparse') {
+    return `⚠ COMPOSITION CONTRACT — SPARSE:
 Home page = hero phrase + navigation ONLY.
 Do NOT render project cards, featured project, experiments, or any portfolio section.
 index.tsx is a single-composition canvas today, not a portfolio hub.`
@@ -735,9 +638,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // -----------------------------------------------------------------------
     const archiveDir = path.join(ROOT, 'archive')
     let recentBriefs = ''
-    let archetypeConstraintPrompt = ''
-    let forbiddenArchetypes = []
-    let allowedArchetypes = [...ARCHETYPE_NAMES]
     try {
       const dirs = readdirSync(archiveDir)
         .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))
@@ -750,16 +650,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         if (existsSync(briefPath)) {
           recentBriefs += `\n### ${dir}\n${readFileSync(briefPath, 'utf8')}\n`
         }
-      }
-      const archetypeHistory = buildArchetypeHistory(archiveDir, dirs)
-      const constraint = buildArchetypeConstraintPrompt(archetypeHistory)
-      archetypeConstraintPrompt = constraint.block
-      forbiddenArchetypes = constraint.forbidden
-      allowedArchetypes = constraint.allowed
-      if (archetypeHistory.length > 0) {
-        console.log(
-          `  archetype history: ${archetypeHistory.map((h) => `${h.date}=${h.archetype}`).join(', ')}`
-        )
       }
     } catch {}
 
@@ -872,16 +762,21 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       console.warn(`[hero-source-mandate] computation failed (non-blocking): ${err.message}`)
     }
 
-    const { computeLayoutSignatureMandate, formatLayoutSignatureMandateForPrompt } = await import(
-      './utils/layout-signature-mandate.js'
+    const { computeCompositionMandate, formatCompositionMandateForPrompt } = await import(
+      './utils/composition-mandate.js'
     )
-    let layoutSignatureMandateSection = ''
+    const buildDate = signals.date || new Date().toISOString().slice(0, 10)
+    let compositionMandateSection = ''
     try {
-      layoutSignatureMandateSection = formatLayoutSignatureMandateForPrompt(
-        computeLayoutSignatureMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 7 })
+      compositionMandateSection = formatCompositionMandateForPrompt(
+        computeCompositionMandate({
+          archiveDir: path.join(ROOT, 'archive'),
+          date: buildDate,
+          lookbackDays: 7,
+        })
       )
     } catch (err) {
-      console.warn(`[layout-signature-mandate] computation failed (non-blocking): ${err.message}`)
+      console.warn(`[composition-mandate] computation failed (non-blocking): ${err.message}`)
     }
 
     // -----------------------------------------------------------------------
@@ -892,7 +787,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     console.log('\n[phase-0+1] Art Director')
 
     const chassisCatalogBlock = formatChassisCatalogForPrompt(CHASSIS_CATALOG)
-    const archetypeHistoryBlock = archetypeConstraintPrompt
     const weightsBlock = `Signals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${describeRiskTier(weights.risk)}`
 
     // Art Director system prompt: art-director.md + brand register +
@@ -909,7 +803,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         contentSummary,
         chassisCatalog: CHASSIS_CATALOG,
         chassisCatalogBlock,
-        archetypeHistoryBlock,
         recentBriefs,
         recentRatings,
         references,
@@ -917,7 +810,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         shellMandateSection,
         paletteFormulaMandateSection,
         heroSourceMandateSection,
-        layoutSignatureMandateSection,
+        compositionMandateSection,
         brandContract,
         weightsBlock,
         tasteMemoryBlock,
@@ -933,9 +826,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           contentSummary,
           chassisCatalog: CHASSIS_CATALOG,
           chassisCatalogBlock,
-          archetypeHistoryBlock:
-            archetypeHistoryBlock +
-            `\n\n## Previous attempt was rejected\n\nYour previous response failed validation: ${firstErr.message}\nEmit ALL required blocks with exact delimiters and exact field formats this time.`,
           recentBriefs,
           recentRatings,
           references,
@@ -943,10 +833,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           shellMandateSection,
           paletteFormulaMandateSection,
           heroSourceMandateSection,
-          layoutSignatureMandateSection,
+          compositionMandateSection,
           brandContract,
           weightsBlock,
           tasteMemoryBlock,
+          retryContext: `## Previous attempt was rejected\n\nYour previous response failed validation: ${firstErr.message}\nEmit ALL required blocks with exact delimiters and exact field formats this time.`,
           failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
           systemPrompt: artDirectorSystemPrompt,
         })
@@ -958,6 +849,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     }
 
     const chosenArchetype = artDirectorResult.archetype
+    // Reassigned below, after any codegen retry, so downstream consumers
+    // (spec-critic, lane selection, archive persistence) always see the
+    // composition tuple from the FINAL settled artDirectorResult — same
+    // reasoning as shellDecl/measurablesDecl further down. This early value
+    // only backs the log line and trace step right after this call.
+    let chosenComposition = parseCompositionBlock(artDirectorResult.composition)
     let chosenChassis = CHASSIS_CATALOG.find((c) => c.id === artDirectorResult.chassisId)
     if (!chosenChassis) {
       console.warn(
@@ -966,24 +863,23 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       chosenChassis = CHASSIS_CATALOG[0]
     }
     const visualSpec = artDirectorResult.visualSpec
-    if (chosenArchetype && forbiddenArchetypes.includes(chosenArchetype)) {
-      console.log(
-        `  ℹ Art Director reused recently-used archetype "${chosenArchetype}" — accepting (variance is advisory)`
-      )
-    }
     console.log(
       `  hero: "${artDirectorResult.heroCopy.slice(0, 60)}${artDirectorResult.heroCopy.length > 60 ? '...' : ''}"`
     )
-    console.log(`  archetype: ${chosenArchetype} | chassis: ${chosenChassis.id}`)
+    console.log(
+      `  composition: ${formatTuple(chosenComposition).replace(/\n/g, ' | ')} | chassis: ${chosenChassis.id}`
+    )
+    if (chosenArchetype) console.log(`  archetype (descriptive, unvalidated): ${chosenArchetype}`)
     console.log(`  visual spec: ${(visualSpec.length / 1024).toFixed(0)}KB`)
 
     trace.addStep({
       name: 'art-director',
       phase: 1,
-      input: { archetypeConstraints: archetypeConstraintPrompt.slice(0, 500) },
+      input: { compositionMandate: compositionMandateSection.slice(0, 500) },
       output: {
         hero_copy: artDirectorResult.heroCopy.slice(0, 200),
         archetype: chosenArchetype || 'unknown',
+        composition: chosenComposition,
         chassisId: chosenChassis?.id || 'unknown',
         specLength: visualSpec.length,
         specPreview: visualSpec.slice(0, 500),
@@ -1056,9 +952,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           contentSummary,
           chassisCatalog: CHASSIS_CATALOG,
           chassisCatalogBlock,
-          archetypeHistoryBlock:
-            archetypeHistoryBlock +
-            `\n\n## Previous attempt failed codegen\n\n${codegenResult.error?.slice(0, 1500) || ''}`,
           recentBriefs,
           recentRatings,
           references,
@@ -1066,10 +959,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           shellMandateSection,
           paletteFormulaMandateSection,
           heroSourceMandateSection,
-          layoutSignatureMandateSection,
+          compositionMandateSection,
           brandContract,
           weightsBlock,
           tasteMemoryBlock,
+          retryContext: `## Previous attempt failed codegen\n\n${codegenResult.error?.slice(0, 1500) || ''}`,
           failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
           systemPrompt: artDirectorSystemPrompt,
         })
@@ -1108,25 +1002,24 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       }
     }
 
-    // Parse shell + measurables + layout signature from the final settled
+    // Parse shell + measurables + composition from the final settled
     // artDirectorResult (computed here, after any codegen retry, so they
     // always reflect the live result). shellDecl (which carries
-    // ground_strategy — see SHELL block) and layoutSignatureDecl are also
-    // used as archive artifacts below (shell.json, layout-signature.json).
-    const { parseShellBlock, parseMeasurablesBlock, parseLayoutSignatureBlock } = await import(
-      './utils/spec-blocks.js'
-    )
+    // ground_strategy — see SHELL block) and chosenComposition are also
+    // used as archive artifacts below (shell.json, composition.json).
+    const { parseShellBlock, parseMeasurablesBlock } = await import('./utils/spec-blocks.js')
     const shellDecl = parseShellBlock(artDirectorResult.shell)
     const measurablesDecl = parseMeasurablesBlock(artDirectorResult.measurables)
-    const layoutSignatureDecl = parseLayoutSignatureBlock(artDirectorResult.layoutSignature)
+    chosenComposition = parseCompositionBlock(artDirectorResult.composition)
     console.log(
       `  shell: nav=${shellDecl.nav} | footer=${shellDecl.footer} | lockup=${shellDecl.brand_lockup} (${shellDecl.brand_color_mode}) | ground=${shellDecl.ground_strategy}`
     )
     console.log(
       `  measurables: canvas>=${measurablesDecl.canvas_utilization_min}% color>=${measurablesDecl.color_coverage_min}% hero=${measurablesDecl.hero_scale}`
     )
+    console.log(`  composition: ${formatTuple(chosenComposition).replace(/\n/g, ' | ')}`)
     console.log(
-      `  layout-signature: columns=${layoutSignatureDecl.columns} | axis=${layoutSignatureDecl.axis} | symmetry=${layoutSignatureDecl.symmetry} | hero_zone=${layoutSignatureDecl.hero_zone}`
+      `  composition rationale: ${(artDirectorResult.compositionRationale || '').slice(0, 200)}`
     )
     console.log(`  hero-source: ${artDirectorResult.heroSource || '(none declared)'}`)
 
@@ -1148,14 +1041,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         shellMandateSection,
         paletteFormulaMandateSection,
         heroSourceMandateSection,
-        layoutSignatureMandateSection,
+        compositionMandateSection,
       ]
         .filter(Boolean)
         .join('\n\n')
 
       const criticUserPrompt = [
         `## Hero Copy\n\n${artDirectorResult.heroCopy}`,
-        `## Archetype\n\n${chosenArchetype}`,
+        `## Archetype\n\n${chosenArchetype || '(none declared)'}`,
+        `## Composition\n\n${formatTuple(chosenComposition)}\n\n${artDirectorResult.compositionRationale || ''}`,
         `## Chassis ID\n\n${chosenChassis.id}`,
         `## Visual Specification\n\n${visualSpec}`,
         `## Self-Check\n\n${artDirectorResult.selfCheck}`,
@@ -1255,6 +1149,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       `## Hero Rationale`,
       artDirectorResult.heroRationale,
       '',
+      // Structured, guaranteed-present composition declaration — every
+      // downstream reader of enrichedBrief (mockup designer, react engineer,
+      // screenshot critic) needs this without depending on the Art Director
+      // having also restated it inside the free-text visual spec.
+      `## Composition (structural declaration — execute exactly)`,
+      formatTuple(chosenComposition),
+      artDirectorResult.compositionRationale || '',
+      '',
       `## Visual Specification (from the Art Director)`,
       visualSpec,
       '',
@@ -1335,21 +1237,21 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       conditionalRefs.push(await readFile(path.join(refDir, 'bolder.md'), 'utf8'))
     }
     const {
-      path: seedPath,
-      content: seedContent,
-      laneId: seedLaneId,
-      laneCount: seedLaneCount,
-    } = selectSeedContent(
-      chosenArchetype || 'stack',
-      signals.date || new Date().toISOString().slice(0, 10)
-    )
+      lane: chosenLane,
+      laneCount,
+      forbidden: forbiddenLanes,
+    } = selectLane({
+      archiveDir,
+      date: buildDate,
+      tuple: chosenComposition,
+    })
     console.log(
-      `  injecting seed: ${path.basename(seedPath)}` +
-        (seedLaneId ? ` (lane: ${seedLaneId}, ${seedLaneCount} lanes)` : '') +
-        `; conditional refs: ${conditionalRefs.length}`
+      `  injecting lane: ${chosenLane.id} (register: ${chosenLane.register}, ${laneCount} lanes` +
+        (forbiddenLanes.includes(chosenLane.id) ? ', forbidden but strongest affinity match' : '') +
+        `); conditional refs: ${conditionalRefs.length}`
     )
     const mockupDesignerSystemPrompt = [
-      mockupDesignerPromptRaw.replace('<!-- SEED_ANCHOR -->', seedContent),
+      mockupDesignerPromptRaw.replace('<!-- SEED_ANCHOR -->', chosenLane.body),
       brandRegisterDeclaration,
       refTypography,
       refColor,
@@ -1384,7 +1286,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     }
 
     const lessonsBlock = buildLessonsBlock(path.join(ROOT, 'archive'), { limit: 7 })
-    const archetypeContractBlock = buildArchetypeContractBlock(chosenArchetype) || ''
+    const compositionContractBlock = buildCompositionContractBlock(chosenComposition) || ''
     const brandSvg = await readFile(path.join(ROOT, 'app/assets/logo.svg'), 'utf8')
     const brandMonoSvg = await readFile(path.join(ROOT, 'app/assets/logo-mono.svg'), 'utf8')
     const googleFontsUrl = buildGoogleFontsUrl(chosenChassis)
@@ -1401,7 +1303,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       googleFontsUrl,
       lessonsBlock,
       calibrationNote,
-      archetypeContractBlock,
+      compositionContractBlock,
       tasteMemoryBlock,
       polishRef: refPolish,
       systemPrompt: mockupDesignerSystemPrompt,
@@ -1513,6 +1415,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         `## Interior Notes (how About/Work adapt the system)\n\n${mockup.interiorNotes}`,
         `## Design Tokens (elements/preset.ts)\n\n\`\`\`typescript\n${tokenContext}\n\`\`\``,
         `## Hero Copy\n\n${artDirectorResult.heroCopy}`,
+        `## Composition\n\n${formatTuple(chosenComposition)}`,
         `## Shell Declaration\n\n${artDirectorResult.shell}`,
         '## One-line Design Brief (for og:description context)\n\n' +
           (artDirectorResult.designBrief || ''),
@@ -1716,13 +1619,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
             null,
             2
           ),
-          'layout-signature.json': JSON.stringify(
-            {
-              columns: layoutSignatureDecl.columns,
-              axis: layoutSignatureDecl.axis,
-              symmetry: layoutSignatureDecl.symmetry,
-              hero_zone: layoutSignatureDecl.hero_zone,
-            },
+          'composition.json': JSON.stringify(chosenComposition, null, 2),
+          'lane.json': JSON.stringify(
+            { laneId: chosenLane.id, register: chosenLane.register },
             null,
             2
           ),
@@ -1730,7 +1629,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       )
       archiveRan = true
 
-      // Save archetype for future anti-repetition enforcement
+      // Save the descriptive archetype label, when the Art Director supplied
+      // one, purely for archive continuity — it is never validated or
+      // enforced. The load-bearing structural record is composition.json.
       if (chosenArchetype && signals.date) {
         try {
           const datePath = path.join(ROOT, 'archive', signals.date)

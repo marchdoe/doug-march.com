@@ -1,9 +1,22 @@
 import { describe, it, expect } from 'vitest'
 import { validateArtDirectorResult } from '../../../scripts/agents/art-director.js'
 
+const validComposition = [
+  'columns: three',
+  'axis: vertical',
+  'symmetry: symmetric',
+  'hero_zone: full-bleed',
+  'density: dense',
+  'rhythm: even',
+  'shell_posture: standard',
+  'field_ratio: balanced',
+].join('\n')
+
 const valid = () => ({
   hero_copy: 'FOURTEEN HOURS OF LIGHT',
   archetype: 'Stack',
+  composition: validComposition,
+  composition_rationale: 'Full-bleed dense columns carry the stat-heavy phrase at full confidence.',
   chassis_id: 'big-shoulders-atkinson',
   visual_spec: 'spec',
   self_check: 'yes',
@@ -52,10 +65,9 @@ describe('validateArtDirectorResult — MEASURABLES + SHELL', () => {
     expect(() => validateArtDirectorResult(r)).not.toThrow()
   })
 
-  it('does NOT throw when hero_source and layout_signature are absent (optional variance fields)', () => {
+  it('does NOT throw when hero_source is absent (optional variance field)', () => {
     const r = valid()
     expect(r.hero_source).toBeUndefined()
-    expect(r.layout_signature).toBeUndefined()
     expect(() => validateArtDirectorResult(r)).not.toThrow()
   })
 

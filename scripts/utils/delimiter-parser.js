@@ -25,7 +25,8 @@
  *   shell?: string,
  *   interior_notes?: string,
  *   hero_source?: string,
- *   layout_signature?: string,
+ *   composition?: string,
+ *   composition_rationale?: string,
  * }}
  */
 export function parseDelimiterResponse(result) {
@@ -38,7 +39,7 @@ export function parseDelimiterResponse(result) {
   const src = fenceMatch ? fenceMatch[1] : result
   const withSentinel = src + sentinel
   const filePattern =
-    /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===HERO_COPY===|^===HERO_RATIONALE===|^===HERO_SOURCE===|^===ARCHETYPE===|^===CHASSIS_ID===|^===VISUAL_SPEC===|^===SELF_CHECK===|^===MEASURABLES===|^===SHELL===|^===LAYOUT_SIGNATURE===|^===INTERIOR_NOTES===|^===END_SENTINEL===)/gm
+    /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===HERO_COPY===|^===HERO_RATIONALE===|^===HERO_SOURCE===|^===ARCHETYPE===|^===CHASSIS_ID===|^===VISUAL_SPEC===|^===SELF_CHECK===|^===MEASURABLES===|^===SHELL===|^===COMPOSITION===|^===COMPOSITION_RATIONALE===|^===INTERIOR_NOTES===|^===END_SENTINEL===)/gm
   let match
   while ((match = filePattern.exec(withSentinel)) !== null) {
     const filePath = match[1].trim()
@@ -65,7 +66,8 @@ export function parseDelimiterResponse(result) {
   const self_check = captureBlock('SELF_CHECK')
   const measurables = captureBlock('MEASURABLES')
   const shell = captureBlock('SHELL')
-  const layout_signature = captureBlock('LAYOUT_SIGNATURE')
+  const composition = captureBlock('COMPOSITION')
+  const composition_rationale = captureBlock('COMPOSITION_RATIONALE')
   const interior_notes = captureBlock('INTERIOR_NOTES')
 
   let color_scheme
@@ -92,7 +94,8 @@ export function parseDelimiterResponse(result) {
     self_check,
     measurables,
     shell,
-    layout_signature,
+    composition,
+    composition_rationale,
     interior_notes,
   }
 }

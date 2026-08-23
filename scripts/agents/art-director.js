@@ -2,10 +2,13 @@
  * Art Director — single-agent compositional decision.
  *
  * Replaces the historical brief-writer + Design Director + Token Designer
- * trio. Reads raw signals, content, chassis catalog, archetype history,
+ * trio. Reads raw signals, content, chassis catalog, composition mandate,
  * color mandate, and impeccable references, then asks Claude to make ONE
- * unified decision: hero copy, archetype, chassis, full preset.ts,
- * visual spec, self-check.
+ * unified decision: hero copy, composition tuple, chassis, full preset.ts,
+ * visual spec, self-check. `archetype` survives only as an optional,
+ * unvalidated descriptive label (see validateArtDirectorResult) — the
+ * fixed 8-name archetype list this module used to hard-validate against
+ * was removed 2026-08-23 (composition-grammar arc, Task 4).
  *
  * The orchestrator (scripts/design-agents.js) handles backup/restore,
  * Phase 2 (Unified Designer), build validation, and archive.
@@ -13,18 +16,13 @@
 import { writeFile } from 'node:fs/promises'
 import { callClaudeCLI } from '../utils/claude-cli.js'
 import { parseDelimiterResponse } from '../utils/delimiter-parser.js'
-import { parseMeasurablesBlock, parseShellBlock } from '../utils/spec-blocks.js'
+import {
+  parseMeasurablesBlock,
+  parseShellBlock,
+  parseCompositionBlock,
+} from '../utils/spec-blocks.js'
+import { isValidTuple } from '../utils/composition-grammar.js'
 import { modelFor } from '../utils/models.js'
-const ARCHETYPE_NAMES = new Set([
-  'Gallery Wall',
-  'Broadsheet',
-  'Specimen',
-  'Poster',
-  'Scroll',
-  'Split',
-  'Stack',
-  'Index',
-])
 
 const BRAND_LOCKUP_IDS = new Set([
   'mark-only-sm',
@@ -43,7 +41,6 @@ export function buildArtDirectorUserPrompt({
   signals,
   contentSummary,
   chassisCatalogBlock,
-  archetypeHistoryBlock,
   recentBriefs,
   recentRatings,
   references,
@@ -51,16 +48,16 @@ export function buildArtDirectorUserPrompt({
   shellMandateSection,
   paletteFormulaMandateSection,
   heroSourceMandateSection,
-  layoutSignatureMandateSection,
+  compositionMandateSection,
   brandContract,
   weightsBlock,
   tasteMemoryBlock,
+  retryContext,
 }) {
   const sections = []
   sections.push(`## Today's Raw Signals\n\n\`\`\`yaml\n${formatSignalsAsYaml(signals)}\n\`\`\``)
   sections.push(`## Site Content (read-only — for hero phrase mining)\n\n${contentSummary}`)
   sections.push(`## Typography Chassis Catalog\n\n${chassisCatalogBlock}`)
-  if (archetypeHistoryBlock) sections.push(archetypeHistoryBlock)
   if (recentBriefs) sections.push(`## Recent Archive Briefs\n\n${recentBriefs}`)
   if (recentRatings) sections.push(`## User Design Ratings (learn from these)\n\n${recentRatings}`)
   if (references) sections.push(`## Design References\n\n${references}`)
@@ -68,10 +65,11 @@ export function buildArtDirectorUserPrompt({
   if (shellMandateSection) sections.push(shellMandateSection)
   if (paletteFormulaMandateSection) sections.push(paletteFormulaMandateSection)
   if (heroSourceMandateSection) sections.push(heroSourceMandateSection)
-  if (layoutSignatureMandateSection) sections.push(layoutSignatureMandateSection)
+  if (compositionMandateSection) sections.push(compositionMandateSection)
   if (brandContract) sections.push(brandContract)
   if (weightsBlock) sections.push(`## Creative Weights\n\n${weightsBlock}`)
   if (tasteMemoryBlock) sections.push(tasteMemoryBlock)
+  if (retryContext) sections.push(retryContext)
   return sections.join('\n\n---\n\n')
 }
 
@@ -84,20 +82,32 @@ function formatSignalsAsYaml(signals) {
 
 /**
  * Validate that an Art Director response has all required blocks and a
- * recognized archetype. Throws with a specific reason on failure so the
+ * valid composition tuple. Throws with a specific reason on failure so the
  * orchestrator can decide whether to retry or surface the error.
+ *
+ * `===ARCHETYPE===` is optional and never validated — the fixed 8-name list
+ * this function used to hard-fail against is gone (composition-grammar
+ * arc, Task 4). `===COMPOSITION===` is the real structural declaration now,
+ * and it IS validated: every one of the eight axes must be present with a
+ * value from that axis's fixed vocabulary (see composition-grammar.js).
+ * `===COMPOSITION_RATIONALE===` is required alongside it — a tuple with no
+ * stated reason is exactly the "invented archetype for its own sake"
+ * failure mode a hard-fail-on-unknown-value coherence gate exists to catch.
  */
 export function validateArtDirectorResult(parsed) {
   if (!parsed.hero_copy || parsed.hero_copy.length < 3) {
     throw new Error('Art Director response missing or empty hero_copy (===HERO_COPY===)')
   }
-  if (!parsed.archetype) {
-    throw new Error('Art Director response missing ===ARCHETYPE===')
+  if (!parsed.composition) {
+    throw new Error('Art Director response missing ===COMPOSITION===')
   }
-  if (!ARCHETYPE_NAMES.has(parsed.archetype)) {
-    throw new Error(
-      `Art Director archetype "${parsed.archetype}" is not in the allowed set: ${[...ARCHETYPE_NAMES].join(', ')}`
-    )
+  const composition = parseCompositionBlock(parsed.composition)
+  const { valid, errors } = isValidTuple(composition)
+  if (!valid) {
+    throw new Error(`Art Director composition tuple is invalid: ${errors.join('; ')}`)
+  }
+  if (!parsed.composition_rationale || parsed.composition_rationale.length < 10) {
+    throw new Error('Art Director response missing or too-short ===COMPOSITION_RATIONALE===')
   }
   if (!parsed.chassis_id) {
     throw new Error('Art Director response missing chassis_id (===CHASSIS_ID===)')
@@ -146,7 +156,6 @@ export function validateArtDirectorResult(parsed) {
  *   contentSummary: string,
  *   chassisCatalog: object[],
  *   chassisCatalogBlock: string,
- *   archetypeHistoryBlock: string,
  *   recentBriefs: string,
  *   recentRatings: string,
  *   references: string,
@@ -154,13 +163,14 @@ export function validateArtDirectorResult(parsed) {
  *   shellMandateSection?: string,
  *   paletteFormulaMandateSection?: string,
  *   heroSourceMandateSection?: string,
- *   layoutSignatureMandateSection?: string,
+ *   compositionMandateSection?: string,
  *   weightsBlock: string,
  *   tasteMemoryBlock: string,
+ *   retryContext?: string,
  *   systemPrompt: string,
  *   designReferenceImages?: Array<{ data: string, media_type: string, title?: string }>,
  * }} ctx
- * @returns {Promise<{ heroCopy: string, heroRationale: string, heroSource: string, archetype: string, chassisId: string, presetTs: string, visualSpec: string, selfCheck: string, rationale: string, designBrief: string, colorScheme: object|null, shell: string, layoutSignature: string, brief: string }>}
+ * @returns {Promise<{ heroCopy: string, heroRationale: string, heroSource: string, archetype: string, chassisId: string, presetTs: string, visualSpec: string, selfCheck: string, rationale: string, designBrief: string, colorScheme: object|null, shell: string, composition: string, compositionRationale: string, brief: string }>}
  */
 export async function runArtDirector(ctx) {
   const userPrompt = buildArtDirectorUserPrompt(ctx)
@@ -189,7 +199,8 @@ export async function runArtDirector(ctx) {
   } catch (err) {
     const present = [
       'hero_copy',
-      'archetype',
+      'composition',
+      'composition_rationale',
       'chassis_id',
       'visual_spec',
       'self_check',
@@ -198,7 +209,8 @@ export async function runArtDirector(ctx) {
     ].filter((k) => parsed[k])
     const absent = [
       'hero_copy',
-      'archetype',
+      'composition',
+      'composition_rationale',
       'chassis_id',
       'visual_spec',
       'self_check',
@@ -228,7 +240,13 @@ export async function runArtDirector(ctx) {
     parsed.hero_rationale || '(none)',
     '',
     `## Archetype`,
-    parsed.archetype,
+    parsed.archetype || '(none declared — composition tuple below is the structural record)',
+    '',
+    `## Composition`,
+    parsed.composition || '',
+    '',
+    `## Composition Rationale`,
+    parsed.composition_rationale || '',
     '',
     `## Chassis`,
     parsed.chassis_id,
@@ -247,14 +265,15 @@ export async function runArtDirector(ctx) {
     heroCopy: parsed.hero_copy,
     heroRationale: parsed.hero_rationale || '',
     heroSource: parsed.hero_source || '',
-    archetype: parsed.archetype,
+    archetype: parsed.archetype || '',
     chassisId: parsed.chassis_id,
     presetTs: parsed.files.find((f) => f.path === 'elements/preset.ts').content,
     visualSpec: parsed.visual_spec,
     selfCheck: parsed.self_check,
     measurables: parsed.measurables,
     shell: parsed.shell,
-    layoutSignature: parsed.layout_signature || '',
+    composition: parsed.composition,
+    compositionRationale: parsed.composition_rationale,
     rationale: parsed.rationale || '',
     designBrief: parsed.design_brief || '',
     colorScheme: parsed.color_scheme || null,

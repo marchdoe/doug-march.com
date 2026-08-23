@@ -37,7 +37,7 @@ Failures: Featured heading and sidebar heading at the same visual weight. Everyt
 ### 2. Spec Fidelity
 Does the render match what the Design Director specified? Check:
 - **Color** — Are the background, text, and accent colors visually consistent with the spec? (You cannot see hex values, but you can see if something is warm/cool/dark/light, whether there's a clear accent color, whether dark mode is applied if specified.)
-- **Layout archetype** — Does the composition match the specified pattern (Magazine, Gallery, Scroll, Dashboard, Minimal)? Is the nav where it should be?
+- **Composition** — Does the render match the declared tuple (columns, axis, symmetry, hero placement, density, rhythm, shell posture, field ratio)? Is the nav where the shell declaration and `shell_posture` say it should be — present when `standard`/`marginal`/`folded-into-hero`/`footer-only`, genuinely absent when `shell_posture: none`?
 - **Typography** — Do heading and body fonts look like the specified fonts (serif vs sans-serif, display vs workhorse)? Are size relationships proportional to the spec?
 
 Failures: Spec says dark background, render is white. Spec says left sidebar nav, render has top bar. Spec says display serif, render uses system sans.
@@ -71,17 +71,16 @@ Failures: Project title wrapping into three lines and overflowing its card. Side
 
 Does the design *use the canvas*, or does the active content sit in a narrow column with large unexplained empty rails?
 
-The chosen archetype's density floor must be visible in the render:
-- **Specimen / Poster** — type or hero fills the page at ≥70% width AND height. A specimen day with body-article-scale headlines on a sea of cream is a failure regardless of how nice the typography looks.
-- **Broadsheet / Index** — dense, multi-column or tightly-set list, ≥80% canvas utilization. A single narrow column of text with a 60% empty rail is a failure.
-- **Scroll** — committed column at ≥80% viewport width.
-- **Split** — two active halves, no center void.
-- **Stack** — full-width bands, edge to edge.
-- **Gallery Wall** — blocks across the full canvas, not clustered.
+The declared composition's density floor must be visible in the render:
+- **`density: sparse`** — the one dominant element (type or hero) fills ≥70% width AND height of the active region. A sparse composition with body-article-scale headlines on a sea of cream is a failure regardless of how nice the typography looks — sparse means few elements, not permission to leave the canvas empty.
+- **`density: dense` or `crowded`** — multi-column or tightly-set, ≥80% canvas utilization. A single narrow column of text with a 60% empty rail is a failure.
+- **`columns: single`** — the column itself must be wide (≥80% viewport width), regardless of density.
+- **`columns: two-asymmetric` or `two-equal`** — both zones active, no center void.
+- **`columns: masonry` or `irregular-twelve`** — blocks across the full canvas, not clustered to one quadrant.
 
 A desktop render where active content occupies less than ~70% of the viewport width is an under-execution unless the empty space is *active* (drenched color field, atmospheric gradient, hero motion). A field of plain background color with no role is dead canvas.
 
-Failures: A 40%-wide column of body text on the left half of the page with a 60% empty cream rail on the right. Specimen archetype but headline rendered at body-article scale. Index archetype but only one list, narrow, in a single column. When this fails, owner is **react-engineer**.
+Failures: A 40%-wide column of body text on the left half of the page with a 60% empty cream rail on the right. `density: sparse` but headline rendered at body-article scale. `density: dense` but only one list, narrow, in a single column. When this fails, owner is **react-engineer**.
 
 ### 7. Hero Phrase Execution
 
@@ -99,11 +98,11 @@ Failures:
 
 When this fails, owner is **react-engineer**.
 
-### 8. Archetype Purity (Specimen / Poster days only)
+### 8. Sparse-Composition Purity (`density: sparse` days only)
 
-Skip this section entirely if the archetype is not Specimen or Poster.
+Skip this section entirely if the composition's `density` is not `sparse`.
 
-For Specimen and Poster days: The home page IS the hero phrase. There must be NO visible project cards, NO work grid, NO "Selected Work" heading, NO featured project section, and NO experiments section on the home page. Projects are accessible only via navigation.
+On a sparse day: The home page IS the hero phrase. There must be NO visible project cards, NO work grid, NO "Selected Work" heading, NO featured project section, and NO experiments section on the home page. Projects are accessible only via navigation.
 
 Check:
 - Are any project cards, project titles, or a "Selected Work" / "Experiments" section visible on the home page?
@@ -165,13 +164,13 @@ did" is).
 
 ## Verdict Rules
 
-**SHIP** if: All applicable areas are acceptable — the seven standard areas plus mockup fidelity, plus Section 8 if the archetype is Specimen or Poster. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
+**SHIP** if: All applicable areas are acceptable — the seven standard areas plus mockup fidelity, plus Section 8 if `density: sparse`. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
 
 **REVISE** if: One or more areas have a clear, specific failure that meaningfully degrades the experience or contradicts the spec. Identify exactly what is wrong and who is responsible.
 
 ### Responsible Agents
 
-All revisions go to **react-engineer**. It owns the entire rendered output: color, fonts, layout structure, nav placement, component styling, hero phrase execution, and archetype purity.
+All revisions go to **react-engineer**. It owns the entire rendered output: color, fonts, layout structure, nav placement, component styling, hero phrase execution, and sparse-composition purity.
 
 ## Feedback Quality Standard
 

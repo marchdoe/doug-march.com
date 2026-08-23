@@ -192,11 +192,11 @@ The APPROVED MOCKUP wins every conflict with this list — it already passed the
 
 Bind content from the content files. Every listed key must appear in the rendered output. Contract is about what's shown, not how.
 
-**Home page content contract — varies by archetype (follow the mockup and ===INTERIOR_NOTES===):**
+**Home page content contract — varies by composition density (follow the mockup and ===INTERIOR_NOTES===):**
 
-**Specimen / Poster:** Home page IS the hero phrase. Render ONLY: the hero phrase at full-page scale, navigation, and optional signal annotation. Do NOT render a project listing, featured project section, or experiments section.
+**When `density: sparse`:** Home page IS the hero phrase. Render ONLY: the hero phrase at full-page scale, navigation, and optional signal annotation. Do NOT render a project listing, featured project section, or experiments section.
 
-**All other archetypes:** Must render:
+**Every other density value:** Must render:
 - Featured project: title, problem statement, external link
 - Each selected-work project: title, type, year, and a link to `/work/$slug`
 - Each experiment: title, type, year, and a link (internal or external)

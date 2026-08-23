@@ -34,27 +34,30 @@ describe('parseDelimiterResponse — new blocks', () => {
     expect(p.interior_notes).toBe('notes')
   })
 
-  it('captures HERO_SOURCE and LAYOUT_SIGNATURE (variance mandate blocks)', () => {
+  it('captures HERO_SOURCE, COMPOSITION, and COMPOSITION_RATIONALE (variance/coherence blocks)', () => {
     const raw = [
       '===HERO_COPY===',
       'FOURTEEN HOURS OF LIGHT',
       '===HERO_SOURCE===',
       'composed',
-      '===LAYOUT_SIGNATURE===',
-      'columns: 2',
+      '===COMPOSITION===',
+      'columns: two-equal',
       'axis: vertical',
-      'symmetry: asymmetric',
-      'hero_zone: left',
+      'symmetry: broken',
+      'hero_zone: center',
+      '===COMPOSITION_RATIONALE===',
+      'A broken-symmetry two-column grid lets the phrase sit off-center, matching its uneasy tone.',
       '===RATIONALE===',
       'because',
     ].join('\n')
     const p = parseDelimiterResponse(raw)
     expect(p.hero_source).toBe('composed')
-    expect(p.layout_signature).toContain('columns: 2')
+    expect(p.composition).toContain('columns: two-equal')
+    expect(p.composition_rationale).toContain('broken-symmetry')
     expect(p.rationale).toBe('because')
   })
 
-  it('does not fail when HERO_SOURCE and LAYOUT_SIGNATURE are absent (optional blocks)', () => {
+  it('does not fail when HERO_SOURCE and COMPOSITION are absent (optional/independent blocks)', () => {
     const raw = [
       '===HERO_COPY===',
       'FOURTEEN HOURS OF LIGHT',
@@ -65,14 +68,26 @@ describe('parseDelimiterResponse — new blocks', () => {
     ].join('\n')
     const p = parseDelimiterResponse(raw)
     expect(p.hero_source).toBeUndefined()
-    expect(p.layout_signature).toBeUndefined()
+    expect(p.composition).toBeUndefined()
+    expect(p.composition_rationale).toBeUndefined()
     expect(p.hero_copy).toBe('FOURTEEN HOURS OF LIGHT')
   })
 
-  it('still terminates a FILE block at HERO_SOURCE and LAYOUT_SIGNATURE', () => {
-    const raw = ['===FILE:mockup.html===', '<html></html>', '===HERO_SOURCE===', 'quote'].join('\n')
+  it('still terminates a FILE block at HERO_SOURCE, COMPOSITION, and COMPOSITION_RATIONALE', () => {
+    const raw = [
+      '===FILE:mockup.html===',
+      '<html></html>',
+      '===HERO_SOURCE===',
+      'quote',
+      '===COMPOSITION===',
+      'columns: single',
+      '===COMPOSITION_RATIONALE===',
+      'because',
+    ].join('\n')
     const p = parseDelimiterResponse(raw)
     expect(p.files[0].content).toBe('<html></html>')
     expect(p.hero_source).toBe('quote')
+    expect(p.composition).toBe('columns: single')
+    expect(p.composition_rationale).toBe('because')
   })
 })

@@ -1,5 +1,5 @@
 /**
- * Parsers for the Art Director's MEASURABLES, SHELL, and LAYOUT_SIGNATURE
+ * Parsers for the Art Director's MEASURABLES, SHELL, and COMPOSITION
  * delimiter blocks. All are simple `key: value` lines; `#` starts a
  * comment. Missing/unparseable fields come back null — validation policy
  * lives in the caller (validateArtDirectorResult), not here.
@@ -51,23 +51,21 @@ export function parseShellBlock(text) {
 }
 
 /**
- * Layout-signature mandate (2026-08-23): a compact, exact-match-comparable
- * fingerprint of today's composition, used to soft-forbid repeating the
- * same structural tuple. All fields optional — missing/unparseable fields
- * come back null so old archives and non-compliant responses degrade
- * gracefully instead of failing the run.
- *
- * Widened to all eight composition axes (see utils/composition-grammar.js).
- * Any `layout-signature.json` written under the original four-key shape
- * still parses: the four new keys simply come back null, which the per-axis
- * mandate treats as "no history for this axis" rather than an error. (As of
- * 2026-08-23 no such file exists in the archive — the artifact and the
- * pipeline that would write it shipped the same day the pipeline went
- * dormant — but a future one would degrade correctly.)
+ * The Art Director's `===COMPOSITION===` block — the eight composition-axis
+ * key: value declarations (see utils/composition-grammar.js for the
+ * vocabulary). Successor to the four-key `===LAYOUT_SIGNATURE===` block this
+ * function used to parse (renamed 2026-08-23, Task 4 of the
+ * composition-grammar arc — the fixed archetype list it validated against
+ * is gone; composition is now the sole structural declaration). All fields
+ * optional here — missing/unparseable fields come back null so validation
+ * policy stays entirely in the caller, and any legacy `layout-signature.json`
+ * written under the original four-key shape still parses: the four new keys
+ * simply come back null, which the per-axis mandate treats as "no history
+ * for this axis" rather than an error.
  *
  * @returns {Record<'columns'|'axis'|'symmetry'|'hero_zone'|'density'|'rhythm'|'shell_posture'|'field_ratio', string|null>}
  */
-export function parseLayoutSignatureBlock(text) {
+export function parseCompositionBlock(text) {
   const kv = parseKeyValues(text)
   const norm = (v) => (v ? v.toLowerCase().trim() : null)
   return {

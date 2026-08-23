@@ -3,10 +3,9 @@ import {
   FILE_OWNERSHIP,
   buildAgentPrompt,
   identifyFailingAgent,
-  extractArchetypeFromText,
   parseDelimiterResponse,
   resolveChassisFromDirectorOutput,
-  buildArchetypeContractBlock,
+  buildCompositionContractBlock,
   describeRiskTier,
   resolveRiskWeight,
 } from '../../scripts/design-agents.js'
@@ -128,59 +127,6 @@ describe('buildAgentPrompt', () => {
       tokenContext: null,
     })
     expect(prompt).not.toContain('Do NOT use these as a design starting point')
-  })
-})
-
-describe('extractArchetypeFromText', () => {
-  it('extracts from the structured **Archetype:** declaration', () => {
-    const spec = `# Visual Specification\n**Date:** 2026-04-09\n**Archetype:** The Broadsheet\n\n...`
-    expect(extractArchetypeFromText(spec)).toBe('Broadsheet')
-  })
-
-  it('handles archetype without "The" prefix', () => {
-    const spec = `**Archetype:** Specimen\n\nbody`
-    expect(extractArchetypeFromText(spec)).toBe('Specimen')
-  })
-
-  it('handles "Gallery Wall" with space (avoids partial match on Wall)', () => {
-    const spec = `**Archetype:** The Gallery Wall\n\nbody`
-    expect(extractArchetypeFromText(spec)).toBe('Gallery Wall')
-  })
-
-  it('picks the chosen archetype, not forbidden names from constraint text', () => {
-    // This was the regression that shipped wrong archetypes — the
-    // forbidden-list echo appears earlier in the text than the actual
-    // choice, and the old first-match implementation returned the
-    // forbidden name.
-    const spec = `
-## Archetype History — MANDATORY CONSTRAINT
-Recent archetype usage: Gallery Wall, Specimen, Gallery Wall
-**FORBIDDEN TODAY**: Gallery Wall, Specimen
-
-You MUST choose from: Broadsheet, Poster, Scroll, Split, Stack, Index.
-
-# Visual Specification
-**Archetype:** The Index
-`
-    expect(extractArchetypeFromText(spec)).toBe('Index')
-  })
-
-  it('falls back to last-match when structured line is absent', () => {
-    const spec =
-      'FORBIDDEN: Gallery Wall, Specimen\n\nThis uses the Stack approach with horizontal bands.'
-    expect(extractArchetypeFromText(spec)).toBe('Stack')
-  })
-
-  it('returns null when no archetype is mentioned', () => {
-    expect(extractArchetypeFromText('random prose with no archetype names')).toBeNull()
-  })
-
-  it('returns null for empty string', () => {
-    expect(extractArchetypeFromText('')).toBeNull()
-  })
-
-  it('matches Broadsheet case-insensitively in structured line', () => {
-    expect(extractArchetypeFromText('**Archetype:** THE BROADSHEET')).toBe('Broadsheet')
   })
 })
 
@@ -387,29 +333,33 @@ describe('parseDelimiterResponse', () => {
   })
 })
 
-describe('buildArchetypeContractBlock', () => {
-  it('returns override block for Specimen', () => {
-    const block = buildArchetypeContractBlock('Specimen')
-    expect(block).toContain('ARCHETYPE CONTRACT — SPECIMEN')
+describe('buildCompositionContractBlock', () => {
+  it('returns the override block when density is sparse', () => {
+    const block = buildCompositionContractBlock({ density: 'sparse' })
+    expect(block).toContain('COMPOSITION CONTRACT — SPARSE')
     expect(block).toContain('hero phrase + navigation ONLY')
     expect(block).toContain('Do NOT render project cards')
   })
 
-  it('returns override block for Poster', () => {
-    const block = buildArchetypeContractBlock('Poster')
-    expect(block).toContain('ARCHETYPE CONTRACT — POSTER')
-    expect(block).toContain('hero phrase + navigation ONLY')
+  it('fires regardless of which other axis values accompany sparse density', () => {
+    const block = buildCompositionContractBlock({
+      density: 'sparse',
+      field_ratio: 'type-dominant',
+      hero_zone: 'full-bleed',
+    })
+    expect(block).toContain('COMPOSITION CONTRACT — SPARSE')
   })
 
-  it('returns empty string for all other archetypes', () => {
-    expect(buildArchetypeContractBlock('Broadsheet')).toBe('')
-    expect(buildArchetypeContractBlock('Scroll')).toBe('')
-    expect(buildArchetypeContractBlock('Stack')).toBe('')
-    expect(buildArchetypeContractBlock('Gallery Wall')).toBe('')
-    expect(buildArchetypeContractBlock('Split')).toBe('')
-    expect(buildArchetypeContractBlock('Index')).toBe('')
-    expect(buildArchetypeContractBlock(undefined)).toBe('')
-    expect(buildArchetypeContractBlock(null)).toBe('')
+  it('returns empty string for every other density value', () => {
+    expect(buildCompositionContractBlock({ density: 'measured' })).toBe('')
+    expect(buildCompositionContractBlock({ density: 'dense' })).toBe('')
+    expect(buildCompositionContractBlock({ density: 'crowded' })).toBe('')
+  })
+
+  it('returns empty string for a missing or empty tuple', () => {
+    expect(buildCompositionContractBlock(undefined)).toBe('')
+    expect(buildCompositionContractBlock(null)).toBe('')
+    expect(buildCompositionContractBlock({})).toBe('')
   })
 })
 

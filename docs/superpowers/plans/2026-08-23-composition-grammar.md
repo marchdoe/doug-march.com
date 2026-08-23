@@ -180,34 +180,65 @@ vision calls but discards them. Same capture path.
 
 ## Task 4: Art Director contract
 
-- [ ] `scripts/agents/art-director.js` — delete the `ARCHETYPE_NAMES` Set (line 18) and
-      the throw at line 97. Replace with `isValidTuple` against a new
-      `===COMPOSITION===` block. `===ARCHETYPE===` becomes **optional and descriptive**:
-      the AD may name what it made ("reads like a broadsheet"), and the name is recorded
-      for continuity but never validated.
-- [ ] Add the coherence contract to the response format: a `===COMPOSITION_RATIONALE===`
-      line stating why this tuple serves today's hero phrase. Mirrors the existing
-      color-mandate justification requirement.
-- [ ] `scripts/prompts/art-director.md`:
-  - Rewrite line 230 — it currently instructs the AD that novel archetypes hard-fail.
-    That instruction inverts under this plan.
-  - Replace the archetype section with the composition-axis vocabulary.
-  - Extend the `===LAYOUT_SIGNATURE===` block (line 205, 287) to all 8 axes, or fold it
-    into `===COMPOSITION===` and retire the duplicate.
-  - Update the Max-Risk License: the day's one permitted anti-pattern break can now
-    include an axis value outside the day's mandate, which was impossible before.
-- [ ] `scripts/design-agents.js`:
-  - Delete the second `ARCHETYPE_NAMES` copy (line 82) plus `extractArchetypeFromText`,
-    `buildArchetypeHistory`, `buildArchetypeConstraintPrompt`.
-  - `buildArchetypeContractBlock` (line 347) hardcodes a Specimen/Poster "no project
-    cards" rule — re-express as `density: sparse` + `field_ratio: drenched`, so the
-    content contract follows the composition rather than a name.
-  - `describeRiskTier` (lines 254–258) — its comment documents the hard validation as the
-    reason the Max-Risk License is narrow. Update alongside Task 4.
-  - Persist `composition.json` per build; keep writing `archetype.txt` when the AD supplies
-    a descriptive name so archive continuity holds.
-- [ ] Tests: novel archetype names accepted; invalid axis value rejected; missing
-      `===COMPOSITION===` fails closed with a clear message; legacy archives still read.
+- [x] `scripts/agents/art-director.js` — deleted the `ARCHETYPE_NAMES` Set and the throw.
+      Replaced with `isValidTuple` against a new `===COMPOSITION===` block (via
+      `parseCompositionBlock`). `===ARCHETYPE===` is now **optional and descriptive**: the
+      AD may name what it made, recorded for continuity, never validated.
+- [x] Added the coherence contract: `===COMPOSITION_RATIONALE===`, required, minimum 10
+      chars, stating why the tuple serves today's hero phrase.
+- [x] `scripts/prompts/art-director.md`: archetype section replaced with the composition-
+      axis table; `===LAYOUT_SIGNATURE===` folded into `===COMPOSITION===` (all 8 axes),
+      the duplicate retired; Max-Risk License now offers a choice — break one named
+      anti-pattern from the lane, OR land one axis on a soft-forbidden value — never both.
+- [x] `scripts/design-agents.js`: deleted the second `ARCHETYPE_NAMES` copy plus
+      `extractArchetypeFromText`, `buildArchetypeHistory`, `buildArchetypeConstraintPrompt`
+      (all three were already advisory-only — `forbidden` was "retained for trace logging
+      only, no longer enforced" per their own comment, so nothing was actually
+      hard-enforced by their removal). `buildArchetypeContractBlock` →
+      `buildCompositionContractBlock(tuple)`, firing on `density === 'sparse'` alone
+      (**deviation**: the task's draft wording suggested `density: sparse` AND
+      `field_ratio: drenched`; narrowed to density alone since that's composition-
+      grammar.js's own definition of "few elements, page is mostly field" — Poster's
+      sparseness and Specimen's type-as-canvas both violate "no cards" for the same
+      underlying reason, independent of field_ratio). `describeRiskTier`'s comment
+      updated. `composition.json` + `lane.json` persisted per build; `archetype.txt` still
+      written when the AD supplies a name.
+- [x] Rewired the seed→lane call site from `selectSeedContent` to `selectLane`, keyed by
+      the AD's own composition tuple instead of `chosenArchetype`. Deleted
+      `scripts/utils/select-seed.js`, `scripts/utils/layout-signature-mandate.js`,
+      `scripts/prompts/seeds/` and their tests — dead after the cutover, not kept as a
+      compat shim (no runtime code validates archetype strings against a name-set
+      anymore, so a `LEGACY_ARCHETYPES` export as the Rollback section suggested would
+      have had no consumer).
+- [x] Tests: `tests/scripts/agents/art-director.test.js` / `art-director-blocks.test.js` —
+      novel and blank archetypes accepted, invalid axis value rejected, missing axis
+      rejected, missing/short `COMPOSITION_RATIONALE` rejected. Verified live (not just
+      unit tests) end-to-end through a realistic full AD response: parse → validate →
+      lane selection succeeded; a response with no `===COMPOSITION===` and one with
+      `columns: seventeen` both failed closed with the expected message; every archetype
+      value tried (`undefined`, `''`, a novel phrase, `'Poster'`, `'Cinema'`) was accepted.
+
+**Scope found during execution, not in the original checklist.** Changing the AD's Layout
+Specification bullet from "Archetype — name it" to "Composition — name the tuple" removed
+the one guaranteed textual anchor three *other* prompt files depended on to key real
+logic off the literal 8 names:
+- `mockup-designer.md`'s "Canvas commitment (non-negotiable)" per-archetype density-floor
+  table (the guardrail against the site's most-cited failure mode, a narrow column on a
+  sea of background) and its Specimen/Poster home-page content contract.
+- `spec-critic.md`'s hard chassis-ratio check ("if archetype is Specimen or Poster, ratio
+  must be ≥1.500") and its measurable-floor-by-archetype table.
+- `screenshot-critic.md`'s "Archetype Purity" section 8, gated on the archetype string
+  being exactly "Specimen" or "Poster".
+- `react-engineer.md` had the same Specimen/Poster home-page dichotomy as
+  mockup-designer.md.
+
+Flagged and confirmed with Doug: expanded Task 4 to re-express all four in composition
+terms (`density: sparse` for the home-page-is-hero-phrase contract; `field_ratio:
+type-dominant`/`density: sparse` for the chassis-ratio floor; `density`/`columns` for the
+canvas-utilization table) rather than leave them dormant. Added a structured
+`## Composition` section to the shared `enrichedBrief` (read by the mockup designer, the
+screenshot critic, and now the react engineer too) so all three see the tuple reliably,
+instead of depending on the AD having also restated it in free-text visual-spec prose.
 
 ## Task 5: Shell posture becomes real
 
