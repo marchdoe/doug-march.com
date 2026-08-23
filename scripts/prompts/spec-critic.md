@@ -39,7 +39,7 @@ Failure example: visual spec says "primary hue 18° terracotta," preset has only
 
 The hero phrase must render at the intended scale on a 1440×900 viewport. Check:
 
-- If archetype is Specimen or Poster, the chassis MUST have ratio ≥ 1.500 (display-grade). The catalog ratios are: bricolage-manrope 1.500, spectral-albert 1.333, big-shoulders-atkinson 1.618, anton-inter-tight 1.500, bebas-plex 1.500.
+- If archetype is Specimen or Poster, the chassis MUST have ratio ≥ 1.500 (display-grade). The catalog ratios are: bricolage-manrope 1.500, spectral-albert 1.333, big-shoulders-atkinson 1.618, anton-inter-tight 1.500, bebas-plex 1.500, fraunces-karla 1.500, dm-serif-public 1.618, zilla-worksans 1.333, space-mono-archivo 1.500, unbounded-figtree 1.500.
 - If chassis is `spectral-albert` (1.333) and archetype is Specimen, that is a render-feasibility failure — Specimen needs poster-scale type.
 - The chassis catalog lists "Best for archetypes" — if the chosen archetype is NOT in that list, flag it (acceptable if the rationale explicitly justifies it; otherwise revise).
 
@@ -74,7 +74,7 @@ Not acceptable: "Hero phrase is weak", "Colors don't match"
 Acceptable:
 - "Hero phrase 'Selected Work — recent projects' is a section label, not an anchor. Pick from today's signals: the Reagan quote, the 13–6 Tigers headline, or the Kerouac fragment in projects.ts."
 - "Visual spec names primary hue 18° terracotta but preset.ts colors are entirely cool blues (#3a5a7e family). Either restate the spec to match the preset, or rewrite the preset color tokens to match the spec."
-- "Archetype Specimen + chassis spectral-albert (ratio 1.333) cannot render the hero phrase at marquee scale. Pick big-shoulders-atkinson, bricolage-manrope, anton-inter-tight, or bebas-plex (all ≥ 1.500)."
+- "Archetype Specimen + chassis spectral-albert (ratio 1.333) cannot render the hero phrase at marquee scale. Pick a ≥1.500 chassis instead — e.g. big-shoulders-atkinson, bricolage-manrope, anton-inter-tight, bebas-plex, fraunces-karla, dm-serif-public, space-mono-archivo, or unbounded-figtree."
 
 ## Response Format
 

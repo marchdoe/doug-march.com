@@ -7,6 +7,8 @@ import {
   parseDelimiterResponse,
   resolveChassisFromDirectorOutput,
   buildArchetypeContractBlock,
+  describeRiskTier,
+  resolveRiskWeight,
 } from '../../scripts/design-agents.js'
 
 describe('FILE_OWNERSHIP', () => {
@@ -408,5 +410,107 @@ describe('buildArchetypeContractBlock', () => {
     expect(buildArchetypeContractBlock('Index')).toBe('')
     expect(buildArchetypeContractBlock(undefined)).toBe('')
     expect(buildArchetypeContractBlock(null)).toBe('')
+  })
+})
+
+describe('describeRiskTier', () => {
+  it('produces four distinct sentences across the 3-4 / 5-6 / 7-8 / 9-10 buckets', () => {
+    const sentences = new Set([3, 4, 5, 6, 7, 8, 9, 10].map(describeRiskTier))
+    // 8 risk values, 4 buckets → exactly 4 distinct sentences.
+    expect(sentences.size).toBe(4)
+  })
+
+  it('risk 3 and 4 share the SAFE bucket', () => {
+    expect(describeRiskTier(3)).toBe(describeRiskTier(4))
+    expect(describeRiskTier(3)).toMatch(/SAFE/)
+  })
+
+  it('risk 5 and 6 share the Balanced bucket', () => {
+    expect(describeRiskTier(5)).toBe(describeRiskTier(6))
+    expect(describeRiskTier(5)).toMatch(/Balanced/)
+  })
+
+  it('risk 7 and 8 share the BOLD bucket, distinct from 9-10', () => {
+    expect(describeRiskTier(7)).toBe(describeRiskTier(8))
+    expect(describeRiskTier(7)).toMatch(/^BOLD/)
+    expect(describeRiskTier(7)).not.toBe(describeRiskTier(9))
+  })
+
+  it('risk 9 and 10 share the MAXIMUM RISK bucket and mention the Max-Risk License', () => {
+    expect(describeRiskTier(9)).toBe(describeRiskTier(10))
+    expect(describeRiskTier(9)).toMatch(/MAXIMUM RISK/)
+    expect(describeRiskTier(9)).toMatch(/Max-Risk License/)
+  })
+
+  it('the old risk=8 default no longer produces the >=7 sentence used for 9-10', () => {
+    // Regression guard: risk=8 was the constant default before this change,
+    // and previously shared the ">=7" sentence with every value through 10.
+    expect(describeRiskTier(8)).not.toBe(describeRiskTier(10))
+  })
+})
+
+describe('resolveRiskWeight', () => {
+  it('an explicitly-set env value always wins over the derived value', () => {
+    expect(resolveRiskWeight('5', '2026-08-23')).toEqual({ risk: 5, explicitlySet: true })
+    expect(resolveRiskWeight('10', '2026-01-01')).toEqual({ risk: 10, explicitlySet: true })
+  })
+
+  it('"0" counts as explicitly set (falsy in JS, but not unset)', () => {
+    expect(resolveRiskWeight('0', '2026-08-23')).toEqual({ risk: 0, explicitlySet: true })
+  })
+
+  it('undefined and empty string both derive risk from the date instead', () => {
+    const fromUndefined = resolveRiskWeight(undefined, '2026-08-23')
+    const fromEmpty = resolveRiskWeight('', '2026-08-23')
+    expect(fromUndefined.explicitlySet).toBe(false)
+    expect(fromEmpty.explicitlySet).toBe(false)
+    expect(fromUndefined.risk).toBe(fromEmpty.risk)
+  })
+
+  it('derived risk is always in range 3-10', () => {
+    const dates = [
+      '2026-01-01',
+      '2026-02-14',
+      '2026-03-30',
+      '2026-04-17',
+      '2026-05-05',
+      '2026-06-21',
+      '2026-07-04',
+      '2026-08-23',
+      '2026-09-09',
+      '2026-10-31',
+      '2026-11-11',
+      '2026-12-25',
+    ]
+    for (const date of dates) {
+      const { risk } = resolveRiskWeight(undefined, date)
+      expect(risk).toBeGreaterThanOrEqual(3)
+      expect(risk).toBeLessThanOrEqual(10)
+    }
+  })
+
+  it('same date always derives the same risk (reproducible re-runs)', () => {
+    const a = resolveRiskWeight(undefined, '2026-08-23')
+    const b = resolveRiskWeight(undefined, '2026-08-23')
+    expect(a).toEqual(b)
+  })
+
+  it('different dates derive different risk values across a run (not a constant)', () => {
+    const dates = [
+      '2026-01-01',
+      '2026-02-14',
+      '2026-03-30',
+      '2026-04-17',
+      '2026-05-05',
+      '2026-06-21',
+      '2026-07-04',
+      '2026-08-23',
+      '2026-09-09',
+      '2026-10-31',
+      '2026-11-11',
+      '2026-12-25',
+    ]
+    const risks = new Set(dates.map((d) => resolveRiskWeight(undefined, d).risk))
+    expect(risks.size).toBeGreaterThan(1)
   })
 })

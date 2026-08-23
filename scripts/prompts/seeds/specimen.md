@@ -1,4 +1,9 @@
-# Seed: specimen — inspired by Vercel / Geist
+# Seed: specimen
+
+Two lanes anchor this archetype: Vercel / Geist (black-and-white dev-tool precision) and an independent type-foundry specimen sheet (warm paper, genuine typographic annotation). The pipeline deterministically picks one per day by date hash — the lane below is the only one injected into this prompt.
+
+<!-- LANE:vercel-geist -->
+**Lane: Vercel / Geist**
 
 > Source: Vercel / Geist via VoltAgent/awesome-design-md (MIT). Paraphrased from public brand characteristics. Use as anchor reference, not copy target — borrow the rigor and reinterpret it through today's signals and brief.
 
@@ -34,8 +39,46 @@ Spacing scale on a 4px grid (4, 8, 16, 24, 48, 96). Hero sections are type-only 
 - DO NOT render photography-first sections — type dominates every viewport
 
 ## Mobile strategy
-
 Specimen fills the full viewport width on mobile; the label block (metadata, callouts, signals) stacks **below** the specimen, not beside. Hero type uses `font-size: clamp(3rem, 14vw, 11.25rem)` so the specimen-scale character survives shrinking without overflow. The specimen element itself should be ≥ 60% of viewport height on mobile — don't let it collapse into something indistinguishable from normal body content.
+<!-- /LANE -->
+
+<!-- LANE:klim-specimen -->
+**Lane: Independent Type-Foundry Specimen**
+
+> Source: independent type-foundry specimen sheets (e.g. Klim Type Foundry's own marketing) — general genre characteristics of how foundries present their own type, not a specific copyrighted layout. Use as anchor reference, not copy target.
+
+## Atmosphere
+A working type foundry's own specimen sheet — warmer and more tactile than a dev-tool aesthetic, but no less precise. Oversized glyphs paired with genuine ink-drawdown color swatches, annotated with real typographic vocabulary (x-height, aperture, optical size) rather than pixel measurements. Feels handmade-precise, not machine-precise — the opposite warmth register from the Vercel/Geist lane.
+
+## Color roles
+- bg: #F5F1E8 — warm paper
+- text: #1C1917 — deep ink
+- text.mid: #78716C — annotation captions
+- accent: one saturated "ink" color per build — e.g. #B23A48 (a genuine printer's red) — used for annotation marks and swatches only
+- border: #D6CFC4 — hairlines
+
+## Typography
+- Display: whatever chassis is assigned, set at genuinely enormous scale (240px+) with visible construction guides (baseline, cap-height as thin rules behind the glyph)
+- Body: 400, 15px, line-height 1.5, set in a narrow annotation column beside the glyph, not below it
+- Mono: for measurement callouts only (e.g. "x-height 512u")
+
+## Component cues
+- Buttons: "swatch" chips styled like ink drawdowns — rounded-rect with a subtle paper-texture gradient, not a flat fill
+- Cards: bordered with a slightly asymmetric radius suggesting a deckle/torn edge
+- Nav: small-caps serif wordmark, minimal
+
+## Spatial rhythm
+Asymmetric — the specimen glyph anchors one side (60–70% width), the annotation column runs down the other side at a much smaller scale, like a spec sheet margin.
+
+## Anti-patterns specific to this style
+- DO NOT use pure black or pure white — warm paper and deep ink only
+- DO NOT use a cold blue accent — that belongs to the Vercel/Geist lane
+- DO NOT omit annotation marks — measurement callouts are the point of this lane
+- DO NOT center the glyph — it anchors one side, asymmetrically
+
+## Mobile strategy
+The annotation column moves below the glyph instead of beside it. The glyph itself stays the dominant visual element at ≥ 55% of viewport height — the annotation detail can shrink, the glyph cannot.
+<!-- /LANE -->
 
 ## This is one lane
 

@@ -1,4 +1,9 @@
-# Seed: split — inspired by Framer / Stripe
+# Seed: split
+
+Two lanes anchor this archetype: Framer / Stripe (structural corporate tension) and a vibrant gradient-blob split in the spirit of consumer app launches. The pipeline deterministically picks one per day by date hash — the lane below is the only one injected into this prompt.
+
+<!-- LANE:framer-stripe -->
+**Lane: Framer / Stripe**
 
 > Source: Framer / Stripe via VoltAgent/awesome-design-md (MIT). Paraphrased from public brand characteristics. Use as anchor reference, not copy target — borrow the rigor and reinterpret it through today's signals and brief.
 
@@ -34,8 +39,47 @@ Two halves in tension. One side is bold, saturated, gradient-lit — the other i
 - DO NOT use identical card treatments across both panes
 
 ## Mobile strategy
-
 Two halves become two stacked sections on mobile. The divider becomes a horizontal rule (or negative space between sections). Asymmetry carries via aspect-ratio difference — the dominant half gets more vertical space. Avoid flipping which half dominates between viewports.
+<!-- /LANE -->
+
+<!-- LANE:arc-browser -->
+**Lane: Vibrant Gradient-Blob Split**
+
+> Source: consumer app launch pages (Arc Browser and similar) — general genre characteristics of playful gradient-blob marketing pages, not a specific copyrighted layout. Use as anchor reference, not copy target.
+
+## Atmosphere
+Playful, saturated, almost toylike confidence — one half is a soft gradient-blob field with rounded organic shapes, the other half is clean functional white space. Feels like a consumer product launch, not enterprise software — the opposite temperament from the Framer/Stripe lane's structural fintech-corporate tension.
+
+## Color roles
+- bg (bold half): animated-feeling gradient field — e.g. linear-gradient(135deg, #FF6B9D, #C239B3, #7B2FF7)
+- bg (quiet half): #FAFAFA — warm neutral, not stark white
+- text (on bold half): #FFFFFF
+- text (on quiet half): #17171A
+- accent: #FF6B9D — highlight/glow on interactive marks on the quiet side
+- border: none on the bold half; 1px #EAEAEA on the quiet half
+
+## Typography
+- Display: whatever the chassis provides at 600–700, scale ratio 1.5, rounded/soft numerals if the chassis has them
+- Body: 400, 16px, line-height 1.5
+- Mono: not used in this lane
+
+## Component cues
+- Buttons: fully rounded pill on both sides — bold-side buttons are translucent/glass, quiet-side buttons are solid filled
+- Cards: quiet side uses soft-shadow floating cards (12–16px radius); bold side has no cards — organic blob shapes substitute for containers
+- Nav: logo mark sits at the seam between the two halves, straddling both
+
+## Spatial rhythm
+45/55 split. Blob shapes on the bold side bleed slightly across the seam for tension. Quiet side uses a tight functional grid.
+
+## Anti-patterns specific to this style
+- DO NOT use a static flat color on the bold half — it must read as a gradient/blob field, not a color block
+- DO NOT use sharp corners anywhere in this lane
+- DO NOT make the quiet half feel corporate-cold — keep it warm neutral, not stark white
+- DO NOT let the seam be a hard straight line — at least one shape crosses it
+
+## Mobile strategy
+The bold half becomes a shorter gradient band at the top (not a full section) with the hero phrase overlaid. The quiet half becomes the scrollable body beneath it — proportion inverts from desktop's 45/55 to roughly 25/75 so content isn't crowded out by the gradient band.
+<!-- /LANE -->
 
 ## This is one lane
 
