@@ -19,13 +19,13 @@ export function buildMockupDesignerUserPrompt({
   googleFontsUrl,
   lessonsBlock,
   calibrationNote,
-  archetypeContractBlock,
+  compositionContractBlock,
   polishRef,
   revisionFeedback,
   tasteMemoryBlock,
 }) {
   const sections = []
-  if (archetypeContractBlock) sections.push(archetypeContractBlock)
+  if (compositionContractBlock) sections.push(compositionContractBlock)
   sections.push(enrichedBrief)
   sections.push(`## Measurables (the critic will measure these)\n\n${measurables}`)
   sections.push(`## Shell Declaration (execute exactly)\n\n${shell}`)

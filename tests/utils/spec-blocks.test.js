@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import {
   parseMeasurablesBlock,
   parseShellBlock,
-  parseLayoutSignatureBlock,
+  parseCompositionBlock,
 } from '../../scripts/utils/spec-blocks.js'
 
 describe('parseMeasurablesBlock', () => {
@@ -77,25 +77,50 @@ describe('parseShellBlock', () => {
   })
 })
 
-describe('parseLayoutSignatureBlock', () => {
-  it('parses the four layout signature fields', () => {
-    const s = parseLayoutSignatureBlock(
-      ['columns: 2', 'axis: vertical', 'symmetry: asymmetric', 'hero_zone: left'].join('\n')
+describe('parseCompositionBlock', () => {
+  it('parses all eight composition-axis fields', () => {
+    const s = parseCompositionBlock(
+      [
+        'columns: two-equal',
+        'axis: vertical',
+        'symmetry: broken',
+        'hero_zone: center',
+        'density: measured',
+        'rhythm: even',
+        'shell_posture: standard',
+        'field_ratio: balanced',
+      ].join('\n')
     )
-    expect(s.columns).toBe('2')
-    expect(s.axis).toBe('vertical')
-    expect(s.symmetry).toBe('asymmetric')
-    expect(s.hero_zone).toBe('left')
+    expect(s).toEqual({
+      columns: 'two-equal',
+      axis: 'vertical',
+      symmetry: 'broken',
+      hero_zone: 'center',
+      density: 'measured',
+      rhythm: 'even',
+      shell_posture: 'standard',
+      field_ratio: 'balanced',
+    })
   })
 
-  it('returns nulls for missing fields', () => {
-    const s = parseLayoutSignatureBlock('columns: asym')
-    expect(s.columns).toBe('asym')
+  it('returns nulls for missing fields, including all four legacy-shape fields', () => {
+    const s = parseCompositionBlock('columns: single')
+    expect(s.columns).toBe('single')
     expect(s.axis).toBeNull()
+    expect(s.density).toBeNull()
+    expect(s.rhythm).toBeNull()
+    expect(s.shell_posture).toBeNull()
+    expect(s.field_ratio).toBeNull()
   })
 
-  it('normalizes values to lowercase', () => {
-    const s = parseLayoutSignatureBlock('symmetry: Symmetric')
-    expect(s.symmetry).toBe('symmetric')
+  it('normalizes values to lowercase and trims whitespace', () => {
+    const s = parseCompositionBlock('symmetry:   Broken  \nfield_ratio: Type-Dominant')
+    expect(s.symmetry).toBe('broken')
+    expect(s.field_ratio).toBe('type-dominant')
+  })
+
+  it("does not validate values against the axis vocabulary — that is the caller's job", () => {
+    const s = parseCompositionBlock('columns: seventeen')
+    expect(s.columns).toBe('seventeen')
   })
 })

@@ -17,7 +17,7 @@ describe('buildMockupDesignerUserPrompt', () => {
       googleFontsUrl: 'https://fonts.googleapis.com/css2?family=Anton',
       lessonsBlock: '## Recent Lessons\n- stop doing X',
       calibrationNote: '',
-      archetypeContractBlock: '',
+      compositionContractBlock: '',
       polishRef: 'POLISH GUIDANCE TEXT',
     })
     for (const s of [

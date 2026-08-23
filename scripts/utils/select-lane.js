@@ -5,17 +5,15 @@ import { hashToRange } from './deterministic-hash.js'
 import { AXIS_NAMES, COMPOSITION_AXES } from './composition-grammar.js'
 
 /**
- * Lane selection — successor to select-seed.js now that aesthetic register
- * is decoupled from archetype (see composition-grammar.js). A lane no
- * longer belongs to one archetype's file; all ~17 live in one directory and
- * any lane can pair with any composition tuple. Selection is no longer
- * keyed by archetype at all — it is keyed by the day's composition tuple,
- * biased toward lanes whose declared `affinity` overlaps that tuple's
- * values, softly steering away from lanes used on the last 3 builds.
- *
- * select-seed.js is untouched and still live — design-agents.js's call site
- * still resolves an archetype-scoped seed. This module is additive until
- * the Task 4 cutover rewires that call site.
+ * Lane selection — successor to select-seed.js (deleted, Task 4) now that
+ * aesthetic register is decoupled from archetype (see
+ * composition-grammar.js). A lane no longer belongs to one archetype's
+ * file; all 17 live in one directory and any lane can pair with any
+ * composition tuple. Selection is no longer keyed by archetype at all — it
+ * is keyed by the day's composition tuple, biased toward lanes whose
+ * declared `affinity` overlaps that tuple's values, softly steering away
+ * from lanes used on the last 3 builds. design-agents.js's call site was
+ * rewired to this module in the same change that deleted select-seed.js.
  *
  * @module
  */

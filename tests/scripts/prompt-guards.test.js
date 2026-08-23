@@ -107,14 +107,18 @@ describe('screenshot-critic.md load-bearing directives', () => {
   })
 })
 
-describe('seed permission overrides', () => {
-  const seedDir = path.join(promptDir, 'seeds')
-  const seeds = readdirSync(seedDir).filter((f) => f.endsWith('.md') && f !== 'README.md')
-  it('every seed declares itself one lane, not the law', () => {
-    expect(seeds.length).toBeGreaterThanOrEqual(8)
-    for (const f of seeds) {
-      const content = readFileSync(path.join(seedDir, f), 'utf8')
-      expect(content, `${f} missing permission override`).toContain('## This is one lane')
+describe('lane permission overrides', () => {
+  // Successor to the old seed-era check (composition-grammar arc, Task 4):
+  // seeds/ welded a "not the law" disclaimer to an archetype name that no
+  // longer exists. Lanes carry the equivalent guard as inline prose instead
+  // — every lane is an anchor to reinterpret, not a template to copy.
+  const laneDir = path.join(promptDir, 'lanes')
+  const lanes = readdirSync(laneDir).filter((f) => f.endsWith('.md') && f !== 'README.md')
+  it('every lane declares itself an anchor, not a copy target', () => {
+    expect(lanes.length).toBeGreaterThanOrEqual(15)
+    for (const f of lanes) {
+      const content = readFileSync(path.join(laneDir, f), 'utf8')
+      expect(content, `${f} missing anchor-not-copy-target guard`).toContain('not copy target')
     }
   })
 })

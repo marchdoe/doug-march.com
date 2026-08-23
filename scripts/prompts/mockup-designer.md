@@ -36,7 +36,7 @@ No code fences anywhere — not around the response, not around the HTML inside 
 
 ## mockup.html requirements
 
-- mockup.html is the COMPLETE HOME PAGE — full scroll depth as the archetype demands, nothing more. The About and Work pages are NOT in the mockup; describe how they adapt the system in ===INTERIOR_NOTES===.
+- mockup.html is the COMPLETE HOME PAGE — full scroll depth as the composition demands, nothing more. The About and Work pages are NOT in the mockup; describe how they adapt the system in ===INTERIOR_NOTES===.
 - Fully self-contained: one `<style>` block, no JavaScript, no external CSS — with ONE exception: the Google Fonts `<link>` tags for the day's chassis faces. Do not use `@import` for fonts. Use ONLY the font families declared in your inputs.
 - Colors: use ONLY hex values present in today's `elements/preset.ts` (in
   your inputs). You are executing the Art Director's palette, not authoring
@@ -63,16 +63,16 @@ Underdelivering on the brief's scale or strategy is the most common failure mode
 
 ### Canvas commitment (non-negotiable)
 
-The chosen archetype's *layout density* is binding, not advisory. A desktop render that uses less than ~70% of the viewport width is an under-execution regardless of how restrained the brief sounds. Active content — type, image, color field, structured list — must occupy the canvas at the density the archetype calls for.
+The day's composition's *layout density* — declared in `===COMPOSITION===` and repeated for you below — is binding, not advisory. A desktop render that uses less than ~70% of the viewport width is an under-execution regardless of how restrained the brief sounds. Active content — type, image, color field, structured list — must occupy the canvas at the density the composition calls for.
 
-Per-archetype density floors:
+Per-composition density floors, read together (a composition declares one value per row):
 
-- **Specimen / Poster** — type or hero fills the page: ≥70% width AND ≥70% height. Whitespace is allowed only where the type or hero itself dominates the active region.
-- **Broadsheet / Index** — dense: multi-column or tightly-set rules, every row carrying weight, ≥80% canvas utilization. Reads as a contents page or directory, not a single-column blog.
-- **Scroll** — single committed column at ≥80% viewport width on desktop; cinematic vertical pacing, but the column itself is wide and committed.
-- **Split** — two asymmetric halves spanning the full canvas; both panels are active surfaces, no center void.
-- **Stack** — each band edge-to-edge, each band a distinct full-width moment with its own treatment.
-- **Gallery Wall** — irregular blocks placed across the *whole* canvas, not clustered to one quadrant.
+- **`density: sparse`** — sparse means few ELEMENTS, not permission to leave the canvas empty. Whichever element dominates (hero type, one image, one graphic) must occupy ≥70% width AND ≥70% height of the active region. If `field_ratio: type-dominant` accompanies it, the type itself is that dominant element — set it at genuinely oversized scale, not a modest headline floating on white.
+- **`density: measured`** — active content occupies ≥70% of the canvas; breathing room is a deliberate choice, not what's left over after a timid layout.
+- **`density: dense` or `crowded`** — ≥80% canvas utilization: multi-column or tightly-set rules, every zone carrying weight. Reads as a contents page or directory, never a single-column blog post.
+- **`columns: single`** — the column itself must be wide and committed (≥80% viewport width on desktop) regardless of density. A narrow centered column is never acceptable, at any density value.
+- **`columns: two-asymmetric` or `two-equal`** — both zones are active surfaces; no center void, no one "real" side and one decorative dead side.
+- **`columns: masonry` or `irregular-twelve`** — blocks spread across the *whole* canvas; irregular whitespace lives *between* blocks, never clustered to one quadrant while another sits empty.
 
 A narrow centered column on a sea of background is the AI-default of "tasteful editorial" and the most common under-execution on this site. Defeat it deliberately. If your render leaves a substantial empty rail with no role (no drenched color, no atmospheric gradient, no active treatment), the layout has failed regardless of how good the typography is.
 
@@ -149,18 +149,18 @@ The structure itself is a creative choice.
 
 Present this data in any visual form — large type, small label, tooltip, hover, inline prose, table row — but every listed key must appear in the rendered output. Contract is about what's shown, not how.
 
-**Home page content contract — varies by archetype:**
+**Home page content contract — varies by composition density:**
 
-**Specimen / Poster:** Home page IS the hero phrase. Render ONLY: the hero phrase at full-page scale, navigation, and optional signal annotation. Do NOT render a project listing, featured project section, or experiments section. Projects are reachable via navigation.
+**When `density: sparse`** (see the ⚠ COMPOSITION CONTRACT block above, when present): Home page IS the hero phrase. Render ONLY: the hero phrase at full-page scale, navigation, and optional signal annotation. Do NOT render a project listing, featured project section, or experiments section. Projects are reachable via navigation.
 
-**All other archetypes:** Must render:
+**Every other density value:** Must render:
 - Featured project: title, problem statement, external link
 - Each selected-work project: title, type, year, and a link to the corresponding mockup section
 - Each experiment: title, type, year, and a link (internal or external)
 
 **About page (NOT in mockup.html):** The identity statement, timeline entries (year/role/company/description), capability strings, education (school/degree/concentration/years), and personal data (holes in one, sport, teams, current focus) are NOT rendered in the home-page mockup. Instead, ===INTERIOR_NOTES=== must state how the About page renders each of these items within the day's design system.
 
-**All sections:** Name, role, and nav links — rendered in whatever form today's archetype calls for (masthead, floating pills, bottom bar, corner mark, overlay menu, or classical sidebar).
+**All sections:** Name, role, and nav links — rendered in whatever form today's SHELL declaration and `shell_posture` call for (masthead, floating pills, bottom bar, corner mark, overlay menu, classical sidebar, or none at all when `shell_posture: none`).
 
 Layout, typography, color, spacing, and interaction of every element are entirely yours. The data must appear; the presentation is free.
 
