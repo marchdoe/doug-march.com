@@ -115,6 +115,19 @@ export function buildLessonsBlock(archiveDir, { limit = 7, lookbackDays = 14 } =
               text: String(v.feedback).slice(0, 400),
             })
           }
+          // The screenshot-critic's BAR self-eval (calibration against the
+          // owner's highest-rated past build) rides on the verdict, not
+          // gated by it — a SHIP can still land "below," which is exactly
+          // the signal worth carrying forward. Independent of the REVISE
+          // branch above so both can fire on the same verdict entry.
+          if (v.bar?.position) {
+            const reason = v.bar.reason ? ` — ${v.bar.reason}` : ''
+            entries.push({
+              date: dateDir,
+              source: `${v.critic} (BAR)`,
+              text: `BAR vs best build: ${v.bar.position}${reason}`.slice(0, 400),
+            })
+          }
         }
       } catch {
         /* ignore malformed */

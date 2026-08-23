@@ -86,8 +86,16 @@ describe('callClaudeSDK', () => {
 
   it('requests adaptive thinking on models that support it', async () => {
     const { client, create } = stubClient(OK)
-    await callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], { client })
+    // screenshot-critic resolves to sonnet, which supports adaptive thinking.
+    // (mockup-critic resolves to haiku, which does not — see the guard test below.)
+    await callClaudeSDK('screenshot-critic', 'sys', [textBlock('x')], { client })
     expect(create.mock.calls[0][0].thinking).toEqual({ type: 'adaptive' })
+  })
+
+  it('omits thinking on mockup-critic (haiku tier) without an explicit model override', async () => {
+    const { client, create } = stubClient(OK)
+    await callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], { client })
+    expect(create.mock.calls[0][0].thinking).toBeUndefined()
   })
 
   it('omits thinking on haiku, which rejects adaptive', async () => {

@@ -51,7 +51,15 @@ describe('model tier resolution', () => {
     setEnv({}) // dev tier
     expect(modelFor('spec-critic')).toBe(MODEL_IDS.haiku) // haiku stays haiku
     expect(modelFor('react-engineer')).toBe(MODEL_IDS.sonnet)
-    expect(modelFor('mockup-critic')).toBe(MODEL_IDS.sonnet)
+    expect(modelFor('mockup-critic')).toBe(MODEL_IDS.haiku)
+    expect(modelFor('screenshot-critic')).toBe(MODEL_IDS.sonnet)
+  })
+
+  it('mockup-critic resolves to haiku in prod (floors-check gate, not a taste call)', () => {
+    setEnv({ PIPELINE_TIER: 'prod' })
+    expect(modelFor('mockup-critic')).toBe(MODEL_IDS.haiku)
+    expect(PROD_MODELS['mockup-critic']).toBe('haiku')
+    // screenshot-critic (taste/fidelity judgment) stays on sonnet
     expect(modelFor('screenshot-critic')).toBe(MODEL_IDS.sonnet)
   })
 

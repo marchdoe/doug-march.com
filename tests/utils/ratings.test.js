@@ -2,7 +2,11 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { mkdtempSync, rmSync, mkdirSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { buildRecentRatingsBlock, readRecentRatings } from '../../scripts/utils/ratings.js'
+import {
+  buildRecentRatingsBlock,
+  readRecentRatings,
+  findBestRatedReference,
+} from '../../scripts/utils/ratings.js'
 
 describe('buildRecentRatingsBlock', () => {
   let archiveDir
@@ -91,5 +95,78 @@ describe('buildRecentRatingsBlock', () => {
     const rs = readRecentRatings(archiveDir, { lookbackDays: 10 })
     expect(rs).toHaveLength(1)
     expect(rs[0].worked).toBe('second') // higher timestamp wins
+  })
+})
+
+describe('findBestRatedReference', () => {
+  let referencesDir
+  beforeEach(() => {
+    referencesDir = mkdtempSync(path.join(tmpdir(), 'references-'))
+  })
+  afterEach(() => {
+    rmSync(referencesDir, { recursive: true, force: true })
+  })
+
+  function writeIndex(entries) {
+    const body = entries
+      .map((e) => `  - file: ${e.file}\n    description: "${e.description}"\n`)
+      .join('')
+    writeFileSync(path.join(referencesDir, 'index.yml'), `references:\n${body}`)
+  }
+
+  it('prefers grade A over grade B', () => {
+    writeIndex([
+      { file: 'own-2026-06-10.png', description: 'OWN (2026-06-10, grade B): split.' },
+      { file: 'own-2026-06-12.png', description: 'OWN (2026-06-12, grade A): specimen.' },
+    ])
+    writeFileSync(path.join(referencesDir, 'own-2026-06-10.png'), 'a')
+    writeFileSync(path.join(referencesDir, 'own-2026-06-12.png'), 'b')
+    const best = findBestRatedReference(referencesDir)
+    expect(best.file).toBe('own-2026-06-12.png')
+    expect(best.grade).toBe('A')
+    expect(best.path).toBe(path.join(referencesDir, 'own-2026-06-12.png'))
+  })
+
+  it('breaks ties on the same grade by newer date', () => {
+    writeIndex([
+      { file: 'own-2026-05-01.png', description: 'OWN (2026-05-01, grade A): older.' },
+      { file: 'own-2026-06-20.png', description: 'OWN (2026-06-20, grade A): newer.' },
+    ])
+    writeFileSync(path.join(referencesDir, 'own-2026-05-01.png'), 'a')
+    writeFileSync(path.join(referencesDir, 'own-2026-06-20.png'), 'b')
+    expect(findBestRatedReference(referencesDir).file).toBe('own-2026-06-20.png')
+  })
+
+  it('skips manually-curated entries with no parseable grade', () => {
+    writeIndex([
+      {
+        file: 'own-2026-04-28-terracotta-specimen.png',
+        description: 'OWN GOLD STANDARD (2026-04-28, risk 8): no machine-parseable grade.',
+      },
+    ])
+    writeFileSync(path.join(referencesDir, 'own-2026-04-28-terracotta-specimen.png'), 'x')
+    expect(findBestRatedReference(referencesDir)).toBeNull()
+  })
+
+  it('falls through to the next-best candidate when the top file is missing on disk', () => {
+    writeIndex([
+      {
+        file: 'own-2026-06-20.png',
+        description: 'OWN (2026-06-20, grade A): promoted but pruned.',
+      },
+      { file: 'own-2026-06-10.png', description: 'OWN (2026-06-10, grade B): still on disk.' },
+    ])
+    // only the grade-B file actually exists
+    writeFileSync(path.join(referencesDir, 'own-2026-06-10.png'), 'b')
+    expect(findBestRatedReference(referencesDir).file).toBe('own-2026-06-10.png')
+  })
+
+  it('returns null when index.yml has no own-* entries', () => {
+    writeIndex([])
+    expect(findBestRatedReference(referencesDir)).toBeNull()
+  })
+
+  it('returns null when index.yml does not exist', () => {
+    expect(findBestRatedReference(referencesDir)).toBeNull()
   })
 })
