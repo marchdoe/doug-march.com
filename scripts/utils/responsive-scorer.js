@@ -44,6 +44,7 @@ const CHECKS = {
     let min = Infinity
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
     let n
+    // biome-ignore lint/suspicious/noAssignInExpressions: TreeWalker has no matchAll-style iteration; this is the standard DOM traversal idiom.
     while ((n = walker.nextNode())) {
       const text = (n.textContent || '').trim()
       if (text.length < 8) continue

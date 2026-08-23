@@ -40,8 +40,7 @@ export function parseDelimiterResponse(result) {
   const withSentinel = src + sentinel
   const filePattern =
     /^===FILE:([^=\n]+)===\s*\n([\s\S]*?)(?=^===FILE:|^===RATIONALE===|^===DESIGN_BRIEF===|^===COLOR_SCHEME===|^===HERO_COPY===|^===HERO_RATIONALE===|^===HERO_SOURCE===|^===ARCHETYPE===|^===CHASSIS_ID===|^===VISUAL_SPEC===|^===SELF_CHECK===|^===MEASURABLES===|^===SHELL===|^===COMPOSITION===|^===COMPOSITION_RATIONALE===|^===INTERIOR_NOTES===|^===END_SENTINEL===)/gm
-  let match
-  while ((match = filePattern.exec(withSentinel)) !== null) {
+  for (const match of withSentinel.matchAll(filePattern)) {
     const filePath = match[1].trim()
     const content = match[2].trim()
     if (filePath && content) {

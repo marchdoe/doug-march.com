@@ -36,7 +36,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "suspicious": {
         "noExplicitAny": "warn",
         "noCommentText": "warn",
@@ -53,7 +53,7 @@
         "useExhaustiveDependencies": "warn"
       },
       "a11y": {
-        "recommended": true,
+        "preset": "recommended",
         "useButtonType": "warn",
         "noSvgWithoutTitle": "warn",
         "useSemanticElements": "warn",
@@ -69,5 +69,17 @@
         "organizeImports": "off"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["app/dev-panel.tsx"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noCommentText": "off"
+          }
+        }
+      }
+    }
+  ]
 }

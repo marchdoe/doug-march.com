@@ -19,8 +19,7 @@ function extractSlugs(html) {
   const slugs = []
   // Match href="/sites/slug" patterns — these are the individual SOTD links
   const pattern = /href="\/sites\/([a-z0-9][a-z0-9-]*)"/gi
-  let match
-  while ((match = pattern.exec(html)) !== null) {
+  for (const match of html.matchAll(pattern)) {
     const slug = match[1]
     if (!slugs.includes(slug)) slugs.push(slug)
     if (slugs.length >= MAX_SITES) break

@@ -1,9 +1,8 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, afterEach } from 'vitest'
 import { runCollector } from '../scripts/collect-signals.js'
-import { readFile, unlink } from 'node:fs/promises'
+import { unlink } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import path from 'node:path'
-import * as yaml from 'js-yaml'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
 

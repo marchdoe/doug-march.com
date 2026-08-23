@@ -287,6 +287,7 @@ export function DevPanel() {
   }, [])
 
   // ── Auto-scroll log pane ──────────────────────────────────────────────────
+  // biome-ignore lint/correctness/useExhaustiveDependencies: logLines is the intended re-run trigger even though its value isn't read here.
   useEffect(() => {
     logEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [logLines])
@@ -325,7 +326,7 @@ export function DevPanel() {
   const reconnectAttemptsRef = useRef(0)
   const MAX_RECONNECT_ATTEMPTS = 5
 
-  const connectToStream = (startTime: number) => {
+  const connectToStream = useCallback((startTime: number) => {
     const es = new EventSource('/api/pipeline')
     esRef.current = es
 
@@ -458,7 +459,7 @@ export function DevPanel() {
         setResult({ error: 'Lost connection to pipeline (server may be down)', totalMs: 0 })
       }
     }
-  }
+  }, [])
 
   // ── Reconnect on mount if pipeline was running before HMR ────────────────
   useEffect(() => {
@@ -480,8 +481,7 @@ export function DevPanel() {
 
       connectToStream(startTime)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [connectToStream])
 
   // ── Run pipeline ──────────────────────────────────────────────────────────
   const handleRun = async () => {
@@ -565,6 +565,7 @@ export function DevPanel() {
         <nav style={s.sidebar}>
           {/* Run Pipeline — prominent at top */}
           <button
+            type="button"
             onClick={() => setActivePane('run')}
             style={{
               display: 'flex',
@@ -615,12 +616,21 @@ export function DevPanel() {
               active={activePane === 'pipeline'}
               onClick={() => setActivePane('pipeline')}
               widget={
+                // biome-ignore lint/a11y/useSemanticElements: nested inside SidebarItem's own <button> — a real <button> can't nest inside another button (invalid HTML, breaks hydration).
                 <span
                   role="button"
+                  tabIndex={0}
                   title="Refresh signals"
                   onClick={(e) => {
                     e.stopPropagation()
                     handleRefreshSignals()
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      handleRefreshSignals()
+                    }
                   }}
                   style={{
                     display: 'inline-flex',
@@ -852,6 +862,7 @@ function SidebarItem({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       style={{
         display: 'flex',
@@ -976,6 +987,7 @@ function PipelinePane({
           />
         </div>
         <button
+          type="button"
           data-testid="save-overrides-btn"
           style={s.saveBtn}
           onClick={handleSaveOverrides}
@@ -1095,6 +1107,7 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
                 {entry.brief}
               </span>
               <button
+                type="button"
                 onClick={() => window.open(previewUrl(entry), '_blank')}
                 style={{
                   background: 'rgba(34,211,238,0.1)',
@@ -1337,6 +1350,7 @@ function InspectorPane({
       ) : (
         displaySteps.map((step, i) => (
           <TraceStepCard
+            // biome-ignore lint/suspicious/noArrayIndexKey: TraceStep has no unique id; displaySteps is append-only/static, never reordered.
             key={`${step.name}-${i}`}
             step={step}
             expanded={expandedSteps.has(i)}
@@ -1410,8 +1424,14 @@ function TraceStepCard({
   const phase = TRACE_PHASES[step.phase] || { name: `P${step.phase}`, color: c.muted }
 
   return (
-    <div
+    <button
+      type="button"
       style={{
+        display: 'block',
+        width: '100%',
+        textAlign: 'left',
+        font: 'inherit',
+        color: 'inherit',
         background: c.cardBg,
         border: `1px solid ${c.border}`,
         borderLeft: `3px solid ${phase.color}`,
@@ -1460,7 +1480,7 @@ function TraceStepCard({
           )}
         </div>
       )}
-    </div>
+    </button>
   )
 }
 
@@ -1581,6 +1601,8 @@ function RunPane({
             <div style={{ display: 'flex', gap: '3px' }}>
               {Array.from({ length: 11 }, (_, n) => (
                 <button
+                  type="button"
+                  // biome-ignore lint/suspicious/noArrayIndexKey: n is the weight value itself (0-10), not a list position.
                   key={n}
                   onClick={() => setWeights({ ...weights, [key]: n })}
                   disabled={isRunDisabled}
@@ -1609,6 +1631,7 @@ function RunPane({
       {/* Run controls */}
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
         <button
+          type="button"
           data-testid="run-pipeline-btn"
           onClick={handleRun}
           disabled={isRunDisabled}
@@ -2183,12 +2206,12 @@ function SportsCard({
         <span>// SPORTS</span>
         <span style={metaStyle}>{teams.length} teams</span>
       </h3>
-      {teams.map((team, i) => {
+      {teams.map((team) => {
         const isActive = team.result !== 'off season'
         const isWin = team.result?.toLowerCase() === 'w' || team.result?.toLowerCase() === 'win'
         return (
           <div
-            key={i}
+            key={team.name}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -2318,7 +2341,7 @@ function GolfCard({
           </div>
           {(golf.leaders ?? []).map((leader, i) => (
             <div
-              key={i}
+              key={leader.name}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -2409,9 +2432,9 @@ function GitHubCard({
       <h3 style={headerStyle}>
         <span>// GITHUB TRENDING</span>
       </h3>
-      {repos.map((repo, i) => (
+      {repos.map((repo) => (
         <div
-          key={i}
+          key={repo.name}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -2485,12 +2508,12 @@ function HackerNewsCard({
           HACKER NEWS
         </span>
       </h3>
-      {stories.map((story, i) => {
+      {stories.map((story) => {
         // Brighten scores for high values, fade for lower
         const scoreOpacity = Math.min(1, 0.7 + (story.score / 500) * 0.3)
         return (
           <div
-            key={i}
+            key={story.title}
             style={{
               display: 'flex',
               alignItems: 'baseline',
@@ -2662,9 +2685,9 @@ function NewsCard({
       <h3 style={headerStyle}>
         <span>// NEWS</span>
       </h3>
-      {headlines.map((h, i) => (
+      {headlines.map((h) => (
         <div
-          key={i}
+          key={h.title}
           style={{
             padding: '3px 0',
             display: 'flex',
@@ -2786,9 +2809,9 @@ function ProductHuntCard({
       <h3 style={headerStyle}>
         <span>// PRODUCT HUNT</span>
       </h3>
-      {products.map((p, i) => (
+      {products.map((p) => (
         <div
-          key={i}
+          key={p.name}
           style={{ padding: '3px 0', display: 'flex', alignItems: 'baseline', gap: '8px' }}
         >
           <span
@@ -2891,9 +2914,9 @@ function BottomRow({ signals }: { signals: Signals }) {
         <div style={halfCardStyle}>
           <h3 style={{ ...labelStyle, marginTop: 0 }}>// MUSIC</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
-            {(music?.bands ?? []).map((band, i) => (
+            {(music?.bands ?? []).map((band) => (
               <span
-                key={i}
+                key={band}
                 style={{
                   fontSize: '10px',
                   background: 'rgba(74,143,212,0.12)',
@@ -2916,9 +2939,9 @@ function BottomRow({ signals }: { signals: Signals }) {
         <div style={halfCardStyle}>
           <h3 style={{ ...labelStyle, marginTop: 0 }}>// BOOKS</h3>
           {(books?.currently_reading ?? []).length > 0 ? (
-            books!.currently_reading!.map((book, i) => (
+            (books?.currently_reading ?? []).map((book) => (
               <div
-                key={i}
+                key={book}
                 style={{
                   fontSize: '11px',
                   color: c.primary,
@@ -3118,6 +3141,7 @@ function ProgressSection({
         >
           {logLines.map((line, i) => (
             <div
+              // biome-ignore lint/suspicious/noArrayIndexKey: log lines have no unique id and can repeat; array is append-only, never reordered.
               key={i}
               style={{
                 color:
@@ -3273,6 +3297,7 @@ function SuccessSection({
             </div>
           </div>
           <button
+            type="button"
             onClick={() => window.open(siteUrl, '_blank')}
             style={{
               background: c.green,
@@ -3376,6 +3401,7 @@ function SuccessSection({
             Recent designs
           </div>
           <button
+            type="button"
             onClick={onRunAgain}
             disabled={isCooldown}
             style={{
@@ -3399,7 +3425,7 @@ function SuccessSection({
           const isToday = entry.date === today
           return (
             <div
-              key={entry.date + i}
+              key={entry.buildId || entry.date + i}
               style={{
                 display: 'flex',
                 gap: '10px',
@@ -3493,6 +3519,7 @@ function ErrorSection({
         <div style={{ fontSize: '10px', color: '#f87171', fontFamily: c.font }}>{error}</div>
       </div>
       <button
+        type="button"
         onClick={onRetry}
         style={{
           background: '#ef4444',

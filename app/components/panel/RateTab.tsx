@@ -59,10 +59,17 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
       <p className={fieldLabel} id="grade-label">
         Grade
       </p>
-      <div
-        role="group"
+      <fieldset
         aria-labelledby="grade-label"
-        className={css({ display: 'flex', gap: '8px', marginBottom: '14px' })}
+        className={css({
+          display: 'flex',
+          gap: '8px',
+          marginBottom: '14px',
+          border: 'none',
+          margin: 0,
+          padding: 0,
+          minWidth: 0,
+        })}
       >
         {(['A', 'B', 'C', 'D'] as const).map((g) => (
           <button
@@ -75,7 +82,7 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
             {g}
           </button>
         ))}
-      </div>
+      </fieldset>
       <div className={field}>
         <label>
           <span className={fieldLabel}>What worked</span>
