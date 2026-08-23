@@ -22,6 +22,7 @@ export function buildMockupDesignerUserPrompt({
   archetypeContractBlock,
   polishRef,
   revisionFeedback,
+  tasteMemoryBlock,
 }) {
   const sections = []
   if (archetypeContractBlock) sections.push(archetypeContractBlock)
@@ -40,6 +41,7 @@ export function buildMockupDesignerUserPrompt({
   )
   if (lessonsBlock) sections.push(lessonsBlock)
   if (calibrationNote) sections.push(calibrationNote)
+  if (tasteMemoryBlock) sections.push(tasteMemoryBlock)
   // polish.md rides in the user prompt — the system prompt is at its
   // size budget (CLI 2.1.92 fails on ~56KB+ system prompts).
   if (polishRef) sections.push(`## Execution Polish Reference (apply throughout)\n\n${polishRef}`)

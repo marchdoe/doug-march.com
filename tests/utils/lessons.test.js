@@ -82,4 +82,50 @@ describe('buildLessonsBlock', () => {
     expect(block).toContain('utilization low')
     expect(block).not.toContain('older flaw')
   })
+
+  it('escalates substantially-similar complaints across ≥2 builds to RECURRING, folded into one entry', () => {
+    seed(archiveDir, '2026-06-08', {
+      rating: { grade: 'C', didnt: 'the header is messed up and cramped', try: '' },
+    })
+    seed(archiveDir, '2026-06-10', {
+      rating: { grade: 'C', didnt: 'header still messed up, cramped again', try: '' },
+    })
+    seed(archiveDir, '2026-06-11', {
+      verdicts: [{ critic: 'mockup-critic', verdict: 'REVISE', feedback: 'unrelated spacing nit' }],
+    })
+    const block = buildLessonsBlock(archiveDir, { limit: 7 })
+    expect(block).toContain('RECURRING (2x):')
+    // folded to one line, not two
+    expect((block.match(/RECURRING/g) || []).length).toBe(1)
+    // uses the newest occurrence's text
+    expect(block).toContain('header still messed up, cramped again')
+  })
+
+  it('sorts RECURRING lessons before non-recurring ones regardless of date', () => {
+    seed(archiveDir, '2026-06-05', {
+      rating: { grade: 'C', didnt: 'brand lockup is a placeholder gray box', try: '' },
+    })
+    seed(archiveDir, '2026-06-06', {
+      rating: { grade: 'C', didnt: 'brand lockup still a placeholder gray box', try: '' },
+    })
+    seed(archiveDir, '2026-06-12', {
+      verdicts: [
+        {
+          critic: 'screenshot-critic',
+          verdict: 'REVISE',
+          feedback: 'a totally distinct one-off nit',
+        },
+      ],
+    })
+    const block = buildLessonsBlock(archiveDir, { limit: 7 })
+    expect(block.indexOf('RECURRING')).toBeLessThan(block.indexOf('distinct one-off nit'))
+  })
+
+  it('does not mark a single occurrence as RECURRING', () => {
+    seed(archiveDir, '2026-06-10', {
+      rating: { grade: 'C', didnt: 'footer felt bolted on', try: '' },
+    })
+    const block = buildLessonsBlock(archiveDir, { limit: 7 })
+    expect(block).not.toContain('RECURRING')
+  })
 })

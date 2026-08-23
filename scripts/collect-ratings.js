@@ -7,7 +7,14 @@
  * when gh is unavailable. Never fails the run.
  */
 import { execFileSync } from 'node:child_process'
-import { writeFileSync, mkdirSync } from 'node:fs'
+import {
+  writeFileSync,
+  mkdirSync,
+  existsSync,
+  readdirSync,
+  readFileSync,
+  copyFileSync,
+} from 'node:fs'
 import { resolve, join } from 'node:path'
 
 const ROOT = resolve(import.meta.dirname, '..')
@@ -45,6 +52,75 @@ export function parseRatingFromIssue(issue) {
     }
   }
   return null
+}
+
+/**
+ * Locate the best (newest) build's screenshot for a rated date, or null
+ * when no build directory for that date has one — expected for older
+ * builds that predate screenshot archiving, or dates with no builds at all.
+ */
+export function findBestScreenshot(archiveDir, date) {
+  const dateDir = join(archiveDir, date)
+  let buildDirs
+  try {
+    buildDirs = readdirSync(dateDir)
+      .filter((d) => /^build-\d+$/.test(d))
+      .sort()
+      .reverse()
+  } catch {
+    return null
+  }
+  for (const b of buildDirs) {
+    const candidate = join(dateDir, b, 'screenshot.png')
+    if (existsSync(candidate)) return candidate
+  }
+  return null
+}
+
+/** Collapse to one line and escape for a YAML double-quoted scalar. */
+function escapeYamlDoubleQuoted(s) {
+  return String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\r?\n/g, ' ').trim()
+}
+
+/**
+ * Append one reference entry to references/index.yml, preserving the
+ * existing file (comments included) instead of round-tripping through a
+ * YAML serializer. No-op (returns false) if this file was already promoted
+ * — harvest() can run against the same rating more than once.
+ */
+export function appendReferenceEntry(indexPath, { file, description }) {
+  const raw = existsSync(indexPath) ? readFileSync(indexPath, 'utf8') : 'references:\n'
+  if (raw.includes(`file: ${file}`)) return false
+  const block = `  - file: ${file}\n    description: "${escapeYamlDoubleQuoted(description)}"\n`
+  writeFileSync(indexPath, raw.endsWith('\n') ? raw + block : `${raw}\n${block}`, 'utf8')
+  return true
+}
+
+/**
+ * Auto-promote an A/B-graded rating into the reference library: copy the
+ * date's best screenshot into references/ and append an index.yml entry
+ * describing what worked, so tomorrow's Art Director sees today's own
+ * success as a citable reference. Non-blocking by contract — callers wrap
+ * this in try/catch; returns null on any skip condition (grade below B,
+ * no screenshot on disk, already promoted).
+ *
+ * @returns {{ id: string, file: string } | null}
+ */
+export function promoteRatingToReferences(rating, { archiveDir, referencesDir, indexPath } = {}) {
+  if (!rating || !['A', 'B'].includes(rating.grade)) return null
+  const screenshotSrc = findBestScreenshot(archiveDir, rating.date)
+  if (!screenshotSrc) return null
+
+  const id = `own-${rating.date}`
+  const fileName = `${id}.png`
+  mkdirSync(referencesDir, { recursive: true })
+  copyFileSync(screenshotSrc, join(referencesDir, fileName))
+
+  const description = rating.worked
+    ? `OWN (${rating.date}, grade ${rating.grade}): ${rating.worked}`
+    : `OWN (${rating.date}, grade ${rating.grade}).`
+  const appended = appendReferenceEntry(indexPath, { file: fileName, description })
+  return appended ? { id, file: fileName } : { id, file: fileName, alreadyPromoted: true }
 }
 
 function harvest() {
@@ -90,6 +166,24 @@ function harvest() {
         join(dateDir, `rating-${ts}.json`),
         JSON.stringify({ ...rating, timestamp: ts }, null, 2)
       )
+      // Non-blocking: an A/B rating gets folded into the reference library
+      // so tomorrow's Art Director can cite today's own success. Isolated
+      // in its own try/catch so a promotion failure never costs the rating
+      // that already landed on disk above.
+      try {
+        const promoted = promoteRatingToReferences(rating, {
+          archiveDir: join(ROOT, 'archive'),
+          referencesDir: join(ROOT, 'references'),
+          indexPath: join(ROOT, 'references', 'index.yml'),
+        })
+        if (promoted && !promoted.alreadyPromoted) {
+          console.log(
+            `[collect-ratings] promoted ${rating.date} (grade ${rating.grade}) → references/${promoted.file}`
+          )
+        }
+      } catch (err) {
+        console.warn(`[collect-ratings] reference promotion failed (non-blocking): ${err.message}`)
+      }
       execFileSync('gh', [
         'issue',
         'close',
