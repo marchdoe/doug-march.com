@@ -616,12 +616,21 @@ export function DevPanel() {
               active={activePane === 'pipeline'}
               onClick={() => setActivePane('pipeline')}
               widget={
-                <button
-                  type="button"
+                // biome-ignore lint/a11y/useSemanticElements: nested inside SidebarItem's own <button> — a real <button> can't nest inside another button (invalid HTML, breaks hydration).
+                <span
+                  role="button"
+                  tabIndex={0}
                   title="Refresh signals"
                   onClick={(e) => {
                     e.stopPropagation()
                     handleRefreshSignals()
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      handleRefreshSignals()
+                    }
                   }}
                   style={{
                     display: 'inline-flex',
@@ -666,7 +675,7 @@ export function DevPanel() {
                     ↻
                   </span>
                   <span>{refreshingSignals ? '...' : meta ? `${meta.providers_ok}` : '–'}</span>
-                </button>
+                </span>
               }
             />
             <SidebarItem
