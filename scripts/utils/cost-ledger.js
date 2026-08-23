@@ -97,7 +97,15 @@ export function recordUsage(entry = {}) {
   const num = (v) => (typeof v === 'number' && Number.isFinite(v) ? v : null)
 
   const reported = num(entry.costUsd)
-  const estimated = reported === null ? estimateCostUsd(entry.model, usage) : null
+  // A call that crashed before a result event, or was killed by the
+  // timeout/stall path, carries an empty usage object with no cost. Estimating
+  // that as $0 would read as "this call was free" and silently disappear from
+  // a run's total instead of marking it unpriceable — the two are different
+  // facts. Only estimate when there's a token count to estimate from; every
+  // real completion reports at least one of these two as a positive number.
+  const hasMeasurableUsage = (usage.input_tokens ?? 0) > 0 || (usage.output_tokens ?? 0) > 0
+  const estimated =
+    reported === null && hasMeasurableUsage ? estimateCostUsd(entry.model, usage) : null
 
   const record = {
     agent: String(entry.agent ?? 'unknown'),

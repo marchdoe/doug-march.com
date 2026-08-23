@@ -236,6 +236,25 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     // subsequent paths become no-ops.
     let settled = false
 
+    // Book whatever we know about this call to the cost ledger. Called from
+    // all three settling paths (timeout, stall, close) — a killed call still
+    // consumed real time and, on a billed run, real tokens, so it must show
+    // up in cost.json even though resultUsage is null for it. Never throws:
+    // telemetry must not fail a design run.
+    const bookCall = () => {
+      try {
+        recordUsage({
+          agent: agentName,
+          model,
+          source: 'cli',
+          usage: resultUsage?.usage,
+          costUsd: resultUsage?.costUsd ?? undefined,
+          ms: resultUsage?.ms ?? Date.now() - startTime,
+          numTurns: resultUsage?.numTurns ?? undefined,
+        })
+      } catch {}
+    }
+
     const cleanup = () => {
       clearTimeout(timeout)
       clearInterval(stallCheck)
@@ -259,6 +278,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
       settled = true
       cleanup()
       killHard()
+      bookCall()
       let extra = ''
       if (onTimeout) {
         try {
@@ -287,6 +307,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
         settled = true
         cleanup()
         killHard()
+        bookCall()
         const stallMin = Math.round(stallDuration / 60000)
         dumpDiagnostics('stall').finally(() => {
           reject(
@@ -318,21 +339,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
         } catch {}
       }
       console.log(`  [${agentName}] finished (${(charCount / 1024).toFixed(0)}KB total)`)
-
-      // Book the call. Only calls that reach `close` are recorded — a call
-      // killed by the timeout or stall path never emitted a result event, so
-      // there is nothing to book beyond the retry the caller will count.
-      try {
-        recordUsage({
-          agent: agentName,
-          model,
-          source: 'cli',
-          usage: resultUsage?.usage,
-          costUsd: resultUsage?.costUsd ?? undefined,
-          ms: resultUsage?.ms ?? Date.now() - startTime,
-          numTurns: resultUsage?.numTurns ?? undefined,
-        })
-      } catch {}
+      bookCall()
 
       if (code !== 0 && !finalResult && !fullText) {
         console.error(`  [${agentName}] stderr: ${stderr.slice(0, 500)}`)

@@ -58,10 +58,12 @@ export function parseShellBlock(text) {
  * gracefully instead of failing the run.
  *
  * Widened to all eight composition axes (see utils/composition-grammar.js).
- * The ~15 `layout-signature.json` files written under the original four-key
- * shape still parse: the four new keys simply come back null, which the
- * per-axis mandate treats as "no history for this axis" rather than an
- * error.
+ * Any `layout-signature.json` written under the original four-key shape
+ * still parses: the four new keys simply come back null, which the per-axis
+ * mandate treats as "no history for this axis" rather than an error. (As of
+ * 2026-08-23 no such file exists in the archive — the artifact and the
+ * pipeline that would write it shipped the same day the pipeline went
+ * dormant — but a future one would degrade correctly.)
  *
  * @returns {Record<'columns'|'axis'|'symmetry'|'hero_zone'|'density'|'rhythm'|'shell_posture'|'field_ratio', string|null>}
  */

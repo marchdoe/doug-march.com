@@ -60,9 +60,11 @@ vi.mock('fs', async () => {
 })
 
 describe('claude-cli stall detection', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     mockChildren.length = 0
     vi.useFakeTimers()
+    const { resetLedger } = await import('../../scripts/utils/cost-ledger.js')
+    resetLedger()
   })
 
   afterEach(() => {
@@ -96,6 +98,13 @@ describe('claude-cli stall detection', () => {
     expect(err).toBeInstanceOf(Error)
     expect(err.message).toMatch(/stalled/)
     expect(err.message).toMatch(/test-agent/)
+
+    // A stalled call still consumed real time (and, on a billed run, real
+    // tokens) — it must show up in cost.json as unpriceable, not disappear.
+    const { getUsageRecords } = await import('../../scripts/utils/cost-ledger.js')
+    const [record] = getUsageRecords()
+    expect(record.agent).toBe('test-agent')
+    expect(record.cost_usd).toBeNull()
   })
 
   it('does NOT stall when content arrives periodically', async () => {
@@ -134,5 +143,52 @@ describe('claude-cli stall detection', () => {
     await vi.advanceTimersByTimeAsync(6000)
     const err = await rejected
     expect(err.message).toMatch(/stalled/)
+  })
+
+  it('books an unpriceable call when the hard timeout fires', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    const { getUsageRecords } = await import('../../scripts/utils/cost-ledger.js')
+
+    const promise = callClaudeCLI('timeout-agent', 'system', 'user prompt', {
+      timeoutMs: 1000,
+      stallTimeoutMs: 60 * 60 * 1000, // stall check must not fire first
+    })
+    const rejected = promise.catch((err) => err)
+
+    await vi.advanceTimersByTimeAsync(1000) // trips the hard timeout
+    await vi.advanceTimersByTimeAsync(6000) // SIGKILL fallback + close
+
+    const err = await rejected
+    expect(err.message).toMatch(/timed out/)
+
+    const [record] = getUsageRecords()
+    expect(record.agent).toBe('timeout-agent')
+    expect(record.cost_usd).toBeNull()
+  })
+
+  it('books an unpriceable call, not a $0 one, when the process crashes with no result event', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    const { getUsageRecords } = await import('../../scripts/utils/cost-ledger.js')
+
+    const promise = callClaudeCLI('crash-agent', 'system', 'user prompt', {
+      timeoutMs: 60 * 60 * 1000,
+      stallTimeoutMs: 60 * 60 * 1000,
+    })
+    const rejected = promise.catch((err) => err)
+
+    await vi.advanceTimersByTimeAsync(10)
+    const child = mockChildren[0]
+    child.stderr.emit('data', Buffer.from('fatal: bad auth config\n'))
+    child.emit('close', 1)
+
+    const err = await rejected
+    expect(err.message).toMatch(/exited with code 1/)
+
+    const [record] = getUsageRecords()
+    expect(record.agent).toBe('crash-agent')
+    // The bug this guards: an empty usage object must not price to $0 —
+    // that would read as "this call was free" instead of "we don't know".
+    expect(record.cost_usd).toBeNull()
+    expect(record.estimated).toBe(false)
   })
 })
