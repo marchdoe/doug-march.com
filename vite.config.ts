@@ -1,11 +1,13 @@
 import { defineConfig, type Plugin } from 'vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
+import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { resolve } from 'node:path'
 import { spawn, spawnSync } from 'node:child_process'
-import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
 import { config } from 'dotenv'
 import * as yaml from 'js-yaml'
+import { _readSignalsHandler, _saveOverridesHandler } from './app/server/signals-impl'
 
 // @tanstack/start-storage-context uses AsyncLocalStorage (Node-only) and has no browser
 // export conditions. Alias it to a no-op stub for the client build so the /dev route
@@ -137,11 +139,30 @@ function pipelineApiPlugin(): Plugin {
 
           let signals: Record<string, unknown> | null = null
           if (existsSync(signalsPath)) {
-            const raw = readFileSync(signalsPath, 'utf8')
-            signals = yaml.load(raw) as Record<string, unknown>
-            if (signals.date instanceof Date) {
-              signals.date = (signals.date as Date).toISOString().slice(0, 10)
+            signals = _readSignalsHandler(signalsPath)
+          }
+
+          // Parse the rationale + files-changed sections out of a build's
+          // brief.md for the panel's expandable archive entries.
+          const parseBriefSections = (md: string) => {
+            const lines = md.split('\n')
+            const rationaleStart = lines.findIndex((l) => l.startsWith("## Claude's Rationale"))
+            const filesStart = lines.findIndex((l) => l.startsWith('## Files Changed'))
+            let rationale = ''
+            if (rationaleStart !== -1 && filesStart !== -1) {
+              rationale = lines
+                .slice(rationaleStart + 1, filesStart)
+                .join('\n')
+                .trim()
             }
+            const filesChanged: string[] = []
+            if (filesStart !== -1) {
+              for (const l of lines.slice(filesStart + 1)) {
+                const m = l.match(/^-\s+(.+)$/)
+                if (m) filesChanged.push(m[1].trim())
+              }
+            }
+            return { rationale, filesChanged }
           }
 
           const archiveDir = resolve('archive')
@@ -151,6 +172,8 @@ function pipelineApiPlugin(): Plugin {
             timestamp: number
             brief: string
             weights?: Record<string, number>
+            rationale?: string
+            filesChanged?: string[]
           }> = []
           if (existsSync(archiveDir)) {
             const dateDirs = readdirSync(archiveDir)
@@ -171,12 +194,16 @@ function pipelineApiPlugin(): Plugin {
                   if (existsSync(buildJsonPath)) {
                     try {
                       const meta = JSON.parse(readFileSync(buildJsonPath, 'utf8'))
+                      const sections = existsSync(briefPath)
+                        ? parseBriefSections(readFileSync(briefPath, 'utf8'))
+                        : { rationale: '', filesChanged: [] }
                       archive.push({
                         date: dir,
                         buildId: meta.buildId,
                         timestamp: meta.timestamp,
                         brief: meta.brief,
                         weights: meta.weights,
+                        ...sections,
                       })
                     } catch {}
                   } else if (existsSync(briefPath)) {
@@ -236,11 +263,10 @@ function pipelineApiPlugin(): Plugin {
         try {
           const body = await readBodyLimited(req)
           const { moodOverride, notes } = JSON.parse(body)
-          const signalsPath = resolve('signals/today.yml')
-          const signals = yaml.load(readFileSync(signalsPath, 'utf8')) as Record<string, unknown>
-          signals.mood_override = moodOverride ? String(moodOverride) : null
-          if (notes) signals.notes = String(notes)
-          writeFileSync(signalsPath, yaml.dump(signals, { lineWidth: 120 }), 'utf8')
+          _saveOverridesHandler({
+            moodOverride: moodOverride ? String(moodOverride) : null,
+            notes: notes ? String(notes) : null,
+          })
           res.writeHead(200, { 'Content-Type': 'application/json' })
           res.end(JSON.stringify({ ok: true }))
         } catch (err) {
@@ -490,6 +516,11 @@ export default defineConfig({
       srcDirectory: 'app',
       spa: {},
     }),
+    // React Refresh runtime for dev mode. Without this, TanStack Start's dev
+    // client entry 500s (/@react-refresh unresolved) and every TanStack route
+    // renders shell-only under `vite dev` — the "blank content area" noted in
+    // the 2026-08-05 deps-update evidence. Production builds were unaffected.
+    react(),
     tsconfigPaths({ projects: ['./tsconfig.json'] }),
   ],
 })

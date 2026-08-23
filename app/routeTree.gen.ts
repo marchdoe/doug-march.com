@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ArchiveRouteImport } from './routes/archive'
-import { Route as DevRouteImport } from './routes/dev'
 import { Route as ElementsRouteImport } from './routes/elements'
 import { Route as ExperimentsRouteImport } from './routes/experiments'
 import { Route as OgRouteImport } from './routes/og'
@@ -35,11 +34,6 @@ const AboutRoute = AboutRouteImport.update({
 const ArchiveRoute = ArchiveRouteImport.update({
   id: '/archive',
   path: '/archive',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DevRoute = DevRouteImport.update({
-  id: '/dev',
-  path: '/dev',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ElementsRoute = ElementsRouteImport.update({
@@ -68,9 +62,9 @@ const ArchiveDateRoute = ArchiveDateRouteImport.update({
   getParentRoute: () => ArchiveRoute,
 } as any)
 const DevResponsiveRoute = DevResponsiveRouteImport.update({
-  id: '/responsive',
-  path: '/responsive',
-  getParentRoute: () => DevRoute,
+  id: '/dev/responsive',
+  path: '/dev/responsive',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const WorkIndexRoute = WorkIndexRouteImport.update({
   id: '/work/',
@@ -87,7 +81,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/archive': typeof ArchiveRouteWithChildren
-  '/dev': typeof DevRouteWithChildren
   '/elements': typeof ElementsRoute
   '/experiments': typeof ExperimentsRoute
   '/og': typeof OgRoute
@@ -101,7 +94,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/archive': typeof ArchiveRouteWithChildren
-  '/dev': typeof DevRouteWithChildren
   '/elements': typeof ElementsRoute
   '/experiments': typeof ExperimentsRoute
   '/og': typeof OgRoute
@@ -116,7 +108,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/archive': typeof ArchiveRouteWithChildren
-  '/dev': typeof DevRouteWithChildren
   '/elements': typeof ElementsRoute
   '/experiments': typeof ExperimentsRoute
   '/og': typeof OgRoute
@@ -132,7 +123,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/archive'
-    | '/dev'
     | '/elements'
     | '/experiments'
     | '/og'
@@ -146,7 +136,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/archive'
-    | '/dev'
     | '/elements'
     | '/experiments'
     | '/og'
@@ -160,7 +149,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/archive'
-    | '/dev'
     | '/elements'
     | '/experiments'
     | '/og'
@@ -175,11 +163,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ArchiveRoute: typeof ArchiveRouteWithChildren
-  DevRoute: typeof DevRouteWithChildren
   ElementsRoute: typeof ElementsRoute
   ExperimentsRoute: typeof ExperimentsRoute
   OgRoute: typeof OgRoute
   PanelRoute: typeof PanelRoute
+  DevResponsiveRoute: typeof DevResponsiveRoute
   WorkSlugRoute: typeof WorkSlugRoute
   WorkIndexRoute: typeof WorkIndexRoute
 }
@@ -205,13 +193,6 @@ declare module '@tanstack/react-router' {
       path: '/archive'
       fullPath: '/archive'
       preLoaderRoute: typeof ArchiveRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dev': {
-      id: '/dev'
-      path: '/dev'
-      fullPath: '/dev'
-      preLoaderRoute: typeof DevRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/elements': {
@@ -251,10 +232,10 @@ declare module '@tanstack/react-router' {
     }
     '/dev/responsive': {
       id: '/dev/responsive'
-      path: '/responsive'
+      path: '/dev/responsive'
       fullPath: '/dev/responsive'
       preLoaderRoute: typeof DevResponsiveRouteImport
-      parentRoute: typeof DevRoute
+      parentRoute: typeof rootRouteImport
     }
     '/work/': {
       id: '/work/'
@@ -284,25 +265,15 @@ const ArchiveRouteChildren: ArchiveRouteChildren = {
 const ArchiveRouteWithChildren =
   ArchiveRoute._addFileChildren(ArchiveRouteChildren)
 
-interface DevRouteChildren {
-  DevResponsiveRoute: typeof DevResponsiveRoute
-}
-
-const DevRouteChildren: DevRouteChildren = {
-  DevResponsiveRoute: DevResponsiveRoute,
-}
-
-const DevRouteWithChildren = DevRoute._addFileChildren(DevRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ArchiveRoute: ArchiveRouteWithChildren,
-  DevRoute: DevRouteWithChildren,
   ElementsRoute: ElementsRoute,
   ExperimentsRoute: ExperimentsRoute,
   OgRoute: OgRoute,
   PanelRoute: PanelRoute,
+  DevResponsiveRoute: DevResponsiveRoute,
   WorkSlugRoute: WorkSlugRoute,
   WorkIndexRoute: WorkIndexRoute,
 }
