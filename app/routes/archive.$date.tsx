@@ -37,9 +37,8 @@ function parsePreset(preset: string): ParsedTokens {
   // Colors: match key-value pairs like  primary: '#AABBCC'  or  bg: '#FFF'
   // Also handles nested objects like  primary: { value: '#AABBCC' }
   const colorHexRe = /(\w[\w-]*):\s*['{"]?(#[0-9A-Fa-f]{3,8})['"}\s,]/g
-  let m: RegExpExecArray | null
   const seen = new Set<string>()
-  while ((m = colorHexRe.exec(preset)) !== null) {
+  for (const m of preset.matchAll(colorHexRe)) {
     const name = m[1]
     const hex = m[2]
     const key = `${name}-${hex}`
@@ -51,13 +50,13 @@ function parsePreset(preset: string): ParsedTokens {
 
   // Fonts: look for font family values
   const fontRe = /fonts[\s\S]*?value:\s*'([^']+)'/g
-  while ((m = fontRe.exec(preset)) !== null) {
+  for (const m of preset.matchAll(fontRe)) {
     if (!fonts.includes(m[1])) fonts.push(m[1])
   }
 
   // Also catch fontFamily patterns
   const fontFamilyRe = /fontFamily[^:]*:\s*['"]([^'"]+)['"]/g
-  while ((m = fontFamilyRe.exec(preset)) !== null) {
+  for (const m of preset.matchAll(fontFamilyRe)) {
     if (!fonts.includes(m[1])) fonts.push(m[1])
   }
 
@@ -65,7 +64,7 @@ function parsePreset(preset: string): ParsedTokens {
   const fontSizeBlock = preset.match(/fontSizes[\s\S]*?\{([\s\S]*?)\}/)?.[1]
   if (fontSizeBlock) {
     const sizeRe = /(\w+):\s*['"]([^'"]+)['"]/g
-    while ((m = sizeRe.exec(fontSizeBlock)) !== null) {
+    for (const m of fontSizeBlock.matchAll(sizeRe)) {
       fontSizes.push({ name: m[1], value: m[2] })
     }
   }
@@ -216,6 +215,7 @@ function ArchiveDetailPage() {
             }}
           >
             {detail.rationale.split('\n\n').map((para, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: static string split, rendered once, never reordered.
               <p key={i} style={{ marginBottom: 16 }}>
                 {para}
               </p>
@@ -276,9 +276,9 @@ function ArchiveDetailPage() {
                     gap: 12,
                   }}
                 >
-                  {tokens.colors.map((c, i) => (
+                  {tokens.colors.map((c) => (
                     <div
-                      key={i}
+                      key={`${c.name}-${c.hex}`}
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -332,8 +332,8 @@ function ArchiveDetailPage() {
                   Typography
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  {tokens.fonts.map((font, i) => (
-                    <div key={i}>
+                  {tokens.fonts.map((font) => (
+                    <div key={font}>
                       <p
                         style={{
                           fontSize: 20,
@@ -379,9 +379,9 @@ function ArchiveDetailPage() {
                     gap: '8px 24px',
                   }}
                 >
-                  {tokens.fontSizes.map((s, i) => (
+                  {tokens.fontSizes.map((s) => (
                     <span
-                      key={i}
+                      key={s.name}
                       style={{
                         fontSize: 13,
                         color: 'var(--colors-text-dim, #777)',
@@ -430,8 +430,8 @@ function ArchiveDetailPage() {
           </p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-            {signals?.map((section, i) => (
-              <div key={i}>
+            {signals?.map((section) => (
+              <div key={section.heading}>
                 <p
                   style={{
                     fontSize: 13,
@@ -450,6 +450,7 @@ function ArchiveDetailPage() {
                   }}
                 >
                   {section.body.split('\n\n').map((para, j) => (
+                    // biome-ignore lint/suspicious/noArrayIndexKey: static string split, rendered once, never reordered.
                     <p key={j} style={{ marginBottom: 10 }}>
                       {para}
                     </p>
