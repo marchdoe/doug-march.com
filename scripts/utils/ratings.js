@@ -1,5 +1,12 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import path from 'node:path'
+import { sanitizeString } from './sanitize-signal.js'
+
+// Free-text rating notes end up verbatim in agent prompts. The harvester
+// gates on comment author, but sanitize at read time too so historical
+// rating-*.json files (written before the author gate) get the same
+// treatment. Roomier cap than signal text — these are the owner's notes.
+const MAX_NOTE_LENGTH = 1000
 
 /**
  * Newest valid rating for one date dir, or null.
@@ -21,7 +28,8 @@ export function readRatingForDate(archiveDir, date) {
       const r = JSON.parse(readFileSync(path.join(dirPath, f), 'utf8'))
       const grade = typeof r.grade === 'string' ? r.grade.trim().toUpperCase() : ''
       if (!/^[A-D]$/.test(grade)) continue // legacy or malformed
-      return { grade, worked: r.worked || '', didnt: r.didnt || '', try: r.try || '' }
+      const note = (v) => sanitizeString(v || '', { maxLength: MAX_NOTE_LENGTH })
+      return { grade, worked: note(r.worked), didnt: note(r.didnt), try: note(r.try) }
     } catch {
       /* ignore malformed */
     }

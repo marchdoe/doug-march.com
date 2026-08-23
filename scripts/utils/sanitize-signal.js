@@ -16,8 +16,9 @@ const MAX_STRING_LENGTH = 280
 
 // Patterns that indicate an attempted prompt injection
 const INJECTION_PATTERNS = [
-  /ignore\s+(?:all\s+|previous\s+|prior\s+|the\s+)?(?:instructions|rules|prompts|directives)/i,
-  /disregard\s+(?:all\s+|previous\s+|prior\s+|the\s+)?(?:instructions|rules|prompts|directives)/i,
+  // Qualifiers repeat: "ignore all previous instructions" stacks two of them
+  /ignore\s+(?:(?:all|previous|prior|the|any|your)\s+)*(?:instructions|rules|prompts|directives)/i,
+  /disregard\s+(?:(?:all|previous|prior|the|any|your)\s+)*(?:instructions|rules|prompts|directives)/i,
   /(?:new|updated)\s+(?:instructions|rules|system\s+prompt)/i,
   /you\s+(?:are|will|must)\s+now\s+(?:be|act|behave|pretend)/i,
   /from\s+now\s+on,?\s+you/i,
@@ -42,9 +43,11 @@ const HTML_PATTERNS = [
  * Sanitize a single string value from a signal provider.
  *
  * @param {unknown} value
+ * @param {{ maxLength?: number }} [opts] maxLength overrides the 280-char cap
+ *   for trusted-author text (e.g. owner ratings) where clipping loses signal
  * @returns {string} Sanitized string, safe to include in a prompt
  */
-export function sanitizeString(value) {
+export function sanitizeString(value, { maxLength = MAX_STRING_LENGTH } = {}) {
   if (value === null || value === undefined) return ''
   const str = String(value)
 
@@ -71,8 +74,8 @@ export function sanitizeString(value) {
   clean = clean.replace(/\s+/g, ' ').trim()
 
   // Length limit
-  if (clean.length > MAX_STRING_LENGTH) {
-    clean = `${clean.slice(0, MAX_STRING_LENGTH)}...`
+  if (clean.length > maxLength) {
+    clean = `${clean.slice(0, maxLength)}...`
   }
 
   return clean

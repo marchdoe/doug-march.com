@@ -12,11 +12,20 @@ import { resolve, join } from 'node:path'
 
 const ROOT = resolve(import.meta.dirname, '..')
 
+// The daily-rating issue is public: anyone can comment, and comment text
+// flows into the Art Director prompt as owner instructions. Only accept
+// rating comments from accounts GitHub vouches for on this repo. The issue
+// body needs no gate — it's bot-authored and only collaborators can edit it.
+const TRUSTED_ASSOCIATIONS = new Set(['OWNER', 'MEMBER', 'COLLABORATOR'])
+
 export function parseRatingFromIssue(issue) {
   const dateMatch = /Rate:\s*(\d{4}-\d{2}-\d{2})/.exec(issue.title || '')
   if (!dateMatch) return null
   const date = dateMatch[1]
-  const sources = [...(issue.comments || []).map((c) => c.body).reverse(), issue.body || '']
+  const trusted = (issue.comments || []).filter((c) =>
+    TRUSTED_ASSOCIATIONS.has(c.authorAssociation)
+  )
+  const sources = [...trusted.map((c) => c.body).reverse(), issue.body || '']
   for (const text of sources) {
     const fence = /```ya?ml\s*\n([\s\S]*?)```/.exec(text || '')
     if (!fence) continue
