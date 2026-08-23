@@ -6,9 +6,8 @@ const RSS_URL = 'https://dribbble.com/shots/popular.rss'
 function parseRssItems(xml) {
   const items = []
   const itemRegex = /<item>([\s\S]*?)<\/item>/g
-  let match
 
-  while ((match = itemRegex.exec(xml)) !== null) {
+  for (const match of xml.matchAll(itemRegex)) {
     const block = match[1]
 
     const title = (/<title><!\[CDATA\[(.*?)\]\]><\/title>/.exec(block) ||
