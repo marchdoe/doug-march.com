@@ -1,0 +1,39 @@
+---
+id: swiss-poster
+register: grid-rigor
+affinity: diagonal, broken, irregular-twelve, measured
+---
+
+**Lane: Swiss International Style**
+
+> Source: International Typographic Style (Müller-Brockmann, Ruder, Hofmann lineage) — general historical movement characteristics, not a specific living brand or copyrighted work. Use as anchor reference, not copy target.
+
+## Atmosphere
+Grid-locked objectivity. A single strong diagonal or oversized numeral is the one permitted gesture; everything else obeys a strict modular grid. Sans-serif, asymmetric layout, flush-left ragged-right text, hard-cropped photography. Function over decoration — a mood of quiet confidence rather than spectacle.
+
+## Color roles
+- bg: #FFFFFF — pure, no warmth
+- text: #000000 — pure, no softening
+- accent: #E30613 (signal red) — the only color besides black and white
+- accent.secondary: #005EB8 (data blue) — reserve for chart/data marks only, never decorative
+- border: #000000 — thin, precise hairline rules only, never rgba-softened
+
+## Typography
+- Display: a grotesk at 700, scale ratio ~1.618, set to a visible baseline grid
+- Body: same grotesk family at 400, 16px, line-height 1.4, ragged right — never justified, never centered
+- Mono: not used in this lane
+
+## Component cues
+- Buttons: none — links are bold black text with a red underline rule, no border, no fill
+- Cards: none — content lives in grid cells separated by thin black rules
+- Nav: a single horizontal rule; flush-left wordmark, flush-right minimal text links
+
+## Anti-patterns specific to this style
+- DO NOT center anything — asymmetry is the point
+- DO NOT use a third color beyond black, white, and signal red
+- DO NOT use gradients, drop shadows, or rounded corners anywhere
+- DO NOT use a serif typeface
+- DO NOT soften the grid with organic or freeform shapes
+
+## Mobile strategy
+Margins stay asymmetric on mobile — never re-center to compensate for lost columns. Any rotated or diagonal gesture element scales via `clamp()` but stays off-axis — it must never straighten out to fit.

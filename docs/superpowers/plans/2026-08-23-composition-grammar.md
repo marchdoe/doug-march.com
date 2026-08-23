@@ -139,16 +139,40 @@ vision calls but discards them. Same capture path.
 
 ## Task 3: Decouple aesthetic lanes from archetypes
 
-- [ ] Flatten `scripts/prompts/seeds/*.md` into `scripts/prompts/lanes/` — one file per
-      lane (~20), each keeping its reference material and named anti-patterns, with the
-      archetype-mechanics prose stripped out (that is now the grammar's job).
-- [ ] Each lane gains front-matter: `id`, `register`, `affinity` (which axis values it
-      sits well with — advisory, for ranking, never a hard filter).
-- [ ] Rewrite `scripts/utils/select-seed.js` → `select-lane.js`: pick by
-      `hashToRange('lane:' + date)` across all lanes, biased toward `affinity` match with
-      the day's composition tuple, soft-forbidding the last 3 lanes used.
-- [ ] Tests: all lanes parse, selection deterministic per date, forbid window honored,
-      affinity biases without hard-filtering.
+- [x] Flattened `scripts/prompts/seeds/*.md` into `scripts/prompts/lanes/` — one file per
+      lane. **Correction: 17 lanes, not ~20** (8 seed files: one holds 3 lanes, seven hold 2 —
+      3 + 7×2 = 17). Each keeps its reference material and named anti-patterns; the
+      archetype-mechanics prose is stripped: every `## Spatial rhythm` section is gone
+      (columns/axis/hero-zone/density claims are now the grammar's job), and anti-pattern
+      bullets that hard-locked a composition shape (e.g. Tesla's "DO NOT render three
+      projects side-by-side", WIRED's "the front page is columnar from first pixel",
+      Framer/Stripe's "horizontal split is the identity") are removed — aesthetic/color/
+      type/component anti-patterns are kept. Cross-lane references by name ("...unlike the
+      Pinterest lane's tiles") are generalized, since lanes are no longer read alongside
+      their former siblings. `scripts/prompts/seeds/` and `select-seed.js` are untouched
+      and still the live path — additive until Task 4 rewires the call site.
+- [x] Front-matter on every lane: `id`, `register` (a short kebab-case aesthetic label,
+      e.g. `radical-subtraction`, `paper-white-editorial-density`), `affinity` (3-4
+      composition-axis values, comma-separated — validated by `validateAffinities()`
+      against the real axis vocabulary; 0 invalid across all 17).
+- [x] New `scripts/utils/select-lane.js`. Scoring, not hash-then-override: each lane's
+      score is `hashToRange('lane:'+date+':'+laneId, 0, 999)` (deterministic per-lane
+      base) `+ 300` per composition-axis value it shares with today's tuple `− 600` if it
+      was used in the last 3 builds (per `extractRecentLanes`, reading a `lane.json`
+      artifact Task 4 will start writing — currently 0 exist, same as `layout-signature.json`).
+      Highest score wins. This keeps "biased toward affinity" and "soft-forbidding recent
+      use" as genuinely soft pulls on a hash-random base, rather than a hard filter with a
+      fallback.
+- [x] Tests: 26 in `tests/utils/select-lane.test.js` — all 17 real lanes parse with a
+      populated register/affinity/body and no residual `## Spatial rhythm`; affinity
+      vocabulary validated against composition-grammar.js for all 38 real axis values;
+      `extractRecentLanes` empty/malformed/lookback-window cases; `selectLane` determinism,
+      forbid-window plumbing, and a live-lane demonstration that a forbidden lane
+      (`linear`) still wins within 27 tried dates when its affinity match is strong enough
+      — proving the forbid is soft, not by assertion but by finding a real case.
+- [x] **Verified against real content**: three consecutive dates (2026-08-24/25/26) pick
+      three distinct lanes (`nike`, `arc-browser`, `tesla-spacex`) on the real, currently-
+      empty archive.
 
 ---
 

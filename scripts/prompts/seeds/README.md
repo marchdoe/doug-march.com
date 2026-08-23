@@ -1,5 +1,10 @@
 # Archetype Seeds
 
+**Superseded by `scripts/prompts/lanes/`** (composition-grammar arc, Task 3)
+— still the live path until Task 4 rewires `design-agents.js`'s call site
+from `select-seed.js` to `select-lane.js`. Do not add a ninth seed file or a
+new lane here; add it to `lanes/` instead.
+
 Concrete anchor references for the mockup-designer prompt. Each file holds 2-3 **lanes** — distinct aesthetic references for the same archetype. `scripts/utils/select-seed.js` deterministically picks one lane per day (hashed from the build date + archetype, so a given day always re-derives the same lane) and injects only that lane's content, replacing the `<!-- SEED_ANCHOR -->` marker in `mockup-designer.md`. The other lanes stay on disk, unread, until their date comes up.
 
 Seeds are **anchors, not templates**. The designer borrows rigor, restraint, and character — it does not copy tokens, fonts, or layouts verbatim. Today's signals and brief always override the seed where they conflict.
