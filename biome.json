@@ -69,5 +69,17 @@
         "organizeImports": "off"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["app/dev-panel.tsx"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noCommentText": "off"
+          }
+        }
+      }
+    }
+  ]
 }
