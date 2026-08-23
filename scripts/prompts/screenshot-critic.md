@@ -45,7 +45,7 @@ Failures: Spec says dark background, render is white. Spec says left sidebar nav
 ### 3. Readability
 Can a user actually read and navigate this page?
 - Body text must be legible (not too small, sufficient contrast against background)
-- Navigation links must be visible and identifiable as navigation
+- Navigation links must be visible and identifiable as navigation — **unless the composition declares `shell_posture: none`, which means no nav element by design; judge reachability instead, via visible in-content links**
 - Section labels and headings must be distinguishable from body text
 - Text on colored backgrounds or images must not disappear
 

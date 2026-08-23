@@ -208,7 +208,7 @@ Bind content from the content files. Every listed key must appear in the rendere
 - Education: school, degree, concentration, years
 - Personal: holes in one count, sport, teams, current focus
 
-**All pages:** Name, role, and nav links — rendered by the Sidebar component.
+**All pages:** Name and role render on every page, in whatever form today's SHELL declaration and `shell_posture` call for. Nav links render alongside them — **except when `shell_posture: none`: render zero `<nav>` elements anywhere in the output.** Projects and other routes stay reachable through in-content `<a>` links instead. `folded-into-hero` and `footer-only` move the nav out of its usual Sidebar slot (into the hero composition, or to the page foot) — the mockup shows where; match it.
 
 **og.tsx data-render:** Today's hero phrase at display scale + today's palette as field + brand lockup. No project listings.
 
