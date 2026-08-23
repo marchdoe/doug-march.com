@@ -48,7 +48,6 @@ function pipelineApiPlugin(): Plugin {
 
   function isAllowedOrigin(req: import('http').IncomingMessage): boolean {
     const origin = req.headers.origin || ''
-    const host = req.headers.host || ''
     // No origin header means same-origin request (fetch from dev panel itself)
     if (!origin) return true
     try {
@@ -359,7 +358,10 @@ function pipelineApiPlugin(): Plugin {
         pipelineLog = []
         pipelineDone = false
 
-        const pipelineEnv = {
+        // Typed as ProcessEnv (all-optional): object spread drops process.env's
+        // index signature, which made the security-critical delete below a
+        // type error on a literal type.
+        const pipelineEnv: NodeJS.ProcessEnv = {
           ...process.env,
           DRY_RUN: dryRun ? 'true' : 'false',
           MOCK_MODE: mock ? 'true' : 'false',
@@ -459,18 +461,13 @@ function pipelineApiPlugin(): Plugin {
       })
 
       // Serve archived site snapshots for the preview viewer
-      server.middlewares.use('/api/archive-preview', (req, res, next) => {
+      server.middlewares.use('/api/archive-preview', (req, res) => {
         if (!guardRequest(req, res)) return
         // URL formats:
         //   /api/archive-preview/2026-03-20/build-123456/index.html  (per-build)
         //   /api/archive-preview/2026-03-16/index.html               (legacy date-level)
         const buildMatch = req.url?.match(/^\/(\d{4}-\d{2}-\d{2})\/(build-\d+)\/(.+)$/)
-        const legacyMatch = !buildMatch && req.url?.match(/^\/(\d{4}-\d{2}-\d{2})\/(.+)$/)
-        if (!buildMatch && !legacyMatch) {
-          res.writeHead(404)
-          res.end('Not found')
-          return
-        }
+        const legacyMatch = req.url?.match(/^\/(\d{4}-\d{2}-\d{2})\/(.+)$/)
 
         let fullPath: string
         let filePath: string
@@ -478,10 +475,14 @@ function pipelineApiPlugin(): Plugin {
           const [, date, buildDir, fp] = buildMatch
           filePath = fp
           fullPath = resolve('archive', date, buildDir, 'site', filePath)
-        } else {
-          const [, date, fp] = legacyMatch!
+        } else if (legacyMatch) {
+          const [, date, fp] = legacyMatch
           filePath = fp
           fullPath = resolve('archive', date, 'site', filePath)
+        } else {
+          res.writeHead(404)
+          res.end('Not found')
+          return
         }
 
         const archiveBase = resolve('archive')

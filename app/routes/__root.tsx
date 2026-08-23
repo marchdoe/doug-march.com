@@ -8,7 +8,6 @@ import {
   Scripts,
 } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
-import { styled } from '../../styled-system/jsx'
 import type { ReactNode } from 'react'
 
 const THEME_INIT_SCRIPT = `(function(){

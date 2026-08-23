@@ -15,6 +15,7 @@
     "test:e2e:dev": "playwright test --project=dev-panel",
     "test:e2e": "playwright test",
     "lint": "biome ci .",
+    "typecheck": "panda codegen && tsc --noEmit",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "codegen": "panda codegen",
