@@ -331,10 +331,18 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
   let parsed
 
   if (result.includes('===VERDICT===')) {
-    // Critic response (spec-critic, screenshot-critic) — extract verdict and feedback
+    // Critic response (spec-critic, screenshot-critic) — extract verdict and feedback.
+    // _fullResponse keeps the undelimited text: parseCriticVerdict anchors on the
+    // ===VERDICT=== block, so it must see the full response, not the stripped body.
     const verdictMatch = result.match(/===VERDICT===([\s\S]*?)===END===/)
     const verdictBody = verdictMatch ? verdictMatch[1].trim() : result.trim()
-    parsed = { files: [], rationale: verdictBody, design_brief: '', _rawResponse: verdictBody }
+    parsed = {
+      files: [],
+      rationale: verdictBody,
+      design_brief: '',
+      _rawResponse: verdictBody,
+      _fullResponse: result,
+    }
   } else if (result.includes('===VISUAL_SPEC===')) {
     // Design Director response — the entire content after the delimiter is the spec
     const specMatch = result.match(/===VISUAL_SPEC===([\s\S]*)/)
@@ -1003,7 +1011,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         { model: modelFor('spec-critic') }
       )
       const rawResponse = criticResult._rawResponse || criticResult.rationale || ''
-      const { verdict: specVerdict } = parseCriticVerdict(rawResponse, 'APPROVED')
+      // Parse from the full response — _rawResponse has the ===VERDICT=== block
+      // stripped, which parseCriticVerdict anchors on (it would fail closed to
+      // REVISE on every response otherwise).
+      const { verdict: specVerdict } = parseCriticVerdict(
+        criticResult._fullResponse || rawResponse,
+        'APPROVED'
+      )
 
       trace.addStep({
         name: 'spec-critic',
