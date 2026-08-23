@@ -17,6 +17,19 @@ describe('validateWritePath', () => {
       expect(validateWritePath('elements/preset.ts')).toBe('elements/preset.ts')
     })
 
+    it('allows elements/chassis-preset.ts', () => {
+      expect(validateWritePath('elements/chassis-preset.ts')).toBe('elements/chassis-preset.ts')
+    })
+
+    it('rejects executable pipeline code under elements/', () => {
+      // design-agents.js imports these at startup — writable would mean
+      // persistent code execution on the next nightly run
+      expect(() => validateWritePath('elements/chassis/index.js')).toThrow(/allowlist/)
+      expect(() => validateWritePath('elements/chassis/evil.js')).toThrow(/allowlist/)
+      expect(() => validateWritePath('elements/index.ts')).toThrow(/allowlist/)
+      expect(() => validateWritePath('elements/theme/tokens.ts')).toThrow(/allowlist/)
+    })
+
     it('allows app/stubs/ paths', () => {
       expect(validateWritePath('app/stubs/foo.ts')).toBe('app/stubs/foo.ts')
     })

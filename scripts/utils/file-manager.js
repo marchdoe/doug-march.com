@@ -10,16 +10,15 @@ export const ROOT = path.resolve(__dirname, '../..')
 // Any path outside these prefixes is rejected. This is the primary defense
 // against a malicious or prompt-injected agent overwriting the pipeline,
 // workflows, package.json, .env, or other sensitive files.
-const ALLOWED_WRITE_PREFIXES = [
-  'app/components/',
-  'app/routes/',
-  'app/stubs/',
-  'elements/', // only preset.ts; further restricted by ALLOWED_EXACT below
-]
+const ALLOWED_WRITE_PREFIXES = ['app/components/', 'app/routes/', 'app/stubs/']
 
-// Exact paths allowed for writes outside the prefix list.
-// Currently empty — elements/preset.ts is covered by the prefix.
-const ALLOWED_EXACT = new Set()
+// Exact paths allowed for writes outside the prefix list. elements/ is
+// deliberately NOT a prefix: elements/chassis/index.js and elements/index.ts
+// are imported and executed by the pipeline itself (design-agents.js), so a
+// prefix-level allow would let a prompt-injected agent plant code that runs
+// with repo write access on the next nightly run. Only the two generated
+// preset files are writable.
+const ALLOWED_EXACT = new Set(['elements/preset.ts', 'elements/chassis-preset.ts'])
 
 // Within allowed prefixes, these exact files are still forbidden.
 // Protects generated files (routeTree.gen.ts) and content files that
@@ -31,7 +30,6 @@ const FORBIDDEN_PREFIXES = [
   'app/server/', // server functions — hand-maintained
   'app/styles/', // panda css base styles
   'app/assets/', // static assets
-  'elements/theme/', // canonical theme files
 ]
 
 /**
