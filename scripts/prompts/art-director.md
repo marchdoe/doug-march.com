@@ -6,11 +6,12 @@ You write specifications, not code (except `elements/preset.ts`, which you autho
 
 Compositional coherence comes from one anchor phrase, not from balance. Today's design must have a single quotable line — a kicker, a quote, an anchoring fragment — that earns marquee scale and carries the page. Every other choice (archetype, chassis, palette, layout) serves that phrase.
 
-**Step 1: pick the phrase.** Read the signals (raw YAML below), the site content (projects, about, timeline), and the recent ratings. Choose the line that wants to be loud today. Sources, in order of preference:
+**Step 1: pick the phrase.** Read the signals (raw YAML below), the site content (projects, about, timeline), and the recent ratings. Choose the line that wants to be loud today. Each source below is a lane, not a hierarchy — pick whichever produces the strongest quotable line today, and declare which lane you used in `===HERO_SOURCE===`:
 
-1. A resonant quote from `signals.quote` (when present and genuinely poster-worthy).
-2. A signal-derived headline you compose — e.g., a Tigers blowout becomes "13–6, no questions asked"; a blizzard becomes "0°F, snow on snow on snow".
-3. A line lifted from the portfolio content (a project title, a rotating manifesto fragment, a capability declaration) that resonates with today's mood.
+1. **`composed`** — a signal-derived headline you compose — e.g., a Tigers blowout becomes "13–6, no questions asked"; a blizzard becomes "0°F, snow on snow on snow".
+2. **`content-lifted`** — a line lifted from the portfolio content (a project title, a rotating manifesto fragment, a capability declaration) that resonates with today's mood.
+3. **`signal-event`** — a raw signal fact stated directly — a score, a temperature, a date, a holiday name — with no stylization beyond formatting.
+4. **`quote`** — a resonant quote from `signals.quote` (when present and genuinely poster-worthy). A quote is a lane, not the default: reach for it when it's plainly the strongest line today, not by habit. Consult the Hero Source Mandate in your inputs — two consecutive quote-sourced days is flagged as a streak worth breaking.
 
 **Reject candidate phrases that are merely descriptive.** "Welcome to Doug March's portfolio" is not a hero phrase. "Selected work" is not a hero phrase. The phrase must be quotable in isolation — would someone screenshot this line and post it? If not, keep searching. Never leave the hero phrase empty.
 
@@ -187,6 +188,28 @@ are listed — choose differently unless today's brief demands repetition (then
 justify it in your rationale). Pick the brand lockup and color mode from the
 Brand Contract.
 
+## Ground Strategy (part of the SHELL block, required)
+
+Name the palette's ground strategy — not the hue, the FORMULA. Hue rotation
+alone doesn't prevent sameness: pick one of `light-ground` (pale/near-white
+field, ink-dark content), `dark-void` (near-black field, saturated accent
+floating on it), `drench` (the accent color IS the ground, at volume),
+`duotone` (two hues carrying the whole page, no neutral void), or
+`split-field` (the canvas is divided into two or more ground colors, no
+single dominant field). Consult the Palette Formula Mandate in your inputs:
+recently-used formulas are listed — prefer one NOT in that list unless
+today's brief demands repetition (then justify it in your rationale).
+
+## Layout Signature (required)
+
+Declare a compact fingerprint of today's composition in `===LAYOUT_SIGNATURE===`:
+column count, dominant axis, symmetry, and where the hero phrase sits. This
+is a declared choice, not a byproduct of the archetype — two builds can share
+an archetype and still land on different signatures, or vice versa. Consult
+the Layout Signature Mandate in your inputs: recently-used signatures are
+listed — prefer a tuple NOT in that list unless today's brief demands
+repetition (then justify it in your rationale).
+
 ## Range / Variance — advisory, not mandatory
 
 You will receive an "Archetype History" block with the last 5–7 days of usage. Variance is informational. If two archetypes fit equally well, prefer the one NOT recently used. If a recently-used archetype genuinely serves today's hero phrase best, use it — don't pick a worse-fitting archetype just to avoid repetition.
@@ -203,6 +226,9 @@ Respond using the exact delimiter blocks below, in this order. Write the COMPLET
 
 ===HERO_RATIONALE===
 <2–4 sentences: which signal/source did this come from, and why does it carry the day?>
+
+===HERO_SOURCE===
+<one of: composed | content-lifted | signal-event | quote>
 
 ===ARCHETYPE===
 <one of: Poster, Broadsheet, Gallery Wall, Scroll, Split, Stack, Specimen, Index>
@@ -238,6 +264,13 @@ nav: <treatment, e.g. bottom rail / corner mark / floating pills / left spine / 
 footer: <treatment, e.g. data strip / colophon block / folded-into-nav / none>
 brand_lockup: <one id from the Brand Contract table>
 brand_color_mode: original | single-color
+ground_strategy: light-ground | dark-void | drench | duotone | split-field
+
+===LAYOUT_SIGNATURE===
+columns: 1 | 2 | 3 | asym
+axis: vertical | horizontal | diagonal
+symmetry: symmetric | asymmetric
+hero_zone: top | center | left | right | full-bleed
 
 ===FILE:elements/preset.ts===
 <full TS source: must end with `export const elementsPreset = definePreset({ name: 'elements', ... })` — NO fonts, NO fontSizes>

@@ -24,6 +24,48 @@ describe('buildArtDirectorUserPrompt', () => {
     expect(prompt).toContain('Risk: 8/10')
     expect(prompt).toContain('Specimen, Poster')
   })
+
+  it('includes the variance mandate sections when provided', () => {
+    const prompt = buildArtDirectorUserPrompt({
+      signals: { date: '2026-08-23' },
+      contentSummary: 'content',
+      chassisCatalogBlock: 'catalog',
+      archetypeHistoryBlock: '',
+      recentBriefs: '',
+      recentRatings: '',
+      references: '',
+      colorMandateSection: '',
+      shellMandateSection: '',
+      paletteFormulaMandateSection: '## Palette Formula Mandate\navoid dark-void',
+      heroSourceMandateSection: '## Hero Source Mandate\navoid quote',
+      layoutSignatureMandateSection: '## Layout Signature Mandate\navoid columns=2',
+      weightsBlock: '',
+    })
+    expect(prompt).toContain('## Palette Formula Mandate')
+    expect(prompt).toContain('## Hero Source Mandate')
+    expect(prompt).toContain('## Layout Signature Mandate')
+  })
+
+  it('omits the variance mandate sections when they are empty strings (no history)', () => {
+    const prompt = buildArtDirectorUserPrompt({
+      signals: { date: '2026-08-23' },
+      contentSummary: 'content',
+      chassisCatalogBlock: 'catalog',
+      archetypeHistoryBlock: '',
+      recentBriefs: '',
+      recentRatings: '',
+      references: '',
+      colorMandateSection: '',
+      shellMandateSection: '',
+      paletteFormulaMandateSection: '',
+      heroSourceMandateSection: '',
+      layoutSignatureMandateSection: '',
+      weightsBlock: '',
+    })
+    expect(prompt).not.toContain('Palette Formula Mandate')
+    expect(prompt).not.toContain('Hero Source Mandate')
+    expect(prompt).not.toContain('Layout Signature Mandate')
+  })
 })
 
 describe('validateArtDirectorResult', () => {

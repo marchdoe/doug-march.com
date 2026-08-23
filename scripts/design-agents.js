@@ -751,6 +751,48 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       console.warn(`[shell-mandate] computation failed (non-blocking): ${err.message}`)
     }
 
+    // Anti-sameness mandates (2026-08-23 audit): palette FORMULA (not just
+    // hue), hero-source rotation, and layout composition. Same soft-forbid
+    // shape as color/shell mandates above — deterministic, zero-LLM,
+    // advisory only. Each formatter returns '' when there's no history to
+    // react to (old archives predate these fields), so the section is
+    // simply omitted from the prompt rather than showing empty guidance.
+    const { computePaletteFormulaMandate, formatPaletteFormulaMandateForPrompt } = await import(
+      './utils/palette-formula-mandate.js'
+    )
+    let paletteFormulaMandateSection = ''
+    try {
+      paletteFormulaMandateSection = formatPaletteFormulaMandateForPrompt(
+        computePaletteFormulaMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 7 })
+      )
+    } catch (err) {
+      console.warn(`[palette-formula-mandate] computation failed (non-blocking): ${err.message}`)
+    }
+
+    const { computeHeroSourceMandate, formatHeroSourceMandateForPrompt } = await import(
+      './utils/hero-source-mandate.js'
+    )
+    let heroSourceMandateSection = ''
+    try {
+      heroSourceMandateSection = formatHeroSourceMandateForPrompt(
+        computeHeroSourceMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 7 })
+      )
+    } catch (err) {
+      console.warn(`[hero-source-mandate] computation failed (non-blocking): ${err.message}`)
+    }
+
+    const { computeLayoutSignatureMandate, formatLayoutSignatureMandateForPrompt } = await import(
+      './utils/layout-signature-mandate.js'
+    )
+    let layoutSignatureMandateSection = ''
+    try {
+      layoutSignatureMandateSection = formatLayoutSignatureMandateForPrompt(
+        computeLayoutSignatureMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 7 })
+      )
+    } catch (err) {
+      console.warn(`[layout-signature-mandate] computation failed (non-blocking): ${err.message}`)
+    }
+
     // -----------------------------------------------------------------------
     // Phase 0+1: Art Director — single decision (hero copy, archetype,
     // chassis, full preset.ts, visual spec). Replaces the historical
@@ -782,6 +824,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         references,
         colorMandateSection,
         shellMandateSection,
+        paletteFormulaMandateSection,
+        heroSourceMandateSection,
+        layoutSignatureMandateSection,
         brandContract,
         weightsBlock,
         failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
@@ -803,6 +848,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           references,
           colorMandateSection,
           shellMandateSection,
+          paletteFormulaMandateSection,
+          heroSourceMandateSection,
+          layoutSignatureMandateSection,
           brandContract,
           weightsBlock,
           failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
@@ -921,6 +969,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           references,
           colorMandateSection,
           shellMandateSection,
+          paletteFormulaMandateSection,
+          heroSourceMandateSection,
+          layoutSignatureMandateSection,
           brandContract,
           weightsBlock,
           failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
@@ -961,18 +1012,27 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       }
     }
 
-    // Parse shell + measurables from the final settled artDirectorResult
-    // (computed here, after any codegen retry, so they always reflect the live result).
-    // shellDecl is also used as the shell.json archive artifact below.
-    const { parseShellBlock, parseMeasurablesBlock } = await import('./utils/spec-blocks.js')
+    // Parse shell + measurables + layout signature from the final settled
+    // artDirectorResult (computed here, after any codegen retry, so they
+    // always reflect the live result). shellDecl (which carries
+    // ground_strategy — see SHELL block) and layoutSignatureDecl are also
+    // used as archive artifacts below (shell.json, layout-signature.json).
+    const { parseShellBlock, parseMeasurablesBlock, parseLayoutSignatureBlock } = await import(
+      './utils/spec-blocks.js'
+    )
     const shellDecl = parseShellBlock(artDirectorResult.shell)
     const measurablesDecl = parseMeasurablesBlock(artDirectorResult.measurables)
+    const layoutSignatureDecl = parseLayoutSignatureBlock(artDirectorResult.layoutSignature)
     console.log(
-      `  shell: nav=${shellDecl.nav} | footer=${shellDecl.footer} | lockup=${shellDecl.brand_lockup} (${shellDecl.brand_color_mode})`
+      `  shell: nav=${shellDecl.nav} | footer=${shellDecl.footer} | lockup=${shellDecl.brand_lockup} (${shellDecl.brand_color_mode}) | ground=${shellDecl.ground_strategy}`
     )
     console.log(
       `  measurables: canvas>=${measurablesDecl.canvas_utilization_min}% color>=${measurablesDecl.color_coverage_min}% hero=${measurablesDecl.hero_scale}`
     )
+    console.log(
+      `  layout-signature: columns=${layoutSignatureDecl.columns} | axis=${layoutSignatureDecl.axis} | symmetry=${layoutSignatureDecl.symmetry} | hero_zone=${layoutSignatureDecl.hero_zone}`
+    )
+    console.log(`  hero-source: ${artDirectorResult.heroSource || '(none declared)'}`)
 
     // -----------------------------------------------------------------------
     // Spec Critic Gate — Art Director self-check
@@ -1510,6 +1570,21 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           'mockup-screenshot.png': mockupScreenshot?.png ?? null,
           'verdicts.json': JSON.stringify(verdicts, null, 2),
           'shell.json': JSON.stringify(shellDecl, null, 2),
+          'hero-source.json': JSON.stringify(
+            { source: artDirectorResult.heroSource || null },
+            null,
+            2
+          ),
+          'layout-signature.json': JSON.stringify(
+            {
+              columns: layoutSignatureDecl.columns,
+              axis: layoutSignatureDecl.axis,
+              symmetry: layoutSignatureDecl.symmetry,
+              hero_zone: layoutSignatureDecl.hero_zone,
+            },
+            null,
+            2
+          ),
         }
       )
       archiveRan = true
