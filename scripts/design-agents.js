@@ -49,6 +49,7 @@ import {
   formatChassisCatalogForPrompt,
 } from './utils/chassis.js'
 import { parseDelimiterResponse } from './utils/delimiter-parser.js'
+import { parseCriticVerdict } from './utils/critic-verdict.js'
 import { modelFor, isDevModelTier } from './utils/models.js'
 import { runArtDirector } from './agents/art-director.js'
 export { parseDelimiterResponse }
@@ -1002,13 +1003,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         { model: modelFor('spec-critic') }
       )
       const rawResponse = criticResult._rawResponse || criticResult.rationale || ''
+      const { verdict: specVerdict } = parseCriticVerdict(rawResponse, 'APPROVED')
 
       trace.addStep({
         name: 'spec-critic',
         phase: 1,
         input: { specLength: visualSpec.length },
         output: {
-          verdict: rawResponse.includes('REVISE') ? 'REVISE' : 'APPROVED',
+          verdict: specVerdict,
           feedback: rawResponse.slice(0, 500),
         },
         durationMs: Date.now() - t0Critic,
@@ -1016,12 +1018,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
       verdicts.push({
         critic: 'spec-critic',
-        verdict: rawResponse.includes('REVISE') ? 'REVISE' : 'APPROVED',
+        verdict: specVerdict,
         feedback: rawResponse.slice(0, 2000),
         ts: Date.now(),
       })
 
-      if (rawResponse.includes('REVISE')) {
+      if (specVerdict === 'REVISE') {
         console.log(
           `  [spec-critic] REVISE — accepting and continuing (single point of failure: a full Art Director re-run is expensive; let the screenshot critic catch render failures)`
         )
@@ -1544,8 +1546,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
         console.log('[screenshot-critic] Evaluating design...')
         const criticUserPrompt = [
-          `## Structured Brief\n\n${brief}`,
-          `## Visual Specification\n\n${visualSpec}`,
+          // enrichedBrief carries hero copy, rationale, and the full visual
+          // spec. The nightly context has no `brief` key, so the old
+          // `${brief}` here rendered the literal string "undefined".
+          `## Structured Brief\n\n${enrichedBrief}`,
           references ? `## Design References\n\n${references}` : '',
           mockupScreenshot
             ? 'The APPROVED MOCKUP screenshot (fidelity target):\n\n![Mockup](data:image/jpeg;base64,' +
@@ -1573,10 +1577,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         )
         const criticResponse =
           screenshotCriticResult._rawResponse || screenshotCriticResult.rationale || ''
+        const { verdict: screenshotVerdict } = parseCriticVerdict(criticResponse, 'SHIP')
 
         verdicts.push({
           critic: 'screenshot-critic',
-          verdict: criticResponse.includes('REVISE') ? 'REVISE' : 'SHIP',
+          verdict: screenshotVerdict,
           feedback: criticResponse.slice(0, 2000),
           ts: Date.now(),
         })
@@ -1586,13 +1591,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           phase: 4,
           input: {},
           output: {
-            verdict: criticResponse.includes('REVISE') ? 'REVISE' : 'SHIP',
+            verdict: screenshotVerdict,
             feedback: criticResponse.slice(0, 500),
           },
           durationMs: Date.now() - t0ScreenshotCritic,
         })
 
-        if (criticResponse.includes('REVISE')) {
+        if (screenshotVerdict === 'REVISE') {
           const agentMatch = criticResponse.match(/\*\*Responsible agent:\*\*\s*([\w-]+)/)
           const responsibleAgent = agentMatch?.[1] || 'react-engineer'
           const feedback = criticResponse
