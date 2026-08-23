@@ -26,7 +26,13 @@ export function validateGenerated() {
       // Check for self-referencing tokens: '{tokenCategory.tokenName}' where the
       // surrounding context is defining that same tokenCategory.tokenName
       // This catches: fonts: { heading: { value: '{fonts.heading}' } }
-      const selfRefCategories = ['fonts', 'fontSizes', 'fontWeights', 'lineHeights', 'letterSpacings']
+      const selfRefCategories = [
+        'fonts',
+        'fontSizes',
+        'fontWeights',
+        'lineHeights',
+        'letterSpacings',
+      ]
 
       for (const category of selfRefCategories) {
         // Find if this category appears in semantic tokens

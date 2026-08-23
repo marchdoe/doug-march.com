@@ -28,7 +28,12 @@ import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
 import { callClaudeCLI } from './utils/claude-cli.js'
-import { MUTABLE_FILES, STRUCTURE_FILES, COMPONENT_FILES, readContext } from './utils/site-context.js'
+import {
+  MUTABLE_FILES,
+  STRUCTURE_FILES,
+  COMPONENT_FILES,
+  readContext,
+} from './utils/site-context.js'
 import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-manager.js'
 import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
