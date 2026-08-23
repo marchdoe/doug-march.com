@@ -19,9 +19,6 @@ import { fileURLToPath } from 'node:url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
 
-const DRY_RUN = process.env.DRY_RUN === 'true'
-const MOCK_MODE = process.env.MOCK_MODE === 'true'
-
 function run(label, command) {
   console.log(`\n=== ${label} ===\n`)
   execSync(command, { cwd: ROOT, stdio: 'inherit', env: process.env })

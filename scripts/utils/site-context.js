@@ -72,16 +72,6 @@ export const COMPONENT_FILES = [
 ]
 
 /**
- * Content files Claude gets a summary of (titles + types only, no full descriptions).
- * These are read-only context, not included in mutable files.
- */
-const CONTENT_FILES_FOR_SUMMARY = [
-  'app/content/projects.ts',
-  'app/content/timeline.ts',
-  'app/content/about.ts',
-]
-
-/**
  * Build a human-readable summary of projects content.
  * We only include title, type, year — not full descriptions.
  * This is intentional: Claude needs to know what projects exist to preserve

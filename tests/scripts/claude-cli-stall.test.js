@@ -21,7 +21,7 @@ vi.mock('child_process', () => ({
     // Simpler: use a proper Writable stream
     const { Writable } = require('node:stream')
     child.stdin = new Writable({
-      write(chunk, enc, cb) {
+      write(_chunk, _enc, cb) {
         cb()
       },
     })

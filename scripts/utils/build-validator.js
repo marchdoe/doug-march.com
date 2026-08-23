@@ -26,19 +26,12 @@ export function validateGenerated() {
       // Check for self-referencing tokens: '{tokenCategory.tokenName}' where the
       // surrounding context is defining that same tokenCategory.tokenName
       // This catches: fonts: { heading: { value: '{fonts.heading}' } }
-      const selfRefPatterns = [
-        { category: 'fonts', pattern: /'\{fonts\.(\w+)\}'/g },
-        { category: 'fontSizes', pattern: /'\{fontSizes\.(\w+)\}'/g },
-        { category: 'fontWeights', pattern: /'\{fontWeights\.(\w+)\}'/g },
-        { category: 'lineHeights', pattern: /'\{lineHeights\.(\w+)\}'/g },
-        { category: 'letterSpacings', pattern: /'\{letterSpacings\.(\w+)\}'/g },
-      ]
+      const selfRefCategories = ['fonts', 'fontSizes', 'fontWeights', 'lineHeights', 'letterSpacings']
 
-      for (const { category, pattern } of selfRefPatterns) {
+      for (const category of selfRefCategories) {
         // Find if this category appears in semantic tokens
         const catRegex = new RegExp(`${category}\\s*:\\s*\\{`, 'g')
-        let catMatch
-        while ((catMatch = catRegex.exec(semanticSection)) !== null) {
+        for (const catMatch of semanticSection.matchAll(catRegex)) {
           // Get the block content (rough — find matching brace)
           const blockStart = catMatch.index
           let depth = 0
@@ -54,9 +47,8 @@ export function validateGenerated() {
           const block = semanticSection.slice(blockStart, blockEnd + 1)
 
           // Check for self-references within this block
-          let refMatch
           const localPattern = new RegExp(`'\\{${category}\\.(\\w+)\\}'`, 'g')
-          while ((refMatch = localPattern.exec(block)) !== null) {
+          for (const refMatch of block.matchAll(localPattern)) {
             const tokenName = refMatch[1]
             // Check if this token name appears as a key in this block
             if (block.match(new RegExp(`${tokenName}\\s*:`))) {
@@ -68,7 +60,7 @@ export function validateGenerated() {
         }
       }
     }
-  } catch (err) {
+  } catch {
     // If we can't read preset.ts, that's a bigger problem — build will catch it
   }
 
@@ -104,8 +96,7 @@ export function validateGenerated() {
       // Explicitly excludes `import type { ... } from 'react'` since those
       // are correct.
       const importRegex = /^import\s+\{([^}]+)\}\s+from\s+['"]react['"]/gm
-      let importMatch
-      while ((importMatch = importRegex.exec(content)) !== null) {
+      for (const importMatch of content.matchAll(importRegex)) {
         const imports = importMatch[1].split(',').map((s) => s.trim())
         const typeImports = imports.filter((i) => reactTypes.includes(i))
         if (typeImports.length > 0) {

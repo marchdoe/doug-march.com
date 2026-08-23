@@ -12,7 +12,6 @@
 
 import { config } from 'dotenv'
 import { readFile, writeFile, readdir } from 'node:fs/promises'
-import { existsSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import * as yaml from 'js-yaml'

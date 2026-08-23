@@ -18,10 +18,9 @@ function formatLesson(b) {
  * @param {object} opts
  * @param {Array<object>} opts.history - recent builds, newest-first (expected from readResponsiveHistory)
  * @param {string} opts.todayArchetype
- * @param {string} opts.today - ISO date of today's build
  * @returns {{ lesson: string|null, selectedBuildId: string|null }}
  */
-export function selectRecentFailure({ history, todayArchetype, today }) {
+export function selectRecentFailure({ history, todayArchetype }) {
   const recent = history.slice(0, 7)
   if (recent.length < 3) return { lesson: null, selectedBuildId: null }
 

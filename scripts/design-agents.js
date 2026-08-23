@@ -28,13 +28,7 @@ import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
 import { callClaudeCLI } from './utils/claude-cli.js'
-import {
-  MUTABLE_FILES,
-  TOKEN_FILES,
-  STRUCTURE_FILES,
-  COMPONENT_FILES,
-  readContext,
-} from './utils/site-context.js'
+import { MUTABLE_FILES, STRUCTURE_FILES, COMPONENT_FILES, readContext } from './utils/site-context.js'
 import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-manager.js'
 import { validateBuild } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
@@ -47,7 +41,6 @@ import {
   buildGoogleFontsUrl,
   renderRootTemplate,
   renderChassisPresetFile,
-  getChassisById,
   formatChassisCatalogForPrompt,
 } from './utils/chassis.js'
 import { parseDelimiterResponse } from './utils/delimiter-parser.js'
@@ -179,7 +172,7 @@ export function describeRiskTier(risk) {
  * @param {{ brief: string, referenceFiles: Array<{path: string, content: string}>, tokenContext: string|null }} ctx
  * @returns {string}
  */
-export function buildAgentPrompt(agentName, { brief, referenceFiles, tokenContext }) {
+export function buildAgentPrompt(_agentName, { brief, referenceFiles, tokenContext }) {
   const sections = []
 
   // Section 1: Creative Brief
@@ -407,7 +400,7 @@ function validateCodegen() {
  * @returns {Promise<{ rationale: string, design_brief: string, files: Array<{path: string, content: string}> }>}
  */
 export async function runAgentSwarm(context, { onTraceStep } = {}) {
-  const { signals, brief, contentSummary, currentFiles = [] } = context
+  const { signals, brief, contentSummary } = context
 
   // Start this run's cost accounting from zero. The ledger is module-level,
   // so a second swarm in the same process (the dev panel's Run button) would
@@ -1177,7 +1170,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         const { lesson, selectedBuildId } = selectRecentFailure({
           history,
           todayArchetype: chosenArchetype,
-          today,
         })
         if (lesson) {
           responsiveLesson = lesson
