@@ -76,7 +76,7 @@ describe('callVisionAgent', () => {
     expect(prompt).toContain('## Brief')
     // No base64 payload smuggled into the text prompt.
     expect(prompt).not.toContain('base64')
-    expect(opts.model).toBe('claude-sonnet-5')
+    expect(opts.model).toBe('claude-haiku-4-5') // mockup-critic's prod tier (floors-check, not taste)
   })
 
   it('uses the CLI when there are no images even with an API key', async () => {

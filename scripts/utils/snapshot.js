@@ -49,6 +49,71 @@ async function processHtml(html, baseUrl) {
   return processed
 }
 
+/** Critic-bound JPEGs are downscaled to this width. Claude's vision tokenizer
+ * bills roughly by pixel count, not by JPEG quality — a 1280w or 1440w
+ * screenshot costs meaningfully more input tokens than the same composition
+ * at ~1024w, with zero gain in the critic's ability to judge hierarchy,
+ * color, or spec fidelity. The archived PNG (and the full-res JPEG, where one
+ * still exists) is never touched — this constant only governs what the
+ * critic sees. */
+const CRITIC_JPEG_WIDTH = 1024
+const CRITIC_JPEG_QUALITY = 70
+
+/**
+ * Compute the target pixel size for a critic-bound downscale. Pure and
+ * side-effect-free so it's unit-testable without a browser; never upscales
+ * a source already narrower than the target.
+ * @param {number} naturalWidth
+ * @param {number} naturalHeight
+ * @param {number} [targetWidth]
+ * @returns {{ width: number, height: number }}
+ */
+export function computeDownscaleDimensions(
+  naturalWidth,
+  naturalHeight,
+  targetWidth = CRITIC_JPEG_WIDTH
+) {
+  const scale = Math.min(1, targetWidth / naturalWidth)
+  return { width: Math.round(naturalWidth * scale), height: Math.round(naturalHeight * scale) }
+}
+
+/**
+ * Downscale a full-resolution PNG screenshot buffer to a smaller JPEG for
+ * critic consumption, using the already-open page's own <canvas> — no
+ * second navigation/render, and no image-processing npm dependency. The
+ * resize math mirrors computeDownscaleDimensions (duplicated here because
+ * page.evaluate serializes the callback into the page context and cannot
+ * close over outer Node functions).
+ *
+ * @param {import('playwright').Page} page - any open page in the same browser
+ * @param {Buffer} pngBuffer - full-resolution source (the archived PNG)
+ * @param {{ targetWidth?: number, quality?: number }} [opts]
+ * @returns {Promise<Buffer>} downscaled JPEG bytes
+ */
+async function downscaleForCritic(
+  page,
+  pngBuffer,
+  { targetWidth = CRITIC_JPEG_WIDTH, quality = CRITIC_JPEG_QUALITY } = {}
+) {
+  const dataUrl = await page.evaluate(
+    async ({ base64, targetWidth, quality }) => {
+      const img = new Image()
+      img.src = `data:image/png;base64,${base64}`
+      await img.decode()
+      const scale = Math.min(1, targetWidth / img.naturalWidth)
+      const width = Math.round(img.naturalWidth * scale)
+      const height = Math.round(img.naturalHeight * scale)
+      const canvas = document.createElement('canvas')
+      canvas.width = width
+      canvas.height = height
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height)
+      return canvas.toDataURL('image/jpeg', quality / 100)
+    },
+    { base64: pngBuffer.toString('base64'), targetWidth, quality }
+  )
+  return Buffer.from(dataUrl.slice(dataUrl.indexOf(',') + 1), 'base64')
+}
+
 /**
  * Poll a URL until it returns HTTP 200.
  * @param {string} url
@@ -160,9 +225,12 @@ export async function captureSnapshot(date, buildId) {
  * Spins up a Vite preview server and uses Playwright to render and screenshot.
  *
  * Returns both encodings from one render: PNG for archive/public artifacts,
- * JPEG (q70) for critic prompts. Gradient-heavy designs produce ~900KB PNGs;
- * two of those base64'd made a 1.6MB critic prompt that the model answered
- * with 0 bytes (2026-07-10 run 2). The JPEG is typically 5-10x smaller.
+ * JPEG (downscaled to ~1024w, q70) for critic prompts. Gradient-heavy
+ * designs produce ~900KB PNGs; two of those base64'd made a 1.6MB critic
+ * prompt that the model answered with 0 bytes (2026-07-10 run 2). The JPEG
+ * is downscaled AND re-encoded, typically 10-20x smaller than the PNG and
+ * cheaper in image tokens than a full-res JPEG at the same quality (see
+ * CRITIC_JPEG_WIDTH above).
  *
  * @param {number} [port] - Optional port if server is already running
  * @returns {Promise<{png: Buffer, jpeg: Buffer}>} image buffers
@@ -204,7 +272,7 @@ export async function captureScreenshot(port) {
     })
     await page.waitForTimeout(1000) // wait for fonts
     const png = await page.screenshot({ type: 'png', fullPage: false })
-    const jpeg = await page.screenshot({ type: 'jpeg', quality: 70, fullPage: false })
+    const jpeg = await downscaleForCritic(page, png)
 
     // Second capture with the OPPOSITE color scheme. The theme init script
     // follows prefers-color-scheme, so a headless capture only ever showed
@@ -219,7 +287,7 @@ export async function captureScreenshot(port) {
     await darkPage.goto(`http://localhost:${serverPort}/`, { waitUntil: 'networkidle' })
     await darkPage.waitForTimeout(1000)
     const darkPng = await darkPage.screenshot({ type: 'png', fullPage: false })
-    const darkJpeg = await darkPage.screenshot({ type: 'jpeg', quality: 70, fullPage: false })
+    const darkJpeg = await downscaleForCritic(darkPage, darkPng)
 
     return { png, jpeg, darkPng, darkJpeg }
   } finally {
@@ -239,7 +307,7 @@ export async function captureScreenshot(port) {
  * @param {string} filePath - absolute path to the HTML file
  * @param {{ width?: number, height?: number }} [opts]
  * @returns {Promise<{png: Buffer, jpeg: Buffer}>} image buffers — PNG for
- *   archives, JPEG (q70) for critic prompts (see captureScreenshot)
+ *   archives, JPEG (downscaled, q70) for critic prompts (see captureScreenshot)
  */
 export async function captureHtmlFileScreenshot(filePath, { width = 1440, height = 900 } = {}) {
   const { chromium } = await import('playwright')
@@ -249,7 +317,7 @@ export async function captureHtmlFileScreenshot(filePath, { width = 1440, height
     await page.goto(`file://${filePath}`, { waitUntil: 'networkidle' })
     await page.waitForTimeout(1000) // fonts
     const png = await page.screenshot({ type: 'png', fullPage: false })
-    const jpeg = await page.screenshot({ type: 'jpeg', quality: 70, fullPage: false })
+    const jpeg = await downscaleForCritic(page, png)
     return { png, jpeg }
   } finally {
     await browser.close()

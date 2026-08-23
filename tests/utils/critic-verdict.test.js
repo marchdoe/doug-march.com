@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseCriticVerdict } from '../../scripts/utils/critic-verdict.js'
+import { parseCriticVerdict, parseBarLine } from '../../scripts/utils/critic-verdict.js'
 
 describe('parseCriticVerdict', () => {
   it('reads an anchored APPROVED verdict block', () => {
@@ -46,5 +46,57 @@ describe('parseCriticVerdict', () => {
   it('rejects an inline verdict that is not alone on its line', () => {
     const raw = '===VERDICT=== SHIP right away'
     expect(parseCriticVerdict(raw, 'SHIP')).toEqual({ verdict: 'REVISE', malformed: true })
+  })
+})
+
+describe('parseBarLine', () => {
+  it('parses an em-dash-separated BAR line', () => {
+    const raw =
+      '===VERDICT===\nSHIP\n\nBAR: above — cleaner hierarchy than the reference.\n===END==='
+    expect(parseBarLine(raw)).toEqual({
+      position: 'above',
+      reason: 'cleaner hierarchy than the reference.',
+    })
+  })
+
+  it('tolerates a hyphen or colon instead of an em-dash', () => {
+    expect(parseBarLine('BAR: at - about the same drench commitment')).toEqual({
+      position: 'at',
+      reason: 'about the same drench commitment',
+    })
+    expect(parseBarLine('BAR: below: canvas utilization is lower than the reference')).toEqual({
+      position: 'below',
+      reason: 'canvas utilization is lower than the reference',
+    })
+  })
+
+  it('is case-insensitive on the position token', () => {
+    expect(parseBarLine('bar: ABOVE — stronger hero scale')).toEqual({
+      position: 'above',
+      reason: 'stronger hero scale',
+    })
+  })
+
+  it('tolerates a missing reason (position only)', () => {
+    expect(parseBarLine('BAR: at')).toEqual({ position: 'at', reason: '' })
+  })
+
+  it('only captures the first line of the reason', () => {
+    const raw = 'BAR: above — first line reason\nsome trailing prose\n===END==='
+    expect(parseBarLine(raw).reason).toBe('first line reason')
+  })
+
+  it('returns null when no BAR line is present (no reference was attached)', () => {
+    expect(parseBarLine('===VERDICT===\nSHIP\n===END===')).toBeNull()
+  })
+
+  it('returns null on empty/null/undefined input', () => {
+    expect(parseBarLine('')).toBeNull()
+    expect(parseBarLine(null)).toBeNull()
+    expect(parseBarLine(undefined)).toBeNull()
+  })
+
+  it('returns null on an invalid position token', () => {
+    expect(parseBarLine('BAR: sideways — nonsense')).toBeNull()
   })
 })

@@ -1127,8 +1127,25 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // -----------------------------------------------------------------------
     try {
       console.log('\n[spec-critic] Reviewing Art Director response...')
+      // Trimmed to what the five checks actually use (spec ↔ preset.ts
+      // consistency, hero quotability, archetype × chassis renderability,
+      // self-check honesty, measurable-spec consistency): the declaration
+      // blocks, the visual spec, preset.ts, and the deterministic mandates
+      // the Art Director was constrained by. The full signals YAML (~4KB)
+      // and last-5-days brief history (~13KB) never factored into a REVISE
+      // — every historical spec-critic REVISE has been a hex/token mismatch
+      // between the spec and preset.ts, not a signals- or history-driven call.
+      const mandatesBlock = [
+        colorMandateSection,
+        shellMandateSection,
+        paletteFormulaMandateSection,
+        heroSourceMandateSection,
+        layoutSignatureMandateSection,
+      ]
+        .filter(Boolean)
+        .join('\n\n')
+
       const criticUserPrompt = [
-        `## Today's Signals\n\n\`\`\`yaml\n${JSON.stringify(signals, null, 2)}\n\`\`\``,
         `## Hero Copy\n\n${artDirectorResult.heroCopy}`,
         `## Archetype\n\n${chosenArchetype}`,
         `## Chassis ID\n\n${chosenChassis.id}`,
@@ -1137,7 +1154,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         `## Measurables (declared floors)\n\n${artDirectorResult.measurables}`,
         `## Shell Declaration\n\n${artDirectorResult.shell}`,
         `## elements/preset.ts\n\n\`\`\`typescript\n${artDirectorResult.presetTs}\n\`\`\``,
-        recentBriefs ? `## Recent Archive Briefs\n${recentBriefs}` : '',
+        mandatesBlock
+          ? `## Mandates (the Art Director was constrained by these)\n\n${mandatesBlock}`
+          : '',
       ]
         .filter(Boolean)
         .join('\n\n---\n\n')
@@ -1736,23 +1755,40 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         // these JPEGs as base64 data-URIs in a CLI text prompt billed ~300k
         // tokens per image and the model never saw the pixels (a solid-red
         // probe read back as "light gray"). Three image blocks are ~5k tokens.
-        const { imageBlock, textBlock } = await import('./utils/claude-sdk.js')
         const { callVisionAgent } = await import('./utils/vision-router.js')
-        const criticBlocks = [
+        const { buildScreenshotCriticBlocks } = await import('./agents/screenshot-critic.js')
+        const { findBestRatedReference } = await import('./utils/ratings.js')
+        const { parseBarLine } = await import('./utils/critic-verdict.js')
+
+        // Self-eval calibration: attach the owner's highest-rated past own
+        // build alongside today's render, when one has been auto-promoted
+        // into references/ (collect-ratings.js, grade A/B). Best-effort —
+        // a missing/unreadable reference just means no calibration question.
+        let bestReference = null
+        try {
+          const found = findBestRatedReference(path.join(ROOT, 'references'))
+          if (found) {
+            bestReference = { buffer: await readFile(found.path), description: found.description }
+            console.log(
+              `  [screenshot-critic] calibrating against ${found.file} (grade ${found.grade})`
+            )
+          }
+        } catch (err) {
+          console.warn(
+            `  [screenshot-critic] best-rated reference lookup failed (non-blocking): ${err.message}`
+          )
+        }
+
+        const criticBlocks = buildScreenshotCriticBlocks({
           // enrichedBrief carries hero copy, rationale, and the full visual
           // spec. The nightly context has no `brief` key, so the old
           // `${brief}` here rendered the literal string "undefined".
-          textBlock(`## Structured Brief\n\n${enrichedBrief}`),
-          references ? textBlock(`## Design References\n\n${references}`) : null,
-          mockupScreenshot ? textBlock('The APPROVED MOCKUP screenshot (fidelity target):') : null,
-          mockupScreenshot ? imageBlock(mockupScreenshot.jpeg) : null,
-          textBlock(
-            "The rendered homepage in BOTH color schemes follows. ONE of them (the design's canonical mode) must match the mockup; the other is an adaptation and must stay a coherent, committed version of the same design — never a washed-out inversion.\n\nLIGHT scheme:"
-          ),
-          imageBlock(screenshotBuffer.jpeg),
-          textBlock('DARK scheme:'),
-          imageBlock(screenshotBuffer.darkJpeg),
-        ].filter(Boolean)
+          enrichedBrief,
+          references,
+          mockupScreenshot,
+          screenshotBuffer,
+          bestReference,
+        })
 
         const t0ScreenshotCritic = Date.now()
         const criticResponse = await callVisionAgent({
@@ -1767,12 +1803,17 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           stallTimeoutMs: 300000,
         })
         const { verdict: screenshotVerdict } = parseCriticVerdict(criticResponse, 'SHIP')
+        // BAR is only expected when a reference image was actually attached;
+        // parseBarLine is tolerant regardless — absent is fine either way.
+        const bar = bestReference ? parseBarLine(criticResponse) : null
+        if (bar) console.log(`  [screenshot-critic] BAR: ${bar.position} — ${bar.reason}`)
 
         verdicts.push({
           critic: 'screenshot-critic',
           verdict: screenshotVerdict,
           feedback: criticResponse.slice(0, 2000),
           ts: Date.now(),
+          ...(bar ? { bar } : {}),
         })
 
         trace.addStep({

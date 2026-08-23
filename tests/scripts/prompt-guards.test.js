@@ -97,6 +97,16 @@ describe('react-engineer.md load-bearing directives', () => {
   })
 })
 
+describe('screenshot-critic.md load-bearing directives', () => {
+  const sc = () => read('screenshot-critic.md')
+  it('gates the BAR calibration line on a reference image being attached', () => {
+    const c = sc()
+    expect(c).toContain('BAR:')
+    expect(c).toMatch(/above\|at\|below/)
+    expect(c).toMatch(/Skip this section entirely if no reference image/i)
+  })
+})
+
 describe('seed permission overrides', () => {
   const seedDir = path.join(promptDir, 'seeds')
   const seeds = readdirSync(seedDir).filter((f) => f.endsWith('.md') && f !== 'README.md')

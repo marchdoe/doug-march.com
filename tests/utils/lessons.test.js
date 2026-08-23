@@ -128,4 +128,38 @@ describe('buildLessonsBlock', () => {
     const block = buildLessonsBlock(archiveDir, { limit: 7 })
     expect(block).not.toContain('RECURRING')
   })
+
+  it('surfaces a BAR self-eval entry even on a SHIP verdict', () => {
+    seed(archiveDir, '2026-06-10', {
+      verdicts: [
+        {
+          critic: 'screenshot-critic',
+          verdict: 'SHIP',
+          feedback: 'fine',
+          bar: { position: 'below', reason: 'canvas utilization was lower than the reference' },
+        },
+      ],
+    })
+    const block = buildLessonsBlock(archiveDir, { limit: 7 })
+    expect(block).toContain('BAR vs best build: below')
+    expect(block).toContain('canvas utilization was lower than the reference')
+    expect(block).toContain('screenshot-critic (BAR)')
+  })
+
+  it('tolerates a BAR entry with an empty reason', () => {
+    seed(archiveDir, '2026-06-10', {
+      verdicts: [
+        { critic: 'screenshot-critic', verdict: 'SHIP', bar: { position: 'at', reason: '' } },
+      ],
+    })
+    const block = buildLessonsBlock(archiveDir, { limit: 7 })
+    expect(block).toContain('BAR vs best build: at')
+  })
+
+  it('omits a BAR entry when the verdict carries no bar field (no reference was attached)', () => {
+    seed(archiveDir, '2026-06-10', {
+      verdicts: [{ critic: 'screenshot-critic', verdict: 'SHIP', feedback: 'fine' }],
+    })
+    expect(buildLessonsBlock(archiveDir, { limit: 7 })).toBe('')
+  })
 })

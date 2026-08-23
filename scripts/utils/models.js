@@ -24,7 +24,12 @@ export const PROD_MODELS = {
   'art-director': 'opus',
   'spec-critic': 'haiku',
   'mockup-designer': 'opus',
-  'mockup-critic': 'sonnet',
+  // Haiku 4.5 has vision; this gate is a floors-check (canvas %, hero scale,
+  // color coverage) against the measurables the Art Director already
+  // declared, not a taste call — Sonnet's judgment was never the bottleneck.
+  // claude-sdk.js's supportsAdaptiveThinking() guard keeps the SDK call from
+  // sending `thinking` on claude-haiku-4-5, which 400s on it.
+  'mockup-critic': 'haiku',
   'react-engineer': 'sonnet',
   'screenshot-critic': 'sonnet',
 }

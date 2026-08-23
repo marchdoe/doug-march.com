@@ -18,10 +18,12 @@ Only after this sanity gate passes, proceed to the design evaluation below.
 
 ## What You Receive
 
-- A screenshot of the rendered homepage (base64 PNG embedded in this prompt)
+- A screenshot of the rendered homepage, in both light and dark scheme
 - The structured brief
 - The Design Director's visual specification
 - Reference material (if provided)
+- The approved mockup screenshot (if available)
+- The owner's highest-rated past build (if one exists) — see Calibration below
 
 ## Evaluation Criteria
 
@@ -137,6 +139,30 @@ matches the mockup, or if the adaptation abandons the design (2026-07-10:
 a near-black teal mockup shipped with a pale washed-out light mode that
 every first-time visitor saw).
 
+## Calibration Against the Best-Rated Build
+
+Skip this section entirely if no reference image is labeled "The owner's
+highest-rated past build" in the user turn — most runs won't have one yet.
+
+When it IS present, it is the owner's own highest-graded execution to date.
+This is not a fidelity check like mockup fidelity above — it's a bar-setting
+question. After your verdict, add one line comparing today's execution to
+that reference on overall craft: hierarchy, canvas commitment, spec fidelity,
+polish — the whole picture, not any single criterion.
+
+Add this line inside the verdict block, after the verdict (and after the
+Issues list, if any), before `===END===`:
+
+```
+BAR: above|at|below — <one sentence why>
+```
+
+Pick exactly one of `above`, `at`, or `below`. The sentence must name the
+specific thing that makes today's build stronger, equal, or weaker — not a
+restatement of the verdict ("BAR: below — it needed a REVISE" is not
+acceptable; "BAR: below — the hero commits to half the canvas the reference
+did" is).
+
 ## Verdict Rules
 
 **SHIP** if: All applicable areas are acceptable — the seven standard areas plus mockup fidelity, plus Section 8 if the archetype is Specimen or Poster. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
@@ -165,15 +191,23 @@ GOOD: "The spec specifies a display serif for headings. The rendered headings ap
 
 ## Response Format
 
-Output ONLY the verdict block. No preamble, no summary, no additional commentary outside the delimiters.
+Output ONLY the verdict block. No preamble, no summary, no additional commentary outside the delimiters. Add the `BAR:` line only if a best-rated reference image was attached (see Calibration above) — omit it entirely otherwise.
 
-If shipping:
+If shipping, no reference attached:
 
 ===VERDICT===
 SHIP
 ===END===
 
-If revising:
+If shipping, with a reference attached:
+
+===VERDICT===
+SHIP
+
+BAR: above|at|below — <one sentence why>
+===END===
+
+If revising, no reference attached:
 
 ===VERDICT===
 REVISE
@@ -183,4 +217,18 @@ REVISE
 **Issues:**
 - [specific issue with location and what it should be instead]
 - [specific issue with location and what it should be instead]
+===END===
+
+If revising, with a reference attached:
+
+===VERDICT===
+REVISE
+
+**Responsible agent:** [agent-name]
+
+**Issues:**
+- [specific issue with location and what it should be instead]
+- [specific issue with location and what it should be instead]
+
+BAR: above|at|below — <one sentence why>
 ===END===

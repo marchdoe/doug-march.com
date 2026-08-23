@@ -30,3 +30,20 @@ export function parseCriticVerdict(raw, positiveToken) {
   }
   return { verdict: matches[matches.length - 1][1], malformed: false }
 }
+
+/**
+ * Parse an optional "BAR: above|at|below — <reason>" line from the
+ * screenshot-critic's response — its calibration verdict against the
+ * owner's highest-rated past build, only asked when a reference image was
+ * attached (see screenshot-critic.md). Tolerant by design: the BAR line is
+ * advisory, never load-bearing, so absent or malformed input returns null
+ * rather than throwing or failing a verdict closed.
+ *
+ * @param {string} raw - the critic's raw response text
+ * @returns {{ position: 'above'|'at'|'below', reason: string } | null}
+ */
+export function parseBarLine(raw) {
+  const m = /BAR:\s*(above|at|below)\b\s*[-—:]*\s*(.*)/i.exec(String(raw ?? ''))
+  if (!m) return null
+  return { position: m[1].toLowerCase(), reason: m[2].trim().split(/\r?\n/)[0].trim() }
+}
