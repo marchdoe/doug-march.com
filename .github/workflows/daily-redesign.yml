@@ -51,6 +51,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Install Playwright browser
+        # The pipeline renders screenshots with Playwright/Chromium: the OG
+        # share card (public/og/<date>.png), the screenshot-critic vision
+        # gate, and the archive site snapshots. pnpm does not run Playwright's
+        # browser-download postinstall (not in allowBuilds), so without this
+        # every chromium.launch() throws and the callers silently skip —
+        # leaving og:image a 404 and the screenshot critic a no-op in CI.
+        run: npx playwright install --with-deps chromium
+
       - name: Install Claude CLI
         # Pinned to 2.1.207. The old 2.1.92 pin (0KB-output regression in
         # 2.1.94+, PR #40) sent the legacy thinking.type=enabled param, which
