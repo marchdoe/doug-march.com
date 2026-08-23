@@ -92,7 +92,7 @@ function ArchivePage() {
           padding: '0 48px 120px',
         }}
       >
-        {entries.length === 0 ? (
+        {!loaded ? null : entries.length === 0 ? (
           <p style={{ color: 'var(--colors-text-dim, #888)', fontSize: 14 }}>
             No archive entries yet.
           </p>

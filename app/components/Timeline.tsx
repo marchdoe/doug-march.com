@@ -7,7 +7,7 @@ export function Timeline() {
     <Box>
       <SectionHead label="Experience" />
       <Box>
-        {timeline.map((entry, index) => (
+        {timeline.map((entry) => (
           <Box
             key={`${entry.year}-${entry.company}`}
             paddingTop="4"

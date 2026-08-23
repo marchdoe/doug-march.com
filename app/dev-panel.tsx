@@ -938,7 +938,7 @@ function PipelinePane({
       <QuoteBlock signals={signals} />
 
       {/* Zone 4: Live Data Cards */}
-      <LiveDataCards signals={signals} meta={meta} />
+      <LiveDataCards signals={signals} />
 
       {/* Zone 5: Bottom Row */}
       <BottomRow signals={signals} />
@@ -2080,7 +2080,7 @@ function QuoteBlock({ signals }: { signals: Signals }) {
 
 // ─── Zone 4: Live Data Cards ─────────────────────────────────────────────────
 
-function LiveDataCards({ signals, meta }: { signals: Signals; meta: Meta | null }) {
+function LiveDataCards({ signals }: { signals: Signals }) {
   const cardStyle: React.CSSProperties = {
     background: c.cardBg,
     border: `1px solid ${c.border}`,

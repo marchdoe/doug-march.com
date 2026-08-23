@@ -1,5 +1,8 @@
 {
   "include": ["**/*.ts", "**/*.tsx"],
+  // archive/ holds frozen daily-build snapshots (each with its own preset.ts
+  // written against that day's token schema) — historical artifacts, not code.
+  "exclude": ["node_modules", "dist", "archive"],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
