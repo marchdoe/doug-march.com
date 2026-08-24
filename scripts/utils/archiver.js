@@ -4,6 +4,7 @@ import path from 'node:path'
 import { ROOT } from './file-manager.js'
 import { captureSnapshot } from './snapshot.js'
 import { summarizeLedger } from './cost-ledger.js'
+import { anomaliesOf, buildRecord } from './archive-record.js'
 
 /**
  * Copy key archive artifacts to public/archive/ for static serving.
@@ -334,6 +335,25 @@ export async function archive(
     }
   } catch (err) {
     console.warn(`  responsive scoring failed (non-blocking): ${err.message}`)
+  }
+
+  // The day's canonical record (#153). Written last, so every artifact above is
+  // on disk by now. Signals are passed in rather than read back from trace.json,
+  // which design-agents.js does not write until after this function returns.
+  try {
+    const record = buildRecord(dateStr, {
+      archiveDir: path.join(ROOT, 'archive'),
+      signals,
+    })
+    if (record) {
+      await writeFile(path.join(dir, 'record.json'), JSON.stringify(record, null, 2), 'utf8')
+      console.log(`  wrote archive/${dateStr}/record.json`)
+      for (const anomaly of anomaliesOf(record)) {
+        console.warn(`  record anomaly (${dateStr}, ${record.era}): ${anomaly}`)
+      }
+    }
+  } catch (err) {
+    console.warn(`  record.json write failed (non-blocking): ${err.message}`)
   }
 
   // Copy artifacts to public/ for static serving

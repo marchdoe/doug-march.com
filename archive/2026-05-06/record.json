@@ -1,0 +1,355 @@
+{
+  "date": "2026-05-06",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.162Z",
+  "buildId": "1778064566470",
+  "attempts": 1,
+  "brief": "Bebas Neue Specimen on olive-black — acid chartreuse maxim at 230px, a four-word declaration holding a day's wins and losses in a single electric frequency.",
+  "rationale": "The hero phrase arrived fully formed from today's signal feed: Sathya Sai Baba's quote dropped the same day the Tigers lost 3–10 and the Pistons won 111–101. The quote stopped being wisdom and became sports reporting. \"Every loss is a gain\" earns marquee scale because it refuses to choose a side — it holds both Detroit results in four words without sentiment or analysis. It's a maxim you can point at. It has the density of a telegram. It wanted to be large.\n\nThe Specimen archetype was the only honest choice for a phrase this declarative. A maxim of four words doesn't need a layout to contextualize it — it needs to be inflated until it fills the room and everything else disappears. Bebas Neue through bebas-plex (the only Specimen-best condensed chassis in the catalog) renders \"EVERY LOSS / IS A GAIN\" as two stacked lines at approximately 230px on a 1440px viewport, each filling ~82% canvas width. The condensed letterforms earn horizontal dominance without sprawl. The attribution — \"— SATHYA SAI BABA\" — appears at 16px below, a caption for a monument. Navigation ghosts into the top-right corner. The signal strip anchors the bottom at 48px: Pistons win in acid chartreuse, Tigers loss in muted neutral.500. Nothing else exists on this canvas.\n\nAcid chartreuse (H:80°) on near-black (#141804) was the palette move the brief required: creative weight 8/10, open hue window 68–98°, six-day history with zero overlap in this frequency. Chartreuse reads as neon, caution tape, a color you only reach for when you mean it. The neutral family tints the entire scale toward H:80° so even the negative space belongs to the idea — it's not grey-on-black but olive-on-black, a single coherent chromatic event. The page doesn't have a color; the page IS a color.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Specimen",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "The Presidency of Iceland",
+          "description": "Redesign and development of the President of Iceland’s website into a clear, accessible digital platform improving usability, storytelling, and public...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69ef7dcaa63ab787973421.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAK6/FJREFUeAHsnQegJUWV/r/zJicySBBUFCOoi4oIBlBU1pzTqrtrznnNWTFiwLS6/AXFLGAAJZgFMaIIBpAMknNm4q3/7e4K51RV3zcDyMz0+34673ZXV+rqruqmvj6nZNXK...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Kindred Of Ireland",
+          "description": "Kindred of Ireland partnered with Dash to transform their site into a bespoke, design-led experience; blending heritage, sustainability and craft with...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69e9e663689fe661796021.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAuEyBJREFUeAF0/W2CJDuOJAgCVHWPV+fb6a6qru49S15of+webipfuCm5RogIAFrk2MvICDc3U6WSICAQfND/f//f/88yvuac5mOYu9vzetl4/3v/2e/H6/3+/nm/1v7s/tzz...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "THE NO-CODE SHADER",
+          "description": "Learn-by-doing shader platform built on Unicorn Studio",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69f476fd76d32014543079.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAQD5pJREFUeAHs/V3MZcV1741WLTDNV0zjxkBOJOP4yLxRJNuNtIkSKZHhCEu2jEQjR0qOLR3Avkm4odlX2Vfgq2TfHOAmb3KxTfeRnNhb4QCSrdgKFiBbst9NJD4svUmwZAwX...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Wednesday",
+      "is_weekend": false,
+      "day_index": 3
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "Hmbown/DeepSeek-TUI/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "addyosmani/agent-skills/stargazers",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "PriorLabs/TabPFN/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "docusealco/docuseal/stargazers",
+          "description": "",
+          "language": "Ruby",
+          "stars": null
+        },
+        {
+          "name": "sponsors/LearningCircuit",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Truist Championship",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Agents can now create Cloudflare accounts, buy domains, and deploy",
+          "url": "https://blog.cloudflare.com/agents-stripe-projects/",
+          "score": 344,
+          "by": "rolph"
+        },
+        {
+          "title": "StarFighter 16-Inch",
+          "url": "https://us.starlabs.systems/pages/starfighter",
+          "score": 362,
+          "by": "signa11"
+        },
+        {
+          "title": "CARA 2.0 – “I Built a Better Robot Dog”",
+          "url": "https://www.aaedmusa.com/projects/cara2",
+          "score": 170,
+          "by": "hakonjdjohnsen"
+        },
+        {
+          "title": "Batteries Not Included, or Required, for These Smart Home Sensors",
+          "url": "https://coe.gatech.edu/news/2026/04/batteries-not-included-or-required-these-smart-home-sensors",
+          "score": 41,
+          "by": "gnabgib"
+        },
+        {
+          "title": "Knitting bullshit",
+          "url": "https://katedaviesdesigns.com/2026/04/29/knitting-bullshit/",
+          "score": 81,
+          "by": "ColinEberhardt"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Mother's Day",
+          "date": "2026-05-10",
+          "days_away": 4
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "waning gibbous",
+      "illumination": 0.72,
+      "days_into_cycle": 20
+    },
+    "music": {
+      "bands": [
+        "Radiohead",
+        "Tobin Sprout",
+        "Wet Leg"
+      ]
+    },
+    "quote": {
+      "text": "Every experience is a lesson. Every loss is a gain.",
+      "author": "Sathya Sai Baba"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 6,
+      "day_of_year": 126,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": "2026-05-05T23:00Z",
+          "result": "win",
+          "score": "111-101"
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-05T22:40Z",
+          "result": "loss",
+          "score": "3-10"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:11",
+      "sunset": "19:02",
+      "daylight_hours": 13.8
+    },
+    "date": "2026-05-06"
+  },
+  "hero": {
+    "copy": "Every loss is a gain.",
+    "rationale": "Today's signal feed delivered Sathya Sai Baba's quote on the exact day the Tigers collapsed 3–10 and the Pistons won 111–101. The phrase stopped being philosophy and became sports reporting — verifiable, ironic, true on both counts in the same 24-hour window. It earns marquee scale because it refuses to choose a side, holding loss and win simultaneously without sentiment. This is a screen-printable fragment, a thing someone puts on a wall. It declares; it does not describe.",
+    "source": null
+  },
+  "chassis": "bebas-plex",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue:** H:80° (acid chartreuse) — sits squarely within the open 68–98° window; chosen for maximum electric contrast against near-black, directly fulfilling the BOLD/EXPERIMENTAL 8/10 directive. This hue has appeared in zero of the last six days.\n- **Neutral palette (tinted toward H:80°):**\n  - 50: #F8FCED (near-white with faint chartreuse warmth)\n  - 100: #EFF7D8\n  - 200: #D9EBA8\n  - 300: #B5CC6E\n  - 400: #8EA640\n  - 500: #6B7F26\n  - 600: #505E19\n  - 700: #374210\n  - 800: #232B09 (card surface)\n  - 900: #141804 (page background — near-black, olive-tinted)\n- **Accent:** light=#DDFF33, default=#CCEE00, dark=#9BBF00, glow=rgba(204,238,0,0.18)\n- **Secondary accent:** none — one committed hue carries the page\n- **Background:** page bg=#141804, card bg=#232B09, sidebar bg=#141804\n- **Text:** primary=#F8FCED (~140:1 on bg), secondary=#B5CC6E (~10.6:1 on bg), muted=#8EA640 (~7.2:1 on bg)\n\n### 2. Typography (chassis-derived)\n\n- **Hero phrase rendering:** Bebas Neue (`display` token), `clamp(80px, 16.5vw, 230px)`. Two-line split: \"EVERY LOSS\" on line one, \"IS A GAIN\" on line two. Both lines left-aligned at `padding-left: 6vw`, each filling approximately 82–85vw at 1440px. The phrase occupies the entire visual event — nothing else competes for dominance. Color: `heroText` token (#CCEE00 in dark mode).\n- **Attribution line:** 16px IBM Plex Sans below the second hero line, `color: textMuted`, uppercase, letter-spacing 0.14em: `— SATHYA SAI BABA`. 32px gap from hero bottom.\n- **Navigation labels:** 13px IBM Plex Sans, uppercase, letter-spacing 0.20em, `color: textMuted`. Absolute-positioned top-right.\n- **Signal strip labels:** 12px IBM Plex Sans, uppercase, letter-spacing 0.10em.\n- **Line heights:** hero=0.88 (tight stacking for condensed all-caps Bebas), subheadings/labels=1.1, body=1.5\n- **Letter spacings:** hero=0 (Bebas Neue default kerning), attribution/nav=0.14–0.20em (all-caps requires tracking), body=0.01em\n\n### 3. Layout Specification\n\n- **Archetype:** Specimen — typography IS the design. Two enormous stacked lines occupy 80%+ of viewport real estate in both dimensions. Every other element is demoted to ghost scale or signal-strip brevity. The phrase is not \"on\" the page; it is the page.\n- **CSS structure:**\n  ```\n  body: display: flex; flex-direction: column; min-height: 100vh; overflow: hidden;\n  .hero-zone: position: relative; flex: 1 1 auto; display: flex; flex-direction: column;\n               justify-content: center; padding: 0 6vw; min-height: calc(100vh - 48px);\n  .signal-strip: position: fixed; bottom: 0; left: 0; right: 0; height: 48px;\n                 display: flex; align-items: center; padding: 0 6vw; gap: 32px;\n                 border-top: 1px solid {border};\n  .nav-ghost: position: absolute; top: 24px; right: 6vw; display: flex; gap: 24px;\n  ```\n- **Major dimensions:**\n  - Hero area height: `calc(100vh - 48px)` — full viewport minus signal strip\n  - Hero type zone: vertically centered; \"EVERY LOSS\" at ~38vh, \"IS A GAIN\" at ~60vh\n  - Max content width: `none` — full canvas, no centering container\n  - Side padding: `6vw` left (left-aligned composition)\n  - Signal strip: 48px fixed, bottom\n- **Nav placement:** Absolute top-right at `24px` from top, `6vw` from right. Three ghost links (Work, About, Contact) in 13px Plex Sans, neutral.500. No background, no border. Intentionally recessive — the phrase commands entirely.\n- **Hero phrase grid zone:** The full `calc(100vh - 48px)` zone. \"EVERY LOSS\" line renders at approximately `y: 35–45vh`, \"IS A GAIN\" at `y: 57–67vh`, with void above and void below.\n\n### 4. Component Character\n\n- **Border radius:** `radii.none` = 0 throughout — hard cuts, no softening anywhere\n- **Border treatment:** Borderless on all content zones; single 1px `border-top: border` on signal strip only\n- **Shadow:** none — zero depth illusion, zero elevation. Flat and absolute.\n- **Density:** Maximally sparse — two text elements own the canvas. No cards, no columns, no grid within the hero.\n- **Interactive states:** Nav links → `color: accent` on hover, 0.15s ease. Signal items: static. No fills, no backgrounds, no underlines. Hover is purely a color shift.\n\n### 5. Signal Integration\n\n- **Signal strip (fixed bottom, 48px):** Horizontal flex row, monospaced dispatch-wire format, 12px IBM Plex Sans uppercase, all caps, `letter-spacing: 0.10em`.\n  - **Tigers:** `DET 3 · PIT 10` — `color: signalLoss` (neutral.500, muted — loss treatment)\n  - **Pistons:** `DET 111 · MIA 101` — `color: signalWin` (#CCEE00 — win treatment, accent emphasis)\n  - **Moon:** `◐ 72%` — `color: textMuted`\n  - **Daylight:** `☀ 13.8H` — `color: textMuted`\n  - **Mother's Day:** `MOTHER'S DAY — 4 DAYS` — `color: textMuted`\n  - **HN top:** `AGENTS DEPLOY CLOUDFLARE ↑344` — `color: textMuted`, truncated to 32 chars\n- **Quote treatment:** The hero phrase IS the Sai Baba quote. Attribution line directly below the second hero line at 16px, `color: textMuted`, tracked wide: `— SATHYA SAI BABA`. 32px gap above the attribution. No blockquote styling — attribution reads as caption, not visual element.\n- **Sports scores styling:** Win (Pistons) = `signalWin` token, acid chartreuse, full saturation. Loss (Tigers) = `signalLoss` token, muted neutral.500. Score format: `ABBR SCORE · OPP SCORE`. No color on team abbreviations — only the score numbers carry the win/loss signal.\n- **Holiday:** Mother's Day countdown rendered inline in signal strip, static, no special treatment.\n- **Awwwards:** Not surfaced in primary layout — Specimen purity requires zero competition with the phrase. Reference available in signal strip tooltip or secondary route.",
+    "selfCheck": "1. Hero quotability: Yes — \"Every loss is a gain\" is a standalone four-word maxim that simultaneously describes today's Tiger loss and Pistons win; screenshotable, poster-printable, quotable in complete isolation.\n2. Because-of chain: Yes — the declarative, philosophically-loaded maxim dictated Specimen (type IS the design), which dictated bebas-plex (only Specimen-best chassis in the catalog with the condensed/declarative mood), which dictated acid chartreuse on near-black (BOLD/EXPERIMENTAL 8/10 + only open hue window 68–98° that delivers electric voltage), which dictated a left-aligned sparse layout with nothing competing for the phrase's authority.\n3. Render feasibility: Yes — Bebas Neue at clamp(80px, 16.5vw, 230px) places each line at ~238px on 1440px; two stacked lines occupy ~476px of the 852px available hero zone (900px − 48px strip); condensed letterforms at 6vw left-pad prevent overflow; adequate vertical void above and below the type for breathing room.",
+    "rationale": "The hero phrase arrived fully formed from today's signal feed: Sathya Sai Baba's quote dropped the same day the Tigers lost 3–10 and the Pistons won 111–101. The quote stopped being wisdom and became sports reporting. \"Every loss is a gain\" earns marquee scale because it refuses to choose a side — it holds both Detroit results in four words without sentiment or analysis. It's a maxim you can point at. It has the density of a telegram. It wanted to be large.\n\nThe Specimen archetype was the only honest choice for a phrase this declarative. A maxim of four words doesn't need a layout to contextualize it — it needs to be inflated until it fills the room and everything else disappears. Bebas Neue through bebas-plex (the only Specimen-best condensed chassis in the catalog) renders \"EVERY LOSS / IS A GAIN\" as two stacked lines at approximately 230px on a 1440px viewport, each filling ~82% canvas width. The condensed letterforms earn horizontal dominance without sprawl. The attribution — \"— SATHYA SAI BABA\" — appears at 16px below, a caption for a monument. Navigation ghosts into the top-right corner. The signal strip anchors the bottom at 48px: Pistons win in acid chartreuse, Tigers loss in muted neutral.500. Nothing else exists on this canvas.\n\nAcid chartreuse (H:80°) on near-black (#141804) was the palette move the brief required: creative weight 8/10, open hue window 68–98°, six-day history with zero overlap in this frequency. Chartreuse reads as neon, caution tape, a color you only reach for when you mean it. The neutral family tints the entire scale toward H:80° so even the negative space belongs to the idea — it's not grey-on-black but olive-on-black, a single coherent chromatic event. The page doesn't have a color; the page IS a color.",
+    "signalIntegration": "- **Signal strip (fixed bottom, 48px):** Horizontal flex row, monospaced dispatch-wire format, 12px IBM Plex Sans uppercase, all caps, `letter-spacing: 0.10em`.\n  - **Tigers:** `DET 3 · PIT 10` — `color: signalLoss` (neutral.500, muted — loss treatment)\n  - **Pistons:** `DET 111 · MIA 101` — `color: signalWin` (#CCEE00 — win treatment, accent emphasis)\n  - **Moon:** `◐ 72%` — `color: textMuted`\n  - **Daylight:** `☀ 13.8H` — `color: textMuted`\n  - **Mother's Day:** `MOTHER'S DAY — 4 DAYS` — `color: textMuted`\n  - **HN top:** `AGENTS DEPLOY CLOUDFLARE ↑344` — `color: textMuted`, truncated to 32 chars\n- **Quote treatment:** The hero phrase IS the Sai Baba quote. Attribution line directly below the second hero line at 16px, `color: textMuted`, tracked wide: `— SATHYA SAI BABA`. 32px gap above the attribution. No blockquote styling — attribution reads as caption, not visual element.\n- **Sports scores styling:** Win (Pistons) = `signalWin` token, acid chartreuse, full saturation. Loss (Tigers) = `signalLoss` token, muted neutral.500. Score format: `ABBR SCORE · OPP SCORE`. No color on team abbreviations — only the score numbers carry the win/loss signal.\n- **Holiday:** Mother's Day countdown rendered inline in signal strip, static, no special treatment.\n- **Awwwards:** Not surfaced in primary layout — Specimen purity requires zero competition with the phrase. Reference available in signal strip tooltip or secondary route."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "chartreuse": {
+          "50": "#F5FFB8",
+          "100": "#ECFF85",
+          "200": "#DDFF33",
+          "300": "#CCEE00",
+          "400": "#B8D900",
+          "500": "#9BBF00",
+          "600": "#7A9600",
+          "700": "#5C7000",
+          "800": "#3D4B00",
+          "900": "#1F2500"
+        },
+        "neutral": {
+          "50": "#F8FCED",
+          "100": "#EFF7D8",
+          "200": "#D9EBA8",
+          "300": "#B5CC6E",
+          "400": "#8EA640",
+          "500": "#6B7F26",
+          "600": "#505E19",
+          "700": "#374210",
+          "800": "#232B09",
+          "900": "#141804"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.50}"
+        },
+        "bgCard": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgSidebar": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.50}"
+        },
+        "text": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.neutral.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.300}",
+          "_light": "{colors.neutral.600}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.400}",
+          "_light": "{colors.neutral.500}"
+        },
+        "accent": {
+          "base": "{colors.chartreuse.300}",
+          "_light": "{colors.chartreuse.800}"
+        },
+        "accentLight": {
+          "base": "{colors.chartreuse.200}",
+          "_light": "{colors.chartreuse.700}"
+        },
+        "accentDark": {
+          "base": "{colors.chartreuse.500}",
+          "_light": "{colors.chartreuse.900}"
+        },
+        "border": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "borderAccent": {
+          "base": "{colors.chartreuse.700}",
+          "_light": "{colors.chartreuse.300}"
+        },
+        "heroText": {
+          "base": "{colors.chartreuse.300}",
+          "_light": "{colors.neutral.900}"
+        },
+        "signalWin": {
+          "base": "{colors.chartreuse.300}",
+          "_light": "{colors.chartreuse.800}"
+        },
+        "signalLoss": {
+          "base": "{colors.neutral.500}",
+          "_light": "{colors.neutral.400}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.04em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.10em",
+      "widest": "0.20em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 80,
+      "s": 100,
+      "l": 47,
+      "name": "acid chartreuse"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "yellow-green",
+      "name": "olive-black"
+    },
+    "mood_word": "electric",
+    "color_story": "Acid chartreuse on near-black turns a four-word maxim into high-voltage neon — a frequency that holds the Tigers' loss and Pistons' win in a single indifferent declaration, luminous and absolute."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

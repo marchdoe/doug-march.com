@@ -1,0 +1,386 @@
+{
+  "date": "2026-07-14",
+  "era": "shell-directed",
+  "generatedAt": "2026-08-24T15:34:16.227Z",
+  "buildId": "1784025959794",
+  "attempts": 1,
+  "brief": "Cobalt corrective-ink Split — Buffett's confession stacked huge in Bebas across an ultramarine field, \"OWN MISTAKES\" lit electric-blue, a deep-indigo ledger of the day's honest reports pinned to the right.",
+  "rationale": "The day handed me a finished object: Buffett's \"It is better to point out your own mistakes than have somebody else do it.\" For a portfolio that demolishes and rebuilds itself every morning — publishing its own revisions in the open — this is less a quote than a mission statement. It's quotable in isolation, and the day's other signals are all honest self-reports waiting to be pinned to it: the Tigers owning a 0–5 loss, a new moon resetting the count to zero, Tom Kim's clean −17 as the one thing that went right.\n\nBecause the phrase is structurally oppositional — *your own* against *somebody else* — the Split archetype was the only honest form: a giant cobalt confession on the left, a dark indigo ledger of the day's admissions on the right, both halves full-bleed and active, no center void. Split also hasn't appeared in the recent rotation, so fit and variance align. Bebas Neue (bebas-plex) carries the fourteen-word line at billboard scale without overflow — condensed, all-caps, plainly declarative, the register of candor rather than warmth — while IBM Plex Sans keeps the ledger and attribution quietly legible. A single emphasized \"OWN MISTAKES\" in Electric Sky is the one place the field brightens.\n\nThe color mandate left only the 225°–247° corridor open, and cobalt at 233° turned out to be exactly right rather than a constraint: it is corrective-ink blue, the pen you drag across your own draft. After a week of near-void dark canvases I pivoted to a fully drenched, mid-light cobalt field with warm cream type — alive, committed, IKB-adjacent — pushing color coverage past 70%. The shell moves are all fresh against the mandate: floating pills top-right (not the recent left spine or top bar), a single baseline stamp (not the recent colophon or data strip), and a `horizontal-md` mono lockup inheriting cream via `currentColor` so the mark sits cleanly on the cobalt without reinvention.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Split",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "The Pop-Up Hotel",
+          "description": "WooCommerce site for The Pop-Up Hotel, bringing experiences to the Monaco, British and Italian Grand Prix, The Ryder Cup, and Glastonbury.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a4255722030b571601648.jpg",
+          "screenshot_b64": "/9j/4RmFRXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAAYgEbAAUAAAABAAAAagEoAAMAAAABAAIAAAExAAIAAAAhAAAAcgEyAAIAAAAUAAAAk4dpAAQAAAABAAAAqAAAANQACvyAAAAnEAAK/IAAACcQQWRvYmUgUGhvdG9zaG9wIDI3LjggKE1hY2ludG9zaCkAMjAyNjowNjoyOSAxMjoyMjo1NgAAAAOgAQADAAAAAQABAACgAgAEAAAAAQAABkCgAwAE...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "House of Honey",
+          "description": "House of Honey designs spaces with story. We built a sophisticated digital presence that mirrors this sensory philosophy through editorial elegance and...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1c09bf6c5f3457361940.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/CABEIBLAGQAMBEQACEQEDEQH/xAA6AAAABgMBAQEAAAAAAAAAAAADBAUGBwgAAQIJCgsBAAAH...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "Galaxy of Structures",
+          "description": "Galaxy of Structures, by Daiki Odaka. An interactive 7,000-particle galaxy, custom-built in HTML5 Canvas with vanilla JS — no libraries — explodes on...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a422b1cf0293910008437.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOz9d5wk2Vngex8TkbZ8+542Y3tmenq81Xh5CSQhhAAJkDDC7F72XrG83GW594WF3QXWvOwu5rIL3AUkQBLSCgTyboRG40caP9Mz096Xd+kj4pzz/hGZWVlVmdVZrrOq+veFz9EzUVlZJyIjoiueeuIJIQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwPogOz0BAACwktLp...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Tuesday",
+      "is_weekend": false,
+      "day_index": 2
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/OpenCut-app",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/Dicklesworthstone",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "HKUDS/Vibe-Trading/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "moeru-ai/airi/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "Shubhamsaboo/awesome-llm-apps/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Genesis Scottish Open",
+      "status": "Final",
+      "leaders": [
+        {
+          "name": "Tom Kim",
+          "position": "1",
+          "score": "-17"
+        },
+        {
+          "name": "Min Woo Lee",
+          "position": "2",
+          "score": "-15"
+        },
+        {
+          "name": "Johnny Keefer",
+          "position": "3",
+          "score": "-13"
+        },
+        {
+          "name": "Keita Nakajima",
+          "position": "4",
+          "score": "-13"
+        },
+        {
+          "name": "Robert MacIntyre",
+          "position": "5",
+          "score": "-13"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Japan develops a method to recover up to 90% of lithium from used EV batteries",
+          "url": "https://tech.supercarblondie.com/japan-recovers-up-to-90-of-lithium-from-used-ev-batteries/",
+          "score": 502,
+          "by": "donohoe"
+        },
+        {
+          "title": "Alternative(s) to run CUDA on non-Nvidia hardware",
+          "url": "https://www.hpcwire.com/2026/07/09/spectral-compute-aims-to-set-cuda-free-will-it-succeed/",
+          "score": 40,
+          "by": "alok-g"
+        },
+        {
+          "title": "Australian energy retailers must provide three hours of free daytime electricity",
+          "url": "https://lenergy.com.au/free-daytime-electricity-is-coming-heres-how-it-actually-works/",
+          "score": 110,
+          "by": "i2oc"
+        },
+        {
+          "title": "The git history command",
+          "url": "https://lalitm.com/post/git-history/",
+          "score": 314,
+          "by": "turbocon"
+        },
+        {
+          "title": "Indian scientists produce most detailed 3D atlas of the human brainstem",
+          "url": "https://www.bbc.com/news/articles/cg53l737v1qo",
+          "score": 56,
+          "by": "BaudouinVH"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "new moon",
+      "illumination": 0.002,
+      "days_into_cycle": 0.41
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "My Morning Jacket",
+        "Radiohead"
+      ]
+    },
+    "quote": {
+      "text": "It is better to point out your own mistakes than have somebody else do it.",
+      "author": "Warren Buffett"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 14,
+      "day_of_year": 195,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-12T17:40Z",
+          "result": "loss",
+          "score": "0-5"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:00",
+      "sunset": "19:31",
+      "daylight_hours": 14.5
+    },
+    "date": "2026-07-14"
+  },
+  "hero": {
+    "copy": "It is better to point out your own mistakes than have somebody else do it.",
+    "rationale": "Warren Buffett's line is today's `signals.quote`, and it lands as autobiography for a portfolio that tears itself down and rebuilds every morning — a site that publishes its own corrections in public. It's quotable stripped of context (it circulates as a standalone Buffett maxim) and it rhymes with the day's honest self-reports: the Tigers owning a 0–5 shutout, a new moon at 0.2% resetting the ledger to zero. With risk dialed to 8/10, a plain-spoken imperative about candor wants blunt, billboard candor — not decoration.",
+    "source": null
+  },
+  "chassis": "bebas-plex",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 233° cobalt/ultramarine. The color mandate leaves only the 225°–247° corridor open (all warm and violet zones are forbidden after the recent run), and cobalt is thematically exact: the blue of correction ink, of an honest cold read. Committed as a full-field drench.\n- **Neutral palette (Indigo Slate, tinted toward blue):**\n  - 50 `#f6f6fb`\n  - 100 `#ecedf5`\n  - 200 `#d9dbe8`\n  - 300 `#b9bcce`\n  - 400 `#8e91a8`\n  - 500 `#6a6d84`\n  - 600 `#4e5167`\n  - 700 `#3a3d50`\n  - 800 `#24263a`\n  - 900 `#14162b`\n- **Accent color (Electric Sky, secondary/emphasis blue):** light `#a9c3ff` · default `#6f9bff` · dark `#4f7aff` · glow `rgba(111,155,255,0.45)`\n- **Secondary accent** — Electric Sky is the *only* secondary; used to light the single emphasized phrase \"OWN MISTAKES\" and the primary signal marker. No warm accent (mandate + coherence).\n- **Background** — page bg `#2437d8` (cobalt drench) · right-panel/card bg `#14162b` (deep indigo slate) · inset chip bg `#24263a`\n- **Text colors** — primary text (on cobalt) cream `#f4f1e6` · secondary text `#c9cffb` · muted text `#9299d8`; on the dark right panel: primary `#f4f1e6`, muted `#8e91a8`\n\n### 2. Typography\n- **Hero phrase rendering** — Bebas Neue (`display`) all-caps, set on the left half as a stacked 5–6 line block via `clamp(64px, 9vw, 132px)`. Condensed proportions let all 14 words fill the column without overflow. \"OWN MISTAKES\" flips to Electric Sky `#6f9bff`; everything else is cream. Attribution \"— WARREN BUFFETT\" set small-caps IBM Plex Sans beneath.\n- **Line heights** — hero 0.90; panel headings 1.1; body/ledger 1.5; light-on-dark body bumped to 1.55.\n- **Letter spacings** — hero 0.005em (Bebas is already tight); all-caps labels/eyebrows 0.12em; body 0.01em.\n\n### 3. Layout Specification\n- **Archetype** — Split. The quote's structure is inherently oppositional (\"your own mistakes\" vs \"somebody else\"), so two active asymmetric halves carry it: left = the giant confession in cobalt, right = a dark indigo ledger of the day's honest self-reports. No center void; both surfaces are full-bleed color.\n- **CSS grid/flex structure** — `display: grid; grid-template-columns: 1.6fr 1fr; min-height: 100vh;` collapses to single column below 900px.\n- **Major dimensions:**\n  - Hero (left) area: `min-height: 100vh`, full-bleed cobalt, `padding: clamp(48px, 6vw, 104px)`.\n  - Right ledger panel: the `1fr` column, deep-indigo `#14162b`, `padding: clamp(40px, 4vw, 72px) clamp(32px, 3vw, 56px)`.\n  - Max content width: `max-width: none` (full canvas); side padding is viewport-relative as above.\n  - Section spacing inside panel: 32px between ledger rows, 48px between groups.\n- **Nav placement** — floating pills, top-right of the LEFT (cobalt) half: a horizontal cluster of 3 caps pills (WORK · ABOUT · INDEX), each ~`padding: 8px 18px`, `border-radius: full`, cream 1px border, translucent cobalt fill. Sits at `top: 40px; right: 40px`.\n- **Hero phrase grid zone** — left column, occupying vertical rows from ~18vh to ~88vh, left-aligned; intended footprint ≈ 55vw × 62vh at 1440×900.\n\n### 4. Component Character\n- **Border radius** — cards/panels 0 (sharp, typeset); nav pills `full`; chips 2px. The ledger reads as a ruled ledger, not soft cards.\n- **Border treatment** — bordered: hairline rules between ledger rows using `neutral.700` (`#3a3d50`); nav pills bordered in cream at 40% via `border`.\n- **Shadow** — none. Depth comes from the cobalt/indigo lightness split, not shadow.\n- **Density** — left half spacious (one dominant block); right half compact (ruled ledger).\n- **Interactive states** — nav pills invert on hover (cream fill, cobalt text, 150ms); ledger rows shift their leading marker to Electric Sky on hover.\n\n### 5. Signal Integration\n- **Where signal elements live** — the right indigo panel, titled \"POINTED OUT TODAY,\" a vertical ruled ledger.\n- **Sports scores** — Tigers loss framed as the honest self-report: row reads \"TIGERS 0–5 · L\" with the score in Bebas at ~40px cream and \"L\" tagged in muted; Genesis Scottish Open below it — \"TOM KIM −17 · FINAL\" with −17 in Electric Sky as the day's one triumph marker.\n- **Quote display** — the Buffett quote IS the hero; attribution \"— WARREN BUFFETT\" is the small-caps line beneath the marquee, no blockquote chrome.\n- **New moon** — a chip at the top of the ledger: \"NEW MOON · 0.2%\" with a hollow disc glyph, muted cream — the emptied ledger.\n- **Music** — a single ledger line \"ON: GUIDED BY VOICES · MY MORNING JACKET · RADIOHEAD\" in muted caps.\n- **Season/sun** — footer baseline stamp: \"SUMMER · 14.5H DAYLIGHT · JUL 14 2026.\"\n- **Holiday** — none today; omitted.",
+    "selfCheck": "1. Hero quotability: Yes — a standalone Buffett maxim, screenshot-ready without any surrounding copy.\n2. Because-of chain: Yes — candid imperative → Split (oppositional structure) → Bebas condensed (fits 14 words at billboard scale, declarative) → cobalt corrective-ink drench (only open mandate corridor) → left confession / right ledger.\n3. Render feasibility: Yes — Bebas condensed at clamp(64–132px) stacks the quote across ~6 lines within a 55vw column at 1440×900 without overflow.\n4. Canvas floor feasible: Yes — full-bleed cobalt left + full-bleed indigo right = 100% colored canvas, far above the Split 65% floor.",
+    "rationale": "The day handed me a finished object: Buffett's \"It is better to point out your own mistakes than have somebody else do it.\" For a portfolio that demolishes and rebuilds itself every morning — publishing its own revisions in the open — this is less a quote than a mission statement. It's quotable in isolation, and the day's other signals are all honest self-reports waiting to be pinned to it: the Tigers owning a 0–5 loss, a new moon resetting the count to zero, Tom Kim's clean −17 as the one thing that went right.\n\nBecause the phrase is structurally oppositional — *your own* against *somebody else* — the Split archetype was the only honest form: a giant cobalt confession on the left, a dark indigo ledger of the day's admissions on the right, both halves full-bleed and active, no center void. Split also hasn't appeared in the recent rotation, so fit and variance align. Bebas Neue (bebas-plex) carries the fourteen-word line at billboard scale without overflow — condensed, all-caps, plainly declarative, the register of candor rather than warmth — while IBM Plex Sans keeps the ledger and attribution quietly legible. A single emphasized \"OWN MISTAKES\" in Electric Sky is the one place the field brightens.\n\nThe color mandate left only the 225°–247° corridor open, and cobalt at 233° turned out to be exactly right rather than a constraint: it is corrective-ink blue, the pen you drag across your own draft. After a week of near-void dark canvases I pivoted to a fully drenched, mid-light cobalt field with warm cream type — alive, committed, IKB-adjacent — pushing color coverage past 70%. The shell moves are all fresh against the mandate: floating pills top-right (not the recent left spine or top bar), a single baseline stamp (not the recent colophon or data strip), and a `horizontal-md` mono lockup inheriting cream via `currentColor` so the mark sits cleanly on the cobalt without reinvention.",
+    "signalIntegration": "- **Where signal elements live** — the right indigo panel, titled \"POINTED OUT TODAY,\" a vertical ruled ledger.\n- **Sports scores** — Tigers loss framed as the honest self-report: row reads \"TIGERS 0–5 · L\" with the score in Bebas at ~40px cream and \"L\" tagged in muted; Genesis Scottish Open below it — \"TOM KIM −17 · FINAL\" with −17 in Electric Sky as the day's one triumph marker.\n- **Quote display** — the Buffett quote IS the hero; attribution \"— WARREN BUFFETT\" is the small-caps line beneath the marquee, no blockquote chrome.\n- **New moon** — a chip at the top of the ledger: \"NEW MOON · 0.2%\" with a hollow disc glyph, muted cream — the emptied ledger.\n- **Music** — a single ledger line \"ON: GUIDED BY VOICES · MY MORNING JACKET · RADIOHEAD\" in muted caps.\n- **Season/sun** — footer baseline stamp: \"SUMMER · 14.5H DAYLIGHT · JUL 14 2026.\"\n- **Holiday** — none today; omitted."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "cobalt": {
+          "50": "#eef1ff",
+          "100": "#dde3ff",
+          "200": "#b8c4ff",
+          "300": "#8ea0ff",
+          "400": "#5f78fb",
+          "500": "#3a53f0",
+          "600": "#2437d8",
+          "700": "#1c2bb0",
+          "800": "#182590",
+          "900": "#131c66"
+        },
+        "sky": {
+          "50": "#eef3ff",
+          "100": "#d9e4ff",
+          "200": "#bcd0ff",
+          "300": "#a9c3ff",
+          "400": "#6f9bff",
+          "500": "#4f7aff",
+          "600": "#3661f0",
+          "700": "#2a4dc4",
+          "800": "#233d99",
+          "900": "#1d3170"
+        },
+        "neutral": {
+          "50": "#f6f6fb",
+          "100": "#ecedf5",
+          "200": "#d9dbe8",
+          "300": "#b9bcce",
+          "400": "#8e91a8",
+          "500": "#6a6d84",
+          "600": "#4e5167",
+          "700": "#3a3d50",
+          "800": "#24263a",
+          "900": "#14162b"
+        },
+        "cream": "#f4f1e6"
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.cobalt.600}",
+          "_light": "{colors.cobalt.600}"
+        },
+        "panel": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.900}"
+        },
+        "surface": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.800}"
+        },
+        "text": {
+          "base": "{colors.cream}",
+          "_light": "{colors.cream}"
+        },
+        "textSecondary": {
+          "base": "{colors.cobalt.100}",
+          "_light": "{colors.cobalt.100}"
+        },
+        "textMuted": {
+          "base": "{colors.cobalt.200}",
+          "_light": "{colors.cobalt.200}"
+        },
+        "accent": {
+          "base": "{colors.sky.400}",
+          "_light": "{colors.sky.400}"
+        },
+        "accentDark": {
+          "base": "{colors.sky.500}",
+          "_light": "{colors.sky.500}"
+        },
+        "border": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.700}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.9",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.7"
+    },
+    "letterSpacings": {
+      "tight": "0.005em",
+      "normal": "0.01em",
+      "wide": "0.06em",
+      "wider": "0.12em",
+      "widest": "0.18em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "6px",
+      "lg": "12px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 233,
+      "s": 78,
+      "l": 49,
+      "name": "Cobalt"
+    },
+    "secondary_accent": {
+      "h": 222,
+      "s": 100,
+      "l": 72,
+      "name": "Electric Sky"
+    },
+    "neutral_family": {
+      "tinted_toward": "blue",
+      "name": "Indigo Slate"
+    },
+    "mood_word": "candid",
+    "color_story": "Cobalt is corrective ink — the blue pen you drag across your own draft before anyone else can."
+  },
+  "shell": {
+    "nav": "floating pills (top-right cluster, 3 caps pills on the cobalt half)",
+    "footer": "baseline stamp (single-line build/season stamp pinned to canvas bottom-left)",
+    "brand_lockup": "horizontal-md",
+    "brand_color_mode": "single-color"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "REVISE",
+      "feedback": "REVISE\n\n- **Preset colors don't match visual spec.** The spec declares secondary text `#c9cffb` and muted text `#9299d8` (on cobalt), but preset.ts assigns `textSecondary: cobalt.100` (#dde3ff) and `textMuted: cobalt.200` (#b8c4ff). These hex values do not exist in the preset and are significantly bluer than spec. Add `#c9cffb` and `#9299d8` as new color tokens (or find them in the existing palette), then update the semantic tokens to reference them. Also handle the dark-panel muted text `#8e91a8` separately (can use `neutral.400`).\n\n- **Semantic tokens lack context awareness.** Visual spec requires different text colors for two contexts: on cobalt (primary cream, secondary `#c9cffb`, muted `#9299d8`) vs. on dark panel (primary cream, muted `#8e91a8`). Preset has flat semantic tokens that can't vary by zone. Either create context-specific token families (`textMutedOnBg`, `textMutedOnPanel`) or use CSS conditions to assign colors conditionally.\n\n- **Render feasibility claim depends on undefined font variant.** Self-check says \"Bebas condensed at clamp(64–132px) stacks the quote across ~6 lines within a 55vw column.\" The preset references `bebas-plex` as chassis ID but does not explicitly declare that a Condensed weight is loaded. Verify the actual CSS/HTML font-family includes Bebas Neue Condensed, or recalculate the `clamp()` max-size for the default (non-condensed) weight to prevent overflow.",
+      "ts": 1784025395205
+    }
+  ],
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

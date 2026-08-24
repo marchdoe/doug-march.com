@@ -1,0 +1,371 @@
+{
+  "date": "2026-05-25",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.182Z",
+  "buildId": "1779708687928",
+  "attempts": 1,
+  "brief": "Bricolage-weight \"moment\" glowing in ceremony indigo on deep ink-void — Memorial Day's temporal claim cinematic-scrolled across five folds, each a moment seized.",
+  "rationale": "\"You only have this moment.\" is Dan Millman's final fragment from today's signal quote, and it arrives on Memorial Day — a holiday about the permanent absence of people who no longer have moments. That convergence lifts the fragment from a wellness aphorism into something heavier: a statement about the irreducible specificity of being alive now, on this specific May Monday, while others are honored precisely because they are not. The phrase does not require explanation or attribution to land; it earns its marquee scale on its own.\n\nThe Scroll archetype is the only honest container for a phrase making a temporal claim. \"This moment\" is not a poster slogan to be stared at — it is an instruction about sequence. The page enacts the instruction: the first fold is the present moment in full (the phrase at 158px maximum, weight 800 Bricolage Grotesque, mixed case, the word \"moment\" in indigo blue), and every subsequent fold is a moment already seized — the work, the signals, the signals of others who showed up (-30, Wyndham Clark, dominant). The scroll itself is the argument: you arrive at the present, and then you move through what presence produced. Bricolage Grotesque at weight 800 is the right chassis because it is expressive and warm without being authoritative-institutional — it is the font of things said by a human, not posted by an organization.\n\nThe indigo palette at H:245° sits cleanly inside the mandated 235°–260° window and carries precisely the right register: the deep blue of the late-May sky at 19:19, the moment the light fails, the color of ceremony without grief. Against near-black ink.900 (#07071A), the indigo.400 accent (#5C70FF) achieves 5.3:1 contrast — AA compliant even as body text — and on the hero phrase, where it colors only the single word \"moment,\" it glows without competing with the surrounding ink.50 type. The neutral ink family's H:245° tint keeps the dark surfaces alive across all five folds of the page; pure black would have read as a void rather than a depth.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Scroll",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Pillars Of Seven",
+          "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Pedal Mafia | Event Micro Site",
+          "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Monday",
+      "is_weekend": false,
+      "day_index": 1
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "Lum1104/Understand-Anything/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "anthropics/knowledge-work-plugins/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/rohitg00",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/affaan-m",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/mukul975",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "THE CJ CUP Byron Nelson",
+      "status": "Final",
+      "leaders": [
+        {
+          "name": "Wyndham Clark",
+          "position": "1",
+          "score": "-30"
+        },
+        {
+          "name": "Si Woo Kim",
+          "position": "2",
+          "score": "-27"
+        },
+        {
+          "name": "Scottie Scheffler",
+          "position": "3",
+          "score": "-25"
+        },
+        {
+          "name": "Jackson Suber",
+          "position": "4",
+          "score": "-23"
+        },
+        {
+          "name": "Keith Mitchell",
+          "position": "5",
+          "score": "-22"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Magnifica Humanitas (Encyclical Letter)",
+          "url": "https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html",
+          "score": 71,
+          "by": "theletterf"
+        },
+        {
+          "title": "Didgeridoo playing as alternative treatment for obstructive sleep apnoea (2006)",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1360393/",
+          "score": 158,
+          "by": "kelseyfrog"
+        },
+        {
+          "title": "Show HN: Geomatic – a command-driven geometry studio enabled with autodiff",
+          "url": "https://www.tinyvolt.com/geomatic",
+          "score": 24,
+          "by": "nivter"
+        },
+        {
+          "title": "Show HN: Audiomass – a free, open-source multitrack audio editor for the web",
+          "url": "https://audiomass.co/?multitrack=1",
+          "score": 385,
+          "by": "pantelisk"
+        },
+        {
+          "title": "DeepSeek reasonix, DeepSeek native coding agent with high caching and low cost",
+          "url": "https://esengine.github.io/DeepSeek-Reasonix/",
+          "score": 581,
+          "by": "Alifatisk"
+        }
+      ]
+    },
+    "holidays": {
+      "today": "Memorial Day",
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waxing gibbous",
+      "illumination": 0.718,
+      "days_into_cycle": 9.5
+    },
+    "music": {
+      "bands": [
+        "The War on Drugs",
+        "Wet Leg"
+      ]
+    },
+    "quote": {
+      "text": "Be gentle with yourself. Think less and feel more. Be as happy as you can. You only have this moment.",
+      "author": "Dan Millman"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 25,
+      "day_of_year": 145,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-24T16:35Z",
+          "result": "loss",
+          "score": "3-5"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:54",
+      "sunset": "19:19",
+      "daylight_hours": 14.4
+    },
+    "date": "2026-05-25"
+  },
+  "hero": {
+    "copy": "You only have this moment.",
+    "rationale": "The Dan Millman quote's closing fragment arrives on Memorial Day — a holiday constructed from the irreversible absence of people who no longer have moments. Stripped of the quote's gentler preamble and left alone, \"You only have this moment.\" shifts from wellness aphorism to existential statement: the irreducible specificity of being present, now, while others no longer are. It is quotable without attribution, and on this particular Monday it earns its weight without explanation.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue:** H:245° (indigo). The permitted zone is 235°–260°; indigo at 245° is ceremonial, deep, and sky-register — the exact color of a long late-spring evening tilting into dark. It is neither corporate blue nor referential violet, but something between: the color of something about to be finished.\n- **Neutral palette (tinted toward H:245°, chroma ~0.008):**\n  - 50: `#F4F4FA`\n  - 100: `#E5E5F0`\n  - 200: `#C7C7DC`\n  - 300: `#A6A6C8`\n  - 400: `#7676A4`\n  - 500: `#4F4F78`\n  - 600: `#353554`\n  - 700: `#212135`\n  - 800: `#141425`\n  - 900: `#07071A`\n- **Accent color (indigo):**\n  - light: `#8896FF`\n  - default: `#5C70FF`\n  - dark: `#2438D4`\n  - glow: `rgba(92,112,255,0.28)`\n- **Secondary accent:** none\n- **Background:**\n  - page bg: `#07071A`\n  - card bg: `#141425`\n  - section bg (alternating): `#0D0D22`\n- **Text colors:**\n  - primary: `#F4F4FA`\n  - secondary: `#A6A6C8`\n  - muted: `#7676A4`\n\n### 2. Typography\n\n- **Hero phrase rendering:** Bricolage Grotesque (`display` token), weight 800, `clamp(84px, 11.5vw, 158px)`. Mixed case. Three-line break: \"You only / have this / moment.\" — the word \"moment\" rendered in `indigo.400` (`#5C70FF`) while \"You only\" and \"have this\" are in `ink.50` (`#F4F4FA`). The period returns to `ink.50`. This color-codes the concept without shouting.\n- **Line heights:** hero: `0.88`; section heads: `1.05`; lead text: `1.4`; body: `1.65`; meta/signal: `1.3`\n- **Letter spacings:** hero: `-0.025em`; section heads: `-0.015em`; body: `0em`; label/smallcaps: `0.08em`; signal data (tabular): `0.02em`\n- Attribution below hero phrase: \"— Dan Millman · Memorial Day, 2026\" in Manrope weight 400, `clamp(11px, 1.1vw, 14px)`, `ink.400`, letter-spacing `0.08em`, small-caps variant.\n\n### 3. Layout Specification\n\n- **Archetype:** Scroll — the phrase's instruction (\"this moment\") maps to the archetype's architecture: the page is a temporal sequence. The first fold is the present moment; everything that follows (the work, the signals, the about) is the evidence of moments already seized. Single committed column, cinematic vertical pacing.\n- **CSS structure:**\n  - `body`: `display: flex; flex-direction: column; align-items: center`\n  - Hero section: `width: 100vw; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 6vw`\n  - Content sections: `width: 100%; max-width: none; padding: 96px 8vw` (full canvas, viewport-relative padding)\n  - Max content width: `none` — viewport-relative only\n- **Major dimensions:**\n  - Hero fold: `min-height: 100vh`\n  - Work section folds: `min-height: 80vh` each\n  - Signal / footer band: `min-height: 40vh`\n  - Section padding: `96px 8vw` top/bottom and sides\n- **Nav placement:** Fixed minimal bar, 60px tall, pinned top. `background: transparent` until 20px scroll, then `background: ink.900/88 + backdrop-filter: blur(12px)`. Logo (Doug March) left-anchored; nav links (Work · About · Contact) right-anchored, Manrope 500 13px letter-spacing `0.06em` ink.300.\n- **Hero phrase grid zone:** Vertically centered in the full 100vh fold. Phrase block: `width: 90vw`, left-aligned (not centered — more designed). Attribution 32px below last line. Fold bottom: a single 1px `ink.700` rule spans `94vw`.\n\n### 4. Component Character\n\n- **Border radius:** cards: `4px`; buttons: `2px`; tags: `full`\n- **Border treatment:** Borderless by default; `1px solid ink.700` as divider / card underline only\n- **Shadow:** None. Depth from surface color gradation (`ink.900` → `ink.800` → `ink.700` as elevation rises).\n- **Density:** Spacious. One concept per fold. Generous `96px` section top-padding; tight inter-element spacing within a block (`8px`–`24px`).\n- **Interactive states:** `accent` color on link hover; project cards: `background` shifts from `ink.800` to `ink.700`, border-bottom becomes `indigo.600`; transition `200ms ease`.\n\n### 5. Signal Integration\n\n- **Where signal elements live:** A dedicated signal band in the final fold — \"Today's Frequency\" section, full-width, `min-height: 40vh`, background `ink.800`. Laid out as a sparse horizontal strip with four signal nodes separated by thin vertical `ink.600` rules.\n- **Golf score styling:** Wyndham Clark −30 in Bricolage Grotesque weight 700, `clamp(28px, 3vw, 42px)`, `ink.50`. Label \"CJ CUP Byron Nelson · Final\" in Manrope 400 12px `ink.400` above. The −30 rendered with the minus sign in `indigo.400` and the number in `ink.50` — tabular numerals.\n- **Quote display:** The quote IS the hero phrase. Attribution rendered in the hero fold below the phrase: \"— Dan Millman · Memorial Day, 2026\" in `ink.400`, 13px, small-caps, letter-spacing `0.08em`. No blockquote element — the phrase lives at display scale.\n- **Memorial Day treatment:** The holiday label appears twice: in the hero attribution, and as a standalone eyebrow in the signal band — \"Memorial Day 2026\" in `indigo.300`, small-caps, 11px, letter-spacing `0.12em`.\n- **Tigers loss (3–5):** Signal band node: \"Tigers\" label `ink.400`; score \"3–5\" in Manrope 600 `ink.300`; a small \"L\" tag in `ink.600` background with `ink.300` text, border-radius `full`. Low visual prominence — it's a loss, it belongs to the day's muted register.\n- **Lunar waxing gibbous (71.8%):** A thin crescent arc SVG in `indigo.400` at 20px, positioned in the signal band alongside the moon phase label.\n- **Music signals:** The War on Drugs · Wet Leg — in `ink.500`, 11px, letter-spacing `0.06em`, footnote-scale at the signal band bottom edge.",
+    "selfCheck": "1. Hero quotability: Yes — \"You only have this moment.\" on Memorial Day 2026 is screenshot-worthy as an isolated fragment; the holiday context transforms a wellness aphorism into a memorial statement without requiring the page to explain it.\n2. Because-of chain: Yes — the phrase's quiet solemnity and temporal instruction demanded Scroll (one idea per fold, the page as sequence-in-time), which demanded bricolage-manrope (warm + expressive, tagged for Scroll, not the condensed-shout register of Anton or Big Shoulders), which demanded indigo at H:245° (ceremony, depth, late-May sky at golden hour), which demanded single-column cinematic layout where each fold is itself a moment.\n3. Render feasibility: Yes — Bricolage Grotesque weight 800 at clamp(84px, 11.5vw, 158px) over three lines (\"You only / have this / moment.\") occupies ~55vh at 1440×900, well within the hero fold's 100vh budget with room for attribution and breathing margin above/below.",
+    "rationale": "\"You only have this moment.\" is Dan Millman's final fragment from today's signal quote, and it arrives on Memorial Day — a holiday about the permanent absence of people who no longer have moments. That convergence lifts the fragment from a wellness aphorism into something heavier: a statement about the irreducible specificity of being alive now, on this specific May Monday, while others are honored precisely because they are not. The phrase does not require explanation or attribution to land; it earns its marquee scale on its own.\n\nThe Scroll archetype is the only honest container for a phrase making a temporal claim. \"This moment\" is not a poster slogan to be stared at — it is an instruction about sequence. The page enacts the instruction: the first fold is the present moment in full (the phrase at 158px maximum, weight 800 Bricolage Grotesque, mixed case, the word \"moment\" in indigo blue), and every subsequent fold is a moment already seized — the work, the signals, the signals of others who showed up (-30, Wyndham Clark, dominant). The scroll itself is the argument: you arrive at the present, and then you move through what presence produced. Bricolage Grotesque at weight 800 is the right chassis because it is expressive and warm without being authoritative-institutional — it is the font of things said by a human, not posted by an organization.\n\nThe indigo palette at H:245° sits cleanly inside the mandated 235°–260° window and carries precisely the right register: the deep blue of the late-May sky at 19:19, the moment the light fails, the color of ceremony without grief. Against near-black ink.900 (#07071A), the indigo.400 accent (#5C70FF) achieves 5.3:1 contrast — AA compliant even as body text — and on the hero phrase, where it colors only the single word \"moment,\" it glows without competing with the surrounding ink.50 type. The neutral ink family's H:245° tint keeps the dark surfaces alive across all five folds of the page; pure black would have read as a void rather than a depth.",
+    "signalIntegration": "- **Where signal elements live:** A dedicated signal band in the final fold — \"Today's Frequency\" section, full-width, `min-height: 40vh`, background `ink.800`. Laid out as a sparse horizontal strip with four signal nodes separated by thin vertical `ink.600` rules.\n- **Golf score styling:** Wyndham Clark −30 in Bricolage Grotesque weight 700, `clamp(28px, 3vw, 42px)`, `ink.50`. Label \"CJ CUP Byron Nelson · Final\" in Manrope 400 12px `ink.400` above. The −30 rendered with the minus sign in `indigo.400` and the number in `ink.50` — tabular numerals.\n- **Quote display:** The quote IS the hero phrase. Attribution rendered in the hero fold below the phrase: \"— Dan Millman · Memorial Day, 2026\" in `ink.400`, 13px, small-caps, letter-spacing `0.08em`. No blockquote element — the phrase lives at display scale.\n- **Memorial Day treatment:** The holiday label appears twice: in the hero attribution, and as a standalone eyebrow in the signal band — \"Memorial Day 2026\" in `indigo.300`, small-caps, 11px, letter-spacing `0.12em`.\n- **Tigers loss (3–5):** Signal band node: \"Tigers\" label `ink.400`; score \"3–5\" in Manrope 600 `ink.300`; a small \"L\" tag in `ink.600` background with `ink.300` text, border-radius `full`. Low visual prominence — it's a loss, it belongs to the day's muted register.\n- **Lunar waxing gibbous (71.8%):** A thin crescent arc SVG in `indigo.400` at 20px, positioned in the signal band alongside the moon phase label.\n- **Music signals:** The War on Drugs · Wet Leg — in `ink.500`, 11px, letter-spacing `0.06em`, footnote-scale at the signal band bottom edge."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "indigo": {
+          "50": "#EEF0FF",
+          "100": "#D8DDFF",
+          "200": "#B3BCFF",
+          "300": "#8896FF",
+          "400": "#5C70FF",
+          "500": "#3A52F5",
+          "600": "#2438D4",
+          "700": "#1528AA",
+          "800": "#0B1880",
+          "900": "#060C55"
+        },
+        "ink": {
+          "50": "#F4F4FA",
+          "100": "#E5E5F0",
+          "200": "#C7C7DC",
+          "300": "#A6A6C8",
+          "400": "#7676A4",
+          "500": "#4F4F78",
+          "600": "#353554",
+          "700": "#212135",
+          "800": "#141425",
+          "900": "#07071A"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.ink.900}",
+          "_light": "{colors.ink.50}"
+        },
+        "bgCard": {
+          "base": "{colors.ink.800}",
+          "_light": "{colors.ink.100}"
+        },
+        "bgSubtle": {
+          "base": "{colors.ink.700}",
+          "_light": "{colors.ink.200}"
+        },
+        "bgSection": {
+          "base": "#0D0D22",
+          "_light": "{colors.ink.100}"
+        },
+        "text": {
+          "base": "{colors.ink.50}",
+          "_light": "{colors.ink.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.ink.300}",
+          "_light": "{colors.ink.600}"
+        },
+        "textMuted": {
+          "base": "{colors.ink.400}",
+          "_light": "{colors.ink.500}"
+        },
+        "accent": {
+          "base": "{colors.indigo.400}",
+          "_light": "{colors.indigo.600}"
+        },
+        "accentLight": {
+          "base": "{colors.indigo.300}",
+          "_light": "{colors.indigo.500}"
+        },
+        "accentDim": {
+          "base": "{colors.indigo.700}",
+          "_light": "{colors.indigo.200}"
+        },
+        "accentSubtle": {
+          "base": "{colors.indigo.900}",
+          "_light": "{colors.indigo.50}"
+        },
+        "border": {
+          "base": "{colors.ink.700}",
+          "_light": "{colors.ink.200}"
+        },
+        "borderSubtle": {
+          "base": "{colors.ink.800}",
+          "_light": "{colors.ink.100}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.65",
+      "loose": "1.85"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.14em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700",
+      "black": "800"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 245,
+      "s": 82,
+      "l": 55,
+      "name": "deep indigo"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "indigo",
+      "name": "ink"
+    },
+    "mood_word": "ceremonial",
+    "color_story": "Indigo — the color of the late-May sky at 19:19 as the light finally fails — carries the solemnity of Memorial Day and the depth implied by the phrase's claim on the present moment."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

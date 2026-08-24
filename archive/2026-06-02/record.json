@@ -1,0 +1,370 @@
+{
+  "date": "2026-06-02",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.188Z",
+  "buildId": "1780400364055",
+  "attempts": 1,
+  "brief": "Bricolage azure Gallery Wall on warm ivory — \"Stuff your eyes with wonder\" at 96px in two lines across 67% of the canvas, a near-black signal tower on the right holding Tigers 10–9, Henley at −13, and the waning gibbous in compressed small-caps, the full Bradbury source below in a narrow pull-quote block.",
+  "rationale": "The Bradbury quote arrived from today's signals carrying a phrase that is already in the exact register this portfolio needs: not a description of Doug's work, but an instruction about how to encounter the world — which is also an instruction about how to use this site. \"Stuff your eyes with wonder\" is physically strange (you stuff a turkey, you stuff a suitcase, you don't usually stuff eyes) and that strangeness is what makes it quotable. On June 2 — first Tuesday of summer, 14.6 hours of daylight, a 10-9 Tigers comeback, a waning gibbous moon at 91.7% — the phrase is operationally correct and signals-resonant without being a simple data summary.\n\nThe Gallery Wall archetype was the only honest container for this command. A Poster would put the phrase on a pedestal and let it rest on its own authority. The Gallery Wall forces you to enact the phrase: you arrive and there is an enormous hero phrase dominating the left two-thirds of the screen, a tall dark signal tower pressing in from the right edge, and below the fold, three distinct zones (projects, the full Bradbury quote in context, timeline) consuming every inch of canvas. The page is the wonder you are being instructed to stuff your eyes with. The archetype is not illustrating the phrase — it is enacting it. Bricolage Grotesque at weight 800 is the correct chassis choice: warm, expressive, variable-weight, distinctly human in its curves in a way that Anton or Bebas are not. Bradbury wrote warm sentences; the typeface should be warm. The 1.500 scale ratio handles the display demand.\n\nSky azure at H:200° is the color you find when you actually look up on a June morning — not corporate blue, not terminal cyan, but the specific vivid saturated azure of a clear sky at 10am on the second day of summer. Against the warm ivory parchment neutrals (barely tinted toward H:35°, not dead gray), it fires like light through glass. The signal panel on the right is held in near-black ink (barely warm, `#0E0E08`) — the dark column where today's signals live in compressed, high-contrast type — so the overall page reads as the contrast between a luminous open space (left: the wonder) and a dense information column (right: the world's data stuffed into one panel). This asymmetry, two-thirds light to one-third dark, is the visual argument that wonder is bigger than the facts that occasion it.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Gallery Wall",
+  "signals": {
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Tuesday",
+      "is_weekend": false,
+      "day_index": 2
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "microsoft/markitdown/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/nesquena",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "supermemoryai/supermemory/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "harry0703/MoneyPrinterTurbo/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/D4Vinci",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Charles Schwab Challenge",
+      "status": "Final",
+      "leaders": [
+        {
+          "name": "Russell Henley",
+          "position": "1",
+          "score": "-13"
+        },
+        {
+          "name": "Eric Cole",
+          "position": "2",
+          "score": "-12"
+        },
+        {
+          "name": "Ben Griffin",
+          "position": "3",
+          "score": "-11"
+        },
+        {
+          "name": "Alex Smalley",
+          "position": "4",
+          "score": "-11"
+        },
+        {
+          "name": "Mac Meissner",
+          "position": "5",
+          "score": "-11"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Why Janet? (2023)",
+          "url": "https://ianthehenry.com/posts/why-janet/",
+          "score": 136,
+          "by": "yacin"
+        },
+        {
+          "title": "Adafruit Receives Demand Letter from Fenwick Legal Counsel on Behalf of Flux.ai",
+          "url": "https://blog.adafruit.com/",
+          "score": 78,
+          "by": "semanser"
+        },
+        {
+          "title": "CSS-Native Parallax Effect",
+          "url": "https://dan-webnotes.com/posts/2026-06-02-css-native-parallax-effect/",
+          "score": 19,
+          "by": "dandep"
+        },
+        {
+          "title": "The newest Instagram “exploit” is the goofiest I've seen",
+          "url": "https://www.0xsid.com/blog/meta-account-takeover-fiasco",
+          "score": 1874,
+          "by": "ssiddharth"
+        },
+        {
+          "title": "Muxcard, a dyi credit card size computer",
+          "url": "https://github.com/krauseler/muxcard",
+          "score": 71,
+          "by": "sargstuff"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waning gibbous",
+      "illumination": 0.917,
+      "days_into_cycle": 17.51
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "Wet Leg",
+        "Tobin Sprout"
+      ]
+    },
+    "quote": {
+      "text": "Stuff your eyes with wonder... live as if you'd drop dead in ten seconds. See the world. It's more fantastic than any dream made or paid for in factories.",
+      "author": "Ray Bradbury"
+    },
+    "season": {
+      "season": "summer",
+      "month": 6,
+      "day": 2,
+      "day_of_year": 153,
+      "month_name": "June"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-06-01T22:40Z",
+          "result": "win",
+          "score": "10-9"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:51",
+      "sunset": "19:25",
+      "daylight_hours": 14.6
+    },
+    "date": "2026-06-02"
+  },
+  "hero": {
+    "copy": "Stuff your eyes with wonder",
+    "rationale": "Ray Bradbury's signal quote delivers this as a command in four words — visceral, physical, strange. You don't \"open\" eyes to wonder; you STUFF them, the way you stuff a suitcase before a journey you're not sure you'll survive. On June 2 — summer's first Tuesday, 14.6 hours of daylight, a Tigers barn-burner won 10-9 — the phrase is operationally correct. For a portfolio that redesigns itself daily and treats making as seeing, \"stuff your eyes with wonder\" is its own mission statement. The fragment is quotable in isolation without context, which is the test.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue** — H:200°, S:88%, L:48° (summer sky azure). The open color mandate zone is H:188°–215°; H:200° sits at its midpoint, which is the exact hue of a deep clear summer sky at 10am — not the cool tech-blue of corporate interfaces, not the cyan of terminals, but the azure that hits when you look up on a long June day.\n\n**Neutral palette** — warm ivory, barely tinted toward H:35° (parchment/linen quality):\n- 50: `#FAFAF7`\n- 100: `#F4F4EF`\n- 200: `#E8E8E2`\n- 300: `#D1D1C9`\n- 400: `#A8A89E`\n- 500: `#7A7A70`\n- 600: `#5C5C52`\n- 700: `#3D3D34`\n- 800: `#242420`\n- 900: `#121210`\n\n**Accent color** — sky azure:\n- Light: `#7DD3FC`\n- Default: `#0EA5E9`\n- Dark: `#0369A1`\n- Glow: `#BAE6FD`\n\n**Secondary accent** — none\n\n**Background** — page bg: `#FAFAF7` (warm ivory, summer light); signal panel bg: `#0E0E08` (near-black ink, barely warm-tinted); card bg: `#F4F4EF`\n\n**Text colors** — primary: `#121210`; secondary: `#3D3D34`; muted: `#7A7A70`; on dark panels: `#F4F4EF` (primary), `#A8A89E` (secondary), `#38BDF8` (accent)\n\n---\n\n### 2. Typography\n\n**Hero phrase rendering** — `display` token, Bricolage Grotesque weight 800. Two lines, mixed case (Bradbury is warm, not shouting):\n```\nStuff your eyes\nwith wonder\n```\nSize: `clamp(56px, 6.5vw, 96px)`. The phrase fits two lines in the hero block (~67% viewport width). Line height: `0.88`. Letter spacing: `−0.03em`. The word \"wonder\" optionally rendered in sky azure (`#0369A1` on light bg — 5.4:1 contrast at this size, passes WCAG large-text 3:1 threshold).\n\n**Attribution below hero** — Manrope weight 300, italic, `14px`, `#7A7A70`, `\"— Ray Bradbury\"`, letter spacing `0.02em`.\n\n**Body text** — Manrope weight 400, `16px`, line height `1.5`, `#121210` on light bg.\n\n**Signal panel labels** — Manrope weight 500, `10px` all-caps, letter spacing `0.15em`, `#A8A89E`.\n\n**Signal panel scores** — Bricolage Grotesque weight 700, `clamp(28px, 2.5vw, 36px)`, `#38BDF8`, line height `1.0`.\n\n**Section headers / block identifiers** — Manrope weight 500, `11px`, letter spacing `0.10em`, all-caps, `#7A7A70`.\n\n---\n\n### 3. Layout Specification\n\n**Archetype** — Gallery Wall. \"Stuff your eyes with wonder\" is a command to consume multiple things simultaneously — a wall of pinned objects, not a single centered proclamation. The asymmetric blocks ARE the wonder: you arrive and there is a hero phrase dominating 67% of the canvas, a dark signal panel pressing in from the right, and below the fold, three distinct zones that can be consumed in any order. The archetype makes the page a cabinet of curiosities.\n\n**CSS grid structure** — 12-column, full viewport, no max-width:\n```css\n.gallery-wall {\n  display: grid;\n  grid-template-columns: repeat(12, 1fr);\n  grid-template-rows: auto auto;\n  width: 100vw;\n  max-width: none;\n}\n```\n\nBlock assignments:\n- **Hero block** — `grid-column: 1 / 9; grid-row: 1;` (cols 1–8, 66.7% width)\n- **Signal panel** — `grid-column: 9 / 13; grid-row: 1 / 3;` (cols 9–12, 33.3% width, spans both rows — a tall dark tower on the right)\n- **Projects block** — `grid-column: 1 / 7; grid-row: 2;` (cols 1–6)\n- **Quote context block** — `grid-column: 7 / 9; grid-row: 2;` (cols 7–8, narrow inset)\n\n**Major dimensions**:\n- Hero block min-height: `80vh`\n- Signal panel min-height: `100vh` (spans both rows, creating the tall dark tower)\n- Projects block min-height: `320px`\n- Quote context min-height: `320px`\n- Max-width: `none` — full canvas edge-to-edge\n- Side padding (hero): `padding: 52px 72px 64px 6vw`\n- Signal panel padding: `padding: 52px 40px 64px 32px`\n- Projects padding: `padding: 48px 72px 56px 6vw`\n- Quote context padding: `padding: 48px 40px`\n\n**Nav placement** — top-left of hero block, inline, horizontal: `[doug march]` (Manrope medium, 12px) left-anchored, nav links (`work`, `about`) at right of same row in 12px small-caps. `margin-bottom: 96px` to create distance before the hero phrase.\n\n**Hero phrase grid zone** — occupies rows 2–3 of hero block's internal flow (after nav row), from left edge of block to 90% of block width. At 1440px viewport: hero block is 960px wide, phrase at `clamp(56px, 6.5vw, 96px)` = ~94px, \"Stuff your eyes\" (15 chars) fits in ~780px of 960px block. `margin-top: auto` pushes the phrase toward the vertical center of the block.\n\n---\n\n### 4. Component Character\n\n**Border radius** — `0px` everywhere. Crisp, flat blocks. No softening.\n\n**Border treatment** — No borders on blocks (background color defines block edges). `1px solid #E8E8E2` as horizontal rules between project list items only.\n\n**Shadow** — None. Depth via background color contrast between blocks.\n\n**Density** — Spacious in hero (generous vertical breathing, phrase given full room). Signal panel is compact: 16px between signal items. Projects block is medium density: 32px between rows.\n\n**Interactive states** — Project links: on hover, sky azure (`#0EA5E9`) underline, `2px`, `underline-offset: 4px`, instant (no transition). Signal links: sky azure text on hover. Nav links: sky azure on hover, no underline.\n\n---\n\n### 5. Signal Integration\n\n**Tigers 10–9 win** — Signal panel, top section, highest prominence. Label: \"DETROIT TIGERS\" in `10px` Manrope small-caps, `#A8A89E`. Score: \"10 – 9\" in Bricolage Grotesque 700, `36px`, `#38BDF8`. Below: \"W · Jun 1\" in `11px` Manrope, `#72726A`.\n\n**Golf — Charles Schwab Challenge Final** — Signal panel, second block. Label: \"SCHWAB CHALLENGE\" in `10px` small-caps. \"R. Henley −13\" in Bricolage 600, `20px`, `#7DD3FC`. Runners up listed in `12px` Manrope, `#72726A`: \"Cole −12 · Griffin −11\".\n\n**Lunar waning gibbous** — Signal panel, third block. Glyph \"◐\" in `#7DD3FC`, `18px`, followed by \"91.7%\" in Bricolage 600, `20px`, `#7DD3FC`. Label: \"WANING GIBBOUS / Day 17.5\" in `10px` small-caps, `#A8A89E`.\n\n**The Bradbury quote** — Quote context block (cols 7–8, row 2). Light warm bg (`#F4F4EF`). Full quote displayed as a pull quote, Manrope weight 300 italic, `15px`, line height `1.6`, `#3D3D34`. Attribution: \"— Ray Bradbury\" in `12px` Manrope 500 small-caps, `#7A7A70`, `margin-top: 24px`. This block connects the hero phrase to its full source.\n\n**Music — Guided by Voices · Wet Leg · Tobin Sprout** — Signal panel, fourth block. \"NOW LISTENING\" label in `10px` small-caps. Artists listed one per line in `13px` Manrope 400, `#A8A89E`.\n\n**HN top story** — Signal panel, footer zone. Italic `11px` Manrope, `#72726A`, truncated: \"HN #1: Instagram exploit, 1,874pts\". Not prominent — curiosity item.\n\n**Daylight hours** — Signal panel, footer. \"14.6h daylight\" in `10px` small-caps, `#4E4E46`. Pairs with sun emoji or sunrise glyph.",
+    "selfCheck": "1. Hero quotability: Yes — \"Stuff your eyes with wonder\" is a Bradbury command physically strange enough to stop scrolling; it would read as a standalone poster without the source.\n2. Because-of chain: Yes — the stuffing-eyes conceit demanded Gallery Wall (multiple blocks = multiple things to see at once); Gallery Wall + marquee scale demanded bricolage-manrope (1.500 ratio, warm, expressive); summer azure H:200° follows from the literal act of looking at a June sky.\n3. Render feasibility: Yes — at 1440px, hero block is 960px wide; \"Stuff your eyes\" at ~94px Bricolage 800 runs ~780px, fitting comfortably; signal panel at 480px holds all signal data at compact density without overflow.",
+    "rationale": "The Bradbury quote arrived from today's signals carrying a phrase that is already in the exact register this portfolio needs: not a description of Doug's work, but an instruction about how to encounter the world — which is also an instruction about how to use this site. \"Stuff your eyes with wonder\" is physically strange (you stuff a turkey, you stuff a suitcase, you don't usually stuff eyes) and that strangeness is what makes it quotable. On June 2 — first Tuesday of summer, 14.6 hours of daylight, a 10-9 Tigers comeback, a waning gibbous moon at 91.7% — the phrase is operationally correct and signals-resonant without being a simple data summary.\n\nThe Gallery Wall archetype was the only honest container for this command. A Poster would put the phrase on a pedestal and let it rest on its own authority. The Gallery Wall forces you to enact the phrase: you arrive and there is an enormous hero phrase dominating the left two-thirds of the screen, a tall dark signal tower pressing in from the right edge, and below the fold, three distinct zones (projects, the full Bradbury quote in context, timeline) consuming every inch of canvas. The page is the wonder you are being instructed to stuff your eyes with. The archetype is not illustrating the phrase — it is enacting it. Bricolage Grotesque at weight 800 is the correct chassis choice: warm, expressive, variable-weight, distinctly human in its curves in a way that Anton or Bebas are not. Bradbury wrote warm sentences; the typeface should be warm. The 1.500 scale ratio handles the display demand.\n\nSky azure at H:200° is the color you find when you actually look up on a June morning — not corporate blue, not terminal cyan, but the specific vivid saturated azure of a clear sky at 10am on the second day of summer. Against the warm ivory parchment neutrals (barely tinted toward H:35°, not dead gray), it fires like light through glass. The signal panel on the right is held in near-black ink (barely warm, `#0E0E08`) — the dark column where today's signals live in compressed, high-contrast type — so the overall page reads as the contrast between a luminous open space (left: the wonder) and a dense information column (right: the world's data stuffed into one panel). This asymmetry, two-thirds light to one-third dark, is the visual argument that wonder is bigger than the facts that occasion it.",
+    "signalIntegration": "**Tigers 10–9 win** — Signal panel, top section, highest prominence. Label: \"DETROIT TIGERS\" in `10px` Manrope small-caps, `#A8A89E`. Score: \"10 – 9\" in Bricolage Grotesque 700, `36px`, `#38BDF8`. Below: \"W · Jun 1\" in `11px` Manrope, `#72726A`.\n\n**Golf — Charles Schwab Challenge Final** — Signal panel, second block. Label: \"SCHWAB CHALLENGE\" in `10px` small-caps. \"R. Henley −13\" in Bricolage 600, `20px`, `#7DD3FC`. Runners up listed in `12px` Manrope, `#72726A`: \"Cole −12 · Griffin −11\".\n\n**Lunar waning gibbous** — Signal panel, third block. Glyph \"◐\" in `#7DD3FC`, `18px`, followed by \"91.7%\" in Bricolage 600, `20px`, `#7DD3FC`. Label: \"WANING GIBBOUS / Day 17.5\" in `10px` small-caps, `#A8A89E`.\n\n**The Bradbury quote** — Quote context block (cols 7–8, row 2). Light warm bg (`#F4F4EF`). Full quote displayed as a pull quote, Manrope weight 300 italic, `15px`, line height `1.6`, `#3D3D34`. Attribution: \"— Ray Bradbury\" in `12px` Manrope 500 small-caps, `#7A7A70`, `margin-top: 24px`. This block connects the hero phrase to its full source.\n\n**Music — Guided by Voices · Wet Leg · Tobin Sprout** — Signal panel, fourth block. \"NOW LISTENING\" label in `10px` small-caps. Artists listed one per line in `13px` Manrope 400, `#A8A89E`.\n\n**HN top story** — Signal panel, footer zone. Italic `11px` Manrope, `#72726A`, truncated: \"HN #1: Instagram exploit, 1,874pts\". Not prominent — curiosity item.\n\n**Daylight hours** — Signal panel, footer. \"14.6h daylight\" in `10px` small-caps, `#4E4E46`. Pairs with sun emoji or sunrise glyph."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "sky": {
+          "50": "#F0F9FF",
+          "100": "#E0F2FE",
+          "200": "#BAE6FD",
+          "300": "#7DD3FC",
+          "400": "#38BDF8",
+          "500": "#0EA5E9",
+          "600": "#0284C7",
+          "700": "#0369A1",
+          "800": "#075985",
+          "900": "#0C4A6E"
+        },
+        "neutral": {
+          "50": "#FAFAF7",
+          "100": "#F4F4EF",
+          "200": "#E8E8E2",
+          "300": "#D1D1C9",
+          "400": "#A8A89E",
+          "500": "#7A7A70",
+          "600": "#5C5C52",
+          "700": "#3D3D34",
+          "800": "#242420",
+          "900": "#121210"
+        },
+        "ink": {
+          "50": "#F2F2EF",
+          "100": "#E6E6E2",
+          "200": "#CCCCC6",
+          "300": "#A0A098",
+          "400": "#72726A",
+          "500": "#4E4E46",
+          "600": "#3A3A32",
+          "700": "#28281E",
+          "800": "#1A1A12",
+          "900": "#0E0E08"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.50}",
+          "_dark": "{colors.ink.900}"
+        },
+        "bgCard": {
+          "base": "{colors.neutral.100}",
+          "_dark": "{colors.ink.800}"
+        },
+        "bgSubtle": {
+          "base": "{colors.neutral.100}",
+          "_dark": "{colors.ink.800}"
+        },
+        "bgInverse": {
+          "base": "{colors.ink.900}",
+          "_dark": "{colors.neutral.100}"
+        },
+        "bgInverseSubtle": {
+          "base": "{colors.ink.800}",
+          "_dark": "{colors.neutral.200}"
+        },
+        "text": {
+          "base": "{colors.ink.900}",
+          "_dark": "{colors.neutral.100}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.700}",
+          "_dark": "{colors.neutral.400}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.500}",
+          "_dark": "{colors.neutral.500}"
+        },
+        "textInverse": {
+          "base": "{colors.neutral.100}",
+          "_dark": "{colors.ink.900}"
+        },
+        "textInverseSecondary": {
+          "base": "{colors.neutral.400}",
+          "_dark": "{colors.ink.400}"
+        },
+        "accent": {
+          "base": "{colors.sky.500}",
+          "_dark": "{colors.sky.400}"
+        },
+        "accentLight": {
+          "base": "{colors.sky.200}",
+          "_dark": "{colors.sky.900}"
+        },
+        "accentStrong": {
+          "base": "{colors.sky.700}",
+          "_dark": "{colors.sky.300}"
+        },
+        "accentOnDark": {
+          "base": "{colors.sky.400}",
+          "_dark": "{colors.sky.500}"
+        },
+        "border": {
+          "base": "{colors.neutral.200}",
+          "_dark": "{colors.ink.700}"
+        },
+        "borderStrong": {
+          "base": "{colors.neutral.300}",
+          "_dark": "{colors.ink.600}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.15",
+      "normal": "1.5",
+      "loose": "1.7"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.15em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "800"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 200,
+      "s": 88,
+      "l": 48,
+      "name": "summer sky azure"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "warm ivory",
+      "name": "parchment"
+    },
+    "mood_word": "luminous",
+    "color_story": "Sky azure at H:200° is the color you encounter when you actually do stuff your eyes upward on a June afternoon — clear, saturated, infinite — fired against warm ivory parchment the way a cloudless sky meets old stone."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

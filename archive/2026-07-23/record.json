@@ -1,0 +1,329 @@
+{
+  "date": "2026-07-23",
+  "era": "shell-directed",
+  "generatedAt": "2026-08-24T15:34:16.240Z",
+  "buildId": "1784804109482",
+  "attempts": 1,
+  "brief": "Klein-blue Gallery Wall — \"PASSION IS ENERGY\" knocked out huge in Anton across an ultramarine drench, the word ENERGY lit in voltage-white, Doug's work tiled around it and the day's charge (Tigers 5–1 W, moon 71%, War on Drugs) pinned top-right.",
+  "rationale": "The day handed me a manifesto, not a decoration. Oprah's \"Passion is energy\" is the exact thesis of a portfolio that tears itself down and rebuilds every morning out of nothing but enthusiasm — so I compressed the quote to its detonating first sentence, \"PASSION IS ENERGY,\" and let it become the current running through the whole page. The word \"energy\" is the operative instruction: this phrase wants voltage, and every other decision is downstream of that.\n\nBecause the owner's last two grades were C's — \"gray box,\" \"missing my personal brand,\" \"the template feels like it's cycling through five layouts\" — I refused a bare Specimen and chose the Gallery Wall (unused in the recent rotation). The wall lets the marquee phrase anchor the dominant tile while Doug's actual work — the project directory (Spaceman → Twittertale), the capabilities, the completing half of the quote, and the day's signals — surround it as real, placed content. It reads as HIS body of work energized by the line, not a menu-picked layout with a slogan pasted on. Anton (anton-inter-tight, 1.500) gives the phrase electric condensed caps that hold \"PASSION IS / ENERGY\" as a two-line knockout at up to 190px, while Inter Tight keeps the directory, capabilities and the Tigers 5–1 box tabular and clean.\n\nColor is the boldest legal gesture available. The mandate scorched the wheel down to the 221°–245° corridor, and instead of hedging into a timid blue I read \"energy\" as pure charged pigment — Yves Klein's International Klein Blue, a monochrome that IS intensity. I drench the full canvas in 232° ultramarine (coverage ≥65%), tint every neutral toward it so the tiles read as the same world at different depths, and light only the word \"ENERGY\" and the Tigers' \"5\" in a luminous voltage-white step of the same hue — one pigment, no second color. The shell is fresh against seven days of spines, rails and mastheads: floating outlined nav pills top-right, a big stacked-lg brand lockup in its original colors top-left to put Doug's mark unmistakably present, and a small colophon block folded into the bottom of the wall.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/components/Tile.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Gallery Wall",
+  "signals": {
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Thursday",
+      "is_weekend": false,
+      "day_index": 4
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "koala73/worldmonitor/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "ruvnet/RuView/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "ayghri/i-have-adhd/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/schollz",
+          "description": "",
+          "language": "Go",
+          "stars": null
+        },
+        {
+          "name": "sponsors/likec4",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "3M Open",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Escape IntelliJ: Scala and Kotlin LSPs on Emacs Eglot",
+          "url": "https://jointhefreeworld.org/blog/articles/emacs/emacs-eglot-scala-kotlin/index.html",
+          "score": 73,
+          "by": "jjba23"
+        },
+        {
+          "title": "Terence Tao's ChatGPT conversation about the Jacobian Conjecture counterexample",
+          "url": "https://chatgpt.com/share/6a5fdc7a-d6f8-83e8-bbea-8deb42cfed56",
+          "score": 899,
+          "by": "gmays"
+        },
+        {
+          "title": "Cruller: Bun's Zig Runtime, Continued on Zig 0.16",
+          "url": "https://ziggit.dev/t/cruller-buns-zig-runtime-continued-on-zig-0-16/16734",
+          "score": 64,
+          "by": "Erenay09"
+        },
+        {
+          "title": "Quality non-fiction books are the antithesis of AI slop",
+          "url": "https://resobscura.substack.com/p/quality-non-fiction-books-are-the",
+          "score": 377,
+          "by": "benbreen"
+        },
+        {
+          "title": "git's –end-of-options Flag",
+          "url": "https://nesbitt.io/2026/07/21/end-of-options.html",
+          "score": 155,
+          "by": "Erenay09"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waxing gibbous",
+      "illumination": 0.709,
+      "days_into_cycle": 9.41
+    },
+    "music": {
+      "bands": [
+        "Tobin Sprout",
+        "The War on Drugs"
+      ]
+    },
+    "quote": {
+      "text": "Passion is energy. Feel the power that comes from focusing on what excites you.",
+      "author": "Oprah Winfrey"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 23,
+      "day_of_year": 204,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-23T00:00Z",
+          "result": "win",
+          "score": "5-1"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:07",
+      "sunset": "19:25",
+      "daylight_hours": 14.3
+    },
+    "date": "2026-07-23"
+  },
+  "hero": {
+    "copy": "PASSION IS ENERGY",
+    "rationale": "Lifted from today's Oprah Winfrey quote — \"Passion is energy. Feel the power that comes from focusing on what excites you.\" — compressed to its detonating first sentence. Three words, declarative, quotable in isolation, and the truest mission statement a portfolio that rebuilds itself out of enthusiasm every dawn could carry. It reads as a manifesto, not a caption, and it wants voltage: energy as pure electric pigment.",
+    "source": null
+  },
+  "chassis": "anton-inter-tight",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 232° electric ultramarine (International Klein Blue lineage). The Color Mandate leaves only the 221°–245° corridor clean; rather than fight it I read \"energy\" as high-voltage pigment intensity, the IKB monochrome gesture — bold and artistic, dead-center in the allowed corridor.\n- **Neutral palette (cobalt ink, blue-tinted):** 50 `#f6f7fc` · 100 `#eceef6` · 200 `#d6dae8` · 300 `#b3b9d1` · 400 `#868ead` · 500 `#5c6486` · 600 `#414863` · 700 `#2d3349` · 800 `#1b2036` · 900 `#0d1024`\n- **Accent (luminous voltage-blue):** light `#9db4ff` · default `#6d8bff` · dark `#3f5ce6` · glow `#d3ddff`\n- **Secondary accent** — none. IKB is a monochrome gesture; the single hue carries the page. \"Energy\" is lit by lightness step within the family, never a second hue.\n- **Background** — page bg (drench field) `#1e2fa0`; card/tile bg `#1a2780`; sidebar/quiet tile bg `#131a4d`.\n- **Text colors** — primary `#f6f7fc`; secondary `#d6dae8`; muted `#b3b9d1`. The lit hero word uses accent.glow `#d3ddff`.\n\n### 2. Typography\n- **Hero phrase rendering** — Anton display token, set on two lines: `PASSION IS` / `ENERGY`, left-aligned. \"ENERGY\" is the lit line in accent.glow; \"PASSION IS\" in `#f6f7fc`. Scale via `clamp(84px, 12vw, 190px)`. Anton's condensed heavy caps hold both lines inside the hero block at 1440px without overflow. Inter Tight carries project rows, capabilities, quote body and signals as clean tabular workhorse text.\n- **Line heights** — hero `0.85`; block headings `1.0`; body `1.5`; light-on-dark body bumped to `1.55`.\n- **Letter spacings** — hero `-0.02em`; smallcaps labels `0.12em`; body `0.01em` (light-on-dark compensation); nav pills `0.08em`.\n\n### 3. Layout Specification\n- **Archetype** — Gallery Wall. The phrase anchors the largest tile while Doug's actual work (project directory, capabilities), the day's signals, and the full quote are placed as irregular blocks across the full canvas — the wall IS his body of work energized by the line, directly answering the owner's \"missing personal brand / gray box\" note with real content, not a bare specimen.\n- **CSS grid structure** — `display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: minmax(72px, auto); gap: clamp(16px, 2.4vw, 40px);` on the full canvas.\n- **Major dimensions**:\n  - Hero tile: `grid-column: 1 / 9; grid-row: 2 / 5; min-height: 56vh`\n  - Quote tile: `grid-column: 9 / 13; grid-row: 2 / 4`\n  - Signals (\"the charge\") tile: `grid-column: 9 / 13; grid-row: 4 / 7`\n  - Selected work directory: `grid-column: 1 / 6; grid-row: 5 / 7`\n  - Capabilities: `grid-column: 6 / 9; grid-row: 5 / 6`\n  - Colophon block: `grid-column: 1 / 5; grid-row: 7 / 8`\n  - `max-width: none`; page padding `clamp(32px, 5vw, 80px)`.\n- **Nav placement** — floating pills, top-right (`grid-column: 10 / 13; grid-row: 1`): three all-caps Inter Tight links in `radius: full` outlined pills, ~40px tall.\n- **Hero phrase grid zone** — rows 2–4, columns 1–8; intended render ~56vh tall × ~62vw wide, phrase set flush-left at 12vw.\n\n### 4. Component Character\n- **Border radius** — tiles/cards `10px`; buttons/tags `9999px` (full, pill); hero tile `20px`.\n- **Border treatment** — hairline `1px solid` in brand.500 `#3550dd` on darker tiles for gallery separation; nav pills outlined in accent.default.\n- **Shadow** — none on the drench field (flat pigment); one soft focus glow on hover: `0 0 0 2px #6d8bff` ring.\n- **Density** — spacious in the hero tile, compact/tabular in the directory and signals tiles.\n- **Interactive states** — links and pills brighten toward accent.glow and gain the voltage ring on `_hover`; project rows shift bg from brand.800 to brand.600.\n\n### 5. Signal Integration\n- **Where signal elements live** — the top-right \"THE DAY'S CHARGE\" tile (rows 4–7) collects sports, music, and moon as a tabular stack.\n- **Sports scores** — Tigers 5–1 WIN rendered in Anton at ~40px, the \"5\" in accent.glow, \"1\" in muted; labeled `DET 5 · OPP 1 · W` in Inter Tight smallcaps. It's a small win, so it's celebrated but not marquee-scale.\n- **Quote display** — the full sentence \"Feel the power that comes from focusing on what excites you.\" sits in the quote tile (cols 9–12, rows 2–3) as an Inter Tight pull-quote with \"— OPRAH WINFREY\" attribution in smallcaps; the hero marquee IS the quote's opening, so the tile completes it.\n- **Music** — Tobin Sprout · The War on Drugs listed as \"ON HEAVY ROTATION\" in the charge tile.\n- **Moon** — waxing gibbous 71% as a small glyph + `71%` numeral in the charge tile.\n- **Holidays** — none today; omitted.\n- **GitHub / HN / golf** — low-salience today; a single colophon line notes the build stamp only.",
+    "selfCheck": "1. Hero quotability: Yes — \"PASSION IS ENERGY\" is a standalone manifesto, screenshot-worthy, not descriptive body copy.\n2. Because-of chain: Yes — a voltage manifesto → Gallery Wall of energized work → Anton's electric condensed caps → IKB ultramarine drench → phrase anchors the dominant tile.\n3. Render feasibility: Yes — Anton condensed sets \"PASSION IS / ENERGY\" on two lines at clamp max 190px inside a 62vw × 56vh tile without overflow at 1440×900.\n4. Canvas floor feasible: Yes — asymmetric tiles tile the full 12-col grid with irregular gaps, comfortably clearing 78% utilization.",
+    "rationale": "The day handed me a manifesto, not a decoration. Oprah's \"Passion is energy\" is the exact thesis of a portfolio that tears itself down and rebuilds every morning out of nothing but enthusiasm — so I compressed the quote to its detonating first sentence, \"PASSION IS ENERGY,\" and let it become the current running through the whole page. The word \"energy\" is the operative instruction: this phrase wants voltage, and every other decision is downstream of that.\n\nBecause the owner's last two grades were C's — \"gray box,\" \"missing my personal brand,\" \"the template feels like it's cycling through five layouts\" — I refused a bare Specimen and chose the Gallery Wall (unused in the recent rotation). The wall lets the marquee phrase anchor the dominant tile while Doug's actual work — the project directory (Spaceman → Twittertale), the capabilities, the completing half of the quote, and the day's signals — surround it as real, placed content. It reads as HIS body of work energized by the line, not a menu-picked layout with a slogan pasted on. Anton (anton-inter-tight, 1.500) gives the phrase electric condensed caps that hold \"PASSION IS / ENERGY\" as a two-line knockout at up to 190px, while Inter Tight keeps the directory, capabilities and the Tigers 5–1 box tabular and clean.\n\nColor is the boldest legal gesture available. The mandate scorched the wheel down to the 221°–245° corridor, and instead of hedging into a timid blue I read \"energy\" as pure charged pigment — Yves Klein's International Klein Blue, a monochrome that IS intensity. I drench the full canvas in 232° ultramarine (coverage ≥65%), tint every neutral toward it so the tiles read as the same world at different depths, and light only the word \"ENERGY\" and the Tigers' \"5\" in a luminous voltage-white step of the same hue — one pigment, no second color. The shell is fresh against seven days of spines, rails and mastheads: floating outlined nav pills top-right, a big stacked-lg brand lockup in its original colors top-left to put Doug's mark unmistakably present, and a small colophon block folded into the bottom of the wall.",
+    "signalIntegration": "- **Where signal elements live** — the top-right \"THE DAY'S CHARGE\" tile (rows 4–7) collects sports, music, and moon as a tabular stack.\n- **Sports scores** — Tigers 5–1 WIN rendered in Anton at ~40px, the \"5\" in accent.glow, \"1\" in muted; labeled `DET 5 · OPP 1 · W` in Inter Tight smallcaps. It's a small win, so it's celebrated but not marquee-scale.\n- **Quote display** — the full sentence \"Feel the power that comes from focusing on what excites you.\" sits in the quote tile (cols 9–12, rows 2–3) as an Inter Tight pull-quote with \"— OPRAH WINFREY\" attribution in smallcaps; the hero marquee IS the quote's opening, so the tile completes it.\n- **Music** — Tobin Sprout · The War on Drugs listed as \"ON HEAVY ROTATION\" in the charge tile.\n- **Moon** — waxing gibbous 71% as a small glyph + `71%` numeral in the charge tile.\n- **Holidays** — none today; omitted.\n- **GitHub / HN / golf** — low-salience today; a single colophon line notes the build stamp only."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "brand": {
+          "50": "#eceffd",
+          "100": "#d6ddfb",
+          "200": "#aebbf6",
+          "300": "#8296ef",
+          "400": "#5670e8",
+          "500": "#3550dd",
+          "600": "#2439c4",
+          "700": "#1e2fa0",
+          "800": "#1a2780",
+          "900": "#131a4d"
+        },
+        "accent": {
+          "50": "#eef2ff",
+          "100": "#d3ddff",
+          "200": "#9db4ff",
+          "300": "#6d8bff",
+          "400": "#5673f2",
+          "500": "#3f5ce6",
+          "600": "#2f47c8",
+          "700": "#2437a1",
+          "800": "#1c2b7d",
+          "900": "#141d54"
+        },
+        "neutral": {
+          "50": "#f6f7fc",
+          "100": "#eceef6",
+          "200": "#d6dae8",
+          "300": "#b3b9d1",
+          "400": "#868ead",
+          "500": "#5c6486",
+          "600": "#414863",
+          "700": "#2d3349",
+          "800": "#1b2036",
+          "900": "#0d1024"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.brand.700}",
+          "_light": "{colors.neutral.50}"
+        },
+        "surface": {
+          "base": "{colors.brand.800}",
+          "_light": "#ffffff"
+        },
+        "surfaceQuiet": {
+          "base": "{colors.brand.900}",
+          "_light": "{colors.neutral.100}"
+        },
+        "text": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.neutral.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.200}",
+          "_light": "{colors.neutral.600}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.300}",
+          "_light": "{colors.neutral.500}"
+        },
+        "accent": {
+          "base": "{colors.accent.300}",
+          "_light": "{colors.accent.500}"
+        },
+        "accentGlow": {
+          "base": "{colors.accent.100}",
+          "_light": "{colors.accent.400}"
+        },
+        "border": {
+          "base": "{colors.brand.500}",
+          "_light": "{colors.neutral.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.85",
+      "snug": "1.0",
+      "normal": "1.5",
+      "loose": "1.7"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0.01em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.12em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "4px",
+      "md": "10px",
+      "lg": "20px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 232,
+      "s": 68,
+      "l": 37,
+      "name": "Klein electric ultramarine"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "ultramarine blue",
+      "name": "cobalt ink"
+    },
+    "mood_word": "electric",
+    "color_story": "PASSION IS ENERGY drenched in Yves-Klein ultramarine as pure charged pigment, one word lit in luminous voltage-white so the phrase reads as a current, not a slogan."
+  },
+  "shell": {
+    "nav": "floating pills (three full-radius outlined caps links, top-right, ~40px tall)",
+    "footer": "colophon block (single small stacked build-stamp tile, bottom-left of the wall)",
+    "brand_lockup": "stacked-lg",
+    "brand_color_mode": "original"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "APPROVED",
+      "feedback": "APPROVED",
+      "ts": 1784803738002
+    }
+  ],
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

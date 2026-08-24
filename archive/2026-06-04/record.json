@@ -1,0 +1,304 @@
+{
+  "date": "2026-06-04",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.189Z",
+  "buildId": "1780571534062",
+  "attempts": 1,
+  "brief": "Emerson at marquee scale on deep amber-walnut — four lines of luminous gold philosophy consuming 78% of the viewport, everything external (scores, moon, signals) demoted to a single quiet strip below the declaration.",
+  "rationale": "The hero phrase arrived from `signals.quote` fully formed — Emerson's \"Nothing external to you has any power over you\" is a declaration that earns marquee scale because it is simultaneously a philosophical position, a portfolio thesis, and a design brief. A site that redesigns itself every morning by reading the world and then choosing its own response is the literal enactment of this sentence. The phrase doesn't describe Doug's work; it describes the stance his work requires. That self-referential precision is what makes it poster-worthy rather than decorative.\n\nThe Poster archetype followed from the phrase without negotiation. If the declaration is that external things have no power, then a Poster — where one thing consumes the page and everything else is demoted to the edges — is the only structurally honest layout. A broadsheet would imply equivalence between the phrase and the scores. A gallery wall would position the phrase next to other things. The Poster makes the phrase the *only* thing that has power on the page, rendering the layout and the content identical arguments. Bricolage Grotesque at weight 800 was chosen over Bebas or Big Shoulders because Emerson didn't write factory warnings or stadium signage — he wrote warm, muscular American philosophy. The font's variable weight and humanist construction carry the philosophical register without the industrial coldness that a condensed all-caps display face would impose.\n\nAmber gold at H:38° is the only open hue in the color mandate (33°–48°) but it is also genuinely the correct color for this phrase on this day. Deep amber-walnut darkness (`#211000`) holding luminous gold text (`#FFE08A`) is the visual register of old books, candlelit manuscripts, and the long June light (14.6 hours on the fourth). The Tigers' 7–2 win, the waning gibbous at 76.8%, and the HN story about AI being \"made out of weights\" — a quietly resonant note on a page that is itself made out of weights — all find their home in the 80px signal strip at the bottom, peripheral and small, because the phrase above them has already settled the question of what matters.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Poster",
+  "signals": {
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Thursday",
+      "is_weekend": false,
+      "day_index": 4
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/chopratejas",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "NousResearch/hermes-agent/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/affaan-m",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "PaddlePaddle/PaddleOCR/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "github/spec-kit/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "the Memorial Tournament pres. by Workday",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Show HN: Uruky (EU-based Kagi alternative) now has Image Search and URL Rewrites",
+          "url": "https://uruky.com/?il=en",
+          "score": 60,
+          "by": "BrunoBernardino"
+        },
+        {
+          "title": "UK media fails to disclose defence sector links in nearly 60% of cases",
+          "url": "https://aoav.org.uk/2026/military-experts-or-arms-industry-insiders-uk-media-fails-to-disclose-defence-sector-links-in-nearly-60-of-cases/",
+          "score": 108,
+          "by": "XzetaU8"
+        },
+        {
+          "title": "They’re made out of weights",
+          "url": "https://maxleiter.com/blog/weights",
+          "score": 755,
+          "by": "MaxLeiter"
+        },
+        {
+          "title": "Gaussian Point Splatting",
+          "url": "https://momentsingraphics.de/Siggraph2026.html",
+          "score": 7,
+          "by": "ibobev"
+        },
+        {
+          "title": "Failing grades soar with AI usage, dwindling math skills in Berkeley CS classes",
+          "url": "https://www.dailycal.org/news/campus/academics/failing-grades-soar-as-professors-see-greater-ai-usage-dwindling-math-skills-in-uc-berkeley/article_16fad0bf-02cb-4b8c-8d88-888ffd9f8608.html",
+          "score": 351,
+          "by": "littlexsparkee"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waning gibbous",
+      "illumination": 0.768,
+      "days_into_cycle": 19.49
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "Radiohead",
+        "Tobin Sprout"
+      ]
+    },
+    "quote": {
+      "text": "Nothing external to you has any power over you.",
+      "author": "Ralph Waldo Emerson"
+    },
+    "season": {
+      "season": "summer",
+      "month": 6,
+      "day": 4,
+      "day_of_year": 155,
+      "month_name": "June"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-06-03T17:10Z",
+          "result": "win",
+          "score": "7-2"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:50",
+      "sunset": "19:26",
+      "daylight_hours": 14.6
+    },
+    "date": "2026-06-04"
+  },
+  "hero": {
+    "copy": "Nothing external to you has any power over you.",
+    "rationale": "Today's `signals.quote` delivers an Emerson line that is already in the exact register this portfolio demands. \"Nothing external to you has any power over you.\" is a declaration of pure internal authority — and for a portfolio that reinvents itself every morning by reading the world and then ignoring what isn't useful, it's operationally true. The phrase needs no framing, no attribution to land, no context — any visitor reading it on a Thursday in June, looking at a page that was different yesterday, is already standing inside its proof. Risk 8/10 says make it loud and mean it.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — H:38° (amber/gold); the only open zone in the color mandate (33°–48°), and genuinely the correct choice: it is the exact hue of late-afternoon summer light on June 4 with 14.6 hours of daylight, of torchlight and old manuscript — Emerson's transcendentalism rendered as warmth, not as cold industrial command\n- **Neutral palette** (amber-tinted stone, H:35°):\n  - 50: `#FAF8F3`\n  - 100: `#F4EEE0`\n  - 200: `#E6D9C2`\n  - 300: `#D2C0A0`\n  - 400: `#B5A07A`\n  - 500: `#8A7558`\n  - 600: `#685538`\n  - 700: `#493A22`\n  - 800: `#2D2210`\n  - 900: `#1A1408`\n- **Accent color**:\n  - light: `#FFE08A`\n  - default: `#FFCA3A`\n  - dark: `#C07000`\n  - glow: `rgba(255, 202, 58, 0.20)`\n- **Secondary accent** — none; one amber voice carries the page; a second accent would introduce exactly the \"external\" thing the phrase dismisses\n- **Background**:\n  - page bg: `#211000` (amber.900 — deep amber-walnut, near-black with a warm cast; not a dead black)\n  - card bg: `#3F1D00` (amber.800 — dark amber brown)\n  - sidebar bg: `#1A1408` (stone.900 — slightly cooler dark)\n- **Text colors**:\n  - primary text: `#FFE08A` (amber.200 — luminous gold, ≈14:1 contrast on page bg)\n  - secondary text: `#FFCA3A` (amber.300 — bright amber, ≈10:1 contrast)\n  - muted text: `#C07000` (amber.500 — medium amber, ≈5.5:1 contrast — used only for large/display text ≥18px)\n\n### 2. Typography (chassis-derived)\n- **Hero phrase rendering** — `display` token at `clamp(58px, 11vw, 162px)`, Bricolage Grotesque weight 800, four-line break, left-aligned from `6vw`:\n  ```\n  NOTHING\n  EXTERNAL TO YOU\n  HAS ANY POWER\n  OVER YOU.\n  ```\n  The cascade from a short first line to longer middle lines back to shorter last line creates a visual mass — a monolithic block of internal authority. Total phrase height at 162px × 0.88 leading ≈ 570px, consuming ~78% of the 760px remaining hero zone. Attribution `— RALPH WALDO EMERSON` sits 32px below line 4 in small-caps amber.400 at `0.875rem`.\n- **Line heights** — hero: `0.88` (lines almost touch, fusing into a single object); attribution: `1.4`; signal strip: `1.4`; body text elsewhere: `1.55`\n- **Letter spacings** — hero: `-0.02em` (optical compression at display scale); attribution: `0.12em` (spaced small-caps against the tight hero above); signal labels: `0.08em`; body: `0em`\n\n### 3. Layout Specification\n- **Archetype** — Poster: a single declaration fills ~78% of the viewport, demoting every other element to the periphery. This enacts the phrase — on a page where \"nothing external has any power,\" the type IS the power, and everything else (nav, signals, attribution) is marginal by design.\n- **CSS grid/flex structure**:\n  ```css\n  body {\n    min-height: 100vh;\n    display: grid;\n    grid-template-rows: 60px 1fr 80px;\n    max-width: none;\n  }\n  .nav { grid-row: 1; padding: 0 6vw; display: flex; align-items: center; justify-content: space-between; }\n  .hero { grid-row: 2; display: flex; flex-direction: column; justify-content: center; padding: 0 6vw; }\n  .signal-strip { grid-row: 3; padding: 0 6vw; display: flex; align-items: center; gap: 32px; border-top: 1px solid #6B3400; }\n  ```\n- **Major dimensions**:\n  - Hero/featured area: `grid-row: 2` fills `calc(100vh - 140px)` — phrase block vertically centered within\n  - Nav height: `60px`\n  - Signal strip height: `80px`\n  - Max content width: `none` — full canvas; all spacing via `padding: 0 6vw`\n  - Side padding: `6vw` both sides (≈86px at 1440px)\n  - Section spacing: `0` between hero lines (tight mass); `32px` margin-top on attribution below phrase\n- **Nav placement** — top bar, `height: 60px`, `padding: 0 6vw`; site name/logo in amber.500 far-left at `0.875rem` weight 500; nav links (Work, About) in amber.500 far-right at `0.875rem`; both intentionally muted so they don't compete with the phrase below\n- **Hero phrase grid zone** — occupies the vertical center of row 2; left edge at `6vw` (left-aligned); four lines each at `clamp(58px, 11vw, 162px)` with `line-height: 0.88`; rightmost extent is content-driven (the phrase does not need to justify to right margin — natural left-alignment gives the declaration its authority)\n\n### 4. Component Character\n- **Border radius** — `0px` throughout; no softening anywhere on this poster treatment\n- **Border treatment** — nearly borderless; single `1px` rule in `amber.700` (#6B3400) at the top of the signal strip only; nothing else\n- **Shadow** — none; the chromatic contrast between `#211000` and `#FFE08A` does all the work; shadows would cheapen it\n- **Density** — maximally spacious in the hero zone; the phrase owns the page and nothing crowds it; signal strip is compact (single row, `0.75–0.875rem`) to stay peripheral\n- **Interactive states** — nav links and signal links: hover moves from amber.500 to amber.200 (`#FFE08A`) with no underline; the page won't let external things make noise — transitions are `color 0.15s ease` only\n\n### 5. Signal Integration\n- **Signal elements live** in the bottom strip (80px, full width minus 6vw padding), a single horizontal row separated by the amber.700 top border\n- **Tigers 7–2 (WIN)** — `DET 7 · 2` in amber.200 weight 600 tabular-nums at `0.875rem`; label `W` in amber.300 at `0.75rem` — positioned first in the strip\n- **Moon** — `◑ 76.8%` in amber.500 at `0.75rem`; the waning gibbous nearly three-quarters lit, sitting quietly in the strip\n- **HN top story** — `\"They're made out of weights\"` in amber.400 at `0.75rem`, truncated to 40 chars, with score `755` in amber.300; this story about AI/LLM architecture is quietly resonant on a page generated by AI signals — the page IS made out of weights\n- **Daylight** — `☀ 14.6h` in amber.500 at `0.75rem`; the June 4 sun context\n- **Quote attribution** — `— RALPH WALDO EMERSON` in amber.400 at `0.875rem`, letter-spacing `0.12em`, rendered as small-caps (`font-variant-caps: all-small-caps`), positioned `32px` below the last hero line — this is the annotation, not the declaration; the declaration stands above it without needing the name",
+    "selfCheck": "1. Hero quotability: Yes — \"Nothing external to you has any power over you.\" is a complete philosophical declaration by Emerson that earns marquee scale entirely on its own; isolated from any context it remains forceful, specific, and screenshot-worthy.\n2. Because-of chain: Yes — phrase is a declaration of internal authority → Poster (the declaration IS the entire page, everything external pushed to margins, enacting the phrase structurally) → bricolage-manrope (Emerson wrote warm American philosophy, not industrial signage; Bricolage's humanist warmth over Bebas's cold weight) → amber drench (H:38° open mandate zone, torchlit summer warmth, internal power made chromatic) → four-line type mass fills 78% of viewport with nav and signals demoted to the periphery.\n3. Render feasibility: Yes — Bricolage Grotesque weight 800 at clamp(58px, 11vw, 162px) across 4 lines at line-height 0.88 on 1440×900 produces a hero block of approximately 570px, comfortably within the ~760px hero zone after subtracting nav (60px) and signal strip (80px), with 95px to spare for the attribution line.",
+    "rationale": "The hero phrase arrived from `signals.quote` fully formed — Emerson's \"Nothing external to you has any power over you\" is a declaration that earns marquee scale because it is simultaneously a philosophical position, a portfolio thesis, and a design brief. A site that redesigns itself every morning by reading the world and then choosing its own response is the literal enactment of this sentence. The phrase doesn't describe Doug's work; it describes the stance his work requires. That self-referential precision is what makes it poster-worthy rather than decorative.\n\nThe Poster archetype followed from the phrase without negotiation. If the declaration is that external things have no power, then a Poster — where one thing consumes the page and everything else is demoted to the edges — is the only structurally honest layout. A broadsheet would imply equivalence between the phrase and the scores. A gallery wall would position the phrase next to other things. The Poster makes the phrase the *only* thing that has power on the page, rendering the layout and the content identical arguments. Bricolage Grotesque at weight 800 was chosen over Bebas or Big Shoulders because Emerson didn't write factory warnings or stadium signage — he wrote warm, muscular American philosophy. The font's variable weight and humanist construction carry the philosophical register without the industrial coldness that a condensed all-caps display face would impose.\n\nAmber gold at H:38° is the only open hue in the color mandate (33°–48°) but it is also genuinely the correct color for this phrase on this day. Deep amber-walnut darkness (`#211000`) holding luminous gold text (`#FFE08A`) is the visual register of old books, candlelit manuscripts, and the long June light (14.6 hours on the fourth). The Tigers' 7–2 win, the waning gibbous at 76.8%, and the HN story about AI being \"made out of weights\" — a quietly resonant note on a page that is itself made out of weights — all find their home in the 80px signal strip at the bottom, peripheral and small, because the phrase above them has already settled the question of what matters.",
+    "signalIntegration": "- **Signal elements live** in the bottom strip (80px, full width minus 6vw padding), a single horizontal row separated by the amber.700 top border\n- **Tigers 7–2 (WIN)** — `DET 7 · 2` in amber.200 weight 600 tabular-nums at `0.875rem`; label `W` in amber.300 at `0.75rem` — positioned first in the strip\n- **Moon** — `◑ 76.8%` in amber.500 at `0.75rem`; the waning gibbous nearly three-quarters lit, sitting quietly in the strip\n- **HN top story** — `\"They're made out of weights\"` in amber.400 at `0.75rem`, truncated to 40 chars, with score `755` in amber.300; this story about AI/LLM architecture is quietly resonant on a page generated by AI signals — the page IS made out of weights\n- **Daylight** — `☀ 14.6h` in amber.500 at `0.75rem`; the June 4 sun context\n- **Quote attribution** — `— RALPH WALDO EMERSON` in amber.400 at `0.875rem`, letter-spacing `0.12em`, rendered as small-caps (`font-variant-caps: all-small-caps`), positioned `32px` below the last hero line — this is the annotation, not the declaration; the declaration stands above it without needing the name"
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "amber": {
+          "50": "#FFF9ED",
+          "100": "#FFF0CC",
+          "200": "#FFE08A",
+          "300": "#FFCA3A",
+          "400": "#F09400",
+          "500": "#C07000",
+          "600": "#924E00",
+          "700": "#6B3400",
+          "800": "#3F1D00",
+          "900": "#211000"
+        },
+        "stone": {
+          "50": "#FAF8F3",
+          "100": "#F4EEE0",
+          "200": "#E6D9C2",
+          "300": "#D2C0A0",
+          "400": "#B5A07A",
+          "500": "#8A7558",
+          "600": "#685538",
+          "700": "#493A22",
+          "800": "#2D2210",
+          "900": "#1A1408"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.amber.900}",
+          "_light": "{colors.stone.50}"
+        },
+        "bgCard": {
+          "base": "{colors.amber.800}",
+          "_light": "{colors.stone.100}"
+        },
+        "bgSidebar": {
+          "base": "{colors.stone.900}",
+          "_light": "{colors.stone.100}"
+        },
+        "text": {
+          "base": "{colors.amber.200}",
+          "_light": "{colors.stone.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.amber.300}",
+          "_light": "{colors.stone.700}"
+        },
+        "textMuted": {
+          "base": "{colors.amber.500}",
+          "_light": "{colors.stone.500}"
+        },
+        "accent": {
+          "base": "{colors.amber.300}",
+          "_light": "{colors.amber.500}"
+        },
+        "accentHover": {
+          "base": "{colors.amber.200}",
+          "_light": "{colors.amber.600}"
+        },
+        "border": {
+          "base": "{colors.amber.700}",
+          "_light": "{colors.stone.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.15",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.10em",
+      "widest": "0.18em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "800"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 38,
+      "s": 100,
+      "l": 44,
+      "name": "amber gold"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "amber",
+      "name": "amber stone"
+    },
+    "mood_word": "torchlit",
+    "color_story": "Deep amber-walnut darkness holds a luminous gold proclamation like candlelight on old parchment — internal power made visible, a summer torch burning against the dark."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

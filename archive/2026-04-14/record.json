@@ -1,0 +1,26 @@
+{
+  "date": "2026-04-14",
+  "era": "traced",
+  "generatedAt": "2026-08-24T15:34:16.143Z",
+  "buildId": "1776167013986",
+  "attempts": 1,
+  "brief": null,
+  "rationale": null,
+  "filesChanged": [],
+  "legacyArchetype": null,
+  "signals": null,
+  "hero": {
+    "copy": null,
+    "rationale": null,
+    "source": null
+  },
+  "chassis": null,
+  "adBrief": null,
+  "tokens": null,
+  "colorScheme": null,
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

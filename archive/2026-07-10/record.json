@@ -1,0 +1,366 @@
+{
+  "date": "2026-07-10",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.221Z",
+  "buildId": "1783682008354",
+  "attempts": 1,
+  "brief": "Spectral Italic at literary marquee scale, chartreuse-gold on near-void Barcelona black — Zafón's irreversible aphorism floating in an asymmetric void, Tigers 4–1 and the waning crescent holding quiet court in the upper-right shadow.",
+  "rationale": "The Zafón quote arrived as today's primary signal — and it arrived fully formed. \"The moment you stop to think about whether you love someone, you've already stopped loving that person forever\" is a philosophical aphorism that has circulated as a standalone screenshot-shared quote for well over a decade, lifted cleanly from *The Shadow of the Wind* and passed around exactly because it reads as a finished thought. On a Friday in mid-July, with the moon at 13.8% illumination in its final waning days, the quote's subject — the irreversibility of a moment, the thing that ends before you know it has ended — is calibrated precisely to the day's emotional register. For a portfolio site that rebuilds itself every morning from fresh environmental data rather than from a fixed template, the quote is also autobiographical: the site never hesitates, never repeats itself by default, never stops to second-guess the gesture.\n\nGallery Wall was the only honest archetype for this phrase. The quote does not want to fill a full viewport poster-style (that would reduce it to a motivational poster; the phrase has too much nuance for that treatment). It wants to occupy a dominant zone in a composed canvas — like a pinned note in a vast reading room — surrounded by the day's other signals at respectful but unequal distances. The asymmetric offset of the signals block (120px lower than the quote top) is the Gallery Wall's signature move: blocks that are not aligned with each other, whitespace that is placed rather than inherited. Spectral Italic is the only honest chassis choice for Zafón: Spectral's transitional slab letterforms in italic have the literary gravity of a well-set book page, the exact register of a sentence worth pulling from a novel. Anton or Big Shoulders would shout; Bebas would posture; Spectral earns the quote's authority through its serifs rather than its weight.\n\nThe color mandate's narrow 58°–75° corridor — the only open zone after six recent designs consumed most of the hue wheel — forces golden chartreuse (#D8E500) as the accent. This turns out to be exactly right: H:63° is the hue of Mediterranean sunlight on limestone, of afternoon light through old book pages, of the particular gold that makes darkness feel inhabited rather than empty. Against the near-void warm black background (#120E06, with its amber tint pulling toward the same hue family), the chartreuse-gold reads as something emitted rather than reflected — a candle in a bookshop at closing time, warm and irreplaceable.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Gallery Wall",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "21 Hrs On The Moon",
+          "description": "To mark the recent Artemis Moon Mission and honour the legacy of the first moon landing in 1969, we celebrate the experiments carried out in those historic...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0d7b8f419a3938435907.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAJulBJREFUeAHsvWmbXLeRJooqFjeRlERJFLVbsiTbsiXb8riX6Z62u9sz88ydb/f7PM/9MH9k/tD8gZ7rp6/b7rblRbJky63d2khKFPedrO0mTtUposBAIFbgJJmvVMzMk0BE...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Spin the Wheel",
+          "description": "SpinTheWheel.io lets anyone create, customise and share interactive spinning wheels for random choices, competitions and events. Ideal for teaching and...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3911ca65eb6086956411.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAKr2lDQ1BJQ0MgUHJvZmlsZQAASImVlwdUk9kSgO//pzdaINIJvUlvAaSEHor0KiohCRBKiIEgYgNkcQXWgooIqAu6KKDgqhRZCyKKbRFQ7LogoqCuiwUbKu8HDsHdd9575805k/kymTsz9557z5kAQKGzhcJUWAaANEGmKMTbjR4VHUPHPQdYQAU0QAJ2bE6GkBkU5A8QmbN/l/e3ADRtb5hM5/r33/+ryHJ5GRwA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Cloudstudio this site is awake",
+          "description": "An AI studio whose site is itself the demo: eight living particle drivers tour, narrate and re-theme the whole page, then dare you to beat them at their...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4bad57d1887955097327.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAQAElEQVR4nOz9B3xj6X0f/J5+cNB7Ze/kzHB62Zkts71o1SXLcizLNXFN3pvEeZ37Jrnpju34tR3bcYss27J6l1arXa22l+m9sfeO3oFT7/+Aq9nZKSRAgiRI/r8faAVyABA4wHnwPL+nMVrmDwmEEKphb50Y+8DHPw9X2rsf+L/+v88TCCFUw57/9n//wbd+F6783D//7c/81m8TCCFUw/71z3700qm34crP/+Xz...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Friday",
+      "is_weekend": false,
+      "day_index": 5
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/wonderwhy-er",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "oven-sh/bun/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "abseil/abseil-cpp/stargazers",
+          "description": "",
+          "language": "C++",
+          "stars": null
+        },
+        {
+          "name": "addyosmani/agent-skills/stargazers",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "jbeder/yaml-cpp/stargazers",
+          "description": "",
+          "language": "C++",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Genesis Scottish Open",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Jordan Smith",
+          "position": "1",
+          "score": "-8"
+        },
+        {
+          "name": "Danny Willett",
+          "position": "2",
+          "score": "-6"
+        },
+        {
+          "name": "Guido Migliozzi",
+          "position": "3",
+          "score": "-6"
+        },
+        {
+          "name": "Matt Fitzpatrick",
+          "position": "4",
+          "score": "-6"
+        },
+        {
+          "name": "Darius Van Driel",
+          "position": "5",
+          "score": "-5"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "GPT-5.6",
+          "url": "https://openai.com/index/gpt-5-6/",
+          "score": 1313,
+          "by": "logickkk1"
+        },
+        {
+          "title": "In Emacs, Everything Looks Like a Service",
+          "url": "http://yummymelon.com/devnull/in-emacs-everything-looks-like-a-service.html",
+          "score": 31,
+          "by": "kickingvegas"
+        },
+        {
+          "title": "Show HN: Getting GLM 5.2 running on my slow computer",
+          "url": "https://github.com/JustVugg/colibri",
+          "score": 706,
+          "by": "vforno"
+        },
+        {
+          "title": "EU Parliament greenlights Chat Control 1.0",
+          "url": "https://www.patrick-breyer.de/en/eu-parliament-greenlights-chat-control-1-0-breyer-our-children-lose-out/",
+          "score": 1421,
+          "by": "rapnie"
+        },
+        {
+          "title": "Train sim created by just one person is being called the best ever made",
+          "url": "https://kotaku.com/a-train-sim-created-by-just-one-person-is-being-called-the-best-ever-made-2000699429",
+          "score": 630,
+          "by": "oumua_don17"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waning crescent",
+      "illumination": 0.138,
+      "days_into_cycle": 25.96
+    },
+    "music": {
+      "bands": [
+        "Tobin Sprout",
+        "Guided by Voices"
+      ]
+    },
+    "quote": {
+      "text": "The moment you stop to think about whether you love someone, you've already stopped loving that person forever.",
+      "author": "Carlos Ruiz Zafon"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 10,
+      "day_of_year": 191,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-09T22:40Z",
+          "result": "win",
+          "score": "4-1"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:57",
+      "sunset": "19:32",
+      "daylight_hours": 14.6
+    },
+    "date": "2026-07-10"
+  },
+  "hero": {
+    "copy": "The moment you stop to think about whether you love someone, you've already stopped loving that person forever.",
+    "rationale": "Carlos Ruiz Zafón's sentence from *The Shadow of the Wind* arrived as today's primary signal — and it requires nothing from the surrounding design except space to land in. On a Friday in mid-July with a waning crescent moon at 13.8% illumination (the closing hours of a lunar cycle), this aphorism about irreversible endings is precisely calibrated to the day's emotional register. For a portfolio site that commits to a new decisive gesture every morning rather than defaulting to any template, the quote is also self-portrait: hesitation is the thing that kills. It is one of the most screenshot-shared literary quotes of the past two decades and earns its scale on that fact alone.",
+    "source": null
+  },
+  "chassis": "spectral-albert",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue:** H:63°, S:88%, L:46% — golden chartreuse, mathematically inside the mandate's only open corridor (58°–75°), and tonally precise for a July literary brief: the hue of sunlit limestone and printed pages held toward a window. Named \"Barcelona gold.\"\n- **Neutral palette** (warm-tinted toward amber, like aged paper and bookshelf stone):\n  - stone.50:  #FAFAF5\n  - stone.100: #F5F3E8\n  - stone.200: #E8E5D4\n  - stone.300: #CBC6B2\n  - stone.400: #9E9888\n  - stone.500: #6E6858\n  - stone.600: #4E4A3C\n  - stone.700: #342F24\n  - stone.800: #1E1912\n  - stone.900: #120E06\n- **Accent color:**\n  - light:   #E8F200\n  - default: #D8E500\n  - dark:    #B2BE00\n  - glow:    #EEFF9E\n- **Secondary accent:** None — single-accent strategy. The literary quote tolerates no chromatic competition.\n- **Background:**\n  - Page bg:    #120E06 (stone.900, near-void warm black)\n  - Card bg:    #1E1912 (stone.800)\n  - Sidebar bg: #1E1912 (stone.800)\n- **Text colors:**\n  - Primary text:   #F8F0DC — warm cream, ~18:1 on page bg ✓\n  - Secondary text: #9E9888 — stone.400, ~5:1 on page bg ✓ (passes AA large text)\n  - Muted text:     #6E6858 — stone.500, ~3.3:1 on page bg (decorative / large labels only)\n\n### 2. Typography (spectral-albert chassis)\n\n- **Hero phrase rendering:** Spectral `display` token, italic variant (`font-style: italic`), `clamp(2.25rem, 4.2vw, 5rem)`, left-aligned, natural line-breaks across 4–5 lines. The Zafón quote does not want condensed weight or all-caps — it wants the gravity of Spectral's transitional slab italic, like a fragment pulled directly from the novel's pages. At max scale on a 1440px viewport, the quote occupies approximately 380–440px of vertical space within its 7/12-column zone.\n- **Line heights:**\n  - Hero quote: 1.12 (tight enough for mass; generous enough for Spectral's italic descenders)\n  - Attribution line: 1.4\n  - Body / card prose: 1.6 (dark bg compensation, +0.05 above normal)\n  - Signal labels: 1.2\n- **Letter spacings:**\n  - Hero quote: 0em — Spectral's italic inherently carries rhythm\n  - All-caps labels (TIGERS, SCOTTISH OPEN, MOON): 0.12em\n  - Nav items: 0.10em\n  - Body / captions: 0em\n\n### 3. Layout Specification\n\n- **Archetype:** Gallery Wall — the Zafón quote lives as a dominant text block in the upper-left of the canvas, with signal, navigation, and project blocks asymmetrically placed across the remaining void. The irregular whitespace between blocks is compositional, not padding. The literary fragment sits like a pinned note in a vast dark reading room.\n- **CSS grid structure:**\n  ```css\n  display: grid;\n  grid-template-columns: repeat(12, 1fr);\n  grid-template-rows: auto;\n  column-gap: 0;\n  row-gap: 0;\n  padding: 72px 5vw 96px;\n  max-width: none;\n  ```\n- **Major dimensions:**\n  - Canvas: 100vw, no max-width constraint; side padding 5vw\n  - **Hero quote zone:** `grid-column: 1 / 8; grid-row: 1 / 2` — ~58% canvas width, begins 72px from top edge\n  - **Attribution zone:** `grid-column: 1 / 6; grid-row: 2 / 3` — 24px below quote base, inset from left\n  - **Signals zone:** `grid-column: 9 / 13; grid-row: 1 / 3` — upper right, top-padded 120px (creates asymmetric vertical offset vs. quote top — this IS the Gallery Wall)\n  - **Projects zone:** `grid-column: 1 / 13; grid-row: 3 / 4` — full width, ~80px below attribution\n  - **Identity/nav zone:** `grid-column: 1 / 5; grid-row: 4 / 5` — lower left\n  - **Capabilities zone:** `grid-column: 6 / 13; grid-row: 4 / 5` — lower right\n- **Nav placement:** Top-right, compact horizontal bar at page top — `grid-column: 9 / 13`, positioned above the signals zone (treated as a header sub-zone). Albert Sans, 11px, uppercase, letter-spacing 0.12em. Four links: WORK · ABOUT · CONTACT · FRI 10 JUL 2026.\n- **Hero phrase grid zone:** Columns 1–7, row 1. The quote begins at the established top inset. At `clamp(2.25rem, 4.2vw, 5rem)` Spectral Italic, line-height 1.12, the 21-word quote breaks into 4 natural lines of roughly even visual mass.\n\n### 4. Component Character\n\n- **Border radius:** `none` (0px) on all elements. The quote's philosophical severity permits no softened corners.\n- **Border treatment:** Sparing. A 1px left border in `accent` (#D8E500) marks the attribution line — the only purely decorative border. A 1px `border` token (stone.700) defines the signals block on its left edge. No other borders.\n- **Shadow:** None. The near-void background establishes all depth through pure darkness.\n- **Density:** Spacious in the quote zone (white-void breathing room earns the quote its weight); compact in the signals zone (dense labeled data, ticker-register).\n- **Interactive states:** Project cards — 1px left border in accent appears on hover. Nav links — accent underline on hover. No transition animations; immediate state changes match the quote's declarative finality.\n\n### 5. Signal Integration\n\n- **Zafón quote (hero):** IS the page — Spectral Italic at display scale, cream #F8F0DC, upper-left zone, left-aligned, no pull-quote decoration. Quotation marks are set as typographic openings.\n- **Attribution:** Two lines below quote in Albert Sans small caps, stone.400: \"— CARLOS RUIZ ZAFÓN · THE SHADOW OF THE WIND\". A 1px accent left border runs the full height of the attribution block.\n- **Tigers 4–1:** In signals zone. Label: \"TIGERS\" — Albert Sans caps, widest letter-spacing, stone.500. Score: \"4 · 1  W\" — cream weight for the numerals, accent for the \"W\". Sub-line: \"vs. Kansas City · Jul 9\" in stone.400 at 11px.\n- **Golf leaderboard:** \"SCOTTISH OPEN\" label. Three entries: Jordan Smith −8 / Willett −6 / Fitzpatrick −6. Albert Sans, 12px, stone.400; leader score in accent.\n- **Moon:** \"🌒  WANING CRESCENT  14%\" in stone.500 at 11px, bottom of signals zone. The lunar close connects to the quote's theme of endings.\n- **Music:** \"GBV · TOBIN SPROUT\" in stone.500 italics, 11px, base of signals block — a whispered continuity with yesterday.\n- **Chat Control:** Below sports scores: \"EU: Chat Control 1.0 — Parliament\" in stone.500 at 11px, no accent color. A note, not an alarm.\n- **Friday/date:** \"FRI 10 JUL 2026\" in nav bar, Albert Sans caps, 11px, stone.400.\n- **Awwwards echo:** \"21 HRS ON THE MOON\" in stone.600 at 10px, lower-right corner of projects zone — the Artemis SOTD as a barely-legible environmental footnote for those who look.",
+    "selfCheck": "1. Hero quotability: Yes — Zafón's line from *The Shadow of the Wind* has circulated as a standalone screenshot-worthy quote for over a decade; it is complete, devastating, and fully legible without context.\n2. Because-of chain: Yes — the literary register of the quote demands Spectral Italic (not a condensed signage face), the Gallery Wall archetype (dominant text block among asymmetric signal elements, not a full-viewport poster), and golden chartreuse on near-void black (the color of candlelight, of Barcelona, of the narrow hue corridor the mandate opens today).\n3. Render feasibility: Yes — Gallery Wall requires no 70%+ height fill (that is Specimen's constraint); Spectral at clamp(2.25rem, 4.2vw, 5rem) in a 7/12-column zone renders the full 21-word quote at comfortable literary marquee scale on 1440×900 without overflow.",
+    "rationale": "The Zafón quote arrived as today's primary signal — and it arrived fully formed. \"The moment you stop to think about whether you love someone, you've already stopped loving that person forever\" is a philosophical aphorism that has circulated as a standalone screenshot-shared quote for well over a decade, lifted cleanly from *The Shadow of the Wind* and passed around exactly because it reads as a finished thought. On a Friday in mid-July, with the moon at 13.8% illumination in its final waning days, the quote's subject — the irreversibility of a moment, the thing that ends before you know it has ended — is calibrated precisely to the day's emotional register. For a portfolio site that rebuilds itself every morning from fresh environmental data rather than from a fixed template, the quote is also autobiographical: the site never hesitates, never repeats itself by default, never stops to second-guess the gesture.\n\nGallery Wall was the only honest archetype for this phrase. The quote does not want to fill a full viewport poster-style (that would reduce it to a motivational poster; the phrase has too much nuance for that treatment). It wants to occupy a dominant zone in a composed canvas — like a pinned note in a vast reading room — surrounded by the day's other signals at respectful but unequal distances. The asymmetric offset of the signals block (120px lower than the quote top) is the Gallery Wall's signature move: blocks that are not aligned with each other, whitespace that is placed rather than inherited. Spectral Italic is the only honest chassis choice for Zafón: Spectral's transitional slab letterforms in italic have the literary gravity of a well-set book page, the exact register of a sentence worth pulling from a novel. Anton or Big Shoulders would shout; Bebas would posture; Spectral earns the quote's authority through its serifs rather than its weight.\n\nThe color mandate's narrow 58°–75° corridor — the only open zone after six recent designs consumed most of the hue wheel — forces golden chartreuse (#D8E500) as the accent. This turns out to be exactly right: H:63° is the hue of Mediterranean sunlight on limestone, of afternoon light through old book pages, of the particular gold that makes darkness feel inhabited rather than empty. Against the near-void warm black background (#120E06, with its amber tint pulling toward the same hue family), the chartreuse-gold reads as something emitted rather than reflected — a candle in a bookshop at closing time, warm and irreplaceable.",
+    "signalIntegration": "- **Zafón quote (hero):** IS the page — Spectral Italic at display scale, cream #F8F0DC, upper-left zone, left-aligned, no pull-quote decoration. Quotation marks are set as typographic openings.\n- **Attribution:** Two lines below quote in Albert Sans small caps, stone.400: \"— CARLOS RUIZ ZAFÓN · THE SHADOW OF THE WIND\". A 1px accent left border runs the full height of the attribution block.\n- **Tigers 4–1:** In signals zone. Label: \"TIGERS\" — Albert Sans caps, widest letter-spacing, stone.500. Score: \"4 · 1  W\" — cream weight for the numerals, accent for the \"W\". Sub-line: \"vs. Kansas City · Jul 9\" in stone.400 at 11px.\n- **Golf leaderboard:** \"SCOTTISH OPEN\" label. Three entries: Jordan Smith −8 / Willett −6 / Fitzpatrick −6. Albert Sans, 12px, stone.400; leader score in accent.\n- **Moon:** \"🌒  WANING CRESCENT  14%\" in stone.500 at 11px, bottom of signals zone. The lunar close connects to the quote's theme of endings.\n- **Music:** \"GBV · TOBIN SPROUT\" in stone.500 italics, 11px, base of signals block — a whispered continuity with yesterday.\n- **Chat Control:** Below sports scores: \"EU: Chat Control 1.0 — Parliament\" in stone.500 at 11px, no accent color. A note, not an alarm.\n- **Friday/date:** \"FRI 10 JUL 2026\" in nav bar, Albert Sans caps, 11px, stone.400.\n- **Awwwards echo:** \"21 HRS ON THE MOON\" in stone.600 at 10px, lower-right corner of projects zone — the Artemis SOTD as a barely-legible environmental footnote for those who look."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "yellow": {
+          "50": "#FDFFF0",
+          "100": "#F5FFD6",
+          "200": "#EEFF9E",
+          "300": "#E2F56A",
+          "400": "#E8F200",
+          "500": "#D8E500",
+          "600": "#B2BE00",
+          "700": "#8E9700",
+          "800": "#606600",
+          "900": "#333800"
+        },
+        "stone": {
+          "50": "#FAFAF5",
+          "100": "#F5F3E8",
+          "200": "#E8E5D4",
+          "300": "#CBC6B2",
+          "400": "#9E9888",
+          "500": "#6E6858",
+          "600": "#4E4A3C",
+          "700": "#342F24",
+          "800": "#1E1912",
+          "900": "#120E06"
+        },
+        "cream": {
+          "100": "#F8F0DC",
+          "200": "#F0E3C0",
+          "300": "#E5D09A",
+          "400": "#D4B870",
+          "500": "#B89040"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.stone.900}",
+          "_light": "{colors.stone.50}"
+        },
+        "bgCard": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.100}"
+        },
+        "bgSidebar": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.100}"
+        },
+        "text": {
+          "base": "{colors.cream.100}",
+          "_light": "{colors.stone.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.stone.400}",
+          "_light": "{colors.stone.600}"
+        },
+        "textMuted": {
+          "base": "{colors.stone.500}",
+          "_light": "{colors.stone.400}"
+        },
+        "accent": {
+          "base": "{colors.yellow.500}",
+          "_light": "{colors.yellow.600}"
+        },
+        "accentLight": {
+          "base": "{colors.yellow.400}",
+          "_light": "{colors.yellow.500}"
+        },
+        "accentGlow": {
+          "base": "{colors.yellow.200}",
+          "_light": "{colors.yellow.300}"
+        },
+        "border": {
+          "base": "{colors.stone.700}",
+          "_light": "{colors.stone.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "24px",
+      "6": "32px",
+      "7": "48px",
+      "8": "64px",
+      "9": "96px",
+      "10": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.9",
+      "snug": "1.15",
+      "base": "1.55",
+      "loose": "1.8"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.08em",
+      "widest": "0.15em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 63,
+      "s": 88,
+      "l": 46,
+      "name": "Barcelona gold"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "warm amber",
+      "name": "aged stone"
+    },
+    "mood_word": "irreversible",
+    "color_story": "Chartreuse-gold on near-void warm black — the color of candlelight in an old bookshop at closing time, of Mediterranean sunlight cutting through shadow; the mandate's narrow 58°–75° corridor happens to land exactly where Zafón's Barcelona lives."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

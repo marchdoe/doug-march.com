@@ -1,14 +1,7 @@
 import { createFileRoute, Link, Outlet, useMatch } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 
-export interface ArchiveEntry {
-  date: string
-  brief: string
-  rationale: string
-  filesChanged: string[]
-  archetype: string
-  buildId: string
-}
+import type { ArchiveIndexEntry } from '../types/archive-record'
 
 export const Route = createFileRoute('/archive')({
   component: ArchivePage,
@@ -20,12 +13,12 @@ function truncate(text: string, max: number) {
 }
 
 function ArchivePage() {
-  const [entries, setEntries] = useState<ArchiveEntry[]>([])
+  const [entries, setEntries] = useState<ArchiveIndexEntry[]>([])
   const [loaded, setLoaded] = useState(false)
   const childMatch = useMatch({ from: '/archive/$date', shouldThrow: false })
 
   useEffect(() => {
-    fetch('/archive/_data.json')
+    fetch('/archive-data/index.json')
       .then((res) => (res.ok ? res.json() : []))
       .then((data) => {
         setEntries(data)
@@ -106,7 +99,7 @@ function ArchivePage() {
   )
 }
 
-function ArchiveRow({ entry, isLast }: { entry: ArchiveEntry; isLast: boolean }) {
+function ArchiveRow({ entry, isLast }: { entry: ArchiveIndexEntry; isLast: boolean }) {
   return (
     <Link
       to="/archive/$date"
@@ -140,7 +133,7 @@ function ArchiveRow({ entry, isLast }: { entry: ArchiveEntry; isLast: boolean })
             marginBottom: 4,
           }}
         >
-          {entry.archetype || 'Untitled'}
+          {entry.legacyArchetype || entry.chassis || 'Untitled'}
         </span>
         <span
           style={{
@@ -149,7 +142,7 @@ function ArchiveRow({ entry, isLast }: { entry: ArchiveEntry; isLast: boolean })
             lineHeight: 1.4,
           }}
         >
-          {truncate(entry.brief, 120)}
+          {truncate(entry.brief ?? '', 120)}
         </span>
       </div>
 

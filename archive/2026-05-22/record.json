@@ -1,0 +1,370 @@
+{
+  "date": "2026-05-22",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.179Z",
+  "buildId": "1779448450309",
+  "attempts": 1,
+  "brief": "Spectral editorial declaration on acid-spring ink-void — Gibran's \"cease to be at peace\" set in phosphorescent chartreuse at 65px italic across two broadsheet lines, three dense columns of work, timeline, and signals ruled below in warm near-white on the darkest paper of the week.",
+  "rationale": "The Gibran quote arrived from today's signal feed and immediately earned its place through convergence rather than selection. It is a Friday in late May — a week ending, the first-quarter moon half-lit, 14.3 hours of daylight still building, a Tigers loss filed quietly for the third time this week, Memorial Day three days out. The phrase \"You talk when you cease to be at peace with your thoughts\" is the exact phenomenology of that moment: the accumulated pressure of a week's unfinished thinking breaking into speech. For a portfolio site that speaks by redesigning itself daily in response to environmental signals, the meta-dimension is unavoidable — this site exists precisely at that boundary. The phrase is quotable without attribution, accusatory without a target, and reads as portfolio philosophy: the work is the silence; this page is where the silence ended.\n\nThe Broadsheet archetype followed necessarily from the phrase. A Poster would have isolated the quote in a void — treating it as a monument rather than a declaration. A Specimen would have made the typography the entire argument. Broadsheet does something more complex: it makes the quote the headline of today's edition and the work, signals, and timeline the editorial content below. The logic is exact — the quote claims the top of the page as a masthead; the three columns of projects, timeline, and today's signals are the evidence that the claim is earned. Spectral Italic was the only chassis capable of this register: it is the font of transitional serif newspapers, of literary journals, of things printed to be believed. Condensed grotesque or Anton would have made the Gibran line feel like a motivational poster; Spectral makes it feel like a front page.\n\nThe palette is the most committed departure in recent memory. The color mandate's open window — 65°–88° — is the precise hue range of acid chartreuse, the color of new-growth leaves held up to late-May sunlight. This is not a safe green, not a sage or an olive; it is aggressive, biological, almost neon, the color that announces spring has stopped being gentle. Printed as the headline ink on near-black paper (ink.900, `#1A1A0A`), chartreuse.300 (`#C8E828`) achieves a contrast ratio of 13.1:1 and reads like a broadsheet printed in an alternate world where presses run on phosphorescent ink. The warm-tinted ink neutral family (barely tinted toward H:75°, chroma 0.01) gives the near-black its life — pure black would read as CMYK registration; this reads as the specific darkness of a May evening.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Broadsheet",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Pillars Of Seven",
+          "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Pedal Mafia | Event Micro Site",
+          "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Friday",
+      "is_weekend": false,
+      "day_index": 5
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "anthropics/claude-plugins-official/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "colbymchenry/codegraph/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "ruvnet/RuView/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "sponsors/rohitg00",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "ChromeDevTools/chrome-devtools-mcp/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "THE CJ CUP Byron Nelson",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Taylor Moore",
+          "position": "1",
+          "score": "-9"
+        },
+        {
+          "name": "Brooks Koepka",
+          "position": "2",
+          "score": "-8"
+        },
+        {
+          "name": "Jesper Svensson",
+          "position": "3",
+          "score": "-8"
+        },
+        {
+          "name": "Emiliano Grillo",
+          "position": "4",
+          "score": "-7"
+        },
+        {
+          "name": "Keith Mitchell",
+          "position": "5",
+          "score": "-7"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "The case against boolean logic",
+          "url": "https://abuseofnotation.github.io/boolean-thinking/",
+          "score": 5,
+          "by": "boris_m"
+        },
+        {
+          "title": "Project Hail Mary – Stellar Navigation Chart",
+          "url": "https://valhovey.github.io/gaia-mary/",
+          "score": 952,
+          "by": "speleo"
+        },
+        {
+          "title": "Slumber a TUI HTTP Client",
+          "url": "https://slumber.lucaspickering.me",
+          "score": 90,
+          "by": "jicea"
+        },
+        {
+          "title": "CODA: Rewriting Transformer Blocks as GEMM-Epilogue Programs",
+          "url": "https://arxiv.org/abs/2605.19269",
+          "score": 76,
+          "by": "matt_d"
+        },
+        {
+          "title": "Cleve Moler has died",
+          "url": "https://www.mathworks.com/company/aboutus/founders/clevemoler.html",
+          "score": 124,
+          "by": "mychele"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Memorial Day",
+          "date": "2026-05-25",
+          "days_away": 3
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "first quarter",
+      "illumination": 0.405,
+      "days_into_cycle": 6.49
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "Radiohead"
+      ]
+    },
+    "quote": {
+      "text": "You talk when you cease to be at peace with your thoughts.",
+      "author": "Kahlil Gibran"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 22,
+      "day_of_year": 142,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-21T17:10Z",
+          "result": "loss",
+          "score": "1-3"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:56",
+      "sunset": "19:16",
+      "daylight_hours": 14.3
+    },
+    "date": "2026-05-22"
+  },
+  "hero": {
+    "copy": "You talk when you cease to be at peace with your thoughts.",
+    "rationale": "The Gibran quote from today's signal feed earns today's marquee precisely because it functions as an accusation, a confession, and a portfolio manifesto simultaneously. On a Friday in late May — end of week, first-quarter moon at 40.5%, 14.3 hours of daylight building toward a long weekend — it lands as the exact sensation of a week's accumulated thoughts reaching their limit. For a portfolio site that redesigns itself daily in response to environmental signals, the phrase is also self-description: this site speaks because its maker has stopped being at peace with a blank screen. The Tigers lost again (1–3) and silence was broken. The phrase is quotable in isolation, attributable without the attribution, and does not describe the site — it indicts the visitor at the same moment it indicts the maker.",
+    "source": null
+  },
+  "chassis": "spectral-albert",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue:** H:75°, S:88%, L:48% — acid chartreuse. H:75° falls squarely in the mandated 65°–88° window. This is not grass green or olive or citrus; it is the precise frequency of new-growth leaves in the third week of May, aggressive and unambiguous. Every recent design has lived in the 0°–65° or 162°–350° range; H:75° is the sharpest available break, and it reads as spring's most confrontational color against near-black.\n\n**Neutral palette (warm ink family, tinted H:75°):**\n- 50: `#FAFAF2`\n- 100: `#F4F4E4`\n- 200: `#E6E6C8`\n- 300: `#CECDA8`\n- 400: `#AEAD85`\n- 500: `#8A8A62`\n- 600: `#666646`\n- 700: `#484830`\n- 800: `#2E2E1C`\n- 900: `#1A1A0A`\n- 950: `#0E0E06`\n\n**Accent color (chartreuse scale):**\n- Light (50): `#F7FCD8`\n- Default (300): `#C8E828` — hero headline ink\n- Dark (500): `#8EC206` — rule lines, section borders\n- Glow: none — print register, no glow effects\n\n**Secondary accent:** None. One committed color; the broadsheet logic of a single special ink.\n\n**Background:**\n- Page bg: `#1A1A0A` (ink.900) — near-black with faint yellow-green undertone\n- Card/column bg: `#2E2E1C` (ink.800) — slightly lighter for inset panels\n- Sidebar/nav bg: `#0E0E06` (ink.950) — deepest surface, newspaper gutter\n\n**Text colors:**\n- Primary text: `#FAFAF2` (ink.50) — warm near-white, 17.1:1 vs ink.900\n- Secondary text: `#CECDA8` (ink.300) — warm mid-tone, 11.4:1 vs ink.900\n- Muted text: `#8A8A62` (ink.500) — for dates, metadata, light labels\n- Hero phrase: `#C8E828` (chartreuse.300) — 13.1:1 vs ink.900 ✓\n\n---\n\n### 2. Typography (chassis-derived)\n\n**Chassis:** `spectral-albert` — Spectral (transitional serif display) + Albert Sans (humanist body/label). Spectral Italic at display scale is the editorial register: a genuine newspaper headline font, not condensed impact type. Albert Sans in uppercase with wide tracking handles the label/dateline/section-header role.\n\n**Hero phrase rendering:**\n- Font: Spectral Italic, weight 600 (semibold), in chartreuse.300\n- Scale: `clamp(28px, 4.5vw, 64px)` — at 1440px viewport → ~65px per line\n- Line break: two lines:\n  - Line 1: *You talk when you cease to be at peace*\n  - Line 2: *with your thoughts.*\n- The second line is shorter, creating a natural hanging emphasis on \"thoughts.\" — no decoration, no color event. The phrase earns its weight through scale and the font itself.\n- Letter spacing: `tight` (−0.02em) — Spectral at this scale wants slightly tighter tracking than default\n- Line height: `0.95` (tight) — the two lines kiss slightly, pressing the thought together\n\n**Section headers:** Albert Sans, uppercase, 11px, `widest` tracking (0.18em), ink.400 — like broadsheet column headers, small and authoritative\n\n**Dateline:** Albert Sans, uppercase, 11px, wider tracking (0.1em), ink.500 — newspaper dateline register\n\n**Body text:** Albert Sans Regular, 14px (minimum), ink.50, `normal` line-height (1.55)\n\n**Labels/scores/captions:** Albert Sans Medium, 12px, ink.300, wide tracking (0.05em)\n\n**Line heights:**\n- Hero: `0.95`\n- Section headers: `1.1`\n- Body: `1.55`\n- Loose (quotes, pull): `1.75`\n\n**Letter spacings:**\n- Hero: `−0.02em`\n- Section headers (uppercase): `0.18em`\n- Body: `0em`\n- Labels: `0.05em`\n\n---\n\n### 3. Layout Specification\n\n**Archetype: Broadsheet.** The phrase is the front-page kicker of today's edition — a personal journal printed in acid ink. The broadsheet archetype makes the declaration the masthead and the work/signals the columns below, creating the logic of a newspaper: headline first, evidence after. No other archetype can honor both the phrase's scale and the full density of signal data, projects, and timeline that constitutes the editorial content of a daily-redesigning portfolio.\n\n**CSS grid/flex structure:**\n\nTop-level layout (full viewport):\n```\ndisplay: grid;\ngrid-template-rows: 56px 1px auto auto 1fr;\n/* nav | rule | masthead | attribution | columns */\nmin-height: 100vh;\npadding: 0 5vw;\nmax-width: none;\n```\n\nMasthead zone (hero):\n```\ndisplay: block;\npadding: 32px 0 16px 0;\n```\n\nContent columns:\n```\ndisplay: grid;\ngrid-template-columns: 1.25fr 1fr 0.85fr;\ncolumn-gap: 32px;\npadding: 24px 0 64px 0;\nborder-top: 1px solid {ink.700};\n```\n\n**Major dimensions:**\n- Nav bar: `height: 56px`, full width, `max-width: none`\n- Hero phrase zone: `min-height: 180px` (two lines at 65px + spacing)\n- Full masthead block (date + phrase + attribution): approximately `min-height: 280px`\n- Content columns: fill remaining viewport height to `min-height: 100vh`\n- Max content width: `none` — Broadsheet fills full canvas\n- Side padding: `5vw` both sides (72px at 1440px)\n- Column gap: `32px` — newspaper gutter\n\n**Nav placement:**\nFull-width horizontal bar, `height: 56px`, `padding: 0 5vw`. Left: \"DOUG MARCH\" in Albert Sans medium uppercase, letter-spaced 0.1em, ink.400. Right: inline nav links (WORK · ABOUT · CONTACT) in Albert Sans 11px uppercase, ink.400, space between. Bottom: `1px solid` chartreuse.500 rule.\n\n**Hero phrase grid zone:**\nOccupies full content width (1fr column spanning all 3 macro columns). Rows 3–4 of the page grid. Spectral Italic at `clamp(28px, 4.5vw, 64px)`, set on 2 lines, in chartreuse.300. Attribution (\"— Kahlil Gibran\") below in Albert Sans 11px uppercase ink.500, left-aligned, `padding-top: 12px`. Then a full-width `1px solid ink.700` rule separating masthead from columns.\n\n---\n\n### 4. Component Character\n\n**Border radius:** `0px` across all surfaces. This is newsprint. Nothing is rounded.\n\n**Border treatment:** Ruled lines only — `1px solid ink.700` for column separators and section dividers; `2px solid chartreuse.500` for the nav bottom rule and section header underlines (immediately below section header text). No card outlines.\n\n**Shadow:** None. Editorial flatness. Depth comes from surface lightness variation (ink.900 → ink.800 for any inset blocks).\n\n**Density:** HIGH. Broadsheet demands ≥80% canvas utilization. Every column is packed: project rows use `16px` vertical rhythm, signal entries use `20px` rows, no generous white space except between major sections (the masthead-to-columns gap at `32px`).\n\n**Interactive states:**\n- Links: chartreuse.300 → chartreuse.200 on hover, `underline` appears with `text-underline-offset: 3px`\n- Project rows: background transitions to ink.800 on hover, no border change\n- Nav items: ink.50 on hover (from ink.400 resting)\n\n---\n\n### 5. Signal Integration\n\n**Signal elements live in:** Column 3 (\"TODAY\" column), with the golf leaderboard and Tigers result at the top, environmental data in the middle, music/upcoming holidays at the bottom. The quote IS the hero phrase and is placed in the masthead, not in the signal column.\n\n**Golf (CJ Cup Byron Nelson — In Progress):**\nSection header: \"CJ CUP BYRON NELSON\" in Albert Sans 11px uppercase, ink.500, widest tracking. Leaderboard format, 3 rows visible:\n```\nT. MOORE      −9   ← chartreuse.300, Albert Sans medium\nB. KOEPKA    −8   ← ink.50\nJ. SVENSSON  −8   ← ink.50\n```\nScore column right-aligned, tabular nums. Chartreuse.300 reserved for the sole leader — emphasis without excess.\n\n**Tigers (1–3 loss, May 21):**\nCompact inline line: \"DETROIT TIGERS · L 1–3\" in Albert Sans 12px, ink.400. No special treatment — a loss gets muted prose, not scarlet. Below golf, separated by a `1px ink.700` micro-rule.\n\n**Quote display:** Gibran IS the hero phrase. It occupies the masthead at `clamp(28px, 4.5vw, 64px)` in Spectral Italic chartreuse.300. Attribution \"— Kahlil Gibran\" in Albert Sans 11px uppercase ink.500 below. The signal column does NOT repeat the quote.\n\n**Environmental signals (inset in Today column, below sports):**\n```\n◑  FIRST QUARTER — 40.5%    ← moon phase, ink.300\n☀  14.3 HOURS DAYLIGHT       ← daylight, ink.300\n🎵  WET LEG · RADIOHEAD      ← music, ink.500\n⚑  MEMORIAL DAY IN 3 DAYS   ← ink.400\n```\nAll in Albert Sans 12px, `wide` tracking. The lunar phase icon carries visual weight as a soft compositional accent against the dense text columns.\n\n**Hacker News (Project Hail Mary — score 952):**\nListed in column 3 below environmental signals as a single-line item: \"HN: PROJECT HAIL MARY — STELLAR NAVIGATION CHART\" in ink.400, 11px. The stellar navigation reference resonates with the first-quarter moon and the week-end sense of navigation.",
+    "selfCheck": "1. Hero quotability: Yes — \"You talk when you cease to be at peace with your thoughts.\" is isolable, attributable without attribution, and functions as both accusation and manifesto; a visitor screenshots the line, not the page.\n2. Because-of chain: Yes — the contemplative/literary register of Gibran demanded Spectral over condensed sans; Broadsheet was chosen because the phrase is a headline that needs an editorial grid of evidence beneath it; H:75° chartreuse was mandated by the color window AND earns its place as May's most aggressive growth-color printed as editorial ink on dark paper.\n3. Render feasibility: Yes — Spectral Italic at `clamp(28px, 4.5vw, 64px)` on a 1440×900 viewport produces ~65px headline type; at 0.5em average character width, the 38-character first line measures ~1235px, fitting within the 1296px content column (1440 − 2×72px padding); the two-line break prevents overflow.",
+    "rationale": "The Gibran quote arrived from today's signal feed and immediately earned its place through convergence rather than selection. It is a Friday in late May — a week ending, the first-quarter moon half-lit, 14.3 hours of daylight still building, a Tigers loss filed quietly for the third time this week, Memorial Day three days out. The phrase \"You talk when you cease to be at peace with your thoughts\" is the exact phenomenology of that moment: the accumulated pressure of a week's unfinished thinking breaking into speech. For a portfolio site that speaks by redesigning itself daily in response to environmental signals, the meta-dimension is unavoidable — this site exists precisely at that boundary. The phrase is quotable without attribution, accusatory without a target, and reads as portfolio philosophy: the work is the silence; this page is where the silence ended.\n\nThe Broadsheet archetype followed necessarily from the phrase. A Poster would have isolated the quote in a void — treating it as a monument rather than a declaration. A Specimen would have made the typography the entire argument. Broadsheet does something more complex: it makes the quote the headline of today's edition and the work, signals, and timeline the editorial content below. The logic is exact — the quote claims the top of the page as a masthead; the three columns of projects, timeline, and today's signals are the evidence that the claim is earned. Spectral Italic was the only chassis capable of this register: it is the font of transitional serif newspapers, of literary journals, of things printed to be believed. Condensed grotesque or Anton would have made the Gibran line feel like a motivational poster; Spectral makes it feel like a front page.\n\nThe palette is the most committed departure in recent memory. The color mandate's open window — 65°–88° — is the precise hue range of acid chartreuse, the color of new-growth leaves held up to late-May sunlight. This is not a safe green, not a sage or an olive; it is aggressive, biological, almost neon, the color that announces spring has stopped being gentle. Printed as the headline ink on near-black paper (ink.900, `#1A1A0A`), chartreuse.300 (`#C8E828`) achieves a contrast ratio of 13.1:1 and reads like a broadsheet printed in an alternate world where presses run on phosphorescent ink. The warm-tinted ink neutral family (barely tinted toward H:75°, chroma 0.01) gives the near-black its life — pure black would read as CMYK registration; this reads as the specific darkness of a May evening.",
+    "signalIntegration": "**Signal elements live in:** Column 3 (\"TODAY\" column), with the golf leaderboard and Tigers result at the top, environmental data in the middle, music/upcoming holidays at the bottom. The quote IS the hero phrase and is placed in the masthead, not in the signal column.\n\n**Golf (CJ Cup Byron Nelson — In Progress):**\nSection header: \"CJ CUP BYRON NELSON\" in Albert Sans 11px uppercase, ink.500, widest tracking. Leaderboard format, 3 rows visible:\n```\nT. MOORE      −9   ← chartreuse.300, Albert Sans medium\nB. KOEPKA    −8   ← ink.50\nJ. SVENSSON  −8   ← ink.50\n```\nScore column right-aligned, tabular nums. Chartreuse.300 reserved for the sole leader — emphasis without excess.\n\n**Tigers (1–3 loss, May 21):**\nCompact inline line: \"DETROIT TIGERS · L 1–3\" in Albert Sans 12px, ink.400. No special treatment — a loss gets muted prose, not scarlet. Below golf, separated by a `1px ink.700` micro-rule.\n\n**Quote display:** Gibran IS the hero phrase. It occupies the masthead at `clamp(28px, 4.5vw, 64px)` in Spectral Italic chartreuse.300. Attribution \"— Kahlil Gibran\" in Albert Sans 11px uppercase ink.500 below. The signal column does NOT repeat the quote.\n\n**Environmental signals (inset in Today column, below sports):**\n```\n◑  FIRST QUARTER — 40.5%    ← moon phase, ink.300\n☀  14.3 HOURS DAYLIGHT       ← daylight, ink.300\n🎵  WET LEG · RADIOHEAD      ← music, ink.500\n⚑  MEMORIAL DAY IN 3 DAYS   ← ink.400\n```\nAll in Albert Sans 12px, `wide` tracking. The lunar phase icon carries visual weight as a soft compositional accent against the dense text columns.\n\n**Hacker News (Project Hail Mary — score 952):**\nListed in column 3 below environmental signals as a single-line item: \"HN: PROJECT HAIL MARY — STELLAR NAVIGATION CHART\" in ink.400, 11px. The stellar navigation reference resonates with the first-quarter moon and the week-end sense of navigation."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "chartreuse": {
+          "50": "#F7FCD8",
+          "100": "#EEF9A8",
+          "200": "#DCEF65",
+          "300": "#C8E828",
+          "400": "#ACDA0A",
+          "500": "#8EC206",
+          "600": "#709C05",
+          "700": "#527604",
+          "800": "#365003",
+          "900": "#1A2A01"
+        },
+        "ink": {
+          "50": "#FAFAF2",
+          "100": "#F4F4E4",
+          "200": "#E6E6C8",
+          "300": "#CECDA8",
+          "400": "#AEAD85",
+          "500": "#8A8A62",
+          "600": "#666646",
+          "700": "#484830",
+          "800": "#2E2E1C",
+          "900": "#1A1A0A",
+          "950": "#0E0E06"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.ink.900}",
+          "_light": "{colors.ink.50}"
+        },
+        "bgCard": {
+          "base": "{colors.ink.800}",
+          "_light": "{colors.ink.100}"
+        },
+        "bgSidebar": {
+          "base": "{colors.ink.950}",
+          "_light": "{colors.ink.50}"
+        },
+        "text": {
+          "base": "{colors.ink.50}",
+          "_light": "{colors.ink.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.ink.300}",
+          "_light": "{colors.ink.600}"
+        },
+        "textMuted": {
+          "base": "{colors.ink.500}",
+          "_light": "{colors.ink.400}"
+        },
+        "accent": {
+          "base": "{colors.chartreuse.300}",
+          "_light": "{colors.chartreuse.700}"
+        },
+        "accentHover": {
+          "base": "{colors.chartreuse.200}",
+          "_light": "{colors.chartreuse.600}"
+        },
+        "accentSubtle": {
+          "base": "{colors.chartreuse.900}",
+          "_light": "{colors.chartreuse.100}"
+        },
+        "border": {
+          "base": "{colors.ink.700}",
+          "_light": "{colors.ink.200}"
+        },
+        "borderAccent": {
+          "base": "{colors.chartreuse.500}",
+          "_light": "{colors.chartreuse.500}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.95",
+      "snug": "1.1",
+      "normal": "1.55",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.18em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 75,
+      "s": 88,
+      "l": 48,
+      "name": "acid chartreuse"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "yellow-green",
+      "name": "warm ink"
+    },
+    "mood_word": "phosphorescent",
+    "color_story": "Acid chartreuse at H:75° is the color of a May leaf held up to sunlight — aggressive, biological, alive — printed as headline ink on a page of near-black, making the Gibran phrase glow like a posted notice in a darkened room."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

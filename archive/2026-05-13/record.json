@@ -1,0 +1,338 @@
+{
+  "date": "2026-05-13",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.170Z",
+  "buildId": "1778669919108",
+  "attempts": 1,
+  "brief": "Bricolage aphorism in cordovan dark — the Zafón wound at three-quarter canvas scale on the sticky left, crimson attribution pulse below it, the evidence filing in on the right while the moon goes out.",
+  "rationale": "The Zafón quote arrived in the signal feed with immediate authority — nine words, no hedging, a complete epistemological argument that works equally as literary aphorism, portfolio manifesto, and dark commentary on a Tuesday when the Tigers got blown out 2–10 and the moon has almost entirely disappeared. For a site that literally rebuilds itself daily by reading environmental signals, the irony is structural: the design mechanism IS an act of perception, of choosing what to see. The phrase earns marquee scale because it names the thing the site quietly does.\n\nThe Split archetype is the only honest container for a self-sufficient aphorism. A Specimen would inflate the phrase and delete all evidence. A Poster would do the same. The Split keeps the assertion undiluted on the left while insisting the right panel carry the weight of the world it came from: the Tigers loss, the near-new-moon dark, the HN crowd's current obsessions, the music playing. The phrase makes its claim; the right panel presents the record. Left panel is sticky — the quote stays visible as the visitor scrolls through the evidence, which is the design's single compositional argument.\n\nBricolage Grotesque creates productive tension: it's warm, expressive, brand-driven — a humanist grotesque — rendering what is essentially a wound of a sentence. A condensed display font (Anton, Bebas) would have turned Zafón into a headline. Bricolage turns it into something spoken. Crimson at H:345° is outside the forbidden 5°–325° zone and earns its presence by being the only chromatic event on the page — it appears as the author attribution color, as the Tigers loss score, as the single accent that says \"this cost something.\" Near-black cordovan stone (`#130910`) as the ground participates in the palette even at maximum darkness because it's tinted toward H:340° throughout.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Split",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Pedal Mafia | Event Micro Site",
+          "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Renée Crown Wellness Institute",
+          "description": "Our objective is to establish the Crown Institute as the gold standard for science-backed, multidisciplinary approaches to mindfulness-based mental wellness...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/02/698bcba679e8c124826409.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQEBLAEsAAD/4gxYSUNDX1BST0ZJTEUAAQEAAAxITGlubwIQAABtbnRyUkdCIFhZWiAHzgACAAkABgAxAABhY3NwTVNGVAAAAABJRUMgc1JHQgAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLUhQICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFjcHJ0AAABUAAAADNkZXNjAAABhAAAAGx3dHB0AAAB8AAAABRia3B0...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Wednesday",
+      "is_weekend": false,
+      "day_index": 3
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "tinyhumansai/openhuman/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "sponsors/rohitg00",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/obra",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "yikart/AiToEarn/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "influxdata/telegraf/stargazers",
+          "description": "",
+          "language": "Go",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "PGA Championship",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Deterministic Fully-Static Whole-Binary Translation Without Heuristics",
+          "url": "https://arxiv.org/abs/2605.08419",
+          "score": 193,
+          "by": "matt_d"
+        },
+        {
+          "title": "Restore full BambuNetwork support for Bambu Lab printers",
+          "url": "https://github.com/FULU-Foundation/OrcaSlicer-bambulab",
+          "score": 454,
+          "by": "Murfalo"
+        },
+        {
+          "title": "Googlebook",
+          "url": "https://googlebook.google/",
+          "score": 798,
+          "by": "tambourine_man"
+        },
+        {
+          "title": "Show HN: Needle: We Distilled Gemini Tool Calling into a 26M Model",
+          "url": "https://github.com/cactus-compute/needle",
+          "score": 477,
+          "by": "HenryNdubuaku"
+        },
+        {
+          "title": "New stainless steel can survive conditions for hydrogen production in seawater",
+          "url": "https://www.sciencedaily.com/releases/2026/05/260510030950.htm",
+          "score": 61,
+          "by": "HardwareLust"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waning crescent",
+      "illumination": 0.07,
+      "days_into_cycle": 27.01
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "My Morning Jacket",
+        "The War on Drugs"
+      ]
+    },
+    "quote": {
+      "text": "We are willing to believe anything other than the truth.",
+      "author": "Carlos Ruiz Zafon"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 13,
+      "day_of_year": 133,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-12T23:10Z",
+          "result": "loss",
+          "score": "2-10"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:04",
+      "sunset": "19:08",
+      "daylight_hours": 14.1
+    },
+    "date": "2026-05-13"
+  },
+  "hero": {
+    "copy": "We are willing to believe anything other than the truth.",
+    "rationale": "Carlos Ruiz Zafón's line arrived in today's signal feed and earned immediate marquee status: nine words, zero hedging, a complete and barbed argument in a single sentence. Against today's evidence — Tigers crushed 2–10, a nearly moonless sky at 7% illumination, the waning crescent dragging spring into shadow — the quote becomes darkly structural. A personal portfolio site that rebuilds its own design daily by reading environmental signals is, in itself, a statement about what we choose to see. The Zafón line holds that irony without explanation.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue** — H:345° (crimson/deep rose). Outside the forbidden 5°–325° zone. Chosen because truth and blood share a color; the Zafón quote is a wound, not a decoration.\n\n**Neutral palette** — cordovan stone, tinted H:340° throughout:\n- 50: `#FAF0F3`\n- 100: `#EDD8DF`\n- 200: `#D4B8C1`\n- 300: `#B594A0`\n- 400: `#91707E`\n- 500: `#6D4E5C`\n- 600: `#503543`\n- 700: `#371F2D`\n- 800: `#22101A`\n- 900: `#130910`\n\n**Accent color** — crimson:\n- light: `#FF7AAD` (crimson.300)\n- default: `#F04882` (crimson.400)\n- dark: `#CC2060` (crimson.500)\n- glow: `rgba(240, 72, 130, 0.18)`\n\n**Secondary accent** — none. Single chromatic event only.\n\n**Background** —\n- Page bg (left panel): `#130910` (stone.900)\n- Card/right panel bg: `#22101A` (stone.800)\n- Sidebar bg: `#22101A` (stone.800)\n\n**Text colors** —\n- Primary text: `#FAF0F3` (stone.50) — 17:1 on stone.900\n- Secondary text: `#B594A0` (stone.300)\n- Muted text: `#6D4E5C` (stone.500)\n\n---\n\n### 2. Typography (chassis-derived)\n\n**Hero phrase rendering** — `display` token, `clamp(44px, 5.8vw, 84px)`, Bricolage Grotesque at weight 700 (max variable axis). The quote renders across 3–4 lines in the left panel (~835px effective width at 1440), filling approximately 60–70% of the panel's vertical height. No letter-spacing manipulation — Bricolage's natural tracking at this weight is sufficient. The author attribution renders beneath the quote in `sm` scale (`clamp(13px, 1vw, 15px)`) in crimson.400, preceded by an em-dash.\n\n**Line heights** —\n- Hero (quote): `0.93` — tight stacking, each line leans into the next\n- Attribution: `1.3`\n- Body/right panel content: `1.55`\n- Signal labels: `1.2`\n\n**Letter spacings** —\n- Hero: `-0.02em` (Bricolage at heavy weight benefits from slight compression)\n- Body: `0em`\n- Nav/labels (smallcaps): `0.08em`\n- Signal data headers: `0.12em`\n\n---\n\n### 3. Layout Specification\n\n**Archetype** — Split. The aphorism is a complete, self-contained argument that demands its own half of the canvas; the other half holds the evidence — the signals that prove or disprove the claim. Neither half is decorative; both are active surfaces.\n\n**CSS grid/flex structure** —\n```css\ndisplay: grid;\ngrid-template-columns: 58fr 42fr;\nmin-height: 100vh;\nmax-width: none;\n```\n\nLeft panel: `position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 64px 48px 64px 6vw;`\n\nRight panel: `min-height: 100vh; overflow-y: auto; padding: 32px 6vw 80px 48px; display: flex; flex-direction: column; gap: 48px;`\n\n**Major dimensions** —\n- Left panel: `height: 100vh; width: 58vw` — sticky, the quote never scrolls away\n- Right panel: `min-height: 100vh; width: 42vw` — scrollable, signals and work below the fold\n- Max content width: `none` — full-canvas, viewport-relative padding only (6vw sides)\n- Quote block within left panel: centered vertically with ~10vh top offset to feel slightly raised\n\n**Nav placement** — Top of right panel, horizontal inline list: `display: flex; gap: 32px; padding-bottom: 32px; border-bottom: 1px solid border`. Items: Work · About · Contact. Small (`12px`), wide letter-spacing (`0.1em`), muted text color. Site name as logo wordmark sits above nav in the right panel's top-left, `16px` medium weight.\n\n**Hero phrase grid zone** — Left panel, vertically centered, `padding: 0 48px 0 6vw`. The quote occupies rows 2–8 of a 10-row flex column: row 1 is a decorative opening mark (quotation mark, crimson, `80px`, opacity 0.2), rows 2–8 are the phrase text, row 9 is the attribution, row 10 is free space. Total quote block: approximately `70vh` tall.\n\n---\n\n### 4. Component Character\n\n**Border radius** — none (`0`). This design has no rounding. Cards: `border-radius: 0`. Buttons: `border-radius: 0`. Tags: `border-radius: 0`. The geometry is hard and architectural.\n\n**Border treatment** — `1px solid {colors.stone.700}` on right panel separators, project rows, and signal rows. No box borders on the quote side — only the vertical divider between panels: `border-right: 1px solid {colors.stone.700}` on the left panel.\n\n**Shadow** — none. Depth comes from background differentiation (`stone.900` vs `stone.800`), not shadow.\n\n**Density** — Left panel: spacious and monastic. Right panel: compact, deliberately information-dense — `gap: 24px` between signal sections, `gap: 16px` between project rows.\n\n**Interactive states** — Project links: `color` transition from `textSecondary` to `accent` on hover, 150ms ease. Nav links: `opacity: 0.7` → `opacity: 1`. No background highlights, no rounded hovers — the design language is text-based transitions only.\n\n---\n\n### 5. Signal Integration\n\n**Where signal elements live** — All in the right panel, below nav, in a signal section before the work list. Signals are labeled in smallcaps muted text and given sparse treatment.\n\n**Sports scores** — Tigers `2–10` loss: displayed as a score line — `DET` in muted stone.400, the score `2–10` in crimson.500 (the loss color earns the accent), `W·STL` in stone.400. Small label above: `MLB · MAY 12` in stone.500 at `0.12em` tracking. PGA Championship: `PGA CHAMPIONSHIP · STARTS TODAY` in stone.400 with no scores yet — treated as an upcoming event note.\n\n**Quote display** — The Zafón line IS the hero phrase, rendered at full marquee scale in the left panel. Attribution `— Carlos Ruiz Zafón` in crimson.400 beneath it. In the right panel, a short reference note in stone.500 at `12px`: `signals.quote`, as editorial provenance.\n\n**Holiday elements** — None today.\n\n**Signal treatments** —\n- Lunar waning crescent (7%): `◐ waning crescent · 7%` in stone.500, `12px`\n- Music: `GUIDED BY VOICES · MY MORNING JACKET · THE WAR ON DRUGS` in stone.400 at `11px`, tracking `0.08em`\n- HN top: `\"Googlebook\" · 798 pts` with small HN orange dot (`#FF6600`, 6px circle) — the one moment a non-crimson hue appears, and only at 6px\n- Awwwards: `The Power of Storytelling · SOTD` in stone.400, `11px`\n- Daylight: `14.1h daylight · 05:04 → 19:08` in stone.500\n\nEvery signal line follows the same pattern: label in stone.500 at `0.1em` tracking, value in stone.300. The overall right panel reads as: nav → provenance note → signals block → work list → capabilities footer.",
+    "selfCheck": "1. Hero quotability: Yes — \"We are willing to believe anything other than the truth.\" is attributed to a major literary voice, stands entirely alone as an argument, and is the kind of line someone screenshots from a novel.\n2. Because-of chain: Yes — the aphorism's self-sufficiency demanded a panel that could hold it undisturbed (Split left), its literary weight called for Bricolage's warm-expressive grotesque over a cold condensed slab, and crimson at H:345° is the only color that rhymes with \"the truth\" as a wound.\n3. Render feasibility: Yes — Bricolage Grotesque Bold at clamp(44px, 5.8vw, 84px) across ~835px effective width at 1440 renders the quote in 3–4 lines filling ~65% of the left panel's height with no overflow.",
+    "rationale": "The Zafón quote arrived in the signal feed with immediate authority — nine words, no hedging, a complete epistemological argument that works equally as literary aphorism, portfolio manifesto, and dark commentary on a Tuesday when the Tigers got blown out 2–10 and the moon has almost entirely disappeared. For a site that literally rebuilds itself daily by reading environmental signals, the irony is structural: the design mechanism IS an act of perception, of choosing what to see. The phrase earns marquee scale because it names the thing the site quietly does.\n\nThe Split archetype is the only honest container for a self-sufficient aphorism. A Specimen would inflate the phrase and delete all evidence. A Poster would do the same. The Split keeps the assertion undiluted on the left while insisting the right panel carry the weight of the world it came from: the Tigers loss, the near-new-moon dark, the HN crowd's current obsessions, the music playing. The phrase makes its claim; the right panel presents the record. Left panel is sticky — the quote stays visible as the visitor scrolls through the evidence, which is the design's single compositional argument.\n\nBricolage Grotesque creates productive tension: it's warm, expressive, brand-driven — a humanist grotesque — rendering what is essentially a wound of a sentence. A condensed display font (Anton, Bebas) would have turned Zafón into a headline. Bricolage turns it into something spoken. Crimson at H:345° is outside the forbidden 5°–325° zone and earns its presence by being the only chromatic event on the page — it appears as the author attribution color, as the Tigers loss score, as the single accent that says \"this cost something.\" Near-black cordovan stone (`#130910`) as the ground participates in the palette even at maximum darkness because it's tinted toward H:340° throughout.",
+    "signalIntegration": "**Where signal elements live** — All in the right panel, below nav, in a signal section before the work list. Signals are labeled in smallcaps muted text and given sparse treatment.\n\n**Sports scores** — Tigers `2–10` loss: displayed as a score line — `DET` in muted stone.400, the score `2–10` in crimson.500 (the loss color earns the accent), `W·STL` in stone.400. Small label above: `MLB · MAY 12` in stone.500 at `0.12em` tracking. PGA Championship: `PGA CHAMPIONSHIP · STARTS TODAY` in stone.400 with no scores yet — treated as an upcoming event note.\n\n**Quote display** — The Zafón line IS the hero phrase, rendered at full marquee scale in the left panel. Attribution `— Carlos Ruiz Zafón` in crimson.400 beneath it. In the right panel, a short reference note in stone.500 at `12px`: `signals.quote`, as editorial provenance.\n\n**Holiday elements** — None today.\n\n**Signal treatments** —\n- Lunar waning crescent (7%): `◐ waning crescent · 7%` in stone.500, `12px`\n- Music: `GUIDED BY VOICES · MY MORNING JACKET · THE WAR ON DRUGS` in stone.400 at `11px`, tracking `0.08em`\n- HN top: `\"Googlebook\" · 798 pts` with small HN orange dot (`#FF6600`, 6px circle) — the one moment a non-crimson hue appears, and only at 6px\n- Awwwards: `The Power of Storytelling · SOTD` in stone.400, `11px`\n- Daylight: `14.1h daylight · 05:04 → 19:08` in stone.500\n\nEvery signal line follows the same pattern: label in stone.500 at `0.1em` tracking, value in stone.300. The overall right panel reads as: nav → provenance note → signals block → work list → capabilities footer."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "crimson": {
+          "50": "#FFF0F4",
+          "100": "#FFD6E4",
+          "200": "#FFB0CB",
+          "300": "#FF7AAD",
+          "400": "#F04882",
+          "500": "#CC2060",
+          "600": "#A8194F",
+          "700": "#841340",
+          "800": "#5E0C2E",
+          "900": "#3C0620"
+        },
+        "stone": {
+          "50": "#FAF0F3",
+          "100": "#EDD8DF",
+          "200": "#D4B8C1",
+          "300": "#B594A0",
+          "400": "#91707E",
+          "500": "#6D4E5C",
+          "600": "#503543",
+          "700": "#371F2D",
+          "800": "#22101A",
+          "900": "#130910"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.stone.900}",
+          "_light": "{colors.stone.50}"
+        },
+        "bgCard": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.100}"
+        },
+        "bgSidebar": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.100}"
+        },
+        "text": {
+          "base": "{colors.stone.50}",
+          "_light": "{colors.stone.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.stone.300}",
+          "_light": "{colors.stone.600}"
+        },
+        "textMuted": {
+          "base": "{colors.stone.500}",
+          "_light": "{colors.stone.400}"
+        },
+        "accent": {
+          "base": "{colors.crimson.400}",
+          "_light": "{colors.crimson.600}"
+        },
+        "accentHover": {
+          "base": "{colors.crimson.300}",
+          "_light": "{colors.crimson.500}"
+        },
+        "accentSubtle": {
+          "base": "{colors.crimson.900}",
+          "_light": "{colors.crimson.100}"
+        },
+        "border": {
+          "base": "{colors.stone.700}",
+          "_light": "{colors.stone.200}"
+        },
+        "borderSubtle": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.100}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "24px",
+      "6": "32px",
+      "7": "48px",
+      "8": "64px",
+      "9": "96px",
+      "10": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.93",
+      "snug": "1.1",
+      "normal": "1.55",
+      "loose": "1.8"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.08em",
+      "widest": "0.15em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 345,
+      "s": 72,
+      "l": 44,
+      "name": "crimson"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "rose-dark",
+      "name": "cordovan stone"
+    },
+    "mood_word": "unsparing",
+    "color_story": "Crimson is the color of the mark left in red ink — corrections, blood, the pen that writes what cannot be unwritten — and against near-black cordovan void it pulses like the truth itself: visible, uncomfortable, impossible to pretend away."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

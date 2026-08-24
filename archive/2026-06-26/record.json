@@ -1,0 +1,363 @@
+{
+  "date": "2026-06-26",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.208Z",
+  "buildId": "1782472296563",
+  "attempts": 1,
+  "brief": "Deep cerulean archive — \"SEALED FOR 2,000 YEARS.\" in Bebas Neue masthead at 11vw over a three-column ink-black catalog where every row carries the weight of a document finally read.",
+  "rationale": "The hero phrase arrived fully formed from today's dominant signal: the Herculaneum scroll story on Hacker News at 1327 points — an entire papyrus document, carbonized by Vesuvius in 79 AD and physically unopenable for two millennia, has now been read cover to cover using virtual unwrapping technology. \"SEALED FOR 2,000 YEARS.\" is the irreducible drama of that fact. It passes the screenshot test on its own — the reader asks both \"what was?\" and \"what happened?\" The period is not punctuation; it's the sound of a library door finally opening.\n\nThe Index archetype follows because the hero phrase is fundamentally about a catalog being decoded. The Index renders the page as a functional analog to that act: a masthead declaration above a dense, systematic three-column catalog of work, signals, and record. Bebas-plex is the chassis the catalog table itself recommends for Index — \"editorial, catalog, declarative\" are the exact three mood words that govern both the phrase and the Herculaneum scholarship context. Bebas Neue's condensed authority renders the masthead without noise; IBM Plex Sans's precision makes 7 projects, a golf leaderboard, and a day's worth of signals legible at 12–14px without ever competing with the declaration above.\n\nCerulean at H:200° is the only open corridor in the color mandate (188°–215°) and it is not just mandate-compliant — it is thematically exact. Cerulean is the color of conservation-lab light, darkroom photographic archives, and X-ray imaging: the precise visual register of something ancient being examined under modern scrutiny. Against the deep cerulean-tinted ink-black (#07111C) page background, the near-white hero phrase achieves a contrast ratio of ~16.8:1, and the #3FB4DB accent holds 7.8:1 — both well above WCAG AA. The tinted neutrals carry the cerulean hue at very low chroma so the entire surface, including the most muted catalog rows, belongs to the same archival family.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Index",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Himachal - The Experience",
+          "description": "Our Himachal web experience began as a simple desire, to capture the soul of Himachal beyond postcards and panoramas. We wanted people to feel the mist,...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a26737dd6af2719498604.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAgAINJREFUeAFs/V2iJLmOpAmCVDW/tcruyv+cWcXd2zzObCjjqJJzCMgHwKLas25FhPtxM1USBAQCATj+f//f/8++5jTb297f/53/G7//9/uvv7+3bM7LnufHzn+O3//d923j...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Pil Rebranding Site",
+          "description": "For 20 years, Pil has evolved with brands and people. Today, our new website reflects who we are: a living ecosystem of creativity, ideas, and innovation.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a218e4cb4e5a558333777.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAC4jAAAuIwF4pT92AAyc5UlEQVR4nOT9CbhuXVYWhu5v/+dvq6UKRYgFJXKhBJsgYJSIJgIShUSwQZ8bwaiJlhghCV4jT2wAIVHAgF41aIHm3muTqBhFYsRgg0piSyOKUIBGSqmGEqr+qr895+zvPnvN0bzvO8aca+19zl94n7sozv/tteaac8wxxxzjHWOOOdfpHW9768XFxcXp4uJ8YT8W19kKnLb/...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Arkansas Museum of Fine Art",
+          "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+          "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Friday",
+      "is_weekend": false,
+      "day_index": 5
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "google-labs-code/design.md/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/calesthio",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "xbtlin/ai-berkshire/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "mauriceboe/TREK/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "apple/container/stargazers",
+          "description": "",
+          "language": "Swift",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Travelers Championship",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Eric Cole",
+          "position": "1",
+          "score": "-7"
+        },
+        {
+          "name": "Nico Echavarria",
+          "position": "2",
+          "score": "-6"
+        },
+        {
+          "name": "Ben Griffin",
+          "position": "3",
+          "score": "-6"
+        },
+        {
+          "name": "Matt Fitzpatrick",
+          "position": "4",
+          "score": "-6"
+        },
+        {
+          "name": "Kristoffer Reitan",
+          "position": "5",
+          "score": "-6"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "We All Depend on Open Source. We Will Defend It Together",
+          "url": "https://akrites.org/letter/",
+          "score": 163,
+          "by": "dhruv3006"
+        },
+        {
+          "title": "Om Malik has died",
+          "url": "https://om.co/2026/06/24/1966-2026/",
+          "score": 924,
+          "by": "minimaxir"
+        },
+        {
+          "title": "An entire Herculaneum scroll has been read for the first time",
+          "url": "https://scrollprize.org/firstscroll",
+          "score": 1327,
+          "by": "verditelabs"
+        },
+        {
+          "title": "Libre Barcode Project",
+          "url": "https://graphicore.github.io/librebarcode/",
+          "score": 166,
+          "by": "luu"
+        },
+        {
+          "title": "What happened after 2k people tried to hack my AI assistant",
+          "url": "https://www.fernandoi.cl/posts/hackmyclaw/",
+          "score": 183,
+          "by": "cuchoi"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waxing gibbous",
+      "illumination": 0.913,
+      "days_into_cycle": 11.96
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "Tobin Sprout",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "Failure is the key to success; each mistake teaches us something.",
+      "author": "Morihei Ueshiba"
+    },
+    "season": {
+      "season": "summer",
+      "month": 6,
+      "day": 26,
+      "day_of_year": 177,
+      "month_name": "June"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-06-25T22:40Z",
+          "result": "loss",
+          "score": "1-2"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:50",
+      "sunset": "19:35",
+      "daylight_hours": 14.7
+    },
+    "date": "2026-06-26"
+  },
+  "hero": {
+    "copy": "SEALED FOR 2,000 YEARS.",
+    "rationale": "Today's top Hacker News story — \"An entire Herculaneum scroll has been read for the first time\" at 1327 points — is the signal of the day, by a mile. These papyrus scrolls were carbonized by Vesuvius in 79 AD and couldn't be physically opened without disintegrating; virtual unwrapping finally cracked the last one. The phrase distills that discovery to its essential drama: two millennia of silence, then revelation. For a portfolio that rebuilds itself each morning, the meta-resonance is deliberate — what was sealed becomes readable; what was obscured becomes visible. This earns marquee scale without apology.",
+    "source": null
+  },
+  "chassis": "bebas-plex",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue** — H:200° (cerulean); the mandate's open corridor is 188°–215° and this sits dead center. Cerulean reads as archaeological documentation: conservation-lab blue, darkroom print tones, the color of X-ray light that decoded the scroll.\n\n**Neutral palette (ink family, tinted toward H:200° with chroma 0.01–0.02):**\n- 50: #EBF2F6\n- 100: #D2E2EC\n- 200: #A9C5D8\n- 300: #7EA5BC\n- 400: #5787A0\n- 500: #3B6880\n- 600: #294E63\n- 700: #1A3648\n- 800: #0E2030\n- 900: #07111C\n\n**Accent color (cerulean):**\n- Light: #87CEEA (cerulean.200)\n- Default: #3FB4DB (cerulean.300)\n- Dark: #0C9DC7 (cerulean.400)\n- Glow: rgba(63, 180, 219, 0.20)\n\n**Secondary accent:** none — single accent commits fully.\n\n**Background:**\n- Page bg: #07111C (ink.900 — deep cerulean-tinted near-black, not pure black)\n- Card bg: #0E2030 (ink.800)\n- Column bg: transparent (columns read as surface zones via borders, not fill)\n\n**Text colors:**\n- Primary text: #EBF2F6 (ink.50) — contrast vs #07111C ≈ 16.8:1 ✓\n- Secondary text: #A9C5D8 (ink.200) — contrast vs #07111C ≈ 10.5:1 ✓\n- Muted text: #5787A0 (ink.400) — contrast vs #07111C ≈ 4.84:1 ✓ AA\n\n---\n\n### 2. Typography (bebas-plex chassis)\n\n**Hero phrase rendering** — Bebas Neue (display token), `font-size: clamp(72px, 11vw, 175px)`. Two stacked lines, left-aligned at `padding-left: 4vw`, bottom-anchored in the masthead zone. Line 1: \"SEALED FOR\" / Line 2: \"2,000 YEARS.\" — both at identical size. Color: `text` (#EBF2F6). Letter-spacing: `0.01em` (Bebas benefits from a trace of positive tracking at display sizes). The period is load-bearing punctuation — it closes the phrase with finality and adds a visual anchor.\n\n**Column headers** — Bebas Neue, `font-size: clamp(13px, 1.2vw, 18px)`, `letter-spacing: 0.14em`, color: `accent` (#3FB4DB), uppercase. These label the three catalog columns and read as catalog section headers.\n\n**Entry titles** — IBM Plex Sans Medium 500, `font-size: 14px`, color: `text`. This is the workhorse text that fills the catalog rows.\n\n**Entry meta / descriptors** — IBM Plex Sans Regular 400, `font-size: 12px`, color: `textSecondary` (#A9C5D8).\n\n**Entry numbers** — IBM Plex Sans Light 300, `font-size: 11px`, `font-variant-numeric: tabular-nums`, color: `textMuted` (#5787A0).\n\n**Nav links** — IBM Plex Sans Medium 500, `font-size: 12px`, `letter-spacing: 0.08em`, uppercase, color: `textSecondary`.\n\n**Line heights:**\n- Hero phrase: `0.92` (tight — Bebas at this scale needs no air between lines)\n- Column headers: `1.0`\n- Body/entries: `1.5`\n\n**Letter spacings:**\n- Hero: `0.01em`\n- Column labels: `0.14em`\n- Entry body: `0em` (normal)\n- Nav: `0.08em`\n\n---\n\n### 3. Layout Specification\n\n**Archetype: Index** — chosen because the Index archetype is the only honest structural response to a hero phrase about a decoded catalog. A scroll being read for the first time is literally an act of indexing. The page becomes the table of contents for the discovered scroll — dense, systematic, every row carrying weight. Bebas-plex is the catalog in the chassis table's \"Best for archetypes\" column. The archetype has not appeared in the 7-day archive.\n\n**CSS grid/flex structure:**\n\n```css\n/* Root layout */\n.page-root {\n  display: grid;\n  grid-template-rows: 56px minmax(34vh, auto) 1fr;\n  min-height: 100vh;\n  max-width: none;\n  padding: 0 4vw;\n}\n\n/* Index body — three asymmetric columns */\n.index-body {\n  display: grid;\n  grid-template-columns: 2.5fr 2fr 1.5fr;\n  border-top: 1px solid var(--colors-border);\n}\n\n/* Individual columns */\n.index-col {\n  padding: 24px 24px 48px;\n  border-right: 1px solid var(--colors-border);\n}\n.index-col:last-child { border-right: none; }\n\n/* Column entries */\n.entry-row {\n  display: grid;\n  grid-template-columns: 28px 1fr;\n  gap: 0 8px;\n  padding: 10px 0;\n  border-bottom: 1px solid var(--colors-border);\n}\n```\n\n**Major dimensions:**\n- Nav height: `56px`\n- Hero masthead height: `min-height: 34vh` — flex column, `justify-content: flex-end`, `padding-bottom: 32px`\n- Index body: `1fr` — fills remaining viewport height; on tall viewports scrolls naturally\n- Max content width: `none` — full viewport, `padding: 0 4vw` on both sides\n- Column A (WORK): `2.5fr` — widest, carries 7 projects\n- Column B (SIGNALS): `2fr`\n- Column C (TODAY): `1.5fr` — narrowest, compact record\n\n**Nav placement** — top bar, 56px, full width. Left: \"DOUG MARCH\" wordmark in Bebas Neue 18px, letter-spacing 0.1em. Right: \"WORK\" / \"ABOUT\" in IBM Plex Sans Medium 12px, uppercase, letter-spacing 0.08em, color: textMuted. A 1px bottom border in `border` token separates nav from hero zone.\n\n**Hero phrase grid zone** — Row 2 of the page grid, spanning full canvas width minus `8vw` total side padding. The phrase occupies the bottom ~40% of the masthead zone (flex bottom-aligned). A 1px horizontal rule in `ink.700` spans the full width at the masthead's bottom edge, separating it from the index body.\n\n---\n\n### 4. Component Character\n\n**Border radius:** `none` (0) for all catalog elements, column borders, rules. The archival aesthetic is sharp and rectilinear — no rounding anywhere. Only buttons (if present) get `radii.sm` (2px).\n\n**Border treatment:** Borderless cards; all divisions are 1px rules in `border` (#1A3648 — ink.700). Column separators use the same rule. The accent `borderAccent` (#004263 — cerulean.700) is used for the rule beneath the hero phrase and the horizontal rule beneath column headers.\n\n**Shadow:** None. Depth comes from surface tone contrast and the border rule system, not from shadow. Shadows would undermine the flat archival documentation aesthetic.\n\n**Density:** Compact. Entry rows have `padding: 10px 0`, entries are separated by 1px rules, column padding is `24px`. The overall impression should feel like a printed museum catalog, not a modern web app with generous breathing room.\n\n**Interactive states:** On hover, entry titles shift from `text` (#EBF2F6) to `accent` (#3FB4DB). Entry rows get a left border of `2px solid cerulean.600` on hover, sliding in via `transition: border-left 0.15s ease`. Nav links get `color: text` on hover. No background fills — all states are typographic/border changes only.\n\n---\n\n### 5. Signal Integration\n\n**HN top story (Herculaneum scroll)** — This IS the hero phrase source. It receives a featured treatment at the top of Column B (SIGNALS): full-width entry with the headline set at 13px IBM Plex Sans Medium, the score \"▲ 1327\" in `accent` (#3FB4DB) cerulean, and a line below in textMuted: \"Vesuvius Challenge · scrollprize.org\". Entry label: \"HN #1\" in Bebas 14px, cerulean accent. This entry has a 2px left border in cerulean.400 to visually distinguish it as the source of the hero phrase.\n\n**Golf (Travelers Championship)** — Listed in Column B below the HN entry. Entry label: \"GOLF\" in Bebas. Five leaderboard entries as compact rows: \"1 E. Cole -7\", \"2 N. Echavarria -6\", \"T2 B. Griffin -6\", etc. Score numbers set with `font-variant-numeric: tabular-nums`. Leader's score in `accent`.\n\n**Quote (Ueshiba)** — Bottom of Column B, set smaller (12px, textSecondary), as a simple attribution line: `\"Failure is the key to success.\" — Morihei Ueshiba`. Column B entry label: \"QUOTE\".\n\n**Tigers loss (1–2)** — Column C (TODAY), entry row: \"DET TIGERS\" label / \"L 1–2\" with the score in a muted warm token. No special prominence — just an honest catalog entry.\n\n**Lunar (waxing gibbous, 91.3%)** — Column C, compact entry: \"MOON\" label / \"Waxing Gibbous · 91%\" with a symbolic character (●) in cerulean.\n\n**Music** — Column C: \"LISTENING\" label / \"Wet Leg · Tobin Sprout · My Morning Jacket\" as stacked lines at 12px.\n\n**Date record** — Top of Column C: \"FRI 26 JUN 2026\" in Bebas 18px, then \"Sunrise 04:50 · Sunset 19:35 · 14.7h daylight\" in 11px textMuted. Acts as the catalog's timestamp.\n\n**Awwwards** — Column B, below golf: brief entries for the 3 SOTD — \"Himachal\", \"Pil Rebranding\", \"AMFA\" as label/title pairs.",
+    "selfCheck": "1. Hero quotability: Yes — \"SEALED FOR 2,000 YEARS.\" is directly derived from the day's top story (1327 HN points); it stands alone, invites curiosity, and earns a screenshot without surrounding context.\n2. Because-of chain: Yes — the discovery/cataloging theme of the phrase dictated Index (the scroll as decoded catalog), which dictated bebas-plex (explicitly tagged \"catalog, declarative, Index\"), which dictated cerulean H:200° (archival documentation blue, mandate's only open corridor), which dictated the dense catalog layout with Bebas masthead over IBM Plex Sans entry rows.\n3. Render feasibility: Yes — \"2,000 YEARS.\" at `clamp(72px, 11vw, 175px)` on a 1440px viewport yields 158px; 12 Bebas characters at ~0.62em average width = 1174px + 58px padding = 1232px < 1440px; hero zone at 34vh = 306px accommodates two lines at 158px × 0.92 leading = 291px with room to spare.",
+    "rationale": "The hero phrase arrived fully formed from today's dominant signal: the Herculaneum scroll story on Hacker News at 1327 points — an entire papyrus document, carbonized by Vesuvius in 79 AD and physically unopenable for two millennia, has now been read cover to cover using virtual unwrapping technology. \"SEALED FOR 2,000 YEARS.\" is the irreducible drama of that fact. It passes the screenshot test on its own — the reader asks both \"what was?\" and \"what happened?\" The period is not punctuation; it's the sound of a library door finally opening.\n\nThe Index archetype follows because the hero phrase is fundamentally about a catalog being decoded. The Index renders the page as a functional analog to that act: a masthead declaration above a dense, systematic three-column catalog of work, signals, and record. Bebas-plex is the chassis the catalog table itself recommends for Index — \"editorial, catalog, declarative\" are the exact three mood words that govern both the phrase and the Herculaneum scholarship context. Bebas Neue's condensed authority renders the masthead without noise; IBM Plex Sans's precision makes 7 projects, a golf leaderboard, and a day's worth of signals legible at 12–14px without ever competing with the declaration above.\n\nCerulean at H:200° is the only open corridor in the color mandate (188°–215°) and it is not just mandate-compliant — it is thematically exact. Cerulean is the color of conservation-lab light, darkroom photographic archives, and X-ray imaging: the precise visual register of something ancient being examined under modern scrutiny. Against the deep cerulean-tinted ink-black (#07111C) page background, the near-white hero phrase achieves a contrast ratio of ~16.8:1, and the #3FB4DB accent holds 7.8:1 — both well above WCAG AA. The tinted neutrals carry the cerulean hue at very low chroma so the entire surface, including the most muted catalog rows, belongs to the same archival family.",
+    "signalIntegration": "**HN top story (Herculaneum scroll)** — This IS the hero phrase source. It receives a featured treatment at the top of Column B (SIGNALS): full-width entry with the headline set at 13px IBM Plex Sans Medium, the score \"▲ 1327\" in `accent` (#3FB4DB) cerulean, and a line below in textMuted: \"Vesuvius Challenge · scrollprize.org\". Entry label: \"HN #1\" in Bebas 14px, cerulean accent. This entry has a 2px left border in cerulean.400 to visually distinguish it as the source of the hero phrase.\n\n**Golf (Travelers Championship)** — Listed in Column B below the HN entry. Entry label: \"GOLF\" in Bebas. Five leaderboard entries as compact rows: \"1 E. Cole -7\", \"2 N. Echavarria -6\", \"T2 B. Griffin -6\", etc. Score numbers set with `font-variant-numeric: tabular-nums`. Leader's score in `accent`.\n\n**Quote (Ueshiba)** — Bottom of Column B, set smaller (12px, textSecondary), as a simple attribution line: `\"Failure is the key to success.\" — Morihei Ueshiba`. Column B entry label: \"QUOTE\".\n\n**Tigers loss (1–2)** — Column C (TODAY), entry row: \"DET TIGERS\" label / \"L 1–2\" with the score in a muted warm token. No special prominence — just an honest catalog entry.\n\n**Lunar (waxing gibbous, 91.3%)** — Column C, compact entry: \"MOON\" label / \"Waxing Gibbous · 91%\" with a symbolic character (●) in cerulean.\n\n**Music** — Column C: \"LISTENING\" label / \"Wet Leg · Tobin Sprout · My Morning Jacket\" as stacked lines at 12px.\n\n**Date record** — Top of Column C: \"FRI 26 JUN 2026\" in Bebas 18px, then \"Sunrise 04:50 · Sunset 19:35 · 14.7h daylight\" in 11px textMuted. Acts as the catalog's timestamp.\n\n**Awwwards** — Column B, below golf: brief entries for the 3 SOTD — \"Himachal\", \"Pil Rebranding\", \"AMFA\" as label/title pairs."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "cerulean": {
+          "50": "#E5F5FB",
+          "100": "#C0E7F5",
+          "200": "#87CEEA",
+          "300": "#3FB4DB",
+          "400": "#0C9DC7",
+          "500": "#007BA3",
+          "600": "#005E82",
+          "700": "#004263",
+          "800": "#002844",
+          "900": "#001528"
+        },
+        "ink": {
+          "50": "#EBF2F6",
+          "100": "#D2E2EC",
+          "200": "#A9C5D8",
+          "300": "#7EA5BC",
+          "400": "#5787A0",
+          "500": "#3B6880",
+          "600": "#294E63",
+          "700": "#1A3648",
+          "800": "#0E2030",
+          "900": "#07111C"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.ink.900}",
+          "_light": "{colors.ink.50}"
+        },
+        "bgCard": {
+          "base": "{colors.ink.800}",
+          "_light": "{colors.cerulean.50}"
+        },
+        "bgSidebar": {
+          "base": "{colors.ink.700}",
+          "_light": "{colors.ink.100}"
+        },
+        "text": {
+          "base": "{colors.ink.50}",
+          "_light": "{colors.ink.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.ink.200}",
+          "_light": "{colors.ink.600}"
+        },
+        "textMuted": {
+          "base": "{colors.ink.400}",
+          "_light": "{colors.ink.500}"
+        },
+        "accent": {
+          "base": "{colors.cerulean.300}",
+          "_light": "{colors.cerulean.500}"
+        },
+        "accentLight": {
+          "base": "{colors.cerulean.200}",
+          "_light": "{colors.cerulean.400}"
+        },
+        "accentDark": {
+          "base": "{colors.cerulean.400}",
+          "_light": "{colors.cerulean.600}"
+        },
+        "border": {
+          "base": "{colors.ink.700}",
+          "_light": "{colors.ink.200}"
+        },
+        "borderAccent": {
+          "base": "{colors.cerulean.700}",
+          "_light": "{colors.cerulean.300}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.92",
+      "snug": "1.2",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.10em",
+      "widest": "0.18em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 200,
+      "s": 88,
+      "l": 55,
+      "name": "cerulean"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "cerulean",
+      "name": "ink"
+    },
+    "mood_word": "archival",
+    "color_story": "Cerulean H:200° is the color of museum conservation light, photographic archives, and deep water — the precise chromatic register of something ancient being illuminated for the first time."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

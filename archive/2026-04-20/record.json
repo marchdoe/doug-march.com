@@ -1,0 +1,333 @@
+{
+  "date": "2026-04-20",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.150Z",
+  "buildId": "1776682091872",
+  "attempts": 1,
+  "brief": "Eucalyptus sage foundation with warm clay metadata accents, light-mode morning clarity, zero ornament — typography and negative space as sole design instruments.",
+  "rationale": "The brief provides exhaustively detailed specifications for a light-mode Specimen portfolio with eucalyptus sage as the dominant neutral system. The design tokens operationalize a rigorously constrained palette: a 10-step sage neutral family (H:158°, S:5–10%) governing all backgrounds and secondary text, paired with a single clay accent (H:18°, S:70%, reserved for project metadata and callouts only). The color mandate to avoid zones 0°–112° is honored at H:158°, which sits 33° eastward of the recent Apr 17 position (H:125°) and maintains the required 76° separation from Apr 18 (H:82°). All spacing derives from an 8px base scale (4, 8, 16, 24, 32... 128px), and typography tokens mirror the Perfect Fourth ratio specified: line heights (0.90–1.75) and letter spacings (−0.03em to +0.14em) support the archetype's typographic-only hierarchy. The waxing crescent signal (17% illumination) is baked into the shadow opacity (0.05 max) and border colors (neutral-200 rather than neutral-300), creating a softened-light aesthetic without harshness. Light mode is the sole mode; semantic tokens map to page backgrounds, card surfaces, footer inversions, and text hierarchies that support the specified asymmetric 12-column work grid and hero-centric layout.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Specimen",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "The Agency of Love & Logic",
+          "description": "This site introduces our agency rebrand with a renewed vision. It presents the duality behind our work through the lens of love and logic across curated...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69a849752f761629311403.jpg"
+        },
+        {
+          "title": "House of Adjaycent",
+          "description": "A high-energy digital canvas where systems are shaped by narrative—expressing House of Adjaycent’s partner-led philosophy through a concept-led, typographic,...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69d527b801ef9061417912.jpg"
+        },
+        {
+          "title": "Portfolio of Daniel Destefanis",
+          "description": "Personal design portfolio that showcases Daniel's work, design explorations, and ideas.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69d3a0bb9c797966867211.png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Monday",
+      "is_weekend": false,
+      "day_index": 1
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/Fincept-Corporation",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/thunderbird",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "tractorjuice/arc-kit/stargazers",
+          "description": "",
+          "language": "HTML",
+          "stars": null
+        },
+        {
+          "name": "openai/openai-agents-python/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "pingdotgg/t3code/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "RBC Heritage",
+      "status": "Final",
+      "leaders": [
+        {
+          "name": "Matt Fitzpatrick",
+          "position": "1",
+          "score": "-19"
+        },
+        {
+          "name": "Scottie Scheffler",
+          "position": "2",
+          "score": "-18"
+        },
+        {
+          "name": "Si Woo Kim",
+          "position": "3",
+          "score": "-16"
+        },
+        {
+          "name": "Collin Morikawa",
+          "position": "4",
+          "score": "-13"
+        },
+        {
+          "name": "Harris English",
+          "position": "5",
+          "score": "-13"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "OpenClaw isn't fooling me. I remember MS-DOS",
+          "url": "https://www.flyingpenguin.com/build-an-openclaw-free-secure-always-on-local-ai-agent/",
+          "score": 95,
+          "by": "feigewalnuss"
+        },
+        {
+          "title": "GitHub's Fake Star Economy",
+          "url": "https://awesomeagents.ai/news/github-fake-stars-investigation/",
+          "score": 106,
+          "by": "Liriel"
+        },
+        {
+          "title": "Up to 8M Bees Are Living in an Underground Network Beneath This Cemetery",
+          "url": "https://www.discovermagazine.com/up-to-8-million-bees-are-living-in-an-underground-network-beneath-this-cemetery-48977",
+          "score": 57,
+          "by": "janandonly"
+        },
+        {
+          "title": "SDF Public Access Unix System",
+          "url": "https://sdf.org/?ssh",
+          "score": 75,
+          "by": "neehao"
+        },
+        {
+          "title": "Vercel April 2026 security incident",
+          "url": "https://www.bleepingcomputer.com/news/security/vercel-confirms-breach-as-hackers-claim-to-be-selling-stolen-data/",
+          "score": 752,
+          "by": "colesantiago"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waxing crescent",
+      "illumination": 0.17,
+      "days_into_cycle": 4
+    },
+    "music": {
+      "bands": [
+        "Tobin Sprout",
+        "The War on Drugs",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "The greatest of empires, is the empire over one's self.",
+      "author": "Publilius Syrus"
+    },
+    "season": {
+      "season": "spring",
+      "month": 4,
+      "day": 20,
+      "day_of_year": 110,
+      "month_name": "April"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": "2026-04-19T22:30Z",
+          "result": "loss",
+          "score": "101-112"
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-04-19T20:35Z",
+          "result": "win",
+          "score": "6-2"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:32",
+      "sunset": "18:46",
+      "daylight_hours": 13.2
+    },
+    "date": "2026-04-20"
+  },
+  "hero": {
+    "copy": null,
+    "rationale": null,
+    "source": null
+  },
+  "chassis": null,
+  "adBrief": {
+    "mood": "Monday morning in spring: early light, steady momentum, a quiet tension between aspiration and self-awareness. The site should breathe with the season's optimism but ground itself in something real — there's no major news to celebrate, no weather drama, just the steady hum of a productive week beginning. A waxing crescent moon suggests things are gathering energy, not yet full. Hold the duality here: fresh and forward-looking, but not naive. The tech community (Hacker News, GitHub signals) is in a skeptical mood about authenticity — fake stars, security breaches, nostalgia for simpler systems. Let that skepticism live quietly in the design without freezing it. This is a day for clarity and intentional restraint, not spectacle.\n\n---",
+    "compositionDirection": "**Specimen with Gallery Wall energy.** \n\nToday calls for a layout that treats the portfolio itself as a curated collection of discrete objects — each project breathing in its own space, arranged with intention rather than flow. The Specimen archetype's focus on isolation and careful framing suits a Monday when focus is high and distractions are few. Gallery Wall energy prevents it from feeling sterile; projects should feel like they're in dialogue with each other through negative space and visual rhythm, not connected by narrative. This matches the awwwards references (Daniel Destefanis, House of Adjaycent) which both favor compositional precision over decorative connective tissue.\n\n---",
+    "typographyDirection": "Tight, deliberate, quiet authority. Headings should whisper rather than shout — use scale sparingly and let generous negative space do the work of hierarchy. Justified or carefully tracked body text; letter-spacing should be precise but not loose. The waxing crescent and early-week momentum suggest typography that feels controlled and intentional, not relaxed. Avoid rounded forms; lean toward geometric or classical sans with clean angles. This reflects the skepticism in today's tech discourse (GitHub's fake star economy, security concerns) — the design should feel like it knows what it's doing, no performance, no excess.\n\n---",
+    "signalIntegration": "- **Waxing crescent moon (4 days in, 17% illumination)** → Reduce overall contrast slightly. Backgrounds and secondary elements should feel subtly dimmer, as if lit by moonlight rather than full daylight. This is felt, not explicit — no moon graphics. Let shadows be softer, highlights less aggressive.\n\n- **Spring season + 13.2 daylight hours** → Palette should reflect lengthening light: fresh, saturated greens and warm neutrals welcome here, but resist oversaturation. The extended daylight means the site can afford airiness without feeling sparse. Use this to justify generous margins and breathing room between compositional elements.\n\n- **Monday / Weekday (day_index: 1)** → Layout density should increase subtly. Where a weekend version might sprawl, this version should feel organized and task-oriented. Navigation and hierarchy are crisp. Projects are presented with clear, scannable metadata (dates, disciplines, outcomes). Structure over serendipity.\n\n- **RBC Heritage final leaderboard (Matt Fitzpatrick -19)** → If golf content appears on the site, present it as a quiet editorial note or sidebar data point — not a celebration, not a feature. Golf is a framing device for precision and long-form focus, not a headline. Treat it like a reference, not a story.\n\n- **Hacker News skepticism (GitHub fake stars, Vercel breach, nostalgia for SDF/MS-DOS)** → This mood should inform tone across any copy or editorial elements. If portfolio descriptions exist, they should prioritize authenticity and honest assessment over hype. Any technical references should skew toward substance over trend. This is a design that respects the viewer's intelligence.\n\n- **Tech stack signals (Python, TypeScript, HTML across repos)** → Subtle nod to full-stack thinking. If case studies or project descriptions mention technical decisions, let them have equal weight with visual/UX decisions. The design itself shouldn't look \"coded,\" but it should feel technically sound — precision in margins, consistency in systems, no surprises.\n\n---",
+    "paletteDirection": "Cool-to-neutral foundation with selective warm accents. Spring saturation is present but restrained — think sage, soft olive, warm grays rather than bright greens. High contrast is not needed today; instead, rely on contrast through value shift and careful color placement. The overall feeling should be clean and intentional, never muddy but never stark. Warm whites and soft neutrals keep the space breathable; a single warm accent color (clay, rust, or warm sand) can appear sparingly in project callouts or metadata. The waxing crescent and early daylight hours allow for lighter backgrounds without feeling washed out. Avoid cool blues or purples — they'd feel too evening-focused. This is morning light, not night-time drama."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "sage": {
+          "50": "#F2F6F4",
+          "100": "#E2EDE9",
+          "200": "#C4D9D3",
+          "300": "#97BAB2",
+          "400": "#6B9B92",
+          "500": "#487870",
+          "600": "#324F4A",
+          "700": "#1D2E2C",
+          "800": "#111A18",
+          "900": "#080E0D"
+        },
+        "clay": {
+          "light": "#EAA882",
+          "default": "#C05828",
+          "dark": "#8A3518"
+        },
+        "off-white": "#FAFCFB",
+        "transparent": "transparent"
+      },
+      "semantic": {
+        "bg": "{colors.sage.50}",
+        "bg-secondary": "{colors.sage.100}",
+        "bg-card": "{colors.off-white}",
+        "bg-footer": "{colors.sage.700}",
+        "text": "{colors.sage.700}",
+        "text-secondary": "{colors.sage.600}",
+        "text-muted": "{colors.sage.400}",
+        "text-footer": "{colors.sage.50}",
+        "accent": "{colors.clay.default}",
+        "accent-light": "{colors.clay.light}",
+        "accent-dark": "{colors.clay.dark}",
+        "accent-glow": "rgba(192, 88, 40, 0.08)",
+        "border": "{colors.sage.200}",
+        "border-subtle": "{colors.sage.100}"
+      }
+    },
+    "spacing": {
+      "4": "4px",
+      "8": "8px",
+      "16": "16px",
+      "24": "24px",
+      "32": "32px",
+      "40": "40px",
+      "48": "48px",
+      "56": "56px",
+      "64": "64px",
+      "72": "72px",
+      "80": "80px",
+      "96": "96px",
+      "128": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.90",
+      "snug": "1.10",
+      "normal": "1.55",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "-0.01em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.14em"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "semibold": "600",
+      "bold": "700"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px"
+    },
+    "shadows": {
+      "subtle": "0 1px 3px rgba(13, 22, 20, 0.05), 0 3px 10px rgba(13, 22, 20, 0.04)"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 158,
+      "s": 6,
+      "l": 50,
+      "name": "eucalyptus sage"
+    },
+    "secondary_accent": {
+      "h": 18,
+      "s": 70,
+      "l": 50,
+      "name": "warm clay"
+    },
+    "neutral_family": {
+      "tinted_toward": "sage",
+      "name": "sage-neutral"
+    },
+    "mood_word": "deliberate",
+    "color_story": "Eucalyptus sage (H:158°) as primary neutral ensures cool-morning clarity without blue-coldness; warm clay (H:18°) appears only at project metadata level, maintaining a 140° visual separation. The hue sits safely outside forbidden zones (0°–112°, 352°–360°) and 33° eastward of Apr 17's position, clearing recent palettes. Light backgrounds (#F2F6F4 page, #FAFCFB cards) reflect spring's lengthening daylight; waxing crescent signal reduces shadow opacity to 0.05 and softens borders, creating a moonlit-but-legible morning-to-daylight transition."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

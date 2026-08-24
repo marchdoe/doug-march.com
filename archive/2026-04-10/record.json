@@ -1,0 +1,460 @@
+{
+  "date": "2026-04-10",
+  "era": "traced",
+  "generatedAt": "2026-08-24T15:34:16.140Z",
+  "buildId": "1775817641143",
+  "attempts": 1,
+  "brief": "A fixed left panel holds the day's live signals in amber and sage — Masters tie, Detroit win, Tracy's autonomy reminder — while spring-lit cream pages scroll quietly past on the right, everything spaced like 5 PM light through a window you haven't closed yet.",
+  "rationale": "The Split archetype anchors this design—a fixed left panel (38%) holding the day's live signals (Masters leaderboard, Brian Tracy quote, Detroit scores) against a scrollable right panel carrying portfolio depth. I've built the neutral scale from H=160° (cool spring teal, heavily desaturated) so the page reads as afternoon light on cream paper rather than clinical white. Amber (#C4840A) appears only three times—leaderboard scores, quote border rule, active nav—making each appearance feel earned. Fraunces (heading) meets Outfit (body) for exactly the \"whispering authority\" the brief demands: the variable optical serif's soft irregularity versus Outfit's clean geometry. The Perfect Fourth scale (1.333) gives genuine drama between 9px labels and 50px display moments without chaos. Previous build errors (dangerouslySetInnerHTML, missing Scripts) are corrected by using the head() scripts array and rendering `<Scripts />` in RootDocument.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/routes/__root.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Gallery Wall",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Not Worth the Gamble",
+          "description": "An integrated digital campaign exposing illegal gambling risks through cinematic storytelling, educating communities and driving awareness across British...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69caad027c47b296567479.jpg"
+        },
+        {
+          "title": "The Cube",
+          "description": "The Cube is a multi-functional venue located in Copenhagen, Denmark. It works as a flexible space for events, workshops, studio productions, and product...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69caa2ed308a1315623251.jpg"
+        },
+        {
+          "title": "Home of Ambrose",
+          "description": "Web design for Home of Ambrose, a Madrid-based project celebrating timeless living through curated, design-led homes shaped by narrative, detail, and...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69c538044c78b578228067.jpg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Friday",
+      "is_weekend": false,
+      "day_index": 5
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "NousResearch/hermes-agent/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "forrestchang/andrej-karpathy-skills/stargazers",
+          "description": "",
+          "language": null,
+          "stars": null
+        },
+        {
+          "name": "HKUDS/DeepTutor/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "OpenBMB/VoxCPM/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "opendataloader-project/opendataloader-pdf/stargazers",
+          "description": "",
+          "language": "Java",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Masters Tournament",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Sam Burns",
+          "position": "1",
+          "score": "-5"
+        },
+        {
+          "name": "Rory McIlroy",
+          "position": "2",
+          "score": "-5"
+        },
+        {
+          "name": "Kurt Kitayama",
+          "position": "3",
+          "score": "-3"
+        },
+        {
+          "name": "Jason Day",
+          "position": "4",
+          "score": "-3"
+        },
+        {
+          "name": "Patrick Reed",
+          "position": "5",
+          "score": "-3"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "How NASA built Artemis II’s fault-tolerant computer",
+          "url": "https://cacm.acm.org/news/how-nasa-built-artemis-iis-fault-tolerant-computer/",
+          "score": 402,
+          "by": "speckx"
+        },
+        {
+          "title": "ETH Zurich demonstrates 17,000 qubit array with 99.91% fidelity",
+          "url": "https://ethz.ch/en/news-and-events/eth-news/news/2026/04/a-new-trick-brings-stability-to-quantum-operations.html",
+          "score": 75,
+          "by": "joko42"
+        },
+        {
+          "title": "I still prefer MCP over skills",
+          "url": "https://david.coffee/i-still-prefer-mcp-over-skills/",
+          "score": 193,
+          "by": "gmays"
+        },
+        {
+          "title": "Native Instant Space Switching on macOS",
+          "url": "https://arhan.sh/blog/native-instant-space-switching-on-macos/",
+          "score": 519,
+          "by": "PaulHoule"
+        },
+        {
+          "title": "We've raised $17M to build what comes after Git",
+          "url": "https://blog.gitbutler.com/series-a",
+          "score": 142,
+          "by": "ellieh"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "last quarter",
+      "illumination": 0.356,
+      "days_into_cycle": 23.52
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "The War on Drugs"
+      ]
+    },
+    "quote": {
+      "text": "The biggest mistake we could ever make in our lives is to think we work for anybody but ourselves.",
+      "author": "Brian Tracy"
+    },
+    "season": {
+      "season": "spring",
+      "month": 4,
+      "day": 10,
+      "day_of_year": 100,
+      "month_name": "April"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": "2026-04-09T23:00Z",
+          "result": "win",
+          "score": "6-3"
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-04-09T17:40Z",
+          "result": "loss",
+          "score": "1-3"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:47",
+      "sunset": "18:36",
+      "daylight_hours": 12.8
+    },
+    "date": "2026-04-10"
+  },
+  "hero": {
+    "copy": null,
+    "rationale": null,
+    "source": null
+  },
+  "chassis": null,
+  "adBrief": {
+    "mood": "Friday afternoon in early spring—a moment of legitimate momentum. The Masters is live and tightening (Burns and McIlroy locked at -5), the Red Wings just won 6-3, and the tech world is humming with concrete wins (NASA's fault-tolerant systems, quantum stability breakthroughs, GitButler's $17M raise). But underneath sits a quiet tension: the Tigers lost yesterday, and there's a Brian Tracy quote about working for yourself that lands harder on a Friday than it would mid-week. The design should feel *forward-moving and capable* but with an undercurrent of Friday-afternoon self-reflection—not celebration, not rest, but a kind of competent awareness. The last quarter moon is waning; daylight is still generous (12.8 hours). Hold the spring freshness and the achievement signals together with the introspective undertow.\n\n---",
+    "compositionDirection": "**Gallery Wall with Specimen energy.**\n\nToday's signals resist a single focal point. The Awwwards sites show cinematic storytelling, architectural clarity, and curated narrative—all pointing toward *multiple carefully-framed moments* rather than one hero image. The golf leaderboard, the tech headlines, the Detroit sports results, the music artists—they each deserve their own frame, their own breathing room. A Gallery Wall lets us treat each signal as an artifact worth isolating and contemplating. The Specimen elements (extreme scale shifts between elements, generous white space around individual pieces) will keep the Friday momentum from feeling scattered.\n\n---",
+    "typographyDirection": "Type should be **restrained but confident**—tight letterspacing on headlines (drawing from the angular precision suggested by Guided by Voices' lo-fi aesthetic contrasted with The War on Drugs' deliberate pacing), with generous leading on body copy. Headings should *whisper with authority* rather than shout; the mood is self-assured, not aggressive. Scale variance should be significant (supporting the Specimen approach) but never chaotic. Let breathing room between type elements match the breathing room between framed content pieces.\n\n---",
+    "signalIntegration": "- **Masters Tournament (in progress, tie at -5)** → Feature the leaderboard as a clean, right-aligned typographic element—no graphic flourish, just names and scores. Treat it as a *live scoreboard*, not a card. Position it with intention (high on the page or integrated into a frame), emphasizing the tension of the tie. This is the day's most compelling real-time narrative.\n\n- **Detroit Red Wings win (6-3)** → Inline scoreline treatment, placed without fanfare. A simple \"DET 6–3\" notation near relevant content or as a passing editorial detail. The win is noted but not celebrated—it's factual momentum, not exuberance.\n\n- **Detroit Tigers loss (1-3)** → Acknowledge as a minor footnote, almost dismissively. A small, muted reference—perhaps a strikethrough or grayed element. The loss happened; move on. Friday mood doesn't dwell.\n\n- **Brian Tracy quote (\"The biggest mistake we could ever make in our lives is to think we work for anybody but ourselves\")** → This lands *hard* on a Friday. Feature it as a standalone framed element, centered in its own breathing space. Let it be read slowly. This is the day's emotional anchor—self-directed work, autonomy, ownership. Position it where it can be lingered on.\n\n- **Hacker News momentum (NASA, quantum stability, GitButler, macOS improvements)** → Weave these as *proof points of capability and progress*. Not as a news feed, but as subtle textual references scattered throughout the page—evidence that the technical landscape is moving forward. Treat as editorial texture, not breaking news.\n\n- **Guided by Voices + The War on Drugs** → These bands suggest *deliberate, crafted work*—lo-fi precision meeting meticulous production. Let this inform the tightness of the type and the intentionality of spacing. No randomness. Every element placed with purpose.\n\n- **Last quarter moon (waning, 35.6% illumination)** → Reduce overall contrast subtly. The page should feel lit by diminishing light—not dark, but less dramatic. High-contrast moments should feel earned, not default. Support this through careful value differentiation rather than flashy light/dark shifts.\n\n- **Spring season + 12.8 daylight hours** → The palette should feel *open and lit*, but not overly saturated. Fresh greens are available but should be restrained. The generosity of daylight means the layout can breathe, but that breathing should feel intentional, not accidental.\n\n---",
+    "paletteDirection": "**Cool-to-neutral spring palette with strategic warmth.** Start from a clean, lightly-desaturated spring green as an accent rather than a dominant color. The base should be cool-neutral whites and soft grays with significant breathing room—reflecting the generous daylight and Friday's forward momentum. Introduce warmth only in accent moments (around the Masters leaderboard, perhaps the Tracy quote frame). Contrast should be *moderate*—the waning moon and the Friday introspection call for restraint; no harsh blacks or blown-out whites. The design should feel like it's lit naturally at 5:47 PM in late April, not artificially bright. Saturation should be low overall, with restraint serving as a mark of intentionality rather than blandness."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "neutral": {
+          "50": "#F3F8F5",
+          "100": "#E7EFEC",
+          "200": "#CDD9D5",
+          "300": "#AAB9B4",
+          "400": "#849690",
+          "500": "#5E726C",
+          "600": "#435651",
+          "700": "#2D3E39",
+          "800": "#1A2622",
+          "900": "#0F1714"
+        },
+        "amber": {
+          "light": "#F2C96A",
+          "DEFAULT": "#C4840A",
+          "dark": "#8A5B00",
+          "glow": "rgba(196, 132, 10, 0.08)"
+        },
+        "sage": {
+          "DEFAULT": "#5D8A69",
+          "light": "#8AB896"
+        },
+        "panel": {
+          "left": "#EEF5F1",
+          "right": "#F3F8F5"
+        },
+        "white": "#FFFFFF",
+        "transparent": "transparent"
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.50}",
+          "_dark": "{colors.neutral.800}"
+        },
+        "bgPanel": {
+          "base": "{colors.panel.left}",
+          "_dark": "{colors.neutral.900}"
+        },
+        "bgCard": {
+          "base": "{colors.white}",
+          "_dark": "{colors.neutral.700}"
+        },
+        "bgHover": {
+          "base": "{colors.neutral.100}",
+          "_dark": "{colors.neutral.700}"
+        },
+        "bgSubtle": {
+          "base": "{colors.neutral.100}",
+          "_dark": "{colors.neutral.800}"
+        },
+        "text": {
+          "base": "{colors.neutral.600}",
+          "_dark": "{colors.neutral.200}"
+        },
+        "textHeading": {
+          "base": "{colors.neutral.700}",
+          "_dark": "{colors.neutral.50}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.500}",
+          "_dark": "{colors.neutral.400}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.400}",
+          "_dark": "{colors.neutral.500}"
+        },
+        "textDisabled": {
+          "base": "{colors.neutral.300}",
+          "_dark": "{colors.neutral.600}"
+        },
+        "accent": {
+          "base": "{colors.amber.DEFAULT}",
+          "_dark": "{colors.amber.light}"
+        },
+        "accentLight": {
+          "base": "{colors.amber.light}",
+          "_dark": "{colors.amber.DEFAULT}"
+        },
+        "accentDark": {
+          "base": "{colors.amber.dark}",
+          "_dark": "{colors.amber.DEFAULT}"
+        },
+        "accentGlow": {
+          "base": "{colors.amber.glow}",
+          "_dark": "{colors.amber.glow}"
+        },
+        "sage": {
+          "base": "{colors.sage.DEFAULT}",
+          "_dark": "{colors.sage.light}"
+        },
+        "border": {
+          "base": "{colors.neutral.200}",
+          "_dark": "{colors.neutral.700}"
+        },
+        "borderSubtle": {
+          "base": "{colors.neutral.100}",
+          "_dark": "{colors.neutral.800}"
+        },
+        "borderStrong": {
+          "base": "{colors.neutral.300}",
+          "_dark": "{colors.neutral.600}"
+        },
+        "navText": {
+          "base": "{colors.neutral.500}",
+          "_dark": "{colors.neutral.400}"
+        },
+        "navActive": {
+          "base": "{colors.amber.DEFAULT}",
+          "_dark": "{colors.amber.light}"
+        },
+        "linkHover": {
+          "base": "{colors.neutral.700}",
+          "_dark": "{colors.neutral.100}"
+        },
+        "scoreWin": {
+          "base": "{colors.sage.DEFAULT}",
+          "_dark": "{colors.sage.light}"
+        },
+        "scoreLoss": {
+          "base": "{colors.neutral.300}",
+          "_dark": "{colors.neutral.600}"
+        },
+        "leaderScore": {
+          "base": "{colors.amber.DEFAULT}",
+          "_dark": "{colors.amber.light}"
+        },
+        "quoteRule": {
+          "base": "{colors.amber.DEFAULT}",
+          "_dark": "{colors.amber.light}"
+        }
+      }
+    },
+    "fonts": {
+      "heading": "'Fraunces', Georgia, 'Times New Roman', serif",
+      "body": "'Outfit', system-ui, -apple-system, sans-serif",
+      "mono": "'JetBrains Mono', 'Fira Code', monospace"
+    },
+    "fontSizes": {
+      "2xs": "9px",
+      "xs": "12px",
+      "sm": "14px",
+      "base": "16px",
+      "md": "21px",
+      "lg": "28px",
+      "xl": "37px",
+      "2xl": "50px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "regular": "400",
+      "semibold": "600"
+    },
+    "lineHeights": {
+      "tight": "1.05",
+      "snug": "1.2",
+      "normal": "1.55",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.025em",
+      "normal": "0em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.12em"
+    },
+    "spacing": {
+      "0": "0px",
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "20px",
+      "6": "24px",
+      "8": "32px",
+      "10": "40px",
+      "12": "48px",
+      "14": "56px",
+      "16": "64px",
+      "20": "80px",
+      "24": "96px",
+      "28": "112px",
+      "32": "128px",
+      "px": "1px"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "full": "9999px"
+    },
+    "shadows": {
+      "card": "0 1px 4px rgba(15, 23, 20, 0.06)",
+      "none": "none"
+    },
+    "sizes": {
+      "siteMax": "1240px",
+      "leftPanelMin": "320px",
+      "rightContentMax": "640px",
+      "rowHeight": "44px",
+      "panelFull": "100vh"
+    },
+    "zIndex": {
+      "base": "0",
+      "above": "1",
+      "fixed": "10",
+      "overlay": "100"
+    },
+    "durations": {
+      "fast": "120ms",
+      "normal": "180ms",
+      "slow": "300ms"
+    },
+    "easings": {
+      "ease": "ease",
+      "easeIn": "ease-in",
+      "easeOut": "ease-out"
+    },
+    "borders": {
+      "hairline": "1px solid",
+      "none": "none"
+    },
+    "opacity": {
+      "0": "0",
+      "30": "0.30",
+      "50": "0.50",
+      "60": "0.60",
+      "70": "0.70",
+      "100": "1"
+    }
+  },
+  "colorScheme": null,
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

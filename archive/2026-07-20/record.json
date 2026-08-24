@@ -1,0 +1,371 @@
+{
+  "date": "2026-07-20",
+  "era": "shell-directed",
+  "generatedAt": "2026-08-24T15:34:16.236Z",
+  "buildId": "1784546102459",
+  "attempts": 1,
+  "brief": "Breadboard-amber Poster — a $120K-to-$1,600 price brag stacked huge in Anton over caution-yellow, the winning number solid-ink and the old one hollow-outlined, the day's signals invoiced on a dark bill-of-materials footer.",
+  "rationale": "The hero phrase came pre-assembled from the top of Hacker News (2,379 points): a $120,000 industrial system replaced with $1,600 of ESP32s. On a portfolio built by a founder-experimenter whose defining move is small, clever leverage — and whose site tears itself down and rebuilds cheaply every night — that number-to-number ratio is the thesis, not the news. Reduced to \"$120K SYSTEM. $1,600 IN ESP32s.\" it's quotable in isolation, and the gap between the two figures is the whole story to tell.\n\nA price brag whose payload is two numbers wants the Poster: one dominant object filling the field, the winning figure loudest, everything else pushed to the corners. Anton (anton-inter-tight, 1.500 ratio, Poster-tagged and fresh since 07-16) gives heavy condensed numerals that stack \"$120K SYSTEM.\" over \"$1,600 IN ESP32s.\" inside 88vw with room to spare, while Inter Tight's workhorse/spec register carries the golf badge and the bill-of-materials footer — exactly the technical voice a hardware-hack deserves. Emphasis between the two numbers is typographic, not chromatic: $120K is a hollow outline (the expensive old way), $1,600 is solid ink (the punchline).\n\nColor is where the mandate and the metaphor agree: the recent palettes scorched everything except the 45°–67° window, and 46° breadboard-amber is precisely the color of a DIY-electronics triumph — jumper wires, status LEDs, caution stock. I drench the canvas in it and set black ink numerals on top (coverage ~66%), a hard-ruled, radius-zero poster with no shadows and no second hue. The shell is deliberately fresh against the avoid lists: a top-left corner stack pairs the unused `stacked-md` lockup (single-color mono inheriting ink) with three caps links beneath it; the golf final rides a hard-offset badge top-right; and the footer is a dark \"bill of materials\" panel that lists the Tigers loss, the band bench, and the moon/sun almanac as invoice line items — thematically native to the ESP32 build and unlike any recent folio/ledger/caption footer.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Footer.tsx",
+    "app/components/Badge.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Poster",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "/zeroz Brand Site",
+          "description": "Brand site for /zeroz, a self-conditioning food born from Otsuka Pharmaceutical Co., Ltd.'s \"Active Inner Resource\" concept. Chapters unfold through 3DCG...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4687f45bf83853560900.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The Record Institute",
+          "description": "A museum-grade digital archive dedicated to preserving pre-2000 print ephemera. Multilingual, meticulously catalogued, and free—safeguarding vintage advertising...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a44c228af614956383273.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADASIAAhEBAxEB/8QAHQAAAAcBAQEAAAAAAAAAAAAAAAECAwQFBgcICf/E...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The History of Muse Group",
+          "description": "SANDS STUDIO created an interactive website for Muse Group — a living digital archive connecting its music ecosystem, products, and nearly a century of...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a43c670e1dae067356082.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAMAAACU33alAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAJBQTFRFLCoq/v7+9/f37O3r1NTUUPP+9c0Cgv4EtbW1yqwmeMkxTb/GjJCQgYMlcGHyc17qdlzkeFnee1fYflXSflLLhE7FZGtqlTT97DQCmDuUnjaHojN+XEyppS91qStsridg6ws/th9OvRk/wxMwaCOzREZDSDluaCtPiR41Oi84JCQjSwkiHBwc...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Monday",
+      "is_weekend": false,
+      "day_index": 1
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/tirth8205",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "1jehuang/jcode/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "sponsors/diegosouzapw",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/rohitg00",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/msitarzewski",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "The Open",
+      "status": "Final",
+      "leaders": [
+        {
+          "name": "Ryan Fox",
+          "position": "1",
+          "score": "-10"
+        },
+        {
+          "name": "Cameron Young",
+          "position": "2",
+          "score": "-9"
+        },
+        {
+          "name": "Sam Burns",
+          "position": "3",
+          "score": "-8"
+        },
+        {
+          "name": "Scottie Scheffler",
+          "position": "4",
+          "score": "-7"
+        },
+        {
+          "name": "Tommy Fleetwood",
+          "position": "5",
+          "score": "-7"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Exploit brokers pay $500k for WordPress RCEs. I found one with GPT5.6 and $25",
+          "url": "https://slcyber.io/research-center/exploit-brokers-pay-500000-for-a-wordpress-rce-i-found-one-with-gpt5-6/",
+          "score": 122,
+          "by": "infosecau"
+        },
+        {
+          "title": "Show HN: I replaced a $120k bowling center system with $1,600 in ESP32s",
+          "score": 2379,
+          "by": "section33"
+        },
+        {
+          "title": "Moonshine: Lets you stream games from your PC to any device running Moonlight",
+          "url": "https://github.com/hgaiser/moonshine",
+          "score": 202,
+          "by": "wertyk"
+        },
+        {
+          "title": "Sealed tomb filled with paintings and inscriptions discovered in Egypt",
+          "url": "https://www.labrujulaverde.com/en/2026/07/sealed-tomb-of-a-high-official-or-priest-filled-with-paintings-and-inscriptions-discovered-on-luxors-west-bank/",
+          "score": 51,
+          "by": "isaacfrond"
+        },
+        {
+          "title": "LoRA Speedrun – a public wall-clock leaderboard for fine-tuning techniques",
+          "url": "https://github.com/Saivineeth147/lora-speedrun",
+          "score": 88,
+          "by": "Vineeth147"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "first quarter",
+      "illumination": 0.399,
+      "days_into_cycle": 6.43
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "Wet Leg",
+        "My Morning Jacket"
+      ]
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 20,
+      "day_of_year": 201,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-19T20:07Z",
+          "result": "loss",
+          "score": "2-3"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:05",
+      "sunset": "19:27",
+      "daylight_hours": 14.4
+    },
+    "date": "2026-07-20"
+  },
+  "hero": {
+    "copy": "$120K SYSTEM. $1,600 IN ESP32s.",
+    "rationale": "Today's loudest signal isn't a quote or a score — it's the #1 Hacker News story at 2,379 points: someone ripped out a $120,000 bowling-alley control system and rebuilt it with $1,600 of ESP32 microcontrollers. For a portfolio whose whole thesis is a scrappy builder (Founder, three Twitter-era experiments, a site that rebuilds itself nightly), that ratio IS the mission statement — proof that leverage beats budget. Stripped to \"$120K SYSTEM. $1,600 IN ESP32s.\" it's a self-contained brag you'd screenshot, and the tension between the two numbers is the entire composition.",
+    "source": null
+  },
+  "chassis": "anton-inter-tight",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 46° (breadboard amber). The color mandate leaves only the 45°–67° window clean after a week that scorched the rest of the wheel; 46° is exactly right for a DIY-electronics story — the yellow of breadboards, jumper wires, and status LEDs. Read at full saturation as poster/caution stock.\n- **Neutral palette** — warm-tinted toward 50°:\n  - 50 `#FAF8F1` · 100 `#F1EEE2` · 200 `#E0DBC9` · 300 `#C6BFA6` · 400 `#A39B7E` · 500 `#7C745A` · 600 `#5A5340` · 700 `#40392A` · 800 `#29241A` · 900 `#16130A`\n- **Accent color** — breadboard amber: light `#FFD84D`, default `#FFC400`, dark `#C08E00`, glow `rgba(255,196,0,0.55)`\n- **Secondary accent** — none. The field IS the accent; emphasis between the two numbers is carried typographically (solid ink for $1,600, hairline-outline for $120K), not with a second hue.\n- **Background** — page bg `#FFC400` (amber drench); BOM footer panel `#16130A` (dark board); no sidebar.\n- **Text colors** — primary `#16130A`, secondary `#40392A`, muted `#5A5340`; on the dark BOM panel, text `#FFC400` / muted `#A39B7E`.\n\n### 2. Typography\n- **Hero phrase rendering** — Anton (display token) sets the numerals at poster scale as a stacked two-line lockup: line 1 `$120K SYSTEM.` at ~55% of max, line 2 `$1,600 IN ESP32s.` at full `clamp(88px, 15vw, 240px)`. `$120K` is rendered as an outline (transparent fill, 2px ink stroke via `-webkit-text-stroke`) to read as \"the old, expensive way\"; `$1,600` is solid ink — the punchline lands heaviest. Inter Tight handles the golf badge, nav caps, and BOM line items.\n- **Line heights** — hero 0.82; labels 1.0; body 1.5.\n- **Letter spacings** — hero -0.01em; all-caps nav/labels 0.1em; body 0.\n\n### 3. Layout Specification\n- **Archetype** — Poster. One dominant element (the two giant numbers) fills 70–90% of the viewport; the winning number is the single loudest object, everything else demoted to the corners and a bottom strip — the exact shape of a punchy price-comparison brag.\n- **CSS grid/flex structure** — `display: grid; grid-template-rows: auto minmax(0,1fr) auto; min-height: 100vh; padding: 5vh 6vw 0;`\n- **Major dimensions**:\n  - Hero/featured area: middle row `min-height: 70vh`, hero numbers left-aligned.\n  - No sidebar.\n  - Max content width: `none`; viewport side padding `6vw`.\n  - Section padding: top corner row `5vh`; BOM footer panel `32px 6vw`.\n- **Nav placement** — top-left corner stack: `stacked-md` brand lockup with three all-caps links (WORK · ABOUT · LOG) stacked directly beneath it, ~140px block. Top-right corner holds the golf result badge.\n- **Hero phrase grid zone** — middle row, columns 1–11 of a 12-col field; occupies ~70vh × ~88vw. `$1,600 IN ESP32s.` is the marquee anchor at `clamp(88px,15vw,240px)`.\n\n### 4. Component Character\n- **Border radius** — none (0) everywhere; industrial/spec-sheet flatness. BOM cells radius 0.\n- **Border treatment** — bordered, heavy: 2–3px solid `border` (neutral.900) rules; BOM footer is a hard-ruled parts table.\n- **Shadow** — none. Flat poster; a single 4px hard ink offset allowed on the golf badge only.\n- **Density** — hero spacious; BOM footer compact and tabular.\n- **Interactive states** — nav links invert on hover (ink block bg, amber text); golf badge and BOM rows underline on `_hover`.\n\n### 5. Signal Integration\n- **Where signal elements live** — golf badge top-right corner; all other signals in the dark BOM (bill-of-materials) footer panel styled as an invoice/parts list — thematically native to the ESP32 story.\n- **Sports scores** — Tigers loss as a BOM line item: `DET TIGERS — 2–3 L` in Inter Tight tabular-nums, muted amber, right-aligned score column. Golf badge up top: `THE OPEN · FINAL · R. FOX −10` in bold caps ink on amber with a 4px offset, Cameron Young −9 as sub-line.\n- **Quote display** — no quote today; the hero IS a signal-derived headline.\n- **Holiday elements** — none (holidays empty).\n- **Every signal**: HN bowling story → hero. Golf Open final → top-right badge. Tigers 2–3 → BOM row. Music (Guided by Voices, Wet Leg, My Morning Jacket) → BOM \"on the bench\" row. Moon (first quarter, 40%) + sun (05:05 / 19:27) → BOM almanac row. Build/edition stamp closes the BOM.",
+    "selfCheck": "1. Hero quotability: Yes — \"$120K SYSTEM. $1,600 IN ESP32s.\" is a self-contained brag, quotable with no context.\n2. Because-of chain: Yes — the price-ratio headline demands Poster (one dominant object), Anton (heavy condensed numerals), an amber drench (breadboard color, only clean hue window), corner-demoted signals.\n3. Render feasibility: Yes — condensed Anton stacks the two short number lines within 88vw at clamp max on 1440×900 without overflow.\n4. Canvas floor feasible: Yes — amber drench + 70vh numeral block + full-width BOM easily clears 70% utilization.",
+    "rationale": "The hero phrase came pre-assembled from the top of Hacker News (2,379 points): a $120,000 industrial system replaced with $1,600 of ESP32s. On a portfolio built by a founder-experimenter whose defining move is small, clever leverage — and whose site tears itself down and rebuilds cheaply every night — that number-to-number ratio is the thesis, not the news. Reduced to \"$120K SYSTEM. $1,600 IN ESP32s.\" it's quotable in isolation, and the gap between the two figures is the whole story to tell.\n\nA price brag whose payload is two numbers wants the Poster: one dominant object filling the field, the winning figure loudest, everything else pushed to the corners. Anton (anton-inter-tight, 1.500 ratio, Poster-tagged and fresh since 07-16) gives heavy condensed numerals that stack \"$120K SYSTEM.\" over \"$1,600 IN ESP32s.\" inside 88vw with room to spare, while Inter Tight's workhorse/spec register carries the golf badge and the bill-of-materials footer — exactly the technical voice a hardware-hack deserves. Emphasis between the two numbers is typographic, not chromatic: $120K is a hollow outline (the expensive old way), $1,600 is solid ink (the punchline).\n\nColor is where the mandate and the metaphor agree: the recent palettes scorched everything except the 45°–67° window, and 46° breadboard-amber is precisely the color of a DIY-electronics triumph — jumper wires, status LEDs, caution stock. I drench the canvas in it and set black ink numerals on top (coverage ~66%), a hard-ruled, radius-zero poster with no shadows and no second hue. The shell is deliberately fresh against the avoid lists: a top-left corner stack pairs the unused `stacked-md` lockup (single-color mono inheriting ink) with three caps links beneath it; the golf final rides a hard-offset badge top-right; and the footer is a dark \"bill of materials\" panel that lists the Tigers loss, the band bench, and the moon/sun almanac as invoice line items — thematically native to the ESP32 build and unlike any recent folio/ledger/caption footer.",
+    "signalIntegration": "- **Where signal elements live** — golf badge top-right corner; all other signals in the dark BOM (bill-of-materials) footer panel styled as an invoice/parts list — thematically native to the ESP32 story.\n- **Sports scores** — Tigers loss as a BOM line item: `DET TIGERS — 2–3 L` in Inter Tight tabular-nums, muted amber, right-aligned score column. Golf badge up top: `THE OPEN · FINAL · R. FOX −10` in bold caps ink on amber with a 4px offset, Cameron Young −9 as sub-line.\n- **Quote display** — no quote today; the hero IS a signal-derived headline.\n- **Holiday elements** — none (holidays empty).\n- **Every signal**: HN bowling story → hero. Golf Open final → top-right badge. Tigers 2–3 → BOM row. Music (Guided by Voices, Wet Leg, My Morning Jacket) → BOM \"on the bench\" row. Moon (first quarter, 40%) + sun (05:05 / 19:27) → BOM almanac row. Build/edition stamp closes the BOM."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "primary": {
+          "50": "#FFFCEB",
+          "100": "#FFF3C4",
+          "200": "#FFE896",
+          "300": "#FFD84D",
+          "400": "#FFC400",
+          "500": "#EBB000",
+          "600": "#C08E00",
+          "700": "#8F6900",
+          "800": "#5E4500",
+          "900": "#332500"
+        },
+        "neutral": {
+          "50": "#FAF8F1",
+          "100": "#F1EEE2",
+          "200": "#E0DBC9",
+          "300": "#C6BFA6",
+          "400": "#A39B7E",
+          "500": "#7C745A",
+          "600": "#5A5340",
+          "700": "#40392A",
+          "800": "#29241A",
+          "900": "#16130A"
+        },
+        "accent": {
+          "light": "#FFD84D",
+          "default": "#FFC400",
+          "dark": "#C08E00",
+          "glow": "rgba(255,196,0,0.55)"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.primary.400}",
+          "_light": "{colors.primary.400}"
+        },
+        "surface": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.900}"
+        },
+        "surfaceText": {
+          "base": "{colors.primary.400}",
+          "_light": "{colors.primary.400}"
+        },
+        "text": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.700}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.600}",
+          "_light": "{colors.neutral.600}"
+        },
+        "accent": {
+          "base": "{colors.primary.600}",
+          "_light": "{colors.primary.600}"
+        },
+        "onAccent": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.900}"
+        },
+        "border": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.900}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.82",
+      "snug": "1.0",
+      "normal": "1.5",
+      "loose": "1.7"
+    },
+    "letterSpacings": {
+      "tight": "-0.01em",
+      "normal": "0",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.16em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 46,
+      "s": 100,
+      "l": 50,
+      "name": "breadboard amber"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "amber/50°",
+      "name": "solder graphite"
+    },
+    "mood_word": "scrappy",
+    "color_story": "A drenched breadboard-amber field with black ink numerals turns the page into a caution-tape spec sheet — the color of jumper wires and LED glow behind a DIY triumph."
+  },
+  "shell": {
+    "nav": "top-left corner stack (stacked-md brand lockup with three all-caps links beneath); golf badge in top-right corner",
+    "footer": "BOM strip — dark bill-of-materials/invoice panel listing the day's signals as line items (Tigers, music, almanac, build stamp)",
+    "brand_lockup": "stacked-md",
+    "brand_color_mode": "single-color"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "APPROVED",
+      "feedback": "APPROVED",
+      "ts": 1784545498967
+    }
+  ],
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

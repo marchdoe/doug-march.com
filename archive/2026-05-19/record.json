@@ -1,0 +1,376 @@
+{
+  "date": "2026-05-19",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.177Z",
+  "buildId": "1779189200407",
+  "attempts": 1,
+  "brief": "Big Shoulders instrument panel on a teal-stone daylight field — FOURTEEN HOURS in near-black and OF LIGHT. in marine teal at 10.5vw, stacked as a tide table reading, the dark signal band filing Aaron Rai's −9, a 2−8 Tigers loss, and 14.3h of spring sun below the measurement that opened the page.",
+  "rationale": "The hero phrase arrived from today's environmental data, not from the quote feed. 14.3 hours of daylight on May 19th is a precise, almost scientific reading — the kind of number that belongs on a gauge or a tide table. For a site whose entire premise is reading the environment and translating it into design, making the day's most arresting environmental fact into a 152px declaration is the most honest thing the site can do. The phrase is strange enough to stop a scroll (\"FOURTEEN HOURS OF LIGHT.\") and specific enough to prove it's real. The period lands as finality.\n\nStack was the only archetype that could render this correctly. A Poster would have isolated the phrase in a void, treating it as a quotation. Stack treats the phrase as the first reading in a series of registers — each horizontal band is a different instrument measuring the same day. Band 1: the primary signal (light). Band 2: secondary signals (golf, baseball, season). Band 3: the work portfolio. Band 4: context and voice. Band 5: capabilities. The page reads vertically like a printed report, which is exactly right for content that presents itself as environmental measurement. Big Shoulders Display at condensed poster scale is the typeface of gauges and highway signs and calibration panels — it carries a number at scale without making it feel decorative.\n\nThe teal palette at H:162° was both mandated (the color window permitted 150°–175°, the most constrained window in recent memory) and conceptually inevitable. H:162° is the color of refracted spring light through glass, of clear water, of the atmosphere on a long May afternoon. Against six consecutive dark designs, a near-white ground with saturated teal type is the boldest available move — not because it's louder, but because it's the first daylit page in a week. The color break in the hero phrase is the payload: \"FOURTEEN HOURS\" arrives in near-black (a measurement stated), then \"OF LIGHT.\" arrives in teal.500 — the thing being measured takes the live color, and you can almost see it.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Stack",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Pillars Of Seven",
+          "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Pedal Mafia | Event Micro Site",
+          "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Tuesday",
+      "is_weekend": false,
+      "day_index": 2
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "tinyhumansai/openhuman/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "HKUDS/CLI-Anything/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "Imbad0202/academic-research-skills/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/obra",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "anthropics/claude-plugins-official/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "PGA Championship",
+      "status": "Final",
+      "leaders": [
+        {
+          "name": "Aaron Rai",
+          "position": "1",
+          "score": "-9"
+        },
+        {
+          "name": "Jon Rahm",
+          "position": "2",
+          "score": "-6"
+        },
+        {
+          "name": "Alex Smalley",
+          "position": "3",
+          "score": "-6"
+        },
+        {
+          "name": "Justin Thomas",
+          "position": "4",
+          "score": "-5"
+        },
+        {
+          "name": "Matti Schmid",
+          "position": "5",
+          "score": "-5"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Gaussian Splat of a Strawberry",
+          "url": "https://superspl.at/scene/84df8849",
+          "score": 11,
+          "by": "danybittel"
+        },
+        {
+          "title": "I Found Ultra-Pure Quantum Crystals in an Abandoned Mine in the Atacama Desert",
+          "url": "https://medium.com/@breid.at/ultra-pure-quantum-crystals-from-an-abandoned-mine-in-a-mysterious-desert-93cc87d12314",
+          "score": 74,
+          "by": "vi_sextus_vi"
+        },
+        {
+          "title": "Polypad",
+          "url": "https://polypad.amplify.com/",
+          "score": 81,
+          "by": "ivank"
+        },
+        {
+          "title": "Peter Neumann has died",
+          "url": "https://www.tuhs.org/pipermail/tuhs/2026-May/033748.html",
+          "score": 134,
+          "by": "pabs3"
+        },
+        {
+          "title": "The last six months in LLMs in five minutes",
+          "url": "https://simonwillison.net/2026/May/19/5-minute-llms/",
+          "score": 474,
+          "by": "yakkomajuri"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Memorial Day",
+          "date": "2026-05-25",
+          "days_away": 6
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "waxing crescent",
+      "illumination": 0.132,
+      "days_into_cycle": 3.49
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "A pessimist sees the difficulty in every opportunity; an optimist sees the opportunity in every difficulty.",
+      "author": "Winston Churchill"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 19,
+      "day_of_year": 139,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-18T22:40Z",
+          "result": "loss",
+          "score": "2-8"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:59",
+      "sunset": "19:14",
+      "daylight_hours": 14.3
+    },
+    "date": "2026-05-19"
+  },
+  "hero": {
+    "copy": "FOURTEEN HOURS OF LIGHT.",
+    "rationale": "Today's most striking environmental fact: 14.3 hours of daylight on May 19th, deep into spring's longest-lit arc. For a site that redesigns itself daily by reading environmental signals, leading with the exact measurement of today's light is both the premise and the proof — the mechanism announcing itself through its own output. \"FOURTEEN HOURS OF LIGHT.\" is specific enough to be a news report and strange enough to stop a scroll. The period makes it a declaration, not a caption.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue** — H:162°, the exact chromatic midpoint of the color mandate's permitted window (150°–175°). Marine teal: the color of a glass of water held up to spring light, of tide-pool shallows, of calibration instruments. Not the over-used blue or the obvious green.\n\n- **Neutral palette** — teal-stone family, every step tinted H:162° at chroma ≈ 0.008–0.012 so surfaces participate in the palette without reading as colored:\n  - 50: `#F4F9F7`\n  - 100: `#E8F3EF`\n  - 200: `#D0E8E0`\n  - 300: `#A8CEC3`\n  - 400: `#7BB3A6`\n  - 500: `#589488`\n  - 600: `#3E756B`\n  - 700: `#2B5850`\n  - 800: `#1A3B35`\n  - 900: `#0A201C`\n\n- **Accent color**:\n  - light: `#6FD7C0` (teal.300)\n  - default: `#0F9E85` (teal.500)\n  - dark: `#086A5A` (teal.700)\n  - glow: `#38BEA5` (teal.400)\n\n- **Secondary accent** — none. One frequency of light, sustained.\n\n- **Background**:\n  - Page bg: `#F4F9F7` (stone.50)\n  - Card bg: `#E8F3EF` (stone.100)\n  - Signal band: `#065248` (teal.800)\n\n- **Text colors**:\n  - Primary: `#0A201C` (stone.900) — near-black with teal cast\n  - Secondary: `#2B5850` (stone.700)\n  - Muted: `#589488` (stone.500)\n  - On signal band: `#D6F3EC` (teal.100)\n\n**Contrast checks:**\n- stone.900 on stone.50: ≈ 14.7:1 ✓\n- teal.500 on stone.50: ≈ 3.0:1 — large display text (64px+) only; passes WCAG AA large ✓\n- teal.700 on stone.50: ≈ 5.7:1 — body text and labels ✓\n- teal.100 on teal.800: ≈ 14.8:1 ✓\n\n---\n\n### 2. Typography (chassis: big-shoulders-atkinson)\n\n- **Hero phrase rendering** — `display` token, `clamp(64px, 10.5vw, 152px)`, Big Shoulders Display condensed, all-caps (natural to the typeface).\n  - Line 1: `FOURTEEN HOURS` — stone.900 (`#0A201C`)\n  - Line 2: `OF LIGHT.` — teal.500 (`#0F9E85`)\n  - The color break lands at the semantic break: the measurement is stated flat in dark, the thing being measured arrives in the live chromatic event\n  - Stacked left-aligned at `padding-left: 6vw`\n\n- **Line heights**:\n  - Hero: `0.92` — ultra-tight for condensed caps, the two lines press together like a billboard\n  - Section headings: `1.1`\n  - Body: `1.6` (Atkinson Hyperlegible at small scale benefits from generous leading)\n  - Signal strip labels: `1.2`\n\n- **Letter spacings**:\n  - Hero: `-0.02em` — condensed display at scale needs slight tightening\n  - All-caps labels (signal strip, eyebrows): `0.08em` — all-caps at small size needs tracking\n  - Body: `0em`\n  - Metadata/muted: `0.03em`\n\n---\n\n### 3. Layout Specification\n\n- **Archetype** — Stack. Full-width horizontal bands, each a distinct visual moment. \"FOURTEEN HOURS OF LIGHT.\" is a reading from an instrument; Stack renders the page as a set of registers — each band a different measurement from the same day.\n\n- **CSS structure** — top-level: `display: flex; flex-direction: column; width: 100%; max-width: none; overflow-x: hidden;`\n  - Each band: `width: 100%; display: block;`\n\n- **Major dimensions**:\n  - **Band 1 — Hero**: `min-height: 100vh; padding: 0 6vw; position: relative`\n  - **Band 2 — Signal strip**: `min-height: 72px; padding: 20px 6vw;` — teal.800 background, full-bleed\n  - **Band 3 — Work**: `padding: 96px 6vw;` — stone.50 bg, teal.400 2px rule as section header\n  - **Band 4 — About + Quote pull**: `padding: 80px 6vw;` — stone.100 bg\n  - **Band 5 — Capabilities + Footer**: `padding: 64px 6vw 48px;` — teal.800 bg, light text\n  - Max content width: `max-width: none` — full canvas\n  - Viewport side padding: `6vw` throughout (≈ 86px at 1440px)\n\n- **Nav placement** — `position: absolute; top: 0; left: 0; right: 0; padding: 28px 6vw; display: flex; justify-content: space-between; align-items: center; z-index: 10` — floats over hero band, transparent background. \"DOUG MARCH\" in stone.900 (`font-size: 13px; letter-spacing: 0.1em; font-weight: 600`), nav links right in stone.600.\n\n- **Hero phrase grid zone** — phrase block sits `padding-top: 0; margin: auto 0;` (vertically centered via flex on Band 1). Hero band uses `display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding-top: 96px;` (top padding clears the nav). The two-line phrase block is `max-width: none`, left-aligned at 6vw. Below the phrase: fine rule `width: 40px; height: 2px; background: teal.400; margin: 40px 0 20px;` then date metadata `font-size: 13px; letter-spacing: 0.08em; color: stone.500;` reading \"MAY 19, 2026 · 14.3h DAYLIGHT · ☽ WAXING CRESCENT 13%\".\n\n---\n\n### 4. Component Character\n\n- **Border radius** — `none` (0px) throughout. No rounded corners — the phrase is a measurement and everything else inherits that precision.\n- **Border treatment** — borderless cards; the signal strip creates separation through background contrast; a 2px solid teal.400 rule (`#38BEA5`) appears as the WORK section header above the project grid; 1px stone.200 dividers between capabilities rows.\n- **Shadow** — none. Depth comes from band background contrast alone.\n- **Density** — Hero: spacious (one idea, full viewport). Signal strip: compact (5 inline data items across full width). Work: comfortable (2–3 column project cards). Footer: tight.\n- **Interactive states**:\n  - Project cards: `background: stone.100 → stone.200` on hover; 2px solid teal.500 left border appears on hover\n  - Nav links: `color: stone.600 → teal.500` on hover\n  - Buttons/tags: `background: transparent; border: 1px solid teal.500` → `background: teal.500; color: stone.50` on hover\n\n---\n\n### 5. Signal Integration\n\n- **Signal strip (Band 2, teal.800 bg)** — single horizontal row, `display: flex; gap: 40px; align-items: center; flex-wrap: wrap;`. Each item: `font-size: 13px; letter-spacing: 0.08em;` in teal.100. Items:\n  - `⛳ PGA: AARON RAI −9` — teal.300 (`#6FD7C0`) for the score; winner accented\n  - `⚾ TIGERS 2−8` — teal.400, loss noted without drama\n  - `🌱 SPRING · DAY 139` — teal.100\n  - `☽ CRESCENT 13%` — teal.100\n  - `▶ MEMORIAL DAY IN 6 DAYS` — teal.200\n\n- **Sports scores** — inline in signal strip, monospaced numerals via `font-variant-numeric: tabular-nums`. Tigers loss in teal.400 (not suppressed but not celebrated). PGA winner in teal.300 with the score in a slightly larger weight (semibold).\n\n- **Quote treatment** — Churchill's \"AN OPTIMIST SEES THE OPPORTUNITY IN EVERY DIFFICULTY.\" appears in Band 4 (About) as a pull-quote: `font-size: clamp(18px, 2.5vw, 28px); font-style: normal; color: teal.700; letter-spacing: -0.01em; border-left: 3px solid teal.400; padding-left: 24px;` — an editorial aside to the day's hero measurement, not competing with it.\n\n- **Daylight data** — the signal origin of the hero phrase. Rendered as fine metadata below the hero text: `MAY 19, 2026 · 14.3h DAYLIGHT` in stone.500, `font-size: 13px; letter-spacing: 0.08em`.\n\n- **Music signals** — Guided by Voices, My Morning Jacket noted in footer band (Band 5) as `NOW PLAYING:` micro-label alongside capabilities.",
+    "selfCheck": "1. Hero quotability: Yes — \"FOURTEEN HOURS OF LIGHT.\" is a complete, standalone declarative statement; the specificity of the measurement and the compression of \"OF LIGHT.\" make it poster-worthy and dissonant enough to earn a screenshot.\n2. Because-of chain: Yes — the phrase (a precise environmental measurement) demanded Stack (registers/readings), demanded Big Shoulders condensed (instrument panel numerics at bulletin scale), demanded teal H:162° (the color of the light being measured), demanded the light-on-dark color break at \"OF LIGHT.\" where the measured quantity arrives in accent.\n3. Render feasibility: Yes — Big Shoulders Display at clamp(64px, 10.5vw, 152px) renders \"FOURTEEN HOURS\" (13 chars) at ≈148px on a 1440px viewport; condensed proportions keep it within bounds; Stack bands are full-width so no overflow risk.",
+    "rationale": "The hero phrase arrived from today's environmental data, not from the quote feed. 14.3 hours of daylight on May 19th is a precise, almost scientific reading — the kind of number that belongs on a gauge or a tide table. For a site whose entire premise is reading the environment and translating it into design, making the day's most arresting environmental fact into a 152px declaration is the most honest thing the site can do. The phrase is strange enough to stop a scroll (\"FOURTEEN HOURS OF LIGHT.\") and specific enough to prove it's real. The period lands as finality.\n\nStack was the only archetype that could render this correctly. A Poster would have isolated the phrase in a void, treating it as a quotation. Stack treats the phrase as the first reading in a series of registers — each horizontal band is a different instrument measuring the same day. Band 1: the primary signal (light). Band 2: secondary signals (golf, baseball, season). Band 3: the work portfolio. Band 4: context and voice. Band 5: capabilities. The page reads vertically like a printed report, which is exactly right for content that presents itself as environmental measurement. Big Shoulders Display at condensed poster scale is the typeface of gauges and highway signs and calibration panels — it carries a number at scale without making it feel decorative.\n\nThe teal palette at H:162° was both mandated (the color window permitted 150°–175°, the most constrained window in recent memory) and conceptually inevitable. H:162° is the color of refracted spring light through glass, of clear water, of the atmosphere on a long May afternoon. Against six consecutive dark designs, a near-white ground with saturated teal type is the boldest available move — not because it's louder, but because it's the first daylit page in a week. The color break in the hero phrase is the payload: \"FOURTEEN HOURS\" arrives in near-black (a measurement stated), then \"OF LIGHT.\" arrives in teal.500 — the thing being measured takes the live color, and you can almost see it.",
+    "signalIntegration": "- **Signal strip (Band 2, teal.800 bg)** — single horizontal row, `display: flex; gap: 40px; align-items: center; flex-wrap: wrap;`. Each item: `font-size: 13px; letter-spacing: 0.08em;` in teal.100. Items:\n  - `⛳ PGA: AARON RAI −9` — teal.300 (`#6FD7C0`) for the score; winner accented\n  - `⚾ TIGERS 2−8` — teal.400, loss noted without drama\n  - `🌱 SPRING · DAY 139` — teal.100\n  - `☽ CRESCENT 13%` — teal.100\n  - `▶ MEMORIAL DAY IN 6 DAYS` — teal.200\n\n- **Sports scores** — inline in signal strip, monospaced numerals via `font-variant-numeric: tabular-nums`. Tigers loss in teal.400 (not suppressed but not celebrated). PGA winner in teal.300 with the score in a slightly larger weight (semibold).\n\n- **Quote treatment** — Churchill's \"AN OPTIMIST SEES THE OPPORTUNITY IN EVERY DIFFICULTY.\" appears in Band 4 (About) as a pull-quote: `font-size: clamp(18px, 2.5vw, 28px); font-style: normal; color: teal.700; letter-spacing: -0.01em; border-left: 3px solid teal.400; padding-left: 24px;` — an editorial aside to the day's hero measurement, not competing with it.\n\n- **Daylight data** — the signal origin of the hero phrase. Rendered as fine metadata below the hero text: `MAY 19, 2026 · 14.3h DAYLIGHT` in stone.500, `font-size: 13px; letter-spacing: 0.08em`.\n\n- **Music signals** — Guided by Voices, My Morning Jacket noted in footer band (Band 5) as `NOW PLAYING:` micro-label alongside capabilities."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "teal": {
+          "50": "#F0FAF7",
+          "100": "#D6F3EC",
+          "200": "#AAEADA",
+          "300": "#6FD7C0",
+          "400": "#38BEA5",
+          "500": "#0F9E85",
+          "600": "#0B8470",
+          "700": "#086A5A",
+          "800": "#065248",
+          "900": "#04342C"
+        },
+        "stone": {
+          "50": "#F4F9F7",
+          "100": "#E8F3EF",
+          "200": "#D0E8E0",
+          "300": "#A8CEC3",
+          "400": "#7BB3A6",
+          "500": "#589488",
+          "600": "#3E756B",
+          "700": "#2B5850",
+          "800": "#1A3B35",
+          "900": "#0A201C"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.stone.50}"
+        },
+        "bg-card": {
+          "base": "{colors.stone.100}"
+        },
+        "bg-signal": {
+          "base": "{colors.teal.800}"
+        },
+        "bg-footer": {
+          "base": "{colors.teal.900}"
+        },
+        "bg-subtle": {
+          "base": "{colors.stone.200}"
+        },
+        "text": {
+          "base": "{colors.stone.900}"
+        },
+        "text-secondary": {
+          "base": "{colors.stone.700}"
+        },
+        "text-muted": {
+          "base": "{colors.stone.500}"
+        },
+        "text-on-signal": {
+          "base": "{colors.teal.100}"
+        },
+        "text-on-footer": {
+          "base": "{colors.teal.200}"
+        },
+        "accent": {
+          "base": "{colors.teal.500}"
+        },
+        "accent-light": {
+          "base": "{colors.teal.300}"
+        },
+        "accent-dark": {
+          "base": "{colors.teal.700}"
+        },
+        "accent-glow": {
+          "base": "{colors.teal.400}"
+        },
+        "border": {
+          "base": "{colors.stone.200}"
+        },
+        "border-strong": {
+          "base": "{colors.teal.400}"
+        },
+        "border-subtle": {
+          "base": "{colors.stone.100}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "24px",
+      "6": "32px",
+      "7": "48px",
+      "8": "64px",
+      "9": "96px",
+      "10": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.9",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.8"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.2em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 162,
+      "s": 85,
+      "l": 34,
+      "name": "marine teal"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "teal",
+      "name": "teal-stone"
+    },
+    "mood_word": "luminous",
+    "color_story": "Teal at H:162° — the precise frequency of clear spring water and morning light refracted through glass — holds the measurement phrase at its maximum authority against a near-white field, delivering six consecutive dark builds their first full daylight reversal."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

@@ -1,0 +1,347 @@
+{
+  "date": "2026-05-15",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.172Z",
+  "buildId": "1778842658678",
+  "attempts": 1,
+  "brief": "Big Shoulders command in night-violet drench — \"YOURSELF\" glowing in surveillance-purple at three-line marquee scale while signal witnesses scatter asymmetrically across the dark canvas: PGA five-way tie, new moon zero-percent lit, 886-point RAV4 anti-surveillance story ruling the full-width band, everything arranged as the watching apparatus the hero phrase cancels.",
+  "rationale": "The hero phrase arrived from Chamfort's signal quote, compressed to its most poster-worthy five words. \"Stop watching ourselves live\" is the original; \"STOP WATCHING YOURSELF LIVE.\" is the command form — direct address, second person, period as full stop against the noise. Three signals converge to make it inevitable: the HN top story (886 points) is literally a developer removing surveillance hardware from their car; the new moon provides zero illumination, a night with no witness; the Tigers lost quietly in the dark. For a site that auto-redesigns itself by reading environmental signals, the phrase is also a structural wink — the mechanism IS watching, and the visitor is instructed to stop.\n\nGallery Wall is the archetype because it creates a meta-reading unavailable to Poster or Specimen: the scattered signal blocks (PGA leaderboard, new moon, HN story, Tigers, Radiohead) become the surveillance apparatus arrayed around the dominant block that cancels them. They are the watchers. The hero command is the override. That conceptual argument — which you can only have if the signal fragments are present on the same canvas as the command — ruled out isolating archetypes. Big Shoulders Display is the mandatory chassis: this typeface is condensed signage, it is warning labels and public notices, it is the letter-form register of something posted on a wall telling you what not to do. At clamp(68px, 9.5vw, 152px) across eight columns it reads at public-declaration scale without tipping into parody.\n\nH:292° violet-purple is the only honest palette choice, and it was both constrained and conceptually exact. The color mandate's sole permitted window (278°–315°) happens to be the precise frequency of CCTV monitors, night-vision camera glow, and the paranoid ambient light of surveillance infrastructure. The hue didn't need to be forced into concept — it arrived there already. The near-black ground (#0C0716, tinted toward H:290° so it participates in the palette rather than sitting as anonymous void) creates the atmosphere of watching-in-the-dark that the phrase then commands you to abandon. \"YOURSELF\" landing in #A668F5 accent-violet makes the self-reflexive word the one that's lit and marked — the surveilled subject of the command is the exact word that receives the color.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Gallery Wall",
+  "signals": {
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Friday",
+      "is_weekend": false,
+      "day_index": 5
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "tinyhumansai/openhuman/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "sponsors/obra",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "K-Dense-AI/scientific-agent-skills/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "supertone-inc/supertonic/stargazers",
+          "description": "",
+          "language": "Swift",
+          "stars": null
+        },
+        {
+          "name": "ruvnet/RuView/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "PGA Championship",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Martin Kaymer",
+          "position": "1",
+          "score": "-3"
+        },
+        {
+          "name": "Scottie Scheffler",
+          "position": "2",
+          "score": "-3"
+        },
+        {
+          "name": "Alex Smalley",
+          "position": "3",
+          "score": "-3"
+        },
+        {
+          "name": "Aldrich Potgieter",
+          "position": "4",
+          "score": "-3"
+        },
+        {
+          "name": "Stephan Jaeger",
+          "position": "5",
+          "score": "-3"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Explore Wikipedia Like a Windows XP Desktop",
+          "url": "https://explorer.samismith.com/",
+          "score": 79,
+          "by": "smusamashah"
+        },
+        {
+          "title": "Show HN: Find the best local LLM for your hardware, ranked by benchmarks",
+          "url": "https://github.com/Andyyyy64/whichllm",
+          "score": 24,
+          "by": "andyyyy64"
+        },
+        {
+          "title": "Removing the modem and GPS from my 2024 RAV4 hybrid",
+          "url": "https://arkadiyt.com/2026/05/13/removing-the-modem-and-gps-from-my-rav4/",
+          "score": 886,
+          "by": "arkadiyt"
+        },
+        {
+          "title": "UK sovereign LLM inference",
+          "url": "https://relax.ai/docs",
+          "score": 59,
+          "by": "benjamintnorris"
+        },
+        {
+          "title": "Show HN: GlycemicGPT – Open-source AI-powered diabetes management",
+          "url": "https://github.com/GlycemicGPT/GlycemicGPT",
+          "score": 32,
+          "by": "jlengelbrecht"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "new moon",
+      "illumination": 0.003,
+      "days_into_cycle": 29.01
+    },
+    "music": {
+      "bands": [
+        "Radiohead",
+        "Guided by Voices",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "Contemplation often makes life miserable. We should act more, think less, and stop watching ourselves live.",
+      "author": "Nicolas Chamfort"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 15,
+      "day_of_year": 135,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-14T17:10Z",
+          "result": "loss",
+          "score": "4-9"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:02",
+      "sunset": "19:10",
+      "daylight_hours": 14.1
+    },
+    "date": "2026-05-15"
+  },
+  "hero": {
+    "copy": "STOP WATCHING YOURSELF LIVE.",
+    "rationale": "The Chamfort signal quote yields its most poster-worthy fragment: five words, a period, a command. The resonances today are structural, not decorative — the HN story with 886 points is literally someone removing surveillance hardware from their car; the new moon makes tonight entirely unwatched; the Tigers dropped another game in the dark. For a site that rebuilds itself daily by reading environmental signals, the phrase is also a wink at the mechanism: the design is produced by watching signals, and the visitor is instructed to stop watching themselves. It earns marquee scale because it works simultaneously as Chamfort aphorism, portfolio manifesto, and dry comedy.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — H:292° (violet-purple); both mandated (sole permitted window is 278°–315°) and semantically exact — the chromatic register of surveillance equipment, signal interference, and absolute night\n- **Neutral palette** — all tinted toward H:290° so even the void participates:\n  - 50: #F3F0F8\n  - 100: #E5DEEF\n  - 200: #C4B8D8\n  - 300: #A294BC\n  - 400: #80709E\n  - 500: #5F4F7E\n  - 600: #443662\n  - 700: #2D2046\n  - 800: #1A102E\n  - 900: #0C0716\n- **Accent color** — Light: #C39BFF | Default: #A668F5 | Dark: #7030C4 | Glow: `0 0 24px rgba(166, 104, 245, 0.40)`\n- **Secondary accent** — None; one chromatic event on the page\n- **Background** — Page bg: #0C0716 (deep night-violet black) | Card bg: #1A102E | Subtle surface: #2D2046\n- **Text colors** — Primary text: #F3F0F8 | Secondary text: #A294BC | Muted text: #5F4F7E\n\n### 2. Typography (chassis-derived)\n- **Hero phrase rendering** — Big Shoulders Display `display` token; three-line layout: \"STOP WATCHING\" / \"YOURSELF\" / \"LIVE.\" at `clamp(68px, 9.5vw, 152px)`; left-aligned, no centering; \"STOP WATCHING\" and \"LIVE.\" in #F3F0F8 (near-white); \"YOURSELF\" in #A668F5 (vivid violet) — the self-reflexive word is the surveilled one, so it receives the accent; Chamfort attribution beneath in Atkinson Hyperlegible 13px tracked wide, muted\n- **Line heights** — Hero: 0.88 (tight stacking for condensed letterforms at display scale); Signal subheadings: 1.1; Body/signal text: 1.55; Compact signal rows: 1.2\n- **Letter spacings** — Hero: −0.02em (condensed display at this scale needs tighter tracking); Eyebrow all-caps labels: 0.10em; Body text: 0em; Tabular signal data: 0.02em\n\n### 3. Layout Specification\n- **Archetype** — Gallery Wall: the scattered signal blocks (PGA leaderboard, new moon, HN surveillance story, Tigers score, music) are arranged across the canvas as asymmetric witnesses — the world's watching apparatus — while the dominant block carries the command that cancels it all\n- **CSS grid/flex structure** — `display: grid; grid-template-columns: repeat(12, 1fr); gap: 3vw; padding: 4vw; padding-top: calc(4vw + 52px)`\n- **Major dimensions**:\n  - Hero block: min-height 68vh; cols 1–8; phrase left-aligned within block\n  - Right signal column: cols 9–12 (~30% of canvas); stacked blocks — PGA ~38vh top, Moon ~18vh bottom\n  - Full-width HN band: rows 6; spans all 12 cols; height ~96px\n  - Bottom row: Tigers block cols 1–5; Music block cols 6–9; Project pill cols 10–12\n  - Max content width: `max-width: none` — full canvas, 4vw side padding only, never a centered container\n  - Block internal padding: 5vw (hero), 3vw (signal blocks)\n- **Nav placement** — Fixed top strip, full 100vw, height 52px; `position: fixed; top: 0; z-index: 100; background: #0C0716; border-bottom: 1px solid #2D2046`; site name left in Atkinson Hyperlegible 13px tracked wide; nav links right in same treatment; accent dot separator; scrolls no — stays fixed\n- **Hero phrase grid zone** — Rows 1–5 (top 68vh of canvas), columns 1–8; the phrase fills this block left-anchored at 4vw from block edge; no centering; three lines of condensed display type; Chamfort attribution 32px below \"LIVE.\" in Atkinson 13px muted\n\n### 4. Component Character\n- **Border radius** — Cards: 2px; Buttons: 2px; Tags: 2px; nothing rounds — every edge is hard, every container is a frame\n- **Border treatment** — Signal blocks: 1px solid #2D2046 (barely-there); accent-activated blocks (when hover): 1px solid #A668F5; hero block: no border, no edge\n- **Shadow** — None; depth hierarchy via surface lightness steps only: #0C0716 → #1A102E → #2D2046\n- **Density** — Hero zone: open, large negative space around phrase; signal blocks: compact, tight rows, dense data\n- **Interactive states** — Hover on signal blocks: accent border appears + subtle background lift to #2D2046; nav links: opacity 0.7 default → 1.0 hover with accent underline; project links: underline in #A668F5\n\n### 5. Signal Integration\n- **Where signal elements live** — Right column (cols 9–12): PGA Championship block top, New Moon block bottom; Full-width row below hero fold: HN story band; Bottom row: Tigers left, Music center, Project right\n- **PGA Championship** — Eyebrow \"PGA CHAMPIONSHIP\" in #A668F5 at 11px tracked 0.10em; five leaders all at -3 listed in tight Atkinson rows; \"Martin Kaymer\" bold near-white, four others in secondary neutral; score column in tabular nums; note \"5-way tie\" in muted italic\n- **New Moon** — Right column below PGA; large CSS circle `width: 72px; height: 72px; border-radius: 9999px; background: #0C0716; border: 2px solid #2D2046` next to \"NEW MOON\" in small-caps 11px tracked wide; \"0.3% ILLUMINATED\" in muted text; \"NIGHT 29 OF CYCLE\" below\n- **HN story (surveillance)** — Full-width band, height 80px, background #1A102E, 1px accent border top and bottom; \"886 →\" in accent #A668F5 bold; \"REMOVING THE MODEM AND GPS FROM MY 2024 RAV4\" in near-white medium; this story earns a named slot because it is the day's thematic double for the hero phrase\n- **Quote treatment** — The quote IS the hero phrase; Chamfort attribution appears 32px below \"LIVE.\" in Atkinson Hyperlegible 13px, tracked 0.08em, color #5F4F7E: \"— NICOLAS CHAMFORT\"\n- **Tigers 4–9** — Bottom-left block; \"TIGERS\" eyebrow muted 10px; score \"4–9\" in Big Shoulders Display ~52px secondary neutral #A294BC; \"L\" badge 1px border; \"MAY 14\" in muted; no drama — filed, not mourned",
+    "selfCheck": "1. Hero quotability: Yes — \"STOP WATCHING YOURSELF LIVE.\" is Chamfort compressed to command form; works as film-poster text, portfolio manifesto, and day-specific commentary on surveillance removal; would be screenshotted without the site around it.\n2. Because-of chain: Yes — command phrase → Gallery Wall (scattered signal witnesses arranged around the thing that cancels watching) → Big Shoulders Display (warning-sign/public-notice condensed register, a command reads like signage) → H:292° violet-purple (CCTV-screen and night-vision frequency, the color of watching in the dark) → hard-edged blocks with no rounding and no shadow (surveillance-grid aesthetic, nothing soft).\n3. Render feasibility: Yes — Big Shoulders Display at clamp(68px, 9.5vw, 152px) across 8 of 12 columns (~67% canvas width) renders three lines (\"STOP WATCHING\" / \"YOURSELF\" / \"LIVE.\") well within 68vh hero zone on 1440×900 without overflow.",
+    "rationale": "The hero phrase arrived from Chamfort's signal quote, compressed to its most poster-worthy five words. \"Stop watching ourselves live\" is the original; \"STOP WATCHING YOURSELF LIVE.\" is the command form — direct address, second person, period as full stop against the noise. Three signals converge to make it inevitable: the HN top story (886 points) is literally a developer removing surveillance hardware from their car; the new moon provides zero illumination, a night with no witness; the Tigers lost quietly in the dark. For a site that auto-redesigns itself by reading environmental signals, the phrase is also a structural wink — the mechanism IS watching, and the visitor is instructed to stop.\n\nGallery Wall is the archetype because it creates a meta-reading unavailable to Poster or Specimen: the scattered signal blocks (PGA leaderboard, new moon, HN story, Tigers, Radiohead) become the surveillance apparatus arrayed around the dominant block that cancels them. They are the watchers. The hero command is the override. That conceptual argument — which you can only have if the signal fragments are present on the same canvas as the command — ruled out isolating archetypes. Big Shoulders Display is the mandatory chassis: this typeface is condensed signage, it is warning labels and public notices, it is the letter-form register of something posted on a wall telling you what not to do. At clamp(68px, 9.5vw, 152px) across eight columns it reads at public-declaration scale without tipping into parody.\n\nH:292° violet-purple is the only honest palette choice, and it was both constrained and conceptually exact. The color mandate's sole permitted window (278°–315°) happens to be the precise frequency of CCTV monitors, night-vision camera glow, and the paranoid ambient light of surveillance infrastructure. The hue didn't need to be forced into concept — it arrived there already. The near-black ground (#0C0716, tinted toward H:290° so it participates in the palette rather than sitting as anonymous void) creates the atmosphere of watching-in-the-dark that the phrase then commands you to abandon. \"YOURSELF\" landing in #A668F5 accent-violet makes the self-reflexive word the one that's lit and marked — the surveilled subject of the command is the exact word that receives the color.",
+    "signalIntegration": "- **Where signal elements live** — Right column (cols 9–12): PGA Championship block top, New Moon block bottom; Full-width row below hero fold: HN story band; Bottom row: Tigers left, Music center, Project right\n- **PGA Championship** — Eyebrow \"PGA CHAMPIONSHIP\" in #A668F5 at 11px tracked 0.10em; five leaders all at -3 listed in tight Atkinson rows; \"Martin Kaymer\" bold near-white, four others in secondary neutral; score column in tabular nums; note \"5-way tie\" in muted italic\n- **New Moon** — Right column below PGA; large CSS circle `width: 72px; height: 72px; border-radius: 9999px; background: #0C0716; border: 2px solid #2D2046` next to \"NEW MOON\" in small-caps 11px tracked wide; \"0.3% ILLUMINATED\" in muted text; \"NIGHT 29 OF CYCLE\" below\n- **HN story (surveillance)** — Full-width band, height 80px, background #1A102E, 1px accent border top and bottom; \"886 →\" in accent #A668F5 bold; \"REMOVING THE MODEM AND GPS FROM MY 2024 RAV4\" in near-white medium; this story earns a named slot because it is the day's thematic double for the hero phrase\n- **Quote treatment** — The quote IS the hero phrase; Chamfort attribution appears 32px below \"LIVE.\" in Atkinson Hyperlegible 13px, tracked 0.08em, color #5F4F7E: \"— NICOLAS CHAMFORT\"\n- **Tigers 4–9** — Bottom-left block; \"TIGERS\" eyebrow muted 10px; score \"4–9\" in Big Shoulders Display ~52px secondary neutral #A294BC; \"L\" badge 1px border; \"MAY 14\" in muted; no drama — filed, not mourned"
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "primary": {
+          "50": "#FAF5FF",
+          "100": "#F0E6FF",
+          "200": "#DCC4FF",
+          "300": "#C39BFF",
+          "400": "#A668F5",
+          "500": "#8B47E0",
+          "600": "#7030C4",
+          "700": "#561EA3",
+          "800": "#3D1280",
+          "900": "#270B57"
+        },
+        "neutral": {
+          "50": "#F3F0F8",
+          "100": "#E5DEEF",
+          "200": "#C4B8D8",
+          "300": "#A294BC",
+          "400": "#80709E",
+          "500": "#5F4F7E",
+          "600": "#443662",
+          "700": "#2D2046",
+          "800": "#1A102E",
+          "900": "#0C0716"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.50}"
+        },
+        "bgCard": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgSubtle": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "text": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.neutral.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.300}",
+          "_light": "{colors.neutral.600}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.500}",
+          "_light": "{colors.neutral.400}"
+        },
+        "accent": {
+          "base": "{colors.primary.400}",
+          "_light": "{colors.primary.600}"
+        },
+        "accentLight": {
+          "base": "{colors.primary.200}",
+          "_light": "{colors.primary.400}"
+        },
+        "accentDark": {
+          "base": "{colors.primary.600}",
+          "_light": "{colors.primary.800}"
+        },
+        "accentGlow": {
+          "base": "{colors.primary.300}",
+          "_light": "{colors.primary.500}"
+        },
+        "border": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "borderAccent": {
+          "base": "{colors.primary.500}",
+          "_light": "{colors.primary.400}"
+        },
+        "borderSubtle": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "24px",
+      "6": "32px",
+      "7": "48px",
+      "8": "64px",
+      "9": "96px",
+      "10": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.08em",
+      "widest": "0.15em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 292,
+      "s": 72,
+      "l": 62,
+      "name": "violet-purple"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "violet",
+      "name": "night-violet"
+    },
+    "mood_word": "surveillance",
+    "color_story": "Violet-purple H:292° is the exact frequency of CCTV screens, night-vision camera glow, and the paranoid illumination of a new-moon sky — the color of watching in total darkness, which the hero command orders you to stop."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

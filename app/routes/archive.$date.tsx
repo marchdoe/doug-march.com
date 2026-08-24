@@ -1,101 +1,62 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
+import type { ArchiveRecord, ArchiveTokens } from '../types/archive-record'
 
-export interface ArchiveDetail {
-  date: string
-  archetype: string
-  brief: string
-  signalsBrief: string
-  preset: string
-  rationale: string
-  filesChanged: string[]
-  hasScreenshot: boolean
-  buildId: string
-  trace: string
-}
+type ArchiveDetail = ArchiveRecord & { hasScreenshot: boolean }
 
 export const Route = createFileRoute('/archive/$date')({
   component: ArchiveDetailPage,
 })
 
 /* ---------------------------------------------------------------------------
- * Preset parser — extracts colors, fonts, and font sizes from the raw
- * TypeScript preset string using regex.
+ * Record readers — the parsing happened once, at build time, into record.json.
  * ------------------------------------------------------------------------- */
 
-interface ParsedTokens {
-  colors: { name: string; hex: string }[]
-  fonts: string[]
-  fontSizes: { name: string; value: string }[]
+interface Swatch {
+  name: string
+  hex: string
 }
 
-function parsePreset(preset: string): ParsedTokens {
-  const colors: ParsedTokens['colors'] = []
-  const fonts: string[] = []
-  const fontSizes: ParsedTokens['fontSizes'] = []
-
-  // Colors: match key-value pairs like  primary: '#AABBCC'  or  bg: '#FFF'
-  // Also handles nested objects like  primary: { value: '#AABBCC' }
-  const colorHexRe = /(\w[\w-]*):\s*['{"]?(#[0-9A-Fa-f]{3,8})['"}\s,]/g
-  const seen = new Set<string>()
-  for (const m of preset.matchAll(colorHexRe)) {
-    const name = m[1]
-    const hex = m[2]
-    const key = `${name}-${hex}`
-    if (!seen.has(key)) {
-      seen.add(key)
-      colors.push({ name, hex })
+/** Every stop of every ramp, in the order the preset declared them. */
+function swatches(tokens: ArchiveTokens | null): Swatch[] {
+  if (!tokens) return []
+  const out: Swatch[] = []
+  for (const [ramp, stops] of Object.entries(tokens.colors.ramps)) {
+    for (const [stop, hex] of Object.entries(stops)) {
+      if (typeof hex === 'string') out.push({ name: `${ramp}.${stop}`, hex })
     }
   }
-
-  // Fonts: look for font family values
-  const fontRe = /fonts[\s\S]*?value:\s*'([^']+)'/g
-  for (const m of preset.matchAll(fontRe)) {
-    if (!fonts.includes(m[1])) fonts.push(m[1])
-  }
-
-  // Also catch fontFamily patterns
-  const fontFamilyRe = /fontFamily[^:]*:\s*['"]([^'"]+)['"]/g
-  for (const m of preset.matchAll(fontFamilyRe)) {
-    if (!fonts.includes(m[1])) fonts.push(m[1])
-  }
-
-  // Font sizes: key-value pairs in a fontSizes block
-  const fontSizeBlock = preset.match(/fontSizes[\s\S]*?\{([\s\S]*?)\}/)?.[1]
-  if (fontSizeBlock) {
-    const sizeRe = /(\w+):\s*['"]([^'"]+)['"]/g
-    for (const m of fontSizeBlock.matchAll(sizeRe)) {
-      fontSizes.push({ name: m[1], value: m[2] })
-    }
-  }
-
-  return { colors, fonts, fontSizes }
+  return out
 }
 
-/* ---------------------------------------------------------------------------
- * Signals parser — splits markdown on ## headings into sections.
- * ------------------------------------------------------------------------- */
-
-interface SignalSection {
-  heading: string
-  body: string
+/** A token group flattened to name/value pairs, or [] when the era had none. */
+function pairs(tokens: ArchiveTokens | null, group: string): { name: string; value: string }[] {
+  const block = tokens?.[group]
+  if (!block || typeof block !== 'object') return []
+  return Object.entries(block as Record<string, unknown>)
+    .filter((entry): entry is [string, string] => typeof entry[1] === 'string')
+    .map(([name, value]) => ({ name, value }))
 }
 
-function parseSignals(md: string): SignalSection[] {
-  const sections: SignalSection[] = []
-  const parts = md.split(/^## /m).filter(Boolean)
-  for (const part of parts) {
-    const newline = part.indexOf('\n')
-    if (newline === -1) {
-      sections.push({ heading: part.trim(), body: '' })
-    } else {
-      sections.push({
-        heading: part.slice(0, newline).trim(),
-        body: part.slice(newline + 1).trim(),
-      })
-    }
-  }
-  return sections
+/** The Art Director's headings, which changed vocabulary in 2026-05. */
+const BRIEF_LABELS: Record<string, string> = {
+  visualSpecification: 'Visual Specification',
+  signalIntegration: 'Signal Integration',
+  selfCheck: 'Self-Check',
+  rationale: 'Rationale',
+  compositionRationale: 'Composition Rationale',
+  mood: 'Mood',
+  compositionDirection: 'Composition Direction',
+  typographyDirection: 'Typography Direction',
+  paletteDirection: 'Palette Direction',
+}
+
+function briefSections(adBrief: Record<string, string> | null) {
+  if (!adBrief) return []
+  return Object.entries(adBrief).map(([key, body]) => ({
+    heading: BRIEF_LABELS[key] ?? key,
+    body,
+  }))
 }
 
 /* ---------------------------------------------------------------------------
@@ -126,7 +87,7 @@ function ArchiveDetailPage() {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    fetch(`/archive/${date}/_detail.json`)
+    fetch(`/archive-data/${date}.json`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (data) setDetail(data)
@@ -150,8 +111,10 @@ function ArchiveDetailPage() {
 
   if (!detail) return null
 
-  const tokens = detail.preset ? parsePreset(detail.preset) : null
-  const signals = detail.signalsBrief ? parseSignals(detail.signalsBrief) : null
+  const colors = swatches(detail.tokens)
+  const fonts = pairs(detail.tokens, 'fonts')
+  const fontSizes = pairs(detail.tokens, 'fontSizes')
+  const sections = briefSections(detail.adBrief)
 
   return (
     <>
@@ -163,7 +126,7 @@ function ArchiveDetailPage() {
           padding: '120px 48px 80px',
         }}
       >
-        {detail.archetype && (
+        {(detail.legacyArchetype ?? detail.chassis) && (
           <p
             style={{
               fontVariant: 'all-small-caps',
@@ -173,7 +136,7 @@ function ArchiveDetailPage() {
               marginBottom: 8,
             }}
           >
-            {detail.archetype}
+            {detail.legacyArchetype ?? detail.chassis}
           </p>
         )}
 
@@ -244,7 +207,7 @@ function ArchiveDetailPage() {
           TOKENS
         </p>
 
-        {!detail.preset ? (
+        {!detail.tokens ? (
           <p
             style={{
               fontSize: 14,
@@ -257,7 +220,7 @@ function ArchiveDetailPage() {
         ) : (
           <>
             {/* Color swatches */}
-            {tokens && tokens.colors.length > 0 && (
+            {colors.length > 0 && (
               <div style={{ marginBottom: 32 }}>
                 <p
                   style={{
@@ -276,7 +239,7 @@ function ArchiveDetailPage() {
                     gap: 12,
                   }}
                 >
-                  {tokens.colors.map((c) => (
+                  {colors.map((c) => (
                     <div
                       key={`${c.name}-${c.hex}`}
                       style={{
@@ -318,8 +281,9 @@ function ArchiveDetailPage() {
               </div>
             )}
 
-            {/* Fonts */}
-            {tokens && tokens.fonts.length > 0 && (
+            {/* Typography — the preset holds no fonts on most nights; the
+                chassis is what names the type pairing. */}
+            {(detail.chassis || fonts.length > 0) && (
               <div style={{ marginBottom: 32 }}>
                 <p
                   style={{
@@ -332,35 +296,34 @@ function ArchiveDetailPage() {
                   Typography
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  {tokens.fonts.map((font) => (
-                    <div key={font}>
-                      <p
-                        style={{
-                          fontSize: 20,
-                          fontFamily: font,
-                          color: 'var(--colors-text, #111)',
-                          marginBottom: 4,
-                        }}
-                      >
-                        {font}
-                      </p>
-                      <p
-                        style={{
-                          fontSize: 12,
-                          color: 'var(--colors-text-dim, #999)',
-                          fontFamily: 'monospace',
-                        }}
-                      >
-                        {font}
-                      </p>
-                    </div>
+                  {detail.chassis && (
+                    <p
+                      style={{
+                        fontSize: 20,
+                        color: 'var(--colors-text, #111)',
+                      }}
+                    >
+                      {detail.chassis}
+                    </p>
+                  )}
+                  {fonts.map((font) => (
+                    <p
+                      key={font.name}
+                      style={{
+                        fontSize: 12,
+                        color: 'var(--colors-text-dim, #999)',
+                        fontFamily: 'monospace',
+                      }}
+                    >
+                      {font.name}: {font.value}
+                    </p>
                   ))}
                 </div>
               </div>
             )}
 
             {/* Font sizes */}
-            {tokens && tokens.fontSizes.length > 0 && (
+            {fontSizes.length > 0 && (
               <div>
                 <p
                   style={{
@@ -379,7 +342,7 @@ function ArchiveDetailPage() {
                     gap: '8px 24px',
                   }}
                 >
-                  {tokens.fontSizes.map((s) => (
+                  {fontSizes.map((s) => (
                     <span
                       key={s.name}
                       style={{
@@ -418,7 +381,7 @@ function ArchiveDetailPage() {
           SIGNALS
         </p>
 
-        {!detail.signalsBrief ? (
+        {sections.length === 0 ? (
           <p
             style={{
               fontSize: 14,
@@ -426,11 +389,11 @@ function ArchiveDetailPage() {
               fontStyle: 'italic',
             }}
           >
-            Signals brief not available for this build.
+            The Art Director's brief was not kept for this build.
           </p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-            {signals?.map((section) => (
+            {sections.map((section) => (
               <div key={section.heading}>
                 <p
                   style={{
@@ -484,7 +447,7 @@ function ArchiveDetailPage() {
           </p>
           <img
             src={`/archive/${detail.date}.png`}
-            alt={`Screenshot of ${detail.archetype} design from ${detail.date}`}
+            alt={`Screenshot of the design from ${detail.date}`}
             style={{
               width: '100%',
               border: '1px solid var(--colors-border, #e0e0e0)',

@@ -1,0 +1,371 @@
+{
+  "date": "2026-05-16",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.173Z",
+  "buildId": "1778927763579",
+  "attempts": 1,
+  "brief": "Bricolage cultivation on warm paper — Yogananda's nine-word directive bottom-anchored at 96px in near-black, terminal period in cerulean, the new moon and two Detroit wins filing into a spring-sky signal fold below.",
+  "rationale": "The hero phrase arrived from today's signal feed (Paramahansa Yogananda) and earned its place by landing at the exact intersection of three signal streams: the new moon (day 0.46 of a new lunar cycle — structurally, a beginning), spring Saturday with 14.2 hours of daylight (the longest-lit kind of beginning), and both Detroit teams winning (Pistons by 21, Tigers by one — fruit of cultivated effort). The phrase isn't consolation or decoration; it's a directive for a day that already has momentum. It's quotable in isolation as aphorism, as portfolio manifesto, and as the thing you tell yourself before noon on a Saturday in May.\n\nThe Scroll archetype was the only honest container. Every archetype that would have worked for a command — Poster, Specimen — would have isolated the phrase from all environmental evidence. But \"Nurture the good qualities you want to have\" is not a command to a stranger; it's counsel you read and then carry into the rest of the page. The Scroll creates a meditative procession: the phrase arrives in the full darkness of the hero fold (alone, large, bottom-anchored like something written on a wall), and then the day unfolds beneath it — signals, wins, projects, capabilities. The phrase remains the reason for all of it. Bricolage Grotesque is precisely right because it's warm and humanist at display weight, not the condensed-signage register of Anton or Bebas; the phrase sounds like a person speaking, not a billboard barking.\n\nAfter five consecutive dark-mode designs (night-violet, night-olive, cordovan, terminal-void, deep-slate), the pivot to warm paper (#F8F5F2) and cerulean (#1272B2) is the boldest compositional move available. It doesn't feel like a stylistic choice — it feels like the sky clearing. The color mandate's narrow permitted window (193°–218°) landed directly on the blue of spring water and open sky, which is the conceptual palette for a cultivation directive on a long-daylight Saturday. The terminal period of the hero phrase renders in cerulean.500 — the only chromatic event in the entire H1 — so the full stop arrives as a signal: this sentence means something, the day is beginning, here is where to start.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Scroll",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Pillars Of Seven",
+          "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Pedal Mafia | Event Micro Site",
+          "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Saturday",
+      "is_weekend": true,
+      "day_index": 6
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "tinyhumansai/openhuman/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "sponsors/obra",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "K-Dense-AI/scientific-agent-skills/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "supertone-inc/supertonic/stargazers",
+          "description": "",
+          "language": "Swift",
+          "stars": null
+        },
+        {
+          "name": "ruvnet/RuView/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "PGA Championship",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Maverick McNealy",
+          "position": "1",
+          "score": "-4"
+        },
+        {
+          "name": "Alex Smalley",
+          "position": "2",
+          "score": "-4"
+        },
+        {
+          "name": "Chris Gotterup",
+          "position": "3",
+          "score": "-3"
+        },
+        {
+          "name": "Hideki Matsuyama",
+          "position": "4",
+          "score": "-3"
+        },
+        {
+          "name": "Max Greyserman",
+          "position": "5",
+          "score": "-3"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Δ-Mem: Efficient Online Memory for Large Language Models",
+          "url": "https://arxiv.org/abs/2605.12357",
+          "score": 17,
+          "by": "44za12"
+        },
+        {
+          "title": "Project Gutenberg – keeps getting better",
+          "url": "https://www.gutenberg.org/",
+          "score": 951,
+          "by": "JSeiko"
+        },
+        {
+          "title": "Futhark by Example",
+          "url": "https://futhark-lang.org/examples.html",
+          "score": 5,
+          "by": "tosh"
+        },
+        {
+          "title": "Setting up an AI-native organization",
+          "url": "https://aweb.ai/blog/ai-first-company-howto",
+          "score": 3,
+          "by": "juanre"
+        },
+        {
+          "title": "Frontier AI has broken the open CTF format",
+          "url": "https://kabir.au/blog/the-ctf-scene-is-dead",
+          "score": 139,
+          "by": "frays"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "new moon",
+      "illumination": 0.002,
+      "days_into_cycle": 0.46
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "Engage in those actions and thoughts that nurture the good qualities you want to have.",
+      "author": "Paramahansa Yogananda"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 16,
+      "day_of_year": 136,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": "2026-05-15T23:00Z",
+          "result": "win",
+          "score": "115-94"
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-15T22:40Z",
+          "result": "win",
+          "score": "3-2"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:01",
+      "sunset": "19:11",
+      "daylight_hours": 14.2
+    },
+    "date": "2026-05-16"
+  },
+  "hero": {
+    "copy": "\"Nurture the good qualities you want to have.\"",
+    "rationale": "From signals.quote — Paramahansa Yogananda. Three signals converge to make this the inevitable phrase: the new moon (0.002 illumination, day 0.46 of a new lunar cycle) marks a beginning; spring Saturday with 14.2 hours of daylight gives that beginning maximum light; both Detroit teams won (Pistons 115–94 blowout, Tigers 3–2). Cultivation, not consolation — the phrase is a directive to begin, which is exactly what a new-cycle Saturday in May demands. Quotable in isolation as daily discipline, as portfolio manifesto, as the sentence a person decides to live by before the weekend is over.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue — H:205° (cerulean)**\nChosen because H:205° sits cleanly in today's permitted zone (193°–218°), and is conceptually exact: the blue of still water and open sky, the color of clarity, of a spring morning with maximal daylight. It reads as purposeful without drama — the right register for a cultivation directive, not a command.\n\n**Neutral palette — warm sand (tinted toward H:205°)**\nA linen-warm off-white ground that participates in the cerulean palette through its slight cool-warm tension. Each step is tinted fractionally toward H:205° so the negative space coheres with the accent.\n- 50: #F8F5F2 — page background\n- 100: #EDE9E5 — card/section background\n- 200: #D8D4CF — hairline borders\n- 300: #BEB9B3 — dividers\n- 400: #9B9690 — decorative-only muted elements\n- 500: #797470 — tertiary labels\n- 600: #5C5855 — muted body text (≥4.5:1 on stone.50)\n- 700: #433F3D — secondary text (≥7:1 on stone.50)\n- 800: #2D2B29 — heavy secondary text\n- 900: #1A1815 — primary text / hero phrase\n\n**Accent color — cerulean**\n- Light: #C8E3F5 — selection highlight, tag background\n- Default: #1272B2 — links, attribution, signal labels, cerulean period\n- Dark: #0A4872 — hover states\n- Glow: #1272B220 — subtle focus ring\n\n**Secondary accent** — none. Single-accent discipline.\n\n**Backgrounds**\n- Page bg: #F8F5F2 (stone.50, warm paper)\n- Card bg: #EDE9E5 (stone.100)\n- Sidebar bg: n/a (no sidebar in Scroll)\n- Signal section bg: #EDF4FB (cerulean.50 — a cool breath of air between folds)\n\n**Text colors**\n- Primary text: #1A1815 — hero phrase, headings, body\n- Secondary text: #433F3D — project dates, signal labels\n- Muted text: #5C5855 — attributions, footnotes, metadata\n\n---\n\n### 2. Typography (chassis-derived)\n\n**Hero phrase rendering**\nBricolage Grotesque Display weight 800. Token: `display`. Scale: `clamp(48px, 6.5vw, 96px)`. Three lines left-aligned within the 88vw column, rendering as:\n\n```\nNurture the good\nqualities you want\nto have.\n```\n\nThe terminal period renders in cerulean.500 (#1272B2) — the only chromatic event in the hero phrase itself. All other phrase characters: stone.900 (#1A1815). Attribution line below in cerulean.500, 13px, all-caps, letter-spacing 0.10em.\n\n**Line heights**\n- Hero phrase (H1): 0.92 — compressed, monumental, no air between lines\n- Section headings (H2): 1.10\n- Body text: 1.60 — generous on a light ground (no dark-mode compensation needed)\n- Signal labels: 1.3\n\n**Letter spacings**\n- Hero phrase: −0.03em (tight, compressed)\n- All-caps labels / attribution: +0.10em (5–12% per spec)\n- Body text: 0em (natural Manrope spacing)\n- Small-caps eyebrows: +0.08em\n\n---\n\n### 3. Layout Specification\n\n**Archetype: Scroll**\nA single committed column of 88vw carrying one major idea per viewport fold — required by a phrase that needs space to breathe, not evidence around it. The Scroll creates a meditative rhythm: the phrase arrives alone, then the day's signals unfold below as the visitor moves through time.\n\n**CSS structure**\n```css\n/* Page wrapper */\n.page {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  max-width: none;\n}\n\n/* Section column */\n.section-inner {\n  width: 88vw;\n  margin: 0 auto;\n  padding: 0;\n}\n\n/* Body text constraint (Scroll only) */\n.body-text {\n  max-width: 65ch;\n}\n```\n\n**Major dimensions**\n- Hero fold: `min-height: 100vh`, `display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 10vh`\n- Nav: fixed top, height 64px, `width: 100%; background: #F8F5F2; border-bottom: 1px solid #D8D4CF`\n- Signal fold: `min-height: 80vh; background: #EDF4FB; padding: 80px 6vw`\n- Work fold: `padding: 80px 6vw`\n- Capabilities fold: `padding: 64px 6vw; border-top: 1px solid #BEB9B3`\n- Section-inner: `width: 88vw; margin: 0 auto` — no max-width cap on display elements\n- Side padding: `6vw` each side (= ~86px on 1440px viewport)\n\n**Nav placement**\nFixed top bar. Left: \"doug march\" logotype in stone.900, weight 700, 15px. Right: inline nav links (work · about · contact) in stone.600, 14px, letter-spacing 0.05em. No hamburger menu visible on desktop.\n\n**Hero phrase grid zone**\nWithin the 88vw column, the hero H1 occupies the lower 55vh of the 100vh fold (bottom-anchored via flex-end). At 96px line-height×0.92 = 88.3px per line, three lines ≈ 265px total. Attribution occupies an additional 48px below (margin-top: 32px, line-height 24px). Full phrase block ≈ 313px, leaving ≈ 10vh gutter from fold bottom edge.\n\n---\n\n### 4. Component Character\n\n**Border radius**\n- Cards: 0px (none — the square geometry respects the contemplative, undecorated register)\n- Buttons: 2px (sm)\n- Tags/chips: 2px (sm)\n\n**Border treatment**\nHairline only. `border: 1px solid #D8D4CF` (stone.200) for cards and section dividers. Signal fold uses a 2px left rule in cerulean.200 (#90C7ED) for signal items — a quiet structural accent.\n\n**Shadow**\nNone. The light palette creates depth through color temperature differences between stone.50 and cerulean.50 backgrounds — no drop shadows needed.\n\n**Density**\nSpacious. The Scroll archetype dictates one idea per fold. Within sections, generous vertical padding between elements (32–48px between signal items).\n\n**Interactive states**\n- Links: color transitions from cerulean.500 → cerulean.700 over 150ms\n- Project cards: `border-left: 2px solid transparent` → `border-left: 2px solid #1272B2` on hover, over 120ms\n- Nav links: `opacity: 1.0` → underline in cerulean.500 on hover\n\n---\n\n### 5. Signal Integration\n\n**Where signal elements live**\nSignal fold (fold 2, below hero), rendered as a typographic inventory within the cerulean.50 (#EDF4FB) background band. Each signal item carries a left rule in cerulean.200.\n\n**Sports scores**\nPistons WIN 115–94: rendered prominently — \"PISTONS 115 · 94\" in H2 Bricolage weight 700 at 32px, score delta \"+21\" in cerulean.500. Tigers WIN 3–2: same treatment at slightly smaller scale (26px). Both presented as a pair in the top signal block. PGA Championship: Maverick McNealy \"−4\" and Alex Smalley \"−4\" share the lead; rendered as a small leaderboard table in Manrope 14px with tabular-nums, scores in cerulean.500.\n\n**The quote displayed**\nThe Yogananda quote IS the hero phrase — rendered as a full-bleed typographic declaration on the hero fold, not as a traditional blockquote. Attribution (\"— Paramahansa Yogananda\") is in cerulean.500, 13px, all-caps, letter-spacing 0.10em, immediately below the phrase.\n\n**New moon**\nRendered in the signal fold as: \"NEW MOON · 0%\" in small-caps Manrope, 12px, stone.600, letter-spacing 0.08em. Placed as the first signal item, topmost in the fold — the new lunar cycle is the structural metaphor of today's design (begin, cultivate).\n\n**Music signals**\nGuided by Voices + My Morning Jacket rendered as: \"NOW PLAYING\" eyebrow (cerulean.500, 11px, all-caps) with band names below in Bricolage weight 600, 18px, stone.800. Placed in lower portion of signal fold.\n\n**HN highlight**\n\"Project Gutenberg – keeps getting better\" (951 pts) shown as a pull-aside within the signal fold: score \"951\" in Bricolage weight 800 at 28px cerulean.500, title in Manrope 14px stone.800 below it. Framed by a 1px cerulean.200 left rule.\n\n**Saturday/spring/daylight**\n\"14.2 HRS DAYLIGHT · MAY 16\" as a footer-line within the hero fold, stone.500, 11px, all-caps, letter-spacing 0.12em. Positioned bottom-left beneath the attribution, to the right of the new moon indicator.",
+    "selfCheck": "1. Hero quotability: Yes — \"Nurture the good qualities you want to have.\" is a complete, self-contained directive quotable and screenshot-worthy in isolation; it earns its marquee scale as aphorism, manifesto, and seasonal directive simultaneously.\n2. Because-of chain: Yes — new-moon/spring/growth energy → cultivation phrase → Scroll (phrase needs uninterrupted air, not evidence) → Bricolage (warm humanist voice, not a command-register condensed font) → cerulean on warm paper (spring sky clarity, not drama) → bottom-anchored hero with one idea per fold.\n3. Render feasibility: Yes — Bricolage Grotesque at clamp(48px, 6.5vw, 96px) across 88vw on a 1440×900 viewport yields three clean left-aligned lines totaling ~265px height, comfortably within the 100vh hero fold with no overflow.",
+    "rationale": "The hero phrase arrived from today's signal feed (Paramahansa Yogananda) and earned its place by landing at the exact intersection of three signal streams: the new moon (day 0.46 of a new lunar cycle — structurally, a beginning), spring Saturday with 14.2 hours of daylight (the longest-lit kind of beginning), and both Detroit teams winning (Pistons by 21, Tigers by one — fruit of cultivated effort). The phrase isn't consolation or decoration; it's a directive for a day that already has momentum. It's quotable in isolation as aphorism, as portfolio manifesto, and as the thing you tell yourself before noon on a Saturday in May.\n\nThe Scroll archetype was the only honest container. Every archetype that would have worked for a command — Poster, Specimen — would have isolated the phrase from all environmental evidence. But \"Nurture the good qualities you want to have\" is not a command to a stranger; it's counsel you read and then carry into the rest of the page. The Scroll creates a meditative procession: the phrase arrives in the full darkness of the hero fold (alone, large, bottom-anchored like something written on a wall), and then the day unfolds beneath it — signals, wins, projects, capabilities. The phrase remains the reason for all of it. Bricolage Grotesque is precisely right because it's warm and humanist at display weight, not the condensed-signage register of Anton or Bebas; the phrase sounds like a person speaking, not a billboard barking.\n\nAfter five consecutive dark-mode designs (night-violet, night-olive, cordovan, terminal-void, deep-slate), the pivot to warm paper (#F8F5F2) and cerulean (#1272B2) is the boldest compositional move available. It doesn't feel like a stylistic choice — it feels like the sky clearing. The color mandate's narrow permitted window (193°–218°) landed directly on the blue of spring water and open sky, which is the conceptual palette for a cultivation directive on a long-daylight Saturday. The terminal period of the hero phrase renders in cerulean.500 — the only chromatic event in the entire H1 — so the full stop arrives as a signal: this sentence means something, the day is beginning, here is where to start.",
+    "signalIntegration": "**Where signal elements live**\nSignal fold (fold 2, below hero), rendered as a typographic inventory within the cerulean.50 (#EDF4FB) background band. Each signal item carries a left rule in cerulean.200.\n\n**Sports scores**\nPistons WIN 115–94: rendered prominently — \"PISTONS 115 · 94\" in H2 Bricolage weight 700 at 32px, score delta \"+21\" in cerulean.500. Tigers WIN 3–2: same treatment at slightly smaller scale (26px). Both presented as a pair in the top signal block. PGA Championship: Maverick McNealy \"−4\" and Alex Smalley \"−4\" share the lead; rendered as a small leaderboard table in Manrope 14px with tabular-nums, scores in cerulean.500.\n\n**The quote displayed**\nThe Yogananda quote IS the hero phrase — rendered as a full-bleed typographic declaration on the hero fold, not as a traditional blockquote. Attribution (\"— Paramahansa Yogananda\") is in cerulean.500, 13px, all-caps, letter-spacing 0.10em, immediately below the phrase.\n\n**New moon**\nRendered in the signal fold as: \"NEW MOON · 0%\" in small-caps Manrope, 12px, stone.600, letter-spacing 0.08em. Placed as the first signal item, topmost in the fold — the new lunar cycle is the structural metaphor of today's design (begin, cultivate).\n\n**Music signals**\nGuided by Voices + My Morning Jacket rendered as: \"NOW PLAYING\" eyebrow (cerulean.500, 11px, all-caps) with band names below in Bricolage weight 600, 18px, stone.800. Placed in lower portion of signal fold.\n\n**HN highlight**\n\"Project Gutenberg – keeps getting better\" (951 pts) shown as a pull-aside within the signal fold: score \"951\" in Bricolage weight 800 at 28px cerulean.500, title in Manrope 14px stone.800 below it. Framed by a 1px cerulean.200 left rule.\n\n**Saturday/spring/daylight**\n\"14.2 HRS DAYLIGHT · MAY 16\" as a footer-line within the hero fold, stone.500, 11px, all-caps, letter-spacing 0.12em. Positioned bottom-left beneath the attribution, to the right of the new moon indicator."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "cerulean": {
+          "50": "#EDF4FB",
+          "100": "#C8E3F5",
+          "200": "#90C7ED",
+          "300": "#52A8DE",
+          "400": "#2287CA",
+          "500": "#1272B2",
+          "600": "#0E5C92",
+          "700": "#0A4872",
+          "800": "#073459",
+          "900": "#04213B"
+        },
+        "stone": {
+          "50": "#F8F5F2",
+          "100": "#EDE9E5",
+          "200": "#D8D4CF",
+          "300": "#BEB9B3",
+          "400": "#9B9690",
+          "500": "#797470",
+          "600": "#5C5855",
+          "700": "#433F3D",
+          "800": "#2D2B29",
+          "900": "#1A1815"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.stone.50}"
+        },
+        "bgCard": {
+          "base": "{colors.stone.100}"
+        },
+        "bgSubtle": {
+          "base": "{colors.cerulean.50}"
+        },
+        "bgSidebar": {
+          "base": "{colors.stone.100}"
+        },
+        "text": {
+          "base": "{colors.stone.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.stone.700}"
+        },
+        "textMuted": {
+          "base": "{colors.stone.600}"
+        },
+        "accent": {
+          "base": "{colors.cerulean.500}"
+        },
+        "accentHover": {
+          "base": "{colors.cerulean.600}"
+        },
+        "accentLight": {
+          "base": "{colors.cerulean.100}"
+        },
+        "accentDark": {
+          "base": "{colors.cerulean.700}"
+        },
+        "border": {
+          "base": "{colors.stone.200}"
+        },
+        "borderStrong": {
+          "base": "{colors.stone.300}"
+        },
+        "borderAccent": {
+          "base": "{colors.cerulean.200}"
+        },
+        "heroPhrase": {
+          "base": "{colors.stone.900}"
+        },
+        "heroPunctuation": {
+          "base": "{colors.cerulean.500}"
+        },
+        "heroAttribution": {
+          "base": "{colors.cerulean.500}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.92",
+      "snug": "1.15",
+      "normal": "1.60",
+      "loose": "1.80"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.08em",
+      "widest": "0.12em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700",
+      "black": "800"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 205,
+      "s": 78,
+      "l": 42,
+      "name": "cerulean"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "cerulean",
+      "name": "warm sand"
+    },
+    "mood_word": "cultivation",
+    "color_story": "Cerulean — the exact blue of a clear spring sky at 6 AM, when a new moon has already set and 14 hours of light are promised — held against warm paper ground: the palette of a morning you decide to begin something."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

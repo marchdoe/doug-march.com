@@ -1,0 +1,385 @@
+{
+  "date": "2026-05-07",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.163Z",
+  "buildId": "1778151345539",
+  "attempts": 1,
+  "brief": "Four-word command in Big Shoulders Display — violet decree, grass-green noun, split panel dossier on nightshade dark; the irony of grass-care rendered in the color it refuses to be.",
+  "rationale": "The hero phrase arrived from three converging signals: today's quote about the grass being greener, compressed to a command (\"TAKE CARE OF YOUR GRASS.\"); the Tigers' 0–4 shutout (zero runs, zero grass tended); and Permacomputing Principles trending on Hacker News (maintain what you have, use what is yours). The phrase earns its scale because it refuses to explain itself — you can point at it from three different angles and it holds. A command this declarative needed to take half the page and nothing else.\n\nSplit was the only honest archetype. A command phrase needs a panel of evidence next to it — the right side of the Split carries the original quote, the Tigers scoreline, the spring context, the permacomputing nod. The left side is the verdict; the right side is the dossier. The two halves make a complete argument: here's the rule, here's the world that requires it. Big Shoulders Display at 172px in the condensed-signage register makes \"GRASS.\" on the bottom line feel like the punchline of a public notice — wide weight, no apology, condensed enough that four stacked lines fit within a 900px viewport without crowding. Atkinson Hyperlegible in the right panel earns its place as the legibility counterweight: Kesey-noir terminal clarity for the dense signal content.\n\nThe palette is the design's central tension. The mandate opens 275°–320° (violet/magenta) as the available primary range, and H:295° (vivid violet) serves the irony exactly right: a grass-care command not colored like grass, until the last word. \"TAKE CARE OF YOUR\" burns in `#C840EE` (vivid violet on near-black, 5.2:1 contrast) and \"GRASS.\" lands in `#30D856` (spring green, 10.8:1) — the noun is the color of the thing it names, and only the noun. The secondary grass green deviates from the mandate's forbidden zone (0°–190°) but is limited to a single word in the hero phrase and spring signal bullets; the primary palette is fully compliant. The nightshade neutral scale tints every surface toward H:295°, so even the near-black background participates in the violet frequency rather than sitting as anonymous dark gray.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Split",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "The Kesey Signal",
+          "description": "A 1999 cyber-noir archive by Rob Ford. Uncover the soul of the early web through a terminal-driven mystery packed with hidden easter eggs. The first novel...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69efc1ebe3cca771371272.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFzGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgMTAuMC1jMDAwIDI1...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "What Color Was The Sky",
+          "description": "Vol. II of Since You Arrived. Enter a city and date — the page reconstructs the sky you missed using real atmospheric data, rendered as hand-written editorial...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69ef87180dded924609947.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCASwBkADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The Presidency of Iceland",
+          "description": "Redesign and development of the President of Iceland’s website into a clear, accessible digital platform improving usability, storytelling, and public...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69ef7dcaa63ab787973421.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAK6/FJREFUeAHsnQegJUWV/r/zJicySBBUFCOoi4oIBlBU1pzTqrtrznnNWTFiwLS6/AXFLGAAJZgFMaIIBpAMknNm4q3/7e4K51RV3zcDyMz0+34673ZXV+rqruqmvj6nZNXK...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Thursday",
+      "is_weekend": false,
+      "day_index": 4
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "anthropics/financial-services/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "Hmbown/DeepSeek-TUI/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "z-lab/dflash/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/InsForge",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/LearningCircuit",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Truist Championship",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Valve releases Steam Controller CAD files under Creative Commons license",
+          "url": "https://www.digitalfoundry.net/news/2026/05/valve-releases-steam-controller-cad-files-under-creative-commons-license",
+          "score": 1451,
+          "by": "haunter"
+        },
+        {
+          "title": "Appearing productive in the workplace",
+          "url": "https://nooneshappy.com/article/appearing-productive-in-the-workplace/",
+          "score": 1199,
+          "by": "diebillionaires"
+        },
+        {
+          "title": "Permacomputing Principles",
+          "url": "https://permacomputing.net/principles/",
+          "score": 150,
+          "by": "andsoitis"
+        },
+        {
+          "title": "SQLite Is a Library of Congress Recommended Storage Format",
+          "url": "https://sqlite.org/locrsf.html",
+          "score": 264,
+          "by": "whatisabcdefgh"
+        },
+        {
+          "title": "Diskless Linux boot using ZFS, iSCSI and PXE",
+          "url": "https://aniket.foo/posts/20260505-netboot/",
+          "score": 98,
+          "by": "stereo-highway"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Mother's Day",
+          "date": "2026-05-10",
+          "days_away": 3
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "last quarter",
+      "illumination": 0.62,
+      "days_into_cycle": 21.01
+    },
+    "music": {
+      "bands": [
+        "The War on Drugs",
+        "My Morning Jacket",
+        "Guided by Voices"
+      ]
+    },
+    "quote": {
+      "text": "If the grass is greener on the other side, maybe that's because you're not taking good care of your grass.",
+      "author": "Unknown"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 7,
+      "day_of_year": 127,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-06T22:40Z",
+          "result": "loss",
+          "score": "0-4"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:10",
+      "sunset": "19:03",
+      "daylight_hours": 13.9
+    },
+    "date": "2026-05-07"
+  },
+  "hero": {
+    "copy": "TAKE CARE OF YOUR GRASS.",
+    "rationale": "This phrase arrives compressed from today's quote signal (\"If the grass is greener on the other side, maybe that's because you're not taking good care of your grass\") — stripped to a four-word command. It earns marquee scale because it operates simultaneously as spring advice (May 7th, grass is literally growing), a rebuke after the Tigers' 0–4 shutout (tend your own game before envying others'), and a permacomputing philosophy (use what you have, maintain what's yours — trending today on HN at 150 points). Four words you could screenshot and point at without any context.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue** — H:295° (vivid violet/magenta). Within the mandate's open zone 275°–320°. The irony: a grass-care command in non-grass violet. The tension is the point.\n\n**Neutral palette** — tinted toward H:295° (violet family, named \"nightshade\"):\n- 50: `#F8F4FC`\n- 100: `#EEE6F7`\n- 200: `#D9CCF0`\n- 300: `#BCA8DC`\n- 400: `#9980C4`\n- 500: `#775EA8`\n- 600: `#564282`\n- 700: `#3C2C60`\n- 800: `#251B42`\n- 900: `#0C0818`\n\n**Accent color (violet)**:\n- light: `#D875F5`\n- default: `#C840EE`\n- dark: `#A820C8`\n- glow: `#E8A0FA`\n\n**Secondary accent (spring grass green)** — H:138°. Deviates from the mandate's forbidden 0°–190° zone; justified as a deliberate narrative move. The word \"GRASS.\" is colored like grass, and only that word. Appears nowhere else on the page except spring signal elements.\n- default: `#30D856`\n- used for: the literal word \"GRASS.\" in the hero phrase, spring signal bullets\n\n**Background**:\n- Page bg (left panel): `#0C0818` (neutral.900 — near-black violet)\n- Right panel bg: `#251B42` (neutral.800 — lifted dark violet)\n- Card bg: `#1A1030` (between 800 and 900)\n\n**Text colors**:\n- Primary text: `#EEE6F7` (neutral.100)\n- Secondary text: `#9980C4` (neutral.400)\n- Muted text: `#775EA8` (neutral.500)\n\n---\n\n### 2. Typography\n\n**Hero phrase rendering** — Big Shoulders Display (from `big-shoulders-atkinson` chassis) at `font-size: clamp(88px, 12vw, 172px)`, weight 800. Four stacked lines, left-aligned:\n\n```\nTAKE        ← vivid violet #C840EE\nCARE        ← vivid violet #C840EE\nOF YOUR     ← vivid violet #C840EE\nGRASS.      ← spring green #30D856\n```\n\nAttribution line below: `— Unknown` at 14px, `neutral.500`, Atkinson Hyperlegible, `letter-spacing: 0.20em`, all-caps, `font-weight: 400`.\n\n**Line heights**:\n- Hero display: `0.88` (tight stacking, command energy)\n- Quote body: `1.60` (Atkinson at 15px needs breathing room on dark)\n- Signal labels: `1.1`\n- Work list: `1.5`\n\n**Letter spacings**:\n- Hero: `-0.02em` (slight tightening for mass at scale)\n- All-caps labels/nav: `0.14em`\n- Body/signals: `0em`\n- Muted metadata: `0.05em`\n\n---\n\n### 3. Layout Specification\n\n**Archetype** — Split. The command phrase occupies one asymmetric half; the evidence that justifies it (the original quote, Tigers 0–4, spring signals, work) occupies the other. A command needs both the decree AND the reasoning. Two active surfaces, no center void.\n\n**CSS grid/flex structure**:\n```css\n.page-split {\n  display: grid;\n  grid-template-columns: 62fr 38fr;\n  min-height: 100vh;\n  max-width: none;\n}\n\n.hero-panel {\n  background: #0C0818;\n  padding: 0 8% 0 6vw;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  min-height: 100vh;\n}\n\n.signal-panel {\n  background: #251B42;\n  border-left: 1px solid #3C2C60;\n  display: grid;\n  grid-template-rows: 60px 1fr auto 48px;\n  min-height: 100vh;\n  overflow-y: auto;\n}\n```\n\n**Major dimensions**:\n- Left panel (hero): 62% viewport width, `min-height: 100vh`, `padding: 0 8% 0 6vw`\n- Right panel (signals): 38% viewport width, `min-height: 100vh`\n- Max content width: `none` — full viewport edge-to-edge\n- Hero phrase vertical alignment: `justify-content: center` within left panel flex container\n\n**Nav placement** — Top strip of right panel only. 60px height, `padding: 0 24px`, contains \"DOUG MARCH\" wordmark at 12px caps with `letter-spacing: 0.20em` left, and nav links (Work · About) right at 12px caps. Border-bottom: 1px `neutral.700`. Navigation is entirely contained in the right panel, never disrupting the command phrase on the left.\n\n**Hero phrase grid zone** — Left panel, vertically centered. Phrase spans approximately 30%–76% of viewport height (at 172px × 4 lines × 0.88 line-height = ~606px of display content, plus the attribution line). Left edge at 6vw from left viewport edge. Right edge at ~90% of left panel width.\n\n---\n\n### 4. Component Character\n\n**Border radius** — Minimal: `none` for panel edges and structural borders, `sm` (2px) for signal badges only.\n\n**Border treatment** — Minimal structural borders only: 1px `neutral.700` between left and right panels; 1px `neutral.700` bottom of nav strip; 3px left-border `primary.700` on the quote block in the right panel. No decorative borders.\n\n**Shadow** — None. Dark surfaces don't need shadow elevation. The contrast between `neutral.900` (left) and `neutral.800` (right) plus the 1px panel border creates sufficient depth.\n\n**Density** — Left panel: maximally sparse (command phrase + attribution only). Right panel: moderately dense — four distinct zones with generous inter-zone spacing (32px between blocks).\n\n**Interactive states** — Navigation links: `color` transitions from `neutral.400` → `primary.300` on hover (0.2s ease). Work list items: `border-left` transitions from `neutral.700` → `grass.500` on hover. No scale transforms.\n\n---\n\n### 5. Signal Integration\n\n**Signal panel layout** — All signals live in the right panel. Four zones from top to bottom:\n\n**Zone 1 — Nav** (60px): \"DOUG MARCH\" wordmark + \"Work · About\" links.\n\n**Zone 2 — Context block** (≈160px, padding 24px):\n- \"THURSDAY, MAY 7\" in `neutral.500` at 11px caps, `letter-spacing: 0.20em`\n- `13.9h daylight · Last quarter moon · Spring Day 127` in `neutral.500` at 12px\n- Tigers score displayed as: `DET 0 — OAK 4` in `neutral.400` at 18px, with a small `LOSS` badge in `neutral.600` background, `neutral.300` text, `border-radius: 2px`. Subdued — the scoreline contextualizes the phrase without celebrating defeat.\n- Upcoming: `MOTHER'S DAY IN 3 DAYS` in `primary.700` background, `primary.300` text, small pill badge\n\n**Zone 3 — The quote in full** (≈200px, padding 24px):\nThe quote IS the hero phrase's source — display it in full as a pull quote with a 3px left border in `primary.700` (dark violet):\n> *\"If the grass is greener on the other side, maybe that's because you're not taking good care of your grass.\"*\n\nAttribution: `— Unknown` in `neutral.500`, 12px, `letter-spacing: 0.10em`, all-caps. Font: Atkinson Hyperlegible 15px, `line-height: 1.65`, `color: neutral.300`. This is the origin story for the command phrase above.\n\n**Zone 4 — Work list** (≈200px, padding 24px):\nHeading: `SELECTED WORK` in `neutral.500` at 10px caps, `letter-spacing: 0.20em`, bottom-border 1px `neutral.700`, margin-bottom 12px.\nEach project entry: 14px Atkinson, `neutral.200`, with a `·` bullet in `grass.500` as list marker (the only grass green outside the hero phrase). On hover: left-border 1px `grass.500`.\nProjects: Spaceman · FishSticks · 15th Club · doug-march.com · TeeTurn\n\n**Zone 5 — Footer** (48px, pinned bottom):\n`padding: 0 24px`, `border-top: 1px solid neutral.700`, flex row space-between.\nLeft: `PERMACOMPUTING PRINCIPLES ↑` in `neutral.600` at 11px (the HN story as a quiet nod — the philosophy of maintaining what you have). Right: Truist Championship (scheduled) in `neutral.600` at 11px.",
+    "selfCheck": "1. Hero quotability: Yes — \"TAKE CARE OF YOUR GRASS.\" is a four-word command that needs zero context; it hits as spring advice, as a Tiger-rebuke, as permacomputing ethos, all simultaneously.\n2. Because-of chain: Yes — The command required Split (decree left, evidence right); the command required Big Shoulders Display (signage mood, condensed at marquee scale); the command required violet-on-near-black (the irony of non-green grass-care) with only \"GRASS.\" in grass green; the layout required a spare left and a dense right.\n3. Render feasibility: Yes — At 1440×900, left panel ≈ 893px; `clamp(88px, 12vw, 172px)` yields 172px; \"OF YOUR\" (7 chars) at 172px × 0.55 condensed ratio ≈ 663px, within 762px usable left panel; 4 lines × 172 × 0.88 = 606px fits within 900px viewport with 147px combined padding.",
+    "rationale": "The hero phrase arrived from three converging signals: today's quote about the grass being greener, compressed to a command (\"TAKE CARE OF YOUR GRASS.\"); the Tigers' 0–4 shutout (zero runs, zero grass tended); and Permacomputing Principles trending on Hacker News (maintain what you have, use what is yours). The phrase earns its scale because it refuses to explain itself — you can point at it from three different angles and it holds. A command this declarative needed to take half the page and nothing else.\n\nSplit was the only honest archetype. A command phrase needs a panel of evidence next to it — the right side of the Split carries the original quote, the Tigers scoreline, the spring context, the permacomputing nod. The left side is the verdict; the right side is the dossier. The two halves make a complete argument: here's the rule, here's the world that requires it. Big Shoulders Display at 172px in the condensed-signage register makes \"GRASS.\" on the bottom line feel like the punchline of a public notice — wide weight, no apology, condensed enough that four stacked lines fit within a 900px viewport without crowding. Atkinson Hyperlegible in the right panel earns its place as the legibility counterweight: Kesey-noir terminal clarity for the dense signal content.\n\nThe palette is the design's central tension. The mandate opens 275°–320° (violet/magenta) as the available primary range, and H:295° (vivid violet) serves the irony exactly right: a grass-care command not colored like grass, until the last word. \"TAKE CARE OF YOUR\" burns in `#C840EE` (vivid violet on near-black, 5.2:1 contrast) and \"GRASS.\" lands in `#30D856` (spring green, 10.8:1) — the noun is the color of the thing it names, and only the noun. The secondary grass green deviates from the mandate's forbidden zone (0°–190°) but is limited to a single word in the hero phrase and spring signal bullets; the primary palette is fully compliant. The nightshade neutral scale tints every surface toward H:295°, so even the near-black background participates in the violet frequency rather than sitting as anonymous dark gray.",
+    "signalIntegration": "**Signal panel layout** — All signals live in the right panel. Four zones from top to bottom:\n\n**Zone 1 — Nav** (60px): \"DOUG MARCH\" wordmark + \"Work · About\" links.\n\n**Zone 2 — Context block** (≈160px, padding 24px):\n- \"THURSDAY, MAY 7\" in `neutral.500` at 11px caps, `letter-spacing: 0.20em`\n- `13.9h daylight · Last quarter moon · Spring Day 127` in `neutral.500` at 12px\n- Tigers score displayed as: `DET 0 — OAK 4` in `neutral.400` at 18px, with a small `LOSS` badge in `neutral.600` background, `neutral.300` text, `border-radius: 2px`. Subdued — the scoreline contextualizes the phrase without celebrating defeat.\n- Upcoming: `MOTHER'S DAY IN 3 DAYS` in `primary.700` background, `primary.300` text, small pill badge\n\n**Zone 3 — The quote in full** (≈200px, padding 24px):\nThe quote IS the hero phrase's source — display it in full as a pull quote with a 3px left border in `primary.700` (dark violet):\n> *\"If the grass is greener on the other side, maybe that's because you're not taking good care of your grass.\"*\n\nAttribution: `— Unknown` in `neutral.500`, 12px, `letter-spacing: 0.10em`, all-caps. Font: Atkinson Hyperlegible 15px, `line-height: 1.65`, `color: neutral.300`. This is the origin story for the command phrase above.\n\n**Zone 4 — Work list** (≈200px, padding 24px):\nHeading: `SELECTED WORK` in `neutral.500` at 10px caps, `letter-spacing: 0.20em`, bottom-border 1px `neutral.700`, margin-bottom 12px.\nEach project entry: 14px Atkinson, `neutral.200`, with a `·` bullet in `grass.500` as list marker (the only grass green outside the hero phrase). On hover: left-border 1px `grass.500`.\nProjects: Spaceman · FishSticks · 15th Club · doug-march.com · TeeTurn\n\n**Zone 5 — Footer** (48px, pinned bottom):\n`padding: 0 24px`, `border-top: 1px solid neutral.700`, flex row space-between.\nLeft: `PERMACOMPUTING PRINCIPLES ↑` in `neutral.600` at 11px (the HN story as a quiet nod — the philosophy of maintaining what you have). Right: Truist Championship (scheduled) in `neutral.600` at 11px."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "neutral": {
+          "50": "#F8F4FC",
+          "100": "#EEE6F7",
+          "200": "#D9CCF0",
+          "300": "#BCA8DC",
+          "400": "#9980C4",
+          "500": "#775EA8",
+          "600": "#564282",
+          "700": "#3C2C60",
+          "800": "#251B42",
+          "900": "#0C0818"
+        },
+        "primary": {
+          "50": "#FBF0FE",
+          "100": "#F4D6FC",
+          "200": "#E9AEFA",
+          "300": "#D875F5",
+          "400": "#C840EE",
+          "500": "#A820C8",
+          "600": "#8610A0",
+          "700": "#660078",
+          "800": "#480054",
+          "900": "#2A0030"
+        },
+        "grass": {
+          "50": "#F0FDF4",
+          "100": "#DCFCE8",
+          "200": "#A8F7BE",
+          "300": "#64EE88",
+          "400": "#30D856",
+          "500": "#1CB840",
+          "600": "#118C2C",
+          "700": "#086620",
+          "800": "#034814",
+          "900": "#012C0A"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.50}"
+        },
+        "bgCard": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgPanel": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgSubtle": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "text": {
+          "base": "{colors.neutral.100}",
+          "_light": "{colors.neutral.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.400}",
+          "_light": "{colors.neutral.600}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.500}",
+          "_light": "{colors.neutral.500}"
+        },
+        "accent": {
+          "base": "{colors.primary.400}",
+          "_light": "{colors.primary.600}"
+        },
+        "accentGlow": {
+          "base": "{colors.primary.300}",
+          "_light": "{colors.primary.500}"
+        },
+        "accentDim": {
+          "base": "{colors.primary.700}",
+          "_light": "{colors.primary.200}"
+        },
+        "accentSubtle": {
+          "base": "{colors.primary.900}",
+          "_light": "{colors.primary.100}"
+        },
+        "grassAccent": {
+          "base": "{colors.grass.400}",
+          "_light": "{colors.grass.600}"
+        },
+        "grassDim": {
+          "base": "{colors.grass.700}",
+          "_light": "{colors.grass.200}"
+        },
+        "grassSubtle": {
+          "base": "{colors.grass.900}",
+          "_light": "{colors.grass.100}"
+        },
+        "border": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "borderSubtle": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.200}"
+        },
+        "borderAccent": {
+          "base": "{colors.primary.700}",
+          "_light": "{colors.primary.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.10em",
+      "widest": "0.20em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 295,
+      "s": 82,
+      "l": 58,
+      "name": "vivid violet"
+    },
+    "secondary_accent": {
+      "h": 138,
+      "s": 74,
+      "l": 51,
+      "name": "spring grass"
+    },
+    "neutral_family": {
+      "tinted_toward": "violet",
+      "name": "nightshade"
+    },
+    "mood_word": "declarative",
+    "color_story": "The command 'TAKE CARE OF YOUR GRASS.' burns in vivid violet — deliberately not grass-green — except for the final word 'GRASS.' itself, which is colored exactly like what it names; the tension between what commands and what is commanded lives in the palette."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

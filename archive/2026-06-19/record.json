@@ -1,0 +1,357 @@
+{
+  "date": "2026-06-19",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.203Z",
+  "buildId": "1781869307273",
+  "attempts": 1,
+  "brief": "Proclamation indigo on aged parchment — \"THE WORD / ARRIVED.\" at 18vw Big Shoulders Display fills three-quarters of the viewport, a single gold rule separates the 1865 dateline from the declaration, signal data pressed into the bottom corner like a notary's stamp.",
+  "rationale": "The hero phrase locked in the moment I read today's date: June 19 is Juneteenth, the federal holiday commemorating the day in 1865 when Union soldiers arrived in Galveston, Texas, and informed the last enslaved people that the war was over and they were free — two and a half years after Lincoln's Emancipation Proclamation. \"The word arrived\" is the precise historical phrase: not \"freedom came\" or \"liberation happened,\" but the word — the information, the dispatch, the document — finally arrived. At eight words it is monument-grade compression. The portfolio site, which reads raw YAML at dawn and composes a new design face from whatever signals are present, enacts its own smaller version of this logic daily. The phrase earns quotation in isolation.\n\nThe Poster archetype is not optional for this phrase — it would be a category error to put this declaration into an Index or Broadsheet and surround it with competing columns. A declaration of this weight needs a stage, not company. The phrase must fill the page. Big Shoulders Display is the chassis because its DNA is literally signage and monument letterforms: condensed, authoritative, designed to be read from a distance on stone or steel. At 18vw on a 1440px viewport, \"THE WORD\" and \"ARRIVED.\" push to roughly 78% of the canvas width each — genuine Poster scale, not comfortable hero scale. The date eyebrow \"JUNE 19, 1865\" at 1.75vw with 0.14em tracking provides context without competing.\n\nThe palette is the third node in the chain: deep proclamation indigo (#0C0A32) on warm parchment (#F7F3E9) is the color of printed law, of ink on a document page, of institutional permanence. The hue at H:245° falls cleanly in the color mandate's open corridor (233°–262°), which has been unused in seven consecutive builds, and it earns the brief rather than merely satisfying it. Document gold (#C8952A) plays a single decorative role: a 1px full-width rule between the date eyebrow and the declaration, echoing the gold seal on an official document. No gold is used for any text (the accessible gold.600 shade handles links at 4.88:1). The signal footer in the bottom-left corner — lunar phase, Friday music, HN's Project Valhalla, Father's Day in two days — presses into the corner as evidence: here is the specific Friday this was composed.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Poster",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Arkansas Museum of Fine Art",
+          "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+          "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The Bend Club",
+          "description": "A luxury residence club that doesn't exist yet. Brand, logo, and investor site designed to make early buyers feel the place before the ground breaks....",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1cbcaa59c1c699174924.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAtF6hJREFUeAG0/dmTddl1H4ittc+9mfkN9VUVUCiAIAigAJIAOLTCImWpJdEPdqhNv7Yd7Rc/246ww3+D/w09OOzn9ovEsB9aUkeoW+rWALIlERBFECIxECAKKAwFVH1DZt6z...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "House of Honey",
+          "description": "House of Honey designs spaces with story. We built a sophisticated digital presence that mirrors this sensory philosophy through editorial elegance and...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1c09bf6c5f3457361940.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/CABEIBLAGQAMBEQACEQEDEQH/xAA6AAAABgMBAQEAAAAAAAAAAAADBAUGBwgAAQIJCgsBAAAH...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Friday",
+      "is_weekend": false,
+      "day_index": 5
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "google-research/timesfm/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "n0-computer/iroh/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "sponsors/freeCodeCamp",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/obra",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "zai-org/GLM-5/stargazers",
+          "description": "",
+          "language": null,
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": null,
+      "status": "Unknown",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Project Valhalla, Explained: How a Decade of Work Arrives in JDK 28",
+          "url": "https://www.jvm-weekly.com/p/project-valhalla-explained-how-a",
+          "score": 184,
+          "by": "philonoist"
+        },
+        {
+          "title": "DuckDB Internals: Why Is DuckDB Fast? (Part 1)",
+          "url": "https://www.greybeam.ai/blog/duckdb-internals-part-1",
+          "score": 209,
+          "by": "marklit"
+        },
+        {
+          "title": "To study how chips work, MIT researchers built their own operating system",
+          "url": "https://news.mit.edu/2026/to-study-how-chips-really-work-mit-researchers-built-their-own-operating-system-0610",
+          "score": 205,
+          "by": "speckx"
+        },
+        {
+          "title": "So You Want to Define a Well-Known URI",
+          "url": "https://mnot.net/blog/2026/well_known_uris",
+          "score": 80,
+          "by": "ingve"
+        },
+        {
+          "title": "Ten years of ClickHouse in open source",
+          "url": "https://clickhouse.com/blog/open-source-10",
+          "score": 62,
+          "by": "saisrirampur"
+        }
+      ]
+    },
+    "holidays": {
+      "today": "Juneteenth",
+      "upcoming": [
+        {
+          "name": "Father's Day",
+          "date": "2026-06-21",
+          "days_away": 2
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "waxing crescent",
+      "illumination": 0.255,
+      "days_into_cycle": 4.98
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "My Morning Jacket",
+        "Guided by Voices"
+      ]
+    },
+    "quote": {
+      "text": "Successful people are always looking for opportunities to help others. Unsuccessful people are always asking, 'What's in it for me?'",
+      "author": "Brian Tracy"
+    },
+    "season": {
+      "season": "summer",
+      "month": 6,
+      "day": 19,
+      "day_of_year": 170,
+      "month_name": "June"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:49",
+      "sunset": "19:33",
+      "daylight_hours": 14.7
+    },
+    "date": "2026-06-19"
+  },
+  "hero": {
+    "copy": "June 19, 1865. The word arrived.",
+    "rationale": "Today is Juneteenth — the day the last enslaved people in Galveston, Texas received word of their emancipation, two and a half years after the Emancipation Proclamation. The phrase compresses that historical fact into eight words with the weight of a monument inscription: not \"freedom was granted\" but \"the word arrived\" — the information, the messenger, the delayed dispatch finally reaching shore. It earns marquee scale not through abstraction but through specificity. The portfolio, which reads raw YAML at sunrise and composes a new face from whatever is present, enacts its own version of this logic every day: the word arrives, the site responds. Risk weight is 8/10; this is the only phrase today that is truly unrepeatable.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue** — H:245° (deep proclamation indigo). This is the hue of institutional permanence: the ink a president uses, the color of law printed on the first official documents of a republic. Not the default AI indigo (H:260°) — this sits in the genuine blue-navy register, serious and load-bearing.\n\n**Neutral palette** — warm parchment, faint indigo tint (chroma ≈ 0.008) for cohesion with the type:\n- 50: `#FDFBF7`\n- 100: `#F7F3E9`\n- 200: `#EDE8D8`\n- 300: `#D8D2BF`\n- 400: `#BDB6A2`\n- 500: `#9E9787`\n- 600: `#7E786A`\n- 700: `#5E594F`\n- 800: `#3F3B34`\n- 900: `#221F1A`\n\n**Accent color** — Document gold (accessible shade for interactive/text use):\n- light: `#F5D478`\n- default: `#C8952A` (decorative only — 2.3:1 on parchment, not used for text)\n- accessible text: `#855A18` (gold.600 — 4.88:1 on parchment #F7F3E9, passes WCAG AA)\n- glow: `rgba(200, 149, 42, 0.12)`\n\n**Secondary accent** — none as a separate palette; gold plays the single accent role, split between decorative (#C8952A for the rule) and text-accessible (#855A18 for links).\n\n**Background**:\n- Page bg: `#F7F3E9` (parchment.100)\n- Card bg: `#FDFBF7` (parchment.50)\n- No sidebar bg needed for Poster\n\n**Text colors**:\n- Primary text: `#0C0A32` (indigo.900) — 13.6:1 on parchment ✓\n- Secondary text: `#231F72` (indigo.700)\n- Muted text: `#7E786A` (parchment.600)\n\n---\n\n### 2. Typography (Chassis: big-shoulders-atkinson, ratio 1.618)\n\n**Hero phrase rendering** — Three typographic tiers for the Poster:\n\n1. **Date eyebrow** — Big Shoulders Display, `clamp(0.875rem, 1.75vw, 1.5rem)`, `letter-spacing: 0.14em`, uppercase, `color: #C8952A` (gold, decorative scale — not body text), `font-weight: 600`. Renders as: `JUNE 19, 1865`\n\n2. **Main declaration, line 1** — Big Shoulders Display, `clamp(5rem, 18vw, 16rem)`, `letter-spacing: -0.01em`, `line-height: 0.88`, `color: #0C0A32`, `font-weight: 800`. Text: `THE WORD`\n\n3. **Main declaration, line 2** — Big Shoulders Display, same scale as line 1. Text: `ARRIVED.`\n\nLines 1 and 2 together span ~78% of the 1440px viewport (Big Shoulders' condensed letterforms make 8–9 caps fit within ~80vw at 18vw font-size). Together they occupy ~70% of the viewport height.\n\nA 1px gold rule (`#C8952A`) spans full viewport width between the date eyebrow and the main declaration.\n\n**Body / caption** — Atkinson Hyperlegible, `clamp(0.875rem, 1vw, 1rem)`, `letter-spacing: 0.01em`, `line-height: 1.6`, `color: #231F72`\n\n**Line heights**:\n- Hero display: `0.88` (tight, monumental)\n- Subhead / attribution: `1.15`\n- Body: `1.6`\n- Signal/caption: `1.5`\n\n**Letter spacings**:\n- Hero display: `-0.01em` (Big Shoulders condensed needs no extra tracking)\n- Date eyebrow (all-caps): `0.14em`\n- Navigation (all-caps labels): `0.08em`\n- Body: `0.01em`\n\n---\n\n### 3. Layout Specification\n\n**Archetype: Poster** — The two-line declaration `THE WORD / ARRIVED.` is the page. It earns 78% viewport width and roughly 65% viewport height. Navigation demoted to a thin fixed bar. Signal data pressed into the bottom-left corner. No competing columns, no card grid, no sidebar — just the declaration and the evidence of the day it was composed.\n\n**CSS structure**:\n```css\nbody {\n  display: grid;\n  grid-template-rows: auto 1fr auto;\n  min-height: 100vh;\n  background: #F7F3E9;\n}\n\n.nav-strip {\n  position: fixed;\n  top: 0; left: 0; right: 0;\n  height: 48px;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 6vw;\n  z-index: 100;\n  mix-blend-mode: multiply; /* subtly transparent over parchment */\n}\n\n.hero-zone {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: flex-start;\n  padding: 96px 6vw 48px;\n  min-height: 100vh;\n  max-width: none;\n}\n\n.signal-footer {\n  position: fixed;\n  bottom: 0; left: 0;\n  padding: 24px 6vw;\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n}\n```\n\n**Major dimensions**:\n- Hero area: `min-height: 100vh`, full-bleed (`max-width: none`)\n- Side padding: `6vw` left and right (viewport-relative)\n- Nav strip height: `48px` fixed\n- Signal footer: fixed bottom-left\n\n**Nav placement** — Fixed top strip spanning full width, 48px tall. Left: `DOUG MARCH` logotype in Atkinson Hyperlegible at 0.75rem, `letter-spacing: 0.08em`, `color: #7E786A` (muted). Right: navigation links `WORK · ABOUT` in Atkinson, 0.75rem, `letter-spacing: 0.08em`, `color: #231F72`.\n\n**Hero phrase grid zone** — No formal grid columns. Content left-aligned at `padding-left: 6vw`. Vertical position: centered within 100vh with `justify-content: center`. Sequence from top: [64px spacer for nav] → date eyebrow → 16px gap → gold full-width rule → 32px gap → `THE WORD` line → `ARRIVED.` line.\n\nAt 1440×900: `THE WORD` and `ARRIVED.` at 18vw = 259px type size, each line ~1100px wide. Both lines together: ~580px height. Centered within 900px viewport = 65% vertical occupation. ✓ Poster threshold met.\n\n---\n\n### 4. Component Character\n\n**Border radius** — `0` everywhere. Flat document aesthetics. No rounded corners — this is a proclamation, not a product card.\n\n**Border treatment** — A single 1px full-width gold rule (`#C8952A`) between the date eyebrow and the main declaration. Navigation links separated by `·` bullet, no ruled borders. No card borders.\n\n**Shadow** — None. Parchment with ink is shadowless.\n\n**Density** — Maximally spacious. The Poster needs air. Signal footer is tightly-set (Atkinson 0.75rem) to contrast against the vast empty parchment field.\n\n**Interactive states** — Navigation links: `color: #0C0A32` on hover (from muted to full dark). Project links in footer: underline + `#855A18` (gold accessible) on hover. Cursor: default pointer.\n\n---\n\n### 5. Signal Integration\n\n**Where signal elements live** — Bottom-left corner, fixed, small Atkinson Hyperlegible text stack. Bottom-right corner: \"Friday, June 19, 2026\" date stamp. Top-right of nav strip: the two navigation links.\n\n**Juneteenth treatment** — The holiday IS the design. The entire poster is the Juneteenth signal. No separate badge or label needed — the hero phrase explains itself.\n\n**Father's Day** — Single line in signal footer: `Father's Day Sunday` in parchment.600, 0.75rem.\n\n**Music** — Signal footer, one line: `Wet Leg · My Morning Jacket · Guided by Voices` — Atkinson 0.75rem, indigo.700.\n\n**Lunar** — Signal footer: `☽ Waxing crescent · 25%` — Atkinson 0.75rem, muted.\n\n**HN signal** — One story abbreviated: `HN: Project Valhalla lands in JDK 28` — Atkinson 0.75rem, muted.\n\n**Sports scores** — All off-season; no scores to display. Omitted from signal footer.\n\n**Bottom-right date stamp** — `JUNE 19, 2026` in Big Shoulders Display, 0.875rem, `letter-spacing: 0.08em`, `color: #BDB6A2` (parchment.400 — light and recessive). This anchors the composition temporally without competing.",
+    "selfCheck": "1. Hero quotability: Yes — \"June 19, 1865. The word arrived.\" is a monument inscription; the compression of the Juneteenth delivery-of-news moment into eight words is quotable and screenshot-worthy in isolation without context.\n2. Because-of chain: Yes — Juneteenth's historical weight demands Poster scale (declaration needs a stage, not companions); Poster needs condensed display at marquee scale; Big Shoulders Display's signage/monument DNA fits the historical-document register; indigo-on-parchment directly references printed law and official proclamations.\n3. Render feasibility: Yes — Big Shoulders Display's condensed letterforms allow 18vw at 1440px (≈259px cap height) with \"THE WORD\" and \"ARRIVED.\" each fitting within ~78% of viewport width; no overflow risk at 900px height with centered two-line stack occupying ~65% vertical.",
+    "rationale": "The hero phrase locked in the moment I read today's date: June 19 is Juneteenth, the federal holiday commemorating the day in 1865 when Union soldiers arrived in Galveston, Texas, and informed the last enslaved people that the war was over and they were free — two and a half years after Lincoln's Emancipation Proclamation. \"The word arrived\" is the precise historical phrase: not \"freedom came\" or \"liberation happened,\" but the word — the information, the dispatch, the document — finally arrived. At eight words it is monument-grade compression. The portfolio site, which reads raw YAML at dawn and composes a new design face from whatever signals are present, enacts its own smaller version of this logic daily. The phrase earns quotation in isolation.\n\nThe Poster archetype is not optional for this phrase — it would be a category error to put this declaration into an Index or Broadsheet and surround it with competing columns. A declaration of this weight needs a stage, not company. The phrase must fill the page. Big Shoulders Display is the chassis because its DNA is literally signage and monument letterforms: condensed, authoritative, designed to be read from a distance on stone or steel. At 18vw on a 1440px viewport, \"THE WORD\" and \"ARRIVED.\" push to roughly 78% of the canvas width each — genuine Poster scale, not comfortable hero scale. The date eyebrow \"JUNE 19, 1865\" at 1.75vw with 0.14em tracking provides context without competing.\n\nThe palette is the third node in the chain: deep proclamation indigo (#0C0A32) on warm parchment (#F7F3E9) is the color of printed law, of ink on a document page, of institutional permanence. The hue at H:245° falls cleanly in the color mandate's open corridor (233°–262°), which has been unused in seven consecutive builds, and it earns the brief rather than merely satisfying it. Document gold (#C8952A) plays a single decorative role: a 1px full-width rule between the date eyebrow and the declaration, echoing the gold seal on an official document. No gold is used for any text (the accessible gold.600 shade handles links at 4.88:1). The signal footer in the bottom-left corner — lunar phase, Friday music, HN's Project Valhalla, Father's Day in two days — presses into the corner as evidence: here is the specific Friday this was composed.",
+    "signalIntegration": "**Where signal elements live** — Bottom-left corner, fixed, small Atkinson Hyperlegible text stack. Bottom-right corner: \"Friday, June 19, 2026\" date stamp. Top-right of nav strip: the two navigation links.\n\n**Juneteenth treatment** — The holiday IS the design. The entire poster is the Juneteenth signal. No separate badge or label needed — the hero phrase explains itself.\n\n**Father's Day** — Single line in signal footer: `Father's Day Sunday` in parchment.600, 0.75rem.\n\n**Music** — Signal footer, one line: `Wet Leg · My Morning Jacket · Guided by Voices` — Atkinson 0.75rem, indigo.700.\n\n**Lunar** — Signal footer: `☽ Waxing crescent · 25%` — Atkinson 0.75rem, muted.\n\n**HN signal** — One story abbreviated: `HN: Project Valhalla lands in JDK 28` — Atkinson 0.75rem, muted.\n\n**Sports scores** — All off-season; no scores to display. Omitted from signal footer.\n\n**Bottom-right date stamp** — `JUNE 19, 2026` in Big Shoulders Display, 0.875rem, `letter-spacing: 0.08em`, `color: #BDB6A2` (parchment.400 — light and recessive). This anchors the composition temporally without competing."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "indigo": {
+          "50": "#F0F0FA",
+          "100": "#D8D8F5",
+          "200": "#B5B4ED",
+          "300": "#8F8DE0",
+          "400": "#6965C9",
+          "500": "#4A46B0",
+          "600": "#342F91",
+          "700": "#231F72",
+          "800": "#161454",
+          "900": "#0C0A32"
+        },
+        "parchment": {
+          "50": "#FDFBF7",
+          "100": "#F7F3E9",
+          "200": "#EDE8D8",
+          "300": "#D8D2BF",
+          "400": "#BDB6A2",
+          "500": "#9E9787",
+          "600": "#7E786A",
+          "700": "#5E594F",
+          "800": "#3F3B34",
+          "900": "#221F1A"
+        },
+        "gold": {
+          "50": "#FEF9EA",
+          "100": "#FAEEC4",
+          "200": "#F5D478",
+          "300": "#E8B940",
+          "400": "#C8952A",
+          "500": "#A67520",
+          "600": "#855A18",
+          "700": "#643F12",
+          "800": "#432A0C",
+          "900": "#211505"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.parchment.100}",
+          "_light": "{colors.parchment.100}"
+        },
+        "bgCard": {
+          "base": "{colors.parchment.50}",
+          "_light": "{colors.parchment.50}"
+        },
+        "text": {
+          "base": "{colors.indigo.900}",
+          "_light": "{colors.indigo.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.indigo.700}",
+          "_light": "{colors.indigo.700}"
+        },
+        "textMuted": {
+          "base": "{colors.parchment.600}",
+          "_light": "{colors.parchment.600}"
+        },
+        "accent": {
+          "base": "{colors.gold.400}",
+          "_light": "{colors.gold.400}"
+        },
+        "accentText": {
+          "base": "{colors.gold.600}",
+          "_light": "{colors.gold.600}"
+        },
+        "accentSubtle": {
+          "base": "{colors.gold.100}",
+          "_light": "{colors.gold.100}"
+        },
+        "border": {
+          "base": "{colors.parchment.300}",
+          "_light": "{colors.parchment.300}"
+        },
+        "borderStrong": {
+          "base": "{colors.indigo.800}",
+          "_light": "{colors.indigo.800}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.15",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.14em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700",
+      "extrabold": "800"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 245,
+      "s": 65,
+      "l": 18,
+      "name": "proclamation indigo"
+    },
+    "secondary_accent": {
+      "h": 38,
+      "s": 72,
+      "l": 46,
+      "name": "document gold"
+    },
+    "neutral_family": {
+      "tinted_toward": "indigo",
+      "name": "parchment"
+    },
+    "mood_word": "monumental",
+    "color_story": "Proclamation indigo — the color of printed law, of ink on parchment, of the sky above Galveston on the evening of June 19, 1865 — fills the letters at monument scale against aged cream, while document gold marks the date as something worth striking."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

@@ -1,0 +1,371 @@
+{
+  "date": "2026-07-18",
+  "era": "shell-directed",
+  "generatedAt": "2026-08-24T15:34:16.232Z",
+  "buildId": "1784371263245",
+  "attempts": 1,
+  "brief": "Candle-lit Stack — a Chinese proverb burning as an acid-lime band over smoked olive-black, the flame lit and the darkness demoted, one crescent moon pinned above.",
+  "rationale": "The day handed me a finished poster in `signals.quote`: \"Better to light a candle than to curse the darkness.\" It is a complete, standalone aphorism — the exact test for a hero phrase — and it doubles as a mission statement for a site that demolishes and rebuilds itself every morning rather than resenting the version it just was. Two other signals fuse to it: a waxing crescent at 20% illumination is a literal small light returning to the sky, and the Tigers' quiet 2–1 win is a candle rather than a blowout. The phrase's own structure — a lit thing set against a dark thing — is the composition.\n\nBecause the line contains its own light-vs-dark opposition, The Stack is the only honest archetype: full-width bands descending dark → lit → dark → ledger, so \"Better to light a candle\" literally burns as a lime band while \"than to curse the darkness\" is demoted to a fading near-black band below it. The proverb is warm wisdom, not athletic shouting, so I rejected Anton/Bebas in favor of Bricolage Grotesque (bricolage-manrope, 1.500 ratio, Stack-tagged, expressive and humane) — it renders the marquee lines big and warm without tipping into billboard parody, and Manrope keeps the ledger's leaderboard and music list crisp. Stack is fresh against a week of Specimen/Poster/Split.\n\nThe palette is where the mandate and the metaphor collide productively: the warm-flame corridor (30–55°) sits inside the forbidden 0–93° zone, and the only clean window is 94–119°. Rather than fight it, I read the candle as *light spilling* — an acid-lime phosphor glow at 98° — which, with risk dialed to 8/10, is the bolder Liquid-Death-acid gesture over a safe amber. One flame, one accent: candle lime burns across a full band and lights only the Open leader Herbert (−8) and the Tigers' \"W,\" while everything else lives in smoked olive-black tinted toward that same 98°. Shell moves are all fresh against the recent avoid list: a corner-mark nav (mark-only-md, single-color lime via currentColor), inline caps links folded into a full-width signal-ledger band that carries the golf, Tigers, music, and moon.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/components/Footer.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Stack",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "/zeroz Brand Site",
+          "description": "Brand site for /zeroz, a self-conditioning food born from Otsuka Pharmaceutical Co., Ltd.'s \"Active Inner Resource\" concept. Chapters unfold through 3DCG...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4687f45bf83853560900.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The Record Institute",
+          "description": "A museum-grade digital archive dedicated to preserving pre-2000 print ephemera. Multilingual, meticulously catalogued, and free—safeguarding vintage advertising...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a44c228af614956383273.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADASIAAhEBAxEB/8QAHQAAAAcBAQEAAAAAAAAAAAAAAAECAwQFBgcICf/E...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The History of Muse Group",
+          "description": "SANDS STUDIO created an interactive website for Muse Group — a living digital archive connecting its music ecosystem, products, and nearly a century of...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a43c670e1dae067356082.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAMAAACU33alAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAJBQTFRFLCoq/v7+9/f37O3r1NTUUPP+9c0Cgv4EtbW1yqwmeMkxTb/GjJCQgYMlcGHyc17qdlzkeFnee1fYflXSflLLhE7FZGtqlTT97DQCmDuUnjaHojN+XEyppS91qStsridg6ws/th9OvRk/wxMwaCOzREZDSDluaCtPiR41Oi84JCQjSwkiHBwc...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Saturday",
+      "is_weekend": true,
+      "day_index": 6
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "codecrafters-io/build-your-own-x/stargazers",
+          "description": "",
+          "language": "Markdown",
+          "stars": null
+        },
+        {
+          "name": "PostHog/posthog/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/HenryNdubuaku",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "Nutlope/hallmark/stargazers",
+          "description": "",
+          "language": "CSS",
+          "stars": null
+        },
+        {
+          "name": "github/copilot-sdk/stargazers",
+          "description": "",
+          "language": "Java",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "The Open",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Lucas Herbert",
+          "position": "1",
+          "score": "-8"
+        },
+        {
+          "name": "Cameron Young",
+          "position": "2",
+          "score": "-6"
+        },
+        {
+          "name": "Ryan Gerard",
+          "position": "3",
+          "score": "-6"
+        },
+        {
+          "name": "Jackson Suber",
+          "position": "4",
+          "score": "-6"
+        },
+        {
+          "name": "Sam Burns",
+          "position": "5",
+          "score": "-5"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Regressive JPEGs",
+          "url": "https://maurycyz.com/projects/bad_jpeg/",
+          "score": 362,
+          "by": "vitaut"
+        },
+        {
+          "title": "AWS: Inaccurate Estimated Billing Data – $1.7 billion",
+          "score": 1195,
+          "by": "nprateem"
+        },
+        {
+          "title": "Thanks HN for 15 years of support and helping me find my life's work",
+          "score": 610,
+          "by": "nicholasjbs"
+        },
+        {
+          "title": "Porting nanochat to a TPU: what carries over from PyTorch, and what breaks",
+          "url": "https://github.com/tucan9389/nanochat-jax/discussions/1",
+          "score": 35,
+          "by": "tucan9389"
+        },
+        {
+          "title": "Reviving a 15-year-old netbook with Arch Linux",
+          "url": "https://parksb.github.io/en/article/41.html",
+          "score": 112,
+          "by": "parksb"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waxing crescent",
+      "illumination": 0.204,
+      "days_into_cycle": 4.4
+    },
+    "music": {
+      "bands": [
+        "Tobin Sprout",
+        "Wet Leg",
+        "The War on Drugs"
+      ]
+    },
+    "quote": {
+      "text": "Better to light a candle than to curse the darkness.",
+      "author": "Chinese Proverb"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 18,
+      "day_of_year": 199,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-18T01:38Z",
+          "result": "win",
+          "score": "2-1"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:03",
+      "sunset": "19:28",
+      "daylight_hours": 14.4
+    },
+    "date": "2026-07-18"
+  },
+  "hero": {
+    "copy": "Better to light a candle than to curse the darkness.",
+    "rationale": "Pulled straight from `signals.quote` (Chinese Proverb), and it's genuinely poster-worthy — a complete, quotable aphorism about action over complaint. It rhymes hard with two of today's other signals: a waxing crescent moon at 20% illumination (day 4.4 — literally a small light returning to the sky) and a portfolio that rebuilds itself every dawn instead of resenting yesterday's version. The line carries an inherent light-vs-dark structure, which hands me the composition for free.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 98° (candle lime / acid chartreuse). The warm-flame corridor (30–55°) is inside the forbidden 0–93° zone; the only clean window the mandate leaves is 94–119°, and 98° reads as a candle's light *spilling* — a phosphor-lime glow rather than a literal orange flame. With risk at 8/10 this Liquid-Death-acid lane is the bolder, more distinctive call than a safe amber.\n- **Neutral palette (smoked olive black)** — 50 `#f6f8f0`, 100 `#ecefe0`, 200 `#d5dbc3`, 300 `#b3bd97`, 400 `#899168`, 500 `#646c47`, 600 `#4a5133`, 700 `#333823`, 800 `#1f2314`, 900 `#12150b`\n- **Accent color (candle lime)** — light `#cae95f`, default `#b5e61d`, dark `#8ab00f`, glow `rgba(181,230,29,0.35)`\n- **Secondary accent** — none. One flame only.\n- **Background** — page bg `#12150b`; darkness band `#12150b`; candle band `#b5e61d`; ledger band `#1f2314`\n- **Text colors** — primary text on dark `#ecefe0`; on lime band `#12150b`; secondary `#b3bd97`; muted `#899168`\n\n### 2. Typography\n- **Hero phrase rendering** — Bricolage Grotesque `display` token. The full proverb splits across two central bands: \"Better to light a candle\" set in the lime band at `clamp(56px, 8vw, 128px)`, dark ink on lime; \"than to curse the darkness.\" set on the dark band below at the same scale, lime on near-black, with \"the darkness\" dropping to muted `#899168` so the dark literally fades. Attribution \"— Chinese Proverb\" in Manrope smallcaps beneath.\n- **Line heights** — hero 0.95; band sublines 1.1; body 1.5; light-on-dark body bumped to 1.6\n- **Letter spacings** — hero -0.02em; body 0; smallcaps/labels 0.12em (uppercase)\n\n### 3. Layout Specification\n- **Archetype** — The Stack. Full-width horizontal bands descend from dark → lit → dark → ledger, embodying the proverb's own arc: the candle band burns brightest in the middle, the darkness band is demoted below it, and the eye leaves on data, not despair.\n- **CSS grid/flex structure** — `display: grid; grid-template-rows: auto minmax(38vh,1fr) minmax(30vh,1fr) auto; grid-template-columns: 1fr; min-height: 100vh`\n- **Major dimensions**:\n  - Kicker band: `min-height: 12vh`, padding `24px 6vw`\n  - Candle (lime) band: `min-height: 38vh`, padding `64px 6vw`\n  - Darkness band: `min-height: 30vh`, padding `48px 6vw`\n  - Ledger band: `min-height: 16vh`, padding `32px 6vw`\n  - `max-width: none` on all bands; side padding via `6vw`\n- **Nav placement** — corner mark top-left of the kicker band (mark-only, 44px); caps links inline right in the bottom ledger band, so navigation and signal data share the closing moment.\n- **Hero phrase grid zone** — rows 2–3 (candle band + darkness band), full width, occupying ~68% of viewport height combined; intended cap height ~120px at desktop.\n\n### 4. Component Character\n- **Border radius** — cards/chips 8px; buttons 4px; tags `full` (pill). none = 0.\n- **Border treatment** — mostly borderless (bands carry contrast); hairline `1px solid` `border` token only between ledger columns.\n- **Shadow** — none on bands; the candle band emits a `box-shadow: 0 0 120px rgba(181,230,29,0.35)` upward glow into the darkness band seam.\n- **Density** — spacious in hero bands, compact in the ledger.\n- **Interactive states** — nav links underline-grow in lime on `_hover`; ledger rows lighten background one step.\n\n### 5. Signal Integration\n- **Signal elements** — waxing-crescent chip pinned top-right of the kicker band (\"waxing crescent · 20% · a light returning\"), thematically the candle in the sky. Golf, Tigers, and music all live in the ledger band.\n- **Sports scores** — Tigers \"W 2–1\" in Manrope tabular-nums, lime for the \"W\"; understated, one line.\n- **The Open leaderboard** — three tabular rows, Lucas Herbert −8 lit in candle lime as the leader; Young/Gerard −6 in secondary.\n- **The quote IS the hero phrase** — rendered as the two central marquee bands; attribution \"— Chinese Proverb\" in smallcaps under the darkness band.\n- **Music** — Tobin Sprout · Wet Leg · The War on Drugs as a lime-dotted inline list in the ledger. **Holiday** — none today.",
+    "selfCheck": "1. Hero quotability: Yes — a complete standalone proverb anyone would screenshot.\n2. Because-of chain: Yes — the light/dark structure dictated Stack, warmth dictated Bricolage, the flame dictated lime-on-black, the arc dictated the band order.\n3. Render feasibility: Yes — the phrase splits naturally at \"candle / than\" across two bands, so no single line overflows at 1440px.\n4. Canvas floor feasible: Yes — full-bleed horizontal bands trivially exceed 65% utilization.",
+    "rationale": "The day handed me a finished poster in `signals.quote`: \"Better to light a candle than to curse the darkness.\" It is a complete, standalone aphorism — the exact test for a hero phrase — and it doubles as a mission statement for a site that demolishes and rebuilds itself every morning rather than resenting the version it just was. Two other signals fuse to it: a waxing crescent at 20% illumination is a literal small light returning to the sky, and the Tigers' quiet 2–1 win is a candle rather than a blowout. The phrase's own structure — a lit thing set against a dark thing — is the composition.\n\nBecause the line contains its own light-vs-dark opposition, The Stack is the only honest archetype: full-width bands descending dark → lit → dark → ledger, so \"Better to light a candle\" literally burns as a lime band while \"than to curse the darkness\" is demoted to a fading near-black band below it. The proverb is warm wisdom, not athletic shouting, so I rejected Anton/Bebas in favor of Bricolage Grotesque (bricolage-manrope, 1.500 ratio, Stack-tagged, expressive and humane) — it renders the marquee lines big and warm without tipping into billboard parody, and Manrope keeps the ledger's leaderboard and music list crisp. Stack is fresh against a week of Specimen/Poster/Split.\n\nThe palette is where the mandate and the metaphor collide productively: the warm-flame corridor (30–55°) sits inside the forbidden 0–93° zone, and the only clean window is 94–119°. Rather than fight it, I read the candle as *light spilling* — an acid-lime phosphor glow at 98° — which, with risk dialed to 8/10, is the bolder Liquid-Death-acid gesture over a safe amber. One flame, one accent: candle lime burns across a full band and lights only the Open leader Herbert (−8) and the Tigers' \"W,\" while everything else lives in smoked olive-black tinted toward that same 98°. Shell moves are all fresh against the recent avoid list: a corner-mark nav (mark-only-md, single-color lime via currentColor), inline caps links folded into a full-width signal-ledger band that carries the golf, Tigers, music, and moon.",
+    "signalIntegration": "- **Signal elements** — waxing-crescent chip pinned top-right of the kicker band (\"waxing crescent · 20% · a light returning\"), thematically the candle in the sky. Golf, Tigers, and music all live in the ledger band.\n- **Sports scores** — Tigers \"W 2–1\" in Manrope tabular-nums, lime for the \"W\"; understated, one line.\n- **The Open leaderboard** — three tabular rows, Lucas Herbert −8 lit in candle lime as the leader; Young/Gerard −6 in secondary.\n- **The quote IS the hero phrase** — rendered as the two central marquee bands; attribution \"— Chinese Proverb\" in smallcaps under the darkness band.\n- **Music** — Tobin Sprout · Wet Leg · The War on Drugs as a lime-dotted inline list in the ledger. **Holiday** — none today."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "lime": {
+          "50": "#f7fce6",
+          "100": "#edf8c6",
+          "200": "#ddf095",
+          "300": "#cae95f",
+          "400": "#b5e61d",
+          "500": "#9fce12",
+          "600": "#7fa30d",
+          "700": "#5f7a0d",
+          "800": "#48590f",
+          "900": "#2f3a0c"
+        },
+        "olive": {
+          "50": "#f6f8f0",
+          "100": "#ecefe0",
+          "200": "#d5dbc3",
+          "300": "#b3bd97",
+          "400": "#899168",
+          "500": "#646c47",
+          "600": "#4a5133",
+          "700": "#333823",
+          "800": "#1f2314",
+          "900": "#12150b"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.olive.900}",
+          "_light": "{colors.olive.50}"
+        },
+        "bgCandle": {
+          "base": "{colors.lime.400}",
+          "_light": "{colors.lime.400}"
+        },
+        "bgLedger": {
+          "base": "{colors.olive.800}",
+          "_light": "{colors.olive.100}"
+        },
+        "text": {
+          "base": "{colors.olive.100}",
+          "_light": "{colors.olive.900}"
+        },
+        "textOnCandle": {
+          "base": "{colors.olive.900}",
+          "_light": "{colors.olive.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.olive.300}",
+          "_light": "{colors.olive.600}"
+        },
+        "textMuted": {
+          "base": "{colors.olive.400}",
+          "_light": "{colors.olive.400}"
+        },
+        "accent": {
+          "base": "{colors.lime.400}",
+          "_light": "{colors.lime.600}"
+        },
+        "accentDark": {
+          "base": "{colors.lime.600}",
+          "_light": "{colors.lime.700}"
+        },
+        "border": {
+          "base": "{colors.olive.700}",
+          "_light": "{colors.olive.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.95",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.7"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.14em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "4px",
+      "md": "8px",
+      "lg": "16px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 98,
+      "s": 82,
+      "l": 51,
+      "name": "candle lime"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "chartreuse-green",
+      "name": "smoked olive black"
+    },
+    "mood_word": "defiant-hope",
+    "color_story": "A single acid-lime candle-band burns inside a smoked near-black field — the flame lit, the darkness demoted, exactly as the proverb instructs."
+  },
+  "shell": {
+    "nav": "corner mark top-left (kicker band) + inline caps links riding the bottom ledger band",
+    "footer": "signal ledger band (bottom Stack band, full-width: Open leaderboard + Tigers + music + moon in tabular columns)",
+    "brand_lockup": "mark-only-md",
+    "brand_color_mode": "single-color"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "APPROVED",
+      "feedback": "APPROVED",
+      "ts": 1784370742056
+    }
+  ],
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

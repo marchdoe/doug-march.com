@@ -1,0 +1,348 @@
+{
+  "date": "2026-05-28",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.184Z",
+  "buildId": "1779967294629",
+  "attempts": 1,
+  "brief": "Bricolage three-line descent in seafoam on near-void ink — \"opportunity.\" lit in #22B88A at the base of the hero, four bands of dark-to-bright-to-cream-to-deep cycling the Tigers' shutout and 94.3% moon through a Stack that makes you earn the final word.",
+  "rationale": "The Einstein quote arrived as the right hero phrase because today's signals triangulate on it from three directions simultaneously: the Tigers' 4–0 shutout is the phrase enacted in baseball (difficulty met, question answered with silence); the HN top story about Anthropic and OpenAI finding product-market fit is the phrase at industry scale (the difficulty of the last four years yielding to the opportunity of the next four); and the waxing gibbous moon at 94.3% is the phrase as an astronomical metaphor — nearly through the arc, the brightness almost full. For a portfolio where every project is a founder choosing to enter difficulty voluntarily, the line functions as unsolicited mission statement. It doesn't need explaining; it needs space and a lit final word.\n\nThe Stack archetype followed from the phrase's temporal structure. A three-line descent — \"In the middle / of difficulty / lies opportunity.\" — is already a vertical journey, and Stack gives that journey architectural form: the hero band is the claim (difficulty = darkness, near-black void), the signal band is the proof (seafoam.400 saturated drench = the opportunity color, literally the color of this phrase, fired at full saturation), the work band is the evidence (light, cream-tinted stone.50, projects rendered in light), the about band completes the loop (deep forest dark, returning to depth). You scroll through the argument. The chassis `bricolage-manrope` was selected because Bricolage Grotesque at weight 800 is warm and declarative without being institutional — Anton or Bebas would make Einstein sound like a gym poster; Bricolage makes him sound like someone who meant it.\n\nThe seafoam palette at H:158° sits precisely in the mandated 148°–175° window and earns its presence viscerally: it is the exact hue of new growth pressing against resistance — not blue (serene), not standard green (money, nature), but the specific charged threshold between them, the color of something emerging. At `#22B88A` (seafoam.400), it achieves 9.2:1 contrast against ink.900, meaning the single word \"opportunity.\" on the final hero line fires like a lit match in a dark room. The tinted stone neutral family (barely pulled toward H:158° at minimal chroma) keeps every surface alive — pure black neutrals would make the dark bands feel like voids rather than depths, and this design lives in depths.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Stack",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Education Foundation of AACPS",
+          "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+          "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "Pillars Of Seven",
+          "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Thursday",
+      "is_weekend": false,
+      "day_index": 4
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "harry0703/MoneyPrinterTurbo/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/affaan-m",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/Leonxlnx",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "hardikpandya/stop-slop/stargazers",
+          "description": "",
+          "language": null,
+          "stars": null
+        },
+        {
+          "name": "twentyhq/twenty/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Charles Schwab Challenge",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "YouTube to automatically label AI-generated videos",
+          "url": "https://blog.youtube/news-and-events/improving-ai-labels-viewers-creators/",
+          "score": 928,
+          "by": "nopg"
+        },
+        {
+          "title": "A Eureka machine that thinks like nature and explores what AI cannot",
+          "url": "https://iisc.ac.in/a-eureka-machine-that-thinks-like-nature-and-explores-what-ai-cannot/",
+          "score": 80,
+          "by": "kunalsin9h"
+        },
+        {
+          "title": "I analysed 20 years of my chats",
+          "url": "https://drobinin.com/posts/am-i-a-bad-friend/",
+          "score": 152,
+          "by": "valzevul"
+        },
+        {
+          "title": "I think Anthropic and OpenAI have found product-market fit",
+          "url": "https://simonwillison.net/2026/May/27/product-market-fit/",
+          "score": 893,
+          "by": "simonw"
+        },
+        {
+          "title": "Hallucinate – Massively Multiplayer Online Rave",
+          "url": "https://hallucinate.site",
+          "score": 225,
+          "by": "stagas"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waxing gibbous",
+      "illumination": 0.943,
+      "days_into_cycle": 12.5
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "Wet Leg"
+      ]
+    },
+    "quote": {
+      "text": "In the middle of difficulty lies opportunity.",
+      "author": "Albert Einstein"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 28,
+      "day_of_year": 148,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-27T22:40Z",
+          "result": "win",
+          "score": "4-0"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:53",
+      "sunset": "19:21",
+      "daylight_hours": 14.5
+    },
+    "date": "2026-05-28"
+  },
+  "hero": {
+    "copy": "In the middle of difficulty lies opportunity.",
+    "rationale": "Einstein's quote arrives from today's signal feed at a precise convergence: the Tigers threw a clean 4–0 shutout (difficulty met, opportunity taken), the waxing gibbous moon sits at 94.3% illumination (nearly through the arc), and the top HN story — Simon Willison's \"Anthropic and OpenAI have found product-market fit\" at 893 points — makes the phrase read as an industry-scale caption. For a portfolio where every project is a founder choosing to enter difficulty (Spaceman 2018, FishSticks 2025, 15th Club 2025), the Einstein line functions as unsolicited self-description. It earns marquee scale without needing explanation or attribution to land.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue:** H:158°, seafoam-teal. This hue sits dead-center in the mandated 148°–175° window and carries exactly the right register for \"opportunity\" — biological, growing, charged. Not blue (corporate), not green (money), but the specific threshold between the two: the color of something pressing through toward light.\n\n**Neutral palette (stone-teal family, tinted toward H:158°):**\n- 50: `#F3F9F7`\n- 100: `#E4F0EC`\n- 200: `#CAE2D9`\n- 300: `#A4C5BC`\n- 400: `#7DA69C`\n- 500: `#5D8880`\n- 600: `#446B63`\n- 700: `#2E5047`\n- 800: `#1A3530`\n- 900: `#0B1D1A`\n\n**Accent color:**\n- Light: `#54CCA9` (seafoam.300)\n- Default: `#22B88A` (seafoam.400) — main accent; used for \"opportunity.\" in hero\n- Dark: `#107A58` (seafoam.600)\n- Glow: `#22B88A` at 40% opacity for hover states\n\n**Background:**\n- Page bg / Hero band: `#071410` (ink.900 — near-black barely tinted toward teal)\n- Signal band: `#22B88A` (seafoam.400 — saturated, full drench)\n- Work band: `#F3F9F7` (stone.50 — very light seafoam-cream)\n- About band: `#1A3530` (stone.800 — deep forest dark)\n\n**Text colors:**\n- Primary text (on dark): `#F3F9F7` (stone.50) — 17.5:1 vs ink.900 ✓\n- Secondary text (on dark): `#7DA69C` (stone.400) — 4.8:1 vs ink.900 ✓\n- Muted (on dark): `#5D8880` (stone.500) — 3.4:1 vs ink.900 (large text only) ✓\n- Text on signal band: `#071410` (ink.900) — 9.2:1 vs seafoam.400 ✓\n- Text on work band: `#0B1D1A` (stone.900) — 17.8:1 vs stone.50 ✓\n- Text on about band: `#F3F9F7` (stone.50) — 10.4:1 vs stone.800 ✓\n\n---\n\n### 2. Typography\n\n**Hero phrase rendering:** Chassis `display` token (Bricolage Grotesque 800). Size: `clamp(52px, 7vw, 100px)`. Three-line break, hard-left-aligned, padding: `0 6vw`:\n- Line 1: `In the middle` — stone.50\n- Line 2: `of difficulty` — stone.50\n- Line 3: `lies ` — stone.50; `opportunity.` — seafoam.400 (`#22B88A`)\n\nThe accent on the final word fires at the moment of resolution — the reader follows the descent into difficulty and arrives at the lit word. Attribution `— Albert Einstein` in Manrope 400, 18px, stone.500, `margin-top: 32px`.\n\n**Line heights:**\n- Hero display: `0.9` (tight — the three lines stack into a block)\n- Subheadings: `1.1`\n- Body / signal band: `1.5`\n- Signal band labels: `1.4`\n\n**Letter spacings:**\n- Hero: `-0.03em` (Bricolage 800 at large scale needs tightening)\n- Body: `0`\n- Signal band label ALL-CAPS: `0.08em`\n- Project card eyebrow: `0.1em`\n\n---\n\n### 3. Layout Specification\n\n**Archetype:** Stack — four full-width horizontal bands spanning edge-to-edge, each a visually distinct world. The Stack earns the hero phrase because the three-line structure is already temporal: you read down through difficulty and arrive at opportunity, mirroring the vertical scroll through the bands. The first band is the claim; each band below is evidence.\n\n**CSS structure (overall page):**\n```css\ndisplay: flex;\nflex-direction: column;\nwidth: 100%;\nmax-width: none;\n```\n\nEach band:\n```css\nwidth: 100%;\npadding-left: 6vw;\npadding-right: 6vw;\n```\n\n**Band 1 — Hero:**\n```css\nmin-height: 88vh;\nbackground: #071410;\ndisplay: flex;\nflex-direction: column;\njustify-content: center;\npadding: 0 6vw;\npadding-top: 56px; /* nav height */\nposition: relative;\n```\n\n**Band 2 — Signals:**\n```css\nmin-height: 160px;\nbackground: #22B88A;\ndisplay: flex;\nalign-items: center;\npadding: 32px 6vw;\ngap: 48px;\nflex-wrap: wrap;\n```\n\n**Band 3 — Work:**\n```css\npadding: 96px 6vw;\nbackground: #F3F9F7;\n```\nProject grid: `display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;`\n\n**Band 4 — About / Capabilities:**\n```css\npadding: 80px 6vw;\nbackground: #1A3530;\ndisplay: grid;\ngrid-template-columns: 1fr 1fr;\ngap: 48px;\n```\n\n**Major dimensions:**\n- Hero area height: `min-height: 88vh`\n- Max content width: `none` (edge-to-edge with `6vw` side padding)\n- Signal band height: `min-height: 160px`\n- Section padding: `96px 6vw` (work), `80px 6vw` (about)\n\n**Nav placement:** Absolute within hero band, top-pinned. `height: 56px`, `display: flex; align-items: center; justify-content: space-between; padding: 0 6vw; width: 100%; position: absolute; top: 0; left: 0`. Logo in stone.50 Bricolage 600 at 18px; nav links in Manrope 500 at 14px, stone.400, letter-spacing: 0.05em, uppercase. No border — the dark void makes the nav float.\n\n**Hero phrase grid zone:** Within Band 1, centered vertically (flex column, justify-content: center). Phrase block spans `padding: 0` horizontally (already inside 6vw container). At 1440px, at `7vw = 100.8px` font size with line-height 0.9 and 3 lines, the text block height is approximately `270px` — well within the `88vh ≈ 792px` band, leaving generous dark space above and below.\n\n---\n\n### 4. Component Character\n\n**Border radius:**\n- Cards (work band): `6px`\n- Buttons / tags: `2px` (flat, declarative — matches Bricolage's geometric authority)\n- Signal pills: `full` (9999px) for contrast against the flat card treatment\n\n**Border treatment:** Borderless on dark bands. On work band (light bg): `1px solid #CAE2D9` (stone.200) for card separation. Signal band: no borders at all — color IS the boundary.\n\n**Shadow:** None on hero or signal bands. Work band cards: `0 2px 12px rgba(7,20,16,0.08)` — barely-there, very subtle. About band: none.\n\n**Density:** Spacious. Bands breathe. The hero band is mostly dark silence with the phrase occupying its center-left zone. Signal band is dense (multiple items) but has 48px gaps between elements. Work cards have 32px grid gap.\n\n**Interactive states:**\n- Nav links: hover color transitions to seafoam.400 in 0.15s\n- Project cards: `transform: translateY(-4px)` on hover, `transition: transform 0.2s ease`, border-color to seafoam.300\n- Signal items: no hover (signal band is read-only)\n\n---\n\n### 5. Signal Integration\n\n**Where signal elements live:** Signal Band (Band 2) — full-width seafoam.400 strip between the hero and the work. This band carries all today's instruments at readable scale, visually separated from the hero claim.\n\n**Sports scores styling:** Tigers `4–0` rendered as Bricolage Grotesque 700 at 28px in ink.900, followed by `WIN` in a small-caps label (Manrope 600, 11px, letter-spacing: 0.1em). \"Detroit Tigers\" in Manrope 500 at 12px, ink.900 at 70% opacity, above the score. The shutout is worth emphasis — the `0` in the opponents' column renders in stone.800 (dimmed, nearly invisible, which is appropriate for a shutout).\n\n**Quote display:** The Einstein quote IS the hero phrase — it renders at display scale as the entire first band's content. Attribution `— Albert Einstein` in Manrope 400, 18px, stone.500 on ink.900 background, 32px below the phrase. No blockquote chrome, no quotes — the size is the attribution.\n\n**Moon phase:** In signal band: waxing gibbous glyph (🌔) in ink.900 at 22px, followed by `94.3%` in Bricolage 700 at 24px, and `WAXING GIBBOUS` label below in Manrope 500 at 11px, letter-spacing: 0.1em. The 94.3% reinforces today's theme — nearly through the difficulty.\n\n**Music:** Guided by Voices + Wet Leg rendered as small pills in the signal band: ink.900 background at 15% opacity, stone.900 text, Manrope 500 at 12px, border-radius: 9999px, padding: 4px 10px.\n\n**HN top story:** \"Anthropic and OpenAI: PMF found\" — a single line in the signal band, Manrope 400, 14px, ink.900. Small label `HN ↑893` in Bricolage 600, 13px, stone.800.\n\n**Golf:** Charles Schwab Challenge — \"Scheduled\" — appears in signal band as a small eyebrow-label treatment: `CHARLES SCHWAB CHALLENGE` in Manrope 500 11px all-caps, ink.900 at 70% opacity.\n\n**Daylight:** `14.5H LIGHT · ↑04:53 ↓19:21` in Manrope 400 12px, ink.900 at 60% opacity — the rightmost element in the signal band strip.",
+    "selfCheck": "1. Hero quotability: Yes — \"In the middle of difficulty lies opportunity.\" is a standalone poster-phrase; the word \"opportunity.\" rendered in seafoam against a void makes it a screenshot-worthy visual object, not just body copy.\n2. Because-of chain: Yes — the phrase's temporal arc (descent → emergence) mandated Stack (bands = journey); Bricolage 800 was selected because its weight gives the three-line descent its gravitational pull; seafoam.400 was chosen because it is literally the color of emergence at H:158° (within mandate), firing precisely on the final word; the dark hero band creates the difficulty before the bright signal band delivers the opportunity.\n3. Render feasibility: Yes — at 1440×900, `7vw = 100.8px` Bricolage Grotesque 800 with line-height 0.9 across three lines yields a ~270px text block sitting inside 88vh (≈792px), with no overflow; \"lies opportunity.\" at ~18 characters × ~58px average glyph width ≈ 1044px, fits inside 1440 − 2×86px (6vw) = 1267px content width.",
+    "rationale": "The Einstein quote arrived as the right hero phrase because today's signals triangulate on it from three directions simultaneously: the Tigers' 4–0 shutout is the phrase enacted in baseball (difficulty met, question answered with silence); the HN top story about Anthropic and OpenAI finding product-market fit is the phrase at industry scale (the difficulty of the last four years yielding to the opportunity of the next four); and the waxing gibbous moon at 94.3% is the phrase as an astronomical metaphor — nearly through the arc, the brightness almost full. For a portfolio where every project is a founder choosing to enter difficulty voluntarily, the line functions as unsolicited mission statement. It doesn't need explaining; it needs space and a lit final word.\n\nThe Stack archetype followed from the phrase's temporal structure. A three-line descent — \"In the middle / of difficulty / lies opportunity.\" — is already a vertical journey, and Stack gives that journey architectural form: the hero band is the claim (difficulty = darkness, near-black void), the signal band is the proof (seafoam.400 saturated drench = the opportunity color, literally the color of this phrase, fired at full saturation), the work band is the evidence (light, cream-tinted stone.50, projects rendered in light), the about band completes the loop (deep forest dark, returning to depth). You scroll through the argument. The chassis `bricolage-manrope` was selected because Bricolage Grotesque at weight 800 is warm and declarative without being institutional — Anton or Bebas would make Einstein sound like a gym poster; Bricolage makes him sound like someone who meant it.\n\nThe seafoam palette at H:158° sits precisely in the mandated 148°–175° window and earns its presence viscerally: it is the exact hue of new growth pressing against resistance — not blue (serene), not standard green (money, nature), but the specific charged threshold between them, the color of something emerging. At `#22B88A` (seafoam.400), it achieves 9.2:1 contrast against ink.900, meaning the single word \"opportunity.\" on the final hero line fires like a lit match in a dark room. The tinted stone neutral family (barely pulled toward H:158° at minimal chroma) keeps every surface alive — pure black neutrals would make the dark bands feel like voids rather than depths, and this design lives in depths.",
+    "signalIntegration": "**Where signal elements live:** Signal Band (Band 2) — full-width seafoam.400 strip between the hero and the work. This band carries all today's instruments at readable scale, visually separated from the hero claim.\n\n**Sports scores styling:** Tigers `4–0` rendered as Bricolage Grotesque 700 at 28px in ink.900, followed by `WIN` in a small-caps label (Manrope 600, 11px, letter-spacing: 0.1em). \"Detroit Tigers\" in Manrope 500 at 12px, ink.900 at 70% opacity, above the score. The shutout is worth emphasis — the `0` in the opponents' column renders in stone.800 (dimmed, nearly invisible, which is appropriate for a shutout).\n\n**Quote display:** The Einstein quote IS the hero phrase — it renders at display scale as the entire first band's content. Attribution `— Albert Einstein` in Manrope 400, 18px, stone.500 on ink.900 background, 32px below the phrase. No blockquote chrome, no quotes — the size is the attribution.\n\n**Moon phase:** In signal band: waxing gibbous glyph (🌔) in ink.900 at 22px, followed by `94.3%` in Bricolage 700 at 24px, and `WAXING GIBBOUS` label below in Manrope 500 at 11px, letter-spacing: 0.1em. The 94.3% reinforces today's theme — nearly through the difficulty.\n\n**Music:** Guided by Voices + Wet Leg rendered as small pills in the signal band: ink.900 background at 15% opacity, stone.900 text, Manrope 500 at 12px, border-radius: 9999px, padding: 4px 10px.\n\n**HN top story:** \"Anthropic and OpenAI: PMF found\" — a single line in the signal band, Manrope 400, 14px, ink.900. Small label `HN ↑893` in Bricolage 600, 13px, stone.800.\n\n**Golf:** Charles Schwab Challenge — \"Scheduled\" — appears in signal band as a small eyebrow-label treatment: `CHARLES SCHWAB CHALLENGE` in Manrope 500 11px all-caps, ink.900 at 70% opacity.\n\n**Daylight:** `14.5H LIGHT · ↑04:53 ↓19:21` in Manrope 400 12px, ink.900 at 60% opacity — the rightmost element in the signal band strip."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "seafoam": {
+          "50": "#EDFBF5",
+          "100": "#C8F1E3",
+          "200": "#95E2CA",
+          "300": "#54CCA9",
+          "400": "#22B88A",
+          "500": "#169970",
+          "600": "#107A58",
+          "700": "#0B5B41",
+          "800": "#073D2B",
+          "900": "#042015"
+        },
+        "stone": {
+          "50": "#F3F9F7",
+          "100": "#E4F0EC",
+          "200": "#CAE2D9",
+          "300": "#A4C5BC",
+          "400": "#7DA69C",
+          "500": "#5D8880",
+          "600": "#446B63",
+          "700": "#2E5047",
+          "800": "#1A3530",
+          "900": "#0B1D1A"
+        },
+        "ink": {
+          "700": "#163530",
+          "800": "#0E2420",
+          "900": "#071410"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.ink.900}",
+          "_light": "{colors.stone.50}"
+        },
+        "text": {
+          "base": "{colors.stone.50}",
+          "_light": "{colors.stone.900}"
+        },
+        "text-secondary": {
+          "base": "{colors.stone.400}",
+          "_light": "{colors.stone.600}"
+        },
+        "text-muted": {
+          "base": "{colors.stone.500}",
+          "_light": "{colors.stone.500}"
+        },
+        "accent": "{colors.seafoam.400}",
+        "accent-dim": {
+          "base": "{colors.seafoam.700}",
+          "_light": "{colors.seafoam.600}"
+        },
+        "accent-bright": "{colors.seafoam.300}",
+        "on-accent": "{colors.ink.900}",
+        "border": {
+          "base": "{colors.stone.700}",
+          "_light": "{colors.stone.200}"
+        },
+        "border-subtle": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.100}"
+        },
+        "surface-1": {
+          "base": "{colors.ink.800}",
+          "_light": "{colors.stone.100}"
+        },
+        "surface-2": {
+          "base": "{colors.ink.700}",
+          "_light": "{colors.seafoam.50}"
+        },
+        "band-hero-bg": "{colors.ink.900}",
+        "band-signal-bg": "{colors.seafoam.400}",
+        "band-signal-text": "{colors.ink.900}",
+        "band-work-bg": "{colors.stone.50}",
+        "band-work-text": "{colors.stone.900}",
+        "band-about-bg": "{colors.stone.800}",
+        "band-about-text": "{colors.stone.50}"
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "20px",
+      "6": "24px",
+      "8": "32px",
+      "10": "40px",
+      "12": "48px",
+      "16": "64px",
+      "20": "80px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.9",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.15em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "6px",
+      "lg": "12px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700",
+      "extrabold": "800"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 158,
+      "s": 68,
+      "l": 43,
+      "name": "seafoam"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "seafoam teal",
+      "name": "stone-teal"
+    },
+    "mood_word": "emergent",
+    "color_story": "Seafoam at H:158° is the exact color of late-May biological urgency — not the serene aqua of May 24, not the corporate teal of a UI kit, but the specific charged green of new growth pushing against difficulty into the light; it drench-colors the signal band, it accent-fires the word 'opportunity', and it tints every neutral surface just enough to feel alive."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

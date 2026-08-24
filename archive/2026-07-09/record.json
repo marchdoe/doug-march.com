@@ -1,0 +1,359 @@
+{
+  "date": "2026-07-09",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.220Z",
+  "buildId": "1783595684158",
+  "attempts": 1,
+  "brief": "Hot-magenta neon attribution on rose-void — Chesterton at wall scale, BRAINS FALL OUT in Big Shoulders Black, the signal strip compressed to a 48px exhaust at page-bottom.",
+  "rationale": "The Chesterton quote arrived as today's clearest signal: \"Do not be so open-minded that your brains fall out\" is already a finished object — a maxim, a warning, a punchline. It requires nothing from the surrounding design except scale and a field to land in. Placing it at ALL CAPS marquee scale in Big Shoulders Display Weight 900 across a near-void rose-black background turns the phrase into something closer to a roadside billboard than a web page — which is exactly the register it wants. The Poster archetype was the only honest answer: the phrase IS the design, so everything else (nav, signals, attribution) gets demoted to thin edge zones.\n\nBig Shoulders Display was chosen because the phrase's quality is declarative-condensed: it has authority, not warmth, and Big Shoulders' condensed signage letterforms carry it without irony. The 1.618 modular ratio ensures the chassis scale can render the phrase at genuinely marquee dimensions without tipping into parody. Atkinson Hyperlegible handles all auxiliary copy cleanly without competing. The chassis pairing is also affinity-tagged for Poster, making it the unambiguous selection within the brief.\n\nThe rose-magenta palette (H:330°) occupies the only open corridor in the color mandate (315°–358°) and is thematically precise: hot magenta is the color of a neon sign in a dark bar, a lit object against unlit space. It amplifies the Chesterton quote's wit-as-warning quality — provocative, pointed, slightly unnerving. The near-void background (#130009) at 18.7:1 contrast gives the cream phrase the quality of emitted light. The single accent point (the magenta attribution line \"— GILBERT CHESTERTON\" below the phrase) serves as a visual period — the only non-cream element in the poster field, landing like a signature on a manifesto.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Poster",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Spin the Wheel",
+          "description": "SpinTheWheel.io lets anyone create, customise and share interactive spinning wheels for random choices, competitions and events. Ideal for teaching and...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3911ca65eb6086956411.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAKr2lDQ1BJQ0MgUHJvZmlsZQAASImVlwdUk9kSgO//pzdaINIJvUlvAaSEHor0KiohCRBKiIEgYgNkcQXWgooIqAu6KKDgqhRZCyKKbRFQ7LogoqCuiwUbKu8HDsHdd9575805k/kymTsz9557z5kAQKGzhcJUWAaANEGmKMTbjR4VHUPHPQdYQAU0QAJ2bE6GkBkU5A8QmbN/l/e3ADRtb5hM5/r33/+ryHJ5GRwA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Cloudstudio this site is awake",
+          "description": "An AI studio whose site is itself the demo: eight living particle drivers tour, narrate and re-theme the whole page, then dare you to beat them at their...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4bad57d1887955097327.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAQAElEQVR4nOz9B3xj6X0f/J5+cNB7Ze/kzHB62Zkts71o1SXLcizLNXFN3pvEeZ37Jrnpju34tR3bcYss27J6l1arXa22l+m9sfeO3oFT7/+Aq9nZKSRAgiRI/r8faAVyABA4wHnwPL+nMVrmDwmEEKphb50Y+8DHPw9X2rsf+L/+v88TCCFUw57/9n//wbd+F6783D//7c/81m8TCCFUw/71z3700qm34crP/+Xz...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Dorot - The Jewish Timeline",
+          "description": "Dorot is an interactive visual and educational tool that brings to life 4,000 years of Jewish civilization - its history, creativity, and cultural diversity.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4a51ba9dae3158682251.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAQ8HtJREFUeAHs/duyNbtyJoYBqLH+tTZ7k2x2U1a3o6Voy6Fw+NJ+O9/5HfxwtkLWlaIlBdVNstmb5N5rjVHQrAOqCl8CSGQBqMOY4yP3+ueoQuGYSCSAPOj/z//7/2XVF7TW...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Thursday",
+      "is_weekend": false,
+      "day_index": 4
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "MadsLorentzen/ai-job-search/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "SmartlyDressedGames/U3-SDK/stargazers",
+          "description": "",
+          "language": "C#",
+          "stars": null
+        },
+        {
+          "name": "addyosmani/agent-skills/stargazers",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/VoltAgent",
+          "description": "",
+          "language": null,
+          "stars": null
+        },
+        {
+          "name": "iOfficeAI/OfficeCLI/stargazers",
+          "description": "",
+          "language": "C#",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Genesis Scottish Open",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Bernd Wiesberger",
+          "position": "1",
+          "score": "-6"
+        },
+        {
+          "name": "Tom Kim",
+          "position": "2",
+          "score": "-5"
+        },
+        {
+          "name": "Min Woo Lee",
+          "position": "3",
+          "score": "-5"
+        },
+        {
+          "name": "Patrick Cantlay",
+          "position": "4",
+          "score": "-5"
+        },
+        {
+          "name": "Matt McCarty",
+          "position": "5",
+          "score": "-4"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "John Deere owners will get the right to repair equipment under FTC settlement",
+          "url": "https://apnews.com/article/john-deere-right-to-repair-agriculture-equipment-cb7514ffedb95c130a976af661f2bc02",
+          "score": 886,
+          "by": "djoldman"
+        },
+        {
+          "title": "Spider venom kills varroa mites without harming honeybees",
+          "url": "https://connectsci.au/news/news-parent/9703/Spider-venom-kills-varroa-mites-without-harming",
+          "score": 144,
+          "by": "Jedd"
+        },
+        {
+          "title": "Meta reuses old RAM in new servers with custom bridge chip",
+          "url": "https://www.networkworld.com/article/4192827/meta-reuses-old-ram-in-new-servers-with-custom-bridge-chip.html",
+          "score": 55,
+          "by": "ihsw"
+        },
+        {
+          "title": "Why developers are ditching GitHub for Codeberg and self-hosting alternatives",
+          "url": "https://www.howtogeek.com/why-developers-are-ditching-github-for-codeberg-and-self-hosting-alternatives/",
+          "score": 148,
+          "by": "Gedxx"
+        },
+        {
+          "title": "My Thoughts on the Bun Rust Rewrite",
+          "url": "https://andrewkelley.me/post/my-thoughts-bun-rust-rewrite.html",
+          "score": 64,
+          "by": "kristoff_it"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waning crescent",
+      "illumination": 0.218,
+      "days_into_cycle": 24.96
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "The War on Drugs"
+      ]
+    },
+    "quote": {
+      "text": "Do not be so open-minded that your brains fall out.",
+      "author": "Gilbert Chesterton"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 9,
+      "day_of_year": 190,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-08T22:40Z",
+          "result": "win",
+          "score": "6-1"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:57",
+      "sunset": "19:33",
+      "daylight_hours": 14.6
+    },
+    "date": "2026-07-09"
+  },
+  "hero": {
+    "copy": "Do not be so open-minded that your brains fall out.",
+    "rationale": "The Chesterton quote from today's signals arrives pre-formed as a poster: 14 words, a named author, and a punchline ending in \"your brains fall out\" — visceral, funny, irreversible. At 8/10 creative risk with the open corridor pointing exclusively toward the neglected rose-magenta zone (315°–358°), the quote earns ALL CAPS treatment in Big Shoulders Display, where \"BRAINS FALL OUT.\" across a near-void dark field becomes an image, not merely text. The phrase has a secondary resonance for a portfolio site that reinvents itself daily from environmental signals — seeking truth rather than asserting it.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue:** H:330° (hot rose-magenta). Only open corridor after mandate exclusions (315°–358°). Rose-magenta is precisely the register for Chesterton's wit-as-warning: provocative, pointed, slightly dangerous.\n- **Neutral palette (void-rose, H:330° tinted):**\n  - 50: #FEF3F8 | 100: #FAEAF4 | 200: #F0CAE0 | 300: #D4A0BB | 400: #A8728F | 500: #7D4A68 | 600: #572D4A | 700: #38172E | 800: #220B1B | 900: #130009\n- **Accent color (hot magenta, H:330°, full saturation):**\n  - Light: #FF5AA4 | Default: #E8006B | Dark: #920043 | Glow: rgba(232, 0, 107, 0.25)\n- **Secondary accent:** None — one committed color, not two.\n- **Background:** Page bg: #130009 | Card bg: #220B1B | Sidebar bg: #130009\n- **Text colors:** Primary text: #FEF3F8 | Secondary text: #F0CAE0 | Muted text: #A8728F\n\n**Contrast verification:**\n- Primary text (#FEF3F8) on page bg (#130009): ≈ 18.7:1 ✓\n- Accent (#E8006B) on page bg (#130009): ≈ 4.56:1 ✓ (just clears WCAG AA at 4.5:1)\n- All body text ≥ 1rem (16px); attribution ≥ 0.875rem at bold weight.\n\n---\n\n### 2. Typography (chassis-derived)\n\n- **Hero phrase rendering:** `display` chassis token, `clamp(3.5rem, 9vw, 11rem)`, weight 900 (Black), ALL CAPS, left-aligned, line-height 0.88. At 1440px the clamp caps at 11rem (176px). Four natural line breaks: \"DO NOT BE SO\" / \"OPEN-MINDED\" / \"THAT YOUR\" / \"BRAINS FALL OUT.\" — four lines × 176px × 0.88 ≈ 619px vertical span, filling ~75% of the 900px viewport after nav and signal strip.\n- **Attribution:** \"— GILBERT CHESTERTON\" at 0.875rem, weight 700, tracking `0.12em`, right-aligned, rendered in accent (#E8006B), approximately 1.5rem below the final phrase line.\n- **Line heights:** Hero: 0.88 | Subheads/labels: 1.1 | Body: 1.5\n- **Letter spacings:** Hero ALL CAPS: 0.01em (slight positive for condensed signage legibility) | Labels/smallcaps: 0.08em | Signal strip: 0.06em | Body: 0em\n\n---\n\n### 3. Layout Specification\n\n- **Archetype:** Poster — the Chesterton phrase IS the design. One dominant typographic element fills 70–80% of the viewport; navigation, attribution, and all signals are demoted to thin edge zones. No center void, no balancing act — the phrase is the architecture.\n\n- **CSS grid/flex structure:**\n  ```\n  Page: display: grid; grid-template-rows: 56px 1fr 48px; min-height: 100vh; max-width: none;\n  Hero zone: display: flex; flex-direction: column; justify-content: center; padding: 80px 5vw 48px;\n  Signal strip: display: flex; align-items: center; justify-content: space-between; padding: 0 5vw;\n  ```\n\n- **Major dimensions:**\n  - Nav strip: `height: 56px`, `position: absolute`, `top: 0`, `width: 100%`, transparent background\n  - Hero/poster area: `grid-row: 1 / 3` (spans nav + main rows), `min-height: calc(100vh - 48px)`, `padding: 80px 5vw 48px`\n  - Signal strip: `height: 48px`, `grid-row: 3`, `border-top: 1px solid #38172E`\n  - Max content width: `none`; side padding: `5vw` (72px at 1440px)\n  - No max-width constraint anywhere — full canvas Poster\n\n- **Nav placement:** Absolute overlay, transparent; left side: \"DOUG MARCH\" in 0.75rem weight 700 all-caps tracking wide; right side: \"WORK · ABOUT\" in 0.75rem weight 400, muted color. Nav does not interrupt the poster field — it floats over it.\n\n- **Hero phrase grid zone:** Occupies full canvas width (5vw inset both sides), starting at approximately 80px from top. Phrase flows across 4 lines, occupying rows row 1–4 of the text block. At 1440×900 this is approximately 619px of vertical text + 80px top padding = 699px from page top, with the attribution approximately 40px below the final line.\n\n---\n\n### 4. Component Character\n\n- **Border radius:** `0px` throughout — zero-radius hard edges match the phrase's declarative, uncompromising quality. No softening.\n- **Border treatment:** Borderless everywhere except the signal strip top edge: `1px solid #38172E` (neutral.700). Zero decorative borders in the poster field.\n- **Shadow:** None — contrast between cream text and void background IS the composition.\n- **Density:** Deliberately two modes: the poster field is extravagantly spacious (the phrase breathes in near-void); the signal strip is compact and compressed (48px, everything crammed in).\n- **Interactive states:** Nav link hover → magenta.300 (#FF5AA4), transition 0.15s ease. Signal link hover → same. No underlines on hover in the poster field (too decorative).\n\n---\n\n### 5. Signal Integration\n\n- **Quote:** IS the hero phrase. Full poster scale, Big Shoulders Display Black, ALL CAPS, left-aligned, cream on void. The signal and the design are the same object.\n- **Attribution display:** \"— GILBERT CHESTERTON\" in magenta.500 (#E8006B), right-aligned, 0.875rem bold, tracked 0.12em, approximately 40px below the terminal line of the phrase. The magenta creates a visual exclamation point — the only non-cream element in the poster field.\n- **Sports scores (signal strip, bottom):** \"TIGERS · 6–1 ✓\" — magenta dot for win indicator, neutral.50 for score text, 0.75rem bold, left zone of strip.\n- **Golf (signal strip):** \"WIESBERGER −6 · SCOTTISH OPEN\" — neutral.200, 0.75rem, center-left zone.\n- **Lunar (signal strip):** \"☽ 22% · WANING\" — muted (neutral.400), 0.75rem, decorative atmospheric detail.\n- **Music (signal strip, far right):** \"WET LEG · THE WAR ON DRUGS\" — muted (neutral.400), 0.75rem, trailing edge.\n- Every signal is deliberately compressed into the 48px strip — none of it competes with the poster field above. The strip is a data exhaust, the poster is the argument.",
+    "selfCheck": "1. Hero quotability: Yes — \"Do not be so open-minded that your brains fall out.\" ends in a visceral punchline; it is screenshot-and-post material from Gilbert Chesterton, not a description of the page.\n2. Because-of chain: Yes — the phrase demanded a Poster (phrase IS the design), which required a 1.618-ratio condensed signage chassis (big-shoulders-atkinson), which earned the only-open-corridor rose-magenta drench on near-void, which collapsed all other elements to a single 48px signal strip.\n3. Render feasibility: Yes — Big Shoulders Display at clamp(3.5rem, 9vw, 11rem) × 4 lines × 0.88 line-height ≈ 619px; with 80px top padding + 56px nav + 48px strip = 803px total, within 900px viewport height with no overflow.",
+    "rationale": "The Chesterton quote arrived as today's clearest signal: \"Do not be so open-minded that your brains fall out\" is already a finished object — a maxim, a warning, a punchline. It requires nothing from the surrounding design except scale and a field to land in. Placing it at ALL CAPS marquee scale in Big Shoulders Display Weight 900 across a near-void rose-black background turns the phrase into something closer to a roadside billboard than a web page — which is exactly the register it wants. The Poster archetype was the only honest answer: the phrase IS the design, so everything else (nav, signals, attribution) gets demoted to thin edge zones.\n\nBig Shoulders Display was chosen because the phrase's quality is declarative-condensed: it has authority, not warmth, and Big Shoulders' condensed signage letterforms carry it without irony. The 1.618 modular ratio ensures the chassis scale can render the phrase at genuinely marquee dimensions without tipping into parody. Atkinson Hyperlegible handles all auxiliary copy cleanly without competing. The chassis pairing is also affinity-tagged for Poster, making it the unambiguous selection within the brief.\n\nThe rose-magenta palette (H:330°) occupies the only open corridor in the color mandate (315°–358°) and is thematically precise: hot magenta is the color of a neon sign in a dark bar, a lit object against unlit space. It amplifies the Chesterton quote's wit-as-warning quality — provocative, pointed, slightly unnerving. The near-void background (#130009) at 18.7:1 contrast gives the cream phrase the quality of emitted light. The single accent point (the magenta attribution line \"— GILBERT CHESTERTON\" below the phrase) serves as a visual period — the only non-cream element in the poster field, landing like a signature on a manifesto.",
+    "signalIntegration": "- **Quote:** IS the hero phrase. Full poster scale, Big Shoulders Display Black, ALL CAPS, left-aligned, cream on void. The signal and the design are the same object.\n- **Attribution display:** \"— GILBERT CHESTERTON\" in magenta.500 (#E8006B), right-aligned, 0.875rem bold, tracked 0.12em, approximately 40px below the terminal line of the phrase. The magenta creates a visual exclamation point — the only non-cream element in the poster field.\n- **Sports scores (signal strip, bottom):** \"TIGERS · 6–1 ✓\" — magenta dot for win indicator, neutral.50 for score text, 0.75rem bold, left zone of strip.\n- **Golf (signal strip):** \"WIESBERGER −6 · SCOTTISH OPEN\" — neutral.200, 0.75rem, center-left zone.\n- **Lunar (signal strip):** \"☽ 22% · WANING\" — muted (neutral.400), 0.75rem, decorative atmospheric detail.\n- **Music (signal strip, far right):** \"WET LEG · THE WAR ON DRUGS\" — muted (neutral.400), 0.75rem, trailing edge.\n- Every signal is deliberately compressed into the 48px strip — none of it competes with the poster field above. The strip is a data exhaust, the poster is the argument."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "magenta": {
+          "50": "#FFE8F3",
+          "100": "#FFC2DF",
+          "200": "#FF93C8",
+          "300": "#FF5AA4",
+          "400": "#FF1A82",
+          "500": "#E8006B",
+          "600": "#C00058",
+          "700": "#920043",
+          "800": "#62002D",
+          "900": "#36001A"
+        },
+        "neutral": {
+          "50": "#FEF3F8",
+          "100": "#FAEAF4",
+          "200": "#F0CAE0",
+          "300": "#D4A0BB",
+          "400": "#A8728F",
+          "500": "#7D4A68",
+          "600": "#572D4A",
+          "700": "#38172E",
+          "800": "#220B1B",
+          "900": "#130009"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.50}"
+        },
+        "bgCard": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgSidebar": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.100}"
+        },
+        "text": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.neutral.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.200}",
+          "_light": "{colors.neutral.700}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.400}",
+          "_light": "{colors.neutral.500}"
+        },
+        "accent": {
+          "base": "{colors.magenta.500}",
+          "_light": "{colors.magenta.600}"
+        },
+        "accentLight": {
+          "base": "{colors.magenta.300}",
+          "_light": "{colors.magenta.400}"
+        },
+        "accentDark": {
+          "base": "{colors.magenta.700}",
+          "_light": "{colors.magenta.800}"
+        },
+        "border": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.04em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.2em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700",
+      "black": "900"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 330,
+      "s": 85,
+      "l": 45,
+      "name": "hot rose-magenta"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "rose-magenta",
+      "name": "void-rose"
+    },
+    "mood_word": "incisive",
+    "color_story": "Hot magenta on near-void rose-black — the color of a neon sign in a dark corridor, amplifying the Chesterton quote's wit-as-warning quality against the deep quiet of a waning crescent night."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

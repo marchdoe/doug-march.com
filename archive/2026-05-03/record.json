@@ -1,0 +1,342 @@
+{
+  "date": "2026-05-03",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.159Z",
+  "buildId": "1777804487673",
+  "attempts": 1,
+  "brief": "A nearly full moon's dramatic chiaroscuro punctuates spring-fresh clarity and generous white-space as disparate design signals—Awwwards rooms, Tigers score, Dickens reflection, Hacker News momentum—find conversation through the Split.",
+  "rationale": "The brief from Doug's director is remarkably specific and architectural — it's not a mood to interpret but a visual specification to faithfully execute through tokens. The system I've built prioritizes two core tensions that define May 3rd: **lunar drama and spring clarity**.\n\nThe color palette anchors on a single cool spring mint (H:160°, S:65%, positioned at the edge of the mandate's open window) that carries interactive weight without aggression. A warm amber secondary accent (H:35°, complementary contrast) appears sparingly in emotional signals only—Tigers score, Dickens quote border, moon percentage. The neutral scale deliberately desaturates to 5-8% saturation, preserving the clean, directional quality of 13.7-hour May daylight: bright without glare, cool without coldness. The waning gibbous moon (94.5%) translates into tonal architecture: near-black Awwwards room cards erupt against pale panels, creating sharp chiaroscuro that fulfills the brief's demand for \"dramatic contrast.\"\n\nSpacing tokens respect the Split archetype's dual nature: generous gaps (32–64px) between signal blocks permit leisurely Sunday exploration, while micro-rhythms (4–8px) within components signal precision and craft. Typography tokens (lineHeights 1.0–1.82, letterSpacings -0.03em to +0.14em) manifest the \"personality in spacing\" the brief requires — Radiohead's angular geometry in tight display spacing, GBV's scrappy warmth in loose small-cap widths, MMJ's introspection in the Dickens quote's generous line-height.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Stack",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "THE NO-CODE SHADER",
+          "description": "Learn-by-doing shader platform built on Unicorn Studio",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69f476fd76d32014543079.png"
+        },
+        {
+          "title": "WFEO World Engineering Day",
+          "description": "An interactive global hub for World Engineering Day, highlighting engineering innovation, hackathons and insights shaping a more sustainable future.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69e77e2052287973882897.jpg"
+        },
+        {
+          "title": "The Push",
+          "description": "A complete digital platform for Australia's leading youth music charity. Built for four distinct audiences. Launched for their 40th anniversary.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69e56d45a215d092966355.png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Sunday",
+      "is_weekend": true,
+      "day_index": 0
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "TauricResearch/TradingAgents/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "ruvnet/ruflo/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "browserbase/skills/stargazers",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/soxoj",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "Flowseal/zapret-discord-youtube/stargazers",
+          "description": "",
+          "language": "Batchfile",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Cadillac Championship",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Cameron Young",
+          "position": "1",
+          "score": "-15"
+        },
+        {
+          "name": "Scottie Scheffler",
+          "position": "2",
+          "score": "-9"
+        },
+        {
+          "name": "Si Woo Kim",
+          "position": "3",
+          "score": "-9"
+        },
+        {
+          "name": "Kristoffer Reitan",
+          "position": "4",
+          "score": "-9"
+        },
+        {
+          "name": "Ben Griffin",
+          "position": "5",
+          "score": "-8"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "A couple million lines of Haskell: Production engineering at Mercury",
+          "url": "https://blog.haskell.org/a-couple-million-lines-of-haskell/",
+          "score": 221,
+          "by": "unignorant"
+        },
+        {
+          "title": "This Month in Ladybird – April 2026",
+          "url": "https://ladybird.org/newsletter/2026-04-30/",
+          "score": 333,
+          "by": "richardboegli"
+        },
+        {
+          "title": "Unverified Evaluations in Dusk's PLONK",
+          "url": "https://osec.io/blog/2026-04-30-unverified-evaluations-dusk-plonk/",
+          "score": 24,
+          "by": "deut-erium"
+        },
+        {
+          "title": "Dav2d",
+          "url": "https://code.videolan.org/videolan/dav2d",
+          "score": 479,
+          "by": "dabinat"
+        },
+        {
+          "title": "Six Years Perfecting Maps on WatchOS",
+          "url": "https://www.david-smith.org/blog/2026/04/29/maps-on-watchos/",
+          "score": 296,
+          "by": "valzevul"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Mother's Day",
+          "date": "2026-05-10",
+          "days_away": 7
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "waning gibbous",
+      "illumination": 0.945,
+      "days_into_cycle": 16.99
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "My Morning Jacket",
+        "Radiohead"
+      ]
+    },
+    "quote": {
+      "text": "The pain of parting is nothing to the joy of meeting again.",
+      "author": "Charles Dickens"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 3,
+      "day_of_year": 123,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-02T23:15Z",
+          "result": "win",
+          "score": "5-1"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:15",
+      "sunset": "18:59",
+      "daylight_hours": 13.7
+    },
+    "date": "2026-05-03"
+  },
+  "hero": {
+    "copy": null,
+    "rationale": null,
+    "source": null
+  },
+  "chassis": null,
+  "adBrief": {
+    "mood": "A late-spring Sunday afternoon when the light is still generous (13.7 hours of daylight) but the day already feels like it's winding down. The energy is **spacious and unhurried** — weekend permission — but there's an undercurrent of intellectual curiosity threading through (strong HN and GitHub signals, design references all pointing toward *build-it-yourself* platforms and innovation). Hold the tension between **relaxation and restlessness**: a designer on Sunday scrolling through Awwwards and thinking about shipping code. The moon is nearly full (waning gibbous at 94.5% illumination), lending subtle **dramatic contrast** to everything it touches — don't flatten this; let it create visual drama even in the spaciousness.\n\n---",
+    "compositionDirection": "**Gallery Wall with Scroll undertones.**\n\nToday's signals pull in multiple directions at once — Awwwards references show distinct design languages (shaders, engineering, youth culture), GitHub suggests technical depth across languages, and the quote + music + sports create a personal collage. Gallery Wall lets you hold these disparate elements in conversation without forcing false hierarchy or narrative. It respects Sunday's permission to browse, not sprint. The Scroll undertone means each \"wall\" item should feel discoverable, not all-at-once — there's motion, but it's leisurely.\n\n---",
+    "typographyDirection": "**Generous spacing with theatrical contrast.** \n\nType should breathe — this is weekend reading energy, not Monday morning density. But pair that generosity with **high-contrast weight jumps** (the near-full moon demands visual drama). Headings should have personality without shouting; they should feel like they're *inviting* exploration rather than commanding it. Use angular precision in accent typography (inspired by the Radiohead + technical GitHub signals) but keep body copy warm and approachable. Let negative space do as much work as letterforms.\n\n---",
+    "signalIntegration": "- **Awwwards sites of the day** → Feature three distinct visual \"rooms\" on the Gallery Wall — each pulling a different compositional or typographic gesture from the featured sites. Don't copy; learn. \"THE NO-CODE SHADER\" should hint at precision and craftsmanship (tight, modular spacing). \"WFEO\" should carry engineering weight (structured, authoritative). \"The Push\" should feel youth-forward and dimensional (layered, playful). Display these as interactive cards or linked reference zones, not a flat list.\n\n- **Waning gibbous moon (94.5% illumination)** → Increase tonal contrast throughout. Use deeper shadows, sharper highlights. This is the visual equivalent of late-afternoon sun hitting sharp angles. The near-full moon should feel *present* — perhaps a subtle lunar indicator in the corner, or use high-contrast shadow/light interplay in the layout itself.\n\n- **Sunday / Weekend energy** → Layout should have white space and breathing room. Sections should feel discretionary to explore, not mandatory to consume. Pace is slow; discovery is rewarded.\n\n- **Spring season + 13.7 daylight hours** → Palette should be bright and unsaturated — fresh greens, clear off-whites, perhaps a warm cream. Avoid heavy saturation; keep colors clean and minimal. The long daylight should feel like an *availability of light*, not a oppressive brightness.\n\n- **Detroit Tigers win (5-1)** → Acknowledge briefly and proudly, but don't centering it. A small inline scoreline badge near content, celebratory but not triumphant. Tone: \"Nice Sunday evening.\" Not: \"CHAMPION.\"\n\n- **Guided by Voices, My Morning Jacket, Radiohead** → These three bands suggest lo-fi warmth (GBV), Americana introspection (MMJ), and precise angular beauty (Radiohead). Let this manifest as **personality in spacing and line-height**, not imagery. Radiohead's angular DNA should influence how you kern certain words or set display text. GBV's scrappy energy should whisper through in small typographic choices (slightly imperfect baseline alignment in micro-copy, maybe).\n\n- **Cadillac Championship leaderboard** → Sunday golf is *Sunday golf* — not urgent, but present. Display the leaderboard as a quiet reference element, not a hero. Cameron Young's -15 lead is notable but not the story of the day. Integrate it as a sidebar or footer-level element with restrained typography.\n\n- **Charles Dickens quote** → This quote about parting and reunion carries emotional weight and has genuine resonance on a Sunday when people are often thinking about the week ahead. It deserves placement but not dominance. Consider it as a subtle typographic moment — set it in a different voice from the main type palette, perhaps with more generous line-height, in a secondary location on the page.\n\n- **Hacker News momentum** → \"Six Years Perfecting Maps on WatchOS\" (296 pts) and \"Ladybird – April 2026\" (333 pts) signal thoughtful, patient technical work. This should inform the *tone* of how you present your own work or case studies — meticulous, not flashy. If Doug has projects visible, frame them with language that suggests care and iteration, not overnight genius.\n\n---",
+    "paletteDirection": "**Spring-forward and luminous with minimal saturation.** Favor bright off-whites, pale creams, and cool fresh greens — the palette of mid-May light before the heat saturates everything. Keep the saturation low to mid-range; this is not a candy palette. High contrast between light and dark (driven by the near-full moon signal) means your darks can be near-black and your lights can be nearly white, but avoid muddy mid-tones. Temperature should lean **slightly warm** (spring has turned; it's not early-April coolness) but not sun-baked. The feeling is: *clarity*, not *warmth*. Think of the specific quality of 6 PM light on a May Sunday in the Midwest — clear, directional, without harshness.\n\n---\n\n**END BRIEF**"
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "stone": {
+          "50": "#F5FAF8",
+          "100": "#E8F3EF",
+          "200": "#CCDFD8",
+          "300": "#9DC0B5",
+          "400": "#6D9F93",
+          "500": "#467F72",
+          "600": "#2C5F53",
+          "700": "#1A3D33",
+          "800": "#0D221C",
+          "900": "#07140F"
+        },
+        "mint": {
+          "light": "#8DCFBC",
+          "DEFAULT": "#2DA88A",
+          "dark": "#1A705C",
+          "glow": "rgba(45, 168, 138, 0.1)"
+        },
+        "amber": {
+          "DEFAULT": "#C4873B"
+        }
+      },
+      "semantic": {
+        "bg": "{colors.stone.50}",
+        "bgPanelLeft": "#F0F8F4",
+        "bgPanel": "{colors.stone.100}",
+        "bgDark": "{colors.stone.800}",
+        "bgDarkAlt": "{colors.stone.700}",
+        "bgAccent": "{colors.mint.light}",
+        "text": "{colors.stone.700}",
+        "textSecondary": "{colors.stone.600}",
+        "textMuted": "{colors.stone.500}",
+        "textOnDark": "{colors.stone.50}",
+        "accent": "{colors.mint.DEFAULT}",
+        "accentLight": "{colors.mint.light}",
+        "accentDark": "{colors.mint.dark}",
+        "secondary": "{colors.amber.DEFAULT}",
+        "border": "{colors.stone.200}",
+        "borderSubtle": "{colors.stone.300}"
+      }
+    },
+    "spacing": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "12px",
+      "lg": "16px",
+      "xl": "24px",
+      "2xl": "32px",
+      "3xl": "40px",
+      "4xl": "48px",
+      "5xl": "56px",
+      "6xl": "64px",
+      "7xl": "72px",
+      "8xl": "80px",
+      "9xl": "96px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    },
+    "lineHeights": {
+      "tight": "1.0",
+      "snug": "1.15",
+      "normal": "1.55",
+      "loose": "1.82"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.14em"
+    },
+    "radii": {
+      "none": "0px",
+      "xs": "3px",
+      "sm": "6px",
+      "lg": "20px",
+      "full": "50%"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 160,
+      "s": 65,
+      "l": 50,
+      "name": "cool spring mint"
+    },
+    "secondary_accent": {
+      "h": 35,
+      "s": 65,
+      "l": 45,
+      "name": "warm amber"
+    },
+    "neutral_family": {
+      "tinted_toward": "mint",
+      "name": "sage-grey"
+    },
+    "mood_word": "spacious",
+    "color_story": "Cool spring mint (H:160°, full saturation) as the single dominant accent carries interactive presence: links, nav focus, alert rings, the moon percentage. Warm amber (H:35°, 120° away) appears only in emotional signals—Tigers badge, Dickens border, lunar illumination label—earning attention through rarity and warmth contrast alone. Sage-grey neutrals (H:160°, S:5-8%) preserve crystalline clarity across the 13.7-hour May daylight without flattening. The waning gibbous moon (94.5%) drives tonal architecture: near-black Awwwards room cards burst against pale, nearly-white panels, creating sharp chiaroscuro and hard micro-shadows that echo the moon's drama. Spacing scale (4px base) honors Sunday's dual nature—generous panels (32-64px) permit leisurely browsing while tight rhythms (4-8px) signal craft precision. One hue anchors the system; one warm accent punctuates emotion; breathing room welcomes discovery; high tonal contrast creates visual presence without saturation."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

@@ -1,0 +1,372 @@
+{
+  "date": "2026-07-12",
+  "era": "shell-directed",
+  "generatedAt": "2026-08-24T15:34:16.222Z",
+  "buildId": "1783873296225",
+  "attempts": 1,
+  "brief": "Moonless-violet Specimen, \"START OVER IN THE DARK\" stacked at 224px Bebas, a single lavender glow on the last word and the new-moon chip pinned to a three-column data strip below.",
+  "rationale": "The day gave me a moonless sky — a new moon at 2.1% illumination sitting on day 28.17 of its cycle, the exact instant the lunar calendar rolls back to zero. That reset rhymes precisely with what this site does every morning: it wipes itself clean and rebuilds. \"Start over in the dark\" is the composed headline that holds both truths at once — the literal dark of a moonless July night and the imperative a daily-rebuilding portfolio lives by. It's quotable in isolation, which is the whole test.\n\nBecause the phrase IS the day, the archetype had to be Specimen: type pressed against a night field, filling both axes, with everything else — nav, signals — demoted to slim edges. Bebas Neue (bebas-plex) is the honest chassis here; it's condensed and declarative enough to stack \"START OVER / IN THE DARK\" at 224px without shouting into parody, and IBM Plex Sans keeps the bottom data strip legible and quiet. It's also a chassis I haven't leaned on recently, and Specimen hasn't appeared in the last week — fit and variance align.\n\nThe palette is dictated by the mandate corridor (only 269°–299° open) and by the brief simultaneously: 278° violet is the color of a sky with no moon in it. Rather than repeat the recent near-void-black pattern, I drenched the canvas in a real saturated violet (`#1a1030` bg, `#2b1f45` cards) so the page reads as a colored night, not black. A single luminous lavender accent (`#a480ff`) lights only the word \"DARK\" and the primary signal chip — the last light in the sky, the crescent that's coming back. One accent, fully committed, no hedging neutrals.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/FooterStrip.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Specimen",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "The Watch",
+          "description": "The FS 60P is our take on showing a luxury watch at its best. A real-time WebGL piece that interacts with the content around it.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3d46eb879b8710119898.jpg",
+          "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/rNPpKUAIRAAAAAQAANPBqdW1iAAAAHmp1bWRjMnBhABEAEIAAAKoAOJtxA2MycGEAAAA0ymp1bWIAAABHanVtZGMybWEAEQAQgAAAqgA4m3EDdXJuOmMycGE6OTU1YTAwNTQtZjAwYy00NGU4LWFmMGMtY2U4YjQzMTVkYWZkAAAAAktqdW1iAAAAKWp1bWRjMmFzABEAEIAAAKoAOJtxA2MycGEuYXNzZXJ0aW9ucwAAAAFW...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The state of the gallery",
+          "description": "mesh3d - \"The state of the gallery\" is an overiew of the gallery in numbers and picks. What's catalogued, who is making the strongest Three.js work and...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a3ea31c78f5b788025408.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAXC8JJREFUeAHsvYu2GzmuJBpQ3Vnz//97ZuNaSQQQAJmStu2q09XL6i5vKZME8QoEmEpJ9tf/+b9fWA/zHw/78YjX/jwmfzGO4zn0x5T8ezfnMG4+bteI55hr6iOO+cEGxGu1...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "21 Hrs On The Moon",
+          "description": "To mark the recent Artemis Moon Mission and honour the legacy of the first moon landing in 1969, we celebrate the experiments carried out in those historic...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0d7b8f419a3938435907.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAJulBJREFUeAHsvWmbXLeRJooqFjeRlERJFLVbsiTbsiXb8riX6Z62u9sz88ydb/f7PM/9MH9k/tD8gZ7rp6/b7rblRbJky63d2khKFPedrO0mTtUposBAIFbgJJmvVMzMk0BE...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Sunday",
+      "is_weekend": true,
+      "day_index": 0
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/Dicklesworthstone",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "sponsors/wonderwhy-er",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "HKUDS/Vibe-Trading/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "PrefectHQ/prefect/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "Shubhamsaboo/awesome-llm-apps/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Genesis Scottish Open",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Tom Kim",
+          "position": "1",
+          "score": "-14"
+        },
+        {
+          "name": "Min Woo Lee",
+          "position": "2",
+          "score": "-13"
+        },
+        {
+          "name": "Matt Fitzpatrick",
+          "position": "3",
+          "score": "-13"
+        },
+        {
+          "name": "Rory McIlroy",
+          "position": "4",
+          "score": "-12"
+        },
+        {
+          "name": "Si Woo Kim",
+          "position": "5",
+          "score": "-12"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Old and new apps, via modern coding agents by Terry Tao",
+          "url": "https://terrytao.wordpress.com/2026/07/11/old-and-new-apps-via-modern-coding-agents/",
+          "score": 237,
+          "by": "subset"
+        },
+        {
+          "title": "AI Boosts Research Careers but Flattens Scientific Discovery",
+          "url": "https://spectrum.ieee.org/ai-science-research-flattens-discovery",
+          "score": 66,
+          "by": "zaikunzhang"
+        },
+        {
+          "title": "Understanding the Odin Programming Language",
+          "url": "https://odinbook.com/",
+          "score": 75,
+          "by": "AlexeyBrin"
+        },
+        {
+          "title": "Ghostel.el: Terminal emulator powered by libghostty",
+          "url": "https://dakra.github.io/ghostel/",
+          "score": 133,
+          "by": "signa11"
+        },
+        {
+          "title": "Gina Gallery of International Naive Art",
+          "url": "https://www.ginagallery.com/",
+          "score": 17,
+          "by": "o4c"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "new moon",
+      "illumination": 0.021,
+      "days_into_cycle": 28.17
+    },
+    "music": {
+      "bands": [
+        "Tobin Sprout",
+        "Guided by Voices"
+      ]
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 12,
+      "day_of_year": 193,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:59",
+      "sunset": "19:32",
+      "daylight_hours": 14.5
+    },
+    "date": "2026-07-12"
+  },
+  "hero": {
+    "copy": "START OVER\nIN THE DARK",
+    "rationale": "Tonight's moon is a new moon — 2.1% illumination, day 28.17 of the cycle, the instant the lunar calendar wraps back to zero. That reset is the day's loudest signal and it's also this site's own operating principle: a portfolio that erases and rebuilds itself every morning. \"Start over in the dark\" fuses the moonless July night with the daily-rebuild ethos into one quotable imperative — a line you'd screenshot, not a description of the weather.",
+    "source": null
+  },
+  "chassis": "bebas-plex",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 278° (violet). The only corridor left open by the mandate (269°–299°) and the exact color of a moonless summer night sky just after the light drains out — perfect for a new-moon brief.\n- **Neutral palette (violet-tinted \"night indigo\")** — 50 `#f5f2fb`, 100 `#eae4f6`, 200 `#d3c9ea`, 300 `#b3a6d6`, 400 `#8d7cb8`, 500 `#6f5c9c`, 600 `#574780`, 700 `#423463`, 800 `#2b1f45`, 900 `#1a1030`\n- **Accent color (luminous lavender)** — light `#c4aaff`, default `#a480ff`, dark `#7a45f0`, glow `rgba(164,128,255,0.45)`\n- **Secondary accent** — none. Single committed accent carries the page.\n- **Background** — page bg `#1a1030` (drenched violet, NOT black), card bg `#2b1f45`, sidebar/strip bg `#22143d`\n- **Text colors** — primary `#ece6fb`, secondary `#b3a6d6`, muted `#8d7cb8`\n\n### 2. Typography\n- **Hero phrase rendering** — Bebas Neue (`display` token), uppercase, stacked in two big lines: \"START OVER\" / \"IN THE DARK\". Scale `clamp(72px, 14vw, 224px)`. It fills ≥72% of both canvas axes; the word \"DARK\" is set in accent lavender to make the last word glow while the rest reads in pale lavender-white.\n- **Line heights** — hero `0.88`, subheads `1.05`, body `1.55` (bumped for light-on-dark), data strip `1.3`\n- **Letter spacings** — hero `0.01em` (Bebas is already condensed), all-caps labels/kickers `0.14em`, body `0`, smallcaps `0.08em`\n\n### 3. Layout Specification\n- **Archetype** — Specimen. The phrase IS the design; giant condensed type occupies the field like text pressed against a night sky, everything else demoted to a thin lower data strip.\n- **CSS grid structure** — `display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh`. Middle row is a single full-bleed type stage using `display: grid; place-content: center start`.\n- **Major dimensions**:\n  - Hero/type stage: `min-height: 78vh`\n  - No sidebar. `max-width: none`; side padding `padding: clamp(40px, 6vw, 96px)`\n  - Top nav bar height ~72px; bottom data strip height ~120px\n  - Section spacing driven by 24px vertical rhythm multiples\n- **Nav placement** — thin top bar: brand lockup left, three inline links (Work · About · Index) right, `letter-spacing: 0.14em`, uppercase, 13px Plex.\n- **Hero phrase grid zone** — occupies rows 1–3 / columns 1–10 of the middle stage, left-aligned, intended footprint ~86vw wide × ~62vh tall.\n\n### 4. Component Character\n- **Border radius** — cards `4px`, buttons `2px`, tags `full` (pill) only for the lunar chip\n- **Border treatment** — hairline borders in `violet.700` (`#423463`), 1px; the data strip separated by a single top border.\n- **Shadow** — none; depth comes from surface lightness (card `#2b1f45` sits above bg `#1a1030`).\n- **Density** — spacious in the type stage, compact in the bottom data strip.\n- **Interactive states** — nav links and project rows shift text to accent `#c4aaff` on hover with a `0.15s` transition; no underlines except an accent baseline that grows on hover.\n\n### 5. Signal Integration\n- **Where signal elements live** — a single bottom data strip spanning full width, three columns.\n- **Sports scores** — Genesis Scottish Open in the left column of the strip: \"SCOTTISH OPEN · IN PROGRESS\" kicker in muted violet, then \"TOM KIM −14\" with the score set in accent lavender tabular numerals, followed by \"Min Woo Lee −13 · Fitzpatrick −13 · McIlroy −12\".\n- **Quote** — no quote signal today; the hero phrase is a composed signal-headline, not a quote.\n- **Lunar (primary signal)** — center column, a pill chip: \"◐ NEW MOON · 2% LIT · DAY 28\" in `violet.700` border pill with accent text — the conceptual anchor tied to the hero phrase.\n- **Music** — right column footnote: \"ON REPEAT — Guided by Voices · Tobin Sprout\" in secondary violet.\n- **Holiday elements** — none today.",
+    "selfCheck": "1. Hero quotability: Yes — \"Start over in the dark\" is an imperative that stands alone and screenshots cleanly.\n2. Because-of chain: Yes — new-moon reset → darkness/renewal → Specimen type-as-night-sky → Bebas condensed marquee → drenched violet with a single lavender glow.\n3. Render feasibility: Yes — two short stacked lines in Bebas at clamp(72px,14vw,224px) fit 1440×900 without overflow.\n4. Canvas floor feasible: Yes — giant two-line type + full-width bottom strip fills ≥72% easily.",
+    "rationale": "The day gave me a moonless sky — a new moon at 2.1% illumination sitting on day 28.17 of its cycle, the exact instant the lunar calendar rolls back to zero. That reset rhymes precisely with what this site does every morning: it wipes itself clean and rebuilds. \"Start over in the dark\" is the composed headline that holds both truths at once — the literal dark of a moonless July night and the imperative a daily-rebuilding portfolio lives by. It's quotable in isolation, which is the whole test.\n\nBecause the phrase IS the day, the archetype had to be Specimen: type pressed against a night field, filling both axes, with everything else — nav, signals — demoted to slim edges. Bebas Neue (bebas-plex) is the honest chassis here; it's condensed and declarative enough to stack \"START OVER / IN THE DARK\" at 224px without shouting into parody, and IBM Plex Sans keeps the bottom data strip legible and quiet. It's also a chassis I haven't leaned on recently, and Specimen hasn't appeared in the last week — fit and variance align.\n\nThe palette is dictated by the mandate corridor (only 269°–299° open) and by the brief simultaneously: 278° violet is the color of a sky with no moon in it. Rather than repeat the recent near-void-black pattern, I drenched the canvas in a real saturated violet (`#1a1030` bg, `#2b1f45` cards) so the page reads as a colored night, not black. A single luminous lavender accent (`#a480ff`) lights only the word \"DARK\" and the primary signal chip — the last light in the sky, the crescent that's coming back. One accent, fully committed, no hedging neutrals.",
+    "signalIntegration": "- **Where signal elements live** — a single bottom data strip spanning full width, three columns.\n- **Sports scores** — Genesis Scottish Open in the left column of the strip: \"SCOTTISH OPEN · IN PROGRESS\" kicker in muted violet, then \"TOM KIM −14\" with the score set in accent lavender tabular numerals, followed by \"Min Woo Lee −13 · Fitzpatrick −13 · McIlroy −12\".\n- **Quote** — no quote signal today; the hero phrase is a composed signal-headline, not a quote.\n- **Lunar (primary signal)** — center column, a pill chip: \"◐ NEW MOON · 2% LIT · DAY 28\" in `violet.700` border pill with accent text — the conceptual anchor tied to the hero phrase.\n- **Music** — right column footnote: \"ON REPEAT — Guided by Voices · Tobin Sprout\" in secondary violet.\n- **Holiday elements** — none today."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "violet": {
+          "50": "#f5f2fb",
+          "100": "#eae4f6",
+          "200": "#d3c9ea",
+          "300": "#b3a6d6",
+          "400": "#8d7cb8",
+          "500": "#6f5c9c",
+          "600": "#574780",
+          "700": "#423463",
+          "800": "#2b1f45",
+          "900": "#1a1030"
+        },
+        "accent": {
+          "50": "#f4f0ff",
+          "100": "#e9e0ff",
+          "200": "#d3c2ff",
+          "300": "#c4aaff",
+          "400": "#a480ff",
+          "500": "#8f61ff",
+          "600": "#7a45f0",
+          "700": "#6233c9",
+          "800": "#4a2799",
+          "900": "#331a6b"
+        },
+        "neutral": {
+          "50": "#f5f2fb",
+          "100": "#eae4f6",
+          "200": "#d3c9ea",
+          "300": "#b3a6d6",
+          "400": "#8d7cb8",
+          "500": "#6f5c9c",
+          "600": "#574780",
+          "700": "#423463",
+          "800": "#2b1f45",
+          "900": "#1a1030"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.violet.900}",
+          "_light": "{colors.violet.50}"
+        },
+        "surface": {
+          "base": "{colors.violet.800}",
+          "_light": "{colors.violet.100}"
+        },
+        "text": {
+          "base": "#ece6fb",
+          "_light": "{colors.violet.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.violet.300}",
+          "_light": "{colors.violet.600}"
+        },
+        "textMuted": {
+          "base": "{colors.violet.400}",
+          "_light": "{colors.violet.500}"
+        },
+        "accent": {
+          "base": "{colors.accent.400}",
+          "_light": "{colors.accent.600}"
+        },
+        "accentGlow": {
+          "base": "{colors.accent.300}",
+          "_light": "{colors.accent.500}"
+        },
+        "border": {
+          "base": "{colors.violet.700}",
+          "_light": "{colors.violet.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.05",
+      "normal": "1.55",
+      "loose": "1.7"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.2em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 278,
+      "s": 62,
+      "l": 55,
+      "name": "moonless violet"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "violet",
+      "name": "night indigo"
+    },
+    "mood_word": "moonless",
+    "color_story": "A drenched deep-violet night sky with no moon in it — the single luminous lavender accent is the only light left, the promise of the crescent returning."
+  },
+  "shell": {
+    "nav": "top bar (brand left, inline caps links right)",
+    "footer": "data strip (three-column, full width)",
+    "brand_lockup": "horizontal-sm",
+    "brand_color_mode": "single-color"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "REVISE",
+      "feedback": "REVISE\n\n- **Visual spec → preset mismatch on data strip background.** The color specification declares \"sidebar/strip bg `#22143d`\" but this exact hex is not defined anywhere in the preset.ts tokens. The violet scale runs 50–900 (`#f5f2fb`–`#1a1030`), and `#22143d` (H:275° S:50% L:15.9%) does not map to any token. It sits between violet.900 and violet.800 in darkness, with distinct saturation. Either (a) add `#22143d` to the violet scale as violet.850 or similar, or (b) clarify in the visual spec whether the data strip should use an existing token (violet.800 `#2b1f45`?) instead. The layout description says \"No sidebar\" but still names a strip bg color—that color must be in the preset or removed from the spec.",
+      "ts": 1783872931212
+    }
+  ],
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

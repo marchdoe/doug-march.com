@@ -1,0 +1,388 @@
+{
+  "date": "2026-07-17",
+  "era": "shell-directed",
+  "generatedAt": "2026-08-24T15:34:16.230Z",
+  "buildId": "1784284902598",
+  "attempts": 1,
+  "brief": "Emerald-drenched Specimen, Naval's imperative stacked huge in Big Shoulders with \"HAPPY\" lit lime, the Open leaderboard and moon pinned to a specimen-caption band.",
+  "rationale": "The day handed me Naval Ravikant's line, and its imperative tail — \"it's your responsibility that you're happy\" — is the whole design. It's quotable stripped of context, and it rhymes exactly with what this site does: a portfolio that demolishes and rebuilds itself every morning is a machine for owning its own state. On a 14.4-hour July Friday, that self-authored joy wants to be loud, so the phrase earns marquee scale over everything else.\n\nA manifesto this declarative can only be a Specimen: the type IS the page, pressed against the field on both axes, with every signal demoted to a caption strip below. Big Shoulders Display (big-shoulders-atkinson, 1.618 ratio, the strongest marquee in the catalog and unused recently) stacks the four short caps lines — the 14-character \"RESPONSIBILITY\" holding within 88vw at 168px without tipping into parody — while Atkinson Hyperlegible keeps the caption band's leaderboard and attribution crisp. Specimen last appeared five days ago; the execution here diverges hard from that moonless-violet run in both palette and register.\n\nThe color mandate left only the 135°–164° corridor clean, and 150° emerald is exactly right rather than a constraint — high-summer growth, the color of a living thing that chose to be alive. I drenched the canvas in deep emerald (coverage ≥65%) with sun-cream type, letting a single lime-emerald pop light only the final word HAPPY and the golf leader Herbert at −6. One accent, fully committed, no hedging neutrals. The shell moves are all fresh against the mandate: nav lives inline in the hero's bottom-left (not the recent rail/pills/spine/top-bar), the footer is a specimen-caption band (not folded-into-nav, stamp, colophon, or data strip), and a horizontal-sm mono lockup inherits cream via currentColor to sit cleanly on the green.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/HeroNav.tsx",
+    "app/components/Chip.tsx",
+    "app/components/CaptionBand.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.index.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Specimen",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "The Record Institute",
+          "description": "A museum-grade digital archive dedicated to preserving pre-2000 print ephemera. Multilingual, meticulously catalogued, and free—safeguarding vintage advertising...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a44c228af614956383273.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADASIAAhEBAxEB/8QAHQAAAAcBAQEAAAAAAAAAAAAAAAECAwQFBgcICf/E...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The History of Muse Group",
+          "description": "SANDS STUDIO created an interactive website for Muse Group — a living digital archive connecting its music ecosystem, products, and nearly a century of...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a43c670e1dae067356082.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAMAAACU33alAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAJBQTFRFLCoq/v7+9/f37O3r1NTUUPP+9c0Cgv4EtbW1yqwmeMkxTb/GjJCQgYMlcGHyc17qdlzkeFnee1fYflXSflLLhE7FZGtqlTT97DQCmDuUnjaHojN+XEyppS91qStsridg6ws/th9OvRk/wxMwaCOzREZDSDluaCtPiR41Oi84JCQjSwkiHBwc...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Pop-Up Hotel",
+          "description": "WooCommerce site for The Pop-Up Hotel, bringing experiences to the Monaco, British and Italian Grand Prix, The Ryder Cup, and Glastonbury.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a4255722030b571601648.jpg",
+          "screenshot_b64": "/9j/4RmFRXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAAYgEbAAUAAAABAAAAagEoAAMAAAABAAIAAAExAAIAAAAhAAAAcgEyAAIAAAAUAAAAk4dpAAQAAAABAAAAqAAAANQACvyAAAAnEAAK/IAAACcQQWRvYmUgUGhvdG9zaG9wIDI3LjggKE1hY2ludG9zaCkAMjAyNjowNjoyOSAxMjoyMjo1NgAAAAOgAQADAAAAAQABAACgAgAEAAAAAQAABkCgAwAE...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Friday",
+      "is_weekend": false,
+      "day_index": 5
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "apache/ossie/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "Nutlope/hallmark/stargazers",
+          "description": "",
+          "language": "CSS",
+          "stars": null
+        },
+        {
+          "name": "sponsors/OpenCut-app",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "PostHog/posthog/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "openinterpreter/openinterpreter/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "The Open",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Lucas Herbert",
+          "position": "1",
+          "score": "-6"
+        },
+        {
+          "name": "Jackson Suber",
+          "position": "2",
+          "score": "-5"
+        },
+        {
+          "name": "Matt Wallace",
+          "position": "3",
+          "score": "-4"
+        },
+        {
+          "name": "Pierceson Coody",
+          "position": "4",
+          "score": "-4"
+        },
+        {
+          "name": "Bud Cauley",
+          "position": "5",
+          "score": "-4"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "EEG shows brain can simultaneous encode two speech streams",
+          "url": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3003876",
+          "score": 104,
+          "by": "giuliomagnifico"
+        },
+        {
+          "title": "Kimi K3: Open Frontier Intelligence",
+          "url": "https://www.kimi.com/blog/kimi-k3",
+          "score": 1660,
+          "by": "vincent_s"
+        },
+        {
+          "title": "Pebble Mega Update – July 2026",
+          "url": "https://repebble.com/blog/pebble-mega-update-july-2026",
+          "score": 126,
+          "by": "crazysaem"
+        },
+        {
+          "title": "How Has Roman Concrete Lasted for Millennia? 1,900-Year-Old Latrine Offers Clues",
+          "url": "https://www.smithsonianmag.com/smart-news/how-has-roman-concrete-lasted-for-millennia-a-1900-year-old-latrine-offers-new-clues-about-the-materials-impressive-durability-180989115/",
+          "score": 134,
+          "by": "divbzero"
+        },
+        {
+          "title": "Microsoft Comic Chat is now open source",
+          "url": "https://opensource.microsoft.com/blog/2026/07/16/microsoft-comic-chat-is-now-open-source/",
+          "score": 690,
+          "by": "jervant"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waxing crescent",
+      "illumination": 0.126,
+      "days_into_cycle": 3.41
+    },
+    "music": {
+      "bands": [
+        "The War on Drugs",
+        "My Morning Jacket",
+        "Radiohead"
+      ]
+    },
+    "quote": {
+      "text": "Every second you have on this planet is very precious and it's your responsibility that you're happy.",
+      "author": "Naval Ravikant"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 17,
+      "day_of_year": 198,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:02",
+      "sunset": "19:29",
+      "daylight_hours": 14.4
+    },
+    "date": "2026-07-17"
+  },
+  "hero": {
+    "copy": "IT'S YOUR RESPONSIBILITY THAT YOU'RE HAPPY",
+    "rationale": "This is the punch line of today's Naval Ravikant quote — \"Every second you have on this planet is very precious and it's your responsibility that you're happy.\" Stripped to its imperative, \"IT'S YOUR RESPONSIBILITY THAT YOU'RE HAPPY\" is a screenshot-worthy manifesto that lands hard on a 14.4-hour summer Friday. For a portfolio that tears itself down and rebuilds every morning by choice, self-authored joy is the whole thesis — the site owns its own state daily, exactly as the line demands.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 150° emerald green. It's the one open corridor in the mandate (135°–164°) and it's exactly right: high-summer growth, 14.4 hours of daylight, the color of a thing that is alive and chose to be. Not a constraint — the honest color for a happiness manifesto.\n- **Neutral palette (sage, green-tinted)** — 50 `#F5F8F5`, 100 `#E8EEE9`, 200 `#CFDAD1`, 300 `#ADBCAF`, 400 `#829387`, 500 `#5E6F62`, 600 `#47564B`, 700 `#354039`, 800 `#232B26`, 900 `#141814`\n- **Accent color (lime-emerald pop)** — light `#4FD79C`, default `#3FE39B`, dark `#10A366`, glow `rgba(63,227,155,0.35)`\n- **Secondary accent** — none. One green carries the page.\n- **Background** — page bg `#07724A` (drenched deep emerald), card bg `#0A6444`, sidebar/caption band bg `#064A32`\n- **Text colors** — primary text `#F2FBF5` (sun-cream), secondary text `#B9E6CE`, muted text `#7FBF9E` (large/decorative only)\n\n### 2. Typography\n- **Hero phrase rendering** — Big Shoulders Display, all caps, stacked in four ragged-left lines: `IT'S YOUR` / `RESPONSIBILITY` / `THAT YOU'RE` / `HAPPY`. The final word **HAPPY** flips to accent `#3FE39B`. Rendered via `display` token at `clamp(72px, 12vw, 168px)`, filling ≥72% of both width and height. Atkinson Hyperlegible carries the caption band and attribution.\n- **Line heights** — hero `0.88`, body `1.6` (light-on-dark compensation), caption `1.5`\n- **Letter spacings** — hero `-0.02em`, body `0.01em`, smallcaps labels `0.12em`\n\n### 3. Layout Specification\n- **Archetype** — Specimen. The phrase IS the design: it presses against the emerald field on both axes, everything else demoted to a slim caption band. A manifesto this declarative wants type at poster scale with nothing competing.\n- **CSS grid/flex structure** — `display: grid; grid-template-rows: 1fr auto; min-height: 100vh`. Hero occupies row 1 as a flex column, `justify-content: center; align-items: flex-start`. Caption band is row 2.\n- **Major dimensions**:\n  - Hero area: `min-height: 82vh`\n  - Caption band: full-width, `min-height: 120px`\n  - Max content width: `max-width: none`; side padding `clamp(32px, 6vw, 112px)`\n  - Section padding: hero `96px 6vw 48px`; caption band `24px 6vw`\n- **Nav placement** — inline within the hero: three caps links (`WORK`, `ABOUT`, `EXPERIMENTS`) riding the very bottom-left of the hero field just above the caption band, `letter-spacing: 0.12em`, sage-cream. Brand lockup top-left corner.\n- **Hero phrase grid zone** — rows 1–3 conceptually, columns 1–11 of a 12-col field; occupies roughly `88vw × 62vh` centered-left.\n\n### 4. Component Character\n- **Border radius** — cards `4px`, buttons `2px`, tags `2px` (crisp signage, not soft)\n- **Border treatment** — near-borderless; hairline `1px solid` in `sage.700`/emerald-dark only to divide the caption band from the hero.\n- **Shadow** — none. Depth comes from the surface-lightness step (bg → card → band), signage-flat.\n- **Density** — spacious hero, compact caption band.\n- **Interactive states** — links: on `_hover` underline offset 4px in accent `#3FE39B`; the word HAPPY subtly brightens accent light on hover if interactive.\n\n### 5. Signal Integration\n- **Where signal elements live** — a full-width caption band at the page foot (row 2), reading like the specimen sheet caption under a type poster.\n- **How sports scores are styled** — The Open leaderboard rendered as tabular caption: `Lucas Herbert −6` set in accent `#3FE39B` (the leader), followed by Suber −5, Wallace −4 in sage-cream, `font-variant-numeric: tabular-nums`, smallcaps label \"THE OPEN · IN PROGRESS\".\n- **How the quote is displayed** — the quote fragment IS the hero. The full Naval line + attribution (\"Naval Ravikant\") sits as a single quiet line in the caption band, `#B9E6CE`, small caps attribution.\n- **Holiday elements** — none today.\n- **Other signals** — waxing crescent (12.6% illum) as a small caption chip \"◗ waxing crescent 13%\"; music trio (War on Drugs · My Morning Jacket · Radiohead) as a caption item; build/season stamp in the band.",
+    "selfCheck": "1. Hero quotability: Yes — \"IT'S YOUR RESPONSIBILITY THAT YOU'RE HAPPY\" is a standalone imperative, quotable stripped of all context.\n2. Because-of chain: Yes — imperative manifesto → Specimen (type is the whole page) → Big Shoulders (condensed signage stacks it at 168px) → drenched emerald (summer/alive/growth) → caption-band demotion of all signals.\n3. Render feasibility: Yes — condensed Big Shoulders sets \"RESPONSIBILITY\" (14 chars) within 88vw at clamp max 168px without overflow on 1440×900.\n4. Canvas floor feasible: Yes — four stacked marquee lines plus caption band genuinely fill ≥72% of a 1440×900 viewport.",
+    "rationale": "The day handed me Naval Ravikant's line, and its imperative tail — \"it's your responsibility that you're happy\" — is the whole design. It's quotable stripped of context, and it rhymes exactly with what this site does: a portfolio that demolishes and rebuilds itself every morning is a machine for owning its own state. On a 14.4-hour July Friday, that self-authored joy wants to be loud, so the phrase earns marquee scale over everything else.\n\nA manifesto this declarative can only be a Specimen: the type IS the page, pressed against the field on both axes, with every signal demoted to a caption strip below. Big Shoulders Display (big-shoulders-atkinson, 1.618 ratio, the strongest marquee in the catalog and unused recently) stacks the four short caps lines — the 14-character \"RESPONSIBILITY\" holding within 88vw at 168px without tipping into parody — while Atkinson Hyperlegible keeps the caption band's leaderboard and attribution crisp. Specimen last appeared five days ago; the execution here diverges hard from that moonless-violet run in both palette and register.\n\nThe color mandate left only the 135°–164° corridor clean, and 150° emerald is exactly right rather than a constraint — high-summer growth, the color of a living thing that chose to be alive. I drenched the canvas in deep emerald (coverage ≥65%) with sun-cream type, letting a single lime-emerald pop light only the final word HAPPY and the golf leader Herbert at −6. One accent, fully committed, no hedging neutrals. The shell moves are all fresh against the mandate: nav lives inline in the hero's bottom-left (not the recent rail/pills/spine/top-bar), the footer is a specimen-caption band (not folded-into-nav, stamp, colophon, or data strip), and a horizontal-sm mono lockup inherits cream via currentColor to sit cleanly on the green.",
+    "signalIntegration": "- **Where signal elements live** — a full-width caption band at the page foot (row 2), reading like the specimen sheet caption under a type poster.\n- **How sports scores are styled** — The Open leaderboard rendered as tabular caption: `Lucas Herbert −6` set in accent `#3FE39B` (the leader), followed by Suber −5, Wallace −4 in sage-cream, `font-variant-numeric: tabular-nums`, smallcaps label \"THE OPEN · IN PROGRESS\".\n- **How the quote is displayed** — the quote fragment IS the hero. The full Naval line + attribution (\"Naval Ravikant\") sits as a single quiet line in the caption band, `#B9E6CE`, small caps attribution.\n- **Holiday elements** — none today.\n- **Other signals** — waxing crescent (12.6% illum) as a small caption chip \"◗ waxing crescent 13%\"; music trio (War on Drugs · My Morning Jacket · Radiohead) as a caption item; build/season stamp in the band."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "emerald": {
+          "50": "#E8F9F0",
+          "100": "#C6F0DC",
+          "200": "#96E4C0",
+          "300": "#5FD49F",
+          "400": "#2DBE7F",
+          "500": "#10A366",
+          "600": "#068A54",
+          "700": "#076E44",
+          "800": "#085637",
+          "900": "#06422B"
+        },
+        "lime": {
+          "50": "#EAFCF2",
+          "100": "#C9F6DD",
+          "200": "#9AECC1",
+          "300": "#6BE4A9",
+          "400": "#4FD79C",
+          "500": "#3FE39B",
+          "600": "#10A366",
+          "700": "#0C7E50",
+          "800": "#0A6444",
+          "900": "#064A32"
+        },
+        "sage": {
+          "50": "#F5F8F5",
+          "100": "#E8EEE9",
+          "200": "#CFDAD1",
+          "300": "#ADBCAF",
+          "400": "#829387",
+          "500": "#5E6F62",
+          "600": "#47564B",
+          "700": "#354039",
+          "800": "#232B26",
+          "900": "#141814"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "#07724A",
+          "_light": "#07724A"
+        },
+        "cardBg": {
+          "base": "#0A6444",
+          "_light": "#0A6444"
+        },
+        "bandBg": {
+          "base": "#064A32",
+          "_light": "#064A32"
+        },
+        "text": {
+          "base": "#F2FBF5",
+          "_light": "#F2FBF5"
+        },
+        "textSecondary": {
+          "base": "#B9E6CE",
+          "_light": "#B9E6CE"
+        },
+        "textMuted": {
+          "base": "#7FBF9E",
+          "_light": "#7FBF9E"
+        },
+        "accent": {
+          "base": "{colors.lime.500}",
+          "_light": "{colors.lime.500}"
+        },
+        "accentLight": {
+          "base": "{colors.lime.400}",
+          "_light": "{colors.lime.400}"
+        },
+        "accentDark": {
+          "base": "{colors.emerald.500}",
+          "_light": "{colors.emerald.500}"
+        },
+        "border": {
+          "base": "{colors.emerald.900}",
+          "_light": "{colors.emerald.900}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.15",
+      "normal": "1.5",
+      "loose": "1.6"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0.01em",
+      "wide": "0.06em",
+      "wider": "0.1em",
+      "widest": "0.12em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 150,
+      "s": 88,
+      "l": 24,
+      "name": "drenched emerald"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "green",
+      "name": "sage"
+    },
+    "mood_word": "alive",
+    "color_story": "A summer-drenched emerald field turns the imperative to be happy into a growing, sunlit green — optimism with weight, not decoration."
+  },
+  "shell": {
+    "nav": "inline within hero (three caps links riding bottom-left of the hero field, above the caption band)",
+    "footer": "caption band (full-width specimen-caption strip carrying leaderboard, quote attribution, moon, music, build stamp)",
+    "brand_lockup": "horizontal-sm",
+    "brand_color_mode": "single-color"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "APPROVED",
+      "feedback": "APPROVED",
+      "ts": 1784284580192
+    }
+  ],
+  "composition": null,
+  "lane": null,
+  "cost": null
+}
