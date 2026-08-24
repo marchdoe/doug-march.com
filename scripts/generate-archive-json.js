@@ -13,7 +13,8 @@
  * produces a complete archive.
  *
  * The files live under `/archive-data/` rather than inside `/archive/`, which is
- * reserved for bytes that shipped on the day they are named after.
+ * reserved for bytes that shipped on the day they are named after. The day's
+ * screenshot sits here too, written by the pipeline rather than by this script.
  */
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -23,7 +24,6 @@ import { readRatingForDate } from './utils/ratings.js'
 
 const ROOT = resolve(import.meta.dirname, '..')
 const ARCHIVE_PATH = join(ROOT, 'archive')
-const PUBLIC_ARCHIVE = join(ROOT, 'public', 'archive')
 const OUT_DIR = join(ROOT, 'public', 'archive-data')
 
 function archivedDates() {
@@ -97,8 +97,7 @@ for (const date of dates) {
     for (const anomaly of anomaliesOf(record)) anomalous.push(`${date}: ${anomaly}`)
   }
 
-  // The screenshot is still written into the preserved namespace; #154 moves it.
-  const hasScreenshot = existsSync(join(PUBLIC_ARCHIVE, `${date}.png`))
+  const hasScreenshot = existsSync(join(OUT_DIR, `${date}.png`))
 
   writeFileSync(join(OUT_DIR, `${date}.json`), JSON.stringify({ ...record, hasScreenshot }), 'utf8')
   index.push(indexEntry(record, hasScreenshot))

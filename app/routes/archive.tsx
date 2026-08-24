@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, useMatch } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 
 import type { ArchiveIndexEntry } from '../types/archive-record'
@@ -15,7 +15,6 @@ function truncate(text: string, max: number) {
 function ArchivePage() {
   const [entries, setEntries] = useState<ArchiveIndexEntry[]>([])
   const [loaded, setLoaded] = useState(false)
-  const childMatch = useMatch({ from: '/archive/$date', shouldThrow: false })
 
   useEffect(() => {
     fetch('/archive-data/index.json')
@@ -26,11 +25,6 @@ function ArchivePage() {
       })
       .catch(() => setLoaded(true))
   }, [])
-
-  // If a child route is active, render only the child (Outlet)
-  if (childMatch) {
-    return <Outlet />
-  }
 
   return (
     <>
@@ -102,7 +96,7 @@ function ArchivePage() {
 function ArchiveRow({ entry, isLast }: { entry: ArchiveIndexEntry; isLast: boolean }) {
   return (
     <Link
-      to="/archive/$date"
+      to="/how/$date"
       params={{ date: entry.date }}
       style={{
         display: 'flex',

@@ -46,30 +46,33 @@ test.describe('site health — archive', () => {
   test('archive list loads and shows entries', async ({ page }) => {
     await page.goto('/archive')
 
-    // Should have at least one archive entry link
-    const entries = page.locator('a[href^="/archive/20"]')
+    // Rows link to the explainer; the design itself is static, outside the router.
+    const entries = page.locator('a[href^="/how/20"]')
     await expect(entries.first()).toBeVisible({ timeout: 15000 })
     expect(await entries.count()).toBeGreaterThan(0)
   })
 
-  test('archive detail page loads for a valid date', async ({ page }) => {
-    // Go to archive list and click the first entry
+  test('explainer page loads from the archive list', async ({ page }) => {
     await page.goto('/archive')
 
-    const firstEntry = page.locator('a[href^="/archive/20"]').first()
+    const firstEntry = page.locator('a[href^="/how/20"]').first()
     await expect(firstEntry).toBeVisible({ timeout: 15000 })
 
     await firstEntry.click()
 
-    // Should show back link (confirms detail page rendered)
+    await expect(page).toHaveURL(/\/how\/\d{4}-\d{2}-\d{2}/)
     await expect(page.locator('text=Back to Archive')).toBeVisible({ timeout: 15000 })
   })
 
-  test('archive detail handles invalid date gracefully', async ({ page }) => {
-    const response = await page.goto('/archive/9999-99-99')
-    // The route throws on invalid dates — TanStack Start returns 500 with an error component.
-    // We just verify the page responds (doesn't hang or crash the server).
-    expect(response?.status()).toBeDefined()
+  test('explainer handles a date with no record gracefully', async ({ page }) => {
+    await page.goto('/how/9999-99-99')
+    await expect(page.locator('text=Archive entry not found')).toBeVisible({ timeout: 15000 })
+  })
+
+  test('the record projection is served', async ({ request }) => {
+    const index = await request.get('/archive-data/index.json')
+    expect(index.status()).toBe(200)
+    expect((await index.json()).length).toBeGreaterThan(0)
   })
 })
 
@@ -84,6 +87,24 @@ test.describe('site health — archived site serving', () => {
       expect(content).not.toContain('tanstack-start-client-entry')
     }
     // If 404, the archive doesn't have this date — that's OK
+  })
+
+  // A preserved design's URL must end in a slash: every snapshot links its own
+  // pages document-relative, and the browser resolves those against the
+  // directory. The slash-less form redirects rather than serving. See #154.
+  test('a preserved design serves at its own URL, and its pages resolve in-date', async ({
+    page,
+  }) => {
+    const response = await page.goto('/archive/2026-06-28/')
+    expect(response?.status()).toBe(200)
+
+    const about = await page.goto('/archive/2026-06-28/about.html')
+    expect(about?.status()).toBe(200)
+  })
+
+  test('the slash-less form redirects to the design', async ({ page }) => {
+    await page.goto('/archive/2026-06-28')
+    await expect(page).toHaveURL(/\/archive\/2026-06-28\/$/)
   })
 })
 
