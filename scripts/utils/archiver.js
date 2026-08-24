@@ -7,19 +7,25 @@ import { summarizeLedger } from './cost-ledger.js'
 import { anomaliesOf, buildRecord } from './archive-record.js'
 
 /**
- * Copy key archive artifacts to public/archive/ for static serving.
- * - Screenshot → public/archive/{date}.png
+ * Copy key archive artifacts to public/ for static serving.
  * - Site HTML  → public/archive/{date}/index.html, about.html, work/*.html
+ * - Screenshot → public/archive-data/{date}.png
+ * - Viewports  → public/archive-data/{date}/viewports/*.png
+ *
+ * Only the site HTML goes under `public/archive/`, which means one thing (#154):
+ * the bytes that shipped that day. Everything this project generates *about* a
+ * day lives in `public/archive-data/` beside its record.
  */
 async function copyToPublic(dateStr, buildDir) {
   const publicBase = path.join(ROOT, 'public', 'archive')
+  const publicData = path.join(ROOT, 'public', 'archive-data')
 
   // Copy screenshot if it exists
   const screenshotSrc = path.join(buildDir, 'screenshot.png')
   if (existsSync(screenshotSrc)) {
-    await mkdir(publicBase, { recursive: true })
-    await copyFile(screenshotSrc, path.join(publicBase, `${dateStr}.png`))
-    console.log(`  copied screenshot to public/archive/${dateStr}.png`)
+    await mkdir(publicData, { recursive: true })
+    await copyFile(screenshotSrc, path.join(publicData, `${dateStr}.png`))
+    console.log(`  copied screenshot to public/archive-data/${dateStr}.png`)
   }
 
   // Copy site HTML if it exists
@@ -46,7 +52,7 @@ async function copyToPublic(dateStr, buildDir) {
   // Copy viewport screenshots (if the build produced them)
   const vpSrc = path.join(buildDir, 'viewports')
   if (existsSync(vpSrc)) {
-    const vpDest = path.join(publicBase, dateStr, 'viewports')
+    const vpDest = path.join(publicData, dateStr, 'viewports')
     await mkdir(vpDest, { recursive: true })
     const vpEntries = await readdir(vpSrc)
     for (const f of vpEntries) {
@@ -54,7 +60,7 @@ async function copyToPublic(dateStr, buildDir) {
         await copyFile(path.join(vpSrc, f), path.join(vpDest, f))
       }
     }
-    console.log(`  copied viewport screenshots to public/archive/${dateStr}/viewports/`)
+    console.log(`  copied viewport screenshots to public/archive-data/${dateStr}/viewports/`)
   }
 }
 

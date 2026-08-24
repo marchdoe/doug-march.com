@@ -4,8 +4,8 @@ import type { ArchiveRecord, ArchiveTokens } from '../types/archive-record'
 
 type ArchiveDetail = ArchiveRecord & { hasScreenshot: boolean }
 
-export const Route = createFileRoute('/archive/$date')({
-  component: ArchiveDetailPage,
+export const Route = createFileRoute('/how/$date')({
+  component: HowPage,
 })
 
 /* ---------------------------------------------------------------------------
@@ -17,11 +17,20 @@ interface Swatch {
   hex: string
 }
 
-/** Every stop of every ramp, in the order the preset declared them. */
+/**
+ * Every stop of every ramp, in the order the preset declared them.
+ *
+ * Not every colour token is a ramp: a one-off like `glow: { value: '#FF8FC7' }`
+ * unwraps to a bare string, and iterating that yields one swatch per character.
+ */
 function swatches(tokens: ArchiveTokens | null): Swatch[] {
   if (!tokens) return []
   const out: Swatch[] = []
   for (const [ramp, stops] of Object.entries(tokens.colors.ramps)) {
+    if (typeof stops === 'string') {
+      out.push({ name: ramp, hex: stops })
+      continue
+    }
     for (const [stop, hex] of Object.entries(stops)) {
       if (typeof hex === 'string') out.push({ name: `${ramp}.${stop}`, hex })
     }
@@ -81,7 +90,7 @@ function formatDate(date: string): string {
  * Page component
  * ------------------------------------------------------------------------- */
 
-function ArchiveDetailPage() {
+function HowPage() {
   const { date } = Route.useParams()
   const [detail, setDetail] = useState<ArchiveDetail | null>(null)
   const [error, setError] = useState(false)
@@ -446,7 +455,7 @@ function ArchiveDetailPage() {
             PREVIEW
           </p>
           <img
-            src={`/archive/${detail.date}.png`}
+            src={`/archive-data/${detail.date}.png`}
             alt={`Screenshot of the design from ${detail.date}`}
             style={{
               width: '100%',
@@ -479,7 +488,7 @@ function ArchiveDetailPage() {
           ← Back to Archive
         </Link>
         <a
-          href={`/archive/${detail.date}/index.html`}
+          href={`/archive/${detail.date}/`}
           target="_blank"
           rel="noopener noreferrer"
           style={{

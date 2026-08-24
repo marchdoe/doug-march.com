@@ -18,7 +18,7 @@ export function ResponsiveCard({
     font: 'JetBrains Mono, monospace',
   }
   const order = ['mobile', 'tablet', 'laptop', 'desktop'] as const
-  const base = `/archive/${date}/viewports`
+  const base = `/archive-data/${date}/viewports`
 
   return (
     <div

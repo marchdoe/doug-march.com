@@ -5,6 +5,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import { resolve } from 'node:path'
 import { spawn, spawnSync } from 'node:child_process'
 import { readFileSync, existsSync, readdirSync } from 'node:fs'
+import type { IncomingMessage, ServerResponse } from 'node:http'
 import { config } from 'dotenv'
 import * as yaml from 'js-yaml'
 import { _readSignalsHandler, _saveOverridesHandler } from './app/server/signals-impl'
@@ -21,6 +22,51 @@ function browserStorageContextStub() {
         return stubPath
       }
       return null
+    },
+  }
+}
+
+// Serve preserved designs the way production does (#154).
+//
+// A preserved design's URL must end in a slash: every snapshot links its own
+// pages document-relative (`about.html`, `work/*.html`), and the browser resolves
+// those against the directory. Vite's static middleware does the opposite — it
+// 307s `/archive/<date>/` to the slash-less form, which then falls through to the
+// SPA and 404s now that `/archive/$date` is gone. Vercel is configured to redirect
+// the other way, so without this the two disagree.
+//
+// Installed before Vite's own middlewares so it wins the trailing slash, and on
+// the preview server too — that is what `pnpm test:e2e` points at locally, and a
+// route scheme that only holds in one of the three environments is not a scheme.
+function archiveStaticPlugin(): Plugin {
+  const DATE_URL = /^\/archive\/(\d{4}-\d{2}-\d{2})(\/?)$/
+
+  // dist/client in preview and on Vercel; public/ under the dev server.
+  const roots = [resolve('dist', 'client', 'archive'), resolve('public', 'archive')]
+
+  const middleware = (req: IncomingMessage, res: ServerResponse, next: () => void) => {
+    const match = DATE_URL.exec((req.url ?? '').split('?')[0])
+    if (!match) return next()
+
+    const [, date, trailingSlash] = match
+    if (!trailingSlash) {
+      res.writeHead(301, { Location: `/archive/${date}/` })
+      return res.end()
+    }
+
+    const indexPath = roots.map((r) => resolve(r, date, 'index.html')).find((p) => existsSync(p))
+    if (!indexPath) return next()
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+    return res.end(readFileSync(indexPath))
+  }
+
+  return {
+    name: 'archive-static',
+    configureServer(server) {
+      server.middlewares.use(middleware)
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(middleware)
     },
   }
 }
@@ -516,6 +562,7 @@ function pipelineApiPlugin(): Plugin {
 
 export default defineConfig({
   plugins: [
+    archiveStaticPlugin(),
     pipelineApiPlugin(),
     browserStorageContextStub(),
     tanstackStart({
