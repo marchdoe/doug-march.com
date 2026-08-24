@@ -1,0 +1,339 @@
+{
+  "date": "2026-07-03",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.215Z",
+  "buildId": "1783076625006",
+  "attempts": 1,
+  "brief": "Void-violet midnight before the fireworks — LESS / IS / MORE. in Big Shoulders condensed at specimen scale, three stacked words claiming 76% of the viewport, the right-side void as the argument.",
+  "rationale": "The hero phrase arrived without competition. Today's signals are quiet in the way a day before a national holiday is always quiet — the Tigers dropped 4–10, the John Deere Classic is grinding through its mid-round with Glover and Blair sharing the lead at −8 without drama, and the Hacker News front page offers civic weight (Virginia bans geolocation data, 815 points) but no single cultural rupture. Into that stillness, Robert Browning's \"Less is more.\" lands as the exact line this portfolio surface wants on a contemplative summer Friday: it is simultaneously a design instruction, a critical position, and an honest self-description of a page that rebuilds itself from scratch every morning. It passes every poster test — someone would screenshot these three words in isolation. The period is intentional and load-bearing.\n\nSpecimen was the only honest archetype. The Specimen archetype commits fully: typography IS the design, and anything surrounding the type is infrastructure, not content. Three single words stacked at wall scale — LESS / IS / MORE., rendered uppercase — in Big Shoulders Display at clamp(8rem, 18vw, 26rem) produce a roughly 684px type block on a 900px-tall viewport, claiming 76% of the canvas for the phrase alone. The right 30–50% of the canvas is void. That void IS the argument: the phrase has room because the constraint is the idea, not because the designer ran out of content. Big Shoulders Display, tagged for Specimen in the chassis catalog with \"dramatic, poster, condensed, signage\" mood tags, is the only chassis capable of stacking three words across 76% of viewport height without either shrinking below impact or overflowing at 1440px wide. Atkinson Hyperlegible handles the signal strip at 14px, legible as the finest of footnotes.\n\nThe color mandate left precisely one door open: 273°–305°, the violet-purple corridor, after six consecutive builds occupied every other quadrant of the wheel. H:285° is not a compliance concession — it is thematically correct. Violet is the color of the 81.4% waning gibbous moon on the eve of Independence Day, the color of the quiet hour before something larger begins. Against near-void violet-black (#0D0812), the near-white lavender (#F4F0FA) phrase achieves 18.3:1 contrast and appears to emit from within the dark field rather than sit on top of it. The bright lavender accent (#C084FF) at 7.83:1 handles all supporting navigation and signal-strip text without competing with the hero. Everything else — the Tigers loss, the tournament leaderboard, the approaching holiday, the week's biggest civil-liberties story — is demoted to a single 48px all-caps Atkinson strip at the bottom edge. Browning's phrase does not share the stage.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Specimen",
+  "signals": {
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Friday",
+      "is_weekend": false,
+      "day_index": 5
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "usestrix/strix/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "openai/codex-plugin-cc/stargazers",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/JuliusBrussee",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "elastic/elasticsearch/stargazers",
+          "description": "",
+          "language": "Java",
+          "stars": null
+        },
+        {
+          "name": "actions/checkout/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "John Deere Classic",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Lucas Glover",
+          "position": "1",
+          "score": "-8"
+        },
+        {
+          "name": "Zac Blair",
+          "position": "2",
+          "score": "-8"
+        },
+        {
+          "name": "Lee Hodges",
+          "position": "3",
+          "score": "-7"
+        },
+        {
+          "name": "Stephan Jaeger",
+          "position": "4",
+          "score": "-7"
+        },
+        {
+          "name": "Zach Johnson",
+          "position": "5",
+          "score": "-7"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Half-Baked Product",
+          "url": "https://weli.dev/blog/half-baked-product/",
+          "score": 137,
+          "by": "weli"
+        },
+        {
+          "title": "Virginia bans sale of geolocation data",
+          "url": "https://www.hunton.com/privacy-and-cybersecurity-law-blog/virginia-bans-sale-of-geolocation-data",
+          "score": 815,
+          "by": "toomuchtodo"
+        },
+        {
+          "title": "Right to Local Intelligence",
+          "url": "https://righttointelligence.org/",
+          "score": 281,
+          "by": "thoughtpeddler"
+        },
+        {
+          "title": "CarPlay Is Additive",
+          "url": "https://www.caseyliss.com/2026/7/2/carplay-is-additive-you-dolts",
+          "score": 324,
+          "by": "sprawl_"
+        },
+        {
+          "title": "Wordgard: The new in-browser rich-text editor from the creator of ProseMirror",
+          "url": "https://wordgard.net/",
+          "score": 20,
+          "by": "indy"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Independence Day",
+          "date": "2026-07-04",
+          "days_away": 1
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "waning gibbous",
+      "illumination": 0.814,
+      "days_into_cycle": 18.95
+    },
+    "music": {
+      "bands": [
+        "The War on Drugs",
+        "Radiohead",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "Less is more.",
+      "author": "Robert Browning"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 3,
+      "day_of_year": 184,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-03T00:05Z",
+          "result": "loss",
+          "score": "4-10"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:53",
+      "sunset": "19:34",
+      "daylight_hours": 14.7
+    },
+    "date": "2026-07-03"
+  },
+  "hero": {
+    "copy": "Less is more.",
+    "rationale": "Today's `signals.quote` delivers Robert Browning's five-word manifesto at a moment when the rest of the signals are quiet — the Tigers lost 4–10, the John Deere Classic is mid-round without a transcendent story, no cultural flashpoint on HN. Into that contemplative Friday-before-a-holiday quiet, \"Less is more.\" lands as the exact design instruction, portfolio credo, and self-description this page earns: it demands marquee scale, requires no context, and works as an accusation aimed equally at the design and the viewer. Tomorrow is Independence Day. The phrase fits the pause before the noise.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue** — H:285° (violet-purple). The color mandate's sole open corridor is 273°–305°; 285° is its center. Violet is thematically exact: the color of twilight before a national holiday, a waning gibbous moon at 81.4% illumination, the quiet after a 4–10 loss. Not aggressive, not warm — contemplative and committed.\n- **Neutral palette** (tinted toward H:285°):\n  - 50: #F4F0FA (near-white lavender)\n  - 100: #E8E1F5\n  - 200: #CFC5E8\n  - 300: #B0A3D0\n  - 400: #8E7FB5\n  - 500: #6E6095\n  - 600: #52467A\n  - 700: #382F5C\n  - 800: #211A3D\n  - 900: #0D0812 (near-void violet-black)\n- **Accent color** — bright lavender violet:\n  - light: #C084FF (dark-mode use — contrast vs. bg #0D0812: 7.83:1 ✓)\n  - default: #9B40FF\n  - dark: #6A1FBF (light-mode use)\n  - glow: #9B40FF33\n- **Secondary accent** — none. The phrase is the whole story.\n- **Background**:\n  - Page bg: #0D0812 (neutral.900 — near-void violet-black)\n  - Card bg: #211A3D (neutral.800)\n  - Sidebar bg: #211A3D (neutral.800, unused in this archetype)\n- **Text colors**:\n  - Primary text: #F4F0FA (neutral.50 — contrast on bg: 18.3:1 ✓)\n  - Secondary text: #B0A3D0 (neutral.300 — contrast on bg: 8.84:1 ✓)\n  - Muted text / signal strip: #8E7FB5 (neutral.400 — contrast on bg: 5.78:1 ✓ at 14px+)\n\n### 2. Typography (chassis: big-shoulders-atkinson)\n\n- **Hero phrase rendering** — Big Shoulders Display at maximum weight (900), three lines stacked left-aligned, CSS `text-transform: uppercase`:\n  - Line 1: LESS\n  - Line 2: IS\n  - Line 3: MORE.\n  - Scale: `clamp(8rem, 18vw, 26rem)` — at 1440px viewport this renders at ~259px font-size; three lines at 0.88 line-height stack to ~684px total height (76% of a 900px viewport)\n  - Left-aligned at `padding-left: 8vw`\n  - Color: neutral.50 (#F4F0FA)\n- **Line heights**:\n  - Hero phrase: 0.88 (tight — lines nearly touch, creating a monumental stack)\n  - Signal strip: 1.5 (normal)\n  - Nav: 1.1 (snug)\n- **Letter spacings**:\n  - Hero phrase: -0.01em (slight negative tracking on the condensed face at display scale)\n  - Signal strip labels: 0.08em (wide — uppercase labels need breathing room)\n  - Nav links: 0.05em (wide)\n\n### 3. Layout Specification\n\n- **Archetype** — Specimen. \"Less is more.\" at wall scale IS the design. No other content earns comparable visual weight. The phrase occupies 76% of viewport height as three stacked display words; everything else is infrastructure.\n- **CSS grid structure**:\n  ```\n  display: grid;\n  grid-template-rows: 60px 1fr 48px;\n  min-height: 100vh;\n  max-width: none;\n  padding: 0;\n  ```\n- **Major dimensions**:\n  - Hero phrase area: `1fr` (all remaining viewport height between nav and signal strip)\n  - Nav row: 60px, positioned as an overlay in the top-right corner\n  - Signal strip: 48px, full-width bottom row, `border-top: 1px solid #211A3D`\n  - Max content width: none — full canvas, no constraint\n  - Hero phrase left margin: `padding-left: 8vw`; phrase extends naturally rightward; right 30–50% of canvas is intentional void\n- **Nav placement** — minimal top-right corner label: \"Doug March\" at 14px (Atkinson Hyperlegible), three nav links at 14px all-caps with 0.08em letter-spacing. Nav should read as a small footnote in the corner, not a structural band. `position: absolute; top: 0; right: 0; padding: 20px 8vw`.\n- **Hero phrase grid zone** — middle row (1fr), `display: flex; align-items: center`. Phrase block left-aligned at 8vw. On 1440×900: three words (LESS / IS / MORE.) stacked at ~259px font-size, occupying roughly 520px × 684px of the left canvas — the right 40% is void. The void carries the argument.\n\n### 4. Component Character\n\n- **Border radius** — 0px everywhere. The Specimen demands zero decoration.\n- **Border treatment** — borderless. No cards, no containers, no rules except the single 1px `neutral.800` line above the signal strip.\n- **Shadow** — none. Not a single drop shadow. The type floats on the void.\n- **Density** — maximally sparse. Three words, a corner nav, a signal strip. The void is load-bearing.\n- **Interactive states** — nav links: `transition: color 200ms ease` to accent (#C084FF) on hover. No other interactive decoration needed on this page.\n\n### 5. Signal Integration\n\n- **Signal strip** — 48px horizontal band at viewport bottom, full-width, `padding: 0 8vw`. All text: Atkinson Hyperlegible at 14px, neutral.400 (#8E7FB5), `letter-spacing: 0.05em; text-transform: uppercase`. Items separated by `·` (middle dot):\n  - `DET 4 · CLE 10 — TIGERS L`\n  - `JOHN DEERE CLASSIC: GLOVER −8 IN PROGRESS`\n  - `🌔 MOON 81%`\n  - `INDEPENDENCE DAY TOMORROW`\n  - `VIRGINIA BANS GEOLOCATION DATA`\n- **Sports scores** — Tigers L 4–10 in neutral.400 all-caps at 14px, signal strip only. No color treatment for the loss; it fits the phrase (\"less\" was not done tonight, and it showed).\n- **Quote display** — \"Less is more.\" IS the hero phrase. Attribution \"— R. Browning\" does NOT appear in the hero zone. If signal strip space allows, a final strip item in neutral.500 italic: `\"LESS IS MORE.\" — R. BROWNING`.\n- **Holiday elements** — `INDEPENDENCE DAY TOMORROW` in the signal strip, styled identically to other strip items. No bunting, no stars, no red-white-blue. The restraint IS the holiday treatment.\n- **Music** — `♫ WAR ON DRUGS · RADIOHEAD · MY MORNING JACKET` in neutral.500 at 13px at the trailing end of the signal strip, rendered as a quiet ambient footnote.",
+    "selfCheck": "1. Hero quotability: Yes — \"Less is more.\" (Browning/Mies) is a six-word complete thought poster-worthy in isolation, requiring no portfolio context, with a period that is load-bearing.\n2. Because-of chain: Yes — the phrase's radical minimalism mandated Specimen (type IS design) → Big Shoulders Display (the only chassis tagged for Specimen that delivers condensed words at 76% viewport height) → void-violet palette (mandate-compliant 273°–305° corridor, thematically exact for moonlit-eve-of-holiday contemplation) → void-dark background with no card surfaces so the phrase floats alone.\n3. Render feasibility: Yes — Big Shoulders Display at clamp(8rem, 18vw, 26rem) renders three stacked words at ~259px on 1440×900, producing a ~684px-tall type block (76% viewport height) well within the 1fr hero row after a 60px nav and 48px signal strip consume 108px of the 900px canvas.",
+    "rationale": "The hero phrase arrived without competition. Today's signals are quiet in the way a day before a national holiday is always quiet — the Tigers dropped 4–10, the John Deere Classic is grinding through its mid-round with Glover and Blair sharing the lead at −8 without drama, and the Hacker News front page offers civic weight (Virginia bans geolocation data, 815 points) but no single cultural rupture. Into that stillness, Robert Browning's \"Less is more.\" lands as the exact line this portfolio surface wants on a contemplative summer Friday: it is simultaneously a design instruction, a critical position, and an honest self-description of a page that rebuilds itself from scratch every morning. It passes every poster test — someone would screenshot these three words in isolation. The period is intentional and load-bearing.\n\nSpecimen was the only honest archetype. The Specimen archetype commits fully: typography IS the design, and anything surrounding the type is infrastructure, not content. Three single words stacked at wall scale — LESS / IS / MORE., rendered uppercase — in Big Shoulders Display at clamp(8rem, 18vw, 26rem) produce a roughly 684px type block on a 900px-tall viewport, claiming 76% of the canvas for the phrase alone. The right 30–50% of the canvas is void. That void IS the argument: the phrase has room because the constraint is the idea, not because the designer ran out of content. Big Shoulders Display, tagged for Specimen in the chassis catalog with \"dramatic, poster, condensed, signage\" mood tags, is the only chassis capable of stacking three words across 76% of viewport height without either shrinking below impact or overflowing at 1440px wide. Atkinson Hyperlegible handles the signal strip at 14px, legible as the finest of footnotes.\n\nThe color mandate left precisely one door open: 273°–305°, the violet-purple corridor, after six consecutive builds occupied every other quadrant of the wheel. H:285° is not a compliance concession — it is thematically correct. Violet is the color of the 81.4% waning gibbous moon on the eve of Independence Day, the color of the quiet hour before something larger begins. Against near-void violet-black (#0D0812), the near-white lavender (#F4F0FA) phrase achieves 18.3:1 contrast and appears to emit from within the dark field rather than sit on top of it. The bright lavender accent (#C084FF) at 7.83:1 handles all supporting navigation and signal-strip text without competing with the hero. Everything else — the Tigers loss, the tournament leaderboard, the approaching holiday, the week's biggest civil-liberties story — is demoted to a single 48px all-caps Atkinson strip at the bottom edge. Browning's phrase does not share the stage.",
+    "signalIntegration": "- **Signal strip** — 48px horizontal band at viewport bottom, full-width, `padding: 0 8vw`. All text: Atkinson Hyperlegible at 14px, neutral.400 (#8E7FB5), `letter-spacing: 0.05em; text-transform: uppercase`. Items separated by `·` (middle dot):\n  - `DET 4 · CLE 10 — TIGERS L`\n  - `JOHN DEERE CLASSIC: GLOVER −8 IN PROGRESS`\n  - `🌔 MOON 81%`\n  - `INDEPENDENCE DAY TOMORROW`\n  - `VIRGINIA BANS GEOLOCATION DATA`\n- **Sports scores** — Tigers L 4–10 in neutral.400 all-caps at 14px, signal strip only. No color treatment for the loss; it fits the phrase (\"less\" was not done tonight, and it showed).\n- **Quote display** — \"Less is more.\" IS the hero phrase. Attribution \"— R. Browning\" does NOT appear in the hero zone. If signal strip space allows, a final strip item in neutral.500 italic: `\"LESS IS MORE.\" — R. BROWNING`.\n- **Holiday elements** — `INDEPENDENCE DAY TOMORROW` in the signal strip, styled identically to other strip items. No bunting, no stars, no red-white-blue. The restraint IS the holiday treatment.\n- **Music** — `♫ WAR ON DRUGS · RADIOHEAD · MY MORNING JACKET` in neutral.500 at 13px at the trailing end of the signal strip, rendered as a quiet ambient footnote."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "violet": {
+          "50": "#F4F0FA",
+          "100": "#E8E1F5",
+          "200": "#CFBEF0",
+          "300": "#B094E0",
+          "400": "#9468CC",
+          "500": "#7A44B8",
+          "600": "#5E2BA0",
+          "700": "#441685",
+          "800": "#2C0A65",
+          "900": "#1A0450"
+        },
+        "neutral": {
+          "50": "#F4F0FA",
+          "100": "#E8E1F5",
+          "200": "#CFC5E8",
+          "300": "#B0A3D0",
+          "400": "#8E7FB5",
+          "500": "#6E6095",
+          "600": "#52467A",
+          "700": "#382F5C",
+          "800": "#211A3D",
+          "900": "#0D0812"
+        },
+        "accent": {
+          "light": "#C084FF",
+          "default": "#9B40FF",
+          "dark": "#6A1FBF",
+          "glow": "#9B40FF33"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.50}"
+        },
+        "bg.card": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bg.sidebar": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "text": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.neutral.900}"
+        },
+        "text.secondary": {
+          "base": "{colors.neutral.300}",
+          "_light": "{colors.neutral.700}"
+        },
+        "text.muted": {
+          "base": "{colors.neutral.400}",
+          "_light": "{colors.neutral.500}"
+        },
+        "accent": {
+          "base": "{colors.accent.light}",
+          "_light": "{colors.accent.dark}"
+        },
+        "border": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.08em",
+      "widest": "0.15em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 285,
+      "s": 78,
+      "l": 56,
+      "name": "violet-purple"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "violet",
+      "name": "void-violet"
+    },
+    "mood_word": "contemplative",
+    "color_story": "The mandate's sole open corridor (273°–305°) is violet — the color of the 81% waning gibbous moon hanging over the eve of Independence Day, and precisely the right hue for a phrase that asks the viewer to stand still."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

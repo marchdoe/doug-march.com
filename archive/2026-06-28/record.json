@@ -1,0 +1,355 @@
+{
+  "date": "2026-06-28",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.210Z",
+  "buildId": "1782644122731",
+  "attempts": 1,
+  "brief": "Terracotta fire on near-void dark — Pema Chodron's monster-mind imperative at 5.5vw in Big Shoulders weight-800 dominates three-quarters of a Gallery Wall canvas, Hovland's −20 burning orange in the right panel, and the full moon bearing silent witness at the bottom.",
+  "rationale": "The hero phrase arrived without competition. Today's signals are quieter than most — the Tigers lost yesterday, the Travelers Championship is mid-round with a clean leaderboard but no single dramatic upset, and Hacker News offers no cultural moment strong enough to carry a hero. Into this relative quiet, Pema Chodron's line about spending whole lives escaping from monsters of our minds lands with the full weight of a full moon Sunday. It passes every poster test in isolation: it doesn't need context, it doesn't need explanation, and it invites the reader to complete the implication themselves. On a portfolio site that reconstitutes itself daily precisely to avoid the trap of sameness, the phrase is also quietly meta — every rebuild is a small act of not escaping, of showing up and making the thing again.\n\nGallery Wall was the archetype choice because the Chodron line doesn't want to be the only thing on the page (that's Specimen) and it doesn't want to share equal billing with other content (that's a Scroll or Stack). It wants to be the dominant block in a room where other blocks also exist — the golf tournament (Hovland at -20, Scheffler one back on Sunday, a genuine leaderboard drama) earns its own panel as a secondary block, and the signals-plus-projects bottom band grounds the page in practical information. The Gallery Wall's asymmetric blocks-on-a-dark-wall structure gives the quote its weight while refusing to leave the rest of the day unacknowledged.\n\nBig Shoulders Display condensed at weight 800 was the only chassis that could solve the typographic challenge: a 13-word literary quote needs a condensed display face to stack into four tight marquee-scale lines without either shrinking below impact or overflowing a block. The terracotta palette at H:22° is the single open corridor in the color mandate, but it is also the honest choice — burnt orange is the color of heat that illuminates without destroying, the exact emotional register of Chodron's instruction to name the monsters rather than run.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Gallery Wall",
+  "signals": {
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Sunday",
+      "is_weekend": true,
+      "day_index": 0
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/simplex-chat",
+          "description": "",
+          "language": "Haskell",
+          "stars": null
+        },
+        {
+          "name": "xbtlin/ai-berkshire/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "commaai/openpilot/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "IceWhaleTech/CasaOS/stargazers",
+          "description": "",
+          "language": "Go",
+          "stars": null
+        },
+        {
+          "name": "ripienaar/free-for-dev/stargazers",
+          "description": "",
+          "language": "HTML",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Travelers Championship",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Viktor Hovland",
+          "position": "1",
+          "score": "-20"
+        },
+        {
+          "name": "Scottie Scheffler",
+          "position": "2",
+          "score": "-19"
+        },
+        {
+          "name": "Patrick Cantlay",
+          "position": "3",
+          "score": "-15"
+        },
+        {
+          "name": "Akshay Bhatia",
+          "position": "4",
+          "score": "-15"
+        },
+        {
+          "name": "Shane Lowry",
+          "position": "5",
+          "score": "-13"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Marfa Public Radio Puts You to Sleep",
+          "url": "https://www.marfapublicradio.org/podcast/marfa-public-radio-puts-you-to-sleep",
+          "score": 243,
+          "by": "reaperducer"
+        },
+        {
+          "title": "Bashblog – a single bash script to create blogs",
+          "url": "https://github.com/cfenollosa/bashblog",
+          "score": 53,
+          "by": "ludicrousdispla"
+        },
+        {
+          "title": "AMD Strix Halo RDMA Cluster Setup Guide",
+          "url": "https://github.com/kyuz0/amd-strix-halo-vllm-toolboxes/blob/main/rdma_cluster/setup_guide.md",
+          "score": 145,
+          "by": "jakogut"
+        },
+        {
+          "title": "OpenRA",
+          "url": "https://www.openra.net/",
+          "score": 725,
+          "by": "tosh"
+        },
+        {
+          "title": "Wayfinder Router: deterministic routing of queries between local and hosted LLM",
+          "url": "https://github.com/itsthelore/wayfinder-router",
+          "score": 70,
+          "by": "handfuloflight"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Independence Day",
+          "date": "2026-07-04",
+          "days_away": 6
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "full moon",
+      "illumination": 0.992,
+      "days_into_cycle": 13.94
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "We can spend our whole lives escaping from the monsters of our minds.",
+      "author": "Pema Chodron"
+    },
+    "season": {
+      "season": "summer",
+      "month": 6,
+      "day": 28,
+      "day_of_year": 179,
+      "month_name": "June"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-06-27T17:10Z",
+          "result": "loss",
+          "score": "6-8"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:51",
+      "sunset": "19:35",
+      "daylight_hours": 14.7
+    },
+    "date": "2026-06-28"
+  },
+  "hero": {
+    "copy": "We can spend our whole lives escaping from the monsters of our minds.",
+    "rationale": "Pema Chodron's line arrives from `signals.quote` on the one day the rest of the signals conspire to be quiet: no blowout, no dramatic weather, no breaking news story at 1000 points. The golf tournament is compelling (Hovland at -20, Scheffler one back, Sunday final round) but it yields to this. The full moon at 99.2% illumination amplifies the phrase — monsters of the mind are most vivid at 3am under a full moon. It is also quietly meta: a portfolio site that reconstitutes itself daily to avoid sameness is, in its own way, a practice of confronting rather than escaping. The phrase is quotable in complete isolation; a reader would screenshot it and post it before asking who made the page.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue:** H:22°, terracotta/burnt orange. The only open corridor in the color mandate is 10°–42°; H:22° sits at its warm center. Terracotta is the color of confrontation and heat without destruction — precisely the emotional register of naming monsters rather than fleeing them.\n- **Neutral palette (warm taupe, tinted toward H:22°):**\n  - 50: #FAF3F0\n  - 100: #EEE3DC\n  - 200: #DACAC0\n  - 300: #D0BEB4\n  - 400: #B09080\n  - 500: #9C8578\n  - 600: #6A4E44\n  - 700: #4A332E\n  - 800: #2D1C17\n  - 900: #180B08\n- **Accent color:**\n  - light: #FFA07A (orange.300)\n  - default: #F05428 (orange.500)\n  - dark: #C43D14 (orange.600)\n  - glow: rgba(240, 84, 40, 0.22)\n- **Secondary accent:** none — single committed orange carries the page\n- **Background:**\n  - page bg: #140806 (night.400 — near-void dark with faint orange tint)\n  - card bg: #1C0D09 (night.300)\n  - sidebar/panel bg: #1C0D09\n- **Text colors:**\n  - primary: #FAF3F0 (taupe.50 — warm near-white, contrast ~18:1 on page bg)\n  - secondary: #D0BEB4 (taupe.300 — contrast ~10:1 on page bg)\n  - muted: #9C8578 (taupe.500 — contrast ~5.6:1, used at ≥14px only)\n\n### 2. Typography (chassis-derived)\n- **Hero phrase rendering:** Big Shoulders Display `display` token, `clamp(2.5rem, 5.5vw, 6.5rem)` — weight 800, all-uppercase via `text-transform: uppercase`, line-height 0.88, letter-spacing -0.02em. At 1440px (5.5vw = ~79px), the 13-word quote breaks across four tight lines inside the dominant 75%-width left block:\n  ```\n  WE CAN SPEND\n  OUR WHOLE LIVES\n  ESCAPING FROM THE\n  MONSTERS OF OUR MINDS.\n  ```\n  Each line ≈ 3–4 words in Big Shoulders condensed at this scale fits within ~1050px block width without overflow. Block height of four lines at 0.88 leading ≈ 4 × 79px × 0.88 ≈ 278px — anchored to bottom-left of the block with generous padding-top.\n- **Subheadings/labels:** Atkinson Hyperlegible, 0.625–0.75rem, weight 600, all-caps, letter-spacing widest (0.2em)\n- **Body/secondary text:** Atkinson Hyperlegible, 1rem, weight 400, line-height 1.5\n- **Line heights:**\n  - Hero: 0.88 (extremely tight condensed stacking)\n  - Subheadings: 1.15\n  - Body: 1.5\n- **Letter spacings:**\n  - Hero: -0.02em\n  - ALL-CAPS labels: 0.2em (widest)\n  - Body: 0em (normal)\n\n### 3. Layout Specification\n- **Archetype:** Gallery Wall — the Chodron quote occupies one dominant asymmetric block (75% width, full main-area height) alongside a narrower panel for the golf leaderboard and a bottom band for signals and projects. The irregular proportions mirror how one dominant thought coexists with other signals in a day.\n- **CSS grid structure:**\n  ```css\n  display: grid;\n  grid-template-columns: 3fr 1fr;\n  grid-template-rows: 48px 1fr 180px;\n  gap: 12px;\n  padding: 32px 5vw;\n  min-height: 100vh;\n  max-width: none;\n  box-sizing: border-box;\n  ```\n  - Row 1 (48px): Nav strip spanning all columns\n  - Row 2 (flex-fill, ~540–580px on 900vh): Quote block (col 1, 3fr) | Golf/signals panel (col 2, 1fr)\n  - Row 3 (180px): Bottom band spanning all columns — projects list (left 60%) + signals/meta (right 40%)\n- **Major dimensions:**\n  - Hero block: ~75% canvas width × ~580px height (fills available row 2)\n  - Right panel: ~25% canvas width × ~580px height\n  - Bottom band: full canvas width × 180px\n  - Max content width: none\n  - Side padding: 5vw (72px at 1440px)\n  - Gap between blocks: 12px (thin gutter, blocks read as distinct objects on a dark wall)\n- **Nav placement:** 48px horizontal strip, row 1, spanning both columns. \"DOUG MARCH\" in 0.75rem Atkinson Hyperlegible weight 600 tracked wide, left-aligned; nav links (WORK · ABOUT · CONTACT) right-aligned, same treatment, taupe.400.\n- **Hero phrase grid zone:** Row 2, column 1 (75% width). Quote text anchored bottom-left within the block at padding 40px. No background on the block itself — the text floats on the page bg, using its scale as its boundary.\n\n### 4. Component Character\n- **Border radius:** cards: 0px (none — sharp geometry matches condensed type); buttons: 2px (sm); tags: 2px (sm)\n- **Border treatment:** Single 1px hairline in border-subtle (#2E1510) used only to separate the bottom band from the main row; no borders around the gallery blocks themselves — blocks are defined by content density and scale, not containers\n- **Shadow:** None — depth from background lightness contrast between page bg and right panel bg\n- **Density:** Spacious within the quote block (the text is the density); compact in the right golf panel (tight rows, small type, high information density); moderately compact in the bottom band\n- **Interactive states:** Project links: hover → accent orange (#F05428) + opacity 0.85; nav links: hover → text primary (#FAF3F0); 0.2s ease transitions throughout\n\n### 5. Signal Integration\n- **Full moon (99.2%):** Small \"● FULL MOON 99.2%\" label in the bottom-right corner of the quote block, absolutely positioned, 0.625rem Atkinson weight 600, taupe.500, letter-spacing widest. The ● glyph reads as illumination icon.\n- **Golf leaderboard** (right panel — primary content of the right block):\n  - Header row: \"TRAVELERS CHAMPIONSHIP\" in 0.5625rem, letter-spacing widest, taupe.500; \"SUNDAY · FINAL ROUND\" immediately below in 0.625rem, accent orange #F05428\n  - Hovland: \"HOVLAND\" in 0.625rem taupe.300 tracked wide; \"-20\" in `clamp(2rem, 3.5vw, 3.5rem)` Big Shoulders weight 800, accent orange #F05428 — dominates the panel\n  - Scheffler: \"-19\" at 1.25rem weight 700, taupe.300; \"SCHEFFLER\" at 0.625rem taupe.400\n  - Cantlay & Bhatia at -15: compact row, 0.625rem taupe.400\n  - Lowry at -13: 0.625rem taupe.500\n  - 1px border-subtle hairline between each row\n- **Tigers score:** Bottom band, signals side: \"DET TIGERS\" label + \"6–8 L\" in 0.75rem Atkinson, taupe.400; preceding day noted as \"SAT 6.27\"\n- **Quote display:** The hero phrase IS the quote. Rendered as giant wall type in Big Shoulders Display weight 800. Attribution \"— Pema Chodron\" in 0.75rem Atkinson Hyperlegible, taupe.400, 24px below the closing period, no italic.\n- **Independence Day countdown:** Bottom band: \"INDEPENDENCE DAY IN 6 DAYS\" in 0.5625rem, letter-spacing widest, taupe.500\n- **Music (Wet Leg · My Morning Jacket):** Bottom band signals: \"WET LEG · MY MORNING JACKET\" in 0.5625rem, taupe.500\n- **GitHub/HN:** Not surfaced in primary layout — signal data noted in bottom band footnote at taupe.500 if space permits",
+    "selfCheck": "1. Hero quotability: Yes — \"We can spend our whole lives escaping from the monsters of our minds.\" is a Pema Chodron line that exists independently of any portfolio context; it would be screenshotted and shared on its own merits.\n2. Because-of chain: Yes — the literary profundity of the Chodron quote demanded a scale that feels like confrontation (Gallery Wall, dominant block), a condensed weight-800 chassis that can stack 13 words into four tight wall-filling lines without dissolving into body-copy scale (big-shoulders-atkinson), and a terracotta palette chosen because H:22° is the one open corridor AND because burnt orange is the color of heat-without-destruction — the precise emotional register of naming rather than fleeing.\n3. Render feasibility: Yes — Big Shoulders Display condensed at 5.5vw (≈79px at 1440px) stacks \"WE CAN SPEND / OUR WHOLE LIVES / ESCAPING FROM THE / MONSTERS OF OUR MINDS.\" across four lines within a ~1050px block width with zero overflow; the Gallery Wall's 3fr+1fr column split keeps the right golf panel visible without crowding.",
+    "rationale": "The hero phrase arrived without competition. Today's signals are quieter than most — the Tigers lost yesterday, the Travelers Championship is mid-round with a clean leaderboard but no single dramatic upset, and Hacker News offers no cultural moment strong enough to carry a hero. Into this relative quiet, Pema Chodron's line about spending whole lives escaping from monsters of our minds lands with the full weight of a full moon Sunday. It passes every poster test in isolation: it doesn't need context, it doesn't need explanation, and it invites the reader to complete the implication themselves. On a portfolio site that reconstitutes itself daily precisely to avoid the trap of sameness, the phrase is also quietly meta — every rebuild is a small act of not escaping, of showing up and making the thing again.\n\nGallery Wall was the archetype choice because the Chodron line doesn't want to be the only thing on the page (that's Specimen) and it doesn't want to share equal billing with other content (that's a Scroll or Stack). It wants to be the dominant block in a room where other blocks also exist — the golf tournament (Hovland at -20, Scheffler one back on Sunday, a genuine leaderboard drama) earns its own panel as a secondary block, and the signals-plus-projects bottom band grounds the page in practical information. The Gallery Wall's asymmetric blocks-on-a-dark-wall structure gives the quote its weight while refusing to leave the rest of the day unacknowledged.\n\nBig Shoulders Display condensed at weight 800 was the only chassis that could solve the typographic challenge: a 13-word literary quote needs a condensed display face to stack into four tight marquee-scale lines without either shrinking below impact or overflowing a block. The terracotta palette at H:22° is the single open corridor in the color mandate, but it is also the honest choice — burnt orange is the color of heat that illuminates without destroying, the exact emotional register of Chodron's instruction to name the monsters rather than run.",
+    "signalIntegration": "- **Full moon (99.2%):** Small \"● FULL MOON 99.2%\" label in the bottom-right corner of the quote block, absolutely positioned, 0.625rem Atkinson weight 600, taupe.500, letter-spacing widest. The ● glyph reads as illumination icon.\n- **Golf leaderboard** (right panel — primary content of the right block):\n  - Header row: \"TRAVELERS CHAMPIONSHIP\" in 0.5625rem, letter-spacing widest, taupe.500; \"SUNDAY · FINAL ROUND\" immediately below in 0.625rem, accent orange #F05428\n  - Hovland: \"HOVLAND\" in 0.625rem taupe.300 tracked wide; \"-20\" in `clamp(2rem, 3.5vw, 3.5rem)` Big Shoulders weight 800, accent orange #F05428 — dominates the panel\n  - Scheffler: \"-19\" at 1.25rem weight 700, taupe.300; \"SCHEFFLER\" at 0.625rem taupe.400\n  - Cantlay & Bhatia at -15: compact row, 0.625rem taupe.400\n  - Lowry at -13: 0.625rem taupe.500\n  - 1px border-subtle hairline between each row\n- **Tigers score:** Bottom band, signals side: \"DET TIGERS\" label + \"6–8 L\" in 0.75rem Atkinson, taupe.400; preceding day noted as \"SAT 6.27\"\n- **Quote display:** The hero phrase IS the quote. Rendered as giant wall type in Big Shoulders Display weight 800. Attribution \"— Pema Chodron\" in 0.75rem Atkinson Hyperlegible, taupe.400, 24px below the closing period, no italic.\n- **Independence Day countdown:** Bottom band: \"INDEPENDENCE DAY IN 6 DAYS\" in 0.5625rem, letter-spacing widest, taupe.500\n- **Music (Wet Leg · My Morning Jacket):** Bottom band signals: \"WET LEG · MY MORNING JACKET\" in 0.5625rem, taupe.500\n- **GitHub/HN:** Not surfaced in primary layout — signal data noted in bottom band footnote at taupe.500 if space permits"
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "orange": {
+          "50": "#FFF3EE",
+          "100": "#FFE4D6",
+          "200": "#FFC5AC",
+          "300": "#FFA07A",
+          "400": "#FF7A4D",
+          "500": "#F05428",
+          "600": "#C43D14",
+          "700": "#962D0A",
+          "800": "#6A1E05",
+          "900": "#3C0E01"
+        },
+        "taupe": {
+          "50": "#FAF3F0",
+          "100": "#EEE3DC",
+          "200": "#DACAC0",
+          "300": "#D0BEB4",
+          "400": "#B09080",
+          "500": "#9C8578",
+          "600": "#6A4E44",
+          "700": "#4A332E",
+          "800": "#2D1C17",
+          "900": "#180B08"
+        },
+        "night": {
+          "100": "#2E1510",
+          "200": "#240F0B",
+          "300": "#1C0D09",
+          "400": "#140806",
+          "500": "#0D0503",
+          "600": "#080302"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.night.400}",
+          "_light": "{colors.taupe.50}"
+        },
+        "bgCard": {
+          "base": "{colors.night.300}",
+          "_light": "{colors.taupe.100}"
+        },
+        "bgSubtle": {
+          "base": "{colors.night.200}",
+          "_light": "{colors.taupe.100}"
+        },
+        "bgElevated": {
+          "base": "{colors.night.100}",
+          "_light": "{colors.taupe.200}"
+        },
+        "text": {
+          "base": "{colors.taupe.50}",
+          "_light": "{colors.taupe.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.taupe.300}",
+          "_light": "{colors.taupe.600}"
+        },
+        "textMuted": {
+          "base": "{colors.taupe.500}",
+          "_light": "{colors.taupe.400}"
+        },
+        "accent": {
+          "base": "{colors.orange.500}",
+          "_light": "{colors.orange.600}"
+        },
+        "accentLight": {
+          "base": "{colors.orange.300}",
+          "_light": "{colors.orange.400}"
+        },
+        "accentStrong": {
+          "base": "{colors.orange.400}",
+          "_light": "{colors.orange.700}"
+        },
+        "border": {
+          "base": "{colors.taupe.700}",
+          "_light": "{colors.taupe.200}"
+        },
+        "borderSubtle": {
+          "base": "{colors.night.100}",
+          "_light": "{colors.taupe.100}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.15",
+      "normal": "1.5",
+      "loose": "1.8"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.2em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "800"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 22,
+      "s": 90,
+      "l": 55,
+      "name": "terracotta fire"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "orange",
+      "name": "warm taupe"
+    },
+    "mood_word": "confrontational",
+    "color_story": "Terracotta at H:22° is the color of heated iron and unfired clay — it burns without consuming, which is exactly the register Chodron's line inhabits: urgent awareness under a full moon, not panic."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

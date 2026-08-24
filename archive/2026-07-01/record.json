@@ -1,0 +1,320 @@
+{
+  "date": "2026-07-01",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.213Z",
+  "buildId": "1782904634988",
+  "attempts": 1,
+  "brief": "Forensic rose on void-black — CLAUDE / LEAVES / FINGERPRINTS. in Big Shoulders Black at marquee scale, left-aligned, three stacked words lit like UV evidence, the day's marked artifacts catalogued in a single whispered signal strip below.",
+  "rationale": "The hero phrase arrived without competition from the Hacker News signal: 2,099 points — nearly double the next story — for the revelation that Claude Code steganographically embeds hidden identifiers in every request it generates. For a portfolio site that Claude assembles fresh every morning, the meta-reading is impossible to improve on: this page is itself a marked artifact, a signed output, evidence. \"Claude leaves fingerprints.\" is not composed — it is extracted from the fact. It passes the screenshot test because it works simultaneously as accusation, confession, wry observation, and categorical statement. The period is forensic certainty, not decoration.\n\nThe Poster archetype follows because the phrase is a declaration, not an argument. It does not need context or surrounding content to earn its scale — it needs the dark void that makes the mark visible. Three stacked words (CLAUDE / LEAVES / FINGERPRINTS.) at `clamp(5.5rem, 16vw, 20rem)` in Big Shoulders Display Black, left-aligned at `5vw`, render the phrase as a monumental wall of type in the tradition of wanted posters, evidence boards, and warning labels. Big Shoulders Display is the only chassis in the catalog that is simultaneously ultra-condensed enough to accommodate \"FINGERPRINTS.\" at display scale within the viewport AND carries the \"dramatic, poster, condensed, signage\" mood tags that the Poster archetype demands. Atkinson Hyperlegible handles the signal strip at the bottom — readable at 13px, legible as footnote.\n\nHot magenta at H:335° is both mandate-compliant (the only open corridor is 315°–352°) and thematically exact. This is not romantic pink or brand-fashion rose — it is the specific saturated hue of highlighter pens on sensitive documents, UV ink revealed under black light, evidence markers in a dark room. Against `#0C0610` (near-void neutral.950), the accent at `#FF2472` achieves 5.4:1 contrast, satisfying WCAG AA for all text sizes including the display hero. The tinted neutrals carry the rose-purple lean through every surface at low chroma, creating subconscious cohesion between the forensic lamp and the dark room it illuminates. Nothing else shares the stage with the rose: no secondary accent, no competing gradient, no card surfaces cluttering the void. The fingerprint glows. Everything else disappears.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Poster",
+  "signals": {
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Wednesday",
+      "is_weekend": false,
+      "day_index": 3
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/msitarzewski",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "usestrix/strix/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "HKUDS/Vibe-Trading/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "hasaneyldrm/exercises-dataset/stargazers",
+          "description": "",
+          "language": "HTML",
+          "stars": null
+        },
+        {
+          "name": "facebook/astryx/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "John Deere Classic",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Asahi Linux 7.1 Progress Report",
+          "url": "https://asahilinux.org/2026/06/progress-report-7-1/",
+          "score": 94,
+          "by": "pantalaimon"
+        },
+        {
+          "title": "Claude Code is steganographically marking requests",
+          "url": "https://thereallo.dev/blog/claude-code-prompt-steganography",
+          "score": 2099,
+          "by": "kirushik"
+        },
+        {
+          "title": "Newly discovered spider builds spring loaded snare to catch ants",
+          "url": "https://phys.org/news/2026-06-newly-australian-ballista-spider-snare.html",
+          "score": 62,
+          "by": "chimpanzee"
+        },
+        {
+          "title": "Claude Sonnet 5",
+          "url": "https://www.anthropic.com/news/claude-sonnet-5",
+          "score": 1146,
+          "by": "marinesebastian"
+        },
+        {
+          "title": "ArXiv's Next Chapter",
+          "url": "https://blog.arxiv.org/2026/06/30/arxivs-next-chapter/",
+          "score": 144,
+          "by": "subset"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Independence Day",
+          "date": "2026-07-04",
+          "days_away": 3
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "waning gibbous",
+      "illumination": 0.946,
+      "days_into_cycle": 16.96
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "Tobin Sprout"
+      ]
+    },
+    "quote": {
+      "text": "If you read a lot of books, you're considered well-read. But if you watch a lot of TV, you're not considered well-viewed.",
+      "author": "Lily Tomlin"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 1,
+      "day_of_year": 182,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-06-30T23:05Z",
+          "result": "win",
+          "score": "9-3"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:52",
+      "sunset": "19:34",
+      "daylight_hours": 14.7
+    },
+    "date": "2026-07-01"
+  },
+  "hero": {
+    "copy": "Claude leaves fingerprints.",
+    "rationale": "Today's dominant signal is unmistakable: \"Claude Code is steganographically marking requests\" reached 2,099 points on Hacker News — the top story by a factor of two. The revelation is that Claude embeds hidden identifiers in its outputs, silently signing every artifact it touches. For a portfolio site that Claude rebuilds every single day, the meta-reading is extraordinary: this page IS a marked output, a signed artifact, evidence. \"Claude leaves fingerprints.\" passes every poster test in isolation — it reads as accusation, confession, and fact simultaneously, with no context required. The period is not punctuation; it is forensic certainty.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue:** H:335° — forensic rose-magenta. Not pink-girly, not brand-red: the specific saturated hot-pink of UV ink, highlighter markers, and evidence tags. This is the hue of the thing you can't un-see.\n- **Neutral palette** (tinted toward H:335°, very low chroma, rose-purple lean):\n  - 50: `#FCF7FA`\n  - 100: `#F5EEEF`\n  - 200: `#E8DDE4`\n  - 300: `#CEB8C7`\n  - 400: `#A88A9C`\n  - 500: `#7F5E73`\n  - 600: `#5C3D52`\n  - 700: `#3D2237`\n  - 800: `#261423`\n  - 900: `#150A14`\n  - 950: `#0C0610`\n- **Accent color:**\n  - Light: `#FF80AA` (rose.300)\n  - Default: `#FF2472` (rose.500)\n  - Dark: `#8C0036` (rose.800)\n  - Glow: `rgba(255, 36, 114, 0.25)` (used for subtle atmospheric bleed behind type)\n- **Secondary accent:** None. One forensic lamp, one color.\n- **Background:**\n  - Page bg: `#0C0610` (neutral.950 — near-void with rose-purple lean, never pure black)\n  - Card/panel bg: `#150A14` (neutral.900)\n  - Elevated surface: `#261423` (neutral.800)\n- **Text colors:**\n  - Primary: `#FCF7FA` (neutral.50)\n  - Secondary: `#CEB8C7` (neutral.300)\n  - Muted: `#7F5E73` (neutral.500)\n\n**Contrast verification:**\n- `#FCF7FA` on `#0C0610` ≈ 18:1 ✓ (body text)\n- `#FF2472` on `#0C0610` ≈ 5.4:1 ✓ (AA all text sizes, including the hero at display scale)\n- `#CEB8C7` on `#0C0610` ≈ 10.9:1 ✓ (secondary)\n- `#7F5E73` on `#0C0610` ≈ 4.6:1 ✓ (muted — meets AA at large label sizes; not used for body)\n\n---\n\n### 2. Typography\n\n- **Hero phrase rendering:** Big Shoulders Display (display token), weight 900 (Black), ALL CAPS. Three stacked lines: `CLAUDE` / `LEAVES` / `FINGERPRINTS.` Each word on its own line. Size: `font-size: clamp(5.5rem, 16vw, 20rem)`. Line-height: `0.88`. Letter-spacing: `-0.02em`. Color: accent (`#FF2472`). Left-aligned, starting at `5vw` from left edge. The three-line block at 16vw on a 1440px viewport yields ~230px/line, block height ~607px = 67% of 900px viewport — poster-dominant, especially given the void surrounding it.\n- **Line heights:** Hero: `0.88` | Nav/labels: `1.0` | Signal strip: `1.3` | Body: `1.5`\n- **Letter spacings:** Hero: `-0.02em` (tight, condensed face) | Body: `0em` | ALL-CAPS labels/nav: `0.1em` | Signal metadata: `0.06em`\n\n---\n\n### 3. Layout Specification\n\n- **Archetype:** Poster. One dominant typographic element — three stacked words — commands 70–90% of the viewport. Everything else (navigation, signal strip) is demoted to the extreme edges. The phrase is not in a container; the phrase IS the page.\n- **CSS grid structure:**\n  ```\n  display: grid;\n  grid-template-rows: 60px 1fr 80px;\n  grid-template-columns: 1fr;\n  min-height: 100vh;\n  ```\n  Row 1: nav bar (top). Row 2: hero zone (phrase, absolutely positioned or flex-centered). Row 3: signal strip (bottom).\n- **Major dimensions:**\n  - Page: `width: 100vw; min-height: 100vh; max-width: none;`\n  - Hero zone: `min-height: calc(100vh - 140px)` — phrase block centered vertically within this\n  - Hero type block: `padding: 0 5vw` — left-aligned, words stacked, letting \"FINGERPRINTS.\" reach toward the right with natural condensed-font clearance\n  - Nav bar: `height: 60px; padding: 0 5vw; display: flex; align-items: center; justify-content: space-between`\n  - Signal strip: `height: 80px; padding: 0 5vw; display: flex; align-items: center; justify-content: space-between`\n- **Nav placement:** Top bar, full width. Left: site name \"DM\" in accent, small, weight 700, 14px. Right: nav links (Work, About, Contact) in Atkinson Hyperlegible, 12px, ALL CAPS, letter-spacing 0.1em, muted color — demoted, not competing.\n- **Hero phrase grid zone:** Rows 2 (the full middle band), starting at `left: 5vw`. Vertical alignment: `display: flex; align-items: center` within the hero zone — phrase sits at the optical middle. The three words left-aligned create deliberate right-side void — the dark space IS the design; it is where the hidden signature would be if you could see it.\n\n---\n\n### 4. Component Character\n\n- **Border radius:** `0` everywhere. Forensic stark. No softening.\n- **Border treatment:** Borderless. No card borders, no dividing lines — except one: a single `1px solid` accent (`#FF2472`) hairline separating the nav from the hero zone, at 10% opacity, almost invisible. Suggests the evidence tape perimeter.\n- **Shadow:** None on standard elements. Hero type may receive a very subtle `text-shadow: 0 0 80px rgba(255, 36, 114, 0.20)` — the glow of a UV lamp illuminating the hidden mark. Applied to the type only, not to containers.\n- **Density:** Maximally sparse in the hero zone. Dense in the signal strip (multiple signals packed into one horizontal rule, separated by ` · ` middot).\n- **Interactive states:** Nav links hover to accent `#FF2472`. \"FINGERPRINTS.\" text is not interactive. Signal strip items in secondary text gain accent color on hover. Cursor: default on hero type (it is a statement, not a link).\n\n---\n\n### 5. Signal Integration\n\n- **Signal strip location:** Bottom of page, full-width horizontal rule, 80px height, `padding: 0 5vw`. Left side: date + HN headline. Right side: sports + lunar + upcoming holiday.\n- **HN steganography story:** Given top placement in the signal strip: `HN #1 · 2,099 pts` in accent color `#FF2472`, followed by em-dash, then `\"Claude Code is steganographically marking requests\"` in secondary text `#CEB8C7`, truncated with `…`. This is not just a signal — it IS the hero phrase's source; surface it prominently.\n- **Tigers 9–3:** `DET 9 · OPP 3` in accent on a win, inline with other sports signals. Weight 600.\n- **John Deere Classic:** `John Deere Classic — scheduled` in muted text.\n- **Lunar:** `Waning gibbous 94.6%` in muted text `#7F5E73`.\n- **Independence Day:** `Independence Day −3` in muted text, no special treatment — just a timestamp in the signal row.\n- **The quote (Lily Tomlin):** NOT used as hero (used June 27); surfaces as a footnote attribution line if space permits, otherwise dropped — the HN signal dominates.\n- **Signal strip typography:** Atkinson Hyperlegible, 13px, line-height 1.3, a mix of accent, secondary, and muted colors creating a density hierarchy without size variation.",
+    "selfCheck": "1. Hero quotability: Yes — \"Claude leaves fingerprints.\" works as accusation, confession, and double entendre without any context; the period locks it as fact, not conjecture.\n2. Because-of chain: Yes — steganography story (HN 2099pts) mandated forensic/surveillance tone → Poster (one undeniable declaration fills the frame) → big-shoulders-atkinson (ultra-condensed display at marquee scale, tagged Poster/Specimen) → hot magenta H:335° (forensic highlighter, the only open hue corridor, exact register of UV ink on dark) → left-aligned three-word stacked type, everything else demoted to edges.\n3. Render feasibility: Yes — Big Shoulders Display is ultra-condensed (~0.40 width ratio per uppercase char); \"FINGERPRINTS.\" at 16vw on 1440px = 230px font-size yields estimated 13 × 0.40 × 230 = 1196px width, clearing the viewport (1440px) with 5vw left margin (72px) and ~172px right clearance; three-line block at LH 0.88 reaches ~607px height = 67% of 900px — poster-dominant.",
+    "rationale": "The hero phrase arrived without competition from the Hacker News signal: 2,099 points — nearly double the next story — for the revelation that Claude Code steganographically embeds hidden identifiers in every request it generates. For a portfolio site that Claude assembles fresh every morning, the meta-reading is impossible to improve on: this page is itself a marked artifact, a signed output, evidence. \"Claude leaves fingerprints.\" is not composed — it is extracted from the fact. It passes the screenshot test because it works simultaneously as accusation, confession, wry observation, and categorical statement. The period is forensic certainty, not decoration.\n\nThe Poster archetype follows because the phrase is a declaration, not an argument. It does not need context or surrounding content to earn its scale — it needs the dark void that makes the mark visible. Three stacked words (CLAUDE / LEAVES / FINGERPRINTS.) at `clamp(5.5rem, 16vw, 20rem)` in Big Shoulders Display Black, left-aligned at `5vw`, render the phrase as a monumental wall of type in the tradition of wanted posters, evidence boards, and warning labels. Big Shoulders Display is the only chassis in the catalog that is simultaneously ultra-condensed enough to accommodate \"FINGERPRINTS.\" at display scale within the viewport AND carries the \"dramatic, poster, condensed, signage\" mood tags that the Poster archetype demands. Atkinson Hyperlegible handles the signal strip at the bottom — readable at 13px, legible as footnote.\n\nHot magenta at H:335° is both mandate-compliant (the only open corridor is 315°–352°) and thematically exact. This is not romantic pink or brand-fashion rose — it is the specific saturated hue of highlighter pens on sensitive documents, UV ink revealed under black light, evidence markers in a dark room. Against `#0C0610` (near-void neutral.950), the accent at `#FF2472` achieves 5.4:1 contrast, satisfying WCAG AA for all text sizes including the display hero. The tinted neutrals carry the rose-purple lean through every surface at low chroma, creating subconscious cohesion between the forensic lamp and the dark room it illuminates. Nothing else shares the stage with the rose: no secondary accent, no competing gradient, no card surfaces cluttering the void. The fingerprint glows. Everything else disappears.",
+    "signalIntegration": "- **Signal strip location:** Bottom of page, full-width horizontal rule, 80px height, `padding: 0 5vw`. Left side: date + HN headline. Right side: sports + lunar + upcoming holiday.\n- **HN steganography story:** Given top placement in the signal strip: `HN #1 · 2,099 pts` in accent color `#FF2472`, followed by em-dash, then `\"Claude Code is steganographically marking requests\"` in secondary text `#CEB8C7`, truncated with `…`. This is not just a signal — it IS the hero phrase's source; surface it prominently.\n- **Tigers 9–3:** `DET 9 · OPP 3` in accent on a win, inline with other sports signals. Weight 600.\n- **John Deere Classic:** `John Deere Classic — scheduled` in muted text.\n- **Lunar:** `Waning gibbous 94.6%` in muted text `#7F5E73`.\n- **Independence Day:** `Independence Day −3` in muted text, no special treatment — just a timestamp in the signal row.\n- **The quote (Lily Tomlin):** NOT used as hero (used June 27); surfaces as a footnote attribution line if space permits, otherwise dropped — the HN signal dominates.\n- **Signal strip typography:** Atkinson Hyperlegible, 13px, line-height 1.3, a mix of accent, secondary, and muted colors creating a density hierarchy without size variation."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "rose": {
+          "50": "#FFF0F6",
+          "100": "#FFD6E8",
+          "200": "#FFB0CC",
+          "300": "#FF80AA",
+          "400": "#FF4D88",
+          "500": "#FF2472",
+          "600": "#E0005A",
+          "700": "#B80048",
+          "800": "#8C0036",
+          "900": "#5E0024"
+        },
+        "neutral": {
+          "50": "#FCF7FA",
+          "100": "#F5EEEF",
+          "200": "#E8DDE4",
+          "300": "#CEB8C7",
+          "400": "#A88A9C",
+          "500": "#7F5E73",
+          "600": "#5C3D52",
+          "700": "#3D2237",
+          "800": "#261423",
+          "900": "#150A14",
+          "950": "#0C0610"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.950}",
+          "_light": "{colors.neutral.50}"
+        },
+        "bgCard": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgSubtle": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.200}"
+        },
+        "text": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.neutral.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.300}",
+          "_light": "{colors.neutral.600}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.500}",
+          "_light": "{colors.neutral.500}"
+        },
+        "accent": {
+          "base": "{colors.rose.500}",
+          "_light": "{colors.rose.700}"
+        },
+        "accentLight": {
+          "base": "{colors.rose.300}",
+          "_light": "{colors.rose.600}"
+        },
+        "accentDim": {
+          "base": "{colors.rose.900}",
+          "_light": "{colors.rose.100}"
+        },
+        "border": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "borderSubtle": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.2em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700",
+      "black": "900"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 335,
+      "s": 100,
+      "l": 57,
+      "name": "forensic rose"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "rose-purple",
+      "name": "void neutral"
+    },
+    "mood_word": "exposed",
+    "color_story": "Hot magenta at H:335° is the color of highlighter pen on a classified document — the exact forensic register of something hidden being made visible; against near-void dark, it glows like an evidence lamp."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

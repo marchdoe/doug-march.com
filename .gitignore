@@ -41,7 +41,9 @@ references/*.png
 references/*.jpg
 references/*.jpeg
 
-# Generated archive JSON (built from archive/ at build time)
+# Generated archive JSON (projected from archive/*/record.json at build time)
+public/archive-data/
+# Retired by the record projection; still on disk in older checkouts
 public/archive/_data.json
 public/archive/*/_detail.json
 

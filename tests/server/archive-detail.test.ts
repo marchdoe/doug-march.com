@@ -6,6 +6,33 @@ import { _readArchiveDetail } from '../../app/server/archive-detail-impl'
 
 const TEST_ARCHIVE = join(process.cwd(), 'archive', '__test-detail__')
 
+/** A record as `scripts/utils/archive-record.js` writes it. */
+function record(date: string, overrides: Record<string, unknown> = {}) {
+  return {
+    date,
+    era: 'grammar',
+    generatedAt: '2026-08-24T00:00:00.000Z',
+    buildId: '9999999999999',
+    attempts: 1,
+    brief: 'Test brief content',
+    rationale: 'Test rationale paragraph.',
+    filesChanged: ['app/routes/index.tsx', 'elements/preset.ts'],
+    legacyArchetype: 'Specimen',
+    signals: { lunar: { illumination: 0.5 } },
+    hero: { copy: 'A phrase', rationale: 'It earned the scale.', source: null },
+    chassis: 'space-mono-archivo',
+    adBrief: { mood: 'Test mood' },
+    tokens: { colors: { ramps: { lime: { '500': '#b5e61d' } }, semantic: {} } },
+    colorScheme: null,
+    shell: null,
+    verdicts: null,
+    composition: null,
+    lane: null,
+    cost: null,
+    ...overrides,
+  }
+}
+
 describe('archive detail', () => {
   const dateWithBuild = '2099-01-01'
   const dateDir = join(TEST_ARCHIVE, dateWithBuild)
@@ -14,87 +41,79 @@ describe('archive detail', () => {
   const dateNoBuild = '2099-01-02'
   const dateDirNoBuild = join(TEST_ARCHIVE, dateNoBuild)
 
+  const dateNoRecord = '2099-01-03'
+
   beforeAll(() => {
     mkdirSync(buildDir, { recursive: true })
-    writeFileSync(join(dateDir, 'archetype.txt'), 'Specimen')
+    writeFileSync(join(dateDir, 'record.json'), JSON.stringify(record(dateWithBuild)))
     writeFileSync(
-      join(buildDir, 'brief.md'),
-      [
-        '# 2099-01-01',
-        '',
-        '**Design Brief:** Test brief content',
-        '',
-        '## Signals',
-        '',
-        "## Claude's Rationale",
-        '',
-        'Test rationale paragraph.',
-        '',
-        '## Files Changed',
-        '',
-        '- app/routes/index.tsx',
-        '- elements/preset.ts',
-      ].join('\n')
+      join(buildDir, 'trace.json'),
+      JSON.stringify({ steps: [{ name: 'signals-loaded', output: {} }] })
     )
-    writeFileSync(join(buildDir, 'signals-brief.md'), '# Signals Brief\n\n## Mood\nTest mood')
-    writeFileSync(join(buildDir, 'preset.ts'), 'export const preset = {}')
 
     mkdirSync(dateDirNoBuild, { recursive: true })
-    writeFileSync(join(dateDirNoBuild, 'archetype.txt'), 'Poster')
     writeFileSync(
-      join(dateDirNoBuild, 'brief.md'),
-      [
-        '# 2099-01-02',
-        '',
-        '**Design Brief:** Old format brief',
-        '',
-        "## Claude's Rationale",
-        '',
-        'Old rationale.',
-        '',
-        '## Files Changed',
-        '',
-        '- app/routes/index.tsx',
-      ].join('\n')
+      join(dateDirNoBuild, 'record.json'),
+      JSON.stringify(
+        record(dateNoBuild, {
+          era: 'prose',
+          buildId: null,
+          attempts: 0,
+          legacyArchetype: 'Poster',
+          brief: 'Old format brief',
+          rationale: 'Old rationale.',
+          signals: null,
+          adBrief: null,
+          tokens: null,
+          chassis: null,
+        })
+      )
     )
+
+    // A date the backfill has not reached: artifacts, but no record.
+    mkdirSync(join(TEST_ARCHIVE, dateNoRecord), { recursive: true })
   })
 
   afterAll(() => {
     rmSync(TEST_ARCHIVE, { recursive: true, force: true })
   })
 
-  it('reads all artifacts for a date with build directory', () => {
+  it('returns the record plus the raw trace the record leaves out', () => {
     const result = _readArchiveDetail(dateWithBuild, TEST_ARCHIVE)
     if (!result) throw new Error('expected a non-null archive detail')
     expect(result.date).toBe(dateWithBuild)
-    expect(result.archetype).toBe('Specimen')
+    expect(result.legacyArchetype).toBe('Specimen')
     expect(result.brief).toBe('Test brief content')
     expect(result.rationale).toBe('Test rationale paragraph.')
-    expect(result.signalsBrief).toContain('## Mood')
-    expect(result.preset).toContain('export const preset')
+    expect(result.chassis).toBe('space-mono-archivo')
+    expect(result.adBrief).toEqual({ mood: 'Test mood' })
+    expect(result.tokens?.colors.ramps.lime['500']).toBe('#b5e61d')
     expect(result.filesChanged).toEqual(['app/routes/index.tsx', 'elements/preset.ts'])
     expect(result.buildId).toBe('9999999999999')
+    expect(result.trace).toContain('signals-loaded')
     expect(result.hasScreenshot).toBe(false)
   })
 
-  it('falls back to top-level brief.md when no build directory exists', () => {
+  it('reads a date whose era never had a build directory', () => {
     const result = _readArchiveDetail(dateNoBuild, TEST_ARCHIVE)
     if (!result) throw new Error('expected a non-null archive detail')
-    expect(result.archetype).toBe('Poster')
+    expect(result.era).toBe('prose')
+    expect(result.legacyArchetype).toBe('Poster')
     expect(result.brief).toBe('Old format brief')
-    expect(result.rationale).toBe('Old rationale.')
-    expect(result.signalsBrief).toBe('')
-    expect(result.preset).toBe('')
-    expect(result.buildId).toBe('')
+    expect(result.buildId).toBeNull()
+    expect(result.trace).toBe('')
+    expect(result.tokens).toBeNull()
+  })
+
+  it('returns null for a date with no record', () => {
+    expect(_readArchiveDetail(dateNoRecord, TEST_ARCHIVE)).toBeNull()
   })
 
   it('returns null for non-existent date', () => {
-    const result = _readArchiveDetail('9999-99-99', TEST_ARCHIVE)
-    expect(result).toBeNull()
+    expect(_readArchiveDetail('9999-99-99', TEST_ARCHIVE)).toBeNull()
   })
 
   it('returns null for path traversal attempts', () => {
-    // These should return null because the resolved path won't match a valid date dir
     expect(_readArchiveDetail('../../etc', TEST_ARCHIVE)).toBeNull()
     expect(_readArchiveDetail('../../../etc/passwd', TEST_ARCHIVE)).toBeNull()
     expect(_readArchiveDetail('2099-01-01/../../etc', TEST_ARCHIVE)).toBeNull()

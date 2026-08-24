@@ -1,0 +1,366 @@
+{
+  "date": "2026-05-31",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.186Z",
+  "buildId": "1780224408644",
+  "attempts": 1,
+  "brief": "Bebas Neue acid-chartreuse broadsheet dispatch on near-black void — \"the real moat\" lit in #B8E000 across a three-line newspaper headline, column rules dividing domain proof from signal inventory, full moon in the masthead corner.",
+  "rationale": "The phrase \"Domain expertise has always been the real moat\" arrived at 605 Hacker News points today — more than twice the next story — which makes it the day's unambiguous intellectual signal. For a personal portfolio, the claim is perfect: it names the thing the page is trying to demonstrate. You don't need to explain it or contextualise it. It earns marquee scale because it is arguable, quotable, and applies directly to why someone would read this page. The Tigers lost 1–7, every major league is in offseason, and it's the last Sunday of May — the day feels like a reckoning moment, a line drawn at the end of a season before something new. The phrase carries that register.\n\nThe Broadsheet archetype was the only honest container. A Poster would make this look like a motivational wall print. A Specimen would make it a typography exercise. A Broadsheet makes it a front page — and a front page is the correct medium for a declarative editorial claim published on the day it matters. More than that, the broadsheet enacts the thesis: a page dense with signals, projects, work history, scores, and signals is itself a display of accumulated domain knowledge. The layout IS the moat. Bebas Neue + IBM Plex Sans (`bebas-plex`) maps perfectly to this: Bebas Neue is the typeface of newspaper mastheads, transit signage, and official declarations; IBM Plex Sans is the workhorse body face that says \"this was written by someone who knows something.\"\n\nThe acid chartreuse palette at H:78° lands in the narrow open zone of the color mandate (65°–85°) and is genuinely surprising on a dark portfolio. But it earns its presence: chartreuse is the color of warning signs, of neon declarations, of things posted where you cannot look away. Against the near-black void neutral (barely tinted toward the same hue family, so the surfaces breathe), the #B8E000 accent at 13:1 contrast reads like a lit board. The phrase \"THE REAL MOAT\" in chartreuse on the third line of the headline is the chromatic equivalent of underlining — not decorative, emphatic. The full-moon signal at 99.4% finds its natural home in the masthead's right corner, glowing like a second accent without competing with the headline.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Broadsheet",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Education Foundation of AACPS",
+          "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+          "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "Pillars Of Seven",
+          "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Sunday",
+      "is_weekend": true,
+      "day_index": 0
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "microsoft/markitdown/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "harry0703/MoneyPrinterTurbo/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "anthropics/claude-code/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "cursor/plugins/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "revfactory/harness/stargazers",
+          "description": "",
+          "language": "HTML",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Charles Schwab Challenge",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Eric Cole",
+          "position": "1",
+          "score": "-12"
+        },
+        {
+          "name": "Ryan Gerard",
+          "position": "2",
+          "score": "-11"
+        },
+        {
+          "name": "Mac Meissner",
+          "position": "3",
+          "score": "-10"
+        },
+        {
+          "name": "J.J. Spaun",
+          "position": "4",
+          "score": "-10"
+        },
+        {
+          "name": "Russell Henley",
+          "position": "5",
+          "score": "-9"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "The Website Specification",
+          "url": "https://specification.website/",
+          "score": 168,
+          "by": "k1m"
+        },
+        {
+          "title": "London's Free Roof Terraces",
+          "url": "https://diamondgeezer.blogspot.com/2026/05/londons-free-roof-terraces.html",
+          "score": 63,
+          "by": "zeristor"
+        },
+        {
+          "title": "Domain expertise has always been the real moat",
+          "url": "https://www.brethorsting.com/blog/2026/05/domain-expertise-has-always-been-the-real-moat/",
+          "score": 605,
+          "by": "aaronbrethorst"
+        },
+        {
+          "title": "Shantell Sans (2023)",
+          "url": "https://shantellsans.com/process",
+          "score": 262,
+          "by": "aleda145"
+        },
+        {
+          "title": "Avian Visitors",
+          "url": "https://theodore.net/projects/AvianVisitors/",
+          "score": 43,
+          "by": "fdb"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "full moon",
+      "illumination": 0.994,
+      "days_into_cycle": 15.47
+    },
+    "music": {
+      "bands": [
+        "The War on Drugs",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "To the world you may be one person; but to one person you may be the world.",
+      "author": "Dr. Seuss"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 31,
+      "day_of_year": 151,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-30T18:10Z",
+          "result": "loss",
+          "score": "1-7"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:51",
+      "sunset": "19:24",
+      "daylight_hours": 14.5
+    },
+    "date": "2026-05-31"
+  },
+  "hero": {
+    "copy": "Domain expertise has always been the real moat.",
+    "rationale": "The Hacker News front page today leads with \"Domain expertise has always been the real moat\" at 605 points — the day's dominant intellectual signal by a factor of three over the next story. For a portfolio that is itself a proof of domain expertise (Spaceman, FishSticks, 15th Club, TeeTurn — each a founder's specific technical knowledge turned into product), the phrase is an unsolicited mission statement. It doesn't require attribution to land; it earns marquee scale because it names the thing the page is trying to demonstrate. On a Sunday at the end of May, full moon at 99.4%, Risk 8/10, it reads as confident and final — a line someone underlines.",
+    "source": null
+  },
+  "chassis": "bebas-plex",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue** — H:78° (acid chartreuse/yellow-green). The hue of neon signage, tennis balls, phosphorescent paint — colors that demand to be read. Falls inside the open mandate zone (65°–85°). Chosen because \"the real moat\" is a declaration, not a suggestion; this is the color of declarations posted in places where obedience is expected.\n- **Neutral palette (void family — tinted toward H:78°)**:\n  - 50: `#F2F5E4`\n  - 100: `#E2E8C8`\n  - 200: `#C8D2A4`\n  - 300: `#AABA7E`\n  - 400: `#8E9F5C`\n  - 500: `#74833E`\n  - 600: `#596728`\n  - 700: `#404C18`\n  - 800: `#28310A`\n  - 900: `#141904`\n- **Accent color (chartreuse)**:\n  - Light: `#E0F58A`\n  - Default: `#B8E000`\n  - Dark: `#688600`\n  - Glow: `rgba(184, 224, 0, 0.20)` (for hover halos)\n- **Secondary accent** — none\n- **Background**:\n  - Page bg: `#141904` (void.900 — near-black, faint yellow-green undertone)\n  - Card bg: `#28310A` (void.800)\n  - Sidebar bg: `#1C2207` (between void.900 and void.800)\n- **Text colors**:\n  - Primary text: `#F2F5E4` (void.50)\n  - Secondary text: `#AABA7E` (void.300)\n  - Muted text: `#8E9F5C` (void.400)\n\nContrast checks:\n- void.50 (#F2F5E4) on void.900 (#141904): ≈16.8:1 ✓ (WCAG AA/AAA)\n- void.300 (#AABA7E) on void.900: ≈9.2:1 ✓\n- chartreuse.400 (#B8E000) on void.900: ≈13.3:1 ✓\n\n### 2. Typography (chassis-derived)\n\n- **Hero phrase rendering** — `display` token (Bebas Neue), `clamp(52px, 6.5vw, 96px)`. Phrase breaks across 3 lines: \"DOMAIN EXPERTISE / HAS ALWAYS BEEN / THE REAL MOAT\". Full canvas width with `padding: 0 4vw`. Lines justified left, flush to column rules. Line 3 \"THE REAL MOAT\" rendered in `chartreuse.400` (#B8E000); lines 1–2 in void.50. This is the masthead headline.\n- **Section eyebrows** — Bebas Neue, 13px, `letterSpacing: widest` (0.15em), `chartreuse.400`. Used for \"SELECTED WORK\", \"SIGNALS\", \"ABOUT\", \"CAPABILITIES\", etc.\n- **Body copy** — IBM Plex Sans, 16px, `lineHeight: normal` (1.5), `color: void.50`. No smaller than 14px anywhere.\n- **Dateline/metadata** — IBM Plex Sans, 13px, `letterSpacing: wide`, void.300.\n- **Line heights** — Hero: 0.9 (tight; Bebas Neue caps need no leading). Section headers: 1.1. Body: 1.5. Captions: 1.3.\n- **Letter spacings** — Hero: `tight` (-0.04em, Bebas already tracks correctly). Body: `normal` (0). Eyebrows: `widest` (0.15em). Metadata: `wide` (0.06em).\n\n### 3. Layout Specification\n\n- **Archetype** — Broadsheet. The phrase is an editorial thesis, not a poster slogan — it demands density and proof around it. A newspaper broadsheet enacts the claim: a page packed with domain knowledge IS the moat, made visible.\n- **CSS grid/flex structure**:\n  ```css\n  /* Masthead — full width */\n  .masthead { display: flex; align-items: baseline; justify-content: space-between; padding: 16px 4vw 12px; border-bottom: 1px solid #B8E000; }\n  \n  /* Headline band — full width */\n  .headline-band { padding: 32px 4vw 24px; border-bottom: 1px solid #404C18; }\n  \n  /* Content grid — 3 columns */\n  .content-grid { display: grid; grid-template-columns: 1fr 1fr 300px; gap: 0; padding: 0 4vw; }\n  \n  /* Column rules */\n  .col-main-1 { padding: 32px 32px 32px 0; border-right: 1px solid #404C18; }\n  .col-main-2 { padding: 32px 32px 32px 32px; border-right: 1px solid #404C18; }\n  .col-sidebar { padding: 32px 0 32px 32px; }\n  ```\n- **Major dimensions**:\n  - Masthead height: 52px\n  - Headline band height: auto (min ~180px for 3-line Bebas headline at 96px)\n  - Content columns: min-height `60vh`\n  - Max content width: `none` (full canvas, `padding: 0 4vw`)\n  - Sidebar column: fixed `300px`\n  - Section padding: `32px` between sections within columns\n- **Nav placement** — embedded in masthead bar, full-width, left-side: `doug-march.com` in Bebas Neue 20px chartreuse; right-side: dateline + nav links (Work, About) in IBM Plex Sans 13px void.300. No sidebar nav, no bottom nav.\n- **Hero phrase grid zone** — spans full canvas width (columns 1–3), in the dedicated headline band below masthead, above content grid. Left-aligned flush to 4vw padding. Target rendered height: ~200–240px at 1440px viewport (3 lines × ~80px leading).\n\n### 4. Component Character\n\n- **Border radius** — none (0) everywhere. A broadsheet has no rounded corners. Cards, tags, and buttons are all sharp rectangles. This is print register.\n- **Border treatment** — ruled lines: `1px solid #B8E000` for primary rules (masthead bottom, major section dividers); `1px solid #404C18` (void.700) for column separators and card borders.\n- **Shadow** — none. The broadsheet reads by contrast and rule lines, not elevation shadows.\n- **Density** — compact. Content fills to ≥80% canvas utilization. Column gutters are tight (`32px` between column content, not between gutters). Section labels appear immediately above content, no large spacing gaps.\n- **Interactive states** — links: underline appears on hover, color shifts from void.50 to `#B8E000`. Project cards: `background` shifts from void.800 to void.700 on hover. Transitions: `150ms ease`.\n\n### 5. Signal Integration\n\n- **Masthead bar (full-width, above headline)**: Left: `doug-march.com` in Bebas Neue 20px chartreuse. Center: `SUNDAY — MAY 31, 2026 — LAST DAY OF SPRING'S FINAL MONTH` in IBM Plex Sans 12px void.400, `letterSpacing: wider`. Right: `◉ FULL MOON 99.4%` in void.300 13px + nav links.\n- **Headline kicker** (small text above the main headline): `HN TODAY — 605 PTS` in Bebas 13px chartreuse.400, `letterSpacing: widest`. Followed immediately by the 3-line headline.\n- **Sidebar column — SIGNALS block**: Top of sidebar. Section eyebrow: \"SIGNALS\" in Bebas 13px chartreuse. Then tight rows:\n  - `CHARLES SCHWAB CHALLENGE` — Eric Cole –12 / Ryan Gerard –11 / Mac Meissner –10. Scores in `#B8E000`. Names in void.50. Layout: `display: flex; justify-content: space-between`.\n  - `DET TIGERS` — L 1–7 in void.300 with loss styled in void.400.\n  - Thin rule `#404C18` between each row.\n- **Quote treatment** — Dr. Seuss quote placed at bottom of sidebar column, set in IBM Plex Sans italic 14px void.300, preceded by a 2px left border in chartreuse.400. Attribution in Bebas 11px void.400 `letterSpacing: widest`. This is a pull quote, not the hero phrase.\n- **Full moon** — `◉ FULL MOON 99.4%` in masthead, plus a small repeating motif in the sidebar: `●` glyph in chartreuse.400 at 18px beside the lunar section label.\n- **HN story** — \"Domain expertise has always been the real moat\" IS the hero phrase. The attribution `— HACKER NEWS, 605 PTS` appears below the headline in IBM Plex Sans 13px void.400, flush left.\n- **Music signals** (The War on Drugs, My Morning Jacket): listed in the sidebar under \"NOW PLAYING\" eyebrow in Bebas 13px chartreuse. Artist names in void.50 15px.",
+    "selfCheck": "1. Hero quotability: Yes — the phrase is independently circulating at 605 HN points, attributable to a real published essay, quotable and arguable in complete isolation from portfolio context.\n2. Because-of chain: Yes — the phrase is a declarative editorial thesis → Broadsheet (only archetype that enacts the claim via density) → bebas-plex (Bebas Neue is newspaper editorial; IBM Plex Sans is workhorse body; \"declarative\" matches) → acid chartreuse on near-black (warning-sign register, not elegant, not gentle — matches the unapologetic confidence of the phrase) → newspaper grid with column rules (the medium proves the message).\n3. Render feasibility: Yes — Bebas Neue at `clamp(52px, 6.5vw, 96px)` across a 1440px canvas with `8vw` total horizontal padding leaves ~1324px for type; \"DOMAIN EXPERTISE\" (16 chars) at Bebas's condensed ~0.55 char-width ratio at 96px ≈ 845px — comfortable in the left-aligned headline band without overflow.",
+    "rationale": "The phrase \"Domain expertise has always been the real moat\" arrived at 605 Hacker News points today — more than twice the next story — which makes it the day's unambiguous intellectual signal. For a personal portfolio, the claim is perfect: it names the thing the page is trying to demonstrate. You don't need to explain it or contextualise it. It earns marquee scale because it is arguable, quotable, and applies directly to why someone would read this page. The Tigers lost 1–7, every major league is in offseason, and it's the last Sunday of May — the day feels like a reckoning moment, a line drawn at the end of a season before something new. The phrase carries that register.\n\nThe Broadsheet archetype was the only honest container. A Poster would make this look like a motivational wall print. A Specimen would make it a typography exercise. A Broadsheet makes it a front page — and a front page is the correct medium for a declarative editorial claim published on the day it matters. More than that, the broadsheet enacts the thesis: a page dense with signals, projects, work history, scores, and signals is itself a display of accumulated domain knowledge. The layout IS the moat. Bebas Neue + IBM Plex Sans (`bebas-plex`) maps perfectly to this: Bebas Neue is the typeface of newspaper mastheads, transit signage, and official declarations; IBM Plex Sans is the workhorse body face that says \"this was written by someone who knows something.\"\n\nThe acid chartreuse palette at H:78° lands in the narrow open zone of the color mandate (65°–85°) and is genuinely surprising on a dark portfolio. But it earns its presence: chartreuse is the color of warning signs, of neon declarations, of things posted where you cannot look away. Against the near-black void neutral (barely tinted toward the same hue family, so the surfaces breathe), the #B8E000 accent at 13:1 contrast reads like a lit board. The phrase \"THE REAL MOAT\" in chartreuse on the third line of the headline is the chromatic equivalent of underlining — not decorative, emphatic. The full-moon signal at 99.4% finds its natural home in the masthead's right corner, glowing like a second accent without competing with the headline.",
+    "signalIntegration": "- **Masthead bar (full-width, above headline)**: Left: `doug-march.com` in Bebas Neue 20px chartreuse. Center: `SUNDAY — MAY 31, 2026 — LAST DAY OF SPRING'S FINAL MONTH` in IBM Plex Sans 12px void.400, `letterSpacing: wider`. Right: `◉ FULL MOON 99.4%` in void.300 13px + nav links.\n- **Headline kicker** (small text above the main headline): `HN TODAY — 605 PTS` in Bebas 13px chartreuse.400, `letterSpacing: widest`. Followed immediately by the 3-line headline.\n- **Sidebar column — SIGNALS block**: Top of sidebar. Section eyebrow: \"SIGNALS\" in Bebas 13px chartreuse. Then tight rows:\n  - `CHARLES SCHWAB CHALLENGE` — Eric Cole –12 / Ryan Gerard –11 / Mac Meissner –10. Scores in `#B8E000`. Names in void.50. Layout: `display: flex; justify-content: space-between`.\n  - `DET TIGERS` — L 1–7 in void.300 with loss styled in void.400.\n  - Thin rule `#404C18` between each row.\n- **Quote treatment** — Dr. Seuss quote placed at bottom of sidebar column, set in IBM Plex Sans italic 14px void.300, preceded by a 2px left border in chartreuse.400. Attribution in Bebas 11px void.400 `letterSpacing: widest`. This is a pull quote, not the hero phrase.\n- **Full moon** — `◉ FULL MOON 99.4%` in masthead, plus a small repeating motif in the sidebar: `●` glyph in chartreuse.400 at 18px beside the lunar section label.\n- **HN story** — \"Domain expertise has always been the real moat\" IS the hero phrase. The attribution `— HACKER NEWS, 605 PTS` appears below the headline in IBM Plex Sans 13px void.400, flush left.\n- **Music signals** (The War on Drugs, My Morning Jacket): listed in the sidebar under \"NOW PLAYING\" eyebrow in Bebas 13px chartreuse. Artist names in void.50 15px."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "chartreuse": {
+          "50": "#F8FDE6",
+          "100": "#EEFABD",
+          "200": "#E0F58A",
+          "300": "#CAEC4C",
+          "400": "#B8E000",
+          "500": "#8DB300",
+          "600": "#688600",
+          "700": "#4D6400",
+          "800": "#334300",
+          "900": "#1A2100"
+        },
+        "void": {
+          "50": "#F2F5E4",
+          "100": "#E2E8C8",
+          "200": "#C8D2A4",
+          "300": "#AABA7E",
+          "400": "#8E9F5C",
+          "500": "#74833E",
+          "600": "#596728",
+          "700": "#404C18",
+          "800": "#28310A",
+          "900": "#141904"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.void.900}",
+          "_light": "{colors.void.50}"
+        },
+        "surface": {
+          "base": "{colors.void.800}",
+          "_light": "{colors.void.100}"
+        },
+        "surfaceRaised": {
+          "base": "{colors.void.700}",
+          "_light": "{colors.void.200}"
+        },
+        "text": {
+          "base": "{colors.void.50}",
+          "_light": "{colors.void.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.void.300}",
+          "_light": "{colors.void.600}"
+        },
+        "textMuted": {
+          "base": "{colors.void.400}",
+          "_light": "{colors.void.500}"
+        },
+        "accent": {
+          "base": "{colors.chartreuse.400}",
+          "_light": "{colors.chartreuse.600}"
+        },
+        "accentSubtle": {
+          "base": "{colors.chartreuse.800}",
+          "_light": "{colors.chartreuse.100}"
+        },
+        "accentBright": {
+          "base": "{colors.chartreuse.300}",
+          "_light": "{colors.chartreuse.500}"
+        },
+        "border": {
+          "base": "{colors.void.700}",
+          "_light": "{colors.void.200}"
+        },
+        "borderAccent": {
+          "base": "{colors.chartreuse.400}",
+          "_light": "{colors.chartreuse.500}"
+        },
+        "borderSubtle": {
+          "base": "{colors.void.800}",
+          "_light": "{colors.void.100}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.9",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.7"
+    },
+    "letterSpacings": {
+      "tight": "-0.04em",
+      "normal": "0em",
+      "wide": "0.06em",
+      "wider": "0.10em",
+      "widest": "0.15em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 78,
+      "s": 100,
+      "l": 44,
+      "name": "acid chartreuse"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "yellow-green",
+      "name": "void"
+    },
+    "mood_word": "declarative",
+    "color_story": "Acid chartreuse on near-black void is the color of a warning posted somewhere you cannot ignore — the same register as the phrase, which is also a warning posted somewhere you cannot ignore."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

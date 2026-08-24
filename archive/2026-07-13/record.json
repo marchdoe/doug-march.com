@@ -1,0 +1,347 @@
+{
+  "date": "2026-07-13",
+  "era": "shell-directed",
+  "generatedAt": "2026-08-24T15:34:16.224Z",
+  "buildId": "1783941158142",
+  "attempts": 1,
+  "brief": "Glacial-cyan fog Scroll, \"we can lose our way\" murmured in lowercase Bricolage with \"lose\" the only word that thickens into color, a deep-cyan spine holding the mark and the new-moon chip pinned where the light ran out.",
+  "rationale": "The day handed me a quote that ends on an admission — \"we can lose our way\" — and that fragment is the whole design. It is quotable stripped of its context, and it gains force from two other signals: a new moon at 0.4% illumination (literally no light to steer by tonight) and the Tigers being shut out 0–5 despite whatever plan they walked in with. The phrase is about a path, so the archetype had to be a path: The Scroll, a single committed column that descends fold by fold, the fog thickening as you go — fold 1 states the loss, fold 2 unfurls the full Ravikant quote, fold 3 lays down the evidence of the certain-yet-lost.\n\nBricolage Grotesque (bricolage-manrope) is the chassis because the phrase is humble, not aggressive — a condensed signage face like Anton or Bebas would shout a line that wants to murmur. Bricolage renders lowercase at marquee scale with warmth and personality (1.500 ratio, marquee-capable), and it's Scroll-tagged. It also hasn't appeared in the recent chassis rotation, which is a bonus, not the reason. The single accent word \"lose\" in deep cyan is the only place the fog condenses into saturated color.\n\nThe palette is the sharpest decision: after a week of near-void black canvases (violet-void, rose-void, phosphor-black), I pivoted hard to a light, drenched glacial-cyan fog — the surface where people actually lose their way (open water, low cloud, glacier melt). Cyan at 194° sits inside the only open mandate corridor (188°–208°), so the pivot is both creative and compliant. The deep-cyan left spine anchors the fog and pushes color coverage past 65% so the light background never reads as timid white. Nav lives on that vertical spine (away from yesterday's top bar), the footer is a quiet colophon (away from yesterday's data strip), and the brand is a mark-only lockup in single-color cyan — recognizable, unreinvented, sitting cleanly at the top of the spine.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Scroll",
+  "signals": {
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Monday",
+      "is_weekend": false,
+      "day_index": 1
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/OpenCut-app",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/Dicklesworthstone",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "HKUDS/Vibe-Trading/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "moeru-ai/airi/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "Shubhamsaboo/awesome-llm-apps/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Genesis Scottish Open",
+      "status": "Final",
+      "leaders": [
+        {
+          "name": "Tom Kim",
+          "position": "1",
+          "score": "-17"
+        },
+        {
+          "name": "Min Woo Lee",
+          "position": "2",
+          "score": "-15"
+        },
+        {
+          "name": "Johnny Keefer",
+          "position": "3",
+          "score": "-13"
+        },
+        {
+          "name": "Keita Nakajima",
+          "position": "4",
+          "score": "-13"
+        },
+        {
+          "name": "Robert MacIntyre",
+          "position": "5",
+          "score": "-13"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Zig Creator Calls Spade a Spade, Anthropic Blows Smoke",
+          "url": "https://raymyers.org/post/zed-creator-calls-spade-a-spade/",
+          "score": 304,
+          "by": "crowdhailer"
+        },
+        {
+          "title": "Interrail: 6,379Km and 13 Countries over 7 weeks",
+          "url": "https://shkspr.mobi/blog/2026/07/another-ridiculous-interrail-holiday-6379km-and-13-countries-over-7-weeks/",
+          "score": 75,
+          "by": "coinfused"
+        },
+        {
+          "title": "The social physics of conversation: Communication patterns matter",
+          "url": "https://andiroberts.com/citizenship/the-social-physics-of-conversation-citizenship-leadership",
+          "score": 49,
+          "by": "kiyanwang"
+        },
+        {
+          "title": "GhostLock, a stack-UAF that has existed in all Linux distributions for 15 years",
+          "url": "https://nebusec.ai/research/ionstack-part-2/",
+          "score": 288,
+          "by": "ranger_danger"
+        },
+        {
+          "title": "Beavis Ultrasound PnP ISA Sound Card Replica",
+          "url": "https://github.com/schlae/BeavisUltrasound",
+          "score": 66,
+          "by": "mariuz"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "new moon",
+      "illumination": 0.004,
+      "days_into_cycle": 28.96
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "The War on Drugs",
+        "Tobin Sprout"
+      ]
+    },
+    "quote": {
+      "text": "No matter how smart we may think we are, no matter how committed we are to our truth, we can lose our way.",
+      "author": "Kamal Ravikant"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 13,
+      "day_of_year": 194,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-12T17:40Z",
+          "result": "loss",
+          "score": "0-5"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:59",
+      "sunset": "19:31",
+      "daylight_hours": 14.5
+    },
+    "date": "2026-07-13"
+  },
+  "hero": {
+    "copy": "we can lose our way",
+    "rationale": "Lifted from today's quote — Kamal Ravikant: \"No matter how smart we may think we are, no matter how committed we are to our truth, we can lose our way.\" The tail fragment is the part that screenshots: humble, exposed, universal. It rhymes with the day's new moon (0.4% illuminated — no light to navigate by) and with the Tigers being shut out 0–5 despite their certainty. On a portfolio that rebuilds itself blind every morning, \"we can lose our way\" is also a confession worth making out loud.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 194° cyan. Chosen because \"losing your way\" is a navigation failure, and cyan is the color of fog, glacier melt, and open water — the surfaces on which people actually get lost. It also lands cleanly inside the only open mandate corridor (188°–208°), a deliberate hard pivot away from the last week of near-void-black canvases.\n- **Neutral palette (cyan-tinted cool fog)** — 50 `#f2f7f8`, 100 `#e6eef0`, 200 `#cfdcdf`, 300 `#aebfc3`, 400 `#7e9297`, 500 `#5b6f74`, 600 `#45585c`, 700 `#344549`, 800 `#222f32`, 900 `#131c1e`\n- **Accent color (glacial cyan)** — light `#38c4cf`, default `#14a8b6`, dark `#0b8794`, glow `#71dbe2`\n- **Secondary accent** — none. One committed hue carries the page.\n- **Background** — page bg `#d3f5f7` (light drenched fog), card bg `#ecfbfc`, sidebar/spine bg `#106b76` (deep cyan anchor)\n- **Text colors** — primary `#131c1e`, secondary `#344549`, muted `#45585c` (all ≥4.5:1 on the fog bg). On the deep-cyan spine: `#ecfbfc`.\n\n### 2. Typography\n- **Hero phrase rendering** — Bricolage Grotesque display, lowercase for a reflective/humble register (not a shout), set as `display` token at `clamp(56px, 10vw, 148px)`. Stacked to 2–3 lines: \"we can / lose our / way\", with the single word **lose** carried in accent.dark `#0b8794` — the one place the fog thickens into color. Weight 800.\n- **Line heights** — hero `0.92`, subhead `1.1`, body `1.6`, loose captions `1.8`.\n- **Letter spacings** — hero `-0.03em`, body `0`, smallcaps/labels `0.12em`.\n\n### 3. Layout Specification\n- **Archetype** — Scroll. The phrase is about a path, so the page IS a path: one committed column descending through folds, the fog literally deepening as you go — fold 1 states the loss, fold 2 gives the whole quote, fold 3 lays out the day's evidence of the certain who still lost their way.\n- **CSS grid/flex structure** — `display: grid; grid-template-columns: 72px 1fr;` (left spine + main scroll column). Main column is `display: flex; flex-direction: column;` with fold sections each `min-height` bounded.\n- **Major dimensions**:\n  - Hero fold height: `min-height: 92vh`\n  - Left spine width: `72px`, full height, fill `#106b76`\n  - Max content width: `max-width: none`; main column padding `96px 8vw`; body pull-quote pinned to `≤ 32ch` measure inside its fold for the full quote.\n  - Section spacing: folds separated by `clamp(64px, 12vh, 128px)`.\n- **Nav placement** — left spine (vertical), 72px wide, deep-cyan fill: mark at top, three rotated caps nav labels (`work / about / index`) reading bottom-to-top, small.\n- **Hero phrase grid zone** — main column, fold 1, vertically centered, occupying ~82% of column width and rows spanning the first 92vh. Intended render ~144px cap height on 1440px.\n\n### 4. Component Character\n- **Border radius** — cards `8px`, buttons `8px`, tags `4px`.\n- **Border treatment** — mostly borderless; where needed, 1px `#cfdcdf` (neutral.200) hairlines.\n- **Shadow** — soft, cyan-cast fog depth: `0 20px 60px -24px rgba(16,107,118,0.28)`.\n- **Density** — spacious in fold 1–2, tighter grid in fold 3 evidence cards (`repeat(auto-fit, minmax(240px,1fr))`).\n- **Interactive states** — hover lifts card `-2px` and deepens shadow; links underline in accent.dark on hover.\n\n### 5. Signal Integration\n- **Where signals live** — fold 3 \"the certain, and the lost\" evidence band as a card grid; a thin new-moon chip pinned into fold 1's lower-left corner.\n- **Sports scores** — Tigers `0–5` shutout styled as the lead evidence card: score in Bricolage numerals, label \"detroit, shut out despite the plan\" in muted caps. Tom Kim `-17 · Scottish Open` shown as counterpoint card (\"someone who didn't\").\n- **Quote** — the full Ravikant quote is the fold-2 pull-quote at large scale with attribution \"— Kamal Ravikant\"; the hero phrase is its extracted tail.\n- **New moon** — `new moon · 0.4% lit` chip in fold 1 corner, accent.dark text — \"no light to steer by.\"\n- **Music / HN** — Wet Leg · The War on Drugs · Tobin Sprout as a small footer colophon line; HN \"GhostLock — 15 years unseen\" folded into evidence as a lost-your-way artifact.",
+    "selfCheck": "1. Hero quotability: Yes — \"we can lose our way\" is a standalone confession, screenshot-ready, not descriptive boilerplate.\n2. Because-of chain: Yes — path-phrase → Scroll (a path down) → Bricolage (expressive but humble, Scroll-tagged) → glacial-cyan fog (the surface you get lost on) → left-spine descending layout.\n3. Render feasibility: Yes — 10vw/148px capped, lowercase, 2–3 line stack fills fold 1 at 1440×900 without overflow.\n4. Canvas floor feasible: Yes — colored fog bg + deep-cyan spine + full-bleed folds clear the 65% Scroll floor easily.",
+    "rationale": "The day handed me a quote that ends on an admission — \"we can lose our way\" — and that fragment is the whole design. It is quotable stripped of its context, and it gains force from two other signals: a new moon at 0.4% illumination (literally no light to steer by tonight) and the Tigers being shut out 0–5 despite whatever plan they walked in with. The phrase is about a path, so the archetype had to be a path: The Scroll, a single committed column that descends fold by fold, the fog thickening as you go — fold 1 states the loss, fold 2 unfurls the full Ravikant quote, fold 3 lays down the evidence of the certain-yet-lost.\n\nBricolage Grotesque (bricolage-manrope) is the chassis because the phrase is humble, not aggressive — a condensed signage face like Anton or Bebas would shout a line that wants to murmur. Bricolage renders lowercase at marquee scale with warmth and personality (1.500 ratio, marquee-capable), and it's Scroll-tagged. It also hasn't appeared in the recent chassis rotation, which is a bonus, not the reason. The single accent word \"lose\" in deep cyan is the only place the fog condenses into saturated color.\n\nThe palette is the sharpest decision: after a week of near-void black canvases (violet-void, rose-void, phosphor-black), I pivoted hard to a light, drenched glacial-cyan fog — the surface where people actually lose their way (open water, low cloud, glacier melt). Cyan at 194° sits inside the only open mandate corridor (188°–208°), so the pivot is both creative and compliant. The deep-cyan left spine anchors the fog and pushes color coverage past 65% so the light background never reads as timid white. Nav lives on that vertical spine (away from yesterday's top bar), the footer is a quiet colophon (away from yesterday's data strip), and the brand is a mark-only lockup in single-color cyan — recognizable, unreinvented, sitting cleanly at the top of the spine.",
+    "signalIntegration": "- **Where signals live** — fold 3 \"the certain, and the lost\" evidence band as a card grid; a thin new-moon chip pinned into fold 1's lower-left corner.\n- **Sports scores** — Tigers `0–5` shutout styled as the lead evidence card: score in Bricolage numerals, label \"detroit, shut out despite the plan\" in muted caps. Tom Kim `-17 · Scottish Open` shown as counterpoint card (\"someone who didn't\").\n- **Quote** — the full Ravikant quote is the fold-2 pull-quote at large scale with attribution \"— Kamal Ravikant\"; the hero phrase is its extracted tail.\n- **New moon** — `new moon · 0.4% lit` chip in fold 1 corner, accent.dark text — \"no light to steer by.\"\n- **Music / HN** — Wet Leg · The War on Drugs · Tobin Sprout as a small footer colophon line; HN \"GhostLock — 15 years unseen\" folded into evidence as a lost-your-way artifact."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "cyan": {
+          "50": "#ecfbfc",
+          "100": "#d3f5f7",
+          "200": "#a8ebef",
+          "300": "#71dbe2",
+          "400": "#38c4cf",
+          "500": "#14a8b6",
+          "600": "#0b8794",
+          "700": "#106b76",
+          "800": "#155760",
+          "900": "#124851"
+        },
+        "neutral": {
+          "50": "#f2f7f8",
+          "100": "#e6eef0",
+          "200": "#cfdcdf",
+          "300": "#aebfc3",
+          "400": "#7e9297",
+          "500": "#5b6f74",
+          "600": "#45585c",
+          "700": "#344549",
+          "800": "#222f32",
+          "900": "#131c1e"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.cyan.100}",
+          "_light": "{colors.cyan.100}"
+        },
+        "cardBg": {
+          "base": "{colors.cyan.50}",
+          "_light": "{colors.cyan.50}"
+        },
+        "spineBg": {
+          "base": "{colors.cyan.700}",
+          "_light": "{colors.cyan.700}"
+        },
+        "text": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.700}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.600}",
+          "_light": "{colors.neutral.600}"
+        },
+        "textOnSpine": {
+          "base": "{colors.cyan.50}",
+          "_light": "{colors.cyan.50}"
+        },
+        "accent": {
+          "base": "{colors.cyan.600}",
+          "_light": "{colors.cyan.600}"
+        },
+        "accentGlow": {
+          "base": "{colors.cyan.300}",
+          "_light": "{colors.cyan.300}"
+        },
+        "border": {
+          "base": "{colors.neutral.200}",
+          "_light": "{colors.neutral.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.92",
+      "snug": "1.1",
+      "normal": "1.6",
+      "loose": "1.8"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0",
+      "wide": "0.02em",
+      "wider": "0.06em",
+      "widest": "0.12em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "4px",
+      "md": "8px",
+      "lg": "16px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "800"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 194,
+      "s": 82,
+      "l": 40,
+      "name": "glacial cyan"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "cyan",
+      "name": "cool fog"
+    },
+    "mood_word": "adrift",
+    "color_story": "A drenched glacial-cyan fog — the color of open water and low cloud where landmarks dissolve — so the whole page feels like the moment you realize you've lost the path."
+  },
+  "shell": {
+    "nav": "left spine (72px vertical rail, mark top, rotated caps labels)",
+    "footer": "colophon block (music + build note, single line)",
+    "brand_lockup": "mark-only-md",
+    "brand_color_mode": "single-color"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "APPROVED",
+      "feedback": "APPROVED",
+      "ts": 1783940808431
+    }
+  ],
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

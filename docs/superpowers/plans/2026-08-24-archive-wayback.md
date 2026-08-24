@@ -53,70 +53,86 @@ in one commit or not at all.
 
 ---
 
-## Phase 0 — Restore the link (independent, ship first)
+## Phase 0 — Restore the link — SHIPPED (PR #164, 2026-08-24)
 
 The archive link has been missing from every build since 2026-07-12. This phase is
 independent of everything else and should land tonight.
 
 ### Task 0.1: Orchestrator-owned archive link
-- [ ] `scripts/templates/__root.tsx.template` — render the link inside `RootDocument`,
+- [x] `scripts/templates/__root.tsx.template` — render the link inside `RootDocument`,
       **outside** `<Layout>`, at the end of document flow. Add a `{{ARCHIVE_COUNT}}`
       placeholder beside the existing `{{OG_META}}` and `{{GOOGLE_FONTS_URL}}`.
-- [ ] Copy: `Archive — <n> designs`. Target: `/archive`.
-- [ ] Style: `text` at reduced opacity on `bg`, `accent` on hover. Only these tokens —
+- [x] Copy: `Archive — <n> designs`. Target: `/archive`.
+- [x] Style: `text` at reduced opacity on `bg`, `accent` on hover. Only these tokens —
       `textMuted` is absent on one night in five.
-- [ ] `scripts/utils/chassis.js` — `renderRootTemplate()` substitutes the count.
+- [x] `scripts/utils/chassis.js` — `renderRootTemplate()` substitutes the count.
       Source the count from the archive date list, not from the stale `_data.json`.
 
 ### Task 0.2: Regression check
-- [ ] Playwright, `site-health` project: assert the link is **visible** on the built
+- [x] Playwright, `site-health` project: assert the link is **visible** on the built
       output, not merely present in the markup. A design using full-bleed `position:
       fixed` or `overflow: hidden` can bury it.
-- [ ] Comment the test with `2026-07-12` and why it exists.
+- [x] Comment the test with `2026-07-12` and why it exists.
 
 ### Task 0.3: Delete the production fixture
-- [ ] Remove `public/archive/2099-01-02/`. It carries only a `_detail.json` and will
+- [x] Remove `public/archive/2099-01-02/`. It carries only a `_detail.json` and will
       otherwise eventually render as a real day.
 
 ---
 
-## Phase 1 — The record (independent of Phase 2)
+## Phase 1 — The record — SHIPPED (2026-08-24)
 
 Implements #153. Can run in parallel with Phase 0.
 
+**As built.** Four notes where the work differed from this plan:
+- The object-literal reader that `preset.ts` needs is its own module,
+  `scripts/utils/preset-parser.js`, rather than living inside `archive-record.js`.
+  It parses all 110 archived presets, including the two nights (07-18, 07-24) that
+  nested everything under `theme.extend`, which this plan did not anticipate.
+- One anomaly, not three. `2026-04-28` and `2026-04-30` resolve cleanly: the build
+  that shipped is the one whose `brief.md` matches the date-level copy `archive()`
+  writes as the day's latest. Only `2026-04-14` remains, having no artifacts at all.
+- `app/routes/archive.$date.tsx` reads the record instead of regex-parsing a preset
+  string in the browser. Phase 2 deletes the route, but leaving it broken in the
+  meantime was worse. The dev panel still receives the raw `trace.json`, which the
+  record deliberately drops — its step inspector replays it.
+- The screenshot stays at `public/archive/<date>.png` for now; moving it belongs
+  with the rest of Task 2.4, and splitting that move across two phases would leave
+  the preserved namespace half-cleared.
+
 ### Task 1.1: Record builder module
-- [ ] New `scripts/utils/archive-record.js`. Build one date's record per #153's schema.
-- [ ] Era from the hardcoded date table, never from observing which files are present.
+- [x] New `scripts/utils/archive-record.js`. Build one date's record per #153's schema.
+- [x] Era from the hardcoded date table, never from observing which files are present.
       Observation cannot tell "this stratum did not exist yet" from "this build dropped
       a file", which is the distinction the era stamp was chosen to buy.
-- [ ] **Pick the build that shipped, not the newest by timestamp.** `2026-04-28` and
+- [x] **Pick the build that shipped, not the newest by timestamp.** `2026-04-28` and
       `2026-04-30` have a newest build dir that is a failed retry carrying no artifacts.
       This corrects a decision recorded on #153; the prototype found it.
-- [ ] Parse `signals-brief.md` by heading, handling both format eras (83 dates modern,
+- [x] Parse `signals-brief.md` by heading, handling both format eras (83 dates modern,
       27 older).
-- [ ] Parse `preset.ts` into a token record. Handle **both** bare (`50:`) and quoted
+- [x] Parse `preset.ts` into a token record. Handle **both** bare (`50:`) and quoted
       (`'50':`) keys — expecting only the bare form silently drops 16 dates.
-- [ ] Lift only `signals-loaded.output` from `trace.json`. Never store the whole trace.
-- [ ] Drop today's free-prose `archetype.txt`; keep the 8-name vocabulary as
+- [x] Lift only `signals-loaded.output` from `trace.json`. Never store the whole trace.
+- [x] Drop today's free-prose `archetype.txt`; keep the 8-name vocabulary as
       `legacyArchetype` on the 121 dates that have it.
-- [ ] Log any date whose artifacts disagree with its era. Expect 3 today: `2026-04-14`,
+- [x] Log any date whose artifacts disagree with its era. Expect 3 today: `2026-04-14`,
       and the two build-picking cases above once they are understood rather than fixed.
-- [ ] Tests: schema shape, era boundaries, both preset key styles, build-picking,
+- [x] Tests: schema shape, era boundaries, both preset key styles, build-picking,
       anomaly detection, a prose-era date, a grammar-era date.
 
 ### Task 1.2: Pipeline writes the record
-- [ ] `scripts/utils/archiver.js` — write `archive/<date>/record.json` at build time.
-- [ ] No `schemaVersion`. Carry `generatedAt` and treat the file as a rebuildable cache.
+- [x] `scripts/utils/archiver.js` — write `archive/<date>/record.json` at build time.
+- [x] No `schemaVersion`. Carry `generatedAt` and treat the file as a rebuildable cache.
 
 ### Task 1.3: Backfill
-- [ ] `scripts/backfill-archive-records.js` — write records for all 123 dates.
-- [ ] Idempotent. Re-running produces identical output.
+- [x] `scripts/backfill-archive-records.js` — write records for all 123 dates.
+- [x] Idempotent. Re-running produces identical output.
 
 ### Task 1.4: `generate-archive-json.js` becomes a projection
-- [ ] Read `record.json`; emit the public copy. Stop re-deriving from `brief.md` prose.
-- [ ] Retire the regex parsing in `app/server/archive-impl.ts` and
+- [x] Read `record.json`; emit the public copy. Stop re-deriving from `brief.md` prose.
+- [x] Retire the regex parsing in `app/server/archive-impl.ts` and
       `archive-detail-impl.ts`.
-- [ ] Output moves to `/archive-data/` (Phase 2 depends on this; see Task 2.4).
+- [x] Output moves to `/archive-data/` (Phase 2 depends on this; see Task 2.4).
 
 ---
 

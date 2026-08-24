@@ -1,0 +1,374 @@
+{
+  "date": "2026-06-06",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.190Z",
+  "buildId": "1780742960850",
+  "attempts": 1,
+  "brief": "Electric chartreuse Split on void-green black — Rumi's declaration in four stepped lines of 100px Bebas acid-lime across the left half, the work catalog and Memorial Tournament signals compressed into the right, one hue family, no hedging.",
+  "rationale": "The hero phrase arrived from Rumi via today's `signals.quote` with its argument already complete: this portfolio is itself the demonstration. A site that redesigns its own visual identity every single morning — reading signals, making decisions, tearing down yesterday — is a structure that can only exist because someone is walking their own road daily. \"It's your road, and yours alone.\" is not a quote *about* the portfolio; it *is* the portfolio's operating logic stated plainly. The truncation to the opening clause is deliberate: the second half (\"no one can walk it for you\") is implied, and implication at marquee scale is more powerful than completion.\n\nThe Split archetype followed without argument. If the declaration is that there is YOUR road and there is evidence of it, the layout must make those two things physically adjacent but distinct. Left half = the claim; right half = the proof. The catalog of work on the right — FishSticks, 15th Club, Spaceman, the whole arc — is the road walked. Every project row is a step. The archetype is not illustrating the phrase; it is structuring the argument spatially. Bebas Neue was the only honest chassis choice: the condensed, institutional, road-sign weight of Bebas renders the phrase at the scale it deserves without the warmth-for-its-own-sake of Bricolage or the stadium-shout of Big Shoulders. This phrase is not warm and not a stadium — it is a clean directive. IBM Plex Sans in the right panel is the workhorse catalog body, contrasting the display register cleanly.\n\nElectric lime at H:112° lands squarely in the mandated 108°–125° zone, but the mandate is the least interesting reason to use it. June 6 on a Saturday: the Memorial Tournament is live at Muirfield Village, J.T. Poston at −9 on a green that is specifically *that* color; the Tigers won 7–3 yesterday on outfield grass; 14.6 hours of daylight pressing full summer light into every outdoor surface. This is the hue of the day empirically. On #080D02 (void-green near-black), #7AFF18 electric lime at 100px Bebas Neue does not merely display — it *radiates*. The hero phrase is the accent color; the accent color is the hero phrase; they are the same commitment at different scales.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Split",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "21 Hrs On The Moon",
+          "description": "To mark the recent Artemis Moon Mission and honour the legacy of the first moon landing in 1969, we celebrate the experiments carried out in those historic...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0d7b8f419a3938435907.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAJulBJREFUeAHsvWmbXLeRJooqFjeRlERJFLVbsiTbsiXb8riX6Z62u9sz88ydb/f7PM/9MH9k/tD8gZ7rp6/b7rblRbJky63d2khKFPedrO0mTtUposBAIFbgJJmvVMzMk0BE...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "THE RED",
+          "description": "This is THE RED. Built to be bold. A historic landmark of character and color that has defined Chicago’s skyline since 1972.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1db853d921f825300359.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAFkXJJREFUeAHs/VeTbNmV54ktj4gbWssr8qbWSAAJUUB1tZpuMw7NSJqNGT8EX/kx+MxXfgPS+DrNmeZ0oapRlUBBFERKZCKBFFeE1lr5rP/xszx2nHCP8IgbwsPv72d2wj1c...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Education Foundation of AACPS",
+          "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+          "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Saturday",
+      "is_weekend": true,
+      "day_index": 6
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "NousResearch/hermes-agent/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/chopratejas",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "CopilotKit/CopilotKit/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "lfnovo/open-notebook/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/affaan-m",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "the Memorial Tournament pres. by Workday",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "J.T. Poston",
+          "position": "1",
+          "score": "-9"
+        },
+        {
+          "name": "Ryan Gerard",
+          "position": "2",
+          "score": "-8"
+        },
+        {
+          "name": "Sam Burns",
+          "position": "3",
+          "score": "-6"
+        },
+        {
+          "name": "Tommy Fleetwood",
+          "position": "4",
+          "score": "-4"
+        },
+        {
+          "name": "Eric Cole",
+          "position": "5",
+          "score": "-3"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "GrapheneOS user reported to authorities for using GrapheneOS",
+          "url": "https://discuss.grapheneos.org/d/36134-grapheneos-user-reported-to-authorities-for-using-grapheneos",
+          "score": 203,
+          "by": "Cider9986"
+        },
+        {
+          "title": "Zig Zen Update",
+          "url": "https://codeberg.org/ziglang/zig/commit/621844bde551ee1a9b8142d7d146d1fa804247a2",
+          "score": 42,
+          "by": "tosh"
+        },
+        {
+          "title": "How LLMs work",
+          "url": "https://www.0xkato.xyz/how-llms-actually-work/",
+          "score": 376,
+          "by": "0xkato"
+        },
+        {
+          "title": "The intracies of modern camera lens repair (2024)",
+          "url": "https://salvagedcircuitry.com/sigma-45mm.html",
+          "score": 176,
+          "by": "transistor-man"
+        },
+        {
+          "title": "S&P 500 rejects SpaceX, also blocking entry for OpenAI and Anthropic",
+          "url": "https://arstechnica.com/tech-policy/2026/06/sp-500-blocks-fast-spacex-entry-wont-waive-rule-for-unprofitable-ai-firms/",
+          "score": 510,
+          "by": "maltalex"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "last quarter",
+      "illumination": 0.572,
+      "days_into_cycle": 21.47
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "Tobin Sprout"
+      ]
+    },
+    "quote": {
+      "text": "It's your road, and yours alone, others may walk it with you, but no one can walk it for you.",
+      "author": "Rumi"
+    },
+    "season": {
+      "season": "summer",
+      "month": 6,
+      "day": 6,
+      "day_of_year": 157,
+      "month_name": "June"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-06-05T22:40Z",
+          "result": "win",
+          "score": "7-3"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:49",
+      "sunset": "19:28",
+      "daylight_hours": 14.6
+    },
+    "date": "2026-06-06"
+  },
+  "hero": {
+    "copy": "It's your road, and yours alone.",
+    "rationale": "Rumi's opening clause from today's `signals.quote` earns the hero slot not because it's famous but because it is the exact thesis of this site: a portfolio that tears itself down and rebuilds every morning is the most literal enactment of a road only one person can walk. The truncation to \"It's your road, and yours alone.\" is deliberate — the second clause (\"others may walk it with you, but no one can walk it for you\") is implicit, leaving the declaration without apology or softening. On a Saturday in June, with 14.6 hours of daylight and a Tigers win banked, the phrase carries lightness and ownership simultaneously.",
+    "source": null
+  },
+  "chassis": "bebas-plex",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue:** 112° (lime/chartreuse) — mandated 108°–125° zone honored; genuinely the correct hue for a Saturday in June, Memorial Tournament in progress, Tigers on the grass, maximum summer saturation\n- **Neutral palette (forest family, tinted toward H:112°):**\n  - 50: #D0E8B0\n  - 100: #A8C880\n  - 200: #7CAA4C\n  - 300: #547828\n  - 400: #385212\n  - 500: #243608\n  - 600: #182505\n  - 700: #111A03\n  - 800: #0D1404\n  - 900: #080D02\n- **Accent:** light = #C3EE92 / default = #7AFF18 / dark = #409200 / glow = rgba(122,255,24,0.15)\n- **Secondary accent:** none — single hue family, full commitment\n- **Background:** page bg = #080D02 (forest.900), left panel bg = #060B02 (deeper), right panel bg = #0D1404 (forest.800, subtle separation)\n- **Text:** primary = #E6F9D2 (mist.200), secondary = #B8E090 (mist.400), muted = #65A038 (mist.600), hero phrase = #7AFF18 (lime.400 — the phrase IS the accent)\n\nContrast verification:\n- Hero phrase (#7AFF18) on left panel (#060B02): ~15:1 ✓✓\n- Primary text (#E6F9D2) on right panel (#0D1404): ~14:1 ✓✓\n- Secondary text (#B8E090) on bg: ~10:1 ✓✓\n- Muted text (#65A038) on bg: ~5.5:1 ✓ (passes AA for normal text)\n\n### 2. Typography (chassis-derived)\n\n- **Hero phrase rendering:** Bebas Neue at `clamp(64px, 7vw, 100px)`, color lime.400 (#7AFF18), line-height 0.88, letter-spacing 0.01em. Rendered as a 4-line stepped cascade in the left panel:\n  ```\n  IT'S YOUR\n  ROAD,\n  AND YOURS\n  ALONE.\n  ```\n  Intentional stepped/short-line rhythm — \"ROAD,\" and \"ALONE.\" land short, the unresolved space after each is the road metaphor made visible.\n- **Rumi attribution:** IBM Plex Sans, 12px, mist.600 (#65A038), letter-spacing 0.10em, uppercase: `— RUMI`\n- **Right panel labels:** Bebas Neue, 11px, lime.400, letter-spacing 0.14em — \"SELECTED WORK\", \"TODAY\", \"D.M.\"\n- **Project titles:** IBM Plex Sans, 16px, mist.200, weight 400, letter-spacing 0\n- **Project metadata:** IBM Plex Sans, 13px, mist.600, weight 400\n- **Signal values:** Bebas Neue, 18–22px, lime.400, letter-spacing 0.04em\n- **Line heights:** 0.88 for hero, 1.1 for section labels, 1.5 for body/catalog rows\n- **Letter spacings:** 0.01em for hero, 0.14em for small-caps labels, 0 for project titles\n\n### 3. Layout Specification\n\n- **Archetype:** Split. Left half = the declaration, right half = the proof. The road is named on the left; the work done on it is cataloged on the right. Two active surfaces, no center void. Not recently used (last 7 days are Scroll, Poster, Specimen, Gallery Wall, Index, Broadsheet, Specimen).\n\n- **CSS grid structure:**\n  ```css\n  display: grid;\n  grid-template-columns: 45fr 55fr;\n  min-height: 100vh;\n  width: 100%;\n  max-width: none;\n  ```\n\n- **Left panel (45% = ~648px at 1440):**\n  ```css\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  padding: 80px 52px;\n  background: #060B02;\n  min-height: 100vh;\n  position: relative;\n  ```\n\n- **Right panel (55% = ~792px at 1440):**\n  ```css\n  display: flex;\n  flex-direction: column;\n  padding: 64px 52px;\n  background: #0D1404;\n  min-height: 100vh;\n  border-left: 1px solid #182505;\n  ```\n\n- **Major dimensions:**\n  - Both panels: `min-height: 100vh`\n  - Hero phrase block: approximately 100px × 4 lines × 0.88 = ~352px centered in a 900px panel — 274px above/below breathing room\n  - Left panel content width: ~544px (648px − 104px padding)\n  - Right panel content width: ~688px (792px − 104px padding)\n  - Max content width: none\n\n- **Nav placement:** Bottom of right panel — three text links (Work, About, Contact) in IBM Plex Sans 12px mist.500, letter-spacing 0.08em, arranged as `position: absolute; bottom: 48px; left: 52px` within the right panel.\n\n- **Date mark:** Top-left of left panel at `position: absolute; top: 48px; left: 52px` — \"06.06.2026\" in IBM Plex Sans 11px, mist.700/forest.300 (#547828), letter-spacing 0.10em. Very quiet presence.\n\n- **Hero phrase grid zone:** Left panel, vertically centered. `flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 24px` — the 4-line Bebas block + 16px gap + attribution line.\n\n### 4. Component Character\n\n- **Border radius:** none (0px) everywhere — the road has no rounded corners. Cards = 0, buttons = 0, tags = 0.\n- **Border treatment:** `1px solid {colors.forest.600}` (#182505) for horizontal rules between sections in the right panel. Single precise hairlines.\n- **Shadow:** none. Depth via color value contrast between forest.900 and forest.800.\n- **Density:** Left panel = spacious (one idea, vast breathing room). Right panel = compact (every row carries weight, tight leading, 1px rules between sections).\n- **Interactive states:** Project title hover → `color: lime.400 (#7AFF18)`, transition `0.08s ease`. Nav links → `color: mist.200`, transition `0.08s`. No underlines, no backgrounds.\n- **Scrollbehavior:** Right panel may scroll independently on mobile; desktop is fixed 100vh.\n\n### 5. Signal Integration\n\n- **Signal placement:** A \"TODAY\" section in the lower third of the right panel, after the work catalog and a hairline rule.\n\n- **Tigers 7–3:** Rendered as two-column item — `TIGERS` in Bebas 11px lime.400 letter-spacing widest / `7–3` in Bebas 22px lime.400 / `W` in Bebas 11px mist.600 superscript. One line.\n\n- **Golf — Poston −9 at the Memorial:** `POSTON` label / `−9` in same treatment as Tigers score. Single line. `MEMORIAL TOURNAMENT` in 10px mist.700 beneath as context.\n\n- **Moon — last quarter 57.2%:** `☽` glyph in mist.400, 14px + `LAST QUARTER` in IBM Plex Sans 11px mist.600, letter-spacing 0.08em.\n\n- **The quote IS the hero phrase:** Attribution `— RUMI` in IBM Plex Sans 12px mist.600, letter-spacing 0.10em, uppercase, sits 24px below the final line of the hero phrase in the left panel.\n\n- **Awwwards signal:** \"21 HRS ON THE MOON\" from today's Awwwards earns a quiet footnote in the right panel — `21 HRS ON THE MOON` in Bebas 13px mist.700, one line, after the sports signals. The Artemis/moon connection echoes the lunar phase and today's date (June 6 — history remembered).\n\n- **Day context:** The date `06.06.2026` at top-left of left panel is the only reference to the date; no explicit D-Day note (would feel imposed on a portfolio surface).",
+    "selfCheck": "1. Hero quotability: Yes — \"It's your road, and yours alone.\" is Rumi at his most declarative, quotable entirely without context, and self-referential on a portfolio that rebuilds itself daily.\n2. Because-of chain: Yes — \"your road alone\" → Split (left=declaration/right=proof of the road taken) → bebas-plex (Bebas for road-sign authority, Plex for catalog clarity) → electric lime H:112° (mandated zone, summer Saturday, golf fairway, Tigers win) → 4-line stepped cascade left panel at 100px max.\n3. Render feasibility: Yes — at `clamp(64px, 7vw, 100px)` Bebas Neue in 4 lines, the longest lines (\"IT'S YOUR\" / \"AND YOURS\") are ~9 chars × ~0.5em average × 100px = ~450px against a ~544px content width; no overflow risk on 1440×900.",
+    "rationale": "The hero phrase arrived from Rumi via today's `signals.quote` with its argument already complete: this portfolio is itself the demonstration. A site that redesigns its own visual identity every single morning — reading signals, making decisions, tearing down yesterday — is a structure that can only exist because someone is walking their own road daily. \"It's your road, and yours alone.\" is not a quote *about* the portfolio; it *is* the portfolio's operating logic stated plainly. The truncation to the opening clause is deliberate: the second half (\"no one can walk it for you\") is implied, and implication at marquee scale is more powerful than completion.\n\nThe Split archetype followed without argument. If the declaration is that there is YOUR road and there is evidence of it, the layout must make those two things physically adjacent but distinct. Left half = the claim; right half = the proof. The catalog of work on the right — FishSticks, 15th Club, Spaceman, the whole arc — is the road walked. Every project row is a step. The archetype is not illustrating the phrase; it is structuring the argument spatially. Bebas Neue was the only honest chassis choice: the condensed, institutional, road-sign weight of Bebas renders the phrase at the scale it deserves without the warmth-for-its-own-sake of Bricolage or the stadium-shout of Big Shoulders. This phrase is not warm and not a stadium — it is a clean directive. IBM Plex Sans in the right panel is the workhorse catalog body, contrasting the display register cleanly.\n\nElectric lime at H:112° lands squarely in the mandated 108°–125° zone, but the mandate is the least interesting reason to use it. June 6 on a Saturday: the Memorial Tournament is live at Muirfield Village, J.T. Poston at −9 on a green that is specifically *that* color; the Tigers won 7–3 yesterday on outfield grass; 14.6 hours of daylight pressing full summer light into every outdoor surface. This is the hue of the day empirically. On #080D02 (void-green near-black), #7AFF18 electric lime at 100px Bebas Neue does not merely display — it *radiates*. The hero phrase is the accent color; the accent color is the hero phrase; they are the same commitment at different scales.",
+    "signalIntegration": "- **Signal placement:** A \"TODAY\" section in the lower third of the right panel, after the work catalog and a hairline rule.\n\n- **Tigers 7–3:** Rendered as two-column item — `TIGERS` in Bebas 11px lime.400 letter-spacing widest / `7–3` in Bebas 22px lime.400 / `W` in Bebas 11px mist.600 superscript. One line.\n\n- **Golf — Poston −9 at the Memorial:** `POSTON` label / `−9` in same treatment as Tigers score. Single line. `MEMORIAL TOURNAMENT` in 10px mist.700 beneath as context.\n\n- **Moon — last quarter 57.2%:** `☽` glyph in mist.400, 14px + `LAST QUARTER` in IBM Plex Sans 11px mist.600, letter-spacing 0.08em.\n\n- **The quote IS the hero phrase:** Attribution `— RUMI` in IBM Plex Sans 12px mist.600, letter-spacing 0.10em, uppercase, sits 24px below the final line of the hero phrase in the left panel.\n\n- **Awwwards signal:** \"21 HRS ON THE MOON\" from today's Awwwards earns a quiet footnote in the right panel — `21 HRS ON THE MOON` in Bebas 13px mist.700, one line, after the sports signals. The Artemis/moon connection echoes the lunar phase and today's date (June 6 — history remembered).\n\n- **Day context:** The date `06.06.2026` at top-left of left panel is the only reference to the date; no explicit D-Day note (would feel imposed on a portfolio surface)."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "lime": {
+          "50": "#F3FDE8",
+          "100": "#E1F7C8",
+          "200": "#C3EE92",
+          "300": "#9ED85C",
+          "400": "#7AFF18",
+          "500": "#58C400",
+          "600": "#409200",
+          "700": "#2C6200",
+          "800": "#1A3C00",
+          "900": "#0D1E00"
+        },
+        "forest": {
+          "50": "#D0E8B0",
+          "100": "#A8C880",
+          "200": "#7CAA4C",
+          "300": "#547828",
+          "400": "#385212",
+          "500": "#243608",
+          "600": "#182505",
+          "700": "#111A03",
+          "800": "#0D1404",
+          "900": "#080D02"
+        },
+        "mist": {
+          "50": "#FBFFF5",
+          "100": "#F2FDE6",
+          "200": "#E6F9D2",
+          "300": "#D4F0B8",
+          "400": "#B8E090",
+          "500": "#8EC864",
+          "600": "#65A038",
+          "700": "#447820",
+          "800": "#2C500E",
+          "900": "#1A3006"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.forest.900}",
+          "_light": "{colors.mist.50}"
+        },
+        "bgCard": {
+          "base": "{colors.forest.800}",
+          "_light": "{colors.mist.100}"
+        },
+        "bgSidebar": {
+          "base": "{colors.forest.800}",
+          "_light": "{colors.mist.100}"
+        },
+        "text": {
+          "base": "{colors.mist.200}",
+          "_light": "{colors.forest.800}"
+        },
+        "textSecondary": {
+          "base": "{colors.mist.400}",
+          "_light": "{colors.forest.500}"
+        },
+        "textMuted": {
+          "base": "{colors.mist.600}",
+          "_light": "{colors.forest.400}"
+        },
+        "accent": {
+          "base": "{colors.lime.400}",
+          "_light": "{colors.lime.600}"
+        },
+        "accentLight": {
+          "base": "{colors.lime.200}",
+          "_light": "{colors.lime.500}"
+        },
+        "accentDark": {
+          "base": "{colors.lime.600}",
+          "_light": "{colors.lime.700}"
+        },
+        "border": {
+          "base": "{colors.forest.600}",
+          "_light": "{colors.mist.300}"
+        },
+        "borderSubtle": {
+          "base": "{colors.forest.700}",
+          "_light": "{colors.mist.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.14em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 112,
+      "s": 100,
+      "l": 55,
+      "name": "electric lime"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "lime-chartreuse",
+      "name": "void-forest"
+    },
+    "mood_word": "charged",
+    "color_story": "Electric chartreuse on void-green black — the specific hue of a golf fairway under full June sun, acid-bright against the darkest dark, the phrase glowing like a signal you can't miss."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

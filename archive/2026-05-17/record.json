@@ -1,0 +1,373 @@
+{
+  "date": "2026-05-17",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.175Z",
+  "buildId": "1779014807689",
+  "attempts": 1,
+  "brief": "Big Shoulders cascade on an ocean void — \"SURF.\" arrives at 14vw in three tide-building lines, the period marked in foam-indigo on a field of absolute deep water, every signal from the day filed quietly in the 72px strip below the wave.",
+  "rationale": "The hero phrase arrived from Dan Millman's signal quote and earned its place at the exact convergence of three independent streams: the new moon (day 1.47 of a new cycle — a structural beginning), Sunday in mid-May (the longest-daylight stretch of the year building), and a color mandate that — through the process of eliminating the last six builds' primary hues — opened a window of exactly 235°–262°, which is the precise frequency of deep ocean water. The wave metaphor and the available palette arrived at the same destination without coordination. That kind of serendipity gets to be the hero.\n\nThe Specimen archetype was the only honest container for this phrase. A Poster could have done it, but Poster implies a designed field around the type — a relationship between type and surface. Specimen eliminates that relationship: the type IS the surface. At three cascade scales (\"WE CAN\" → \"LEARN TO\" → \"SURF.\" at 14vw), the phrase reads as a wave building from the left margin and cresting at the bottom line. Each line is taller than the last. The monosyllable \"SURF.\" — the payload of the whole sentence — arrives at maximum scale with the only chromatic event on the page: a foam-indigo period. Big Shoulders Display condensed was mandatory; this is the typeface of signage, of public declarations, of things printed on walls, and \"WE CAN LEARN TO SURF.\" needs to feel less like a caption and more like something chiseled.\n\nThe palette does no work except hold the void. Deep ocean indigo (#060616 to #F2F2FF) is a single frequency sustained across the entire canvas — no warmth, no competing colors, no neutralization. The forbidden zones created by six consecutive builds eliminated every other hue family, and what remained was the ocean. The single accent event (foam.400 #8E8EE8 on the period of \"SURF.\") functions as the foam at the crest of a breaking wave: the only moment of color, and it lands on punctuation rather than a letter, so it reads as emphasis on the sentence itself rather than decoration of a glyph.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Specimen",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Pillars Of Seven",
+          "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Pedal Mafia | Event Micro Site",
+          "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Sunday",
+      "is_weekend": true,
+      "day_index": 0
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "oven-sh/bun/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "K-Dense-AI/scientific-agent-skills/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/obra",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "Anil-matcha/Open-Generative-AI/stargazers",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "supertone-inc/supertonic/stargazers",
+          "description": "",
+          "language": "Swift",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "PGA Championship",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Alex Smalley",
+          "position": "1",
+          "score": "-6"
+        },
+        {
+          "name": "Matti Schmid",
+          "position": "2",
+          "score": "-4"
+        },
+        {
+          "name": "Nick Taylor",
+          "position": "3",
+          "score": "-4"
+        },
+        {
+          "name": "Aaron Rai",
+          "position": "4",
+          "score": "-4"
+        },
+        {
+          "name": "Jon Rahm",
+          "position": "5",
+          "score": "-4"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Zerostack – A Unix-inspired coding agent written in pure Rust",
+          "url": "https://crates.io/crates/zerostack/1.0.0",
+          "score": 403,
+          "by": "gidellav"
+        },
+        {
+          "title": "Mozilla to UK regulators: VPNs are essential privacy and security tools",
+          "url": "https://blog.mozilla.org/netpolicy/2026/05/15/mozilla-to-uk-regulators-vpns-are-essential-privacy-and-security-tools-and-should-not-be-undermined/",
+          "score": 217,
+          "by": "WithinReason"
+        },
+        {
+          "title": "A nicer voltmeter clock",
+          "url": "https://lcamtuf.substack.com/p/a-nicer-voltmeter-clock",
+          "score": 190,
+          "by": "surprisetalk"
+        },
+        {
+          "title": "Colossus: The Forbin Project",
+          "url": "https://en.wikipedia.org/wiki/Colossus:_The_Forbin_Project",
+          "score": 106,
+          "by": "doener"
+        },
+        {
+          "title": "Hosting a website on an 8-bit microcontroller",
+          "url": "https://maurycyz.com/projects/mcusite/",
+          "score": 133,
+          "by": "zdw"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "new moon",
+      "illumination": 0.024,
+      "days_into_cycle": 1.47
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "The War on Drugs",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "Life comes at us in waves. We can't predict or control those waves, but we can learn to surf.",
+      "author": "Dan Millman"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 17,
+      "day_of_year": 137,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-16T17:10Z",
+          "result": "loss",
+          "score": "1-2"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:00",
+      "sunset": "19:12",
+      "daylight_hours": 14.2
+    },
+    "date": "2026-05-17"
+  },
+  "hero": {
+    "copy": "WE CAN LEARN TO SURF.",
+    "rationale": "Dan Millman's quote arrived in today's signal feed and the last six words earn their own sentence. Sunday + new moon (day 1.47 of a new cycle, 2.4% illumination) + mid-May spring with 14.2 hours of daylight: this is structurally a beginning, not a continuation. The phrase works as portfolio manifesto — Doug March as someone who reads the environment and adapts — and it becomes serendipitously perfect when the color mandate forces the palette into the deep ocean-indigo band (235°–262°). The wave metaphor and the available hues arrived at the same destination independently. A period at the end makes it declaration, not suggestion.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue** — H:245° (deep ocean indigo). The color mandate permits only 235°–262°, which landed directly on the blue-indigo range of open-ocean depth. No creative deviation needed — the constraint IS the concept.\n\n**Neutral palette** (tinted toward H:245°, very low chroma, named \"void\"):\n- 50:  #F2F2FF\n- 100: #E0E0F8\n- 200: #BEBEDD\n- 300: #9494BB\n- 400: #686898\n- 500: #444472\n- 600: #2C2C54\n- 700: #1A1A38\n- 800: #0E0E24\n- 900: #060616\n\n**Accent color** (foam indigo, H:245° lifted high):\n- light: #DDDDF8\n- default: #8E8EE8\n- dark: #4444CC\n- glow: rgba(142,142,232,0.18)\n\n**Secondary accent**: none. One chromatic frequency, fully committed.\n\n**Background**:\n- Page bg: #060616 (void.900 — the ocean at absolute depth)\n- Card bg: #0E0E24 (void.800)\n- Sidebar bg: #0E0E24\n\n**Text colors**:\n- Primary text: #F2F2FF (void.50 — foam white, near-white with indigo cast)\n- Secondary text: #9494BB (void.300)\n- Muted text: #686898 (void.400)\n\n---\n\n### 2. Typography (chassis-derived)\n\n**Hero phrase rendering** — `display` token at three cascade sizes using `clamp()`:\n- Line 1 \"WE CAN\" — `clamp(44px, 7vw, 112px)`, weight 700, tracking `-0.04em`\n- Line 2 \"LEARN TO\" — `clamp(60px, 9.5vw, 148px)`, weight 700, tracking `-0.04em`\n- Line 3 \"SURF.\" — `clamp(88px, 14vw, 220px)`, weight 700, tracking `-0.04em`, the period in #8E8EE8 (foam.400 accent)\n\nAll three lines left-aligned at `padding-left: 6vw`. The cascade reads as a wave building — each line taller than the last, the monosyllable \"SURF.\" arriving at maximum scale with the chromatic event of the accented period.\n\n**Line heights**:\n- Hero lines: `0.88` (tight — the condensed display letterforms compress vertically)\n- Body/signal: `1.5`\n- Labels: `1.1`\n\n**Letter spacings**:\n- Hero: `-0.04em` (tight — counters Big Shoulders' natural openness at display scale)\n- Body: `0em`\n- Smallcaps/labels: `0.1em` (wider — needed for short uppercase labels)\n- Attribution line: `0.05em`\n\n---\n\n### 3. Layout Specification\n\n**Archetype** — Specimen. The phrase is the design. No sidebar, no competing panels — the type occupies 85%+ of the viewport canvas. The Specimen archetype lets Big Shoulders Display do the one thing it does best: fill a wall with the weight of a public declaration.\n\n**CSS grid/flex structure**:\n```\ndisplay: grid;\ngrid-template-rows: 64px 1fr 72px;\ngrid-template-columns: 1fr;\nmin-height: 100vh;\nmax-width: none;\n```\n- Row 1: nav bar\n- Row 2: hero phrase zone (fills all remaining space)\n- Row 3: signal strip\n\n**Major dimensions**:\n- Hero/featured area height: `calc(100vh - 64px - 72px)` (fills between nav and signal strip)\n- Max content width: `none` — full canvas, `padding: 0 6vw`\n- Nav height: `64px`\n- Signal strip height: `72px`\n- Section padding: `6vw` horizontal throughout\n\n**Nav placement** — full-width top bar, `64px` tall:\n```\ndisplay: flex;\njustify-content: space-between;\nalign-items: center;\npadding: 0 6vw;\nborder-bottom: 1px solid void.700 (#1A1A38);\n```\nLeft: \"DOUG MARCH\" in Atkinson Hyperlegible, 13px, `letter-spacing: 0.1em`, void.300\nRight: nav links (Work, About, Contact) in Atkinson, 13px, void.400, hover → void.50\n\n**Hero phrase grid zone** — occupies the full `1fr` row. Within it:\n```\ndisplay: flex;\nflex-direction: column;\njustify-content: center;\npadding: 0 6vw;\ngap: 0;\n```\nThe three lines stack with `line-height: 0.88`, creating a tight cascade. Vertically centered in the row, sits roughly 10vh from vertical center to feel weighted (surfer's low center of gravity).\n\n---\n\n### 4. Component Character\n\n**Border radius** — `none` throughout. Specimen mode: no rounded softness. The type is the form.\n\n**Border treatment** — minimal: only the nav bottom rule (1px, void.700) and signal strip top rule (1px, void.700). No card borders.\n\n**Shadow** — none. The dark ground provides all depth.\n\n**Density** — maximally spacious in the hero zone (the phrase breathes in the dark ocean). Compact in the signal strip (small labels, tight rows).\n\n**Interactive states**:\n- Nav links: `color` transition 150ms; hover moves from void.400 → void.50\n- Signal items: no hover state (read-only data)\n- Project mentions if any: subtle underline on hover in foam.400\n\n---\n\n### 5. Signal Integration\n\n**Where signal elements live** — exclusively in the 72px signal strip at the bottom of the viewport. Full-width, `display: flex; align-items: center; gap: 48px; padding: 0 6vw;`. Separated from hero by a 1px void.700 rule.\n\n**Golf (PGA Championship)** — leftmost signal item. Label: \"PGA\" in void.400, 11px, `letter-spacing: 0.1em`. Score: \"Smalley –6\" in void.50, 13px, foam.400 for the \"–6\". No decoration.\n\n**Tigers loss** — \"DET 1–2\" in void.300, 13px. The \"L\" indicator in void.400 muted — a quiet loss, not dramatized.\n\n**Lunar** — \"● NEW MOON\" in void.400, 11px. The bullet character (●) in foam.400.\n\n**Hacker News** — \"ZEROSTACK 403↑\" in void.400, 11px. \"403↑\" in void.300.\n\n**Quote attribution** — rightmost, flush right: \"— DAN MILLMAN\" in Atkinson, 11px, void.500, `letter-spacing: 0.05em`. This anchors where the hero phrase came from without explaining it.\n\n**Music** — not in the signal strip (too much for the strip). Suppressed today in service of the Specimen discipline.",
+    "selfCheck": "1. Hero quotability: Yes — \"WE CAN LEARN TO SURF.\" is a complete declarative sentence from a named author that stands alone as a poster, a manifesto, and a life stance; someone would screenshot this line.\n2. Because-of chain: Yes — phrase (waves/surfing) demanded Specimen (type fills the canvas like a wave face), Specimen demanded Big Shoulders Display (condensed athletic signage at poster scale), phrase+archetype demanded deep ocean indigo H:245° (the only open color window perfectly intersects the metaphor), palette demanded the three-cascade left-anchored layout where \"SURF.\" arrives at maximum scale with the one chromatic event.\n3. Render feasibility: Yes — Big Shoulders Display condensed at clamp(88px,14vw,220px) on 1440×900 renders \"SURF.\" at ~202px in a single word with natural glyph width well inside 94vw; the three-line cascade fits comfortably in calc(100vh - 136px) without overflow.",
+    "rationale": "The hero phrase arrived from Dan Millman's signal quote and earned its place at the exact convergence of three independent streams: the new moon (day 1.47 of a new cycle — a structural beginning), Sunday in mid-May (the longest-daylight stretch of the year building), and a color mandate that — through the process of eliminating the last six builds' primary hues — opened a window of exactly 235°–262°, which is the precise frequency of deep ocean water. The wave metaphor and the available palette arrived at the same destination without coordination. That kind of serendipity gets to be the hero.\n\nThe Specimen archetype was the only honest container for this phrase. A Poster could have done it, but Poster implies a designed field around the type — a relationship between type and surface. Specimen eliminates that relationship: the type IS the surface. At three cascade scales (\"WE CAN\" → \"LEARN TO\" → \"SURF.\" at 14vw), the phrase reads as a wave building from the left margin and cresting at the bottom line. Each line is taller than the last. The monosyllable \"SURF.\" — the payload of the whole sentence — arrives at maximum scale with the only chromatic event on the page: a foam-indigo period. Big Shoulders Display condensed was mandatory; this is the typeface of signage, of public declarations, of things printed on walls, and \"WE CAN LEARN TO SURF.\" needs to feel less like a caption and more like something chiseled.\n\nThe palette does no work except hold the void. Deep ocean indigo (#060616 to #F2F2FF) is a single frequency sustained across the entire canvas — no warmth, no competing colors, no neutralization. The forbidden zones created by six consecutive builds eliminated every other hue family, and what remained was the ocean. The single accent event (foam.400 #8E8EE8 on the period of \"SURF.\") functions as the foam at the crest of a breaking wave: the only moment of color, and it lands on punctuation rather than a letter, so it reads as emphasis on the sentence itself rather than decoration of a glyph.",
+    "signalIntegration": "**Where signal elements live** — exclusively in the 72px signal strip at the bottom of the viewport. Full-width, `display: flex; align-items: center; gap: 48px; padding: 0 6vw;`. Separated from hero by a 1px void.700 rule.\n\n**Golf (PGA Championship)** — leftmost signal item. Label: \"PGA\" in void.400, 11px, `letter-spacing: 0.1em`. Score: \"Smalley –6\" in void.50, 13px, foam.400 for the \"–6\". No decoration.\n\n**Tigers loss** — \"DET 1–2\" in void.300, 13px. The \"L\" indicator in void.400 muted — a quiet loss, not dramatized.\n\n**Lunar** — \"● NEW MOON\" in void.400, 11px. The bullet character (●) in foam.400.\n\n**Hacker News** — \"ZEROSTACK 403↑\" in void.400, 11px. \"403↑\" in void.300.\n\n**Quote attribution** — rightmost, flush right: \"— DAN MILLMAN\" in Atkinson, 11px, void.500, `letter-spacing: 0.05em`. This anchors where the hero phrase came from without explaining it.\n\n**Music** — not in the signal strip (too much for the strip). Suppressed today in service of the Specimen discipline."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "ocean": {
+          "50": "#EEEEF8",
+          "100": "#D8D8F2",
+          "200": "#B0B0E4",
+          "300": "#8080D0",
+          "400": "#5555B8",
+          "500": "#3030A0",
+          "600": "#1E1E88",
+          "700": "#121268",
+          "800": "#0A0A48",
+          "900": "#04042A"
+        },
+        "void": {
+          "50": "#F2F2FF",
+          "100": "#E0E0F8",
+          "200": "#BEBEDD",
+          "300": "#9494BB",
+          "400": "#686898",
+          "500": "#444472",
+          "600": "#2C2C54",
+          "700": "#1A1A38",
+          "800": "#0E0E24",
+          "900": "#060616"
+        },
+        "foam": {
+          "50": "#FAFAFF",
+          "100": "#F0F0FF",
+          "200": "#DDDDF8",
+          "300": "#B8B8F0",
+          "400": "#8E8EE8",
+          "500": "#6666DC",
+          "600": "#4444CC",
+          "700": "#2828B0",
+          "800": "#161690",
+          "900": "#0A0A70"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.void.900}"
+        },
+        "bgCard": {
+          "base": "{colors.void.800}"
+        },
+        "bgSidebar": {
+          "base": "{colors.void.800}"
+        },
+        "bgElevated": {
+          "base": "{colors.void.700}"
+        },
+        "text": {
+          "base": "{colors.void.50}"
+        },
+        "textMuted": {
+          "base": "{colors.void.300}"
+        },
+        "textDim": {
+          "base": "{colors.void.400}"
+        },
+        "textFaint": {
+          "base": "{colors.void.500}"
+        },
+        "accent": {
+          "base": "{colors.foam.400}"
+        },
+        "accentBright": {
+          "base": "{colors.foam.300}"
+        },
+        "accentDim": {
+          "base": "{colors.foam.700}"
+        },
+        "accentSubtle": {
+          "base": "{colors.foam.200}"
+        },
+        "border": {
+          "base": "{colors.void.700}"
+        },
+        "borderSubtle": {
+          "base": "{colors.void.600}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.04em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.2em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 245,
+      "s": 72,
+      "l": 18,
+      "name": "deep ocean indigo"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "indigo",
+      "name": "void indigo"
+    },
+    "mood_word": "oceanic",
+    "color_story": "The color mandate's only open window (235°–262°) is the exact frequency of deep ocean water at depth — pure serendipity for a surfing phrase; the dark indigo void becomes the wave face and the near-white text becomes foam at the crest."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

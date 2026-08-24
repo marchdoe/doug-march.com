@@ -1,0 +1,361 @@
+{
+  "date": "2026-07-19",
+  "era": "shell-directed",
+  "generatedAt": "2026-08-24T15:34:16.233Z",
+  "buildId": "1784457879757",
+  "attempts": 1,
+  "brief": "Fluoro-magenta sports-page Broadsheet — Jordan's \"THERE ARE NO SHORTCUTS.\" stenciled white across risograph pink, ink-plum columns ruling in the live Open leaderboard and a 7–0 Tigers box score under a nameplate masthead.",
+  "rationale": "The day's quote arrived pre-stenciled: Michael Jordan's \"There are no shortcuts in life.\" Stripped to its marquee — THERE ARE NO SHORTCUTS — it is a locker-room decal, quotable in isolation and thematically load-bearing for a site that refuses to reuse yesterday's build and grinds out a new one every dawn. The two sports signals are the corroborating evidence: The Open still in progress with Sam Burns grinding to −10, and a Tigers 7–0 shutout — both wins assembled one clean stroke, one clean inning at a time. A phrase that lives on the front page of a sports section wants the front page of a sports section, so the whole composition becomes one: a Broadsheet, fresh against three straight days of Stack/Specimen/Poster and the honest home for a banner headline riding above dense, ruled columns of the day's proof.\n\nBig Shoulders Display carries the banner — the most athletic, muscular, signage-grade face in the catalog (1.618 ratio), condensed enough to hold \"THERE ARE NO / SHORTCUTS.\" across the full sheet as a knockout two-liner without tipping into overflow, while Atkinson Hyperlegible keeps the leaderboard, box score, and lede columns crisp and tabular. The color mandate scorched nearly the whole wheel and left only the 309°–343° window clean; instead of hedging into a timid pink I read it at full commitment as risograph fluoro-magenta poster stock — 332°, 100% saturation — the boldest possible reading for an 8/10 risk day. One color drenches the entire sheet (coverage ~72%); ink-plum neutrals (tinted toward the same 332°) handle rules, column dividers, and the knockout blocks that host the leader row and the giant Tigers \"7\".\n\nLayout is pure newspaper: a 64px ink masthead nameplate carries the horizontal-md lockup (single-color, inheriting ink via currentColor), a centered dateline, and inline caps nav — a top-bar treatment unused in the last three shells and native to the form. Below it, the fluoro banner; below that, three ruled columns holding the full Jordan lede, THE OPEN — LIVE, and the Tigers box with music and almanac. A single folio bar closes the page with edition, moon/sun almanac, and build note — distinct from the recently-used data-strip and caption-band footers. Flat, hard-ruled, radius-zero: a print object, not a template.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Broadsheet",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "/zeroz Brand Site",
+          "description": "Brand site for /zeroz, a self-conditioning food born from Otsuka Pharmaceutical Co., Ltd.'s \"Active Inner Resource\" concept. Chapters unfold through 3DCG...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4687f45bf83853560900.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The Record Institute",
+          "description": "A museum-grade digital archive dedicated to preserving pre-2000 print ephemera. Multilingual, meticulously catalogued, and free—safeguarding vintage advertising...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a44c228af614956383273.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADASIAAhEBAxEB/8QAHQAAAAcBAQEAAAAAAAAAAAAAAAECAwQFBgcICf/E...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The History of Muse Group",
+          "description": "SANDS STUDIO created an interactive website for Muse Group — a living digital archive connecting its music ecosystem, products, and nearly a century of...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a43c670e1dae067356082.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAMAAACU33alAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAJBQTFRFLCoq/v7+9/f37O3r1NTUUPP+9c0Cgv4EtbW1yqwmeMkxTb/GjJCQgYMlcGHyc17qdlzkeFnee1fYflXSflLLhE7FZGtqlTT97DQCmDuUnjaHojN+XEyppS91qStsridg6ws/th9OvRk/wxMwaCOzREZDSDluaCtPiR41Oi84JCQjSwkiHBwc...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Sunday",
+      "is_weekend": true,
+      "day_index": 0
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "Robbyant/lingbot-map/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "apache/ossie/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "PostHog/posthog/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/ibelick",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/rohitg00",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "The Open",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Sam Burns",
+          "position": "1",
+          "score": "-10"
+        },
+        {
+          "name": "Ryan Fox",
+          "position": "2",
+          "score": "-8"
+        },
+        {
+          "name": "Si Woo Kim",
+          "position": "3",
+          "score": "-8"
+        },
+        {
+          "name": "Ryan Gerard",
+          "position": "4",
+          "score": "-7"
+        },
+        {
+          "name": "Lucas Herbert",
+          "position": "5",
+          "score": "-7"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Qwen3.8 is launching and going open-weight soon",
+          "url": "https://twitter.com/Alibaba_Qwen/status/2078759124914098291",
+          "score": 177,
+          "by": "nh43215rgb"
+        },
+        {
+          "title": "Transcribe.cpp",
+          "url": "https://workshop.cjpais.com/projects/transcribe-cpp",
+          "score": 542,
+          "by": "sebjones"
+        },
+        {
+          "title": "Speech Recognition and TTS in less than 500kb",
+          "url": "https://github.com/moonshine-ai/moonshine/tree/main/micro",
+          "score": 462,
+          "by": "petewarden"
+        },
+        {
+          "title": "Claude Code uses Bun written in Rust now",
+          "url": "https://simonwillison.net/2026/Jul/19/claude-code-in-bun-in-rust/",
+          "score": 5,
+          "by": "tosh"
+        },
+        {
+          "title": "Better and Cheaper Than IPTV",
+          "url": "https://github.com/stupside/castor",
+          "score": 208,
+          "by": "xonery"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waxing crescent",
+      "illumination": 0.296,
+      "days_into_cycle": 5.4
+    },
+    "music": {
+      "bands": [
+        "The War on Drugs",
+        "Wet Leg"
+      ]
+    },
+    "quote": {
+      "text": "If you do the work you get rewarded. There are no shortcuts in life.",
+      "author": "Michael Jordan"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 19,
+      "day_of_year": 200,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-19T02:07Z",
+          "result": "win",
+          "score": "7-0"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:04",
+      "sunset": "19:28",
+      "daylight_hours": 14.4
+    },
+    "date": "2026-07-19"
+  },
+  "hero": {
+    "copy": "THERE ARE NO SHORTCUTS.",
+    "rationale": "Straight from `signals.quote` — Michael Jordan: \"If you do the work you get rewarded. There are no shortcuts in life.\" The back half is the quotable one: a flat, undeniable declaration that reads like a locker-room stencil. It rhymes perfectly with a portfolio that tears itself down and rebuilds from scratch every single morning, and the day is stacked with proof of the grind — The Open in progress (Sam Burns clawing to −10) and the Tigers' 7–0 shutout, wins earned inning by inning, hole by hole. The line is the front-page banner of a sports section, so the whole page becomes one.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 332° (fluoro magenta / hot risograph pink). Chosen because the color mandate leaves only the 309°–343° window clean after a week that burned nearly the whole wheel; rather than fight it, I read it as fluoro-ink poster stock — the boldest, most athletic reading of that corridor, exactly on-brief for an 8/10 risk day.\n- **Neutral palette** (ink plum, tinted toward 332°):\n  - 50 `#fbf3f6`\n  - 100 `#f2e6ec`\n  - 200 `#e0cbd7`\n  - 300 `#c3a4b6`\n  - 400 `#96738a`\n  - 500 `#6b4d60`\n  - 600 `#4a3242`\n  - 700 `#31212c`\n  - 800 `#1f131a`\n  - 900 `#150a0f`\n- **Primary (magenta) scale:**\n  - 50 `#fff0f6` · 100 `#ffdbe9` · 200 `#ffb8d3` · 300 `#ff8bb6` · 400 `#ff5f9c` · 500 `#ff3d86` · 600 `#e51f6b` · 700 `#b81456` · 800 `#7d0d3b` · 900 `#470722`\n- **Accent color** — light `#ff5f9c`, default `#ff3d86` (the field), dark `#b81456`, glow `rgba(255,61,134,0.55)`.\n- **Secondary accent** — none. One color carries the page.\n- **Background** — page bg `#ff3d86` (fluoro field); card/panel bg `#150a0f` (ink-plum knockout blocks for the leaderboard/box-score); masthead band bg `#150a0f`.\n- **Text colors** — primary text `#150a0f` (ink plum on pink); secondary text `#31212c`; muted text `#4a3242`; knockout text on ink blocks `#fff0f6`.\n\n### 2. Typography\n- **Hero phrase rendering** — Big Shoulders Display at the largest chassis step via `clamp(64px, 11vw, 168px)`, all-caps, set as a two-line full-width banner (\"THERE ARE NO / SHORTCUTS.\") in knockout white `#fff0f6` directly on the fluoro field, spanning the full masthead-to-body gutter. It is the front-page nameplate headline: everything below is body columns.\n- **Line heights** — hero `0.85`; sub-heads `1.0`; body (Atkinson) `1.5`; leaderboard rows `1.35`.\n- **Letter spacings** — hero `-0.02em`; section eyebrows/labels `0.12em` (all-caps); body `0`; tabular scores `0.01em`.\n\n### 3. Layout Specification\n- **Archetype** — Broadsheet. A sports-section front page is the literal home of an earned-grind headline; the banner sits atop dense, ruled columns carrying the day's live proof (golf, baseball, the manifesto). Fresh against the last three days (Stack/Specimen/Poster).\n- **CSS grid/flex structure** — outer: `display: grid; grid-template-rows: auto auto 1fr auto` (masthead / banner / column body / folio). Column body: `display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 0;` with 2px ink vertical rules between columns.\n- **Major dimensions**:\n  - Masthead band: full-width, height `64px`, ink-plum `#150a0f`.\n  - Banner headline zone: `min-height: 34vh`, full-bleed on the pink field.\n  - Column body: `min-height: 52vh`.\n  - Max content width: `max-width: none`; side padding `clamp(24px, 5vw, 72px)`.\n  - Vertical rhythm on 24px multiples; column gap rules 2px ink.\n- **Nav placement** — masthead **top bar / nameplate**: brand lockup left, dateline \"SUNDAY · JULY 19 2026 · LATE EDITION\" center, three inline caps links (WORK · ABOUT · INDEX) right, all within the 64px ink band, knockout text.\n- **Hero phrase grid zone** — row 2, full width (columns 1–3 spanning), occupying the ~34vh banner directly under the masthead; renders ~150px at 1440px, two lines, left-aligned to the content margin.\n\n### 4. Component Character\n- **Border radius** — 0 everywhere (cards, buttons, tags). Hard newspaper rules only.\n- **Border treatment** — bordered: 2px solid `border` token (ink plum `#150a0f`) as column rules and block outlines; a 4px ink rule under the masthead.\n- **Shadow** — none. Flat riso print.\n- **Density** — dense/compact columns (Broadsheet ≥80% fill); tight leaderboard rows.\n- **Interactive states** — links: on `_hover`, ink text flips to knockout inside a fluoro-magenta fill sweep (invert). Score rows: leader row gets a solid ink-block fill with knockout numerals.\n\n### 5. Signal Integration\n- **Where signal elements live** — column body. Column 1 (lead): the full Jordan quote as the lede paragraph + attribution, then the capabilities/manifesto run-on. Column 2: \"THE OPEN — LIVE.\" Column 3: \"TIGERS 7, VISITORS 0\" box + music + lunar/sun.\n- **Sports scores** — leaderboard in Atkinson tabular-nums, ink on pink; the leader (Sam Burns −10) sits in a solid ink-plum block with knockout `−10`. Golf sub-head \"THE OPEN — LIVE\" in caps eyebrow. Tigers 7–0 set as an oversized box-score numeral block (`7` huge in Big Shoulders, knockout on an ink panel).\n- **Quote** — the quote IS the hero; the marquee banner (\"THERE ARE NO SHORTCUTS.\") is its punch line, and the full two-sentence Jordan quote runs as the column-1 lede with \"— Michael Jordan\" attribution.\n- **Holiday elements** — none today (holidays null).\n- **Other signals** — music (The War on Drugs · Wet Leg) as a small caps \"ON THE WIRE\" list in column 3; lunar (waxing crescent, 30%) and sun (05:04 / 19:28, 14.4h) as a two-line almanac footer item in the folio bar.",
+    "selfCheck": "1. Hero quotability: Yes — \"THERE ARE NO SHORTCUTS.\" is a standalone stencil, screenshot-ready without any surrounding copy.\n2. Because-of chain: Yes — flat declaration → sports-page Broadsheet → athletic condensed Big Shoulders → mandate-forced magenta read as fluoro poster stock → full-width banner over ruled columns.\n3. Render feasibility: Yes — the phrase breaks cleanly to two lines at clamp(64,11vw,168) in a condensed face across a 1440px banner without overflow.\n4. Canvas floor feasible: Yes — masthead + 34vh banner + three dense ruled columns + folio easily exceed 80% fill and the pink field covers ~100% for color.",
+    "rationale": "The day's quote arrived pre-stenciled: Michael Jordan's \"There are no shortcuts in life.\" Stripped to its marquee — THERE ARE NO SHORTCUTS — it is a locker-room decal, quotable in isolation and thematically load-bearing for a site that refuses to reuse yesterday's build and grinds out a new one every dawn. The two sports signals are the corroborating evidence: The Open still in progress with Sam Burns grinding to −10, and a Tigers 7–0 shutout — both wins assembled one clean stroke, one clean inning at a time. A phrase that lives on the front page of a sports section wants the front page of a sports section, so the whole composition becomes one: a Broadsheet, fresh against three straight days of Stack/Specimen/Poster and the honest home for a banner headline riding above dense, ruled columns of the day's proof.\n\nBig Shoulders Display carries the banner — the most athletic, muscular, signage-grade face in the catalog (1.618 ratio), condensed enough to hold \"THERE ARE NO / SHORTCUTS.\" across the full sheet as a knockout two-liner without tipping into overflow, while Atkinson Hyperlegible keeps the leaderboard, box score, and lede columns crisp and tabular. The color mandate scorched nearly the whole wheel and left only the 309°–343° window clean; instead of hedging into a timid pink I read it at full commitment as risograph fluoro-magenta poster stock — 332°, 100% saturation — the boldest possible reading for an 8/10 risk day. One color drenches the entire sheet (coverage ~72%); ink-plum neutrals (tinted toward the same 332°) handle rules, column dividers, and the knockout blocks that host the leader row and the giant Tigers \"7\".\n\nLayout is pure newspaper: a 64px ink masthead nameplate carries the horizontal-md lockup (single-color, inheriting ink via currentColor), a centered dateline, and inline caps nav — a top-bar treatment unused in the last three shells and native to the form. Below it, the fluoro banner; below that, three ruled columns holding the full Jordan lede, THE OPEN — LIVE, and the Tigers box with music and almanac. A single folio bar closes the page with edition, moon/sun almanac, and build note — distinct from the recently-used data-strip and caption-band footers. Flat, hard-ruled, radius-zero: a print object, not a template.",
+    "signalIntegration": "- **Where signal elements live** — column body. Column 1 (lead): the full Jordan quote as the lede paragraph + attribution, then the capabilities/manifesto run-on. Column 2: \"THE OPEN — LIVE.\" Column 3: \"TIGERS 7, VISITORS 0\" box + music + lunar/sun.\n- **Sports scores** — leaderboard in Atkinson tabular-nums, ink on pink; the leader (Sam Burns −10) sits in a solid ink-plum block with knockout `−10`. Golf sub-head \"THE OPEN — LIVE\" in caps eyebrow. Tigers 7–0 set as an oversized box-score numeral block (`7` huge in Big Shoulders, knockout on an ink panel).\n- **Quote** — the quote IS the hero; the marquee banner (\"THERE ARE NO SHORTCUTS.\") is its punch line, and the full two-sentence Jordan quote runs as the column-1 lede with \"— Michael Jordan\" attribution.\n- **Holiday elements** — none today (holidays null).\n- **Other signals** — music (The War on Drugs · Wet Leg) as a small caps \"ON THE WIRE\" list in column 3; lunar (waxing crescent, 30%) and sun (05:04 / 19:28, 14.4h) as a two-line almanac footer item in the folio bar."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "primary": {
+          "50": "#fff0f6",
+          "100": "#ffdbe9",
+          "200": "#ffb8d3",
+          "300": "#ff8bb6",
+          "400": "#ff5f9c",
+          "500": "#ff3d86",
+          "600": "#e51f6b",
+          "700": "#b81456",
+          "800": "#7d0d3b",
+          "900": "#470722"
+        },
+        "neutral": {
+          "50": "#fbf3f6",
+          "100": "#f2e6ec",
+          "200": "#e0cbd7",
+          "300": "#c3a4b6",
+          "400": "#96738a",
+          "500": "#6b4d60",
+          "600": "#4a3242",
+          "700": "#31212c",
+          "800": "#1f131a",
+          "900": "#150a0f"
+        },
+        "accent": {
+          "light": "#ff5f9c",
+          "default": "#ff3d86",
+          "dark": "#b81456",
+          "glow": "rgba(255, 61, 134, 0.55)"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.primary.500}",
+          "_light": "{colors.primary.100}"
+        },
+        "text": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.900}"
+        },
+        "accent": {
+          "base": "{colors.primary.700}",
+          "_light": "{colors.primary.600}"
+        },
+        "border": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.800}"
+        },
+        "knockout": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.primary.50}"
+        },
+        "panel": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.900}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.85",
+      "snug": "1.2",
+      "normal": "1.5",
+      "loose": "1.7"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.14em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "0",
+      "md": "0",
+      "lg": "0",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 332,
+      "s": 100,
+      "l": 65,
+      "name": "fluoro magenta"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "aubergine / magenta",
+      "name": "ink plum"
+    },
+    "mood_word": "relentless",
+    "color_story": "A risograph fluoro-magenta stock drenches the whole sheet so 'THERE ARE NO SHORTCUTS' hits like a stenciled locker-room banner — loud, unhedged, no soft neutrals to hide behind."
+  },
+  "shell": {
+    "nav": "top bar / nameplate masthead (brand left, dateline center, inline caps links right, 64px ink band)",
+    "footer": "folio bar (single baseline page-folio rule: edition + almanac (moon/sun) + build note, distinct from a data strip)",
+    "brand_lockup": "horizontal-md",
+    "brand_color_mode": "single-color"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "REVISE",
+      "feedback": "REVISE\n\n- **Check 2 | Preset vs. Visual Spec Color Contradiction**: The visual specification explicitly states \"knockout text on ink blocks `#fff0f6`\" (primary.50, a magenta-tinted white), but elements/preset.ts defines `knockout.base: '{colors.neutral.50}'`, which resolves to `#fbf3f6` (a plum-tinted white). The preset's knockout should be `{colors.primary.50}` to match the spec. This matters because knockout text on the dark ink panels (#150a0f) needs to be the brightest, warmest off-white for legibility against the fluoro field.",
+      "ts": 1784457330586
+    }
+  ],
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

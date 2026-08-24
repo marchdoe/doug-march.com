@@ -1,0 +1,372 @@
+{
+  "date": "2026-05-18",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.176Z",
+  "buildId": "1779103764943",
+  "attempts": 1,
+  "brief": "Anton championship amber on midnight stone — Kiyosaki's five-line decree at 7.5vw golden cascade while Aaron Rai's -9 and two Detroit filings anchor the 56px signal strip below.",
+  "rationale": "The hero phrase arrived from Robert Kiyosaki's quote in today's signal feed, but it earned its place through convergence, not reflex. The Pistons were blown out 94–125. The Tigers fell 1–4. And yet Aaron Rai claimed the PGA Championship at -9, one winner standing across a weekend where Detroit absorbed its losses quietly. The phrase is the conceptual architecture for all three results simultaneously: fear accounted for, excitement chosen. For a portfolio site built on iterative risk-taking — Spaceman in 2018, FishSticks in 2025, 15th Club in 2025, this site rebuilding itself daily — the quote reads as both visitor instruction and product manifesto. The waxing crescent at day 2.5 of a new cycle and 14.2 hours of spring daylight confirm the timing: this is the right Monday for it.\n\nThe Poster archetype was the only honest container. The phrase contains a complete philosophical argument — a comparison, a negation, a recommendation — and it doesn't need the company of projects and signals sharing its canvas at scale. Poster contracts the entire portfolio rationale to one statement and lets every other element (nav, signal strip, attribution) be footnote. The phrase sits flush-left at 6vw, not centered, because declarations are posted on walls, not floated in white space. Anton's condensed capitals at clamp(52px, 7.5vw, 108px) across five lines creates the correct physical register: this is a sign in a locker room, a poster above a desk, not a magazine headline. The terminal period on \"OF WINNING.\" renders in amber.500 — slightly darker, more saturated than the golden amber.300 of the phrase body — so the full stop arrives as a deliberate color event, not punctuation.\n\nThe amber-gold palette was both mandated and conceptually exact. The color mandate's permitted window (15°–42°) is the precise hue family of championship gold, trophy brass, and hazard amber. H:35° at high saturation against near-black stone.950 (#0E0A06) creates a luminous isolation — the phrase floats in darkness like a lit sign, not a page. Five consecutive designs have lived in the dark (ocean-void, night-olive, cordovan, night-violet) or swung to warm paper; amber-on-midnight is neither. It's the gold that doesn't need warmth to feel alive, because it has its own light source.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Layout.tsx",
+    "app/components/Sidebar.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Poster",
+  "signals": {
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Monday",
+      "is_weekend": false,
+      "day_index": 1
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "tinyhumansai/openhuman/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "Imbad0202/academic-research-skills/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "HKUDS/CLI-Anything/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "K-Dense-AI/scientific-agent-skills/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "supertone-inc/supertonic/stargazers",
+          "description": "",
+          "language": "Swift",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "PGA Championship",
+      "status": "Final",
+      "leaders": [
+        {
+          "name": "Aaron Rai",
+          "position": "1",
+          "score": "-9"
+        },
+        {
+          "name": "Jon Rahm",
+          "position": "2",
+          "score": "-6"
+        },
+        {
+          "name": "Alex Smalley",
+          "position": "3",
+          "score": "-6"
+        },
+        {
+          "name": "Justin Thomas",
+          "position": "4",
+          "score": "-5"
+        },
+        {
+          "name": "Matti Schmid",
+          "position": "5",
+          "score": "-5"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "The foundations of a provably secure operating system (PSOS) (1979) [pdf]",
+          "url": "http://www.csl.sri.com/users/neumann/psos.pdf",
+          "score": 38,
+          "by": "rurban"
+        },
+        {
+          "title": "Where Are the Vibecoded Photoshops?",
+          "url": "https://indiepixel.de/blog/posts/where-are-the-vibecoded-photoshops/",
+          "score": 112,
+          "by": "gizmo64k"
+        },
+        {
+          "title": "GenCAD",
+          "url": "https://gencad.github.io/",
+          "score": 347,
+          "by": "dagenix"
+        },
+        {
+          "title": "Multiple commencement speakers booed for AI comments during graduation speeches",
+          "url": "https://www.nbcnews.com/video/multiple-commencement-speakers-booed-for-ai-comments-during-graduation-speeches-263486021518",
+          "score": 80,
+          "by": "wrxd"
+        },
+        {
+          "title": "Crystals found inside wreckage from the first nuclear bomb test",
+          "url": "https://www.scientificamerican.com/article/strange-crystals-found-inside-wreckage-from-the-first-nuclear-bomb-test/",
+          "score": 91,
+          "by": "jumploops"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Memorial Day",
+          "date": "2026-05-25",
+          "days_away": 7
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "waxing crescent",
+      "illumination": 0.069,
+      "days_into_cycle": 2.5
+    },
+    "music": {
+      "bands": [
+        "My Morning Jacket",
+        "Radiohead",
+        "Guided by Voices"
+      ]
+    },
+    "quote": {
+      "text": "Don't let the fear of losing be greater than the excitement of winning.",
+      "author": "Robert Kiyosaki"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 18,
+      "day_of_year": 138,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": "2026-05-18T00:00Z",
+          "result": "loss",
+          "score": "94-125"
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-17T17:40Z",
+          "result": "loss",
+          "score": "1-4"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:00",
+      "sunset": "19:13",
+      "daylight_hours": 14.2
+    },
+    "date": "2026-05-18"
+  },
+  "hero": {
+    "copy": "DON'T LET THE FEAR OF LOSING BE GREATER THAN THE EXCITEMENT OF WINNING.",
+    "rationale": "The signal quote from Robert Kiyosaki arrives on a Monday with precise convergence: the Pistons got blown out 94–125, the Tigers fell 1–4, and yet Aaron Rai just claimed the PGA Championship at -9 — one winner standing, the fear absorbed and filed. Day 2.5 of a new lunar cycle, 14.2 hours of spring daylight, the week starting fresh. The quote is a direct address to this exact morning. It's the sentence you tape above a desk; it earns marquee scale because it names the choice that every portfolio project represents. The Kiyosaki attribution grounds it without softening it.",
+    "source": null
+  },
+  "chassis": "anton-inter-tight",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue:** H:35° (amber-gold). The color mandate's permitted window is 15°–42°; H:35° lands at the warm center of that band. This is trophy gold, hazard tape, the specific amber of a scoreboard flipping to CHAMPION.\n\n**Neutral palette (stone, amber-tinted H:30°):**\n- 50: #FAF8F4\n- 100: #EDE8E0\n- 200: #D6CFC4\n- 300: #B8AFA3\n- 400: #928880\n- 500: #706760\n- 600: #544C46\n- 700: #3A3430\n- 800: #252018\n- 900: #161210\n- 950: #0E0A06\n\n**Accent color:**\n- light: #FFD49A (amber.200)\n- default: #E87C08 (amber.500)\n- dark: #C56206 (amber.600)\n- glow: rgba(232, 124, 8, 0.25)\n\n**Secondary accent:** None. Single committed accent.\n\n**Background:**\n- Page bg: #0E0A06 (stone.950 — near-black, amber-tinted midnight)\n- Card bg: #161210 (stone.900)\n- Sidebar bg: #0E0A06\n\n**Text colors:**\n- Hero phrase: #FFB85A (amber.300 — golden, 9.9:1 contrast on bg)\n- Primary text: #FFECD0 (amber.100 — warm cream, 16:1 contrast)\n- Secondary text: #B8AFA3 (stone.300)\n- Muted text: #706760 (stone.500)\n- Attribution / label: #928880 (stone.400)\n\n---\n\n### 2. Typography\n\n**Hero phrase rendering:** Anton (display token, sourced from `anton-inter-tight` chassis). Rendered at `clamp(52px, 7.5vw, 108px)` across 5 poster lines in color #FFB85A. The phrase breaks as:\n\n```\nLINE 1: DON'T LET THE FEAR\nLINE 2: OF LOSING BE\nLINE 3: GREATER THAN\nLINE 4: THE EXCITEMENT\nLINE 5: OF WINNING.\n```\n\nLine 5 (\"OF WINNING.\") receives the emphatic terminal period — the period renders in amber.500 (#E87C08), slightly warmer/deeper than the main golden text, making the full stop the single chromatic accent event. The phrase is uppercase, tracking normal (Anton is already condensed — no additional letter-spacing needed). The block is left-aligned at 6vw from left edge; vertical placement: centered at 48vh.\n\n**Line heights:**\n- Hero (Anton): 0.9 (tight, poster compression — lines nearly touch for maximum density)\n- Body (Inter Tight): 1.55\n- Labels / captions: 1.2\n\n**Letter spacings:**\n- Hero: 0em (Anton reads at natural weight)\n- Body: 0.01em\n- Labels / smallcaps: 0.1em (wide, for Inter Tight at 11–12px)\n- Attribution: 0.12em, all-caps\n\n---\n\n### 3. Layout Specification\n\n**Archetype:** Poster. The phrase fills the viewport as a physical object — not centered on a field, but flush to the left-edge grid column (6vw padding) so it reads as a declaration rather than a caption. The dark ground is not a background; it's the absence of anything except the phrase.\n\n**CSS grid/flex structure:**\n```css\nbody {\n  display: grid;\n  grid-template-rows: 48px 1fr 56px;\n  min-height: 100vh;\n  padding: 0;\n}\n/* Row 1: nav strip */\n/* Row 2: hero zone */\n/* Row 3: signal strip */\n```\n\n**Major dimensions:**\n- Hero area: `min-height: calc(100vh - 104px)` (full viewport minus nav + strip)\n- Signal strip: `height: 56px` — fixed bottom band\n- Nav strip: `height: 48px` — fixed top\n- Max content width: `none` — full bleed edge to edge\n- Hero padding: `padding: 0 6vw` — viewport-relative only\n- No max-width constraint on any element\n\n**Nav placement:** Top strip, full-width, 48px tall. Logo \"DOUG MARCH\" in Inter Tight 11px, letter-spacing 0.18em, all-caps, color stone.300 — flush left at 6vw. Navigation links (Work, About) flush right at 6vw, same spec. The nav sits in a transparent band; no border, no background.\n\n**Hero phrase grid zone:** Rows 2 of the 3-row grid. Within that zone the phrase block is positioned at `padding-top: 14vh`, left-aligned. The 5-line cascade occupies roughly 80% viewport height at the specified scale on a 900px tall viewport — remaining 20vh is breathing room below the phrase before the signal strip.\n\n**Attribution line:** \"— ROBERT KIYOSAKI\" in Inter Tight 11px, stone.400, all-caps, wide tracking, positioned `margin-top: 28px` below \"OF WINNING.\" — flush left, same 6vw indent.\n\n---\n\n### 4. Component Character\n\n**Border radius:**\n- Cards: 0 (none — hard poster edges)\n- Buttons: 2px (sm — nearly square)\n- Tags/labels: 0\n\n**Border treatment:** Borderless on the main poster. Signal strip separated by a single 1px rule in stone.800 (#252018). No card borders.\n\n**Shadow:** None. The midnight ground does all elevation work — anything lifted uses amber glow (rgba(232, 124, 8, 0.12) for hover states only).\n\n**Density:** Spacious. The poster breathes — the only density is in the signal strip, which packs score tokens in a single tight row.\n\n**Interactive states:**\n- Nav links on hover: color transition to amber.400, 180ms ease\n- Signal items on hover: text brightens to amber.300, underline appears in amber.600\n- All transitions: 180ms ease\n\n---\n\n### 5. Signal Integration\n\n**PGA Championship (lead signal):** Signal strip, far right. \"PGA CHAMPION / AARON RAI  −9\" in two micro-lines — \"PGA CHAMPION\" in Inter Tight 9px, stone.400, wide-tracked label; \"AARON RAI  −9\" in Inter Tight 13px bold, amber.400. This is the triumph anchor of the strip — receives the brightest color.\n\n**Sports losses:** Signal strip, center-left. Two inline tokens:\n- \"PISTONS  94–125\" — Inter Tight 11px, stone.400 (loss = muted)\n- \"TIGERS  1–4\" — same spec. A hairline rule (stone.700) separates the two.\n- Both are deliberate understatement — the losses are filed, not featured.\n\n**Quote treatment:** The Kiyosaki quote IS the hero phrase. No separate blockquote or pull-quote element. Attribution sits as a subordinate line immediately below \"OF WINNING.\" in the poster zone.\n\n**Lunar signal:** Signal strip, far left: waxing crescent symbol (☽) + \"2.5D / 6.9%\" in Inter Tight 9px, stone.500. Day 2.5 into the new cycle — new beginnings filed quietly.\n\n**Monday / date:** Signal strip, immediately right of lunar: \"MON 18 MAY 2026 / 14.2H DAYLIGHT\" in Inter Tight 9px, stone.400, wide tracking. Contextual anchoring.\n\n**HN top story:** Not surfaced in the main poster (would dilute the phrase). If the downstream implementation includes an expandable signals drawer, \"Where Are the Vibecoded Photoshops?\" (112) belongs there — self-referential provocation appropriate to this site.\n\n**Music:** My Morning Jacket / Radiohead / Guided by Voices — available as a hover-reveal tooltip on the signal strip date element. Not surface-level; these are ambient.",
+    "selfCheck": "1. Hero quotability: Yes — \"Don't let the fear of losing be greater than the excitement of winning\" is a widely-cited motivational phrase that stands as a complete argument in isolation; at Anton scale across five poster lines it's something a visitor would photograph.\n2. Because-of chain: Yes — Kiyosaki's dialectic (fear/excitement) → Poster archetype (one argument fills the frame) → Anton/Inter Tight (condensed declaration weight, not editorial warmth) → championship amber on midnight stone (trophy gold as the only light source in the void) → left-aligned cascade layout (a declaration posted on a wall, not a headline centered on a magazine cover).\n3. Render feasibility: Yes — Anton at clamp(52px, 7.5vw, 108px) across five lines, the longest being \"DON'T LET THE FEAR\" (18 chars in condensed Anton ≈ 1,080px at 108px scale), fits inside a 1440px viewport at 6vw side padding with ~180px margin per side.",
+    "rationale": "The hero phrase arrived from Robert Kiyosaki's quote in today's signal feed, but it earned its place through convergence, not reflex. The Pistons were blown out 94–125. The Tigers fell 1–4. And yet Aaron Rai claimed the PGA Championship at -9, one winner standing across a weekend where Detroit absorbed its losses quietly. The phrase is the conceptual architecture for all three results simultaneously: fear accounted for, excitement chosen. For a portfolio site built on iterative risk-taking — Spaceman in 2018, FishSticks in 2025, 15th Club in 2025, this site rebuilding itself daily — the quote reads as both visitor instruction and product manifesto. The waxing crescent at day 2.5 of a new cycle and 14.2 hours of spring daylight confirm the timing: this is the right Monday for it.\n\nThe Poster archetype was the only honest container. The phrase contains a complete philosophical argument — a comparison, a negation, a recommendation — and it doesn't need the company of projects and signals sharing its canvas at scale. Poster contracts the entire portfolio rationale to one statement and lets every other element (nav, signal strip, attribution) be footnote. The phrase sits flush-left at 6vw, not centered, because declarations are posted on walls, not floated in white space. Anton's condensed capitals at clamp(52px, 7.5vw, 108px) across five lines creates the correct physical register: this is a sign in a locker room, a poster above a desk, not a magazine headline. The terminal period on \"OF WINNING.\" renders in amber.500 — slightly darker, more saturated than the golden amber.300 of the phrase body — so the full stop arrives as a deliberate color event, not punctuation.\n\nThe amber-gold palette was both mandated and conceptually exact. The color mandate's permitted window (15°–42°) is the precise hue family of championship gold, trophy brass, and hazard amber. H:35° at high saturation against near-black stone.950 (#0E0A06) creates a luminous isolation — the phrase floats in darkness like a lit sign, not a page. Five consecutive designs have lived in the dark (ocean-void, night-olive, cordovan, night-violet) or swung to warm paper; amber-on-midnight is neither. It's the gold that doesn't need warmth to feel alive, because it has its own light source.",
+    "signalIntegration": "**PGA Championship (lead signal):** Signal strip, far right. \"PGA CHAMPION / AARON RAI  −9\" in two micro-lines — \"PGA CHAMPION\" in Inter Tight 9px, stone.400, wide-tracked label; \"AARON RAI  −9\" in Inter Tight 13px bold, amber.400. This is the triumph anchor of the strip — receives the brightest color.\n\n**Sports losses:** Signal strip, center-left. Two inline tokens:\n- \"PISTONS  94–125\" — Inter Tight 11px, stone.400 (loss = muted)\n- \"TIGERS  1–4\" — same spec. A hairline rule (stone.700) separates the two.\n- Both are deliberate understatement — the losses are filed, not featured.\n\n**Quote treatment:** The Kiyosaki quote IS the hero phrase. No separate blockquote or pull-quote element. Attribution sits as a subordinate line immediately below \"OF WINNING.\" in the poster zone.\n\n**Lunar signal:** Signal strip, far left: waxing crescent symbol (☽) + \"2.5D / 6.9%\" in Inter Tight 9px, stone.500. Day 2.5 into the new cycle — new beginnings filed quietly.\n\n**Monday / date:** Signal strip, immediately right of lunar: \"MON 18 MAY 2026 / 14.2H DAYLIGHT\" in Inter Tight 9px, stone.400, wide tracking. Contextual anchoring.\n\n**HN top story:** Not surfaced in the main poster (would dilute the phrase). If the downstream implementation includes an expandable signals drawer, \"Where Are the Vibecoded Photoshops?\" (112) belongs there — self-referential provocation appropriate to this site.\n\n**Music:** My Morning Jacket / Radiohead / Guided by Voices — available as a hover-reveal tooltip on the signal strip date element. Not surface-level; these are ambient."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "amber": {
+          "50": "#FFF8EE",
+          "100": "#FFECD0",
+          "200": "#FFD49A",
+          "300": "#FFB85A",
+          "400": "#F99820",
+          "500": "#E87C08",
+          "600": "#C56206",
+          "700": "#964904",
+          "800": "#6A3303",
+          "900": "#411F01",
+          "950": "#280F00"
+        },
+        "stone": {
+          "50": "#FAF8F4",
+          "100": "#EDE8E0",
+          "200": "#D6CFC4",
+          "300": "#B8AFA3",
+          "400": "#928880",
+          "500": "#706760",
+          "600": "#544C46",
+          "700": "#3A3430",
+          "800": "#252018",
+          "900": "#161210",
+          "950": "#0E0A06"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.stone.950}",
+          "_light": "{colors.stone.50}"
+        },
+        "bgCard": {
+          "base": "{colors.stone.900}",
+          "_light": "{colors.stone.100}"
+        },
+        "bgSubtle": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.200}"
+        },
+        "bgStrip": {
+          "base": "{colors.stone.900}",
+          "_light": "{colors.amber.50}"
+        },
+        "text": {
+          "base": "{colors.amber.100}",
+          "_light": "{colors.stone.900}"
+        },
+        "textHero": {
+          "base": "{colors.amber.300}",
+          "_light": "{colors.amber.700}"
+        },
+        "textSecondary": {
+          "base": "{colors.stone.300}",
+          "_light": "{colors.stone.600}"
+        },
+        "textMuted": {
+          "base": "{colors.stone.500}",
+          "_light": "{colors.stone.400}"
+        },
+        "textLabel": {
+          "base": "{colors.stone.400}",
+          "_light": "{colors.stone.500}"
+        },
+        "accent": {
+          "base": "{colors.amber.500}",
+          "_light": "{colors.amber.600}"
+        },
+        "accentLight": {
+          "base": "{colors.amber.300}",
+          "_light": "{colors.amber.500}"
+        },
+        "accentDim": {
+          "base": "{colors.amber.700}",
+          "_light": "{colors.amber.200}"
+        },
+        "accentGlow": {
+          "base": "{colors.amber.900}",
+          "_light": "{colors.amber.100}"
+        },
+        "border": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.200}"
+        },
+        "borderSubtle": {
+          "base": "{colors.stone.700}",
+          "_light": "{colors.stone.300}"
+        },
+        "win": {
+          "base": "{colors.amber.400}",
+          "_light": "{colors.amber.600}"
+        },
+        "loss": {
+          "base": "{colors.stone.400}",
+          "_light": "{colors.stone.500}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.9",
+      "snug": "1.1",
+      "normal": "1.55",
+      "loose": "1.8"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.18em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700",
+      "black": "900"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 35,
+      "s": 92,
+      "l": 58,
+      "name": "amber-gold"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "amber-warm",
+      "name": "midnight stone"
+    },
+    "mood_word": "luminous",
+    "color_story": "Championship amber — the gold Aaron Rai earned at -9, lit against midnight stone on a Monday when two Detroit losses are absorbed and filed and the phrase arrives at poster scale like a sign over the exit door."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

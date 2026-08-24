@@ -3,26 +3,21 @@ import { Link } from '@tanstack/react-router'
 import { css, cx } from '../../../styled-system/css'
 import { badge, mutedText, errorText, archiveLink, ratingNotes, archiveRow } from './styles'
 
-interface ArchiveEntry {
-  date: string
-  brief: string
-  archetype: string
-  rating: { grade: string; worked: string; didnt: string; try: string } | null
-}
+import type { ArchiveIndexEntry } from '../../types/archive-record'
 
 type State =
   | { kind: 'loading' }
-  | { kind: 'loaded'; entries: ArchiveEntry[] }
+  | { kind: 'loaded'; entries: ArchiveIndexEntry[] }
   | { kind: 'error'; message: string }
 
 export function ArchiveTab() {
   const [state, setState] = useState<State>({ kind: 'loading' })
 
   useEffect(() => {
-    fetch('/archive/_data.json')
+    fetch('/archive-data/index.json')
       .then(async (res) => {
         if (!res.ok) throw new Error(`Failed to load archive (${res.status})`)
-        const data = (await res.json()) as ArchiveEntry[]
+        const data = (await res.json()) as ArchiveIndexEntry[]
         setState({ kind: 'loaded', entries: data })
       })
       .catch((err: unknown) => {
@@ -55,7 +50,7 @@ export function ArchiveTab() {
             <span className={badge({ kind: e.rating ? 'graded' : 'none' })}>
               {e.rating?.grade ?? '—'}
             </span>
-            <span className={mutedText}>{e.archetype}</span>
+            <span className={mutedText}>{e.legacyArchetype ?? e.chassis}</span>
           </div>
           <p className={cx(mutedText, css({ marginTop: '3px' }))}>{e.brief}</p>
           {e.rating && (e.rating.worked || e.rating.didnt || e.rating.try) && (

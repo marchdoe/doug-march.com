@@ -1,0 +1,387 @@
+{
+  "date": "2026-05-11",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.168Z",
+  "buildId": "1778497956200",
+  "attempts": 1,
+  "brief": "Bricolage declaration in three stacked lines — near-white setup, aqua teal punchline — deep slate bands descending from manifesto to signal strip to work grid, the craft ethic of \"by hand.\" earning the only color on the page.",
+  "rationale": "The hero phrase arrived from Hacker News today: \"I'm going back to writing code by hand\" (414 points), a developer's counter-cultural declaration in the age of AI-generated everything. For a personal portfolio site that literally rebuilds its own design daily through AI orchestration, the irony is structural — the phrase is both a sincere statement of craft values and a wink at the mechanism displaying it. That tension makes it poster-worthy: you can read it as aspiration, as critique, or as comedy, and all three readings survive scrutiny. The period after \"by hand.\" is not decoration; it's a full stop against noise.\n\nThe Stack archetype was the only honest container. A Specimen (used twice in the last week) would have isolated the phrase from all evidence — but this phrase needs bands below it: the Tigers win that happened while someone was presumably coding, the golf leaderboard filing with quiet scores, the HN context so the viewer knows where the phrase came from. Stack lets the hero declaration stand undivided at full viewport height, then unfolds the supporting world in distinct bands below — signal strip, work grid, capabilities — each with its own background treatment, none competing with the phrase above. Bricolage Grotesque's variable humanist grotesque is exactly right because it has genuine warmth and craft character at display scale; it's not the scream of Anton or Bebas, it's a voice that sounds like a person.\n\nAqua teal at H:163° was both mandated and correct. The narrow 158°–170° window that remained after eliminating all recent hues happens to be the most precisely \"craft-technical\" color available: it reads as spring freshness, as the glow of a terminal running a build, as the color of something carefully made. The near-black `#0B1C24` ground is not anonymous void — it's tinted blue-green toward H:200° so even the negative space participates in the palette's coherence. The design's single chromatic event is \"by hand.\" landing in vivid teal at the end of the three-line hero block — everything builds to that 10 characters.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Stack",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Pedal Mafia | Event Micro Site",
+          "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Renée Crown Wellness Institute",
+          "description": "Our objective is to establish the Crown Institute as the gold standard for science-backed, multidisciplinary approaches to mindfulness-based mental wellness...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/02/698bcba679e8c124826409.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQEBLAEsAAD/4gxYSUNDX1BST0ZJTEUAAQEAAAxITGlubwIQAABtbnRyUkdCIFhZWiAHzgACAAkABgAxAABhY3NwTVNGVAAAAABJRUMgc1JHQgAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLUhQICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFjcHJ0AAABUAAAADNkZXNjAAABhAAAAGx3dHB0AAAB8AAAABRia3B0...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The Kesey Signal",
+          "description": "A 1999 cyber-noir archive by Rob Ford. Uncover the soul of the early web through a terminal-driven mystery packed with hidden easter eggs. The first novel...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69efc1ebe3cca771371272.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFzGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgMTAuMC1jMDAwIDI1...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Monday",
+      "is_weekend": false,
+      "day_index": 1
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "bytedance/UI-TARS-desktop/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "CloakHQ/CloakBrowser/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "yikart/AiToEarn/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "playcanvas/supersplat/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "datawhalechina/easy-vibe/stargazers",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Truist Championship",
+      "status": "Final",
+      "leaders": [
+        {
+          "name": "Kristoffer Reitan",
+          "position": "1",
+          "score": "-15"
+        },
+        {
+          "name": "Rickie Fowler",
+          "position": "2",
+          "score": "-13"
+        },
+        {
+          "name": "Nicolai Højgaard",
+          "position": "3",
+          "score": "-13"
+        },
+        {
+          "name": "Alex Fitzpatrick",
+          "position": "4",
+          "score": "-12"
+        },
+        {
+          "name": "J.J. Spaun",
+          "position": "5",
+          "score": "-11"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Hardware Attestation as Monopoly Enabler",
+          "url": "https://grapheneos.social/@GrapheneOS/116550899908879585",
+          "score": 1626,
+          "by": "ChuckMcM"
+        },
+        {
+          "title": "Local AI needs to be the norm",
+          "url": "https://unix.foo/posts/local-ai-needs-to-be-norm/",
+          "score": 1217,
+          "by": "cylo"
+        },
+        {
+          "title": "I'm going back to writing code by hand",
+          "url": "https://blog.k10s.dev/im-going-back-to-writing-code-by-hand/",
+          "score": 414,
+          "by": "dropbox_miner"
+        },
+        {
+          "title": "The greatest shot in television: James Burke had one chance to nail this scene (2024)",
+          "url": "https://www.openculture.com/2024/10/the-greatest-shot-in-television.html",
+          "score": 192,
+          "by": "susam"
+        },
+        {
+          "title": "Running local models on an M4 with 24GB memory",
+          "url": "https://jola.dev/posts/running-local-models-on-m4",
+          "score": 336,
+          "by": "shintoist"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waning crescent",
+      "illumination": 0.213,
+      "days_into_cycle": 25.02
+    },
+    "music": {
+      "bands": [
+        "Tobin Sprout",
+        "Wet Leg",
+        "The War on Drugs"
+      ]
+    },
+    "quote": {
+      "text": "The key to success is action.",
+      "author": "Brian Tracy"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 11,
+      "day_of_year": 131,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-10T23:20Z",
+          "result": "win",
+          "score": "6-3"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:06",
+      "sunset": "19:07",
+      "daylight_hours": 14
+    },
+    "date": "2026-05-11"
+  },
+  "hero": {
+    "copy": "I'm going back to writing code by hand.",
+    "rationale": "Hacker News surfaces \"I'm going back to writing code by hand\" at 414 points today — a developer's personal manifesto pushing back against AI-assisted everything. On a portfolio site that rebuilds itself daily via AI, the irony is load-bearing: the declaration is both genuine critique and self-aware comedy. The phrase earns its scale because you can hold it from three angles simultaneously (craft ethic, anti-AI provocation, ironic self-description) and it stays coherent at each reading. For a portfolio where design is the product, this is a statement about intentionality — and \"by hand.\" as the landing fragment is an editorial punch.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue** — H:163° (aqua teal). Sits precisely in the 158°–170° mandate window, the only open zone after 7 days of palette avoidance. At full saturation on near-black, it reads as electric-craft: technical but warm, spring but purposeful.\n- **Neutral palette** — blue-slate family tinted toward H:200°:\n  - 50: `#EEF3F5`\n  - 100: `#D8E4E9`\n  - 200: `#B3C9D1`\n  - 300: `#8AADB9`\n  - 400: `#628F9F`\n  - 500: `#437282`\n  - 600: `#2E5666`\n  - 700: `#1E3D4E`\n  - 800: `#122837`\n  - 900: `#0B1C24`\n- **Accent color** — primary.300: `#3EC9B8` (light), `#15B39F` (default), `#0A9687` (dark); glow: `rgba(62,201,184,0.25)`. Contrast vs. bg: ~8.7:1 ✓\n- **Secondary accent** — none. One accent carries the page.\n- **Background** — page bg: `#0B1C24`; card bg: `#122837`; mid-band bg: `#1E3D4E`\n- **Text colors** — primary: `#EEF3F5` (~17.5:1 on bg ✓); secondary: `#B3C9D1`; muted: `#628F9F`\n\n### 2. Typography\n\n- **Hero phrase rendering** — `display` chassis token, `clamp(52px, 7.8vw, 118px)`. Three stacked lines, left-aligned at 6vw from left edge, filling ~85% canvas width:\n  ```\n  I'm going back\n  to writing code\n  by hand.\n  ```\n  Lines 1–2 in `#D8E4E9` (neutral.100, warm near-white). \"by hand.\" in vivid teal `#3EC9B8` — the phrase earns its color at the landing. Bricolage Grotesque's variable weight pulls toward 700 at this size.\n- **Eyebrow above phrase** — `body` chassis token at 11px, `letter-spacing: 0.10em`, ALL CAPS, in neutral.400: `↑ HACKER NEWS · 414 PTS · MAY 11`\n- **Signal strip type** — `sm` chassis token at 13px, tabular-nums for scores, neutral.200\n- **Work band headings** — `lg` chassis token at `clamp(18px, 2vw, 28px)`, neutral.50\n- **Body / captions** — `base` chassis token at 16px, neutral.200, line-height 1.5\n- **Line heights** — hero: 0.92 (tight stacked mass); subheads: 1.15; body: 1.5\n- **Letter spacings** — hero: `-0.025em`; body: `0em`; caps/labels: `0.10em`\n\n### 3. Layout Specification\n\n- **Archetype** — Stack. The manifesto phrase is a single declarative moment; the Stack's full-width bands give it an undivided first band at near-full viewport height, then let subsequent bands each carry a distinct mood without competing — the evidence beneath the declaration.\n- **CSS grid/flex structure** — `display: flex; flex-direction: column; width: 100vw; overflow-x: hidden`. Each band: `width: 100%; padding: 0 6vw`.\n- **Major dimensions**:\n  - Nav strip (Band 0): `height: 52px`; `display: flex; align-items: center; justify-content: space-between; padding: 0 6vw`; bg: transparent overlaid on hero band\n  - Hero band (Band 1): `min-height: 88vh`; bg: `#0B1C24`; phrase aligned to `padding-bottom: 10vh` (bottom-weighted)\n  - Signal strip (Band 2): `height: 112px`; bg: `#122837`; `display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center`\n  - Work band (Band 3): `min-height: 60vh`; bg: `#1E3D4E`; `display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px`\n  - Capabilities band (Band 4): `min-height: 40vh`; bg: `#0B1C24`; two-column list\n  - `max-width: none` throughout; `padding: 0 6vw` for breathing room\n- **Nav placement** — overlaid top of hero band: \"doug march\" wordmark left in Manrope medium 14px neutral.300; nav links right: work · about · contact in neutral.400, hover → accent teal, `letter-spacing: 0.06em`\n- **Hero phrase grid zone** — Band 1, full width, phrase block anchored to `bottom: 10vh; left: 6vw`. The three lines cascade left at display scale. Eyebrow sits 20px above the first hero line.\n\n### 4. Component Character\n\n- **Border radius** — cards: `none` (0px — the craft ethos is sharp-edged); buttons: `none`; tags: `2px`\n- **Border treatment** — project cards in work band separated by 1px gaps in the grid (background showing through the gap acts as the border — no box borders). Signal strip divided by 1px vertical `#1E3D4E` lines.\n- **Shadow** — none. Depth comes entirely from band background layering and color temperature shifts.\n- **Density** — spacious in hero band; compact and tabular in signal strip; medium in work band\n- **Interactive states** — cards: `background` transitions to `#1E3D4E` on hover (200ms ease); project titles shift to `#3EC9B8`; nav links: opacity 1 → 0.7 on hover with accent color crossfade; cursor: pointer\n\n### 5. Signal Integration\n\n- **Tigers WIN 6–3** — Signal strip, left cell. \"DET 6 · 3 OPP\" in `#3EC9B8` (accent teal), weight bold, font-variant-numeric tabular-nums. Label above: \"TIGERS\" in neutral.400 caps 11px letter-spaced.\n- **Golf — Truist FINAL** — Signal strip, center cell. \"REITAN −15\" in neutral.100, \"Fowler / Højgaard −13\" in neutral.400 at 12px. Label: \"TRUIST FINAL\" in neutral.500 caps.\n- **HN source attribution** — Eyebrow directly above the hero phrase: `↑ HACKER NEWS · 414 PTS · MAY 11` in neutral.400 at 11px all-caps. The quote IS the attribution — the hero phrase is contextualized but not diminished.\n- **Lunar / date** — Signal strip, right cell. \"☽ waning crescent 21%\" in neutral.400 at 12px. Below: \"MONDAY · DAY 131 · 14H LIGHT\" in neutral.500 at 11px.\n- **Music** — Thin footer row below capabilities band: \"♫ Wet Leg · The War on Drugs · Tobin Sprout\" in neutral.500 at 12px, centered.\n- **Awwwards / Kesey Signal** — Mentioned as a sub-item in capabilities or context band: \"SITE OF THE DAY: The Kesey Signal — 1999 cyber-noir terminal archive\" in neutral.500 italic, 12px. The terminal-noir aesthetic is atmospheric background for the \"writing code by hand\" ethos.",
+    "selfCheck": "1. Hero quotability: Yes — \"I'm going back to writing code by hand\" is a 414-point Hacker News headline that's a standalone manifesto; screenshot-worthy, provocative for a dev portfolio, and richly ironic on a site that redesigns itself daily via AI.\n2. Because-of chain: Yes — the craft/handmade ethos of the phrase dictated Stack (bands of evidence beneath the declaration), bricolage-manrope (warm humanist grotesque that performs craft rather than shouts it), aqua teal H:163° (precise, fresh, spring-technical), and bottom-weighted hero layout (the phrase has weight, let it settle).\n3. Render feasibility: Yes — Bricolage Grotesque at clamp(52px, 7.8vw, 118px) renders three lines of the phrase within the 88vh hero band on a 1440×900 viewport at ~85% canvas width without overflow; Manrope body text handles all supporting type cleanly.",
+    "rationale": "The hero phrase arrived from Hacker News today: \"I'm going back to writing code by hand\" (414 points), a developer's counter-cultural declaration in the age of AI-generated everything. For a personal portfolio site that literally rebuilds its own design daily through AI orchestration, the irony is structural — the phrase is both a sincere statement of craft values and a wink at the mechanism displaying it. That tension makes it poster-worthy: you can read it as aspiration, as critique, or as comedy, and all three readings survive scrutiny. The period after \"by hand.\" is not decoration; it's a full stop against noise.\n\nThe Stack archetype was the only honest container. A Specimen (used twice in the last week) would have isolated the phrase from all evidence — but this phrase needs bands below it: the Tigers win that happened while someone was presumably coding, the golf leaderboard filing with quiet scores, the HN context so the viewer knows where the phrase came from. Stack lets the hero declaration stand undivided at full viewport height, then unfolds the supporting world in distinct bands below — signal strip, work grid, capabilities — each with its own background treatment, none competing with the phrase above. Bricolage Grotesque's variable humanist grotesque is exactly right because it has genuine warmth and craft character at display scale; it's not the scream of Anton or Bebas, it's a voice that sounds like a person.\n\nAqua teal at H:163° was both mandated and correct. The narrow 158°–170° window that remained after eliminating all recent hues happens to be the most precisely \"craft-technical\" color available: it reads as spring freshness, as the glow of a terminal running a build, as the color of something carefully made. The near-black `#0B1C24` ground is not anonymous void — it's tinted blue-green toward H:200° so even the negative space participates in the palette's coherence. The design's single chromatic event is \"by hand.\" landing in vivid teal at the end of the three-line hero block — everything builds to that 10 characters.",
+    "signalIntegration": "- **Tigers WIN 6–3** — Signal strip, left cell. \"DET 6 · 3 OPP\" in `#3EC9B8` (accent teal), weight bold, font-variant-numeric tabular-nums. Label above: \"TIGERS\" in neutral.400 caps 11px letter-spaced.\n- **Golf — Truist FINAL** — Signal strip, center cell. \"REITAN −15\" in neutral.100, \"Fowler / Højgaard −13\" in neutral.400 at 12px. Label: \"TRUIST FINAL\" in neutral.500 caps.\n- **HN source attribution** — Eyebrow directly above the hero phrase: `↑ HACKER NEWS · 414 PTS · MAY 11` in neutral.400 at 11px all-caps. The quote IS the attribution — the hero phrase is contextualized but not diminished.\n- **Lunar / date** — Signal strip, right cell. \"☽ waning crescent 21%\" in neutral.400 at 12px. Below: \"MONDAY · DAY 131 · 14H LIGHT\" in neutral.500 at 11px.\n- **Music** — Thin footer row below capabilities band: \"♫ Wet Leg · The War on Drugs · Tobin Sprout\" in neutral.500 at 12px, centered.\n- **Awwwards / Kesey Signal** — Mentioned as a sub-item in capabilities or context band: \"SITE OF THE DAY: The Kesey Signal — 1999 cyber-noir terminal archive\" in neutral.500 italic, 12px. The terminal-noir aesthetic is atmospheric background for the \"writing code by hand\" ethos."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "primary": {
+          "50": "#E5FAF6",
+          "100": "#BBEEE6",
+          "200": "#7EDCCF",
+          "300": "#3EC9B8",
+          "400": "#15B39F",
+          "500": "#0A9687",
+          "600": "#077A6C",
+          "700": "#055B51",
+          "800": "#033E38",
+          "900": "#022420"
+        },
+        "neutral": {
+          "50": "#EEF3F5",
+          "100": "#D8E4E9",
+          "200": "#B3C9D1",
+          "300": "#8AADB9",
+          "400": "#628F9F",
+          "500": "#437282",
+          "600": "#2E5666",
+          "700": "#1E3D4E",
+          "800": "#122837",
+          "900": "#0B1C24"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.50}"
+        },
+        "bgCard": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgSidebar": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgBand": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "bgBandAlt": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgSignal": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "text": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.neutral.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.200}",
+          "_light": "{colors.neutral.700}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.400}",
+          "_light": "{colors.neutral.500}"
+        },
+        "textDim": {
+          "base": "{colors.neutral.500}",
+          "_light": "{colors.neutral.400}"
+        },
+        "accent": {
+          "base": "{colors.primary.300}",
+          "_light": "{colors.primary.500}"
+        },
+        "accentBright": {
+          "base": "{colors.primary.200}",
+          "_light": "{colors.primary.400}"
+        },
+        "accentSubtle": {
+          "base": "{colors.primary.800}",
+          "_light": "{colors.primary.100}"
+        },
+        "accentDim": {
+          "base": "{colors.primary.600}",
+          "_light": "{colors.primary.200}"
+        },
+        "border": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "borderSubtle": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "borderAccent": {
+          "base": "{colors.primary.600}",
+          "_light": "{colors.primary.300}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.92",
+      "snug": "1.2",
+      "normal": "1.5",
+      "loose": "1.8"
+    },
+    "letterSpacings": {
+      "tight": "-0.04em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.08em",
+      "widest": "0.15em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 163,
+      "s": 72,
+      "l": 52,
+      "name": "aqua teal"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "blue-green 200°",
+      "name": "deep slate"
+    },
+    "mood_word": "deliberate",
+    "color_story": "Aqua teal at H:163° — the narrow open window between all recent palette zones — reads as spring-fresh and precision-craft simultaneously: the color of a well-cleaned terminal, a soldering pen's glow, the exact hue of something made by hand with care."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

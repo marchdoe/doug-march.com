@@ -1,0 +1,370 @@
+{
+  "date": "2026-07-27",
+  "era": "shell-directed",
+  "generatedAt": "2026-08-24T15:34:16.245Z",
+  "buildId": "1785150830209",
+  "attempts": 1,
+  "brief": "Verdant Zen Poster — \"No snowflake ever falls in the wrong place\" drenched across a deep summer-green field, the word snowflake glowing pale, the day's signals folded into one quiet baseline strip.",
+  "rationale": "The day handed me a finished poster line in `signals.quote`: \"No snowflake ever falls in the wrong place.\" It is quotable in isolation, and for a site whose entire premise is tearing itself down and rebuilding every night, it is also a confession of faith — whatever this page becomes today is exactly where it was meant to fall. That single serene line, and only that line, decides everything else. A contemplative one-idea statement cannot be one object among many, so the archetype is the Poster: the phrase fills 78% of the field, everything else demoted to corners and a baseline strip.\n\nBecause the tone is warm and accepting rather than athletic, I rejected the condensed billboard chassis (Anton, Bebas, Big Shoulders) that dominated the recent week and chose bricolage-manrope — a humanist expressive display at a 1.500 ratio that carries the phrase at 132px with warmth instead of a shout, while Manrope sets the corner nav and the tabular signal strip cleanly. The one committed gesture is typographic: the whole line sits in pale mint, but the word \"snowflake\" lifts into a luminous pale-green glow, so the single cold word is literally the thing that glows against the summer field.\n\nThe color mandate closed the wheel down to a narrow 76°–120° corridor, so I leaned into it rather than deviating: 118° verdant green becomes summer verdure, the living field onto which the snowflake falls perfectly placed. One saturated hue drenches the canvas past 68% coverage, every neutral is tinted toward it, and no second accent hedges the page. The shell answers the owner's standing notes directly — flush radius-0 everywhere (no rounded corners), and a fresh corner-mark treatment: a single mark-only-md lockup top-left with three quiet lowercase text links top-right, no band, no pills, no spine — none of the seven recently-used nav shells. Signals fold into a thin baseline data strip (a footer treatment unused in the recent set), where Koivun's −25 win at the 3M Open takes the accent, the 98% full moon glows as a dot echoing the snowflake, and the Tigers' 4–5 loss stays deliberately muted.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Logo.tsx",
+    "app/components/SignalStrip.tsx",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.index.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Poster",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Tabasco - The Root Of A Legacy",
+          "description": "Solo-built WebGL scrollytelling experience. The 155-year Tabasco story told through scroll-driven 3D. Pepper ripening, barrel aging, and a cinematic product...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a524632a9d45072322533.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfqBwsNIjnuRZQuAACAAElEQVR42uz9ebQ1S3YXBv525Ln3e99735tfVb2aXqlUc5VKUg0aSkNpYhBSg4xoTDcLWGpjFjQG2902Xq3upt20jbyARWND00Z4CTCDBQK3JHuBBBIIIRkhsEAS...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Tuscan Journey Begins",
+          "description": "MONOGRID created an interactive journey for Weekend Max Mara, transforming Italian craftsmanship into an immersive digital experience.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4f5b3f3e376480567855.jpg",
+          "screenshot_b64": "/9j/4R2tRXhpZgAATU0AKgAAAAgABwESAAMAAAABAAEAAAEaAAUAAAABAAAAYgEbAAUAAAABAAAAagEoAAMAAAABAAIAAAExAAIAAAAhAAAAcgEyAAIAAAAUAAAAk4dpAAQAAAABAAAAqAAAANQACvyAAAAnEAAK/IAAACcQQWRvYmUgUGhvdG9zaG9wIDI3LjIgKE1hY2ludG9zaCkAMjAyNjowNzowNyAxNDo0OToxNAAAAAOgAQADAAAAAQABAACgAgAEAAAAAQAABkCgAwAE...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "IKEA “Taking Apart the 30”",
+          "description": "It’s been 30 years since IKEA arrived in Spain, and we want to celebrate your journey with us and all the things we’ve built together to create a better...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a50f5516ead9193321829.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Monday",
+      "is_weekend": false,
+      "day_index": 1
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "permissionlesstech/bitchat/stargazers",
+          "description": "",
+          "language": "Swift",
+          "stars": null
+        },
+        {
+          "name": "amnezia-vpn/amnezia-client/stargazers",
+          "description": "",
+          "language": "C++",
+          "stars": null
+        },
+        {
+          "name": "moeru-ai/airi/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "yorukot/superfile/stargazers",
+          "description": "",
+          "language": "Go",
+          "stars": null
+        },
+        {
+          "name": "sponsors/NanmiCoder",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "3M Open",
+      "status": "Final",
+      "leaders": [
+        {
+          "name": "Jackson Koivun",
+          "position": "1",
+          "score": "-25"
+        },
+        {
+          "name": "Scottie Scheffler",
+          "position": "2",
+          "score": "-22"
+        },
+        {
+          "name": "Hideki Matsuyama",
+          "position": "3",
+          "score": "-20"
+        },
+        {
+          "name": "Brian Harman",
+          "position": "4",
+          "score": "-20"
+        },
+        {
+          "name": "Denny McCarthy",
+          "position": "5",
+          "score": "-20"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Kimi-K3 Releases on HuggingFace 7/27",
+          "url": "https://huggingface.co/moonshotai/Kimi-K3",
+          "score": 380,
+          "by": "nateb2022"
+        },
+        {
+          "title": "PGSimCity - How PostgreSQL Works",
+          "url": "https://nikolays.github.io/PGSimCity/",
+          "score": 656,
+          "by": "jonbaer"
+        },
+        {
+          "title": "Show HN: Physically accurate black hole you can put in your room",
+          "url": "https://blackhole.plav.in",
+          "score": 334,
+          "by": "aplavin"
+        },
+        {
+          "title": "Magnolias Are So Old That They're Pollinated by Beetles, Not Bees",
+          "url": "https://mymodernmet.com/magnolia-ancient-flowers-beetles/",
+          "score": 44,
+          "by": "speckx"
+        },
+        {
+          "title": "Scriptc by Vercel: TypeScript-to-Native compiler, no JavaScript engine in binary",
+          "url": "https://github.com/vercel-labs/scriptc",
+          "score": 203,
+          "by": "maxloh"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "full moon",
+      "illumination": 0.98,
+      "days_into_cycle": 13.43
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "Wet Leg"
+      ]
+    },
+    "quote": {
+      "text": "No snowflake ever falls in the wrong place.",
+      "author": "Zen Proverb"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 27,
+      "day_of_year": 208,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-26T17:40Z",
+          "result": "loss",
+          "score": "4-5"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:11",
+      "sunset": "19:22",
+      "daylight_hours": 14.2
+    },
+    "date": "2026-07-27"
+  },
+  "hero": {
+    "copy": "No snowflake ever falls in the wrong place.",
+    "rationale": "Straight from `signals.quote` — a Zen proverb that lands as a genuine poster line: quotable in isolation, screenshot-worthy, and quietly devastating. On a portfolio that demolishes and rebuilds itself every single night, \"no snowflake ever falls in the wrong place\" is the site's own theology — whatever it becomes today is exactly where it was meant to fall. Dropping a line about snow into a 14-hour July day, under a 98%-full moon, is the kind of serene contradiction that earns the whole canvas.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 118° (verdant green). The color mandate scorched everything except the narrow 76°–120° corridor; rather than fight it I read the proverb's \"right place\" as summer verdure — a field so alive that a single cold word falling into it looks perfectly, serenely placed. 118° sits just inside the legal edge and reads unambiguously green, not chartreuse.\n- **Neutral palette (Sage, green-tinted)** — 50 `#F3F7F3`, 100 `#E6EEE7`, 200 `#CBD8CC`, 300 `#A6B8A8`, 400 `#7C8E7E`, 500 `#5B6B5D`, 600 `#455146`, 700 `#333D34`, 800 `#212A23`, 900 `#121A14`\n- **Accent color** — light `#6FD38C`, default `#3DBB68`, dark `#178740`, glow `#A4E6B4`\n- **Secondary accent** — none. One hue carries the entire page.\n- **Background** — page bg `#0E4A26` (deep emerald drench), card bg `#0A2E18`, strip bg `#0A2E18`\n- **Text colors** — primary `#ECFAEF` (pale mint), secondary `#CBD8CC`, muted `#8AA391`\n\n### 2. Typography\n- **Hero phrase rendering** — set in the Bricolage display token at poster scale via `clamp(48px, 8.5vw, 132px)`, left-aligned, wrapping to 3 lines and filling ~78% of the viewport. Full phrase in pale mint `#ECFAEF`; the single word **snowflake** lifted to accent-glow `#A4E6B4` with a soft luminous cast, so the snowflake is the one thing that glows against the field.\n- **Line heights** — hero `0.95`, body `1.6` (bumped for light-on-dark), captions `1.4`\n- **Letter spacings** — hero `-0.02em`, body `0`, smallcaps/labels `0.12em`\n\n### 3. Layout Specification\n- **Archetype** — Poster. One serene line dominates 70–90% of the viewport; a contemplative single idea wants to BE the surface, not sit in a card on it.\n- **CSS grid/flex structure** — `display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh;` The hero phrase lives in the center band as a left-aligned block; corners hold the mark, nav, and strip.\n- **Major dimensions**:\n  - Hero/featured area: center band `min-height: 78vh`, phrase block `max-width: 22ch`\n  - No sidebar\n  - `max-width: none`; side padding `clamp(32px, 6vw, 96px)`\n  - Section padding: `64px` top for the mark/nav row, `48px` bottom for the strip\n- **Nav placement** — corner mark. Brand mark top-left; three lowercase text links (`work · about · contact`) top-right, no band, no pills, no border — pure type, 40px row.\n- **Hero phrase grid zone** — rows 2 (the `1fr` band), columns spanning the left ~72% of canvas; intended footprint ~1000×620px on a 1440×900 viewport.\n\n### 4. Component Character\n- **Border radius** — 0 everywhere (cards, links, strip). `full` reserved only for any dot glyph. Honors the owner's standing note against rounded corners.\n- **Border treatment** — borderless surfaces; a single 1px hairline `#178740` divides the baseline data strip from the field.\n- **Shadow** — none as elevation. The hero \"snowflake\" word carries a soft text glow only: `text-shadow: 0 0 32px rgba(164,230,180,0.35)`.\n- **Density** — spacious; the field breathes, the strip is compact tabular.\n- **Interactive states** — nav links shift from `#CBD8CC` to `#A4E6B4` on hover with a 1px underline offset; no motion beyond a 150ms color ease.\n\n### 5. Signal Integration\n- **Where signal elements live** — a thin baseline **data strip** across the bottom edge (`#0A2E18`, hairline top border), reading as one quiet tabular line.\n- **How sports scores are styled** — golf leads the strip: `3M OPEN · KOIVUN −25 · SCHEFFLER −22` in Manrope tabular numerals, `−25` in accent `#3DBB68`. The Tigers loss (4–5) sits muted in `#8AA391` — a loss doesn't get the accent.\n- **How the quote is displayed** — the quote IS the hero phrase, at marquee scale in the center band; author credit \"— Zen Proverb\" set small in `#8AA391` beneath the phrase.\n- **Holiday elements** — none today.\n- **Other signals** — full moon 98% rendered as `● FULL · 98%` in the strip (the glowing dot echoes the snowflake glow); music `GUIDED BY VOICES / WET LEG` in smallcaps; daylight `05:11 → 19:22` as an almanac fragment. All folded into the single baseline strip.",
+    "selfCheck": "1. Hero quotability: Yes — a standalone Zen proverb, poster-worthy and screenshot-ready on its own.\n2. Because-of chain: Yes — serene acceptance → Poster (one dominant line) → Bricolage (warm marquee, not shouty) → green drench (only legal corridor, read as verdure) → corner-mark poster layout with one glowing word.\n3. Render feasibility: Yes — a 6-word phrase at `clamp(48px,8.5vw,132px)` wraps to 3 lines within 22ch on 1440×900 without overflow.\n4. Canvas floor feasible: Yes — the phrase block plus full-bleed green drench and baseline strip fill well past 72% of the viewport.",
+    "rationale": "The day handed me a finished poster line in `signals.quote`: \"No snowflake ever falls in the wrong place.\" It is quotable in isolation, and for a site whose entire premise is tearing itself down and rebuilding every night, it is also a confession of faith — whatever this page becomes today is exactly where it was meant to fall. That single serene line, and only that line, decides everything else. A contemplative one-idea statement cannot be one object among many, so the archetype is the Poster: the phrase fills 78% of the field, everything else demoted to corners and a baseline strip.\n\nBecause the tone is warm and accepting rather than athletic, I rejected the condensed billboard chassis (Anton, Bebas, Big Shoulders) that dominated the recent week and chose bricolage-manrope — a humanist expressive display at a 1.500 ratio that carries the phrase at 132px with warmth instead of a shout, while Manrope sets the corner nav and the tabular signal strip cleanly. The one committed gesture is typographic: the whole line sits in pale mint, but the word \"snowflake\" lifts into a luminous pale-green glow, so the single cold word is literally the thing that glows against the summer field.\n\nThe color mandate closed the wheel down to a narrow 76°–120° corridor, so I leaned into it rather than deviating: 118° verdant green becomes summer verdure, the living field onto which the snowflake falls perfectly placed. One saturated hue drenches the canvas past 68% coverage, every neutral is tinted toward it, and no second accent hedges the page. The shell answers the owner's standing notes directly — flush radius-0 everywhere (no rounded corners), and a fresh corner-mark treatment: a single mark-only-md lockup top-left with three quiet lowercase text links top-right, no band, no pills, no spine — none of the seven recently-used nav shells. Signals fold into a thin baseline data strip (a footer treatment unused in the recent set), where Koivun's −25 win at the 3M Open takes the accent, the 98% full moon glows as a dot echoing the snowflake, and the Tigers' 4–5 loss stays deliberately muted.",
+    "signalIntegration": "- **Where signal elements live** — a thin baseline **data strip** across the bottom edge (`#0A2E18`, hairline top border), reading as one quiet tabular line.\n- **How sports scores are styled** — golf leads the strip: `3M OPEN · KOIVUN −25 · SCHEFFLER −22` in Manrope tabular numerals, `−25` in accent `#3DBB68`. The Tigers loss (4–5) sits muted in `#8AA391` — a loss doesn't get the accent.\n- **How the quote is displayed** — the quote IS the hero phrase, at marquee scale in the center band; author credit \"— Zen Proverb\" set small in `#8AA391` beneath the phrase.\n- **Holiday elements** — none today.\n- **Other signals** — full moon 98% rendered as `● FULL · 98%` in the strip (the glowing dot echoes the snowflake glow); music `GUIDED BY VOICES / WET LEG` in smallcaps; daylight `05:11 → 19:22` as an almanac fragment. All folded into the single baseline strip."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "green": {
+          "50": "#ECFAEF",
+          "100": "#D2F4D9",
+          "200": "#A4E6B4",
+          "300": "#6FD38C",
+          "400": "#3DBB68",
+          "500": "#22A04F",
+          "600": "#178740",
+          "700": "#106E36",
+          "800": "#0E4A26",
+          "900": "#0A2E18"
+        },
+        "sage": {
+          "50": "#F3F7F3",
+          "100": "#E6EEE7",
+          "200": "#CBD8CC",
+          "300": "#A6B8A8",
+          "400": "#7C8E7E",
+          "500": "#5B6B5D",
+          "600": "#455146",
+          "700": "#333D34",
+          "800": "#212A23",
+          "900": "#121A14"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.green.800}",
+          "_light": "{colors.green.50}"
+        },
+        "bgDeep": {
+          "base": "{colors.green.900}",
+          "_light": "{colors.sage.100}"
+        },
+        "surface": {
+          "base": "{colors.green.900}",
+          "_light": "{colors.sage.50}"
+        },
+        "text": {
+          "base": "{colors.green.50}",
+          "_light": "{colors.green.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.sage.200}",
+          "_light": "{colors.sage.600}"
+        },
+        "textMuted": {
+          "base": "#8AA391",
+          "_light": "{colors.sage.500}"
+        },
+        "accent": {
+          "base": "{colors.green.400}",
+          "_light": "{colors.green.600}"
+        },
+        "accentGlow": {
+          "base": "{colors.green.200}",
+          "_light": "{colors.green.500}"
+        },
+        "border": {
+          "base": "{colors.green.600}",
+          "_light": "{colors.sage.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.95",
+      "snug": "1.15",
+      "normal": "1.6",
+      "loose": "1.9"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.14em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "0",
+      "md": "0",
+      "lg": "0",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 118,
+      "s": 55,
+      "l": 42,
+      "name": "Verdant Green"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "green",
+      "name": "Sage"
+    },
+    "mood_word": "serene",
+    "color_story": "A deep summer-verdure drench turns the acceptance in the phrase into a living field — everything already in its right place — while one snowflake glows pale against it."
+  },
+  "shell": {
+    "nav": "corner mark — mark-only-md top-left, three lowercase text links top-right (no band, no pills, no border)",
+    "footer": "data strip — thin baseline tabular strip listing golf, moon, music, almanac and the Tigers loss",
+    "brand_lockup": "mark-only-md",
+    "brand_color_mode": "single-color"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "APPROVED",
+      "feedback": "APPROVED",
+      "ts": 1785150456833
+    }
+  ],
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

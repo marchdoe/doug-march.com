@@ -1,0 +1,349 @@
+{
+  "date": "2026-05-14",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.171Z",
+  "buildId": "1778756209880",
+  "attempts": 1,
+  "brief": "Spectral broadsheet on night-olive void — Hubbard's five-word decree at 92px spanning two-thirds of the grid while acid chartreuse rules divide the evidence filing in from the right, the moon entirely dark, two close Detroit losses noted and filed.",
+  "rationale": "The hero phrase arrived from Elbert Hubbard's signal-feed quote, compressed to its most poster-worthy fragment: five words, a period, a complete philosophical statement that locates the source of defeat inside the self. Today gives it context in triplicate — the Pistons lost by four, the Tigers by one, and the moon is at its darkest (0.026 illumination, new cycle day 28). The phrase isn't consolation; it's diagnosis. That register demanded authority, not volume — which is why the Broadsheet archetype won over Poster or Specimen. A declaration this compressed doesn't need a void to land in; it needs a printed record around it, the evidence of what it's responding to. The Broadsheet makes the phrase the lead story of a night edition.\n\nSpectral + Albert Sans was the only honest chassis. Spectral's transitional slab serifs carry 19th-century British newspaper authority — the type used to print both legal statutes and moral pronouncements. At `clamp(56px, 6vw, 92px)` across eight of twelve columns, the three-line headline (\"NO DEFEAT / EXCEPT / FROM WITHIN.\") reads as something permanent, filed, recorded. Albert Sans handles the evidence: scores, signals, projects, capabilities — the body of the day's record beneath the declaration. The 1.333 ratio is deliberate: this phrase doesn't want to scream, it wants to be inscribed.\n\nAcid chartreuse at H:72° is the only available hue in today's color mandate (the gap between 65°–90° after eliminating 0°–65° and 90°–360°). That constraint turned out to be generative: chartreuse on near-black is the color of warning labels, emergency signage, hazard tape — a color that conveys \"this matters, pay attention\" without warmth. On `#0C0E08` (night-olive near-black) it reads as a single frequency of light in absolute darkness, which is precisely the new moon aesthetic. The color appears only in structural roles: the masthead rule, eyebrow labels, the Hubbard attribution, HN scores — never as large-area fill. The cream type and dark ground carry the mass; chartreuse is the single live wire threading through it.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Broadsheet",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Pedal Mafia | Event Micro Site",
+          "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Renée Crown Wellness Institute",
+          "description": "Our objective is to establish the Crown Institute as the gold standard for science-backed, multidisciplinary approaches to mindfulness-based mental wellness...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/02/698bcba679e8c124826409.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQEBLAEsAAD/4gxYSUNDX1BST0ZJTEUAAQEAAAxITGlubwIQAABtbnRyUkdCIFhZWiAHzgACAAkABgAxAABhY3NwTVNGVAAAAABJRUMgc1JHQgAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLUhQICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABFjcHJ0AAABUAAAADNkZXNjAAABhAAAAGx3dHB0AAAB8AAAABRia3B0...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Thursday",
+      "is_weekend": false,
+      "day_index": 4
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "ruvnet/RuView/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "tinyhumansai/openhuman/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "sponsors/rohitg00",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/obra",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "K-Dense-AI/scientific-agent-skills/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "PGA Championship",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Claude for Small Business",
+          "url": "https://www.anthropic.com/news/claude-for-small-business",
+          "score": 271,
+          "by": "neilfrndes"
+        },
+        {
+          "title": "Scorched Earth 2000 – Web",
+          "url": "http://www.scorch2000.com/web/",
+          "score": 269,
+          "by": "meshko"
+        },
+        {
+          "title": "Linux gaming is faster because Windows APIs are becoming Linux kernel features",
+          "url": "https://www.xda-developers.com/linux-gaming-is-getting-faster-because-windows-apis-are-becoming-linux-kernel-features/",
+          "score": 752,
+          "by": "haunter"
+        },
+        {
+          "title": "Classic 7 is a Windows 10 LTSC mod to look 1:1 to Windows 7",
+          "url": "https://classic7.lol/",
+          "score": 61,
+          "by": "jandeboevrie"
+        },
+        {
+          "title": "Setting up a free *.city.state.us locality domain (2025)",
+          "url": "https://fredchan.org/blog/locality-domains-guide/",
+          "score": 565,
+          "by": "speckx"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "new moon",
+      "illumination": 0.026,
+      "days_into_cycle": 28.01
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "Guided by Voices",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "There is no failure except in no longer trying. There is no defeat except from within, no insurmountable barrier except our own inherent weakness of purpose.",
+      "author": "Elbert Hubbard"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 14,
+      "day_of_year": 134,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": "2026-05-14T00:00Z",
+          "result": "loss",
+          "score": "113-117"
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-13T23:10Z",
+          "result": "loss",
+          "score": "2-3"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:03",
+      "sunset": "19:09",
+      "daylight_hours": 14.1
+    },
+    "date": "2026-05-14"
+  },
+  "hero": {
+    "copy": "No defeat except from within.",
+    "rationale": "Elbert Hubbard's quote arrived in today's signal feed with a concentrated fragment that stands alone: five words, no hedging, a complete epistemological argument about will. The Pistons lost 113-117 (four-point margin), the Tigers lost 2-3 (one run)—both close losses, both defeats that came from execution, not talent. New moon today: zero illumination, day 28 of cycle, the absolute dark before renewal. Hubbard's fragment is the right phrase for a new-moon Thursday when Detroit came this close twice; the phrase doesn't mourn, it locates. You'd screenshot this line. It stands alone.",
+    "source": null
+  },
+  "chassis": "spectral-albert",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue** — H:72° (chartreuse-yellow). This is the only remaining gap in the color mandate after eliminating 0°–65° and 90°–360°; at full saturation on a near-black ground it reads as acid, electric, and deliberately uncomfortable — the right register for a defiant persistence aphorism on a new-moon night.\n\n**Neutral palette** — Tinted toward H:72° (olive), dark-dominant:\n- 50: `#F0F0E8`\n- 100: `#DEDEDA`\n- 200: `#C4C4BA`\n- 300: `#A6A69A`\n- 400: `#888876`\n- 500: `#6A6A58`\n- 600: `#4E4E3C`\n- 700: `#323220`\n- 800: `#1C1C0E`\n- 900: `#0C0E08`\n\n**Accent color** — Chartreuse:\n- Light: `#D5EC6E`\n- Default: `#AACC1A`\n- Dark: `#73920D`\n- Glow: `#C1E136`\n\n**Secondary accent** — None. One chromatic event only.\n\n**Background** — Page bg: `#0C0E08` (near-black, slight olive tint) · Card bg: `#1C1C0E` · Sidebar bg: `#1C1C0E`\n\n**Text colors** — Primary: `#F0F0E8` · Secondary: `#A6A69A` · Muted: `#6A6A58`\n\n**Contrast verification** — `#F0F0E8` on `#0C0E08` ≈ 18:1 (AA ✓). Accent `#AACC1A` on bg ≈ 11:1 for accent as large display element (AA ✓). Light-mode body: `#0C0E08` on `#F0F0E8` ≈ 18:1 (AA ✓).\n\n---\n\n### 2. Typography\n\n**Hero phrase rendering** — Spectral (slab serif, `display` token), `clamp(56px, 6vw, 92px)`, weight 700, line-height 0.92, letter-spacing −0.03em. Phrase breaks into three editorial lines: `NO DEFEAT` / `EXCEPT` / `FROM WITHIN.` — all caps broadsheet register. Color: `#F0F0E8` (cream). Attribution line below (\"— Elbert Hubbard\") in Albert Sans 11px, tracked 0.2em, color `#AACC1A` (chartreuse). This is the only chartreuse text in the hero zone.\n\n**Line heights** — Hero: 0.92 · Section heads: 1.0 · Body: 1.55 · Signal data: 1.4\n\n**Letter spacings** — Hero: −0.03em · Eyebrows/labels (tracked caps): 0.20em · Body: 0em · Meta/data: 0.05em\n\n---\n\n### 3. Layout Specification\n\n**Archetype** — Broadsheet. The hero phrase is a declaration requiring the authority of a printed record — a night edition, the dispatch of a truth. Broadsheet gives it a masthead, a lead story zone, and dense columns of evidence (scores, signals, projects) that make the phrase feel published rather than posted.\n\n**CSS grid structure:**\n```\ndisplay: grid;\ngrid-template-columns: repeat(12, 1fr);\ngrid-template-rows: auto 2px auto 1px auto;\ngap: 0 24px;\npadding: 0 6vw;\nmax-width: none;\n```\n\n**Masthead band** — Full 12 columns, height 56px: \"DOUG MARCH\" in Spectral tracked caps (left, cols 1–4), date + issue in Albert Sans small caps (center, cols 5–8), nav links in Albert Sans (right, cols 9–12). Bottom edge: 2px chartreuse rule.\n\n**Hero story zone** — `grid-column: 1 / 9; grid-row: 3;` — takes cols 1–8. The hero phrase at `clamp(56px, 6vw, 92px)`, three lines, no background. Padding: 48px 0 40px 0. No hero background — lives directly on page bg.\n\n**Signal column** — `grid-column: 9 / 13; grid-row: 3;` — cols 9–12. Two stacked blocks: SIGNALS BRIEF (Pistons/Tigers scores, new moon, daylight hours, PGA status) and HN TODAY (top three stories). Separated by 1px neutral.700 rule. Label eyebrows in Albert Sans 10px tracked 0.2em chartreuse.\n\n**Below-fold section** — Full-width 1px chartreuse rule, then 3-equal-column grid: SELECTED WORK (cols 1–4), CAPABILITIES (cols 5–8), TIMELINE FRAGMENT (cols 9–12). Section labels: Albert Sans 10px tracked caps in chartreuse. Content: Albert Sans 14px, 1.55 leading.\n\n**Major dimensions:**\n- Masthead height: 56px\n- Hero story zone min-height: 52vh\n- Below-fold section: padding 48px 0\n- Max content width: `none` (full canvas)\n- Side padding: `6vw`\n\n**Nav placement** — Inline in masthead band, rightmost 4 columns. Horizontal list: WORK · ABOUT · EXPERIMENTS. Albert Sans 12px, tracked wide, color `#A6A69A`, hover → `#AACC1A`.\n\n**Hero phrase grid zone** — Columns 1–8 of a 12-column grid, below masthead. Intended rendered size: ~840px wide at 1440px viewport. At `clamp(56px, 6vw, 92px)` with three lines at 0.92 line-height, the hero block occupies approximately 44vh of vertical real estate.\n\n---\n\n### 4. Component Character\n\n**Border radius** — none (`0px`) throughout. This is a newspaper; no rounded corners.\n\n**Border treatment** — Structural horizontal rules in chartreuse (`#AACC1A`, 2px for primary divisions; 1px `#73920D` for secondary). Vertical column separators: 1px `#323220` (neutral.700).\n\n**Shadow** — None. Depth through surface distinction only (900 bg → 800 card).\n\n**Density** — High. Broadsheet demands it. Compact signal lists (line-height 1.4, 13px), tight section headers, columns packed with readable data.\n\n**Interactive states** — Links: color `#A6A69A` → `#AACC1A` on hover, underline appears. Project entries: no card chrome, just a chartreuse border-left (4px) that appears on hover. Nav: tracked label → chartreuse.\n\n---\n\n### 5. Signal Integration\n\n**Signal column placement** — Rightmost 4 columns (grid cols 9–12), sitting beside the hero zone. Two blocks with hard-ruled divisions.\n\n**Sports scores** — SIGNALS BRIEF section: `PISTONS` (Albert Sans 11px tracked caps, neutral.300) · `113 – 117` (Spectral 20px, neutral.50) · `L` badge in neutral.500 box. `TIGERS` same treatment · `2 – 3`. Both losses flagged quietly — neither in chartreuse (that color is for structure and attribution, not defeats).\n\n**PGA Championship** — Single line: `PGA CHAMPIONSHIP` in tracked caps + `SCHEDULED` in neutral.500. No scores yet; presence is enough.\n\n**The quote** — IS the hero phrase, displayed as the broadsheet lead story at `clamp(56px, 6vw, 92px)`. Attribution \"— Elbert Hubbard\" is the only chartreuse text in the hero zone, functioning as a source credit below the declaration.\n\n**New moon** — In SIGNALS BRIEF: `NEW MOON` · `0.026 illumination` · `Day 28` — rendered in neutral.400 italic Albert Sans 12px. The darkness is noted, not dramatized.\n\n**Daylight** — `SUNRISE 05:03 · SUNSET 19:09 · 14.1H` in Albert Sans 11px tracked, neutral.500 — one line in the signals block.\n\n**Music** — Listed at the foot of the signal column: `WET LEG · GUIDED BY VOICES · MY MORNING JACKET` — Albert Sans 11px, neutral.400, tracked 0.05em.\n\n**HN TODAY** — Second block in signal column. Three entries: headline text in Albert Sans 13px neutral.200, score in chartreuse.600, stacked. Eyebrow \"HN TODAY\" in tracked caps chartreuse.",
+    "selfCheck": "1. Hero quotability: Yes — \"No defeat except from within.\" stands alone as a poster, a locker-room wall, a manifesto fragment; it needs no context to land.\n2. Because-of chain: Yes — the phrase demanded editorial authority (Broadsheet), which demanded a slab serif with newspaper gravity (spectral-albert), which demanded acid chartreuse on near-black (the only open mandated hue, correctly visceral for a defiant aphorism on a zero-illumination new moon night).\n3. Render feasibility: Yes — Spectral at clamp(56px, 6vw, 92px) across 8 of 12 columns (~840px at 1440px viewport), breaking into 3 lines at 0.92 leading, occupies approximately 44vh cleanly with no overflow risk.",
+    "rationale": "The hero phrase arrived from Elbert Hubbard's signal-feed quote, compressed to its most poster-worthy fragment: five words, a period, a complete philosophical statement that locates the source of defeat inside the self. Today gives it context in triplicate — the Pistons lost by four, the Tigers by one, and the moon is at its darkest (0.026 illumination, new cycle day 28). The phrase isn't consolation; it's diagnosis. That register demanded authority, not volume — which is why the Broadsheet archetype won over Poster or Specimen. A declaration this compressed doesn't need a void to land in; it needs a printed record around it, the evidence of what it's responding to. The Broadsheet makes the phrase the lead story of a night edition.\n\nSpectral + Albert Sans was the only honest chassis. Spectral's transitional slab serifs carry 19th-century British newspaper authority — the type used to print both legal statutes and moral pronouncements. At `clamp(56px, 6vw, 92px)` across eight of twelve columns, the three-line headline (\"NO DEFEAT / EXCEPT / FROM WITHIN.\") reads as something permanent, filed, recorded. Albert Sans handles the evidence: scores, signals, projects, capabilities — the body of the day's record beneath the declaration. The 1.333 ratio is deliberate: this phrase doesn't want to scream, it wants to be inscribed.\n\nAcid chartreuse at H:72° is the only available hue in today's color mandate (the gap between 65°–90° after eliminating 0°–65° and 90°–360°). That constraint turned out to be generative: chartreuse on near-black is the color of warning labels, emergency signage, hazard tape — a color that conveys \"this matters, pay attention\" without warmth. On `#0C0E08` (night-olive near-black) it reads as a single frequency of light in absolute darkness, which is precisely the new moon aesthetic. The color appears only in structural roles: the masthead rule, eyebrow labels, the Hubbard attribution, HN scores — never as large-area fill. The cream type and dark ground carry the mass; chartreuse is the single live wire threading through it.",
+    "signalIntegration": "**Signal column placement** — Rightmost 4 columns (grid cols 9–12), sitting beside the hero zone. Two blocks with hard-ruled divisions.\n\n**Sports scores** — SIGNALS BRIEF section: `PISTONS` (Albert Sans 11px tracked caps, neutral.300) · `113 – 117` (Spectral 20px, neutral.50) · `L` badge in neutral.500 box. `TIGERS` same treatment · `2 – 3`. Both losses flagged quietly — neither in chartreuse (that color is for structure and attribution, not defeats).\n\n**PGA Championship** — Single line: `PGA CHAMPIONSHIP` in tracked caps + `SCHEDULED` in neutral.500. No scores yet; presence is enough.\n\n**The quote** — IS the hero phrase, displayed as the broadsheet lead story at `clamp(56px, 6vw, 92px)`. Attribution \"— Elbert Hubbard\" is the only chartreuse text in the hero zone, functioning as a source credit below the declaration.\n\n**New moon** — In SIGNALS BRIEF: `NEW MOON` · `0.026 illumination` · `Day 28` — rendered in neutral.400 italic Albert Sans 12px. The darkness is noted, not dramatized.\n\n**Daylight** — `SUNRISE 05:03 · SUNSET 19:09 · 14.1H` in Albert Sans 11px tracked, neutral.500 — one line in the signals block.\n\n**Music** — Listed at the foot of the signal column: `WET LEG · GUIDED BY VOICES · MY MORNING JACKET` — Albert Sans 11px, neutral.400, tracked 0.05em.\n\n**HN TODAY** — Second block in signal column. Three entries: headline text in Albert Sans 13px neutral.200, score in chartreuse.600, stacked. Eyebrow \"HN TODAY\" in tracked caps chartreuse."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "chartreuse": {
+          "50": "#F4FAD5",
+          "100": "#E8F5AE",
+          "200": "#D5EC6E",
+          "300": "#C1E136",
+          "400": "#AACC1A",
+          "500": "#8FB512",
+          "600": "#73920D",
+          "700": "#576F0A",
+          "800": "#3B4C06",
+          "900": "#1E2800"
+        },
+        "neutral": {
+          "50": "#F0F0E8",
+          "100": "#DEDEDA",
+          "200": "#C4C4BA",
+          "300": "#A6A69A",
+          "400": "#888876",
+          "500": "#6A6A58",
+          "600": "#4E4E3C",
+          "700": "#323220",
+          "800": "#1C1C0E",
+          "900": "#0C0E08"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.50}"
+        },
+        "bgCard": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgSidebar": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgElevated": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "text": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.neutral.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.300}",
+          "_light": "{colors.neutral.600}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.500}",
+          "_light": "{colors.neutral.400}"
+        },
+        "accent": {
+          "base": "{colors.chartreuse.400}",
+          "_light": "{colors.chartreuse.700}"
+        },
+        "accentLight": {
+          "base": "{colors.chartreuse.200}",
+          "_light": "{colors.chartreuse.100}"
+        },
+        "accentDark": {
+          "base": "{colors.chartreuse.600}",
+          "_light": "{colors.chartreuse.800}"
+        },
+        "accentGlow": {
+          "base": "{colors.chartreuse.300}",
+          "_light": "{colors.chartreuse.200}"
+        },
+        "border": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "borderAccent": {
+          "base": "{colors.chartreuse.700}",
+          "_light": "{colors.chartreuse.500}"
+        },
+        "borderStrong": {
+          "base": "{colors.chartreuse.400}",
+          "_light": "{colors.chartreuse.600}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.92",
+      "snug": "1.2",
+      "normal": "1.55",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.2em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 72,
+      "s": 85,
+      "l": 50,
+      "name": "acid chartreuse"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "olive-green",
+      "name": "night olive"
+    },
+    "mood_word": "resolute",
+    "color_story": "Acid chartreuse on near-black is the color of a warning label printed on dark paper — appropriate for a phrase that locates defeat inside the self while the moon goes entirely dark."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

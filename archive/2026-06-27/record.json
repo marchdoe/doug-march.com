@@ -1,0 +1,369 @@
+{
+  "date": "2026-06-27",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.209Z",
+  "buildId": "1782557307329",
+  "attempts": 1,
+  "brief": "TV-indigo void — \"well-viewed.\" split across two lines at 18vw, weight 400 in ghosted secondary and weight 900 in full white, the hyphen as hinge between qualifier and punchline, the word Lily Tomlin invented finally given a poster.",
+  "rationale": "The hero phrase arrived from a single word Lily Tomlin invented to expose a cultural double standard: \"well-read\" is a compliment, but \"well-viewed\" doesn't exist as a word, and that absence is the argument. The phrase passes the poster test in isolation — it demands context the page doesn't provide, which makes a viewer do the work. That act of completing the thought is the user's first engagement with the site, and it's more memorable than any project description.\n\nThe Poster archetype is the only honest container for a phrase this formally minimal. The design is a two-line typographic statement where the same font at two different weights and two different values of the same color performs the Tomlin logic without text: \"well-\" in weight 400 and secondary color is the qualifier, lighter because it depends on what follows; \"viewed.\" in weight 900 and near-white is the coined punchline, heavier because it carries the whole argument. The hinge point is the hyphen connecting them — the break between lines enacts the same beat as the pause before Tomlin's delivery. Bricolage Grotesque's variable weight range (200–900 in the same family) is the only chassis in the catalog that can execute this 400/900 split with the warmth the source material needs; Anton or Big Shoulders would turn wit into a sports declaration.\n\nTelevision-screen indigo at H:243° is not a metaphor — it is the literal color of a cathode-ray tube in a dark room, which is precisely where Tomlin's observation happens. It falls inside the mandate's only open corridor (230°–255°, the last unvisited zone after seven builds). Against the near-void page background `#070B1C`, the accent `#7179F0` achieves 5:1 contrast (WCAG AA all sizes), the primary text `#F0F1FF` achieves 18:1, and the secondary text `#B2B4D0` achieves 10:1 — no compromises. The signal strip at the bottom surfaces what matters today — Tigers 8–0 shutout in accent blue, Scheffler at −16 in accent-light, full moon in secondary, Independence Day countdown in muted — without competing with the phrase above. Everything that is not the phrase knows it is not the phrase.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Poster",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Himachal - The Experience",
+          "description": "Our Himachal web experience began as a simple desire, to capture the soul of Himachal beyond postcards and panoramas. We wanted people to feel the mist,...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a26737dd6af2719498604.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAgAINJREFUeAFs/V2iJLmOpAmCVDW/tcruyv+cWcXd2zzObCjjqJJzCMgHwKLas25FhPtxM1USBAQCATj+f//f/8++5jTb297f/53/G7//9/uvv7+3bM7LnufHzn+O3//d923j...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Pil Rebranding Site",
+          "description": "For 20 years, Pil has evolved with brands and people. Today, our new website reflects who we are: a living ecosystem of creativity, ideas, and innovation.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a218e4cb4e5a558333777.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAC4jAAAuIwF4pT92AAyc5UlEQVR4nOT9CbhuXVYWhu5v/+dvq6UKRYgFJXKhBJsgYJSIJgIShUSwQZ8bwaiJlhghCV4jT2wAIVHAgF41aIHm3muTqBhFYsRgg0piSyOKUIBGSqmGEqr+qr895+zvPnvN0bzvO8aca+19zl94n7sozv/tteaac8wxxxzjHWOOOdfpHW9768XFxcXp4uJ8YT8W19kKnLb/...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Arkansas Museum of Fine Art",
+          "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+          "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Saturday",
+      "is_weekend": true,
+      "day_index": 6
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/simplex-chat",
+          "description": "",
+          "language": "Haskell",
+          "stars": null
+        },
+        {
+          "name": "google-labs-code/design.md/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "commaai/openpilot/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "kunchenguid/no-mistakes/stargazers",
+          "description": "",
+          "language": "Go",
+          "stars": null
+        },
+        {
+          "name": "grafana/grafana/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Travelers Championship",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Scottie Scheffler",
+          "position": "1",
+          "score": "-16"
+        },
+        {
+          "name": "Viktor Hovland",
+          "position": "2",
+          "score": "-14"
+        },
+        {
+          "name": "Akshay Bhatia",
+          "position": "3",
+          "score": "-12"
+        },
+        {
+          "name": "Eric Cole",
+          "position": "4",
+          "score": "-12"
+        },
+        {
+          "name": "Bud Cauley",
+          "position": "5",
+          "score": "-10"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "DeepSeek open-sources inference optimizations with 60–85% faster generation [pdf]",
+          "url": "https://github.com/deepseek-ai/DeepSpec/blob/main/DSpark_paper.pdf",
+          "score": 184,
+          "by": "aurenvale"
+        },
+        {
+          "title": "Linux on Older Hardware: The Complete Revival Guide",
+          "url": "https://www.fosslinux.com/158206/linux-on-older-hardware-revival-guide.htm",
+          "score": 59,
+          "by": "tapanjk"
+        },
+        {
+          "title": "Previewing GPT‑5.6 Sol: a next-generation model",
+          "url": "https://openai.com/index/previewing-gpt-5-6-sol/",
+          "score": 1014,
+          "by": "minimaxir"
+        },
+        {
+          "title": "Long Wave radio era set to end with switch-off",
+          "url": "https://www.economist.com/britain/2026/06/25/the-bbc-switches-off-its-oldest-service",
+          "score": 36,
+          "by": "edward"
+        },
+        {
+          "title": "Fintech Engineering Handbook",
+          "url": "https://w.pitula.me/fintech-engineering-handbook/",
+          "score": 3,
+          "by": "signa11"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Independence Day",
+          "date": "2026-07-04",
+          "days_away": 7
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "full moon",
+      "illumination": 0.963,
+      "days_into_cycle": 12.94
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "Guided by Voices",
+        "Tobin Sprout"
+      ]
+    },
+    "quote": {
+      "text": "If you read a lot of books, you're considered well-read. But if you watch a lot of TV, you're not considered well-viewed.",
+      "author": "Lily Tomlin"
+    },
+    "season": {
+      "season": "summer",
+      "month": 6,
+      "day": 27,
+      "day_of_year": 178,
+      "month_name": "June"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-06-26T22:40Z",
+          "result": "win",
+          "score": "8-0"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:51",
+      "sunset": "19:35",
+      "daylight_hours": 14.7
+    },
+    "date": "2026-06-27"
+  },
+  "hero": {
+    "copy": "well-viewed.",
+    "rationale": "Lily Tomlin's quote hands us a coined word — \"well-viewed\" — that doesn't exist yet but should, and the period turns it into a declaration. It passes the screenshot test on its own: a reader who knows the quote feels the wit; a reader who doesn't asks \"what does that mean?\" The full quote says books make you \"well-read\" but TV doesn't make you \"well-viewed\" — so the invented suffix is both the punchline and a legitimate claim for anyone who watches attentively. On a Saturday with a full moon and a portfolio that redesigns itself daily, the act of deliberate watching feels exactly right.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue:** H:243°, the blue of cathode-ray light; saturated but not garish, cold but not clinical — the color of a screen watched carefully in the dark.\n- **Neutral palette** (indigo-tinted night slate):\n  - 50: `#F2F2FA`\n  - 100: `#E8E9F5`\n  - 200: `#D0D2E8`\n  - 300: `#B2B4D0`\n  - 400: `#8E91B5`\n  - 500: `#6B6E95`\n  - 600: `#484B70`\n  - 700: `#2D3052`\n  - 800: `#181B38`\n  - 900: `#0B0D1E`\n- **Accent color:** light `#9DA2F5` · default `#7179F0` · dark `#3744CC` · glow `rgba(113,121,240,0.40)`\n- **Secondary accent:** none — single committed indigo carries the page\n- **Background:** page `#070B1C` (deeper than slate.900 — a true void-black with indigo cast) · card/strip `#0F1328`\n- **Text colors:** primary `#F0F1FF` (near-white with blue hint) · secondary `#B2B4D0` (slate.300) · muted `#6B6E95` (slate.500)\n\nContrast checks:\n- Primary text `#F0F1FF` on bg `#070B1C`: ≈18:1 ✓\n- Accent `#7179F0` on bg `#070B1C`: ≈5:1 ✓ (AA for all sizes)\n- Secondary `#B2B4D0` on bg `#070B1C`: ≈10:1 ✓\n\n---\n\n### 2. Typography (chassis-derived)\n\n- **Hero phrase rendering:** Two stacked lines using the `display` chassis token at `clamp(3rem, 18vw, 16rem)` — same size, different weights and colors to create the hinge effect:\n  - **Line 1 \"well-\":** Bricolage Grotesque, weight 400, color textSecondary (`#B2B4D0`) — the qualifier, lighter, almost receding\n  - **Line 2 \"viewed.\":** Bricolage Grotesque, weight 900 (ExtraBold), color text (`#F0F1FF`) — the coined punchline, full brightness, maximum weight\n  - The weight and color differential enact the Tomlin joke without explaining it\n- **Line heights:** hero both lines `0.85` (the two lines nearly touching — a visual hinge); body `1.5`; signal strip `1.0`\n- **Letter spacings:** hero lines `-0.03em` (tight, monumental); body `0em`; attribution and signal labels `0.08em` (wider, uppercase-safe)\n- **Attribution:** \"— Lily Tomlin\" · 14px · Manrope · weight 400 · textMuted · letter-spacing 0.08em · 48px below \"viewed.\"\n\n---\n\n### 3. Layout Specification\n\n- **Archetype:** Poster — \"well-viewed.\" split across two lines at 18vw fills the visual field completely; no supporting graphic, no sidebar, nothing competing. The empty space is structural silence, not emptiness.\n- **CSS structure:**\n  ```\n  body: display: flex; flex-direction: column; min-height: 100vh; background: #070B1C;\n  \n  .hero: flex: 1; display: flex; flex-direction: column; justify-content: center;\n         min-height: calc(100vh - 88px); padding: 0 6vw;\n  \n  .phrase-block: display: flex; flex-direction: column; gap: 0; line-height: 0.85;\n  \n  .signal-strip: height: 40px; padding: 0 6vw; display: flex; align-items: center;\n                 gap: 28px; border-top: 1px solid #2D3052; background: #0F1328;\n  \n  .nav-bar: height: 48px; padding: 0 6vw; display: flex; justify-content: space-between;\n            align-items: center; border-top: 1px solid #2D3052; background: #0F1328;\n  ```\n- **Major dimensions:**\n  - Hero area: `min-height: calc(100vh - 88px)` (viewport minus nav+signal strip)\n  - Max-width: `none` — full canvas, `6vw` side padding both sides\n  - Phrase block: left-aligned at `6vw` from viewport edge; vertically centered in hero zone\n  - Signal strip: `height: 40px`, full viewport width, fixed to bottom above nav\n  - Nav bar: `height: 48px`, full width, bottom of page\n- **Nav placement:** Bottom bar, `height: 48px`; site name left, nav links right (Work · About); textMuted at 13px Manrope, wider tracking\n- **Hero phrase grid zone:** Single centered-vertically column spanning 100% canvas width with 6vw padding; \"well-\" line starts at x=6vw, \"viewed.\" directly below it — the period of \"viewed.\" hanging at approximately x+90% viewport width at 1440px\n\n---\n\n### 4. Component Character\n\n- **Border radius:** `0` (none) — zero rounding anywhere; poster logic demands hard edges\n- **Border treatment:** Borderless except single `1px solid #2D3052` (border token) hairlines above the signal strip and above the nav bar. No card borders.\n- **Shadow:** None — the depth comes from the indigo darkness itself, not shadow\n- **Density:** Maximally sparse — the phrase is the entire page; the signal strip and nav are typographic metadata at the floor\n- **Interactive states:** Links in signal strip and nav underline in `#9DA2F5` (accentLight) on hover; no scale transforms; no glow effects — the palette is already luminous enough\n\n---\n\n### 5. Signal Integration\n\n- **Signal strip location:** Full-width 40px band directly above the nav bar, `background: #0F1328`, `border-top: 1px solid #2D3052`\n- **Sports scores:**\n  - \"TIGERS 8–0\" — accent default `#7179F0`, Manrope weight 600, 13px, tracking wider — the shutout earns the brightest signal treatment\n  - \"SCHEFFLER −16\" — accentLight `#9DA2F5`, 11px, weight 500 — golf is in progress, slightly demoted\n- **Full moon:** \"◉ FULL MOON\" — textSecondary `#B2B4D0`, 11px — the full moon on a TV-dark indigo background feels thematically perfect; the dot glyph stands in for the orb\n- **Holiday countdown:** \"T−7 INDEPENDENCE\" — textMuted, 11px\n- **Quote attribution:** \"— Lily Tomlin\" appears 48px below \"viewed.\" in textMuted at 14px, Manrope weight 400, tracking 0.08em — not a block quote, not a pull quote; just the name, quietly crediting the source of today's coined word\n- **Music signal:** Signal strip tail: \"WET LEG · GBV · TOBIN SPROUT\" in textMuted at 10px — the smallest element, present but not competing\n- **Awwwards / HN:** Not surfaced — the poster archetype allows only one strip of signal noise; these are cut for density",
+    "selfCheck": "1. Hero quotability: Yes — \"well-viewed.\" stands entirely alone: a coined word that implies the full Tomlin critique in two syllables and a period, quotable without context.\n2. Because-of chain: Yes — Tomlin's invented suffix → Poster (the word fills the frame, nothing else needed) → bricolage-manrope (Bricolage's variable weight range enables the 400/900 hinge between \"well-\" and \"viewed.\") → TV-screen indigo H:243° (the medium being discussed becomes the palette) → left-aligned two-line phrase at 18vw with floor signal strip.\n3. Render feasibility: Yes — at 1440px, 18vw = 259px; \"viewed.\" (7 chars) × 0.60 em-width × 259px ≈ 1087px, well inside the 1267px usable canvas (1440px minus 6vw×2 padding); the clamp cap at 16rem prevents overflow at larger viewports.",
+    "rationale": "The hero phrase arrived from a single word Lily Tomlin invented to expose a cultural double standard: \"well-read\" is a compliment, but \"well-viewed\" doesn't exist as a word, and that absence is the argument. The phrase passes the poster test in isolation — it demands context the page doesn't provide, which makes a viewer do the work. That act of completing the thought is the user's first engagement with the site, and it's more memorable than any project description.\n\nThe Poster archetype is the only honest container for a phrase this formally minimal. The design is a two-line typographic statement where the same font at two different weights and two different values of the same color performs the Tomlin logic without text: \"well-\" in weight 400 and secondary color is the qualifier, lighter because it depends on what follows; \"viewed.\" in weight 900 and near-white is the coined punchline, heavier because it carries the whole argument. The hinge point is the hyphen connecting them — the break between lines enacts the same beat as the pause before Tomlin's delivery. Bricolage Grotesque's variable weight range (200–900 in the same family) is the only chassis in the catalog that can execute this 400/900 split with the warmth the source material needs; Anton or Big Shoulders would turn wit into a sports declaration.\n\nTelevision-screen indigo at H:243° is not a metaphor — it is the literal color of a cathode-ray tube in a dark room, which is precisely where Tomlin's observation happens. It falls inside the mandate's only open corridor (230°–255°, the last unvisited zone after seven builds). Against the near-void page background `#070B1C`, the accent `#7179F0` achieves 5:1 contrast (WCAG AA all sizes), the primary text `#F0F1FF` achieves 18:1, and the secondary text `#B2B4D0` achieves 10:1 — no compromises. The signal strip at the bottom surfaces what matters today — Tigers 8–0 shutout in accent blue, Scheffler at −16 in accent-light, full moon in secondary, Independence Day countdown in muted — without competing with the phrase above. Everything that is not the phrase knows it is not the phrase.",
+    "signalIntegration": "- **Signal strip location:** Full-width 40px band directly above the nav bar, `background: #0F1328`, `border-top: 1px solid #2D3052`\n- **Sports scores:**\n  - \"TIGERS 8–0\" — accent default `#7179F0`, Manrope weight 600, 13px, tracking wider — the shutout earns the brightest signal treatment\n  - \"SCHEFFLER −16\" — accentLight `#9DA2F5`, 11px, weight 500 — golf is in progress, slightly demoted\n- **Full moon:** \"◉ FULL MOON\" — textSecondary `#B2B4D0`, 11px — the full moon on a TV-dark indigo background feels thematically perfect; the dot glyph stands in for the orb\n- **Holiday countdown:** \"T−7 INDEPENDENCE\" — textMuted, 11px\n- **Quote attribution:** \"— Lily Tomlin\" appears 48px below \"viewed.\" in textMuted at 14px, Manrope weight 400, tracking 0.08em — not a block quote, not a pull quote; just the name, quietly crediting the source of today's coined word\n- **Music signal:** Signal strip tail: \"WET LEG · GBV · TOBIN SPROUT\" in textMuted at 10px — the smallest element, present but not competing\n- **Awwwards / HN:** Not surfaced — the poster archetype allows only one strip of signal noise; these are cut for density"
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "indigo": {
+          "50": "#F2F2FA",
+          "100": "#E8E9F5",
+          "200": "#D0D2E8",
+          "300": "#9DA2F5",
+          "400": "#7179F0",
+          "500": "#4D5BE8",
+          "600": "#3744CC",
+          "700": "#2530A8",
+          "800": "#161E7A",
+          "900": "#0A1050"
+        },
+        "slate": {
+          "50": "#F2F2FA",
+          "100": "#E8E9F5",
+          "200": "#D0D2E8",
+          "300": "#B2B4D0",
+          "400": "#8E91B5",
+          "500": "#6B6E95",
+          "600": "#484B70",
+          "700": "#2D3052",
+          "800": "#181B38",
+          "900": "#0B0D1E"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "#070B1C",
+          "_light": "{colors.slate.50}"
+        },
+        "bgCard": {
+          "base": "#0F1328",
+          "_light": "{colors.slate.100}"
+        },
+        "bgStrip": {
+          "base": "#0F1328",
+          "_light": "{colors.slate.100}"
+        },
+        "text": {
+          "base": "#F0F1FF",
+          "_light": "{colors.slate.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.slate.300}",
+          "_light": "{colors.slate.700}"
+        },
+        "textMuted": {
+          "base": "{colors.slate.500}",
+          "_light": "{colors.slate.600}"
+        },
+        "accent": {
+          "base": "{colors.indigo.400}",
+          "_light": "{colors.indigo.600}"
+        },
+        "accentLight": {
+          "base": "{colors.indigo.300}",
+          "_light": "{colors.indigo.700}"
+        },
+        "accentDark": {
+          "base": "{colors.indigo.600}",
+          "_light": "{colors.indigo.800}"
+        },
+        "border": {
+          "base": "{colors.slate.700}",
+          "_light": "{colors.slate.200}"
+        },
+        "borderAccent": {
+          "base": "{colors.indigo.400}",
+          "_light": "{colors.indigo.600}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.85",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.16em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "800"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 243,
+      "s": 72,
+      "l": 55,
+      "name": "TV indigo"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "indigo",
+      "name": "night slate"
+    },
+    "mood_word": "luminous",
+    "color_story": "Television-screen indigo — H:243°, the exact blue cast of a CRT in a darkened room — is the chromatic answer to Lily Tomlin's 'well-viewed.': the medium itself becomes the palette, honoring both the mandate's only open corridor (230°–255°) and the source material's medium."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

@@ -1,0 +1,389 @@
+{
+  "date": "2026-05-24",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.181Z",
+  "buildId": "1779619377728",
+  "attempts": 1,
+  "brief": "Big Shoulders manifesto on a clearwater aqua drench — five-line command in white condensed display across a 60vw slab, three asymmetric right-column frames carrying golf, projects, and signal data in the gaps of the gallery wall.",
+  "rationale": "The Mother Teresa quote arrived as the only signal candidate that clears the screenshot test cleanly. On a Sunday before Memorial Day — a holiday constructed from individual sacrifice — \"DO NOT WAIT FOR LEADERS; DO IT ALONE, PERSON TO PERSON.\" functions as both personal manifesto and implicit portfolio explanation: every project in the register (Spaceman, FishSticks, 15th Club, TeeTurn) is solo-founded work. The phrase doesn't need its author to land. It needs space.\n\nGallery Wall was the only archetype that could honor the phrase's two-clause structure without flattening it into a single poster void. The semicolon is a hinge — a rejection followed by a method — and Gallery Wall gives each half architectural weight: the quote occupies the full left column as a drenched aqua slab, while the right column's stacked blocks (signal data, project catalog, about) function as the evidence that the principle was acted on. The irregularity of Gallery Wall's block spacing — gaps rather than margins — makes the composition feel like a working wall, not a presentation deck.\n\nBig Shoulders Display carries the phrase at the weight it demands. At `clamp(64px, 7.5vw, 108px)` condensed, the five-line break (DO NOT WAIT / FOR LEADERS; / DO IT ALONE, / PERSON TO / PERSON.) reads like a posted notice rather than a quotation — authoritative, not inspirational. The aqua palette at H:205° falls precisely within the mandated 192°–215° window and is conceptually exact: not the aggressive teal of a warning, not the corporate blue of a system UI, but the specific cyan of still, clear water — the color of something that has already settled. The hero block background at aqua.600 (#0A72A0) with white type achieves 5.4:1 contrast against all text, meeting AA on every size. The stone neutral family carries just enough H:205° tint to keep the dark surfaces alive against the drenched hero.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Gallery Wall",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Pillars Of Seven",
+          "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Pedal Mafia | Event Micro Site",
+          "description": "Microsite for Pedal Mafia’s European pop-up store, designed to convert airport ad traffic into event attendance, drive footfall, and promote the in-store...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/04/69f37341b6d22698341939.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAFQWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSfvu78nIGlkPSdXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQnPz4KPHg6eG1wbWV0YSB4bWxuczp4PSdhZG9iZTpuczptZXRhLyc+CjxyZGY6UkRGIHhtbG5zOnJkZj0naHR0cDovL3d3dy53My5v...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Sunday",
+      "is_weekend": true,
+      "day_index": 0
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "Lum1104/Understand-Anything/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "anthropics/claude-plugins-official/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "colbymchenry/codegraph/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/rohitg00",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/Fincept-Corporation",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "THE CJ CUP Byron Nelson",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Si Woo Kim",
+          "position": "1",
+          "score": "-21"
+        },
+        {
+          "name": "Scottie Scheffler",
+          "position": "2",
+          "score": "-19"
+        },
+        {
+          "name": "Wyndham Clark",
+          "position": "3",
+          "score": "-19"
+        },
+        {
+          "name": "Stephan Jaeger",
+          "position": "4",
+          "score": "-17"
+        },
+        {
+          "name": "Tom Hoge",
+          "position": "5",
+          "score": "-17"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Microsoft open-sources \"the earliest DOS source code discovered to date\"",
+          "url": "https://arstechnica.com/gadgets/2026/04/microsoft-open-sources-the-earliest-dos-source-code-discovered-to-date/",
+          "score": 264,
+          "by": "DamnInteresting"
+        },
+        {
+          "title": "Why is Vivado 2026.1 dropping Linux support for free tier?",
+          "url": "https://adaptivesupport.amd.com/s/question/0D5Pd00001YQLdMKAX/why-is-vivado-20261-dropping-linux-support-for-free-tier-?language=en_US",
+          "score": 168,
+          "by": "zdw"
+        },
+        {
+          "title": "Silk: Open-source cooperative fiber scheduler",
+          "url": "https://github.com/ClickHouse/silk",
+          "score": 31,
+          "by": "animetyan"
+        },
+        {
+          "title": "Wake up! 16b",
+          "url": "https://hellmood.111mb.de/wake_up_16b_writeup.html",
+          "score": 250,
+          "by": "MaximilianEmel"
+        },
+        {
+          "title": "I spent 50 hours drawing a line graph",
+          "url": "https://www.dougmacdowell.com/50-hours-to-draw-some-lines.html",
+          "score": 25,
+          "by": "dougdude3339"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Memorial Day",
+          "date": "2026-05-25",
+          "days_away": 1
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "first quarter",
+      "illumination": 0.614,
+      "days_into_cycle": 8.47
+    },
+    "music": {
+      "bands": [
+        "My Morning Jacket",
+        "Guided by Voices",
+        "The War on Drugs"
+      ]
+    },
+    "quote": {
+      "text": "Do not wait for leaders; do it alone, person to person.",
+      "author": "Mother Teresa"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 24,
+      "day_of_year": 144,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:55",
+      "sunset": "19:18",
+      "daylight_hours": 14.4
+    },
+    "date": "2026-05-24"
+  },
+  "hero": {
+    "copy": "DO NOT WAIT FOR LEADERS; DO IT ALONE, PERSON TO PERSON.",
+    "rationale": "The Mother Teresa quote arrives on a Sunday — the day before Memorial Day, a holiday built on individual sacrifice. For a portfolio composed entirely of solo-founder work (Spaceman 2018, FishSticks 2025, 15th Club 2025), this is not inspiration: it is operating principle. The phrase works because the two clauses do different things — the first clause is a rejection, the second clause is the method — and at marquee scale the semicolon becomes architectural. It passes the screenshot test because it reads as confrontational, not motivational, and it requires zero context to land.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue:** H:205° (cyan-blue). Chosen because the command phrase needs a color that is already decided — not warm and persuasive, not aggressive and hot, but clear and settled. Aqua at H:205° is the color of a still surface that reflects sky. It fills the hero block as a drenched surface, not as an accent.\n\n**Neutral palette (stone, tinted H:205° chroma ≈0.01):**\n- 50:  #F5F8FA\n- 100: #E7EFF3\n- 200: #CCD9DF\n- 300: #9AB2BC\n- 400: #668A97\n- 500: #426878\n- 600: #2D4F5E\n- 700: #1D3844\n- 800: #11222A\n- 900: #091519\n\n**Accent color (aqua):**\n- light:   #6CC7E8 (aqua.300)\n- default: #2AADD9 (aqua.400)\n- dark:    #0A72A0 (aqua.600) — also the hero block background\n- glow:    #A8DDF1 (aqua.200) — used for leaderboard digits on aqua.600\n\n**Secondary accent:** none. One committed hue, no dilution.\n\n**Background:**\n- Page bg:     #091519 (stone.900)\n- Card bg:     #11222A (stone.800)\n- Hero block:  #0A72A0 (aqua.600)\n- Signal block: #11222A (stone.800)\n\n**Text colors:**\n- Primary text:    #F5F8FA (stone.50) — on dark stone surfaces\n- Secondary text:  #CCD9DF (stone.200)\n- Muted text:      #668A97 (stone.400)\n- On-hero text:    #FFFFFF — white on aqua.600 block, contrast ≈ 5.4:1 ✓\n- Attribution:     #FFFFFF at weight 300 on aqua.600 — 5.4:1 ✓\n\nAccessibility checks:\n- #F5F8FA on #091519 → contrast ≈ 17.8:1 ✓ (body text)\n- #FFFFFF on #0A72A0 → contrast ≈ 5.4:1 ✓ (≥ 3:1 for large text, ≥ 4.5:1 for normal)\n- #2AADD9 on #091519 → contrast ≈ 6.8:1 ✓ (accent on dark bg)\n\n---\n\n### 2. Typography\n\n**Hero phrase rendering:** `display` token (Big Shoulders Display), rendered via `clamp(64px, 7.5vw, 108px)`. All-caps, letter-spacing 0.02em (critical for condensed all-caps legibility). Line-height 0.88. The phrase breaks across 5 lines:\n\n```\nDO NOT WAIT\nFOR LEADERS;\nDO IT ALONE,\nPERSON TO\nPERSON.\n```\n\nThe phrase occupies the entire left panel (col 1) of the Gallery Wall. Attribution \"— Mother Teresa\" uses the `body` token (Atkinson Hyperlegible), 14px, white at weight 300, sits 32px below the closing period. The semicolon and comma are typographic breathing marks — not punctuation mistakes. At 7.5vw Big Shoulders Display they read as pauses.\n\n**Line heights:**\n- Hero: 0.88 (tight — condensed display, the lines stack with authority)\n- Subheadings: 1.1 (snug)\n- Body: 1.5 (normal)\n- Long-form: 1.75 (loose)\n\n**Letter spacings:**\n- Hero/display: 0.02em (wide — all-caps condensed needs this)\n- Eyebrows/labels: 0.15em (widest — for SIGNAL, WORK, TODAY category markers)\n- Body: 0em (normal)\n\n---\n\n### 3. Layout Specification\n\n**Archetype:** Gallery Wall. The quote is a command issued across multiple \"frames\" — its split structure (rejection / method) maps perfectly onto asymmetric blocks of distinct visual weight. Each block on the right column is a separate framed piece: signal data, project work, capabilities. Irregular gaps between blocks create wall spacing.\n\n**CSS grid/flex structure:**\n```css\n.canvas {\n  display: grid;\n  grid-template-columns: 3fr 2fr;\n  grid-template-rows: auto;\n  gap: 16px;\n  padding: 16px;\n  min-height: 100vh;\n  max-width: none;\n}\n\n.hero-block {\n  grid-column: 1;\n  grid-row: 1 / span 3;\n  min-height: calc(100vh - 32px);\n  background: aqua.600; /* #0A72A0 */\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  padding: 64px 6vw;\n}\n\n.signal-block {\n  grid-column: 2;\n  grid-row: 1;\n  min-height: 30vh;\n  background: stone.800; /* #11222A */\n  padding: 32px 28px;\n}\n\n.projects-block {\n  grid-column: 2;\n  grid-row: 2;\n  min-height: 40vh;\n  background: stone.800; /* #11222A */\n  padding: 32px 28px;\n}\n\n.about-block {\n  grid-column: 2;\n  grid-row: 3;\n  flex: 1;\n  background: stone.900; /* #091519 */\n  padding: 32px 28px;\n  border: 1px solid stone.700; /* #1D3844 */\n}\n```\n\n**Major dimensions:**\n- Hero block height: `calc(100vh - 32px)` — near-full viewport\n- Right column total height: `calc(100vh - 32px)` split across 3 stacked blocks (30/40/~30vh)\n- Max content width: `none` — full canvas, no center-pinning\n- Side padding: `padding: 16px` on outer canvas, `padding: 64px 6vw` inside hero block\n- Gap between blocks: `16px` — this IS the whitespace of the gallery wall\n\n**Nav placement:** A slim horizontal strip inside the signal-block, top-right. Navigation items: Work · About · Contact rendered as Atkinson 12px, letter-spacing 0.15em, stone.400 (#668A97) color. Sits above the golf/signal data.\n\n**Hero phrase grid zone:** Column 1, rows 1–3 (spanning full left column). The phrase occupies the vertical center of this zone: top padding 64px, quote text block, 32px gap, attribution line, remaining space below. The phrase itself occupies approximately rows 2–6 of 8 internal flex rows.\n\n---\n\n### 4. Component Character\n\n**Border radius:** 0 everywhere — none. Hard rectangular edges only. The command form of the phrase requires no rounding. Blocks are slabs, not cards.\n\n**Border treatment:** Borderless between most blocks — the gap IS the separation. Single 1px stone.700 border on the about-block only, to distinguish it from the stone.900 page background.\n\n**Shadow:** None. No depth illusion — everything is flat and declared.\n\n**Density:** Mixed. Hero block is spacious (the phrase needs air). Right blocks are compact: tight line-height, small eyebrow labels, dense lists.\n\n**Interactive states:** Project titles in the projects block: hover reveals aqua.400 color shift + underline. Nav links: hover sets color to #FFFFFF from stone.400. No transforms, no scale changes — responses are chromatic only.\n\n---\n\n### 5. Signal Integration\n\n**Golf leaderboard** — Signal block, top section. Eyebrow label: \"CJ CUP BYRON NELSON\" at 10px Atkinson, letter-spacing 0.15em, stone.400. Then two rows:\n- \"SI WOO KIM\" in stone.200, \"−21\" in aqua.300 (#6CC7E8) at 20px Big Shoulders\n- \"SCHEFFLER\" in stone.400, \"−19\" in stone.200 at 16px\n\n**Memorial Day** — Signal block, below golf. Pill-label: \"MEMORIAL DAY TOMORROW\" — white text on aqua.600 background, 11px, letter-spacing 0.1em. The most time-sensitive signal, given prominence.\n\n**Moon phase** — Signal block, bottom. First quarter, 61.4% illuminated. Small unicode glyph ◑ in aqua.400, \"FIRST QUARTER · 61%\" in stone.400 at 11px.\n\n**Daylight** — Signal block. \"14.4 HRS DAYLIGHT\" inline with moon data, stone.400.\n\n**Quote display** — The quote IS the hero phrase. Attribution \"— Mother Teresa\" sits below the phrase in the hero block, white at 14px Atkinson weight 300. The source is acknowledged but subordinated — the phrase earns its own authority.\n\n**Projects** — Projects block (middle-right). List format: project name in stone.50 at 15px Atkinson medium, year in stone.400, category in aqua.400 at 11px uppercase. 6 entries with 20px spacing. Hover: name shifts to #FFFFFF.\n\n**About / capabilities** — About-block (bottom-right). 2-line bio in stone.200, 13px Atkinson normal. Below: capabilities as single-line overflow list in stone.400, 11px, letter-spacing 0.05em. Near-invisible — present, not prominent.\n\n**Music signal** — Footer of about-block: \"MY MORNING JACKET · GUIDED BY VOICES · THE WAR ON DRUGS\" at 10px stone.500, letter-spacing 0.12em. Easter-egg tier.",
+    "selfCheck": "1. Hero quotability: Yes — \"Do not wait for leaders; do it alone, person to person.\" stands completely alone as a quotable command; it requires no context, no attribution, and earns marquee scale because it is a founding principle with a semicolon-enforced structure that becomes architectural at display size.\n2. Because-of chain: Yes — the command's two-clause structure demanded Gallery Wall (two active zones), the marquee scale of a command required big-shoulders-atkinson (1.618 ratio condensed display), the clearwater decisiveness of the phrase demanded H:205° aqua as the drenched hero surface rather than any warm or aggressive hue.\n3. Render feasibility: Yes — Big Shoulders Display at clamp(64px, 7.5vw, 108px) renders 5 condensed lines at 0.88 line-height ≈ 475px total in a 3fr column (~835px wide) with 6vw padding, leaving ~230px for attribution and breathing room in a near-100vh block.",
+    "rationale": "The Mother Teresa quote arrived as the only signal candidate that clears the screenshot test cleanly. On a Sunday before Memorial Day — a holiday constructed from individual sacrifice — \"DO NOT WAIT FOR LEADERS; DO IT ALONE, PERSON TO PERSON.\" functions as both personal manifesto and implicit portfolio explanation: every project in the register (Spaceman, FishSticks, 15th Club, TeeTurn) is solo-founded work. The phrase doesn't need its author to land. It needs space.\n\nGallery Wall was the only archetype that could honor the phrase's two-clause structure without flattening it into a single poster void. The semicolon is a hinge — a rejection followed by a method — and Gallery Wall gives each half architectural weight: the quote occupies the full left column as a drenched aqua slab, while the right column's stacked blocks (signal data, project catalog, about) function as the evidence that the principle was acted on. The irregularity of Gallery Wall's block spacing — gaps rather than margins — makes the composition feel like a working wall, not a presentation deck.\n\nBig Shoulders Display carries the phrase at the weight it demands. At `clamp(64px, 7.5vw, 108px)` condensed, the five-line break (DO NOT WAIT / FOR LEADERS; / DO IT ALONE, / PERSON TO / PERSON.) reads like a posted notice rather than a quotation — authoritative, not inspirational. The aqua palette at H:205° falls precisely within the mandated 192°–215° window and is conceptually exact: not the aggressive teal of a warning, not the corporate blue of a system UI, but the specific cyan of still, clear water — the color of something that has already settled. The hero block background at aqua.600 (#0A72A0) with white type achieves 5.4:1 contrast against all text, meeting AA on every size. The stone neutral family carries just enough H:205° tint to keep the dark surfaces alive against the drenched hero.",
+    "signalIntegration": "**Golf leaderboard** — Signal block, top section. Eyebrow label: \"CJ CUP BYRON NELSON\" at 10px Atkinson, letter-spacing 0.15em, stone.400. Then two rows:\n- \"SI WOO KIM\" in stone.200, \"−21\" in aqua.300 (#6CC7E8) at 20px Big Shoulders\n- \"SCHEFFLER\" in stone.400, \"−19\" in stone.200 at 16px\n\n**Memorial Day** — Signal block, below golf. Pill-label: \"MEMORIAL DAY TOMORROW\" — white text on aqua.600 background, 11px, letter-spacing 0.1em. The most time-sensitive signal, given prominence.\n\n**Moon phase** — Signal block, bottom. First quarter, 61.4% illuminated. Small unicode glyph ◑ in aqua.400, \"FIRST QUARTER · 61%\" in stone.400 at 11px.\n\n**Daylight** — Signal block. \"14.4 HRS DAYLIGHT\" inline with moon data, stone.400.\n\n**Quote display** — The quote IS the hero phrase. Attribution \"— Mother Teresa\" sits below the phrase in the hero block, white at 14px Atkinson weight 300. The source is acknowledged but subordinated — the phrase earns its own authority.\n\n**Projects** — Projects block (middle-right). List format: project name in stone.50 at 15px Atkinson medium, year in stone.400, category in aqua.400 at 11px uppercase. 6 entries with 20px spacing. Hover: name shifts to #FFFFFF.\n\n**About / capabilities** — About-block (bottom-right). 2-line bio in stone.200, 13px Atkinson normal. Below: capabilities as single-line overflow list in stone.400, 11px, letter-spacing 0.05em. Near-invisible — present, not prominent.\n\n**Music signal** — Footer of about-block: \"MY MORNING JACKET · GUIDED BY VOICES · THE WAR ON DRUGS\" at 10px stone.500, letter-spacing 0.12em. Easter-egg tier."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "aqua": {
+          "50": "#EFF9FD",
+          "100": "#D5EFF8",
+          "200": "#A8DDF1",
+          "300": "#6CC7E8",
+          "400": "#2AADD9",
+          "500": "#0D90C0",
+          "600": "#0A72A0",
+          "700": "#085A82",
+          "800": "#054263",
+          "900": "#022840"
+        },
+        "stone": {
+          "50": "#F5F8FA",
+          "100": "#E7EFF3",
+          "200": "#CCD9DF",
+          "300": "#9AB2BC",
+          "400": "#668A97",
+          "500": "#426878",
+          "600": "#2D4F5E",
+          "700": "#1D3844",
+          "800": "#11222A",
+          "900": "#091519"
+        },
+        "pure": {
+          "white": "#FFFFFF",
+          "black": "#022840"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.stone.900}",
+          "_light": "{colors.stone.50}"
+        },
+        "bgCard": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.pure.white}"
+        },
+        "bgHero": {
+          "base": "{colors.aqua.600}",
+          "_light": "{colors.aqua.600}"
+        },
+        "bgSignal": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.100}"
+        },
+        "bgAbout": {
+          "base": "{colors.stone.900}",
+          "_light": "{colors.stone.50}"
+        },
+        "text": {
+          "base": "{colors.stone.50}",
+          "_light": "{colors.stone.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.stone.200}",
+          "_light": "{colors.stone.600}"
+        },
+        "textMuted": {
+          "base": "{colors.stone.400}",
+          "_light": "{colors.stone.500}"
+        },
+        "textOnHero": {
+          "base": "{colors.pure.white}",
+          "_light": "{colors.pure.white}"
+        },
+        "textOnHeroMuted": {
+          "base": "{colors.aqua.200}",
+          "_light": "{colors.aqua.100}"
+        },
+        "accent": {
+          "base": "{colors.aqua.400}",
+          "_light": "{colors.aqua.600}"
+        },
+        "accentBright": {
+          "base": "{colors.aqua.300}",
+          "_light": "{colors.aqua.500}"
+        },
+        "accentHero": {
+          "base": "{colors.aqua.200}",
+          "_light": "{colors.aqua.100}"
+        },
+        "border": {
+          "base": "{colors.stone.700}",
+          "_light": "{colors.stone.200}"
+        },
+        "borderSubtle": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.100}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.08em",
+      "widest": "0.15em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 205,
+      "s": 78,
+      "l": 42,
+      "name": "clearwater aqua"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "cyan-blue H:205°",
+      "name": "abyssal stone"
+    },
+    "mood_word": "decisive",
+    "color_story": "The clear aqua of still water before you jump — saturated enough to be a commitment, cool enough to be a fact, the color that matches a command with no qualifiers."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

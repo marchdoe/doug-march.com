@@ -1,0 +1,377 @@
+{
+  "date": "2026-06-13",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.198Z",
+  "buildId": "1781348228503",
+  "attempts": 1,
+  "brief": "Tolkien's declaration in three-line Big Shoulders on ocean-teal void — the asymmetric Split pits the announcement against the evidence, new moon footnoted at the floor, ADVENTURE at 136px filling the left half of the dark.",
+  "rationale": "The Tolkien quote arrived in today's `signals.quote` carrying the exact weight this Saturday needed. A new moon at 0.012 illumination — day 28.48 of the cycle — means the sky is at its absolute darkest before renewal. A threshold. The phrase \"what lies ahead\" in that context isn't cheerful optimism; it's a navigator's declaration made from the dark end of a cycle, pointing forward into the unseen. The phrase passes the screenshot test: a stranger receiving this image with no context would not need the portfolio to understand it. That is the bar.\n\nThe Split archetype is the only choice that lets the layout *argue* the same point as the hero phrase. The left panel is the declaration — it will not move, it will not scroll, it is anchored in the void. The right panel is the proof — it contains the actual \"what lies ahead\": FishSticks, 15th Club, Spaceman, the experiments, the signals, the capabilities. You read the declaration on the left, then your eye moves to the right and you discover what \"ahead\" actually contains. The Split structure physically enacts the quote's logic: claim on the left, evidence on the right. No other archetype creates that coherence.\n\n`big-shoulders-atkinson` is the chassis because \"ADVENTURE\" needs to be *large*. At 1.618 ratio and a condensed signage character, Big Shoulders Display can fill a 58vw panel with nine characters without requiring a ridiculous point size. The athletic, condensed weight of this font is appropriate for the word — adventures are physical, forward-moving, not editorial or precious. Atkinson Hyperlegible in the right panel's body copy provides maximum legibility at signal-data sizes (12–14px) with none of the stylistic competition that would dilute the declaration. Ocean teal at H:162° — the only open zone in the color mandate — happens to be precisely the right hue: bioluminescence in dark water, the specific color of \"what you see when you look ahead in the dark.\"",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Split",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "21 Hrs On The Moon",
+          "description": "To mark the recent Artemis Moon Mission and honour the legacy of the first moon landing in 1969, we celebrate the experiments carried out in those historic...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0d7b8f419a3938435907.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAJulBJREFUeAHsvWmbXLeRJooqFjeRlERJFLVbsiTbsiXb8riX6Z62u9sz88ydb/f7PM/9MH9k/tD8gZ7rp6/b7rblRbJky63d2khKFPedrO0mTtUposBAIFbgJJmvVMzMk0BE...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "THE RED",
+          "description": "This is THE RED. Built to be bold. A historic landmark of character and color that has defined Chicago’s skyline since 1972.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1db853d921f825300359.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAFkXJJREFUeAHs/VeTbNmV54ktj4gbWssr8qbWSAAJUUB1tZpuMw7NSJqNGT8EX/kx+MxXfgPS+DrNmeZ0oapRlUBBFERKZCKBFFeE1lr5rP/xszx2nHCP8IgbwsPv72d2wj1c...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Saturday",
+      "is_weekend": true,
+      "day_index": 6
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "addyosmani/agent-skills/stargazers",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "sponsors/music-assistant",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "mattermost/mattermost/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "apple/container/stargazers",
+          "description": "",
+          "language": "Swift",
+          "stars": null
+        },
+        {
+          "name": "iptv-org/iptv/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "RBC Canadian Open",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Ben James",
+          "position": "1",
+          "score": "-10"
+        },
+        {
+          "name": "Haotong Li",
+          "position": "2",
+          "score": "-9"
+        },
+        {
+          "name": "Keith Mitchell",
+          "position": "3",
+          "score": "-9"
+        },
+        {
+          "name": "Jackson Suber",
+          "position": "4",
+          "score": "-9"
+        },
+        {
+          "name": "Jesper Svensson",
+          "position": "5",
+          "score": "-9"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Leaving Mozilla",
+          "url": "https://blog.unitedheroes.net/5751",
+          "score": 206,
+          "by": "martey"
+        },
+        {
+          "title": "Electric motors with no rare earths",
+          "url": "https://www.renaultgroup.com/en/magazine/energy-and-powertrains/all-about-electric-motors-with-no-rare-earths/",
+          "score": 485,
+          "by": "bestouff"
+        },
+        {
+          "title": "Statement on US government directive to suspend access to Fable 5 and Mythos 5",
+          "url": "https://www.anthropic.com/news/fable-mythos-access",
+          "score": 2376,
+          "by": "Dylan1312"
+        },
+        {
+          "title": "CRISPR tech selectively shreds cancer cells, including \"undruggable\" cancers",
+          "url": "https://innovativegenomics.org/news/crispr-technique-selectively-shreds-cancer-cells/",
+          "score": 831,
+          "by": "gmays"
+        },
+        {
+          "title": "Show HN: Paca – Lightweight Jira alternative for human-AI collaboration",
+          "url": "https://github.com/Paca-AI/paca",
+          "score": 11,
+          "by": "pikann22"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Juneteenth",
+          "date": "2026-06-19",
+          "days_away": 6
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "new moon",
+      "illumination": 0.012,
+      "days_into_cycle": 28.48
+    },
+    "music": {
+      "bands": [
+        "The War on Drugs",
+        "Guided by Voices",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "The biggest adventure is what lies ahead.",
+      "author": "J.R.R. Tolkien"
+    },
+    "season": {
+      "season": "summer",
+      "month": 6,
+      "day": 13,
+      "day_of_year": 164,
+      "month_name": "June"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-06-12T23:10Z",
+          "result": "loss",
+          "score": "2-3"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:48",
+      "sunset": "19:31",
+      "daylight_hours": 14.7
+    },
+    "date": "2026-06-13"
+  },
+  "hero": {
+    "copy": "The biggest adventure is what lies ahead.",
+    "rationale": "Today's `signals.quote` delivers this Tolkien line on a new moon (0.012 illumination — the cycle's absolute threshold, day 28.48), a summer Saturday, 14.7 hours of daylight, and a portfolio that daily reconstitutes itself from signals exactly the way a voyage reconstitutes itself from wind. The phrase isn't borrowed decoration — it is the site's operating thesis stated in one quotable line. \"What lies ahead\" is also the literal right-hand panel of today's layout: the work, the projects, the future things. The phrase earns its scale because it is simultaneously autobiographical to the site and universally screenshot-able.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue** — H:162° (ocean teal). The only fully open mandate window is 142°–168°; this hue sits at the center of that band and would be chosen on merit regardless — it is the color of ocean horizons, phosphorescence in dark water, what \"lies ahead\" looks like when you're on a ship at night.\n- **Neutral palette** (void sage, teal-tinted):\n  - 50: #F0FAF6\n  - 100: #DAEEE7\n  - 200: #B9DDD2\n  - 300: #8EC5B5\n  - 400: #62A899\n  - 500: #468B7C\n  - 600: #346F63\n  - 700: #26534A\n  - 800: #183832\n  - 900: #0E201C\n- **Accent color** — light: #44D5B7, default: #00D4A0, dark: #009870, glow: #00B888\n- **Secondary accent** — none; one hue carries the entire page\n- **Background** — page bg: #060E0B (void, barely a color, teal-cast near-black), card bg: #0E1E19, right-panel bg: #091510\n- **Text colors** — primary: #E5FBF4 (near-white, teal cast), secondary: #8EC5B5 (sage.300), muted: #346F63 (sage.600)\n\n**Accessibility check:**\n- Hero phrase (#00D4A0 teal on #060E0B void): ≈ 9.5:1 ✓ (well above 3:1 large text)\n- Body text (#E5FBF4 on #091510): ≈ 17:1 ✓\n- Secondary text (#8EC5B5 on #091510): ≈ 7.2:1 ✓\n\n---\n\n### 2. Typography\n\n- **Hero phrase rendering** — Big Shoulders Display at `display` token. Rendered in three lines in the left panel:\n  - Line 1: \"THE BIGGEST\" — `clamp(32px, 3.6vw, 52px)`, weight 700, tracking `-0.04em`, color accent (#00D4A0)\n  - Line 2: \"ADVENTURE\" — `clamp(72px, 9.5vw, 136px)`, weight 800, tracking `-0.04em`, color accent (#00D4A0). Dominant element. At 1440px viewport, 9.5vw = ~136px; Big Shoulders' extreme condensing fits \"ADVENTURE\" (9 chars) to roughly 85% of the 58vw left panel.\n  - Line 3: \"is what lies ahead.\" — `clamp(20px, 2.1vw, 30px)`, weight 400, tracking `0em`, same teal accent, italic register via Big Shoulders' lighter cut\n  - Attribution: \"— J.R.R. Tolkien\" — Atkinson Hyperlegible, 14px, #8EC5B5 (sage.300), 40px top margin\n- **Line heights** — hero lines: 0.88 (tight, condensed letterforms don't need air); attribution: 1.5; right-panel body: 1.5; right-panel headings: 1.1\n- **Letter spacings** — hero display: `-0.04em`; right-panel labels (all-caps): `0.12em`; body: `0em`\n\n---\n\n### 3. Layout Specification\n\n- **Archetype** — Split. The declaration occupies the left half of the canvas permanently; the right half is the literal \"what lies ahead\" — the portfolio, the projects, the signals. The metaphor and the layout are the same object. Two fully active surfaces, no void between them.\n- **CSS grid/flex structure** — `display: grid; grid-template-columns: 58fr 42fr; min-height: 100vh; max-width: none;`\n- **Major dimensions**:\n  - Left panel (declaration zone): `width: 58vw; height: 100vh; position: sticky; top: 0; overflow: hidden;` — fixed to viewport, full height, no scroll\n  - Right panel (portfolio zone): `width: 42vw; min-height: 100vh; overflow-y: auto;` — scrollable independently\n  - Max content width: `none` — full-canvas. Left panel: `padding: 0 6vw 0 6vw`. Right panel: `padding: 48px 40px`\n  - Hero phrase sits vertically centered in the left panel: `display: flex; flex-direction: column; justify-content: center; align-items: flex-start`\n  - Signal footnote zone: bottom-left of left panel, `position: absolute; bottom: 40px; left: 6vw`\n- **Nav placement** — horizontal strip at top of right panel only; 56px height; `border-bottom: 1px solid #1D352D`; wordmark left (\"DM\"), three nav links right (Work, About, Github); Atkinson Hyperlegible 13px, wide tracking (0.08em); right-panel exclusive — the left panel has no nav chrome\n- **Hero phrase grid zone** — left panel, rows fill full height. \"ADVENTURE\" line horizontally occupies ≈55% of panel width centered on the left edge; entire phrase block is vertically centered at 45% down from top (slightly above true center for optical correctness)\n\n---\n\n### 4. Component Character\n\n- **Border radius** — cards: `2px` (sm); tags/pills: `full` (9999px); nav links: `0`\n- **Border treatment** — borderless panels (edge-to-edge color contrast between panels separates them); cards in right panel: `1px solid #1D352D` (void.400)\n- **Shadow** — none; depth from surface lightness steps only (void.50 → void.100 → void.200)\n- **Density** — left panel: maximally spacious, the phrase breathes; right panel: compact-structured, signal-dense, rows with 16px gaps\n- **Interactive states** — links: color shifts from accent (#00D4A0) → accentHover (#44D5B7) + `text-underline-offset: 3px`; project rows: `background-color` shifts to void.300 on hover; transition: `all 0.18s ease`\n\n---\n\n### 5. Signal Integration\n\n- **New moon (0.012 illumination, day 28.48)** — bottom-left of the left declaration panel, `position: absolute`. Label: \"● new moon · june 13\" in Atkinson 12px, #346F63 (sage.600 — near-invisible, intentional: the moon barely exists tonight). The ● glyph at near-void color is the moon itself.\n- **Detroit Tigers 2–3 loss** — right panel, inline signal pill: \"DET 2 · HOU 3 ✗\" — `background: #0E1E19; border: 1px solid #1D352D; border-radius: 9999px; font-size: 12px; color: #8EC5B5; padding: 4px 12px`\n- **RBC Canadian Open — Ben James −10** — right panel, below Tigers pill: \"⛳ Ben James  −10  RBC Canadian Open\" — same pill treatment; −10 score colored accent (#00D4A0) to emphasize the lead\n- **The Tolkien quote IS the hero phrase** — rendered at architectural scale in the left panel; no separate blockquote; attribution inline below the phrase in muted sage\n- **Juneteenth (6 days away)** — right panel bottom section, small badge: \"Juneteenth · 6 days\" in sage.300, 12px, above right-panel footer\n- **Awwwards \"THE RED\"** — not surfaced directly but its language (\"built to be bold, a historic landmark of character and color\") resonates structurally with today's layout commitment\n- **HN top story (2376 pts)** — Anthropic/government access suspension noted as a minimal footnote in the right panel: \"↑ 2376 · anthropic.com\" small link row, not prominently styled — today is about forward adventure, not access denial",
+    "selfCheck": "1. Hero quotability: Yes — \"The biggest adventure is what lies ahead.\" is a standalone Tolkien fragment that would be screenshot-posted in isolation; it operates independently of any portfolio framing.\n2. Because-of chain: Yes — the forward-looking Tolkien declaration → Split (left: the declaration, right: the literal \"what lies ahead\") → big-shoulders-atkinson (condensed athletic scale to make ADVENTURE fill a panel) → teal at H:162° (the only open mandate zone, also the exact hue of ocean-dark-and-bioluminescence) → left panel declaration zone with absolute-positioned new moon footnote.\n3. Render feasibility: Yes — Big Shoulders Display at clamp(72px, 9.5vw, 136px) on a 58vw left panel renders \"ADVENTURE\" at ~136px on 1440px viewport; Big Shoulders' extreme condensing keeps 9 characters within ~820px of the 835px panel without overflow.",
+    "rationale": "The Tolkien quote arrived in today's `signals.quote` carrying the exact weight this Saturday needed. A new moon at 0.012 illumination — day 28.48 of the cycle — means the sky is at its absolute darkest before renewal. A threshold. The phrase \"what lies ahead\" in that context isn't cheerful optimism; it's a navigator's declaration made from the dark end of a cycle, pointing forward into the unseen. The phrase passes the screenshot test: a stranger receiving this image with no context would not need the portfolio to understand it. That is the bar.\n\nThe Split archetype is the only choice that lets the layout *argue* the same point as the hero phrase. The left panel is the declaration — it will not move, it will not scroll, it is anchored in the void. The right panel is the proof — it contains the actual \"what lies ahead\": FishSticks, 15th Club, Spaceman, the experiments, the signals, the capabilities. You read the declaration on the left, then your eye moves to the right and you discover what \"ahead\" actually contains. The Split structure physically enacts the quote's logic: claim on the left, evidence on the right. No other archetype creates that coherence.\n\n`big-shoulders-atkinson` is the chassis because \"ADVENTURE\" needs to be *large*. At 1.618 ratio and a condensed signage character, Big Shoulders Display can fill a 58vw panel with nine characters without requiring a ridiculous point size. The athletic, condensed weight of this font is appropriate for the word — adventures are physical, forward-moving, not editorial or precious. Atkinson Hyperlegible in the right panel's body copy provides maximum legibility at signal-data sizes (12–14px) with none of the stylistic competition that would dilute the declaration. Ocean teal at H:162° — the only open zone in the color mandate — happens to be precisely the right hue: bioluminescence in dark water, the specific color of \"what you see when you look ahead in the dark.\"",
+    "signalIntegration": "- **New moon (0.012 illumination, day 28.48)** — bottom-left of the left declaration panel, `position: absolute`. Label: \"● new moon · june 13\" in Atkinson 12px, #346F63 (sage.600 — near-invisible, intentional: the moon barely exists tonight). The ● glyph at near-void color is the moon itself.\n- **Detroit Tigers 2–3 loss** — right panel, inline signal pill: \"DET 2 · HOU 3 ✗\" — `background: #0E1E19; border: 1px solid #1D352D; border-radius: 9999px; font-size: 12px; color: #8EC5B5; padding: 4px 12px`\n- **RBC Canadian Open — Ben James −10** — right panel, below Tigers pill: \"⛳ Ben James  −10  RBC Canadian Open\" — same pill treatment; −10 score colored accent (#00D4A0) to emphasize the lead\n- **The Tolkien quote IS the hero phrase** — rendered at architectural scale in the left panel; no separate blockquote; attribution inline below the phrase in muted sage\n- **Juneteenth (6 days away)** — right panel bottom section, small badge: \"Juneteenth · 6 days\" in sage.300, 12px, above right-panel footer\n- **Awwwards \"THE RED\"** — not surfaced directly but its language (\"built to be bold, a historic landmark of character and color\") resonates structurally with today's layout commitment\n- **HN top story (2376 pts)** — Anthropic/government access suspension noted as a minimal footnote in the right panel: \"↑ 2376 · anthropic.com\" small link row, not prominently styled — today is about forward adventure, not access denial"
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "teal": {
+          "50": "#E5FBF4",
+          "100": "#BDEEE1",
+          "200": "#88E4CF",
+          "300": "#44D5B7",
+          "400": "#00D4A0",
+          "500": "#00B888",
+          "600": "#009870",
+          "700": "#007557",
+          "800": "#00523D",
+          "900": "#002F22"
+        },
+        "sage": {
+          "50": "#F0FAF6",
+          "100": "#DAEEE7",
+          "200": "#B9DDD2",
+          "300": "#8EC5B5",
+          "400": "#62A899",
+          "500": "#468B7C",
+          "600": "#346F63",
+          "700": "#26534A",
+          "800": "#183832",
+          "900": "#0E201C"
+        },
+        "void": {
+          "50": "#060E0B",
+          "100": "#091510",
+          "200": "#0E1E19",
+          "300": "#152A23",
+          "400": "#1D352D",
+          "500": "#264039",
+          "600": "#304D46"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.void.50}"
+        },
+        "bgCard": {
+          "base": "{colors.void.200}"
+        },
+        "bgPanel": {
+          "base": "{colors.void.100}"
+        },
+        "bgHighlight": {
+          "base": "{colors.void.400}"
+        },
+        "bgHover": {
+          "base": "{colors.void.300}"
+        },
+        "text": {
+          "base": "{colors.teal.50}"
+        },
+        "textSecondary": {
+          "base": "{colors.sage.300}"
+        },
+        "textMuted": {
+          "base": "{colors.sage.600}"
+        },
+        "accent": {
+          "base": "{colors.teal.400}"
+        },
+        "accentHover": {
+          "base": "{colors.teal.300}"
+        },
+        "accentDark": {
+          "base": "{colors.teal.600}"
+        },
+        "accentGlow": {
+          "base": "{colors.teal.500}"
+        },
+        "border": {
+          "base": "{colors.void.400}"
+        },
+        "borderSubtle": {
+          "base": "{colors.void.300}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.04em",
+      "normal": "0em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.18em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 162,
+      "s": 100,
+      "l": 42,
+      "name": "ocean teal"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "teal",
+      "name": "void sage"
+    },
+    "mood_word": "threshold",
+    "color_story": "Teal at H:162° is the exact color of bioluminescence in open water at night — what you see when you look ahead into darkness and something glows back, which is precisely what a new moon + Tolkien declaration demands."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

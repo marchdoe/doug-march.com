@@ -1,0 +1,371 @@
+{
+  "date": "2026-05-29",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.184Z",
+  "buildId": "1780053242302",
+  "attempts": 1,
+  "brief": "T.S. Eliot split in two — risk in near-black forest void, discovery in full-saturation spring lime, Big Shoulders condensed at 84px thundering across a 45/55 bleed with a five-way golf deadlock and the full moon glowing in the dark.",
+  "rationale": "The T.S. Eliot quote is this portfolio's unsolicited mission statement: every project in the register (Spaceman, FishSticks, 15th Club, 15th Club, TeeTurn) is someone choosing to enter territory they couldn't see the end of. Today the signals converge to amplify that charge — a risk mandate at 8/10, a full moon pressing toward completeness, a Friday afternoon in late May with 14.5 hours of light. The quote doesn't need context to land; it needs space and structural honesty. The Split gives it that honesty: the sentence is a conditional argument in two clauses, and placing each clause on a physically distinct surface makes the logic spatial. You cross from darkness into electric lime to finish the sentence. The crossing is the meaning.\n\nBig Shoulders Display was the only chassis that could honor both halves at equivalent scale. It's radically condensed — not the institutional weight of Anton, not the editorial warmth of Bricolage — it's pure signage register, the font of transit systems and stadium banners, built for maximum information density at maximum scale. At `clamp(52px, 5.8vw, 84px)` in the condensed register, a 14-character line like \"WHO WILL RISK\" sits in approximately 520px — comfortable within the 648px dark column at 1440 wide. Atkinson Hyperlegible as the body font is a deliberate counter-choice: designed for reading, not for display, it signals that the projects and signals sections are genuinely meant to be read, not just seen.\n\nThe lime palette at H:115° falls precisely inside the mandated 105°–128° window, and it earns its presence beyond mandate compliance: this is the color of late spring at its most pressurized, the specific green of something forcing itself past its own limit — which is exactly what the Eliot line describes. At full saturation on the 55% right column, it doesn't function as an accent; it functions as an event. The forest-stone neutral family with its faint H:115° green cast keeps the dark left side alive — not dead black, but a depth that has the same hue family as the lime it borders, making the two halves feel like the same world in two different states of illumination.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Split",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Education Foundation of AACPS",
+          "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+          "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "Pillars Of Seven",
+          "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Friday",
+      "is_weekend": false,
+      "day_index": 5
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "harry0703/MoneyPrinterTurbo/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "microsoft/markitdown/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "EveryInc/compound-engineering-plugin/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "twentyhq/twenty/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "anthropics/claude-code/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Charles Schwab Challenge",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Ryan Gerard",
+          "position": "1",
+          "score": "-6"
+        },
+        {
+          "name": "Andrew Putnam",
+          "position": "2",
+          "score": "-6"
+        },
+        {
+          "name": "Tom Kim",
+          "position": "3",
+          "score": "-6"
+        },
+        {
+          "name": "J.J. Spaun",
+          "position": "4",
+          "score": "-6"
+        },
+        {
+          "name": "Matt McCarty",
+          "position": "5",
+          "score": "-6"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Claude Opus 4.8",
+          "url": "https://www.anthropic.com/news/claude-opus-4-8",
+          "score": 1558,
+          "by": "craigmart"
+        },
+        {
+          "title": "Bricks and Minifigs Stole a Man's $200k Lego Collection",
+          "url": "https://mybricklog.com/blog/bricks-minifigs-corporate-stole-old-mans-200000-lego-collection",
+          "score": 996,
+          "by": "philips"
+        },
+        {
+          "title": "Real-time LLM Inference on Standard GPUs: 3k tokens/s per request",
+          "url": "https://blog.kog.ai/real-time-llm-inference-on-standard-gpus-3-000-tokens-s-per-request/",
+          "score": 20,
+          "by": "NicoConstant"
+        },
+        {
+          "title": "I made a million dollar product from my dorm room (2025)",
+          "url": "https://nick.winans.io/blog/nice-nano/",
+          "score": 429,
+          "by": "mattrighetti"
+        },
+        {
+          "title": "Volkswagen blocks Home Assistant by requiring client assertion",
+          "url": "https://github.com/robinostlund/homeassistant-volkswagencarnet/issues/967",
+          "score": 191,
+          "by": "Kwastie"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "full moon",
+      "illumination": 0.982,
+      "days_into_cycle": 13.49
+    },
+    "music": {
+      "bands": [
+        "The War on Drugs",
+        "Tobin Sprout",
+        "Wet Leg"
+      ]
+    },
+    "quote": {
+      "text": "Only those who will risk going too far can possibly find out how far one can go.",
+      "author": "T.S. Eliot"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 29,
+      "day_of_year": 149,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-28T17:10Z",
+          "result": "loss",
+          "score": "1-7"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:52",
+      "sunset": "19:22",
+      "daylight_hours": 14.5
+    },
+    "date": "2026-05-29"
+  },
+  "hero": {
+    "copy": "Only those who will risk going too far can possibly find out how far one can go.",
+    "rationale": "T.S. Eliot's line arrives today at the precise convergence of three signals: a risk weight of 8/10 (the loudest creative mandate all month), a full moon at 98.2% illumination (the night at its most charged), and a Friday at the edge of late spring — 14.5 hours of daylight, the season pressing against its own limit. The quote is not being borrowed for warmth or decoration; it describes the literal posture of this portfolio (every project a voluntary leap into uncertain territory) and the literal posture of today's mandate (bold, experimental, go too far). It would be screenshotted standalone. It earns the scale.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue** — 115° (electric lime). Late May spring at full momentum: not the safety yellow of a warning, not the money green of commerce, but the specific charged lime of new growth pressing at maximum velocity against the end of spring. Falls squarely in the mandated 105°–128° window.\n\n**Neutral palette** — forest stone family, tinted toward H:115°:\n- stone.50: `#F5F8F0`\n- stone.100: `#E6EDE0`\n- stone.200: `#C8D4BC`\n- stone.300: `#A3B594`\n- stone.400: `#7C906A`\n- stone.500: `#5C6E4E`\n- stone.600: `#404E36`\n- stone.700: `#2B3523`\n- stone.800: `#1A2215`\n- stone.900: `#0D1209`\n\n**Accent color:**\n- light: `#94DE52` (lime.300)\n- default: `#68CB1E` (lime.400)\n- dark: `#3D7E12` (lime.600)\n- glow: `rgba(104, 203, 30, 0.35)`\n\n**Secondary accent** — none.\n\n**Background:**\n- Dark side (left): `#0D1209` (stone.900) — near-black with faint green cast, depth not void\n- Lime side (right): `#68CB1E` (lime.400) — full-saturation drench\n- Card bg: `#1A2215` (stone.800)\n- Sidebar / signal strips: `#0D1209`\n\n**Text colors:**\n- Primary text on dark: `#F5F8F0` (stone.50) — 18.6:1 vs stone.900 ✓\n- Primary text on lime: `#0D1209` (stone.900) — 9.9:1 vs lime.400 ✓\n- Secondary text: `#A3B594` (stone.300) on dark — 6.8:1 ✓\n- Muted text: `#7C906A` (stone.400) on dark — 4.6:1 ✓\n\n---\n\n### 2. Typography (chassis-derived)\n\n**Hero phrase rendering** — Big Shoulders Display (the `display` chassis token), all-caps, weight 800. The phrase is physically split: first clause on the dark left column, second clause on the lime right column. Each side uses `clamp(52px, 5.8vw, 84px)` — at 1440px viewport this is ~83px per line. Big Shoulders Display is extremely condensed; at 83px a 14-character line occupies ~520px, which fits comfortably in a 45%-wide (648px) column with 48px horizontal padding.\n\nLeft breakpoint (dark side):\n```\nONLY THOSE\nWHO WILL RISK\nGOING TOO\nFAR\n```\nRight breakpoint (lime side):\n```\nCAN POSSIBLY\nFIND OUT\nHOW FAR\nONE CAN GO.\n```\n\nAttribution \"— T.S. Eliot\" renders in Atkinson Hyperlegible, 0.875rem, wide tracking (0.12em), small-caps treatment, placed below the right clause.\n\n**Line heights:**\n- Hero display: 0.88 (tight; condensed letterforms need minimal leading)\n- Subheadings: 1.1\n- Body: 1.6 (Atkinson Hyperlegible is designed for readability — give it room)\n- Signal labels: 1.2\n\n**Letter spacings:**\n- Hero all-caps: -0.02em (Big Shoulders Display needs slight tightening at large size)\n- Body prose: 0.01em\n- Small-caps labels: 0.08em\n- Signal eyebrows: 0.12em\n\n---\n\n### 3. Layout Specification\n\n**Archetype — Split.** The T.S. Eliot quote is a conditional statement in two halves: the condition (risk going too far) and its reward (discovering how far you can go). Placing each half on a different surface — one dark, one lime — makes the sentence's logic spatial and visual. You literally cross from darkness into light to finish reading the sentence. No other archetype can enact that argument.\n\n**CSS grid/flex structure:**\n```css\n.canvas {\n  display: grid;\n  grid-template-columns: 45fr 55fr;\n  min-height: 100vh;\n  max-width: none;\n}\n.left-column {\n  background: #0D1209;\n  min-height: 100vh;\n  padding: 48px 48px 48px 6vw;\n  display: flex;\n  flex-direction: column;\n}\n.right-column {\n  background: #68CB1E;\n  min-height: 100vh;\n  padding: 48px 6vw 48px 48px;\n  display: flex;\n  flex-direction: column;\n}\n```\n\n**Major dimensions:**\n- Left column: 45% viewport width, 100vh minimum height\n- Right column: 55% viewport width, 100vh minimum height\n- Hero phrase area on each side: occupies rows 1–3, roughly `min-height: 70vh`\n- Max content width: `none` — full bleed, viewport-relative padding only (`6vw` outer edge)\n- Section padding: 48px top/bottom within each column's content zones\n\n**Nav placement:** Top of the left column. Horizontal mini-nav: logo \"DM\" in lime.400 at 0.75rem/wide tracking, nav links (Work, About, Contact) in stone.300 at 0.75rem. Height: 64px. Sits above the hero phrase, flush left.\n\n**Hero phrase grid zone:**\n- Left column: rows 1–3, column 1. The phrase occupies `min-height: 65vh`, centered vertically within that zone. Text is left-aligned. The word \"FAR\" on the final line stands alone, enormous, flush left — the single word sitting at the precipice.\n- Right column: rows 1–3, column 2. Phrase occupies the same `min-height: 65vh` zone. Text is left-aligned on the lime field. \"ONE CAN GO.\" closes it — the period feels like a landing.\n\nBelow the hero phrase zone on each side:\n- **Left** (rows 4–5): Signal strip — golf leaderboard (5-way tie at -6), Tigers result (1-7), full moon icon at 98.2%. Type in stone.400/stone.300. Dense, small, tabular.\n- **Right** (rows 4–5): Projects strip — featured project cards in a 2-column grid using dark stone.900 cards on the lime field, then a signal zone (HN Claude Opus 4.8 headline, music: War on Drugs / Tobin Sprout / Wet Leg).\n\n---\n\n### 4. Component Character\n\n**Border radius:** `0` everywhere in hero zones. Cards get `2px` — nearly square, graphic, not rounded. Tags and labels: `0` with `1px solid border`.\n\n**Border treatment:** Borderless on the two main columns. Cards on the right column: `1px solid rgba(13,18,9,0.25)` (slightly transparent stone.900 on the lime field). Signal rows in the left column: `1px solid stone.700` top-border separators.\n\n**Shadow:** None on hero type. Cards: no drop shadow — the lime/dark contrast is doing all the depth work. Focus states: `0 0 0 3px lime.400` outline on dark background; `0 0 0 3px stone.900` on lime background.\n\n**Density:** Hero zones — very spacious (the phrase needs air to breathe). Signal/project zones — compact (tabular spacing, 8–16px gaps).\n\n**Interactive states:** Links on dark side: stone.300 → lime.400 on hover. Links on lime side: stone.800 → stone.900 on hover. Project cards: `scale(1.02)` + border intensification on hover. No animations in the hero type zones.\n\n---\n\n### 5. Signal Integration\n\n**Signal element placement:**\n- Left column bottom (below hero phrase): the day's sports and astronomical signals in a tight strip\n- Right column bottom (below projects): HN top story, music signals\n\n**Golf scores:** The 5-way deadlock at -6 (Gerard, Putnam, Kim, Spaun, McCarty) displayed as a compact leaderboard table. Header \"CHARLES SCHWAB\" in stone.400, widest tracking. Five names in stone.200, scores in lime.400 — all five showing \"-6\" in the same color, the deadlock made visual.\n\n**Full moon:** A circular indicator `36px` diameter, `background: lime.400`, `border-radius: 50%`. Label \"FULL MOON / 98.2%\" in stone.400, 0.75rem. Placed directly above the golf strip on the dark left side — the brightest signal at the top.\n\n**Tigers loss:** \"TIGERS 1–7\" in stone.500 (muted — a loss doesn't earn lime). One line, monospaced numerals, below the golf strip.\n\n**Quote display:** The T.S. Eliot line IS the hero phrase, rendered at full marquee scale across both columns of the Split. The attribution \"— T.S. Eliot\" appears on the right column below \"ONE CAN GO.\" in Atkinson Hyperlegible 0.875rem, stone.700, wide tracking — quiet, crediting without competing.\n\n**HN signal:** \"Claude Opus 4.8 ↑1558\" in stone.800 on lime field, 0.875rem, below the projects grid on the right. Self-referential easter egg — this site is built by Claude; Claude 4.8 launches today.\n\n**Music:** \"The War on Drugs · Tobin Sprout · Wet Leg\" in stone.700, 0.75rem, bottom of right column — a barely-legible ambient signal, the day's soundtrack.",
+    "selfCheck": "1. Hero quotability: Yes — T.S. Eliot's risk-and-discovery line is a standalone cultural artifact; someone would screenshot exactly this line without context.\n2. Because-of chain: Yes — the two-clause sentence structure demanded Split; the \"going too far\" + risk-8/10 + full-moon demanded electric lime at maximum saturation; Big Shoulders Display was chosen because its condensed weight fills both 45% and 55% halves at marquee scale without overflow or decorative excess.\n3. Render feasibility: Yes — Big Shoulders Display at clamp(52px, 5.8vw, 84px) in the condensed register renders a 14-character line in approximately 520px, comfortably fitting the 45%-wide (648px) left column at 1440×900 with 6vw padding.",
+    "rationale": "The T.S. Eliot quote is this portfolio's unsolicited mission statement: every project in the register (Spaceman, FishSticks, 15th Club, 15th Club, TeeTurn) is someone choosing to enter territory they couldn't see the end of. Today the signals converge to amplify that charge — a risk mandate at 8/10, a full moon pressing toward completeness, a Friday afternoon in late May with 14.5 hours of light. The quote doesn't need context to land; it needs space and structural honesty. The Split gives it that honesty: the sentence is a conditional argument in two clauses, and placing each clause on a physically distinct surface makes the logic spatial. You cross from darkness into electric lime to finish the sentence. The crossing is the meaning.\n\nBig Shoulders Display was the only chassis that could honor both halves at equivalent scale. It's radically condensed — not the institutional weight of Anton, not the editorial warmth of Bricolage — it's pure signage register, the font of transit systems and stadium banners, built for maximum information density at maximum scale. At `clamp(52px, 5.8vw, 84px)` in the condensed register, a 14-character line like \"WHO WILL RISK\" sits in approximately 520px — comfortable within the 648px dark column at 1440 wide. Atkinson Hyperlegible as the body font is a deliberate counter-choice: designed for reading, not for display, it signals that the projects and signals sections are genuinely meant to be read, not just seen.\n\nThe lime palette at H:115° falls precisely inside the mandated 105°–128° window, and it earns its presence beyond mandate compliance: this is the color of late spring at its most pressurized, the specific green of something forcing itself past its own limit — which is exactly what the Eliot line describes. At full saturation on the 55% right column, it doesn't function as an accent; it functions as an event. The forest-stone neutral family with its faint H:115° green cast keeps the dark left side alive — not dead black, but a depth that has the same hue family as the lime it borders, making the two halves feel like the same world in two different states of illumination.",
+    "signalIntegration": "**Signal element placement:**\n- Left column bottom (below hero phrase): the day's sports and astronomical signals in a tight strip\n- Right column bottom (below projects): HN top story, music signals\n\n**Golf scores:** The 5-way deadlock at -6 (Gerard, Putnam, Kim, Spaun, McCarty) displayed as a compact leaderboard table. Header \"CHARLES SCHWAB\" in stone.400, widest tracking. Five names in stone.200, scores in lime.400 — all five showing \"-6\" in the same color, the deadlock made visual.\n\n**Full moon:** A circular indicator `36px` diameter, `background: lime.400`, `border-radius: 50%`. Label \"FULL MOON / 98.2%\" in stone.400, 0.75rem. Placed directly above the golf strip on the dark left side — the brightest signal at the top.\n\n**Tigers loss:** \"TIGERS 1–7\" in stone.500 (muted — a loss doesn't earn lime). One line, monospaced numerals, below the golf strip.\n\n**Quote display:** The T.S. Eliot line IS the hero phrase, rendered at full marquee scale across both columns of the Split. The attribution \"— T.S. Eliot\" appears on the right column below \"ONE CAN GO.\" in Atkinson Hyperlegible 0.875rem, stone.700, wide tracking — quiet, crediting without competing.\n\n**HN signal:** \"Claude Opus 4.8 ↑1558\" in stone.800 on lime field, 0.875rem, below the projects grid on the right. Self-referential easter egg — this site is built by Claude; Claude 4.8 launches today.\n\n**Music:** \"The War on Drugs · Tobin Sprout · Wet Leg\" in stone.700, 0.75rem, bottom of right column — a barely-legible ambient signal, the day's soundtrack."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "lime": {
+          "50": "#F2FAE9",
+          "100": "#E0F5CE",
+          "200": "#BEED93",
+          "300": "#94DE52",
+          "400": "#68CB1E",
+          "500": "#51A417",
+          "600": "#3D7E12",
+          "700": "#2A590C",
+          "800": "#193806",
+          "900": "#0D1F03"
+        },
+        "stone": {
+          "50": "#F5F8F0",
+          "100": "#E6EDE0",
+          "200": "#C8D4BC",
+          "300": "#A3B594",
+          "400": "#7C906A",
+          "500": "#5C6E4E",
+          "600": "#404E36",
+          "700": "#2B3523",
+          "800": "#1A2215",
+          "900": "#0D1209"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.stone.900}",
+          "_light": "{colors.stone.50}"
+        },
+        "bg-card": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.100}"
+        },
+        "bg-raised": {
+          "base": "{colors.stone.700}",
+          "_light": "{colors.stone.200}"
+        },
+        "bg-accent": {
+          "base": "{colors.lime.400}",
+          "_light": "{colors.lime.400}"
+        },
+        "text": {
+          "base": "{colors.stone.50}",
+          "_light": "{colors.stone.900}"
+        },
+        "text-secondary": {
+          "base": "{colors.stone.300}",
+          "_light": "{colors.stone.600}"
+        },
+        "text-muted": {
+          "base": "{colors.stone.500}",
+          "_light": "{colors.stone.400}"
+        },
+        "text-on-accent": {
+          "base": "{colors.stone.900}",
+          "_light": "{colors.stone.900}"
+        },
+        "accent": {
+          "base": "{colors.lime.400}",
+          "_light": "{colors.lime.600}"
+        },
+        "accent-subtle": {
+          "base": "{colors.lime.700}",
+          "_light": "{colors.lime.100}"
+        },
+        "accent-strong": {
+          "base": "{colors.lime.300}",
+          "_light": "{colors.lime.500}"
+        },
+        "border": {
+          "base": "{colors.stone.700}",
+          "_light": "{colors.stone.200}"
+        },
+        "border-subtle": {
+          "base": "{colors.stone.800}",
+          "_light": "{colors.stone.100}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.15",
+      "normal": "1.6",
+      "loose": "1.8"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.08em",
+      "widest": "0.12em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "800"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 115,
+      "s": 72,
+      "l": 46,
+      "name": "electric lime"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "lime-green",
+      "name": "forest stone"
+    },
+    "mood_word": "electric",
+    "color_story": "The quote has two clauses — risk and discovery — and the palette splits with it: the risk clause lives in near-black forest void, the discovery clause detonates in full-saturation spring lime, the specific color of something that has forced its way through resistance into the open."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

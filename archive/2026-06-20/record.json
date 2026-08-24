@@ -1,0 +1,387 @@
+{
+  "date": "2026-06-20",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.204Z",
+  "buildId": "1781953022289",
+  "attempts": 1,
+  "brief": "Monument amber on warm charcoal void — \"THE LONGEST DAY.\" in three-line Anton at 13.5vw fills three-quarters of the canvas, Gallery Wall satellite blocks scatter the U.S. Open leaderboard and solstice signals in the remaining space, the hairline seams between blocks measuring the day's light in dark.",
+  "rationale": "The hero phrase arrived from the solar data without hesitation. June 20 — 14.7 hours of daylight, sunrise at 04:49, sunset at 19:34, one day before the official summer solstice — is the calendar's maximum: the longest day of the year. \"THE LONGEST DAY.\" is three words that do not need context to land. They carry their own cultural weight (the WWII film, the idiom of exhaustion and scale), and they are exactly what the signals are announcing. Ryan Holiday's obstacle quote was considered and set aside — \"Within every obstacle is an opportunity\" is motivational wallpaper at this scale, and today's data offers something far more specific and poster-ready. The phrase is the signal.\n\nGallery Wall follows because \"THE LONGEST DAY.\" is not an object to be framed — it is a presence to be arranged around. A Poster would give it a pedestal. A Specimen would make it the only thing. Gallery Wall lets the phrase dominate 70% of the canvas as the unmistakable anchor while the remaining space carries annotating blocks — the U.S. Open leaderboard (Wyndham Clark at −7, four clear), the Tigers' 4–3 win, the first-quarter moon at 35%, Father's Day tomorrow — scattered asymmetrically like margin notes on the longest day. The canvas is full, nothing is centered, the irregular whitespace between blocks is the design. Anton + Inter Tight is the only chassis that can carry the phrase at the scale it demands: Anton's condensed signage DNA makes three stacked lines at 13.5vw feel carved rather than blown up, and Inter Tight's precision keeps the leaderboard and signal data legible at 12–14px without competing with the monument above it.\n\nThe palette is both mandate-compliant and thematically earned. The forbidden zones (0°–20° and 42°–360°) leave exactly one corridor open: 20°–42°, warm amber-orange. This is not a constraint — it is a gift. H:28° amber is the precise color of peak-summer afternoon light, the warmth that arrives at 14.7 hours of solar exposure and does not leave until nearly 19:34. Against near-black warm charcoal (`#140C00` — not pure black, tinted amber so the dark carries the same family warmth), the blazing `#F5A020` achieves 9.6:1 contrast while reading as the sun itself pressed into type. Seven straight builds emptied the archive of warmth; this is the first amber-gold build and it earns its temperature.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Gallery Wall",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Arkansas Museum of Fine Art",
+          "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+          "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The Bend Club",
+          "description": "A luxury residence club that doesn't exist yet. Brand, logo, and investor site designed to make early buyers feel the place before the ground breaks....",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1cbcaa59c1c699174924.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAtF6hJREFUeAG0/dmTddl1H4ittc+9mfkN9VUVUCiAIAigAJIAOLTCImWpJdEPdqhNv7Yd7Rc/246ww3+D/w09OOzn9ovEsB9aUkeoW+rWALIlERBFECIxECAKKAwFVH1DZt6z...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "House of Honey",
+          "description": "House of Honey designs spaces with story. We built a sophisticated digital presence that mirrors this sensory philosophy through editorial elegance and...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1c09bf6c5f3457361940.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/CABEIBLAGQAMBEQACEQEDEQH/xAA6AAAABgMBAQEAAAAAAAAAAAADBAUGBwgAAQIJCgsBAAAH...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Saturday",
+      "is_weekend": true,
+      "day_index": 6
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "DeusData/codebase-memory-mcp/stargazers",
+          "description": "",
+          "language": "C",
+          "stars": null
+        },
+        {
+          "name": "google-research/timesfm/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "palmier-io/palmier-pro/stargazers",
+          "description": "",
+          "language": "Swift",
+          "stars": null
+        },
+        {
+          "name": "koala73/worldmonitor/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "aishwaryanr/awesome-generative-ai-guide/stargazers",
+          "description": "",
+          "language": "HTML",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "U.S. Open",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Wyndham Clark",
+          "position": "1",
+          "score": "-7"
+        },
+        {
+          "name": "Xander Schauffele",
+          "position": "2",
+          "score": "-3"
+        },
+        {
+          "name": "Tom Kim",
+          "position": "3",
+          "score": "-3"
+        },
+        {
+          "name": "Sam Stevens",
+          "position": "4",
+          "score": "-3"
+        },
+        {
+          "name": "Matt Fitzpatrick",
+          "position": "5",
+          "score": "-3"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "I Stored a Website in a Favicon",
+          "url": "https://www.timwehrle.de/blog/i-stored-a-website-in-a-favicon/",
+          "score": 145,
+          "by": "theanonymousone"
+        },
+        {
+          "title": "Where to Find the Colors Your Screen Can't Show You",
+          "url": "https://moultano.wordpress.com/2026/06/19/where-to-find-the-colors-your-screen-cant-show-you/",
+          "score": 145,
+          "by": "moultano"
+        },
+        {
+          "title": "Data Compression Explained (2012)",
+          "url": "https://mattmahoney.net/dc/dce.html",
+          "score": 133,
+          "by": "mtdewcmu"
+        },
+        {
+          "title": "Can you see three trees?",
+          "url": "https://www.not-ship.com/can-you-see-three-trees/",
+          "score": 125,
+          "by": "Pamar"
+        },
+        {
+          "title": "There are no instances in ATProto",
+          "url": "https://overreacted.io/there-are-no-instances-in-atproto/",
+          "score": 454,
+          "by": "danabramov"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Father's Day",
+          "date": "2026-06-21",
+          "days_away": 1
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "first quarter",
+      "illumination": 0.35,
+      "days_into_cycle": 5.95
+    },
+    "music": {
+      "bands": [
+        "My Morning Jacket",
+        "Wet Leg",
+        "Radiohead"
+      ]
+    },
+    "quote": {
+      "text": "Within every obstacle is an opportunity to improve our condition.",
+      "author": "Ryan Holiday"
+    },
+    "season": {
+      "season": "summer",
+      "month": 6,
+      "day": 20,
+      "day_of_year": 171,
+      "month_name": "June"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-06-19T22:40Z",
+          "result": "win",
+          "score": "4-3"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:49",
+      "sunset": "19:34",
+      "daylight_hours": 14.7
+    },
+    "date": "2026-06-20"
+  },
+  "hero": {
+    "copy": "THE LONGEST DAY.",
+    "rationale": "June 20 — the day before the summer solstice — with 14.7 hours of daylight, sunrise at 04:49, sunset at 19:34. That solar fact is the phrase: not a metaphor, not a motivational gloss, but a declaration of exact time. \"THE LONGEST DAY.\" also carries cinematic weight as a WWII film title, adding cultural resonance that makes it quotable in total isolation. Father's Day is tomorrow, the U.S. Open is deep into round three, and the world is at peak light — this phrase earns the stage.",
+    "source": null
+  },
+  "chassis": "anton-inter-tight",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue:** H:28° (amber-orange). The mandate's only open corridor is 20°–42°; amber sits dead-center of it and is the literal color of the signal — peak summer sunlight at golden hour.\n\n**Neutral palette (warm charcoal, amber-tinted):**\n- 50: `#FAF5E8` — warm cream\n- 100: `#F0E6CC`\n- 200: `#D8C89A`\n- 300: `#BC9E68`\n- 400: `#9A7540`\n- 500: `#7A5020`\n- 600: `#5C3200`\n- 700: `#3D1C00`\n- 800: `#2A1000`\n- 900: `#140C00` — near-black with amber warmth\n\n**Accent color (amber gold):**\n- light: `#FFD060`\n- default: `#F5A020`\n- dark: `#C07800`\n- glow: `rgba(245, 160, 32, 0.18)`\n\n**Secondary accent:** None.\n\n**Background:**\n- page bg: `#140C00`\n- card bg: `#2A1000`\n- sidebar bg: `#2A1000`\n\n**Text colors:**\n- primary: `#FAF5E8` — warm cream, 15.6:1 vs page bg ✓\n- secondary: `#D8C89A` — mid cream\n- muted: `#9A7540` — 4.8:1 vs page bg ✓\n\n---\n\n### 2. Typography\n\n**Hero phrase rendering:** Anton (the `display` token from anton-inter-tight chassis). Three stacked lines — \"THE\" / \"LONGEST\" / \"DAY.\" — set at `clamp(96px, 13.5vw, 195px)`. On a 1440px viewport: 13.5 × 14.4 = ~194px. Each line fills nearly the full width of its grid zone (columns 1–9, ~75vw). Color: amber `#F5A020`. Letter-spacing: `−0.03em`. Contrast: 9.6:1 vs page bg ✓\n\n**Line heights:**\n- Hero (Anton): `0.88` — condensed letterforms allow stacking with near-zero gap\n- Subheadings: `1.1`\n- Body / signal text: `1.55` — light text on dark needs extra air\n- Labels / caps strips: `1.2`\n\n**Letter spacings:**\n- Hero: `−0.03em` — pull condensed into tight monument formation\n- Eyebrows / all-caps labels: `0.12em`\n- Body / data: `0em`\n- Widest (nav, dateline): `0.18em`\n\n---\n\n### 3. Layout Specification\n\n**Archetype:** Gallery Wall — asymmetric blocks spread across the full viewport canvas. The hero phrase occupies ~70% of the canvas as a dominant block; satellite blocks for the U.S. Open leaderboard, signal data, and project index scatter in the remaining space with irregular whitespace between them, not around the composition.\n\n**CSS grid structure:**\n```css\ndisplay: grid;\ngrid-template-columns: repeat(12, 1fr);\ngrid-auto-rows: auto;\ngap: 2px; /* hairline seam between blocks */\nwidth: 100vw;\nmin-height: 100vh;\n```\n\n**Block placements:**\n- **Hero phrase block**: `grid-column: 1 / 10; grid-row: 1 / 5; min-height: 72vh; padding: 5vw 5vw 3vw 6vw;` — \"THE LONGEST DAY.\" in three stacked Anton lines, amber on near-black\n- **U.S. Open leaderboard block**: `grid-column: 10 / 13; grid-row: 1 / 3; padding: 32px 28px;` — compact standings list\n- **Signal strip block**: `grid-column: 10 / 13; grid-row: 3 / 5; padding: 24px 28px;` — Tigers, lunar, Father's Day, music\n- **Work index row**: `grid-column: 1 / 7; grid-row: 5; padding: 36px 6vw 48px;` — project index, Inter Tight\n- **About + nav block**: `grid-column: 7 / 13; grid-row: 5; padding: 36px 28px 48px;` — capabilities snippet, Ryan Holiday quote, nav links\n\n**Max content width:** `none` — full viewport edge to edge. Side padding via block-level `padding` only (6vw on hero block).\n\n**Nav placement:** Inside the About+Nav block (bottom-right), Inter Tight 11px / widest letter-spacing / all caps. Three links: WORK · ABOUT · CONTACT. No top bar.\n\n**Hero phrase grid zone:** Rows 1–4, columns 1–9. At 1440px viewport: ~1080px wide, min-height 72vh (~648px). Three Anton lines at ~194px cap height each = stacked monument fill.\n\n---\n\n### 4. Component Character\n\n**Border radius:** `0px` throughout — hard edges, no softening. The phrase demands architectural clarity.\n\n**Border treatment:** 2px hairline seam between grid blocks using `#3D1C00`. Accent blocks (leaderboard header, signal labels) use a 2px top border in `#F5A020` amber.\n\n**Shadow:** None. The dark field creates depth without shadows.\n\n**Density:** Hero block — airy (type breathes in the dark). Leaderboard + signal blocks — compact (14px / 1.3 line-height), maximum information per pixel.\n\n**Interactive states:** Project links in work index — amber underline reveal on hover. Nav links — 1px amber border-bottom on hover. Leaderboard rows — subtle bg lighten `#2A1000` → `#3D1C00` on hover.\n\n---\n\n### 5. Signal Integration\n\n**Hero (primary signal):** \"THE LONGEST DAY.\" is the solar signal — June 20, 14.7 hours of daylight, solstice eve. The phrase IS the signal integration. Beneath the three stacked lines: a date strip at 13px Inter Tight — `JUNE 20, 2026 · SUMMER SOLSTICE EVE · 04:49 → 19:34` in amber at 0.12em tracking.\n\n**U.S. Open leaderboard** (top-right block): Block header `U.S. OPEN — IN PROGRESS` in widest tracking, muted cream, 11px. Leader line: \"WYNDHAM CLARK\" Inter Tight bold 15px + `−7` in amber `#F5A020` at 18px tabular-nums, weight 700. T2 block: Schauffele / Kim / Stevens / Fitzpatrick at `−3` in `#D8C89A`. Hairline amber rule below the header.\n\n**Signal strip** (right-middle block):\n- `◑ FIRST QUARTER · 35%` — lunar, muted `#9A7540`, 12px\n- `DET 4–3 WIN` — Tigers result, amber, 13px bold\n- `FATHER'S DAY TOMORROW` — accent `#FFD060`, 12px caps, 0.10em tracking\n- `MY MORNING JACKET · WET LEG · RADIOHEAD` — music, muted, 11px\n\n**Father's Day:** Surfaced in signal strip in light gold — the solstice and Father's Day converging on consecutive days amplifies \"THE LONGEST DAY.\" The day is not just the longest on the calendar; it is the longest in the relational sense.\n\n**Ryan Holiday quote:** Rendered in the About+Nav block as a small pull quote — Inter Tight 13px italic, `#9A7540` muted, `\"Within every obstacle is an opportunity to improve our condition.\"` — positioned below the capabilities snippet, not competing with the hero.\n\n**Awwwards reference:** The Arkansas Museum of Fine Art (Studio Gang renovation) and House of Honey's \"editorial elegance\" inform the block-level approach — structured sections that each have distinct character within a coherent canvas.",
+    "selfCheck": "1. Hero quotability: Yes — \"THE LONGEST DAY.\" is a three-word declaration referencing the June 20 solstice eve (14.7 hours of daylight), carries standalone cinematic weight as a cultural phrase, and would be screenshotted without context.\n2. Because-of chain: Yes — the phrase required Gallery Wall (asymmetric dominance without framing), demanded Anton at 13.5vw condensed marquee scale (anton-inter-tight), and earned amber-on-near-black as the literal color of peak summer light filling the mandate's only open zone (20°–42°).\n3. Render feasibility: Yes — Anton at `clamp(96px, 13.5vw, 195px)` stacked over three lines within `grid-column: 1/10` (~75vw) leaves full horizontal clearance; condensed letterforms prevent overflow at all viewport sizes above 480px.",
+    "rationale": "The hero phrase arrived from the solar data without hesitation. June 20 — 14.7 hours of daylight, sunrise at 04:49, sunset at 19:34, one day before the official summer solstice — is the calendar's maximum: the longest day of the year. \"THE LONGEST DAY.\" is three words that do not need context to land. They carry their own cultural weight (the WWII film, the idiom of exhaustion and scale), and they are exactly what the signals are announcing. Ryan Holiday's obstacle quote was considered and set aside — \"Within every obstacle is an opportunity\" is motivational wallpaper at this scale, and today's data offers something far more specific and poster-ready. The phrase is the signal.\n\nGallery Wall follows because \"THE LONGEST DAY.\" is not an object to be framed — it is a presence to be arranged around. A Poster would give it a pedestal. A Specimen would make it the only thing. Gallery Wall lets the phrase dominate 70% of the canvas as the unmistakable anchor while the remaining space carries annotating blocks — the U.S. Open leaderboard (Wyndham Clark at −7, four clear), the Tigers' 4–3 win, the first-quarter moon at 35%, Father's Day tomorrow — scattered asymmetrically like margin notes on the longest day. The canvas is full, nothing is centered, the irregular whitespace between blocks is the design. Anton + Inter Tight is the only chassis that can carry the phrase at the scale it demands: Anton's condensed signage DNA makes three stacked lines at 13.5vw feel carved rather than blown up, and Inter Tight's precision keeps the leaderboard and signal data legible at 12–14px without competing with the monument above it.\n\nThe palette is both mandate-compliant and thematically earned. The forbidden zones (0°–20° and 42°–360°) leave exactly one corridor open: 20°–42°, warm amber-orange. This is not a constraint — it is a gift. H:28° amber is the precise color of peak-summer afternoon light, the warmth that arrives at 14.7 hours of solar exposure and does not leave until nearly 19:34. Against near-black warm charcoal (`#140C00` — not pure black, tinted amber so the dark carries the same family warmth), the blazing `#F5A020` achieves 9.6:1 contrast while reading as the sun itself pressed into type. Seven straight builds emptied the archive of warmth; this is the first amber-gold build and it earns its temperature.",
+    "signalIntegration": "**Hero (primary signal):** \"THE LONGEST DAY.\" is the solar signal — June 20, 14.7 hours of daylight, solstice eve. The phrase IS the signal integration. Beneath the three stacked lines: a date strip at 13px Inter Tight — `JUNE 20, 2026 · SUMMER SOLSTICE EVE · 04:49 → 19:34` in amber at 0.12em tracking.\n\n**U.S. Open leaderboard** (top-right block): Block header `U.S. OPEN — IN PROGRESS` in widest tracking, muted cream, 11px. Leader line: \"WYNDHAM CLARK\" Inter Tight bold 15px + `−7` in amber `#F5A020` at 18px tabular-nums, weight 700. T2 block: Schauffele / Kim / Stevens / Fitzpatrick at `−3` in `#D8C89A`. Hairline amber rule below the header.\n\n**Signal strip** (right-middle block):\n- `◑ FIRST QUARTER · 35%` — lunar, muted `#9A7540`, 12px\n- `DET 4–3 WIN` — Tigers result, amber, 13px bold\n- `FATHER'S DAY TOMORROW` — accent `#FFD060`, 12px caps, 0.10em tracking\n- `MY MORNING JACKET · WET LEG · RADIOHEAD` — music, muted, 11px\n\n**Father's Day:** Surfaced in signal strip in light gold — the solstice and Father's Day converging on consecutive days amplifies \"THE LONGEST DAY.\" The day is not just the longest on the calendar; it is the longest in the relational sense.\n\n**Ryan Holiday quote:** Rendered in the About+Nav block as a small pull quote — Inter Tight 13px italic, `#9A7540` muted, `\"Within every obstacle is an opportunity to improve our condition.\"` — positioned below the capabilities snippet, not competing with the hero.\n\n**Awwwards reference:** The Arkansas Museum of Fine Art (Studio Gang renovation) and House of Honey's \"editorial elegance\" inform the block-level approach — structured sections that each have distinct character within a coherent canvas."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "amber": {
+          "50": "#FFF8E8",
+          "100": "#FFF0C5",
+          "200": "#FFE08A",
+          "300": "#FFCC4D",
+          "400": "#F5B020",
+          "500": "#E09000",
+          "600": "#C07500",
+          "700": "#985800",
+          "800": "#703C00",
+          "900": "#4A2600"
+        },
+        "charcoal": {
+          "50": "#FAF5E8",
+          "100": "#F0E6CC",
+          "200": "#D8C89A",
+          "300": "#BC9E68",
+          "400": "#9A7540",
+          "500": "#7A5020",
+          "600": "#5C3200",
+          "700": "#3D1C00",
+          "800": "#2A1000",
+          "900": "#140C00"
+        },
+        "gold": {
+          "light": "#FFD060",
+          "base": "#F5A020",
+          "dark": "#C07800",
+          "glow": "rgba(245, 160, 32, 0.18)"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.charcoal.900}",
+          "_light": "{colors.charcoal.50}"
+        },
+        "bgCard": {
+          "base": "{colors.charcoal.800}",
+          "_light": "{colors.charcoal.100}"
+        },
+        "bgSidebar": {
+          "base": "{colors.charcoal.800}",
+          "_light": "{colors.charcoal.100}"
+        },
+        "bgElevated": {
+          "base": "{colors.charcoal.700}",
+          "_light": "{colors.charcoal.200}"
+        },
+        "text": {
+          "base": "{colors.charcoal.50}",
+          "_light": "{colors.charcoal.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.charcoal.200}",
+          "_light": "{colors.charcoal.700}"
+        },
+        "textMuted": {
+          "base": "{colors.charcoal.400}",
+          "_light": "{colors.charcoal.500}"
+        },
+        "accent": {
+          "base": "{colors.gold.base}",
+          "_light": "{colors.amber.600}"
+        },
+        "accentLight": {
+          "base": "{colors.gold.light}",
+          "_light": "{colors.amber.400}"
+        },
+        "accentDark": {
+          "base": "{colors.gold.dark}",
+          "_light": "{colors.amber.700}"
+        },
+        "accentGlow": {
+          "base": "{colors.gold.glow}",
+          "_light": "{colors.gold.glow}"
+        },
+        "border": {
+          "base": "{colors.charcoal.700}",
+          "_light": "{colors.charcoal.200}"
+        },
+        "borderAccent": {
+          "base": "{colors.gold.base}",
+          "_light": "{colors.amber.500}"
+        },
+        "borderSubtle": {
+          "base": "{colors.charcoal.800}",
+          "_light": "{colors.charcoal.100}"
+        }
+      }
+    },
+    "spacing": {
+      "4": "4px",
+      "8": "8px",
+      "16": "16px",
+      "24": "24px",
+      "32": "32px",
+      "48": "48px",
+      "64": "64px",
+      "96": "96px",
+      "128": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.55",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.04em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.10em",
+      "widest": "0.18em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 28,
+      "s": 95,
+      "l": 54,
+      "name": "amber gold"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "amber-orange",
+      "name": "warm charcoal"
+    },
+    "mood_word": "luminous",
+    "color_story": "Amber blazing against near-black charcoal — the exact palette of summer afternoon light, earned by 14.7 hours of sun at its calendar maximum, and the only open hue zone (20°–42°) left untouched in the full seven-build archive."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

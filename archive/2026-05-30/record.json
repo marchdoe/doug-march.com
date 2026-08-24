@@ -1,0 +1,355 @@
+{
+  "date": "2026-05-30",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.185Z",
+  "buildId": "1780137812298",
+  "attempts": 1,
+  "brief": "Will Rogers railroad warning in five-line Bebas crimson across a near-white broadside — the quote about not sitting still rendered at full-page scale with zero irony.",
+  "rationale": "The Will Rogers quote is the rarest kind of signal-day gift: a phrase already in the correct register for this portfolio. Every project Doug has built (Spaceman, FishSticks, 15th Club, TeeTurn) is the record of someone who got off the track. On a Saturday full moon with Risk 8/10 and a Tigers team that was one run short of moving, the phrase reads as operational guidance, not as motivational poster. It is funny, pointed, and irreducibly true in a way that earns marquee scale without needing context.\n\nThe Specimen archetype was the only honest container. A quote about not sitting still cannot be rendered as a centered hero on a field of white — that IS sitting still. Specimen makes the type the entirety of the design: you arrive at the page and you are looking at a printed warning, a broadside nailed to the station wall. The five-line break was chosen to maximize the descending visual weight — the lines get longer as they move toward the bottom, so the eye accelerates. The final line \"YOU JUST SIT THERE.\" lands at the widest point, as if the logic has been delivered and you are out of arguments. Bebas Neue (via `bebas-plex`) is the only chassis in the catalog that matches this register: it is the font of railway signs, of stadium scoreboards, of instructions posted in places where you are expected to obey them immediately.\n\nThe crimson red at H:3° falls precisely inside the 0°–5° open zone of the color mandate and has not appeared in the recent archive. More importantly, it is correct: this quote exists in the register of warning signage, and warning signs are red. Against stone.50 (`#FAFAF8` — near-white with the faintest warm cast), the red.600 accent achieves ≈5.1:1 contrast, passing AA even for body text. The choice to make the entire display text red — rather than using red as a single word accent — is the Risk 8/10 move: a white page covered in red proclamation has more commitment than a white page with one lit word. The signal strip below the fold preserves the signals (golf, Tigers loss, full moon, HN top story) in a clean typographic inventory that never competes with the broadside above it.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Specimen",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Education Foundation of AACPS",
+          "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+          "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "Pillars Of Seven",
+          "description": "Pillars of Seven is a Texas commercial general contractor and self-perform tradesoperator. 1M+ SF delivered, 5,000+ units, $4B+ in cumulative project...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fbb8048dc0d800658193.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAIAAAAsYxHAAAEAAElEQVR4nOzdeZxcVZk//uecc7dae0u6O/tC9hBIICEJWwj7poCiIm4D4sA447h+h3nNV/2p4zjO12VGR5kZHVAQFRdABER2BSQbBEIWQvals3R3eqm97nLO+f3xdFeadUBBovN5f/32dKqrbt26dav1fvp5nkMEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Power of Storytelling",
+          "description": "The Power of Digital Storytelling explores how craft itself becomes the story, why motion, interaction, and immersive design shape brand narratives more...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/69fa3cf2121fc086203255.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAkSF1JREFUeAHsvYuCKzfKBgjVnbz/4+5u2sW2LsAHQuVyn5P8mRkrOW27SkIIAUKgC//1/zyEmHpi+/OdhCzJfAyPSL6LnQ988k6/Ix2fTMcH+wMJH/4jdIiQ7LpCiq+yyST1...",
+          "screenshot_media_type": "image/png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Saturday",
+      "is_weekend": true,
+      "day_index": 6
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "harry0703/MoneyPrinterTurbo/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "microsoft/markitdown/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "EveryInc/compound-engineering-plugin/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "twentyhq/twenty/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "anthropics/claude-code/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Charles Schwab Challenge",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Jordan Smith",
+          "position": "1",
+          "score": "-10"
+        },
+        {
+          "name": "Michael Thorbjornsen",
+          "position": "2",
+          "score": "-9"
+        },
+        {
+          "name": "Hideki Matsuyama",
+          "position": "3",
+          "score": "-9"
+        },
+        {
+          "name": "Brian Harman",
+          "position": "4",
+          "score": "-9"
+        },
+        {
+          "name": "Ryan Gerard",
+          "position": "5",
+          "score": "-9"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Zig: Build System Reworked",
+          "url": "https://ziglang.org/devlog/2026/#2026-05-26",
+          "score": 60,
+          "by": "tosh"
+        },
+        {
+          "title": "The Kaiser and a \"Mediocre Man\" Theory of History",
+          "url": "https://www.deadcarl.com/p/the-kaiser-and-a-mediocre-man-theory",
+          "score": 17,
+          "by": "baud147258"
+        },
+        {
+          "title": "SQLite is all you need for durable workflows",
+          "url": "https://obeli.sk/blog/sqlite-is-all-you-need-for-durable-workflows/",
+          "score": 546,
+          "by": "tomasol"
+        },
+        {
+          "title": "Danish pension fund excludes SpaceX citing governance and valuation",
+          "url": "https://www.reuters.com/legal/transactional/danish-pension-fund-excludes-spacex-citing-governance-valuation-2026-05-29/",
+          "score": 135,
+          "by": "vrganj"
+        },
+        {
+          "title": "Algebraic Effects for the Rest of Us",
+          "url": "https://overreacted.io/algebraic-effects-for-the-rest-of-us/",
+          "score": 62,
+          "by": "satvikpendem"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "full moon",
+      "illumination": 0.999,
+      "days_into_cycle": 14.47
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "Guided by Voices"
+      ]
+    },
+    "quote": {
+      "text": "Even though you are on the right track - you will get run over if you just sit there.",
+      "author": "Will Rogers"
+    },
+    "season": {
+      "season": "spring",
+      "month": 5,
+      "day": 30,
+      "day_of_year": 150,
+      "month_name": "May"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-05-29T23:40Z",
+          "result": "loss",
+          "score": "3-4"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:52",
+      "sunset": "19:23",
+      "daylight_hours": 14.5
+    },
+    "date": "2026-05-30"
+  },
+  "hero": {
+    "copy": "EVEN THOUGH YOU ARE ON THE RIGHT TRACK — YOU WILL GET RUN OVER IF YOU JUST SIT THERE.",
+    "rationale": "The Will Rogers quote arrived from `signals.quote` and is this portfolio's unsolicited operational memo: every project in the register (Spaceman, FishSticks, 15th Club, TeeTurn) is someone choosing to move rather than sit. On a Saturday with a full moon at 99.9% illumination, Risk 8/10, and a Tigers loss that came from being one run short, the phrase functions as both critique and permission. It earns marquee scale because it is funny, pointed, and irreducibly true — the kind of line you'd write on a sticky note and leave for yourself.",
+    "source": null
+  },
+  "chassis": "bebas-plex",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n- **Primary hue** — H:3° (HSL), a railroad-warning crimson. Falls in the 0°–5° open zone. Not warm orange, not tomato — this is the specific red of a NO TRESPASSING sign or a STOP board, which is exactly what the quote is.\n- **Neutral palette (warm stone, tinted toward red/warm)**:\n  - 50: `#FAFAF8` — near-white, minimal warm cast; page background\n  - 100: `#F4F3F0` — card surfaces\n  - 200: `#E8E6E0` — borders, dividers\n  - 300: `#D0CCC4` — disabled states\n  - 400: `#A8A39C` — muted UI\n  - 500: `#7A756E` — secondary text\n  - 600: `#565048` — attribution, footnotes\n  - 700: `#3A3530` — heading fallback\n  - 800: `#252220` — near-black surface\n  - 900: `#131210` — primary text, darkest\n- **Accent color (crimson red)**:\n  - Light: `#FF8070` (red.300)\n  - Default: `#E8351E` (red.500)\n  - Dark: `#CC1E0B` (red.600) — used for hero display text\n  - Glow: `#FF5A4A` (red.400)\n- **Secondary accent** — none. One color, full commitment.\n- **Background**: page bg `#FAFAF8` (stone.50); card bg `#F4F3F0` (stone.100); no sidebar\n- **Text colors**: primary text `#131210` (stone.900); secondary `#565048` (stone.600); muted `#A8A39C` (stone.400)\n\n**Contrast checks:**\n- red.600 `#CC1E0B` on stone.50 `#FAFAF8`: ≈5.1:1 ✓ (AA body text)\n- stone.900 `#131210` on stone.50 `#FAFAF8`: ≈17.9:1 ✓\n- stone.600 `#565048` on stone.50 `#FAFAF8`: ≈7.2:1 ✓\n\n---\n\n### 2. Typography (chassis: bebas-plex)\n\n- **Hero phrase rendering** — Bebas Neue at `clamp(70px, 7.5vw, 108px)`, all caps (Bebas is inherently caps), color: red.600 `#CC1E0B`. Broken into five lines:\n  ```\n  EVEN THOUGH YOU\n  ARE ON THE RIGHT\n  TRACK — YOU WILL\n  GET RUN OVER IF\n  YOU JUST SIT THERE.\n  ```\n  Left-aligned, padding `0 6vw`. Each line spans 40–80% of the available content width — unequal lengths create a descending staircase of urgency, widening line-by-line toward the bottom.\n- **Attribution line** — IBM Plex Sans, `clamp(15px, 1.2vw, 18px)`, weight 400, stone.500, right-aligned below the display block: `— Will Rogers, 1935`\n- **Nav text** — IBM Plex Sans, 14px, weight 400, stone.600, letter-spacing: wide (0.05em), all caps\n- **Body / signal text** — IBM Plex Sans, 15px, stone.700, weight 400\n- **Line heights**:\n  - Hero display: `0.88` (tight — Bebas needs no breathing room)\n  - Body / attribution: `1.5` (normal)\n  - Signal strip: `1.4`\n- **Letter spacings**:\n  - Hero: `0` (Bebas is already tracked for display; manual tracking hurts it)\n  - Nav labels: `0.08em` (caps tracking for small-size readability)\n  - Signal labels: `0.05em`\n\n---\n\n### 3. Layout Specification\n\n- **Archetype: Specimen** — Typography IS the design. The Will Rogers quote occupies the majority of the first viewport; everything else is subordinate evidence that someone here chooses not to sit still. The white page and red type read as a broadside posted in a railroad station.\n\n- **CSS structure**:\n  ```css\n  /* Page shell */\n  body {\n    display: flex;\n    flex-direction: column;\n    min-height: 100vh;\n    padding: 0;\n    margin: 0;\n    max-width: none;\n  }\n\n  /* Nav bar */\n  nav {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0 6vw;\n    height: 56px;\n    border-bottom: 1px solid stone.200;\n    position: sticky;\n    top: 0;\n    background: stone.50;\n    z-index: 10;\n  }\n\n  /* Hero zone */\n  .hero {\n    padding: 80px 6vw 48px;\n    flex: 1;\n  }\n\n  /* Attribution row */\n  .attribution {\n    padding: 24px 6vw 0;\n    text-align: right;\n  }\n\n  /* Signal strip — below fold */\n  .signals {\n    padding: 64px 6vw 48px;\n    border-top: 1px solid stone.200;\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n    gap: 32px;\n  }\n  ```\n\n- **Major dimensions**:\n  - Hero zone height: implicit — `padding-top: 80px` + 5 lines at ~95px each ≈ 555px total from nav bottom ≈ **68% of 900px viewport** (with attribution at ~88vh)\n  - `max-width: none` — full canvas, no container cap\n  - Side padding: `6vw` on all sections (86px at 1440px)\n  - Nav height: `56px`\n  - Signal strip: below fold, visible on scroll\n\n- **Nav placement** — top sticky bar. Left: \"DOUG MARCH\" in stone.600, 14px, tracking 0.08em, all caps. Right: three links (Work · About · Contact) in stone.500, 14px.\n\n- **Hero phrase grid zone** — occupies full horizontal extent of content area (1440px − 2×86px = 1268px available). Vertical: rows 1–5 of the display block. At 108px with 0.88 leading, each line ≈ 95px; five lines ≈ 475px. Positioned starting at `top: 56px + 80px = 136px` from viewport top. Display text ends at approximately `136 + 475 = 611px` = 68% of 900px viewport before attribution.\n\n---\n\n### 4. Component Character\n\n- **Border radius** — none/0px everywhere. Bebas Neue at this scale demands hard edges; rounded corners would soften what the quote is explicitly arguing against. Buttons: 0px. Tags: 0px. Cards: 0px.\n- **Border treatment** — single-pixel `border: 1px solid {border}` (stone.200) for the nav bottom and the signal strip separator. No card borders in the hero zone.\n- **Shadow** — none. White page, flat.\n- **Density** — spacious in the hero zone (type breathes across the page), compact in the signal strip (narrow labels, tight rows).\n- **Interactive states** — nav links: `color: accent` on hover (red.600 → red.500), underline appears. Signal data rows: subtle `background: stone.100` on hover.\n\n---\n\n### 5. Signal Integration\n\n- **Quote IS the hero phrase** — Will Rogers `signals.quote` is the entirety of the display text. No separate quote component needed; the Specimen layout makes the quote the page.\n\n- **Signal strip (below fold, grid layout)**:\n  - **Golf** — \"Charles Schwab Challenge\" label in stone.400 9px small caps; \"Jordan Smith −10\" in stone.800 15px bold; leaderboard top 3 in stone.600 13px.\n  - **Tigers loss** — \"DET 3 · OPP 4\" in stone.700 15px, with a red.400 dot indicator beside \"L\"; yesterday's date in stone.400.\n  - **Full moon** — moon phase symbol (●) in stone.900, full illumination %; \"Full Moon\" label in stone.500. Placed as a standalone data cell.\n  - **Hacker News** — Top story \"SQLite is all you need for durable workflows\" in stone.600 13px, score `546` in red.500 bold. One-line item.\n  - **Music** — \"Wet Leg · Guided by Voices\" in stone.500 13px italic, signal-strip right column.\n\n- **Holiday elements** — none today.\n\n- **Attribution for hero** — \"— Will Rogers, 1935\" in IBM Plex Sans 18px stone.500, right-aligned, 24px below the final display line.\n\n- **Weekend / full moon treatment** — a single line above the signal strip in stone.400 10px all caps: `SATURDAY · FULL MOON · 99.9% · MAY 30` acting as a dateline, echoing newspaper broadside conventions without becoming a broadsheet.\n\n---",
+    "selfCheck": "1. Hero quotability: Yes — \"You will get run over if you just sit there\" is a standalone statement that earns the screenshot test; Will Rogers attributed, no context needed.\n2. Because-of chain: Yes — the railroad-warning phrase demanded crimson (the color of railroad danger signs), which demanded a white page (maximum contrast, broadside register), which demanded Bebas Neue (the most declarative condensed display in the catalog), which demanded Specimen (type as the totality of the design); every choice traces back to the phrase.\n3. Render feasibility: Yes — five lines of Bebas Neue at clamp(70px, 7.5vw, 108px); the longest line \"YOU JUST SIT THERE.\" at 19 chars × ~55px avg = ~1045px, comfortably inside the 1268px available at 1440×900 with 6vw side padding.",
+    "rationale": "The Will Rogers quote is the rarest kind of signal-day gift: a phrase already in the correct register for this portfolio. Every project Doug has built (Spaceman, FishSticks, 15th Club, TeeTurn) is the record of someone who got off the track. On a Saturday full moon with Risk 8/10 and a Tigers team that was one run short of moving, the phrase reads as operational guidance, not as motivational poster. It is funny, pointed, and irreducibly true in a way that earns marquee scale without needing context.\n\nThe Specimen archetype was the only honest container. A quote about not sitting still cannot be rendered as a centered hero on a field of white — that IS sitting still. Specimen makes the type the entirety of the design: you arrive at the page and you are looking at a printed warning, a broadside nailed to the station wall. The five-line break was chosen to maximize the descending visual weight — the lines get longer as they move toward the bottom, so the eye accelerates. The final line \"YOU JUST SIT THERE.\" lands at the widest point, as if the logic has been delivered and you are out of arguments. Bebas Neue (via `bebas-plex`) is the only chassis in the catalog that matches this register: it is the font of railway signs, of stadium scoreboards, of instructions posted in places where you are expected to obey them immediately.\n\nThe crimson red at H:3° falls precisely inside the 0°–5° open zone of the color mandate and has not appeared in the recent archive. More importantly, it is correct: this quote exists in the register of warning signage, and warning signs are red. Against stone.50 (`#FAFAF8` — near-white with the faintest warm cast), the red.600 accent achieves ≈5.1:1 contrast, passing AA even for body text. The choice to make the entire display text red — rather than using red as a single word accent — is the Risk 8/10 move: a white page covered in red proclamation has more commitment than a white page with one lit word. The signal strip below the fold preserves the signals (golf, Tigers loss, full moon, HN top story) in a clean typographic inventory that never competes with the broadside above it.",
+    "signalIntegration": "- **Quote IS the hero phrase** — Will Rogers `signals.quote` is the entirety of the display text. No separate quote component needed; the Specimen layout makes the quote the page.\n\n- **Signal strip (below fold, grid layout)**:\n  - **Golf** — \"Charles Schwab Challenge\" label in stone.400 9px small caps; \"Jordan Smith −10\" in stone.800 15px bold; leaderboard top 3 in stone.600 13px.\n  - **Tigers loss** — \"DET 3 · OPP 4\" in stone.700 15px, with a red.400 dot indicator beside \"L\"; yesterday's date in stone.400.\n  - **Full moon** — moon phase symbol (●) in stone.900, full illumination %; \"Full Moon\" label in stone.500. Placed as a standalone data cell.\n  - **Hacker News** — Top story \"SQLite is all you need for durable workflows\" in stone.600 13px, score `546` in red.500 bold. One-line item.\n  - **Music** — \"Wet Leg · Guided by Voices\" in stone.500 13px italic, signal-strip right column.\n\n- **Holiday elements** — none today.\n\n- **Attribution for hero** — \"— Will Rogers, 1935\" in IBM Plex Sans 18px stone.500, right-aligned, 24px below the final display line.\n\n- **Weekend / full moon treatment** — a single line above the signal strip in stone.400 10px all caps: `SATURDAY · FULL MOON · 99.9% · MAY 30` acting as a dateline, echoing newspaper broadside conventions without becoming a broadsheet.\n\n---"
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "red": {
+          "50": "#FEF5F4",
+          "100": "#FFE4E0",
+          "200": "#FFBDB5",
+          "300": "#FF8070",
+          "400": "#FF5A4A",
+          "500": "#E8351E",
+          "600": "#CC1E0B",
+          "700": "#A01508",
+          "800": "#6E0C04",
+          "900": "#3A0602"
+        },
+        "stone": {
+          "50": "#FAFAF8",
+          "100": "#F4F3F0",
+          "200": "#E8E6E0",
+          "300": "#D0CCC4",
+          "400": "#A8A39C",
+          "500": "#7A756E",
+          "600": "#565048",
+          "700": "#3A3530",
+          "800": "#252220",
+          "900": "#131210"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.stone.50}",
+          "_dark": "{colors.stone.900}"
+        },
+        "bgCard": {
+          "base": "{colors.stone.100}",
+          "_dark": "{colors.stone.800}"
+        },
+        "bgSidebar": {
+          "base": "{colors.stone.100}",
+          "_dark": "{colors.stone.800}"
+        },
+        "text": {
+          "base": "{colors.stone.900}",
+          "_dark": "{colors.stone.50}"
+        },
+        "textSecondary": {
+          "base": "{colors.stone.600}",
+          "_dark": "{colors.stone.300}"
+        },
+        "textMuted": {
+          "base": "{colors.stone.400}",
+          "_dark": "{colors.stone.500}"
+        },
+        "accent": {
+          "base": "{colors.red.600}",
+          "_dark": "{colors.red.400}"
+        },
+        "accentSubtle": {
+          "base": "{colors.red.100}",
+          "_dark": "{colors.red.900}"
+        },
+        "border": {
+          "base": "{colors.stone.200}",
+          "_dark": "{colors.stone.700}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.08em",
+      "widest": "0.15em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 3,
+      "s": 93,
+      "l": 42,
+      "name": "crimson red"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "warm red",
+      "name": "warm stone"
+    },
+    "mood_word": "urgent",
+    "color_story": "Deep crimson on near-white paper puts the Will Rogers quote in the register of a railroad warning sign — suddenly the joke about getting run over is not a joke at all."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

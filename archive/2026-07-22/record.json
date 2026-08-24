@@ -1,0 +1,359 @@
+{
+  "date": "2026-07-22",
+  "era": "shell-directed",
+  "generatedAt": "2026-08-24T15:34:16.239Z",
+  "buildId": "1784717552559",
+  "attempts": 1,
+  "brief": "Deep-water teal Specimen — Kamal Ravikant's \"NO CHOICE BUT TO LIVE IT\" drenched huge in Bricolage, \"LIVE IT\" surfacing in electric aqua, nav folded to a left spine and the day's signals pinned quiet down the right margin.",
+  "rationale": "The day gave me a line worth the whole page. Kamal Ravikant's quote is really about compulsion — the thing inside you that leaves you \"no choice but to live it.\" Stripped to that imperative, \"NO CHOICE BUT TO LIVE IT\" is the quiet mission statement of a site that cannot stop re-expressing itself every morning. Because the phrase is an interior imperative rather than a headline about anything external, it can't be one object among many — it has to BE the object. That forces the Specimen: type at poster scale filling both axes, everything else demoted to the margins as caption.\n\nChassis follows from tone. This is not athletic shouting like the Anton/Bebas/Big-Shoulders posters of the past week — it's something warmer, something that comes \"from within.\" Bricolage Grotesque (bricolage-manrope, 1.500 ratio) is the expressive, humanist display face that can carry \"LIVE IT\" at 200px with warmth instead of billboard aggression, while Manrope keeps the right-margin signals tabular and quiet. Palette follows the metaphor and the mandate simultaneously: the only clean corridor left on the wheel is 181°–202°, and 190° deep-water teal is the perfect reading of \"from within\" — depth, pressure, something welling up. I drench the canvas in it (coverage ≥62%) so a single electric-aqua \"LIVE IT\" can surface like a thing you can't hold under. One hue, one lit word, no hedging neutrals.\n\nLayout answers the owner's two standing notes directly. The header has been the recurring complaint, so I abandon top bars entirely: navigation moves to a genuine left spine — a fresh treatment against the last seven shells — with links reading vertically up the edge, and the signals move to a right margin column, leaving the center free for nothing but the phrase. And rather than feeling like a menu-picked \"layout,\" the Specimen here is dictated by the content: an interior imperative literally becomes the interior of the page, flanked by two thin margins of context. The Tigers' 2–11 loss is deliberately never lit — a blowout defeat gets muted tabular treatment in the margin, not the accent — keeping the aqua glow reserved for the one word that matters.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/SignalMargin.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Specimen",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "House Of Yellow",
+          "description": "HOY is a creative content agency that moves at the speed of your ambition. Build with firepower, we take ideas from concept to production and beyond....",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a5f39fc2e98e650890733.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAUIRpJREFUeAHs/QnQdsl1mIedvu+3/Ov8s2CAGWzEgBQgiiQgUrRoklotKSIt2pRKcqzIUqRQlm25krKcsuI4cllR5HLKomJXqhLbsRnHSVXCUqXiyFnFSJFILZZIiU6RIMEF...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Matter of Design",
+          "description": "Showcase the capabilities and case studies of The Matter of Design, a Chicago-based design studio. Built with Framer.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a4d08654b622080956191.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAylpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBD...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "THE TRIADIC BALLET AI",
+          "description": "A digital reinterpretation of Oskar Schlemmer’s Triadic Ballet, blending AI imagery, motion and experimental web design.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a48decd9b68c655448713.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Wednesday",
+      "is_weekend": false,
+      "day_index": 3
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "koala73/worldmonitor/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "bojieli/ai-agent-book/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/tirth8205",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "ayghri/i-have-adhd/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "earthtojake/text-to-cad/stargazers",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "3M Open",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "OpenAI and Hugging Face address security incident during model evaluation",
+          "url": "https://openai.com/index/hugging-face-model-evaluation-security-incident/",
+          "score": 1193,
+          "by": "mfiguiere"
+        },
+        {
+          "title": "Kimi K3 Is Competitive with Fable; Kimi K3 and Fable Is SoTA",
+          "url": "https://fireworks.ai/blog/kimik3-fable",
+          "score": 651,
+          "by": "piotrgrabowski"
+        },
+        {
+          "title": "Introduction to Formal Verification with Lean Part 1",
+          "url": "https://hashcloak.com/blog/tutorial-introduction-to-formal-verification-with-lean-(part-1)",
+          "score": 31,
+          "by": "badcryptobitch"
+        },
+        {
+          "title": "Intel Starts Shipping High-NA EUV Silicon",
+          "url": "https://morethanmoore.substack.com/p/intel-starts-shipping-high-na-euv",
+          "score": 89,
+          "by": "zdw"
+        },
+        {
+          "title": "Original Apollo 11 Guidance Computer source code for command and lunar modules",
+          "url": "https://github.com/chrislgarry/Apollo-11",
+          "score": 85,
+          "by": "noteness"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "first quarter",
+      "illumination": 0.609,
+      "days_into_cycle": 8.41
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "Guided by Voices"
+      ]
+    },
+    "quote": {
+      "text": "When something comes from within, when it is a part of you, you have no choice but to live it, to express it.",
+      "author": "Kamal Ravikant"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 22,
+      "day_of_year": 203,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-22T00:05Z",
+          "result": "loss",
+          "score": "2-11"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:06",
+      "sunset": "19:26",
+      "daylight_hours": 14.3
+    },
+    "date": "2026-07-22"
+  },
+  "hero": {
+    "copy": "NO CHOICE BUT TO LIVE IT",
+    "rationale": "Lifted from today's `signals.quote` — Kamal Ravikant: \"When something comes from within, when it is a part of you, you have no choice but to live it, to express it.\" Distilled to its imperative core, \"NO CHOICE BUT TO LIVE IT\" is quotable in isolation and reads as a manifesto, not a caption. It's the truest possible thesis for a portfolio that tears itself down and rebuilds every dawn — a site that cannot help but keep expressing itself — so it earns the whole canvas.",
+    "source": null
+  },
+  "chassis": "bricolage-manrope",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 190° teal. Deep water is the visual metaphor for \"comes from within\"; the mandate's only clean corridor (181°–202°) lands exactly here, so honoring the constraint and the concept coincide.\n- **Neutral palette (teal-tinted)** — 50 `#F2FBFB`, 100 `#E1F0F0`, 200 `#C4DCDD`, 300 `#9FBEC0`, 400 `#6F9497`, 500 `#4E7275`, 600 `#385659`, 700 `#274143`, 800 `#182E30`, 900 `#0D1E20`\n- **Accent color (electric aqua ~175°)** — light `#5CEBDD`, default `#1FDDCB`, dark `#0FA697`, glow `rgba(31,221,203,0.45)`\n- **Secondary accent** — none beyond the single aqua pop; the design is one committed hue.\n- **Background** — page bg `#0C464B` (deep teal drench), card/panel bg `#0F565C`, sidebar/spine bg `#082F33`\n- **Text colors** — primary text `#F2FBFB`, secondary/body `#E1F0F0`, muted `#9FBEC0`\n\n### 2. Typography (chassis: Bricolage Grotesque + Manrope)\n- **Hero phrase rendering** — `display` token (Bricolage Grotesque) at `clamp(72px, 12vw, 200px)`, set uppercase across three stacked lines: \"NO CHOICE\" / \"BUT TO\" / \"LIVE IT\". \"LIVE IT\" rendered in accent aqua `#1FDDCB` with a soft glow; the first two lines in cream. Fills ≥72% of both width and height — type IS the composition.\n- **Line heights** — hero `0.90`; attribution/labels `1.1`; body/signal text `1.5`\n- **Letter spacings** — hero `-0.02em` (tight, expressive); smallcaps labels `0.14em`; body `0.005em`\n\n### 3. Layout Specification\n- **Archetype** — Specimen. A single interior imperative deserves to BE the page; nothing competes with the phrase, everything else is demoted to the margins as caption.\n- **CSS grid structure** — `display: grid; grid-template-columns: 72px 1fr 260px; grid-template-rows: 1fr auto;` — left spine, dominant type field, right signal margin.\n- **Major dimensions**:\n  - Hero/type field: `min-height: 100vh`, occupies center column, vertically centered\n  - Left spine: `width: 72px`, full height\n  - Right signal margin: `width: 260px`, full height\n  - Max content width: `max-width: none`; side padding `clamp(32px, 5vw, 80px)` inside the type field\n  - Attribution: pinned bottom-left of the type field, `margin-top: clamp(32px, 5vh, 64px)`\n- **Nav placement** — LEFT SPINE (fresh vs. recent shells): vertical 72px column against `#082F33`; brand mark at top, three all-caps links (`WORK · ABOUT · INDEX`) set rotated `-90deg` reading bottom-to-top down the spine, `0.14em` tracking, `#9FBEC0` resting → `#1FDDCB` on hover.\n- **Hero phrase grid zone** — column 2 (the 1fr center), rows 1, vertically centered; intended render ~72% viewport width × ~60% viewport height as a three-line block.\n\n### 4. Component Character\n- **Border radius** — none (`0`) everywhere; hard specimen edges. Tags/labels square.\n- **Border treatment** — single hairline rules only: `1px solid #385659` separating the right signal margin and under each signal row. Type field itself borderless.\n- **Shadow** — none on surfaces. One text-glow on the accent word: `text-shadow: 0 0 40px rgba(31,221,203,0.45)`.\n- **Density** — spacious in the type field, compact/tabular in the right margin.\n- **Interactive states** — spine links shift `#9FBEC0 → #1FDDCB` with `0.14em → 0.18em` tracking on hover; no motion elsewhere except a single staggered fade-up on load for the three hero lines.\n\n### 5. Signal Integration\n- **Where signal elements live** — RIGHT SIGNAL MARGIN (260px column), a vertical tabular stack of small labeled rows; the quote is the hero, so it lives center-stage, not here.\n- **Sports scores** — Tigers 2–11 loss styled as a demoted, muted row: label \"TIGERS · MLB\" in `#6F9497` smallcaps, score `2–11` in Manrope tabular-nums `#9FBEC0` (never lit — a loss doesn't get the accent). Golf \"3M OPEN · SCHEDULED\" as a quiet upcoming row.\n- **Quote display** — the quote IS the hero phrase. Attribution \"— KAMAL RAVIKANT\" set small-caps `0.14em` in `#9FBEC0` beneath the type block, bottom-left.\n- **Music** — \"ON ROTATION\" row: Wet Leg / Guided by Voices, `#E1F0F0`.\n- **Moon** — \"FIRST QUARTER · 61%\" row with a small aqua crescent tick.\n- **Sun / season** — \"JUL 22 · 14.3H LIGHT\" almanac row at the base of the margin.\n- **Holiday** — none today; omitted.",
+    "selfCheck": "1. Hero quotability: Yes — \"NO CHOICE BUT TO LIVE IT\" stands entirely alone as a manifesto line, not descriptive filler.\n2. Because-of chain: Yes — intimate interior imperative → Specimen (type is the page) → Bricolage (warm expressive display, not athletic shouting) → deep-water teal drench with one lit word → centered type field flanked by spine + margin.\n3. Render feasibility: Yes — three short caps lines (max \"NO CHOICE\" = 9 chars) at clamp up to 200px hold within a 1440px center column at 0.90 line-height without overflow.\n4. Canvas floor feasible: Yes — a 200px three-line block plus spine and signal margin genuinely occupy ≥72% of 1440×900.",
+    "rationale": "The day gave me a line worth the whole page. Kamal Ravikant's quote is really about compulsion — the thing inside you that leaves you \"no choice but to live it.\" Stripped to that imperative, \"NO CHOICE BUT TO LIVE IT\" is the quiet mission statement of a site that cannot stop re-expressing itself every morning. Because the phrase is an interior imperative rather than a headline about anything external, it can't be one object among many — it has to BE the object. That forces the Specimen: type at poster scale filling both axes, everything else demoted to the margins as caption.\n\nChassis follows from tone. This is not athletic shouting like the Anton/Bebas/Big-Shoulders posters of the past week — it's something warmer, something that comes \"from within.\" Bricolage Grotesque (bricolage-manrope, 1.500 ratio) is the expressive, humanist display face that can carry \"LIVE IT\" at 200px with warmth instead of billboard aggression, while Manrope keeps the right-margin signals tabular and quiet. Palette follows the metaphor and the mandate simultaneously: the only clean corridor left on the wheel is 181°–202°, and 190° deep-water teal is the perfect reading of \"from within\" — depth, pressure, something welling up. I drench the canvas in it (coverage ≥62%) so a single electric-aqua \"LIVE IT\" can surface like a thing you can't hold under. One hue, one lit word, no hedging neutrals.\n\nLayout answers the owner's two standing notes directly. The header has been the recurring complaint, so I abandon top bars entirely: navigation moves to a genuine left spine — a fresh treatment against the last seven shells — with links reading vertically up the edge, and the signals move to a right margin column, leaving the center free for nothing but the phrase. And rather than feeling like a menu-picked \"layout,\" the Specimen here is dictated by the content: an interior imperative literally becomes the interior of the page, flanked by two thin margins of context. The Tigers' 2–11 loss is deliberately never lit — a blowout defeat gets muted tabular treatment in the margin, not the accent — keeping the aqua glow reserved for the one word that matters.",
+    "signalIntegration": "- **Where signal elements live** — RIGHT SIGNAL MARGIN (260px column), a vertical tabular stack of small labeled rows; the quote is the hero, so it lives center-stage, not here.\n- **Sports scores** — Tigers 2–11 loss styled as a demoted, muted row: label \"TIGERS · MLB\" in `#6F9497` smallcaps, score `2–11` in Manrope tabular-nums `#9FBEC0` (never lit — a loss doesn't get the accent). Golf \"3M OPEN · SCHEDULED\" as a quiet upcoming row.\n- **Quote display** — the quote IS the hero phrase. Attribution \"— KAMAL RAVIKANT\" set small-caps `0.14em` in `#9FBEC0` beneath the type block, bottom-left.\n- **Music** — \"ON ROTATION\" row: Wet Leg / Guided by Voices, `#E1F0F0`.\n- **Moon** — \"FIRST QUARTER · 61%\" row with a small aqua crescent tick.\n- **Sun / season** — \"JUL 22 · 14.3H LIGHT\" almanac row at the base of the margin.\n- **Holiday** — none today; omitted."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "teal": {
+          "50": "#E8F8F9",
+          "100": "#C6ECEE",
+          "200": "#97DBDE",
+          "300": "#5BC5CB",
+          "400": "#26ABB3",
+          "500": "#0E8F97",
+          "600": "#0B727A",
+          "700": "#0C5A60",
+          "800": "#0C464B",
+          "900": "#082F33"
+        },
+        "aqua": {
+          "50": "#E4FCF8",
+          "100": "#BEF7EF",
+          "200": "#86EFE1",
+          "300": "#5CEBDD",
+          "400": "#1FDDCB",
+          "500": "#12BAAA",
+          "600": "#0FA697",
+          "700": "#10786D",
+          "800": "#115E56",
+          "900": "#0A3D39"
+        },
+        "neutral": {
+          "50": "#F2FBFB",
+          "100": "#E1F0F0",
+          "200": "#C4DCDD",
+          "300": "#9FBEC0",
+          "400": "#6F9497",
+          "500": "#4E7275",
+          "600": "#385659",
+          "700": "#274143",
+          "800": "#182E30",
+          "900": "#0D1E20"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.teal.800}",
+          "_light": "{colors.neutral.50}"
+        },
+        "bgSpine": {
+          "base": "{colors.teal.900}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgCard": {
+          "base": "{colors.teal.700}",
+          "_light": "{colors.neutral.100}"
+        },
+        "text": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.teal.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.100}",
+          "_light": "{colors.teal.700}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.300}",
+          "_light": "{colors.neutral.500}"
+        },
+        "accent": {
+          "base": "{colors.aqua.400}",
+          "_light": "{colors.aqua.600}"
+        },
+        "accentGlow": {
+          "base": "rgba(31,221,203,0.45)",
+          "_light": "rgba(15,166,151,0.30)"
+        },
+        "border": {
+          "base": "{colors.teal.600}",
+          "_light": "{colors.neutral.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "4": "16px",
+      "6": "24px",
+      "8": "32px",
+      "12": "48px",
+      "16": "64px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.9",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.7"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0.005em",
+      "wide": "0.08em",
+      "wider": "0.14em",
+      "widest": "0.18em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "800"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 190,
+      "s": 78,
+      "l": 17,
+      "name": "deep well teal"
+    },
+    "secondary_accent": {
+      "h": 175,
+      "s": 82,
+      "l": 49,
+      "name": "electric aqua"
+    },
+    "neutral_family": {
+      "tinted_toward": "teal",
+      "name": "tidewater neutral"
+    },
+    "mood_word": "welling",
+    "color_story": "A phrase about what rises 'from within' is drenched in deep-water teal so one lit-aqua 'LIVE IT' can surface like something you can't hold under."
+  },
+  "shell": {
+    "nav": "left spine (72px vertical column, brand mark top, three rotated all-caps links reading up the spine)",
+    "footer": "right signal margin (260px vertical tabular signal column pinned full-height on the right edge)",
+    "brand_lockup": "mark-only-md",
+    "brand_color_mode": "single-color"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "REVISE",
+      "feedback": "REVISE\n\n- **Color contradiction**: Visual spec declares card/panel bg as `#0F565C`, but preset.ts defines `bgCard` as `teal.700` which resolves to `#0C5A60`. These don't match. Either add the correct teal value `#0F565C` to the teal palette and map `bgCard` to it, or rewrite the visual spec to say card/panel bg is `#0C5A60` (teal.700) to align with the preset. The spec is the source of truth, so update the preset.",
+      "ts": 1784717228603
+    }
+  ],
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

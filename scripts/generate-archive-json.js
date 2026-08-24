@@ -1,211 +1,114 @@
 #!/usr/bin/env node
 
 /**
- * Generate static JSON files for the archive feature.
+ * Project the archive records into the static JSON the SPA fetches.
  *
  * Produces:
- *   public/archive/index.json        — list of all archive entries
- *   public/archive/{date}/detail.json — per-date detail data
+ *   public/archive-data/index.json    — one light entry per archived day
+ *   public/archive-data/{date}.json   — that day's record, plus display extras
  *
- * Run as part of the build step so the SPA can fetch archive data
- * without server functions.
+ * This derives nothing. `archive/{date}/record.json` (#153) is the record; this
+ * only decides what a browser receives. Any date missing a record is rebuilt
+ * here rather than skipped, so a checkout that has never run the backfill still
+ * produces a complete archive.
+ *
+ * The files live under `/archive-data/` rather than inside `/archive/`, which is
+ * reserved for bytes that shipped on the day they are named after.
  */
 
-import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs'
-import { resolve, join } from 'node:path'
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { join, resolve } from 'node:path'
+import { anomaliesOf, buildRecord } from './utils/archive-record.js'
 import { readRatingForDate } from './utils/ratings.js'
 
 const ROOT = resolve(import.meta.dirname, '..')
-const ARCHIVE_PATH = resolve(ROOT, 'archive')
-const PUBLIC_ARCHIVE = resolve(ROOT, 'public', 'archive')
+const ARCHIVE_PATH = join(ROOT, 'archive')
+const PUBLIC_ARCHIVE = join(ROOT, 'public', 'archive')
+const OUT_DIR = join(ROOT, 'public', 'archive-data')
 
-function readSafe(p) {
-  return existsSync(p) ? readFileSync(p, 'utf8') : ''
+function archivedDates() {
+  if (!existsSync(ARCHIVE_PATH)) return []
+  return readdirSync(ARCHIVE_PATH, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(d.name))
+    .map((d) => d.name)
+    .sort()
+    .reverse()
 }
 
 /**
- * Read a build's cost.json. Returns null for the ~122 builds archived before
- * cost telemetry existed, and for anything unparseable — the archive must
- * keep rendering either way.
+ * Read the record the pipeline wrote. Rebuilding when it is absent keeps this
+ * script honest on a fresh clone; the log line says which happened.
+ * @param {string} date
+ * @returns {{record: object|null, rebuilt: boolean}}
  */
-function readCost(buildDir) {
-  if (!buildDir) return null
-  const p = join(buildDir, 'cost.json')
-  if (!existsSync(p)) return null
-  try {
-    const parsed = JSON.parse(readFileSync(p, 'utf8'))
-    return {
-      totalUsd: typeof parsed.total_usd === 'number' ? parsed.total_usd : null,
-      estimated: Boolean(parsed.estimated),
-      partial: Boolean(parsed.partial),
-      calls: typeof parsed.calls === 'number' ? parsed.calls : 0,
-      retries: typeof parsed.retries === 'number' ? parsed.retries : 0,
-      byAgent: Array.isArray(parsed.byAgent) ? parsed.byAgent : [],
-    }
-  } catch {
-    return null
-  }
-}
-
-function generateIndex() {
-  if (!existsSync(ARCHIVE_PATH)) return []
-
-  return readdirSync(ARCHIVE_PATH, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(d.name))
-    .map((d) => {
-      const dateDir = join(ARCHIVE_PATH, d.name)
-
-      const archetypePath = join(dateDir, 'archetype.txt')
-      const archetype = existsSync(archetypePath) ? readFileSync(archetypePath, 'utf8').trim() : ''
-
-      const builds = readdirSync(dateDir, { withFileTypes: true })
-        .filter((b) => b.isDirectory() && /^build-\d+$/.test(b.name))
-        .map((b) => b.name)
-        .sort()
-        .reverse()
-      const latestBuild = builds[0]
-      const buildId = latestBuild?.replace('build-', '') ?? ''
-
-      const briefPath = latestBuild
-        ? join(dateDir, latestBuild, 'brief.md')
-        : join(dateDir, 'brief.md')
-      if (!existsSync(briefPath)) return null
-      const content = readFileSync(briefPath, 'utf8')
-      const lines = content.split('\n')
-      const dateLine = lines.find((l) => l.startsWith('# '))
-      const briefLine = lines.find((l) => l.startsWith('**Design Brief:** '))
-      if (!dateLine || !briefLine) return null
-
-      let rationale = ''
-      const rationaleStart = lines.findIndex((l) => l.startsWith("## Claude's Rationale"))
-      const filesChangedStart = lines.findIndex((l) => l.startsWith('## Files Changed'))
-      if (rationaleStart !== -1 && filesChangedStart !== -1) {
-        rationale = lines
-          .slice(rationaleStart + 1, filesChangedStart)
-          .join('\n')
-          .trim()
-      } else if (rationaleStart !== -1) {
-        rationale = lines
-          .slice(rationaleStart + 1)
-          .join('\n')
-          .trim()
-      }
-
-      const filesChanged = []
-      if (filesChangedStart !== -1) {
-        for (let i = filesChangedStart + 1; i < lines.length; i++) {
-          const line = lines[i].trim()
-          if (line.startsWith('- ')) filesChanged.push(line.slice(2).trim())
-        }
-      }
-
-      return {
-        date: dateLine.slice(2).trim(),
-        brief: briefLine.slice('**Design Brief:** '.length).trim(),
-        rationale,
-        filesChanged,
-        archetype,
-        buildId,
-        // Index carries the headline number only; the per-agent breakdown
-        // lives in detail.json so _data.json stays small.
-        cost: (() => {
-          const c = readCost(latestBuild ? join(dateDir, latestBuild) : null)
-          return c ? { totalUsd: c.totalUsd, estimated: c.estimated, retries: c.retries } : null
-        })(),
-        rating: readRatingForDate(ARCHIVE_PATH, d.name),
-      }
-    })
-    .filter((e) => e !== null)
-    .sort((a, b) => b.date.localeCompare(a.date))
-}
-
-function generateDetail(date) {
-  const dateDir = join(ARCHIVE_PATH, date)
-  if (!existsSync(dateDir)) return null
-
-  const builds = readdirSync(dateDir, { withFileTypes: true })
-    .filter((b) => b.isDirectory() && /^build-\d+$/.test(b.name))
-    .map((b) => b.name)
-    .sort()
-    .reverse()
-  const latestBuild = builds[0]
-  const buildDir = latestBuild ? join(dateDir, latestBuild) : null
-  const buildId = latestBuild?.replace('build-', '') ?? ''
-
-  const briefContent = buildDir
-    ? readSafe(join(buildDir, 'brief.md'))
-    : readSafe(join(dateDir, 'brief.md'))
-
-  const signalsBrief = buildDir ? readSafe(join(buildDir, 'signals-brief.md')) : ''
-  const preset = buildDir ? readSafe(join(buildDir, 'preset.ts')) : ''
-  const trace = buildDir ? readSafe(join(buildDir, 'trace.json')) : ''
-  const hasScreenshot = existsSync(join(PUBLIC_ARCHIVE, `${date}.png`))
-  const archetype = readSafe(join(dateDir, 'archetype.txt')).trim()
-
-  const lines = briefContent.split('\n')
-  const briefLine = lines.find((l) => l.startsWith('**Design Brief:** '))
-  const brief = briefLine?.slice('**Design Brief:** '.length).trim() ?? ''
-
-  let rationale = ''
-  const rationaleStart = lines.findIndex((l) => l.startsWith("## Claude's Rationale"))
-  const filesChangedStart = lines.findIndex((l) => l.startsWith('## Files Changed'))
-  if (rationaleStart !== -1 && filesChangedStart !== -1) {
-    rationale = lines
-      .slice(rationaleStart + 1, filesChangedStart)
-      .join('\n')
-      .trim()
-  } else if (rationaleStart !== -1) {
-    rationale = lines
-      .slice(rationaleStart + 1)
-      .join('\n')
-      .trim()
-  }
-
-  const filesChanged = []
-  if (filesChangedStart !== -1) {
-    for (let i = filesChangedStart + 1; i < lines.length; i++) {
-      const line = lines[i].trim()
-      if (line.startsWith('- ')) filesChanged.push(line.slice(2).trim())
+function loadRecord(date) {
+  const path = join(ARCHIVE_PATH, date, 'record.json')
+  if (existsSync(path)) {
+    try {
+      return { record: JSON.parse(readFileSync(path, 'utf8')), rebuilt: false }
+    } catch {
+      /* fall through to a rebuild */
     }
   }
+  return { record: buildRecord(date, { archiveDir: ARCHIVE_PATH }), rebuilt: true }
+}
 
+/**
+ * The calendar and the dev panel both read the index, so it carries only what a
+ * list needs: enough to label a day and colour a cell.
+ */
+function indexEntry(record, hasScreenshot) {
   return {
-    date,
-    archetype,
-    brief,
-    signalsBrief,
-    preset,
-    rationale,
-    filesChanged,
+    date: record.date,
+    era: record.era,
+    brief: record.brief,
+    legacyArchetype: record.legacyArchetype,
+    chassis: record.chassis,
+    buildId: record.buildId,
+    attempts: record.attempts,
+    moodWord: record.colorScheme?.mood_word ?? null,
+    primaryHue: record.colorScheme?.primary_hue ?? null,
     hasScreenshot,
-    buildId,
-    trace,
-    cost: readCost(buildDir),
-    rating: readRatingForDate(ARCHIVE_PATH, date),
+    cost: record.cost
+      ? {
+          totalUsd: record.cost.total_usd,
+          estimated: record.cost.estimated,
+          retries: record.cost.retries,
+        }
+      : null,
+    rating: readRatingForDate(ARCHIVE_PATH, record.date),
   }
 }
 
-// Main
-console.log('[generate-archive-json] Generating static archive data...')
+console.log('[generate-archive-json] Projecting archive records...')
 
-const entries = generateIndex()
-console.log(`  found ${entries.length} archive entries`)
+const dates = archivedDates()
+mkdirSync(OUT_DIR, { recursive: true })
 
-// Write index.json
-mkdirSync(PUBLIC_ARCHIVE, { recursive: true })
-writeFileSync(join(PUBLIC_ARCHIVE, '_data.json'), JSON.stringify(entries), 'utf8')
-console.log('  wrote public/archive/_data.json')
+const index = []
+let rebuilt = 0
+const anomalous = []
 
-// Write per-date detail.json
-let detailCount = 0
-for (const entry of entries) {
-  const detail = generateDetail(entry.date)
-  if (detail) {
-    const dateDir = join(PUBLIC_ARCHIVE, entry.date)
-    mkdirSync(dateDir, { recursive: true })
-    writeFileSync(join(dateDir, '_detail.json'), JSON.stringify(detail), 'utf8')
-    detailCount++
+for (const date of dates) {
+  const { record, rebuilt: wasRebuilt } = loadRecord(date)
+  if (!record) continue
+  if (wasRebuilt) {
+    rebuilt++
+    for (const anomaly of anomaliesOf(record)) anomalous.push(`${date}: ${anomaly}`)
   }
+
+  // The screenshot is still written into the preserved namespace; #154 moves it.
+  const hasScreenshot = existsSync(join(PUBLIC_ARCHIVE, `${date}.png`))
+
+  writeFileSync(join(OUT_DIR, `${date}.json`), JSON.stringify({ ...record, hasScreenshot }), 'utf8')
+  index.push(indexEntry(record, hasScreenshot))
 }
-console.log(`  wrote ${detailCount} detail.json files`)
+
+writeFileSync(join(OUT_DIR, 'index.json'), JSON.stringify(index), 'utf8')
+
+console.log(`  wrote public/archive-data/index.json (${index.length} entries)`)
+console.log(
+  `  wrote ${index.length} per-date files${rebuilt ? `, ${rebuilt} rebuilt from artifacts` : ''}`
+)
+for (const anomaly of anomalous) console.warn(`  record anomaly — ${anomaly}`)
 console.log('[generate-archive-json] Done')

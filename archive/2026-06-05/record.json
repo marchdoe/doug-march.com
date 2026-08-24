@@ -1,0 +1,414 @@
+{
+  "date": "2026-06-05",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.190Z",
+  "buildId": "1780658263464",
+  "attempts": 1,
+  "brief": "Big Shoulders instruction at 96px on forest-teal void — \"let go\" declared in four lines of near-white condensed weight, the scroll itself the argument, every downstream fold earned by releasing the one before it.",
+  "rationale": "The hero phrase arrived from `signals.quote` with its argument already complete: a portfolio that releases yesterday's entire visual identity to construct today's is the most literal possible enactment of \"you have to let go at some point in order to move forward.\" The phrase doesn't describe the portfolio — it explains its mechanism. That self-referential precision, combined with Friday's end-of-week register (something is about to be released) and 14.6 hours of early-June light, made this the undeniable choice over the Awwwards headlines and the quantum gravity story from Hacker News.\n\nThe Scroll archetype followed without negotiation. Scrolling forward through a page — physically releasing each fold as you advance — IS the phrase's argument made structural. A Poster would put the quote on a pedestal and let it rest on its own authority. A Specimen would make it a typography exercise. Scroll makes the reader enact the instruction before they've finished reading it: the first fold is the declaration, and the only way to see the work is to let go of it and move. Big Shoulders Display at weight 900 was chosen for its physical, declarative register — condensed industrial type for an instruction about physical movement, not the warmth-for-warmth's-sake of Bricolage. At `clamp(44px, 6.5vw, 96px)` it hits marquee scale on 1440px without overwhelming the fold.\n\nDeep forest teal at H:155° is the only hue family completely absent from the past seven palettes (38°, 252°, 200°, 305°, 78°, 3°, 115°) and sits squarely in the mandate's 145°–170° target — but more importantly, it is genuinely the correct color for this phrase on this day. Dark standing water before you cross it: `#060E09` as page background is almost black but unmistakably tinted toward life, toward growth, toward the particular green of early-summer water. The vivid teal accent `#4EC49A` surfaces at ~10.6:1 contrast — light breaking through canopy — giving every signal, link, and label a luminous presence that rewards forward motion through the page.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Scroll",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "21 Hrs On The Moon",
+          "description": "To mark the recent Artemis Moon Mission and honour the legacy of the first moon landing in 1969, we celebrate the experiments carried out in those historic...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0d7b8f419a3938435907.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAJulBJREFUeAHsvWmbXLeRJooqFjeRlERJFLVbsiTbsiXb8riX6Z62u9sz88ydb/f7PM/9MH9k/tD8gZ7rp6/b7rblRbJky63d2khKFPedrO0mTtUposBAIFbgJJmvVMzMk0BE...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "THE RED",
+          "description": "This is THE RED. Built to be bold. A historic landmark of character and color that has defined Chicago’s skyline since 1972.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1db853d921f825300359.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAFkXJJREFUeAHs/VeTbNmV54ktj4gbWssr8qbWSAAJUUB1tZpuMw7NSJqNGT8EX/kx+MxXfgPS+DrNmeZ0oapRlUBBFERKZCKBFFeE1lr5rP/xszx2nHCP8IgbwsPv72d2wj1c...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "Education Foundation of AACPS",
+          "description": "The Education Foundation's new website helps them connect with community members by clearly expressing the organization’s mission, investments, and key...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a0620e924ddf573031803.jpg",
+          "screenshot_b64": "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAABLAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAADAgICAgIDAgIDBQMDAwUFBAMDBAUGBQUFBQUGCAYHBwcHBggICQoKCgkIDAwMDAwMDg4ODg4QEBAQEBAQEBAQAQMEBAYGBgwICAwSDgwOEhQQEBAQFBEQEBAQEBEREBAQEBAQERAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCASwBkADAREA...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Friday",
+      "is_weekend": false,
+      "day_index": 5
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/chopratejas",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "NousResearch/hermes-agent/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/affaan-m",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "PaddlePaddle/PaddleOCR/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "github/spec-kit/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "the Memorial Tournament pres. by Workday",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "J.J. Spaun",
+          "position": "1",
+          "score": "-5"
+        },
+        {
+          "name": "Wyndham Clark",
+          "position": "2",
+          "score": "-5"
+        },
+        {
+          "name": "Tommy Fleetwood",
+          "position": "3",
+          "score": "-5"
+        },
+        {
+          "name": "Ryan Gerard",
+          "position": "4",
+          "score": "-5"
+        },
+        {
+          "name": "Nick Taylor",
+          "position": "5",
+          "score": "-4"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Changing How We Develop Ladybird",
+          "url": "https://ladybird.org/posts/changing-how-we-develop-ladybird/",
+          "score": 332,
+          "by": "EdwinHoksberg"
+        },
+        {
+          "title": "Tracing a powerful GNSS interference source over Europe",
+          "url": "https://arxiv.org/abs/2606.03673",
+          "score": 71,
+          "by": "mimorigasaka"
+        },
+        {
+          "title": "Entanglement Builds Space-Time. Now \"Magic\" Gives It Gravity",
+          "url": "https://www.quantamagazine.org/entanglement-builds-space-time-now-magic-gives-it-gravity-20260603/",
+          "score": 26,
+          "by": "rbanffy"
+        },
+        {
+          "title": "databow: a Rust CLI to query any database with an ADBC driver",
+          "url": "https://columnar.tech/blog/introducing-databow//",
+          "score": 32,
+          "by": "hckshr"
+        },
+        {
+          "title": "Meta enables ADB on deprecated Portal devices [video]",
+          "url": "https://fb.watch/HxPu0fSyeH/",
+          "score": 233,
+          "by": "jenders"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "last quarter",
+      "illumination": 0.673,
+      "days_into_cycle": 20.49
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "Tobin Sprout",
+        "Radiohead"
+      ]
+    },
+    "quote": {
+      "text": "Getting over a painful experience is much like crossing monkey bars. You have to let go at some point in order to move forward.",
+      "author": "Unknown"
+    },
+    "season": {
+      "season": "summer",
+      "month": 6,
+      "day": 5,
+      "day_of_year": 156,
+      "month_name": "June"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:50",
+      "sunset": "19:27",
+      "daylight_hours": 14.6
+    },
+    "date": "2026-06-05"
+  },
+  "hero": {
+    "copy": "You have to let go at some point in order to move forward.",
+    "rationale": "The phrase arrives from today's `signals.quote` — unknown source, but the precision is earned. This portfolio redesigns itself every morning by releasing yesterday's decisions entirely; the phrase is not illustrating the portfolio, it IS the portfolio's operating principle stated plainly. Friday carries the weight: the last day of the work week before something is let go of and something else begins. The phrase earns marquee scale not from authorial authority but from the physical specificity of what it demands — and from the slight vertigo of reading it on a page that's already proving it true.",
+    "source": null
+  },
+  "chassis": "big-shoulders-atkinson",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue:** H:155° — forest teal-green. Not the reflex cyan (180°) or lime (120°), but the specific dark-water green of June forest floors. In the mandate target of 145°–170° and completely absent from the last seven palettes. The drench strategy: the entire page lives inside this hue family at varying depth.\n\n**Neutral palette** (tinted H:155°, chroma ~0.01):\n- 50: `#F2FAF5`\n- 100: `#E1F0E6`\n- 200: `#C2D8C9`\n- 300: `#98B8A0`\n- 400: `#6A9474`\n- 500: `#4A7053`\n- 600: `#2E5038`\n- 700: `#1A3321`\n- 800: `#0D1F12`\n- 900: `#060E09`\n\n**Accent color** (teal, primary):\n- Light: `#8CD9BA` (teal.200)\n- Default: `#4EC49A` (teal.300) — contrast ~10.6:1 on page bg\n- Dark: `#006D4D` (teal.600)\n- Glow: `rgba(78, 196, 154, 0.12)`\n\n**Secondary accent:** None — one committed hue family is the voice today.\n\n**Background:**\n- Page bg: `#060E09` (neutral.900) — near-black, teal-tinted\n- Card bg: `#0D1F12` (neutral.800)\n- Sidebar/elevated surface: `#1A3321` (neutral.700)\n\n**Text colors:**\n- Primary text: `#F2FAF5` (neutral.50) — contrast ~19:1 on page bg ✓\n- Secondary text: `#98B8A0` (neutral.300) — ~8:1 ✓\n- Muted text: `#6A9474` (neutral.400) — ~5.9:1 ✓ passes AA body\n\n---\n\n### 2. Typography (chassis-derived)\n\n**Hero phrase rendering:** `display` token (Big Shoulders Display), weight 900, `clamp(44px, 6.5vw, 96px)`. Left-aligned within the 85vw column. The phrase wraps to 3–4 lines at desktop scale — intentional. Each line break is a breath, a pause before the next section of the instruction. Letter-spacing: `–0.03em`. The condensed geometry of Big Shoulders at weight 900 gives the phrase the weight of a printed directive — not inspirational-poster warm, but physical and declarative.\n\n**Attribution line:** Atkinson Hyperlegible, 11px, all-caps, letter-spacing `0.14em`, `neutral.400` — \"— UNKNOWN\" sits 28px below the final word of the phrase, flush-left.\n\n**Section headings:** Big Shoulders Display, weight 800, `clamp(28px, 3.5vw, 52px)`, letter-spacing `-0.02em`.\n\n**Body text:** Atkinson Hyperlegible, 16px, weight 400, line-height 1.6 — accessibility-committed, no smaller than 16px anywhere body copy appears.\n\n**Metadata / labels:** Atkinson, 11–12px, all-caps, letter-spacing `0.12em`, `neutral.400`.\n\n**Line heights:**\n- Hero phrase: `0.92`\n- Section headings: `1.0`\n- Body: `1.6` (light-on-dark compensation: +0.1 over typical 1.5)\n- Captions: `1.4`\n\n**Letter spacings:**\n- Hero: `–0.03em`\n- All-caps labels: `0.12–0.14em`\n- Body: `0em`\n\n---\n\n### 3. Layout Specification\n\n**Archetype:** Scroll. The single committed column IS the argument: you physically scroll forward through the page, releasing each fold as you advance, the archetype enacting the phrase before the phrase is even read. A Poster would let the quote rest on its own authority. Scroll makes you earn the forward motion.\n\n**CSS structure (outer shell):**\n```css\n.scroll-root {\n  width: 100%;\n  max-width: none;\n}\n.scroll-column {\n  width: 85vw;\n  margin: 0 auto;\n}\n```\n\n**Major dimensions:**\n\n| Zone | Dimension |\n|---|---|\n| Nav bar | Fixed, `height: 56px`, `position: fixed; top: 0; left: 0; right: 0; z-index: 100` |\n| Hero fold | `min-height: 100vh`, phrase sits at `padding-top: 30vh` |\n| Work fold | `min-height: 95vh`, `padding: 96px 0` |\n| About fold | `min-height: 80vh`, `padding: 80px 0` |\n| Signals footer | `auto`, `padding: 64px 0` |\n| Max content width | `none` — column stays at 85vw with viewport-relative padding |\n| Side padding | `padding: 0 7.5vw` (effective column inset on each side) |\n\n**Nav placement:** Fixed top bar, `background: rgba(6, 14, 9, 0.92)`, `backdrop-filter: blur(12px)`. Left: \"Doug March\" in Big Shoulders Display 18px weight 700. Right: \"Work · About\" in Atkinson 13px all-caps letter-spacing 0.1em, `neutral.300`. On scroll, nav bg transitions from transparent → `rgba(6,14,9,0.92)` over 120px.\n\n**Hero phrase grid zone:** Single column, rows 1–4 of natural flow. The phrase begins at `padding-top: calc(56px + 28vh)` — approximately 28% down from top edge of viewport, putting the phrase slightly above vertical center (golden-ratio-ish). At 1440×900:\n- Column width: ~1224px\n- Phrase at 96px Big Shoulders condensed wraps to 3 lines, total height ~265px\n- Phrase bottom edge sits at approx 65vh\n- Attribution sits at ~70vh\n- Scroll cue (↓ in teal.300) sits at ~88vh\n\n---\n\n### 4. Component Character\n\n**Border radius:**\n- Cards: `4px` (md) — nearly sharp, not rounded-friendly\n- Buttons: `2px` (sm) — almost flush with the grid\n- Tags/chips: `2px`\n- Full pill: reserved for status dots only\n\n**Border treatment:** Thin, `1px solid {border}` — neutral.700 in dark mode, very subtle. Cards in the Work fold use left-border accent: `3px solid {accent}` (teal.300) on hover.\n\n**Shadow:** None in dark mode — depth through surface lightness. Elevated surfaces (modals, tooltips) use `background: neutral.700` rather than shadow. Cards in work grid: on hover, `background` shifts from neutral.800 → neutral.700 (one step lighter), with `border-left: 3px solid teal.300`.\n\n**Density:** Spacious in the hero fold; snug in the work grid (compact project rows at ~72px height each, ruled with 1px neutral.700 separators).\n\n**Interactive states:**\n- Links: `color: teal.300` → `teal.200` on hover, no underline except body prose\n- Work cards: background elevation + left-border accent on hover, `transition: all 150ms ease`\n- Nav links: `neutral.300` → `neutral.50` on hover\n\n---\n\n### 5. Signal Integration\n\n**Signals location:** A horizontal strip at absolute bottom of the hero fold (above fold break, ~88–96vh range), and a dedicated Signals section in the footer fold. Two tiers.\n\n**Hero fold signal strip** (positioned at bottom of first fold, full column width):\n- Flex row, `gap: 32px`, `align-items: center`\n- Each signal: Atkinson 11px all-caps, letter-spacing 0.12em, `neutral.400`\n- Items: `MOON ◑ 67%` · `MEMORIAL TOURNAMENT` · `JUNE 5 · FRIDAY` · `14.6H DAYLIGHT`\n\n**Golf tournament display** (signals footer fold):\n- \"THE MEMORIAL TOURNAMENT\" in Big Shoulders Display 22px, weight 700, `teal.300`\n- Four-way tie subheading: \"J.J. SPAUN · WYNDHAM CLARK · TOMMY FLEETWOOD · RYAN GERARD — ALL –5\" in Atkinson 13px, `neutral.300`, letter-spacing 0.08em\n- Presented as a single ruled row, not a card\n\n**Quote display:** The `signals.quote` is the hero phrase — it IS the page. No secondary blockquote treatment. The attribution \"— Unknown\" below the phrase is its only formal acknowledgment.\n\n**Awwwards signal:** \"21 HRS ON THE MOON\" as a labeled sidebar note in the footer signals section — label: \"AWWWARDS · 2026\", value: \"21 Hrs On The Moon · Artemis Mission\", Atkinson 12px, `neutral.400`. Sits adjacent to the golf row.\n\n**HN signals:** In footer signals fold, three items in a ruled mini-list:\n- \"Changing How We Develop Ladybird\" ↑332\n- \"Meta ADB on deprecated Portal devices\" ↑233\n- \"Entanglement Builds Space-Time. Now 'Magic' Gives It Gravity.\" ↑26 — this one gets `teal.300` for the fragment \"Magic\" as a small nod to its strangeness.\n\n**Music signal:** \"GUIDED BY VOICES · TOBIN SPROUT · RADIOHEAD\" as a footer metadata line, Atkinson 10px all-caps, `neutral.500`, letter-spacing 0.14em.\n\n**Lunar phase:** `◑ LAST QUARTER · 67.3%` inline in the hero signal strip (see above). In footer, a larger treatment: `◑` at 18px `teal.300`, with \"LAST QUARTER\" label.",
+    "selfCheck": "1. Hero quotability: Yes — the phrase demands a response from the reader and applies directly to the portfolio's operational logic (daily release); it would be screenshotted for the sentiment, not as navigation copy.\n2. Because-of chain: Yes — phrase demands physical, forward-motion energy → Scroll (scrolling forward enacts the instruction) → Big Shoulders at 900 weight (physical, declarative, not ornamental) → deep forest teal drench (depth before crossing, suspension before release) → single-column 100vh opening fold with no competing surface.\n3. Render feasibility: Yes — Big Shoulders Display condensed at clamp(44px, 6.5vw, 96px) on an 85vw / ~1224px column at 1440px wraps the 60-char phrase to 3–4 lines at ~265px total height, fitting well within the 900px viewport with 28vh top offset.",
+    "rationale": "The hero phrase arrived from `signals.quote` with its argument already complete: a portfolio that releases yesterday's entire visual identity to construct today's is the most literal possible enactment of \"you have to let go at some point in order to move forward.\" The phrase doesn't describe the portfolio — it explains its mechanism. That self-referential precision, combined with Friday's end-of-week register (something is about to be released) and 14.6 hours of early-June light, made this the undeniable choice over the Awwwards headlines and the quantum gravity story from Hacker News.\n\nThe Scroll archetype followed without negotiation. Scrolling forward through a page — physically releasing each fold as you advance — IS the phrase's argument made structural. A Poster would put the quote on a pedestal and let it rest on its own authority. A Specimen would make it a typography exercise. Scroll makes the reader enact the instruction before they've finished reading it: the first fold is the declaration, and the only way to see the work is to let go of it and move. Big Shoulders Display at weight 900 was chosen for its physical, declarative register — condensed industrial type for an instruction about physical movement, not the warmth-for-warmth's-sake of Bricolage. At `clamp(44px, 6.5vw, 96px)` it hits marquee scale on 1440px without overwhelming the fold.\n\nDeep forest teal at H:155° is the only hue family completely absent from the past seven palettes (38°, 252°, 200°, 305°, 78°, 3°, 115°) and sits squarely in the mandate's 145°–170° target — but more importantly, it is genuinely the correct color for this phrase on this day. Dark standing water before you cross it: `#060E09` as page background is almost black but unmistakably tinted toward life, toward growth, toward the particular green of early-summer water. The vivid teal accent `#4EC49A` surfaces at ~10.6:1 contrast — light breaking through canopy — giving every signal, link, and label a luminous presence that rewards forward motion through the page.",
+    "signalIntegration": "**Signals location:** A horizontal strip at absolute bottom of the hero fold (above fold break, ~88–96vh range), and a dedicated Signals section in the footer fold. Two tiers.\n\n**Hero fold signal strip** (positioned at bottom of first fold, full column width):\n- Flex row, `gap: 32px`, `align-items: center`\n- Each signal: Atkinson 11px all-caps, letter-spacing 0.12em, `neutral.400`\n- Items: `MOON ◑ 67%` · `MEMORIAL TOURNAMENT` · `JUNE 5 · FRIDAY` · `14.6H DAYLIGHT`\n\n**Golf tournament display** (signals footer fold):\n- \"THE MEMORIAL TOURNAMENT\" in Big Shoulders Display 22px, weight 700, `teal.300`\n- Four-way tie subheading: \"J.J. SPAUN · WYNDHAM CLARK · TOMMY FLEETWOOD · RYAN GERARD — ALL –5\" in Atkinson 13px, `neutral.300`, letter-spacing 0.08em\n- Presented as a single ruled row, not a card\n\n**Quote display:** The `signals.quote` is the hero phrase — it IS the page. No secondary blockquote treatment. The attribution \"— Unknown\" below the phrase is its only formal acknowledgment.\n\n**Awwwards signal:** \"21 HRS ON THE MOON\" as a labeled sidebar note in the footer signals section — label: \"AWWWARDS · 2026\", value: \"21 Hrs On The Moon · Artemis Mission\", Atkinson 12px, `neutral.400`. Sits adjacent to the golf row.\n\n**HN signals:** In footer signals fold, three items in a ruled mini-list:\n- \"Changing How We Develop Ladybird\" ↑332\n- \"Meta ADB on deprecated Portal devices\" ↑233\n- \"Entanglement Builds Space-Time. Now 'Magic' Gives It Gravity.\" ↑26 — this one gets `teal.300` for the fragment \"Magic\" as a small nod to its strangeness.\n\n**Music signal:** \"GUIDED BY VOICES · TOBIN SPROUT · RADIOHEAD\" as a footer metadata line, Atkinson 10px all-caps, `neutral.500`, letter-spacing 0.14em.\n\n**Lunar phase:** `◑ LAST QUARTER · 67.3%` inline in the hero signal strip (see above). In footer, a larger treatment: `◑` at 18px `teal.300`, with \"LAST QUARTER\" label."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "teal": {
+          "50": "#E8FAF2",
+          "100": "#C5F0DD",
+          "200": "#8CD9BA",
+          "300": "#4EC49A",
+          "400": "#14A87C",
+          "500": "#008A65",
+          "600": "#006D4D",
+          "700": "#004F36",
+          "800": "#003224",
+          "900": "#001814"
+        },
+        "neutral": {
+          "50": "#F2FAF5",
+          "100": "#E1F0E6",
+          "200": "#C2D8C9",
+          "300": "#98B8A0",
+          "400": "#6A9474",
+          "500": "#4A7053",
+          "600": "#2E5038",
+          "700": "#1A3321",
+          "800": "#0D1F12",
+          "900": "#060E09"
+        },
+        "mint": {
+          "50": "#ECFFF5",
+          "100": "#C3FFDD",
+          "200": "#82FFBB",
+          "300": "#38F094",
+          "400": "#00D972",
+          "500": "#00B85A",
+          "600": "#009044",
+          "700": "#006830",
+          "800": "#00421E",
+          "900": "#001F0D"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.50}"
+        },
+        "bgCard": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgElevated": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "bgNav": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.50}"
+        },
+        "text": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.neutral.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.300}",
+          "_light": "{colors.neutral.600}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.400}",
+          "_light": "{colors.neutral.500}"
+        },
+        "textDisabled": {
+          "base": "{colors.neutral.600}",
+          "_light": "{colors.neutral.300}"
+        },
+        "accent": {
+          "base": "{colors.teal.300}",
+          "_light": "{colors.teal.600}"
+        },
+        "accentLight": {
+          "base": "{colors.teal.200}",
+          "_light": "{colors.teal.500}"
+        },
+        "accentDark": {
+          "base": "{colors.teal.600}",
+          "_light": "{colors.teal.800}"
+        },
+        "accentGlow": {
+          "base": "{colors.teal.800}",
+          "_light": "{colors.teal.100}"
+        },
+        "accentVivid": {
+          "base": "{colors.mint.300}",
+          "_light": "{colors.teal.500}"
+        },
+        "border": {
+          "base": "{colors.neutral.700}",
+          "_light": "{colors.neutral.200}"
+        },
+        "borderSubtle": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.100}"
+        },
+        "borderAccent": {
+          "base": "{colors.teal.700}",
+          "_light": "{colors.teal.200}"
+        },
+        "heroText": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.neutral.900}"
+        },
+        "heroAccent": {
+          "base": "{colors.teal.300}",
+          "_light": "{colors.teal.500}"
+        },
+        "signalLabel": {
+          "base": "{colors.neutral.400}",
+          "_light": "{colors.neutral.500}"
+        },
+        "signalValue": {
+          "base": "{colors.neutral.300}",
+          "_light": "{colors.neutral.700}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "24px",
+      "6": "32px",
+      "7": "48px",
+      "8": "64px",
+      "9": "96px",
+      "10": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.9",
+      "snug": "1.1",
+      "normal": "1.6",
+      "loose": "1.85"
+    },
+    "letterSpacings": {
+      "tight": "-0.04em",
+      "snug": "-0.02em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.10em",
+      "widest": "0.16em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700",
+      "black": "900"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 155,
+      "s": 72,
+      "l": 38,
+      "name": "forest teal"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "teal-green",
+      "name": "forest neutral"
+    },
+    "mood_word": "release",
+    "color_story": "Deep forest teal — the dark standing-water color of depth before you cross it, vivid teal surfacing as accent like light breaking through canopy: a palette that holds the moment of suspension just before letting go."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

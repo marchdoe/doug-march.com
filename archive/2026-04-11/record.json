@@ -1,0 +1,385 @@
+{
+  "date": "2026-04-11",
+  "era": "traced",
+  "generatedAt": "2026-08-24T15:34:16.142Z",
+  "buildId": "1775903640160",
+  "attempts": 1,
+  "brief": "Pre-dawn indigo holds the cool sky of H:218° while rust and gold trace the horizon beginning to catch fire — a Saturday page that breathes like someone scrolling before sunrise, precise in its measurements but leaving the windows open.",
+  "rationale": "This palette is built on H:218° — a pre-dawn indigo sky, cooler and higher than any morning teal, chosen to describe the sky itself rather than light landing on surfaces. The rust accent (H:15°) provides the warm horizon tension, while pale gold (H:43°) is reserved for the three specified uses: leaderboard rank, quote border, and nav indicator. Space Grotesk's angular precision carries Radiohead's compressed geometry while Work Sans breathes with My Morning Jacket's organic warmth. The Scroll archetype governs all spacing — 96px section beats, 720px max content width, generous vertical breathing room that rewards unhurried discovery rather than scanning.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/routes/__root.tsx",
+    "app/components/Layout.tsx",
+    "app/components/Sidebar.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Scroll",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Not Worth the Gamble",
+          "description": "An integrated digital campaign exposing illegal gambling risks through cinematic storytelling, educating communities and driving awareness across British...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69caad027c47b296567479.jpg"
+        },
+        {
+          "title": "The Cube",
+          "description": "The Cube is a multi-functional venue located in Copenhagen, Denmark. It works as a flexible space for events, workshops, studio productions, and product...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69caa2ed308a1315623251.jpg"
+        },
+        {
+          "title": "Home of Ambrose",
+          "description": "Web design for Home of Ambrose, a Madrid-based project celebrating timeless living through curated, design-led homes shaped by narrative, detail, and...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/03/69c538044c78b578228067.jpg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Saturday",
+      "is_weekend": true,
+      "day_index": 6
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "microsoft/markitdown/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "coleam00/Archon/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "NousResearch/hermes-agent/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "rowboatlabs/rowboat/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "multica-ai/multica/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Masters Tournament",
+      "status": "In Progress",
+      "leaders": [
+        {
+          "name": "Rory McIlroy",
+          "position": "1",
+          "score": "-12"
+        },
+        {
+          "name": "Patrick Reed",
+          "position": "2",
+          "score": "-6"
+        },
+        {
+          "name": "Sam Burns",
+          "position": "3",
+          "score": "-6"
+        },
+        {
+          "name": "Tommy Fleetwood",
+          "position": "4",
+          "score": "-5"
+        },
+        {
+          "name": "Justin Rose",
+          "position": "5",
+          "score": "-5"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Filing the corners off my MacBooks",
+          "url": "https://kentwalters.com/posts/corners/",
+          "score": 814,
+          "by": "normanvalentine"
+        },
+        {
+          "title": "Optimal Strategy for Connect 4",
+          "url": "https://2swap.github.io/WeakC4/explanation/",
+          "score": 36,
+          "by": "marvinborner"
+        },
+        {
+          "title": "Starfling: A one-tap endless orbital slingshot game in a single HTML file",
+          "url": "https://playstarfling.com",
+          "score": 175,
+          "by": "iceberger2001"
+        },
+        {
+          "title": "1D Chess",
+          "url": "https://rowan441.github.io/1dchess/chess.html",
+          "score": 817,
+          "by": "burnt-resistor"
+        },
+        {
+          "title": "Artemis II safely splashes down",
+          "url": "https://www.cbsnews.com/live-updates/artemis-ii-splashdown-return/",
+          "score": 898,
+          "by": "areoform"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "waning crescent",
+      "illumination": 0.259,
+      "days_into_cycle": 24.51
+    },
+    "music": {
+      "bands": [
+        "Radiohead",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "When you are able to employ your will always for constructive purposes, you become the controller of your destiny.",
+      "author": "Paramahansa Yogananda"
+    },
+    "season": {
+      "season": "spring",
+      "month": 4,
+      "day": 11,
+      "day_of_year": 101,
+      "month_name": "April"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": "2026-04-10T23:00Z",
+          "result": "win",
+          "score": "118-100"
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-04-10T22:40Z",
+          "result": "win",
+          "score": "2-0"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:45",
+      "sunset": "18:37",
+      "daylight_hours": 12.9
+    },
+    "date": "2026-04-11"
+  },
+  "hero": {
+    "copy": null,
+    "rationale": null,
+    "source": null
+  },
+  "chassis": null,
+  "adBrief": {
+    "mood": "Spring Saturday afternoon energy — open-ended, spacious, slightly introspective. There's a quiet momentum in the air: the Masters unfolds, the Pistons and Tigers both won yesterday, and HackerNews is buzzing with playful constraint-breaking (1D Chess, filing MacBook corners, single-HTML games). But the signal influence is moderate, so the design shouldn't feel driven by any single event. Instead, hold a gentle tension between **restless curiosity** (the tech/game-breaking headlines) and **meditative spaciousness** (waning crescent, spring morning light, weekend). Let the page breathe like someone scrolling on Saturday morning — purposeful but unhurried.\n\n---",
+    "compositionDirection": "**Scroll** — with **Specimen** micro-moments.\n\nA Scroll archetype respects the weekend's relaxed pacing and the moderate signal influence (nothing demanding a poster's urgency or a Broadsheet's structured hierarchy). But today's HackerNews dominates the cultural temperature — playful technical explorations that reward discovery and detail. Embed small **Specimen moments** (isolated, zoomed treatments) for the most resonant signals: the Masters leaderboard as a tight, vertical specimen; the quote as a breathing anchor. The primary motion is vertical, generous, and inviting of the eye's wandering.\n\n---",
+    "typographyDirection": "**Generous line-height, moderate boldness.** Spacing should feel unhurried — letterforms relaxed but not sloppy. Headings should whisper rather than shout; body copy should be inviting to read at length. The music cue (Radiohead + My Morning Jacket) suggests precision within warmth — so maintain tight letter-spacing in headlines (Radiohead's angular DNA) but pair it with open word-spacing and generous leading so the overall effect is **precise but breathing**, not cramped. Hierarchy should be felt through scale and weight, not through contrast alone.\n\n---",
+    "signalIntegration": "- **Masters Tournament (Rory McIlroy -12)** → Vertical leaderboard specimen, positioned as a quiet authority. McIlroy's lead is substantial enough to feel like narrative momentum, not noise. Render as a minimal three-line ranking (1st place, 2nd place, gap). Tone: measured competition, not play-by-play excitement.\n\n- **Detroit Pistons + Tigers wins** → Inline scoreline callouts, brief and factual. No celebratory badges. Simply: \"Pistons 118–100\" and \"Tigers 2–0\" as small text elements woven into the page's rhythm. Tone: fact, not emotion. The wins happened; move on.\n\n- **HackerNews cultural temperature (1D Chess, Starfling, corner-filing MacBooks)** → Pervasive texture. The page's personality should feel slightly playful, slightly technical — subtle serif choices, code-like precision in spacing, small Easter eggs of constraint-breaking (e.g., a link that does something unexpected on hover). Not literally showing HN headlines, but absorbing the mood of \"what if we redesigned something everyone takes for granted?\"\n\n- **Waning crescent moon (26% illumination)** → Reduce overall contrast slightly. The page should feel lit by softer light — avoid pure black/white pairings. Darks should be deep but not absolute; lights should be warm but not blown-out. Visual equivalent: the light of dawn before full sunrise.\n\n- **Spring season + 12.9 daylight hours** → Fresh, saturated (but not garish) palette. April saturation — not the muted spring of March or the heavy green of May. Keep hues clean and distinct, but allow neutral breathing room between them. Color should feel like it's been washed in morning light.\n\n- **Paramahansa Yogananda quote** → Position as a quiet anchor, likely footer or off-canvas edge. The quote about will and destiny is reflective, not prescriptive — it should read as a personal meditation, not a mission statement. Tone: whispered wisdom, not manifesto.\n\n- **Radiohead + My Morning Jacket on rotation** → Angular, precise type treatment layered under warmth. Radiohead's influence = tight letter-spacing, deliberate line-breaks, slightly unconventional baseline rhythm. My Morning Jacket's influence = warm earth tones, organic curves in supporting elements. These don't conflict; they coexist as technical precision meets human warmth.\n\n---",
+    "paletteDirection": "**Cool-warm balance with high clarity.** Spring is here, so avoid winter's desaturation — colors should feel alive and distinct. But the waning crescent and moderate signal influence suggest restraint: avoid oversaturation or too many hues competing. Think **dawn light hitting fresh grass** — cool undertones (greens, subtle blues) grounding warm accents (pale gold, cream, rust). High contrast between color and neutral space, but low contrast within the colors themselves (i.e., saturation is clean, not aggressive). Plenty of white/off-white breathing room. The overall feel should be **clarified, not complicated** — a palette someone could read in morning light without strain."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "neutral": {
+          "50": "#F0F3F8",
+          "100": "#DFE7F1",
+          "200": "#BFC9D6",
+          "300": "#96AABB",
+          "400": "#6B8599",
+          "500": "#485F70",
+          "600": "#2E3E4D",
+          "700": "#1B2A37",
+          "800": "#0D1822",
+          "900": "#060C14"
+        },
+        "surface": {
+          "card": "#141E2B"
+        },
+        "rust": {
+          "light": "#D36945",
+          "default": "#C34B22",
+          "dark": "#9C3816",
+          "glow": "rgba(195, 75, 34, 0.10)",
+          "subtle": "rgba(195, 75, 34, 0.04)"
+        },
+        "gold": {
+          "light": "#DDC588",
+          "default": "#D8A931",
+          "dark": "#9C7616"
+        },
+        "border": {
+          "card": "rgba(150, 170, 187, 0.10)",
+          "section": "rgba(150, 170, 187, 0.08)"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.neutral.800}",
+          "_light": "{colors.neutral.50}"
+        },
+        "bgCard": {
+          "base": "{colors.surface.card}",
+          "_light": "{colors.neutral.100}"
+        },
+        "bgDeep": {
+          "base": "{colors.neutral.900}",
+          "_light": "{colors.neutral.200}"
+        },
+        "text": {
+          "base": "{colors.neutral.100}",
+          "_light": "{colors.neutral.600}"
+        },
+        "textHeading": {
+          "base": "{colors.neutral.50}",
+          "_light": "{colors.neutral.700}"
+        },
+        "textSecondary": {
+          "base": "{colors.neutral.300}",
+          "_light": "{colors.neutral.500}"
+        },
+        "textMuted": {
+          "base": "{colors.neutral.400}",
+          "_light": "{colors.neutral.400}"
+        },
+        "accent": {
+          "base": "{colors.rust.default}",
+          "_light": "{colors.rust.dark}"
+        },
+        "accentHover": {
+          "base": "{colors.rust.light}",
+          "_light": "{colors.rust.default}"
+        },
+        "accentGlow": {
+          "base": "{colors.rust.glow}",
+          "_light": "{colors.rust.glow}"
+        },
+        "accentSubtle": {
+          "base": "{colors.rust.subtle}",
+          "_light": "{colors.rust.subtle}"
+        },
+        "gold": {
+          "base": "{colors.gold.default}",
+          "_light": "{colors.gold.dark}"
+        },
+        "goldLight": {
+          "base": "{colors.gold.light}",
+          "_light": "{colors.gold.default}"
+        },
+        "borderCard": {
+          "base": "{colors.border.card}",
+          "_light": "{colors.neutral.200}"
+        },
+        "borderSection": {
+          "base": "{colors.border.section}",
+          "_light": "{colors.neutral.200}"
+        }
+      }
+    },
+    "fonts": {
+      "heading": "'Space Grotesk', sans-serif",
+      "body": "'Work Sans', sans-serif"
+    },
+    "fontSizes": {
+      "2xs": "9px",
+      "xs": "12px",
+      "sm": "14px",
+      "base": "16px",
+      "md": "21px",
+      "lg": "28px",
+      "xl": "37px",
+      "2xl": "50px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "regular": "400",
+      "semibold": "600",
+      "bold": "700"
+    },
+    "lineHeights": {
+      "tight": "1.05",
+      "snug": "1.20",
+      "normal": "1.55",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "-0.01em",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.12em"
+    },
+    "spacing": {
+      "0": "0px",
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "120px"
+    },
+    "radii": {
+      "none": "0px",
+      "tag": "0px",
+      "card": "2px",
+      "button": "3px"
+    },
+    "sizes": {
+      "contentMax": "720px",
+      "quoteMax": "480px",
+      "leaderboardMax": "320px"
+    }
+  },
+  "colorScheme": null,
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

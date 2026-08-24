@@ -1,0 +1,347 @@
+{
+  "date": "2026-07-07",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.218Z",
+  "buildId": "1783422604626",
+  "attempts": 1,
+  "brief": "Phosphor-teal terminal on near-void black — \"THE COMING AI MARGIN COLLAPSE\" in Anton at declaration scale, a 457-point HN prophecy unfurling into a Stack of signal bands: golf winner, data feeds, portfolio evidence — the whole page reading like a system readout at 3am.",
+  "rationale": "The hero phrase arrived as found text: Martin Alderson's HN piece \"GLM 5.2 and the coming AI margin collapse\" at 457 points. The five-word extract needed no editing — it reads as prophecy, a statement of something already in motion. For a portfolio of someone building AI-native products (FishSticks, 15th Club), the phrase is self-implicating. The \"coming\" tense does everything: not alarm, not retrospective, but inbound and inevitable. A person building in this space who can acknowledge this dynamic publicly is someone worth hiring. The phrase earns marquee scale without requiring amplification.\n\nStack was the only archetype that served the phrase's temporal logic. \"The coming\" implies sequence — something building toward an event. A Stack is literally a cascade of horizontal moments, each band a scene in a data readout. The hero band makes the declaration at near-90vh; the signal band immediately below it shows the primary source (HN 457 points, golf, music) in compressed terminal notation; the work band presents the portfolio as evidence; the capabilities band closes the ledger. The phrase generates the architecture. Anton at `clamp(3.5rem, 8.5vw, 10.5rem)` with uppercase treatment gives the five words the proportional authority of a Bloomberg terminal headline — condensed, heavy, immovable. Inter Tight handles all subordinate copy without competing.\n\nH:158° teal-green occupies the only open corridor in the mandate (147°–170°) and is precisely correct for the phrase's register. Phosphor teal is the color of financial terminals, system dashboards, and monitoring interfaces — the color the screen turns when data is speaking. Against void.900 (#030d08), the teal scale reads as emissive, not reflective: the values appear to be lit from within the dark field. The single-accent strategy (no secondary color, no warm intrusion) keeps the palette reading as a coherent system rather than a designed artifact — appropriate for a brief that wants to feel like it found the design in the data, not imposed one upon it.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Stack",
+  "signals": {
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Tuesday",
+      "is_weekend": false,
+      "day_index": 2
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/asgeirtj",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "addyosmani/agent-skills/stargazers",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/Zackriya-Solutions",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "ruvnet/RuView/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "sponsors/Leonxlnx",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "John Deere Classic",
+      "status": "Final",
+      "leaders": [
+        {
+          "name": "Chris Gotterup",
+          "position": "1",
+          "score": "-20"
+        },
+        {
+          "name": "Max Homa",
+          "position": "2",
+          "score": "-19"
+        },
+        {
+          "name": "Ben Kohles",
+          "position": "3",
+          "score": "-18"
+        },
+        {
+          "name": "Lee Hodges",
+          "position": "4",
+          "score": "-18"
+        },
+        {
+          "name": "Lucas Glover",
+          "position": "5",
+          "score": "-18"
+        }
+      ]
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "OpenWrt One – Open Hardware Router",
+          "url": "https://openwrt.org/toh/openwrt/one",
+          "score": 657,
+          "by": "peter_d_sherman"
+        },
+        {
+          "title": "CoMaps – FOSS Offline Maps",
+          "url": "https://www.comaps.app/",
+          "score": 596,
+          "by": "basilikum"
+        },
+        {
+          "title": "GLM 5.2 and the coming AI margin collapse",
+          "url": "https://martinalderson.com/posts/the-upcoming-ai-margin-collapse-part-1-glm-5-2/",
+          "score": 457,
+          "by": "martinald"
+        },
+        {
+          "title": "Dolosse – a South African invention used over the world",
+          "url": "https://thisbugslife.com/2021/11/21/dolosse-a-south-african-invention-used-over-the-world/",
+          "score": 62,
+          "by": "andsoitis"
+        },
+        {
+          "title": "How to sequence your own DNA at home",
+          "url": "https://bradleywoolf.com/links-1/sequencing-my-own-dna-at-home",
+          "score": 242,
+          "by": "bilsbie"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "last quarter",
+      "illumination": 0.414,
+      "days_into_cycle": 22.96
+    },
+    "music": {
+      "bands": [
+        "My Morning Jacket",
+        "Guided by Voices",
+        "Wet Leg"
+      ]
+    },
+    "quote": {
+      "text": "Life is about accepting the challenges along the way, choosing to keep moving forward, and savoring the journey.",
+      "author": "Roy T. Bennett"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 7,
+      "day_of_year": 188,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:56",
+      "sunset": "19:33",
+      "daylight_hours": 14.6
+    },
+    "date": "2026-07-07"
+  },
+  "hero": {
+    "copy": "the coming AI margin collapse",
+    "rationale": "The third-ranked HN story today is \"GLM 5.2 and the coming AI margin collapse\" at 457 points — Martin Alderson's piece arguing that as foundation models commoditize, the rent-seeking layer evaporates. The phrase requires no compression: \"the coming AI margin collapse\" is five words, a period's worth of weight, already viral. For a portfolio of someone who builds AI products (FishSticks, 15th Club), it reads as self-implicating prophecy. It passes the screenshot test immediately — someone would pull just this line and post it without context. The \"coming\" tense is doing all the work: not past, not present, but inbound.",
+    "source": null
+  },
+  "chassis": "anton-inter-tight",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — H:158°, S:100%, L:46% (#00c97e). Teal-green chosen for the mandate's only open corridor (147°–170°) and because it is the literal color of phosphor terminals, data dashboards, and financial collapse visualizations. The phrase demands a system-alert aesthetic; this hue delivers without irony.\n- **Neutral palette** (void family, tinted toward H:158°):\n  - 50: #e8f5ee\n  - 100: #c2ddd2\n  - 200: #90b8a4\n  - 300: #5e8c77\n  - 400: #3d6f5c\n  - 500: #265443\n  - 600: #183d2f\n  - 700: #0f281f\n  - 800: #081812\n  - 900: #030d08\n- **Accent** — light: #0de591, default: #00c97e, dark: #007349, glow: `0 0 20px rgba(13, 229, 145, 0.4)`\n- **Secondary accent** — none; one phosphor reading is the whole argument\n- **Background** — page bg: #030d08 (void.900), card bg: #081812 (void.800), signal band bg: #0f281f (void.700)\n- **Text colors** — primary: #edfff6 (teal.50, ~19:1 contrast on void.900), secondary: #84f9c8 (teal.200, ~12:1), muted: #0de591 (teal.400, ~11:1)\n\n### 2. Typography (chassis-derived)\n- **Hero phrase rendering** — `display` token (Anton Regular). Scale: `clamp(3.5rem, 8.5vw, 10.5rem)`. Apply `text-transform: uppercase` — Anton's condensed heavy forms at uppercase read as a system declaration, not a shout. The phrase renders across 2 natural lines at 1440px: \"THE COMING AI\" / \"MARGIN COLLAPSE\". Left-aligned, 6vw left padding. Below the phrase: attribution line \"— MARTIN ALDERSON · HACKER NEWS · 457 PTS\" in Inter Tight 0.75rem, teal.600, letter-spacing 0.1em, all-caps. A 1px teal.700 rule separates the attribution from the bottom edge of the hero band.\n- **Line heights** — hero: 0.88, nav labels: 1.0, body: 1.5, signal entries: 1.2\n- **Letter spacings** — hero: -0.02em (Anton reads as ultra-tight at display sizes), all-caps labels: 0.1em, body: 0em, signal eyebrows: 0.15em\n\n### 3. Layout Specification\n- **Archetype** — Stack. The hero phrase opens a cascade: each horizontal band is a complete scene — declaration, data, evidence, portfolio, context — reading top-to-bottom like a system readout or terminal feed. The Stack serves the phrase because the phrase is already sequential (\"the coming\" implies temporal unfolding); the architecture makes that time visible.\n- **CSS structure** — each band is `section { width: 100%; display: flex; }` or `grid` internally. No shared outer container. Top-level layout: `display: flex; flex-direction: column; min-height: 100vh;`\n- **Major dimensions**:\n  - Nav strip: `height: 56px; padding: 0 6vw;` — `display: flex; justify-content: space-between; align-items: center;` — `background: rgba(3,13,8,0.92); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 100;`\n  - Hero band: `min-height: calc(90vh - 56px); padding: 7vh 6vw 6vw;` — `display: flex; flex-direction: column; justify-content: flex-end;`\n  - Signal band: `height: 160px; padding: 0 6vw;` — `display: grid; grid-template-columns: 1fr 1px 1.8fr 1px 1fr; align-items: center;`\n  - Work band: `padding: 80px 6vw;` — `display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;`\n  - Capabilities band: `padding: 64px 6vw;` — `display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;`\n  - Max content width: `max-width: none` throughout; side padding via `6vw` consistently\n- **Nav placement** — sticky top bar, 56px, frosted void.900 background. Site name left in Anton 1rem (\"DOUG MARCH\"). Nav links right in Inter Tight 0.75rem all-caps tracking-wide: WORK · ABOUT. The nav does not interrupt the hero; it floats over it without competing.\n- **Hero phrase grid zone** — Hero band, bottom-aligned (`justify-content: flex-end`), full width, left-aligned. Phrase occupies bottom ~60% of hero height. At 1440px wide: approx 168px letterforms, wrapping naturally after \"AI\". The 1px teal.700 horizontal rule at hero bottom edge is the only decoration between phrase and signal band.\n\n### 4. Component Character\n- **Border radius** — cards: 0px (none — terminal aesthetic; everything is rectangular), buttons: 2px (sm), tags: 9999px (full — pill shape only for status chips)\n- **Border treatment** — work cards: 1px solid borderAccent (teal.700) on left edge only (accent tab, not full border); signal band vertical dividers: 1px solid borderAccent; hero rule: 1px solid teal.700 full width\n- **Shadow** — none; all depth via background color steps (void.900 → void.800 → void.700)\n- **Density** — hero: maximally spacious (phrase breathes in large void); signal band: compact (3 sections in 160px); work grid: tight 1px gaps between cells, cards padded 32px\n- **Interactive states** — work card hover: `background: void.800 → void.700`; nav links hover: `color: teal.400`; work card left border hover: `border-color: teal.400` with glow `box-shadow: -2px 0 12px rgba(13,229,145,0.3)`\n\n### 5. Signal Integration\n- **Signal band lives in Band 2** (immediately below hero), 160px, void.700 background. Three columns separated by 1px teal.700 vertical rules.\n- **Left column — Golf**: Eyebrow \"JOHN DEERE CLASSIC · FINAL\" in teal.600 0.65rem all-caps tracking-wider. Score: \"GOTTERUP\" in teal.50 1rem Anton, \"−20\" in teal.400 2.5rem Anton line-height 0.9. Below: \"HOMA −19 · KOHLES −18\" in teal.600 0.7rem Inter Tight.\n- **Center column — HN Feed**: Eyebrow \"HACKER NEWS TODAY\" in teal.600 0.65rem all-caps. Three entries stacked: score in teal.400 bold + title in teal.200 normal at 0.8rem Inter Tight, tight line-height. First entry \"457 · AI MARGIN COLLAPSE ↑\" inherits special treatment: teal.400 score glows, signaling the hero phrase's origin.\n- **Right column — Dispatch**: Music \"MY MORNING JACKET · GUIDED BY VOICES · WET LEG\" in teal.600 0.7rem all-caps tracking-wider. Below: lunar \"◑ LAST QUARTER 41%\" and sun \"☀ 14.6H DAYLIGHT\" in teal.600, same size. All teams \"OFF SEASON\" in void.400 italic at bottom.\n- **Quote** — Roy T. Bennett quote not used as hero; if displayed it lives as a 0.75rem italic footer note in void.400, clearly demoted.\n- **HN attribution** — the hero phrase's origin is cited directly below the phrase as \"— MARTIN ALDERSON · HACKER NEWS · 457 PTS\" — the design makes the data source explicit, tying signal-to-hero.",
+    "selfCheck": "1. Hero quotability: Yes — \"the coming AI margin collapse\" has 457 HN upvotes already proving social velocity; isolated it reads as prophecy and is immediately screenshot-worthy.\n2. Because-of chain: Yes — the system-alert register of the phrase forced Stack (terminal readout cascade), Anton (condensed declarative authority), H:158° teal (phosphor-terminal palette), and void-dark near-black (the screen behind the alarm).\n3. Render feasibility: Yes — Anton at clamp(3.5rem, 8.5vw, 10.5rem) on a 1440×900 viewport produces ~122px letter-height; the 5-word phrase wraps to two lines cleanly within a 90vh hero band without overflow.",
+    "rationale": "The hero phrase arrived as found text: Martin Alderson's HN piece \"GLM 5.2 and the coming AI margin collapse\" at 457 points. The five-word extract needed no editing — it reads as prophecy, a statement of something already in motion. For a portfolio of someone building AI-native products (FishSticks, 15th Club), the phrase is self-implicating. The \"coming\" tense does everything: not alarm, not retrospective, but inbound and inevitable. A person building in this space who can acknowledge this dynamic publicly is someone worth hiring. The phrase earns marquee scale without requiring amplification.\n\nStack was the only archetype that served the phrase's temporal logic. \"The coming\" implies sequence — something building toward an event. A Stack is literally a cascade of horizontal moments, each band a scene in a data readout. The hero band makes the declaration at near-90vh; the signal band immediately below it shows the primary source (HN 457 points, golf, music) in compressed terminal notation; the work band presents the portfolio as evidence; the capabilities band closes the ledger. The phrase generates the architecture. Anton at `clamp(3.5rem, 8.5vw, 10.5rem)` with uppercase treatment gives the five words the proportional authority of a Bloomberg terminal headline — condensed, heavy, immovable. Inter Tight handles all subordinate copy without competing.\n\nH:158° teal-green occupies the only open corridor in the mandate (147°–170°) and is precisely correct for the phrase's register. Phosphor teal is the color of financial terminals, system dashboards, and monitoring interfaces — the color the screen turns when data is speaking. Against void.900 (#030d08), the teal scale reads as emissive, not reflective: the values appear to be lit from within the dark field. The single-accent strategy (no secondary color, no warm intrusion) keeps the palette reading as a coherent system rather than a designed artifact — appropriate for a brief that wants to feel like it found the design in the data, not imposed one upon it.",
+    "signalIntegration": "- **Signal band lives in Band 2** (immediately below hero), 160px, void.700 background. Three columns separated by 1px teal.700 vertical rules.\n- **Left column — Golf**: Eyebrow \"JOHN DEERE CLASSIC · FINAL\" in teal.600 0.65rem all-caps tracking-wider. Score: \"GOTTERUP\" in teal.50 1rem Anton, \"−20\" in teal.400 2.5rem Anton line-height 0.9. Below: \"HOMA −19 · KOHLES −18\" in teal.600 0.7rem Inter Tight.\n- **Center column — HN Feed**: Eyebrow \"HACKER NEWS TODAY\" in teal.600 0.65rem all-caps. Three entries stacked: score in teal.400 bold + title in teal.200 normal at 0.8rem Inter Tight, tight line-height. First entry \"457 · AI MARGIN COLLAPSE ↑\" inherits special treatment: teal.400 score glows, signaling the hero phrase's origin.\n- **Right column — Dispatch**: Music \"MY MORNING JACKET · GUIDED BY VOICES · WET LEG\" in teal.600 0.7rem all-caps tracking-wider. Below: lunar \"◑ LAST QUARTER 41%\" and sun \"☀ 14.6H DAYLIGHT\" in teal.600, same size. All teams \"OFF SEASON\" in void.400 italic at bottom.\n- **Quote** — Roy T. Bennett quote not used as hero; if displayed it lives as a 0.75rem italic footer note in void.400, clearly demoted.\n- **HN attribution** — the hero phrase's origin is cited directly below the phrase as \"— MARTIN ALDERSON · HACKER NEWS · 457 PTS\" — the design makes the data source explicit, tying signal-to-hero."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "teal": {
+          "50": "#edfff6",
+          "100": "#c5fde4",
+          "200": "#84f9c8",
+          "300": "#3df5ac",
+          "400": "#0de591",
+          "500": "#00c97e",
+          "600": "#009962",
+          "700": "#007349",
+          "800": "#004d31",
+          "900": "#002a1c"
+        },
+        "void": {
+          "50": "#e8f5ee",
+          "100": "#c2ddd2",
+          "200": "#90b8a4",
+          "300": "#5e8c77",
+          "400": "#3d6f5c",
+          "500": "#265443",
+          "600": "#183d2f",
+          "700": "#0f281f",
+          "800": "#081812",
+          "900": "#030d08"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.void.900}",
+          "_light": "{colors.void.50}"
+        },
+        "bgCard": {
+          "base": "{colors.void.800}",
+          "_light": "{colors.teal.50}"
+        },
+        "bgSubtle": {
+          "base": "{colors.void.700}",
+          "_light": "{colors.teal.100}"
+        },
+        "bgSignal": {
+          "base": "{colors.void.700}",
+          "_light": "{colors.teal.100}"
+        },
+        "text": {
+          "base": "{colors.teal.50}",
+          "_light": "{colors.void.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.teal.200}",
+          "_light": "{colors.void.700}"
+        },
+        "textMuted": {
+          "base": "{colors.teal.400}",
+          "_light": "{colors.void.500}"
+        },
+        "textDim": {
+          "base": "{colors.void.400}",
+          "_light": "{colors.void.400}"
+        },
+        "accent": {
+          "base": "{colors.teal.500}",
+          "_light": "{colors.teal.600}"
+        },
+        "accentLight": {
+          "base": "{colors.teal.400}",
+          "_light": "{colors.teal.500}"
+        },
+        "accentDark": {
+          "base": "{colors.teal.700}",
+          "_light": "{colors.teal.800}"
+        },
+        "border": {
+          "base": "{colors.void.600}",
+          "_light": "{colors.teal.200}"
+        },
+        "borderAccent": {
+          "base": "{colors.teal.700}",
+          "_light": "{colors.teal.600}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "24px",
+      "6": "32px",
+      "7": "48px",
+      "8": "64px",
+      "9": "96px",
+      "10": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.88",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.8"
+    },
+    "letterSpacings": {
+      "tight": "-0.02em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.2em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 158,
+      "s": 100,
+      "l": 46,
+      "name": "phosphor teal"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "teal-green",
+      "name": "void"
+    },
+    "mood_word": "terminal",
+    "color_story": "Phosphor teal on near-void black — the exact palette of a Bloomberg terminal at 3am announcing something irreversible."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

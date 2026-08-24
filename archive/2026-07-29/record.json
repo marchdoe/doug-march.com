@@ -1,0 +1,343 @@
+{
+  "date": "2026-07-29",
+  "era": "shell-directed",
+  "generatedAt": "2026-08-24T15:34:16.246Z",
+  "buildId": "1785322984137",
+  "attempts": 1,
+  "brief": "Front-page swagger — Woody Allen's confidence aphorism as a Spectral broadsheet lead, drenched in plum-black and hot magenta, the Tigers' 14–0 shutout pinned in the almanac column.",
+  "rationale": "The phrase decides everything. \"Confidence is what you have before you understand the problem\" is Woody Allen doing stand-up philosophy, and it is also the honest thesis of a site that rebuilds itself nightly on nerve alone. A witty, intellectual aphorism does not want to be screamed off a billboard — it wants to be *read* like the lead editorial on a front page. That is why the archetype is the Broadsheet (also the freshest in the seven-day rotation): masthead, giant headline banner, then dense columns where the day's signals become the paper's almanac. The chassis follows directly — spectral-albert, a transitional slab serif over a humanist sans, is the only pick that renders this line with dry op-ed authority rather than athletic shouting; its 1.333 ratio is explicitly sanctioned for exactly this kind of literary phrase.\n\nPalette is the committed gesture the day's high risk-weight asks for. The mandate left only two open corridors; 328° magenta lands inside the 307–337° window and reads as pure swagger — confidence as pigment. Rather than hedge, I drench a plum-black canvas (`#1B0912`) in that hue, tint every neutral toward magenta so the columns read as one world at different depths, and light a single word — **Confidence** — in a luminous pink glow, with the Tigers' 14–0 shutout as the only other thing that lifts into accent. One hue, load-bearing, past 65% coverage, no second color hedging the edges.\n\nLayout answers the owner's standing complaints head-on. Radii are zeroed everywhere — no rounded corners. The brand is unmistakably present via a stacked-md lockup anchored in the masthead (mono, cream, so it never reads as a gray box). The nav is a genuine newspaper masthead between hairline double-rules — a treatment nowhere in the recent rails/pills/spines/prompt-bars — and the footer is a quiet imprint rule, not the recent data strip or exit line. Crucially, the form is dictated by the content, not menu-picked: a front-page aphorism becomes a literal front page, its signals set as almanac columns, so the page reads as authored rather than templated.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Footer.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Broadsheet",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Portfolio of Daniela Muntyan",
+          "description": "Personal portfolio of Daniela Muntyan featuring selected work from Figma, Craft Docs, and independent design explorations.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a564e6618ba0829299459.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAPBr1JREFUeAHs/QmgJUlVJo6fyLzL29+rvaqreqVXaJruZqdZ3RBEHFFQFAR30cEFEBHmP4o7ouI+zn+UTdEBdRQBAQVkF2TrBrrpht7X2qveetfM+J1z4kRkZL5731JVr7vq...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "The Tie-break",
+          "description": "Play and explore the new New Balance x Miu Miu collection with Coco Gauff.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a47a79eb4dbe565070348.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "Everest · The Ascent",
+          "description": "Climb Everest in your browser. A cinematic WebGL ascent of 8,849m of real terrain, built solo with Three.js. It tunes its own quality to your machine.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/07/6a55cc829a434604910444.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAgEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCASwBkADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Wednesday",
+      "is_weekend": false,
+      "day_index": 3
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/opengeos",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "moeru-ai/airi/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/affaan-m",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "huggingface/speech-to-speech/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "1jehuang/jcode/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Rocket Classic",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "More Tailscale tricks for your jailbroken Kindle",
+          "url": "https://tailscale.com/blog/jailbroken-kindle-proxy-tun-modes",
+          "score": 201,
+          "by": "Error6571"
+        },
+        {
+          "title": "User Interfaces of the Demo Scene",
+          "url": "https://www.datagubbe.se/scenegui/",
+          "score": 215,
+          "by": "zdw"
+        },
+        {
+          "title": "SQLite in Production: Optimizing WAL Mode, Concurrency, and VFS Layers",
+          "url": "https://micrologics.org/blog/sqlite-in-production-optimizing-wal-mode-concurrency-and-vfs-layers-for-low-latency-app-servers",
+          "score": 73,
+          "by": "ankitg12"
+        },
+        {
+          "title": "Lisp moving Forth moving Lisp",
+          "url": "https://letoverlambda.com/textmode.cl/guest/chap8.html",
+          "score": 31,
+          "by": "fallat"
+        },
+        {
+          "title": "Codex Security",
+          "url": "https://github.com/openai/codex-security",
+          "score": 510,
+          "by": "bakigul"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": []
+    },
+    "lunar": {
+      "phase": "full moon",
+      "illumination": 0.995,
+      "days_into_cycle": 15.42
+    },
+    "music": {
+      "bands": [
+        "Guided by Voices",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "Confidence is what you have before you understand the problem.",
+      "author": "Woody Allen"
+    },
+    "season": {
+      "season": "summer",
+      "month": 7,
+      "day": 29,
+      "day_of_year": 210,
+      "month_name": "July"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-07-28T22:40Z",
+          "result": "win",
+          "score": "14-0"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "05:12",
+      "sunset": "19:20",
+      "daylight_hours": 14.1
+    },
+    "date": "2026-07-29"
+  },
+  "hero": {
+    "copy": "Confidence is what you have before you understand the problem.",
+    "rationale": "Pulled straight from `signals.quote` (Woody Allen). For a portfolio that demolishes and rebuilds itself every single night with total swagger and zero certainty about what tomorrow's page will be, this deadpan aphorism is a self-portrait: the whole premise runs on confidence that precedes understanding. It is genuinely quotable in isolation — a line you'd screenshot — and its dry, intellectual wit wants to be *read* like a newspaper op-ed headline, not shouted like a billboard.",
+    "source": null
+  },
+  "chassis": "spectral-albert",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 328° magenta-rose. Confidence is hot, forward, a little unearned; a vivid magenta is swagger made pigment. It also honors the mandate: the only open corridors are 77–87° and 307–337°, and 328° sits cleanly inside the 307–337° window (chartreuse read as anxious/acid, wrong for confidence).\n- **Neutral palette (plum ink, magenta-tinted)** — 50 `#FBEAF2`, 100 `#F3D5E2`, 200 `#E3B0C8`, 300 `#CC86A8`, 400 `#A85C82`, 500 `#7E405E`, 600 `#5C2C44`, 700 `#421E31`, 800 `#2B1220`, 900 `#1B0912`\n- **Accent color (magenta)** — light `#FF6FB5`, default `#F0308A`, dark `#A11056`, glow `#FF8FC7`\n- **Secondary accent** — none. One hue carries the page.\n- **Background** — page bg `#1B0912` (deep plum-black), card/panel bg `#2B1220`, masthead/sidebar bg `#220C18`\n- **Text colors** — primary `#FBEAF2` (cream-pink), secondary `#CC86A8`, muted `#A85C82`\n\n### 2. Typography\n- **Hero phrase rendering** — Spectral display (`display` token) set as the full-width broadsheet headline, wrapping across ~3 lines spanning columns 1–12. The word **Confidence** rendered in accent glow `#FF8FC7`; the remainder in cream `#FBEAF2`; \"— Woody Allen\" set small in Albert Sans small-caps beneath. Scale via `clamp(52px, 7.5vw, 108px)`.\n- **Line heights** — hero `1.02`, subheads `1.1`, body columns `1.5`, light-on-dark bump to `1.55` for the longest column.\n- **Letter spacings** — hero `-0.015em`, body `0`, small-caps labels/dateline `0.12em`.\n\n### 3. Layout Specification\n- **Archetype** — Broadsheet. A witty aphorism belongs on the front page: masthead, giant headline banner, then dense multi-column body where the day's signals become newspaper columns. Serves the phrase by treating it as the day's lead story.\n- **CSS grid structure** — page: `display: grid; grid-template-rows: auto auto 1fr auto` (masthead / headline banner / column body / imprint). Column body: `display: grid; grid-template-columns: repeat(12, 1fr); gap: 32px;` — About/manifesto cols 1–4, Selected Work cols 5–8, Signal column cols 9–12.\n- **Major dimensions**:\n  - Headline banner min-height `44vh`, hairline `1px` double-rule above and below.\n  - Signal column width = 4 of 12 tracks (~33%).\n  - Max content width `none`; side padding `clamp(40px, 6vw, 96px)`; ≥80% canvas utilization.\n  - Section spacing: 48px vertical between bands, 32px column gap, 24px between column entries.\n- **Nav placement** — Masthead top band, height `~96px`: stacked-md brand lockup top-left, centered dateline \"WEDNESDAY · JULY 29, 2026 · FULL MOON\" in small-caps, section links (WORK · ABOUT · CONTACT) right in small-caps `0.12em`, all sitting between two hairline rules. Fresh newspaper-masthead treatment (none of the recent rails/pills/spines/prompt bars).\n- **Hero phrase grid zone** — rows 2, columns 1–12 (full-bleed headline banner), intended render ~1360px wide × ~400px tall on a 1440×900 viewport.\n\n### 4. Component Character\n- **Border radius** — 0 everywhere (cards, tags, buttons). Owner dislikes rounded corners; radii tokens all `0` except `full`.\n- **Border treatment** — bordered with hairline rules: `1px solid` `#421E31` (border token). Column dividers are single vertical hairlines; masthead uses double-rules.\n- **Shadow** — none. Depth comes from surface lightness steps (plum.900 → plum.800 panels), true to dark-mode practice.\n- **Density** — spacious headline band, dense body columns (broadsheet packed).\n- **Interactive states** — links: cream → accent `#F0308A` on `_hover`, plus a `1px` underline offset `0.15em`. Work rows shift left `2px` and gain a magenta leading rule on hover.\n\n### 5. Signal Integration\n- **Where signals live** — right-hand signal column (cols 9–12), styled as the paper's \"Standings & Almanac\" sidebar.\n- **Sports scores** — Tigers' 14–0 shutout is the boxscore lede of the column: `DET 14 · CWS 0` in Spectral tabular figures, the **14** enlarged and lit in accent glow, \"SHUTOUT\" small-caps beneath in cream — the day's loud win, treated as the almanac headline.\n- **Quote** — IS the hero headline; no duplicate. Attribution \"— Woody Allen\" as the standfirst.\n- **Full moon** — 99.5% illumination rendered as a filled magenta disc glyph with \"FULL MOON · 99%\" caption at the top of the signal column.\n- **Music** — \"ON THE TURNTABLE: Guided by Voices · My Morning Jacket\" as a small italic Spectral line-item.\n- **Golf** — \"ROCKET CLASSIC · scheduled\" as a dim tabular one-liner (no leaderboard yet).\n- **Holiday** — none today; omitted.",
+    "selfCheck": "1. Hero quotability: Yes — a complete, wry aphorism that reads as a standalone poster line, not descriptive boilerplate.\n2. Because-of chain: Yes — aphorism → op-ed front page (Broadsheet) → literary transitional serif that reads without shouting (spectral-albert) → confident hot magenta drench → masthead + headline banner + almanac columns.\n3. Render feasibility: Yes — a 9-word sentence at clamp(52–108px) wraps to ~3 lines across a 1360px banner at ~400px tall, well within 1440×900.\n4. Canvas floor feasible: Yes — masthead + 44vh banner + a 3-column packed body reaches ≥80% utilization comfortably.",
+    "rationale": "The phrase decides everything. \"Confidence is what you have before you understand the problem\" is Woody Allen doing stand-up philosophy, and it is also the honest thesis of a site that rebuilds itself nightly on nerve alone. A witty, intellectual aphorism does not want to be screamed off a billboard — it wants to be *read* like the lead editorial on a front page. That is why the archetype is the Broadsheet (also the freshest in the seven-day rotation): masthead, giant headline banner, then dense columns where the day's signals become the paper's almanac. The chassis follows directly — spectral-albert, a transitional slab serif over a humanist sans, is the only pick that renders this line with dry op-ed authority rather than athletic shouting; its 1.333 ratio is explicitly sanctioned for exactly this kind of literary phrase.\n\nPalette is the committed gesture the day's high risk-weight asks for. The mandate left only two open corridors; 328° magenta lands inside the 307–337° window and reads as pure swagger — confidence as pigment. Rather than hedge, I drench a plum-black canvas (`#1B0912`) in that hue, tint every neutral toward magenta so the columns read as one world at different depths, and light a single word — **Confidence** — in a luminous pink glow, with the Tigers' 14–0 shutout as the only other thing that lifts into accent. One hue, load-bearing, past 65% coverage, no second color hedging the edges.\n\nLayout answers the owner's standing complaints head-on. Radii are zeroed everywhere — no rounded corners. The brand is unmistakably present via a stacked-md lockup anchored in the masthead (mono, cream, so it never reads as a gray box). The nav is a genuine newspaper masthead between hairline double-rules — a treatment nowhere in the recent rails/pills/spines/prompt-bars — and the footer is a quiet imprint rule, not the recent data strip or exit line. Crucially, the form is dictated by the content, not menu-picked: a front-page aphorism becomes a literal front page, its signals set as almanac columns, so the page reads as authored rather than templated.",
+    "signalIntegration": "- **Where signals live** — right-hand signal column (cols 9–12), styled as the paper's \"Standings & Almanac\" sidebar.\n- **Sports scores** — Tigers' 14–0 shutout is the boxscore lede of the column: `DET 14 · CWS 0` in Spectral tabular figures, the **14** enlarged and lit in accent glow, \"SHUTOUT\" small-caps beneath in cream — the day's loud win, treated as the almanac headline.\n- **Quote** — IS the hero headline; no duplicate. Attribution \"— Woody Allen\" as the standfirst.\n- **Full moon** — 99.5% illumination rendered as a filled magenta disc glyph with \"FULL MOON · 99%\" caption at the top of the signal column.\n- **Music** — \"ON THE TURNTABLE: Guided by Voices · My Morning Jacket\" as a small italic Spectral line-item.\n- **Golf** — \"ROCKET CLASSIC · scheduled\" as a dim tabular one-liner (no leaderboard yet).\n- **Holiday** — none today; omitted."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "magenta": {
+          "50": "#FDE7F1",
+          "100": "#FBC9E0",
+          "200": "#F79BC5",
+          "300": "#F266A6",
+          "400": "#F0308A",
+          "500": "#D01571",
+          "600": "#A81056",
+          "700": "#7C0B41",
+          "800": "#52072B",
+          "900": "#2E0417"
+        },
+        "plum": {
+          "50": "#FBEAF2",
+          "100": "#F3D5E2",
+          "200": "#E3B0C8",
+          "300": "#CC86A8",
+          "400": "#A85C82",
+          "500": "#7E405E",
+          "600": "#5C2C44",
+          "700": "#421E31",
+          "800": "#2B1220",
+          "900": "#1B0912"
+        },
+        "glow": "#FF8FC7"
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.plum.900}",
+          "_light": "{colors.plum.50}"
+        },
+        "surface": {
+          "base": "{colors.plum.800}",
+          "_light": "{colors.plum.100}"
+        },
+        "panel": {
+          "base": "#220C18",
+          "_light": "#FFFFFF"
+        },
+        "text": {
+          "base": "{colors.plum.50}",
+          "_light": "{colors.plum.900}"
+        },
+        "textMuted": {
+          "base": "{colors.plum.300}",
+          "_light": "{colors.plum.500}"
+        },
+        "textSubtle": {
+          "base": "{colors.plum.400}",
+          "_light": "{colors.plum.400}"
+        },
+        "accent": {
+          "base": "{colors.magenta.400}",
+          "_light": "{colors.magenta.500}"
+        },
+        "accentGlow": {
+          "base": "{colors.glow}",
+          "_light": "{colors.magenta.400}"
+        },
+        "border": {
+          "base": "{colors.plum.700}",
+          "_light": "{colors.plum.200}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "1.02",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.7"
+    },
+    "letterSpacings": {
+      "tight": "-0.015em",
+      "normal": "0",
+      "wide": "0.04em",
+      "wider": "0.08em",
+      "widest": "0.12em"
+    },
+    "radii": {
+      "none": "0",
+      "sm": "0",
+      "md": "0",
+      "lg": "0",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 328,
+      "s": 82,
+      "l": 55,
+      "name": "swagger magenta"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "magenta / plum",
+      "name": "plum ink"
+    },
+    "mood_word": "brash",
+    "color_story": "A drenched plum-black field lit by one unearned, self-assured magenta — the color of confidence you have before you understand the problem."
+  },
+  "shell": {
+    "nav": "newspaper masthead — ~96px top band between hairline double-rules, stacked-md brand left, centered small-caps dateline, small-caps section links right",
+    "footer": "imprint rule — single hairline-topped imprint line with build stamp + colophon",
+    "brand_lockup": "stacked-md",
+    "brand_color_mode": "single-color"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "REVISE",
+      "feedback": "REVISE\n\n- **Color palette mismatch between visual spec and preset.ts**: Visual spec specifies accent magenta light as `#FF6FB5` (bright saturated pink), but preset.ts defines magenta.50 as `#FDE7F1` (pale off-white). These are visually distinct colors. Additionally, visual spec specifies magenta dark as `#A11056`, but preset.ts has magenta.600 as `#A81056` (slightly lighter). Correct the magenta palette in preset.ts to match the visual spec exactly, or update the visual spec to reflect the actual preset tokens.",
+      "ts": 1785322569675
+    }
+  ],
+  "composition": null,
+  "lane": null,
+  "cost": null
+}

@@ -1,0 +1,383 @@
+{
+  "date": "2026-06-17",
+  "era": "color-directed",
+  "generatedAt": "2026-08-24T15:34:16.202Z",
+  "buildId": "1781696671682",
+  "attempts": 1,
+  "brief": "Joyce Meyer's wisdom declaration at 88px Bebas violet on ink-black masthead — four-column catalog of work, timeline, capabilities, and today's signals arrayed beneath a vivid violet rule, Juneteenth highlighted in the signals column, the full index of everything done as proof of what was promised.",
+  "rationale": "The Joyce Meyer quote arrived already formatted for this portfolio's register: it's not aspirational decoration but an operating instruction. A site that reads raw YAML at sunrise and composes a new design face is literally doing now what it will be happy with later. The waxing crescent at day 3 (9.7% illumination) is the calendar counterweight — the month's energy is building, not peaking, and wisdom at that moment is about the decision made before the light arrives. Juneteenth in two days adds historical mass: that date is itself the proof that actions taken matter later, that the accounting eventually comes. The quote earns its scale.\n\nThe Index archetype is the only structural honest response to this phrase. A Poster would set the quote on a pedestal with nothing around it. An Index treats the quote as a masthead — a declaration above a full inventory — and then assembles the proof: every project Doug built, every career entry, every capability, every signal from today's world. The four-column catalog below the violet rule is the evidence that wisdom was, in fact, acted on. The layout is an argument, not a frame. The archetype choice leads directly to the chassis: `bebas-plex` is catalogued for Index specifically because Bebas Neue's condensed authority fills a full-width masthead without needing to shout, and IBM Plex Sans's precise humanist geometry makes 14px catalog rows legible at maximum density.\n\nThe color decision is structural. The open mandate corridor — 275°–320° — after seven consecutive builds through lime, crimson, chartreuse, teal, amber, indigo, and cyan, left precisely one unvisited family: violet. H:292° deep violet is not the default purple of training data (H:260°) nor the default pink-magenta (H:310°) — it sits at the twilight edge of visible spectrum, the hue of something seen before it is fully understood. On near-black `#0A0618` ink, the vivid `#CC55F5` hero phrase at 6.06:1 contrast reads as a signal blazing in the dark, which is exactly the register this quote deserves on a Wednesday in June with 14.7 hours of daylight and Juneteenth two days out.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx"
+  ],
+  "legacyArchetype": "Index",
+  "signals": {
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Arkansas Museum of Fine Art",
+          "description": "A cultural anchor for Little Rock, AMFA reopened after a Studio Gang renovation. The new site captures that transformation and the full scope of art,...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/06/6a1da64753838305796423.jpg",
+          "screenshot_b64": "/9j/4RyyRXhpZgAATU0AKgAAAAgADAEAAAMAAAABDMYAAAEBAAMAAAABB5gAAAECAAMAAAADAAAAngEGAAMAAAABAAIAAAESAAMAAAABAAEAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAApAEbAAUAAAABAAAArAEoAAMAAAABAAIAAAExAAIAAAAhAAAAtAEyAAIAAAAUAAAA1YdpAAQAAAABAAAA7AAAASQACAAIAAgACD1gAAAnEAAIPWAAACcQQWRvYmUgUGhvdG9zaG9wIDI3...",
+          "screenshot_media_type": "image/jpeg"
+        },
+        {
+          "title": "The Bend Club",
+          "description": "A luxury residence club that doesn't exist yet. Brand, logo, and investor site designed to make early buyers feel the place before the ground breaks....",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1cbcaa59c1c699174924.png",
+          "screenshot_b64": "iVBORw0KGgoAAAANSUhEUgAABkAAAASwCAYAAACjAYaXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAtF6hJREFUeAG0/dmTddl1H4ittc+9mfkN9VUVUCiAIAigAJIAOLTCImWpJdEPdqhNv7Yd7Rc/246ww3+D/w09OOzn9ovEsB9aUkeoW+rWALIlERBFECIxECAKKAwFVH1DZt6z...",
+          "screenshot_media_type": "image/png"
+        },
+        {
+          "title": "House of Honey",
+          "description": "House of Honey designs spaces with story. We built a sophisticated digital presence that mirrors this sensory philosophy through editorial elegance and...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/05/6a1c09bf6c5f3457361940.jpg",
+          "screenshot_b64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAf/CABEIBLAGQAMBEQACEQEDEQH/xAA6AAAABgMBAQEAAAAAAAAAAAADBAUGBwgAAQIJCgsBAAAH...",
+          "screenshot_media_type": "image/jpeg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Wednesday",
+      "is_weekend": false,
+      "day_index": 3
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "DeusData/codebase-memory-mcp/stargazers",
+          "description": "",
+          "language": "C",
+          "stars": null
+        },
+        {
+          "name": "n0-computer/iroh/stargazers",
+          "description": "",
+          "language": "Rust",
+          "stars": null
+        },
+        {
+          "name": "Panniantong/Agent-Reach/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "meshery/meshery/stargazers",
+          "description": "",
+          "language": "TypeScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/obra",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "U.S. Open",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "GLM-5.2 is the new leading open weights model on Artificial Analysis",
+          "url": "https://artificialanalysis.ai/articles/glm-5-2-is-the-new-leading-open-weights-model-on-the-artificial-analysis-intelligence-index",
+          "score": 158,
+          "by": "himata4113"
+        },
+        {
+          "title": "Show HN: High-Res Neural Cellular Automata",
+          "url": "https://cells2pixels.github.io/",
+          "score": 54,
+          "by": "esychology"
+        },
+        {
+          "title": "GrapheneOS has been ported to Android 17",
+          "url": "https://discuss.grapheneos.org/d/36469-grapheneos-has-been-ported-to-android-17-and-official-releases-are-coming-soon",
+          "score": 813,
+          "by": "Cider9986"
+        },
+        {
+          "title": "Running local models is good now",
+          "url": "https://vickiboykis.com/2026/06/15/running-local-models-is-good-now/",
+          "score": 1372,
+          "by": "jfb"
+        },
+        {
+          "title": "Hacker News but for Independent Blogs",
+          "url": "https://bubbles.town/",
+          "score": 142,
+          "by": "headalgorithm"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Juneteenth",
+          "date": "2026-06-19",
+          "days_away": 2
+        },
+        {
+          "name": "Father's Day",
+          "date": "2026-06-21",
+          "days_away": 4
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "waxing crescent",
+      "illumination": 0.097,
+      "days_into_cycle": 2.98
+    },
+    "music": {
+      "bands": [
+        "Tobin Sprout",
+        "My Morning Jacket"
+      ]
+    },
+    "quote": {
+      "text": "Wisdom is doing now what you are going to be happy with later on.",
+      "author": "Joyce Meyer"
+    },
+    "season": {
+      "season": "summer",
+      "month": 6,
+      "day": 17,
+      "day_of_year": 168,
+      "month_name": "June"
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-06-17T00:10Z",
+          "result": "loss",
+          "score": "2-4"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "04:48",
+      "sunset": "19:33",
+      "daylight_hours": 14.7
+    },
+    "date": "2026-06-17"
+  },
+  "hero": {
+    "copy": "Wisdom is doing now what you are going to be happy with later on.",
+    "rationale": "The Joyce Meyer quote from today's signals arrives on a waxing crescent day 3 (9.7% illumination, energy building from fresh cycle), two days before Juneteenth — a date that is itself about the long reckoning between actions taken and freedom realized. For a portfolio that makes daily decisions about craft and construction, this quote is its operating logic made visible: every project in the index below is evidence that this principle was acted on. The Bebas Neue display in vivid violet on a near-black canvas renders it as a declaration, not a suggestion.",
+    "source": null
+  },
+  "chassis": "bebas-plex",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n\n**Primary hue** — H:292° (violet), sits dead-center in the mandated 275°–320° open corridor. This is the hue of twilight foresight and ultraviolet signal: warm enough to feel alive, cool enough to feel deliberate. Not the AI-default purple (H:260°), not magenta (H:320°) — the specific reading of H:292° is pre-storm sky.\n\n**Neutral palette** — violet-tinted dark scale (\"ink\"), H:270°, chroma 0.008–0.012:\n- 50: `#F0ECFF`\n- 100: `#E2DCFF`\n- 200: `#C8BAEA`\n- 300: `#A898D0`\n- 400: `#7970A8`\n- 500: `#544A78`\n- 600: `#382B58`\n- 700: `#261A44`\n- 800: `#160E30`\n- 900: `#0A0618`\n\n**Accent color** (vivid violet, H:292°):\n- Light: `#DF8FFF`\n- Default: `#CC55F5`\n- Dark: `#8A10B8`\n- Glow: `rgba(204, 85, 245, 0.20)`\n\n**Secondary accent** — none. Single dominant accent.\n\n**Background**:\n- Page bg: `#0A0618` (ink.900, near-black violet-tinted)\n- Card/column bg: `#160E30` (ink.800)\n- Masthead bg: `#160E30` (ink.800, one step off canvas)\n- Sidebar bg: N/A (Index has no sidebar)\n\n**Text colors**:\n- Primary text: `#F0ECFF` (ink.50 — near-white violet-tinted)\n- Secondary text: `#C8BAEA` (ink.200)\n- Muted text: `#7970A8` (ink.400, passes 4.75:1 on #0A0618)\n\n**Contrast audit**:\n- Hero phrase `#CC55F5` on `#0A0618`: 6.06:1 ✓ (AA for body and large text)\n- Body `#F0ECFF` on `#0A0618`: ~17.9:1 ✓\n- Secondary `#C8BAEA` on `#160E30`: ~8.1:1 ✓\n- Muted `#7970A8` on `#0A0618`: ~4.75:1 ✓\n\n---\n\n### 2. Typography (chassis-derived: bebas-plex)\n\n**Hero phrase rendering** — `display` token (Bebas Neue), `clamp(48px, 6.5vw, 88px)`. At 1440px: renders at 88px. Line height: 0.92. Letter spacing: -0.01em. Uppercase by default with Bebas. The 15-word quote wraps to 3 natural lines at 1440px (usable width ~1266px after 6vw padding):\n- Line 1: \"WISDOM IS DOING NOW WHAT\"\n- Line 2: \"YOU ARE GOING TO BE\"\n- Line 3: \"HAPPY WITH LATER ON.\"\n\nColor: `#CC55F5` (vivid.default). Attribution \"— Joyce Meyer\" follows in IBM Plex Sans, 15px, #C8BAEA, right-aligned to the quote block.\n\n**Column headers** — Bebas Neue, 18px, letter-spacing: 0.12em, color: `#CC55F5`. All caps, borderBottom 1px solid `#CC55F5`.\n\n**Catalog row entries** — IBM Plex Sans, 14px, line-height: 1.5, color: `#F0ECFF`. Metadata (year, category tags): 12px, color: `#7970A8`, tabular-nums.\n\n**Nav items** — IBM Plex Sans, 13px, letter-spacing: 0.06em, uppercase, color: `#C8BAEA`.\n\n**Line heights**:\n- Hero quote: 0.92\n- Column headers: 1.0\n- Catalog rows: 1.5\n- Body/signals: 1.5\n\n**Letter spacings**:\n- Hero phrase: -0.01em\n- Column headers: 0.12em\n- Nav/labels: 0.06em\n- Body: 0em\n\n---\n\n### 3. Layout Specification\n\n**Archetype** — Index. The wisdom declaration serves as a masthead over a four-column dense catalog that is itself the proof of the quote: every project, career entry, capability, and today's signal exists because action was taken. The catalog says \"here is what was done\"; the masthead says \"here is why.\"\n\n**CSS grid/flex structure**:\n\n```\n/* Outer layout */\ndisplay: grid;\ngrid-template-rows: auto 1fr;\nmin-height: 100vh;\nmax-width: none;\n\n/* Masthead band */\ndisplay: flex;\nflex-direction: column;\npadding: 0 6vw;\nbackground: #160E30;\n\n/* Nav row within masthead */\ndisplay: flex;\njustify-content: space-between;\nalign-items: center;\nheight: 48px;\nborder-bottom: 1px solid #261A44;\n\n/* Catalog grid */\ndisplay: grid;\ngrid-template-columns: 1.2fr 1fr 1fr 0.9fr;\ngap: 0;\nborder-top: 2px solid #CC55F5;\npadding: 0 6vw 96px;\nbackground: #0A0618;\n```\n\n**Major dimensions**:\n- Masthead height: `auto` (~340px at 1440px: 48px nav + ~250px quote + 24px attribution + 16px padding)\n- Quote block: `clamp(48px, 6.5vw, 88px)` across 3 lines = ~243px at 88px with lh:0.92\n- Catalog grid: begins at ~340px from top, scrolls to full content height\n- Max content width: `none` — edge-to-edge canvas, 6vw padding each side\n- Column padding: `padding: 32px 28px 32px 0` per column\n- Section padding: `padding: 0 6vw 96px`\n- Row height: 36px (8px top/bottom padding + 20px text height)\n- Column rule (between columns): `1px solid #261A44`\n\n**Nav placement** — top bar within the masthead band. Full-width, 48px tall, flex row. Left: \"DOUG MARCH\" in Bebas Neue 22px, tracking 0.1em, color `#CC55F5`. Right: \"WORK · ABOUT · CONTACT\" in IBM Plex Sans 13px uppercase tracking 0.06em, color `#C8BAEA`.\n\n**Hero phrase grid zone** — spans full width of the masthead band (columns 1–4 conceptually), below the nav row. Padding: 24px 0 20px 0 within the masthead. Attribution line: right-aligned, 15px IBM Plex Sans italic, color `#C8BAEA`, 8px below quote block.\n\n**Violet rule** — 2px solid `#CC55F5` — bridges masthead and catalog. Acts as the hinge between declaration and evidence.\n\n---\n\n### 4. Component Character\n\n**Border radius** — none (`0px`) for all structural elements. Index = catalog precision = no rounding.\n\n**Border treatment** — exclusively `1px solid #261A44` for row separators (ink.700). Column headers get `1px solid #CC55F5` (accent). Outer masthead gets `2px solid #CC55F5` at base.\n\n**Shadow** — none. Depth comes from layered background colors (masthead `#160E30` vs. catalog `#0A0618`).\n\n**Density** — compact. Row padding: 8px vertical. No decorative whitespace inside the catalog. The masthead is spacious (the quote needs room to declare itself); the catalog below is tightly wound.\n\n**Interactive states** — project name rows: `color: #CC55F5` on hover, transition 120ms ease. Nav items: letter-spacing widens from 0.06em to 0.09em on hover, color `#F0ECFF`. Row bg on hover: `background: #160E30`.\n\n---\n\n### 5. Signal Integration\n\n**Signal column** — Column 4 of the catalog grid is dedicated to today's signals, header: \"TODAY\" in Bebas 18px tracking 0.12em violet. Each signal is a row entry.\n\n**Sports scores** — Tigers LOSS 2–4: row format: \"⚾ DET TIGERS\" (secondary text, IBM Plex 13px) + \"2–4 L\" (right-aligned, vivid.dark `#8A10B8`, tabular-nums, 13px). The loss is marked with a faint red-adjacent: use `#C8BAEA` for the score, small \"L\" in `#7970A8` muted.\n\n**Golf** — U.S. Open row: \"⛳ U.S. OPEN\" + \"SCHEDULED\" in muted text.\n\n**Quote display** — The Joyce Meyer quote IS the hero phrase, rendered at full Bebas Neue display scale in the masthead. Attribution \"— Joyce Meyer\" is a secondary IBM Plex Sans italic line beneath.\n\n**HN stories** — Two rows in Signals column: \"↑1372 RUNNING LOCAL MODELS IS GOOD NOW\" (wraps to 2 lines at compact width; 12px, color `#C8BAEA`) and \"↑813 GRAPHENEOS → ANDROID 17\" (12px muted). Score rendered in `#CC55F5` accent, story title in secondary text.\n\n**Lunar phase** — \"🌙 WAXING CRESCENT 9.7%\" in Signals column, row at compact 12px.\n\n**Juneteenth** — Highlighted row with left-border treatment: `border-left: 2px solid #CC55F5; padding-left: 6px`. Text: \"JUNETEENTH — 2 DAYS\" in `#F0ECFF` 13px. This is the only visually elevated row in the Signals column.\n\n**Music** — \"♫ TOBIN SPROUT / MY MORNING JACKET\" at 12px muted, bottom of Signals column.\n\n**Daylight** — \"☀ 14.7h — 04:48 → 19:33\" in Signals column at 12px muted.",
+    "selfCheck": "1. Hero quotability: Yes — \"Wisdom is doing now what you are going to be happy with later on.\" is a complete standalone declaration by a named author; it functions as a poster inscription, not a UI label or descriptive heading.\n2. Because-of chain: Yes — the quote's declarative tone (catalog of evidence) demanded Index; Index's catalog aesthetic demanded bebas-plex; the building-energy of waxing crescent + Juneteenth proximity demanded vivid-forward violet in the open 275–320° mandate window; the layout places the quote as masthead and four catalog columns as evidence.\n3. Render feasibility: Yes — Bebas Neue at clamp(48px, 6.5vw, 88px) renders the 58-character quote across 3 lines at ~243px height on a 1440px canvas with 6vw padding; at no viewport does it overflow the masthead or collapse below 48px.",
+    "rationale": "The Joyce Meyer quote arrived already formatted for this portfolio's register: it's not aspirational decoration but an operating instruction. A site that reads raw YAML at sunrise and composes a new design face is literally doing now what it will be happy with later. The waxing crescent at day 3 (9.7% illumination) is the calendar counterweight — the month's energy is building, not peaking, and wisdom at that moment is about the decision made before the light arrives. Juneteenth in two days adds historical mass: that date is itself the proof that actions taken matter later, that the accounting eventually comes. The quote earns its scale.\n\nThe Index archetype is the only structural honest response to this phrase. A Poster would set the quote on a pedestal with nothing around it. An Index treats the quote as a masthead — a declaration above a full inventory — and then assembles the proof: every project Doug built, every career entry, every capability, every signal from today's world. The four-column catalog below the violet rule is the evidence that wisdom was, in fact, acted on. The layout is an argument, not a frame. The archetype choice leads directly to the chassis: `bebas-plex` is catalogued for Index specifically because Bebas Neue's condensed authority fills a full-width masthead without needing to shout, and IBM Plex Sans's precise humanist geometry makes 14px catalog rows legible at maximum density.\n\nThe color decision is structural. The open mandate corridor — 275°–320° — after seven consecutive builds through lime, crimson, chartreuse, teal, amber, indigo, and cyan, left precisely one unvisited family: violet. H:292° deep violet is not the default purple of training data (H:260°) nor the default pink-magenta (H:310°) — it sits at the twilight edge of visible spectrum, the hue of something seen before it is fully understood. On near-black `#0A0618` ink, the vivid `#CC55F5` hero phrase at 6.06:1 contrast reads as a signal blazing in the dark, which is exactly the register this quote deserves on a Wednesday in June with 14.7 hours of daylight and Juneteenth two days out.",
+    "signalIntegration": "**Signal column** — Column 4 of the catalog grid is dedicated to today's signals, header: \"TODAY\" in Bebas 18px tracking 0.12em violet. Each signal is a row entry.\n\n**Sports scores** — Tigers LOSS 2–4: row format: \"⚾ DET TIGERS\" (secondary text, IBM Plex 13px) + \"2–4 L\" (right-aligned, vivid.dark `#8A10B8`, tabular-nums, 13px). The loss is marked with a faint red-adjacent: use `#C8BAEA` for the score, small \"L\" in `#7970A8` muted.\n\n**Golf** — U.S. Open row: \"⛳ U.S. OPEN\" + \"SCHEDULED\" in muted text.\n\n**Quote display** — The Joyce Meyer quote IS the hero phrase, rendered at full Bebas Neue display scale in the masthead. Attribution \"— Joyce Meyer\" is a secondary IBM Plex Sans italic line beneath.\n\n**HN stories** — Two rows in Signals column: \"↑1372 RUNNING LOCAL MODELS IS GOOD NOW\" (wraps to 2 lines at compact width; 12px, color `#C8BAEA`) and \"↑813 GRAPHENEOS → ANDROID 17\" (12px muted). Score rendered in `#CC55F5` accent, story title in secondary text.\n\n**Lunar phase** — \"🌙 WAXING CRESCENT 9.7%\" in Signals column, row at compact 12px.\n\n**Juneteenth** — Highlighted row with left-border treatment: `border-left: 2px solid #CC55F5; padding-left: 6px`. Text: \"JUNETEENTH — 2 DAYS\" in `#F0ECFF` 13px. This is the only visually elevated row in the Signals column.\n\n**Music** — \"♫ TOBIN SPROUT / MY MORNING JACKET\" at 12px muted, bottom of Signals column.\n\n**Daylight** — \"☀ 14.7h — 04:48 → 19:33\" in Signals column at 12px muted."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "violet": {
+          "50": "#F8F0FF",
+          "100": "#EDD9FF",
+          "200": "#D9B0FF",
+          "300": "#C080F8",
+          "400": "#A450EC",
+          "500": "#8820D8",
+          "600": "#6E10B0",
+          "700": "#530C84",
+          "800": "#380858",
+          "900": "#1E0430"
+        },
+        "vivid": {
+          "50": "#FBF0FF",
+          "100": "#F0C8FF",
+          "200": "#DF8FFF",
+          "300": "#CC55F5",
+          "400": "#B020E0",
+          "500": "#8A10B8",
+          "600": "#6A0090",
+          "700": "#4D0068",
+          "800": "#320044",
+          "900": "#1A0024"
+        },
+        "ink": {
+          "50": "#F0ECFF",
+          "100": "#E2DCFF",
+          "200": "#C8BAEA",
+          "300": "#A898D0",
+          "400": "#7970A8",
+          "500": "#544A78",
+          "600": "#382B58",
+          "700": "#261A44",
+          "800": "#160E30",
+          "900": "#0A0618"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.ink.900}",
+          "_light": "{colors.ink.50}"
+        },
+        "bgCard": {
+          "base": "{colors.ink.800}",
+          "_light": "{colors.violet.50}"
+        },
+        "bgMuted": {
+          "base": "{colors.ink.700}",
+          "_light": "{colors.violet.100}"
+        },
+        "bgMasthead": {
+          "base": "{colors.ink.800}",
+          "_light": "{colors.violet.200}"
+        },
+        "bgRow": {
+          "base": "{colors.ink.900}",
+          "_light": "{colors.ink.50}"
+        },
+        "bgRowHover": {
+          "base": "{colors.ink.800}",
+          "_light": "{colors.violet.100}"
+        },
+        "text": {
+          "base": "{colors.ink.50}",
+          "_light": "{colors.ink.900}"
+        },
+        "textSecondary": {
+          "base": "{colors.ink.200}",
+          "_light": "{colors.ink.700}"
+        },
+        "textMuted": {
+          "base": "{colors.ink.400}",
+          "_light": "{colors.ink.500}"
+        },
+        "accent": {
+          "base": "{colors.vivid.300}",
+          "_light": "{colors.violet.600}"
+        },
+        "accentHover": {
+          "base": "{colors.vivid.200}",
+          "_light": "{colors.violet.500}"
+        },
+        "accentSubtle": {
+          "base": "{colors.vivid.800}",
+          "_light": "{colors.vivid.100}"
+        },
+        "accentDim": {
+          "base": "{colors.vivid.500}",
+          "_light": "{colors.violet.400}"
+        },
+        "border": {
+          "base": "{colors.ink.700}",
+          "_light": "{colors.violet.200}"
+        },
+        "borderAccent": {
+          "base": "{colors.vivid.300}",
+          "_light": "{colors.violet.500}"
+        },
+        "borderSubtle": {
+          "base": "{colors.ink.700}",
+          "_light": "{colors.violet.100}"
+        },
+        "highlight": {
+          "base": "{colors.vivid.300}",
+          "_light": "{colors.violet.600}"
+        }
+      }
+    },
+    "spacing": {
+      "1": "4px",
+      "2": "8px",
+      "3": "16px",
+      "4": "24px",
+      "5": "32px",
+      "6": "48px",
+      "7": "64px",
+      "8": "96px",
+      "9": "128px"
+    },
+    "lineHeights": {
+      "tight": "0.92",
+      "snug": "1.1",
+      "normal": "1.5",
+      "loose": "1.75"
+    },
+    "letterSpacings": {
+      "tight": "-0.03em",
+      "normal": "0em",
+      "wide": "0.05em",
+      "wider": "0.1em",
+      "widest": "0.2em"
+    },
+    "radii": {
+      "none": "0px",
+      "sm": "2px",
+      "md": "4px",
+      "lg": "8px",
+      "full": "9999px"
+    },
+    "fontWeights": {
+      "light": "300",
+      "normal": "400",
+      "medium": "500",
+      "semibold": "600",
+      "bold": "700"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 292,
+      "s": 82,
+      "l": 52,
+      "name": "deep violet"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "violet",
+      "name": "ink"
+    },
+    "mood_word": "incandescent",
+    "color_story": "Deep violet — the hue of foresight and dusk, last light before full dark — renders wisdom as something seen before it is fully understood, a signal blazing on the near-black ink of the catalog page."
+  },
+  "shell": null,
+  "verdicts": null,
+  "composition": null,
+  "lane": null,
+  "cost": null
+}
