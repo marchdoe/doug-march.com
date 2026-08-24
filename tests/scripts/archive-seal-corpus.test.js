@@ -166,12 +166,35 @@ describe('the frame', () => {
     expect(offenders.slice(0, 20)).toEqual([])
   })
 
-  it('goes dead at both ends of the run instead of dangling', () => {
+  /**
+   * The invariant is that an arrow never points at a day that is not here —
+   * not that the newest day has no next arrow.
+   *
+   * The weaker version of this test passed locally and failed in CI, which is
+   * exactly what it was for. A working copy usually holds a build that is not
+   * committed yet; sealing on that machine gives the previous day a next arrow
+   * pointing at it, and committing only the previous day publishes a link to a
+   * date that does not exist. That is the actual defect, and it is what this
+   * checks.
+   */
+  it('never points an arrow at a day the archive does not have', () => {
+    const dates = new Set(pages.map((p) => p.date))
+    const dangling = new Set()
+    for (const page of pages) {
+      const open = page.html.indexOf(`<div ${FRAME_MARKER}=`)
+      const frame = page.html.slice(open, page.html.indexOf('</div>', open))
+      for (const [, target] of frame.matchAll(/href="\/archive\/(\d{4}-\d{2}-\d{2})\/"/g)) {
+        if (!dates.has(target)) dangling.add(`${label(page)} → ${target}`)
+      }
+    }
+    expect([...dangling].slice(0, 20)).toEqual([])
+  })
+
+  it('goes dead at the far end rather than pointing before the first build', () => {
     const dates = [...new Set(pages.map((p) => p.date))].sort()
-    const first = pages.filter((p) => p.date === dates[0])
-    const last = pages.filter((p) => p.date === dates.at(-1))
-    for (const p of first) expect(p.html, label(p)).not.toContain('title="Previous build')
-    for (const p of last) expect(p.html, label(p)).not.toContain('title="Next build')
+    for (const p of pages.filter((page) => page.date === dates[0])) {
+      expect(p.html, label(p)).not.toContain('title="Previous build')
+    }
   })
 
   it('links every page to its own explainer', () => {
