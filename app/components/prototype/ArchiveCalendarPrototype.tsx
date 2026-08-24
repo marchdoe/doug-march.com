@@ -522,10 +522,12 @@ export function PrototypeSwitcher({
   variants,
   current,
   onChange,
+  names = VARIANT_NAMES,
 }: {
   variants: string[]
   current: string
   onChange: (v: string) => void
+  names?: Record<string, string>
 }) {
   useEffect(() => {
     function onKey(ev: KeyboardEvent) {
@@ -551,7 +553,7 @@ export function PrototypeSwitcher({
         ←
       </button>
       <span>
-        {current} — {VARIANT_NAMES[current]}
+        {current} — {names[current]}
       </span>
       <button
         type="button"

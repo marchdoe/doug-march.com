@@ -52,3 +52,6 @@ themes/
 
 # PROTOTYPE #158 — injected snapshot copies, regenerate with scripts/proto-158-inject-bar.js
 public/_proto-158/
+
+# PROTOTYPE #159 — generated records, rebuild with scripts/proto-159-build-records.js
+public/_proto-record/
