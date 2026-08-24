@@ -200,49 +200,81 @@ Target scheme:
 
 ---
 
-## Phase 3 — Seal and frame (one traversal)
+## Phase 3 — Seal and frame — SHIPPED (2026-08-24, one commit)
 
-Implements #156 and #158 over 1,040 pages across 120 dates. Rewrite and injection share
+Implements #156 and #158 over 1,041 pages across 120 dates. Rewrite and injection share
 a single pass.
+
+**As built.** Five notes:
+- The seal is `scripts/utils/archive-seal.js` (pure functions over one page) plus
+  `scripts/seal-archive.js` (the traversal). The pipeline calls the traversal after
+  `copyToPublic`, so capture-time and backfill are the same code path rather than
+  two implementations that drift.
+- The rewrite is scoped to attribute values, never document text. Two snapshots
+  print `https://doug-march.com` as the visible text of a link; a string replace
+  would have edited what the design says, not where it points.
+- `<link rel="modulepreload">` is stripped rather than allowlisted. All 3,611 of
+  them point at `/assets/*.js` that 404s in every snapshot, and no snapshot has a
+  `<script src>` or an external stylesheet other than fonts — every design ships
+  its CSS inline. Dropping them is what lets Task 3.4 read as a literal "no
+  absolute paths" assertion instead of a 3,611-entry exception.
+- `/work` maps to `index.html`, not to a `work.html` that has never existed. None
+  of the six dates carrying the link defines an `id="work"` anchor either, so the
+  nav item has no destination inside the capture and the day's own home page is
+  the least-wrong answer.
+- The whole archive is resealed on every run, not just the new day. Today's
+  arrival is what gives yesterday a next arrow to point at, and the pass costs
+  0.28s for all 1,041 pages, so there was no reason to be cleverer.
+
+**One correction to the plan.** Task 3.4 asked for zero `content="https://doug-march.com`
+in `og:`/`twitter:` meta. That would forbid the `og:url` Task 3.1 requires, since a
+canonical URL is necessarily absolute. The test asserts the stronger thing instead:
+every `og:url` equals its own snapshot's archive URL, and `og:image` / `twitter:image`
+are gone entirely.
+
+**A Phase 2 bug fixed here.** `archiveStaticPlugin` checked `dist/client/archive`
+before `public/archive` on both servers. Under `vite dev` a stale `dist/` from an
+earlier build shadowed every edit to `public/`, so a freshly sealed page served as
+its unsealed self. Each server now reads its own authoritative tree first.
 
 ### Task 3.1: Capture-time link rewrite
 Order matters — three of these match a `/`-prefixed href, and the host rule must run
 before any generic absolute-URL rule.
 
-- [ ] `<a href="/#fragment">` → `index.html#fragment`. 13 dates, 156 occurrences.
-- [ ] `/work…`, `/about…`, `/contact`, `/experiments` → in-date equivalents. 6 dates,
+- [x] `<a href="/#fragment">` → `index.html#fragment`. 13 dates, 156 occurrences.
+- [x] `/work…`, `/about…`, `/contact`, `/experiments` → in-date equivalents. 6 dates,
       81 occurrences. `/work` has no `work.html` in any snapshot, so this needs a
       mapping, not a leading-slash strip.
-- [ ] `https://doug-march.com` → `index.html`. 105 dates. Match the host exactly; do not
+- [x] `https://doug-march.com` → `index.html`. 105 dates. Match the host exactly; do not
       catch `doug-march-dot-com.html`, a legitimate filename.
-- [ ] `og:url` → the snapshot's own archive URL. `og:image` / `twitter:image` dropped —
+- [x] `og:url` → the snapshot's own archive URL. `og:image` / `twitter:image` dropped —
       123 of 135 already 404.
-- [ ] **Leave `<a href="/archive">` alone.** 93 dates, 761 occurrences. It points at the
+- [x] **Leave `<a href="/archive">` alone.** 93 dates, 761 occurrences. It points at the
       calendar, which is the intended exit. Add it to the seal test as an explicit
       allowlist entry so it reads as a decision.
-- [ ] **Leave every font reference alone.** Google Fonts and Fontshare, 119 dates.
+- [x] **Leave every font reference alone.** Google Fonts and Fontshare, 119 dates.
 
 ### Task 3.2: Frame injection
-- [ ] Full-width top rail, always visible, displacing the design via `body padding-top`.
+- [x] Full-width top rail, always visible, displacing the design via `body padding-top`.
       It is the only variant that never covers content; a bottom pill covers the footer
       and a hover-reveal covers the masthead. Both were built and photographed.
-- [ ] Pure HTML + CSS. No script — a sealed snapshot cannot run any.
-- [ ] All 9 pages, not just the home page. The snapshot's own nav invites the click.
-- [ ] Contents: back to `/archive`, the date, prev/next skipping gaps and going dead at
+- [x] Pure HTML + CSS. No script — a sealed snapshot cannot run any.
+- [x] All 9 pages, not just the home page. The snapshot's own nav invites the click.
+- [x] Contents: back to `/archive`, the date, prev/next skipping gaps and going dead at
       the ends, and a link to `/how/<date>`.
-- [ ] Ground: `rgba(14,14,16,0.92)` with a blur reads on all 18 light and 100 dark
+- [x] Ground: `rgba(14,14,16,0.92)` with a blur reads on all 18 light and 100 dark
       grounds. Verified against `#01070e`, `#fafaf8`, and `#07724a`.
 
 ### Task 3.3: Backfill
-- [ ] One traversal of `public/archive/**/*.html` applying 3.1 and 3.2.
-- [ ] Exclude the nested copy under `public/archive/2026-04-14/`.
-- [ ] Idempotent — re-running must not double-inject.
+- [x] One traversal of `public/archive/**/*.html` applying 3.1 and 3.2.
+- [x] Exclude the nested copy under `public/archive/2026-04-14/`.
+- [x] Idempotent — re-running must not double-inject.
 
 ### Task 3.4: Seal regression tests
-- [ ] Zero matches for `href="/` across `public/archive/**/*.html`, allowlisting
+- [x] Zero matches for `href="/` across `public/archive/**/*.html`, allowlisting
       `/archive`.
-- [ ] Zero `content="https://doug-march.com` in `og:`/`twitter:` meta.
-- [ ] **Non-zero** `fonts.googleapis.com` references. An over-eager rewrite that strips
+- [x] Zero `content="https://doug-march.com` in `og:`/`twitter:` meta.
+- [x] **Non-zero** `fonts.googleapis.com` references. An over-eager rewrite that strips
       fonts would flatten 120 designs to Times New Roman, and would otherwise do it
       silently.
 

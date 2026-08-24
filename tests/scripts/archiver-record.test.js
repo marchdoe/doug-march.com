@@ -9,6 +9,14 @@ vi.mock('../../scripts/utils/snapshot.js', () => ({
   captureSnapshot: vi.fn().mockResolvedValue(undefined),
 }))
 
+// Stub the seal too. archive() reseals the whole archive on the way out, which
+// is correct in the pipeline and wrong in a unit test — on an unsealed checkout
+// it would quietly rewrite 1,000 committed files as a side effect of running
+// the suite. The seal has its own tests against a temp tree.
+vi.mock('../../scripts/seal-archive.js', () => ({
+  sealArchive: vi.fn().mockResolvedValue({ dates: 0, scanned: 0, changed: [] }),
+}))
+
 const { archive } = await import('../../scripts/utils/archiver.js')
 const { ROOT } = await import('../../scripts/utils/file-manager.js')
 

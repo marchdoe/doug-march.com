@@ -41,32 +41,38 @@ function browserStorageContextStub() {
 function archiveStaticPlugin(): Plugin {
   const DATE_URL = /^\/archive\/(\d{4}-\d{2}-\d{2})(\/?)$/
 
-  // dist/client in preview and on Vercel; public/ under the dev server.
-  const roots = [resolve('dist', 'client', 'archive'), resolve('public', 'archive')]
+  const PUBLIC = resolve('public', 'archive')
+  const DIST = resolve('dist', 'client', 'archive')
 
-  const middleware = (req: IncomingMessage, res: ServerResponse, next: () => void) => {
-    const match = DATE_URL.exec((req.url ?? '').split('?')[0])
-    if (!match) return next()
+  // Whichever tree is authoritative for the server doing the serving comes first.
+  // Under `vite dev` that is public/ — the pipeline and the seal script write
+  // there, and a dist/ left over from an earlier build would otherwise shadow
+  // every edit with stale bytes. Under `vite preview` the point is to serve what
+  // the build produced, so dist/ wins.
+  const makeMiddleware =
+    (roots: string[]) => (req: IncomingMessage, res: ServerResponse, next: () => void) => {
+      const match = DATE_URL.exec((req.url ?? '').split('?')[0])
+      if (!match) return next()
 
-    const [, date, trailingSlash] = match
-    if (!trailingSlash) {
-      res.writeHead(301, { Location: `/archive/${date}/` })
-      return res.end()
+      const [, date, trailingSlash] = match
+      if (!trailingSlash) {
+        res.writeHead(301, { Location: `/archive/${date}/` })
+        return res.end()
+      }
+
+      const indexPath = roots.map((r) => resolve(r, date, 'index.html')).find((p) => existsSync(p))
+      if (!indexPath) return next()
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
+      return res.end(readFileSync(indexPath))
     }
-
-    const indexPath = roots.map((r) => resolve(r, date, 'index.html')).find((p) => existsSync(p))
-    if (!indexPath) return next()
-    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
-    return res.end(readFileSync(indexPath))
-  }
 
   return {
     name: 'archive-static',
     configureServer(server) {
-      server.middlewares.use(middleware)
+      server.middlewares.use(makeMiddleware([PUBLIC, DIST]))
     },
     configurePreviewServer(server) {
-      server.middlewares.use(middleware)
+      server.middlewares.use(makeMiddleware([DIST, PUBLIC]))
     },
   }
 }

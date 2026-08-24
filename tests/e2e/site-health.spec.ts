@@ -108,6 +108,61 @@ test.describe('site health — archived site serving', () => {
   })
 })
 
+// The frame and the seal, exercised in a browser rather than asserted over
+// bytes. The static checks live in tests/scripts/archive-seal-corpus.test.js;
+// what only a real page can show is that the rail renders above a design that
+// styles every bare element, and that its links go where they claim. See
+// #156 and #158.
+test.describe('site health — the archive frame', () => {
+  test('the rail renders over the design and names the day', async ({ page }) => {
+    await page.goto('/archive/2026-06-28/')
+
+    const frame = page.locator('[data-archive-frame]')
+    await expect(frame).toBeVisible()
+    await expect(frame).toContainText('June 28, 2026')
+    await expect(frame).toContainText('not the current site')
+  })
+
+  test('the rail is on the inner pages too, where the design invites the click', async ({
+    page,
+  }) => {
+    await page.goto('/archive/2026-06-28/work/spaceman.html')
+    await expect(page.locator('[data-archive-frame]')).toBeVisible()
+  })
+
+  test('it displaces the design rather than covering it', async ({ page }) => {
+    await page.goto('/archive/2026-06-28/')
+    const padding = await page.evaluate(() =>
+      Number.parseInt(getComputedStyle(document.body).paddingTop, 10),
+    )
+    expect(padding).toBeGreaterThanOrEqual(44)
+  })
+
+  test('prev and next step over the days with no build', async ({ page }) => {
+    // 2026-07-25 was never built. Next from 07-24 must reach 07-26.
+    await page.goto('/archive/2026-07-24/')
+    await page.locator('[data-archive-frame] a[title^="Next build"]').click()
+    await expect(page).toHaveURL(/\/archive\/2026-07-26\/$/)
+  })
+
+  test('the explainer is one click from the design', async ({ page }) => {
+    await page.goto('/archive/2026-06-28/')
+    await page.locator('[data-archive-frame] a', { hasText: 'How it was made' }).click()
+    await expect(page).toHaveURL(/\/how\/2026-06-28$/)
+  })
+
+  test('a sealed design keeps no link onto the live site', async ({ page }) => {
+    await page.goto('/archive/2026-07-17/')
+    const escaping = await page.evaluate(() =>
+      [...document.querySelectorAll('a')]
+        .filter((a) => !a.closest('[data-archive-frame]'))
+        .map((a) => a.getAttribute('href') ?? '')
+        .filter((href) => href.startsWith('/') || href.startsWith('https://doug-march.com')),
+    )
+    expect(escaping).toEqual([])
+  })
+})
+
 test.describe('site health — content verification', () => {
   test('home page shows real content', async ({ page }) => {
     await page.goto('/')
