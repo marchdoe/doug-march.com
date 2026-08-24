@@ -107,14 +107,16 @@ export function buildFontSizes(chassis) {
 }
 
 /**
- * Read the frozen __root.tsx template and substitute the Google Fonts URL.
- * The template lives at scripts/templates/__root.tsx.template and contains
- * exactly one placeholder: {{GOOGLE_FONTS_URL}}.
+ * Read the frozen __root.tsx template and substitute its placeholders:
+ * {{GOOGLE_FONTS_URL}}, {{OG_META}}, and {{ARCHIVE_COUNT}}.
+ *
+ * The template lives at scripts/templates/__root.tsx.template. Agents never
+ * author it, which is why the archive link lives there (#155).
  *
  * Read fresh on every call so a developer editing the template during a
  * dev loop sees changes without a node restart. Cost is negligible.
  */
-export function renderRootTemplate(googleFontsUrl, ogMeta = '') {
+export function renderRootTemplate(googleFontsUrl, ogMeta = '', archiveCount = 0) {
   const template = readFileSync(TEMPLATE_PATH, 'utf8')
   if (!template.includes('{{GOOGLE_FONTS_URL}}')) {
     throw new Error('__root.tsx.template missing {{GOOGLE_FONTS_URL}} placeholder')
@@ -122,7 +124,13 @@ export function renderRootTemplate(googleFontsUrl, ogMeta = '') {
   if (!template.includes('{{OG_META}}')) {
     throw new Error('__root.tsx.template missing {{OG_META}} placeholder')
   }
-  return template.replace('{{GOOGLE_FONTS_URL}}', googleFontsUrl).replace('{{OG_META}}', ogMeta)
+  if (!template.includes('{{ARCHIVE_COUNT}}')) {
+    throw new Error('__root.tsx.template missing {{ARCHIVE_COUNT}} placeholder')
+  }
+  return template
+    .replace('{{GOOGLE_FONTS_URL}}', googleFontsUrl)
+    .replace('{{OG_META}}', ogMeta)
+    .replace('{{ARCHIVE_COUNT}}', String(archiveCount))
 }
 
 function parseRem(value) {

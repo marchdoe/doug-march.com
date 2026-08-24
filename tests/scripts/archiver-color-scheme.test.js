@@ -16,10 +16,20 @@ const { ROOT } = await import('../../scripts/utils/file-manager.js')
 describe('archive() — color scheme persistence', () => {
   let createdDir = null
 
+  // archive() copies artifacts into public/archive/{date}/ as well as writing
+  // archive/{date}/. Cleaning up only the source left public/archive/2099-01-02/
+  // sitting in the working tree indefinitely. It is gitignored, so it never
+  // reached a deploy, but a date a century in the future is exactly the kind of
+  // litter that reads as real once the archive is browsable. See #154.
   afterEach(async () => {
-    if (createdDir && existsSync(createdDir)) {
-      await rm(createdDir, { recursive: true, force: true })
+    if (!createdDir) return
+    const date = path.basename(createdDir)
+    for (const dir of [createdDir, path.join(ROOT, 'public', 'archive', date)]) {
+      if (existsSync(dir)) await rm(dir, { recursive: true, force: true })
     }
+    const png = path.join(ROOT, 'public', 'archive', `${date}.png`)
+    if (existsSync(png)) await rm(png, { force: true })
+    createdDir = null
   })
 
   it('writes color-scheme.json when colorScheme is provided', async () => {
