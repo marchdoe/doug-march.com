@@ -43,30 +43,27 @@ test.describe('site health — project pages', () => {
 })
 
 test.describe('site health — archive', () => {
-  test('archive list loads and shows entries', async ({ page }) => {
+  test('the calendar loads and shows days', async ({ page }) => {
     await page.goto('/archive')
 
-    // Rows link to the explainer; the design itself is static, outside the router.
-    const entries = page.locator('a[href^="/how/20"]')
-    await expect(entries.first()).toBeVisible({ timeout: 15000 })
-    expect(await entries.count()).toBeGreaterThan(0)
+    // A built day opens the design it shipped; a record-only day opens the
+    // explainer, because there is no design to open. Both are cells.
+    const days = page.locator('a[href^="/archive/20"], a[href^="/how/20"]')
+    await expect(days.first()).toBeVisible({ timeout: 15000 })
+    expect(await days.count()).toBeGreaterThan(0)
   })
 
-  test('explainer page loads from the archive list', async ({ page }) => {
-    await page.goto('/archive')
-
-    const firstEntry = page.locator('a[href^="/how/20"]').first()
-    await expect(firstEntry).toBeVisible({ timeout: 15000 })
-
-    await firstEntry.click()
-
-    await expect(page).toHaveURL(/\/how\/\d{4}-\d{2}-\d{2}/)
-    await expect(page.locator('text=Back to Archive')).toBeVisible({ timeout: 15000 })
+  test('the explainer is reachable from the calendar', async ({ page }) => {
+    await page.goto('/how/2026-06-28')
+    await expect(page.getByRole('heading', { name: /June 28, 2026/ })).toBeVisible({
+      timeout: 15000,
+    })
+    await expect(page.locator('a[href="/archive"]').first()).toBeVisible()
   })
 
   test('explainer handles a date with no record gracefully', async ({ page }) => {
     await page.goto('/how/9999-99-99')
-    await expect(page.locator('text=Archive entry not found')).toBeVisible({ timeout: 15000 })
+    await expect(page.getByText('Nothing archived for 9999-99-99')).toBeVisible({ timeout: 15000 })
   })
 
   test('the record projection is served', async ({ request }) => {
@@ -133,7 +130,7 @@ test.describe('site health — the archive frame', () => {
   test('it displaces the design rather than covering it', async ({ page }) => {
     await page.goto('/archive/2026-06-28/')
     const padding = await page.evaluate(() =>
-      Number.parseInt(getComputedStyle(document.body).paddingTop, 10),
+      Number.parseInt(getComputedStyle(document.body).paddingTop, 10)
     )
     expect(padding).toBeGreaterThanOrEqual(44)
   })
@@ -157,9 +154,109 @@ test.describe('site health — the archive frame', () => {
       [...document.querySelectorAll('a')]
         .filter((a) => !a.closest('[data-archive-frame]'))
         .map((a) => a.getAttribute('href') ?? '')
-        .filter((href) => href.startsWith('/') || href.startsWith('https://doug-march.com')),
+        .filter((href) => href.startsWith('/') || href.startsWith('https://doug-march.com'))
     )
     expect(escaping).toEqual([])
+  })
+})
+
+// The archive must not change when the site does. These run against a real
+// build, so they fail the morning a redesign reaches in — which is the whole
+// point of #152 and the reason the tokens live in panda.config.ts.
+test.describe('site health — the archive keeps its own identity', () => {
+  for (const path of ['/archive', '/how/2026-06-28']) {
+    test(`${path} renders outside the nightly shell`, async ({ page }) => {
+      await page.goto(path)
+      await expect(page.locator('h1')).toBeVisible({ timeout: 15000 })
+
+      // The nightly footer link belongs to every other page, not to these.
+      await expect(page.locator('a[data-archive-link]')).toHaveCount(0)
+
+      // The ground is the archive's, not the day's.
+      const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor)
+      expect(bg).toBe('rgb(14, 14, 16)')
+    })
+
+    test(`${path} sets its own type, not the day's chassis`, async ({ page }) => {
+      await page.goto(path)
+      // These pages fetch their record before rendering anything.
+      await expect(page.locator('h1')).toBeVisible({ timeout: 15000 })
+      const fonts = await page.evaluate(() => ({
+        heading: getComputedStyle(document.querySelector('h1') as Element).fontFamily,
+        loaded: [...document.querySelectorAll('link[rel=stylesheet]')].some((l) =>
+          (l as HTMLLinkElement).href.includes('IBM+Plex')
+        ),
+      }))
+      expect(fonts.heading).toContain('IBM Plex Sans')
+      expect(fonts.loaded).toBe(true)
+    })
+  }
+
+  test('the rest of the site is untouched by all of that', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.locator('a[data-archive-link]')).toBeVisible({ timeout: 15000 })
+    const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor)
+    expect(bg).not.toBe('rgb(14, 14, 16)')
+  })
+})
+
+test.describe('site health — the calendar', () => {
+  test('opens on a month with builds in it, not an empty grid', async ({ page }) => {
+    await page.goto('/archive')
+    const cells = page.locator('a[href^="/archive/2026-"]')
+    await expect(cells.first()).toBeVisible({ timeout: 15000 })
+    expect(await cells.count()).toBeGreaterThan(10)
+  })
+
+  test('a day opens the design it shipped', async ({ page }) => {
+    await page.goto('/archive')
+    const cell = page.locator('a[href="/archive/2026-06-28/"]').first()
+    await expect(cell).toBeVisible({ timeout: 15000 })
+    await cell.click()
+    await expect(page).toHaveURL(/\/archive\/2026-06-28\/$/)
+  })
+
+  test('a day with no preserved pages goes to the explainer instead', async ({ page }) => {
+    await page.goto('/archive')
+    // 2026-03-12 has a record and no capture.
+    await page.locator('button', { hasText: 'All' }).click()
+    const recordCell = page.locator('a[href="/how/2026-03-12"]').first()
+    await expect(recordCell).toBeVisible({ timeout: 15000 })
+  })
+})
+
+test.describe('site health — the explainer', () => {
+  test('leads with the brief and links to the design', async ({ page }) => {
+    await page.goto('/how/2026-06-28')
+    await expect(page.getByRole('heading', { name: 'A brief was written' })).toBeVisible({
+      timeout: 15000,
+    })
+    await expect(page.locator('a[href="/archive/2026-06-28/"]')).toBeVisible()
+  })
+
+  test('names the era when a field did not exist yet, rather than looking broken', async ({
+    page,
+  }) => {
+    await page.goto('/how/2026-03-12')
+    // Four fields predate the prose era, so the sentence appears more than once.
+    await expect(page.getByText(/had no such concept in the prose era/).first()).toBeVisible({
+      timeout: 15000,
+    })
+    // A record-only day has no design to offer.
+    await expect(page.locator('a[href="/archive/2026-03-12/"]')).toHaveCount(0)
+  })
+
+  test('summarises each signal in words rather than counting items', async ({ page }) => {
+    await page.goto('/how/2026-06-28')
+    await expect(page.getByText(/full moon, \d+% lit/)).toBeVisible({ timeout: 15000 })
+    await expect(page.getByText(/\d+ items/)).toHaveCount(0)
+  })
+
+  test('never embeds the preserved design, which would put two identities on one page', async ({
+    page,
+  }) => {
+    await page.goto('/how/2026-06-28')
+    await expect(page.locator('iframe')).toHaveCount(0)
   })
 })
 

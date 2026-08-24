@@ -54,10 +54,33 @@ function loadRecord(date) {
 }
 
 /**
+ * Pages of preserved site under public/archive/<date>/.
+ *
+ * Counted rather than assumed: three dates have a record and no capture, and
+ * the ten earliest have five pages instead of nine. The nested copy of the
+ * archive that 2026-04-14 captured of itself is excluded, the same exclusion
+ * scripts/seal-archive.js makes.
+ */
+function countSnapshotPages(date) {
+  const dir = join(ROOT, 'public', 'archive', date)
+  if (!existsSync(dir)) return 0
+  let n = 0
+  const walk = (d, rel) => {
+    for (const entry of readdirSync(d, { withFileTypes: true })) {
+      if (date === '2026-04-14' && !rel && entry.name === 'archive') continue
+      if (entry.isDirectory()) walk(join(d, entry.name), rel ? `${rel}/${entry.name}` : entry.name)
+      else if (entry.name.endsWith('.html')) n += 1
+    }
+  }
+  walk(dir, '')
+  return n
+}
+
+/**
  * The calendar and the dev panel both read the index, so it carries only what a
  * list needs: enough to label a day and colour a cell.
  */
-function indexEntry(record, hasScreenshot) {
+function indexEntry(record, { hasScreenshot, pages }) {
   return {
     date: record.date,
     era: record.era,
@@ -69,6 +92,10 @@ function indexEntry(record, hasScreenshot) {
     moodWord: record.colorScheme?.mood_word ?? null,
     primaryHue: record.colorScheme?.primary_hue ?? null,
     hasScreenshot,
+    // How many pages of that day's site were preserved. 0 means the record
+    // survived but the capture did not, and the calendar must send that cell to
+    // the explainer instead of to a design that is not there. See #157.
+    pages,
     cost: record.cost
       ? {
           totalUsd: record.cost.total_usd,
@@ -98,9 +125,14 @@ for (const date of dates) {
   }
 
   const hasScreenshot = existsSync(join(OUT_DIR, `${date}.png`))
+  const pages = countSnapshotPages(date)
 
-  writeFileSync(join(OUT_DIR, `${date}.json`), JSON.stringify({ ...record, hasScreenshot }), 'utf8')
-  index.push(indexEntry(record, hasScreenshot))
+  writeFileSync(
+    join(OUT_DIR, `${date}.json`),
+    JSON.stringify({ ...record, hasScreenshot, pages }),
+    'utf8'
+  )
+  index.push(indexEntry(record, { hasScreenshot, pages }))
 }
 
 writeFileSync(join(OUT_DIR, 'index.json'), JSON.stringify(index), 'utf8')
