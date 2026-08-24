@@ -76,6 +76,13 @@ export interface ArchiveIndexEntry {
   moodWord: string | null
   primaryHue: { h: number; s: number; l: number; name?: string } | null
   hasScreenshot: boolean
+  /**
+   * Pages of preserved site under public/archive/<date>/. Zero means the record
+   * survived but the capture did not — three dates in the prose era — and the
+   * calendar sends that cell to the explainer rather than to a design that is
+   * not there.
+   */
+  pages: number
   cost: { totalUsd: number | null; estimated: boolean; retries: number } | null
   rating: { grade: string; worked: string; didnt: string; try: string } | null
 }

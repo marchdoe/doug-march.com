@@ -368,4 +368,22 @@ export async function archive(
   } catch (err) {
     console.warn(`  public copy failed (non-blocking): ${err.message}`)
   }
+
+  // Seal the snapshot: rewrite links that would walk a visitor onto today's
+  // site, and put the frame on every page (#156, #158).
+  //
+  // The whole archive is resealed rather than just today, because today's
+  // arrival is what gives yesterday a next arrow to point at. The pass is
+  // idempotent and costs under a second for all 1,041 pages, so there is no
+  // reason to be cleverer than this.
+  //
+  // Non-blocking, like every other deterministic step here: an unsealed
+  // snapshot is worth more than a failed build.
+  try {
+    const { sealArchive } = await import('../seal-archive.js')
+    const { changed, scanned, dates } = await sealArchive()
+    console.log(`  sealed ${changed.length} of ${scanned} pages across ${dates} dates`)
+  } catch (err) {
+    console.warn(`  archive seal failed (non-blocking): ${err.message}`)
+  }
 }

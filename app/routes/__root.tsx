@@ -6,6 +6,7 @@ import {
   HeadContent,
   ScrollRestoration,
   Scripts,
+  useRouterState,
 } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { css } from '../../styled-system/css'
@@ -92,7 +93,32 @@ export const Route = createRootRoute({
   component: RootComponent,
 })
 
+/**
+ * The archive renders outside <Layout>.
+ *
+ * Layout.tsx, Sidebar.tsx, and Footer.tsx are rewritten by the React Engineer
+ * every night, and the composition grammar may delete the shell entirely. An
+ * archive wearing that shell wears a different face each morning, which is the
+ * one thing #152 says it must not do. The surfaces carry their own chrome and
+ * their own tokens instead — see the `archive.*` tokens in panda.config.ts.
+ *
+ * Regenerated from scripts/templates/__root.tsx.template on every build.
+ */
+function isArchiveSurface(pathname: string) {
+  return pathname === '/archive' || pathname.startsWith('/archive/') || pathname.startsWith('/how/')
+}
+
 function RootComponent() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
+
+  if (isArchiveSurface(pathname)) {
+    return (
+      <RootDocument bare>
+        <Outlet />
+      </RootDocument>
+    )
+  }
+
   return (
     <RootDocument>
       <Layout>
@@ -102,17 +128,52 @@ function RootComponent() {
   )
 }
 
-function RootDocument({ children }: { children: ReactNode }) {
+/**
+ * `bare` is the archive: no nightly shell, no nightly footer link, and the
+ * archive's own webfont instead of the day's.
+ *
+ * The font is declared here rather than in the route's `head` because the
+ * nightly `head` block above is regenerated every morning with that day's
+ * chassis fonts, and a route-level link would arrive after it in the cascade
+ * with no way to guarantee ordering. See the `archive.*` font tokens in
+ * panda.config.ts.
+ */
+const ARCHIVE_FONT =
+  'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap'
+
+/**
+ * The archive's ground, applied to `body` itself.
+ *
+ * The surfaces paint their own background, but `body` keeps whatever the
+ * nightly preset gave it, and that colour shows through wherever the surface
+ * does not reach — the overscroll gutter above and below the page. Caught by
+ * reading the computed style: #120d08 on a morning the design was warm brown.
+ *
+ * The literal matches `archive.bg` in panda.config.ts. It is written out
+ * because this rule has to exist before any component mounts.
+ */
+const ARCHIVE_GROUND = 'body{background:#0e0e10;color:#e8e8ea}'
+
+function RootDocument({ children, bare = false }: { children: ReactNode; bare?: boolean }) {
   return (
     <html lang="en">
       <head>
         <HeadContent />
+        {bare ? (
+          <>
+            <link rel="stylesheet" href={ARCHIVE_FONT} />
+            {/* biome-ignore lint/security/noDangerouslySetInnerHtml: a static literal, no interpolation */}
+            <style dangerouslySetInnerHTML={{ __html: ARCHIVE_GROUND }} />
+          </>
+        ) : null}
       </head>
       <body>
         {children}
-        <a href="/archive" className={archiveLink} data-archive-link>
-          Archive — 123 designs
-        </a>
+        {bare ? null : (
+          <a href="/archive" className={archiveLink} data-archive-link>
+            Archive — 123 designs
+          </a>
+        )}
         <ScrollRestoration />
         <Scripts />
       </body>

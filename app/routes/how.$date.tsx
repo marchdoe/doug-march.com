@@ -1,16 +1,39 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { useState, useEffect } from 'react'
-import type { ArchiveRecord, ArchiveTokens } from '../types/archive-record'
+import { createFileRoute } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 
-type ArchiveDetail = ArchiveRecord & { hasScreenshot: boolean }
+import { type RecordField, absenceNote } from '../lib/archive-era'
+import { signalLines } from '../lib/archive-signals'
+import { css } from '../../styled-system/css'
+import type { ArchiveRecord, ArchiveTokens, JsonValue } from '../types/archive-record'
+
+type ArchiveDetail = ArchiveRecord & { hasScreenshot: boolean; pages?: number }
 
 export const Route = createFileRoute('/how/$date')({
   component: HowPage,
 })
 
-/* ---------------------------------------------------------------------------
- * Record readers — the parsing happened once, at build time, into record.json.
- * ------------------------------------------------------------------------- */
+/**
+ * The explainer — #159.
+ *
+ * A day's build read as a sequence, not an inventory. The sections are named
+ * for what happened in order — the day arrived, a brief was written, a colour
+ * was chosen — because that is what the record is: a morning's work, in the
+ * order it was done.
+ *
+ * The brief leads, never the colour. Colour is absent on 31 of 123 dates, and a
+ * colour-led hero on those days is a grey slab. Signals (107) and tokens (106)
+ * are better covered than colour (92).
+ *
+ * The preserved design is linked, never embedded. A live frame of that day's
+ * site inside this page would put two identities on one screen, and this page's
+ * whole job is to be the fixed one.
+ *
+ * Colours arrive at render time and Panda extracts styles statically, so each
+ * swatch passes its value as a CSS custom property that a static class reads.
+ * That is the one thing `style` is used for here.
+ */
+
+/* ------------------------------------------------------------------ readers */
 
 interface Swatch {
   name: string
@@ -18,22 +41,23 @@ interface Swatch {
 }
 
 /**
- * Every stop of every ramp, in the order the preset declared them.
+ * Ramps kept as ramps, so a scale reads as a scale rather than a pile.
  *
  * Not every colour token is a ramp: a one-off like `glow: { value: '#FF8FC7' }`
  * unwraps to a bare string, and iterating that yields one swatch per character.
  */
-function swatches(tokens: ArchiveTokens | null): Swatch[] {
+function ramps(tokens: ArchiveTokens | null): { name: string; stops: Swatch[] }[] {
   if (!tokens) return []
-  const out: Swatch[] = []
-  for (const [ramp, stops] of Object.entries(tokens.colors.ramps)) {
+  const out: { name: string; stops: Swatch[] }[] = []
+  for (const [name, stops] of Object.entries(tokens.colors.ramps)) {
     if (typeof stops === 'string') {
-      out.push({ name: ramp, hex: stops })
+      out.push({ name, stops: [{ name, hex: stops }] })
       continue
     }
-    for (const [stop, hex] of Object.entries(stops)) {
-      if (typeof hex === 'string') out.push({ name: `${ramp}.${stop}`, hex })
-    }
+    const scale = Object.entries(stops)
+      .filter((e): e is [string, string] => typeof e[1] === 'string')
+      .map(([stop, hex]) => ({ name: stop, hex }))
+    if (scale.length) out.push({ name, stops: scale })
   }
   return out
 }
@@ -49,33 +73,27 @@ function pairs(tokens: ArchiveTokens | null, group: string): { name: string; val
 
 /** The Art Director's headings, which changed vocabulary in 2026-05. */
 const BRIEF_LABELS: Record<string, string> = {
-  visualSpecification: 'Visual Specification',
-  signalIntegration: 'Signal Integration',
-  selfCheck: 'Self-Check',
+  visualSpecification: 'Visual specification',
+  signalIntegration: 'Signal integration',
+  selfCheck: 'Self-check',
   rationale: 'Rationale',
-  compositionRationale: 'Composition Rationale',
+  compositionRationale: 'Composition rationale',
   mood: 'Mood',
-  compositionDirection: 'Composition Direction',
-  typographyDirection: 'Typography Direction',
-  paletteDirection: 'Palette Direction',
+  compositionDirection: 'Composition direction',
+  typographyDirection: 'Typography direction',
+  paletteDirection: 'Palette direction',
 }
 
 function briefSections(adBrief: Record<string, string> | null) {
   if (!adBrief) return []
-  return Object.entries(adBrief).map(([key, body]) => ({
-    heading: BRIEF_LABELS[key] ?? key,
-    body,
-  }))
+  return Object.entries(adBrief)
+    .filter(([, bodyText]) => typeof bodyText === 'string' && bodyText.trim())
+    .map(([key, bodyText]) => ({ heading: BRIEF_LABELS[key] ?? key, body: bodyText }))
 }
-
-/* ---------------------------------------------------------------------------
- * Date formatting
- * ------------------------------------------------------------------------- */
 
 function formatDate(date: string): string {
   try {
-    const d = new Date(`${date}T12:00:00`)
-    return d.toLocaleDateString('en-US', {
+    return new Date(`${date}T12:00:00`).toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -86,9 +104,269 @@ function formatDate(date: string): string {
   }
 }
 
-/* ---------------------------------------------------------------------------
- * Page component
- * ------------------------------------------------------------------------- */
+const asRecord = (v: JsonValue | null | undefined): Record<string, JsonValue> | null =>
+  typeof v === 'object' && v !== null && !Array.isArray(v) ? v : null
+
+/* ------------------------------------------------------------------- styles */
+
+const page = css({
+  minHeight: '100vh',
+  background: 'archive.bg',
+  color: 'archive.text',
+  fontFamily: 'archive.mono',
+  fontSize: 'archive.body',
+})
+
+const masthead = css({
+  borderBottom: '1px solid',
+  borderColor: 'archive.line',
+  padding: { base: '32px 20px 26px', md: '48px 48px 32px' },
+})
+
+const back = css({
+  fontSize: 'archive.micro',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'archive.dim',
+  textDecoration: 'none',
+  display: 'inline-block',
+  marginBottom: '20px',
+  _hover: { color: 'archive.text' },
+})
+
+const dateLine = css({
+  fontFamily: 'archive.sans',
+  fontSize: { base: 'archive.title', md: 'archive.display' },
+  lineHeight: '1.15',
+  fontWeight: 'normal',
+  letterSpacing: '-0.01em',
+})
+
+const columns = css({
+  display: 'grid',
+  gridTemplateColumns: { base: '1fr', lg: '240px minmax(0, 1fr)' },
+  gap: { base: '32px', lg: '56px' },
+  padding: { base: '28px 20px 96px', md: '40px 48px 120px' },
+  maxWidth: '1180px',
+  alignItems: 'start',
+})
+
+const rail = css({
+  position: { base: 'static', lg: 'sticky' },
+  top: '32px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '18px',
+  fontSize: 'archive.micro',
+})
+
+const railRow = css({ display: 'flex', flexDirection: 'column', gap: '4px' })
+
+const railKey = css({
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  color: 'archive.faint',
+})
+
+const railValue = css({ color: 'archive.text', fontSize: 'archive.small', wordBreak: 'break-word' })
+
+const openDesign = css({
+  display: 'block',
+  textAlign: 'center',
+  border: '1px solid',
+  borderColor: 'archive.line',
+  color: 'archive.text',
+  textDecoration: 'none',
+  padding: '11px 12px',
+  fontSize: 'archive.micro',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  transition: 'background 0.15s ease, color 0.15s ease',
+  _hover: { background: 'archive.text', color: 'archive.bg' },
+})
+
+const bodyCol = css({ display: 'flex', flexDirection: 'column', gap: '52px', minWidth: 0 })
+
+const section = css({ minWidth: 0 })
+
+const stepLabel = css({
+  fontSize: 'archive.micro',
+  letterSpacing: '0.18em',
+  textTransform: 'uppercase',
+  color: 'archive.faint',
+  marginBottom: '10px',
+})
+
+const stepTitle = css({
+  fontFamily: 'archive.sans',
+  fontSize: 'archive.lead',
+  fontWeight: 'normal',
+  marginBottom: '18px',
+  color: 'archive.text',
+})
+
+const prose = css({
+  fontFamily: 'archive.sans',
+  fontSize: 'archive.body',
+  lineHeight: '1.75',
+  color: 'archive.text',
+  maxWidth: '68ch',
+  whiteSpace: 'pre-wrap',
+})
+
+const absent = css({
+  fontSize: 'archive.small',
+  color: 'archive.faint',
+  fontStyle: 'italic',
+  maxWidth: '60ch',
+  lineHeight: '1.6',
+})
+
+const subhead = css({
+  fontSize: 'archive.micro',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'archive.dim',
+  marginTop: '26px',
+  marginBottom: '10px',
+})
+
+const defList = css({ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '72ch' })
+
+const defRow = css({
+  display: 'grid',
+  gridTemplateColumns: { base: '1fr', sm: '132px minmax(0, 1fr)' },
+  gap: { base: '2px', sm: '16px' },
+  alignItems: 'baseline',
+  paddingBottom: '10px',
+  borderBottom: '1px solid',
+  borderColor: 'archive.lineSoft',
+})
+
+const defKey = css({
+  fontSize: 'archive.micro',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: 'archive.dim',
+})
+
+const defValue = css({ fontSize: 'archive.small', color: 'archive.text', minWidth: 0 })
+
+const defEmpty = css({ fontSize: 'archive.small', color: 'archive.faint', fontStyle: 'italic' })
+
+const rampRow = css({ marginBottom: '18px' })
+
+const rampName = css({
+  fontSize: 'archive.micro',
+  letterSpacing: '0.12em',
+  color: 'archive.dim',
+  marginBottom: '6px',
+})
+
+const rampStops = css({ display: 'flex', flexWrap: 'wrap', gap: '2px' })
+
+const stop = css({
+  width: '64px',
+  minHeight: '56px',
+  background: 'var(--stop)',
+  border: '1px solid',
+  borderColor: 'archive.lineSoft',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+  gap: '2px',
+  padding: '4px',
+  fontSize: '9px',
+  lineHeight: '1.3',
+  color: 'archive.text',
+})
+
+const stopMeta = css({
+  background: 'archive.bg',
+  padding: '1px 3px',
+  alignSelf: 'flex-start',
+  opacity: 0.92,
+})
+
+const heroSwatch = css({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '14px',
+  marginBottom: '18px',
+})
+
+const heroChip = css({
+  width: '54px',
+  height: '54px',
+  flexShrink: 0,
+  background: 'var(--hero)',
+  border: '1px solid',
+  borderColor: 'archive.line',
+})
+
+const signalGrid = css({ display: 'flex', flexDirection: 'column', gap: '9px', maxWidth: '76ch' })
+
+const signalRow = css({
+  display: 'grid',
+  gridTemplateColumns: { base: '1fr', sm: '128px minmax(0, 1fr)' },
+  gap: { base: '2px', sm: '16px' },
+  alignItems: 'baseline',
+  paddingBottom: '9px',
+  borderBottom: '1px solid',
+  borderColor: 'archive.lineSoft',
+})
+
+const signalName = css({
+  fontSize: 'archive.micro',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: 'archive.dim',
+})
+
+const signalText = css({ fontSize: 'archive.small', color: 'archive.text', minWidth: 0 })
+const signalNone = css({ fontSize: 'archive.small', color: 'archive.faint', fontStyle: 'italic' })
+
+const fileList = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+})
+
+const notFound = css({
+  minHeight: '100vh',
+  background: 'archive.bg',
+  color: 'archive.text',
+  fontFamily: 'archive.mono',
+  fontSize: 'archive.body',
+  padding: '96px 24px',
+  textAlign: 'center',
+})
+
+/* ---------------------------------------------------------------- component */
+
+function Step({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
+  return (
+    <section className={section}>
+      <p className={stepLabel}>{n}</p>
+      <h2 className={stepTitle}>{title}</h2>
+      {children}
+    </section>
+  )
+}
+
+function Absent({ field, era, noun }: { field: RecordField; era: string | null; noun: string }) {
+  return <p className={absent}>{absenceNote(field, era, noun)}</p>
+}
+
+function RailRow({ label, value }: { label: string; value: string | null | undefined }) {
+  if (!value) return null
+  return (
+    <div className={railRow}>
+      <span className={railKey}>{label}</span>
+      <span className={railValue}>{value}</span>
+    </div>
+  )
+}
 
 function HowPage() {
   const { date } = Route.useParams()
@@ -107,399 +385,259 @@ function HowPage() {
 
   if (error) {
     return (
-      <div style={{ padding: '80px 48px', maxWidth: 800, margin: '0 auto' }}>
-        <h2 style={{ fontSize: '1.5rem', marginBottom: 16, color: 'var(--colors-text, #111)' }}>
-          Archive entry not found
-        </h2>
-        <Link to="/archive" style={{ color: 'var(--colors-accent, #666)', textDecoration: 'none' }}>
-          ← Back to Archive
-        </Link>
+      <div className={notFound}>
+        <p>Nothing archived for {date}.</p>
+        <p>
+          <a href="/archive" className={back}>
+            ← The archive
+          </a>
+        </p>
       </div>
     )
   }
 
   if (!detail) return null
 
-  const colors = swatches(detail.tokens)
+  const era = detail.era
+  const scheme = asRecord(detail.colorScheme as JsonValue)
+  const hue = asRecord(scheme?.primary_hue)
+  const colorRamps = ramps(detail.tokens)
+  const stopCount = colorRamps.reduce((n, r) => n + r.stops.length, 0)
   const fonts = pairs(detail.tokens, 'fonts')
   const fontSizes = pairs(detail.tokens, 'fontSizes')
   const sections = briefSections(detail.adBrief)
+  const signals = signalLines(detail.signals as Record<string, JsonValue> | null)
+  const composition = asRecord(detail.composition as JsonValue)
+  const lane = asRecord(detail.lane as JsonValue)
+  const shell = asRecord(detail.shell as JsonValue)
+  const hasDesign = (detail.pages ?? 0) > 0
+
+  const heroHex =
+    hue && typeof hue.h === 'number' && typeof hue.s === 'number' && typeof hue.l === 'number'
+      ? `hsl(${hue.h} ${hue.s}% ${hue.l}%)`
+      : null
 
   return (
-    <>
-      {/* ── Section 1: Design Brief ─────────────────────────────────── */}
-      <section
-        style={{
-          maxWidth: 720,
-          margin: '0 auto',
-          padding: '120px 48px 80px',
-        }}
-      >
-        {(detail.legacyArchetype ?? detail.chassis) && (
-          <p
-            style={{
-              fontVariant: 'all-small-caps',
-              letterSpacing: '0.15em',
-              fontSize: 12,
-              color: 'var(--colors-text-dim, #888)',
-              marginBottom: 8,
-            }}
-          >
-            {detail.legacyArchetype ?? detail.chassis}
-          </p>
-        )}
-
-        <time
-          dateTime={detail.date}
-          style={{
-            display: 'block',
-            fontSize: 13,
-            color: 'var(--colors-text-dim, #999)',
-            fontVariantNumeric: 'tabular-nums',
-            marginBottom: 32,
-          }}
-        >
-          {formatDate(detail.date)}
-        </time>
-
-        {detail.brief && (
-          <h1
-            style={{
-              fontSize: 28,
-              fontWeight: 600,
-              lineHeight: 1.45,
-              color: 'var(--colors-text, #111)',
-              marginBottom: 32,
-              maxWidth: 640,
-            }}
-          >
-            {detail.brief}
-          </h1>
-        )}
-
-        {detail.rationale && (
-          <div
-            style={{
-              fontSize: 15,
-              lineHeight: 1.7,
-              color: 'var(--colors-text-dim, #555)',
-              maxWidth: 640,
-            }}
-          >
-            {detail.rationale.split('\n\n').map((para, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: static string split, rendered once, never reordered.
-              <p key={i} style={{ marginBottom: 16 }}>
-                {para}
-              </p>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* ── Section 2: Tokens ───────────────────────────────────────── */}
-      <section
-        style={{
-          maxWidth: 720,
-          margin: '0 auto',
-          padding: '0 48px 64px',
-        }}
-      >
-        <p
-          style={{
-            fontVariant: 'all-small-caps',
-            letterSpacing: '0.15em',
-            fontSize: 12,
-            color: 'var(--colors-text-dim, #888)',
-            marginBottom: 24,
-          }}
-        >
-          TOKENS
-        </p>
-
-        {!detail.tokens ? (
-          <p
-            style={{
-              fontSize: 14,
-              color: 'var(--colors-text-dim, #999)',
-              fontStyle: 'italic',
-            }}
-          >
-            Tokens not available for this build.
-          </p>
-        ) : (
-          <>
-            {/* Color swatches */}
-            {colors.length > 0 && (
-              <div style={{ marginBottom: 32 }}>
-                <p
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: 'var(--colors-text, #111)',
-                    marginBottom: 12,
-                  }}
-                >
-                  Colors
-                </p>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: 12,
-                  }}
-                >
-                  {colors.map((c) => (
-                    <div
-                      key={`${c.name}-${c.hex}`}
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: 6,
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 6,
-                          backgroundColor: c.hex,
-                          border: '1px solid var(--colors-border, #e0e0e0)',
-                        }}
-                      />
-                      <span
-                        style={{
-                          fontSize: 10,
-                          color: 'var(--colors-text-dim, #999)',
-                          fontFamily: 'monospace',
-                        }}
-                      >
-                        {c.hex}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: 10,
-                          color: 'var(--colors-text-dim, #aaa)',
-                        }}
-                      >
-                        {c.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Typography — the preset holds no fonts on most nights; the
-                chassis is what names the type pairing. */}
-            {(detail.chassis || fonts.length > 0) && (
-              <div style={{ marginBottom: 32 }}>
-                <p
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: 'var(--colors-text, #111)',
-                    marginBottom: 12,
-                  }}
-                >
-                  Typography
-                </p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  {detail.chassis && (
-                    <p
-                      style={{
-                        fontSize: 20,
-                        color: 'var(--colors-text, #111)',
-                      }}
-                    >
-                      {detail.chassis}
-                    </p>
-                  )}
-                  {fonts.map((font) => (
-                    <p
-                      key={font.name}
-                      style={{
-                        fontSize: 12,
-                        color: 'var(--colors-text-dim, #999)',
-                        fontFamily: 'monospace',
-                      }}
-                    >
-                      {font.name}: {font.value}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Font sizes */}
-            {fontSizes.length > 0 && (
-              <div>
-                <p
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: 'var(--colors-text, #111)',
-                    marginBottom: 12,
-                  }}
-                >
-                  Scale
-                </p>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: '8px 24px',
-                  }}
-                >
-                  {fontSizes.map((s) => (
-                    <span
-                      key={s.name}
-                      style={{
-                        fontSize: 13,
-                        color: 'var(--colors-text-dim, #777)',
-                        fontFamily: 'monospace',
-                      }}
-                    >
-                      {s.name}: {s.value}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </section>
-
-      {/* ── Section 3: Signals ──────────────────────────────────────── */}
-      <section
-        style={{
-          maxWidth: 720,
-          margin: '0 auto',
-          padding: '0 48px 64px',
-        }}
-      >
-        <p
-          style={{
-            fontVariant: 'all-small-caps',
-            letterSpacing: '0.15em',
-            fontSize: 12,
-            color: 'var(--colors-text-dim, #888)',
-            marginBottom: 24,
-          }}
-        >
-          SIGNALS
-        </p>
-
-        {sections.length === 0 ? (
-          <p
-            style={{
-              fontSize: 14,
-              color: 'var(--colors-text-dim, #999)',
-              fontStyle: 'italic',
-            }}
-          >
-            The Art Director's brief was not kept for this build.
-          </p>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-            {sections.map((section) => (
-              <div key={section.heading}>
-                <p
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: 'var(--colors-text, #111)',
-                    marginBottom: 8,
-                  }}
-                >
-                  {section.heading}
-                </p>
-                <div
-                  style={{
-                    fontSize: 14,
-                    lineHeight: 1.65,
-                    color: 'var(--colors-text-dim, #666)',
-                  }}
-                >
-                  {section.body.split('\n\n').map((para, j) => (
-                    // biome-ignore lint/suspicious/noArrayIndexKey: static string split, rendered once, never reordered.
-                    <p key={j} style={{ marginBottom: 10 }}>
-                      {para}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* ── Screenshot ──────────────────────────────────────── */}
-      {detail.hasScreenshot && (
-        <section
-          style={{
-            maxWidth: 720,
-            margin: '0 auto',
-            padding: '0 48px 48px',
-          }}
-        >
-          <p
-            style={{
-              fontVariant: 'all-small-caps',
-              letterSpacing: '0.15em',
-              fontSize: 12,
-              color: 'var(--colors-text-dim, #888)',
-              marginBottom: 24,
-            }}
-          >
-            PREVIEW
-          </p>
-          <img
-            src={`/archive-data/${detail.date}.png`}
-            alt={`Screenshot of the design from ${detail.date}`}
-            style={{
-              width: '100%',
-              border: '1px solid var(--colors-border, #e0e0e0)',
-              borderRadius: 4,
-            }}
-          />
-        </section>
-      )}
-
-      {/* ── Section 4: Actions ──────────────────────────────────────── */}
-      <section
-        style={{
-          maxWidth: 720,
-          margin: '0 auto',
-          padding: '0 48px 120px',
-          display: 'flex',
-          gap: 24,
-          alignItems: 'center',
-        }}
-      >
-        <Link
-          to="/archive"
-          style={{
-            fontSize: 14,
-            color: 'var(--colors-accent, #666)',
-            textDecoration: 'none',
-          }}
-        >
-          ← Back to Archive
-        </Link>
-        <a
-          href={`/archive/${detail.date}/`}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            fontSize: 14,
-            color: 'var(--colors-accent, #666)',
-            textDecoration: 'none',
-          }}
-        >
-          View archived site ↗
+    <div className={page}>
+      <header className={masthead}>
+        <a href="/archive" className={back}>
+          ← The archive
         </a>
-      </section>
-    </>
+        <h1 className={dateLine}>{formatDate(date)}</h1>
+      </header>
+
+      <div className={columns}>
+        <aside className={rail}>
+          {hasDesign ? (
+            <a href={`/archive/${date}/`} className={openDesign}>
+              Open the design
+            </a>
+          ) : (
+            <p className={absent}>
+              The record for this day survived; the pages did not. There is no design to open.
+            </p>
+          )}
+
+          <RailRow label="Era" value={era} />
+          <RailRow label="Chassis" value={detail.chassis} />
+          <RailRow label="Archetype" value={detail.legacyArchetype} />
+          <RailRow label="Mood" value={(scheme?.mood_word as string) ?? null} />
+          <RailRow label="Colour" value={(hue?.name as string) ?? heroHex} />
+          <RailRow label="Build" value={detail.buildId} />
+          <RailRow label="Attempts" value={detail.attempts ? String(detail.attempts) : null} />
+          {detail.cost?.total_usd != null ? (
+            <RailRow
+              label="Cost"
+              value={`$${Number(detail.cost.total_usd).toFixed(2)}${
+                detail.cost.estimated ? ' est.' : ''
+              }`}
+            />
+          ) : null}
+        </aside>
+
+        <div className={bodyCol}>
+          <Step n="01" title="The day arrived">
+            {signals.length === 0 ? (
+              <Absent field="signals" era={era} noun="record of the day" />
+            ) : (
+              <div className={signalGrid}>
+                {signals.map((s) => (
+                  <div key={s.provider} className={signalRow}>
+                    <span className={signalName}>{s.label}</span>
+                    <span className={s.empty ? signalNone : signalText}>{s.summary}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Step>
+
+          <Step n="02" title="A brief was written">
+            {detail.brief ? (
+              <p className={prose}>{detail.brief}</p>
+            ) : (
+              <Absent field="brief" era={era} noun="brief" />
+            )}
+            {detail.rationale ? (
+              <>
+                <p className={subhead}>Why</p>
+                <p className={prose}>{detail.rationale}</p>
+              </>
+            ) : null}
+            {sections.map((s) => (
+              <div key={s.heading}>
+                <p className={subhead}>{s.heading}</p>
+                <p className={prose}>{s.body}</p>
+              </div>
+            ))}
+          </Step>
+
+          <Step n="03" title="A colour was chosen">
+            {!scheme ? (
+              <Absent field="colorScheme" era={era} noun="colour direction" />
+            ) : (
+              <>
+                {heroHex ? (
+                  <div className={heroSwatch}>
+                    <div
+                      className={heroChip}
+                      style={{ '--hero': heroHex } as React.CSSProperties}
+                    />
+                    <div>
+                      <p className={defValue}>{(hue?.name as string) ?? heroHex}</p>
+                      <p className={defEmpty}>{heroHex}</p>
+                    </div>
+                  </div>
+                ) : null}
+                {typeof scheme.color_story === 'string' && scheme.color_story ? (
+                  <p className={prose}>{scheme.color_story}</p>
+                ) : null}
+              </>
+            )}
+          </Step>
+
+          <Step n="04" title="Tokens were generated">
+            {colorRamps.length === 0 && fonts.length === 0 && fontSizes.length === 0 ? (
+              <Absent field="tokens" era={era} noun="token set" />
+            ) : (
+              <>
+                {colorRamps.length ? (
+                  <>
+                    <p className={subhead}>
+                      Colour — {colorRamps.length} ramps, {stopCount} stops
+                    </p>
+                    {colorRamps.map((r) => (
+                      <div key={r.name} className={rampRow}>
+                        <p className={rampName}>{r.name}</p>
+                        <div className={rampStops}>
+                          {r.stops.map((s) => (
+                            <div
+                              key={`${r.name}.${s.name}`}
+                              className={stop}
+                              style={{ '--stop': s.hex } as React.CSSProperties}
+                              title={`${r.name}.${s.name} — ${s.hex}`}
+                            >
+                              <span className={stopMeta}>{s.name}</span>
+                              <span className={stopMeta}>{s.hex}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                ) : null}
+
+                {fonts.length ? (
+                  <>
+                    <p className={subhead}>Type</p>
+                    <div className={defList}>
+                      {fonts.map((f) => (
+                        <div key={f.name} className={defRow}>
+                          <span className={defKey}>{f.name}</span>
+                          <span className={defValue}>{f.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : null}
+
+                {fontSizes.length ? (
+                  <>
+                    <p className={subhead}>Scale</p>
+                    <div className={defList}>
+                      {fontSizes.map((f) => (
+                        <div key={f.name} className={defRow}>
+                          <span className={defKey}>{f.name}</span>
+                          <span className={defValue}>{f.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : null}
+              </>
+            )}
+          </Step>
+
+          <Step n="05" title="A composition was decided">
+            {!composition && !lane && !shell ? (
+              <Absent field="composition" era={era} noun="composition grammar" />
+            ) : (
+              <div className={defList}>
+                {composition
+                  ? Object.entries(composition).map(([k, v]) => (
+                      <div key={k} className={defRow}>
+                        <span className={defKey}>{k.replace(/_/g, ' ')}</span>
+                        <span className={defValue}>{String(v)}</span>
+                      </div>
+                    ))
+                  : null}
+                {lane?.name ? (
+                  <div className={defRow}>
+                    <span className={defKey}>Lane</span>
+                    <span className={defValue}>{String(lane.name)}</span>
+                  </div>
+                ) : null}
+                {shell
+                  ? Object.entries(shell).map(([k, v]) => (
+                      <div key={`shell-${k}`} className={defRow}>
+                        <span className={defKey}>{k.replace(/_/g, ' ')}</span>
+                        <span className={defValue}>{String(v)}</span>
+                      </div>
+                    ))
+                  : null}
+              </div>
+            )}
+          </Step>
+
+          <Step n="06" title="It was built">
+            <div className={defList}>
+              <div className={defRow}>
+                <span className={defKey}>Attempts</span>
+                <span className={detail.attempts ? defValue : defEmpty}>
+                  {detail.attempts ? detail.attempts : 'not logged'}
+                </span>
+              </div>
+              <div className={defRow}>
+                <span className={defKey}>Files changed</span>
+                {detail.filesChanged?.length ? (
+                  <span className={`${defValue} ${fileList}`}>
+                    {detail.filesChanged.map((f) => (
+                      <span key={f}>{f}</span>
+                    ))}
+                  </span>
+                ) : (
+                  <span className={defEmpty}>not logged</span>
+                )}
+              </div>
+              <div className={defRow}>
+                <span className={defKey}>Pages kept</span>
+                <span className={hasDesign ? defValue : defEmpty}>
+                  {hasDesign ? detail.pages : 'none — the capture did not survive'}
+                </span>
+              </div>
+            </div>
+          </Step>
+        </div>
+      </div>
+    </div>
   )
 }

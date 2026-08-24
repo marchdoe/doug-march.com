@@ -200,92 +200,154 @@ Target scheme:
 
 ---
 
-## Phase 3 — Seal and frame (one traversal)
+## Phase 3 — Seal and frame — SHIPPED (2026-08-24, one commit)
 
-Implements #156 and #158 over 1,040 pages across 120 dates. Rewrite and injection share
+Implements #156 and #158 over 1,041 pages across 120 dates. Rewrite and injection share
 a single pass.
+
+**As built.** Five notes:
+- The seal is `scripts/utils/archive-seal.js` (pure functions over one page) plus
+  `scripts/seal-archive.js` (the traversal). The pipeline calls the traversal after
+  `copyToPublic`, so capture-time and backfill are the same code path rather than
+  two implementations that drift.
+- The rewrite is scoped to attribute values, never document text. Two snapshots
+  print `https://doug-march.com` as the visible text of a link; a string replace
+  would have edited what the design says, not where it points.
+- `<link rel="modulepreload">` is stripped rather than allowlisted. All 3,611 of
+  them point at `/assets/*.js` that 404s in every snapshot, and no snapshot has a
+  `<script src>` or an external stylesheet other than fonts — every design ships
+  its CSS inline. Dropping them is what lets Task 3.4 read as a literal "no
+  absolute paths" assertion instead of a 3,611-entry exception.
+- `/work` maps to `index.html`, not to a `work.html` that has never existed. None
+  of the six dates carrying the link defines an `id="work"` anchor either, so the
+  nav item has no destination inside the capture and the day's own home page is
+  the least-wrong answer.
+- The whole archive is resealed on every run, not just the new day. Today's
+  arrival is what gives yesterday a next arrow to point at, and the pass costs
+  0.28s for all 1,041 pages, so there was no reason to be cleverer.
+
+**One correction to the plan.** Task 3.4 asked for zero `content="https://doug-march.com`
+in `og:`/`twitter:` meta. That would forbid the `og:url` Task 3.1 requires, since a
+canonical URL is necessarily absolute. The test asserts the stronger thing instead:
+every `og:url` equals its own snapshot's archive URL, and `og:image` / `twitter:image`
+are gone entirely.
+
+**A Phase 2 bug fixed here.** `archiveStaticPlugin` checked `dist/client/archive`
+before `public/archive` on both servers. Under `vite dev` a stale `dist/` from an
+earlier build shadowed every edit to `public/`, so a freshly sealed page served as
+its unsealed self. Each server now reads its own authoritative tree first.
 
 ### Task 3.1: Capture-time link rewrite
 Order matters — three of these match a `/`-prefixed href, and the host rule must run
 before any generic absolute-URL rule.
 
-- [ ] `<a href="/#fragment">` → `index.html#fragment`. 13 dates, 156 occurrences.
-- [ ] `/work…`, `/about…`, `/contact`, `/experiments` → in-date equivalents. 6 dates,
+- [x] `<a href="/#fragment">` → `index.html#fragment`. 13 dates, 156 occurrences.
+- [x] `/work…`, `/about…`, `/contact`, `/experiments` → in-date equivalents. 6 dates,
       81 occurrences. `/work` has no `work.html` in any snapshot, so this needs a
       mapping, not a leading-slash strip.
-- [ ] `https://doug-march.com` → `index.html`. 105 dates. Match the host exactly; do not
+- [x] `https://doug-march.com` → `index.html`. 105 dates. Match the host exactly; do not
       catch `doug-march-dot-com.html`, a legitimate filename.
-- [ ] `og:url` → the snapshot's own archive URL. `og:image` / `twitter:image` dropped —
+- [x] `og:url` → the snapshot's own archive URL. `og:image` / `twitter:image` dropped —
       123 of 135 already 404.
-- [ ] **Leave `<a href="/archive">` alone.** 93 dates, 761 occurrences. It points at the
+- [x] **Leave `<a href="/archive">` alone.** 93 dates, 761 occurrences. It points at the
       calendar, which is the intended exit. Add it to the seal test as an explicit
       allowlist entry so it reads as a decision.
-- [ ] **Leave every font reference alone.** Google Fonts and Fontshare, 119 dates.
+- [x] **Leave every font reference alone.** Google Fonts and Fontshare, 119 dates.
 
 ### Task 3.2: Frame injection
-- [ ] Full-width top rail, always visible, displacing the design via `body padding-top`.
+- [x] Full-width top rail, always visible, displacing the design via `body padding-top`.
       It is the only variant that never covers content; a bottom pill covers the footer
       and a hover-reveal covers the masthead. Both were built and photographed.
-- [ ] Pure HTML + CSS. No script — a sealed snapshot cannot run any.
-- [ ] All 9 pages, not just the home page. The snapshot's own nav invites the click.
-- [ ] Contents: back to `/archive`, the date, prev/next skipping gaps and going dead at
+- [x] Pure HTML + CSS. No script — a sealed snapshot cannot run any.
+- [x] All 9 pages, not just the home page. The snapshot's own nav invites the click.
+- [x] Contents: back to `/archive`, the date, prev/next skipping gaps and going dead at
       the ends, and a link to `/how/<date>`.
-- [ ] Ground: `rgba(14,14,16,0.92)` with a blur reads on all 18 light and 100 dark
+- [x] Ground: `rgba(14,14,16,0.92)` with a blur reads on all 18 light and 100 dark
       grounds. Verified against `#01070e`, `#fafaf8`, and `#07724a`.
 
 ### Task 3.3: Backfill
-- [ ] One traversal of `public/archive/**/*.html` applying 3.1 and 3.2.
-- [ ] Exclude the nested copy under `public/archive/2026-04-14/`.
-- [ ] Idempotent — re-running must not double-inject.
+- [x] One traversal of `public/archive/**/*.html` applying 3.1 and 3.2.
+- [x] Exclude the nested copy under `public/archive/2026-04-14/`.
+- [x] Idempotent — re-running must not double-inject.
 
 ### Task 3.4: Seal regression tests
-- [ ] Zero matches for `href="/` across `public/archive/**/*.html`, allowlisting
+- [x] Zero matches for `href="/` across `public/archive/**/*.html`, allowlisting
       `/archive`.
-- [ ] Zero `content="https://doug-march.com` in `og:`/`twitter:` meta.
-- [ ] **Non-zero** `fonts.googleapis.com` references. An over-eager rewrite that strips
+- [x] Zero `content="https://doug-march.com` in `og:`/`twitter:` meta.
+- [x] **Non-zero** `fonts.googleapis.com` references. An over-eager rewrite that strips
       fonts would flatten 120 designs to Times New Roman, and would otherwise do it
       silently.
 
 ---
 
-## Phase 4 — The surfaces
+## Phase 4 — The surfaces — SHIPPED (2026-08-24, one commit)
 
 Implements #157 and #159. Depends on Phase 2 for URLs and Phase 1 for data.
 
+**As built.** Five notes:
+- **Task 4.2 grew to cover type, and this was load-bearing.** The plan assumed
+  the chassis ramp was orchestrator-owned; `__root.tsx` says so in a comment.
+  It is not. `elements/chassis-preset.ts` carries "overwritten on every daily
+  redesign" and the ramp really moves — `2xl` was `5.063rem` on 2026-07-22 and
+  `3.157rem` on 2026-07-24. The prototype's `fontSize: '2xl'` would have resized
+  the archive's headline every morning, which is the exact thing #152 forbids.
+  The archive now owns colours, fonts, **and** a type scale in `panda.config.ts`.
+- The palette is achromatic on purpose. The only colour on an archive surface is
+  the days themselves. `archive.bg` is the same `#0e0e10` as the Phase 3 frame
+  rail, so the chrome around a snapshot and the chrome around the calendar are
+  one system.
+- The type is IBM Plex Mono, with Plex Sans for prose. The nightly designs are
+  expressive — Anton, Fraunces, Big Shoulders — so the archive reads as a
+  record rather than a poster.
+- The index projection gained `pages`, counted from `public/archive/<date>/`.
+  Without it the calendar cannot tell a day whose design was preserved from one
+  whose record outlived its capture, and would send three dates to a design that
+  is not there.
+- Signal summaries are per-provider. Writing them surfaced a real bug: five
+  providers added in the grammar era (`weather`, `air_quality`, `market`,
+  `news`, `awwwards`) had real payloads and no handler, and the page said
+  "Nothing that day" about all of them. Emptiness is now proven from the payload
+  rather than inferred from a missing handler.
+
+**A bug fixed here.** Archive surfaces paint their own background, but `body`
+kept whatever the nightly preset gave it, and that colour showed in the
+overscroll gutter — `#120d08` on a morning the design was warm brown. `body` now
+carries the archive ground whenever a surface is rendering.
+
 ### Task 4.1: Archive routes leave `<Layout>` (prerequisite for 4.2 and 4.3)
-- [ ] `/archive` and `/how/$date` must render outside agent-authored `<Layout>`.
+- [x] `/archive` and `/how/$date` must render outside agent-authored `<Layout>`.
       Today they inherit the nightly sidebar, footer, and fonts, which is visible in
       every prototype screenshot. #152's "fixed, neutral identity that does not change
       nightly" is unreachable until this lands.
-- [ ] Colour is already solved by Task 4.2. Typography and chrome are not.
+- [x] Colour is already solved by Task 4.2. Typography and chrome are not.
 
 ### Task 4.2: The archive's fixed identity
-- [ ] `archive.*` colour tokens in `panda.config.ts`, which is not agent-owned.
-- [ ] A typographic choice that does not depend on the nightly chassis.
+- [x] `archive.*` colour tokens in `panda.config.ts`, which is not agent-owned.
+- [x] A typographic choice that does not depend on the nightly chassis.
 
 ### Task 4.3: Calendar
-- [ ] Default view: wall calendar, one month, hue filling each built cell, mood word as
+- [x] Default view: wall calendar, one month, hue filling each built cell, mood word as
       cell text.
-- [ ] Index view: six-month contact sheet.
-- [ ] Opens on the **densest** month, computed at render time. Today's month is 1/31.
-- [ ] Three cell states: built (clickable, hue), record-only (clickable, goes to
+- [x] Index view: six-month contact sheet.
+- [x] Opens on the **densest** month, computed at render time. Today's month is 1/31.
+- [x] Three cell states: built (clickable, hue), record-only (clickable, goes to
       `/how/<date>`), empty (dead).
-- [ ] Ink colour by relative luminance, not lightness — `l > 55` puts white on
+- [x] Ink colour by relative luminance, not lightness — `l > 55` puts white on
       yellow-greens.
-- [ ] Grid cells need `min-width: 0`; long mood words otherwise widen their column.
+- [x] Grid cells need `min-width: 0`; long mood words otherwise widen their column.
 
 ### Task 4.4: Explainer
-- [ ] Two columns: fixed metadata rail, prose body. Sections named as a sequence
+- [x] Two columns: fixed metadata rail, prose body. Sections named as a sequence
       ("The day arrived", "A colour was chosen"), not as an inventory.
-- [ ] The brief leads, not the colour. Colour is absent on 31 of 123 dates, where a
+- [x] The brief leads, not the colour. Colour is absent on 31 of 123 dates, where a
       colour-led hero becomes a grey slab. Signals (107) and tokens (106) are better
       covered than colour (92).
-- [ ] Tokens render as real ramps, every stop at its value.
-- [ ] Absent fields name their era: "No composition tuple. The pipeline had no such
+- [x] Tokens render as real ramps, every stop at its value.
+- [x] Absent fields name their era: "No composition tuple. The pipeline had no such
       concept in the prose era."
-- [ ] Adjacent to the preserved design, linked, never embedding a live frame of it —
+- [x] Adjacent to the preserved design, linked, never embedding a live frame of it —
       that would put two identities on one page.
-- [ ] Each signal provider needs a real summary line. The prototype falls back to
+- [x] Each signal provider needs a real summary line. The prototype falls back to
       "5 items" and renders "0 items" for providers that were empty that day.
 
 ---
@@ -311,12 +373,13 @@ on 4.1.
 Per the standing rule: run the flow and screenshot it. Tests passing is not the same as
 working.
 
-- [ ] Load `/archive`, click a date, land on the design with the frame over it, click
-      through to a work page, use prev/next across the 07-30 → 08-22 gap, reach
-      `/how/<date>`, return to the calendar.
-- [ ] Load a light-ground day (`2026-06-15`) and a dark one (`2026-06-10`); confirm the
+- [x] Load `/archive`, click a date, land on the design with the frame over it, click
+      through to a work page, use prev/next across the gaps, reach `/how/<date>`,
+      return to the calendar. Done against a production preview build; the gap
+      exercised was 07-24 → 07-26, since the run now ends at 07-29.
+- [x] Load a light-ground day (`2026-06-15`) and a dark one (`2026-06-10`); confirm the
       frame reads on both.
-- [ ] Load `/how/2026-08-23` (every field) and `/how/2026-03-12` (brief and archetype
+- [x] Load `/how/2026-08-23` (every field) and `/how/2026-03-12` (brief and archetype
       only); confirm neither looks broken.
 - [ ] Confirm tonight's build renders the archive link, and that the `site-health`
       assertion fails if it is removed.
