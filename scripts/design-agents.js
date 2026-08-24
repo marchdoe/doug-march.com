@@ -55,6 +55,7 @@ import { runArtDirector } from './agents/art-director.js'
 import { parseCompositionBlock } from './utils/spec-blocks.js'
 import { formatTuple } from './utils/composition-grammar.js'
 import { findShellPostureViolation } from './utils/shell-posture-check.js'
+import { countArchivedDesigns } from './utils/archive-count.js'
 export { parseDelimiterResponse }
 
 // ---------------------------------------------------------------------------
@@ -907,7 +908,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         heroCopy: artDirectorResult.heroCopy,
         designBrief: artDirectorResult.designBrief,
       })
-      const rootSrc = renderRootTemplate(buildGoogleFontsUrl(chosenChassis), ogMeta)
+      const rootSrc = renderRootTemplate(
+        buildGoogleFontsUrl(chosenChassis),
+        ogMeta,
+        countArchivedDesigns()
+      )
       const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
       await writeFile(rootPath, rootSrc, 'utf8')
       writtenPaths.add('app/routes/__root.tsx')
@@ -978,7 +983,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
             heroCopy: artDirectorResult.heroCopy,
             designBrief: artDirectorResult.designBrief,
           })
-          const retryRootSrc = renderRootTemplate(buildGoogleFontsUrl(chosenChassis), retryOgMeta)
+          const retryRootSrc = renderRootTemplate(
+            buildGoogleFontsUrl(chosenChassis),
+            retryOgMeta,
+            countArchivedDesigns()
+          )
           await writeFile(path.join(ROOT, 'app/routes/__root.tsx'), retryRootSrc, 'utf8')
           console.log('  [chassis] regenerated __root.tsx after codegen retry (og meta refreshed)')
         } catch (rootErr) {

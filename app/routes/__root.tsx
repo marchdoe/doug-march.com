@@ -8,7 +8,38 @@ import {
   Scripts,
 } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
+import { css } from '../../styled-system/css'
 import type { ReactNode } from 'react'
+
+/**
+ * The archive link lives here, outside <Layout>, because Layout.tsx and
+ * Sidebar.tsx are written by the React Engineer each night and the composition
+ * grammar is allowed to delete the whole shell (`shell_posture: none`,
+ * `footer: none`). It did: the link vanished on 2026-07-12, the day the shell
+ * became a declared Art Director choice, and was absent for 16 consecutive
+ * builds before anyone noticed. See issue #155.
+ *
+ * Only `text`, `bg`, and `accent` are used. Semantic tokens are not guaranteed
+ * across nightly presets — `textMuted` is missing from roughly one preset in
+ * five — so the quiet tone comes from opacity, not from a dimmer token. Font
+ * size comes from the chassis ramp, which the orchestrator owns.
+ *
+ * Regenerated from scripts/templates/__root.tsx.template on every build.
+ */
+const archiveLink = css({
+  display: 'block',
+  background: 'bg',
+  color: 'text',
+  opacity: 0.55,
+  fontSize: 'xs',
+  letterSpacing: '0.08em',
+  textAlign: 'center',
+  textDecoration: 'none',
+  padding: '28px 16px',
+  minHeight: '44px',
+  transition: 'opacity 0.2s ease, color 0.2s ease',
+  _hover: { opacity: 1, color: 'accent' },
+})
 
 const THEME_INIT_SCRIPT = `(function(){
   var s=localStorage.getItem('theme');
@@ -79,6 +110,9 @@ function RootDocument({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <a href="/archive" className={archiveLink} data-archive-link>
+          Archive — 123 designs
+        </a>
         <ScrollRestoration />
         <Scripts />
       </body>

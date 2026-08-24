@@ -126,6 +126,35 @@ test.describe('site health — share-sheet meta', () => {
   })
 })
 
+test.describe('site health — archive link (#155)', () => {
+  // This exists because the link silently disappeared. It was on every build
+  // through 2026-07-10 and vanished on 2026-07-12, the day the page shell
+  // became a declared Art Director choice. Sixteen builds shipped without it
+  // before anyone looked. The link now lives in __root.tsx, outside <Layout>,
+  // where no agent can delete it.
+  //
+  // Asserts VISIBLE, not merely present: a design using full-bleed
+  // `position: fixed` or `overflow: hidden` can bury an element that is
+  // perfectly well-formed in the markup.
+  test('every page carries a visible link into the archive', async ({ page }) => {
+    for (const path of ['/', '/about', '/work/spaceman']) {
+      await page.goto(path)
+      const link = page.locator('a[data-archive-link]')
+      await expect(link, `no visible archive link on ${path}`).toBeVisible({ timeout: 15000 })
+      await expect(link).toHaveAttribute('href', '/archive')
+      await expect(link).toContainText(/Archive — \d+ designs/)
+    }
+  })
+
+  test('the archive link actually reaches the archive', async ({ page }) => {
+    await page.goto('/')
+    const link = page.locator('a[data-archive-link]')
+    await expect(link).toBeVisible({ timeout: 15000 })
+    await link.click()
+    await expect(page).toHaveURL(/\/archive/, { timeout: 15000 })
+  })
+})
+
 test.describe('site health — navigation', () => {
   test('can navigate between pages without errors', async ({ page }) => {
     // Start at home
