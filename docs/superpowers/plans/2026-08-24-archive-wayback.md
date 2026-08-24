@@ -288,6 +288,33 @@ working.
       assertion fails if it is removed.
 - [ ] Screenshots in the PR.
 
+## Pending: the domain becomes `dougmar.ch`
+
+Not scheduled here, but it lands on Phase 3 and the rewrite must be built to expect it.
+Tracked separately.
+
+**The archive will hold two hosts forever.** 88 dates' snapshots carry
+`https://doug-march.com` and cannot be rewritten to the new host without falsifying what
+shipped that day. Future snapshots will carry `dougmar.ch`. So Task 3.1's host rule and
+Task 3.4's seal test must both match **either** host, permanently. Writing either against
+a single hardcoded host guarantees a silent gap the day the domain moves.
+
+**The `doug-march-dot-com.html` trap gets worse.** That work page exists in every
+snapshot and is a legitimate relative filename a host rewrite must not catch. If the
+project title in `app/content/projects.ts:81` follows the domain, future snapshots get a
+second slug (`dougmar-ch.html` or similar), and Task 3.1's `/work…` mapping needs both
+spellings for good.
+
+**Single point of change for new output:** `scripts/utils/og-meta.js:11` — the `siteUrl`
+default feeds `og:url`, `og:image`, and `twitter:image` through the generated
+`__root.tsx`. Also `scripts/utils/build-validator.js:258`, which carries the host in a
+check list, and `scripts/signals/dribbble.js:37`, which sends it in a User-Agent.
+
+**Not automatic:** `app/components/Footer.tsx:57` carries `mailto:hello@doug-march.com`.
+Whether the mail domain moves with the site is a separate decision. The other live
+references — `BomFooter.tsx`, `SignalMargin.tsx`, `dev-panel.tsx` — are agent-authored and
+will pick up whatever the content contract says.
+
 ## Out of scope
 
 Retention and pruning, the uniqueness-index feedback loop, owner-only "mark as
