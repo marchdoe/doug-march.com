@@ -1,5 +1,9 @@
-import { createFileRoute, Link, Outlet, useMatch } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet, useMatch, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
+import {
+  ArchiveCalendarPrototype,
+  PrototypeSwitcher,
+} from '../components/prototype/ArchiveCalendarPrototype'
 
 export interface ArchiveEntry {
   date: string
@@ -12,7 +16,11 @@ export interface ArchiveEntry {
 
 export const Route = createFileRoute('/archive')({
   component: ArchivePage,
+  validateSearch: (s: Record<string, unknown>): { variant?: string } =>
+    typeof s.variant === 'string' ? { variant: s.variant } : {},
 })
+
+const PROTO_VARIANTS = ['A', 'B', 'C']
 
 function truncate(text: string, max: number) {
   if (text.length <= max) return text
@@ -23,6 +31,8 @@ function ArchivePage() {
   const [entries, setEntries] = useState<ArchiveEntry[]>([])
   const [loaded, setLoaded] = useState(false)
   const childMatch = useMatch({ from: '/archive/$date', shouldThrow: false })
+  const { variant } = Route.useSearch()
+  const navigate = useNavigate({ from: '/archive' })
 
   useEffect(() => {
     fetch('/archive/_data.json')
@@ -37,6 +47,21 @@ function ArchivePage() {
   // If a child route is active, render only the child (Outlet)
   if (childMatch) {
     return <Outlet />
+  }
+
+  // PROTOTYPE (#157) — ?variant=A|B|C swaps in the calendar prototype.
+  // Remove with app/components/prototype/ when the question is answered.
+  if (import.meta.env.DEV && variant && PROTO_VARIANTS.includes(variant)) {
+    return (
+      <>
+        <ArchiveCalendarPrototype variant={variant} />
+        <PrototypeSwitcher
+          variants={PROTO_VARIANTS}
+          current={variant}
+          onChange={(v) => navigate({ search: { variant: v } })}
+        />
+      </>
+    )
   }
 
   return (
