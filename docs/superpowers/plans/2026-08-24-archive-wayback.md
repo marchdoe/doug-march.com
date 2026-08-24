@@ -136,9 +136,26 @@ Implements #153. Can run in parallel with Phase 0.
 
 ---
 
-## Phase 2 — The URL scheme (atomic)
+## Phase 2 — The URL scheme — SHIPPED (2026-08-24, one commit)
 
 Implements #154. **Every task here lands in one commit.** Blocks Phases 3 and 4.
+
+**As built.** Four notes:
+- Dev, preview, and production each needed the same rule, so it is one middleware
+  (`archiveStaticPlugin` in `vite.config.ts`, installed on both the dev and preview
+  servers) plus the `vercel.json` redirect. Vite's static handler does the exact
+  opposite of what the scheme requires: it 307s `/archive/<date>/` to the
+  slash-less form, which then falls through to a route that no longer exists.
+- Task 2.4 grew by two. `viewports/*.png` moved out of the preserved namespace
+  alongside the screenshot — leaving them behind would have contradicted the
+  sentence that justifies the task — and the retired `_data.json` /
+  `_detail.json` files were deleted rather than left as gitignored litter.
+- `.gitignore` now ignores `public/archive-data/*.json` rather than the whole
+  directory. The screenshots and viewport captures beside them are pipeline output
+  that nothing at build time can recreate, so they stay committed.
+- A display bug from Phase 1 surfaced during verification and is fixed here: a
+  one-off colour token (`glow: { value: '#FF8FC7' }`) unwraps to a bare string, and
+  the swatch renderer iterated it one character at a time. Seven dates have one.
 
 Target scheme:
 
@@ -153,32 +170,33 @@ Target scheme:
 ```
 
 ### Task 2.1: Create `/how/$date`, retire `/archive/$date`
-- [ ] New `app/routes/how.$date.tsx`.
-- [ ] Delete `app/routes/archive.$date.tsx`.
-- [ ] Update the four in-app links: `app/components/panel/ArchiveTab.tsx:52`,
+- [x] New `app/routes/how.$date.tsx`.
+- [x] Delete `app/routes/archive.$date.tsx`.
+- [x] Update the four in-app links: `app/components/panel/ArchiveTab.tsx:52`,
       `app/routes/archive.tsx:112`, and both in `archive.$date.tsx` as it goes.
+      Five, in the end: `app/components/responsive-trend.tsx` links per-date too.
 
 ### Task 2.2: Rewrites
-- [ ] `vercel.json` — `/archive/:path*` is static, always. Everything else falls through
+- [x] `vercel.json` — `/archive/:path*` is static, always. Everything else falls through
       to `_shell.html`. The bare `/archive` still reaches the SPA calendar, having no
       sub-path to match.
-- [ ] Confirm `/archive/` with a trailing slash does not 404 looking for
+- [x] Confirm `/archive/` with a trailing slash does not 404 looking for
       `public/archive/index.html`.
 
 ### Task 2.3: 301 the slash-less form
-- [ ] `/archive/<date>` → `/archive/<date>/`. The slash-less form means the design.
+- [x] `/archive/<date>` → `/archive/<date>/`. The slash-less form means the design.
 
 ### Task 2.4: Move generated files out of the preserved namespace
-- [ ] `_detail.json`, `_data.json`, and `<date>.png` move to `/archive-data/`.
-- [ ] `/archive/<date>/` then means one thing: bytes that shipped that day and never
+- [x] `_detail.json`, `_data.json`, and `<date>.png` move to `/archive-data/`.
+- [x] `/archive/<date>/` then means one thing: bytes that shipped that day and never
       change. That is what lets the Phase 3 seal test assert over `public/archive/**`
       with no exclusions.
 
 ### Verification
-- [ ] `/archive/2026-06-28/` serves the snapshot, and `about.html` resolves in-date.
-- [ ] `/archive/2026-06-28` 301s to it.
-- [ ] `/how/2026-06-28` serves the explainer.
-- [ ] Dev and production agree. They currently do not.
+- [x] `/archive/2026-06-28/` serves the snapshot, and `about.html` resolves in-date.
+- [x] `/archive/2026-06-28` 301s to it.
+- [x] `/how/2026-06-28` serves the explainer.
+- [x] Dev and production agree. They currently do not.
 
 ---
 

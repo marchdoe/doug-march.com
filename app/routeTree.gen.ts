@@ -16,8 +16,8 @@ import { Route as ElementsRouteImport } from './routes/elements'
 import { Route as ExperimentsRouteImport } from './routes/experiments'
 import { Route as OgRouteImport } from './routes/og'
 import { Route as PanelRouteImport } from './routes/panel'
-import { Route as ArchiveDateRouteImport } from './routes/archive.$date'
 import { Route as DevResponsiveRouteImport } from './routes/dev.responsive'
+import { Route as HowDateRouteImport } from './routes/how.$date'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
 
@@ -56,14 +56,14 @@ const PanelRoute = PanelRouteImport.update({
   path: '/panel',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArchiveDateRoute = ArchiveDateRouteImport.update({
-  id: '/$date',
-  path: '/$date',
-  getParentRoute: () => ArchiveRoute,
-} as any)
 const DevResponsiveRoute = DevResponsiveRouteImport.update({
   id: '/dev/responsive',
   path: '/dev/responsive',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowDateRoute = HowDateRouteImport.update({
+  id: '/how/$date',
+  path: '/how/$date',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorkIndexRoute = WorkIndexRouteImport.update({
@@ -80,26 +80,26 @@ const WorkSlugRoute = WorkSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/archive': typeof ArchiveRouteWithChildren
+  '/archive': typeof ArchiveRoute
   '/elements': typeof ElementsRoute
   '/experiments': typeof ExperimentsRoute
   '/og': typeof OgRoute
   '/panel': typeof PanelRoute
-  '/archive/$date': typeof ArchiveDateRoute
   '/dev/responsive': typeof DevResponsiveRoute
+  '/how/$date': typeof HowDateRoute
   '/work/$slug': typeof WorkSlugRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/archive': typeof ArchiveRouteWithChildren
+  '/archive': typeof ArchiveRoute
   '/elements': typeof ElementsRoute
   '/experiments': typeof ExperimentsRoute
   '/og': typeof OgRoute
   '/panel': typeof PanelRoute
-  '/archive/$date': typeof ArchiveDateRoute
   '/dev/responsive': typeof DevResponsiveRoute
+  '/how/$date': typeof HowDateRoute
   '/work/$slug': typeof WorkSlugRoute
   '/work': typeof WorkIndexRoute
 }
@@ -107,13 +107,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/archive': typeof ArchiveRouteWithChildren
+  '/archive': typeof ArchiveRoute
   '/elements': typeof ElementsRoute
   '/experiments': typeof ExperimentsRoute
   '/og': typeof OgRoute
   '/panel': typeof PanelRoute
-  '/archive/$date': typeof ArchiveDateRoute
   '/dev/responsive': typeof DevResponsiveRoute
+  '/how/$date': typeof HowDateRoute
   '/work/$slug': typeof WorkSlugRoute
   '/work/': typeof WorkIndexRoute
 }
@@ -127,8 +127,8 @@ export interface FileRouteTypes {
     | '/experiments'
     | '/og'
     | '/panel'
-    | '/archive/$date'
     | '/dev/responsive'
+    | '/how/$date'
     | '/work/$slug'
     | '/work/'
   fileRoutesByTo: FileRoutesByTo
@@ -140,8 +140,8 @@ export interface FileRouteTypes {
     | '/experiments'
     | '/og'
     | '/panel'
-    | '/archive/$date'
     | '/dev/responsive'
+    | '/how/$date'
     | '/work/$slug'
     | '/work'
   id:
@@ -153,8 +153,8 @@ export interface FileRouteTypes {
     | '/experiments'
     | '/og'
     | '/panel'
-    | '/archive/$date'
     | '/dev/responsive'
+    | '/how/$date'
     | '/work/$slug'
     | '/work/'
   fileRoutesById: FileRoutesById
@@ -162,12 +162,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  ArchiveRoute: typeof ArchiveRouteWithChildren
+  ArchiveRoute: typeof ArchiveRoute
   ElementsRoute: typeof ElementsRoute
   ExperimentsRoute: typeof ExperimentsRoute
   OgRoute: typeof OgRoute
   PanelRoute: typeof PanelRoute
   DevResponsiveRoute: typeof DevResponsiveRoute
+  HowDateRoute: typeof HowDateRoute
   WorkSlugRoute: typeof WorkSlugRoute
   WorkIndexRoute: typeof WorkIndexRoute
 }
@@ -223,18 +224,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PanelRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/archive/$date': {
-      id: '/archive/$date'
-      path: '/$date'
-      fullPath: '/archive/$date'
-      preLoaderRoute: typeof ArchiveDateRouteImport
-      parentRoute: typeof ArchiveRoute
-    }
     '/dev/responsive': {
       id: '/dev/responsive'
       path: '/dev/responsive'
       fullPath: '/dev/responsive'
       preLoaderRoute: typeof DevResponsiveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how/$date': {
+      id: '/how/$date'
+      path: '/how/$date'
+      fullPath: '/how/$date'
+      preLoaderRoute: typeof HowDateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/work/': {
@@ -254,26 +255,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface ArchiveRouteChildren {
-  ArchiveDateRoute: typeof ArchiveDateRoute
-}
-
-const ArchiveRouteChildren: ArchiveRouteChildren = {
-  ArchiveDateRoute: ArchiveDateRoute,
-}
-
-const ArchiveRouteWithChildren =
-  ArchiveRoute._addFileChildren(ArchiveRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  ArchiveRoute: ArchiveRouteWithChildren,
+  ArchiveRoute: ArchiveRoute,
   ElementsRoute: ElementsRoute,
   ExperimentsRoute: ExperimentsRoute,
   OgRoute: OgRoute,
   PanelRoute: PanelRoute,
   DevResponsiveRoute: DevResponsiveRoute,
+  HowDateRoute: HowDateRoute,
   WorkSlugRoute: WorkSlugRoute,
   WorkIndexRoute: WorkIndexRoute,
 }
