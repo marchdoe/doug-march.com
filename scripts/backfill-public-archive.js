@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * One-time script to copy existing archive site HTML and screenshots
- * to public/archive/ for static serving.
+ * out for static serving: the site HTML to public/archive/, the screenshot
+ * to public/archive-data/ beside the day's record (#154).
  *
  * Usage: node scripts/backfill-public-archive.js
  */
@@ -12,8 +13,10 @@ import { join } from 'node:path'
 const ROOT = process.cwd()
 const archiveDir = join(ROOT, 'archive')
 const publicArchive = join(ROOT, 'public', 'archive')
+const publicData = join(ROOT, 'public', 'archive-data')
 
 mkdirSync(publicArchive, { recursive: true })
+mkdirSync(publicData, { recursive: true })
 
 const dates = readdirSync(archiveDir, { withFileTypes: true })
   .filter((d) => d.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(d.name))
@@ -35,7 +38,7 @@ for (const date of dates) {
   // Copy screenshot
   const screenshotSrc = buildDir && join(buildDir, 'screenshot.png')
   if (screenshotSrc && existsSync(screenshotSrc)) {
-    cpSync(screenshotSrc, join(publicArchive, `${date}.png`))
+    cpSync(screenshotSrc, join(publicData, `${date}.png`))
     console.log(`  ${date}: screenshot ✓`)
   }
 

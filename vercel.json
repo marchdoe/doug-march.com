@@ -30,10 +30,19 @@
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     }
   ],
+  "redirects": [
+    {
+      "source": "/archive/:date(\\d{4}-\\d{2}-\\d{2})",
+      "destination": "/archive/:date/",
+      "permanent": true
+    }
+  ],
   "rewrites": [
-    { "source": "/archive/:date/:file", "destination": "/archive/:date/:file" },
-    { "source": "/archive/:date/work/:file", "destination": "/archive/:date/work/:file" },
-    { "source": "/archive/:date.png", "destination": "/archive/:date.png" },
+    {
+      "source": "/archive/:date(\\d{4}-\\d{2}-\\d{2})/",
+      "destination": "/archive/:date/index.html"
+    },
+    { "source": "/archive/:path+", "destination": "/archive/:path+" },
     { "source": "/(.*)", "destination": "/_shell.html" }
   ]
 }

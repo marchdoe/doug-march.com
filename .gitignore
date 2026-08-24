@@ -41,9 +41,11 @@ references/*.png
 references/*.jpg
 references/*.jpeg
 
-# Generated archive JSON (projected from archive/*/record.json at build time)
-public/archive-data/
-# Retired by the record projection; still on disk in older checkouts
+# Generated archive JSON (projected from archive/*/record.json at build time).
+# The screenshots and viewport captures beside it are pipeline output and ARE
+# committed — nothing at build time can recreate them.
+public/archive-data/*.json
+# Retired by the record projection (#153); still on disk in older checkouts.
 public/archive/_data.json
 public/archive/*/_detail.json
 

@@ -44,7 +44,7 @@ export function ArchiveTab() {
       {entries.map((e) => (
         <li key={e.date} className={archiveRow}>
           <div className={css({ display: 'flex', gap: '8px', alignItems: 'center' })}>
-            <Link to="/archive/$date" params={{ date: e.date }} className={archiveLink}>
+            <Link to="/how/$date" params={{ date: e.date }} className={archiveLink}>
               {e.date}
             </Link>
             <span className={badge({ kind: e.rating ? 'graded' : 'none' })}>
