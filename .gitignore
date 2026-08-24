@@ -49,3 +49,6 @@ public/archive/*/_detail.json
 test-results/
 themes/
 .vercel
+
+# PROTOTYPE #158 — injected snapshot copies, regenerate with scripts/proto-158-inject-bar.js
+public/_proto-158/
