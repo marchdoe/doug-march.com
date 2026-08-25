@@ -121,6 +121,13 @@ const ARCHIVE_FONT =
  *
  * The literal matches `archive.bg` in panda.config.ts. It is written out
  * because this rule has to exist before any component mounts.
+ *
+ * Rendered as a plain string child. The React escape hatch for raw HTML is
+ * blocked outright by scripts/utils/build-validator.js as an XSS gate on
+ * agent-authored output, and this file is regenerated from a template on every
+ * build, so it is checked like any other. The first local pipeline run failed
+ * on exactly that — and the gate matches the bare word anywhere in the file,
+ * comments included, so it cannot be named here either.
  */
 const ARCHIVE_GROUND = 'body{background:#0e0e10;color:#e8e8ea}'
 
@@ -132,8 +139,7 @@ function RootDocument({ children, bare = false }: { children: ReactNode; bare?: 
         {bare ? (
           <>
             <link rel="stylesheet" href={ARCHIVE_FONT} />
-            {/* biome-ignore lint/security/noDangerouslySetInnerHtml: a static literal, no interpolation */}
-            <style dangerouslySetInnerHTML={{ __html: ARCHIVE_GROUND }} />
+            <style>{ARCHIVE_GROUND}</style>
           </>
         ) : null}
       </head>
