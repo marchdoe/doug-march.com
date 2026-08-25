@@ -10,6 +10,16 @@ vi.mock('../../scripts/utils/snapshot.js', () => ({
   captureSnapshot: vi.fn().mockResolvedValue(undefined),
 }))
 
+// Stub the seal too. archive() reseals the whole archive on the way out, which
+// is right in the pipeline and wrong in a unit test: it rewrites committed
+// files under public/archive/ as a side effect of running the suite. On a
+// machine holding an uncommitted build it gave the previous day a next arrow
+// pointing at it, which is how nine files ended up modified by `pnpm test`.
+// The seal has its own tests against a temp tree.
+vi.mock('../../scripts/seal-archive.js', () => ({
+  sealArchive: vi.fn().mockResolvedValue({ dates: 0, scanned: 0, changed: [] }),
+}))
+
 const { archive } = await import('../../scripts/utils/archiver.js')
 const { ROOT } = await import('../../scripts/utils/file-manager.js')
 

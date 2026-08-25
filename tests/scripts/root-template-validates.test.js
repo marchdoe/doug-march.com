@@ -25,10 +25,7 @@ import { describe, expect, it } from 'vitest'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 
-const FILES = [
-  'scripts/templates/__root.tsx.template',
-  'app/routes/__root.tsx',
-]
+const FILES = ['scripts/templates/__root.tsx.template', 'app/routes/__root.tsx']
 
 /**
  * Mirrors the DANGEROUS_PATTERNS list in scripts/utils/build-validator.js.
@@ -53,7 +50,7 @@ describe.each(FILES)('%s', (rel) => {
     'carries no %s, which the build validator blocks',
     (_name, regex) => {
       expect(regex.test(src)).toBe(false)
-    },
+    }
   )
 
   it('still paints the archive ground, which is why the style element exists', () => {
@@ -79,7 +76,12 @@ describe('the template and the generated file agree', () => {
     // The template carries {{PLACEHOLDER}} tokens the build fills in. Strip a
     // whole line containing one from both sides and the rest should match on
     // the structural pieces this file cares about.
-    for (const marker of ['isArchiveSurface', '<RootDocument bare>', 'ARCHIVE_GROUND', 'ARCHIVE_FONT']) {
+    for (const marker of [
+      'isArchiveSurface',
+      '<RootDocument bare>',
+      'ARCHIVE_GROUND',
+      'ARCHIVE_FONT',
+    ]) {
       expect(template, `template missing ${marker}`).toContain(marker)
       expect(generated, `generated missing ${marker}`).toContain(marker)
     }
