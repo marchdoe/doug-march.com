@@ -42,9 +42,27 @@ jobs:
       WEIGHT_RISK: ${{ vars.WEIGHT_RISK == '' && '' || vars.WEIGHT_RISK }}
 
     steps:
+      # Checks out over SSH with a deploy key rather than GITHUB_TOKEN.
+      #
+      # The `biome-gate` ruleset requires Lint and Typecheck on the default
+      # branch, and this job pushes to main directly. github-actions[bot] is
+      # not in the ruleset's bypass list and cannot be added: GitHub does not
+      # offer it as a bypass actor on a personal-account repository, only
+      # Copilot's apps appear under Apps. Deploy keys are offered, and are
+      # scoped to this repository rather than carrying a person's identity.
+      #
+      # Opening a PR and auto-merging is not an alternative. A pull request
+      # created with GITHUB_TOKEN deliberately does not trigger workflow runs,
+      # so the required checks would never start and the merge would wait on
+      # checks that cannot run.
+      #
+      # `ssh-key` makes actions/checkout set the remote to SSH, so the push
+      # step below needs no change. GITHUB_TOKEN is still used for the API
+      # calls further down — issues and the rating comment — which are not
+      # pushes and are not gated by the ruleset.
       - uses: actions/checkout@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
 
       - uses: pnpm/action-setup@v6
 
@@ -112,6 +130,11 @@ jobs:
           # paths instead of archive/ so other dates' dirs aren't touched.
           git add "archive/$TODAY/archetype.txt" 2>/dev/null || true
           git add "archive/$TODAY/brief.md" 2>/dev/null || true
+          # record.json is the day's canonical record (#153). Without it the
+          # projection falls back to rebuilding the record from brief.md and
+          # the build dir on every build — which works, and is the designed
+          # fallback, but means the cache never persists.
+          git add "archive/$TODAY/record.json" 2>/dev/null || true
           # Only stage numeric timestamp build dirs (build-\d+), not build-pre-* or build-failed-*
           for d in archive/$TODAY/build-[0-9]*; do
             [ -d "$d" ] && git add "$d"
@@ -120,7 +143,14 @@ jobs:
           # Add each output path independently — some are absent on a given
           # run (public/og/ only exists once OG generation works in CI), and
           # under bash -e one unmatched pathspec would abort the whole push.
-          for p in elements/ app/components/ app/routes/ public/archive/ public/og/ signals/today.references.md; do
+          # public/archive-data/ carries the day's screenshot and viewport
+          # captures. It was added when #154 moved them out of the preserved
+          # namespace — public/archive/<date>.png became
+          # public/archive-data/<date>.png — and this list was not updated with
+          # it, so screenshots stopped being committed at all. The JSON beside
+          # them is gitignored and generated at build time, so adding the whole
+          # directory stages only the images.
+          for p in elements/ app/components/ app/routes/ public/archive/ public/archive-data/ public/og/ signals/today.references.md; do
             git add "$p" 2>/dev/null || true
           done
           git diff --cached --quiet || git commit -m "chore: daily redesign $TODAY"
