@@ -592,48 +592,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     console.log(`  backed up ${originalBackup.size} files`)
 
     // -----------------------------------------------------------------------
-    // Pre-archive: snapshot the CURRENT site before overwriting it
-    // Zero LLM cost — just vite preview + HTML capture + file copy
-    // -----------------------------------------------------------------------
-    const today = signals.date || new Date().toISOString().slice(0, 10)
-    const publicArchiveDir = path.join(ROOT, 'public', 'archive', today)
-    if (!existsSync(publicArchiveDir)) {
-      console.log('\n[pre-archive] Preserving current site before redesign...')
-      // tempBuildDir must always be cleaned up — even if captureSnapshot,
-      // cpSync, or any step throws. Otherwise `git add archive/` in the
-      // workflow commits the temp dir to main.
-      const tempBuildId = `pre-${Date.now()}`
-      const tempBuildDir = path.join(ROOT, 'archive', today, `build-${tempBuildId}`)
-      try {
-        const { captureSnapshot } = await import('./utils/snapshot.js')
-        await captureSnapshot(today, tempBuildId)
-
-        // Copy the snapshot to public/archive/ for static serving
-        const snapshotSiteDir = path.join(tempBuildDir, 'site')
-        if (existsSync(snapshotSiteDir)) {
-          const { cpSync } = await import('node:fs')
-          await mkdir(publicArchiveDir, { recursive: true })
-          cpSync(snapshotSiteDir, publicArchiveDir, { recursive: true })
-          console.log(`  preserved to public/archive/${today}/`)
-        }
-      } catch (err) {
-        console.warn(`  pre-archive failed (non-blocking): ${err.message}`)
-      } finally {
-        // Always clean up the temp build dir — we only needed the public copy
-        try {
-          const { rmSync } = await import('node:fs')
-          if (existsSync(tempBuildDir)) {
-            rmSync(tempBuildDir, { recursive: true, force: true })
-          }
-        } catch (cleanupErr) {
-          console.warn(`  pre-archive temp cleanup failed: ${cleanupErr.message}`)
-        }
-      }
-    } else {
-      console.log(`\n[pre-archive] public/archive/${today}/ already exists, skipping`)
-    }
-
-    // -----------------------------------------------------------------------
     // Read recent archive briefs for Design Director context
     // -----------------------------------------------------------------------
     const archiveDir = path.join(ROOT, 'archive')
