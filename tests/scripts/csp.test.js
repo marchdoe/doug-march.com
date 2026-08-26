@@ -55,17 +55,28 @@ describe('both policies exist', () => {
   })
 
   /**
-   * Vercel sends one header per key, and the LAST matching rule wins.
+   * Both rules match an archived page, and Vercel sends one header per key.
    *
-   * This cost two deploy previews to establish. With the archive rule listed
-   * before the catch-all, an archived page received the site policy — the
-   * strict rule was live, correct, and overwritten. The config looks right
-   * either way; only the response headers tell you which.
+   * Which of the two wins is NOT asserted here, because it was not confirmed.
+   * Two deploy previews disagreed with each attempted ordering, the published
+   * configuration docs do not state duplicate-key precedence, and further
+   * probing tripped Vercel's bot mitigation. Encoding a guess as a test would
+   * make it look settled.
+   *
+   * What is safe either way: both policies permit everything an archived page
+   * needs, so whichever lands, the designs render. The strict one is hardening
+   * on pages that already contain no script at all.
+   *
+   * To settle it, after any deploy:
+   *   curl -sD - -o /dev/null https://<host>/archive/2026-06-28/ | grep -i content-security-policy
+   * If it reports script-src 'none', the archive rule wins and this ordering
+   * is right. If it reports 'self' 'unsafe-inline', move the archive rule to
+   * the other side of the catch-all.
    */
-  it('lists the archive rule after the catch-all, or it gets overwritten', () => {
+  it('has both rules present, whichever precedence turns out to be', () => {
     const sources = config.headers.map((h) => h.source)
-    expect(sources.indexOf(ARCHIVE)).toBeGreaterThan(-1)
-    expect(sources.indexOf(ARCHIVE)).toBeGreaterThan(sources.indexOf(SITE))
+    expect(sources).toContain(ARCHIVE)
+    expect(sources).toContain(SITE)
   })
 })
 
