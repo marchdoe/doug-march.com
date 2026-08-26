@@ -744,6 +744,30 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // -----------------------------------------------------------------------
     console.log('\n[phase-0+1] Art Director')
 
+    // Repetition feedback from the previous build (Task 6). Deterministic and
+    // free, so it runs every day whether or not an owner rating exists.
+    // Computed rather than read back from uniqueness.json, which only exists
+    // for builds made after the index shipped.
+    let uniquenessBlock = ''
+    try {
+      const { readUniquenessHistory } = await import('./utils/read-uniqueness-history.js')
+      const { computeUniqueness, formatUniquenessForPrompt } = await import(
+        './utils/uniqueness-index.js'
+      )
+      const todayStr = signals.date || new Date().toISOString().slice(0, 10)
+      const [previous, ...before] = await readUniquenessHistory({
+        root: ROOT,
+        limit: 8,
+        before: todayStr,
+      })
+      if (previous) {
+        uniquenessBlock = formatUniquenessForPrompt(computeUniqueness(previous, before))
+        if (uniquenessBlock) console.log(`  repetition check: scored ${previous.date}`)
+      }
+    } catch (err) {
+      console.warn(`  uniqueness feedback skipped (non-blocking): ${err.message}`)
+    }
+
     const chassisCatalogBlock = formatChassisCatalogForPrompt(CHASSIS_CATALOG)
     const weightsBlock = `Signals: ${weights.signals}/10 | Inspiration: ${weights.inspiration}/10 | Ratings: ${weights.ratings}/10 | Risk: ${weights.risk}/10\n\n${describeRiskTier(weights.risk)}`
 
@@ -772,6 +796,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         brandContract,
         weightsBlock,
         tasteMemoryBlock,
+        uniquenessBlock,
         failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
         systemPrompt: artDirectorSystemPrompt,
       })
@@ -795,6 +820,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           brandContract,
           weightsBlock,
           tasteMemoryBlock,
+          uniquenessBlock,
           retryContext: `## Previous attempt was rejected\n\nYour previous response failed validation: ${firstErr.message}\nEmit ALL required blocks with exact delimiters and exact field formats this time.`,
           failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
           systemPrompt: artDirectorSystemPrompt,
@@ -925,6 +951,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           brandContract,
           weightsBlock,
           tasteMemoryBlock,
+          uniquenessBlock,
           retryContext: `## Previous attempt failed codegen\n\n${codegenResult.error?.slice(0, 1500) || ''}`,
           failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
           systemPrompt: artDirectorSystemPrompt,
