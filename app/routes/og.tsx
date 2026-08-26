@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { LogoMark } from '../components/LogoMark'
+import logoMono from '../assets/logo-mono.svg'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
@@ -11,7 +11,7 @@ function OgCard() {
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
-        bg: 'bg',
+        background: 'bg',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -19,68 +19,86 @@ function OgCard() {
     >
       <div
         className={css({
+          position: 'relative',
           width: '1200px',
           height: '630px',
-          bg: 'bg',
-          position: 'relative',
+          background: 'bg',
+          border: '3px double',
+          borderColor: 'border',
+          padding: '9',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: '80px',
           overflow: 'hidden',
         })}
       >
         <div
           className={css({
-            fontFamily: 'mono',
-            fontSize: 'sm',
-            letterSpacing: 'widest',
-            textTransform: 'uppercase',
-            color: 'textMuted',
-            marginBottom: '32px',
+            position: 'absolute',
+            inset: 0,
+            background: 'accent',
+            opacity: 0.1,
+            pointerEvents: 'none',
+          })}
+        />
+
+        <div
+          className={css({
+            position: 'relative',
             display: 'flex',
             alignItems: 'center',
-            gap: '12px',
+            gap: '3',
+            marginBottom: '6',
           })}
         >
-          <span className={css({ width: '12px', height: '12px', bg: 'accent', display: 'inline-block' })} />
-          INCIDENT REPORT — LIVE SYSTEM
-        </div>
-
-        <h1
-          className={css({
-            fontFamily: 'mono',
-            fontWeight: 'bold',
-            fontSize: '128px',
-            lineHeight: 'tight',
-            letterSpacing: 'tight',
-            color: 'accent',
-            textShadow: '0 0 48px token(colors.accentGlow)',
-            margin: 0,
-          })}
-        >
-          How Complex
-          <br />
-          Systems Fail
-        </h1>
-
-        <div className={css({ position: 'absolute', top: '64px', right: '64px' })}>
-          <LogoMark size={48} />
+          <img
+            src={logoMono}
+            alt=""
+            className={css({ height: '56px', width: 'auto', color: 'text' })}
+          />
+          <span
+            className={css({
+              fontFamily: 'display',
+              fontWeight: 'bold',
+              fontSize: '2xl',
+              color: 'text',
+              letterSpacing: 'tight',
+            })}
+          >
+            Doug March
+          </span>
         </div>
 
         <div
           className={css({
-            position: 'absolute',
-            bottom: '64px',
-            left: '80px',
-            fontFamily: 'mono',
-            fontSize: 'sm',
-            letterSpacing: 'wide',
-            color: 'textMuted',
+            position: 'relative',
+            fontFamily: 'body',
+            fontSize: 'xs',
+            letterSpacing: 'widest',
+            textTransform: 'lowercase',
+            fontWeight: 'semibold',
+            color: 'accent',
+            marginBottom: '4',
           })}
         >
-          DOUG MARCH // DM
+          The Front Page · Vol. MMXXVI · No. 210
         </div>
+
+        <h1
+          className={css({
+            position: 'relative',
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: 'clamp(3rem, 6vw, 5.5rem)',
+            lineHeight: 'tight',
+            letterSpacing: 'tight',
+            color: 'text',
+            maxWidth: '18ch',
+          })}
+        >
+          <span className={css({ color: 'accentGlow', fontStyle: 'italic' })}>Confidence</span> is
+          what you have before you understand the problem.
+        </h1>
       </div>
     </div>
   )

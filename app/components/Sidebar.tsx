@@ -1,90 +1,104 @@
 import { css } from '../../styled-system/css'
-import { LogoMark } from './LogoMark'
-
-const navItems = [
-  { label: '01 WORK', href: '/#work' },
-  { label: '02 ABOUT', href: '/about' },
-  { label: '03 CONTACT', href: '/#contact' },
-]
+import logoMono from '../assets/logo-mono.svg'
 
 export function Sidebar() {
   return (
-    <aside
+    <header
       className={css({
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: { base: 0, md: 'auto' },
-        width: { base: '100%', md: '72px' },
-        height: { base: '56px', md: '100vh' },
-        bg: 'bgSidebar',
-        borderRight: { base: 'none', md: '1px solid' },
-        borderBottom: { base: '1px solid', md: 'none' },
-        borderColor: 'border',
-        display: 'flex',
-        flexDirection: { base: 'row', md: 'column' },
+        background: 'panel',
+        borderTop: '3px double',
+        borderTopColor: 'border',
+        borderBottom: '3px double',
+        borderBottomColor: 'border',
+        paddingY: '3',
+        paddingX: { base: '4', md: '8' },
+        display: 'grid',
+        gridTemplateColumns: { base: '1fr', sm: '1fr auto 1fr' },
         alignItems: 'center',
-        justifyContent: { base: 'space-between', md: 'flex-start' },
-        padding: { base: '0 16px', md: '20px 0' },
-        zIndex: 100,
+        gap: '3',
+        minHeight: '96px',
       })}
     >
       <a
         href="/"
         aria-label="Doug March — home"
-        className={css({ display: 'flex', marginBottom: { base: 0, md: '40px' } })}
-      >
-        <LogoMark size={26} />
-      </a>
-
-      <nav
-        aria-label="Primary"
         className={css({
           display: 'flex',
-          flexDirection: { base: 'row', md: 'column' },
-          gap: { base: '4px', md: '28px' },
-          writingMode: { base: 'horizontal-tb', md: 'vertical-rl' },
-          textOrientation: 'mixed',
+          flexDirection: 'column',
+          alignItems: { base: 'center', sm: 'flex-start' },
+          gap: '2',
         })}
       >
-        {navItems.map((item) => (
-          <a
-            key={item.label}
-            href={item.href}
-            className={css({
-              fontFamily: 'mono',
-              fontSize: 'xs',
-              letterSpacing: 'widest',
-              color: 'textMuted',
-              transform: { base: 'none', md: 'rotate(180deg)' },
-              padding: { base: '0 10px', md: '8px 4px' },
-              minHeight: '44px',
-              display: 'flex',
-              alignItems: 'center',
-              borderLeft: { base: 'none', md: '2px solid transparent' },
-              borderBottom: { base: '2px solid transparent', md: 'none' },
-              transition: 'color .18s ease-out, border-color .18s ease-out',
-              _hover: { color: 'accentLight', borderColor: 'accent' },
-            })}
-          >
-            {item.label}
-          </a>
-        ))}
-      </nav>
+        <img
+          src={logoMono}
+          alt=""
+          className={css({ height: '46px', width: 'auto', color: 'text' })}
+        />
+        <span
+          className={css({
+            fontFamily: 'display',
+            fontWeight: 'bold',
+            fontSize: 'xl',
+            letterSpacing: 'tight',
+            lineHeight: 'tight',
+            color: 'text',
+          })}
+        >
+          Doug March
+        </span>
+      </a>
 
       <div
         className={css({
-          marginTop: 'auto',
-          fontFamily: 'mono',
-          fontSize: '2xs',
-          letterSpacing: 'wide',
-          color: 'border',
-          writingMode: 'vertical-rl',
-          display: { base: 'none', md: 'block' },
+          order: { base: 3, sm: 0 },
+          textAlign: 'center',
+          fontFamily: 'body',
+          fontSize: 'xs',
+          letterSpacing: 'widest',
+          textTransform: 'lowercase',
+          fontWeight: 'semibold',
+          color: 'textMuted',
         })}
       >
-        DM // 2026
+        Wednesday <span className={css({ color: 'accentGlow' })}>·</span> July 29, 2026{' '}
+        <span className={css({ color: 'accentGlow' })}>·</span> Full Moon
       </div>
-    </aside>
+
+      <nav
+        aria-label="Sections"
+        className={css({
+          order: { base: 2, sm: 0 },
+          display: 'flex',
+          justifyContent: { base: 'center', sm: 'flex-end' },
+          flexWrap: 'wrap',
+          gap: { base: '3', sm: '6' },
+          fontFamily: 'body',
+        })}
+      >
+        {[
+          { href: '/', label: 'Work' },
+          { href: '/about', label: 'About' },
+          { href: 'mailto:hello@doug-march.com', label: 'Contact' },
+        ].map((l) => (
+          <a
+            key={l.label}
+            href={l.href}
+            className={css({
+              fontSize: 'xs',
+              letterSpacing: 'widest',
+              textTransform: 'lowercase',
+              fontWeight: 'semibold',
+              color: 'text',
+              minHeight: '44px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              _hover: { color: 'accent', textDecoration: 'underline' },
+            })}
+          >
+            {l.label}
+          </a>
+        ))}
+      </nav>
+    </header>
   )
 }
