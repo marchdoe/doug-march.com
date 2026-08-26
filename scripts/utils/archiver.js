@@ -5,6 +5,8 @@ import { ROOT } from './file-manager.js'
 import { captureSnapshot } from './snapshot.js'
 import { summarizeLedger } from './cost-ledger.js'
 import { anomaliesOf, buildRecord } from './archive-record.js'
+import { computeUniqueness } from './uniqueness-index.js'
+import { readUniquenessHistory } from './read-uniqueness-history.js'
 
 /**
  * Copy key archive artifacts to public/ for static serving.
@@ -360,6 +362,50 @@ export async function archive(
     }
   } catch (err) {
     console.warn(`  record.json write failed (non-blocking): ${err.message}`)
+  }
+
+  // Uniqueness index (#Task 6). Deterministic, zero LLM. Written after the
+  // artifacts above are on disk so today's inputs are read back from the build
+  // dir rather than threaded through this function's already-long signature.
+  // `before: dateStr` keeps today out of its own comparison window.
+  try {
+    const readJson = async (name) => {
+      try {
+        return JSON.parse(await readFile(path.join(buildDir, name), 'utf8'))
+      } catch {
+        return null
+      }
+    }
+    const [composition, todayScheme, lane, shell] = await Promise.all([
+      readJson('composition.json'),
+      readJson('color-scheme.json'),
+      readJson('lane.json'),
+      readJson('shell.json'),
+    ])
+    const history = await readUniquenessHistory({ root: ROOT, limit: 7, before: dateStr })
+    const index = computeUniqueness(
+      {
+        date: dateStr,
+        composition,
+        hue:
+          typeof todayScheme?.primary_hue?.h === 'number'
+            ? todayScheme.primary_hue.h
+            : (colorScheme?.primary_hue?.h ?? null),
+        lane: lane?.laneId ?? null,
+        shell,
+      },
+      history
+    )
+    await writeFile(path.join(buildDir, 'uniqueness.json'), JSON.stringify(index, null, 2), 'utf8')
+    const pct = index.composite === null ? 'n/a' : `${Math.round(index.composite * 100)}%`
+    console.log(`  wrote uniqueness.json (composite ${pct} over ${index.window} builds)`)
+    if (index.composite !== null && index.composite < 0.35) {
+      console.warn(
+        `  uniqueness LOW (${pct}) — nearest: composition ${index.metrics.composition.nearest ?? 'n/a'}, hue ${index.metrics.hue.nearest ?? 'n/a'}`
+      )
+    }
+  } catch (err) {
+    console.warn(`  uniqueness.json write failed (non-blocking): ${err.message}`)
   }
 
   // Copy artifacts to public/ for static serving

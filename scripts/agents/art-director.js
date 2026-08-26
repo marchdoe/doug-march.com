@@ -52,6 +52,7 @@ export function buildArtDirectorUserPrompt({
   brandContract,
   weightsBlock,
   tasteMemoryBlock,
+  uniquenessBlock,
   retryContext,
 }) {
   const sections = []
@@ -69,6 +70,7 @@ export function buildArtDirectorUserPrompt({
   if (brandContract) sections.push(brandContract)
   if (weightsBlock) sections.push(`## Creative Weights\n\n${weightsBlock}`)
   if (tasteMemoryBlock) sections.push(tasteMemoryBlock)
+  if (uniquenessBlock) sections.push(uniquenessBlock)
   if (retryContext) sections.push(retryContext)
   return sections.join('\n\n---\n\n')
 }
@@ -166,6 +168,7 @@ export function validateArtDirectorResult(parsed) {
  *   compositionMandateSection?: string,
  *   weightsBlock: string,
  *   tasteMemoryBlock: string,
+ *   uniquenessBlock?: string,
  *   retryContext?: string,
  *   systemPrompt: string,
  *   designReferenceImages?: Array<{ data: string, media_type: string, title?: string }>,

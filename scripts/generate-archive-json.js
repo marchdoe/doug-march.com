@@ -21,6 +21,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import { join, resolve } from 'node:path'
 import { anomaliesOf, buildRecord } from './utils/archive-record.js'
 import { readRatingForDate } from './utils/ratings.js'
+import { WINDOW, computeUniqueness } from './utils/uniqueness-index.js'
 
 const ROOT = resolve(import.meta.dirname, '..')
 const ARCHIVE_PATH = join(ROOT, 'archive')
@@ -77,10 +78,57 @@ function countSnapshotPages(date) {
 }
 
 /**
+ * Read one date's uniqueness inputs off disk.
+ *
+ * Computed here for every date rather than only read back from the
+ * `uniqueness.json` the pipeline now writes, so the chart covers the whole
+ * corpus on the first run instead of starting from whenever the index shipped.
+ * The persisted file stays the per-build record; this is the projection.
+ *
+ * @param {string} date
+ * @returns {{date: string, composition: object|null, hue: number|null, lane: string|null, shell: object|null}}
+ */
+function uniquenessInputs(date) {
+  const dateDir = join(ARCHIVE_PATH, date)
+  const readJson = (dir, name) => {
+    try {
+      return JSON.parse(readFileSync(join(dir, name), 'utf8'))
+    } catch {
+      return null
+    }
+  }
+  let builds = []
+  try {
+    builds = readdirSync(dateDir)
+      .filter((b) => b.startsWith('build-') && !b.includes('failed'))
+      .sort()
+      .reverse()
+  } catch {
+    /* no build dirs */
+  }
+  for (const dir of [...builds.map((b) => join(dateDir, b)), dateDir]) {
+    const composition = readJson(dir, 'composition.json')
+    const colorScheme = readJson(dir, 'color-scheme.json')
+    const lane = readJson(dir, 'lane.json')
+    const shell = readJson(dir, 'shell.json')
+    if (composition || colorScheme || lane || shell) {
+      return {
+        date,
+        composition,
+        hue: typeof colorScheme?.primary_hue?.h === 'number' ? colorScheme.primary_hue.h : null,
+        lane: lane?.laneId ?? null,
+        shell,
+      }
+    }
+  }
+  return { date, composition: null, hue: null, lane: null, shell: null }
+}
+
+/**
  * The calendar and the dev panel both read the index, so it carries only what a
  * list needs: enough to label a day and colour a cell.
  */
-function indexEntry(record, { hasScreenshot, pages }) {
+function indexEntry(record, { hasScreenshot, pages, uniqueness }) {
   return {
     date: record.date,
     era: record.era,
@@ -104,6 +152,10 @@ function indexEntry(record, { hasScreenshot, pages }) {
         }
       : null,
     rating: readRatingForDate(ARCHIVE_PATH, record.date),
+    // Composite 0..1, or null when nothing about the day was comparable.
+    // `window` says how many builds it was measured against, so a chart can
+    // dim the early dates rather than treating a 2-build window as a verdict.
+    uniqueness: uniqueness ? { composite: uniqueness.composite, window: uniqueness.window } : null,
   }
 }
 
@@ -116,6 +168,20 @@ const index = []
 let rebuilt = 0
 const anomalous = []
 
+// Uniqueness inputs for every date, oldest first, so each date can be scored
+// against the WINDOW dates that actually preceded it.
+const chronological = [...dates].sort()
+const inputsByDate = new Map(chronological.map((d) => [d, uniquenessInputs(d)]))
+const uniquenessByDate = new Map()
+for (let i = 0; i < chronological.length; i++) {
+  const date = chronological[i]
+  const history = chronological
+    .slice(Math.max(0, i - WINDOW), i)
+    .reverse()
+    .map((d) => inputsByDate.get(d))
+  uniquenessByDate.set(date, computeUniqueness(inputsByDate.get(date), history))
+}
+
 for (const date of dates) {
   const { record, rebuilt: wasRebuilt } = loadRecord(date)
   if (!record) continue
@@ -127,12 +193,14 @@ for (const date of dates) {
   const hasScreenshot = existsSync(join(OUT_DIR, `${date}.png`))
   const pages = countSnapshotPages(date)
 
+  const uniqueness = uniquenessByDate.get(date) ?? null
+
   writeFileSync(
     join(OUT_DIR, `${date}.json`),
-    JSON.stringify({ ...record, hasScreenshot, pages }),
+    JSON.stringify({ ...record, hasScreenshot, pages, uniqueness }),
     'utf8'
   )
-  index.push(indexEntry(record, { hasScreenshot, pages }))
+  index.push(indexEntry(record, { hasScreenshot, pages, uniqueness }))
 }
 
 writeFileSync(join(OUT_DIR, 'index.json'), JSON.stringify(index), 'utf8')
