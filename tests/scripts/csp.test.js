@@ -55,18 +55,17 @@ describe('both policies exist', () => {
   })
 
   /**
-   * Vercel resolves a repeated header key by first match, not by specificity,
-   * and sends exactly one of them.
+   * Vercel sends one header per key, and the LAST matching rule wins.
    *
-   * With the catch-all first, an archived page received the site policy and the
-   * strict one never applied — the config looked right and did nothing. Found
-   * by reading the response headers off a deploy preview, which is the only
-   * place this is visible.
+   * This cost two deploy previews to establish. With the archive rule listed
+   * before the catch-all, an archived page received the site policy — the
+   * strict rule was live, correct, and overwritten. The config looks right
+   * either way; only the response headers tell you which.
    */
-  it('lists the archive rule before the catch-all, or it never applies', () => {
+  it('lists the archive rule after the catch-all, or it gets overwritten', () => {
     const sources = config.headers.map((h) => h.source)
     expect(sources.indexOf(ARCHIVE)).toBeGreaterThan(-1)
-    expect(sources.indexOf(ARCHIVE)).toBeLessThan(sources.indexOf(SITE))
+    expect(sources.indexOf(ARCHIVE)).toBeGreaterThan(sources.indexOf(SITE))
   })
 })
 
