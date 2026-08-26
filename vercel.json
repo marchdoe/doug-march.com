@@ -10,7 +10,7 @@
   "framework": null,
   "headers": [
     {
-      "source": "/archive/:date(\\d{4}-\\d{2}-\\d{2})/:path*",
+      "source": "/archive/(.*)",
       "headers": [
         {
           "key": "Content-Security-Policy",

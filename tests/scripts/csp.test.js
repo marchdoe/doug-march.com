@@ -46,7 +46,7 @@ function directives(policy) {
 }
 
 const SITE = '/(.*)'
-const ARCHIVE = '/archive/:date(\\d{4}-\\d{2}-\\d{2})/:path*'
+const ARCHIVE = '/archive/(.*)'
 
 describe('both policies exist', () => {
   it('one for the site, one for the preserved designs', () => {

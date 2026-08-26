@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import logoMono from '../assets/logo-mono.svg'
+import { LogoMark } from '../components/LogoMark'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
@@ -11,7 +11,7 @@ function OgCard() {
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
-        background: 'bg',
+        bg: 'bg',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -19,86 +19,68 @@ function OgCard() {
     >
       <div
         className={css({
-          position: 'relative',
           width: '1200px',
           height: '630px',
-          background: 'bg',
-          border: '3px double',
-          borderColor: 'border',
-          padding: '9',
+          bg: 'bg',
+          position: 'relative',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
+          padding: '80px',
           overflow: 'hidden',
         })}
       >
         <div
           className={css({
-            position: 'absolute',
-            inset: 0,
-            background: 'accent',
-            opacity: 0.1,
-            pointerEvents: 'none',
-          })}
-        />
-
-        <div
-          className={css({
-            position: 'relative',
+            fontFamily: 'mono',
+            fontSize: 'sm',
+            letterSpacing: 'widest',
+            textTransform: 'uppercase',
+            color: 'textMuted',
+            marginBottom: '32px',
             display: 'flex',
             alignItems: 'center',
-            gap: '3',
-            marginBottom: '6',
+            gap: '12px',
           })}
         >
-          <img
-            src={logoMono}
-            alt=""
-            className={css({ height: '56px', width: 'auto', color: 'text' })}
-          />
-          <span
-            className={css({
-              fontFamily: 'display',
-              fontWeight: 'bold',
-              fontSize: '2xl',
-              color: 'text',
-              letterSpacing: 'tight',
-            })}
-          >
-            Doug March
-          </span>
-        </div>
-
-        <div
-          className={css({
-            position: 'relative',
-            fontFamily: 'body',
-            fontSize: 'xs',
-            letterSpacing: 'widest',
-            textTransform: 'lowercase',
-            fontWeight: 'semibold',
-            color: 'accent',
-            marginBottom: '4',
-          })}
-        >
-          The Front Page · Vol. MMXXVI · No. 210
+          <span className={css({ width: '12px', height: '12px', bg: 'accent', display: 'inline-block' })} />
+          INCIDENT REPORT — LIVE SYSTEM
         </div>
 
         <h1
           className={css({
-            position: 'relative',
-            fontFamily: 'display',
+            fontFamily: 'mono',
             fontWeight: 'bold',
-            fontSize: 'clamp(3rem, 6vw, 5.5rem)',
+            fontSize: '128px',
             lineHeight: 'tight',
             letterSpacing: 'tight',
-            color: 'text',
-            maxWidth: '18ch',
+            color: 'accent',
+            textShadow: '0 0 48px token(colors.accentGlow)',
+            margin: 0,
           })}
         >
-          <span className={css({ color: 'accentGlow', fontStyle: 'italic' })}>Confidence</span> is
-          what you have before you understand the problem.
+          How Complex
+          <br />
+          Systems Fail
         </h1>
+
+        <div className={css({ position: 'absolute', top: '64px', right: '64px' })}>
+          <LogoMark size={48} />
+        </div>
+
+        <div
+          className={css({
+            position: 'absolute',
+            bottom: '64px',
+            left: '80px',
+            fontFamily: 'mono',
+            fontSize: 'sm',
+            letterSpacing: 'wide',
+            color: 'textMuted',
+          })}
+        >
+          DOUG MARCH // DM
+        </div>
       </div>
     </div>
   )

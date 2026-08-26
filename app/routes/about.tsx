@@ -1,201 +1,180 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
+import { Box } from '../../styled-system/jsx'
 import { identity, personal } from '../content/about'
 import { timeline, capabilities, education } from '../content/timeline'
+import { CaseRow } from '../components/CaseRow'
+import { SignalLog } from '../components/SignalLog'
 
 export const Route = createFileRoute('/about')({ component: AboutPage })
-
-const kickerCss = css({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '4',
-  flexWrap: 'wrap',
-  color: 'accent',
-  fontFamily: 'body',
-  fontSize: 'xs',
-  letterSpacing: 'widest',
-  textTransform: 'lowercase',
-  fontWeight: 'semibold',
-  marginBottom: { base: '4', md: '5' },
-})
-
-const ruleCss = css({ flex: 1, height: '1px', background: 'border', minWidth: '10' })
-
-const sectHeadCss = css({
-  fontFamily: 'body',
-  fontSize: 'sm',
-  letterSpacing: 'widest',
-  textTransform: 'lowercase',
-  fontWeight: 'semibold',
-  color: 'accentGlow',
-  paddingBottom: '2',
-  marginBottom: '4',
-  borderBottom: '1px solid',
-  borderBottomColor: 'border',
-})
-
-const almanacItemCss = css({
-  paddingY: '3',
-  borderBottom: '1px solid',
-  borderColor: 'border',
-})
-
-const kCss = css({
-  display: 'block',
-  marginBottom: '1',
-  fontFamily: 'body',
-  fontSize: '2xs',
-  letterSpacing: 'wider',
-  textTransform: 'uppercase',
-  color: 'textSubtle',
-})
-
-const vCss = css({ fontFamily: 'display', fontSize: 'sm', lineHeight: 'loose', color: 'plum.200' })
 
 function AboutPage() {
   return (
     <>
       <section
         className={css({
-          minHeight: { base: 'auto', md: '36vh' },
-          padding: { base: '5', md: '7' },
-          paddingX: { base: '4', md: '8' },
-          borderBottom: '3px double',
-          borderBottomColor: 'border',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
+          display: 'grid',
+          gridTemplateColumns: { base: '1fr', lg: 'repeat(12, 1fr)' },
+          padding: { base: '32px 20px 16px', md: '64px 5vw 32px' },
         })}
       >
-        <div className={kickerCss}>
-          <span>The Masthead</span>
-          <span className={ruleCss} />
-          <span>{identity.role}</span>
-        </div>
-        <h1
+        <div
           className={css({
-            fontFamily: 'display',
-            fontWeight: 'bold',
-            fontSize: 'clamp(2rem, 5.5vw, 4.5rem)',
-            lineHeight: 'snug',
-            letterSpacing: 'tight',
-            color: 'accentGlow',
-            maxWidth: '22ch',
+            gridColumn: { lg: '1 / 8' },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
           })}
         >
-          {identity.statement}
-        </h1>
+          <div
+            className={css({
+              fontFamily: 'mono',
+              fontSize: 'xs',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              color: 'textMuted',
+              marginBottom: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            })}
+          >
+            <span className={css({ width: '8px', height: '8px', bg: 'accent', display: 'inline-block' })} />
+            PERSONNEL FILE
+          </div>
+
+          <h1
+            className={css({
+              fontFamily: 'mono',
+              fontWeight: 'bold',
+              fontSize: 'clamp(40px, 5vw, 88px)',
+              lineHeight: 'snug',
+              letterSpacing: 'tight',
+              color: 'accent',
+              margin: 0,
+            })}
+          >
+            {identity.name}
+          </h1>
+          <p
+            className={css({
+              marginTop: '16px',
+              fontFamily: 'mono',
+              fontSize: 'sm',
+              letterSpacing: 'wide',
+              color: 'textMuted',
+              textTransform: 'uppercase',
+            })}
+          >
+            {identity.role}
+          </p>
+          <p
+            className={css({
+              marginTop: '32px',
+              maxWidth: '52ch',
+              fontSize: 'md',
+              color: 'textSecondary',
+              lineHeight: 'normal',
+            })}
+          >
+            {identity.statement}
+          </p>
+        </div>
+
+        <Box gridColumn={{ lg: '8 / 13' }} marginTop={{ base: '40px', lg: 0 }}>
+          <SignalLog
+            title="PERSONNEL LOG"
+            rows={[
+              { label: 'HOLES-IN-ONE', value: String(personal.holesInOne) },
+              { label: 'SPORT', value: personal.sport },
+              { label: 'TEAMS', value: personal.teams.join(', ') },
+              { label: 'FOCUS', value: personal.currentFocus },
+            ]}
+          />
+        </Box>
       </section>
 
-      <main
-        className={css({
-          padding: { base: '5', md: '6' },
-          paddingX: { base: '4', md: '8' },
-          display: 'grid',
-          gridTemplateColumns: { base: '1fr', md: 'repeat(12, 1fr)' },
-          gap: '8',
-        })}
-      >
-        <section className={css({ gridColumn: { base: '1/-1', md: '1 / span 8' } })}>
-          <h2 className={sectHeadCss}>The Record — Timeline</h2>
-          {timeline.map((t) => (
-            <div
-              key={`${t.year}-${t.role}`}
-              className={css({ paddingY: '4', borderBottom: '1px solid', borderColor: 'border' })}
+      <section className={css({ padding: { base: '24px 20px 48px', md: '32px 5vw 96px' } })}>
+        <div
+          className={css({
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
+            borderBottom: '1px solid',
+            borderColor: 'border',
+            paddingBottom: '16px',
+            marginBottom: '4px',
+          })}
+        >
+          <h2 className={css({ fontFamily: 'mono', fontSize: 'lg', letterSpacing: 'tight', color: 'text' })}>
+            SERVICE RECORD
+          </h2>
+          <span className={css({ fontFamily: 'mono', fontSize: 'xs', color: 'neutral.500', letterSpacing: 'wide' })}>
+            {String(timeline.length + 1).padStart(2, '0')} ENTRIES
+          </span>
+        </div>
+
+        {timeline.map((entry) => (
+          <CaseRow
+            key={`${entry.year}-${entry.company}`}
+            idx={entry.year}
+            title={`${entry.role} — ${entry.company}`}
+            problem={entry.description}
+            type={entry.current ? 'CURRENT' : 'PAST'}
+            status={entry.current ? 'CURRENT' : 'CLOSED'}
+          />
+        ))}
+
+        <CaseRow
+          idx={education.years}
+          title={education.school}
+          problem={`${education.degree} — ${education.concentration}`}
+          type="EDUCATION"
+          status="COMPLETE"
+        />
+      </section>
+
+      <section className={css({ padding: { base: '0 20px 48px', md: '0 5vw 96px' } })}>
+        <div
+          className={css({
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
+            borderBottom: '1px solid',
+            borderColor: 'border',
+            paddingBottom: '16px',
+            marginBottom: '16px',
+          })}
+        >
+          <h2 className={css({ fontFamily: 'mono', fontSize: 'lg', letterSpacing: 'tight', color: 'text' })}>
+            CAPABILITIES
+          </h2>
+        </div>
+
+        <div className={css({ display: 'flex', flexWrap: 'wrap' })}>
+          {capabilities.map((cap) => (
+            <span
+              key={cap}
+              className={css({
+                fontFamily: 'mono',
+                fontSize: 'xs',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                color: 'textMuted',
+                border: '1px solid',
+                borderColor: 'border',
+                padding: '8px 16px',
+                marginRight: '-1px',
+                marginBottom: '-1px',
+                transition: 'color .18s ease-out, border-color .18s ease-out',
+                _hover: { color: 'accentLight', borderColor: 'accent' },
+              })}
             >
-              <div
-                className={css({
-                  display: 'flex',
-                  gap: '4',
-                  alignItems: 'baseline',
-                  flexWrap: 'wrap',
-                })}
-              >
-                <span
-                  className={css({
-                    minWidth: '120px',
-                    flex: 'none',
-                    fontFamily: 'body',
-                    fontSize: 'xs',
-                    letterSpacing: 'wider',
-                    textTransform: 'uppercase',
-                    color: t.current ? 'accentGlow' : 'textSubtle',
-                  })}
-                >
-                  {t.year}
-                </span>
-                <span className={css({ fontFamily: 'display', fontSize: 'lg', color: 'text' })}>
-                  {t.role} <span className={css({ color: 'textMuted' })}>— {t.company}</span>
-                </span>
-              </div>
-              <p
-                className={css({
-                  fontSize: 'sm',
-                  lineHeight: 'loose',
-                  color: 'plum.200',
-                  marginTop: '2',
-                  maxWidth: '60ch',
-                })}
-              >
-                {t.description}
-              </p>
-            </div>
+              {cap}
+            </span>
           ))}
-        </section>
-
-        <aside className={css({ gridColumn: { base: '1/-1', md: '9 / span 4' } })}>
-          <h2 className={sectHeadCss}>Standings &amp; Almanac</h2>
-
-          <div className={css({ marginBottom: '5' })}>
-            <span className={kCss}>Capabilities</span>
-            <ul className={css({ listStyle: 'none', display: 'flex', flexWrap: 'wrap', gap: '2' })}>
-              {capabilities.map((c) => (
-                <li
-                  key={c}
-                  className={css({
-                    fontFamily: 'body',
-                    fontSize: '2xs',
-                    letterSpacing: 'wider',
-                    textTransform: 'lowercase',
-                    fontWeight: 'semibold',
-                    color: 'text',
-                    border: '1px solid',
-                    borderColor: 'border',
-                    paddingX: '2',
-                    paddingY: '1',
-                  })}
-                >
-                  {c}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className={almanacItemCss}>
-            <span className={kCss}>Education</span>
-            <span className={vCss}>
-              {education.school} — {education.degree}
-              <br />
-              {education.concentration} · {education.years}
-            </span>
-          </div>
-
-          <div className={almanacItemCss}>
-            <span className={kCss}>Holes in one</span>
-            <span className={vCss}>
-              {personal.holesInOne} · {personal.sport}
-            </span>
-          </div>
-          <div className={almanacItemCss}>
-            <span className={kCss}>Teams</span>
-            <span className={vCss}>{personal.teams.join(' · ')}</span>
-          </div>
-          <div className={almanacItemCss}>
-            <span className={kCss}>Current focus</span>
-            <span className={vCss}>{personal.currentFocus}</span>
-          </div>
-        </aside>
-      </main>
+        </div>
+      </section>
     </>
   )
 }

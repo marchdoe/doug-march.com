@@ -1,104 +1,90 @@
 import { css } from '../../styled-system/css'
-import logoMono from '../assets/logo-mono.svg'
+import { LogoMark } from './LogoMark'
+
+const navItems = [
+  { label: '01 WORK', href: '/#work' },
+  { label: '02 ABOUT', href: '/about' },
+  { label: '03 CONTACT', href: '/#contact' },
+]
 
 export function Sidebar() {
   return (
-    <header
+    <aside
       className={css({
-        background: 'panel',
-        borderTop: '3px double',
-        borderTopColor: 'border',
-        borderBottom: '3px double',
-        borderBottomColor: 'border',
-        paddingY: '3',
-        paddingX: { base: '4', md: '8' },
-        display: 'grid',
-        gridTemplateColumns: { base: '1fr', sm: '1fr auto 1fr' },
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: { base: 0, md: 'auto' },
+        width: { base: '100%', md: '72px' },
+        height: { base: '56px', md: '100vh' },
+        bg: 'bgSidebar',
+        borderRight: { base: 'none', md: '1px solid' },
+        borderBottom: { base: '1px solid', md: 'none' },
+        borderColor: 'border',
+        display: 'flex',
+        flexDirection: { base: 'row', md: 'column' },
         alignItems: 'center',
-        gap: '3',
-        minHeight: '96px',
+        justifyContent: { base: 'space-between', md: 'flex-start' },
+        padding: { base: '0 16px', md: '20px 0' },
+        zIndex: 100,
       })}
     >
       <a
         href="/"
         aria-label="Doug March — home"
-        className={css({
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: { base: 'center', sm: 'flex-start' },
-          gap: '2',
-        })}
+        className={css({ display: 'flex', marginBottom: { base: 0, md: '40px' } })}
       >
-        <img
-          src={logoMono}
-          alt=""
-          className={css({ height: '46px', width: 'auto', color: 'text' })}
-        />
-        <span
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'bold',
-            fontSize: 'xl',
-            letterSpacing: 'tight',
-            lineHeight: 'tight',
-            color: 'text',
-          })}
-        >
-          Doug March
-        </span>
+        <LogoMark size={26} />
       </a>
 
-      <div
-        className={css({
-          order: { base: 3, sm: 0 },
-          textAlign: 'center',
-          fontFamily: 'body',
-          fontSize: 'xs',
-          letterSpacing: 'widest',
-          textTransform: 'lowercase',
-          fontWeight: 'semibold',
-          color: 'textMuted',
-        })}
-      >
-        Wednesday <span className={css({ color: 'accentGlow' })}>·</span> July 29, 2026{' '}
-        <span className={css({ color: 'accentGlow' })}>·</span> Full Moon
-      </div>
-
       <nav
-        aria-label="Sections"
+        aria-label="Primary"
         className={css({
-          order: { base: 2, sm: 0 },
           display: 'flex',
-          justifyContent: { base: 'center', sm: 'flex-end' },
-          flexWrap: 'wrap',
-          gap: { base: '3', sm: '6' },
-          fontFamily: 'body',
+          flexDirection: { base: 'row', md: 'column' },
+          gap: { base: '4px', md: '28px' },
+          writingMode: { base: 'horizontal-tb', md: 'vertical-rl' },
+          textOrientation: 'mixed',
         })}
       >
-        {[
-          { href: '/', label: 'Work' },
-          { href: '/about', label: 'About' },
-          { href: 'mailto:hello@doug-march.com', label: 'Contact' },
-        ].map((l) => (
+        {navItems.map((item) => (
           <a
-            key={l.label}
-            href={l.href}
+            key={item.label}
+            href={item.href}
             className={css({
+              fontFamily: 'mono',
               fontSize: 'xs',
               letterSpacing: 'widest',
-              textTransform: 'lowercase',
-              fontWeight: 'semibold',
-              color: 'text',
+              color: 'textMuted',
+              transform: { base: 'none', md: 'rotate(180deg)' },
+              padding: { base: '0 10px', md: '8px 4px' },
               minHeight: '44px',
-              display: 'inline-flex',
+              display: 'flex',
               alignItems: 'center',
-              _hover: { color: 'accent', textDecoration: 'underline' },
+              borderLeft: { base: 'none', md: '2px solid transparent' },
+              borderBottom: { base: '2px solid transparent', md: 'none' },
+              transition: 'color .18s ease-out, border-color .18s ease-out',
+              _hover: { color: 'accentLight', borderColor: 'accent' },
             })}
           >
-            {l.label}
+            {item.label}
           </a>
         ))}
       </nav>
-    </header>
+
+      <div
+        className={css({
+          marginTop: 'auto',
+          fontFamily: 'mono',
+          fontSize: '2xs',
+          letterSpacing: 'wide',
+          color: 'border',
+          writingMode: 'vertical-rl',
+          display: { base: 'none', md: 'block' },
+        })}
+      >
+        DM // 2026
+      </div>
+    </aside>
   )
 }
