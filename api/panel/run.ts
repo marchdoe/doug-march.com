@@ -1,8 +1,14 @@
 import { requireAuth } from '../_lib/auth.js'
+import { requireSameOrigin } from '../_lib/csrf.js'
 import { json } from '../_lib/http.js'
 import { dispatchRun, GitHubError } from '../_lib/github.js'
 
 export async function POST(request: Request): Promise<Response> {
+  // Provenance before identity: a 401 would make the browser prompt for
+  // credentials on a page the owner did not choose to visit.
+  const foreign = requireSameOrigin(request)
+  if (foreign) return foreign
+
   const denied = requireAuth(request)
   if (denied) return denied
 
