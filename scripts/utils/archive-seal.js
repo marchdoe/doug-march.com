@@ -15,6 +15,8 @@
  *    and CSS or it is nothing.
  */
 
+import { CANONICAL_ORIGIN, matchOrigin } from './site-origin.js'
+
 /** Marks an injected frame so a second run replaces it instead of stacking one on top. */
 export const FRAME_MARKER = 'data-archive-frame'
 
@@ -42,8 +44,6 @@ const PATH_MAP = new Map([
   ['/experiments', 'index.html'],
 ])
 
-const LIVE_ORIGIN = 'https://doug-march.com'
-
 /** `work/politweets.html` sits one level down and needs `../` on everything. */
 export function depthOf(relPath) {
   return relPath.split('/').length - 1
@@ -60,8 +60,9 @@ function isAllowed(path) {
 export function resolveHref(value, { prefix }) {
   let path = value
 
-  if (path.startsWith(LIVE_ORIGIN)) {
-    path = path.slice(LIVE_ORIGIN.length) || '/'
+  const origin = matchOrigin(path)
+  if (origin) {
+    path = path.slice(origin.length) || '/'
   } else if (!path.startsWith('/')) {
     // Already document-relative, a fragment, a mailto:, or another origin.
     return null
@@ -118,7 +119,7 @@ export function rewriteMeta(html, { date }) {
   return html
     .replace(
       /<meta\b[^>]*\b(?:property|name)="og:url"[^>]*>/g,
-      `<meta property="og:url" content="${LIVE_ORIGIN}/archive/${date}/">`
+      `<meta property="og:url" content="${CANONICAL_ORIGIN}/archive/${date}/">`
     )
     .replace(/<meta\b[^>]*\b(?:property|name)="(?:og:image|twitter:image)(?::[a-z]+)?"[^>]*>/g, '')
 }

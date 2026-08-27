@@ -4,12 +4,9 @@
  * source — object literals joined by newlines, each ending in a comma —
  * shaped for TanStack's head() meta array.
  */
-export function buildOgMetaEntries({
-  date,
-  heroCopy,
-  designBrief,
-  siteUrl = 'https://doug-march.com',
-}) {
+import { CANONICAL_ORIGIN } from './site-origin.js'
+
+export function buildOgMetaEntries({ date, heroCopy, designBrief, siteUrl = CANONICAL_ORIGIN }) {
   const title = JSON.stringify(heroCopy || 'Doug March')
   const description = JSON.stringify(
     designBrief || 'A multi-agent pipeline redesigns this site every morning.'

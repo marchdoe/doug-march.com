@@ -41,17 +41,25 @@ Measured 2026-08-26 against `6d0771c`, not carried over from #163.
   three places: line 63 and 64 strip it as a prefix, line 121 writes the `og:url`. Lines 63
   and 64 must match either host forever, because snapshots taken after the cutover will
   carry `dougmar.ch` and still need sealing. Line 121 must emit only the new host.
-- **`scripts/utils/og-meta.js:11`** is the single point of change for new output. Its
-  `siteUrl` default feeds `og:url`, `og:image`, and `twitter:image` into the generated
-  `app/routes/__root.tsx`. Change it here. The generated file is output, not source.
+- **`scripts/utils/site-origin.js` is now the single point of change.** Phase 0 extracted
+  it. `og-meta.js` takes its `siteUrl` default from `CANONICAL_ORIGIN`, `archive-seal.js`
+  reads both names, and `build-validator.js` builds its allowlist from `RECOGNISED_HOSTS`.
+  No host literal remains anywhere else under `scripts/utils/`. Phase 1's Task 1.1 is
+  editing one line in that file.
+  *(This supersedes the original claim that `og-meta.js:11` was the single point of change.
+  It was not: `archive-seal.js` held a second copy, and the two would have drifted.)*
 - **`scripts/seal-archive.js:30`** already excludes `2026-04-14/archive`, the 182-page copy
   that day captured of the archive index. Those pages are reachable in production, carry no
   frame, and still link to the live host. The domain move makes them worse: their links will
   point at a host that no longer serves the site.
-- **Seven test files** assert the literal host. `tests/scripts/archive-seal-corpus.test.js:114`
-  builds an expected `og:url` from it, and `tests/utils/archive-seal.test.js` hardcodes it in
-  ten assertions. A test written against one host silently stops covering anything on the day
-  the domain moves. These are the regression risk, not the source files.
+- **Five test files, not seven.** The original count came from `grep -l` and swept in two
+  files that carry the string for unrelated reasons: `tests/api/github.test.ts` matches the
+  GitHub *repository* name (`api.github.com/repos/marchdoe/doug-march.com/...`), and
+  `tests/utils/archive-record.test.js` has it inside a brief fixture's prose. Neither moves
+  with the web host. The five that mattered were `archive-seal.test.js` (ten assertions),
+  `archive-seal-corpus.test.js`, `og-meta.test.js`, `build-validator-scanner.test.js`, and
+  `e2e/site-health.spec.ts`. All five now import the origins and loop over them, so both
+  hosts stay covered. **Done in Phase 0.**
 - **`app/content/projects.ts:81`** is the title `doug-march.com` and `:95` the `liveUrl`.
   The title drives the work slug, so changing it mints `dougmar-ch.html` alongside the
   existing `doug-march-dot-com.html` in every future snapshot.
@@ -66,6 +74,29 @@ Measured 2026-08-26 against `6d0771c`, not carried over from #163.
   and rewriting them makes them describe a past that did not happen.
 
 ---
+
+## Prerequisite, now met: #173
+
+The panel CSRF guard and CSP had to land before the cutover, and did (merged 2026-08-27).
+The reason is counter-intuitive enough to record: the move makes that exposure **larger**,
+not smaller.
+
+`doug-march.com` currently returns the same 489-byte dead Create React App shell on every
+path, API routes included, so the owner panel is not reachable through the apex at all.
+Pointing a domain at the healthy deployment is exactly what makes `/api/panel/run` — which
+dispatches a workflow that costs money and writes to main — reachable at a public domain
+for the first time. The broken alias was doing an impression of a security control.
+
+Measured 2026-08-27:
+
+    doug-march.com/api/panel/status                HTTP 200  len=489   (dead shell)
+    ...vercel.app/api/panel/status                 HTTP 401  len=12    (live endpoint)
+
+**`vercel.json`'s security headers need no host change.** That closes half the "unexamined"
+item inherited from #163. Both CSP policies use `'self'` plus explicitly-named font origins,
+and the strict archive policy is scoped by path (`/archive/(.*)`), not host. The CSRF guard
+compares the `Origin` header against the `Host` header, so it is relative by construction.
+Nothing in that PR references the web host.
 
 ## Decisions needed before Phase 1
 
@@ -90,10 +121,19 @@ archived pages that would break if the old host stops resolving.
 
 ---
 
-## Phase 0 — Make the seal host-agnostic (no cutover yet)
+## Phase 0 — Make the seal host-agnostic — SHIPPED (2026-08-27)
 
-Ships before any DNS change. Safe to merge on its own: with only the old host configured,
-behavior is identical.
+Ships before any DNS change. Safe to merge on its own: with only the old host canonical,
+behaviour is identical. Verified by re-sealing all 1,032 committed pages and confirming an
+empty diff, twice — once after the constant split and once after the shared-module refactor.
+
+**A latent bug surfaced while writing Task 0.2's tests.** Origin matching used a bare
+`startsWith`, so any host that merely *begins* with ours was treated as ours and collapsed
+into the snapshot: `resolveHref('https://doug-march.com.evil.example/about')` returned
+`index.html`. The bug predates this work — `LIVE_ORIGIN.startsWith` had it too — but the
+move would have made it bite, because the new domain is short:
+`'https://dougmar.church'.startsWith('https://dougmar.ch')` is true. `matchOrigin` now
+requires a path, query, or fragment boundary. Covered in `tests/utils/site-origin.test.js`.
 
 ### Task 0.1: `LIVE_ORIGIN` becomes two origins
 

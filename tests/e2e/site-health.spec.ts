@@ -1,3 +1,4 @@
+import { RECOGNISED_ORIGINS } from '../../scripts/utils/site-origin.js'
 import { test, expect, type Page } from '@playwright/test'
 
 // Runs against PREVIEW_URL (Vercel preview deploy, or localhost dev server)
@@ -150,11 +151,18 @@ test.describe('site health — the archive frame', () => {
 
   test('a sealed design keeps no link onto the live site', async ({ page }) => {
     await page.goto('/archive/2026-07-17/')
-    const escaping = await page.evaluate(() =>
-      [...document.querySelectorAll('a')]
-        .filter((a) => !a.closest('[data-archive-frame]'))
-        .map((a) => a.getAttribute('href') ?? '')
-        .filter((href) => href.startsWith('/') || href.startsWith('https://doug-march.com'))
+    // Every origin the site has ever served from, not just today's. After a
+    // domain move a snapshot can carry either, and a check spelling one host
+    // silently stops covering the other.
+    const escaping = await page.evaluate(
+      (origins) =>
+        [...document.querySelectorAll('a')]
+          .filter((a) => !a.closest('[data-archive-frame]'))
+          .map((a) => a.getAttribute('href') ?? '')
+          .filter(
+            (href) => href.startsWith('/') || origins.some((o: string) => href.startsWith(o))
+          ),
+      RECOGNISED_ORIGINS
     )
     expect(escaping).toEqual([])
   })
