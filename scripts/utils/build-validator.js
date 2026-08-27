@@ -1,3 +1,4 @@
+import { RECOGNISED_HOSTS } from './site-origin.js'
 import { spawnSync } from 'node:child_process'
 import { readFileSync, readdirSync, existsSync, statSync, writeFileSync, mkdirSync } from 'node:fs'
 import { resolve } from 'node:path'
@@ -255,7 +256,9 @@ export function validateGenerated() {
     'spaceman.llc',
     'getfishsticks.com',
     '15th.club',
-    'doug-march.com',
+    // Every recognised site host, not just today's: archived designs and
+    // hand-written links may reference either side of a domain move.
+    ...RECOGNISED_HOSTS,
     'github.com',
     // XML namespace URIs that appear in xmlns / xmlns:xlink attributes on
     // inline SVG. These are identifiers, not fetchable URLs — no network

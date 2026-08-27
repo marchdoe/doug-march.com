@@ -136,7 +136,7 @@ import type { ReactNode } from 'react'  // CORRECT
 
 **No runtime network or dynamic code:** Your code must NOT use `fetch()`, `XMLHttpRequest`, `WebSocket`, `EventSource`, `navigator.sendBeacon`, `eval()`, `new Function()`, dynamic `import()`, `dangerouslySetInnerHTML`, `document.write`, `.innerHTML =`, inline `onerror=`/`onclick=` HTML attributes, `atob()`, `btoa()`, or `javascript:` URLs. All content is static.
 
-**External URL restriction:** Code must NOT contain URLs to any external domain except: `fonts.googleapis.com`, `fonts.gstatic.com`, `spaceman.llc`, `getfishsticks.com`, `15th.club`, `doug-march.com`, `github.com`.
+**External URL restriction:** Code must NOT contain URLs to any external domain except: `fonts.googleapis.com`, `fonts.gstatic.com`, `spaceman.llc`, `getfishsticks.com`, `15th.club`, `doug-march.com`, `dougmar.ch`, `github.com`.
 
 ### Content imports
 

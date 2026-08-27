@@ -1,3 +1,4 @@
+import { CANONICAL_ORIGIN, RECOGNISED_ORIGINS } from '../../scripts/utils/site-origin.js'
 import { describe, expect, it } from 'vitest'
 
 import {
@@ -59,9 +60,20 @@ describe('resolveHref', () => {
     expect(resolveHref('/work/teeturn', nested)).toBe('../work/teeturn.html')
   })
 
-  it('collapses the live origin onto the in-date page', () => {
-    expect(resolveHref('https://doug-march.com', top)).toBe('index.html')
-    expect(resolveHref('https://doug-march.com/about', top)).toBe('about.html')
+  it('collapses every recognised origin onto the in-date page', () => {
+    // Loops rather than naming a host. A snapshot taken before the domain
+    // move carries the old origin and one taken after carries the new one,
+    // and both must collapse for as long as the archive exists.
+    for (const origin of RECOGNISED_ORIGINS) {
+      expect(resolveHref(origin, top)).toBe('index.html')
+      expect(resolveHref(`${origin}/about`, top)).toBe('about.html')
+      expect(resolveHref(`${origin}/work/teeturn`, top)).toBe('work/teeturn.html')
+    }
+  })
+
+  it('leaves an origin that is not ours untouched', () => {
+    expect(resolveHref('https://doug-march.com.evil.example/about', top)).toBeNull()
+    expect(resolveHref('https://example.com/about', top)).toBeNull()
   })
 
   it('leaves the two deliberate exits alone', () => {
@@ -88,10 +100,10 @@ describe('rewriteLinks', () => {
   it('rewrites the attribute and not the document text', () => {
     // Two snapshots print the live URL as the visible text of a link.
     // A string replace would edit what the design says.
-    const html = '<a href="https://doug-march.com">https://doug-march.com</a>'
-    expect(rewriteLinks(html, { prefix: '' })).toBe(
-      '<a href="index.html">https://doug-march.com</a>'
-    )
+    for (const origin of RECOGNISED_ORIGINS) {
+      const html = `<a href="${origin}">${origin}</a>`
+      expect(rewriteLinks(html, { prefix: '' })).toBe(`<a href="index.html">${origin}</a>`)
+    }
   })
 
   it('leaves a font stylesheet untouched', () => {
@@ -116,15 +128,22 @@ describe('stripDeadPreloads', () => {
 
 describe('rewriteMeta', () => {
   it('points og:url at the snapshot rather than the live site', () => {
-    const html = '<meta property="og:url" content="https://doug-march.com/">'
-    expect(rewriteMeta(html, { date: '2026-06-28' })).toBe(
-      '<meta property="og:url" content="https://doug-march.com/archive/2026-06-28/">'
-    )
+    // Reads whichever origin the snapshot happens to carry; always writes the
+    // canonical one. This is the pointer-vs-record distinction: og:url says
+    // where the page lives NOW, so it follows a domain move.
+    for (const origin of RECOGNISED_ORIGINS) {
+      const html = `<meta property="og:url" content="${origin}/">`
+      expect(rewriteMeta(html, { date: '2026-06-28' })).toBe(
+        `<meta property="og:url" content="${CANONICAL_ORIGIN}/archive/2026-06-28/">`
+      )
+    }
   })
 
   it('drops image meta, which already 404s on 123 of 135 dates', () => {
-    const html =
-      '<meta property="og:image" content="https://doug-march.com/og/2026-07-17.png"><meta name="twitter:image" content="https://doug-march.com/og/2026-07-17.png">'
+    const html = RECOGNISED_ORIGINS.map(
+      (o) =>
+        `<meta property="og:image" content="${o}/og/2026-07-17.png"><meta name="twitter:image" content="${o}/og/2026-07-17.png">`
+    ).join('')
     expect(rewriteMeta(html, { date: '2026-07-17' })).toBe('')
   })
 })
@@ -160,8 +179,8 @@ describe('buildFrame', () => {
 
 describe('sealPage', () => {
   const PAGE = `<!DOCTYPE html><html><head>
-<meta property="og:url" content="https://doug-march.com/">
-<meta property="og:image" content="https://doug-march.com/og/2026-06-28.png">
+<meta property="og:url" content="${CANONICAL_ORIGIN}/">
+<meta property="og:image" content="${CANONICAL_ORIGIN}/og/2026-06-28.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&amp;display=swap">
 <link rel="modulepreload" crossorigin href="/assets/index-ABC123.js">
 <style>body{background:#111}</style>
@@ -174,7 +193,7 @@ describe('sealPage', () => {
     expect(out).toContain('href="/archive"')
     expect(out).not.toContain('modulepreload')
     expect(out).not.toContain('og:image')
-    expect(out).toContain('content="https://doug-march.com/archive/2026-06-28/"')
+    expect(out).toContain(`content="${CANONICAL_ORIGIN}/archive/2026-06-28/"`)
     expect(out).toContain(FRAME_MARKER)
   })
 

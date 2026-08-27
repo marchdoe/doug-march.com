@@ -10,6 +10,7 @@
  * Roman, and would do it silently — every other test here would still pass.
  */
 
+import { CANONICAL_ORIGIN } from '../../scripts/utils/site-origin.js'
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -111,7 +112,7 @@ describe('share metadata does not advertise the live site', () => {
     for (const page of pages) {
       const m = /<meta property="og:url" content="([^"]*)">/.exec(page.html)
       if (!m) continue
-      const expected = `https://doug-march.com/archive/${page.date}/`
+      const expected = `${CANONICAL_ORIGIN}/archive/${page.date}/`
       if (m[1] !== expected) offenders.push(`${label(page)} → ${m[1]}`)
     }
     expect(offenders.slice(0, 20)).toEqual([])
