@@ -58,9 +58,7 @@ function loadRecord(date) {
  * Pages of preserved site under public/archive/<date>/.
  *
  * Counted rather than assumed: three dates have a record and no capture, and
- * the ten earliest have five pages instead of nine. The nested copy of the
- * archive that 2026-04-14 captured of itself is excluded, the same exclusion
- * scripts/seal-archive.js makes.
+ * the ten earliest have five pages instead of nine.
  */
 function countSnapshotPages(date) {
   const dir = join(ROOT, 'public', 'archive', date)
@@ -68,7 +66,6 @@ function countSnapshotPages(date) {
   let n = 0
   const walk = (d, rel) => {
     for (const entry of readdirSync(d, { withFileTypes: true })) {
-      if (date === '2026-04-14' && !rel && entry.name === 'archive') continue
       if (entry.isDirectory()) walk(join(d, entry.name), rel ? `${rel}/${entry.name}` : entry.name)
       else if (entry.name.endsWith('.html')) n += 1
     }

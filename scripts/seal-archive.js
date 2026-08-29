@@ -22,13 +22,6 @@ const ARCHIVE_ROOT = path.join(ROOT, 'public', 'archive')
 
 const DATE_DIR = /^\d{4}-\d{2}-\d{2}$/
 
-/**
- * 2026-04-14 captured a copy of the archive index, which contains 182 pages
- * belonging to other days. Sealing them would rewrite the same date twice under
- * two different roots and give the frame the wrong date.
- */
-const NESTED_COPY = path.join('2026-04-14', 'archive')
-
 async function walkHtml(dir, base = '') {
   const out = []
   for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -54,9 +47,7 @@ export async function listSnapshots(archiveRoot = ARCHIVE_ROOT) {
 
   for (const entry of entries) {
     if (!entry.isDirectory() || !DATE_DIR.test(entry.name)) continue
-    const pages = (await walkHtml(path.join(archiveRoot, entry.name))).filter(
-      (rel) => !path.join(entry.name, rel).startsWith(NESTED_COPY)
-    )
+    const pages = await walkHtml(path.join(archiveRoot, entry.name))
     if (pages.length) snapshots.set(entry.name, pages.sort())
   }
   return new Map([...snapshots].sort(([a], [b]) => a.localeCompare(b)))
