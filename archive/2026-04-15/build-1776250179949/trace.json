@@ -164,7 +164,7 @@
       "phase": 0,
       "input": {},
       "output": {
-        "brief": "# Signals Brief — 2026-04-15\n\n# Creative Brief: doug-march.com\n**Date:** 2026-04-15 | **Signals Influence:** 5/10 (Moderate)\n\n---\n\n## Mood\n\nMid-week spring momentum meets the pull of deep technical work — a day of quiet persistence rather than celebration. The new moon (nearly dark, nearly invisible) creates an understated atmospheric baseline, while long April daylight (13 hours) wants to push the design toward openness. These don't conflict so much as they layer: the site should feel *illumina",
+        "brief": "# Signals Brief — 2026-04-15\n\n# Creative Brief: dougmar.ch\n**Date:** 2026-04-15 | **Signals Influence:** 5/10 (Moderate)\n\n---\n\n## Mood\n\nMid-week spring momentum meets the pull of deep technical work — a day of quiet persistence rather than celebration. The new moon (nearly dark, nearly invisible) creates an understated atmospheric baseline, while long April daylight (13 hours) wants to push the design toward openness. These don't conflict so much as they layer: the site should feel *illumina",
         "charCount": 4698
       },
       "durationMs": 0,
@@ -179,7 +179,7 @@
       "output": {
         "archetype": "Stack",
         "specLength": 13755,
-        "specPreview": "# Visual Specification — doug-march.com\n**Date:** 2026-04-15 | **Archetype:** The Stack\n\n---\n\n## 1. Color Specification\n\n**Primary hue:** H=55° (warm amber-sand). Recent specs occupied cool and warm greens at 88°, 105°, and 160° — this shifts the neutral foundation to the earth side of spring: pale cream, raw linen, warm charcoal. The brief's \"sage, warm grey, pale cream\" palette lives here without repeating a pure green hue as the neutral root. New moon restraint is encoded in the mid-tone spre"
+        "specPreview": "# Visual Specification — dougmar.ch\n**Date:** 2026-04-15 | **Archetype:** The Stack\n\n---\n\n## 1. Color Specification\n\n**Primary hue:** H=55° (warm amber-sand). Recent specs occupied cool and warm greens at 88°, 105°, and 160° — this shifts the neutral foundation to the earth side of spring: pale cream, raw linen, warm charcoal. The brief's \"sage, warm grey, pale cream\" palette lives here without repeating a pure green hue as the neutral root. New moon restraint is encoded in the mid-tone spre"
       },
       "durationMs": 177761,
       "timestamp": "2026-04-15T10:33:00.156Z"
@@ -208,7 +208,7 @@
           "elements/preset.ts",
           "app/routes/__root.tsx"
         ],
-        "rationale": "The Stack archetype with warm, muted neutrals (H:55° amber-sand) and sage green accents serves doug-march.com's mid-week spring momentum. The \"new moon\" signal is encoded system-wide: no pure black or white, all colors tinted toward the primary hue, contrast capped at ~9.5:1 (not 21:1). Playfair Display + Source Sans 3 (Editorial Warmth recipe) pairs a literary serif with humanist warmth—reflecting the brief's \"assembled, lo-fi\" sensibility without preciousness. Perfect Fourth scaling (1.333 rat"
+        "rationale": "The Stack archetype with warm, muted neutrals (H:55° amber-sand) and sage green accents serves dougmar.ch's mid-week spring momentum. The \"new moon\" signal is encoded system-wide: no pure black or white, all colors tinted toward the primary hue, contrast capped at ~9.5:1 (not 21:1). Playfair Display + Source Sans 3 (Editorial Warmth recipe) pairs a literary serif with humanist warmth—reflecting the brief's \"assembled, lo-fi\" sensibility without preciousness. Perfect Fourth scaling (1.333 rat"
       },
       "durationMs": 72470,
       "timestamp": "2026-04-15T10:34:59.304Z"

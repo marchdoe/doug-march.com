@@ -248,7 +248,7 @@
       "input": {},
       "output": {
         "success": false,
-        "error": "Error: Error transforming route file /home/runner/work/doug-march.com/doug-march.com/app/routes/about.tsx: SyntaxError: Identifier 'createFileRoute' has already been declared. (2:9),Error transforming route file /home/runner/work/doug-march.com/doug-march.com/app/routes/work.$slug.tsx: SyntaxError: Identifier 'createFileRoute' has already been declared. (2:9)\n\n---\n(last 3000 chars of build output follows)\n---\n\n/node_modules/@tanstack/react-router/dist/esm/routerContext.js\" was ignored.\u001b[39m\n\u001b[33"
+        "error": "Error: Error transforming route file /home/runner/work/dougmar.ch/dougmar.ch/app/routes/about.tsx: SyntaxError: Identifier 'createFileRoute' has already been declared. (2:9),Error transforming route file /home/runner/work/dougmar.ch/dougmar.ch/app/routes/work.$slug.tsx: SyntaxError: Identifier 'createFileRoute' has already been declared. (2:9)\n\n---\n(last 3000 chars of build output follows)\n---\n\n/node_modules/@tanstack/react-router/dist/esm/routerContext.js\" was ignored.\u001b[39m\n\u001b[33"
       },
       "durationMs": 0,
       "timestamp": "2026-05-18T11:28:10.427Z"

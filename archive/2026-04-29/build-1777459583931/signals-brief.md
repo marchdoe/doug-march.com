@@ -1,6 +1,6 @@
 # Signals Brief — 2026-04-29
 
-# Creative Brief: doug-march.com
+# Creative Brief: dougmar.ch
 **April 29, 2026 | Wednesday | Full Moon (96.5% illumination)**
 
 ---
@@ -31,7 +31,7 @@ Generous vertical breathing but tight, precise horizontal spacing. Headings shou
 
 - **Hacker News: Ghostty/platform independence discourse → Subtle decentralization visual language.** Not heavy-handed. Work the idea of distribution and independence into layout—perhaps asymmetrical composition choices, or elements that don't rely on a central axis. The news cycle is discussing leaving centralized platforms; let that thinking inform how information is organized without making it literal.
 
-- **Awwwards sites: multi-audience design + strategic layering → Implement clear audience segmentation or role-based entry points.** Today's reference sites succeed by serving multiple stakeholders clearly. If doug-march.com surfaces different work for different viewers (technical depth vs. creative direction vs. collaboration examples), this is the day to make those pathways more explicit through composition.
+- **Awwwards sites: multi-audience design + strategic layering → Implement clear audience segmentation or role-based entry points.** Today's reference sites succeed by serving multiple stakeholders clearly. If dougmar.ch surfaces different work for different viewers (technical depth vs. creative direction vs. collaboration examples), this is the day to make those pathways more explicit through composition.
 
 - **Spring season (April, fresh growth) → Restrained green or growth-adjacent accent.** Not aggressive. A single accent color drawn from spring—moss, sage, or muted chartreuse—used sparingly in typography, underlines, or minimal border elements. Saturation should be moderate, not pop. This is texture, not dominance.
 
@@ -39,7 +39,7 @@ Generous vertical breathing but tight, precise horizontal spacing. Headings shou
 
 - **Radiohead + Guided by Voices on rotation → Angular precision in type rendering and alignment.** Radiohead's geometric precision should influence kerning and baseline alignment. Guided by Voices' lo-fi ethos permits imperfection but demands intentionality. The tension between precision (Radiohead) and rawness (GBV) should show up as confident but unstyled typography—no unnecessary flourishes.
 
-- **Oscar Wilde quote ("Whenever people agree with me I always feel I must be wrong") → Optional anchor for contrarian positioning.** If this resonates with the portfolio's voice, feature it briefly—perhaps as a small epigraph or in a footer callout. It's a meta-commentary on taste and independent thinking. Only include if it genuinely reflects how doug-march.com positions itself; don't force it.
+- **Oscar Wilde quote ("Whenever people agree with me I always feel I must be wrong") → Optional anchor for contrarian positioning.** If this resonates with the portfolio's voice, feature it briefly—perhaps as a small epigraph or in a footer callout. It's a meta-commentary on taste and independent thinking. Only include if it genuinely reflects how dougmar.ch positions itself; don't force it.
 
 ---
 

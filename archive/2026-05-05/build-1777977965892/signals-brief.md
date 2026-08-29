@@ -1,6 +1,6 @@
 # Signals Brief — 2026-05-05
 
-# Creative Brief — doug-march.com
+# Creative Brief — dougmar.ch
 **Date:** May 5, 2026 | **Signal Influence: 5/10 (Moderate)**
 
 ---

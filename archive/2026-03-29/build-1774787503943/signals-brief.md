@@ -1,6 +1,6 @@
 # Signals Brief — 2026-03-29
 
-# Creative Brief: doug-march.com
+# Creative Brief: dougmar.ch
 **Date:** March 29, 2026 | **Signal Influence: 5/10** (Moderate)
 
 ---

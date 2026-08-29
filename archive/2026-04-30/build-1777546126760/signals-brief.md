@@ -1,6 +1,6 @@
 # Signals Brief — 2026-04-30
 
-# Creative Brief: doug-march.com
+# Creative Brief: dougmar.ch
 **Date:** April 30, 2026 | **Day:** Thursday (Moderate Signal Influence)
 
 ---

@@ -233,7 +233,7 @@ jobs:
               ``,
               brief ? `> ${brief}` : '',
               ``,
-              `Live: https://doug-march.com · [Archive entry](https://doug-march.com/archive/${today})`,
+              `Live: https://dougmar.ch · [Archive entry](https://dougmar.ch/archive/${today})`,
               ``,
               `Rate it (edit the YAML in a reply, ~2 min):`,
               '```yaml',

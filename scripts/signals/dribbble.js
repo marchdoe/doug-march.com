@@ -34,7 +34,7 @@ export async function collect(_profile) {
   const res = await fetch(RSS_URL, {
     signal: AbortSignal.timeout(8000),
     headers: {
-      'User-Agent': 'doug-march-signals/1.0 (https://doug-march.com)',
+      'User-Agent': 'dougmar-ch-signals/1.0 (https://dougmar.ch)',
       Accept: 'application/rss+xml, application/xml, text/xml',
     },
   })

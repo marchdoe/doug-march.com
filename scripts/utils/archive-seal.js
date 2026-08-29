@@ -6,9 +6,14 @@
  *
  * Two rules govern everything here:
  *
- * 1. Rewrite attribute values, never document text. Two snapshots print
- *    "https://doug-march.com" as the visible text of a link. A string replace
- *    would edit what the design says, not where it points.
+ * 1. Rewrite attribute values, never document text. Some snapshots print the
+ *    site's own URL as the visible text of a link. A string replace would edit
+ *    what the design says, not where it points.
+ *
+ *    (The corpus was scrubbed of the old `doug-march.com` host on 2026-08-29 at
+ *    Doug's direction — visible text included — so archived pages now render
+ *    `dougmar.ch` on days that predate it. That was a deliberate choice of
+ *    consistency over fidelity; this rule still governs how the seal behaves.)
  *
  * 2. A sealed page cannot run script. `/assets/*.js` is 404 in every snapshot
  *    and the theme-init script does not survive capture, so the frame is HTML

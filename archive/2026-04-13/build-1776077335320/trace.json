@@ -210,7 +210,7 @@
       "phase": 0,
       "input": {},
       "output": {
-        "brief": "# Signals Brief — 2026-04-13\n\n# Creative Brief — doug-march.com\n**April 13, 2026 | Monday**\n\n---\n\n## Mood\n\nMonday morning clarity layered over spring's soft momentum—a day caught between structural discipline and natural renewal. The waning crescent (just 10% illuminated) suggests restraint and inward focus, while the Masters conclusion and a suite of technical conversations on Hacker News create intellectual momentum. Hold the tension: this is a day of *decisive thinking*, not celebration. The ",
+        "brief": "# Signals Brief — 2026-04-13\n\n# Creative Brief — dougmar.ch\n**April 13, 2026 | Monday**\n\n---\n\n## Mood\n\nMonday morning clarity layered over spring's soft momentum—a day caught between structural discipline and natural renewal. The waning crescent (just 10% illuminated) suggests restraint and inward focus, while the Masters conclusion and a suite of technical conversations on Hacker News create intellectual momentum. Hold the tension: this is a day of *decisive thinking*, not celebration. The ",
         "charCount": 5198
       },
       "durationMs": 0,
@@ -225,7 +225,7 @@
       "output": {
         "archetype": "Specimen",
         "specLength": 11622,
-        "specPreview": "# Visual Specification — doug-march.com\n## April 13, 2026 | Monday\n\n---\n\n## 1. Color Specification\n\n**Primary hue decision:** H:105° — sage green, the hue of April foliage seen through overcast morning light. Not posterized, not vivid; a color that reads as *grown*, not manufactured. Chosen because the brief demands spring-forward without celebration — this hue carries renewal quietly.\n\n**Neutral palette** (built from H:105°, S:5–10%, fully desaturated toward warm paper):\n\n| Token | Hex | Notes "
+        "specPreview": "# Visual Specification — dougmar.ch\n## April 13, 2026 | Monday\n\n---\n\n## 1. Color Specification\n\n**Primary hue decision:** H:105° — sage green, the hue of April foliage seen through overcast morning light. Not posterized, not vivid; a color that reads as *grown*, not manufactured. Chosen because the brief demands spring-forward without celebration — this hue carries renewal quietly.\n\n**Neutral palette** (built from H:105°, S:5–10%, fully desaturated toward warm paper):\n\n| Token | Hex | Notes "
       },
       "durationMs": 171839,
       "timestamp": "2026-04-13T10:37:10.967Z"
@@ -285,7 +285,7 @@
       "input": {},
       "output": {
         "success": false,
-        "error": "[31m✗\u001b[39m Build failed in 557ms\n\u001b[31merror during build:\n\u001b[31m[tanstack-router:code-splitter:compile-reference-file] Duplicate declaration \"ScrollRestoration\"\u001b[31m\nfile: \u001b[36m/home/runner/work/doug-march.com/doug-march.com/app/routes/__root.tsx\u001b[31m\n    at Hub.buildError (/home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/@babel+traverse@7.29.0/node_modules/@babel/traverse/lib/hub.js:14:12)\n    at Scope.checkBlockScopedCollisions (/home/runner/work/doug-march.com/doug-march.com/"
+        "error": "[31m✗\u001b[39m Build failed in 557ms\n\u001b[31merror during build:\n\u001b[31m[tanstack-router:code-splitter:compile-reference-file] Duplicate declaration \"ScrollRestoration\"\u001b[31m\nfile: \u001b[36m/home/runner/work/dougmar.ch/dougmar.ch/app/routes/__root.tsx\u001b[31m\n    at Hub.buildError (/home/runner/work/dougmar.ch/dougmar.ch/node_modules/.pnpm/@babel+traverse@7.29.0/node_modules/@babel/traverse/lib/hub.js:14:12)\n    at Scope.checkBlockScopedCollisions (/home/runner/work/dougmar.ch/dougmar.ch/"
       },
       "durationMs": 0,
       "timestamp": "2026-04-13T10:48:02.939Z"

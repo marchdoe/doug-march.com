@@ -28,7 +28,7 @@ export const RECOGNISED_ORIGINS = ['https://doug-march.com', 'https://dougmar.ch
 )
 
 /** The origin serving the site today. Change this, and only this, on cutover day. */
-export const CANONICAL_ORIGIN = 'https://doug-march.com'
+export const CANONICAL_ORIGIN = 'https://dougmar.ch'
 
 /** Host portion of every recognised origin, for allowlists keyed on hostname. */
 export const RECOGNISED_HOSTS = RECOGNISED_ORIGINS.map((o) => new URL(o).host)

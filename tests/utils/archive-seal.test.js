@@ -91,9 +91,10 @@ describe('resolveHref', () => {
   })
 
   it('does not mistake the doug-march-dot-com case study for the live host', () => {
-    // 124 archived files still carry this filename. The slug moved to
-    // dougmar-ch on 2026-08-29, but a snapshot records what shipped that day,
-    // so the old spelling must keep resolving correctly forever.
+    // No archived file carries this filename any more — the corpus was
+    // scrubbed and the files renamed on 2026-08-29. Kept as a defensive case:
+    // resolveHref must not mistake ANY work/*.html for a host, and this is the
+    // shape that would break first if the host-prefix matching regressed.
     expect(resolveHref('work/doug-march-dot-com.html', top)).toBeNull()
     expect(resolveHref('/work/doug-march-dot-com', top)).toBe('work/doug-march-dot-com.html')
   })

@@ -1,6 +1,6 @@
 # Signals Brief — 2026-05-02
 
-# CREATIVE BRIEF — doug-march.com
+# CREATIVE BRIEF — dougmar.ch
 **May 2, 2026**
 
 ---

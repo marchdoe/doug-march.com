@@ -4,7 +4,7 @@
 guided by voices
 
 ## Hero Rationale
-Today's music signal lists Guided by Voices first in the feed — a band whose entire ethos is lo-fi, prolific, outsider, guided by instinct rather than convention. But the phrase doubles as a manifesto for the site itself: doug-march.com literally redesigns itself daily by listening to environmental signals — it is, structurally, guided by voices. The phrase earns marquee scale because it works on both registers simultaneously. It's quotable, ambiguous, and resonant in isolation. The Awwwards nod to "THE NO-CODE SHADER" with its aggressive all-caps treatment confirms the typographic register. On a 79°F sunny Tuesday with Risk at 8/10, this is the line that wants to be loud.
+Today's music signal lists Guided by Voices first in the feed — a band whose entire ethos is lo-fi, prolific, outsider, guided by instinct rather than convention. But the phrase doubles as a manifesto for the site itself: dougmar.ch literally redesigns itself daily by listening to environmental signals — it is, structurally, guided by voices. The phrase earns marquee scale because it works on both registers simultaneously. It's quotable, ambiguous, and resonant in isolation. The Awwwards nod to "THE NO-CODE SHADER" with its aggressive all-caps treatment confirms the typographic register. On a 79°F sunny Tuesday with Risk at 8/10, this is the line that wants to be loud.
 
 ## Archetype
 Poster
@@ -164,7 +164,7 @@ The phrase is three monosyllables that want to fill a room. The Poster archetype
 - Section padding: hero rows `0 6vw`; attribution `0 6vw margin-top: 24px`
 
 **Nav placement**
-- Top-left corner (fixed): wordmark `doug-march.com`, 12px, Atkinson Hyperlegible, warm.600, letter-spacing 0.10em
+- Top-left corner (fixed): wordmark `dougmar.ch`, 12px, Atkinson Hyperlegible, warm.600, letter-spacing 0.10em
 - Top-right corner (fixed): nav links `Work` / `About`, 13px, Atkinson Hyperlegible, warm.700, hover → crimson.500
 - Bottom strip (fixed, 48px): signal data
 

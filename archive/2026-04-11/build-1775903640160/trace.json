@@ -209,7 +209,7 @@
       "phase": 0,
       "input": {},
       "output": {
-        "brief": "# Signals Brief — 2026-04-11\n\n# Creative Brief: doug-march.com\n**2026-04-11 | Saturday**\n\n---\n\n## Mood\n\nSpring Saturday afternoon energy — open-ended, spacious, slightly introspective. There's a quiet momentum in the air: the Masters unfolds, the Pistons and Tigers both won yesterday, and HackerNews is buzzing with playful constraint-breaking (1D Chess, filing MacBook corners, single-HTML games). But the signal influence is moderate, so the design shouldn't feel driven by any single event. Inste",
+        "brief": "# Signals Brief — 2026-04-11\n\n# Creative Brief: dougmar.ch\n**2026-04-11 | Saturday**\n\n---\n\n## Mood\n\nSpring Saturday afternoon energy — open-ended, spacious, slightly introspective. There's a quiet momentum in the air: the Masters unfolds, the Pistons and Tigers both won yesterday, and HackerNews is buzzing with playful constraint-breaking (1D Chess, filing MacBook corners, single-HTML games). But the signal influence is moderate, so the design shouldn't feel driven by any single event. Inste",
         "charCount": 5008
       },
       "durationMs": 0,
@@ -224,7 +224,7 @@
       "output": {
         "archetype": "Scroll",
         "specLength": 16548,
-        "specPreview": "# Visual Specification — doug-march.com — 2026-04-11\n\n---\n\n## Archetype Declaration\n\n**THE SCROLL** — Single-column, cinematic pacing, each section a complete beat before the next. Chosen because the brief demands Saturday morning unhurriedness, moderate signal influence (no single event deserves poster urgency), and a page that rewards wandering rather than scanning. Forbidden archetypes (Gallery Wall, Specimen) are respected. Specimen *micro-moments* appear as embedded treatments within Scroll"
+        "specPreview": "# Visual Specification — dougmar.ch — 2026-04-11\n\n---\n\n## Archetype Declaration\n\n**THE SCROLL** — Single-column, cinematic pacing, each section a complete beat before the next. Chosen because the brief demands Saturday morning unhurriedness, moderate signal influence (no single event deserves poster urgency), and a page that rewards wandering rather than scanning. Forbidden archetypes (Gallery Wall, Specimen) are respected. Specimen *micro-moments* appear as embedded treatments within Scroll"
       },
       "durationMs": 154659,
       "timestamp": "2026-04-11T10:14:54.303Z"
@@ -284,7 +284,7 @@
       "input": {},
       "output": {
         "success": false,
-        "error": "erence-file] Identifier 'Scripts' has already been declared. (3:9)\u001b[31m\nfile: \u001b[36m/home/runner/work/doug-march.com/doug-march.com/app/routes/__root.tsx:3:9\u001b[31m\n    at constructor (/home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)\n    at TypeScriptParserMixin.raise (/home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)\n    at Ty"
+        "error": "erence-file] Identifier 'Scripts' has already been declared. (3:9)\u001b[31m\nfile: \u001b[36m/home/runner/work/dougmar.ch/dougmar.ch/app/routes/__root.tsx:3:9\u001b[31m\n    at constructor (/home/runner/work/dougmar.ch/dougmar.ch/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:365:19)\n    at TypeScriptParserMixin.raise (/home/runner/work/dougmar.ch/dougmar.ch/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:6599:19)\n    at Ty"
       },
       "durationMs": 0,
       "timestamp": "2026-04-11T10:33:07.098Z"
