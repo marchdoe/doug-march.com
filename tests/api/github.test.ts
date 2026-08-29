@@ -1,3 +1,4 @@
+import { REPO } from '../../api/_lib/github'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import {
   listOpenRatingIssues,
@@ -41,7 +42,7 @@ describe('listOpenRatingIssues', () => {
     )
     const issues = await listOpenRatingIssues()
     expect(fetchMock.mock.calls[0][0]).toBe(
-      'https://api.github.com/repos/marchdoe/doug-march.com/issues?labels=daily-rating&state=open&per_page=30'
+      `https://api.github.com/repos/${REPO}/issues?labels=daily-rating&state=open&per_page=30`
     )
     expect(issues).toEqual([
       {
@@ -82,7 +83,7 @@ describe('commentOnIssue / createRatingIssue', () => {
     fetchMock.mockResolvedValueOnce(jsonRes({}, 201))
     await commentOnIssue(82, 'hello')
     const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit]
-    expect(url).toBe('https://api.github.com/repos/marchdoe/doug-march.com/issues/82/comments')
+    expect(url).toBe(`https://api.github.com/repos/${REPO}/issues/82/comments`)
     expect(init.method).toBe('POST')
     expect(JSON.parse(init.body as string)).toEqual({ body: 'hello' })
   })
@@ -92,7 +93,7 @@ describe('commentOnIssue / createRatingIssue', () => {
     )
     const issue = await createRatingIssue('2026-07-19', 'body')
     const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit]
-    expect(url).toBe('https://api.github.com/repos/marchdoe/doug-march.com/issues')
+    expect(url).toBe(`https://api.github.com/repos/${REPO}/issues`)
     expect(JSON.parse(init.body as string)).toEqual({
       title: 'Rate: 2026-07-19',
       body: 'body',
@@ -138,7 +139,7 @@ describe('dispatchRun / latestRun', () => {
     await dispatchRun(true)
     const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit]
     expect(url).toBe(
-      'https://api.github.com/repos/marchdoe/doug-march.com/actions/workflows/daily-redesign.yml/dispatches'
+      `https://api.github.com/repos/${REPO}/actions/workflows/daily-redesign.yml/dispatches`
     )
     expect(JSON.parse(init.body as string)).toEqual({ ref: 'main', inputs: { dry_run: 'true' } })
   })
