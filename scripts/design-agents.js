@@ -576,7 +576,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       readFile(path.join(promptDir, 'brand-contract.md'), 'utf8'),
     ])
 
-    // Brand-register declaration. doug-march.com is BRAND register — a personal
+    // Brand-register declaration. dougmar.ch is BRAND register — a personal
     // portfolio where design IS the product. Inject this into every design agent
     // so they apply brand-register conventions (expressive composition, committed
     // color strategy, typographic risk) rather than product-register reflexes

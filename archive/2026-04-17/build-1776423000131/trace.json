@@ -191,7 +191,7 @@
       "phase": 0,
       "input": {},
       "output": {
-        "brief": "# Signals Brief — 2026-04-17\n\n# Creative Brief: doug-march.com\n**Date:** 2026-04-17 | **Signal Weight:** 5/10 (Moderate Influence)\n\n---\n\n## Mood\n\nFriday afternoon energy meets the pull of something quieter—a new moon whispers restraint while spring insists on renewal. There's a productive tension here: the day wants momentum (it's Friday, the Tigers won, tech culture is buzzing with Claude Opus), but the lunar phase and that Deng quote about limits suggest a moment to pause before the weekend ru",
+        "brief": "# Signals Brief — 2026-04-17\n\n# Creative Brief: dougmar.ch\n**Date:** 2026-04-17 | **Signal Weight:** 5/10 (Moderate Influence)\n\n---\n\n## Mood\n\nFriday afternoon energy meets the pull of something quieter—a new moon whispers restraint while spring insists on renewal. There's a productive tension here: the day wants momentum (it's Friday, the Tigers won, tech culture is buzzing with Claude Opus), but the lunar phase and that Deng quote about limits suggest a moment to pause before the weekend ru",
         "charCount": 4803
       },
       "durationMs": 0,
@@ -206,7 +206,7 @@
       "output": {
         "archetype": "Index",
         "specLength": 12476,
-        "specPreview": "# Visual Specification — doug-march.com — 2026-04-17\n\n---\n\n## Archetype Decision\n\n**The Index** — forbidden archetypes (Stack, Specimen, Scroll) ruled out the brief's suggested Scroll direction, but the Index delivers the brief's actual needs more precisely: structural navigability, clear visual pathways, Friday productive energy, and the \"pause at threshold\" mood (still checking things, not celebrating yet). The systematic row-and-rule structure enforces the Radiohead precision signal while Jet"
+        "specPreview": "# Visual Specification — dougmar.ch — 2026-04-17\n\n---\n\n## Archetype Decision\n\n**The Index** — forbidden archetypes (Stack, Specimen, Scroll) ruled out the brief's suggested Scroll direction, but the Index delivers the brief's actual needs more precisely: structural navigability, clear visual pathways, Friday productive energy, and the \"pause at threshold\" mood (still checking things, not celebrating yet). The systematic row-and-rule structure enforces the Radiohead precision signal while Jet"
       },
       "durationMs": 183942,
       "timestamp": "2026-04-17T10:30:41.371Z"
@@ -264,7 +264,7 @@
       "input": {},
       "output": {
         "success": false,
-        "error": "ypeScriptParserMixin.checkIdentifier (/home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:7563:12)\n    at TypeScriptParserMixin.checkLVal (/home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:7500:12)\n    at TypeScriptParserMixin.finishImportSpecifier (/home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/@babel+parser@7.29.2/node_mod"
+        "error": "ypeScriptParserMixin.checkIdentifier (/home/runner/work/dougmar.ch/dougmar.ch/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:7563:12)\n    at TypeScriptParserMixin.checkLVal (/home/runner/work/dougmar.ch/dougmar.ch/node_modules/.pnpm/@babel+parser@7.29.2/node_modules/@babel/parser/lib/index.js:7500:12)\n    at TypeScriptParserMixin.finishImportSpecifier (/home/runner/work/dougmar.ch/dougmar.ch/node_modules/.pnpm/@babel+parser@7.29.2/node_mod"
       },
       "durationMs": 0,
       "timestamp": "2026-04-17T10:46:17.611Z"

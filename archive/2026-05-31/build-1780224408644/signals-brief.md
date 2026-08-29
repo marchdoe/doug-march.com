@@ -82,7 +82,7 @@ Contrast checks:
   - Max content width: `none` (full canvas, `padding: 0 4vw`)
   - Sidebar column: fixed `300px`
   - Section padding: `32px` between sections within columns
-- **Nav placement** — embedded in masthead bar, full-width, left-side: `doug-march.com` in Bebas Neue 20px chartreuse; right-side: dateline + nav links (Work, About) in IBM Plex Sans 13px void.300. No sidebar nav, no bottom nav.
+- **Nav placement** — embedded in masthead bar, full-width, left-side: `dougmar.ch` in Bebas Neue 20px chartreuse; right-side: dateline + nav links (Work, About) in IBM Plex Sans 13px void.300. No sidebar nav, no bottom nav.
 - **Hero phrase grid zone** — spans full canvas width (columns 1–3), in the dedicated headline band below masthead, above content grid. Left-aligned flush to 4vw padding. Target rendered height: ~200–240px at 1440px viewport (3 lines × ~80px leading).
 
 ### 4. Component Character
@@ -95,7 +95,7 @@ Contrast checks:
 
 ### 5. Signal Integration
 
-- **Masthead bar (full-width, above headline)**: Left: `doug-march.com` in Bebas Neue 20px chartreuse. Center: `SUNDAY — MAY 31, 2026 — LAST DAY OF SPRING'S FINAL MONTH` in IBM Plex Sans 12px void.400, `letterSpacing: wider`. Right: `◉ FULL MOON 99.4%` in void.300 13px + nav links.
+- **Masthead bar (full-width, above headline)**: Left: `dougmar.ch` in Bebas Neue 20px chartreuse. Center: `SUNDAY — MAY 31, 2026 — LAST DAY OF SPRING'S FINAL MONTH` in IBM Plex Sans 12px void.400, `letterSpacing: wider`. Right: `◉ FULL MOON 99.4%` in void.300 13px + nav links.
 - **Headline kicker** (small text above the main headline): `HN TODAY — 605 PTS` in Bebas 13px chartreuse.400, `letterSpacing: widest`. Followed immediately by the 3-line headline.
 - **Sidebar column — SIGNALS block**: Top of sidebar. Section eyebrow: "SIGNALS" in Bebas 13px chartreuse. Then tight rows:
   - `CHARLES SCHWAB CHALLENGE` — Eric Cole –12 / Ryan Gerard –11 / Mac Meissner –10. Scores in `#B8E000`. Names in void.50. Layout: `display: flex; justify-content: space-between`.

@@ -69,7 +69,7 @@ export function BomFooter() {
             color: 'neutral.400',
           })}
         >
-          doug-march.com · rev 2026-07-20
+          dougmar.ch · rev 2026-07-20
         </span>
       </Flex>
 

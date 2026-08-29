@@ -1,6 +1,6 @@
 # Signals Brief — 2026-04-17
 
-# Creative Brief: doug-march.com
+# Creative Brief: dougmar.ch
 **Date:** 2026-04-17 | **Signal Weight:** 5/10 (Moderate Influence)
 
 ---

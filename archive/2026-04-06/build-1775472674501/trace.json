@@ -216,7 +216,7 @@
       "phase": 0,
       "input": {},
       "output": {
-        "brief": "# Signals Brief — 2026-04-06\n\n# Creative Brief — doug-march.com\n## April 6, 2026\n\n---\n\n## Mood\n\nMonday morning in early spring, lit by a waning gibbous moon and the lengthening daylight of a 12.7-hour April day. There's a tension here worth holding: the season whispers renewal and fresh growth, but the week is young, the sports results from Detroit are losses, and the cultural conversation (per HN) is tilted toward building small, human-scale tools rather than grand gestures. The Melville quote—",
+        "brief": "# Signals Brief — 2026-04-06\n\n# Creative Brief — dougmar.ch\n## April 6, 2026\n\n---\n\n## Mood\n\nMonday morning in early spring, lit by a waning gibbous moon and the lengthening daylight of a 12.7-hour April day. There's a tension here worth holding: the season whispers renewal and fresh growth, but the week is young, the sports results from Detroit are losses, and the cultural conversation (per HN) is tilted toward building small, human-scale tools rather than grand gestures. The Melville quote—",
         "charCount": 4999
       },
       "durationMs": 0,
@@ -231,7 +231,7 @@
       "output": {
         "archetype": "Specimen",
         "specLength": 14733,
-        "specPreview": "# Visual Specification — doug-march.com\n## April 6, 2026 — Monday Morning, Early Spring\n\n---\n\n## Archetype Override Note\n\nThe brief recommended Specimen, but that archetype is **forbidden** (used April 4). The Index archetype is the superior choice for this day's energy anyway: Monday demands immediate orientation, craftsmanship-at-scale sensibility, and the Hacker News \"building small, human-scale tools\" signal argues for a systematic, rows-and-rules layout rather than a contemplative single-sp"
+        "specPreview": "# Visual Specification — dougmar.ch\n## April 6, 2026 — Monday Morning, Early Spring\n\n---\n\n## Archetype Override Note\n\nThe brief recommended Specimen, but that archetype is **forbidden** (used April 4). The Index archetype is the superior choice for this day's energy anyway: Monday demands immediate orientation, craftsmanship-at-scale sensibility, and the Hacker News \"building small, human-scale tools\" signal argues for a systematic, rows-and-rules layout rather than a contemplative single-sp"
       },
       "durationMs": 196786,
       "timestamp": "2026-04-06T10:29:56.406Z"
@@ -291,7 +291,7 @@
       "input": {},
       "output": {
         "success": false,
-        "error": "\u001b[31m✗\u001b[39m Build failed in 548ms\n\u001b[31merror during build:\n\u001b[31m[tanstack-router:code-splitter:compile-reference-file] Duplicate declaration \"ScrollRestoration\"\u001b[31m\nfile: \u001b[36m/home/runner/work/doug-march.com/doug-march.com/app/routes/__root.tsx\u001b[31m\n    at Hub.buildError (/home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/@babel+traverse@7.29.0/node_modules/@babel/traverse/lib/hub.js:14:12)\n    at Scope.checkBlockScopedCollisions (/home/runner/work/doug-march.com/doug-march.com"
+        "error": "\u001b[31m✗\u001b[39m Build failed in 548ms\n\u001b[31merror during build:\n\u001b[31m[tanstack-router:code-splitter:compile-reference-file] Duplicate declaration \"ScrollRestoration\"\u001b[31m\nfile: \u001b[36m/home/runner/work/dougmar.ch/dougmar.ch/app/routes/__root.tsx\u001b[31m\n    at Hub.buildError (/home/runner/work/dougmar.ch/dougmar.ch/node_modules/.pnpm/@babel+traverse@7.29.0/node_modules/@babel/traverse/lib/hub.js:14:12)\n    at Scope.checkBlockScopedCollisions (/home/runner/work/dougmar.ch/dougmar.ch"
       },
       "durationMs": 0,
       "timestamp": "2026-04-06T10:49:41.264Z"

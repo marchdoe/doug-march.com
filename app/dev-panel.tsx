@@ -763,7 +763,7 @@ function DevHeader({
     >
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
         <span style={{ fontSize: '13px', fontWeight: 700, color: c.primary, fontFamily: c.font }}>
-          doug-march.com
+          dougmar.ch
         </span>
         <span style={{ fontSize: '11px', color: c.muted, fontFamily: c.font }}>
           Daily Redesign &middot; Dev Panel

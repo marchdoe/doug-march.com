@@ -1,6 +1,6 @@
 # Signals Brief — 2026-05-03
 
-# Creative Brief — doug-march.com
+# Creative Brief — dougmar.ch
 **Date:** May 3, 2026 | **Day:** Sunday | **Signal Influence:** Moderate (5/10)
 
 ---

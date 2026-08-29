@@ -19,7 +19,7 @@ not duplicated anywhere, so they were kept.
 ## Why they are not history
 
 **The six under `2026-03-27/work/`** are pages for 15th Club, FishSticks,
-Politweets, Twittertale, TeeTurn and doug-march.com. The real 2026-03-27
+Politweets, Twittertale, TeeTurn and dougmar.ch. The real 2026-03-27
 snapshot has three work pages — `ai-experiment`, `project-alpha`, `spaceman`.
 Those projects did not exist in the site's content in March. The crawler
 requested paths the stored snapshot did not contain, SPA routing returned the
@@ -44,7 +44,7 @@ disagree, the archived one is the record.
 Nothing, most likely. They are kept because deleting the only copy of anything
 is hard to undo, not because they are owed a place in the archive. They are
 unsealed and unframed, and 15 of the pages here still carry absolute links to
-`https://doug-march.com`, which is why they must not be served.
+`https://dougmar.ch`, which is why they must not be served.
 
 Removed from `public/` in the PR that closed
 "Fate of the 182-page 2026-04-14 nested copy".

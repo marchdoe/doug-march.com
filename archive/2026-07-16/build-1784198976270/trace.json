@@ -271,7 +271,7 @@
       "input": {},
       "output": {
         "success": false,
-        "error": "Error: Error transforming route file /home/runner/work/doug-march.com/doug-march.com/app/routes/work.index.tsx: SyntaxError: Unexpected token (112:40)\n\n---\n(last 3000 chars of build output follows)\n---\n\ndown/dist/shared/error-BuvQYXuZ.mjs:48:18)\n    at unwrapBindingResult (file:///home/runner/work/doug-march.com/doug-march.com/node_modules/.pnpm/rolldown@1.0.3/node_modules/rolldown/dist/shared/error-BuvQYXuZ.mjs:18:128)\n    at #build (file:///home/runner/work/doug-march.com/doug-march.com/node_m"
+        "error": "Error: Error transforming route file /home/runner/work/dougmar.ch/dougmar.ch/app/routes/work.index.tsx: SyntaxError: Unexpected token (112:40)\n\n---\n(last 3000 chars of build output follows)\n---\n\ndown/dist/shared/error-BuvQYXuZ.mjs:48:18)\n    at unwrapBindingResult (file:///home/runner/work/dougmar.ch/dougmar.ch/node_modules/.pnpm/rolldown@1.0.3/node_modules/rolldown/dist/shared/error-BuvQYXuZ.mjs:18:128)\n    at #build (file:///home/runner/work/dougmar.ch/dougmar.ch/node_m"
       },
       "durationMs": 0,
       "timestamp": "2026-07-16T10:46:31.563Z"

@@ -68,7 +68,7 @@ bebas-plex
   - Right panel: `width: 55vw`, padding `5vw 6vw 5vw 5vw`, bg `#5DC43A`
   - Signal strip: bottom band on right panel, `padding: 24px 0`, uses `border-top: 1px solid rgba(8,14,7,0.25)`
   - No max-width on any container; side breathing via viewport-relative padding (5–6vw)
-- **Nav placement:** Left panel, top-left corner, fixed within the panel top. Three links: "Work" · "About" · "doug-march.com" — IBM Plex Sans 13px, all-caps, letter-spacing 0.12em, cream text, no underline, chevron-separated.
+- **Nav placement:** Left panel, top-left corner, fixed within the panel top. Three links: "Work" · "About" · "dougmar.ch" — IBM Plex Sans 13px, all-caps, letter-spacing 0.12em, cream text, no underline, chevron-separated.
 - **Hero phrase grid zone:**
   - Left panel: "CONTENT WITH" occupies vertical center (~row 3–6 of 10 implicit rows), fills ~80% of panel width; "CONTENT" and "WITH" on separate lines due to natural line break at Bebas scale.
   - Right panel: "MEDIOCRITY." single line vertically centered at 45vh from top, fills ~80% of panel width.

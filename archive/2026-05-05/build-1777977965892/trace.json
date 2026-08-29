@@ -215,7 +215,7 @@
       "phase": 0,
       "input": {},
       "output": {
-        "brief": "# Signals Brief — 2026-05-05\n\n# Creative Brief — doug-march.com\n**Date:** May 5, 2026 | **Signal Influence: 5/10 (Moderate)**\n\n---\n\n## Mood\n\nLate spring Tuesday: the mind turning inward while the day stretches longest. There's a quiet competence in the air—multiple languages shipping, engineering problems being solved, craft being refined—but it's offset by a waning moon and a Tigers loss that lands like a small, honest disappointment. Hold both: make the design feel *productive and slightly def",
+        "brief": "# Signals Brief — 2026-05-05\n\n# Creative Brief — dougmar.ch\n**Date:** May 5, 2026 | **Signal Influence: 5/10 (Moderate)**\n\n---\n\n## Mood\n\nLate spring Tuesday: the mind turning inward while the day stretches longest. There's a quiet competence in the air—multiple languages shipping, engineering problems being solved, craft being refined—but it's offset by a waning moon and a Tigers loss that lands like a small, honest disappointment. Hold both: make the design feel *productive and slightly def",
         "charCount": 5026
       },
       "durationMs": 0,
@@ -231,7 +231,7 @@
         "archetype": "Index",
         "chassisId": "space-grotesk-work-sans",
         "specLength": 13001,
-        "specPreview": "# Visual Specification — doug-march.com — 2026-05-05\n\n---\n\n## Archetype Selection\n\n**The Split** — two asymmetric halves; left panel fixed (340px, identity + signals), right panel scrolls (work + content).\n\nThe brief's six discrete signal types (moon, Tigers score, golf leaderboard, GitHub polyglot stack, quote, Mother's Day) require a persistent ambient dashboard — not a hero that competes, not a footer that gets skipped. Split places all ambient intelligence in the fixed left panel, where it b"
+        "specPreview": "# Visual Specification — dougmar.ch — 2026-05-05\n\n---\n\n## Archetype Selection\n\n**The Split** — two asymmetric halves; left panel fixed (340px, identity + signals), right panel scrolls (work + content).\n\nThe brief's six discrete signal types (moon, Tigers score, golf leaderboard, GitHub polyglot stack, quote, Mother's Day) require a persistent ambient dashboard — not a hero that competes, not a footer that gets skipped. Split places all ambient intelligence in the fixed left panel, where it b"
       },
       "durationMs": 378406,
       "timestamp": "2026-05-05T10:41:03.763Z"

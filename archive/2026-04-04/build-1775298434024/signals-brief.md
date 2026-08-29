@@ -1,6 +1,6 @@
 # Signals Brief — 2026-04-04
 
-# CREATIVE BRIEF: doug-march.com
+# CREATIVE BRIEF: dougmar.ch
 **Date:** 2026-04-04 | **Signal Influence: 5/10** | **Design Weights: Balanced**
 
 ---

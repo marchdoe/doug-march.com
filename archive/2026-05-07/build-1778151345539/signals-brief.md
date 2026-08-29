@@ -157,7 +157,7 @@ Attribution: `— Unknown` in `neutral.500`, 12px, `letter-spacing: 0.10em`, all
 **Zone 4 — Work list** (≈200px, padding 24px):
 Heading: `SELECTED WORK` in `neutral.500` at 10px caps, `letter-spacing: 0.20em`, bottom-border 1px `neutral.700`, margin-bottom 12px.
 Each project entry: 14px Atkinson, `neutral.200`, with a `·` bullet in `grass.500` as list marker (the only grass green outside the hero phrase). On hover: left-border 1px `grass.500`.
-Projects: Spaceman · FishSticks · 15th Club · doug-march.com · TeeTurn
+Projects: Spaceman · FishSticks · 15th Club · dougmar.ch · TeeTurn
 
 **Zone 5 — Footer** (48px, pinned bottom):
 `padding: 0 24px`, `border-top: 1px solid neutral.700`, flex row space-between.
