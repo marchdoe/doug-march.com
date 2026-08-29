@@ -9,7 +9,8 @@ export interface Weights {
   signals: number
   inspiration: number
   ratings: number
-  risk: number
+  /** null = unset; design-agents.js derives risk 3-10 from the build date. */
+  risk: number | null
 }
 
 export interface RunInfo {

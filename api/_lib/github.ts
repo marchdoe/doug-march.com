@@ -85,23 +85,48 @@ export async function createRatingIssue(date: string, body: string): Promise<Rat
   }
 }
 
+/**
+ * `risk` is nullable and the others are not, which is deliberate.
+ *
+ * `resolveRiskWeight` in scripts/design-agents.js derives risk 3-10 from the
+ * build date whenever WEIGHT_RISK is unset, so that every day does not get the
+ * same "BOLD" sentence in the Art Director prompt. An explicitly-set value wins
+ * — including 0, which is falsy but not unset.
+ *
+ * Before this, the panel could not express "unset": `getWeights` fell back to 8
+ * on a 404 and `setWeights` wrote all four variables unconditionally. So the
+ * panel displayed 8 for a variable that did not exist, and saving materialised
+ * it. That is exactly what had happened by 2026-08-29 — WEIGHT_RISK was pinned
+ * at 8, the derived dial never ran, and the Max-Risk License (risk >= 9) had
+ * never once fired.
+ *
+ * `null` means unset: read as absent, written as a DELETE.
+ */
 export interface Weights {
   signals: number
   inspiration: number
   ratings: number
-  risk: number
+  risk: number | null
 }
 
-// Names + defaults must match scripts/design-agents.js:421-424.
-const WEIGHT_VARS: Array<{ key: keyof Weights; name: string; fallback: number }> = [
+const WEIGHT_VARS: Array<{ key: keyof Weights; name: string; fallback: number | null }> = [
   { key: 'signals', name: 'WEIGHT_SIGNALS', fallback: 5 },
   { key: 'inspiration', name: 'WEIGHT_INSPIRATION', fallback: 5 },
   { key: 'ratings', name: 'WEIGHT_RATINGS', fallback: 5 },
-  { key: 'risk', name: 'WEIGHT_RISK', fallback: 8 },
+  // No numeric fallback: absent means "let the date decide".
+  { key: 'risk', name: 'WEIGHT_RISK', fallback: null },
 ]
 
 export async function getWeights(): Promise<Weights> {
-  const weights: Weights = { signals: 5, inspiration: 5, ratings: 5, risk: 8 }
+  const weights: Weights = { signals: 5, inspiration: 5, ratings: 5, risk: null }
+
+  // Only `risk` is nullable, so a null can only ever land there. Writing this
+  // out rather than casting keeps the compiler enforcing that.
+  const assign = (key: keyof Weights, value: number | null) => {
+    if (key === 'risk') weights.risk = value
+    else if (value !== null) weights[key] = value
+  }
+
   await Promise.all(
     WEIGHT_VARS.map(async ({ key, name, fallback }) => {
       try {
@@ -110,10 +135,10 @@ export async function getWeights(): Promise<Weights> {
           unknown
         >
         const parsed = parseInt(String(raw.value), 10)
-        weights[key] = Number.isNaN(parsed) ? fallback : parsed
+        assign(key, Number.isNaN(parsed) ? fallback : parsed)
       } catch (err) {
         if (err instanceof GitHubError && err.status === 404) {
-          weights[key] = fallback
+          assign(key, fallback)
           return
         }
         throw err
@@ -126,7 +151,21 @@ export async function getWeights(): Promise<Weights> {
 export async function setWeights(w: Weights): Promise<void> {
   await Promise.all(
     WEIGHT_VARS.map(async ({ key, name }) => {
-      const payload = JSON.stringify({ name, value: String(w[key]) })
+      const value = w[key]
+
+      // null means "unset" — delete the variable so design-agents.js derives it
+      // from the build date. A 404 here is success: it was already absent.
+      if (value === null) {
+        try {
+          await gh(`/repos/${REPO}/actions/variables/${name}`, { method: 'DELETE' })
+        } catch (err) {
+          if (err instanceof GitHubError && err.status === 404) return
+          throw err
+        }
+        return
+      }
+
+      const payload = JSON.stringify({ name, value: String(value) })
       try {
         await gh(`/repos/${REPO}/actions/variables/${name}`, { method: 'PATCH', body: payload })
       } catch (err) {

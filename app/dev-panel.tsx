@@ -34,7 +34,7 @@ interface ArchiveEntry {
   buildId: string
   timestamp: number
   brief: string
-  weights?: { signals: number; inspiration: number; ratings: number; risk: number }
+  weights?: PanelWeights
   rationale?: string
   filesChanged?: string[]
 }
@@ -91,6 +91,14 @@ function fmtElapsed(ms: number): string {
 }
 
 // ─── Dark Theme Styles ────────────────────────────────────────────────────────
+
+/** `risk: null` means unset — the pipeline derives it from the build date. */
+type PanelWeights = {
+  signals: number
+  inspiration: number
+  ratings: number
+  risk: number | null
+}
 
 const c = {
   pageBg: '#050C18',
@@ -205,7 +213,14 @@ export function DevPanel() {
 
   const [pipelineStatus, setPipelineStatus] = useState<PipelineStatus>('idle')
   const [dryRun, setDryRun] = useState(false)
-  const [weights, setWeights] = useState({ signals: 5, inspiration: 5, ratings: 5, risk: 5 })
+  // risk starts null — unset, so design-agents.js derives it 3-10 from the
+  // build date rather than sending the same prompt sentence every run.
+  const [weights, setWeights] = useState<PanelWeights>({
+    signals: 5,
+    inspiration: 5,
+    ratings: 5,
+    risk: null,
+  })
   const [phases, setPhases] = useState<Phase[]>(makePhases())
   const [logLines, setLogLines] = useState<string[]>([])
   const logAccumRef = useRef<string[]>([])
@@ -1520,8 +1535,8 @@ function RunPane({
   startCooldown: () => void
   cooldownLeft: number
   signalDate: string
-  weights: { signals: number; inspiration: number; ratings: number; risk: number }
-  setWeights: (v: { signals: number; inspiration: number; ratings: number; risk: number }) => void
+  weights: PanelWeights
+  setWeights: (v: PanelWeights) => void
 }) {
   return (
     <>
@@ -1599,6 +1614,29 @@ function RunPane({
               {label}
             </span>
             <div style={{ display: 'flex', gap: '3px' }}>
+              {key === 'risk' && (
+                <button
+                  type="button"
+                  title="Auto — derive risk 3-10 from the build date"
+                  onClick={() => setWeights({ ...weights, risk: null })}
+                  disabled={isRunDisabled}
+                  style={{
+                    width: '22px',
+                    height: '22px',
+                    borderRadius: '3px',
+                    border: `1px solid ${weights.risk === null ? c.cyan : c.border}`,
+                    background: weights.risk === null ? 'rgba(0,229,255,0.15)' : c.cardBg,
+                    color: weights.risk === null ? c.cyan : c.muted,
+                    fontSize: '9px',
+                    fontWeight: 700,
+                    fontFamily: c.font,
+                    cursor: isRunDisabled ? 'default' : 'pointer',
+                    padding: 0,
+                  }}
+                >
+                  A
+                </button>
+              )}
               {Array.from({ length: 11 }, (_, n) => (
                 <button
                   type="button"
