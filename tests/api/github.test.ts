@@ -110,11 +110,50 @@ describe('getWeights', () => {
         return Promise.resolve(jsonRes({ name: 'WEIGHT_SIGNALS', value: '7' }))
       return Promise.resolve(jsonRes({ message: 'Not Found' }, 404))
     })
-    expect(await getWeights()).toEqual({ signals: 7, inspiration: 5, ratings: 5, risk: 8 })
+    // risk defaults to null, not a number. Until 2026-08-29 it fell back to 8,
+    // so the panel displayed 8 for a variable that did not exist and saving
+    // materialised it — pinning the dial design-agents.js derives from the date.
+    expect(await getWeights()).toEqual({ signals: 7, inspiration: 5, ratings: 5, risk: null })
+  })
+
+  it('reads an explicitly-set risk, including 0', async () => {
+    fetchMock.mockImplementation((url: string) => {
+      if (url.endsWith('/WEIGHT_RISK'))
+        return Promise.resolve(jsonRes({ name: 'WEIGHT_RISK', value: '0' }))
+      return Promise.resolve(jsonRes({ message: 'Not Found' }, 404))
+    })
+    // 0 is falsy but explicitly set, and must not be confused with unset.
+    expect((await getWeights()).risk).toBe(0)
   })
 })
 
 describe('setWeights', () => {
+  it('DELETEs WEIGHT_RISK when risk is null', async () => {
+    fetchMock.mockImplementation(() => Promise.resolve(new Response(null, { status: 204 })))
+    await setWeights({ signals: 5, inspiration: 5, ratings: 5, risk: null })
+    const deletes = fetchMock.mock.calls.filter(
+      ([, init]) => (init as RequestInit)?.method === 'DELETE'
+    )
+    expect(deletes).toHaveLength(1)
+    expect(deletes[0][0]).toContain('/WEIGHT_RISK')
+    // The other three are still written normally.
+    const writes = fetchMock.mock.calls.filter(([, init]) =>
+      ['PATCH', 'POST'].includes((init as RequestInit)?.method ?? '')
+    )
+    expect(writes).toHaveLength(3)
+  })
+
+  it('treats a 404 on the DELETE as success — already unset', async () => {
+    fetchMock.mockImplementation((url: string, init?: RequestInit) => {
+      if (init?.method === 'DELETE' && url.endsWith('/WEIGHT_RISK'))
+        return Promise.resolve(jsonRes({ message: 'Not Found' }, 404))
+      return Promise.resolve(new Response(null, { status: 204 }))
+    })
+    await expect(
+      setWeights({ signals: 5, inspiration: 5, ratings: 5, risk: null })
+    ).resolves.toBeUndefined()
+  })
+
   it('PATCHes existing variables and POSTs missing ones', async () => {
     fetchMock.mockImplementation((url: string, init?: RequestInit) => {
       if (init?.method === 'PATCH' && url.endsWith('/WEIGHT_RISK'))

@@ -420,7 +420,9 @@ function pipelineApiPlugin(): Plugin {
           WEIGHT_SIGNALS: String(weights.signals ?? 5),
           WEIGHT_INSPIRATION: String(weights.inspiration ?? 5),
           WEIGHT_RATINGS: String(weights.ratings ?? 5),
-          WEIGHT_RISK: String(weights.risk ?? 5),
+          // Empty string, not a number: design-agents.js treats '' as unset and
+          // derives risk from the build date. A literal here would pin it.
+          WEIGHT_RISK: weights.risk == null ? '' : String(weights.risk),
         }
         if (mock) delete pipelineEnv.ANTHROPIC_API_KEY
 
