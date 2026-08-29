@@ -91,8 +91,18 @@ describe('resolveHref', () => {
   })
 
   it('does not mistake the doug-march-dot-com case study for the live host', () => {
+    // 124 archived files still carry this filename. The slug moved to
+    // dougmar-ch on 2026-08-29, but a snapshot records what shipped that day,
+    // so the old spelling must keep resolving correctly forever.
     expect(resolveHref('work/doug-march-dot-com.html', top)).toBeNull()
     expect(resolveHref('/work/doug-march-dot-com', top)).toBe('work/doug-march-dot-com.html')
+  })
+
+  it('does not mistake the dougmar-ch case study for the live host either', () => {
+    // The new slug is a near-miss for the new origin the same way the old one
+    // was for the old origin, and RECOGNISED_ORIGINS now contains both.
+    expect(resolveHref('work/dougmar-ch.html', top)).toBeNull()
+    expect(resolveHref('/work/dougmar-ch', top)).toBe('work/dougmar-ch.html')
   })
 })
 

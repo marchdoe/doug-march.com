@@ -77,8 +77,8 @@ export const projects: Project[] = [
     liveUrl: 'https://15th.club',
   },
   {
-    slug: 'doug-march-dot-com',
-    title: 'doug-march.com',
+    slug: 'dougmar-ch',
+    title: 'dougmar.ch',
     type: 'AI',
     year: 2026,
     depth: 'full',
@@ -92,7 +92,7 @@ export const projects: Project[] = [
     outcome:
       'A portfolio that is never the same two days in a row. Every design is saved to an archive. The stack is TanStack Start in SPA mode, PandaCSS for tokens, and Vercel for hosting and CI.',
     stack: ['TanStack Start', 'PandaCSS', 'TypeScript', 'Claude', 'GitHub Actions', 'Vercel'],
-    liveUrl: 'https://doug-march.com',
+    liveUrl: 'https://dougmar.ch',
   },
   {
     slug: 'teeturn',

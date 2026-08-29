@@ -30,7 +30,7 @@ test.describe('site health — project pages', () => {
     'spaceman',
     'fishsticks',
     '15th-club',
-    'doug-march-dot-com',
+    'dougmar-ch',
     'teeturn',
     'politweets',
     'twittertale',

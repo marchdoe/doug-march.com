@@ -1,5 +1,12 @@
 const API = 'https://api.github.com'
-const REPO = 'marchdoe/doug-march.com'
+/**
+ * The repository the panel drives. Exported so tests assert against this rather
+ * than spelling it out: the repo was renamed from `doug-march.com` to
+ * `dougmar.ch` on 2026-08-29, and four assertions had to be hand-edited because
+ * they carried the literal. GitHub redirects old paths, so a stale value fails
+ * quietly rather than loudly — which is the reason to have one source of truth.
+ */
+export const REPO = 'marchdoe/dougmar.ch'
 const WORKFLOW = 'daily-redesign.yml'
 
 export class GitHubError extends Error {
