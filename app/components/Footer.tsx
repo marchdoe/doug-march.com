@@ -1,4 +1,5 @@
 import { css } from '../../styled-system/css'
+import { identity } from '../content/about'
 
 export function Footer() {
   return (
@@ -26,7 +27,10 @@ export function Footer() {
       </span>
       <span>
         Build 2026.07.29 <span className={css({ color: 'accent' })}>·</span> Spectral / Albert Sans{' '}
-        <span className={css({ color: 'accent' })}>·</span> hello@doug-march.com
+        <span className={css({ color: 'accent' })}>·</span>{' '}
+        <a href={`mailto:${identity.email}`} className={css({ color: 'inherit' })}>
+          {identity.email}
+        </a>
       </span>
     </footer>
   )
