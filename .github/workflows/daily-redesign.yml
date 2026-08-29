@@ -2,7 +2,18 @@ name: Daily Redesign
 
 on:
   schedule:
-    - cron: '0 10 * * *'  # 5am EST (UTC-5) / 6am EDT (UTC-4) — runs at 10am UTC
+    # 04:50 America/New_York, year-round. GitHub cron is UTC-only with no DST
+    # support, so one entry cannot track a local time across the switch: a fixed
+    # '0 10 * * *' is 5am in EST but 6am in EDT. Both entries below fire every
+    # day and the `guard` job drops whichever one is an hour wrong for the
+    # current offset, so exactly one survives per day in either season.
+    #
+    # :50 rather than :00 on purpose. Scheduled workflows queue behind everything
+    # else that fires on the hour: runs 2026-08-19 through 08-26 all started
+    # 17-31 minutes late. Aiming at 04:50 lands the build near 5am local once
+    # that lag is applied, instead of 5:20.
+    - cron: '50 8 * * *' # 04:50 EDT (skipped in winter — 03:50 EST)
+    - cron: '50 9 * * *' # 04:50 EST (skipped in summer — 05:50 EDT)
   workflow_dispatch:
     inputs:
       dry_run:
@@ -18,7 +29,35 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Which of the two cron entries is correct depends on whether New York is
+  # currently on EDT or EST, and GitHub expressions have no timezone functions
+  # to decide it. So a tiny job decides, and `redesign` waits on its answer.
+  # A manual run is never dropped.
+  guard:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - id: check
+        run: |
+          if [ "${{ github.event_name }}" != 'schedule' ]; then
+            echo 'run=true' >> "$GITHUB_OUTPUT"
+            echo "manual trigger (${{ github.event_name }}) — always runs"
+            exit 0
+          fi
+          hour=$(TZ=America/New_York date +%-H)
+          local_now=$(TZ=America/New_York date '+%Y-%m-%d %H:%M %Z')
+          if [ "$hour" -eq 4 ]; then
+            echo 'run=true' >> "$GITHUB_OUTPUT"
+            echo "$local_now — the 04:00 hour in New York, this is the day's run"
+          else
+            echo 'run=false' >> "$GITHUB_OUTPUT"
+            echo "$local_now — not the 04:00 hour, this is the other DST entry; skipping"
+          fi
+
   redesign:
+    needs: guard
+    if: needs.guard.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 80  # mockup revision rounds add ~10-15m each; 45m could not absorb one
     permissions:
