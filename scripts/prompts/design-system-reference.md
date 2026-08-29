@@ -58,7 +58,7 @@ export const capabilities: string[]
 
 ### `../content/about`
 ```typescript
-export const identity: { name: string; role: string; statement: string }
+export const identity: { name: string; role: string; statement: string; email: string }
 export const personal: { holesInOne: number; sport: string; teams: string[]; currentFocus: string }
 ```
 **WARNING:** There is NO `bio` export. Use `identity` for the Bio component.

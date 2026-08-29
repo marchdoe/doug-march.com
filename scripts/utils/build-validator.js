@@ -6,6 +6,26 @@ import { ROOT } from './file-manager.js'
 import { MUTABLE_FILES } from './site-context.js'
 
 /**
+ * Does any of `sources` wire up a mailto link to `email`?
+ *
+ * Two spellings count, because the source is TSX and the contract asks the
+ * engineer to BIND the address rather than type it: an interpolated
+ * `mailto:${identity.email}` never contains the literal address, so a plain
+ * substring test would reject the very authoring style the prompt requires.
+ * A hardcoded but correct address still passes — the question this answers is
+ * whether a visitor can mail Doug, not which syntax got them there.
+ *
+ * @param {string[]} sources - file contents to search
+ * @param {string} email - the canonical address from identity.email
+ * @returns {boolean}
+ */
+export function contactLinkPresent(sources, email) {
+  const literal = `mailto:${email}`
+  const bound = /mailto:\$\{[^}]*\bidentity\.email\b[^}]*\}/
+  return sources.some((src) => src.includes(literal) || bound.test(src))
+}
+
+/**
  * Pre-build validation: check for known bad patterns in generated code.
  * Catches issues that `pnpm build` misses but break SSR at runtime.
  *
@@ -316,6 +336,51 @@ export function validateGenerated() {
           `${file}: contains disallowed URL to ${host} (only ${[...ALLOWED_URL_HOSTS].join(', ')} are allowed)`
         )
       }
+    }
+  }
+
+  // Check 6: the contact address must survive the night.
+  //
+  // It has no other enforcement. `identity.email` in app/content/about.ts is
+  // the source of truth, but nothing makes the engineer bind it, and on
+  // 2026-08-29 the build silently replaced Sidebar.tsx's `mailto:` with a
+  // `/#contact` page anchor while Footer.tsx kept a link — so a per-file rule
+  // would have false-positived. The site-wide question is the real one: can a
+  // visitor mail Doug at all?
+  //
+  // Read the address as text rather than importing about.ts: this is a plain
+  // .js script and node is pinned to 22.15.1, where type stripping is still
+  // behind a flag. Same regex-over-the-source idiom site-context.js uses for
+  // projects.ts.
+  //
+  // Two spellings count, because the source is TSX and the prompt asks the
+  // engineer to BIND the address rather than type it: an interpolated
+  // `mailto:${identity.email}` never contains the literal address, so a plain
+  // substring test would fail the very authoring style the contract requires.
+  let contactEmail = null
+  try {
+    const aboutSrc = readFileSync(resolve(ROOT, 'app/content/about.ts'), 'utf8')
+    contactEmail = aboutSrc.match(/email:\s*'([^']+)'/)?.[1] ?? null
+  } catch {}
+
+  if (!contactEmail) {
+    errors.push(
+      'app/content/about.ts: no `email` field on identity — it is the source of ' +
+        'truth for the contact address and Check 6 cannot run without it'
+    )
+  } else {
+    const sources = filesToScan.map((file) => {
+      try {
+        return readFileSync(resolve(ROOT, file), 'utf8')
+      } catch {
+        return ''
+      }
+    })
+    if (!contactLinkPresent(sources, contactEmail)) {
+      errors.push(
+        `no file links to mailto:${contactEmail} — bind it from identity.email ` +
+          `(app/content/about.ts); scanned ${filesToScan.length} files`
+      )
     }
   }
 

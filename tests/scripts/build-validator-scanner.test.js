@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach } from 'vitest'
 import { writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { validateGenerated } from '../../scripts/utils/build-validator.js'
+import { validateGenerated, contactLinkPresent } from '../../scripts/utils/build-validator.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '../..')
@@ -167,5 +167,47 @@ ${RECOGNISED_ORIGINS.map((o) => `        '${o}',`).join('\n')}
     if (!result.success) {
       expect(result.error).not.toContain('__scanner_test.tsx: contains inline onclick')
     }
+  })
+})
+
+describe('contact link detection (Check 6)', () => {
+  const EMAIL = 'hello@dougmar.ch'
+
+  it('accepts the address bound from identity.email', () => {
+    // The form the react-engineer contract asks for. It never contains the
+    // literal address, so a substring test alone would reject it.
+    const src = `<a href={\`mailto:\${identity.email}\`}>{identity.email}</a>`
+    expect(contactLinkPresent([src], EMAIL)).toBe(true)
+  })
+
+  it('accepts a hardcoded but correct address', () => {
+    expect(contactLinkPresent(['<a href="mailto:hello@dougmar.ch">mail</a>'], EMAIL)).toBe(true)
+  })
+
+  it('rejects the page anchor that replaced the mailto on 2026-08-29', () => {
+    // The real regression: Sidebar.tsx's { href: 'mailto:...', label: 'Contact' }
+    // became { label: '03 CONTACT', href: '/#contact' } overnight.
+    const src = "const items = [{ label: '03 CONTACT', href: '/#contact' }]"
+    expect(contactLinkPresent([src], EMAIL)).toBe(false)
+  })
+
+  it('rejects a stale address left behind after the canonical one moves', () => {
+    expect(contactLinkPresent(['<a href="mailto:hello@doug-march.com">x</a>'], EMAIL)).toBe(false)
+  })
+
+  it('rejects an interpolation that binds something other than identity.email', () => {
+    const src = `<a href={\`mailto:\${project.contact}\`}>x</a>`
+    expect(contactLinkPresent([src], EMAIL)).toBe(false)
+  })
+
+  it('is satisfied by any one file in the set, not every file', () => {
+    // Footer may carry it while Sidebar does not. The question is site-wide.
+    const sidebar = "{ label: 'CONTACT', href: '/#contact' }"
+    const footer = `<a href={\`mailto:\${identity.email}\`}>mail</a>`
+    expect(contactLinkPresent([sidebar, footer], EMAIL)).toBe(true)
+  })
+
+  it('finds no link in an empty set', () => {
+    expect(contactLinkPresent([], EMAIL)).toBe(false)
   })
 })
