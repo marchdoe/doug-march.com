@@ -84,7 +84,7 @@
       "destination": "/archive/:path+"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!og/.|archive/.).*)",
       "destination": "/_shell.html"
     }
   ]
