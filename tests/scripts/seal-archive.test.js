@@ -46,12 +46,19 @@ describe('listSnapshots', () => {
     expect(snapshots.get('2026-05-01')).toEqual(['about.html', 'index.html', 'work/spaceman.html'])
   })
 
-  it('skips the copy of the archive that 2026-04-14 captured of itself', async () => {
+  it('walks a nested date directory rather than skipping it', async () => {
+    // Until 2026-08-29 this asserted the opposite: listSnapshots carried a
+    // hardcoded exclusion for `2026-04-14/archive`, the copy of the archive
+    // index that day captured of itself. That directory has been deleted (167
+    // duplicates removed, 15 crawl artifacts moved to
+    // archive/2026-04-14/crawl-artifacts/), so the exclusion went with it.
+    // Nothing in public/archive/ nests a date under a date any more, and if
+    // something ever does again it should be sealed, not silently skipped.
     await write('2026-04-14/index.html', PAGE())
     await write('2026-04-14/archive/2026-03-31/index.html', PAGE())
 
     const snapshots = await listSnapshots(root)
-    expect(snapshots.get('2026-04-14')).toEqual(['index.html'])
+    expect(snapshots.get('2026-04-14')).toEqual(['archive/2026-03-31/index.html', 'index.html'])
   })
 
   it('ignores directories that are not dates', async () => {
