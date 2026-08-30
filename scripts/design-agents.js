@@ -1698,6 +1698,46 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // build (the caller takes it right after its successful build).
     // -----------------------------------------------------------------------
     async function runScreenshotCriticGate(passingBackup) {
+      // Deterministic surface gate first. It walks every generated route at
+      // both rungs in both schemes and measures whether the document fits the
+      // screen — the class of defect that put `/experiments` 657px past a
+      // 1440px viewport with its headline and nav off the edge (#215), which
+      // the single-page critic could never have seen. Measurements cost no
+      // tokens, so this runs in full on every build; its findings are handed
+      // to the critic below as text rather than as more image blocks.
+      let surfaceFindings = []
+      try {
+        const { runSurfaceGate } = await import('./utils/surface-gate.js')
+        const t0Gate = Date.now()
+        const gate = await runSurfaceGate()
+        surfaceFindings = gate.findings
+        console.log(
+          `  [surface-gate] ${gate.measured} measurements, ${gate.errorCount} error(s) in ${((Date.now() - t0Gate) / 1000).toFixed(1)}s`
+        )
+        for (const f of gate.findings) {
+          console.log(`    [${f.severity}] ${f.surface} @${f.width} (${f.scheme}): ${f.detail}`)
+        }
+        trace.addStep({
+          name: 'surface-gate',
+          phase: 4,
+          input: {},
+          output: { measured: gate.measured, errorCount: gate.errorCount, findings: gate.findings },
+          durationMs: Date.now() - t0Gate,
+        })
+        verdicts.push({
+          critic: 'surface-gate',
+          verdict: gate.errorCount > 0 ? 'REVISE' : 'SHIP',
+          feedback: gate.findings.length
+            ? gate.findings.map((f) => `${f.surface} @${f.width}: ${f.detail}`).join('\n')
+            : 'all surfaces fit their viewport',
+          ts: Date.now(),
+        })
+      } catch (err) {
+        // Non-blocking, exactly like the critic below: a gate that cannot run
+        // must not stop a build that otherwise passed.
+        console.warn(`  [surface-gate] failed (non-blocking): ${err.message}`)
+      }
+
       try {
         console.log('\n[screenshot-critic] Capturing screenshot...')
         const { captureScreenshot } = await import('./utils/snapshot.js')
@@ -1736,6 +1776,35 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           )
         }
 
+        // A project page and the share card, in the design's canonical scheme
+        // only. Both are rewritten nightly and neither has ever been reviewed:
+        // /work/<slug> shipped with its prev/next navigation rendered twice,
+        // in two different type treatments, at every viewport (#215). Two
+        // images is the whole cost — the geometry across every other route is
+        // already covered above, for free, by measurement.
+        let routeShots = []
+        try {
+          const { captureRouteScreenshot } = await import('./utils/snapshot.js')
+          const { listGeneratedRoutes } = await import('./utils/surface-gate.js')
+          const slugRoute = (await listGeneratedRoutes()).find((r) => r.route.startsWith('/work/'))
+          const extra = [
+            slugRoute ? { label: 'A project page', route: slugRoute.route, w: 1440, h: 900 } : null,
+            { label: 'The share card', route: '/og', w: 1200, h: 630 },
+          ].filter(Boolean)
+          for (const e of extra) {
+            const png = await captureRouteScreenshot(e.route, { width: e.w, height: e.h })
+            routeShots.push({ label: `${e.label} (${e.route}):`, png })
+          }
+          console.log(`  [screenshot-critic] +${routeShots.length} route captures`)
+        } catch (err) {
+          // Best-effort. The homepage verdict is still worth having without
+          // them, and a capture failure must not block a passing build.
+          console.warn(`  [screenshot-critic] route capture failed (non-blocking): ${err.message}`)
+          routeShots = []
+        }
+
+        const { formatFindingsForCritic } = await import('./utils/surface-gate.js')
+
         const criticBlocks = buildScreenshotCriticBlocks({
           // enrichedBrief carries hero copy, rationale, and the full visual
           // spec. The nightly context has no `brief` key, so the old
@@ -1745,6 +1814,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           mockupScreenshot,
           screenshotBuffer,
           bestReference,
+          routeShots,
+          measuredFaults: formatFindingsForCritic(surfaceFindings),
         })
 
         const t0ScreenshotCritic = Date.now()
@@ -1800,6 +1871,33 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         if (screenshotVerdict === 'REVISE') {
           const agentMatch = criticResponse.match(/\*\*Responsible agent:\*\*\s*([\w-]+)/)
           const responsibleAgent = agentMatch?.[1] || 'react-engineer'
+
+          // Surfaces the critic can now see but no agent can edit. `/work` and
+          // `/experiments` are authored route files outside MUTABLE_FILES: the
+          // 657px overflow on `/experiments` (#215) lived in a file the React
+          // Engineer is never given, so routing that feedback to it produces a
+          // confident edit to something it cannot open. Widening what the gate
+          // watches without widening where its findings can go is how a critic
+          // starts issuing instructions nobody can carry out.
+          const { ownerForSurface } = await import('./utils/surface-gate.js')
+          const unownable = [
+            ...new Set(
+              surfaceFindings
+                .filter((f) => f.severity === 'error' && ownerForSurface(f.surface) === 'human')
+                .map((f) => f.surface)
+            ),
+          ]
+          if (unownable.length) {
+            console.warn(
+              `  [screenshot-critic] ${unownable.join(', ')} — authored route(s), no agent owns these files; needs a human`
+            )
+            verdicts.push({
+              critic: 'surface-gate',
+              verdict: 'NEEDS-HUMAN',
+              feedback: `Authored routes outside MUTABLE_FILES failed the gate: ${unownable.join(', ')}`,
+              ts: Date.now(),
+            })
+          }
           // Take the FEEDBACK block if the critic emitted one, as
           // parseMockupCriticResponse already does. The old form stripped the
           // first literal "REVISE" anywhere in the prose, so a critic writing
