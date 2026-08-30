@@ -18,6 +18,7 @@
 
 import { AXIS_NAMES } from './composition-grammar.js'
 import { hueDistance } from './color-validation.js'
+import { geometryNovelty } from './geometry-fingerprint.js'
 
 /** Builds compared against. @type {number} */
 export const WINDOW = 7
@@ -33,13 +34,24 @@ export const SHELL_FIELDS = ['brand_lockup', 'brand_color_mode', 'ground_strateg
  */
 export const HEADER_FIELDS = ['placement']
 
-/** Composite weights. Keys absent from a build are dropped and the rest renormalized. */
+/**
+ * Composite weights. Keys absent from a build are dropped and the rest renormalized.
+ *
+ * `geometry` was added with #255 and takes its share from the four declaration
+ * metrics, because it is the only one that looks at the rendered page. The
+ * others can all report a build as new when it is a repeat: two unlike tuples
+ * put the mark top-left, the hero on the left and a data column down the right
+ * on both 2026-08-23 and 2026-08-30. It sits just under `composition` — a
+ * repeated silhouette is the failure, and the tuple is still what an agent can
+ * steer directly.
+ */
 export const WEIGHTS = {
-  composition: 0.35,
-  hue: 0.2,
-  lane: 0.2,
-  shell: 0.15,
-  fidelity: 0.1,
+  composition: 0.28,
+  geometry: 0.22,
+  hue: 0.16,
+  lane: 0.16,
+  shell: 0.12,
+  fidelity: 0.06,
 }
 
 /**
@@ -233,6 +245,7 @@ export function composite(metrics) {
  * @param {string|null} [build.lane] laneId from lane.json
  * @param {Record<string, string>|null} [build.shell] shell.json
  * @param {Record<string, string>|null} [build.header] header.json
+ * @param {object|null} [build.fingerprint] fingerprint.json, the rendered silhouette
  * @param {object|null} [build.declared] parsed MEASURABLES
  * @param {object|null} [build.measured] measured render values, absent today
  * @param {Array<object>} history same shape, newest first, trimmed to WINDOW
@@ -254,6 +267,7 @@ export function computeUniqueness(build, history = []) {
       asShell(build),
       window.map((h) => ({ date: h.date, ...asShell(h) }))
     ),
+    geometry: geometryNovelty(build?.fingerprint ?? null, window),
     fidelity: fidelity(build?.declared ?? null, build?.measured ?? null),
   }
 
@@ -262,7 +276,7 @@ export function computeUniqueness(build, history = []) {
     window: window.length,
     metrics,
     composite: composite(metrics),
-    version: 1,
+    version: 2,
   }
 }
 
@@ -284,7 +298,7 @@ export function formatUniquenessForPrompt(index) {
   const lines = [
     '## Repetition Check (previous build)',
     '',
-    `The build before this one scored ${pct}/100 for uniqueness against the ${index.window} builds before it. This is measured, not an opinion: it compares the composition tuple, the primary hue, the aesthetic lane, and the shell against their nearest neighbour in that window.`,
+    `The build before this one scored ${pct}/100 for uniqueness against the ${index.window} builds before it. This is measured, not an opinion: it compares the composition tuple, the primary hue, the aesthetic lane, the shell, and the silhouette the page actually rendered against their nearest neighbour in that window.`,
     '',
   ]
 
@@ -312,6 +326,11 @@ export function formatUniquenessForPrompt(index) {
   if (m.shell?.raw === 0 && m.shell?.nearest) {
     notes.push(
       `- Shell posture and treatment were identical to ${m.shell.nearest}. Change the posture, the lockup, or the ground strategy.`
+    )
+  }
+  if (typeof m.geometry?.raw === 'number' && m.geometry.raw < 0.35 && m.geometry.nearest) {
+    notes.push(
+      `- The rendered silhouette sat ${Math.round(m.geometry.raw * 100)}/100 from ${m.geometry.nearest}: the headline, the nav, the mark and the first sections landed in close to the same places on the page. This is measured off the built page, not off the tuple, so a fresh tuple that puts the hero where yesterday's put it still lands here. Move something a visitor would see move.`
     )
   }
 

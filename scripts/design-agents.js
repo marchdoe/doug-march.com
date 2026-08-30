@@ -1785,6 +1785,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
             2
           ),
           'composition.json': JSON.stringify(chosenComposition, null, 2),
+          // The rendered silhouette (#255). Null when the capture failed, and
+          // written as nothing rather than as an empty object so the uniqueness
+          // index reads "no fingerprint" instead of "an empty page".
+          'fingerprint.json': finalScreenshot?.fingerprint
+            ? JSON.stringify(finalScreenshot.fingerprint, null, 2)
+            : null,
           'lane.json': JSON.stringify(
             { laneId: chosenLane.id, register: chosenLane.register },
             null,

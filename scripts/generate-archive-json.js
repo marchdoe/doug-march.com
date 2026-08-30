@@ -83,7 +83,7 @@ function countSnapshotPages(date) {
  * The persisted file stays the per-build record; this is the projection.
  *
  * @param {string} date
- * @returns {{date: string, composition: object|null, hue: number|null, lane: string|null, shell: object|null}}
+ * @returns {{date: string, composition: object|null, hue: number|null, lane: string|null, shell: object|null, fingerprint: object|null}}
  */
 function uniquenessInputs(date) {
   const dateDir = join(ARCHIVE_PATH, date)
@@ -108,17 +108,19 @@ function uniquenessInputs(date) {
     const colorScheme = readJson(dir, 'color-scheme.json')
     const lane = readJson(dir, 'lane.json')
     const shell = readJson(dir, 'shell.json')
-    if (composition || colorScheme || lane || shell) {
+    const fingerprint = readJson(dir, 'fingerprint.json')
+    if (composition || colorScheme || lane || shell || fingerprint) {
       return {
         date,
         composition,
         hue: typeof colorScheme?.primary_hue?.h === 'number' ? colorScheme.primary_hue.h : null,
         lane: lane?.laneId ?? null,
         shell,
+        fingerprint,
       }
     }
   }
-  return { date, composition: null, hue: null, lane: null, shell: null }
+  return { date, composition: null, hue: null, lane: null, shell: null, fingerprint: null }
 }
 
 /**

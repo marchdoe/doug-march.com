@@ -16,7 +16,7 @@ import path from 'node:path'
  * @param {string} [opts.root] project root
  * @param {number} [opts.limit=7] dates to return
  * @param {string} [opts.before] exclude this date and anything after it
- * @returns {Promise<Array<{date: string, composition: object|null, hue: number|null, lane: string|null, shell: object|null}>>}
+ * @returns {Promise<Array<{date: string, composition: object|null, hue: number|null, lane: string|null, shell: object|null, header: object|null, fingerprint: object|null}>>}
  */
 export async function readUniquenessHistory({
   root = process.cwd(),
@@ -59,14 +59,15 @@ export async function readUniquenessHistory({
 
     let entry = null
     for (const dir of candidates) {
-      const [composition, colorScheme, lane, shell, header] = await Promise.all([
+      const [composition, colorScheme, lane, shell, header, fingerprint] = await Promise.all([
         readJson(path.join(dir, 'composition.json')),
         readJson(path.join(dir, 'color-scheme.json')),
         readJson(path.join(dir, 'lane.json')),
         readJson(path.join(dir, 'shell.json')),
         readJson(path.join(dir, 'header.json')),
+        readJson(path.join(dir, 'fingerprint.json')),
       ])
-      if (composition || colorScheme || lane || shell || header) {
+      if (composition || colorScheme || lane || shell || header || fingerprint) {
         entry = {
           date,
           composition,
@@ -74,11 +75,22 @@ export async function readUniquenessHistory({
           lane: lane?.laneId ?? null,
           shell,
           header,
+          fingerprint,
         }
         break
       }
     }
-    out.push(entry ?? { date, composition: null, hue: null, lane: null, shell: null, header: null })
+    out.push(
+      entry ?? {
+        date,
+        composition: null,
+        hue: null,
+        lane: null,
+        shell: null,
+        header: null,
+        fingerprint: null,
+      }
+    )
   }
   return out
 }
