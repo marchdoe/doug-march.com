@@ -263,7 +263,9 @@ function hueVars(entry: ArchiveIndexEntry) {
 }
 
 function isArchiveIndex(value: unknown): value is ArchiveIndexEntry[] {
-  return Array.isArray(value) && value.every((e) => typeof (e as { date?: unknown })?.date === 'string')
+  return (
+    Array.isArray(value) && value.every((e) => typeof (e as { date?: unknown })?.date === 'string')
+  )
 }
 
 function ArchivePage() {
@@ -324,8 +326,8 @@ function ArchivePage() {
       {!loaded ? null : status === 'error' ? (
         <div className={wrap}>
           <p className={empty}>
-            The archive index could not be loaded. It exists — this is a problem reaching it, not
-            an empty archive. Try again in a moment.
+            The archive index could not be loaded. It exists — this is a problem reaching it, not an
+            empty archive. Try again in a moment.
           </p>
         </div>
       ) : sorted.length === 0 ? (
