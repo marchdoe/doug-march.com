@@ -30,10 +30,8 @@ describe('archive() — color scheme persistence', () => {
   // before that leaked both. Pointing the whole call at a temp dir removes the
   // cleanup rather than fixing it.
   let ROOT
-  let createdDir = null
   beforeEach(async () => {
     ROOT = await tempRepoRoot()
-    createdDir = null
   })
 
   it('writes color-scheme.json when colorScheme is provided', async () => {
@@ -50,7 +48,6 @@ describe('archive() — color scheme persistence', () => {
     await archive(date, signals, 'rationale', 'brief', [], {}, scheme, null, {}, { root: ROOT })
 
     const dir = path.join(ROOT, 'archive', date)
-    createdDir = dir
     const { readdirSync } = await import('node:fs')
     const buildDirs = readdirSync(dir).filter((f) => f.startsWith('build-'))
     expect(buildDirs.length).toBeGreaterThan(0)
@@ -67,7 +64,6 @@ describe('archive() — color scheme persistence', () => {
     await archive(date, { date }, 'r', 'b', [], {}, null, null, {}, { root: ROOT })
 
     const dir = path.join(ROOT, 'archive', date)
-    createdDir = dir
     const { readdirSync } = await import('node:fs')
     const buildDirs = readdirSync(dir).filter((f) => f.startsWith('build-'))
     const schemePath = path.join(dir, buildDirs[0], 'color-scheme.json')

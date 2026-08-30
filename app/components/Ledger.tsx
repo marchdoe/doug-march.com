@@ -22,7 +22,14 @@ export function SectionLabel({ label, count }: { label: string; count: string })
       })}
     >
       <span>{label}</span>
-      <span className={css({ color: 'textMuted', fontWeight: 'medium', letterSpacing: 'wide', whiteSpace: 'nowrap' })}>
+      <span
+        className={css({
+          color: 'textMuted',
+          fontWeight: 'medium',
+          letterSpacing: 'wide',
+          whiteSpace: 'nowrap',
+        })}
+      >
         {count}
       </span>
     </div>
@@ -67,7 +74,11 @@ export function Row({
           {label}
         </span>
       )}
-      <span className={css({ gridColumn: '1', fontSize: 'md', color: 'text', fontWeight: 'medium' })}>{main}</span>
+      <span
+        className={css({ gridColumn: '1', fontSize: 'md', color: 'text', fontWeight: 'medium' })}
+      >
+        {main}
+      </span>
       {sub && (
         <span className={css({ gridColumn: '1', fontSize: 'sm', color: 'textMuted' })}>{sub}</span>
       )}

@@ -43,13 +43,40 @@ export function Layout({ children }: { children: ReactNode }) {
             marginBottom: { base: '7', md: '8' },
           })}
         >
-          <a href="/#work" className={css({ fontWeight: 'medium', fontSize: 'md', color: 'sand.300', padding: '1', _hover: { color: 'accent' } })}>
+          <a
+            href="/#work"
+            className={css({
+              fontWeight: 'medium',
+              fontSize: 'md',
+              color: 'sand.300',
+              padding: '1',
+              _hover: { color: 'accent' },
+            })}
+          >
             work
           </a>
-          <a href="/about" className={css({ fontWeight: 'medium', fontSize: 'md', color: 'sand.300', padding: '1', _hover: { color: 'accent' } })}>
+          <a
+            href="/about"
+            className={css({
+              fontWeight: 'medium',
+              fontSize: 'md',
+              color: 'sand.300',
+              padding: '1',
+              _hover: { color: 'accent' },
+            })}
+          >
             about
           </a>
-          <a href="/" className={css({ fontWeight: 'medium', fontSize: 'md', color: 'sand.300', padding: '1', _hover: { color: 'accent' } })}>
+          <a
+            href="/"
+            className={css({
+              fontWeight: 'medium',
+              fontSize: 'md',
+              color: 'sand.300',
+              padding: '1',
+              _hover: { color: 'accent' },
+            })}
+          >
             index
           </a>
         </nav>
@@ -71,27 +98,70 @@ export function Layout({ children }: { children: ReactNode }) {
           })}
         >
           <div>
-            <span className={css({ fontWeight: 'bold', letterSpacing: 'wide', textTransform: 'uppercase', color: 'sand.500', fontSize: '2xs', marginRight: '2' })}>
+            <span
+              className={css({
+                fontWeight: 'bold',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                color: 'sand.500',
+                fontSize: '2xs',
+                marginRight: '2',
+              })}
+            >
               Contact
             </span>
-            <a href={`mailto:${identity.email}`} className={css({ color: 'sand.300', fontWeight: 'semibold', _hover: { color: 'accent' } })}>
+            <a
+              href={`mailto:${identity.email}`}
+              className={css({
+                color: 'sand.300',
+                fontWeight: 'semibold',
+                _hover: { color: 'accent' },
+              })}
+            >
               {identity.email}
             </a>
           </div>
           <div>
-            <span className={css({ fontWeight: 'bold', letterSpacing: 'wide', textTransform: 'uppercase', color: 'sand.500', fontSize: '2xs', marginRight: '2' })}>
+            <span
+              className={css({
+                fontWeight: 'bold',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                color: 'sand.500',
+                fontSize: '2xs',
+                marginRight: '2',
+              })}
+            >
               Now playing
             </span>
             <b className={css({ color: 'sand.300', fontWeight: 'semibold' })}>My Morning Jacket</b>
           </div>
           <div>
-            <span className={css({ fontWeight: 'bold', letterSpacing: 'wide', textTransform: 'uppercase', color: 'sand.500', fontSize: '2xs', marginRight: '2' })}>
+            <span
+              className={css({
+                fontWeight: 'bold',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                color: 'sand.500',
+                fontSize: '2xs',
+                marginRight: '2',
+              })}
+            >
               Season
             </span>
             Late summer
           </div>
           <div>
-            <span className={css({ fontWeight: 'bold', letterSpacing: 'wide', textTransform: 'uppercase', color: 'sand.500', fontSize: '2xs', marginRight: '2' })}>
+            <span
+              className={css({
+                fontWeight: 'bold',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                color: 'sand.500',
+                fontSize: '2xs',
+                marginRight: '2',
+              })}
+            >
               Build
             </span>
             #2026.08.30 · 04:12 EDT

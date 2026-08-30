@@ -60,7 +60,11 @@ function FootItem({ k, v }: { k: string; v: string }) {
       >
         {k}
       </div>
-      <div className={css({ fontSize: 'sm', color: 'fieldInk', fontWeight: 'medium', marginTop: '1' })}>{v}</div>
+      <div
+        className={css({ fontSize: 'sm', color: 'fieldInk', fontWeight: 'medium', marginTop: '1' })}
+      >
+        {v}
+      </div>
     </div>
   )
 }
@@ -167,11 +171,20 @@ function AboutField() {
             borderColor: 'gold.600',
           })}
         >
-          <div className={css({ fontWeight: 'bold', fontSize: 'sm', color: 'fieldInk' })}>{education.school}</div>
+          <div className={css({ fontWeight: 'bold', fontSize: 'sm', color: 'fieldInk' })}>
+            {education.school}
+          </div>
           <div className={css({ fontSize: 'xs', color: 'gold.800', marginTop: '1' })}>
             {education.degree} · {education.concentration}
           </div>
-          <div className={css({ fontSize: '2xs', letterSpacing: 'wide', color: 'gold.800', marginTop: '1' })}>
+          <div
+            className={css({
+              fontSize: '2xs',
+              letterSpacing: 'wide',
+              color: 'gold.800',
+              marginTop: '1',
+            })}
+          >
             {education.years}
           </div>
         </div>
@@ -253,7 +266,9 @@ function WorkField({ slug }: { slug?: string }) {
           </p>
         )}
       </div>
-      <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '5 8', alignItems: 'baseline' })}>
+      <div
+        className={css({ display: 'flex', flexWrap: 'wrap', gap: '5 8', alignItems: 'baseline' })}
+      >
         {project.role && <FootItem k="Role" v={project.role} />}
         <FootItem k="Timeline" v={String(project.year)} />
         <FootItem k="Status" v={project.liveUrl ? 'Live' : 'Shipped'} />

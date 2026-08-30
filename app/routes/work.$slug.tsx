@@ -13,7 +13,9 @@ function WorkPage() {
   if (!project) {
     return (
       <div className={css({ padding: '6 0' })}>
-        <h1 className={css({ fontFamily: 'display', fontSize: '2xl', color: 'text' })}>Project not found</h1>
+        <h1 className={css({ fontFamily: 'display', fontSize: '2xl', color: 'text' })}>
+          Project not found
+        </h1>
         <a href="/" className={css({ color: 'accent', fontWeight: 'semibold' })}>
           ← back to index
         </a>
@@ -26,9 +28,20 @@ function WorkPage() {
 
   return (
     <>
-      <SectionLabel label="Case study" count={project.depth === 'full' ? 'full depth' : 'lightweight'} />
+      <SectionLabel
+        label="Case study"
+        count={project.depth === 'full' ? 'full depth' : 'lightweight'}
+      />
 
-      <div className={css({ display: 'grid', gap: '5', padding: '5 0', borderBottom: '1px solid', borderColor: 'border' })}>
+      <div
+        className={css({
+          display: 'grid',
+          gap: '5',
+          padding: '5 0',
+          borderBottom: '1px solid',
+          borderColor: 'border',
+        })}
+      >
         {project.problem && (
           <div>
             <h3 className={sectionTitle}>Problem</h3>
@@ -100,7 +113,13 @@ function WorkPage() {
           href={project.githubUrl}
           target="_blank"
           rel="noopener"
-          className={css({ display: 'block', marginTop: '3', color: 'sand.300', fontWeight: 'semibold', _hover: { color: 'accent' } })}
+          className={css({
+            display: 'block',
+            marginTop: '3',
+            color: 'sand.300',
+            fontWeight: 'semibold',
+            _hover: { color: 'accent' },
+          })}
         >
           View source →
         </a>
@@ -129,7 +148,15 @@ function WorkPage() {
       {project.process && project.process.length > 0 && (
         <div className={css({ marginTop: '6' })}>
           <h3 className={sectionTitle}>Process</h3>
-          <ol className={css({ marginTop: '3', display: 'grid', gap: '4', listStyle: 'none', padding: '0' })}>
+          <ol
+            className={css({
+              marginTop: '3',
+              display: 'grid',
+              gap: '4',
+              listStyle: 'none',
+              padding: '0',
+            })}
+          >
             {project.process.map((step, i) => (
               <li
                 key={i}
@@ -142,11 +169,24 @@ function WorkPage() {
                   paddingBottom: '3',
                 })}
               >
-                <span className={css({ color: 'accent', fontWeight: 'bold', fontSize: 'sm' })}>{i + 1}</span>
+                <span className={css({ color: 'accent', fontWeight: 'bold', fontSize: 'sm' })}>
+                  {i + 1}
+                </span>
                 <div>
-                  <div className={css({ fontWeight: 'semibold', color: 'text', fontSize: 'sm' })}>{step.phase}</div>
-                  <div className={css({ color: 'sand.300', fontSize: 'sm', marginTop: '1' })}>{step.does}</div>
-                  <div className={css({ color: 'sand.400', fontSize: 'xs', marginTop: '1', fontStyle: 'italic' })}>
+                  <div className={css({ fontWeight: 'semibold', color: 'text', fontSize: 'sm' })}>
+                    {step.phase}
+                  </div>
+                  <div className={css({ color: 'sand.300', fontSize: 'sm', marginTop: '1' })}>
+                    {step.does}
+                  </div>
+                  <div
+                    className={css({
+                      color: 'sand.400',
+                      fontSize: 'xs',
+                      marginTop: '1',
+                      fontStyle: 'italic',
+                    })}
+                  >
                     → {step.produces}
                   </div>
                 </div>
@@ -161,9 +201,20 @@ function WorkPage() {
           <h3 className={sectionTitle}>Decisions</h3>
           <div className={css({ marginTop: '3', display: 'grid', gap: '4' })}>
             {project.decisions.map((d, i) => (
-              <div key={i} className={css({ borderLeft: '2px solid', borderColor: 'accent', paddingLeft: '3' })}>
-                <div className={css({ fontWeight: 'semibold', color: 'text', fontSize: 'sm' })}>{d.decision}</div>
-                <div className={css({ color: 'sand.300', fontSize: 'sm', marginTop: '1' })}>{d.why}</div>
+              <div
+                key={i}
+                className={css({
+                  borderLeft: '2px solid',
+                  borderColor: 'accent',
+                  paddingLeft: '3',
+                })}
+              >
+                <div className={css({ fontWeight: 'semibold', color: 'text', fontSize: 'sm' })}>
+                  {d.decision}
+                </div>
+                <div className={css({ color: 'sand.300', fontSize: 'sm', marginTop: '1' })}>
+                  {d.why}
+                </div>
               </div>
             ))}
           </div>
@@ -180,11 +231,20 @@ function WorkPage() {
                   href={r.url}
                   target="_blank"
                   rel="noopener"
-                  className={css({ color: 'accent', fontWeight: 'semibold', fontSize: 'sm', _hover: { color: 'gold.300' } })}
+                  className={css({
+                    color: 'accent',
+                    fontWeight: 'semibold',
+                    fontSize: 'sm',
+                    _hover: { color: 'gold.300' },
+                  })}
                 >
                   {r.title}
                 </a>
-                {r.note && <div className={css({ color: 'sand.400', fontSize: 'xs', marginTop: '1' })}>{r.note}</div>}
+                {r.note && (
+                  <div className={css({ color: 'sand.400', fontSize: 'xs', marginTop: '1' })}>
+                    {r.note}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -193,7 +253,6 @@ function WorkPage() {
 
       <SectionLabel label="More work" count="prev / next" />
       <Row main={prev.title} value="← prev" />
-      <a href={`/work/${prev.slug}`} className={css({ display: 'none' })} aria-hidden="true" />
       {[
         { p: prev, dir: '← prev' },
         { p: next, dir: 'next →' },
@@ -210,10 +269,24 @@ function WorkPage() {
             _hover: { color: 'accent' },
           })}
         >
-          <span className={css({ fontFamily: 'display', fontWeight: 'bold', textTransform: 'uppercase', color: 'text' })}>
+          <span
+            className={css({
+              fontFamily: 'display',
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              color: 'text',
+            })}
+          >
             {p.title}
           </span>
-          <span className={css({ color: 'sand.400', fontSize: 'xs', letterSpacing: 'wide', textTransform: 'uppercase' })}>
+          <span
+            className={css({
+              color: 'sand.400',
+              fontSize: 'xs',
+              letterSpacing: 'wide',
+              textTransform: 'uppercase',
+            })}
+          >
             {dir}
           </span>
         </a>

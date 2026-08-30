@@ -33,7 +33,11 @@ function OgCard() {
         })}
       >
         <div className={css({ display: 'flex', alignItems: 'center', gap: '3' })}>
-          <img src={logoMono} alt="" className={css({ width: '14', height: 'auto', color: 'fieldInk' })} />
+          <img
+            src={logoMono}
+            alt=""
+            className={css({ width: '14', height: 'auto', color: 'fieldInk' })}
+          />
           <span
             className={css({
               fontFamily: 'display',
@@ -78,7 +82,14 @@ function OgCard() {
           </h1>
         </div>
 
-        <div className={css({ fontSize: 'sm', color: 'gold.800', fontWeight: 'semibold', letterSpacing: 'wide' })}>
+        <div
+          className={css({
+            fontSize: 'sm',
+            color: 'gold.800',
+            fontWeight: 'semibold',
+            letterSpacing: 'wide',
+          })}
+        >
           dougmar.ch · {identity.role}
         </div>
       </div>

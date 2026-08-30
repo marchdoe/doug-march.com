@@ -51,10 +51,19 @@ function AboutPage() {
             >
               {t.year}
             </span>
-            <span className={css({ fontSize: 'md', fontWeight: 'medium', color: 'text', gridColumn: '2' })}>
+            <span
+              className={css({
+                fontSize: 'md',
+                fontWeight: 'medium',
+                color: 'text',
+                gridColumn: '2',
+              })}
+            >
               {t.role} · {t.company}
             </span>
-            <span className={css({ fontSize: 'sm', color: 'textMuted', gridColumn: '2' })}>{t.description}</span>
+            <span className={css({ fontSize: 'sm', color: 'textMuted', gridColumn: '2' })}>
+              {t.description}
+            </span>
           </div>
         ))}
       </div>

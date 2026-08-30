@@ -110,6 +110,7 @@ describe('what the nightly links to', () => {
     // gets back. Pinned to the archiver's own constant rather than a literal.
     const { PUBLIC_SCREENSHOT_DIR } = await import('../../scripts/utils/archiver.js')
     expect(src).toContain(`main/${PUBLIC_SCREENSHOT_DIR}/\${today}.png`)
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting on the literal text the workflow YAML contains, not interpolating
     expect(src).not.toContain('main/public/archive/${today}.png')
   })
 
