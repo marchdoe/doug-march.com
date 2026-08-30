@@ -125,18 +125,26 @@ describe('buildScreenshotCriticBlocks', () => {
     )
   })
 
-  it('still fits mockup, both schemes, two routes and a reference inside the ceiling', () => {
+  it('fits mockup, both schemes, both header crops, two routes and a reference exactly', () => {
     const blocks = buildScreenshotCriticBlocks({
       ...baseCtx,
-      mockupScreenshot: { jpeg: Buffer.from([0x01]) },
+      screenshotBuffer: { ...baseCtx.screenshotBuffer, headerJpeg: Buffer.from([0x05]) },
+      mockupScreenshot: { jpeg: Buffer.from([0x01]), headerJpeg: Buffer.from([0x06]) },
       routeShots: [
         { label: 'A project page (/work/spaceman):', png: Buffer.from([0x02]) },
         { label: 'The share card (/og):', png: Buffer.from([0x03]) },
       ],
       bestReference: { buffer: Buffer.from([0x89, 0x50, 0x4e, 0x47]), description: 'ref' },
     })
-    expect(blocks.filter((b) => b.type === 'image')).toHaveLength(6)
-    expect(MAX_SCREENSHOT_CRITIC_IMAGES).toBe(6)
+    const images = blocks.filter((b) => b.type === 'image')
+    expect(images).toHaveLength(8)
+    expect(MAX_SCREENSHOT_CRITIC_IMAGES).toBe(8)
+    // Crops come before route shots, route shots before the reference — the
+    // drop order when the ceiling binds is the reverse of this.
+    const labels = blocks.filter((b) => b.type === 'text').map((b) => b.text)
+    const at = (needle) => labels.findIndex((t) => t.includes(needle))
+    expect(at('RENDERED page')).toBeLessThan(at('Other surfaces'))
+    expect(at('Other surfaces')).toBeLessThan(at('highest-rated'))
   })
 
   it('never inlines screenshot bytes as base64 text', () => {
