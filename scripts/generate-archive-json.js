@@ -82,8 +82,13 @@ function countSnapshotPages(date) {
  * corpus on the first run instead of starting from whenever the index shipped.
  * The persisted file stays the per-build record; this is the projection.
  *
+ * Every artifact `scripts/utils/read-uniqueness-history.js` reads has to be read
+ * here too, or the chart scores a day on less than the pipeline did. `header`
+ * was missed when #254 added it and only shipped with #255; a test pins the two
+ * readers together so the next artifact cannot arrive on one side alone.
+ *
  * @param {string} date
- * @returns {{date: string, composition: object|null, hue: number|null, lane: string|null, shell: object|null, fingerprint: object|null}}
+ * @returns {{date: string, composition: object|null, hue: number|null, lane: string|null, shell: object|null, header: object|null, fingerprint: object|null}}
  */
 function uniquenessInputs(date) {
   const dateDir = join(ARCHIVE_PATH, date)
@@ -108,19 +113,29 @@ function uniquenessInputs(date) {
     const colorScheme = readJson(dir, 'color-scheme.json')
     const lane = readJson(dir, 'lane.json')
     const shell = readJson(dir, 'shell.json')
+    const header = readJson(dir, 'header.json')
     const fingerprint = readJson(dir, 'fingerprint.json')
-    if (composition || colorScheme || lane || shell || fingerprint) {
+    if (composition || colorScheme || lane || shell || header || fingerprint) {
       return {
         date,
         composition,
         hue: typeof colorScheme?.primary_hue?.h === 'number' ? colorScheme.primary_hue.h : null,
         lane: lane?.laneId ?? null,
         shell,
+        header,
         fingerprint,
       }
     }
   }
-  return { date, composition: null, hue: null, lane: null, shell: null, fingerprint: null }
+  return {
+    date,
+    composition: null,
+    hue: null,
+    lane: null,
+    shell: null,
+    header: null,
+    fingerprint: null,
+  }
 }
 
 /**
