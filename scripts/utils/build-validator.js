@@ -3,6 +3,7 @@ import { spawnSync } from 'node:child_process'
 import { readFileSync, readdirSync, existsSync, statSync, writeFileSync, mkdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { ROOT } from './file-manager.js'
+import { checkTokenExistence } from './token-existence.js'
 import { MUTABLE_FILES } from './site-context.js'
 
 /**
@@ -433,6 +434,31 @@ export function validateGenerated({ root = ROOT } = {}) {
           `app/content/about.ts). Bind it rather than hardcoding.`
       )
     }
+  }
+
+  // Check: token references that resolve to nothing.
+  //
+  // Panda emits an unknown token as the bare string, so `color: 'panel'`
+  // becomes `color: panel`, the browser drops the declaration, and the element
+  // renders with its inherited value. Nothing throws. The only token check
+  // above this one is for circular semantic references; a name that was never
+  // defined passes everything.
+  //
+  // A warning, not an error, deliberately: the agent currently emits
+  // `fontFamily: 'mono'` on most nights and the chassis defines only
+  // display/body, so blocking on it today would fail every run before the
+  // prompt is taught otherwise. Making it blocking is changing `console.warn`
+  // to `errors.push` — worth doing once a green run confirms a clean baseline.
+  try {
+    const unknownTokens = checkTokenExistence({ root: ROOT, files: MUTABLE_FILES })
+    for (const { file, prop, value, category } of unknownTokens) {
+      console.warn(
+        `  ⚠ ${file}: ${prop}: '${value}' is not a token (no ${category}.${value}) — Panda emits the bare string and the browser drops the declaration`
+      )
+    }
+    if (unknownTokens.length === 0) console.log('  token references all resolve')
+  } catch (err) {
+    console.warn(`  token existence check skipped: ${err.message}`)
   }
 
   if (errors.length > 0) {

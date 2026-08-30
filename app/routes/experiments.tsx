@@ -3,7 +3,10 @@ import { Box, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { experiments } from '../content/projects'
 
-export const Route = createFileRoute('/experiments')({ component: ExperimentsPage })
+export const Route = createFileRoute('/experiments')({
+  component: ExperimentsPage,
+  head: () => ({ meta: [{ title: 'Experiments' }] }),
+})
 
 const rowClass = css({
   display: 'flex',

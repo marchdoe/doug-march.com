@@ -3,7 +3,10 @@ import { Box, Stack, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 
-export const Route = createFileRoute('/work/')({ component: WorkIndexPage })
+export const Route = createFileRoute('/work/')({
+  component: WorkIndexPage,
+  head: () => ({ meta: [{ title: 'Work' }] }),
+})
 
 function WorkIndexPage() {
   return (

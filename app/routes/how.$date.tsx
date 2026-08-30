@@ -11,6 +11,7 @@ type ArchiveDetail = ArchiveRecord & { hasScreenshot: boolean; pages?: number }
 
 export const Route = createFileRoute('/how/$date')({
   component: HowPage,
+  head: ({ params }) => ({ meta: [{ title: `How the ${params.date} design was made` }] }),
 })
 
 /**
@@ -404,13 +405,31 @@ function HowPage() {
   const [error, setError] = useState(false)
 
   useEffect(() => {
+    // Reset on every date change. `error` was only ever set to true, so
+    // navigating from an unarchived day to a real one left the page reading
+    // "Nothing archived" forever — and the archive calendar links here for
+    // record-only days, so that is a route a visitor actually takes.
+    setDetail(null)
+    setError(false)
+
+    // A slower earlier response could otherwise overwrite a later one, and the
+    // previous day's detail stayed on screen until the new fetch resolved.
+    let cancelled = false
     fetch(`/archive-data/${date}.json`)
       .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (data) setDetail(data)
+      .then((data: unknown) => {
+        if (cancelled) return
+        // `res.json()` is `any`; assigning it straight to state was an
+        // unchecked cast into a typed component.
+        if (data && typeof data === 'object') setDetail(data as ArchiveDetail)
         else setError(true)
       })
-      .catch(() => setError(true))
+      .catch(() => {
+        if (!cancelled) setError(true)
+      })
+    return () => {
+      cancelled = true
+    }
   }, [date])
 
   if (error) {
