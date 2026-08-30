@@ -25,6 +25,20 @@ export type Project = {
   stack?: string[]
   liveUrl?: string
   githubUrl?: string
+  // White-paper fields. Optional in the type, expected of every depth:'full'
+  // project — see #190. Content here is durable: `app/content/` is refused at
+  // the write layer (file-manager.js FORBIDDEN_PREFIXES), so the nightly agent
+  // renders these in the day's design without being able to rewrite them.
+  /** The situation before the project existed, and why it did. */
+  context?: string
+  /** What bounded the solution. One clause each. */
+  constraints?: string[]
+  /** The workflow, in the order it runs. */
+  process?: { phase: string; does: string; produces: string }[]
+  /** The forks that were live, and what settled them. */
+  decisions?: { decision: string; why: string }[]
+  /** External lineage worth reading. */
+  references?: { title: string; url: string; note?: string }[]
   // Lightweight fields
   description?: string
   // Client list (e.g. Spaceman)

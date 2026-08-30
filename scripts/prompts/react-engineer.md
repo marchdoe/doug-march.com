@@ -158,6 +158,14 @@ type Project = {
   role?: string; problem?: string; approach?: string; outcome?: string;
   stack?: string[]; liveUrl?: string; githubUrl?: string; description?: string;
 }
+// White-paper fields, present on some full-depth projects. All optional.
+type Project_WhitePaper = {
+  context?: string
+  constraints?: string[]
+  process?: { phase: string; does: string; produces: string }[]
+  decisions?: { decision: string; why: string }[]
+  references?: { title: string; url: string; note?: string }[]
+}
 const projects: Project[]
 const featuredProject: Project | undefined
 const selectedWork: Project[]    // full-depth, non-featured
@@ -207,6 +215,32 @@ Bind content from the content files. Every listed key must appear in the rendere
 - All capability strings
 - Education: school, degree, concentration, years
 - Personal: holes in one count, sport, teams, current focus
+
+**Case study page (`work.$slug.tsx`) must render**, for a `depth: 'full'` project:
+
+- `title`, `type`, `year`, `role`, `timeline`, `status`
+- `problem`, **`approach`**, `outcome` — all three. `approach` is the middle of the
+  narrative and at least one build has dropped it; a case study that states a problem and
+  an outcome with no account of the work between them is not a case study.
+- `stack`, and `liveUrl` as a real outbound link when present
+
+**White-paper fields, when the project carries them.** All optional; render what is
+present and skip a field entirely when absent rather than showing an empty heading.
+
+Bind the meaning, not a layout. How these look is yours to decide in the day's design.
+What must survive:
+
+- `context` and `constraints` read as prose and a list. Constraints are a set, not a sequence.
+- `process` is **ordered**, and its order must be legible. A reader has to be able to tell
+  that Signals comes before Art Director and Archive comes last. Each entry pairs `does`
+  with `produces`; that pairing must stay visible, whatever form it takes.
+- `decisions` pair a claim with its reason. Never render `decision` without its `why`
+  adjacent to it. The pairing is the content.
+- `references` are outbound links. `url` must be reachable as a real anchor, `title` is
+  the link text, and `note` explains why it is worth reading.
+
+Do not summarise, reorder, merge or omit any of it. This content is hand-maintained and
+is not yours to edit, only to present.
 
 **All pages:** The contact address renders on every page as a real `mailto:` link built from `identity.email` — never hardcoded, never a `/#contact` page anchor. Where it sits is yours (footer, nav, hero); that it is reachable and clickable is not. Name and role render on every page, in whatever form today's SHELL declaration and `shell_posture` call for. Nav links render alongside them — **except when `shell_posture: none`: render zero `<nav>` elements anywhere in the output.** Projects and other routes stay reachable through in-content `<a>` links instead. `folded-into-hero` and `footer-only` move the nav out of its usual Sidebar slot (into the hero composition, or to the page foot) — the mockup shows where; match it.
 
