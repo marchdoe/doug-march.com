@@ -1,6 +1,17 @@
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 
 import { requireSameOrigin } from '../../api/_lib/csrf'
+import { GET as statusGet } from '../../api/panel/status'
+import { POST as runPost } from '../../api/panel/run'
+import { POST as ratePost } from '../../api/panel/rate'
+import { PUT as weightsPut } from '../../api/panel/weights'
+
+beforeEach(() => {
+  // Without these, requireAuth answers 503 "not configured" and the 401
+  // assertions below would be measuring the wrong thing.
+  process.env.PANEL_USER = 'doug'
+  process.env.PANEL_PASSWORD = 's3cret'
+})
 
 const req = (init: {
   method?: string
@@ -127,17 +138,55 @@ describe('the two shapes that were actually exploitable', () => {
   })
 })
 
-describe('every panel endpoint is guarded', async () => {
-  const endpoints = ['run', 'rate', 'weights', 'status']
+describe('every panel endpoint is guarded', () => {
+  // This used to read each handler's source text and compare indexOf
+  // positions. That passes if the two names merely appear in a comment in the
+  // right order, and fails on a refactor that changes nothing about the
+  // behaviour — which is exactly what happened when the shared wrapper landed.
+  // Call the handlers instead and assert what a browser would actually see.
+  const handlers: Array<[string, (r: Request) => Promise<Response>, string]> = [
+    ['status', statusGet, 'GET'],
+    ['run', runPost, 'POST'],
+    ['rate', ratePost, 'POST'],
+    ['weights', weightsPut, 'PUT'],
+  ]
 
-  it.each(endpoints)('/api/panel/%s checks provenance before identity', async (name) => {
-    const src = await import('node:fs').then((fs) =>
-      fs.readFileSync(new URL(`../../api/panel/${name}.ts`, import.meta.url), 'utf8')
-    )
-    expect(src).toContain('requireSameOrigin')
-    // Order matters: a 401 from requireAuth would prompt the browser.
-    expect(src.indexOf('requireSameOrigin(request)')).toBeLessThan(
-      src.indexOf('requireAuth(request)')
-    )
-  })
+  const crossSite = (url: string, method: string) =>
+    new Request(url, {
+      method,
+      headers: {
+        'sec-fetch-site': 'cross-site',
+        'content-type': 'application/json',
+        // Deliberately unauthenticated AND cross-site. Provenance must be
+        // decided first, so the answer is 403 and never a 401.
+      },
+      ...(method === 'GET' ? {} : { body: '{}' }),
+    })
+
+  it.each(handlers)(
+    '/api/panel/%s answers 403, not 401, to a cross-site call',
+    async (name, handler, method) => {
+      const res = await handler(crossSite(`https://x/api/panel/${name}`, method))
+      expect(res.status).toBe(403)
+      // A 401 carries WWW-Authenticate, which pops a credential prompt on a
+      // page the owner never chose to visit. That is the whole reason
+      // provenance is checked before identity.
+      expect(res.headers.get('WWW-Authenticate')).toBeNull()
+    }
+  )
+
+  it.each(handlers)(
+    '/api/panel/%s still answers 401 to a same-origin anonymous call',
+    async (name, handler, method) => {
+      const res = await handler(
+        new Request(`https://x/api/panel/${name}`, {
+          method,
+          headers: { 'sec-fetch-site': 'same-origin', 'content-type': 'application/json' },
+          ...(method === 'GET' ? {} : { body: '{}' }),
+        })
+      )
+      expect(res.status).toBe(401)
+      expect(res.headers.get('WWW-Authenticate')).toContain('Basic')
+    }
+  )
 })

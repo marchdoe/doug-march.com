@@ -41,11 +41,13 @@ beforeEach(() => {
 
 describe('POST /api/panel/rate', () => {
   it('rejects unauthenticated requests', async () => {
-    const res = await ratePost(post('https://x/api/panel/rate', { grade: 'A' }, {}))
+    const res = await ratePost(
+      post('https://x/api/panel/rate', { grade: 'A', date: '2026-07-20' }, {})
+    )
     expect(res.status).toBe(401)
   })
   it('rejects invalid grade', async () => {
-    const res = await ratePost(post('https://x/api/panel/rate', { grade: 'F' }))
+    const res = await ratePost(post('https://x/api/panel/rate', { grade: 'F', date: '2026-07-20' }))
     expect(res.status).toBe(400)
   })
   it('rejects malformed date', async () => {
@@ -91,7 +93,7 @@ describe('POST /api/panel/rate', () => {
     vi.mocked(github.findOpenRatingIssue).mockRejectedValue(
       new github.GitHubError('GitHub GET x → 500', 500)
     )
-    const res = await ratePost(post('https://x/api/panel/rate', { grade: 'A' }))
+    const res = await ratePost(post('https://x/api/panel/rate', { grade: 'A', date: '2026-07-20' }))
     expect(res.status).toBe(502)
     expect(((await res.json()) as { error: string }).error).toContain('GitHub')
   })
@@ -146,5 +148,136 @@ describe('POST /api/panel/run', () => {
     const res = await runPost(post('https://x/api/panel/run', { dry_run: true }))
     expect(res.status).toBe(200)
     expect(github.dispatchRun).toHaveBeenCalledWith(true)
+  })
+})
+
+describe('guards apply to every endpoint, not just rate', () => {
+  // Verified missing before #217: 401 coverage existed only for rate, so
+  // status, weights and run could have lost their auth check silently.
+  const anon = (url: string, method: string) =>
+    new Request(url, {
+      method,
+      headers: { 'content-type': 'application/json' },
+      ...(method === 'GET' ? {} : { body: '{}' }),
+    })
+
+  it.each([
+    ['status', statusGet, 'GET'],
+    ['weights', weightsPut, 'PUT'],
+    ['run', runPost, 'POST'],
+  ] as Array<[string, (r: Request) => Promise<Response>, string]>)(
+    '%s rejects an unauthenticated request',
+    async (name, handler, method) => {
+      const res = await handler(anon(`https://x/api/panel/${name}`, method))
+      expect(res.status).toBe(401)
+    }
+  )
+
+  it.each([
+    ['weights', weightsPut, 'PUT'],
+    ['run', runPost, 'POST'],
+  ] as Array<[string, (r: Request) => Promise<Response>, string]>)(
+    '%s rejects a malformed JSON body with 400',
+    async (name, handler, method) => {
+      const res = await handler(
+        new Request(`https://x/api/panel/${name}`, {
+          method,
+          headers: { ...auth, 'content-type': 'application/json' },
+          body: 'not json{',
+        })
+      )
+      expect(res.status).toBe(400)
+      expect(((await res.json()) as { error: string }).error).toContain('Invalid JSON')
+    }
+  )
+
+  it('run no longer dispatches on a body it could not parse', async () => {
+    // The original swallowed the parse failure and dispatched anyway — a
+    // workflow run that costs money and writes to main.
+    await runPost(
+      new Request('https://x/api/panel/run', {
+        method: 'POST',
+        headers: { ...auth, 'content-type': 'application/json' },
+        body: '{{{',
+      })
+    )
+    expect(github.dispatchRun).not.toHaveBeenCalled()
+  })
+
+  it('status maps a GitHubError to 502 rather than throwing', async () => {
+    vi.mocked(github.listOpenRatingIssues).mockRejectedValue(
+      new github.GitHubError('GitHub GET x → 500', 500)
+    )
+    const res = await statusGet(new Request('https://x/api/panel/status', { headers: auth }))
+    expect(res.status).toBe(502)
+  })
+
+  it('turns a non-GitHubError into JSON 500, not an HTML crash page', async () => {
+    // These used to be rethrown, so the panel's res.json() got Vercel's
+    // generic HTML error page and showed "Request failed (500)".
+    vi.mocked(github.listOpenRatingIssues).mockRejectedValue(new TypeError('boom'))
+    const res = await statusGet(new Request('https://x/api/panel/status', { headers: auth }))
+    expect(res.status).toBe(500)
+    expect(res.headers.get('content-type')).toContain('application/json')
+    expect(((await res.json()) as { error: string }).error).toBe('Internal error')
+  })
+
+  it('accepts risk: null at the endpoint, not just in the client', async () => {
+    const res = await weightsPut(
+      new Request('https://x/api/panel/weights', {
+        method: 'PUT',
+        headers: { ...auth, 'content-type': 'application/json' },
+        body: JSON.stringify({ signals: 5, inspiration: 5, ratings: 5, risk: null }),
+      })
+    )
+    expect(res.status).toBe(200)
+    expect(github.setWeights).toHaveBeenCalledWith({
+      signals: 5,
+      inspiration: 5,
+      ratings: 5,
+      risk: null,
+    })
+  })
+})
+
+describe('rate input bounds', () => {
+  it('requires a date rather than defaulting to UTC today', async () => {
+    const res = await ratePost(post('https://x/api/panel/rate', { grade: 'A' }))
+    expect(res.status).toBe(400)
+    expect(((await res.json()) as { error: string }).error).toContain('date is required')
+  })
+
+  it('rejects a date-shaped string that is not a real date', async () => {
+    const res = await ratePost(post('https://x/api/panel/rate', { grade: 'A', date: '2026-13-45' }))
+    expect(res.status).toBe(400)
+  })
+
+  it('rejects a note long enough for GitHub to 422 on', async () => {
+    const res = await ratePost(
+      post('https://x/api/panel/rate', {
+        grade: 'A',
+        date: '2026-07-20',
+        worked: 'x'.repeat(2001),
+      })
+    )
+    expect(res.status).toBe(400)
+    expect(((await res.json()) as { error: string }).error).toContain('worked')
+  })
+
+  it('accepts a note at the cap', async () => {
+    vi.mocked(github.findOpenRatingIssue).mockResolvedValue({
+      number: 1,
+      date: '2026-07-20',
+      title: 't',
+      url: 'u',
+    })
+    const res = await ratePost(
+      post('https://x/api/panel/rate', {
+        grade: 'A',
+        date: '2026-07-20',
+        worked: 'x'.repeat(2000),
+      })
+    )
+    expect(res.status).toBe(200)
   })
 })

@@ -25,14 +25,13 @@
  * page the owner did not choose to visit.
  */
 
+import { json } from './http.js'
+
 /** Methods that do not change state. Their responses are unreadable cross-origin. */
 const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS'])
 
 function forbidden(reason: string): Response {
-  return new Response(JSON.stringify({ error: `Forbidden: ${reason}` }), {
-    status: 403,
-    headers: { 'content-type': 'application/json' },
-  })
+  return json({ error: `Forbidden: ${reason}` }, 403)
 }
 
 /** Returns null when the request came from this site, otherwise the Response to send. */

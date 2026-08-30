@@ -1,30 +1,6 @@
-export interface RatingIssue {
-  number: number
-  date: string
-  title: string
-  url: string
-}
+import type { PanelStatus, RatingIssue, RunInfo, Weights } from '../../types/panel'
 
-export interface Weights {
-  signals: number
-  inspiration: number
-  ratings: number
-  /** null = unset; design-agents.js derives risk 3-10 from the build date. */
-  risk: number | null
-}
-
-export interface RunInfo {
-  status: string
-  conclusion: string | null
-  url: string
-  createdAt: string
-}
-
-export interface PanelStatus {
-  unrated: RatingIssue[]
-  weights: Weights
-  latestRun: RunInfo | null
-}
+export type { PanelStatus, RatingIssue, RunInfo, Weights }
 
 export interface RatingSubmission {
   date: string
@@ -47,7 +23,22 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
   return data as T
 }
 
-export const fetchStatus = () => request<PanelStatus>('/api/panel/status')
+function isPanelStatus(value: unknown): value is PanelStatus {
+  if (typeof value !== 'object' || value === null) return false
+  const v = value as Record<string, unknown>
+  return Array.isArray(v.unrated) && typeof v.weights === 'object' && v.weights !== null
+}
+
+/**
+ * The one response the panel destructures on first paint, so a shape it does
+ * not expect crashes the page rather than showing an error. Checked here
+ * instead of trusting `data as T`.
+ */
+export const fetchStatus = async (): Promise<PanelStatus> => {
+  const data = await request<unknown>('/api/panel/status')
+  if (!isPanelStatus(data)) throw new Error('Panel status response was not the expected shape')
+  return data
+}
 export const submitRating = (r: RatingSubmission) =>
   request<{ ok: true; issueUrl: string }>('/api/panel/rate', {
     method: 'POST',
