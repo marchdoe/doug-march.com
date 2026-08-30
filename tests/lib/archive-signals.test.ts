@@ -55,7 +55,7 @@ describe('a line per provider', () => {
 
   it('names the bands', () => {
     expect(line({ music: { bands: ['Wet Leg', 'My Morning Jacket'] } }, 'music')?.summary).toBe(
-      'Listening to Wet Leg and My Morning Jacket'
+      'From the standing rotation: Wet Leg and My Morning Jacket'
     )
   })
 
