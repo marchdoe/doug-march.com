@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import logoMono from '../assets/logo-mono.svg'
+import { identity } from '../content/about'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
@@ -9,9 +10,9 @@ function OgCard() {
     <div
       className={css({
         position: 'fixed',
-        inset: 0,
-        zIndex: 9999,
-        background: 'bg',
+        inset: '0',
+        zIndex: '9999',
+        bg: 'accent',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -19,86 +20,67 @@ function OgCard() {
     >
       <div
         className={css({
-          position: 'relative',
           width: '1200px',
           height: '630px',
-          background: 'bg',
-          border: '3px double',
-          borderColor: 'border',
-          padding: '9',
+          position: 'relative',
+          bg: 'accent',
+          color: 'fieldInk',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
+          padding: '9',
           overflow: 'hidden',
         })}
       >
-        <div
-          className={css({
-            position: 'absolute',
-            inset: 0,
-            background: 'accent',
-            opacity: 0.1,
-            pointerEvents: 'none',
-          })}
-        />
-
-        <div
-          className={css({
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '3',
-            marginBottom: '6',
-          })}
-        >
-          <img
-            src={logoMono}
-            alt=""
-            className={css({ height: '56px', width: 'auto', color: 'text' })}
-          />
+        <div className={css({ display: 'flex', alignItems: 'center', gap: '3' })}>
+          <img src={logoMono} alt="" className={css({ width: '14', height: 'auto', color: 'fieldInk' })} />
           <span
             className={css({
               fontFamily: 'display',
               fontWeight: 'bold',
-              fontSize: '2xl',
-              color: 'text',
+              fontSize: 'xl',
               letterSpacing: 'tight',
+              color: 'fieldInk',
             })}
           >
-            Doug March
+            {identity.name}
           </span>
         </div>
 
-        <div
-          className={css({
-            position: 'relative',
-            fontFamily: 'body',
-            fontSize: 'xs',
-            letterSpacing: 'widest',
-            textTransform: 'lowercase',
-            fontWeight: 'semibold',
-            color: 'accent',
-            marginBottom: '4',
-          })}
-        >
-          The Front Page · Vol. MMXXVI · No. 210
+        <div>
+          <p
+            className={css({
+              fontFamily: 'body',
+              fontWeight: 'bold',
+              fontSize: 'sm',
+              letterSpacing: 'widest',
+              textTransform: 'uppercase',
+              color: 'gold.800',
+              marginBottom: '5',
+            })}
+          >
+            The busy man — rebuilt nightly
+          </p>
+          <h1
+            className={css({
+              fontFamily: 'display',
+              fontWeight: 'bold',
+              fontSize: 'clamp(4rem,10vw,7.5rem)',
+              lineHeight: 'tight',
+              letterSpacing: 'tight',
+              color: 'fieldInk',
+              textTransform: 'uppercase',
+              margin: '0',
+            })}
+          >
+            <span className={css({ display: 'block' })}>Select</span>
+            <span className={css({ display: 'block' })}>a busy man.</span>
+          </h1>
         </div>
 
-        <h1
-          className={css({
-            position: 'relative',
-            fontFamily: 'display',
-            fontWeight: 'bold',
-            fontSize: 'clamp(3rem, 6vw, 5.5rem)',
-            lineHeight: 'tight',
-            letterSpacing: 'tight',
-            color: 'text',
-            maxWidth: '18ch',
-          })}
-        >
-          <span className={css({ color: 'accentGlow', fontStyle: 'italic' })}>Confidence</span> is
-          what you have before you understand the problem.
-        </h1>
+        <div className={css({ fontSize: 'sm', color: 'gold.800', fontWeight: 'semibold', letterSpacing: 'wide' })}>
+          dougmar.ch · {identity.role}
+        </div>
       </div>
     </div>
   )

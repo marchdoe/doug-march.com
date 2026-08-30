@@ -1,0 +1,37 @@
+{
+  "date": "2026-08-30",
+  "window": 7,
+  "metrics": {
+    "composition": {
+      "raw": null,
+      "score": null,
+      "nearest": null,
+      "compared": 0
+    },
+    "hue": {
+      "raw": 38,
+      "score": 0.2111111111111111,
+      "nearest": "2026-07-24",
+      "compared": 7
+    },
+    "lane": {
+      "raw": null,
+      "score": null,
+      "lastSeen": null,
+      "compared": 0
+    },
+    "shell": {
+      "raw": 2,
+      "score": 0.5,
+      "nearest": "2026-07-24",
+      "compared": 7
+    },
+    "fidelity": {
+      "raw": null,
+      "score": null,
+      "checks": []
+    }
+  },
+  "composite": 0.33492063492063495,
+  "version": 1
+}

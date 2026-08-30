@@ -1,0 +1,74 @@
+{
+  "total_usd": 1.619503,
+  "estimated": true,
+  "partial": false,
+  "retries": 0,
+  "calls": 5,
+  "byAgent": [
+    {
+      "agent": "art-director",
+      "model": "claude-opus-4-8",
+      "source": "cli",
+      "input": 2,
+      "output": 14754,
+      "cache_read": 0,
+      "cache_write": 29971,
+      "cost_usd": 0.5662017500000001,
+      "estimated": false,
+      "ms": 218493,
+      "num_turns": 1
+    },
+    {
+      "agent": "spec-critic",
+      "model": "claude-haiku-4-5",
+      "source": "cli",
+      "input": 10,
+      "output": 4529,
+      "cache_read": 0,
+      "cache_write": 9533,
+      "cost_usd": 0.039780249999999996,
+      "estimated": false,
+      "ms": 50035,
+      "num_turns": 1
+    },
+    {
+      "agent": "mockup-designer",
+      "model": "claude-opus-4-8",
+      "source": "cli",
+      "input": 1,
+      "output": 9548,
+      "cache_read": 0,
+      "cache_write": 33710,
+      "cost_usd": 0.4616995,
+      "estimated": false,
+      "ms": 114919,
+      "num_turns": 1
+    },
+    {
+      "agent": "mockup-critic",
+      "model": "claude-haiku-4-5",
+      "source": "sdk",
+      "input": 7348,
+      "output": 411,
+      "cache_read": 0,
+      "cache_write": 0,
+      "cost_usd": 0.009403,
+      "estimated": true,
+      "ms": 7531,
+      "num_turns": null
+    },
+    {
+      "agent": "react-engineer",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 29901,
+      "cache_read": 0,
+      "cache_write": 22308,
+      "cost_usd": 0.542419,
+      "estimated": false,
+      "ms": 264481,
+      "num_turns": 1
+    }
+  ]
+}

@@ -1,13 +1,7 @@
 import '../styles/panda.css'
-import {
-  createRootRoute,
-  Outlet,
-  HeadContent,
-  ScrollRestoration,
-  Scripts,
-  useRouterState,
-} from '@tanstack/react-router'
+import { createRootRoute, Outlet, HeadContent, ScrollRestoration, Scripts, useRouterState } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
+import { styled } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import type { ReactNode } from 'react'
 
@@ -23,8 +17,6 @@ import type { ReactNode } from 'react'
  * across nightly presets — `textMuted` is missing from roughly one preset in
  * five — so the quiet tone comes from opacity, not from a dimmer token. Font
  * size comes from the chassis ramp, which the orchestrator owns.
- *
- * Regenerated from scripts/templates/__root.tsx.template on every build.
  */
 const archiveLink = css({
   display: 'block',
@@ -52,33 +44,23 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      {
-        property: 'og:title',
-        content: 'Confidence is what you have before you understand the problem.',
-      },
-      {
-        property: 'og:description',
-        content:
-          "Front-page swagger — Woody Allen's confidence aphorism as a Spectral broadsheet lead, drenched in plum-black and hot magenta, the Tigers' 14–0 shutout pinned in the almanac column.",
-      },
-      { property: 'og:image', content: 'https://dougmar.ch/og/default.png' },
-      { property: 'og:image:width', content: '1200' },
-      { property: 'og:image:height', content: '630' },
-      { property: 'og:url', content: 'https://dougmar.ch' },
-      { property: 'og:type', content: 'website' },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      {
-        name: 'twitter:title',
-        content: 'Confidence is what you have before you understand the problem.',
-      },
-      { name: 'twitter:image', content: 'https://dougmar.ch/og/default.png' },
+        { property: 'og:title', content: "Select a busy man." },
+        { property: 'og:description', content: "Split-field imperative — \"Select a busy man.\" reversed out of an industry-gold marquee, the day's work stacked as a warm-black ledger opposite, the divide as the argument." },
+        { property: 'og:image', content: "https://dougmar.ch/og/2026-08-30.png" },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:url', content: "https://dougmar.ch" },
+        { property: 'og:type', content: 'website' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: "Select a busy man." },
+        { name: 'twitter:image', content: "https://dougmar.ch/og/2026-08-30.png" },
     ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Albert+Sans:wght@400;500;600&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Figtree:wght@400;500;700&display=swap',
       },
     ],
     scripts: [{ children: THEME_INIT_SCRIPT }],
@@ -164,8 +146,6 @@ export const Route = createRootRoute({
  * archive wearing that shell wears a different face each morning, which is the
  * one thing #152 says it must not do. The surfaces carry their own chrome and
  * their own tokens instead — see the `archive.*` tokens in panda.config.ts.
- *
- * Regenerated from scripts/templates/__root.tsx.template on every build.
  */
 function isArchiveSurface(pathname: string) {
   return pathname === '/archive' || pathname.startsWith('/archive/') || pathname.startsWith('/how/')
@@ -239,9 +219,9 @@ function RootDocument({ children, bare = false }: { children: ReactNode; bare?: 
       <body>
         {children}
         {bare ? null : (
-          <a href="/archive" className={archiveLink} data-archive-link>
-            Archive — 123 designs
-          </a>
+        <a href="/archive" className={archiveLink} data-archive-link>
+          Archive — 122 designs
+        </a>
         )}
         <ScrollRestoration />
         <Scripts />

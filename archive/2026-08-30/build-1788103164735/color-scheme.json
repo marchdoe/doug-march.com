@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 46,
+    "s": 94,
+    "l": 50,
+    "name": "industry gold"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "warm amber",
+    "name": "sand"
+  },
+  "mood_word": "industrious",
+  "color_story": "A saturated 46° gold — the honeyed hum of a working day — floods the left field as the busy man's daylight, while the idle 'other kind' recedes into warm near-black on the right."
+}

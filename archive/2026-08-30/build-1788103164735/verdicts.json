@@ -1,0 +1,15 @@
+[
+  {
+    "critic": "spec-critic",
+    "verdict": "APPROVED",
+    "feedback": "APPROVED",
+    "ts": 1788102735528
+  },
+  {
+    "critic": "mockup-critic",
+    "round": 0,
+    "verdict": "APPROVE",
+    "feedback": "The mockup executes the brief with confident commitment. Hero phrase \"SELECT A BUSY MAN\" renders at ~100px (within the declared `clamp(64px, 8.5vw, 136px)` range), stacked and monumental in ink on the gold field. Canvas utilization is ~92% — the left panel is a drenched, load-bearing gold field; the right panel is a structured ledger with purposeful hierarchy and tabular rhythm. Color coverage is ~68% (gold field dominates; dark panel is intentional ground, not dead space). The two-asymmetric split is executed cleanly: the command (SELECT A BUSY MAN) weighs left at ~58% width; the consequence clause (\"the other kind has no time.\") answers right with the day's ledger (Tigers W 2–1, Hovland −15, weather, moon phase, markets). Brand lockup (Doug March circular mark + horizontal-md wordmark) sits top-left of the gold field in single-color ink. Nav is genuinely marginal — three lowercase links (work, about, index) stacked top-right of the dark panel, no band or pills. Footer signals (DETROIT, weather, moon, market, music attribution) are legible ledger rows. Typography hierarchy is unambiguous: hero dominates; consequence clause and full Hubbard attribution are subordinate; ledger labels (DETROIT TIGERS, TOUR CHAMPIONSHIP, MARKETS) use smallcaps sand, tabular scores in gold. Spacing is consistent; no orphaned UI; grid split is crisp at the vertical seam. The gesture lands: this is a busy man's ledger, presented as proof of the imperative. Shell, measurables, and brief fidelity all clear.",
+    "ts": 1788102862364
+  }
+]
