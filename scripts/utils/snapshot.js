@@ -121,18 +121,99 @@ async function downscaleForCritic(
  * @param {number} intervalMs
  * @returns {Promise<void>}
  */
-async function waitForServer(url, timeoutMs = 15000, intervalMs = 500) {
-  const deadline = Date.now() + timeoutMs
-  while (Date.now() < deadline) {
-    try {
-      const resp = await fetch(url)
-      if (resp.ok) return
-    } catch {
-      // Server not ready yet
+/**
+ * Start `vite preview`, hand its base URL to `fn`, and always shut it down.
+ *
+ * There used to be three copies of this, deciding "ready" two different ways.
+ * `captureSnapshot` polled the server over HTTP; `captureScreenshot` and
+ * `captureRouteScreenshot` scraped stdout for the string `Local:` with a 15s
+ * timeout. On 2026-08-30 that difference cost the run its entire visual
+ * review — same machine, same seconds:
+ *
+ *   snapshot     -> 9 pages saved
+ *   screenshot   -> Failed (non-blocking): Preview server timeout
+ *   og capture   -> Failed (non-blocking): Preview server timeout
+ *
+ * Vite does not print that banner when stdout is not a TTY, so in CI the
+ * string never arrives and the timer always wins. The design shipped with no
+ * screenshot critic, no OG card and no responsive metrics, and the run
+ * reported success because all three failures are non-blocking.
+ *
+ * Two other things this fixes by consolidating:
+ *
+ * - It spawned `npx`, and `child.kill()` kills the npx wrapper, not the vite
+ *   process underneath. A run that captures snapshot + screenshot + OG could
+ *   leave preview servers behind. Spawning the vite binary directly in its own
+ *   process group and killing the group takes the whole tree down.
+ * - The port was `14000 + random(1000)` in three places, so two captures in
+ *   the same run could collide. One helper, one place to fix that.
+ *
+ * @param {(baseUrl: string, port: number) => Promise<T>} fn
+ * @param {{ port?: number, timeoutMs?: number }} [options] `port` reuses a
+ *   server the caller already started, in which case nothing is spawned here.
+ * @returns {Promise<T>}
+ * @template T
+ */
+export async function withPreviewServer(fn, { port, timeoutMs = 30000 } = {}) {
+  if (port) return await fn(`http://localhost:${port}`, port)
+
+  const serverPort = 14000 + Math.floor(Math.random() * 1000)
+  const baseUrl = `http://localhost:${serverPort}`
+  // The vite binary directly, not through npx: killing npx leaves vite running.
+  const bin = path.join(ROOT, 'node_modules', '.bin', 'vite')
+  const server = spawn(bin, ['preview', '--port', String(serverPort)], {
+    cwd: ROOT,
+    stdio: ['ignore', 'pipe', 'pipe'],
+    detached: true,
+  })
+
+  let stderr = ''
+  server.stderr?.on('data', (chunk) => {
+    stderr += chunk.toString()
+  })
+  // A server that dies immediately (port in use, missing dist/) should say so
+  // rather than waiting out the readiness timeout.
+  let exited = null
+  server.on('exit', (code) => {
+    exited = code
+  })
+
+  try {
+    // Ask the server whether it is up, rather than reading its mind from stdout.
+    const deadline = Date.now() + timeoutMs
+    for (;;) {
+      if (exited !== null) {
+        throw new Error(
+          `vite preview exited with code ${exited} before serving${stderr ? `: ${stderr.trim().slice(0, 300)}` : ''}`
+        )
+      }
+      try {
+        const resp = await fetch(`${baseUrl}/`)
+        if (resp.ok) break
+      } catch {
+        // not listening yet
+      }
+      if (Date.now() >= deadline) {
+        throw new Error(
+          `vite preview did not answer on ${baseUrl} within ${timeoutMs}ms${stderr ? `: ${stderr.trim().slice(0, 300)}` : ''}`
+        )
+      }
+      await new Promise((r) => setTimeout(r, 250))
     }
-    await new Promise((r) => setTimeout(r, intervalMs))
+
+    return await fn(baseUrl, serverPort)
+  } finally {
+    // Kill the process group, not just the direct child.
+    try {
+      if (server.pid && exited === null) process.kill(-server.pid, 'SIGTERM')
+    } catch {
+      try {
+        server.kill('SIGTERM')
+      } catch {
+        /* already gone */
+      }
+    }
   }
-  throw new Error(`Server at ${url} did not become ready within ${timeoutMs}ms`)
 }
 
 /**
@@ -145,19 +226,8 @@ async function waitForServer(url, timeoutMs = 15000, intervalMs = 500) {
  * @returns {Promise<void>}
  */
 export async function captureSnapshot(date, buildId) {
-  const port = 14000 + Math.floor(Math.random() * 1000)
-  const baseUrl = `http://localhost:${port}`
-
-  const child = spawn('npx', ['vite', 'preview', '--port', String(port)], {
-    cwd: ROOT,
-    stdio: ['ignore', 'pipe', 'pipe'],
-  })
-
-  try {
+  return await withPreviewServer(async (baseUrl) => {
     console.log('  capturing snapshot...')
-
-    // Wait for vite preview to be ready
-    await waitForServer(`${baseUrl}/`)
 
     // Read project slugs from the source file
     const projectsSrc = await readFile(path.join(ROOT, 'app/content/projects.ts'), 'utf8')
@@ -215,9 +285,7 @@ export async function captureSnapshot(date, buildId) {
     }
 
     console.log(`  snapshot: ${saved} pages saved`)
-  } finally {
-    child.kill()
-  }
+  })
 }
 
 /**
@@ -238,65 +306,44 @@ export async function captureSnapshot(date, buildId) {
 export async function captureScreenshot(port) {
   const { chromium } = await import('playwright')
 
-  let server = null
-  let serverPort = port
+  return await withPreviewServer(
+    async (baseUrl) => {
+      let browser = null
+      try {
+        browser = await chromium.launch({ headless: true })
+        const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
+        await page.goto(`${baseUrl}/`, {
+          waitUntil: 'networkidle',
+        })
+        await page.waitForTimeout(1000) // wait for fonts
+        const png = await page.screenshot({ type: 'png', fullPage: false })
+        const jpeg = await downscaleForCritic(page, png)
 
-  if (!serverPort) {
-    serverPort = 14000 + Math.floor(Math.random() * 1000)
-    server = spawn('npx', ['vite', 'preview', '--port', String(serverPort)], {
-      cwd: ROOT,
-      stdio: 'pipe',
-    })
+        // Second capture with the OPPOSITE color scheme. The theme init script
+        // follows prefers-color-scheme, so a headless capture only ever showed
+        // the light variant — on days where the AD's canonical field is dark
+        // (2026-07-10 run 2: "teal glowing out of near-black"), the critic was
+        // judging a mode nobody art-directed. colorScheme must be set at page
+        // creation, before the init script reads matchMedia.
+        const darkPage = await browser.newPage({
+          viewport: { width: 1280, height: 900 },
+          colorScheme: 'dark',
+        })
+        await darkPage.goto(`${baseUrl}/`, { waitUntil: 'networkidle' })
+        await darkPage.waitForTimeout(1000)
+        const darkPng = await darkPage.screenshot({ type: 'png', fullPage: false })
+        const darkJpeg = await downscaleForCritic(darkPage, darkPng)
 
-    await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new Error('Preview server timeout')), 15000)
-      server.stdout.on('data', (chunk) => {
-        if (chunk.toString().includes('Local:')) {
-          clearTimeout(timeout)
-          resolve()
-        }
-      })
-      server.on('error', (err) => {
-        clearTimeout(timeout)
-        reject(err)
-      })
-    })
-  }
-
-  let browser = null
-  try {
-    browser = await chromium.launch({ headless: true })
-    const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
-    await page.goto(`http://localhost:${serverPort}/`, {
-      waitUntil: 'networkidle',
-    })
-    await page.waitForTimeout(1000) // wait for fonts
-    const png = await page.screenshot({ type: 'png', fullPage: false })
-    const jpeg = await downscaleForCritic(page, png)
-
-    // Second capture with the OPPOSITE color scheme. The theme init script
-    // follows prefers-color-scheme, so a headless capture only ever showed
-    // the light variant — on days where the AD's canonical field is dark
-    // (2026-07-10 run 2: "teal glowing out of near-black"), the critic was
-    // judging a mode nobody art-directed. colorScheme must be set at page
-    // creation, before the init script reads matchMedia.
-    const darkPage = await browser.newPage({
-      viewport: { width: 1280, height: 900 },
-      colorScheme: 'dark',
-    })
-    await darkPage.goto(`http://localhost:${serverPort}/`, { waitUntil: 'networkidle' })
-    await darkPage.waitForTimeout(1000)
-    const darkPng = await darkPage.screenshot({ type: 'png', fullPage: false })
-    const darkJpeg = await downscaleForCritic(darkPage, darkPng)
-
-    return { png, jpeg, darkPng, darkJpeg }
-  } finally {
-    // Close in finally so a throw from page.goto / screenshot (dead preview
-    // server, networkidle timeout) can't orphan the headless Chromium — the
-    // critic gate calls this up to 3× per run, so leaks accumulate and OOM.
-    if (browser) await browser.close()
-    if (server) server.kill()
-  }
+        return { png, jpeg, darkPng, darkJpeg }
+      } finally {
+        // Close in finally so a throw from page.goto / screenshot (dead preview
+        // server, networkidle timeout) can't orphan the headless Chromium — the
+        // critic gate calls this up to 3× per run, so leaks accumulate and OOM.
+        if (browser) await browser.close()
+      }
+    },
+    { port }
+  )
 }
 
 /**
@@ -338,49 +385,28 @@ export async function captureHtmlFileScreenshot(filePath, { width = 1440, height
 export async function captureRouteScreenshot(route, { port, width = 1200, height = 630 } = {}) {
   const { chromium } = await import('playwright')
 
-  let server = null
-  let serverPort = port
-
-  if (!serverPort) {
-    serverPort = 14000 + Math.floor(Math.random() * 1000)
-    server = spawn('npx', ['vite', 'preview', '--port', String(serverPort)], {
-      cwd: ROOT,
-      stdio: 'pipe',
-    })
-
-    await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new Error('Preview server timeout')), 15000)
-      server.stdout.on('data', (chunk) => {
-        if (chunk.toString().includes('Local:')) {
-          clearTimeout(timeout)
-          resolve()
+  return await withPreviewServer(
+    async (baseUrl) => {
+      let browser = null
+      try {
+        browser = await chromium.launch({ headless: true })
+        const page = await browser.newPage({ viewport: { width, height } })
+        const response = await page.goto(`${baseUrl}${route}`, {
+          waitUntil: 'networkidle',
+        })
+        // Guard against capturing a 404 page. /og is unlinked, so it is never
+        // prerendered or build-validated — if the engineer omitted og.tsx, the
+        // route serves the notFound component. Throwing here lets the caller's
+        // best-effort catch skip writing a broken share card.
+        if (response && !response.ok()) {
+          throw new Error(`route ${route} returned HTTP ${response.status()}`)
         }
-      })
-      server.on('error', (err) => {
-        clearTimeout(timeout)
-        reject(err)
-      })
-    })
-  }
-
-  let browser = null
-  try {
-    browser = await chromium.launch({ headless: true })
-    const page = await browser.newPage({ viewport: { width, height } })
-    const response = await page.goto(`http://localhost:${serverPort}${route}`, {
-      waitUntil: 'networkidle',
-    })
-    // Guard against capturing a 404 page. /og is unlinked, so it is never
-    // prerendered or build-validated — if the engineer omitted og.tsx, the
-    // route serves the notFound component. Throwing here lets the caller's
-    // best-effort catch skip writing a broken share card.
-    if (response && !response.ok()) {
-      throw new Error(`route ${route} returned HTTP ${response.status()}`)
-    }
-    await page.waitForTimeout(1000) // wait for fonts
-    return await page.screenshot({ type: 'png', fullPage: false })
-  } finally {
-    if (browser) await browser.close()
-    if (server) server.kill()
-  }
+        await page.waitForTimeout(1000) // wait for fonts
+        return await page.screenshot({ type: 'png', fullPage: false })
+      } finally {
+        if (browser) await browser.close()
+      }
+    },
+    { port }
+  )
 }
