@@ -1,8 +1,10 @@
 // app/server/archive-impl.ts
 // Pure implementation — no server function wrappers, safe to import in tests
-import { readdirSync, readFileSync, existsSync } from 'node:fs'
+import { readdirSync, existsSync } from 'node:fs'
 import { resolve, join } from 'node:path'
 import type { ArchiveRecord } from '../types/archive-record'
+import { BUILD_DIR_RE, DATE_RE, isArchiveDate, isBuildId } from './archive-paths'
+import { isRecord, readJson } from './read-json'
 
 export const ARCHIVE_PATH = resolve(process.cwd(), 'archive')
 
@@ -14,21 +16,24 @@ export type ArchiveEntry = ArchiveRecord
  * is a date whose artifacts never produced a record — it is skipped rather than
  * re-derived here. Nothing in the app parses `brief.md` prose any more.
  */
+function isArchiveRecord(value: unknown): value is ArchiveRecord {
+  return isRecord(value) && isArchiveDate(value.date)
+}
+
 export function _readArchiveRecord(date: string, archivePath = ARCHIVE_PATH): ArchiveRecord | null {
-  const path = join(archivePath, date, 'record.json')
-  if (!existsSync(path)) return null
-  try {
-    return JSON.parse(readFileSync(path, 'utf8')) as ArchiveRecord
-  } catch {
-    return null
-  }
+  // Validate here, not only in archive.ts's inputValidator. This function is
+  // exported and called directly (by _readArchiveDetail, by tests, and by the
+  // Vite dev middleware), so a guard that lives only at the server-fn boundary
+  // is a guard most callers never pass through.
+  if (!isArchiveDate(date)) return null
+  return readJson(join(archivePath, date, 'record.json'), isArchiveRecord)
 }
 
 export function _readArchiveHandler(archivePath = ARCHIVE_PATH): ArchiveEntry[] {
   if (!existsSync(archivePath)) return []
 
   return readdirSync(archivePath, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(d.name))
+    .filter((d) => d.isDirectory() && DATE_RE.test(d.name))
     .map((d) => _readArchiveRecord(d.name, archivePath))
     .filter((r): r is ArchiveRecord => r !== null)
     .sort((a, b) => b.date.localeCompare(a.date))
@@ -64,18 +69,20 @@ export interface ResponsiveMetrics {
 /**
  * Read responsive-metrics.json for a given build. Returns null if missing or unparseable.
  */
+function isResponsiveMetrics(value: unknown): value is ResponsiveMetrics {
+  return isRecord(value) && typeof value.buildId === 'string' && isRecord(value.viewports)
+}
+
 export function _readResponsiveMetrics(
   date: string,
   buildId: string,
   archivePath = ARCHIVE_PATH
 ): ResponsiveMetrics | null {
-  const p = join(archivePath, date, `build-${buildId}`, 'responsive-metrics.json')
-  if (!existsSync(p)) return null
-  try {
-    return JSON.parse(readFileSync(p, 'utf8')) as ResponsiveMetrics
-  } catch {
-    return null
-  }
+  if (!isArchiveDate(date) || !isBuildId(buildId)) return null
+  return readJson(
+    join(archivePath, date, `build-${buildId}`, 'responsive-metrics.json'),
+    isResponsiveMetrics
+  )
 }
 
 /**
@@ -89,7 +96,7 @@ export function _readResponsiveHistory(
   if (!existsSync(archivePath)) return []
 
   const dates = readdirSync(archivePath)
-    .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))
+    .filter((d) => DATE_RE.test(d))
     .sort()
     .reverse()
 
@@ -98,19 +105,17 @@ export function _readResponsiveHistory(
     const dateDir = join(archivePath, date)
     let builds: string[]
     try {
-      builds = readdirSync(dateDir).filter((b) => b.startsWith('build-'))
+      // `startsWith('build-')` also matched build-failed-* and build-pre-*,
+      // so the history could report metrics from a build that never shipped.
+      builds = readdirSync(dateDir).filter((b) => BUILD_DIR_RE.test(b))
     } catch {
       continue
     }
     builds.sort().reverse()
     for (const b of builds) {
-      const p = join(dateDir, b, 'responsive-metrics.json')
-      if (!existsSync(p)) continue
-      try {
-        out.push(JSON.parse(readFileSync(p, 'utf8')) as ResponsiveMetrics)
-      } catch {
-        /* skip invalid */
-      }
+      const metrics = readJson(join(dateDir, b, 'responsive-metrics.json'), isResponsiveMetrics)
+      if (!metrics) continue
+      out.push(metrics)
       if (out.length >= limit) return out
     }
   }

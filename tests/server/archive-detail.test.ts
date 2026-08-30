@@ -113,9 +113,36 @@ describe('archive detail', () => {
     expect(_readArchiveDetail('9999-99-99', TEST_ARCHIVE)).toBeNull()
   })
 
-  it('returns null for path traversal attempts', () => {
-    expect(_readArchiveDetail('../../etc', TEST_ARCHIVE)).toBeNull()
-    expect(_readArchiveDetail('../../../etc/passwd', TEST_ARCHIVE)).toBeNull()
-    expect(_readArchiveDetail('2099-01-01/../../etc', TEST_ARCHIVE)).toBeNull()
+  it('refuses path traversal, and refuses it for the right reason', () => {
+    // This test used to pass because <fixture>/../../etc/record.json happens
+    // not to exist — not because traversal was refused. Nothing validated the
+    // date; the only guard lived in archive.ts's inputValidator, which most
+    // callers of this function never pass through.
+    //
+    // So plant a real, readable record.json one level above the fixture root
+    // and point a traversal string straight at it. If the date is validated,
+    // this is null. If it is not, the old implementation reads the file and
+    // the assertion below fails — which is what makes this a test.
+    const outsideDir = join(TEST_ARCHIVE, '..', '__test-outside__')
+    mkdirSync(outsideDir, { recursive: true })
+    writeFileSync(
+      join(outsideDir, 'record.json'),
+      JSON.stringify(record('2099-12-31', { brief: 'SHOULD NEVER BE READ' })),
+      'utf8'
+    )
+    try {
+      expect(_readArchiveDetail('../__test-outside__', TEST_ARCHIVE)).toBeNull()
+      expect(_readArchiveDetail('../../etc', TEST_ARCHIVE)).toBeNull()
+      expect(_readArchiveDetail('../../../etc/passwd', TEST_ARCHIVE)).toBeNull()
+      expect(_readArchiveDetail('2099-01-01/../../etc', TEST_ARCHIVE)).toBeNull()
+    } finally {
+      rmSync(outsideDir, { recursive: true, force: true })
+    }
+  })
+
+  it('rejects a date that is merely date-shaped-ish', () => {
+    expect(_readArchiveDetail('2099-01-01extra', TEST_ARCHIVE)).toBeNull()
+    expect(_readArchiveDetail('', TEST_ARCHIVE)).toBeNull()
+    expect(_readArchiveDetail('.', TEST_ARCHIVE)).toBeNull()
   })
 })
