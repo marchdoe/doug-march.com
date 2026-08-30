@@ -19,6 +19,10 @@ import type { ArchiveIndexEntry } from '../types/archive-record'
 
 export const Route = createFileRoute('/archive')({
   component: ArchivePage,
+  // No route declared a title, so every page shared the shell's — /archive,
+  // /how/<date>, /work and /experiments all announced themselves as the home
+  // page in a tab, a bookmark and a search result.
+  head: () => ({ meta: [{ title: 'Archive — every design this site has made' }] }),
 })
 
 /**
@@ -258,22 +262,42 @@ function hueVars(entry: ArchiveIndexEntry) {
   return { '--day': swatchFor(entry), '--ink': inkFor(entry) } as React.CSSProperties
 }
 
+function isArchiveIndex(value: unknown): value is ArchiveIndexEntry[] {
+  return Array.isArray(value) && value.every((e) => typeof (e as { date?: unknown })?.date === 'string')
+}
+
 function ArchivePage() {
   const [entries, setEntries] = useState<ArchiveIndexEntry[]>([])
-  const [loaded, setLoaded] = useState(false)
+  // Three states, not two. `loaded` alone could not tell "the archive is
+  // empty" from "the request failed", so a 5xx or an offline visitor was
+  // shown "Nothing archived yet." — a false statement about a site whose
+  // whole subject is that it has 123 days of history.
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
   const [view, setView] = useState<'month' | 'all'>('month')
   const [ym, setYm] = useState<string | null>(null)
 
   useEffect(() => {
+    let cancelled = false
     fetch('/archive-data/index.json')
-      .then((res) => (res.ok ? res.json() : []))
-      .then((data: ArchiveIndexEntry[]) => {
+      .then((res) => {
+        if (!res.ok) throw new Error(`archive index responded with ${res.status}`)
+        return res.json()
+      })
+      .then((data: unknown) => {
+        if (cancelled) return
+        if (!isArchiveIndex(data)) throw new Error('archive index was not the expected shape')
         setEntries(data)
         setYm(densestMonth(data))
-        setLoaded(true)
+        setStatus('ready')
       })
-      .catch(() => setLoaded(true))
+      .catch(() => {
+        if (!cancelled) setStatus('error')
+      })
+    return () => {
+      cancelled = true
+    }
   }, [])
+  const loaded = status !== 'loading'
 
   const months = useMemo(() => monthsSpanned(entries), [entries])
   const sorted = useMemo(() => [...entries].sort((a, b) => a.date.localeCompare(b.date)), [entries])
@@ -297,7 +321,14 @@ function ArchivePage() {
         ) : null}
       </header>
 
-      {!loaded ? null : sorted.length === 0 ? (
+      {!loaded ? null : status === 'error' ? (
+        <div className={wrap}>
+          <p className={empty}>
+            The archive index could not be loaded. It exists — this is a problem reaching it, not
+            an empty archive. Try again in a moment.
+          </p>
+        </div>
+      ) : sorted.length === 0 ? (
         <div className={wrap}>
           <p className={empty}>Nothing archived yet.</p>
         </div>
