@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
@@ -185,6 +186,14 @@ const openDesign = css({
   _hover: { background: 'archive.text', color: 'archive.bg' },
 })
 
+/**
+ * Code-split. The markdown parser is only needed by this route, and the main
+ * chunk is 268KB before it.
+ */
+const ArchiveMarkdown = lazy(() =>
+  import('../components/ArchiveMarkdown').then((m) => ({ default: m.ArchiveMarkdown }))
+)
+
 const bodyCol = css({ display: 'flex', flexDirection: 'column', gap: '52px', minWidth: 0 })
 
 const section = css({ minWidth: 0 })
@@ -213,6 +222,27 @@ const prose = css({
   maxWidth: '68ch',
   whiteSpace: 'pre-wrap',
 })
+
+const specDetails = css({
+  marginTop: '26px',
+  borderTop: '1px solid',
+  borderColor: 'archive.line',
+  paddingTop: '14px',
+  maxWidth: '68ch',
+})
+
+const specSummary = css({
+  fontSize: 'archive.micro',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'archive.dim',
+  cursor: 'pointer',
+  userSelect: 'none',
+  paddingY: '4px',
+  _hover: { color: 'archive.text' },
+})
+
+const specBody = css({ marginTop: '12px' })
 
 const absent = css({
   fontSize: 'archive.small',
@@ -480,15 +510,28 @@ function HowPage() {
             {detail.rationale ? (
               <>
                 <p className={subhead}>Why</p>
-                <p className={prose}>{detail.rationale}</p>
+                <Suspense fallback={<p className={prose}>{detail.rationale}</p>}>
+                  <ArchiveMarkdown>{detail.rationale}</ArchiveMarkdown>
+                </Suspense>
               </>
             ) : null}
-            {sections.map((s) => (
-              <div key={s.heading}>
-                <p className={subhead}>{s.heading}</p>
-                <p className={prose}>{s.body}</p>
-              </div>
-            ))}
+            {sections.length > 0 && (
+              <details className={specDetails}>
+                <summary className={specSummary}>
+                  The full specification ({sections.length} sections)
+                </summary>
+                <div className={specBody}>
+                  {sections.map((s) => (
+                    <div key={s.heading}>
+                      <p className={subhead}>{s.heading}</p>
+                      <Suspense fallback={<p className={prose}>{s.body}</p>}>
+                        <ArchiveMarkdown>{s.body}</ArchiveMarkdown>
+                      </Suspense>
+                    </div>
+                  ))}
+                </div>
+              </details>
+            )}
           </Step>
 
           <Step n="03" title="A color was chosen">
