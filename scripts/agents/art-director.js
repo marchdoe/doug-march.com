@@ -49,6 +49,7 @@ export function buildArtDirectorUserPrompt({
   paletteFormulaMandateSection,
   heroSourceMandateSection,
   compositionMandateSection,
+  chassisMandateSection,
   brandContract,
   weightsBlock,
   tasteMemoryBlock,
@@ -67,6 +68,7 @@ export function buildArtDirectorUserPrompt({
   if (paletteFormulaMandateSection) sections.push(paletteFormulaMandateSection)
   if (heroSourceMandateSection) sections.push(heroSourceMandateSection)
   if (compositionMandateSection) sections.push(compositionMandateSection)
+  if (chassisMandateSection) sections.push(chassisMandateSection)
   if (brandContract) sections.push(brandContract)
   if (weightsBlock) sections.push(`## Creative Weights\n\n${weightsBlock}`)
   if (tasteMemoryBlock) sections.push(tasteMemoryBlock)
@@ -166,6 +168,7 @@ export function validateArtDirectorResult(parsed) {
  *   paletteFormulaMandateSection?: string,
  *   heroSourceMandateSection?: string,
  *   compositionMandateSection?: string,
+ *   chassisMandateSection?: string,
  *   weightsBlock: string,
  *   tasteMemoryBlock: string,
  *   uniquenessBlock?: string,

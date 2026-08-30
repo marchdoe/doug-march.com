@@ -1,3 +1,5 @@
+import { scaleSteps } from './scale.js'
+
 /**
  * Fat, soft display serif pairing. Fraunces is a variable "wonky" serif with
  * high-contrast optical sizing — at heavy weights it reads warm and tactile
@@ -5,11 +7,13 @@
  * Pairs with Karla, a clean humanist grotesk for body — keeps the softness
  * of the display from tipping into whimsy.
  *
- * Scale at Perfect 5th (1.500) — display-grade, marquee-capable. Added
- * 2026-08-23 to break the condensed-caps monoculture: at the time, 3 of 5
- * chassis were condensed display sans, and every Poster day rendered in
- * the same tight, shouty register. Fraunces is loud in a completely
- * different way — round, warm, generous letterforms instead of narrow ones.
+ * Step table at Perfect 5th (1.500) — display-grade, marquee-capable.
+ * Fraunces' round, generous letterforms tolerate tight leading: the hero
+ * runs 0.9 with only moderate closing, so the wonk stays visible instead of
+ * colliding.
+ *
+ * Weights verified on fonts.google.com/specimen: Fraunces 300/400/600/900,
+ * Karla 400/500/700.
  *
  * Fraunces appears on impeccable's reflex-reject list (a guard against
  * defaulting into it in freeform generative design). That guard doesn't
@@ -42,8 +46,12 @@ export const fraucesKarla = {
     },
   },
 
-  scale: {
-    ratio: 1.500,
-    base: '1rem',
+  type: {
+    steps: scaleSteps(1.5, '1rem', {
+      '2xl': { tracking: '-0.01em' },
+      '3xl': { tracking: '-0.015em' },
+      hero: { lineHeight: 0.9, tracking: '-0.015em' },
+    }),
+    weights: { light: 300, normal: 400, medium: 500, semibold: 600, bold: 900 },
   },
 }

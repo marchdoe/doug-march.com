@@ -80,14 +80,13 @@ export const elementsPreset = definePreset({
   theme: {
     tokens: {
       colors: { paletteName: { shade: { value: '#hex' } } },
-      fonts: { name: { value: "'Font Name', fallback" } },
-      fontSizes: { name: { value: 'rem value' } },
-      fontWeights: { name: { value: 'number' } },
-      letterSpacings: { name: { value: 'em value' } },
-      lineHeights: { name: { value: 'number' } },
-      spacing: { name: { value: 'rem value' } },
+      radii: { name: { value: 'px value' } },
       durations: { name: { value: 's value' } },
       easings: { name: { value: 'css timing fn' } },
+      // fonts, fontSizes, fontWeights, lineHeights, letterSpacings and
+      // spacing live in elements/chassis-preset.ts, generated from the
+      // day's chassis and merged after this preset — values written here
+      // for those groups are overridden.
     },
     semanticTokens: {
       colors: {
@@ -108,9 +107,10 @@ Components reference token names, NOT raw color values. A name outside these set
 - **Colors:** whatever today's `elements/preset.ts` defines under `semanticTokens.colors`. Read that file; the set is redrawn every night and there is no name you can count on across builds.
 - **Fonts:** `display` and `body` come from the chassis. Anything else exists only if the preset defines it.
 - **Font sizes:** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `hero`. Nothing above `5xl` exists. `hero` is a fluid clamp, ready to use on a headline.
-- **Spacing:** `1`-`9`, mapping to 4px, 8px, 16px, 24px, 32px, 48px, 64px, 96px, 128px. A bare number is a spacing token, so a literal size needs its unit (`width: '44px'`).
-- **Line heights:** `tight`, `snug`, `normal`, `loose`
-- **Letter spacings:** `tight`, `normal`, `wide`, `wider`, `widest`
+- **Text styles:** every ramp step is also a `textStyle` token (`textStyle: 'hero'`) carrying size, line-height and letter-spacing together, tuned per step by the day's chassis. Prefer `textStyle` over setting `fontSize` alone.
+- **Spacing:** `1`-`9`, derived from the chassis rhythm and landing close to 4, 8, 16, 24, 32, 48, 64, 96, 128px on every chassis. A bare number is a spacing token, so a literal size needs its unit (`width: '44px'`).
+- **Line heights:** `tight`, `snug`, `normal`, `loose` — derived from the chassis step table. A step's own leading comes free with `textStyle`.
+- **Letter spacings:** `tight`, `normal`, `wide`, `wider`, `widest` — also chassis-derived; `wide`+ are for caps labels and smallcaps.
 
 ## Route Pattern
 

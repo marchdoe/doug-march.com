@@ -1,3 +1,5 @@
+import { scaleSteps } from './scale.js'
+
 /**
  * Mono-display pairing. Space Mono is a retro-futurist monospace pushed up
  * to display duty — quirky, technical, terminal-adjacent, unlike anything
@@ -5,10 +7,13 @@
  * face). Pairs with Archivo, a neutral grotesk body, so the mono voice
  * stays confined to headlines and doesn't make body copy tedious to read.
  *
- * Scale at Perfect 5th (1.500) — display-grade, marquee-capable. Added
- * 2026-08-23 to break the condensed-caps monoculture (3 of the prior 5
- * chassis were condensed display sans) with a genuinely different texture:
- * fixed-width display type reads as technical/precise rather than loud.
+ * Step table at Perfect 5th (1.500) — display-grade, marquee-capable. A
+ * monospace sets wide by construction, so the display steps close harder
+ * than any other chassis: the fixed advance leaves visible air between
+ * glyphs that negative tracking claws back at poster sizes.
+ *
+ * Weights verified on fonts.google.com/specimen: Space Mono 400/700,
+ * Archivo 400/500/700.
  *
  * Space Mono appears on impeccable's reflex-reject list (a guard against
  * reaching for it by training-data habit in freeform design). That guard
@@ -41,8 +46,14 @@ export const spaceMonoArchivo = {
     },
   },
 
-  scale: {
-    ratio: 1.500,
-    base: '1rem',
+  type: {
+    steps: scaleSteps(1.5, '1rem', {
+      '2xl': { tracking: '-0.02em' },
+      '3xl': { tracking: '-0.025em' },
+      '4xl': { tracking: '-0.03em' },
+      '5xl': { tracking: '-0.03em' },
+      hero: { lineHeight: 1, tracking: '-0.03em' },
+    }),
+    weights: { light: 400, normal: 400, medium: 500, semibold: 700, bold: 700 },
   },
 }

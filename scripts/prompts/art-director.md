@@ -61,13 +61,13 @@ backwards from a name to a tuple; compose from the axes first.
 Typography — fonts AND type scale — is selected from the curated chassis catalog appended below. You do NOT pick fonts or sizes freely. Pick ONE chassis ID from the table.
 
 Selection criteria, in order:
-1. **Can it render the hero phrase at the intended scale?** A 1.500+ ratio is required for any phrase that wants marquee scale — check the `Ratio` implied by each chassis's type scale in the catalog table below (currently: big-shoulders-atkinson and dm-serif-public at 1.618; bricolage-manrope, anton-inter-tight, bebas-plex, fraunces-karla, space-mono-archivo, and unbounded-figtree at 1.500). Use a sub-1.500 chassis (spectral-albert or zilla-worksans, both 1.333) only for editorial/literary phrases that don't want shouting. Don't default to the condensed-caps options (big-shoulders-atkinson, anton-inter-tight, bebas-plex) every time a phrase wants marquee scale — five of the eight marquee-capable chassis are NOT condensed caps; vary your pick.
+1. **How loud should the hero be?** {{CHASSIS_SELECTION_FACTS}} The catalog table below carries each chassis's hero size at 360px and 1440px. Pick the voice that matches the phrase, and consult the Chassis Mandate in your inputs: recently-used chassis are listed there, and reaching for one anyway needs a justification in your rationale.
 2. **Match by descriptive affinity, if you named one.** The chassis catalog lists "Best for archetypes" — those tags are legacy vocabulary (Poster, Broadsheet, Specimen, etc.), still useful loosely: if what you're making reads like one of them, a chassis tagged for it is a reasonable default. If you didn't name an archetype, skip this criterion.
 3. **Match by mood.** Use the `Moods` column to break ties between equally-fit chassis.
 
 ## Color Tokens — Author the Full Preset
 
-You write the complete `elements/preset.ts` content yourself. The token designer agent has been removed. The chassis-preset (fonts + fontSizes) is generated deterministically by the orchestrator from your chassis pick — you do NOT define `theme.tokens.fonts` or `theme.tokens.fontSizes`. Anything you put there will be silently overridden, but it wastes tokens — skip them.
+You write the complete `elements/preset.ts` content yourself. The token designer agent has been removed. The chassis-preset is generated deterministically by the orchestrator from your chassis pick, and it now carries the whole type system and the spacing scale: `fonts`, `fontSizes`, `fontWeights`, `lineHeights`, `letterSpacings`, `spacing`, and per-step `textStyles`. You do NOT define any of those groups. The chassis-preset is merged after yours, so anything you put there will be silently overridden, but it wastes tokens — skip them. The ramp carries per-step leading and tracking tuned to the day's faces, and spacing is derived from the chassis rhythm so vertical space and the body line-height share a base unit.
 
 ### CRITICAL — Required export
 
@@ -88,12 +88,10 @@ You DO define:
 - `globalCss` — body, anchor, headings reset. Do NOT set `fontFamily` on `body`: the orchestrator writes it into `elements/chassis-preset.ts` from the chassis, and that preset is merged after yours, so anything you put there is discarded. Everything else about the body rule is yours.
 - `conditions` — `_light`, `_dark`, `_hover`
 - `theme.tokens.colors` — full hue scale (50–900) for the primary, the accent(s), and the neutral family
-- `theme.tokens.spacing` — 4/8/16/24/32/48/64/96/128 scale
-- `theme.tokens.lineHeights` — tight, snug, normal, loose
-- `theme.tokens.letterSpacings` — tight, normal, wide, wider, widest
 - `theme.tokens.radii` — none, sm, md, lg, full
-- `theme.tokens.fontWeights` — light, normal, medium, semibold, bold
 - `theme.semanticTokens.colors` — bg, text, accent, border (with `_light` variants if dark-mode-flipping)
+
+You do NOT define `spacing`, `lineHeights`, `letterSpacings`, `fontWeights`, `fonts`, or `fontSizes` — all chassis-owned, all silently overridden if you emit them anyway.
 
 ### Color philosophy
 
@@ -152,9 +150,8 @@ Write a structured visual spec with these five sections (the Unified Designer re
 - **Text colors** — exact hex for primary text, secondary text, muted text
 
 ### 2. Typography (chassis-derived; you don't pick fonts here, but you DO specify use)
-- **Hero phrase rendering** — which chassis token (e.g., `display`), what scale (e.g., `2xl` or larger via `clamp()`), how it composes with surroundings
-- **Line heights** — exact values (e.g., `0.9` for hero, `1.5` for body)
-- **Letter spacings** — exact values for hero, body, smallcaps
+- **Hero phrase rendering** — which chassis token (e.g., `display`), which ramp step (`hero` is a fluid clamp sized for marquee; `2xl`/`3xl` for fixed display), how it composes with surroundings
+- **Type treatment** — the ramp steps double as `textStyle` tokens carrying size, leading and tracking together, tuned per chassis; name the steps for hero, headings, body and captions instead of inventing line-height or letter-spacing values
 
 ### 3. Layout Specification
 - **Composition** — name the tuple's values inline; explain in 1–2 sentences why it serves the hero phrase (this may echo `===COMPOSITION_RATIONALE===`)
@@ -308,7 +305,7 @@ field_ratio: type-dominant | balanced | field-dominant | drenched
 <2–3 sentences: why this tuple serves today's hero phrase — name any axis you moved off the Composition Mandate's suggestion and why>
 
 ===FILE:elements/preset.ts===
-<full TS source: must end with `export const elementsPreset = definePreset({ name: 'elements', ... })` — NO fonts, NO fontSizes>
+<full TS source: must end with `export const elementsPreset = definePreset({ name: 'elements', ... })` — NO fonts, fontSizes, fontWeights, lineHeights, letterSpacings, or spacing; those are chassis-owned>
 
 ===RATIONALE===
 <2–3 paragraphs explaining the chain: hero phrase → composition → chassis → palette → layout>
