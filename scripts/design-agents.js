@@ -20,6 +20,7 @@
  */
 
 import { config } from 'dotenv'
+import { setRunDeadline } from './utils/run-budget.js'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
@@ -446,6 +447,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // STARTING expensive optional work and ship what we have.
   const runDeadline = Date.now() + parseInt(process.env.RUN_BUDGET_MINUTES || '60', 10) * 60000
   const pastDeadline = () => Date.now() > runDeadline
+  // Publish it so every model call clamps its own timeout to what is left,
+  // rather than each agent's cap being checked only between phases.
+  setRunDeadline(runDeadline)
 
   const trace = createTrace(signals.date || new Date().toISOString().slice(0, 10), {
     onStep: (step) => {

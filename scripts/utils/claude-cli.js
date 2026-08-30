@@ -10,6 +10,7 @@ import { writeFile, unlink } from 'node:fs/promises'
 import { createReadStream } from 'node:fs'
 import { spawn } from 'node:child_process'
 import { ROOT } from './file-manager.js'
+import { clampToBudget } from './run-budget.js'
 import { recordUsage } from './cost-ledger.js'
 
 /**
@@ -64,13 +65,24 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
   }
 
   const {
-    timeoutMs = 600000,
+    timeoutMs: requestedTimeoutMs = 600000,
     stallTimeoutMs = 900000,
     cwd = ROOT,
     model = 'sonnet',
     extraCliArgs = [],
     onTimeout,
   } = options
+
+  // Never start a call with a timeout that outlives the run's own deadline.
+  // The agent caps (25-30 min) are sized for a call in isolation; late in a
+  // run there is not that much left, and overrunning means the Actions job
+  // kills the process mid-call with no trace written. See run-budget.js.
+  const timeoutMs = clampToBudget(requestedTimeoutMs)
+  if (timeoutMs < requestedTimeoutMs) {
+    console.log(
+      `  [${agentName}] timeout clamped ${Math.round(requestedTimeoutMs / 60000)}m → ${Math.round(timeoutMs / 60000)}m by the run budget`
+    )
+  }
 
   // Determine the pipeline-settings.json path (sibling to the scripts/ dir)
   const PIPELINE_SETTINGS = path.resolve(

@@ -46,24 +46,22 @@ jobs:
           echo "Rolling back mutable files to HEAD~$N"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Restore only the AI-mutable files — leave everything else alone
-          git checkout HEAD~$N -- \
-            elements/preset.ts \
-            app/components/Layout.tsx \
-            app/components/Sidebar.tsx \
-            app/components/SectionHead.tsx \
-            app/components/ProjectRow.tsx \
-            app/components/FeaturedProject.tsx \
-            app/components/SelectedWork.tsx \
-            app/components/Experiments.tsx \
-            app/components/Bio.tsx \
-            app/components/Timeline.tsx \
-            app/components/Capabilities.tsx \
-            app/components/Personal.tsx \
-            app/routes/__root.tsx \
-            app/routes/index.tsx \
-            app/routes/about.tsx \
-            'app/routes/work.$slug.tsx'
+          # Restore only the AI-mutable files — leave everything else alone.
+          #
+          # Read the list from MUTABLE_FILES rather than repeating it here. The
+          # hardcoded copy had drifted to 16 of the 18 entries: app/routes/og.tsx
+          # and elements/chassis-preset.ts were never restored, so a rollback
+          # left today's chassis preset and OG route standing against
+          # yesterday's preset.ts — a combination no run ever produced or
+          # validated. Anything added to MUTABLE_FILES is now covered here the
+          # day it lands.
+          mapfile -t FILES < <(node -e "import('./scripts/utils/site-context.js').then(m => console.log(m.MUTABLE_FILES.join('\n')))")
+          if [ "${#FILES[@]}" -eq 0 ]; then
+            echo "::error::could not read MUTABLE_FILES — refusing to roll back a guessed file list"
+            exit 1
+          fi
+          printf 'restoring %s\n' "${FILES[@]}"
+          git checkout "HEAD~$N" -- "${FILES[@]}"
 
       - name: Regenerate styled-system
         run: pnpm panda codegen
@@ -75,8 +73,19 @@ jobs:
         run: |
           git add elements/ app/components/ app/routes/ styled-system/ 2>/dev/null || true
           git diff --cached --quiet || git commit -m "revert: roll back daily redesign (rollback workflow)"
+          # Same guard as the nightly's push step: a for-loop's exit status is
+          # its last command (sleep), so three failed pushes would report
+          # success and leave the rollback sitting on the runner.
+          pushed=false
           for i in 1 2 3; do
-            git pull --rebase origin main && git push origin main && break
+            if git pull --rebase --autostash origin main && git push origin main; then
+              pushed=true
+              break
+            fi
             echo "push attempt $i failed, retrying in 10s..."
             sleep 10
           done
+          if [ "$pushed" != "true" ]; then
+            echo "::error::push failed after 3 attempts — rollback not on main"
+            exit 1
+          fi

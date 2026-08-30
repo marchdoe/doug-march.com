@@ -25,7 +25,9 @@ import { describe, expect, it } from 'vitest'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 const WORKFLOW = path.join(ROOT, '.github', 'workflows', 'daily-redesign.yml')
+const ROLLBACK = path.join(ROOT, '.github', 'workflows', 'rollback.yml')
 const src = readFileSync(WORKFLOW, 'utf8')
+const rollbackSrc = readFileSync(ROLLBACK, 'utf8')
 
 /**
  * Everything a successful run writes that has to survive to main, and what
@@ -96,5 +98,73 @@ describe('the push', () => {
     // report success while nothing was pushed.
     expect(src).toMatch(/pushed" != "true"/)
     expect(src).toMatch(/::error::push failed/)
+  })
+})
+
+describe('what the nightly links to', () => {
+  it('points the rating issue at where the screenshot is actually written', async () => {
+    // #154 moved the day's screenshot from public/archive/<date>.png to
+    // public/archive-data/<date>.png. The staging loop was eventually
+    // updated; this URL was not, so every rating issue rendered a broken
+    // image — and the rating loop is the only taste signal the Art Director
+    // gets back. Pinned to the archiver's own constant rather than a literal.
+    const { PUBLIC_SCREENSHOT_DIR } = await import('../../scripts/utils/archiver.js')
+    expect(src).toContain(`main/${PUBLIC_SCREENSHOT_DIR}/\${today}.png`)
+    expect(src).not.toContain('main/public/archive/${today}.png')
+  })
+
+  it('resolves the failure-issue trace path in JS, not in a dead shell substitution', () => {
+    // `$(date -u +%Y-%m-%d)` inside a JS template literal is never expanded;
+    // the issue body showed the literal text. Scoped to the github-script
+    // block — the same substitution in the shell push step is correct there.
+    const notify = src.slice(src.indexOf('Notify on failure'))
+    expect(notify).toMatch(/build-failed-\*\/trace\.json/)
+    expect(notify).not.toMatch(/\$\(date /)
+    expect(notify).toMatch(/new Date\(\)\.toISOString\(\)/)
+  })
+})
+
+describe('the DST guard', () => {
+  it('decides from the cron entry that fired, not the hour it arrived', () => {
+    // Reading `date +%-H` meant routine queue lag (the header documents
+    // 17-31 minutes) pushed the run past the hour it was checking for, so
+    // both entries were dropped and the day produced no build at all.
+    expect(src).toContain('github.event.schedule')
+    expect(src).not.toMatch(/hour=\$\(TZ=America\/New_York date/)
+  })
+
+  it('pairs each cron entry with the season it belongs to', () => {
+    expect(src).toContain("'50 8 * * *|EDT' | '50 9 * * *|EST'")
+    expect(src).toContain("'50 8 * * *|EST' | '50 9 * * *|EDT'")
+  })
+
+  it('runs rather than skips when the schedule is unrecognised', () => {
+    // A missed morning is visible on a site whose premise is a daily rebuild;
+    // a duplicate queues behind the concurrency group.
+    expect(src).toMatch(/::warning::unrecognised schedule/)
+  })
+})
+
+describe('the rollback workflow', () => {
+  it('restores the same files the pipeline is allowed to write', async () => {
+    // The hardcoded list had drifted to 16 of 18 — og.tsx and
+    // chassis-preset.ts were left standing against a restored preset.ts.
+    // Reading MUTABLE_FILES at runtime is what stops it drifting again.
+    const { MUTABLE_FILES } = await import('../../scripts/utils/site-context.js')
+    expect(rollbackSrc).toContain('m.MUTABLE_FILES')
+    for (const file of MUTABLE_FILES) {
+      expect(rollbackSrc).not.toMatch(
+        new RegExp(`git checkout[^\\n]*${file.replace(/[.$]/g, '\\$&')}`)
+      )
+    }
+  })
+
+  it('refuses to roll back a guessed file list', () => {
+    expect(rollbackSrc).toMatch(/could not read MUTABLE_FILES/)
+  })
+
+  it('fails loudly when the rollback does not leave the runner', () => {
+    expect(rollbackSrc).toMatch(/pushed" != "true"/)
+    expect(rollbackSrc).toMatch(/::error::push failed/)
   })
 })
