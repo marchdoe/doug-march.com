@@ -1,25 +1,20 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { EventEmitter } from 'node:events'
-import { Readable } from 'node:stream'
+import { Readable, Writable } from 'node:stream'
 
 // We need to mock child_process.spawn before importing claude-cli.js
-// so the spawn call inside resolves to our fake child process.
+// so the spawn call inside resolves to our fake child process. The source
+// imports 'node:child_process', so that is the specifier mocked here —
+// mocking bare 'child_process' only worked because vitest normalises the two.
 
 const mockChildren = []
 
-vi.mock('child_process', () => ({
+vi.mock('node:child_process', () => ({
   spawn: vi.fn(() => {
     const child = new EventEmitter()
     child.stdout = new EventEmitter()
     child.stderr = new EventEmitter()
-    // stdin needs a writable-like interface with the methods that pipe() uses
-    child.stdin = Object.assign(new EventEmitter(), {
-      write: vi.fn(),
-      end: vi.fn(),
-      on: EventEmitter.prototype.on.bind(child.stdin ?? new EventEmitter()),
-    })
-    // Simpler: use a proper Writable stream
-    const { Writable } = require('node:stream')
+    // stdin needs the Writable interface pipe() uses.
     child.stdin = new Writable({
       write(_chunk, _enc, cb) {
         cb()

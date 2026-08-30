@@ -4,6 +4,27 @@ import { test, expect, type Page } from '@playwright/test'
 // Runs against PREVIEW_URL (Vercel preview deploy, or localhost dev server)
 // Usage: PREVIEW_URL=https://your-preview.vercel.app pnpm test:e2e:site
 
+// The archived days these tests lean on, and why each one. A date here is a
+// fixture: it was chosen because of what it carries, and a test that switches
+// to another date silently changes what it proves. Display forms ("June 28,
+// 2026") in a few assertions are the same days spelled the way the page does.
+const CORPUS = {
+  // Prose era, record only: has a record.json and no captured pages, so the
+  // calendar must send it to the explainer, and four fields predate its era.
+  recordOnly: '2026-03-12',
+  // The earliest day with preserved static HTML under public/archive/.
+  firstStatic: '2026-03-26',
+  // A fully built day — pages, brief, signals, a full moon — the workhorse.
+  built: '2026-06-28',
+  // A sealed design, used to prove no link escapes onto the live site.
+  sealed: '2026-07-17',
+  // 07-25 was never built, so Next from 07-24 must land on 07-26.
+  beforeGap: '2026-07-24',
+  afterGap: '2026-07-26',
+  // No such day, ever.
+  never: '9999-99-99',
+} as const
+
 // Helper: check page loads with HTTP 200 and renders content
 async function expectPageLoads(page: Page, path: string) {
   const response = await page.goto(path)
@@ -54,8 +75,9 @@ test.describe('site health — archive', () => {
     expect(await days.count()).toBeGreaterThan(0)
   })
 
-  test('the explainer is reachable from the calendar', async ({ page }) => {
-    await page.goto('/how/2026-06-28')
+  test('the explainer renders and links back to the archive', async ({ page }) => {
+    // The calendar-to-explainer journey itself is covered under "the calendar" below.
+    await page.goto(`/how/${CORPUS.built}`)
     await expect(page.getByRole('heading', { name: /June 28, 2026/ })).toBeVisible({
       timeout: 15000,
     })
@@ -63,8 +85,10 @@ test.describe('site health — archive', () => {
   })
 
   test('explainer handles a date with no record gracefully', async ({ page }) => {
-    await page.goto('/how/9999-99-99')
-    await expect(page.getByText('Nothing archived for 9999-99-99')).toBeVisible({ timeout: 15000 })
+    await page.goto(`/how/${CORPUS.never}`)
+    await expect(page.getByText(`Nothing archived for ${CORPUS.never}`)).toBeVisible({
+      timeout: 15000,
+    })
   })
 
   test('the record projection is served', async ({ request }) => {
@@ -76,15 +100,15 @@ test.describe('site health — archive', () => {
 
 test.describe('site health — archived site serving', () => {
   test('archived HTML serves as static file, not SPA shell', async ({ page }) => {
-    // Find a date that has archived HTML
-    const response = await page.goto('/archive/2026-03-26/index.html')
-    if (response?.status() === 200) {
-      const content = await page.content()
-      // Archived HTML should NOT contain the SPA entry point script
-      // It should be self-contained (CSS inlined, JS stripped by snapshot.js)
-      expect(content).not.toContain('tanstack-start-client-entry')
-    }
-    // If 404, the archive doesn't have this date — that's OK
+    // Hard 200 on a date known to be preserved. This used to be wrapped in
+    // `if (status === 200)`, so a 404 — the archive not being served at all —
+    // passed the test whose whole job is to notice that.
+    const response = await page.goto(`/archive/${CORPUS.firstStatic}/index.html`)
+    expect(response?.status()).toBe(200)
+    const content = await page.content()
+    // Self-contained: CSS inlined, JS stripped by snapshot.js, so the SPA
+    // entry point must not be there.
+    expect(content).not.toContain('tanstack-start-client-entry')
   })
 
   // A preserved design's URL must end in a slash: every snapshot links its own
@@ -93,16 +117,16 @@ test.describe('site health — archived site serving', () => {
   test('a preserved design serves at its own URL, and its pages resolve in-date', async ({
     page,
   }) => {
-    const response = await page.goto('/archive/2026-06-28/')
+    const response = await page.goto(`/archive/${CORPUS.built}/`)
     expect(response?.status()).toBe(200)
 
-    const about = await page.goto('/archive/2026-06-28/about.html')
+    const about = await page.goto(`/archive/${CORPUS.built}/about.html`)
     expect(about?.status()).toBe(200)
   })
 
   test('the slash-less form redirects to the design', async ({ page }) => {
-    await page.goto('/archive/2026-06-28')
-    await expect(page).toHaveURL(/\/archive\/2026-06-28\/$/)
+    await page.goto(`/archive/${CORPUS.built}`)
+    await expect(page).toHaveURL(new RegExp(`/archive/${CORPUS.built}/$`))
   })
 })
 
@@ -113,7 +137,7 @@ test.describe('site health — archived site serving', () => {
 // #156 and #158.
 test.describe('site health — the archive frame', () => {
   test('the rail renders over the design and names the day', async ({ page }) => {
-    await page.goto('/archive/2026-06-28/')
+    await page.goto(`/archive/${CORPUS.built}/`)
 
     const frame = page.locator('[data-archive-frame]')
     await expect(frame).toBeVisible()
@@ -124,12 +148,12 @@ test.describe('site health — the archive frame', () => {
   test('the rail is on the inner pages too, where the design invites the click', async ({
     page,
   }) => {
-    await page.goto('/archive/2026-06-28/work/spaceman.html')
+    await page.goto(`/archive/${CORPUS.built}/work/spaceman.html`)
     await expect(page.locator('[data-archive-frame]')).toBeVisible()
   })
 
   test('it displaces the design rather than covering it', async ({ page }) => {
-    await page.goto('/archive/2026-06-28/')
+    await page.goto(`/archive/${CORPUS.built}/`)
     const padding = await page.evaluate(() =>
       Number.parseInt(getComputedStyle(document.body).paddingTop, 10)
     )
@@ -137,20 +161,19 @@ test.describe('site health — the archive frame', () => {
   })
 
   test('prev and next step over the days with no build', async ({ page }) => {
-    // 2026-07-25 was never built. Next from 07-24 must reach 07-26.
-    await page.goto('/archive/2026-07-24/')
+    await page.goto(`/archive/${CORPUS.beforeGap}/`)
     await page.locator('[data-archive-frame] a[title^="Next build"]').click()
-    await expect(page).toHaveURL(/\/archive\/2026-07-26\/$/)
+    await expect(page).toHaveURL(new RegExp(`/archive/${CORPUS.afterGap}/$`))
   })
 
   test('the explainer is one click from the design', async ({ page }) => {
-    await page.goto('/archive/2026-06-28/')
+    await page.goto(`/archive/${CORPUS.built}/`)
     await page.locator('[data-archive-frame] a', { hasText: 'How it was made' }).click()
-    await expect(page).toHaveURL(/\/how\/2026-06-28$/)
+    await expect(page).toHaveURL(new RegExp(`/how/${CORPUS.built}$`))
   })
 
   test('a sealed design keeps no link onto the live site', async ({ page }) => {
-    await page.goto('/archive/2026-07-17/')
+    await page.goto(`/archive/${CORPUS.sealed}/`)
     // Every origin the site has ever served from, not just today's. After a
     // domain move a snapshot can carry either, and a check spelling one host
     // silently stops covering the other.
@@ -172,7 +195,7 @@ test.describe('site health — the archive frame', () => {
 // build, so they fail the morning a redesign reaches in — which is the whole
 // point of #152 and the reason the tokens live in panda.config.ts.
 test.describe('site health — the archive keeps its own identity', () => {
-  for (const path of ['/archive', '/how/2026-06-28']) {
+  for (const path of ['/archive', `/how/${CORPUS.built}`]) {
     test(`${path} renders outside the nightly shell`, async ({ page }) => {
       await page.goto(path)
       await expect(page.locator('h1')).toBeVisible({ timeout: 15000 })
@@ -218,44 +241,43 @@ test.describe('site health — the calendar', () => {
 
   test('a day opens the design it shipped', async ({ page }) => {
     await page.goto('/archive')
-    const cell = page.locator('a[href="/archive/2026-06-28/"]').first()
+    const cell = page.locator(`a[href="/archive/${CORPUS.built}/"]`).first()
     await expect(cell).toBeVisible({ timeout: 15000 })
     await cell.click()
-    await expect(page).toHaveURL(/\/archive\/2026-06-28\/$/)
+    await expect(page).toHaveURL(new RegExp(`/archive/${CORPUS.built}/$`))
   })
 
   test('a day with no preserved pages goes to the explainer instead', async ({ page }) => {
     await page.goto('/archive')
-    // 2026-03-12 has a record and no capture.
     await page.locator('button', { hasText: 'All' }).click()
-    const recordCell = page.locator('a[href="/how/2026-03-12"]').first()
+    const recordCell = page.locator(`a[href="/how/${CORPUS.recordOnly}"]`).first()
     await expect(recordCell).toBeVisible({ timeout: 15000 })
   })
 })
 
 test.describe('site health — the explainer', () => {
   test('leads with the brief and links to the design', async ({ page }) => {
-    await page.goto('/how/2026-06-28')
+    await page.goto(`/how/${CORPUS.built}`)
     await expect(page.getByRole('heading', { name: 'A brief was written' })).toBeVisible({
       timeout: 15000,
     })
-    await expect(page.locator('a[href="/archive/2026-06-28/"]')).toBeVisible()
+    await expect(page.locator(`a[href="/archive/${CORPUS.built}/"]`)).toBeVisible()
   })
 
   test('names the era when a field did not exist yet, rather than looking broken', async ({
     page,
   }) => {
-    await page.goto('/how/2026-03-12')
+    await page.goto(`/how/${CORPUS.recordOnly}`)
     // Four fields predate the prose era, so the sentence appears more than once.
     await expect(page.getByText(/had no such concept in the prose era/).first()).toBeVisible({
       timeout: 15000,
     })
     // A record-only day has no design to offer.
-    await expect(page.locator('a[href="/archive/2026-03-12/"]')).toHaveCount(0)
+    await expect(page.locator(`a[href="/archive/${CORPUS.recordOnly}/"]`)).toHaveCount(0)
   })
 
   test('summarizes each signal in words rather than counting items', async ({ page }) => {
-    await page.goto('/how/2026-06-28')
+    await page.goto(`/how/${CORPUS.built}`)
     await expect(page.getByText(/full moon, \d+% lit/)).toBeVisible({ timeout: 15000 })
     await expect(page.getByText(/\d+ items/)).toHaveCount(0)
   })
@@ -263,7 +285,7 @@ test.describe('site health — the explainer', () => {
   test('never embeds the preserved design, which would put two identities on one page', async ({
     page,
   }) => {
-    await page.goto('/how/2026-06-28')
+    await page.goto(`/how/${CORPUS.built}`)
     await expect(page.locator('iframe')).toHaveCount(0)
   })
 })

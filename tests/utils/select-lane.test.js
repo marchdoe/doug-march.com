@@ -58,7 +58,7 @@ describe('parseLaneFrontmatter', () => {
 })
 
 describe('loadLanes — the real lane directory', () => {
-  it('finds exactly the 17 flattened lanes', () => {
+  it('tripwire: exactly 17 flattened lanes (adding or removing one is a decision, not a side effect)', () => {
     expect(loadLanes()).toHaveLength(17)
   })
 
@@ -164,9 +164,10 @@ describe('extractRecentLanes', () => {
 })
 
 describe('selectLane', () => {
-  it('throws a clear error rather than picking nothing when no lane files exist', () => {
-    // loadLanes() always reads the real directory, so this exercises the
-    // guard path via a controlled expectation rather than an empty fixture.
+  it('has lanes to choose from (the empty-directory throw in selectLane is unreachable from here)', () => {
+    // loadLanes() reads a fixed LANES_DIR, so the guard that throws when it is
+    // empty cannot be exercised without an injectable path. This asserts the
+    // precondition the rest of the suite depends on, and nothing more.
     expect(loadLanes().length).toBeGreaterThan(0)
   })
 

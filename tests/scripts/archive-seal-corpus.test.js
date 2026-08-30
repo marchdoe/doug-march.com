@@ -51,7 +51,7 @@ describe('the corpus itself', () => {
     expect(pages.length).toBeGreaterThanOrEqual(1032)
   })
 
-  it('has a whole snapshot behind every date', () => {
+  it('tripwire: every date has a whole snapshot of 5, 9 or 10 pages', () => {
     const counts = new Map()
     for (const p of pages) counts.set(p.date, (counts.get(p.date) ?? 0) + 1)
     // 5 in the early prose era, 9 once the work pages settled, 10 on
