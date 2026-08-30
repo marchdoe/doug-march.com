@@ -19,19 +19,15 @@ import { parseDelimiterResponse } from '../utils/delimiter-parser.js'
 import {
   parseMeasurablesBlock,
   parseShellBlock,
+  parseHeaderBlock,
   parseCompositionBlock,
 } from '../utils/spec-blocks.js'
 import { isValidTuple } from '../utils/composition-grammar.js'
+import { isValidHeader } from '../utils/header-grammar.js'
+import { LOCKUP_IDS } from '../utils/brand-lockup.js'
 import { modelFor } from '../utils/models.js'
 
-const BRAND_LOCKUP_IDS = new Set([
-  'mark-only-sm',
-  'mark-only-md',
-  'horizontal-sm',
-  'horizontal-md',
-  'stacked-md',
-  'stacked-lg',
-])
+const BRAND_LOCKUP_IDS = new Set(LOCKUP_IDS)
 
 /**
  * Assemble the user prompt for the Art Director call.
@@ -137,7 +133,9 @@ export function validateArtDirectorResult(parsed) {
     throw new Error('Art Director response missing ===SHELL===')
   }
   const shell = parseShellBlock(parsed.shell)
-  for (const key of ['nav', 'footer', 'brand_lockup', 'brand_color_mode']) {
+  // `nav` is no longer a SHELL field — it moved to HEADER with the rest of
+  // the header declaration (#254).
+  for (const key of ['footer', 'brand_lockup', 'brand_color_mode']) {
     if (!shell[key]) throw new Error(`SHELL block missing ${key}`)
   }
   if (!['original', 'single-color'].includes(shell.brand_color_mode)) {
@@ -149,6 +147,24 @@ export function validateArtDirectorResult(parsed) {
     console.warn(
       `  [AD] brand_lockup "${shell.brand_lockup}" is not a Brand Contract id — accepting (warn-only)`
     )
+  }
+  // HEADER is validated the way COMPOSITION is, and for the same reason: a
+  // declaration nobody can check is a declaration the render can quietly
+  // ignore. Three owner ratings running said the header was wrong and no
+  // gate could have caught any of them (#254).
+  if (!parsed.header) {
+    throw new Error('Art Director response missing ===HEADER===')
+  }
+  const header = parseHeaderBlock(parsed.header)
+  const headerCheck = isValidHeader(header, {
+    shellPosture: composition.shell_posture,
+    brandLockup: shell.brand_lockup,
+  })
+  if (!headerCheck.valid) {
+    throw new Error(`Art Director HEADER block is invalid: ${headerCheck.errors.join('; ')}`)
+  }
+  if (!header.nav) {
+    throw new Error('HEADER block missing nav')
   }
 }
 
@@ -176,7 +192,7 @@ export function validateArtDirectorResult(parsed) {
  *   systemPrompt: string,
  *   designReferenceImages?: Array<{ data: string, media_type: string, title?: string }>,
  * }} ctx
- * @returns {Promise<{ heroCopy: string, heroRationale: string, heroSource: string, archetype: string, chassisId: string, presetTs: string, visualSpec: string, selfCheck: string, rationale: string, designBrief: string, colorScheme: object|null, shell: string, composition: string, compositionRationale: string, brief: string }>}
+ * @returns {Promise<{ heroCopy: string, heroRationale: string, heroSource: string, archetype: string, chassisId: string, presetTs: string, visualSpec: string, selfCheck: string, rationale: string, designBrief: string, colorScheme: object|null, shell: string, header: string, composition: string, compositionRationale: string, brief: string }>}
  */
 export async function runArtDirector(ctx) {
   const userPrompt = buildArtDirectorUserPrompt(ctx)
@@ -212,6 +228,7 @@ export async function runArtDirector(ctx) {
       'self_check',
       'measurables',
       'shell',
+      'header',
     ].filter((k) => parsed[k])
     const absent = [
       'hero_copy',
@@ -222,6 +239,7 @@ export async function runArtDirector(ctx) {
       'self_check',
       'measurables',
       'shell',
+      'header',
     ].filter((k) => !parsed[k])
     console.error(
       `  [AD] validation failed — present: [${present.join(', ')}] absent: [${absent.join(', ')}]`
@@ -278,6 +296,7 @@ export async function runArtDirector(ctx) {
     selfCheck: parsed.self_check,
     measurables: parsed.measurables,
     shell: parsed.shell,
+    header: parsed.header,
     composition: parsed.composition,
     compositionRationale: parsed.composition_rationale,
     rationale: parsed.rationale || '',

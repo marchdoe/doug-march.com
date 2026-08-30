@@ -27,7 +27,6 @@ A curator's black gallery wall — project tiles float on near-black with genero
 ## Component cues
 - Buttons: pill, outlined (not filled) on dark; blue fill reserved for the single primary CTA
 - Cards: tiles carry a visible 1px border and a title + one-line description below the image
-- Nav: dark bar, search field with a subtle border, profile cluster right
 
 ## Anti-patterns specific to this style
 - DO NOT use a white background — this lane is dark-canvas by definition

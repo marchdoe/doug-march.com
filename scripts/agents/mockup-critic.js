@@ -27,7 +27,7 @@ export function parseMockupCriticResponse(raw) {
 }
 
 /**
- * @param {{ systemPrompt: string, screenshotBuffer: Buffer, enrichedBrief: string, measurables: string, shell: string }} ctx
+ * @param {{ systemPrompt: string, screenshotBuffer: Buffer, headerCrop?: Buffer|null, enrichedBrief: string, measurables: string, shell: string, header?: string }} ctx
  * @returns {Promise<{ verdict: 'APPROVE'|'REVISE', feedback: string }>}
  */
 export async function runMockupCritic(ctx) {
@@ -50,9 +50,16 @@ export async function runMockupCritic(ctx) {
 
 /**
  * Assemble the critic's user turn: the declared intent as text, then the
- * rendered mockup as a real image block. Exported for tests.
+ * rendered mockup as a real image block, then a 2x crop of the header region.
+ * Exported for tests.
  *
- * @param {{ screenshotBuffer: Buffer, enrichedBrief: string, measurables: string, shell: string }} ctx
+ * The crop is the point of the second image. At 1024px for a 1440px page,
+ * an 11px mark and a 44px mark are both a few grey pixels, which is how a
+ * quarter-size lockup passed this gate (#254). The crop arrives near 1:1, so
+ * `mark_px` becomes something the critic can actually measure. It is optional:
+ * a capture failure costs the critic one image, never the run.
+ *
+ * @param {{ screenshotBuffer: Buffer, headerCrop?: Buffer|null, enrichedBrief: string, measurables: string, shell: string, header?: string }} ctx
  * @returns {Array<{type: string, text?: string, source?: object}>}
  */
 export function buildMockupCriticBlocks(ctx) {
@@ -60,7 +67,14 @@ export function buildMockupCriticBlocks(ctx) {
     textBlock(`## Brief + Visual Specification\n\n${ctx.enrichedBrief}`),
     textBlock(`## Measurables (declared floors)\n\n${ctx.measurables}`),
     textBlock(`## Shell Declaration\n\n${ctx.shell}`),
+    ctx.header ? textBlock(`## Header Declaration\n\n${ctx.header}`) : null,
     textBlock('The screenshot of the rendered mockup (1440×900) follows:'),
     imageBlock(ctx.screenshotBuffer),
-  ]
+    ctx.headerCrop
+      ? textBlock(
+          'A 2x crop of the header region of that same mockup follows. Measure the mark against the declared mark_px here, not in the full-page shot:'
+        )
+      : null,
+    ctx.headerCrop ? imageBlock(ctx.headerCrop) : null,
+  ].filter(Boolean)
 }

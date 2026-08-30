@@ -17,8 +17,12 @@ describe('file group constants', () => {
     expect(TOKEN_FILES).toEqual(['elements/preset.ts'])
   })
 
-  it('ORCHESTRATOR_FILES contains __root.tsx and chassis-preset.ts (generated, never agent-authored)', () => {
-    expect(ORCHESTRATOR_FILES).toEqual(['app/routes/__root.tsx', 'elements/chassis-preset.ts'])
+  it('ORCHESTRATOR_FILES contains the three generated files (never agent-authored)', () => {
+    expect(ORCHESTRATOR_FILES).toEqual([
+      'app/routes/__root.tsx',
+      'elements/chassis-preset.ts',
+      'app/components/BrandLockup.tsx',
+    ])
   })
 
   it('LAYOUT_FILES contains Layout.tsx and 4 route files (og.tsx is the engineer-authored share card)', () => {

@@ -10,6 +10,22 @@ Director. Decoupling the two means any lane can pair with any composition
 tuple, instead of one lane only ever reaching the prompt when a specific
 archetype was chosen.
 
+## A lane does not place the header
+
+Every lane carried a `Nav:` line until 2026-08-30, and between them they
+prescribed a fixed top bar, a left sidebar, a corner mark, a logo at the seam
+of two zones. That is placement, and placement is the composition tuple's and
+the `===HEADER===` block's. The pattern the lanes kept reaching for — a top bar
+with a wordmark on the left and text links on the right — is the one the owner
+rejected in three consecutive ratings, which is roughly what you would expect
+from seventeen files quietly voting for it. The lines are gone (#254).
+
+What a lane may still say about the brand is typographic: that the wordmark
+wants small caps, that it is set in the display serif, that it reads all-caps
+like a section label. Those are register. Where it sits, how tall the mark is,
+whether there is a role line under it — those are declared per day and
+measured by both critics.
+
 `scripts/utils/select-lane.js` scores every lane for the day: a deterministic
 hash-derived base, a bonus per composition-axis value the lane's `affinity`
 shares with today's tuple, and a penalty if the lane ran in the last 3

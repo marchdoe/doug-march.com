@@ -27,7 +27,7 @@ Type is the page. Black-and-white precision — a type foundry's specimen sheet.
 ## Component cues
 - Buttons: 1px border, square-ish (4px radius), text-weight 500, subtle hover invert
 - Cards: bordered, no shadow, tight 16–24px padding, meta row at top in mono
-- Nav: small-caps text links, mono subtitles, fixed thin bar
+- Wordmark: small-caps text links register, mono subtitles
 
 ## Anti-patterns specific to this style
 - DO NOT use color fills or gradients

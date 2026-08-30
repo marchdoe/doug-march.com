@@ -88,6 +88,18 @@ describe('validateArtDirectorResult', () => {
     'field_ratio: balanced',
   ].join('\n')
 
+  const validHeader = [
+    'placement: top-bar',
+    'height_px: 96',
+    'mark_px: 40',
+    'wordmark_step: lg',
+    'wordmark_weight: 600',
+    'role_line: present',
+    'nav_step: sm',
+    'nav_case: upper',
+    'nav: bottom rail',
+  ].join('\n')
+
   const valid = {
     hero_copy: 'There is no limit',
     archetype: 'Specimen',
@@ -98,8 +110,8 @@ describe('validateArtDirectorResult', () => {
     self_check: '1. Yes 2. Yes 3. Yes',
     measurables:
       'canvas_utilization_min: 70\nhero_scale: clamp(96px, 13vw, 200px)\ncolor_coverage_min: 60',
-    shell:
-      'nav: bottom rail\nfooter: data strip\nbrand_lockup: horizontal-md\nbrand_color_mode: original',
+    shell: 'footer: data strip\nbrand_lockup: horizontal-md\nbrand_color_mode: original',
+    header: validHeader,
     files: [{ path: 'elements/preset.ts', content: "export const elementsPreset = 'stub'" }],
     rationale: 'r',
     design_brief: 'b',

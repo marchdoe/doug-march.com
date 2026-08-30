@@ -14,6 +14,7 @@ export function buildMockupDesignerUserPrompt({
   contentSummary,
   measurables,
   shell,
+  header,
   brandSvg,
   brandMonoSvg,
   googleFontsUrl,
@@ -29,6 +30,7 @@ export function buildMockupDesignerUserPrompt({
   sections.push(enrichedBrief)
   sections.push(`## Measurables (the critic will measure these)\n\n${measurables}`)
   sections.push(`## Shell Declaration (execute exactly)\n\n${shell}`)
+  if (header) sections.push(`## Header Declaration (execute these numbers exactly)\n\n${header}`)
   sections.push(
     `## Design Tokens (elements/preset.ts — use ONLY these colors)\n\n\`\`\`typescript\n${tokenContext}\n\`\`\``
   )

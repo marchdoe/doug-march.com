@@ -27,7 +27,7 @@ Paper-white density. Reads like an editorial front page: masthead, pull quotes, 
 ## Component cues
 - Buttons: underlined text-link style (no pill), ink-blue
 - Cards: no cards — use bordered columns and rule-separated sections
-- Nav: masthead row with logo + date + nav as all-caps section labels ("WORK / LAB / ABOUT")
+- Wordmark: all-caps section labels in the same grotesk as the heads
 
 ## Anti-patterns specific to this style
 - DO NOT center body paragraphs
@@ -36,4 +36,4 @@ Paper-white density. Reads like an editorial front page: masthead, pull quotes, 
 - DO NOT use pure #FFFFFF or #000000 — warm paper and ink black only
 
 ## Mobile strategy
-Masthead stacks vertically on mobile: logo → name (Playfair, smaller) → nav as a pill row → date. Section dividers stay styled like masthead rules (full-width horizontal lines, not gutters). Datelines and kickers stay visible; they define the register.
+Whatever the header is on desktop, it keeps its editorial register on mobile: rules stay rules, the wordmark stays in the display serif, the date stays visible. Section dividers stay styled like masthead rules (full-width horizontal lines, not gutters). Datelines and kickers stay visible; they define the register.

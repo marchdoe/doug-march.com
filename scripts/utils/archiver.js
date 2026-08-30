@@ -392,11 +392,12 @@ export async function archive(
         return null
       }
     }
-    const [composition, todayScheme, lane, shell] = await Promise.all([
+    const [composition, todayScheme, lane, shell, header] = await Promise.all([
       readJson('composition.json'),
       readJson('color-scheme.json'),
       readJson('lane.json'),
       readJson('shell.json'),
+      readJson('header.json'),
     ])
     const history = await readUniquenessHistory({ root, limit: 7, before: dateStr })
     const index = computeUniqueness(
@@ -409,6 +410,7 @@ export async function archive(
             : (colorScheme?.primary_hue?.h ?? null),
         lane: lane?.laneId ?? null,
         shell,
+        header,
       },
       history
     )

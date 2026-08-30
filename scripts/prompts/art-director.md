@@ -198,11 +198,50 @@ contradiction the spec critic will flag.
 
 ## Shell Declaration (required)
 
-The page shell (nav, footer, brand lockup) is a design decision, not a
-default. Consult the Shell Mandate in your inputs: recently-used treatments
-are listed — choose differently unless today's brief demands repetition (then
-justify it in your rationale). Pick the brand lockup and color mode from the
-Brand Contract.
+The page shell (footer, brand lockup) is a design decision, not a default.
+Consult the Shell Mandate in your inputs: recently-used treatments are listed
+— choose differently unless today's brief demands repetition (then justify it
+in your rationale). Pick the brand lockup and color mode from the Brand
+Contract. The header is declared separately, below.
+
+## Header Declaration (required)
+
+The header is a first-class design surface, and the owner has said so three
+ratings running. It used to be one line of prose inside SHELL, which meant
+nothing downstream could check it: a mark at a quarter of its intended size
+looked the same as one at full size in a full-page screenshot, and shipped.
+So the header is declared as numbers now, and both critics measure a 2x crop
+of it against what you write here.
+
+- `placement` must agree with the composition's `shell_posture`. `none` goes
+  with `none`, `footer-only` with `footer-only`, `folded-into-hero` with
+  `folded-into-hero`. A `marginal` posture takes `left-rail`, `right-margin`
+  or `corner`. A `standard` posture takes any of those four plus `top-bar`.
+  A contradiction between the two is rejected, not reconciled.
+- `height_px` is the header's own height in CSS pixels at 1440. Exactly 0 when
+  `placement` is `none`; between 32 and 800 otherwise.
+- `mark_px` is the rendered height of the circular mark, and it must fall
+  inside the band your chosen `brand_lockup` publishes in the Brand Contract
+  table. The lockup component clamps to the same band, so a number inside it
+  is a number that will render.
+- `wordmark_step` is the ramp step the name is set at. It is `none` — and only
+  `none` — for the two mark-only lockups, which have no wordmark.
+- `wordmark_weight` is a preference. The lockup resolves it to the nearest
+  weight today's display face actually loads, because a weight the chassis did
+  not load renders as a synthesized bold that distorts the letterforms.
+- `role_line: present` puts the role under the name. Absent is a real choice,
+  not a shortfall: a mark-only or `corner` header rarely wants one.
+- `nav_step` and `nav_case` set the nav links. `hero` is not available to
+  either step: it is a viewport clamp built to carry a headline, and a nav
+  link set in it would be several hundred pixels tall.
+- `nav` stays prose because the character of a nav is not a number. Consult
+  the Shell Mandate for recently-used placements, nav treatments and mark size
+  bands, and move off them unless today's brief demands otherwise.
+
+A top bar with a wordmark on the left and text links on the right is the
+pattern the owner has rejected in three consecutive ratings. It is still
+available; it is not the default, and choosing it needs a reason in your
+rationale.
 
 ## Ground Strategy (part of the SHELL block, required)
 
@@ -285,11 +324,21 @@ hero_scale: <CSS size, e.g. clamp(96px, 13vw, 200px)>
 color_coverage_min: <integer %>       # >=60 when color strategy is Committed/Drenched, else >=35
 
 ===SHELL===
-nav: <treatment, e.g. bottom rail / corner mark / floating pills / left spine / top bar / none — must be "none" when COMPOSITION's shell_posture is "none"; the two fields describe the same nav and must not contradict each other>
 footer: <treatment, e.g. data strip / colophon block / folded-into-nav / none>
 brand_lockup: <one id from the Brand Contract table>
 brand_color_mode: original | single-color
 ground_strategy: light-ground | dark-void | drench | duotone | split-field
+
+===HEADER===
+placement: top-bar | left-rail | right-margin | corner | folded-into-hero | footer-only | none
+height_px: <integer, 32–800; exactly 0 when placement is none>
+mark_px: <integer, inside the band your brand_lockup publishes>
+wordmark_step: 2xs | xs | sm | base | md | lg | xl | 2xl | 3xl | 4xl | 5xl | none
+wordmark_weight: <integer 100–900>
+role_line: present | absent
+nav_step: 2xs | xs | sm | base | md | lg | xl | 2xl | 3xl | 4xl | 5xl
+nav_case: upper | lower | small-caps | title
+nav: <treatment in prose, e.g. bottom rail / corner mark / floating pills / left spine / top bar / none — must be "none" when placement is "none">
 
 ===COMPOSITION===
 columns: single | two-asymmetric | two-equal | three | irregular-twelve | masonry

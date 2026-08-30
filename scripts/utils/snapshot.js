@@ -115,6 +115,95 @@ async function downscaleForCritic(
 }
 
 /**
+ * Long edge, in pixels, for a critic-bound header crop.
+ *
+ * The full-page screenshot reaches the critic at 1024px for a 1440px-wide
+ * page, so every CSS pixel of the header arrives as 0.71 image pixels. That
+ * is why an 11px mark and a 44px mark both read as "the lockup is present"
+ * (#254). The crop is rendered at deviceScaleFactor 2 and sent at up to
+ * 1568px — the largest edge the API keeps without downscaling server-side —
+ * which puts the header back above 1:1.
+ */
+const HEADER_CROP_WIDTH = 1568
+const HEADER_CROP_QUALITY = 75
+
+/** Fallback depth of the top band when nothing declares a header height. */
+export const DEFAULT_HEADER_CROP_HEIGHT = 160
+
+/**
+ * The region of the viewport a header crop should cover, in CSS pixels.
+ *
+ * Placement comes from the day's `===HEADER===` block. A marginal header is a
+ * vertical rail and a top bar is a horizontal band, and cropping the wrong
+ * axis would hand the critic a picture of the hero. `none` still gets the top
+ * band: the composition grammar's `none` posture removes the nav, not the
+ * brand, so the lockup is usually still up there.
+ *
+ * Pure and side-effect-free so it is testable without a browser.
+ *
+ * @param {string|null|undefined} placement
+ * @param {{ width: number, height: number, declaredHeightPx?: number|null }} viewport
+ * @returns {{ x: number, y: number, width: number, height: number }}
+ */
+export function headerCropRegion(placement, { width, height, declaredHeightPx } = {}) {
+  const w = width ?? 1440
+  const h = height ?? 900
+  // Take the declared height plus room to see what sits under it, so a header
+  // that overflows its own declaration is visible in the crop rather than
+  // cropped out of it.
+  const band = Math.min(
+    h,
+    Math.max(DEFAULT_HEADER_CROP_HEIGHT, Math.round((declaredHeightPx || 0) * 1.4) + 48)
+  )
+  const rail = Math.min(w, Math.max(360, Math.round(w * 0.34)))
+  switch (placement) {
+    case 'left-rail':
+      return { x: 0, y: 0, width: rail, height: h }
+    case 'right-margin':
+      return { x: w - rail, y: 0, width: rail, height: h }
+    case 'footer-only':
+      return { x: 0, y: h - band, width: w, height: band }
+    default:
+      return { x: 0, y: 0, width: w, height: band }
+  }
+}
+
+/**
+ * Render one page at deviceScaleFactor 2 and return a JPEG of the header
+ * region. Best-effort: the caller treats a null as "no crop this run" rather
+ * than a failure, because a missing crop must never be the reason a nightly
+ * build stops.
+ *
+ * @param {import('playwright').Browser} browser
+ * @param {string} url page URL (http or file://)
+ * @param {{ width: number, height: number, placement?: string|null, declaredHeightPx?: number|null, colorScheme?: 'light'|'dark' }} opts
+ * @returns {Promise<Buffer|null>}
+ */
+async function captureHeaderCrop(browser, url, opts) {
+  const { width = 1440, height = 900, placement, declaredHeightPx, colorScheme } = opts
+  let page = null
+  try {
+    page = await browser.newPage({
+      viewport: { width, height },
+      deviceScaleFactor: 2,
+      ...(colorScheme ? { colorScheme } : {}),
+    })
+    await page.goto(url, { waitUntil: 'networkidle' })
+    await page.waitForTimeout(1000) // fonts
+    const clip = headerCropRegion(placement, { width, height, declaredHeightPx })
+    const png = await page.screenshot({ type: 'png', clip })
+    return await downscaleForCritic(page, png, {
+      targetWidth: HEADER_CROP_WIDTH,
+      quality: HEADER_CROP_QUALITY,
+    })
+  } catch {
+    return null
+  } finally {
+    if (page) await page.close().catch(() => {})
+  }
+}
+
+/**
  * Poll a URL until it returns HTTP 200.
  * @param {string} url
  * @param {number} timeoutMs
@@ -301,9 +390,11 @@ export async function captureSnapshot(date, buildId) {
  * CRITIC_JPEG_WIDTH above).
  *
  * @param {number} [port] - Optional port if server is already running
- * @returns {Promise<{png: Buffer, jpeg: Buffer}>} image buffers
+ * @param {{ headerCrop?: { placement?: string|null, heightPx?: number|null } }} [opts]
+ *   the day's HEADER declaration, which decides where the header crop is taken
+ * @returns {Promise<{png: Buffer, jpeg: Buffer, darkPng: Buffer, darkJpeg: Buffer, headerJpeg: Buffer|null}>}
  */
-export async function captureScreenshot(port) {
+export async function captureScreenshot(port, { headerCrop } = {}) {
   const { chromium } = await import('playwright')
 
   return await withPreviewServer(
@@ -334,7 +425,17 @@ export async function captureScreenshot(port) {
         const darkPng = await darkPage.screenshot({ type: 'png', fullPage: false })
         const darkJpeg = await downscaleForCritic(darkPage, darkPng)
 
-        return { png, jpeg, darkPng, darkJpeg }
+        // Header crop, rendered separately at 2x and 1440 wide so it lines up
+        // with the mockup's crop. Never blocking — a missing crop costs the
+        // critics one image, not the run.
+        const headerJpeg = await captureHeaderCrop(browser, `${baseUrl}/`, {
+          width: 1440,
+          height: 900,
+          placement: headerCrop?.placement ?? null,
+          declaredHeightPx: headerCrop?.heightPx ?? null,
+        })
+
+        return { png, jpeg, darkPng, darkJpeg, headerJpeg }
       } finally {
         // Close in finally so a throw from page.goto / screenshot (dead preview
         // server, networkidle timeout) can't orphan the headless Chromium — the
@@ -352,11 +453,15 @@ export async function captureScreenshot(port) {
  * the network.
  *
  * @param {string} filePath - absolute path to the HTML file
- * @param {{ width?: number, height?: number }} [opts]
- * @returns {Promise<{png: Buffer, jpeg: Buffer}>} image buffers — PNG for
- *   archives, JPEG (downscaled, q70) for critic prompts (see captureScreenshot)
+ * @param {{ width?: number, height?: number, headerCrop?: { placement?: string|null, heightPx?: number|null } }} [opts]
+ * @returns {Promise<{png: Buffer, jpeg: Buffer, headerJpeg: Buffer|null}>} image
+ *   buffers — PNG for archives, JPEG (downscaled, q70) for critic prompts (see
+ *   captureScreenshot), plus a 2x crop of the declared header region
  */
-export async function captureHtmlFileScreenshot(filePath, { width = 1440, height = 900 } = {}) {
+export async function captureHtmlFileScreenshot(
+  filePath,
+  { width = 1440, height = 900, headerCrop } = {}
+) {
   const { chromium } = await import('playwright')
   const browser = await chromium.launch({ headless: true })
   try {
@@ -365,7 +470,13 @@ export async function captureHtmlFileScreenshot(filePath, { width = 1440, height
     await page.waitForTimeout(1000) // fonts
     const png = await page.screenshot({ type: 'png', fullPage: false })
     const jpeg = await downscaleForCritic(page, png)
-    return { png, jpeg }
+    const headerJpeg = await captureHeaderCrop(browser, `file://${filePath}`, {
+      width,
+      height,
+      placement: headerCrop?.placement ?? null,
+      declaredHeightPx: headerCrop?.heightPx ?? null,
+    })
+    return { png, jpeg, headerJpeg }
   } finally {
     await browser.close()
   }

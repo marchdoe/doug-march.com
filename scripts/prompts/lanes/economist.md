@@ -13,7 +13,7 @@ Data-driven editorial confidence. A red masthead bar, confident charts embedded 
 
 ## Color roles
 - bg: #FFFFFF
-- masthead bar: #E3120B (signal red) — used once at the very top, never repeated as decoration elsewhere
+- signal red: #E3120B — one bar of it, once, wherever the header sits; never repeated as decoration elsewhere
 - text: #1A1A1A
 - text.mid: #595959
 - accent (primary chart series): #E3120B
@@ -28,13 +28,12 @@ Data-driven editorial confidence. A red masthead bar, confident charts embedded 
 ## Component cues
 - Buttons: text-link with a thin red underline, no fill, no pill
 - Cards: bordered 1px hairline with a red kicker label at the top-left corner ("BRIEFING", "ANALYSIS")
-- Nav: red bar with white wordmark; section links sit below in a thin grey rule row
 
 ## Anti-patterns specific to this style
-- DO NOT use the red anywhere except the masthead bar, kickers, and primary chart series — it must stay rare to read as authoritative, not decorative
+- DO NOT use the red anywhere except that one bar, kickers, and primary chart series — it must stay rare to read as authoritative, not decorative
 - DO NOT use drop shadows or rounded cards
 - DO NOT skip a chart or data-visualization element — this lane's identity depends on including at least one
 - DO NOT set a headline longer than one line at display scale
 
 ## Mobile strategy
-The masthead bar stays full-width and fixed at the top. Charts scale down but keep their axis labels legible — never crop a chart's labels to force it to fit.
+The red bar keeps its full extent and its weight on mobile — it is the lane's one loud gesture and it must not shrink into a stripe. Charts scale down but keep their axis labels legible — never crop a chart's labels to force it to fit.

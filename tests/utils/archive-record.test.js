@@ -61,7 +61,8 @@ describe('eraForDate', () => {
     expect(eraForDate('2026-04-18')).toBe('color-directed')
     expect(eraForDate('2026-07-12')).toBe('shell-directed')
     expect(eraForDate('2026-08-23')).toBe('grammar')
-    expect(eraForDate('2027-01-01')).toBe('grammar')
+    expect(eraForDate('2026-08-30')).toBe('header-declared')
+    expect(eraForDate('2027-01-01')).toBe('header-declared')
   })
 
   it('returns null before the archive begins', () => {

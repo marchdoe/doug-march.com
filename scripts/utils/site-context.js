@@ -10,6 +10,7 @@ import { ROOT } from './file-manager.js'
  */
 export const MUTABLE_FILES = [
   'elements/preset.ts',
+  'app/components/BrandLockup.tsx',
   'app/components/Layout.tsx',
   'app/components/Sidebar.tsx',
   'app/components/SectionHead.tsx',
@@ -38,7 +39,14 @@ export const TOKEN_FILES = ['elements/preset.ts']
  * MUTABLE_FILES so backup/restore covers them, but kept out of TOKEN_FILES
  * so the Token Designer is never asked to author them.
  */
-export const ORCHESTRATOR_FILES = ['app/routes/__root.tsx', 'elements/chassis-preset.ts']
+export const ORCHESTRATOR_FILES = [
+  'app/routes/__root.tsx',
+  'elements/chassis-preset.ts',
+  // The brand lockup (#254). Listed here so dropOrchestratorFiles discards it
+  // if an agent emits one, and in MUTABLE_FILES above so backup/restore covers
+  // it on a rollback.
+  'app/components/BrandLockup.tsx',
+]
 
 /** Files owned by the Layout Architect agent. */
 export const LAYOUT_FILES = [

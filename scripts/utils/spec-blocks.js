@@ -1,5 +1,5 @@
 /**
- * Parsers for the Art Director's MEASURABLES, SHELL, and COMPOSITION
+ * Parsers for the Art Director's MEASURABLES, SHELL, HEADER, and COMPOSITION
  * delimiter blocks. All are simple `key: value` lines; `#` starts a
  * comment. Missing/unparseable fields come back null — validation policy
  * lives in the caller (validateArtDirectorResult), not here.
@@ -33,6 +33,12 @@ export function parseMeasurablesBlock(text) {
 }
 
 /**
+ * `nav` moved to the HEADER block on 2026-08-30 (#254) — the header stopped
+ * being one line of prose inside SHELL and became its own measurable
+ * declaration. It is still read here so archived shell.json files written
+ * before that date, and the shell mandate's history window, keep parsing.
+ * New responses put it in HEADER; parseHeaderBlock is what reads it.
+ *
  * @returns {{ nav: string|null, footer: string|null, brand_lockup: string|null, brand_color_mode: string|null, ground_strategy: string|null }}
  */
 export function parseShellBlock(text) {
@@ -47,6 +53,38 @@ export function parseShellBlock(text) {
     // structural declaration like nav/footer, not a poetic color spec.
     // Optional: old archives and pre-mandate responses won't have it.
     ground_strategy: kv.ground_strategy ? kv.ground_strategy.toLowerCase().trim() : null,
+  }
+}
+
+/**
+ * The Art Director's `===HEADER===` block — the header as a set of numbers a
+ * critic can measure off a crop, rather than the single line of prose it used
+ * to be inside SHELL (#254). Vocabulary and validation live in
+ * utils/header-grammar.js; this only reads.
+ *
+ * `nav` stays prose because the character of a nav is not a number. Everything
+ * beside it is: height, mark size, the ramp steps the wordmark and the links
+ * are set at, whether the role line is on.
+ *
+ * All fields optional here — missing/unparseable fields come back null so
+ * validation policy stays entirely in the caller.
+ *
+ * @returns {{ placement: string|null, height_px: number|null, mark_px: number|null, wordmark_step: string|null, wordmark_weight: number|null, role_line: string|null, nav_step: string|null, nav_case: string|null, nav: string|null }}
+ */
+export function parseHeaderBlock(text) {
+  const kv = parseKeyValues(text)
+  const norm = (v) => (v ? v.toLowerCase().trim() : null)
+  return {
+    placement: norm(kv.placement),
+    height_px: toInt(kv.height_px),
+    mark_px: toInt(kv.mark_px),
+    wordmark_step: norm(kv.wordmark_step),
+    wordmark_weight: toInt(kv.wordmark_weight),
+    role_line: norm(kv.role_line),
+    nav_step: norm(kv.nav_step),
+    nav_case: norm(kv.nav_case),
+    // Prose, so it keeps its capitalization.
+    nav: kv.nav ?? null,
   }
 }
 
