@@ -89,9 +89,7 @@ function HomeHero() {
         className={css({
           fontFamily: 'display',
           fontWeight: 'bold',
-          fontSize: 'hero',
-          lineHeight: 'tight',
-          letterSpacing: 'tight',
+          textStyle: 'hero',
           color: 'fieldInk',
           textTransform: 'uppercase',
         })}
