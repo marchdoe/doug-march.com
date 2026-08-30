@@ -42,7 +42,7 @@ hardening on pages that already carry no script, behind two existing controls:
 `snapshot.js:42` strips every `<script>` at capture, and `build-validator.js`
 blocks the pattern in agent-authored source.
 
-So the downside of getting this wrong is losing a defence-in-depth layer, not
+So the downside of getting this wrong is losing a defense-in-depth layer, not
 breaking anything.
 
 ## How to settle it

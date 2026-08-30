@@ -4,7 +4,7 @@
  * Two names, because two different questions get asked about a host, and
  * conflating them is how a domain move falsifies an archive.
  *
- * `RECOGNISED_ORIGINS` answers "could this URL have been ours?" — used when
+ * `RECOGNIZED_ORIGINS` answers "could this URL have been ours?" — used when
  * READING existing bytes. It only ever grows. 109 archived dates were captured
  * under `doug-march.com` and record it as the host that actually served them;
  * every capture after a cutover carries the new host and needs the same
@@ -23,18 +23,18 @@
  */
 
 /** Origins a URL in our own bytes may carry. Longest first: no origin may shadow another as a prefix. */
-export const RECOGNISED_ORIGINS = ['https://doug-march.com', 'https://dougmar.ch'].sort(
+export const RECOGNIZED_ORIGINS = ['https://doug-march.com', 'https://dougmar.ch'].sort(
   (a, b) => b.length - a.length
 )
 
 /** The origin serving the site today. Change this, and only this, on cutover day. */
 export const CANONICAL_ORIGIN = 'https://dougmar.ch'
 
-/** Host portion of every recognised origin, for allowlists keyed on hostname. */
-export const RECOGNISED_HOSTS = RECOGNISED_ORIGINS.map((o) => new URL(o).host)
+/** Host portion of every recognized origin, for allowlists keyed on hostname. */
+export const RECOGNIZED_HOSTS = RECOGNIZED_ORIGINS.map((o) => new URL(o).host)
 
 /**
- * The recognised origin `value` begins with, or null.
+ * The recognized origin `value` begins with, or null.
  *
  * The boundary check is load-bearing. A bare `startsWith` matches any host that
  * merely BEGINS with ours, and the short new domain makes that likely rather
@@ -46,7 +46,7 @@ export const RECOGNISED_HOSTS = RECOGNISED_ORIGINS.map((o) => new URL(o).host)
  */
 export function matchOrigin(value) {
   return (
-    RECOGNISED_ORIGINS.find(
+    RECOGNIZED_ORIGINS.find(
       (o) =>
         value === o ||
         value.startsWith(`${o}/`) ||

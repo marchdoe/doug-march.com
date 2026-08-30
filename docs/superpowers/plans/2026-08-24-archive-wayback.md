@@ -154,7 +154,7 @@ Implements #154. **Every task here lands in one commit.** Blocks Phases 3 and 4.
   directory. The screenshots and viewport captures beside them are pipeline output
   that nothing at build time can recreate, so they stay committed.
 - A display bug from Phase 1 surfaced during verification and is fixed here: a
-  one-off colour token (`glow: { value: '#FF8FC7' }`) unwraps to a bare string, and
+  one-off color token (`glow: { value: '#FF8FC7' }`) unwraps to a bare string, and
   the swatch renderer iterated it one character at a time. Seven dates have one.
 
 Target scheme:
@@ -291,8 +291,8 @@ Implements #157 and #159. Depends on Phase 2 for URLs and Phase 1 for data.
   redesign" and the ramp really moves — `2xl` was `5.063rem` on 2026-07-22 and
   `3.157rem` on 2026-07-24. The prototype's `fontSize: '2xl'` would have resized
   the archive's headline every morning, which is the exact thing #152 forbids.
-  The archive now owns colours, fonts, **and** a type scale in `panda.config.ts`.
-- The palette is achromatic on purpose. The only colour on an archive surface is
+  The archive now owns colors, fonts, **and** a type scale in `panda.config.ts`.
+- The palette is achromatic on purpose. The only color on an archive surface is
   the days themselves. `archive.bg` is the same `#0e0e10` as the Phase 3 frame
   rail, so the chrome around a snapshot and the chrome around the calendar are
   one system.
@@ -310,7 +310,7 @@ Implements #157 and #159. Depends on Phase 2 for URLs and Phase 1 for data.
   rather than inferred from a missing handler.
 
 **A bug fixed here.** Archive surfaces paint their own background, but `body`
-kept whatever the nightly preset gave it, and that colour showed in the
+kept whatever the nightly preset gave it, and that color showed in the
 overscroll gutter — `#120d08` on a morning the design was warm brown. `body` now
 carries the archive ground whenever a surface is rendering.
 
@@ -319,10 +319,10 @@ carries the archive ground whenever a surface is rendering.
       Today they inherit the nightly sidebar, footer, and fonts, which is visible in
       every prototype screenshot. #152's "fixed, neutral identity that does not change
       nightly" is unreachable until this lands.
-- [x] Colour is already solved by Task 4.2. Typography and chrome are not.
+- [x] Color is already solved by Task 4.2. Typography and chrome are not.
 
 ### Task 4.2: The archive's fixed identity
-- [x] `archive.*` colour tokens in `panda.config.ts`, which is not agent-owned.
+- [x] `archive.*` color tokens in `panda.config.ts`, which is not agent-owned.
 - [x] A typographic choice that does not depend on the nightly chassis.
 
 ### Task 4.3: Calendar
@@ -332,16 +332,16 @@ carries the archive ground whenever a surface is rendering.
 - [x] Opens on the **densest** month, computed at render time. Today's month is 1/31.
 - [x] Three cell states: built (clickable, hue), record-only (clickable, goes to
       `/how/<date>`), empty (dead).
-- [x] Ink colour by relative luminance, not lightness — `l > 55` puts white on
+- [x] Ink color by relative luminance, not lightness — `l > 55` puts white on
       yellow-greens.
 - [x] Grid cells need `min-width: 0`; long mood words otherwise widen their column.
 
 ### Task 4.4: Explainer
 - [x] Two columns: fixed metadata rail, prose body. Sections named as a sequence
-      ("The day arrived", "A colour was chosen"), not as an inventory.
-- [x] The brief leads, not the colour. Colour is absent on 31 of 123 dates, where a
-      colour-led hero becomes a grey slab. Signals (107) and tokens (106) are better
-      covered than colour (92).
+      ("The day arrived", "A color was chosen"), not as an inventory.
+- [x] The brief leads, not the color. Color is absent on 31 of 123 dates, where a
+      color-led hero becomes a grey slab. Signals (107) and tokens (106) are better
+      covered than color (92).
 - [x] Tokens render as real ramps, every stop at its value.
 - [x] Absent fields name their era: "No composition tuple. The pipeline had no such
       concept in the prose era."
@@ -389,5 +389,5 @@ working.
 
 Retention and pruning, the uniqueness-index feedback loop, owner-only "mark as
 reference", thumbnails on the calendar (needs a screenshot backfill; 1 of 123 today),
-and responsive behaviour — #152 lists the last as unspecified, and the prototypes were
+and responsive behavior — #152 lists the last as unspecified, and the prototypes were
 desktop-only at 1440.

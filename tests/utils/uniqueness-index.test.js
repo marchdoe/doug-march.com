@@ -96,7 +96,7 @@ describe('compositionNovelty', () => {
     expect(r.nearest).toBe('clone')
   })
 
-  it('normalises against the axis count', () => {
+  it('normalizes against the axis count', () => {
     const r = compositionNovelty(TUPLE, [
       { date: 'd', composition: { ...TUPLE, columns: 'masonry', axis: 'radial' } },
     ])
@@ -241,7 +241,7 @@ describe('shellNovelty', () => {
 
   it('scores a posture-only legacy pair over posture alone', () => {
     // Neither side declares a treatment, so a posture mismatch is a total
-    // mismatch. Normalising over all four fields would score this 0.25.
+    // mismatch. Normalizing over all four fields would score this 0.25.
     const r = shellNovelty({ posture: 'standard' }, [{ date: 'legacy', posture: 'none' }])
     expect(r.raw).toBe(1)
     expect(r.score).toBe(1)
@@ -312,7 +312,7 @@ describe('composite', () => {
     expect(composite(all)).toBeCloseTo(1)
   })
 
-  it('renormalises over present metrics rather than treating null as zero', () => {
+  it('renormalizes over present metrics rather than treating null as zero', () => {
     // Only composition scores. Its own score must survive intact.
     const r = composite({
       composition: { score: 0.5 },
@@ -382,7 +382,7 @@ describe('computeUniqueness', () => {
     expect(r.metrics.lane.score).toBeNull()
     // Shell still scores: posture rides on the composition tuple, and both
     // builds declare 'standard'. So the composite is composition and shell
-    // renormalised over their two weights, not composition alone.
+    // renormalized over their two weights, not composition alone.
     expect(r.metrics.shell.score).toBe(0)
     const expected = ((1 / 8) * WEIGHTS.composition) / (WEIGHTS.composition + WEIGHTS.shell)
     expect(r.composite).toBeCloseTo(expected)
@@ -444,7 +444,7 @@ describe('formatUniquenessForPrompt', () => {
 
   it('stays quiet about a hue that is far enough', () => {
     const out = formatUniquenessForPrompt(idx({ hue: { raw: 120, score: 0.66, nearest: 'd' } }))
-    expect(out).not.toContain('reads as the same colour')
+    expect(out).not.toContain('reads as the same color')
   })
 
   it('flags a back-to-back lane and an identical shell', () => {

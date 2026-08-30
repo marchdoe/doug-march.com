@@ -1,4 +1,4 @@
-import { RECOGNISED_ORIGINS } from '../../scripts/utils/site-origin.js'
+import { RECOGNIZED_ORIGINS } from '../../scripts/utils/site-origin.js'
 import { describe, it, expect, afterEach } from 'vitest'
 import { writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
@@ -127,7 +127,7 @@ describe('build validator content scanner', () => {
         'https://spaceman.llc',
         'https://getfishsticks.com',
         'https://15th.club',
-${RECOGNISED_ORIGINS.map((o) => `        '${o}',`).join('\n')}
+${RECOGNIZED_ORIGINS.map((o) => `        '${o}',`).join('\n')}
         'https://fonts.gstatic.com/s/inter',
       ]`
     )

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { buildOgMetaEntries } from '../../scripts/utils/og-meta.js'
-import { CANONICAL_ORIGIN, RECOGNISED_ORIGINS } from '../../scripts/utils/site-origin.js'
+import { CANONICAL_ORIGIN, RECOGNIZED_ORIGINS } from '../../scripts/utils/site-origin.js'
 
 describe('buildOgMetaEntries', () => {
   it('emits og + twitter entries with escaped content', () => {
@@ -28,7 +28,7 @@ describe('the host is not baked in', () => {
   // canonical, so it can still fail loudly when Phase 1 flips the constant.
   // An assertion spelling the host would simply stop covering anything.
   it('carries whichever siteUrl it is given', () => {
-    for (const origin of RECOGNISED_ORIGINS) {
+    for (const origin of RECOGNIZED_ORIGINS) {
       const code = buildOgMetaEntries({ date: '2026-06-12', siteUrl: origin })
       expect(code).toContain(`${origin}/og/2026-06-12.png`)
       // og:url goes through JSON.stringify, so it lands double-quoted.

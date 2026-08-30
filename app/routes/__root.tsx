@@ -208,7 +208,7 @@ const ARCHIVE_FONT =
  * The archive's ground, applied to `body` itself.
  *
  * The surfaces paint their own background, but `body` keeps whatever the
- * nightly preset gave it, and that colour shows through wherever the surface
+ * nightly preset gave it, and that color shows through wherever the surface
  * does not reach — the overscroll gutter above and below the page. Caught by
  * reading the computed style: #120d08 on a morning the design was warm brown.
  *

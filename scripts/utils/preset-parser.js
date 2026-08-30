@@ -214,9 +214,9 @@ function pickObject(node) {
 /**
  * Parse `preset.ts` source into the record's `tokens` block.
  *
- * Colours are split: `ramps` are the raw scales from `theme.tokens.colors`,
+ * Colors are split: `ramps` are the raw scales from `theme.tokens.colors`,
  * `semantic` is `theme.semanticTokens.colors`, whose values are condition maps
- * (`{ base, _light }`) rather than single colours. Every other token group is
+ * (`{ base, _light }`) rather than single colors. Every other token group is
  * carried through as it was found — the groups vary by era (`fonts` and
  * `fontSizes` appear on a handful of nights, `radii` on most).
  *

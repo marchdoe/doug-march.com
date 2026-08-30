@@ -268,7 +268,7 @@ New card rendered above the existing human rating inputs when
 `responsive-metrics.json` exists for the selected build:
 
 - Header row: "Responsive Score N/5"
-- Row of 4 thumbnail screenshots, labelled with viewport + score
+- Row of 4 thumbnail screenshots, labeled with viewport + score
 - Click a thumbnail → lightbox full-size
 - Failure list in plain English (same strings that feed the prompt)
 

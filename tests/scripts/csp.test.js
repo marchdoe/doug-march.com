@@ -6,7 +6,7 @@
  * reason a careless one is dangerous: every archived page carries its whole
  * design in an inline `<style>` block and pulls its typefaces from Google Fonts
  * or Fontshare. A policy that forgets either does not fail loudly — the pages
- * still render, in Times New Roman, with no colour.
+ * still render, in Times New Roman, with no color.
  *
  * These assertions are derived from what the committed corpus actually
  * contains, measured rather than assumed:

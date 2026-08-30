@@ -26,13 +26,13 @@ export const Route = createFileRoute('/archive')({
  *
  * A wall calendar rather than a list, because the interesting fact about this
  * archive is its shape: which runs are unbroken, where the gaps are, how the
- * colour drifts across a month. A list flattens all of that into rows.
+ * color drifts across a month. A list flattens all of that into rows.
  *
  * Every surface here uses the `archive.*` tokens from panda.config.ts and none
  * of the day's own. See the note there for why.
  *
  * Day hues arrive at render time, and Panda extracts styles statically, so a
- * cell's colour is passed as a CSS custom property that a static class reads.
+ * cell's color is passed as a CSS custom property that a static class reads.
  * That is the one thing `style` is used for here.
  */
 
@@ -239,7 +239,7 @@ const sheetRecord = css({
 const empty = css({ color: 'archive.dim', fontSize: 'archive.small', padding: '40px 0' })
 
 /**
- * A contact-sheet cell is a colour and nothing else, which leaves the anchor
+ * A contact-sheet cell is a color and nothing else, which leaves the anchor
  * with no content for a screen reader to announce. The date goes in, hidden.
  */
 const srOnly = css({
@@ -291,7 +291,7 @@ function ArchivePage() {
         {loaded && sorted.length > 0 ? (
           <p className={standfirst}>
             {sorted.length} designs, {sorted[0].date} to {sorted[sorted.length - 1].date}. {withHue}{' '}
-            carry a recorded colour. Each square is a day; its colour is the colour that day was
+            carry a recorded color. Each square is a day; its color is the color that day was
             built around.
           </p>
         ) : null}

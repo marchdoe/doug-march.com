@@ -105,7 +105,7 @@ export function stateFor(entry: ArchiveIndexEntry | undefined): CellState {
   return entry.pages > 0 ? 'built' : 'record'
 }
 
-/** `hsl(...)` for a day's hue, or a neutral for the 31 dates with no colour recorded. */
+/** `hsl(...)` for a day's hue, or a neutral for the 31 dates with no color recorded. */
 export function swatchFor(entry: ArchiveIndexEntry): string {
   if (!entry.primaryHue) return '#3a3a42'
   const { h, s, l } = entry.primaryHue

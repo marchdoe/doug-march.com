@@ -43,7 +43,7 @@ Measured 2026-08-26 against `6d0771c`, not carried over from #163.
   carry `dougmar.ch` and still need sealing. Line 121 must emit only the new host.
 - **`scripts/utils/site-origin.js` is now the single point of change.** Phase 0 extracted
   it. `og-meta.js` takes its `siteUrl` default from `CANONICAL_ORIGIN`, `archive-seal.js`
-  reads both names, and `build-validator.js` builds its allowlist from `RECOGNISED_HOSTS`.
+  reads both names, and `build-validator.js` builds its allowlist from `RECOGNIZED_HOSTS`.
   No host literal remains anywhere else under `scripts/utils/`. Phase 1's Task 1.1 is
   editing one line in that file.
   *(This supersedes the original claim that `og-meta.js:11` was the single point of change.
@@ -124,7 +124,7 @@ archived pages that would break if the old host stops resolving.
 ## Phase 0 — Make the seal host-agnostic — SHIPPED (2026-08-27)
 
 Ships before any DNS change. Safe to merge on its own: with only the old host canonical,
-behaviour is identical. Verified by re-sealing all 1,032 committed pages and confirming an
+behavior is identical. Verified by re-sealing all 1,032 committed pages and confirming an
 empty diff, twice — once after the constant split and once after the shared-module refactor.
 
 **A latent bug surfaced while writing Task 0.2's tests.** Origin matching used a bare
@@ -137,7 +137,7 @@ requires a path, query, or fragment boundary. Covered in `tests/utils/site-origi
 
 ### Task 0.1: `LIVE_ORIGIN` becomes two origins
 
-`scripts/utils/archive-seal.js`. Replace the single constant with a recognised list and a
+`scripts/utils/archive-seal.js`. Replace the single constant with a recognized list and a
 separate canonical origin. Reading uses the list. Writing uses the canonical.
 
 Lines 63 and 64 iterate the list to find a matching prefix. Line 121 uses the canonical

@@ -25,7 +25,7 @@ export const config = {
  * read; refusing those would break following a link to the panel while
  * preventing nothing.
  *
- * The handler guards stay. This is defence in depth, not a replacement: the
+ * The handler guards stay. This is defense in depth, not a replacement: the
  * API routes are also reachable in local dev, where no middleware runs.
  */
 export default function middleware(request: Request): Response {
