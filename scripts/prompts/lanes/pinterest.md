@@ -28,7 +28,6 @@ Image-first, varied tile sizes, tight horizontal gaps and slightly wider vertica
 ## Component cues
 - Buttons: pill, fully rounded, filled red for primary, filled black for secondary, 14px
 - Cards: the tile IS the card — 16px radius, no border, no shadow, slight hover lift
-- Nav: top bar with small logo, search centered, account cluster right
 
 ## Anti-patterns specific to this style
 - DO NOT enforce uniform tile heights — this lane's identity depends on varied aspect ratios

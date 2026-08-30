@@ -27,7 +27,6 @@ Two zones in tension. One is bold, saturated, gradient-lit — the other is quie
 ## Component cues
 - Buttons: pill (radius 24px) in the bold zone, square (radius 6px) in the quiet zone — different rules per zone
 - Cards: quiet zone uses 1px borders with 12px radius, subtle drop; bold zone uses glass/translucent surfaces
-- Nav: split identity — wordmark in the bold zone, links in the quiet zone, or vice versa
 
 ## Anti-patterns specific to this style
 - DO NOT mirror styling across both zones — tension requires contrast in type, spacing, or color

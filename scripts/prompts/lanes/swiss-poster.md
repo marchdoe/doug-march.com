@@ -26,7 +26,6 @@ Grid-locked objectivity. A single strong diagonal or oversized numeral is the on
 ## Component cues
 - Buttons: none — links are bold black text with a red underline rule, no border, no fill
 - Cards: none — content lives in grid cells separated by thin black rules
-- Nav: a single horizontal rule; flush-left wordmark, flush-right minimal text links
 
 ## Anti-patterns specific to this style
 - DO NOT center anything — asymmetry is the point

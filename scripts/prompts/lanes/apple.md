@@ -28,7 +28,6 @@ Cinematic, one idea at a time. Generous whitespace, photography-first, micro-typ
 ## Component cues
 - Buttons: pill (fully rounded), filled blue or ghost outline, 14–15px, medium weight
 - Cards: full-bleed image blocks with centered title + subhead, no borders, no shadows
-- Nav: fixed top, translucent blur background (backdrop-filter), condenses on scroll
 
 ## Anti-patterns specific to this style
 - DO NOT use serif display type

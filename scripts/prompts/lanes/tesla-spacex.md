@@ -26,7 +26,6 @@ Radical subtraction — nearly everything is removed until the single dominant e
 ## Component cues
 - Buttons: uppercase, letter-spacing 0.12em, border only (no fill), ~14px, generous horizontal padding
 - Cards: almost never used — prefer full-bleed media with text overlay
-- Nav: minimal wordmark + uppercase links, often corner-anchored, shrinks on scroll
 
 ## Anti-patterns specific to this style
 - DO NOT use more than one accent instance per viewport

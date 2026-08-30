@@ -26,7 +26,7 @@ A working type foundry's own specimen sheet — warmer and more tactile than a d
 ## Component cues
 - Buttons: "swatch" chips styled like ink drawdowns — rounded-rect with a subtle paper-texture gradient, not a flat fill
 - Cards: bordered with a slightly asymmetric radius suggesting a deckle/torn edge
-- Nav: small-caps serif wordmark, minimal
+- Wordmark: small-caps serif, minimal
 
 ## Anti-patterns specific to this style
 - DO NOT use pure black or pure white — warm paper and deep ink only

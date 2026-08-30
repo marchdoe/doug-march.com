@@ -29,7 +29,6 @@ Soft, banded sections — each with its own density and treatment (one is dense 
 ## Component cues
 - Buttons: 8px radius, soft fill (filled or subtle tint), medium weight, 14px
 - Cards: 12px radius, soft 1px border, 24–32px padding, rare soft shadow (elevation only when needed)
-- Nav: left sidebar with collapsible sections, or top bar with soft underline on active
 
 ## Anti-patterns specific to this style
 - DO NOT use harsh black (#000) or pure white (#FFF) — warm off-whites and ink browns

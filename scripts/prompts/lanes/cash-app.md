@@ -25,7 +25,7 @@ Loud, confident, chunky — saturated and playful rather than soft and warm. Eac
 ## Component cues
 - Buttons: large, fully rounded, high-contrast fill (always the opposite color from the section's background), 16–18px, bold weight
 - Cards: rare — a section itself IS the card, full-bleed; a card that does appear within a section is borderless with a solid contrasting fill, not a subtle elevation
-- Nav: bold single-color bar, chunky rounded logo mark
+- Wordmark: chunky and rounded, set in the bold display cut
 
 ## Anti-patterns specific to this style
 - DO NOT use a shared off-white base across sections — each one commits to ONE saturated color, full-bleed

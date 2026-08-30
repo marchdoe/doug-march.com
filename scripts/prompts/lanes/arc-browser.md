@@ -27,7 +27,6 @@ Playful, saturated, almost toylike confidence — one zone is a soft gradient-bl
 ## Component cues
 - Buttons: fully rounded pill in both zones — bold-zone buttons are translucent/glass, quiet-zone buttons are solid filled
 - Cards: quiet zone uses soft-shadow floating cards (12–16px radius); bold zone has no cards — organic blob shapes substitute for containers
-- Nav: logo mark sits at the seam between the two zones, straddling both
 
 ## Anti-patterns specific to this style
 - DO NOT use a static flat color in the bold zone — it must read as a gradient/blob field, not a color block

@@ -26,7 +26,6 @@ A human, unhurried catalog — closer to a zine's contents page or a collector's
 ## Component cues
 - Buttons: understated text links, blue underline on hover only
 - Cards: no cards — rows again, but each row includes a small square thumbnail (40–56px) at the left
-- Nav: simple top wordmark; a "channel" or category selector as tabs, not a sidebar
 
 ## Anti-patterns specific to this style
 - DO NOT use a dark background — this lane is warm and paper-toned, not app-dark

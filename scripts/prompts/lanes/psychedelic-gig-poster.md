@@ -25,7 +25,6 @@ Maximalist ornament, hand-lettered energy, clashing complementary colors, warped
 ## Component cues
 - Buttons: blob/pill shape with a thick hard-offset double outline (e.g. 4px offset in a third clashing color) — never a soft grey drop shadow
 - Cards: none — illustration-first, text floats directly over art
-- Nav: a small corner badge or stamp, not a bar
 
 ## Anti-patterns specific to this style
 - DO NOT use a neutral or grey background — one saturated hue only

@@ -26,7 +26,6 @@ Kinetic, high-contrast, motion-implied even in static images. Bold saturated col
 ## Component cues
 - Buttons: solid fill, sharp or barely-rounded (4px), bold uppercase label, high contrast
 - Cards: full-bleed photo/video blocks with a huge stat overlay (e.g. "26.2 MI") in one corner
-- Nav: fixed top, high-contrast, condenses to icon-only on scroll
 
 ## Anti-patterns specific to this style
 - DO NOT stay monochrome — at least one full-bleed saturated color-block section is required

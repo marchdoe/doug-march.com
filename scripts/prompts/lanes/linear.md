@@ -28,7 +28,6 @@ Ultra-minimal list/table density. Reads like a well-kept index — tabular numer
 ## Component cues
 - Buttons: small, 6px radius, 13px, icon + label, subtle hover fill
 - Cards: no cards — rows in a list, separated by 1px hairlines
-- Nav: left sidebar with item list, keyboard hints inline (e.g., "G then I")
 
 ## Anti-patterns specific to this style
 - DO NOT use drop shadows or rounded cards
