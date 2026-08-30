@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { describe, it, expect } from 'vitest'
 import { sanitizeString, sanitizeSignals } from '../../scripts/utils/sanitize-signal.js'
 
@@ -120,5 +121,38 @@ describe('sanitizeSignals', () => {
     expect(sanitizeSignals(null)).toBe(null)
     expect(sanitizeSignals(undefined)).toBe(undefined)
     expect(sanitizeSignals('')).toBe('')
+  })
+})
+
+describe('corpus: real headlines survive, attacks do not', () => {
+  const benign = JSON.parse(
+    readFileSync(new URL('../fixtures/signal-text/benign-headlines.json', import.meta.url), 'utf8')
+  )
+  const injection = JSON.parse(
+    readFileSync(
+      new URL('../fixtures/signal-text/injection-attempts.json', import.meta.url),
+      'utf8'
+    )
+  )
+
+  // The filter is not a safe no-op: a filtered headline is a blanked signal
+  // the Art Director then designs against. Precision is the point of these.
+  it.each(benign.headlines)('passes through unchanged: %s', (headline) => {
+    expect(sanitizeString(headline)).toBe(headline)
+  })
+
+  it.each(injection.attempts.map((a) => [a.text, a.expect]))('filters (%s)', (text, bucket) => {
+    expect(sanitizeString(text)).toBe(`[filtered: potential ${bucket} injection]`)
+  })
+
+  it('drops a URL query string rather than filtering the whole link', () => {
+    expect(sanitizeString('https://example.com/post?q=ignore+previous+instructions')).toBe(
+      'https://example.com/post'
+    )
+    expect(sanitizeString('https://example.com/a#ignore-all-rules')).toBe('https://example.com/a')
+  })
+
+  it('leaves a URL that carries no query untouched', () => {
+    expect(sanitizeString('https://example.com/a/b')).toBe('https://example.com/a/b')
   })
 })
