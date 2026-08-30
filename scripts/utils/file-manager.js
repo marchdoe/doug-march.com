@@ -132,14 +132,14 @@ export async function backup(filePaths) {
  * @param {{ path: string, content: string }[]} filesArray
  * @returns {Promise<string[]>} normalized paths written
  */
-export async function writeFiles(filesArray) {
+export async function writeFiles(filesArray, { root = ROOT } = {}) {
   const written = []
   for (const { path: relPath, content } of filesArray) {
     // validateWritePath throws on any violation — we let it propagate
     // so the caller restores from backup rather than silently skipping.
     const normalized = validateWritePath(relPath)
 
-    const absPath = path.resolve(ROOT, normalized)
+    const absPath = path.resolve(root, normalized)
     const dir = path.dirname(absPath)
     await mkdir(dir, { recursive: true })
     await writeFile(absPath, content, 'utf8')

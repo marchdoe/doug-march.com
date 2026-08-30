@@ -1,7 +1,8 @@
-import { describe, it, expect, afterEach, vi } from 'vitest'
-import { readFile, rm } from 'node:fs/promises'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { readFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import path from 'node:path'
+import { tempRepoRoot } from '../helpers/tmp.js'
 
 // Stub captureSnapshot — it spawns `vite preview`, which is far slower than the
 // per-test timeout. This test is about the record archive() leaves behind.
@@ -18,20 +19,16 @@ vi.mock('../../scripts/seal-archive.js', () => ({
 }))
 
 const { archive } = await import('../../scripts/utils/archiver.js')
-const { ROOT } = await import('../../scripts/utils/file-manager.js')
 
 describe('archive() — record.json', () => {
-  let createdDir = null
-
-  afterEach(async () => {
-    if (!createdDir) return
-    const date = path.basename(createdDir)
-    for (const dir of [createdDir, path.join(ROOT, 'public', 'archive', date)]) {
-      if (existsSync(dir)) await rm(dir, { recursive: true, force: true })
-    }
-    const png = path.join(ROOT, 'public', 'archive', `${date}.png`)
-    if (existsSync(png)) await rm(png, { force: true })
-    createdDir = null
+  // A temp root, not the repo. These tests used to write archive/2099-01-0x/
+  // and public/archive/2099-01-0x/ into the working tree and clean up by hand
+  // afterwards — and the cleanup keyed on a path recorded only after archive()
+  // returned, so a throw part-way through leaked the directories. The stale
+  // public/archive/<date>.png line was cleaning a path #154 had already moved.
+  let ROOT
+  beforeEach(async () => {
+    ROOT = await tempRepoRoot()
   })
 
   it('writes the day’s record from the artifacts it just archived', async () => {
@@ -43,8 +40,19 @@ describe('archive() — record.json', () => {
       color_story: 'Test.',
     }
 
-    await archive(date, signals, 'A rationale.', 'A brief.', ['elements/preset.ts'], {}, scheme)
-    createdDir = path.join(ROOT, 'archive', date)
+    await archive(
+      date,
+      signals,
+      'A rationale.',
+      'A brief.',
+      ['elements/preset.ts'],
+      {},
+      scheme,
+      null,
+      {},
+      { root: ROOT }
+    )
+    const createdDir = path.join(ROOT, 'archive', date)
 
     const recordPath = path.join(createdDir, 'record.json')
     expect(existsSync(recordPath)).toBe(true)
@@ -67,8 +75,8 @@ describe('archive() — record.json', () => {
     const date = '2099-01-05'
     const signals = { date, hacker_news: { stories: ['How Complex Systems Fail'] } }
 
-    await archive(date, signals, 'r', 'b', [])
-    createdDir = path.join(ROOT, 'archive', date)
+    await archive(date, signals, 'r', 'b', [], {}, null, null, {}, { root: ROOT })
+    const createdDir = path.join(ROOT, 'archive', date)
 
     const record = JSON.parse(await readFile(path.join(createdDir, 'record.json'), 'utf8'))
     expect(record.signals).toEqual(signals)

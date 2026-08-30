@@ -1,12 +1,13 @@
 // tests/server/archive.test.ts
 import { describe, it, expect, afterEach } from 'vitest'
-import { mkdirSync, writeFileSync, rmSync } from 'node:fs'
-import { resolve, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { resolve } from 'node:path'
 import { _readArchiveHandler } from '../../app/server/archive-impl.js'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const FIXTURES_DIR = resolve(__dirname, '../fixtures/archive')
+// A temp dir rather than tests/fixtures/archive, which was created and rmSync'd
+// inside the repo on every run.
+const FIXTURES_DIR = mkdtempSync(resolve(tmpdir(), 'dm-archive-'))
 
 /** Write the record the pipeline leaves in `archive/<date>/record.json`. */
 function writeRecord(date: string, brief: string, opts?: Record<string, unknown>) {

@@ -1,18 +1,18 @@
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { runCollector } from '../scripts/collect-signals.js'
-import { unlink } from 'node:fs/promises'
-import { existsSync } from 'node:fs'
-import path from 'node:path'
-
-const ROOT = path.resolve(import.meta.dirname, '..')
 
 describe('collect-signals orchestrator', () => {
-  afterEach(async () => {
-    for (const f of ['signals/today.yml', 'signals/today.meta.yml']) {
-      const p = path.join(ROOT, f)
-      if (existsSync(p)) await unlink(p)
-    }
-  })
+  // No cleanup hook here on purpose.
+  //
+  // There used to be one that unlinked signals/today.yml and today.meta.yml
+  // after every test. runCollector() does not write them — writeOutputs() does,
+  // and only from the CLI branch — so the hook deleted files this file had
+  // never created. Running `pnpm test` with a collected today.yml on disk threw
+  // away the real signals for the day, and because the dev server re-collects
+  // on the next /api/dev-data hit, it looked like nothing had happened.
+  //
+  // If a test here ever does need to write, give runCollector a temp path;
+  // do not clean the developer's working tree from a unit test.
 
   it('collects from providers and writes YAML + meta', async () => {
     const mockProviders = [

@@ -1,5 +1,5 @@
 /**
- * The suite must not rewrite the archive.
+ * The suite must not write into the working tree.
  *
  * `archive()` reseals every page under public/archive/ on the way out, which is
  * correct in the pipeline — today's build is what gives yesterday a next arrow
@@ -38,6 +38,22 @@ function testFiles(dir = TESTS_DIR) {
 
 const rel = (f) => path.relative(TESTS_DIR, f)
 
+/**
+ * Source with comments removed.
+ *
+ * The detectors below must not be satisfiable by prose. The first version of
+ * the archive() rule flagged archiver-artifacts.test.js, which calls
+ * writeArtifacts and only mentions `archive()` in a comment explaining why it
+ * does not call it — the same "a test a comment can satisfy is not a test"
+ * trap this file exists to close.
+ */
+function code(src) {
+  return src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '')
+}
+
+/** This file is all detector patterns; it must not detect itself. */
+const isSelf = (file) => path.basename(file) === 'tests-do-not-mutate-archive.test.js'
+
 describe('tests that run the archiver', () => {
   const callers = testFiles()
     .map((file) => ({ file, src: readFileSync(file, 'utf8') }))
@@ -60,4 +76,59 @@ describe('tests that run the archiver', () => {
       expect(src).toMatch(/vi\.mock\(\s*['"][^'"]*seal-archive\.js['"]/)
     }
   )
+})
+
+describe('tests that call archive() write somewhere disposable', () => {
+  const callers = testFiles()
+    .filter((file) => !isSelf(file))
+    .map((file) => ({ file, src: code(readFileSync(file, 'utf8')) }))
+    .filter(({ src }) => src.includes('archiver.js') && /\bawait archive\s*\(/.test(src))
+
+  it('finds the ones that actually call archive()', () => {
+    expect(callers.length).toBeGreaterThan(0)
+  })
+
+  it.each(callers.map((c) => [rel(c.file), c.src]))(
+    '%s passes archive() a root of its own',
+    (_name, src) => {
+      // archive() writes archive/<date>/ and copies into public/archive/<date>/.
+      // Without a root it does that inside the repo, and the cleanup hooks that
+      // used to compensate keyed on a path recorded only after archive()
+      // returned — so a throw part-way through left both directories behind.
+      expect(src).toMatch(/\{\s*root:/)
+    }
+  )
+})
+
+describe('tests do not clean up files they never created', () => {
+  it("nothing deletes the developer's collected signals", () => {
+    // tests/collect-signals.test.js had an afterEach that unlinked
+    // signals/today.yml and today.meta.yml after every test. runCollector()
+    // does not write them — only the CLI branch does — so it was deleting a
+    // real, uncommitted artifact of the day's pipeline run. The dev server
+    // silently re-collects on the next request, which is why it went unnoticed.
+    for (const file of testFiles().filter((f) => !isSelf(f))) {
+      const src = code(readFileSync(file, 'utf8'))
+      expect(
+        /unlink\([^)]*signals\/today|rm\([^)]*signals\/today/.test(src),
+        `${rel(file)} removes signals/today.* — it is real pipeline output, not test litter`
+      ).toBe(false)
+    }
+  })
+
+  it('nothing writes fixtures into the repo directories the pipeline owns', () => {
+    // build-validator-scanner and file-manager both dropped .tsx fixtures into
+    // the real app/components/ while vitest ran them in parallel workers.
+    const offenders = []
+    for (const file of testFiles().filter((f) => !isSelf(f))) {
+      const src = code(readFileSync(file, 'utf8'))
+      // A repo-rooted path joined with a pipeline-owned directory.
+      if (/(?:resolve|join)\(\s*ROOT\s*,\s*['"](?:app\/|archive|public\/|elements\/)/.test(src)) {
+        // ROOT bound to a temp dir in the same file is the fixed shape.
+        const usesTempRoot = /tempDir|tempRepoRoot|mkdtemp/.test(src)
+        if (!usesTempRoot) offenders.push(rel(file))
+      }
+    }
+    expect(offenders).toEqual([])
+  })
 })

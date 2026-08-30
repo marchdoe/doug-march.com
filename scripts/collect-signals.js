@@ -20,7 +20,7 @@ import { sanitizeSignals } from './utils/sanitize-signal.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
-config({ path: path.join(ROOT, '.env') })
+config({ path: path.join(ROOT, '.env'), quiet: true })
 const SIGNALS_DIR = path.join(__dirname, 'signals')
 const PROFILE_PATH = path.join(ROOT, 'signals/profile.yml')
 

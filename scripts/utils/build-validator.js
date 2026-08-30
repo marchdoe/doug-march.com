@@ -63,13 +63,22 @@ export function staleContactAddresses(sources, email, hosts) {
  *
  * @returns {{ success: boolean, error?: string }}
  */
-export function validateGenerated() {
+/**
+ * @param {{ root?: string }} [options] where to scan. Defaults to the repo.
+ *   Tests pass a temp tree: this used to be scanned against the real ROOT,
+ *   which meant two test files dropped fixtures into app/components/ while
+ *   vitest ran files in parallel, and the scan swept up whatever the nightly
+ *   had left in the working tree. Six assertions were written as
+ *   `if (!result.success) expect(...).not.toContain(...)` to survive that —
+ *   they silently skipped on any checkout with an unrelated validator error.
+ */
+export function validateGenerated({ root = ROOT } = {}) {
   const errors = []
 
   // Check 1: Circular token references in preset.ts
   // e.g., fonts.heading: '{fonts.heading}' creates an infinite loop in PandaCSS
   try {
-    const presetPath = resolve(ROOT, 'elements/preset.ts')
+    const presetPath = resolve(root, 'elements/preset.ts')
     const preset = readFileSync(presetPath, 'utf8')
 
     const semanticStart = preset.indexOf('semanticTokens')
@@ -128,7 +137,7 @@ export function validateGenerated() {
   // Dynamically scan all .tsx files in app/components/ (designer may create any components)
   let componentFiles = []
   try {
-    componentFiles = readdirSync(resolve(ROOT, 'app/components'))
+    componentFiles = readdirSync(resolve(root, 'app/components'))
       .filter((f) => f.endsWith('.tsx'))
       .map((f) => `app/components/${f}`)
   } catch {
@@ -148,7 +157,7 @@ export function validateGenerated() {
 
   for (const file of componentFiles) {
     try {
-      const content = readFileSync(resolve(ROOT, file), 'utf8')
+      const content = readFileSync(resolve(root, file), 'utf8')
       // Match ALL value imports from 'react' (not just the first one).
       // The old .match() with no /g flag only caught the first occurrence,
       // missing subsequent imports that AI often splits across multiple lines.
@@ -175,7 +184,7 @@ export function validateGenerated() {
   // `function Scripts() { return null }` — that breaks SPA hydration
   // but satisfies the old regex.
   try {
-    const rootContent = readFileSync(resolve(ROOT, 'app/routes/__root.tsx'), 'utf8')
+    const rootContent = readFileSync(resolve(root, 'app/routes/__root.tsx'), 'utf8')
     // Must import Scripts from the router package (not a fake local definition)
     const routerImport = rootContent.match(
       /import\s*\{\s*([^}]+)\s*\}\s*from\s*['"]@tanstack\/react-router['"]/
@@ -217,14 +226,14 @@ export function validateGenerated() {
   // Dynamically scan every .tsx in app/routes/ so newly-added routes are
   // covered (the old hardcoded list missed anything new).
   try {
-    const routesDir = resolve(ROOT, 'app/routes')
+    const routesDir = resolve(root, 'app/routes')
     const routeFiles = readdirSync(routesDir)
       .filter((f) => f.endsWith('.tsx') && f !== '__root.tsx')
       .map((f) => `app/routes/${f}`)
 
     for (const file of routeFiles) {
       try {
-        const content = readFileSync(resolve(ROOT, file), 'utf8')
+        const content = readFileSync(resolve(root, file), 'utf8')
         if (/from\s+['"]\.\.\/components\/Layout['"]/.test(content)) {
           errors.push(
             `${file}: imports Layout — routes must NOT import Layout (already provided by __root.tsx). This creates a double header.`
@@ -326,7 +335,7 @@ export function validateGenerated() {
   // canonical list (dynamically discovered).
   const filesToScan = [...MUTABLE_FILES]
   try {
-    const componentsDir = resolve(ROOT, 'app/components')
+    const componentsDir = resolve(root, 'app/components')
     for (const f of readdirSync(componentsDir)) {
       if (!f.endsWith('.tsx') && !f.endsWith('.ts')) continue
       const relPath = `app/components/${f}`
@@ -337,7 +346,7 @@ export function validateGenerated() {
   for (const file of filesToScan) {
     let content
     try {
-      content = readFileSync(resolve(ROOT, file), 'utf8')
+      content = readFileSync(resolve(root, file), 'utf8')
     } catch {
       continue
     }
@@ -391,7 +400,7 @@ export function validateGenerated() {
   // substring test would fail the very authoring style the contract requires.
   let contactEmail = null
   try {
-    const aboutSrc = readFileSync(resolve(ROOT, 'app/content/about.ts'), 'utf8')
+    const aboutSrc = readFileSync(resolve(root, 'app/content/about.ts'), 'utf8')
     contactEmail = aboutSrc.match(/email:\s*'([^']+)'/)?.[1] ?? null
   } catch {}
 
@@ -403,7 +412,7 @@ export function validateGenerated() {
   } else {
     const sources = filesToScan.map((file) => {
       try {
-        return readFileSync(resolve(ROOT, file), 'utf8')
+        return readFileSync(resolve(root, file), 'utf8')
       } catch {
         return ''
       }

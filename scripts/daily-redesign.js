@@ -19,7 +19,7 @@
 import { config } from 'dotenv'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
+config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env'), quiet: true })
 
 import { execSync } from 'node:child_process'
 import { readContext } from './utils/site-context.js'
