@@ -26,7 +26,6 @@ import { readContext } from './utils/site-context.js'
 import { runAgentSwarm } from './design-agents.js'
 
 const DRY_RUN = process.env.DRY_RUN === 'true'
-const MOCK_MODE = process.env.MOCK_MODE === 'true'
 
 async function main() {
   // Validate claude CLI is available (required in all modes)
@@ -40,7 +39,6 @@ async function main() {
 
   console.log(`\n=== Daily Redesign Pipeline ===`)
   console.log(`DRY_RUN: ${DRY_RUN}`)
-  console.log(`MOCK_MODE: ${MOCK_MODE}`)
   console.log('')
 
   // Step 1: Read context

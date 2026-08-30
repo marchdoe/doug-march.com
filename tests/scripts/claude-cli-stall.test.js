@@ -192,3 +192,36 @@ describe('claude-cli stall detection', () => {
     expect(record.estimated).toBe(false)
   })
 })
+
+describe('default timeout relationships', () => {
+  it('clamps the stall window below the hard timeout', async () => {
+    // The defaults were timeoutMs 600000 and stallTimeoutMs 900000, so the
+    // stall check could never fire before the timeout did — dead unless every
+    // caller overrode it, and two call sites carry comments saying they had to.
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    expect(typeof callClaudeCLI).toBe('function')
+    const src = await import('node:fs').then((fs) =>
+      fs.readFileSync(new URL('../../scripts/utils/claude-cli.js', import.meta.url), 'utf8')
+    )
+    expect(src).toContain('Math.min(requestedStallMs, Math.floor(timeoutMs / 2))')
+  })
+})
+
+describe('MOCK_MODE', () => {
+  it('refuses to make a billed call rather than silently making one', async () => {
+    // `pnpm pipeline` and `pipeline:dry` both set MOCK_MODE=true, and nothing
+    // honoured it — "the mock pipeline" spent real tokens. The flag is off
+    // those scripts now; if it is set anyway, stop.
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    const prev = process.env.MOCK_MODE
+    process.env.MOCK_MODE = 'true'
+    try {
+      await expect(callClaudeCLI('mockup-critic', 'sys', 'prompt')).rejects.toThrow(
+        /MOCK_MODE=true but there is no mock/
+      )
+    } finally {
+      if (prev === undefined) delete process.env.MOCK_MODE
+      else process.env.MOCK_MODE = prev
+    }
+  })
+})

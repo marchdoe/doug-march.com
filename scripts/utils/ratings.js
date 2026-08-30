@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import path from 'node:path'
+import { readRecentDates } from './recent-builds.js'
 import { sanitizeString } from './sanitize-signal.js'
 
 // Free-text rating notes end up verbatim in agent prompts. The harvester
@@ -45,19 +46,10 @@ export function readRatingForDate(archiveDir, date) {
  * @returns {Array<{ date: string, grade: string, worked: string, didnt: string, try: string }>} newest first
  */
 export function readRecentRatings(archiveDir, { lookbackDays = 10 } = {}) {
-  if (!existsSync(archiveDir)) return []
-  let dateDirs
-  try {
-    dateDirs = readdirSync(archiveDir)
-      .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))
-      .sort()
-      .reverse()
-      .slice(0, lookbackDays)
-  } catch {
-    return []
-  }
+  // readRecentDates, not readRecentBuilds: a rating hangs off the date, and a
+  // day can carry one without its build dir having been committed.
   const out = []
-  for (const dateDir of dateDirs) {
+  for (const dateDir of readRecentDates(archiveDir, { lookbackDays })) {
     // At most ONE rating per date — newest file wins (see readRatingForDate).
     const rating = readRatingForDate(archiveDir, dateDir)
     if (rating) out.push({ date: dateDir, ...rating })

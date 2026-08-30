@@ -1,5 +1,6 @@
-import { readFileSync, readdirSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync } from 'node:fs'
 import path from 'node:path'
+import { readRecentBuilds } from './recent-builds.js'
 import { hashToRange } from './deterministic-hash.js'
 import {
   AXIS_NAMES,
@@ -41,36 +42,17 @@ const FORBID_WINDOW = 3
  * @returns {Array<{date: string, tuple: Record<string, string|null>}>} newest first
  */
 export function extractRecentCompositions(archiveDir, lookbackDays) {
-  if (!existsSync(archiveDir)) return []
-  let dateDirs
-  try {
-    dateDirs = readdirSync(archiveDir)
-      .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))
-      .sort()
-      .reverse()
-      .slice(0, lookbackDays)
-  } catch {
-    return []
-  }
+  // readRecentBuilds resolves each date to the build that SHIPPED.
+  // Taking the newest build dir, as this did, reads designs the site
+  // never wore — see scripts/utils/recent-builds.js.
+  const recent = readRecentBuilds(archiveDir, { lookbackDays })
 
   const out = []
-  for (const dateDir of dateDirs) {
-    const datePath = path.join(archiveDir, dateDir)
-    let buildDirs
-    try {
-      buildDirs = readdirSync(datePath)
-        .filter((b) => /^build-\d+$/.test(b))
-        .sort()
-        .reverse()
-    } catch {
-      continue
-    }
-    if (buildDirs.length === 0) continue
-
+  for (const { date: dateDir, buildDir } of recent) {
     // composition.json is what Task 4 persists; layout-signature.json is the
     // predecessor artifact. Prefer the new one, fall back to the old, so the
     // history spans the changeover instead of restarting at it.
-    const buildPath = path.join(datePath, buildDirs[0])
+    const buildPath = buildDir
     const sigPath = [
       path.join(buildPath, 'composition.json'),
       path.join(buildPath, 'layout-signature.json'),

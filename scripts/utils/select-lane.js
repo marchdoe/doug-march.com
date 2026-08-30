@@ -1,4 +1,5 @@
 import path from 'node:path'
+import { lastDistinct, readRecentBuilds } from './recent-builds.js'
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { hashToRange } from './deterministic-hash.js'
@@ -117,32 +118,12 @@ export function validateAffinities(lanes) {
  * @returns {Array<{ date: string, laneId: string }>} newest first
  */
 export function extractRecentLanes(archiveDir, lookbackDays) {
-  if (!existsSync(archiveDir)) return []
-  let dateDirs
-  try {
-    dateDirs = readdirSync(archiveDir)
-      .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))
-      .sort()
-      .reverse()
-      .slice(0, lookbackDays)
-  } catch {
-    return []
-  }
+  // The build that shipped, not the newest — see scripts/utils/recent-builds.js
+  const recent = readRecentBuilds(archiveDir, { lookbackDays })
 
   const out = []
-  for (const dateDir of dateDirs) {
-    const datePath = path.join(archiveDir, dateDir)
-    let buildDirs
-    try {
-      buildDirs = readdirSync(datePath)
-        .filter((b) => /^build-\d+$/.test(b))
-        .sort()
-        .reverse()
-    } catch {
-      continue
-    }
-    if (buildDirs.length === 0) continue
-    const lanePath = path.join(datePath, buildDirs[0], 'lane.json')
+  for (const { date: dateDir, buildDir } of recent) {
+    const lanePath = path.join(buildDir, 'lane.json')
     if (!existsSync(lanePath)) continue
     try {
       const parsed = JSON.parse(readFileSync(lanePath, 'utf8'))
@@ -152,15 +133,6 @@ export function extractRecentLanes(archiveDir, lookbackDays) {
     } catch {
       /* malformed artifact — skip the build, keep the history */
     }
-  }
-  return out
-}
-
-function lastDistinct(values, n) {
-  const out = []
-  for (const v of values) {
-    if (v && !out.includes(v)) out.push(v)
-    if (out.length === n) break
   }
   return out
 }

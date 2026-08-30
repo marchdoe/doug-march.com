@@ -1,5 +1,6 @@
-import { readFileSync, readdirSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync } from 'node:fs'
 import path from 'node:path'
+import { readRecentBuilds } from './recent-builds.js'
 import { hexToHsl } from './color-validation.js'
 
 /**
@@ -12,35 +13,13 @@ import { hexToHsl } from './color-validation.js'
  * @returns {number[]} primary hues (0-360)
  */
 export function extractRecentPrimaryHues(archiveDir, lookbackDays) {
-  if (!existsSync(archiveDir)) return []
-
-  let dateDirs
-  try {
-    dateDirs = readdirSync(archiveDir)
-      .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))
-      .sort()
-      .reverse()
-      .slice(0, lookbackDays)
-  } catch {
-    return []
-  }
+  // readRecentBuilds resolves each date to the build that SHIPPED.
+  // Taking the newest build dir, as this did, reads designs the site
+  // never wore — see scripts/utils/recent-builds.js.
+  const recent = readRecentBuilds(archiveDir, { lookbackDays })
 
   const hues = []
-  for (const dateDir of dateDirs) {
-    const datePath = path.join(archiveDir, dateDir)
-    let buildDirs
-    try {
-      buildDirs = readdirSync(datePath)
-        .filter((b) => /^build-\d+$/.test(b))
-        .sort()
-        .reverse()
-    } catch {
-      continue
-    }
-
-    if (buildDirs.length === 0) continue
-    const latestBuild = path.join(datePath, buildDirs[0])
-
+  for (const { buildDir: latestBuild } of recent) {
     const schemePath = path.join(latestBuild, 'color-scheme.json')
     if (existsSync(schemePath)) {
       try {
