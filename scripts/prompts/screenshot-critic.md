@@ -19,7 +19,11 @@ Only after this sanity gate passes, proceed to the design evaluation below.
 ## What You Receive
 
 - A screenshot of the rendered homepage, in both light and dark scheme
+- A 2x crop of the approved mockup's header region, and the same crop of the
+  rendered page — the pair section 9 is judged on
 - The structured brief
+- The header declaration (placement, height, mark size, wordmark step and
+  weight, role line, nav step and case)
 - The Design Director's visual specification
 - Reference material (if provided)
 - The approved mockup screenshot (if available)
@@ -37,7 +41,7 @@ Failures: Featured heading and sidebar heading at the same visual weight. Everyt
 ### 2. Spec Fidelity
 Does the render match what the Design Director specified? Check:
 - **Color** — Are the background, text, and accent colors visually consistent with the spec? (You cannot see hex values, but you can see if something is warm/cool/dark/light, whether there's a clear accent color, whether dark mode is applied if specified.)
-- **Composition** — Does the render match the declared tuple (columns, axis, symmetry, hero placement, density, rhythm, shell posture, field ratio)? Is the nav where the shell declaration and `shell_posture` say it should be — present when `standard`/`marginal`/`folded-into-hero`/`footer-only`, genuinely absent when `shell_posture: none`?
+- **Composition** — Does the render match the declared tuple (columns, axis, symmetry, hero placement, density, rhythm, shell posture, field ratio)? Is the nav where the header declaration's `placement` and the composition's `shell_posture` say it should be — present when `standard`/`marginal`/`folded-into-hero`/`footer-only`, genuinely absent when `shell_posture: none`?
 - **Typography** — Do heading and body fonts look like the specified fonts (serif vs sans-serif, display vs workhorse)? Are size relationships proportional to the spec?
 
 Failures: Spec says dark background, render is white. Spec says left sidebar nav, render has top bar. Spec says display serif, render uses system sans.
@@ -110,11 +114,30 @@ Check:
 
 If yes to either: REVISE. Responsible agent: react-engineer.
 
-### 9. Brand Lockup Fidelity
+### 9. Brand Lockup and Header Fidelity
 
-The shell declares a brand lockup (mark + wordmark variant). Compare the render's lockup against the mockup's:
-- **Is the circular brand mark present** wherever the mockup shows it (nav rail, header, footer)? A render that keeps the wordmark text but drops the mark is a failure — the mark is the fixed element of the brand contract (2026-07-10: shipped a spine with text-only lockup while the approved mockup showed mark + wordmark).
-- Does the lockup match the mockup's variant (stacked vs inline) and color mode?
+Judge this section from the two header crops, not from the full-page
+screenshots. At 1024px for a 1440px page every CSS pixel of the header arrives
+as 0.71 image pixels, which is why a mark at a quarter of its declared size
+read as "the lockup is present" and shipped on 2026-08-30. The crops are the
+same region of the same viewport, mockup first, render second.
+
+- **Is the circular brand mark present** wherever the mockup shows it (nav
+  rail, header, footer)? A render that keeps the wordmark text but drops the
+  mark is a failure — the mark is the fixed element of the brand contract
+  (2026-07-10: shipped a spine with text-only lockup while the approved mockup
+  showed mark + wordmark).
+- **Is it the declared size?** Estimate the rendered height of the circular
+  mark in the render's crop and compare it to `mark_px` from the header
+  declaration. Under ~60% of the declared size → REVISE, and state both
+  numbers. This is the check that catches the 11px mark.
+- **Does the render's crop match the mockup's crop?** Same lockup variant
+  (stacked vs inline vs mark-only), same color mode (`original` is green and
+  blue, `single-color` is one flat hue), same mark size, same role line
+  present or absent, same nav case. A divergence here is a divergence the
+  owner will see first, because the header is the first thing on the page.
+- **Placement and height**: the header sits where `placement` says and stands
+  near `height_px`.
 
 When this fails, owner is **react-engineer**.
 

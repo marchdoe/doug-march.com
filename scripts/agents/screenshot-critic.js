@@ -5,10 +5,14 @@
  */
 import { imageBlock, textBlock } from '../utils/claude-sdk.js'
 
-/** Hard ceiling on image blocks per call — mockup + light + dark + one
- * calibration reference. Keeps the SDK request bounded even if a future
- * caller adds more image sources upstream. */
-export const MAX_SCREENSHOT_CRITIC_IMAGES = 4
+/** Hard ceiling on image blocks per call — mockup + light + dark + the two
+ * header crops + one calibration reference. Keeps the SDK request bounded
+ * even if a future caller adds more image sources upstream.
+ *
+ * The header crops cost about 1.2k image tokens each and are the only place
+ * the critic can read a mark size off, so when the ceiling binds it is the
+ * calibration reference that is dropped, not a crop. */
+export const MAX_SCREENSHOT_CRITIC_IMAGES = 6
 
 /**
  * Assemble the screenshot-critic's user turn.
@@ -16,8 +20,9 @@ export const MAX_SCREENSHOT_CRITIC_IMAGES = 4
  * @param {object} ctx
  * @param {string} ctx.enrichedBrief - hero copy, rationale, visual spec
  * @param {string} [ctx.references] - design reference block, if any
- * @param {{ jpeg: Buffer } | null} [ctx.mockupScreenshot] - approved mockup, if any
- * @param {{ jpeg: Buffer, darkJpeg: Buffer }} ctx.screenshotBuffer - rendered homepage, both schemes
+ * @param {{ jpeg: Buffer, headerJpeg?: Buffer|null } | null} [ctx.mockupScreenshot] - approved mockup, if any
+ * @param {{ jpeg: Buffer, darkJpeg: Buffer, headerJpeg?: Buffer|null }} ctx.screenshotBuffer - rendered homepage, both schemes
+ * @param {string} [ctx.header] - the day's ===HEADER=== declaration
  * @param {{ buffer: Buffer, description: string } | null} [ctx.bestReference] -
  *   the owner's highest-rated past build, for BAR calibration
  * @returns {Array<{type: string, text?: string, source?: object}>}
@@ -26,6 +31,7 @@ export function buildScreenshotCriticBlocks(ctx) {
   const blocks = [
     // enrichedBrief carries hero copy, rationale, and the full visual spec.
     textBlock(`## Structured Brief\n\n${ctx.enrichedBrief}`),
+    ctx.header ? textBlock(`## Header Declaration\n\n${ctx.header}`) : null,
     ctx.references ? textBlock(`## Design References\n\n${ctx.references}`) : null,
     ctx.mockupScreenshot ? textBlock('The APPROVED MOCKUP screenshot (fidelity target):') : null,
     ctx.mockupScreenshot ? imageBlock(ctx.mockupScreenshot.jpeg) : null,
@@ -35,6 +41,20 @@ export function buildScreenshotCriticBlocks(ctx) {
     imageBlock(ctx.screenshotBuffer.jpeg),
     textBlock('DARK scheme:'),
     imageBlock(ctx.screenshotBuffer.darkJpeg),
+    // Two 2x crops of the header region, mockup first, then render. Section 9
+    // of the prompt is judged off these — the full-page shots arrive at 1024px
+    // wide, where a mark at a quarter of its declared size is indistinguishable
+    // from one at full size (#254).
+    ctx.mockupScreenshot?.headerJpeg
+      ? textBlock("A 2x crop of the APPROVED MOCKUP's header region:")
+      : null,
+    ctx.mockupScreenshot?.headerJpeg ? imageBlock(ctx.mockupScreenshot.headerJpeg) : null,
+    ctx.screenshotBuffer.headerJpeg
+      ? textBlock(
+          "A 2x crop of the RENDERED page's header region, same viewport and same region. Measure the mark against the declared mark_px here, and against the mockup crop above:"
+        )
+      : null,
+    ctx.screenshotBuffer.headerJpeg ? imageBlock(ctx.screenshotBuffer.headerJpeg) : null,
   ].filter(Boolean)
 
   const imageCount = blocks.filter((b) => b.type === 'image').length
