@@ -36,4 +36,4 @@ Type is the page. Black-and-white precision — a type foundry's specimen sheet.
 - DO NOT center body copy
 
 ## Mobile strategy
-The label block (metadata, callouts, signals) stacks **below** the dominant specimen element, not beside. Hero type uses `font-size: clamp(3rem, 14vw, 11.25rem)` so the specimen-scale character survives shrinking without overflow. The specimen element itself should be ≥ 60% of viewport height on mobile — don't let it collapse into something indistinguishable from normal body content.
+The label block (metadata, callouts, signals) stays mono, small and dim wherever it lands. Hero type uses `font-size: clamp(3rem, 14vw, 11.25rem)` so the specimen-scale character survives shrinking without overflow. The specimen element itself should be ≥ 60% of viewport height on mobile — don't let it collapse into something indistinguishable from normal body content.

@@ -36,4 +36,4 @@ Ultra-minimal list/table density. Reads like a well-kept index — tabular numer
 - DO NOT apply the purple accent as a background fill — it marks, never coats
 
 ## Mobile strategy
-Table rows collapse to stacked cards at ≤ 768px. Year / role / description become inline labels within each card, not adjacent columns. The overall "index" character is preserved by keeping consistent row rhythm and visible row numbers or bullets.
+The index character survives the narrow width: uniform row rhythm, visible row numbers or bullets, metadata still set small and dim beside what it describes. Year, role and description stay legible as labelled values rather than dissolving into a paragraph.

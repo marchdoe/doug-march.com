@@ -25,7 +25,7 @@ A human, unhurried catalog — closer to a zine's contents page or a collector's
 
 ## Component cues
 - Buttons: understated text links, blue underline on hover only
-- Cards: no cards — rows again, but each row includes a small square thumbnail (40–56px) at the left
+- Cards: no cards — rows again, each carrying a small square thumbnail (40–56px)
 
 ## Anti-patterns specific to this style
 - DO NOT use a dark background — this lane is warm and paper-toned, not app-dark
@@ -34,4 +34,4 @@ A human, unhurried catalog — closer to a zine's contents page or a collector's
 - DO NOT set body copy in tabular-nums throughout — only the entry-number column is mono
 
 ## Mobile strategy
-The thumbnail moves to a leading position above the title within each stacked card rather than beside it. Ledger rules remain visible between cards to preserve the catalog feel.
+The thumbnail keeps its size and its square crop at every width — it is what makes this a catalog rather than a list, so it never drops out. Ledger rules stay visible between entries for the same reason.

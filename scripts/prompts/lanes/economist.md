@@ -9,7 +9,7 @@ affinity: three, dense, interrupted, measured
 > Source: The Economist — general publicly-known brand characteristics (red masthead, data-forward analysis), not a specific copyrighted layout. Use as anchor reference, not copy target.
 
 ## Atmosphere
-Data-driven editorial confidence. A red masthead bar, confident charts embedded directly in the text flow, dense but airy through typographic rhythm rather than whitespace. Reads as authoritative analysis, not just news.
+Data-driven editorial confidence. One bar of signal red, confident charts embedded directly in the text flow, dense but airy through typographic rhythm rather than whitespace. Reads as authoritative analysis, not just news.
 
 ## Color roles
 - bg: #FFFFFF
@@ -27,7 +27,7 @@ Data-driven editorial confidence. A red masthead bar, confident charts embedded 
 
 ## Component cues
 - Buttons: text-link with a thin red underline, no fill, no pill
-- Cards: bordered 1px hairline with a red kicker label at the top-left corner ("BRIEFING", "ANALYSIS")
+- Cards: bordered 1px hairline, each introduced by a red kicker label in caps ("BRIEFING", "ANALYSIS")
 
 ## Anti-patterns specific to this style
 - DO NOT use the red anywhere except that one bar, kickers, and primary chart series — it must stay rare to read as authoritative, not decorative

@@ -34,4 +34,4 @@ Two zones in tension. One is bold, saturated, gradient-lit — the other is quie
 - DO NOT use identical card treatments across both zones
 
 ## Mobile strategy
-Two zones become two stacked sections on mobile. Asymmetry carries via aspect-ratio difference — the dominant zone gets more vertical space. Avoid flipping which zone dominates between viewports.
+The tension survives the narrow width. The dominant zone stays dominant and the quiet one stays quiet, whatever proportion each ends up with, and the two never swap roles between viewports.

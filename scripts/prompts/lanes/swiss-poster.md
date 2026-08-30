@@ -9,7 +9,7 @@ affinity: diagonal, broken, irregular-twelve, measured
 > Source: International Typographic Style (Müller-Brockmann, Ruder, Hofmann lineage) — general historical movement characteristics, not a specific living brand or copyrighted work. Use as anchor reference, not copy target.
 
 ## Atmosphere
-Grid-locked objectivity. A single strong diagonal or oversized numeral is the one permitted gesture; everything else obeys a strict modular grid. Sans-serif, asymmetric layout, flush-left ragged-right text, hard-cropped photography. Function over decoration — a mood of quiet confidence rather than spectacle.
+Objectivity held to the millimetre. One gesture is permitted — an oversized numeral, a rule run at an angle — and everything else is set with the precision that lets it read as a gesture. Sans-serif, flush-left ragged-right text, hard-cropped photography. Function over decoration — a mood of quiet confidence rather than spectacle.
 
 ## Color roles
 - bg: #FFFFFF — pure, no warmth
@@ -25,14 +25,14 @@ Grid-locked objectivity. A single strong diagonal or oversized numeral is the on
 
 ## Component cues
 - Buttons: none — links are bold black text with a red underline rule, no border, no fill
-- Cards: none — content lives in grid cells separated by thin black rules
+- Cards: none — thin black rules do the separating, and nothing is boxed
 
 ## Anti-patterns specific to this style
-- DO NOT center anything — asymmetry is the point
+- DO NOT centre type — flush left, ragged right, everywhere
 - DO NOT use a third color beyond black, white, and signal red
 - DO NOT use gradients, drop shadows, or rounded corners anywhere
 - DO NOT use a serif typeface
-- DO NOT soften the grid with organic or freeform shapes
+- DO NOT soften the geometry with organic or freeform shapes — every edge is straight and every angle is deliberate
 
 ## Mobile strategy
-Margins stay asymmetric on mobile — never re-center to compensate for lost columns. Any rotated or diagonal gesture element scales via `clamp()` but stays off-axis — it must never straighten out to fit.
+The one permitted gesture scales via `clamp()` and stays off-axis — it must never straighten out to fit. Rules stay hairline-thin and pure black at every width; nothing softens to make room.

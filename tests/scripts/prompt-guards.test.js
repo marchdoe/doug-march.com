@@ -121,6 +121,52 @@ describe('lane permission overrides', () => {
       expect(content, `${f} missing anchor-not-copy-target guard`).toContain('not copy target')
     }
   })
+
+  // lanes/README.md: a lane "says nothing about page structure (columns, axis,
+  // symmetry, hero placement, density, rhythm, shell posture, field ratio)".
+  // It said plenty. #254 took out the `Nav:` lines; #255 found seventeen more
+  // placements hiding in component cues and mobile strategies — grid cells, a
+  // thumbnail at the left, a kicker in the top-left corner, six instructions to
+  // stack or collapse at a given width. Between them they were asserting four
+  // of the eight axes the Art Director is supposed to own.
+  //
+  // Front matter is exempt: `affinity` names composition-axis values on
+  // purpose, and it is advisory.
+  const STRUCTURE_PRESCRIPTIONS = [
+    [/^\s*Nav:/m, 'a Nav: line'],
+    [/\bsidebar\b/i, 'a sidebar'],
+    [/\bgrid cells?\b/i, 'grid cells'],
+    [/\btop bar\b/i, 'a top bar'],
+    [/\bmasthead bar\b/i, 'a masthead bar'],
+    [/\bhero zone\b/i, 'a hero zone'],
+    [/\bstacked? (?:section|card|column)/i, 'stacking'],
+    [/\bstacks? (?:into|below|above|beneath|under|normally)/i, 'stacking'],
+    [/\bcollapses? to\b/i, 'a collapse'],
+    [/\bre-?cent(?:er|re)\b/i, 're-centring'],
+    [/\badjacent columns?\b/i, 'adjacent columns'],
+    [/\btwo columns?\b/i, 'a column count'],
+    [/\bsingle column\b/i, 'a column count'],
+    [
+      /\b(?:above|below|beside|beneath|underneath) the (?:glyph|hero|image|title|tile|fold|text)\b/i,
+      'a placement',
+    ],
+    [/\b(?:top|bottom)-(?:left|right) corner\b/i, 'a corner'],
+    [/\bin one corner\b/i, 'a corner'],
+    [/\bat the (?:left|right|top|bottom)\b/i, 'an edge placement'],
+    [/\banchored to (?:its|the) edge\b/i, 'an edge placement'],
+    [/\bend to end\b/i, 'a sequence'],
+  ]
+
+  it.each(lanes)('%s prescribes register, never placement', (f) => {
+    const body = readFileSync(path.join(laneDir, f), 'utf8').replace(/^---[\s\S]*?\n---\n/, '')
+    for (const [pattern, what] of STRUCTURE_PRESCRIPTIONS) {
+      const hit = pattern.exec(body)
+      expect(
+        hit,
+        `${f} prescribes ${what} (${JSON.stringify(hit?.[0])}) — that belongs to the composition tuple`
+      ).toBeNull()
+    }
+  })
 })
 
 describe('logo-mono.svg', () => {

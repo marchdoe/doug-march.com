@@ -30,10 +30,10 @@ Image-first, varied tile sizes, tight horizontal gaps and slightly wider vertica
 - Cards: the tile IS the card — 16px radius, no border, no shadow, slight hover lift
 
 ## Anti-patterns specific to this style
-- DO NOT enforce uniform tile heights — this lane's identity depends on varied aspect ratios
+- DO NOT crop every image to the same aspect ratio — tiles keep the proportions their content came with
 - DO NOT use drop shadows or thick borders on tiles
 - DO NOT use the red accent as a large fill — it marks interactions only
 - DO NOT use serif type
 
 ## Mobile strategy
-Each artifact keeps its scale *relative* to viewport width (e.g. 80vw for featured pieces, 60vw for thumbnails) rather than absolute pixels. The curator's logic should still read — don't just list items end to end; keep the varied rhythm.
+Each artifact keeps its scale *relative* to viewport width (e.g. 80vw for featured pieces, 60vw for thumbnails) rather than absolute pixels, so a featured piece still reads as featured. The curator's hand has to show at the narrowest width too.
