@@ -74,7 +74,7 @@ function WorkPage() {
                   fontWeight: 'semibold',
                   letterSpacing: 'wider',
                   textTransform: 'uppercase',
-                  color: 'sand.300',
+                  color: 'textMuted',
                   border: '1px solid',
                   borderColor: 'border',
                   padding: '1 2',
@@ -102,7 +102,7 @@ function WorkPage() {
             color: 'fieldInk',
             bg: 'accent',
             padding: '3 4',
-            _hover: { bg: 'gold.300' },
+            _hover: { bg: 'accentAlt' },
           })}
         >
           Visit live <span>→</span>
@@ -116,7 +116,7 @@ function WorkPage() {
           className={css({
             display: 'block',
             marginTop: '3',
-            color: 'sand.300',
+            color: 'textMuted',
             fontWeight: 'semibold',
             _hover: { color: 'accent' },
           })}
@@ -176,12 +176,12 @@ function WorkPage() {
                   <div className={css({ fontWeight: 'semibold', color: 'text', fontSize: 'sm' })}>
                     {step.phase}
                   </div>
-                  <div className={css({ color: 'sand.300', fontSize: 'sm', marginTop: '1' })}>
+                  <div className={css({ color: 'textMuted', fontSize: 'sm', marginTop: '1' })}>
                     {step.does}
                   </div>
                   <div
                     className={css({
-                      color: 'sand.400',
+                      color: 'textFaint',
                       fontSize: 'xs',
                       marginTop: '1',
                       fontStyle: 'italic',
@@ -212,7 +212,7 @@ function WorkPage() {
                 <div className={css({ fontWeight: 'semibold', color: 'text', fontSize: 'sm' })}>
                   {d.decision}
                 </div>
-                <div className={css({ color: 'sand.300', fontSize: 'sm', marginTop: '1' })}>
+                <div className={css({ color: 'textMuted', fontSize: 'sm', marginTop: '1' })}>
                   {d.why}
                 </div>
               </div>
@@ -235,13 +235,13 @@ function WorkPage() {
                     color: 'accent',
                     fontWeight: 'semibold',
                     fontSize: 'sm',
-                    _hover: { color: 'gold.300' },
+                    _hover: { color: 'accentAlt' },
                   })}
                 >
                   {r.title}
                 </a>
                 {r.note && (
-                  <div className={css({ color: 'sand.400', fontSize: 'xs', marginTop: '1' })}>
+                  <div className={css({ color: 'textFaint', fontSize: 'xs', marginTop: '1' })}>
                     {r.note}
                   </div>
                 )}
@@ -281,7 +281,7 @@ function WorkPage() {
           </span>
           <span
             className={css({
-              color: 'sand.400',
+              color: 'textFaint',
               fontSize: 'xs',
               letterSpacing: 'wide',
               textTransform: 'uppercase',
@@ -305,7 +305,7 @@ const sectionTitle = css({
 })
 
 const sectionBody = css({
-  color: 'sand.300',
+  color: 'textMuted',
   fontSize: 'base',
   lineHeight: 'loose',
   marginTop: '2',

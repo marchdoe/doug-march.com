@@ -52,6 +52,10 @@ import {
   formatChassisRenderFactsForPrompt,
   formatChassisSelectionForPrompt,
 } from './utils/chassis.js'
+import {
+  formatSemanticContractForArtDirector,
+  formatSemanticContractForPrompt,
+} from './utils/semantic-contract.js'
 import { parseDelimiterResponse } from './utils/delimiter-parser.js'
 import { parseCriticVerdict } from './utils/critic-verdict.js'
 import { modelFor, isDevModelTier } from './utils/models.js'
@@ -631,6 +635,21 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     )}\n\n## Design Critique Heuristics\n\n${refCritique}`
     const screenshotCriticPrompt = `${screenshotCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
 
+    // The semantic colour contract is generated from scripts/utils/semantic-contract.js
+    // at assembly time and injected into all three prompts that document it, so the
+    // list the agents read cannot drift from the list the validator enforces (#255).
+    // react-engineer.md spent months telling the engineer to reach for `bg.side` and
+    // `accent.glow`, names no preset has ever defined.
+    if (!designSystemRef.includes('{{SEMANTIC_COLOR_CONTRACT}}')) {
+      throw new Error(
+        'design-system-reference.md is missing its {{SEMANTIC_COLOR_CONTRACT}} placeholder'
+      )
+    }
+    const designSystemReference = designSystemRef.replace(
+      '{{SEMANTIC_COLOR_CONTRACT}}',
+      formatSemanticContractForPrompt()
+    )
+
     // Backup all mutable files
     console.log('\n[backup] Backing up mutable files...')
     const originalBackup = await backup(MUTABLE_FILES)
@@ -841,10 +860,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     if (!artDirectorPromptRaw.includes('{{CHASSIS_SELECTION_FACTS}}')) {
       throw new Error('art-director.md is missing its {{CHASSIS_SELECTION_FACTS}} placeholder')
     }
-    const artDirectorSystemPrompt = `${artDirectorPromptRaw.replace(
-      '{{CHASSIS_SELECTION_FACTS}}',
-      formatChassisSelectionForPrompt(CHASSIS_CATALOG)
-    )}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}`
+    if (!artDirectorPromptRaw.includes('{{SEMANTIC_COLOR_CONTRACT}}')) {
+      throw new Error('art-director.md is missing its {{SEMANTIC_COLOR_CONTRACT}} placeholder')
+    }
+    const artDirectorSystemPrompt = `${artDirectorPromptRaw
+      .replace('{{CHASSIS_SELECTION_FACTS}}', formatChassisSelectionForPrompt(CHASSIS_CATALOG))
+      .replace(
+        '{{SEMANTIC_COLOR_CONTRACT}}',
+        formatSemanticContractForArtDirector()
+      )}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}`
 
     let artDirectorResult
     const t0Director = Date.now()
@@ -1504,7 +1528,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // -----------------------------------------------------------------------
     console.log('\n[phase-2c] React Engineer')
     const reactEngineerPromptRaw = await readFile(path.join(promptDir, 'react-engineer.md'), 'utf8')
-    const reactEngineerSystemPrompt = `${reactEngineerPromptRaw}\n\n${designSystemRef}${brandRegisterDeclaration}`
+    if (!reactEngineerPromptRaw.includes('{{SEMANTIC_COLOR_CONTRACT}}')) {
+      throw new Error('react-engineer.md is missing its {{SEMANTIC_COLOR_CONTRACT}} placeholder')
+    }
+    const reactEngineerSystemPrompt = `${reactEngineerPromptRaw.replace(
+      '{{SEMANTIC_COLOR_CONTRACT}}',
+      formatSemanticContractForPrompt()
+    )}\n\n${designSystemReference}${brandRegisterDeclaration}`
 
     const buildEngineerUserPrompt = () =>
       [

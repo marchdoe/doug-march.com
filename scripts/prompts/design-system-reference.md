@@ -9,7 +9,7 @@ Available components: `Box`, `Flex`, `Grid`, `Stack`, `VStack`, `HStack`, `Conta
 ### `styled()` factory — create custom styled components:
 ```tsx
 const Card = styled('div', {
-  base: { padding: '4', background: 'bg.card', borderRadius: '8px' },
+  base: { padding: '4', background: 'surface', borderRadius: '8px' },
   variants: {
     size: {
       sm: { padding: '2' },
@@ -104,13 +104,16 @@ export const elementsPreset = definePreset({
 
 Components reference token names, NOT raw color values. A name outside these sets ships as a bare identifier, the browser drops the declaration, and the element silently keeps its inherited value.
 
-- **Colors:** whatever today's `elements/preset.ts` defines under `semanticTokens.colors`. Read that file; the set is redrawn every night and there is no name you can count on across builds.
 - **Fonts:** `display` and `body` come from the chassis. Anything else exists only if the preset defines it.
 - **Font sizes:** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `hero`. Nothing above `5xl` exists. `hero` is a fluid clamp, ready to use on a headline.
 - **Text styles:** every ramp step is also a `textStyle` token (`textStyle: 'hero'`) carrying size, line-height and letter-spacing together, tuned per step by the day's chassis. Prefer `textStyle` over setting `fontSize` alone.
 - **Spacing:** `1`-`9`, derived from the chassis rhythm and landing close to 4, 8, 16, 24, 32, 48, 64, 96, 128px on every chassis. A bare number is a spacing token, so a literal size needs its unit (`width: '44px'`).
 - **Line heights:** `tight`, `snug`, `normal`, `loose` — derived from the chassis step table. A step's own leading comes free with `textStyle`.
 - **Letter spacings:** `tight`, `normal`, `wide`, `wider`, `widest` — also chassis-derived; `wide`+ are for caps labels and smallcaps.
+
+### Colors
+
+{{SEMANTIC_COLOR_CONTRACT}}
 
 ## Route Pattern
 

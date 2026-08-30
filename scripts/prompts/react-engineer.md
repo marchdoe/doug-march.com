@@ -115,9 +115,9 @@ import { css } from '../../styled-system/css'
 ### PandaCSS `css()` usage rules
 
 - Use `css()` for all className generation. Pass a style object — never a string.
-- The `css()` function accepts token references as values: `color: 'text'`, `bg: 'bg.card'`, etc.
+- The `css()` function accepts token references as values: `color: 'text'`, `bg: 'surface'`, etc.
 - Never use raw hex values in TSX. Map every color to a token name. Raw hex in TSX is a defect.
-- Semantic token syntax: bare token name as string, e.g. `color: 'accent'`, `bg: 'bg.side'`.
+- Semantic token syntax: bare token name as string, e.g. `color: 'accent'`, `bg: 'field'`.
 - Responsive values use the conditional (object) syntax: `fontSize: { base: 'sm', md: 'lg' }`.
 - Translate the mockup's px media queries to Panda's base/md/lg conditions.
 - No inline `style` props. No Tailwind classes. PandaCSS only.
@@ -290,7 +290,9 @@ Never write raw hex in TSX. Use only token names as string values.
 
 Panda does not fail on a token it has never heard of. It passes the name through, so `color: 'textSecondary'` ships as `color:textSecondary` and the browser drops the whole declaration. The element then renders with whatever it inherited and the page looks almost right. Treat every name below as a closed set.
 
-**Colors.** There is no fixed list. Use the exact names today's `elements/preset.ts` defines under `semanticTokens.colors`; that file is in your inputs, so read it before you style anything. Recent nights have shipped sets as different from each other as `bg`/`surface`/`field`/`fieldInk`/`text`/`textMuted`/`accent`/`border`. Any name that file does not define is a build failure.
+**Colors.**
+
+{{SEMANTIC_COLOR_CONTRACT}}
 
 **Font sizes.** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `hero`. That is the whole ramp. `6xl`, `7xl`, `8xl` and anything past them do not exist and never have. `hero` is already a fluid clamp sized off the chassis, so reach for it on the headline rather than hand-writing `clamp(4rem,8.5vw,8.5rem)`.
 

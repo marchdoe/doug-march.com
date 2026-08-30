@@ -29,7 +29,7 @@ function FootItem({ k, v }: { k: string; v: string }) {
           fontSize: '2xs',
           letterSpacing: 'wide',
           textTransform: 'uppercase',
-          color: 'gold.800',
+          color: 'fieldInkMuted',
           fontWeight: 'semibold',
         })}
       >
@@ -54,7 +54,7 @@ function HomeHero() {
           fontSize: 'xs',
           letterSpacing: 'widest',
           textTransform: 'uppercase',
-          color: 'gold.800',
+          color: 'fieldInkMuted',
           marginBottom: '4',
         })}
       >
@@ -97,7 +97,7 @@ function AboutField() {
           fontSize: 'xs',
           letterSpacing: 'widest',
           textTransform: 'uppercase',
-          color: 'gold.800',
+          color: 'fieldInkMuted',
           marginBottom: '4',
         })}
       >
@@ -114,7 +114,7 @@ function AboutField() {
               textTransform: 'uppercase',
               color: 'fieldInk',
               border: '1px solid',
-              borderColor: 'gold.600',
+              borderColor: 'fieldBorder',
               padding: '1 2',
             })}
           >
@@ -130,31 +130,31 @@ function AboutField() {
           fontSize: 'xs',
           letterSpacing: 'widest',
           textTransform: 'uppercase',
-          color: 'gold.800',
+          color: 'fieldInkMuted',
           marginBottom: '3',
         })}
       >
         Education
       </p>
-      <div className={css({ borderTop: '1px solid', borderColor: 'gold.600' })}>
+      <div className={css({ borderTop: '1px solid', borderColor: 'fieldBorder' })}>
         <div
           className={css({
             padding: '3 0',
             borderBottom: '1px solid',
-            borderColor: 'gold.600',
+            borderColor: 'fieldBorder',
           })}
         >
           <div className={css({ fontWeight: 'bold', fontSize: 'sm', color: 'fieldInk' })}>
             {education.school}
           </div>
-          <div className={css({ fontSize: 'xs', color: 'gold.800', marginTop: '1' })}>
+          <div className={css({ fontSize: 'xs', color: 'fieldInkMuted', marginTop: '1' })}>
             {education.degree} · {education.concentration}
           </div>
           <div
             className={css({
               fontSize: '2xs',
               letterSpacing: 'wide',
-              color: 'gold.800',
+              color: 'fieldInkMuted',
               marginTop: '1',
             })}
           >
@@ -205,7 +205,7 @@ function WorkField({ slug }: { slug?: string }) {
             fontSize: 'xs',
             letterSpacing: 'widest',
             textTransform: 'uppercase',
-            color: 'gold.800',
+            color: 'fieldInkMuted',
             marginBottom: '4',
           })}
         >
@@ -229,7 +229,7 @@ function WorkField({ slug }: { slug?: string }) {
             className={css({
               marginTop: '5',
               fontSize: 'sm',
-              color: 'gold.800',
+              color: 'fieldInkMuted',
               maxWidth: '42ch',
               lineHeight: 'normal',
               fontWeight: 'medium',
