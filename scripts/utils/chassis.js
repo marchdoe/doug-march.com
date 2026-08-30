@@ -2,57 +2,35 @@
  * Chassis helpers — deterministic transforms from a chassis entry into the
  * artifacts the orchestrator injects:
  *
- *   buildGoogleFontsUrl(chassis) → CSS2 stylesheet href for __root.tsx
- *   buildFontTokens(chassis)     → theme.tokens.fonts object for preset.ts
- *   buildFontSizes(chassis)      → theme.tokens.fontSizes object for preset.ts
- *   renderRootTemplate(url)      → __root.tsx contents with URL substituted
+ *   buildGoogleFontsUrl(chassis)   → CSS2 stylesheet href for __root.tsx
+ *   buildFontTokens(chassis)       → theme.tokens.fonts object
+ *   buildFontSizes(chassis)        → theme.tokens.fontSizes object
+ *   buildTextStyles(chassis)       → theme.textStyles object (size+leading+tracking)
+ *   buildFontWeights(chassis)      → theme.tokens.fontWeights object
+ *   buildLineHeights(chassis)      → legacy named tokens, derived from the step table
+ *   buildLetterSpacings(chassis)   → legacy named tokens, derived from the step table
+ *   buildSpacing(chassis)          → theme.tokens.spacing, rhythm-derived
+ *   renderRootTemplate(url)        → __root.tsx contents with URL substituted
+ *   renderChassisPresetFile(c)     → elements/chassis-preset.ts contents
+ *
+ * The type system lives in the chassis (elements/chassis/*.js): each entry
+ * carries an explicit step table (size, lineHeight, tracking per step), a
+ * fontWeights map, and an optional spacing rhythm. Everything here is a
+ * read of that table — no ratio math, that happens once at authoring time
+ * via elements/chassis/scale.js.
  *
  * No I/O lives here except renderRootTemplate (which reads the template
- * once at module load). Keep it pure so the preview script and the
- * orchestrator share identical behavior.
+ * fresh per call). Keep it pure so the preview script and the orchestrator
+ * share identical behavior.
  */
 
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { RAMP_STEPS } from '../../elements/chassis/scale.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const TEMPLATE_PATH = resolve(__dirname, '../templates/__root.tsx.template')
-
-/** The ramp, small to large. `hero` is fluid; every other step is a rem value. */
-const RAMP_STEPS = ['2xs', 'xs', 'sm', 'base', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', 'hero']
-
-/** Steps above `base`, nearest first. Each is one chassis-ratio step further out. */
-const UP_STEPS = ['md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl']
-
-/** Steps below `base`, nearest first. */
-const DOWN_STEPS = ['sm', 'xs', '2xs']
-
-/**
- * The small end steps down by a fixed 1.125 instead of the chassis ratio (#252).
- *
- * A display ratio is chosen to separate headlines. Running it downward as well
- * put every caption under 11px — at 1.5 the bottom three steps landed on 10.7,
- * 10 and 10px, all three pinned to a floor. Engineers stopped using them and
- * hand-wrote '13px' instead, which is how eight literal pixel sizes ended up in
- * one night's TSX. A minor second below base keeps captions at 11-14px on every
- * chassis in the catalog, so the tokens can express what the pages need.
- */
-const SMALL_RATIO = 1.125
-
-/**
- * `hero` interpolates between two ramp steps across a 360px-1440px viewport
- * window, so headlines scale without anyone hand-writing a clamp.
- *
- * It tops out at `3xl` rather than `5xl`: on the golden-ratio chassis `5xl` is
- * 29rem, and a hero that reached it would render at 464px. `3xl` puts the
- * desktop hero at 121px on the 1.5 chassis, which is where the mockups sit.
- * `4xl` and `5xl` still exist as tokens for anyone who wants them explicitly.
- */
-const HERO_MIN_STEP = '2xl'
-const HERO_MAX_STEP = '3xl'
-const HERO_MIN_VW_REM = 22.5
-const HERO_MAX_VW_REM = 90
 
 /**
  * Build the Google Fonts CSS2 URL for the chassis.
@@ -61,15 +39,28 @@ const HERO_MAX_VW_REM = 90
  *   No italics:   family=Outfit:wght@300;400;500
  *   With italics: family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700
  *
+ * Two font tokens may name the same family (a single-family chassis runs its
+ * display and body off one face). CSS2 rejects a repeated family parameter,
+ * so entries are merged per family: weights union, italics OR.
+ *
  * Always ends with &display=swap for consistent FOIT/FOUT behavior across
  * chassis. The validator allowlists fonts.googleapis.com only.
  */
 export function buildGoogleFontsUrl(chassis) {
-  const families = Object.values(chassis.fonts).map((font) => {
-    const familyParam = font.family.replace(/\s+/g, '+')
-    const weights = [...font.weights].sort((a, b) => a - b)
+  /** @type {Map<string, {weights: Set<number>, italics: boolean}>} */
+  const byFamily = new Map()
+  for (const font of Object.values(chassis.fonts)) {
+    const entry = byFamily.get(font.family) || { weights: new Set(), italics: false }
+    for (const w of font.weights) entry.weights.add(w)
+    entry.italics = entry.italics || font.italics
+    byFamily.set(font.family, entry)
+  }
 
-    if (font.italics) {
+  const families = [...byFamily.entries()].map(([family, { weights: weightSet, italics }]) => {
+    const familyParam = family.replace(/\s+/g, '+')
+    const weights = [...weightSet].sort((a, b) => a - b)
+
+    if (italics) {
       // ital,wght axis: cartesian product, italic-first then weight-first.
       // Order matters — Google Fonts requires axis values ascending.
       const tuples = []
@@ -108,48 +99,167 @@ function quoteIfMultiWord(name) {
   return /\s/.test(name) ? `"${name}"` : name
 }
 
+/** The chassis step table, with every ramp step present or an error naming
+ * the gap — a missing step would otherwise ship a bare-identifier token. */
+function stepsOf(chassis) {
+  const steps = chassis.type?.steps
+  if (!steps) throw new Error(`chassis ${chassis.id ?? '(unnamed)'} has no type.steps table`)
+  for (const step of RAMP_STEPS) {
+    if (!steps[step]?.size) {
+      throw new Error(`chassis ${chassis.id ?? '(unnamed)'} step table is missing "${step}"`)
+    }
+  }
+  return steps
+}
+
 /**
- * Build the theme.tokens.fontSizes object for the chassis.
- *
- * Two scales meet at `base`. Above it, seven steps of the chassis ratio carry
- * `md` through `5xl` — that is where the chassis gets its voice. Below it,
- * three steps of a fixed 1.125 carry `sm`, `xs` and `2xs`, so the small end
- * stays readable whatever ratio the display end is running.
- *
- * `hero` sits on top as a clamp. Output values are rem strings rounded to
- * 0.001rem; no floor, because nothing in the catalog now falls near one.
+ * Build the theme.tokens.fontSizes object for the chassis — a straight read
+ * of the step table.
  */
 export function buildFontSizes(chassis) {
-  const baseRem = parseRem(chassis.scale.base)
-  const ratio = chassis.scale.ratio
-
-  const rems = { base: baseRem }
-  DOWN_STEPS.forEach((step, i) => {
-    rems[step] = baseRem / SMALL_RATIO ** (i + 1)
-  })
-  UP_STEPS.forEach((step, i) => {
-    rems[step] = baseRem * ratio ** (i + 1)
-  })
-
+  const steps = stepsOf(chassis)
   const sizes = {}
   for (const step of RAMP_STEPS) {
-    sizes[step] = { value: step === 'hero' ? buildHeroClamp(rems) : `${roundRem(rems[step])}rem` }
+    sizes[step] = { value: steps[step].size }
   }
   return sizes
 }
 
 /**
- * Render the `hero` step: a clamp whose middle term is the straight line
- * through (360px, HERO_MIN_STEP) and (1440px, HERO_MAX_STEP). Bare sums are
- * legal inside clamp(), so no calc() wrapper is needed.
+ * Build the theme.textStyles object: one style per ramp step carrying
+ * size, leading and tracking together, so a component writes
+ * `textStyle: 'hero'` instead of assembling three properties by hand.
+ *
+ * fontSize references the step's own token by name; Panda resolves token
+ * names inside textStyles the same way it does in css(), so the size has
+ * one source of truth.
  */
-function buildHeroClamp(rems) {
-  const min = roundRem(rems[HERO_MIN_STEP])
-  const max = roundRem(rems[HERO_MAX_STEP])
-  const slope = (max - min) / (HERO_MAX_VW_REM - HERO_MIN_VW_REM)
-  const intercept = roundRem(min - slope * HERO_MIN_VW_REM)
-  const vw = roundRem(slope * 100)
-  return `clamp(${min}rem, ${intercept}rem + ${vw}vw, ${max}rem)`
+export function buildTextStyles(chassis) {
+  const steps = stepsOf(chassis)
+  const styles = {}
+  for (const step of RAMP_STEPS) {
+    styles[step] = {
+      value: {
+        fontSize: step,
+        lineHeight: String(steps[step].lineHeight),
+        letterSpacing: steps[step].tracking,
+      },
+    }
+  }
+  return styles
+}
+
+/** Build theme.tokens.fontWeights from the chassis weights map. */
+export function buildFontWeights(chassis) {
+  const weights = chassis.type?.weights
+  if (!weights || Object.keys(weights).length === 0) {
+    throw new Error(`chassis ${chassis.id ?? '(unnamed)'} has no type.weights map`)
+  }
+  const tokens = {}
+  for (const [name, weight] of Object.entries(weights)) {
+    tokens[name] = { value: String(weight) }
+  }
+  return tokens
+}
+
+/**
+ * Legacy named lineHeights (tight/snug/normal/loose), derived from the step
+ * table instead of re-invented nightly — `tight` ranged 0.85 to 1.02 across
+ * six Art Director presets before the chassis owned it (#253).
+ */
+export function buildLineHeights(chassis) {
+  const steps = stepsOf(chassis)
+  const normal = steps.base.lineHeight
+  return {
+    tight: { value: String(steps.hero.lineHeight) },
+    snug: { value: String(steps['2xl'].lineHeight) },
+    normal: { value: String(normal) },
+    loose: { value: String(Math.round((normal + 0.2) * 100) / 100) },
+  }
+}
+
+/**
+ * Legacy named letterSpacings (tight/normal/wide/wider/widest), derived
+ * from the step table. `wide` is the small-step opening; `wider`/`widest`
+ * scale it up for caps labels, so a chassis that opens its captions more
+ * gets proportionally airier smallcaps.
+ */
+export function buildLetterSpacings(chassis) {
+  const steps = stepsOf(chassis)
+  const wide = parseEm(steps['2xs'].tracking)
+  return {
+    tight: { value: steps['2xl'].tracking },
+    normal: { value: steps.base.tracking },
+    wide: { value: formatEm(wide) },
+    wider: { value: formatEm(wide * 2) },
+    widest: { value: formatEm(wide * 3.5) },
+  }
+}
+
+function parseEm(value) {
+  if (value === '0') return 0
+  const match = /^(-?[\d.]+)em$/.exec(value)
+  if (!match) throw new Error(`tracking must be an em value or '0', got: ${value}`)
+  return parseFloat(match[1])
+}
+
+function formatEm(n) {
+  const rounded = Math.round(n * 1000) / 1000
+  return rounded === 0 ? '0' : `${rounded}em`
+}
+
+/** The chassis rhythm in px: declared, or the body size times body leading. */
+export function rhythmPx(chassis) {
+  const steps = stepsOf(chassis)
+  if (chassis.type.rhythm) return parseRem(chassis.type.rhythm) * 16
+  return parseRem(steps.base.size) * 16 * steps.base.lineHeight
+}
+
+/**
+ * Spacing multiples of the rhythm submultiple r/6, chosen so a 24px rhythm
+ * reproduces the scale the Art Director used to re-type every night:
+ * 4 / 8 / 16 / 24 / 32 / 48 / 64 / 96 / 128.
+ */
+const SPACING_MULTIPLES = [1 / 6, 1 / 3, 2 / 3, 1, 4 / 3, 2, 8 / 3, 4, 16 / 3]
+
+/**
+ * Build theme.tokens.spacing as multiples of the chassis rhythm, so vertical
+ * space and the body line-height share a base unit (the vertical-rhythm
+ * principle the impeccable typography reference opens with). Token names
+ * stay `1`-`9` and, at the catalog's usual 24px rhythm, the values are the
+ * same nine the nightly presets carried.
+ */
+export function buildSpacing(chassis) {
+  const r = rhythmPx(chassis)
+  const tokens = {}
+  SPACING_MULTIPLES.forEach((m, i) => {
+    const px = Math.round(r * m * 2) / 2
+    tokens[String(i + 1)] = { value: `${px}px` }
+  })
+  return tokens
+}
+
+/**
+ * Resolve a step's rendered px size at a viewport width. Understands the
+ * two size forms the schema allows: a rem value, or a `clamp()` whose middle
+ * term is `<rem> + <vw>`.
+ *
+ * @param {{size: string}} step
+ * @param {number} viewportPx
+ * @returns {number} px, rounded to 0.1
+ */
+export function stepPxAt(step, viewportPx) {
+  const clampMatch = /^clamp\(([\d.]+)rem,\s*(-?[\d.]+)rem \+ ([\d.]+)vw,\s*([\d.]+)rem\)$/.exec(
+    step.size
+  )
+  let rem
+  if (clampMatch) {
+    const [min, intercept, vw, max] = clampMatch.slice(1).map(Number)
+    rem = Math.min(Math.max(min, intercept + (vw / 100) * (viewportPx / 16)), max)
+  } else {
+    rem = parseRem(step.size)
+  }
+  return Math.round(rem * 16 * 10) / 10
 }
 
 /**
@@ -181,21 +291,20 @@ export function renderRootTemplate(googleFontsUrl, ogMeta = '', archiveCount = 0
 
 function parseRem(value) {
   const match = /^([\d.]+)rem$/.exec(value)
-  if (!match) throw new Error(`chassis.scale.base must be a rem value, got: ${value}`)
+  if (!match) throw new Error(`expected a rem value, got: ${value}`)
   return parseFloat(match[1])
-}
-
-function roundRem(n) {
-  return Math.round(n * 1000) / 1000
 }
 
 /**
  * Render the contents of `elements/chassis-preset.ts` for a chosen chassis.
- * The orchestrator writes this file each run so PandaCSS can merge fonts +
- * fontSizes from the chassis into the final design system.
+ * The orchestrator writes this file each run so PandaCSS can merge the
+ * chassis type system into the final design system.
  *
- * Listed LAST in panda.config.ts so it always overrides any fonts/fontSizes
- * the Token Designer accidentally emits in elements/preset.ts.
+ * Listed LAST in panda.config.ts so everything here — fonts, the ramp,
+ * weights, leading, tracking, spacing — wins over any values the Art
+ * Director emits in elements/preset.ts. The Art Director owns color, radii
+ * and semantic tokens; typography and spacing are chassis-owned, and
+ * anything it writes for these groups is overridden by this merge order.
  *
  * It also pins `body { font-family: var(--fonts-body) }`. That declaration used
  * to be the Art Director's to write and 9 of the last 12 presets left it out,
@@ -211,12 +320,18 @@ function roundRem(n) {
 export function renderChassisPresetFile(chassis) {
   const fonts = buildFontTokens(chassis)
   const sizes = buildFontSizes(chassis)
+  const weights = buildFontWeights(chassis)
+  const lineHeights = buildLineHeights(chassis)
+  const letterSpacings = buildLetterSpacings(chassis)
+  const spacing = buildSpacing(chassis)
+  const textStyles = buildTextStyles(chassis)
   return `import { definePreset } from '@pandacss/dev'
 
 /**
  * Generated from elements/chassis/${chassis.id}.js by scripts/utils/chassis.js.
- * Listed LAST in panda.config.ts so its fonts + fontSizes win over any values
- * the Token Designer emits in elements/preset.ts.
+ * Listed LAST in panda.config.ts so the chassis type system — fonts,
+ * fontSizes, fontWeights, lineHeights, letterSpacings, spacing, textStyles —
+ * wins over any values the Art Director emits in elements/preset.ts.
  *
  * Do not edit by hand — overwritten on every daily redesign.
  */
@@ -226,7 +341,10 @@ export const chassisPreset = definePreset({
   // globalCss.body instead of replacing it. See scripts/utils/chassis.js.
   globalCss: {
     extend: {
-      body: { fontFamily: 'body' },
+      // lineHeight rides along with the font: the spacing scale is derived
+      // from the base step's size times its leading, and rhythm only means
+      // something if the body actually renders at that leading.
+      body: { fontFamily: 'body', lineHeight: 'normal' },
     },
   },
   theme: {
@@ -234,7 +352,12 @@ export const chassisPreset = definePreset({
       tokens: {
 ${formatTokenBlock('fonts', fonts, 8)}
 ${formatTokenBlock('fontSizes', sizes, 8)}
+${formatTokenBlock('fontWeights', weights, 8)}
+${formatTokenBlock('lineHeights', lineHeights, 8)}
+${formatTokenBlock('letterSpacings', letterSpacings, 8)}
+${formatTokenBlock('spacing', spacing, 8)}
       },
+${formatTextStylesBlock(textStyles, 6)}
     },
   },
 })
@@ -246,10 +369,26 @@ function formatTokenBlock(name, tokens, indent) {
   const pad = ' '.repeat(indent)
   const inner = ' '.repeat(indent + 2)
   const lines = Object.entries(tokens).map(([key, { value }]) => {
-    const safeKey = /^[a-z][a-z0-9]*$/i.test(key) ? key : `'${key}'`
-    return `${inner}${safeKey}: { value: ${JSON.stringify(value)} },`
+    return `${inner}${quoteKey(key)}: { value: ${JSON.stringify(value)} },`
   })
   return `${pad}${name}: {\n${lines.join('\n')}\n${pad}},`
+}
+
+/** Format the textStyles object (nested style values) as TS source. */
+function formatTextStylesBlock(styles, indent) {
+  const pad = ' '.repeat(indent)
+  const inner = ' '.repeat(indent + 2)
+  const lines = Object.entries(styles).map(([key, { value }]) => {
+    const props = Object.entries(value)
+      .map(([prop, v]) => `${prop}: ${JSON.stringify(v)}`)
+      .join(', ')
+    return `${inner}${quoteKey(key)}: { value: { ${props} } },`
+  })
+  return `${pad}textStyles: {\n${lines.join('\n')}\n${pad}},`
+}
+
+function quoteKey(key) {
+  return /^[a-z][a-z0-9]*$/i.test(key) ? key : `'${key}'`
 }
 
 /** Look up a chassis by id. Returns undefined if not found. */
@@ -259,19 +398,62 @@ export function getChassisById(catalog, id) {
 
 /**
  * Render the chassis catalog as a markdown table for inclusion in the
- * Design Director prompt. Each row shows id, name, description, moods,
- * and archetype affinities — enough for the Director to match a chassis
- * to the day's brief without dumping the entire chassis source.
+ * Art Director prompt. Each row shows id, name, description, moods,
+ * archetype affinities, and the hero step's rendered size at the two ends
+ * of the fluid window — enough to match a chassis to the day's brief, and
+ * to know how loud its marquee actually gets, without dumping the entire
+ * chassis source.
  */
 export function formatChassisCatalogForPrompt(catalog) {
   const lines = [
-    '| ID | Name | Feel | Moods | Best for archetypes |',
-    '|----|------|------|-------|---------------------|',
+    '| ID | Name | Feel | Moods | Best for archetypes | Hero px 360→1440 |',
+    '|----|------|------|-------|---------------------|------------------|',
   ]
   for (const c of catalog) {
+    const hero = c.type.steps.hero
     lines.push(
-      `| \`${c.id}\` | ${c.name} | ${c.description} | ${c.moods.join(', ')} | ${c.archetypes.join(', ')} |`
+      `| \`${c.id}\` | ${c.name} | ${c.description} | ${c.moods.join(', ')} | ${c.archetypes.join(', ')} | ${Math.round(stepPxAt(hero, 360))}→${Math.round(stepPxAt(hero, 1440))} |`
     )
   }
   return lines.join('\n')
+}
+
+/**
+ * Per-chassis render facts for the spec critic: hero size at both ends of
+ * the viewport window, the largest fixed step, and the body size. Generated
+ * from the catalog so "can it render marquee" is a lookup, not a hardcoded
+ * list that goes stale when a chassis is added.
+ */
+export function formatChassisRenderFactsForPrompt(catalog) {
+  const lines = []
+  for (const c of catalog) {
+    const s = c.type.steps
+    lines.push(
+      `- \`${c.id}\`: hero ${Math.round(stepPxAt(s.hero, 360))}px at 360 → ${Math.round(stepPxAt(s.hero, 1440))}px at 1440; 2xl ${Math.round(stepPxAt(s['2xl'], 1440))}px; base ${Math.round(stepPxAt(s.base, 1440))}px`
+    )
+  }
+  return lines.join('\n')
+}
+
+/**
+ * The chassis-selection facts injected into the Art Director prompt in
+ * place of the hardcoded ratio list it used to carry. Every chassis reaches
+ * the 64px mobile marquee floor by construction (see scale.js), so the
+ * selection question is desktop voice, not feasibility.
+ */
+export function formatChassisSelectionForPrompt(catalog) {
+  const byLoudness = [...catalog].sort(
+    (a, b) => stepPxAt(b.type.steps.hero, 1440) - stepPxAt(a.type.steps.hero, 1440)
+  )
+  const voices = byLoudness
+    .map((c) => `${c.id} ${Math.round(stepPxAt(c.type.steps.hero, 1440))}px`)
+    .join(', ')
+  const condensed = catalog
+    .filter((c) => c.moods.includes('condensed'))
+    .map((c) => c.id)
+    .join(', ')
+  return [
+    `Every chassis renders the hero at 64px or more on a 360px viewport, so marquee is never infeasible; the choice is how loud the desktop marquee gets. Hero at 1440px, loudest first: ${voices}.`,
+    `Reserve the quietest heroes for editorial or literary phrases that don't want shouting. The condensed-caps chassis (${condensed}) share one register — don't default to them every time a phrase wants scale.`,
+  ].join(' ')
 }
