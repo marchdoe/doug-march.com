@@ -11,9 +11,19 @@ import {
 } from '../../scripts/design-agents.js'
 
 describe('FILE_OWNERSHIP', () => {
-  it('maps every file to exactly one agent', () => {
-    const allFiles = Object.values(FILE_OWNERSHIP)
-    expect(new Set(allFiles).size).toBeLessThanOrEqual(5)
+  it('maps every file to a known agent', () => {
+    // An object key can only hold one value, so "exactly one agent" is true
+    // by construction. What can actually go wrong is a typo in an agent name,
+    // which identifyFailingAgent would then route nowhere.
+    const known = new Set(['art-director', 'react-engineer'])
+    for (const [file, agent] of Object.entries(FILE_OWNERSHIP)) {
+      expect(known, `${file} is owned by unknown agent "${agent}"`).toContain(agent)
+    }
+  })
+
+  it('tripwire: 16 owned files', () => {
+    // Fails on purpose when a file is added to or removed from the mutable
+    // set, so the change is a decision rather than a side effect.
     expect(Object.keys(FILE_OWNERSHIP)).toHaveLength(16)
   })
 
