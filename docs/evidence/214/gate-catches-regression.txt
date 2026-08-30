@@ -1,0 +1,30 @@
+surface-gate run against a build with the pre-fix experiments.tsx restored
+(git show HEAD~1:app/routes/experiments.tsx), 2026-08-30
+
+measured: 44 | errors: 4 | wall: 18.8s
+
+## Measured layout faults
+
+These are measurements taken from the live render, not observations from the images below.
+They are exact. Do not re-litigate them against the screenshots, and do not count one fault
+twice because it appears at more than one viewport.
+
+- [error] /experiments at 360px (both schemes): document is 84px wider than the 360px viewport (scrollWidth 444)
+- [error] /experiments at 1440px (both schemes): document is 657px wider than the 1440px viewport (scrollWidth 2097)
+
+---
+
+same gate against the fixed build:
+
+measured: 44 | errors: 0 | findings: 0
+
+---
+
+critic block assembly, live captures (no model call):
+
+gate: 44 measured, 0 errors, 19.0s
+slug route chosen: /work/spaceman
+  captured /work/spaceman 116KB
+  captured /og 37KB
+blocks: 14 | images: 6 | ceiling: 6
+PASS: within ceiling

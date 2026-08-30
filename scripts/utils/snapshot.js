@@ -207,7 +207,7 @@ async function captureHeaderCrop(browser, url, opts) {
 /**
  * Read the rendered silhouette out of a served page at 1440.
  *
- * The critic screenshot is taken at 1280 and the header crop at 1440; the
+ * The critic screenshot and the header crop are both taken at 1440; the
  * fingerprint gets its own page rather than borrowing either, because it has to
  * be the same viewport every night for the numbers to mean anything, and both
  * of those widths have moved before.
@@ -432,7 +432,7 @@ export async function captureScreenshot(port, { headerCrop } = {}) {
       let browser = null
       try {
         browser = await chromium.launch({ headless: true })
-        const page = await browser.newPage({ viewport: { width: 1280, height: 900 } })
+        const page = await browser.newPage({ viewport: { width: 1440, height: 900 } })
         await page.goto(`${baseUrl}/`, {
           waitUntil: 'networkidle',
         })
@@ -447,7 +447,7 @@ export async function captureScreenshot(port, { headerCrop } = {}) {
         // judging a mode nobody art-directed. colorScheme must be set at page
         // creation, before the init script reads matchMedia.
         const darkPage = await browser.newPage({
-          viewport: { width: 1280, height: 900 },
+          viewport: { width: 1440, height: 900 },
           colorScheme: 'dark',
         })
         await darkPage.goto(`${baseUrl}/`, { waitUntil: 'networkidle' })
