@@ -1,7 +1,7 @@
 /**
  * Deterministic surface gate.
  *
- * The screenshot critic looks at one viewport of one page — `/` at 1280x900,
+ * The screenshot critic looked at one viewport of one page — `/` at 1280x900,
  * above the fold. The #215 audit walked all eleven visitor-reachable surfaces
  * and found seven defects. Five of them were geometry: a page whose document
  * is wider than the screen it is being read on. `/experiments` ran 657px past
@@ -31,8 +31,9 @@ import { withPreviewServer } from './snapshot.js'
  * Viewport rungs. Both are already on the ladder `archiver.js:311` defines for
  * responsive measurement, so this introduces no new numbers to reason about.
  *
- * The critic's own 1280x900 is deliberately not here: it is not a rung on that
- * ladder and it is not a device anyone has. Every defect the audit found was
+ * The critic used to capture at 1280x900, which is not a rung on that ladder
+ * and not a device anyone has; it now captures at 1440, the same width as the
+ * mockup and the header crop. Every defect the audit found was
  * width-dependent, so the width that defines "reviewed" is doing real work.
  */
 export const VIEWPORT_RUNGS = [

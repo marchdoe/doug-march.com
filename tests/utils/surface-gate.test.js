@@ -154,7 +154,7 @@ describe('ownerForSurface', () => {
 })
 
 describe('VIEWPORT_RUNGS', () => {
-  it('stays on the archiver ladder and off the critic 1280', () => {
+  it('stays on the archiver ladder, and off the 1280 the critic used to capture at', () => {
     expect(VIEWPORT_RUNGS.map((v) => v.width)).toEqual([360, 1440])
   })
 })
