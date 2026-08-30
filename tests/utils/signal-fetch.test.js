@@ -94,3 +94,51 @@ describe('fetchText', () => {
     ).rejects.toThrow(/github.com\/trending responded with 429/)
   })
 })
+
+describe('header merging is case-insensitive, because HTTP is', () => {
+  // Object keys are case-sensitive and header names are not. A plain spread
+  // kept BOTH `user-agent` and `User-Agent`, and Headers combined them into
+  // `dougmar-ch-signals/1.0 …, Mozilla/5.0 …` — a bot announcing itself and
+  // then claiming to be Chrome. Awwwards refused it from CI.
+  const sentHeaders = async (options) => {
+    let captured
+    vi.stubGlobal('fetch', (_u, init) => {
+      captured = new Headers(init.headers)
+      return Promise.resolve(ok({}))
+    })
+    await signalFetch('https://example.com', options)
+    return captured
+  }
+
+  it("lets a caller's capitalised User-Agent replace the default", async () => {
+    const h = await sentHeaders({ headers: { 'User-Agent': 'Mozilla/5.0 Chrome/122' } })
+    expect(h.get('user-agent')).toBe('Mozilla/5.0 Chrome/122')
+    expect(h.get('user-agent')).not.toContain('dougmar-ch-signals')
+    expect(h.get('user-agent')).not.toContain(',')
+  })
+
+  it("lets a caller's lower-case user-agent replace it too", async () => {
+    const h = await sentHeaders({ headers: { 'user-agent': 'Custom/1.0' } })
+    expect(h.get('user-agent')).toBe('Custom/1.0')
+  })
+
+  it('still sends the shared agent when the caller sets none', async () => {
+    const h = await sentHeaders({ headers: { Accept: 'text/html' } })
+    expect(h.get('user-agent')).toBe(USER_AGENT)
+    expect(h.get('accept')).toBe('text/html')
+  })
+
+  it('sends no user-agent at all when asked for none', async () => {
+    // ESPN 403s on any custom string; see golf.js and sports.js.
+    const h = await sentHeaders({ userAgent: null })
+    expect(h.get('user-agent')).toBeNull()
+  })
+
+  it('keeps other caller headers whatever their casing', async () => {
+    const h = await sentHeaders({
+      headers: { Authorization: 'Bearer x', 'Content-Type': 'application/json' },
+    })
+    expect(h.get('authorization')).toBe('Bearer x')
+    expect(h.get('content-type')).toBe('application/json')
+  })
+})
