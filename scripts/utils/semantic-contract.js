@@ -275,7 +275,7 @@ export function formatSemanticContractForPrompt() {
  */
 export function formatSemanticContractForArtDirector() {
   const lines = [
-    `Define exactly these ${SEMANTIC_COLORS.length} names under \`theme.semanticTokens.colors\`, with \`_light\` variants if the design flips. Not twelve, not fourteen — the set is frozen, the validator checks it both ways, and a missing or extra name fails the build.`,
+    `Define exactly these ${SEMANTIC_COLORS.length} names under \`theme.semanticTokens.colors\`, with \`_light\` variants if the design flips. The set is frozen and the validator checks it both ways: a missing name fails the build, and so does an invented one.`,
     '',
   ]
   for (const { name, role } of SEMANTIC_COLORS) {
