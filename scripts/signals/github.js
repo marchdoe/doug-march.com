@@ -1,3 +1,5 @@
+import { fetchText } from '../utils/signal-fetch.js'
+
 export const name = 'github'
 export const timeout = 10000
 
@@ -34,15 +36,24 @@ export function parseHTML(html) {
   return repos
 }
 
-export async function collect(_profile) {
-  const res = await fetch('https://github.com/trending', {
-    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; doug-march-signals/1.0)' },
+export async function collect(_profile, { signal } = {}) {
+  const html = await fetchText('https://github.com/trending', {
+    signal,
+    timeoutMs: timeout,
+    source: 'github.com/trending',
   })
-  if (!res.ok) throw new Error(`github.com/trending responded with ${res.status}`)
-  const html = await res.text()
   const repos = parseHTML(html)
+
+  // A scrape that matches nothing is a broken scrape, not a quiet day on
+  // GitHub. Returning `{ repos: [] }` with status 'ok' made the markup
+  // changing look like an empty result, and app/lib/archive-signals.ts then
+  // printed "Nothing that day." — the one statement its own header says it
+  // must never make about a failed read.
+  if (repos.length === 0) {
+    throw new Error('github.com/trending returned no repos — the markup selectors have moved')
+  }
   return {
     data: { repos },
-    meta: { source: 'github.com/trending', items: 5 },
+    meta: { source: 'github.com/trending', items: repos.length },
   }
 }

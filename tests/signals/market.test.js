@@ -30,9 +30,4 @@ describe('market provider', () => {
     expect(result.data.price).toBe('450.25')
     expect(result.meta.source).toBe('alphavantage.co')
   })
-
-  it('throws if API key not set', async () => {
-    vi.stubEnv('ALPHA_VANTAGE_API_KEY', '')
-    await expect(collect({})).rejects.toThrow('ALPHA_VANTAGE_API_KEY')
-  })
 })

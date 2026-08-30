@@ -1,3 +1,5 @@
+import { fetchJson } from '../utils/signal-fetch.js'
+
 export const name = 'news'
 export const timeout = 5000
 export const requiresApiKey = 'NEWS_API_KEY'
@@ -10,16 +12,16 @@ export function filterHeadlines(headlines, disallow) {
   })
 }
 
-export async function collect(profile) {
+export async function collect(profile, { signal } = {}) {
   const key = process.env.NEWS_API_KEY
-  if (!key) throw new Error('NEWS_API_KEY not set')
-
   const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${key}`
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`newsapi.org error: ${res.status}`)
-
-  const json = await res.json()
-  const articles = json.articles ?? []
+  const json = await fetchJson(url, {
+    signal,
+    timeoutMs: timeout,
+    source: 'newsapi.org',
+    expect: (v) => Array.isArray(v?.articles),
+  })
+  const articles = json.articles
   const disallow = profile?.news?.disallow ?? []
 
   const filtered = filterHeadlines(articles, disallow)

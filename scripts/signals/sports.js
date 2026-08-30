@@ -1,3 +1,5 @@
+import { fetchJson } from '../utils/signal-fetch.js'
+
 export const name = 'sports'
 export const timeout = 10000
 
@@ -8,7 +10,7 @@ const LEAGUE_TO_SPORT = {
   MLB: 'baseball',
 }
 
-async function fetchTeamResult(team) {
+async function fetchTeamResult(team, { signal } = {}) {
   const sport = LEAGUE_TO_SPORT[team.league.toUpperCase()]
   if (!sport) {
     return {
@@ -23,10 +25,11 @@ async function fetchTeamResult(team) {
   const league = team.league.toLowerCase()
   const url = `https://site.api.espn.com/apis/site/v2/sports/${sport}/${league}/scoreboard`
 
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`ESPN API error: ${res.status}`)
-
-  const json = await res.json()
+  const json = await fetchJson(url, {
+    signal,
+    timeoutMs: timeout,
+    source: `ESPN ${team.league}`,
+  })
   const events = json.events ?? []
 
   // Find the most recent event involving this team
@@ -64,13 +67,13 @@ async function fetchTeamResult(team) {
   }
 }
 
-export async function collect(profile) {
+export async function collect(profile, { signal } = {}) {
   const teams = profile?.sports?.teams ?? []
 
   const results = await Promise.all(
     teams.map(async (team) => {
       try {
-        return await fetchTeamResult(team)
+        return await fetchTeamResult(team, { signal })
       } catch {
         return {
           name: team.name,
@@ -83,8 +86,22 @@ export async function collect(profile) {
     })
   )
 
+  // A failed team read is not a result. It used to be counted in `items` and
+  // rendered by the consumer as "Detroit Lions error", because
+  // archive-signals.ts only excluded 'off season'. Count the failures
+  // separately, and fail the provider outright when none of them answered —
+  // four errors is a broken read, not a quiet sports day.
+  const failed = results.filter((r) => r.result === 'error' || r.result === 'unknown league')
+  if (teams.length > 0 && failed.length === teams.length) {
+    throw new Error(`ESPN returned nothing usable for any of ${teams.length} teams`)
+  }
+
   return {
     data: { teams: results },
-    meta: { source: 'espn', items: results.length },
+    meta: {
+      source: 'espn',
+      items: results.length - failed.length,
+      ...(failed.length ? { failed: failed.map((f) => f.name) } : {}),
+    },
   }
 }

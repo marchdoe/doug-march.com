@@ -1,16 +1,15 @@
+import { fetchJson } from '../utils/signal-fetch.js'
+
 export const name = 'market'
 export const timeout = 5000
 export const requiresApiKey = 'ALPHA_VANTAGE_API_KEY'
 
-export async function collect(_profile) {
+export async function collect(_profile, { signal } = {}) {
   const key = process.env.ALPHA_VANTAGE_API_KEY
-  if (!key) throw new Error('ALPHA_VANTAGE_API_KEY not set')
-
-  const res = await fetch(
-    `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=SPY&apikey=${key}`
+  const json = await fetchJson(
+    `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=SPY&apikey=${key}`,
+    { signal, timeoutMs: timeout, source: 'Alpha Vantage' }
   )
-  if (!res.ok) throw new Error(`Alpha Vantage responded with ${res.status}`)
-  const json = await res.json()
 
   const quote = json['Global Quote']
   if (!quote?.['05. price']) {

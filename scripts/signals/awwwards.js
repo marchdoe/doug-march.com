@@ -1,3 +1,4 @@
+import { signalFetch } from '../utils/signal-fetch.js'
 export const name = 'awwwards'
 export const timeout = 30000
 
@@ -88,13 +89,10 @@ function extractOgMeta(html) {
  * fetch the bytes at the point of use from screenshot_url, past the
  * text-only sanitizer.
  */
-async function fetchSitePage(slug) {
+async function fetchSitePage(slug, { signal } = {}) {
   const url = `${BASE_URL}/sites/${slug}`
   try {
-    const res = await fetch(url, {
-      signal: AbortSignal.timeout(5000),
-      headers: HEADERS,
-    })
+    const res = await signalFetch(url, { signal, timeoutMs: 5000, headers: HEADERS })
     if (!res.ok) return null
 
     const html = await res.text()
@@ -113,36 +111,32 @@ async function fetchSitePage(slug) {
   }
 }
 
-export async function collect() {
+export async function collect(_profile, { signal } = {}) {
   // Step 1: Fetch listing page to get slugs
-  const listingRes = await fetch(LISTING_URL, {
-    signal: AbortSignal.timeout(8000),
-    headers: HEADERS,
-  })
+  const listingRes = await signalFetch(LISTING_URL, { signal, timeoutMs: 8000, headers: HEADERS })
 
   if (!listingRes.ok) throw new Error(`awwwards.com error: ${listingRes.status}`)
 
   const listingHtml = await listingRes.text()
   const slugs = extractSlugs(listingHtml)
 
+  // A scrape that matches nothing is a broken scrape. Returning a `note`
+  // payload with status 'ok' recorded the markup moving as a successful read
+  // of an empty day.
   if (slugs.length === 0) {
-    return {
-      data: { note: 'Awwwards checked but could not parse SOTD entry slugs' },
-      meta: { source: LISTING_URL, items: 0 },
-    }
+    throw new Error('awwwards.com: could not parse any SOTD slugs — the listing markup has moved')
   }
 
   // Step 2: Fetch individual pages in parallel
-  const results = await Promise.all(slugs.map(fetchSitePage))
+  // Not `slugs.map(fetchSitePage)`: map passes (value, index, array), so the
+  // second argument would be the index rather than the options object.
+  const results = await Promise.all(slugs.map((slug) => fetchSitePage(slug, { signal })))
   const sites = results.filter(Boolean)
 
   if (sites.length === 0) {
-    return {
-      data: {
-        note: 'Awwwards slugs found but could not extract OG metadata from individual pages',
-      },
-      meta: { source: LISTING_URL, items: 0 },
-    }
+    throw new Error(
+      `awwwards.com: found ${slugs.length} slug(s) but no OG metadata — the page markup has moved`
+    )
   }
 
   return {

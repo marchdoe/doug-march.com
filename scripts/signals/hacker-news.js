@@ -1,23 +1,34 @@
+import { fetchJson } from '../utils/signal-fetch.js'
+
 export const name = 'hacker_news'
 export const timeout = 10000
 
-export async function collect(_profile) {
-  const topRes = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json')
-  if (!topRes.ok) throw new Error(`HN topstories responded with ${topRes.status}`)
-  const ids = await topRes.json()
+const SOURCE = 'hacker-news.firebaseio.com'
 
-  const top5 = ids.slice(0, 5)
+export async function collect(_profile, { signal } = {}) {
+  const ids = await fetchJson('https://hacker-news.firebaseio.com/v0/topstories.json', {
+    signal,
+    timeoutMs: timeout,
+    source: SOURCE,
+    expect: (v) => Array.isArray(v) && v.length > 0,
+  })
+
   const stories = await Promise.all(
-    top5.map(async (id) => {
-      const res = await fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
-      if (!res.ok) throw new Error(`HN item/${id} responded with ${res.status}`)
-      const item = await res.json()
+    ids.slice(0, 5).map(async (id) => {
+      const item = await fetchJson(`https://hacker-news.firebaseio.com/v0/item/${id}.json`, {
+        signal,
+        timeoutMs: timeout,
+        source: `${SOURCE} item/${id}`,
+        expect: (v) => v && typeof v === 'object',
+      })
       return { title: item.title, url: item.url, score: item.score, by: item.by }
     })
   )
 
   return {
     data: { stories },
-    meta: { source: 'hacker-news.firebaseio.com', items: 5 },
+    // Counted, not hardcoded to 5. `items` is what today.meta.yml reports as
+    // the size of the read; a literal cannot notice a short response.
+    meta: { source: SOURCE, items: stories.length },
   }
 }

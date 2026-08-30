@@ -1,16 +1,20 @@
+import { fetchJson } from '../utils/signal-fetch.js'
+
 export const name = 'weather'
 export const timeout = 5000
+// collect-signals.js skips a provider whose requiresApiKey env var is unset,
+// so the in-collector `if (!key) throw` this used to carry was unreachable.
 export const requiresApiKey = 'WEATHER_API_KEY'
 
-export async function collect(profile) {
+export async function collect(profile, { signal } = {}) {
   const key = process.env.WEATHER_API_KEY
-  if (!key) throw new Error('WEATHER_API_KEY not set')
-
   const url = `https://api.weatherapi.com/v1/current.json?key=${key}&q=${profile.location.zip}&aqi=yes`
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`weatherapi.com error: ${res.status}`)
-
-  const json = await res.json()
+  const json = await fetchJson(url, {
+    signal,
+    timeoutMs: timeout,
+    source: 'weatherapi.com',
+    expect: (v) => v?.current?.condition && v?.location,
+  })
   const { location, current } = json
 
   return {
@@ -24,9 +28,6 @@ export async function collect(profile) {
       wind_dir: current.wind_dir,
       feels_like_f: current.feelslike_f,
     },
-    meta: {
-      source: 'weatherapi.com',
-      items: 1,
-    },
+    meta: { source: 'weatherapi.com', items: 1 },
   }
 }

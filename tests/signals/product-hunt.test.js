@@ -47,9 +47,4 @@ describe('product-hunt provider', () => {
     expect(result.data.products[0].name).toBe('Cool App')
     expect(result.meta.source).toBe('producthunt.com')
   })
-
-  it('throws if token not set', async () => {
-    vi.stubEnv('PRODUCT_HUNT_TOKEN', '')
-    await expect(collect({})).rejects.toThrow('PRODUCT_HUNT_TOKEN')
-  })
 })
