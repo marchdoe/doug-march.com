@@ -291,8 +291,8 @@ function ArchivePage() {
         {loaded && sorted.length > 0 ? (
           <p className={standfirst}>
             {sorted.length} designs, {sorted[0].date} to {sorted[sorted.length - 1].date}. {withHue}{' '}
-            carry a recorded color. Each square is a day; its color is the color that day was
-            built around.
+            carry a recorded color. Each square is a day; its color is the color that day was built
+            around.
           </p>
         ) : null}
       </header>
