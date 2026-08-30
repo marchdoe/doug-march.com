@@ -10,6 +10,7 @@ export const Route = createFileRoute('/experiments')({
 
 const rowClass = css({
   display: 'flex',
+  flexWrap: 'wrap',
   justifyContent: 'space-between',
   alignItems: 'baseline',
   gap: '4',
@@ -28,14 +29,29 @@ const metaClass = css({
   color: 'textMuted',
 })
 
+/**
+ * Type here is sized against the container, not the viewport.
+ *
+ * This page sits inside Layout.tsx, which the React Engineer rewrites every
+ * night and which may give the content column any fraction of the screen it
+ * likes. On 2026-08-30 it chose a `1.35fr 1fr` split, so `clamp(40px, 8vw,
+ * 100px)` measured 1440px and rendered into ~600px: the headline read
+ * "EXPERI", the nav and every row's metadata sat off-screen. See #215.
+ */
 function ExperimentsPage() {
   return (
-    <Box padding={{ base: '6 4', md: '8 6vw' }} display="flex" flexDirection="column" gap="6">
+    <Box
+      containerType="inline-size"
+      padding={{ base: '6 4', md: '8 6vw' }}
+      display="flex"
+      flexDirection="column"
+      gap="6"
+    >
       <h1
         className={css({
           fontFamily: 'display',
           textTransform: 'uppercase',
-          fontSize: 'clamp(40px, 8vw, 100px)',
+          fontSize: 'clamp(32px, 12cqi, 100px)',
           lineHeight: 'tight',
           letterSpacing: 'tight',
           color: 'text',

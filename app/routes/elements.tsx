@@ -34,7 +34,15 @@ const PageDesc = styled('p', {
 })
 
 const Section = styled('div', {
-  base: { marginBottom: '12' },
+  base: {
+    marginBottom: '12',
+    // This page renders the nightly components directly, at whatever display
+    // size the night's preset picks, so a single long heading can pin the
+    // page open on a narrow screen. Breaking words is the right trade in a
+    // specimen sheet. See #215.
+    minWidth: 0,
+    overflowWrap: 'anywhere',
+  },
 })
 
 const SubHead = styled('div', {
