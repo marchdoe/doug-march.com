@@ -1,7 +1,6 @@
 import { defineConfig, type Plugin } from 'vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import react from '@vitejs/plugin-react'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { resolve } from 'node:path'
 import { spawn, spawnSync } from 'node:child_process'
 import { readFileSync, existsSync, readdirSync } from 'node:fs'
@@ -582,6 +581,5 @@ export default defineConfig({
     // renders shell-only under `vite dev` — the "blank content area" noted in
     // the 2026-08-05 deps-update evidence. Production builds were unaffected.
     react(),
-    tsconfigPaths({ projects: ['./tsconfig.json'] }),
   ],
 })

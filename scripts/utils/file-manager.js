@@ -13,7 +13,7 @@ export const ROOT = path.resolve(__dirname, '../..')
 const ALLOWED_WRITE_PREFIXES = ['app/components/', 'app/routes/', 'app/stubs/']
 
 // Exact paths allowed for writes outside the prefix list. elements/ is
-// deliberately NOT a prefix: elements/chassis/index.js and elements/index.ts
+// deliberately NOT a prefix: elements/chassis/index.js
 // are imported and executed by the pipeline itself (design-agents.js), so a
 // prefix-level allow would let a prompt-injected agent plant code that runs
 // with repo write access on the next nightly run. Only the two generated
