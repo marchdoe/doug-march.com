@@ -1,0 +1,765 @@
+/**
+ * Did every token name the engineer wrote actually resolve?
+ *
+ * PandaCSS does not fail on a token it has never heard of. It passes the name
+ * through as a literal value, so `fontSize: '5xl'` against a ramp that stops at
+ * `2xl` compiles, ships, and lands in the stylesheet as `font-size:5xl`. That is
+ * not a font size, so the browser drops the declaration and the element renders
+ * at whatever it inherited. Nothing throws. Nothing warns. The page looks nearly
+ * right, which on a site that redesigns itself every night is the hardest kind
+ * of wrong to see.
+ *
+ * On 2026-08-30 the home hero asked for `5xl` at base and `7xl` at md. Both were
+ * dropped, so the h1 fell back to the browser default and rendered at 32px on
+ * mobile where the approved mockup called for 64px. The stylesheet carried about
+ * forty such values that morning.
+ *
+ * There is a second, quieter version of the same failure. Panda appends `px` to
+ * a bare number on a length property, so `width: '11'` — meant as a spacing
+ * token — compiled to the perfectly valid `width:11px`. The browser keeps it.
+ * The brand mark shipped at 11px instead of 44px. Scanning the emitted CSS
+ * cannot catch that one, because the CSS is valid; it has to be caught in the
+ * source, against the scale the preset actually defines.
+ *
+ * ## What this does not do
+ *
+ * It is not `strictTokens`. That rejects every raw CSS value as well, which on
+ * this codebase means hundreds of errors, nearly all of them legitimate — the
+ * tooling surfaces under app/components/panel are meant to ignore the day's
+ * design. The defect worth failing a build over is a token *reference* that
+ * resolved to nothing, not a hardcoded pixel value.
+ *
+ * It also deliberately ignores dead code. `app/components/` holds roughly forty
+ * files and routes import about eight of them, but Panda's `include` glob scans
+ * every one, so stale components emit unresolved CSS too (`cardBg`, `pine.400`).
+ * Failing the nightly build over a file nothing renders would be a false alarm,
+ * and a false alarm on a nightly run is worse than a missed one: it kills a run
+ * that would have been fine. Every finding is therefore filtered against the
+ * set of files reachable by import from `app/routes/**`. Deleting the orphans is
+ * #216; until that lands this gate simply steps around them.
+ *
+ * @see https://github.com/marchdoe/dougmar.ch/issues/252
+ */
+
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
+import path from 'node:path'
+
+/* ------------------------------------------------------------------ *
+ * Part one: unresolved token names in the emitted CSS
+ * ------------------------------------------------------------------ */
+
+/**
+ * CSS properties whose value, when it is a bare identifier, is almost certainly
+ * a token name that never resolved.
+ *
+ * The set is explicit rather than inferred. Every property here has a small,
+ * closed set of legal bare-identifier values (listed in {@link PROPERTY_KEYWORDS}
+ * or, for the colour properties, the CSS named colours), so anything else is a
+ * name Panda could not look up. Properties that accept open-ended identifiers —
+ * `display`, `position`, `text-rendering`, `animation-name`, `grid-area` — are
+ * left out on purpose: there is no way to tell a typo from a keyword there.
+ *
+ * Maps the emitted (kebab-case) property to the Panda token category the
+ * engineer was reaching for, so the error message can say which scale to look in.
+ */
+export const CHECKED_PROPERTIES = new Map([
+  // colours
+  ['color', 'colors'],
+  ['background', 'colors'],
+  ['background-color', 'colors'],
+  ['border-color', 'colors'],
+  ['border-top-color', 'colors'],
+  ['border-right-color', 'colors'],
+  ['border-bottom-color', 'colors'],
+  ['border-left-color', 'colors'],
+  ['border-inline-color', 'colors'],
+  ['border-inline-start-color', 'colors'],
+  ['border-inline-end-color', 'colors'],
+  ['border-block-color', 'colors'],
+  ['border-block-start-color', 'colors'],
+  ['border-block-end-color', 'colors'],
+  ['outline-color', 'colors'],
+  ['text-decoration-color', 'colors'],
+  ['caret-color', 'colors'],
+  ['accent-color', 'colors'],
+  ['column-rule-color', 'colors'],
+  ['fill', 'colors'],
+  ['stroke', 'colors'],
+  ['-webkit-text-fill-color', 'colors'],
+  ['-webkit-text-stroke-color', 'colors'],
+  // type
+  ['font-size', 'fontSizes'],
+  ['font-family', 'fonts'],
+  ['letter-spacing', 'letterSpacings'],
+  // space and size
+  ['margin', 'spacing'],
+  ['margin-top', 'spacing'],
+  ['margin-right', 'spacing'],
+  ['margin-bottom', 'spacing'],
+  ['margin-left', 'spacing'],
+  ['margin-inline', 'spacing'],
+  ['margin-inline-start', 'spacing'],
+  ['margin-inline-end', 'spacing'],
+  ['margin-block', 'spacing'],
+  ['margin-block-start', 'spacing'],
+  ['margin-block-end', 'spacing'],
+  ['padding', 'spacing'],
+  ['padding-top', 'spacing'],
+  ['padding-right', 'spacing'],
+  ['padding-bottom', 'spacing'],
+  ['padding-left', 'spacing'],
+  ['padding-inline', 'spacing'],
+  ['padding-inline-start', 'spacing'],
+  ['padding-inline-end', 'spacing'],
+  ['padding-block', 'spacing'],
+  ['padding-block-start', 'spacing'],
+  ['padding-block-end', 'spacing'],
+  ['gap', 'spacing'],
+  ['row-gap', 'spacing'],
+  ['column-gap', 'spacing'],
+  ['top', 'spacing'],
+  ['right', 'spacing'],
+  ['bottom', 'spacing'],
+  ['left', 'spacing'],
+  ['inset', 'spacing'],
+  ['inset-inline', 'spacing'],
+  ['inset-block', 'spacing'],
+  ['width', 'sizes'],
+  ['height', 'sizes'],
+  ['min-width', 'sizes'],
+  ['max-width', 'sizes'],
+  ['min-height', 'sizes'],
+  ['max-height', 'sizes'],
+  ['flex-basis', 'sizes'],
+  ['border-radius', 'radii'],
+  ['border-width', 'borderWidths'],
+  ['border-top-width', 'borderWidths'],
+  ['border-right-width', 'borderWidths'],
+  ['border-bottom-width', 'borderWidths'],
+  ['border-left-width', 'borderWidths'],
+])
+
+/**
+ * Keywords every property accepts. `none` and `auto` are here rather than in the
+ * per-property lists because they are legal on so many of the checked properties
+ * that splitting them out buys nothing.
+ */
+const GLOBAL_KEYWORDS = new Set([
+  'inherit',
+  'initial',
+  'unset',
+  'revert',
+  'revert-layer',
+  'none',
+  'auto',
+  'normal',
+  'currentcolor',
+  'transparent',
+])
+
+/** Keywords legal on one property but not the rest. */
+const PROPERTY_KEYWORDS = new Map([
+  [
+    'font-size',
+    [
+      'xx-small',
+      'x-small',
+      'small',
+      'medium',
+      'large',
+      'x-large',
+      'xx-large',
+      'xxx-large',
+      'smaller',
+      'larger',
+      'math',
+    ],
+  ],
+  [
+    'font-family',
+    [
+      'serif',
+      'sans-serif',
+      'monospace',
+      'cursive',
+      'fantasy',
+      'system-ui',
+      'ui-serif',
+      'ui-sans-serif',
+      'ui-monospace',
+      'ui-rounded',
+      'math',
+      'emoji',
+      'fangsong',
+    ],
+  ],
+  ['width', ['fit-content', 'max-content', 'min-content', 'stretch', 'available']],
+  ['height', ['fit-content', 'max-content', 'min-content', 'stretch', 'available']],
+  ['min-width', ['fit-content', 'max-content', 'min-content', 'stretch', 'available']],
+  ['max-width', ['fit-content', 'max-content', 'min-content', 'stretch', 'available']],
+  ['min-height', ['fit-content', 'max-content', 'min-content', 'stretch', 'available']],
+  ['max-height', ['fit-content', 'max-content', 'min-content', 'stretch', 'available']],
+  ['flex-basis', ['fit-content', 'max-content', 'min-content', 'content']],
+  [
+    'background',
+    [
+      'border-box',
+      'padding-box',
+      'content-box',
+      'repeat',
+      'no-repeat',
+      'cover',
+      'contain',
+      'fixed',
+      'scroll',
+      'local',
+    ],
+  ],
+  ['border-width', ['thin', 'medium', 'thick']],
+  ['border-top-width', ['thin', 'medium', 'thick']],
+  ['border-right-width', ['thin', 'medium', 'thick']],
+  ['border-bottom-width', ['thin', 'medium', 'thick']],
+  ['border-left-width', ['thin', 'medium', 'thick']],
+])
+
+/**
+ * The 148 CSS named colours. `color: rebeccapurple` is real CSS, so a colour
+ * property carrying one of these has resolved to something the browser will
+ * paint, whatever the design system thinks of it.
+ */
+const NAMED_COLORS = new Set(
+  `aliceblue antiquewhite aqua aquamarine azure beige bisque black blanchedalmond blue blueviolet
+   brown burlywood cadetblue chartreuse chocolate coral cornflowerblue cornsilk crimson cyan
+   darkblue darkcyan darkgoldenrod darkgray darkgreen darkgrey darkkhaki darkmagenta darkolivegreen
+   darkorange darkorchid darkred darksalmon darkseagreen darkslateblue darkslategray darkslategrey
+   darkturquoise darkviolet deeppink deepskyblue dimgray dimgrey dodgerblue firebrick floralwhite
+   forestgreen fuchsia gainsboro ghostwhite gold goldenrod gray green greenyellow grey honeydew
+   hotpink indianred indigo ivory khaki lavender lavenderblush lawngreen lemonchiffon lightblue
+   lightcoral lightcyan lightgoldenrodyellow lightgray lightgreen lightgrey lightpink lightsalmon
+   lightseagreen lightskyblue lightslategray lightslategrey lightsteelblue lightyellow lime
+   limegreen linen magenta maroon mediumaquamarine mediumblue mediumorchid mediumpurple
+   mediumseagreen mediumslateblue mediumspringgreen mediumturquoise mediumvioletred midnightblue
+   mintcream mistyrose moccasin navajowhite navy oldlace olive olivedrab orange orangered orchid
+   palegoldenrod palegreen paleturquoise palevioletred papayawhip peachpuff peru pink plum
+   powderblue purple rebeccapurple red rosybrown royalblue saddlebrown salmon sandybrown seagreen
+   seashell sienna silver skyblue slateblue slategray slategrey snow springgreen steelblue tan teal
+   thistle tomato turquoise violet wheat white whitesmoke yellow yellowgreen`.split(/\s+/)
+)
+
+/** Every unit CSS knows, so `0.5s` and `8.5vw` read as numbers rather than names. */
+const CSS_UNITS =
+  'px|em|rem|ex|ch|cap|ic|lh|rlh|vw|vh|vmin|vmax|vi|vb|svw|svh|svmin|svmax|lvw|lvh|lvmin|lvmax|dvw|dvh|dvmin|dvmax|cqw|cqh|cqi|cqb|cqmin|cqmax|cm|mm|q|in|pt|pc|fr|deg|grad|rad|turn|ms|s|hz|khz|dpi|dpcm|dppx|x'
+
+const NUMBER_WITH_OPTIONAL_UNIT = new RegExp(
+  `^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:e[+-]?\\d+)?(?:${CSS_UNITS})?$`,
+  'i'
+)
+
+/**
+ * Is `value` a bare identifier — a name, rather than a measurement, a colour
+ * literal, a function call, a quoted string or a list?
+ *
+ * Anything carrying a space, a comma, a slash, a bracket, a `#`, a `%` or a
+ * quote is raw CSS and none of this gate's business. So is anything that parses
+ * as a number with or without a unit. What is left is a word, and on the
+ * properties in {@link CHECKED_PROPERTIES} a word is either a keyword or a token
+ * name that did not resolve.
+ *
+ * @param {string} value
+ * @returns {boolean}
+ */
+export function isBareIdentifier(value) {
+  if (!value) return false
+  if (/[\s(),/#%'"\\[\]*+<>=;{}$]/.test(value)) return false
+  if (value.startsWith('--')) return false
+  if (NUMBER_WITH_OPTIONAL_UNIT.test(value)) return false
+  return /^-{0,2}[A-Za-z0-9][A-Za-z0-9._-]*$/.test(value)
+}
+
+/**
+ * Did `value` on `property` fail to resolve to a token?
+ *
+ * @param {string} property emitted CSS property, kebab-case
+ * @param {string} value emitted CSS value
+ * @returns {boolean}
+ */
+export function isUnresolvedTokenValue(property, value) {
+  const prop = property.trim().toLowerCase()
+  if (!CHECKED_PROPERTIES.has(prop)) return false
+
+  const raw = value.replace(/!\s*important\s*$/i, '').trim()
+  if (!isBareIdentifier(raw)) return false
+
+  const lower = raw.toLowerCase()
+  // A vendor-prefixed keyword (-webkit-fill-available, -moz-fit-content) is a
+  // keyword, not a token name; no token scale starts with a dash.
+  if (lower.startsWith('-')) return false
+  if (GLOBAL_KEYWORDS.has(lower)) return false
+  if (PROPERTY_KEYWORDS.get(prop)?.includes(lower)) return false
+  if (CHECKED_PROPERTIES.get(prop) === 'colors' && NAMED_COLORS.has(lower)) return false
+
+  return true
+}
+
+/**
+ * Turn an escaped Panda selector back into the value the engineer wrote.
+ *
+ * Panda names an atomic class after the declaration it carries and escapes the
+ * characters CSS reserves, so `color: 'pine.400'` under a `md` condition becomes
+ * `.md\:c_pine\.400`. Unescaping recovers `md:c_pine.400`; everything after the
+ * last `_` is the authored value.
+ *
+ * That matters because the emitted value is not always the authored one — Panda
+ * rewrites `pine.400` to `pine.4` on the way out — so the class name is the only
+ * reliable way back to the string that appears in the TSX.
+ *
+ * @param {string} selector e.g. `.md\:c_pine\.400:hover`
+ * @returns {{ className: string, authoredValue: string } | null}
+ */
+export function parseAtomicSelector(selector) {
+  const first = selector.trim().split(/\s|>|~|\+|,/)[0]
+  if (!first.startsWith('.')) return null
+
+  // Walk the selector so an escaped `\:` is kept while a pseudo-class `:` ends
+  // the class name. Same for the `\.` in a nested token path versus a `.` that
+  // starts the next compound class.
+  let className = ''
+  for (let i = 1; i < first.length; i++) {
+    const ch = first[i]
+    if (ch === '\\') {
+      i++
+      if (i < first.length) className += first[i]
+      continue
+    }
+    if (ch === ':' || ch === '.' || ch === '[' || ch === '#') break
+    className += ch
+  }
+  if (!className) return null
+
+  const underscore = className.lastIndexOf('_')
+  const authoredValue = underscore === -1 ? '' : className.slice(underscore + 1)
+  return { className, authoredValue }
+}
+
+/**
+ * Every declaration in `css`, paired with the selector that carries it.
+ *
+ * The regex matches innermost brace blocks only, which is what makes it safe
+ * inside `@media` and `@layer`: an at-rule prelude is always followed by another
+ * `{`, so it can never satisfy the `[^{}]` body and the match slides past it to
+ * the rule inside.
+ *
+ * @param {string} css
+ * @returns {Array<{selector: string, property: string, value: string}>}
+ */
+export function parseDeclarations(css) {
+  const out = []
+  for (const [, selector, body] of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    for (const decl of body.split(';')) {
+      const colon = decl.indexOf(':')
+      if (colon === -1) continue
+      const property = decl.slice(0, colon).trim()
+      const value = decl.slice(colon + 1).trim()
+      if (!property || property.startsWith('--')) continue
+      out.push({ selector: selector.trim(), property, value })
+    }
+  }
+  return out
+}
+
+/**
+ * Unresolved token names in an emitted stylesheet.
+ *
+ * Findings are deduplicated by property and value: the same miss repeated across
+ * six breakpoints is one mistake, and six lines of it would bury the others in
+ * the retry prompt.
+ *
+ * @param {string} css contents of a built stylesheet
+ * @returns {Array<{property: string, value: string, category: string, authoredValue: string, selector: string}>}
+ */
+export function findUnresolvedCssValues(css) {
+  const found = new Map()
+  for (const { selector, property, value } of parseDeclarations(css)) {
+    if (!isUnresolvedTokenValue(property, value)) continue
+    const prop = property.toLowerCase()
+    const parsed = parseAtomicSelector(selector)
+    const key = `${prop}:${value}`
+    if (found.has(key)) continue
+    found.set(key, {
+      property: prop,
+      value,
+      category: CHECKED_PROPERTIES.get(prop),
+      // Fall back to the emitted value for a rule with no class to read, such as
+      // anything the Art Director puts in globalCss.
+      authoredValue: parsed?.authoredValue || value,
+      selector: selector.trim(),
+    })
+  }
+  return [...found.values()]
+}
+
+/* ------------------------------------------------------------------ *
+ * Part two: bare numbers where a spacing token was meant
+ * ------------------------------------------------------------------ */
+
+/**
+ * Style props that read a token scale keyed by number, written the way they
+ * appear in TSX. Maps each to the Panda category it looks up, because they do
+ * not all read the same one: `gap: '1'` resolves against spacing, while
+ * `height: '3'` resolves against sizes and — with no numeric sizes tokens in the
+ * preset — quietly becomes `height:3px`.
+ */
+export const NUMERIC_SCALE_PROPS = new Map([
+  ['margin', 'spacing'],
+  ['marginTop', 'spacing'],
+  ['marginRight', 'spacing'],
+  ['marginBottom', 'spacing'],
+  ['marginLeft', 'spacing'],
+  ['marginX', 'spacing'],
+  ['marginY', 'spacing'],
+  ['marginInline', 'spacing'],
+  ['marginBlock', 'spacing'],
+  ['padding', 'spacing'],
+  ['paddingTop', 'spacing'],
+  ['paddingRight', 'spacing'],
+  ['paddingBottom', 'spacing'],
+  ['paddingLeft', 'spacing'],
+  ['paddingX', 'spacing'],
+  ['paddingY', 'spacing'],
+  ['paddingInline', 'spacing'],
+  ['paddingBlock', 'spacing'],
+  ['gap', 'spacing'],
+  ['rowGap', 'spacing'],
+  ['columnGap', 'spacing'],
+  ['top', 'spacing'],
+  ['right', 'spacing'],
+  ['bottom', 'spacing'],
+  ['left', 'spacing'],
+  ['inset', 'spacing'],
+  ['width', 'sizes'],
+  ['height', 'sizes'],
+  ['minWidth', 'sizes'],
+  ['maxWidth', 'sizes'],
+  ['minHeight', 'sizes'],
+  ['maxHeight', 'sizes'],
+])
+
+/**
+ * The keys of one token scale in the preset source.
+ *
+ * Parsed rather than hardcoded because the Art Director rewrites
+ * `elements/preset.ts` every night and the scale moves with it: nine steps of
+ * 4px-128px on 2026-08-30, something else tomorrow.
+ *
+ * @param {string} source contents of elements/preset.ts
+ * @param {string} category e.g. `spacing`
+ * @returns {Set<string>} the keys defined under theme.tokens[category]
+ */
+export function parseTokenScaleKeys(source, category) {
+  const keys = new Set()
+  const header = new RegExp(`\\b${category}\\s*:\\s*\\{`).exec(source)
+  if (!header) return keys
+
+  let depth = 0
+  let end = source.length
+  for (let i = header.index + header[0].length - 1; i < source.length; i++) {
+    if (source[i] === '{') depth++
+    else if (source[i] === '}') {
+      depth--
+      if (depth === 0) {
+        end = i
+        break
+      }
+    }
+  }
+  const block = source.slice(header.index + header[0].length, end)
+
+  // Only keys at the top level of the block: `1: { value: '4px' }`, `'2xl': {…}`.
+  let nesting = 0
+  for (let i = 0; i < block.length; i++) {
+    if (block[i] === '{') nesting++
+    else if (block[i] === '}') nesting--
+    else if (nesting === 0) {
+      const rest = block.slice(i)
+      const m = /^(?:'([^']+)'|"([^"]+)"|([A-Za-z0-9_$-]+))\s*:/.exec(rest)
+      if (m) {
+        keys.add(m[1] ?? m[2] ?? m[3])
+        i += m[0].length - 1
+      }
+    }
+  }
+  return keys
+}
+
+/**
+ * Bare numbers written where a token key was meant.
+ *
+ * `width: '11'` reads as a token reference and compiles to `width:11px`, which
+ * is valid CSS, so it survives every check that looks at the stylesheet. It has
+ * to be caught here, against the scale the preset defines.
+ *
+ * `0` is always allowed: it is a legal CSS length on its own and no scale needs
+ * to define it.
+ *
+ * @param {string} source TSX contents
+ * @param {Record<string, Set<string>>} scales token keys by category
+ * @returns {Array<{prop: string, value: string, category: string}>}
+ */
+export function findNumericScaleMisses(source, scales) {
+  const out = []
+  const seen = new Set()
+  for (const [prop, category] of NUMERIC_SCALE_PROPS) {
+    // Both spellings: `css({ width: '11' })` and the JSX prop `<Box width="11">`.
+    // Today's tree uses each in a different file and both compile to the same px.
+    const re = new RegExp(`\\b${prop}\\s*[:=]\\s*['"\`](\\d+(?:\\.\\d+)?)['"\`]`, 'g')
+    for (const [, value] of source.matchAll(re)) {
+      if (Number(value) === 0) continue
+      if (scales[category]?.has(value)) continue
+      const key = `${prop}:${value}`
+      if (seen.has(key)) continue
+      seen.add(key)
+      out.push({ prop, value, category })
+    }
+  }
+  return out
+}
+
+/* ------------------------------------------------------------------ *
+ * Part three: which files actually render
+ * ------------------------------------------------------------------ */
+
+const SOURCE_EXTENSIONS = ['.tsx', '.ts']
+
+function resolveImport(specifier, fromFile, appDir) {
+  let base
+  if (specifier.startsWith('#/')) base = path.join(appDir, specifier.slice(2))
+  else if (specifier.startsWith('.')) base = path.resolve(path.dirname(fromFile), specifier)
+  else return null
+
+  // Only TypeScript sources. An import can resolve to an asset — `.svg`, `.css`,
+  // `.json` — and an SVG's `width="71"` attribute is not a Panda style prop.
+  const candidates = SOURCE_EXTENSIONS.includes(path.extname(base)) ? [base] : []
+  candidates.push(
+    ...SOURCE_EXTENSIONS.map((e) => base + e),
+    ...SOURCE_EXTENSIONS.map((e) => path.join(base, `index${e}`))
+  )
+  for (const candidate of candidates) {
+    if (existsSync(candidate) && statSync(candidate).isFile()) return candidate
+  }
+  return null
+}
+
+function listFiles(dir, out = []) {
+  let entries
+  try {
+    entries = readdirSync(dir, { withFileTypes: true })
+  } catch {
+    return out
+  }
+  for (const entry of entries) {
+    const full = path.join(dir, entry.name)
+    if (entry.isDirectory()) listFiles(full, out)
+    else if (SOURCE_EXTENSIONS.includes(path.extname(entry.name))) out.push(full)
+  }
+  return out
+}
+
+/**
+ * Every source file a route can reach, by walking imports out from
+ * `app/routes/**`.
+ *
+ * This is the orphan filter. Panda scans all of `app/**` and emits CSS for
+ * whatever it finds, including the roughly thirty components in
+ * `app/components/` that no route imports any more. Their unresolved tokens are
+ * real, but they are not on the page, and failing tonight's build over a file
+ * nobody renders would kill a run that was fine.
+ *
+ * The tradeoff is that this trusts static imports. A component pulled in by a
+ * path this walk cannot follow — a computed specifier, a dynamic registry — would
+ * be treated as dead and its findings dropped. Nothing in this codebase does
+ * that today, and erring toward silence is the right direction for a check that
+ * can fail a nightly run.
+ *
+ * @param {string} root repo root
+ * @returns {Map<string, string>} absolute path to file contents
+ */
+export function readReachableSources(root) {
+  const appDir = path.join(root, 'app')
+  const queue = listFiles(path.join(appDir, 'routes'))
+  const seen = new Map()
+
+  while (queue.length > 0) {
+    const file = queue.pop()
+    if (seen.has(file)) continue
+    let source
+    try {
+      source = readFileSync(file, 'utf8')
+    } catch {
+      continue
+    }
+    seen.set(file, source)
+
+    const specifiers = [
+      ...source.matchAll(/(?:^|\n)\s*(?:import|export)[\s\S]{0,400}?from\s*['"]([^'"]+)['"]/g),
+      ...source.matchAll(/\bimport\s*\(\s*['"]([^'"]+)['"]\s*\)/g),
+      ...source.matchAll(/(?:^|\n)\s*import\s*['"]([^'"]+)['"]/g),
+    ].map((m) => m[1])
+
+    for (const specifier of specifiers) {
+      const resolved = resolveImport(specifier, file, appDir)
+      if (resolved && !seen.has(resolved)) queue.push(resolved)
+    }
+  }
+  return seen
+}
+
+/* ------------------------------------------------------------------ *
+ * The gate
+ * ------------------------------------------------------------------ */
+
+function quotedOccurrence(value) {
+  const escaped = value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return new RegExp(`['"\`]${escaped}['"\`]`)
+}
+
+/**
+ * Run both checks against a built site.
+ *
+ * Findings are split by who can act on them. The error string this produces is
+ * handed to a retry of the React Engineer, and the engineer may only write the
+ * files in `ownedFiles`; a finding in `app/routes/elements.tsx` would burn a
+ * retry on a file the agent is not allowed to open and then fail the run anyway.
+ * So a finding in an owned file blocks, and a finding anywhere else is printed
+ * as a warning — visible every night, but never the reason a build dies.
+ *
+ * @param {object} options
+ * @param {string} options.root repo root
+ * @param {string} [options.distDir] built client output, defaults to dist/client
+ * @param {string[]} [options.ownedFiles] repo-relative paths the nightly agents
+ *   may rewrite. Omit to make every finding blocking.
+ * @returns {{ ok: boolean, blocking: Array<object>, warnings: Array<object>, error?: string }}
+ */
+export function checkTokenResolution({
+  root,
+  distDir = path.join(root, 'dist', 'client'),
+  ownedFiles = null,
+}) {
+  const reachable = readReachableSources(root)
+  const findings = []
+
+  // Which file names a given authored value, among the files that render.
+  const attribute = (value) => {
+    const re = quotedOccurrence(value)
+    const files = []
+    for (const [file, source] of reachable) {
+      if (re.test(source)) files.push(path.relative(root, file))
+    }
+    return files
+  }
+
+  const assetsDir = path.join(distDir, 'assets')
+  let stylesheets = []
+  try {
+    stylesheets = readdirSync(assetsDir)
+      .filter((f) => f.endsWith('.css'))
+      .map((f) => path.join(assetsDir, f))
+  } catch {
+    // No stylesheet is a different failure, and validateBuildOutput already
+    // reports it. Nothing to check here.
+    return { ok: true, blocking: [], warnings: [] }
+  }
+
+  for (const sheet of stylesheets) {
+    for (const hit of findUnresolvedCssValues(readFileSync(sheet, 'utf8'))) {
+      const files = attribute(hit.authoredValue)
+      if (files.length === 0) continue // orphan component, see #216
+      findings.push({
+        kind: 'unresolved',
+        property: hit.property,
+        value: hit.value,
+        authoredValue: hit.authoredValue,
+        category: hit.category,
+        files,
+      })
+    }
+  }
+
+  const presetPath = path.join(root, 'elements', 'preset.ts')
+  if (existsSync(presetPath)) {
+    const preset = readFileSync(presetPath, 'utf8')
+    const scales = {
+      spacing: parseTokenScaleKeys(preset, 'spacing'),
+      sizes: parseTokenScaleKeys(preset, 'sizes'),
+    }
+    for (const [file, source] of reachable) {
+      for (const hit of findNumericScaleMisses(source, scales)) {
+        findings.push({
+          kind: 'numeric',
+          property: hit.prop,
+          value: hit.value,
+          category: hit.category,
+          available: [...(scales[hit.category] ?? [])],
+          files: [path.relative(root, file)],
+        })
+      }
+    }
+  }
+
+  const owned = ownedFiles ? new Set(ownedFiles) : null
+  const isBlocking = (finding) => !owned || finding.files.some((f) => owned.has(f))
+  const blocking = findings.filter(isBlocking)
+  const warnings = findings.filter((f) => !isBlocking(f))
+
+  return {
+    ok: blocking.length === 0,
+    blocking,
+    warnings,
+    error: blocking.length > 0 ? formatFindings(blocking) : undefined,
+  }
+}
+
+/**
+ * Turn findings into the message the retry agent reads.
+ *
+ * It is fed straight back to the React Engineer, so it has to say what it saw,
+ * where, and what to do instead — not merely that something is wrong.
+ *
+ * @param {Array<object>} findings
+ * @returns {string}
+ */
+export function formatFindings(findings) {
+  const lines = [
+    `${findings.length} token reference${findings.length === 1 ? '' : 's'} did not resolve. ` +
+      'PandaCSS passes an unknown token through as a literal, so these shipped as invalid CSS ' +
+      'that the browser drops, or as a px value nobody asked for.',
+  ]
+
+  const unresolved = findings.filter((f) => f.kind === 'unresolved')
+  if (unresolved.length > 0) {
+    lines.push('', 'Names that are not in any token scale:')
+    for (const f of unresolved) {
+      lines.push(
+        `  - ${f.files.join(', ')}: ${f.property}: '${f.authoredValue}' emitted ` +
+          `\`${f.property}:${f.value}\`. There is no ${f.category}.${f.authoredValue} token, so the ` +
+          'declaration is invalid and the browser drops it. Use a token that exists in that scale, ' +
+          'or write an explicit CSS value.'
+      )
+    }
+  }
+
+  const numeric = findings.filter((f) => f.kind === 'numeric')
+  if (numeric.length > 0) {
+    lines.push('', 'Bare numbers where a token key was meant:')
+    for (const f of numeric) {
+      const advice = f.available?.length
+        ? `The ${f.category} scale defines ${f.available.join(', ')} — use one of those, or write the length you mean with a unit.`
+        : `The preset defines no ${f.category} scale at all, so write the length you mean with a unit.`
+      lines.push(
+        `  - ${f.files.join(', ')}: ${f.property}: '${f.value}' is not a ${f.category} token, so ` +
+          `Panda appended px and shipped ${f.value}px. ${advice}`
+      )
+    }
+  }
+
+  return lines.join('\n')
+}

@@ -4,6 +4,7 @@ import { readFileSync, readdirSync, existsSync, statSync, writeFileSync, mkdirSy
 import { resolve } from 'node:path'
 import { ROOT } from './file-manager.js'
 import { checkTokenExistence } from './token-existence.js'
+import { checkTokenResolution } from './token-gate.js'
 import { MUTABLE_FILES } from './site-context.js'
 
 /**
@@ -681,6 +682,32 @@ export function validateBuildOutput() {
     }
   } catch (err) {
     errors.push(`dist/client/assets/ missing or unreadable: ${err.message}`)
+  }
+
+  // Check 5: every token name in the emitted CSS actually resolved.
+  //
+  // A build can exit 0, produce a healthy 30KB stylesheet, and still ship
+  // `font-size:5xl` — Panda passes an unknown token through as a literal and
+  // the browser drops the declaration. On 2026-08-30 that put the home hero at
+  // 32px on mobile against an approved 64px mockup, and nothing noticed. See
+  // scripts/utils/token-gate.js and #252.
+  try {
+    const gate = checkTokenResolution({ root: ROOT, ownedFiles: MUTABLE_FILES })
+    for (const w of gate.warnings) {
+      const what =
+        w.kind === 'numeric'
+          ? `is not a ${w.category} token, so Panda shipped ${w.value}px`
+          : 'does not resolve to any token'
+      console.warn(
+        `  ⚠ ${w.files.join(', ')}: ${w.property}: '${w.authoredValue ?? w.value}' ${what}` +
+          ' (not a file the nightly agents own, so not blocking)'
+      )
+    }
+    if (!gate.ok) errors.push(gate.error)
+    else if (gate.warnings.length === 0) console.log('  every token in the emitted CSS resolved')
+  } catch (err) {
+    // A gate that throws must not be the reason a good build is thrown away.
+    console.warn(`  token resolution gate skipped: ${err.message}`)
   }
 
   return { success: errors.length === 0, errors }
