@@ -1,4 +1,4 @@
-import { RECOGNIZED_ORIGINS } from '../../scripts/utils/site-origin.js'
+import { CANONICAL_ORIGIN, RECOGNIZED_ORIGINS } from '../../scripts/utils/site-origin.js'
 import { test, expect, type Page } from '@playwright/test'
 
 // Runs against PREVIEW_URL (Vercel preview deploy, or localhost dev server)
@@ -301,7 +301,14 @@ test.describe('site health — share-sheet meta', () => {
     if ((await ogMeta.count()) === 0)
       test.skip(true, 'og meta not yet generated (pre-first-pipeline-run checkout)')
     const ogImage = await ogMeta.getAttribute('content')
-    expect(ogImage).toMatch(/\/og\/\d{4}-\d{2}-\d{2}\.png$/)
+    // Two shapes are valid. A dated capture is what the pipeline writes on a
+    // green run; `default.png` is the committed fallback that ships a real card
+    // before any run has succeeded, and is what a fresh checkout serves. See
+    // #201 — asserting only the dated form encoded an assumption that the site
+    // always has a successful capture behind it, which it did not.
+    expect(ogImage).toMatch(/\/og\/(\d{4}-\d{2}-\d{2}|default)\.png$/)
+    // Whichever it is, the card has to point at this site.
+    expect(ogImage).toContain(CANONICAL_ORIGIN)
     const card = await page.locator('meta[name="twitter:card"]').getAttribute('content')
     expect(card).toBe('summary_large_image')
   })
