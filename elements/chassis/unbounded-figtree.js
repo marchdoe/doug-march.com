@@ -1,17 +1,19 @@
+import { scaleSteps } from './scale.js'
+
 /**
  * Wide/expanded grotesk pairing. Unbounded is a blocky, geometric variable
  * display face drawn WIDE rather than condensed — the opposite proportion
- * statement from the catalog's existing condensed-caps chassis. Pairs with
+ * statement from the catalog's condensed-caps chassis. Pairs with
  * Figtree, a warm neutral grotesk for body, so the wide display headlines
  * don't fight a competing personality underneath them.
  *
- * Scale at Perfect 5th (1.500) — display-grade, marquee-capable. Added
- * 2026-08-23 specifically to counter the monoculture finding that 3 of the
- * prior 5 chassis were condensed display sans (big-shoulders-atkinson,
- * anton-inter-tight, bebas-plex) — every one of them narrows type under
- * pressure. Unbounded does the opposite: it gets wider and blockier at
- * weight, which reads as confident and modern without repeating the same
- * "tight condensed caps" gesture a fourth time.
+ * Step table at Perfect 5th (1.500) — display-grade, marquee-capable. A
+ * face this wide is already making a proportion statement; over-closing it
+ * would undo the point, so the display steps take only a light -0.01em and
+ * the hero sits at 0.95 leading.
+ *
+ * Weights verified on fonts.google.com/specimen: Unbounded 400/700/900,
+ * Figtree 400/500/700.
  *
  * Off impeccable's reflex-reject list — neither Unbounded nor Figtree
  * appear on it. Use for Poster, Specimen, and Gallery Wall — anywhere the
@@ -41,8 +43,14 @@ export const unboundedFigtree = {
     },
   },
 
-  scale: {
-    ratio: 1.500,
-    base: '1rem',
+  type: {
+    steps: scaleSteps(1.5, '1rem', {
+      '2xl': { tracking: '-0.01em' },
+      '3xl': { tracking: '-0.01em' },
+      '4xl': { tracking: '-0.01em' },
+      '5xl': { tracking: '-0.01em' },
+      hero: { tracking: '-0.01em' },
+    }),
+    weights: { light: 400, normal: 400, medium: 500, semibold: 700, bold: 900 },
   },
 }

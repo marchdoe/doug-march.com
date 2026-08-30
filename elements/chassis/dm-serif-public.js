@@ -1,3 +1,5 @@
+import { scaleSteps } from './scale.js'
+
 /**
  * High-contrast didone pairing. DM Serif Display is a single-weight fashion
  * serif — thin hairlines against thick stems, drawn for headlines that want
@@ -5,12 +7,15 @@
  * Sans (USWDS), a sturdy, neutral body face that stays out of the way and
  * keeps the page from tipping into pure fashion-magazine pastiche.
  *
- * Scale at Golden ratio (1.618) — operatic hierarchy, the same aggressive
- * jump as big-shoulders-atkinson but through a serif instead of a condensed
- * grotesk. Added 2026-08-23 alongside four other chassis to break the
- * condensed-caps monoculture (3 of the prior 5 chassis were condensed
- * display sans) and to give Poster/Specimen days a second visual language
- * beyond "tight all-caps display type."
+ * Step table at Golden ratio (1.618) — operatic hierarchy, the same
+ * aggressive jump as big-shoulders-atkinson but through a serif instead of
+ * a condensed grotesk. A didone must NOT be tracked tight: negative
+ * spacing collides the hairline serifs. The display steps hold zero
+ * tracking and the hero keeps 0.98 leading so ascenders and descenders
+ * clear each other.
+ *
+ * Weights verified on fonts.google.com/specimen: DM Serif Display 400,
+ * Public Sans 400/500/700.
  *
  * DM Serif Display appears on impeccable's reflex-reject list (a guard
  * against reaching for it by training-data habit in freeform design). That
@@ -43,8 +48,14 @@ export const dmSerifPublic = {
     },
   },
 
-  scale: {
-    ratio: 1.618,
-    base: '1rem',
+  type: {
+    steps: scaleSteps(1.618, '1rem', {
+      '2xl': { tracking: '-0.005em' },
+      '3xl': { tracking: '-0.005em' },
+      '4xl': { tracking: '0' },
+      '5xl': { tracking: '0' },
+      hero: { lineHeight: 0.98, tracking: '0' },
+    }),
+    weights: { light: 400, normal: 400, medium: 500, semibold: 700, bold: 700 },
   },
 }

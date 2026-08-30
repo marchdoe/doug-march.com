@@ -1,3 +1,5 @@
+import { scaleSteps } from './scale.js'
+
 /**
  * Heavy-display poster pairing. Anton is a single-weight condensed display
  * sans (Vernon Adams, Google Fonts) — drawn for ad headlines, reads as
@@ -6,8 +8,13 @@
  * narrower advance than Inter classic — keeps body copy economical so
  * the display heads dominate.
  *
- * Scale at Perfect 5th (1.500) — dramatic hierarchy, comfortable home
- * for poster-scale type without crushing body legibility.
+ * Step table at Perfect 5th (1.500) — dramatic hierarchy, comfortable home
+ * for poster-scale type without crushing body legibility. Anton is drawn
+ * tight already: the display steps do not close at all, and the hero opens
+ * a hair so counters keep breathing at 120px.
+ *
+ * Weights verified on fonts.google.com/specimen: Anton 400,
+ * Inter Tight 400/500/700.
  *
  * Off impeccable's reflex-reject list. Use for Poster, Specimen, and
  * Stack archetypes — anywhere the brief calls for headline-led drama.
@@ -36,8 +43,14 @@ export const antonInterTight = {
     },
   },
 
-  scale: {
-    ratio: 1.500,
-    base: '1rem',
+  type: {
+    steps: scaleSteps(1.5, '1rem', {
+      '2xl': { tracking: '0' },
+      '3xl': { tracking: '0' },
+      '4xl': { tracking: '0' },
+      '5xl': { tracking: '0' },
+      hero: { lineHeight: 0.92, tracking: '0.005em' },
+    }),
+    weights: { light: 400, normal: 400, medium: 500, semibold: 700, bold: 700 },
   },
 }
