@@ -2,18 +2,20 @@ name: Daily Redesign
 
 on:
   schedule:
-    # 04:50 America/New_York, year-round. GitHub cron is UTC-only with no DST
+    # 05:00 America/New_York, year-round. GitHub cron is UTC-only with no DST
     # support, so one entry cannot track a local time across the switch: a fixed
     # '0 10 * * *' is 5am in EST but 6am in EDT. Both entries below fire every
     # day and the `guard` job drops whichever one is an hour wrong for the
     # current offset, so exactly one survives per day in either season.
     #
-    # :50 rather than :00 on purpose. Scheduled workflows queue behind everything
-    # else that fires on the hour: runs 2026-08-19 through 08-26 all started
-    # 17-31 minutes late. Aiming at 04:50 lands the build near 5am local once
-    # that lag is applied, instead of 5:20.
-    - cron: '50 8 * * *' # 04:50 EDT (skipped in winter — 03:50 EST)
-    - cron: '50 9 * * *' # 04:50 EST (skipped in summer — 05:50 EDT)
+    # These are the trigger times, not the start times. Scheduled workflows
+    # queue behind everything else on the hour — runs 2026-08-19 through 08-26
+    # started 17-31 minutes late, and 08-27, 08-28 and 08-30 were hours late.
+    # An earlier :50 trigger was tried to absorb the small case; it cannot
+    # touch the large one, and it made the configured time disagree with the
+    # intended one. 5am means 5am; lateness is #193's problem to solve.
+    - cron: '0 9 * * *' # 05:00 EDT (skipped in winter — 04:00 EST)
+    - cron: '0 10 * * *' # 05:00 EST (skipped in summer — 06:00 EDT)
   workflow_dispatch:
     inputs:
       dry_run:
@@ -60,11 +62,11 @@ jobs:
           zone=$(TZ=America/New_York date +%Z)
           local_now=$(TZ=America/New_York date '+%Y-%m-%d %H:%M %Z')
           case "$sched|$zone" in
-            '50 8 * * *|EDT' | '50 9 * * *|EST')
+            '0 9 * * *|EDT' | '0 10 * * *|EST')
               echo 'run=true' >> "$GITHUB_OUTPUT"
               echo "$local_now — cron '$sched' is the $zone entry, this is the day's run"
               ;;
-            '50 8 * * *|EST' | '50 9 * * *|EDT')
+            '0 9 * * *|EST' | '0 10 * * *|EDT')
               echo 'run=false' >> "$GITHUB_OUTPUT"
               echo "$local_now — cron '$sched' is the other DST entry for $zone; skipping"
               ;;

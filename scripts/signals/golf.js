@@ -5,7 +5,15 @@ export const timeout = 10000
 
 export async function collect(_profile, { signal } = {}) {
   const url = 'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard'
-  const json = await fetchJson(url, { signal, timeoutMs: timeout, source: 'ESPN golf' })
+  const json = await fetchJson(url, {
+    signal,
+    timeoutMs: timeout,
+    source: 'ESPN golf',
+    // ESPN's site.api rejects any custom User-Agent with a 403 — a browser
+    // string included — and answers 200 to the runtime default. Sending the
+    // shared signals UA broke this collector; stay anonymous here.
+    userAgent: null,
+  })
   const events = json.events || []
 
   if (events.length === 0) {

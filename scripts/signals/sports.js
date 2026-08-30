@@ -29,6 +29,10 @@ async function fetchTeamResult(team, { signal } = {}) {
     signal,
     timeoutMs: timeout,
     source: `ESPN ${team.league}`,
+    // ESPN's site.api rejects any custom User-Agent with a 403 — a browser
+    // string included — and answers 200 to the runtime default. Sending the
+    // shared signals UA broke this collector; stay anonymous here.
+    userAgent: null,
   })
   const events = json.events ?? []
 

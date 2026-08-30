@@ -31,12 +31,19 @@ export const USER_AGENT = 'dougmar-ch-signals/1.0 (+https://dougmar.ch)'
  * @param {object} [options]
  * @param {AbortSignal} [options.signal] the orchestrator's signal
  * @param {number} [options.timeoutMs] own deadline, defaults to 10s
+ * @param {string|null} [options.userAgent] identify as something else, or pass
+ *   null to send no User-Agent at all. ESPN's site.api answers 200 to the
+ *   runtime default and 403 to every custom string — including a full browser
+ *   UA — so the two ESPN collectors have to stay anonymous.
  * @param {Record<string,string>} [options.headers]
  * @param {string} [options.method]
  * @param {string} [options.body]
  * @returns {Promise<Response>}
  */
-export async function signalFetch(url, { signal, timeoutMs = 10000, headers, ...init } = {}) {
+export async function signalFetch(
+  url,
+  { signal, timeoutMs = 10000, headers, userAgent = USER_AGENT, ...init } = {}
+) {
   // Both deadlines apply: the collector's own, and the orchestrator's, which
   // fires when the whole run is being torn down.
   const timeout = AbortSignal.timeout(timeoutMs)
@@ -45,7 +52,7 @@ export async function signalFetch(url, { signal, timeoutMs = 10000, headers, ...
   return await fetch(url, {
     ...init,
     signal: combined,
-    headers: { 'user-agent': USER_AGENT, ...headers },
+    headers: { ...(userAgent === null ? {} : { 'user-agent': userAgent }), ...headers },
   })
 }
 
