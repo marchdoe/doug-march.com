@@ -103,14 +103,12 @@ export const elementsPreset = definePreset({
 
 ## Semantic Token Names (used in components)
 
-Components reference these names, NOT raw color values:
-- **Backgrounds:** `bg`, `bg.side`, `bg.card`, `bg.tint`
-- **Text:** `text`, `text.mid`, `text.dim`
-- **Borders:** `border`, `border.mid`, `border.accent`
-- **Accent:** `accent`, `accent.dim`, `accent.glow`
-- **Fonts:** `serif`, `mono` (or whatever you define)
-- **Font sizes:** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`
-- **Spacing:** `1`-`12` (maps to 4px-96px scale)
+Components reference token names, NOT raw color values. A name outside these sets ships as a bare identifier, the browser drops the declaration, and the element silently keeps its inherited value.
+
+- **Colors:** whatever today's `elements/preset.ts` defines under `semanticTokens.colors`. Read that file; the set is redrawn every night and there is no name you can count on across builds.
+- **Fonts:** `display` and `body` come from the chassis. Anything else exists only if the preset defines it.
+- **Font sizes:** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `hero`. Nothing above `5xl` exists. `hero` is a fluid clamp, ready to use on a headline.
+- **Spacing:** `1`-`9`, mapping to 4px, 8px, 16px, 24px, 32px, 48px, 64px, 96px, 128px. A bare number is a spacing token, so a literal size needs its unit (`width: '44px'`).
 - **Line heights:** `tight`, `snug`, `normal`, `loose`
 - **Letter spacings:** `tight`, `normal`, `wide`, `wider`, `widest`
 

@@ -14,7 +14,7 @@ function AboutPage() {
           className={css({
             fontFamily: 'display',
             fontWeight: 'bold',
-            fontSize: { base: '3xl', md: 'clamp(2.5rem,5vw,4.5rem)' },
+            fontSize: { base: 'lg', md: 'clamp(2.5rem,5vw,4.5rem)' },
             lineHeight: 'tight',
             letterSpacing: 'tight',
             color: 'text',

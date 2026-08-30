@@ -85,7 +85,7 @@ export const elementsPreset = definePreset({
 The binding name `elementsPreset` is fixed. Do NOT rename it (`preset`, `myPreset`, `elementsTokens`, etc. all break the build at codegen). Do NOT use a default export. Do NOT wrap in additional indirection.
 
 You DO define:
-- `globalCss` — body, anchor, headings reset
+- `globalCss` — body, anchor, headings reset. Do NOT set `fontFamily` on `body`: the orchestrator writes it into `elements/chassis-preset.ts` from the chassis, and that preset is merged after yours, so anything you put there is discarded. Everything else about the body rule is yours.
 - `conditions` — `_light`, `_dark`, `_hover`
 - `theme.tokens.colors` — full hue scale (50–900) for the primary, the accent(s), and the neutral family
 - `theme.tokens.spacing` — 4/8/16/24/32/48/64/96/128 scale

@@ -36,7 +36,7 @@ function OgCard() {
           <img
             src={logoMono}
             alt=""
-            className={css({ width: '14', height: 'auto', color: 'fieldInk' })}
+            className={css({ width: '56px', height: 'auto', color: 'fieldInk' })}
           />
           <span
             className={css({

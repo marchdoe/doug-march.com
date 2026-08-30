@@ -19,18 +19,40 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const TEMPLATE_PATH = resolve(__dirname, '../templates/__root.tsx.template')
 
-/** Standard 8-step ramp the rest of the codebase already references. */
-const RAMP_STEPS = ['2xs', 'xs', 'sm', 'base', 'md', 'lg', 'xl', '2xl']
+/** The ramp, small to large. `hero` is fluid; every other step is a rem value. */
+const RAMP_STEPS = ['2xs', 'xs', 'sm', 'base', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', 'hero']
 
-/** Modular-scale offset from base for each ramp step. */
-const RAMP_OFFSETS = { '2xs': -3, xs: -2, sm: -1, base: 0, md: 1, lg: 2, xl: 3, '2xl': 4 }
+/** Steps above `base`, nearest first. Each is one chassis-ratio step further out. */
+const UP_STEPS = ['md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl']
+
+/** Steps below `base`, nearest first. */
+const DOWN_STEPS = ['sm', 'xs', '2xs']
 
 /**
- * Floor the ramp at 10px so aggressive ratios (1.5+) don't render captions
- * at unreadable sizes. Curators see this clamp in the preview output and
- * can pick a tighter ratio if all three small steps collapse to the same value.
+ * The small end steps down by a fixed 1.125 instead of the chassis ratio (#252).
+ *
+ * A display ratio is chosen to separate headlines. Running it downward as well
+ * put every caption under 11px — at 1.5 the bottom three steps landed on 10.7,
+ * 10 and 10px, all three pinned to a floor. Engineers stopped using them and
+ * hand-wrote '13px' instead, which is how eight literal pixel sizes ended up in
+ * one night's TSX. A minor second below base keeps captions at 11-14px on every
+ * chassis in the catalog, so the tokens can express what the pages need.
  */
-const MIN_REM = 0.625
+const SMALL_RATIO = 1.125
+
+/**
+ * `hero` interpolates between two ramp steps across a 360px-1440px viewport
+ * window, so headlines scale without anyone hand-writing a clamp.
+ *
+ * It tops out at `3xl` rather than `5xl`: on the golden-ratio chassis `5xl` is
+ * 29rem, and a hero that reached it would render at 464px. `3xl` puts the
+ * desktop hero at 121px on the 1.5 chassis, which is where the mockups sit.
+ * `4xl` and `5xl` still exist as tokens for anyone who wants them explicitly.
+ */
+const HERO_MIN_STEP = '2xl'
+const HERO_MAX_STEP = '3xl'
+const HERO_MIN_VW_REM = 22.5
+const HERO_MAX_VW_REM = 90
 
 /**
  * Build the Google Fonts CSS2 URL for the chassis.
@@ -87,23 +109,47 @@ function quoteIfMultiWord(name) {
 }
 
 /**
- * Build the theme.tokens.fontSizes object using the chassis's modular scale.
+ * Build the theme.tokens.fontSizes object for the chassis.
  *
- *   2xs..base..2xl spans 8 steps; ratio raised/lowered by step offset from base.
- *   Output values are rem strings rounded to 0.001rem. Floor of 0.625rem
- *   prevents tiny/illegible captions from aggressive ratios.
+ * Two scales meet at `base`. Above it, seven steps of the chassis ratio carry
+ * `md` through `5xl` — that is where the chassis gets its voice. Below it,
+ * three steps of a fixed 1.125 carry `sm`, `xs` and `2xs`, so the small end
+ * stays readable whatever ratio the display end is running.
+ *
+ * `hero` sits on top as a clamp. Output values are rem strings rounded to
+ * 0.001rem; no floor, because nothing in the catalog now falls near one.
  */
 export function buildFontSizes(chassis) {
   const baseRem = parseRem(chassis.scale.base)
   const ratio = chassis.scale.ratio
+
+  const rems = { base: baseRem }
+  DOWN_STEPS.forEach((step, i) => {
+    rems[step] = baseRem / SMALL_RATIO ** (i + 1)
+  })
+  UP_STEPS.forEach((step, i) => {
+    rems[step] = baseRem * ratio ** (i + 1)
+  })
+
   const sizes = {}
   for (const step of RAMP_STEPS) {
-    const offset = RAMP_OFFSETS[step]
-    const computed = baseRem * ratio ** offset
-    const clamped = Math.max(MIN_REM, computed)
-    sizes[step] = { value: `${roundRem(clamped)}rem` }
+    sizes[step] = { value: step === 'hero' ? buildHeroClamp(rems) : `${roundRem(rems[step])}rem` }
   }
   return sizes
+}
+
+/**
+ * Render the `hero` step: a clamp whose middle term is the straight line
+ * through (360px, HERO_MIN_STEP) and (1440px, HERO_MAX_STEP). Bare sums are
+ * legal inside clamp(), so no calc() wrapper is needed.
+ */
+function buildHeroClamp(rems) {
+  const min = roundRem(rems[HERO_MIN_STEP])
+  const max = roundRem(rems[HERO_MAX_STEP])
+  const slope = (max - min) / (HERO_MAX_VW_REM - HERO_MIN_VW_REM)
+  const intercept = roundRem(min - slope * HERO_MIN_VW_REM)
+  const vw = roundRem(slope * 100)
+  return `clamp(${min}rem, ${intercept}rem + ${vw}vw, ${max}rem)`
 }
 
 /**
@@ -150,6 +196,17 @@ function roundRem(n) {
  *
  * Listed LAST in panda.config.ts so it always overrides any fonts/fontSizes
  * the Token Designer accidentally emits in elements/preset.ts.
+ *
+ * It also pins `body { font-family: var(--fonts-body) }`. That declaration used
+ * to be the Art Director's to write and 9 of the last 12 presets left it out,
+ * so every element the engineer did not tag by hand rendered in Times with the
+ * chassis body face loaded and unused (#252).
+ *
+ * The declaration goes under `globalCss.extend`, not `globalCss`. Panda merges
+ * plain preset globalCss shallowly per selector and the last preset wins the
+ * whole selector, so a bare `globalCss.body` here would delete the Art
+ * Director's background, colour and margin along with it. Under `extend` the
+ * two objects deep-merge and only `fontFamily` is taken.
  */
 export function renderChassisPresetFile(chassis) {
   const fonts = buildFontTokens(chassis)
@@ -165,6 +222,13 @@ export function renderChassisPresetFile(chassis) {
  */
 export const chassisPreset = definePreset({
   name: 'chassis',
+  // Orchestrator-owned. \`extend\` deep-merges into the Art Director's
+  // globalCss.body instead of replacing it. See scripts/utils/chassis.js.
+  globalCss: {
+    extend: {
+      body: { fontFamily: 'body' },
+    },
+  },
   theme: {
     extend: {
       tokens: {

@@ -13,7 +13,7 @@ function Brand() {
       <img
         src={logoMono}
         alt="Doug March logo"
-        className={css({ width: '11', height: 'auto', display: 'block', color: 'fieldInk' })}
+        className={css({ width: '44px', height: 'auto', display: 'block', color: 'fieldInk' })}
       />
       <div className={css({ display: 'flex', flexDirection: 'column' })}>
         <span
@@ -89,7 +89,7 @@ function HomeHero() {
         className={css({
           fontFamily: 'display',
           fontWeight: 'bold',
-          fontSize: { base: '5xl', md: '7xl', lg: 'clamp(4rem,8.5vw,8.5rem)' },
+          fontSize: 'hero',
           lineHeight: 'tight',
           letterSpacing: 'tight',
           color: 'fieldInk',
@@ -212,7 +212,7 @@ function WorkField({ slug }: { slug?: string }) {
           className={css({
             fontFamily: 'display',
             fontWeight: 'bold',
-            fontSize: { base: '4xl', md: '6xl' },
+            fontSize: { base: 'lg', md: 'xl' },
             color: 'fieldInk',
             textTransform: 'uppercase',
           })}
@@ -242,7 +242,7 @@ function WorkField({ slug }: { slug?: string }) {
           className={css({
             fontFamily: 'display',
             fontWeight: 'bold',
-            fontSize: { base: '4xl', md: '6xl', lg: 'clamp(2.75rem,6.5vw,6rem)' },
+            fontSize: { base: 'lg', md: 'xl', lg: 'clamp(2.75rem,6.5vw,6rem)' },
             lineHeight: 'tight',
             letterSpacing: 'tight',
             color: 'fieldInk',

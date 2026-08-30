@@ -23,14 +23,14 @@ export function FeaturedProject() {
       >
         Featured
       </Box>
-      <Box height="1px" background="borderAccent" marginBottom="6" />
+      <Box height="1px" background="accent" marginBottom="6" />
 
       {/* Headline */}
       {href ? (
         <a href={href} target="_blank" rel="noopener noreferrer" className={plainLink}>
           <Box
-            fontFamily="heading"
-            fontWeight="black"
+            fontFamily="display"
+            fontWeight="bold"
             fontSize="2xl"
             lineHeight="tight"
             letterSpacing="tight"
@@ -44,8 +44,8 @@ export function FeaturedProject() {
       ) : (
         <a href={`/work/${featuredProject.slug}`} className={plainLink}>
           <Box
-            fontFamily="heading"
-            fontWeight="black"
+            fontFamily="display"
+            fontWeight="bold"
             fontSize="2xl"
             lineHeight="tight"
             letterSpacing="tight"
@@ -70,7 +70,7 @@ export function FeaturedProject() {
         >
           {featuredProject.type}
         </Box>
-        <Box width="px" height="3" background="borderMuted" />
+        <Box width="1px" height="12px" background="border" />
         <Box
           fontSize="2xs"
           fontFamily="body"
@@ -83,7 +83,7 @@ export function FeaturedProject() {
         </Box>
         {featuredProject.role && (
           <>
-            <Box width="px" height="3" background="borderMuted" />
+            <Box width="1px" height="12px" background="border" />
             <Box
               fontSize="2xs"
               fontFamily="body"
@@ -103,9 +103,9 @@ export function FeaturedProject() {
         <Box
           fontSize="base"
           fontFamily="body"
-          fontWeight="regular"
+          fontWeight="normal"
           lineHeight="normal"
-          color="textSecondary"
+          color="textMuted"
           maxWidth="520px"
           marginBottom="6"
         >
@@ -125,8 +125,8 @@ export function FeaturedProject() {
             color="accent"
             borderBottomWidth="1px"
             borderBottomStyle="solid"
-            borderBottomColor="borderAccent"
-            paddingBottom="px"
+            borderBottomColor="accent"
+            paddingBottom="1px"
             display="inline-block"
           >
             View Project →
@@ -143,8 +143,8 @@ export function FeaturedProject() {
             color="accent"
             borderBottomWidth="1px"
             borderBottomStyle="solid"
-            borderBottomColor="borderAccent"
-            paddingBottom="px"
+            borderBottomColor="accent"
+            paddingBottom="1px"
             display="inline-block"
           >
             View Project →
