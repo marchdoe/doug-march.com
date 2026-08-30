@@ -41,24 +41,52 @@ describe('collect-signals orchestrator', () => {
   })
 
   it('enforces per-provider timeout', async () => {
+    // A provider that never settles rather than one that races a real 5s
+    // timer. The old version needed a 10s test budget, accepted either
+    // 'skipped' or 'error' because "CI timing jitter can cause the timeout to
+    // fire slightly early", and left a live 5s timer running after the test
+    // had finished. The provider's own 100ms timeout is the thing under test,
+    // so nothing here needs to take 100ms of wall clock either.
     const mockProviders = [
       {
         name: 'test-slow',
         timeout: 100,
-        collect: async () => {
-          await new Promise((r) => setTimeout(r, 5000))
-          return { data: {}, meta: {} }
-        },
+        collect: () => new Promise(() => {}),
       },
     ]
 
     const mockProfile = { location: { zip: '20105' } }
     const result = await runCollector(mockProviders, mockProfile)
 
-    // CI timing jitter can cause the timeout to fire slightly early,
-    // reporting 'error' instead of 'skipped' — both indicate the provider
-    // was correctly aborted
-    expect(['skipped', 'error']).toContain(result.meta.sources['test-slow'].status)
+    expect(result.meta.sources['test-slow'].status).toBe('skipped')
     expect(result.meta.sources['test-slow'].reason).toContain('timeout')
-  }, 10000)
+  })
+
+  it('stamps the date in the site timezone, not UTC', async () => {
+    // 22:00 in Ashburn is already tomorrow in UTC. The record used to say
+    // tomorrow's date beside today's weekday.
+    const now = new Date('2026-08-31T02:00:00Z')
+    expect(now.toISOString().slice(0, 10)).toBe('2026-08-31')
+
+    const result = await runCollector([], { location: { tz: 'America/New_York' } }, { now })
+    expect(result.signals.date).toBe('2026-08-30')
+  })
+
+  it('hands every provider the same instant', async () => {
+    // Each derived collector used to call new Date() milliseconds apart,
+    // which straddles midnight about once a year.
+    const seen = []
+    const providers = ['a', 'b', 'c'].map((name) => ({
+      name,
+      timeout: 1000,
+      collect: async (_p, opts) => {
+        seen.push(opts.now.toISOString())
+        return { data: { name }, meta: { source: 'test', items: 1 } }
+      },
+    }))
+    const now = new Date('2026-08-30T12:00:00Z')
+    await runCollector(providers, { location: { tz: 'America/New_York' } }, { now })
+    expect(new Set(seen).size).toBe(1)
+    expect(seen[0]).toBe('2026-08-30T12:00:00.000Z')
+  })
 })

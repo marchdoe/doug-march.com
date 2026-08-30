@@ -5,8 +5,7 @@ export const timeout = 1000
 const KNOWN_NEW_MOON = new Date('2000-01-06T00:00:00Z')
 const SYNODIC_PERIOD = 29.53059 // days
 
-export async function collect(_profile) {
-  const now = new Date()
+export async function collect(_profile, { now = new Date() } = {}) {
   const msSinceRef = now - KNOWN_NEW_MOON
   const daysSinceRef = msSinceRef / 86400000
 

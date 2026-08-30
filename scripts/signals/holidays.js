@@ -1,3 +1,5 @@
+import { localDateString, tzOf, zonedParts } from '../utils/local-time.js'
+
 export const name = 'holidays'
 export const timeout = 1000
 
@@ -97,10 +99,11 @@ function toDateString(d) {
   return `${y}-${m}-${day}`
 }
 
-export async function collect(_profile) {
-  const now = new Date()
-  const todayStr = toDateString(now)
-  const year = now.getFullYear()
+export async function collect(profile, { now = new Date() } = {}) {
+  // Local to the site's zone, not the runner's — see scripts/utils/local-time.js
+  const tz = tzOf(profile)
+  const todayStr = localDateString(now, tz)
+  const year = zonedParts(now, tz).year
 
   // Gather holidays for this year and next to handle year-boundary lookups.
   const holidays = [...getHolidays(year), ...getHolidays(year + 1)]

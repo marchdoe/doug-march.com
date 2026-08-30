@@ -1,11 +1,11 @@
+import { localDayOfYear, localMonthName, tzOf, zonedParts } from '../utils/local-time.js'
+
 export const name = 'season'
 export const timeout = 1000
 
-export async function collect(_profile) {
-  const now = new Date()
-  const month = now.getMonth() + 1 // 1-12
-  const day = now.getDate()
-  const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000)
+export async function collect(profile, { now = new Date() } = {}) {
+  const tz = tzOf(profile)
+  const { month, day } = zonedParts(now, tz)
 
   let season
   if (month >= 3 && month <= 5) season = 'spring'
@@ -18,8 +18,8 @@ export async function collect(_profile) {
       season,
       month,
       day,
-      day_of_year: dayOfYear,
-      month_name: now.toLocaleString('en-US', { month: 'long' }),
+      day_of_year: localDayOfYear(now, tz),
+      month_name: localMonthName(now, tz),
     },
     meta: { source: 'derived', items: 1 },
   }
