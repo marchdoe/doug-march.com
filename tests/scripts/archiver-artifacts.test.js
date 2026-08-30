@@ -3,8 +3,10 @@ import { mkdtempSync, rmSync, existsSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 
-// archive() writes under ROOT (repo root). We can't relocate ROOT, so test
-// the new helper writeArtifacts() directly — it owns the new behavior.
+// Tests writeArtifacts() directly — it owns the behaviour under test. (The
+// note that used to sit here said archive() could not be relocated off the
+// repo root; it takes a `root` option now, which is what the archiver tests
+// beside this one use.)
 import { writeArtifacts } from '../../scripts/utils/archiver.js'
 
 describe('writeArtifacts', () => {

@@ -1,7 +1,8 @@
-import { describe, it, expect, afterEach } from 'vitest'
-import { writeFiles, validateWritePath, ROOT } from '../../scripts/utils/file-manager.js'
-import { existsSync, rmSync, readFileSync } from 'node:fs'
+import { describe, beforeEach, it, expect } from 'vitest'
+import { writeFiles, validateWritePath } from '../../scripts/utils/file-manager.js'
+import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
+import { tempDir } from '../helpers/tmp.js'
 
 describe('validateWritePath', () => {
   describe('allowlist — permits legitimate writes', () => {
@@ -144,22 +145,32 @@ describe('validateWritePath', () => {
 })
 
 describe('file-manager writeFiles', () => {
+  // A temp root. This wrote into the repo's real app/components/ while
+  // build-validator-scanner.test.js was doing the same thing in a parallel
+  // worker, and both were scanned by whatever ran validateGenerated.
   const testFile = 'app/components/__test_write.tsx'
-  const testAbsPath = path.join(ROOT, testFile)
+  let ROOT
+  let testAbsPath
 
-  afterEach(() => {
-    if (existsSync(testAbsPath)) rmSync(testAbsPath)
+  beforeEach(async () => {
+    ROOT = await tempDir('dm-writefiles-')
+    testAbsPath = path.join(ROOT, testFile)
   })
 
   it('writes allowed files and returns normalized paths', async () => {
-    const written = await writeFiles([{ path: testFile, content: 'hello' }])
+    const written = await writeFiles([{ path: testFile, content: 'hello' }], { root: ROOT })
     expect(existsSync(testAbsPath)).toBe(true)
     expect(readFileSync(testAbsPath, 'utf8')).toBe('hello')
     expect(written).toEqual([testFile])
   })
 
   it('normalizes paths on write', async () => {
-    const written = await writeFiles([{ path: './app/components/__test_write.tsx', content: 'x' }])
+    const written = await writeFiles(
+      [{ path: './app/components/__test_write.tsx', content: 'x' }],
+      {
+        root: ROOT,
+      }
+    )
     expect(written).toEqual(['app/components/__test_write.tsx'])
   })
 

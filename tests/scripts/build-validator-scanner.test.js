@@ -1,8 +1,9 @@
 import { RECOGNIZED_ORIGINS } from '../../scripts/utils/site-origin.js'
-import { describe, it, expect, afterEach } from 'vitest'
-import { writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs'
+import { describe, it, expect, beforeEach } from 'vitest'
+import { writeFileSync, mkdirSync, cpSync, existsSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { tempDir } from '../helpers/tmp.js'
 import {
   validateGenerated,
   contactLinkPresent,
@@ -10,12 +11,50 @@ import {
 } from '../../scripts/utils/build-validator.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const ROOT = resolve(__dirname, '../..')
+const REPO = resolve(__dirname, '../..')
 
-// We test the scanner by creating temporary test files and running
-// validateGenerated against the real ROOT. To avoid polluting the real
-// files, we snapshot and restore the files we touch.
-const TEST_FILES = ['app/components/__scanner_test.tsx']
+// The scanner is exercised against a temp tree, not the repo.
+//
+// It used to drop fixtures into the real app/components/ and scan the whole
+// working tree. Vitest runs files in parallel and file-manager.test.js writes
+// into the same directory, and the scan swept up whatever the nightly had
+// left behind — which is why six assertions below were written as
+// `if (!result.success) expect(...).not.toContain(...)`. Those silently
+// skipped on any checkout carrying an unrelated validator error, so the
+// checks stopped being checks exactly when the tree was interesting.
+let ROOT
+
+beforeEach(async () => {
+  ROOT = await tempDir('dm-scanner-')
+  // The scanner reads elements/preset.ts for its circular-token check; copy
+  // the real one so the temp tree is a fair stand-in.
+  mkdirSync(resolve(ROOT, 'elements'), { recursive: true })
+  mkdirSync(resolve(ROOT, 'app/components'), { recursive: true })
+  mkdirSync(resolve(ROOT, 'app/routes'), { recursive: true })
+  // Copy only what the validator requires to exist — the preset for its
+  // circular-token check and app/content/about.ts, which Check 6 reads as the
+  // source of truth for the contact address. Deliberately NOT the scanned
+  // directories: app/components/ and app/routes/ stay empty except for the
+  // fixture under test, which is what makes result.success meaningful.
+  for (const rel of ['elements/preset.ts', 'app/content/about.ts', 'app/content/types.ts']) {
+    const src = resolve(REPO, rel)
+    if (existsSync(src)) {
+      mkdirSync(dirname(resolve(ROOT, rel)), { recursive: true })
+      cpSync(src, resolve(ROOT, rel))
+    }
+  }
+  // Check 6 requires some file to link the contact address bound from
+  // identity.email. Without it the baseline tree can never be clean, and
+  // `expect(result.success).toBe(true)` would be unassertable — which is how
+  // these ended up as `if (!result.success)` in the first place. A minimal
+  // footer supplies it, so a failing result now means the fixture failed.
+  writeFileSync(
+    resolve(ROOT, 'app/components/__baseline_footer.tsx'),
+    `import { identity } from '../content/about'\n` +
+      `export const Footer = () => <a href={\`mailto:\${identity.email}\`}>hello@dougmar.ch</a>\n`,
+    'utf8'
+  )
+})
 
 function writeTestFile(relPath, content) {
   const abs = resolve(ROOT, relPath)
@@ -23,18 +62,9 @@ function writeTestFile(relPath, content) {
   writeFileSync(abs, content, 'utf8')
 }
 
-function cleanupTestFiles() {
-  for (const f of TEST_FILES) {
-    const abs = resolve(ROOT, f)
-    if (existsSync(abs)) rmSync(abs)
-  }
-}
-
 describe('build validator content scanner', () => {
-  afterEach(cleanupTestFiles)
-
   // validateGenerated reads files on every call, so we just call it directly.
-  const runValidator = () => validateGenerated()
+  const runValidator = () => validateGenerated({ root: ROOT })
 
   it('passes clean TSX code', async () => {
     writeTestFile(
@@ -42,10 +72,9 @@ describe('build validator content scanner', () => {
       `export function Hello() { return <div>hello world</div> }`
     )
     const result = await runValidator()
-    // May have pre-existing errors from other files, but should not flag our test file
-    if (!result.success) {
-      expect(result.error).not.toContain('__scanner_test.tsx')
-    }
+    // Unconditional now that the tree is ours: nothing else can put an error
+    // in this result, so "clean code passes" is an assertion again.
+    expect(result.success).toBe(true)
   })
 
   it('flags fetch() calls', async () => {
@@ -108,9 +137,7 @@ describe('build validator content scanner', () => {
       `const url = 'https://fonts.googleapis.com/css2?family=Inter'`
     )
     const result = await runValidator()
-    if (!result.success) {
-      expect(result.error).not.toContain('__scanner_test.tsx')
-    }
+    expect(result.success).toBe(true)
   })
 
   it('allows URLs to github.com', async () => {
@@ -119,9 +146,7 @@ describe('build validator content scanner', () => {
       `const url = 'https://github.com/marchdoe/project'`
     )
     const result = await runValidator()
-    if (!result.success) {
-      expect(result.error).not.toContain('__scanner_test.tsx')
-    }
+    expect(result.success).toBe(true)
   })
 
   it('allows URLs to all allowlisted project domains', async () => {
@@ -136,9 +161,7 @@ ${RECOGNIZED_ORIGINS.map((o) => `        '${o}',`).join('\n')}
       ]`
     )
     const result = await runValidator()
-    if (!result.success) {
-      expect(result.error).not.toContain('__scanner_test.tsx')
-    }
+    expect(result.success).toBe(true)
   })
 
   it('flags document.write', async () => {
@@ -156,9 +179,7 @@ ${RECOGNIZED_ORIGINS.map((o) => `        '${o}',`).join('\n')}
        export function Safe() { return <div /> }`
     )
     const result = await runValidator()
-    if (!result.success) {
-      expect(result.error).not.toContain('__scanner_test.tsx')
-    }
+    expect(result.success).toBe(true)
   })
 
   it('flags inline onclick HTML attribute but not JS property assignment', async () => {

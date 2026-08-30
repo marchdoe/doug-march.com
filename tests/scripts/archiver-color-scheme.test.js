@@ -1,7 +1,8 @@
-import { describe, it, expect, afterEach, vi } from 'vitest'
-import { readFile, rm } from 'node:fs/promises'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { existsSync } from 'node:fs'
+import { tempRepoRoot } from '../helpers/tmp.js'
 
 // Stub captureSnapshot — it spawns `vite preview` which takes longer
 // than the per-test timeout on CI. This test is about archive() side
@@ -21,24 +22,17 @@ vi.mock('../../scripts/seal-archive.js', () => ({
 }))
 
 const { archive } = await import('../../scripts/utils/archiver.js')
-const { ROOT } = await import('../../scripts/utils/file-manager.js')
 
 describe('archive() — color scheme persistence', () => {
+  // A temp root rather than the repo. archive() writes archive/{date}/ AND
+  // copies into public/archive/{date}/, so this needed two hand-written
+  // cleanups keyed on a path recorded only after archive() returned — a throw
+  // before that leaked both. Pointing the whole call at a temp dir removes the
+  // cleanup rather than fixing it.
+  let ROOT
   let createdDir = null
-
-  // archive() copies artifacts into public/archive/{date}/ as well as writing
-  // archive/{date}/. Cleaning up only the source left public/archive/2099-01-02/
-  // sitting in the working tree indefinitely. It is gitignored, so it never
-  // reached a deploy, but a date a century in the future is exactly the kind of
-  // litter that reads as real once the archive is browsable. See #154.
-  afterEach(async () => {
-    if (!createdDir) return
-    const date = path.basename(createdDir)
-    for (const dir of [createdDir, path.join(ROOT, 'public', 'archive', date)]) {
-      if (existsSync(dir)) await rm(dir, { recursive: true, force: true })
-    }
-    const png = path.join(ROOT, 'public', 'archive', `${date}.png`)
-    if (existsSync(png)) await rm(png, { force: true })
+  beforeEach(async () => {
+    ROOT = await tempRepoRoot()
     createdDir = null
   })
 
@@ -53,7 +47,7 @@ describe('archive() — color scheme persistence', () => {
       color_story: 'Test.',
     }
 
-    await archive(date, signals, 'rationale', 'brief', [], {}, scheme)
+    await archive(date, signals, 'rationale', 'brief', [], {}, scheme, null, {}, { root: ROOT })
 
     const dir = path.join(ROOT, 'archive', date)
     createdDir = dir
@@ -70,7 +64,7 @@ describe('archive() — color scheme persistence', () => {
 
   it('does not write color-scheme.json when colorScheme is omitted', async () => {
     const date = '2099-01-02'
-    await archive(date, { date }, 'r', 'b', [], {})
+    await archive(date, { date }, 'r', 'b', [], {}, null, null, {}, { root: ROOT })
 
     const dir = path.join(ROOT, 'archive', date)
     createdDir = dir

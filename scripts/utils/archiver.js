@@ -29,9 +29,9 @@ export const PUBLIC_SCREENSHOT_DIR = 'public/archive-data'
  * the bytes that shipped that day. Everything this project generates *about* a
  * day lives in `public/archive-data/` beside its record.
  */
-async function copyToPublic(dateStr, buildDir) {
-  const publicBase = path.join(ROOT, 'public', 'archive')
-  const publicData = path.join(ROOT, ...PUBLIC_SCREENSHOT_DIR.split('/'))
+async function copyToPublic(dateStr, buildDir, root = ROOT) {
+  const publicBase = path.join(root, 'public', 'archive')
+  const publicData = path.join(root, ...PUBLIC_SCREENSHOT_DIR.split('/'))
 
   // Copy screenshot if it exists
   const screenshotSrc = path.join(buildDir, 'screenshot.png')
@@ -187,11 +187,16 @@ export async function archive(
   weights = {},
   colorScheme = null,
   archetype = null,
-  artifacts = {}
+  artifacts = {},
+  // Where to write. Defaults to the repo, which is what the pipeline wants;
+  // tests pass a temp dir so `pnpm test` stops creating archive/2099-01-01/
+  // and public/archive/2099-01-01/ inside the working tree, and stops leaking
+  // them when an assertion throws before the cleanup hook records the path.
+  { root = ROOT } = {}
 ) {
   const dateStr = date instanceof Date ? date.toISOString().slice(0, 10) : String(date)
   const buildId = String(Date.now())
-  const dir = path.join(ROOT, 'archive', dateStr)
+  const dir = path.join(root, 'archive', dateStr)
   const buildDir = path.join(dir, `build-${buildId}`)
   await mkdir(buildDir, { recursive: true })
 
@@ -246,7 +251,7 @@ export async function archive(
   }
 
   // Save the interpreted signals brief if it exists
-  const signalsBriefSrc = path.join(ROOT, 'signals', 'today.brief.md')
+  const signalsBriefSrc = path.join(root, 'signals', 'today.brief.md')
   if (existsSync(signalsBriefSrc)) {
     try {
       const signalsBrief = await readFile(signalsBriefSrc, 'utf8')
@@ -257,7 +262,7 @@ export async function archive(
   }
 
   // Save the design tokens preset
-  const presetSrc = path.join(ROOT, 'elements', 'preset.ts')
+  const presetSrc = path.join(root, 'elements', 'preset.ts')
   if (existsSync(presetSrc)) {
     try {
       const preset = await readFile(presetSrc, 'utf8')
@@ -361,7 +366,7 @@ export async function archive(
   // which design-agents.js does not write until after this function returns.
   try {
     const record = buildRecord(dateStr, {
-      archiveDir: path.join(ROOT, 'archive'),
+      archiveDir: path.join(root, 'archive'),
       signals,
     })
     if (record) {
@@ -393,7 +398,7 @@ export async function archive(
       readJson('lane.json'),
       readJson('shell.json'),
     ])
-    const history = await readUniquenessHistory({ root: ROOT, limit: 7, before: dateStr })
+    const history = await readUniquenessHistory({ root, limit: 7, before: dateStr })
     const index = computeUniqueness(
       {
         date: dateStr,
@@ -421,7 +426,7 @@ export async function archive(
 
   // Copy artifacts to public/ for static serving
   try {
-    await copyToPublic(dateStr, buildDir)
+    await copyToPublic(dateStr, buildDir, root)
   } catch (err) {
     console.warn(`  public copy failed (non-blocking): ${err.message}`)
   }

@@ -23,7 +23,7 @@ import { config } from 'dotenv'
 import { setRunDeadline } from './utils/run-budget.js'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env') })
+config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env'), quiet: true })
 
 import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'

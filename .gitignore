@@ -53,3 +53,6 @@ public/archive/*/_detail.json
 test-results/
 themes/
 .vercel
+
+# Coverage output (vitest --coverage)
+coverage/

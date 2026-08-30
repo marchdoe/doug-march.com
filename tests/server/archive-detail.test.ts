@@ -1,10 +1,16 @@
 // tests/server/archive-detail.test.ts
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { mkdirSync, writeFileSync, rmSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { _readArchiveDetail } from '../../app/server/archive-detail-impl'
 
-const TEST_ARCHIVE = join(process.cwd(), 'archive', '__test-detail__')
+// A temp dir, not archive/__test-detail__ inside the repo. _readArchiveDetail
+// already takes the archive path as a parameter, so there was never a reason
+// to build the fixture inside the real archive — and a throw in beforeAll left
+// it there, a non-date-shaped directory sitting in a tree that is otherwise
+// entirely date-shaped.
+const TEST_ARCHIVE = mkdtempSync(join(tmpdir(), 'dm-archive-detail-'))
 
 /** A record as `scripts/utils/archive-record.js` writes it. */
 function record(date: string, overrides: Record<string, unknown> = {}) {
