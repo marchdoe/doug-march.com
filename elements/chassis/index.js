@@ -8,11 +8,17 @@ import { dmSerifPublic } from './dm-serif-public.js'
 import { zillaWorksans } from './zilla-worksans.js'
 import { spaceMonoArchivo } from './space-mono-archivo.js'
 import { unboundedFigtree } from './unbounded-figtree.js'
+import { anybodyFranklin } from './anybody-franklin.js'
+import { sourceSerifText } from './source-serif-text.js'
+import { bitterMulish } from './bitter-mulish.js'
+import { hankenSolo } from './hanken-solo.js'
+import { alfaRubik } from './alfa-rubik.js'
 
 /**
  * Curated chassis catalog. Each entry is a hand-vetted typography decision
- * — fonts, weights, italics, type scale. The Art Director picks one per
- * day to carry the chosen hero phrase at the intended scale.
+ * — fonts, weights, italics, and a full type system (step table, weights
+ * map, rhythm). The Art Director picks one per day to carry the chosen
+ * hero phrase at the intended scale.
  *
  * v2 scope (2026-04-29): culled to display-grade only. Removed
  * `schibsted-anonymous` and `jetbrains-mono-only` — both ratio 1.250
@@ -31,6 +37,16 @@ import { unboundedFigtree } from './unbounded-figtree.js'
  * wide/expanded grotesk (unbounded-figtree). Condensed-caps share of the
  * catalog drops from 3-of-5 to 3-of-10.
  *
+ * v4 scope (2026-08-30, #253): each chassis now carries its whole type
+ * system — an explicit step table (per-step size, leading, tracking, with
+ * fluid display steps), a fontWeights map, and a spacing rhythm — instead
+ * of a bare ratio the build multiplied out. Added 5 chassis in registers
+ * the catalog still lacked: a wide grotesk with a real italic
+ * (anybody-franklin), a text serif with optical sizing running alone
+ * (source-serif-text), a slab with genuine heavy cuts (bitter-mulish), a
+ * single-family humanist sans (hanken-solo), and a fatface poster slab
+ * that is not condensed caps (alfa-rubik).
+ *
  * To add a chassis:
  *   1. Verify the font is NOT on impeccable's reflex-reject list (or, if
  *      it is, that the fixed-menu justification in the file's header
@@ -40,13 +56,16 @@ import { unboundedFigtree } from './unbounded-figtree.js'
  *   2. Verify every weight in `weights: [...]` exists on
  *      fonts.google.com/specimen/<family> — e.g. `curl -s -o /dev/null -w
  *      '%{http_code}' "https://fonts.googleapis.com/css2?family=<Family>:wght@<weights>"`
- *      should return 200.
- *   3. Pick a ratio that doesn't crush sm/xs/2xs — see chassis.js
- *      buildFontSizes() for the math (clamped at 0.625rem floor). Use
- *      ≥1.500 for a marquee-capable (Poster/Specimen-ready) chassis;
- *      editorial/text-dense chassis can run as low as 1.333.
- *   4. Tag moods + archetypes so the Art Director can filter sensibly.
- *   5. Append to CHASSIS_CATALOG below.
+ *      should return 200 — and say in the file's comment that you checked.
+ *   3. Build the step table with `scaleSteps(ratio, base, overrides)` and
+ *      tune the overrides to the face: leading tightens as size grows,
+ *      tracking opens below `base` and closes above it, but a condensed
+ *      caps face, a didone and a mono all want different display tracking
+ *      — see the existing files for worked examples. The hero floor in
+ *      scale.js guarantees marquee reach whatever the ratio.
+ *   4. Declare the fontWeights map from weights the fonts actually load.
+ *   5. Tag moods + archetypes so the Art Director can filter sensibly.
+ *   6. Append to CHASSIS_CATALOG below.
  *
  * @type {import('./types.js').ChassisEntry[]}
  */
@@ -61,4 +80,9 @@ export const CHASSIS_CATALOG = [
   zillaWorksans,
   spaceMonoArchivo,
   unboundedFigtree,
+  anybodyFranklin,
+  sourceSerifText,
+  bitterMulish,
+  hankenSolo,
+  alfaRubik,
 ]
