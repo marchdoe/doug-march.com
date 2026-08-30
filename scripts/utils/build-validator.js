@@ -26,6 +26,38 @@ export function contactLinkPresent(sources, email) {
 }
 
 /**
+ * Contact addresses at one of our own domains that are NOT the canonical one.
+ *
+ * {@link contactLinkPresent} asks whether anything links to the right address.
+ * It cannot see a second link pointing at the wrong one, and that is exactly
+ * what shipped: Footer.tsx bound `identity.email` while Sidebar.tsx still
+ * hardcoded `hello@doug-march.com`, so the check passed while the live site
+ * advertised two addresses, one of which has no MX records and silently
+ * discards mail.
+ *
+ * Scoped to our own hosts on purpose. A `mailto:` to some other domain is
+ * somebody else's address and none of this check's business.
+ *
+ * @param {string[]} sources - file contents to search
+ * @param {string} email - the canonical address from identity.email
+ * @param {string[]} hosts - every host that has ever been ours
+ * @returns {string[]} stale addresses found, deduped
+ */
+export function staleContactAddresses(sources, email, hosts) {
+  const found = new Set()
+  for (const src of sources) {
+    for (const m of src.matchAll(/mailto:([^"'`\s>)]+)/g)) {
+      const addr = m[1]
+      if (addr === email) continue
+      if (addr.includes('${')) continue // an interpolation, resolved at runtime
+      const domain = addr.split('@')[1]
+      if (domain && hosts.includes(domain)) found.add(addr)
+    }
+  }
+  return [...found]
+}
+
+/**
  * Pre-build validation: check for known bad patterns in generated code.
  * Catches issues that `pnpm build` misses but break SSR at runtime.
  *
@@ -380,6 +412,16 @@ export function validateGenerated() {
       errors.push(
         `no file links to mailto:${contactEmail} — bind it from identity.email ` +
           `(app/content/about.ts); scanned ${filesToScan.length} files`
+      )
+    }
+
+    // A present-and-correct link does not mean there is no second, wrong one.
+    const stale = staleContactAddresses(sources, contactEmail, RECOGNIZED_HOSTS)
+    if (stale.length > 0) {
+      errors.push(
+        `stale contact address(es) at our own domains: ${stale.join(', ')} — ` +
+          `the canonical address is ${contactEmail} (identity.email in ` +
+          `app/content/about.ts). Bind it rather than hardcoding.`
       )
     }
   }
