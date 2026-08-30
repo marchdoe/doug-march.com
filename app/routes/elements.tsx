@@ -131,59 +131,6 @@ const MobileFooterPreview = styled('div', {
   },
 })
 
-// ── NotFound preview components (duplicated from __root.tsx — not exported there) ──
-
-const NfWrap = styled('div', {
-  base: { paddingTop: '12' },
-})
-
-const NfCode = styled('div', {
-  base: {
-    fontSize: '0.55rem',
-    fontWeight: 'bold',
-    letterSpacing: 'widest',
-    color: 'text.dim',
-    marginBottom: '6',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '2',
-    _before: { content: '"//"', color: 'text.dim' },
-  },
-})
-
-const NfHeading = styled('div', {
-  base: {
-    fontSize: 'xl',
-    fontWeight: 'bold',
-    letterSpacing: 'tight',
-    color: 'text',
-    lineHeight: 'tight',
-    marginBottom: '3',
-  },
-})
-
-const NfMessage = styled('p', {
-  base: {
-    fontSize: 'base',
-    color: 'text.dim',
-    fontStyle: 'italic',
-    lineHeight: 'normal',
-    marginBottom: '8',
-  },
-})
-
-const NfBackLink = styled('span', {
-  base: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '0.4rem',
-    fontSize: 'sm',
-    fontWeight: 'bold',
-    color: 'text.dim',
-    letterSpacing: 'wide',
-  },
-})
-
 const semanticColors: { name: string; cssVar: string }[] = [
   { name: 'bg', cssVar: 'var(--colors-bg)' },
   { name: 'bg.side', cssVar: 'var(--colors-bg-side)' },
@@ -403,13 +350,15 @@ function Elements() {
           <MobileFooter />
         </MobileFooterPreview>
 
-        <SubHead>NOTFOUND COMPONENTS</SubHead>
-        <NfWrap>
-          <NfCode>404</NfCode>
-          <NfHeading>NOT FOUND</NfHeading>
-          <NfMessage>The page you're looking for doesn't exist or has been moved.</NfMessage>
-          <NfBackLink>← BACK TO WORK</NfBackLink>
-        </NfWrap>
+        {/*
+          The 404 is deliberately not previewed here. It reads no design token,
+          so there is nothing on this page for it to demonstrate — see #199. It
+          lives in public/404.html and in the root route's notFoundComponent,
+          kept in step by tests/scripts/not-found-copy.test.js.
+
+          A styled preview used to sit here under a comment claiming it matched
+          __root.tsx. It had not for months. That drift is why the test exists.
+        */}
       </Section>
     </>
   )
