@@ -79,10 +79,31 @@ function HomePage() {
         ].map(([who, sc, lead]) => (
           <div
             key={who as string}
-            className={css({ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '1 0' })}
+            className={css({
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'baseline',
+              padding: '1 0',
+            })}
           >
-            <span className={css({ fontSize: 'sm', color: 'text', fontWeight: lead ? 'semibold' : 'normal' })}>{who}</span>
-            <span className={css({ fontWeight: 'bold', fontSize: 'md', color: lead ? 'accent' : 'sand.300' })}>{sc}</span>
+            <span
+              className={css({
+                fontSize: 'sm',
+                color: 'text',
+                fontWeight: lead ? 'semibold' : 'normal',
+              })}
+            >
+              {who}
+            </span>
+            <span
+              className={css({
+                fontWeight: 'bold',
+                fontSize: 'md',
+                color: lead ? 'accent' : 'sand.300',
+              })}
+            >
+              {sc}
+            </span>
           </div>
         ))}
       </div>
@@ -119,7 +140,14 @@ function HomePage() {
             {featuredProject.title}
           </h3>
           {featuredProject.problem && (
-            <p className={css({ color: 'sand.300', fontSize: 'base', lineHeight: 'loose', maxWidth: '52ch' })}>
+            <p
+              className={css({
+                color: 'sand.300',
+                fontSize: 'base',
+                lineHeight: 'loose',
+                maxWidth: '52ch',
+              })}
+            >
               {featuredProject.problem}
             </p>
           )}
@@ -149,7 +177,13 @@ function HomePage() {
 
       <div>
         {selectedWork.map((p) => (
-          <WorkRow key={p.slug} title={p.title} type={p.type} year={p.year} href={`/work/${p.slug}`} />
+          <WorkRow
+            key={p.slug}
+            title={p.title}
+            type={p.type}
+            year={p.year}
+            href={`/work/${p.slug}`}
+          />
         ))}
       </div>
 
