@@ -48,6 +48,8 @@ import {
   renderRootTemplate,
   renderChassisPresetFile,
   formatChassisCatalogForPrompt,
+  formatChassisRenderFactsForPrompt,
+  formatChassisSelectionForPrompt,
 } from './utils/chassis.js'
 import { parseDelimiterResponse } from './utils/delimiter-parser.js'
 import { parseCriticVerdict } from './utils/critic-verdict.js'
@@ -587,7 +589,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // (dense dashboards, restrained palette, generic card grids).
     const brandRegisterDeclaration = `\n\n## Project Register: BRAND\n\nThis project is BRAND register — a personal portfolio where design IS the product. Apply brand-register conventions throughout. The detailed brand-register reference follows.\n\n${refBrand}`
 
-    const specCriticPrompt = `${specCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
+    // The spec critic's chassis render facts are generated from the catalog
+    // at assembly time, so adding a chassis never means editing a prompt.
+    if (!specCriticPromptRaw.includes('{{CHASSIS_RENDER_FACTS}}')) {
+      throw new Error('spec-critic.md is missing its {{CHASSIS_RENDER_FACTS}} placeholder')
+    }
+    const specCriticPrompt = `${specCriticPromptRaw.replace(
+      '{{CHASSIS_RENDER_FACTS}}',
+      formatChassisRenderFactsForPrompt(CHASSIS_CATALOG)
+    )}\n\n## Design Critique Heuristics\n\n${refCritique}`
     const screenshotCriticPrompt = `${screenshotCriticPromptRaw}\n\n## Design Critique Heuristics\n\n${refCritique}`
 
     // Backup all mutable files
@@ -741,6 +751,22 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       console.warn(`[composition-mandate] computation failed (non-blocking): ${err.message}`)
     }
 
+    // Chassis recency mandate (#253) — same shape as the shell mandate,
+    // reading the chassis field record.json already carries at the date
+    // level, so nothing new is persisted. Kept minimal pending the mandate
+    // consolidation in #225.
+    const { computeChassisMandate, formatChassisMandateForPrompt } = await import(
+      './utils/chassis-mandate.js'
+    )
+    let chassisMandateSection = ''
+    try {
+      chassisMandateSection = formatChassisMandateForPrompt(
+        computeChassisMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 14 })
+      )
+    } catch (err) {
+      console.warn(`[chassis-mandate] computation failed (non-blocking): ${err.message}`)
+    }
+
     // -----------------------------------------------------------------------
     // Phase 0+1: Art Director — single decision (hero copy, archetype,
     // chassis, full preset.ts, visual spec). Replaces the historical
@@ -779,7 +805,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // typography + color. Trim to brand+color+typography per spec to keep
     // assembled prompt <= ~50KB (iter-2 failed at 60KB).
     const artDirectorPromptRaw = await readFile(path.join(promptDir, 'art-director.md'), 'utf8')
-    const artDirectorSystemPrompt = `${artDirectorPromptRaw}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}`
+    // The chassis-selection numbers are generated from the catalog at
+    // assembly time, same as the spec critic's render facts.
+    if (!artDirectorPromptRaw.includes('{{CHASSIS_SELECTION_FACTS}}')) {
+      throw new Error('art-director.md is missing its {{CHASSIS_SELECTION_FACTS}} placeholder')
+    }
+    const artDirectorSystemPrompt = `${artDirectorPromptRaw.replace(
+      '{{CHASSIS_SELECTION_FACTS}}',
+      formatChassisSelectionForPrompt(CHASSIS_CATALOG)
+    )}${brandRegisterDeclaration}\n\n${refTypography}\n\n${refColor}`
 
     let artDirectorResult
     const t0Director = Date.now()
@@ -797,6 +831,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         paletteFormulaMandateSection,
         heroSourceMandateSection,
         compositionMandateSection,
+        chassisMandateSection,
         brandContract,
         weightsBlock,
         tasteMemoryBlock,
@@ -821,6 +856,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           paletteFormulaMandateSection,
           heroSourceMandateSection,
           compositionMandateSection,
+          chassisMandateSection,
           brandContract,
           weightsBlock,
           tasteMemoryBlock,
@@ -952,6 +988,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           paletteFormulaMandateSection,
           heroSourceMandateSection,
           compositionMandateSection,
+          chassisMandateSection,
           brandContract,
           weightsBlock,
           tasteMemoryBlock,
@@ -1039,6 +1076,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         paletteFormulaMandateSection,
         heroSourceMandateSection,
         compositionMandateSection,
+        chassisMandateSection,
       ]
         .filter(Boolean)
         .join('\n\n')

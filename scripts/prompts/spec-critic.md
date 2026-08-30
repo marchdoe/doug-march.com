@@ -39,11 +39,14 @@ Failure example: visual spec says "primary hue 18° terracotta," preset has only
 
 The hero phrase must render at the intended scale on a 1440×900 viewport. Check:
 
-- If `field_ratio` is `type-dominant` or `drenched`, or `density` is `sparse` (type is doing the visual work with few other elements to lean on), the chassis MUST have ratio ≥ 1.500 (display-grade). The catalog ratios are: bricolage-manrope 1.500, spectral-albert 1.333, big-shoulders-atkinson 1.618, anton-inter-tight 1.500, bebas-plex 1.500, fraunces-karla 1.500, dm-serif-public 1.618, zilla-worksans 1.333, space-mono-archivo 1.500, unbounded-figtree 1.500.
-- If chassis is `spectral-albert` or `zilla-worksans` (both 1.333) and `field_ratio: type-dominant`, that is a render-feasibility failure — type-as-the-page needs poster-scale type.
+- Every chassis's hero reaches at least 64px on a 360px viewport, so marquee is never impossible; the question is whether the declared hero_scale and composition match the chassis's actual voice. The per-chassis numbers, generated from the catalog:
+
+{{CHASSIS_RENDER_FACTS}}
+
+- If `field_ratio` is `type-dominant` or `drenched`, or `density` is `sparse` (type is doing the visual work with few other elements to lean on), the hero at 1440 should sit in the loud half of the table. Flag a quiet-voiced chassis (hero below ~110px at 1440) carrying a type-as-the-page composition unless the rationale owns the restraint.
 - The chassis catalog lists "Best for archetypes" (legacy vocabulary) — if the Art Director named a descriptive archetype and the chosen chassis isn't tagged for it, flag it (acceptable if the rationale explicitly justifies it; otherwise revise). Skip this bullet entirely when no archetype was named — there is nothing to match against.
 
-Failure example: `field_ratio: type-dominant` + chassis spectral-albert (1.333) → cannot render at marquee scale.
+Failure example: `field_ratio: type-dominant` + a chassis whose hero tops out at 96px, with hero_scale declaring 180px → the declared scale is not achievable; either the chassis or the declaration must move.
 
 ### 4. Self-check honesty
 
@@ -60,7 +63,7 @@ The MEASURABLES block declares numeric floors. Check:
   declared density implies is a REVISE.
 - The floors don't contradict the visual spec's language: a "drenched" or
   "committed" color story with color_coverage_min below 60 is a REVISE.
-- hero_scale is achievable with the chosen chassis ratio at 1440px.
+- hero_scale is achievable for the chosen chassis at 1440px — compare it against the per-chassis numbers in check 3.
 
 ## Verdict Rules
 
@@ -75,7 +78,7 @@ Not acceptable: "Hero phrase is weak", "Colors don't match"
 Acceptable:
 - "Hero phrase 'Selected Work — recent projects' is a section label, not an anchor. Pick from today's signals: the Reagan quote, the 13–6 Tigers headline, or the Kerouac fragment in projects.ts."
 - "Visual spec names primary hue 18° terracotta but preset.ts colors are entirely cool blues (#3a5a7e family). Either restate the spec to match the preset, or rewrite the preset color tokens to match the spec."
-- "field_ratio: type-dominant + chassis spectral-albert (ratio 1.333) cannot render the hero phrase at marquee scale. Pick a ≥1.500 chassis instead — e.g. big-shoulders-atkinson, bricolage-manrope, anton-inter-tight, bebas-plex, fraunces-karla, dm-serif-public, space-mono-archivo, or unbounded-figtree."
+- "field_ratio: type-dominant + chassis spectral-albert (hero 96px at 1440) is a quiet voice carrying the whole page while hero_scale declares 180px. Pick a louder chassis from the render facts, or bring hero_scale down to what this one delivers."
 
 ## Response Format
 

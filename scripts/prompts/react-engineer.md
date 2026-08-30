@@ -36,8 +36,11 @@ Layout.tsx must use a named export (`export function Layout`), import and render
 - Use the design tokens (elements/preset.ts) for every color — the mockup's
   hex values map 1:1 to token names; reference tokens, never raw hex.
 - If a mockup hex has no exact token match, use the perceptually nearest semantic token — never emit raw hex, never edit preset.ts. Note the substitution in a code comment.
-- Typography comes from the chassis tokens (fontSizes/fonts are generated —
-  use the semantic scale steps that match the mockup's rendered sizes).
+- Typography comes from the chassis tokens. Prefer `textStyle`: every ramp
+  step (`2xs`..`5xl`, `hero`) is a textStyle token carrying size, leading and
+  tracking tuned for the day's faces — pick the steps that match the mockup's
+  rendered sizes. Set `fontSize`/`lineHeight`/`letterSpacing` individually
+  only where the mockup genuinely departs from a step's built-in treatment.
 - **Fonts are ALREADY loaded.** `__root.tsx` (orchestrator-owned) injects the
   day's Google Fonts `<link>`, and the families are exposed as Panda
   `fontFamily` tokens. Do NOT create any CSS file, do NOT write `@font-face`,
@@ -256,7 +259,9 @@ Panda does not fail on a token it has never heard of. It passes the name through
 
 **Font sizes.** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `hero`. That is the whole ramp. `6xl`, `7xl`, `8xl` and anything past them do not exist and never have. `hero` is already a fluid clamp sized off the chassis, so reach for it on the headline rather than hand-writing `clamp(4rem,8.5vw,8.5rem)`.
 
-**Spacing.** `1` through `9`, mapping to 4px, 8px, 16px, 24px, 32px, 48px, 64px, 96px, 128px. There is no `10` or above. A bare number is always read as a spacing token: `width: '11'` asks for a token that does not exist and renders as 11px. When you want a literal size, write the unit (`width: '44px'`).
+**Text styles.** The same step names are textStyle tokens: `textStyle: 'hero'` sets size, line-height and letter-spacing together, tuned per chassis. This is the preferred way to set type; it cannot drift from the ramp.
+
+**Spacing.** `1` through `9`, derived from the chassis rhythm and landing close to 4px, 8px, 16px, 24px, 32px, 48px, 64px, 96px, 128px on every chassis. There is no `10` or above. A bare number is always read as a spacing token: `width: '11'` asks for a token that does not exist and renders as 11px. When you want a literal size, write the unit (`width: '44px'`).
 
 **Line heights.** `tight`, `snug`, `normal`, `loose`
 
