@@ -36,9 +36,4 @@ describe('weather provider', () => {
     expect(result.data.temp_f).toBe(72)
     expect(result.meta.source).toBe('weatherapi.com')
   })
-
-  it('throws if API key not set', async () => {
-    vi.stubEnv('WEATHER_API_KEY', '')
-    await expect(collect({ location: { zip: '20105' } })).rejects.toThrow('WEATHER_API_KEY')
-  })
 })

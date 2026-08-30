@@ -141,8 +141,12 @@ function summarize(provider: string, value: JsonValue | undefined): string | nul
     case 'sports': {
       const teams = arr(isObj(value) ? value.teams : value)
       if (!teams.length) return null
+      // 'error' and 'unknown league' are how the collector records a read it
+      // could not make, not a result. Excluding only 'off season' meant a
+      // network failure rendered to a visitor as "Detroit Lions error".
+      const NON_RESULTS = new Set(['off season', 'error', 'unknown league'])
       const played = teams.filter(
-        (t) => isObj(t) && str(t.result) && str(t.result) !== 'off season'
+        (t) => isObj(t) && str(t.result) && !NON_RESULTS.has(str(t.result) as string)
       )
       if (!played.length) return `${teams.length} teams followed, none playing`
       const first = played[0]

@@ -1,3 +1,5 @@
+import { fetchJson } from '../utils/signal-fetch.js'
+
 export const name = 'air_quality'
 export const timeout = 5000
 export const requiresApiKey = 'WEATHER_API_KEY'
@@ -11,15 +13,16 @@ const AQI_LABELS = {
   6: 'Hazardous',
 }
 
-export async function collect(profile) {
+export async function collect(profile, { signal } = {}) {
   const key = process.env.WEATHER_API_KEY
-  if (!key) throw new Error('WEATHER_API_KEY not set')
-
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${key}&q=${profile.location.zip}&days=1&aqi=yes`
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`weatherapi.com error: ${res.status}`)
+  const json = await fetchJson(url, {
+    signal,
+    timeoutMs: timeout,
+    source: 'weatherapi.com',
+    expect: (v) => v?.current?.air_quality,
+  })
 
-  const json = await res.json()
   const aqi_index = json.current.air_quality['us-epa-index']
   const uv_index = json.current.uv
 
@@ -29,9 +32,6 @@ export async function collect(profile) {
       uv_index,
       air_quality_label: AQI_LABELS[aqi_index] ?? 'Unknown',
     },
-    meta: {
-      source: 'weatherapi.com',
-      items: 1,
-    },
+    meta: { source: 'weatherapi.com', items: 1 },
   }
 }

@@ -247,3 +247,53 @@ describe('a provider with no handler yet', () => {
     expect(line({ tide_charts: {} }, 'tide_charts')?.empty).toBe(true)
   })
 })
+
+describe('a failed read is not a result', () => {
+  // sports.js records a team it could not fetch as `result: 'error'`, and a
+  // league it does not recognise as 'unknown league'. The filter here excluded
+  // only 'off season', so a network failure rendered to a visitor as
+  // "Detroit Lions error".
+  it('does not render a failed team fetch as a score', () => {
+    const summary = line(
+      {
+        sports: {
+          teams: [
+            { name: 'Detroit Lions', league: 'NFL', result: 'error', score: null },
+            { name: 'Detroit Tigers', league: 'MLB', result: 'won 14-0', score: '14-0' },
+          ],
+        },
+      },
+      'sports'
+    )?.summary
+    expect(summary).not.toContain('error')
+    expect(summary).toContain('Detroit Tigers')
+  })
+
+  it('does not render an unknown league as a result', () => {
+    const summary = line(
+      {
+        sports: {
+          teams: [
+            { name: 'Detroit Pistons', league: 'XFL', result: 'unknown league', score: null },
+          ],
+        },
+      },
+      'sports'
+    )?.summary
+    expect(summary).not.toContain('unknown league')
+    expect(summary).toBe('1 teams followed, none playing')
+  })
+
+  it('still reports a real result', () => {
+    const summary = line(
+      {
+        sports: {
+          teams: [{ name: 'Detroit Lions', league: 'NFL', result: 'won 24-20', score: '24-20' }],
+        },
+      },
+      'sports'
+    )?.summary
+    expect(summary).toContain('Detroit Lions')
+    expect(summary).toContain('won 24-20')
+  })
+})

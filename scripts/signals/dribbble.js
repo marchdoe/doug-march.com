@@ -1,3 +1,4 @@
+import { signalFetch } from '../utils/signal-fetch.js'
 export const name = 'dribbble'
 export const timeout = 10000
 
@@ -30,13 +31,11 @@ function parseRssItems(xml) {
   return items
 }
 
-export async function collect(_profile) {
-  const res = await fetch(RSS_URL, {
-    signal: AbortSignal.timeout(8000),
-    headers: {
-      'User-Agent': 'dougmar-ch-signals/1.0 (https://dougmar.ch)',
-      Accept: 'application/rss+xml, application/xml, text/xml',
-    },
+export async function collect(_profile, { signal } = {}) {
+  const res = await signalFetch(RSS_URL, {
+    signal,
+    timeoutMs: 8000,
+    headers: { accept: 'application/rss+xml, application/xml, text/xml' },
   })
 
   // Dribbble serves a WAF JS-challenge (202 + empty body) to non-browser clients.

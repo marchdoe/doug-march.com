@@ -1,12 +1,11 @@
+import { fetchJson } from '../utils/signal-fetch.js'
+
 export const name = 'golf'
 export const timeout = 10000
 
-export async function collect(_profile) {
+export async function collect(_profile, { signal } = {}) {
   const url = 'https://site.api.espn.com/apis/site/v2/sports/golf/pga/scoreboard'
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`ESPN golf error: ${res.status}`)
-
-  const json = await res.json()
+  const json = await fetchJson(url, { signal, timeoutMs: timeout, source: 'ESPN golf' })
   const events = json.events || []
 
   if (events.length === 0) {
