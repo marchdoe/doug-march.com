@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { SectionLabel, Row } from '../components/Ledger'
+import { SectionLabel } from '../components/Ledger'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
@@ -252,7 +252,6 @@ function WorkPage() {
       )}
 
       <SectionLabel label="More work" count="prev / next" />
-      <Row main={prev.title} value="← prev" />
       {[
         { p: prev, dir: '← prev' },
         { p: next, dir: 'next →' },

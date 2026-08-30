@@ -91,7 +91,13 @@ export function Row({
           fontWeight: 'bold',
           fontSize: 'lg',
           color: muted ? 'textMuted' : 'accent',
-          whiteSpace: 'nowrap',
+          // Deliberately not `nowrap`. The auto track already sizes to
+          // max-content whenever there is room, so short values ("−0.23%",
+          // "W 2–1") stay on one line without it. Under pressure `nowrap`
+          // could not shrink at all: /about passes "Product Designer &
+          // Developer" here, whose 472px min-content pushed a 360px screen
+          // out to 602px. Wrapping is the better failure. See #215.
+          minWidth: 0,
         })}
       >
         {value}
@@ -137,6 +143,13 @@ export function WorkRow({
           letterSpacing: 'tight',
           textTransform: 'uppercase',
           color: 'text',
+          // A grid track defaults to min-width:auto, so a long single-word
+          // title (TWITTERTALE, DOUGMAR.CH) set in display type refuses to
+          // shrink and drags the whole row past a 360px screen. minWidth lets
+          // the track shrink; overflowWrap lets the word break rather than
+          // spill, since it also lowers the min-content width. See #215.
+          minWidth: 0,
+          overflowWrap: 'anywhere',
           _hover: { color: 'accent' },
         })}
       >
@@ -170,6 +183,13 @@ export function Featured({ children }: { children: ReactNode }) {
         borderColor: 'border',
         padding: { base: '5', md: '6' },
         marginTop: '4',
+        // The heading inside this card is written by the pipeline, at whatever
+        // display size the night's preset picks. On 2026-08-30 that was a
+        // 406px min-content "SPACEMAN" — one unbreakable word, wider than a
+        // 360px screen, which pinned the whole page open by 176px. Both
+        // properties are inherited, so they cover whatever gets nested here.
+        minWidth: 0,
+        overflowWrap: 'anywhere',
       })}
     >
       {children}

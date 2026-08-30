@@ -13,6 +13,9 @@ function WorkIndexPage() {
     <Box
       as="main"
       className={css({
+        // See experiments.tsx: type is sized against this container, because
+        // the width of the column Layout.tsx hands this page changes nightly.
+        containerType: 'inline-size',
         paddingX: { base: '6', md: '12', lg: '24' },
         paddingY: { base: '10', md: '14', lg: '20' },
       })}
@@ -21,7 +24,7 @@ function WorkIndexPage() {
         className={css({
           fontFamily: 'heading',
           fontWeight: 'bold',
-          fontSize: 'clamp(32px, 5vw, 72px)',
+          fontSize: 'clamp(28px, 9cqi, 72px)',
           lineHeight: 'tight',
           letterSpacing: 'tight',
           color: 'text',
