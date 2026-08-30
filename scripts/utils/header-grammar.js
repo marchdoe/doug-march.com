@@ -19,11 +19,14 @@ import { LOCKUP_VARIANTS } from './brand-lockup.js'
 /**
  * Ramp steps a header field may name.
  *
- * These are the eight steps buildFontSizes emits (scripts/utils/chassis.js).
- * Extending the ramp — #253 — means extending this list, or the Art Director
- * will declare a step this rejects.
+ * These are the steps buildFontSizes emits (scripts/utils/chassis.js), minus
+ * `hero`. `hero` is a viewport clamp built to carry a headline across a
+ * 360px-1440px window; a nav link or a wordmark set in it would be several
+ * hundred pixels tall, so it is not something a header may declare. Any
+ * further change to the ramp means changing this list too, or the Art
+ * Director will declare a step this rejects.
  */
-export const RAMP_STEPS = ['2xs', 'xs', 'sm', 'base', 'md', 'lg', 'xl', '2xl']
+export const RAMP_STEPS = ['2xs', 'xs', 'sm', 'base', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl']
 
 /**
  * The enumerated header fields. `nav`, `height_px` and `mark_px` are not here:

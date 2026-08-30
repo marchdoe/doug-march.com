@@ -268,7 +268,7 @@ import { BrandLockup } from './BrandLockup'               // from a component
 - `className` is merged last, so it can add margin, alignment or a color.
 
 Size, tracking, weight and cap-height alignment are the component's, derived
-from the day's chassis and clamped to the Brand Contract's bands. Do not pass
+from the day's chassis and bounded by the Brand Contract's bands. Do not pass
 a width, a height or a font-size, and do not wrap it in something that scales
 it. The mark shipped at 11px on 2026-08-30 because a `width` prop was written
 by hand against a mockup that had it at 44px.

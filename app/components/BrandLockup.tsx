@@ -16,19 +16,20 @@ import { identity } from '../content/about'
  * SIZE. Every dimension in here is relative to the lockup's own font-size,
  * which is a step on the day's chassis ramp — so the lockup scales with the
  * type rather than fighting it. The mark stands MARK_TO_CAP (2.4) cap-heights
- * tall, cap-height taken as 0.7em, giving 1.68em; that figure is then clamped
- * to the Brand Contract's published band for the variant, so no ramp ratio can
- * push the mark outside the size the Art Director declared. The variant→step
- * map and the bands live in scripts/utils/brand-lockup.js, which is also what
- * the prompts and the validator read.
+ * tall, cap-height taken as 0.7em, giving a flat 1.68em. The step itself is
+ * bounded so that 1.68em lands inside the Brand Contract's band for the
+ * variant, which means no ramp ratio can push the mark outside the size the
+ * Art Director declared, and the wordmark shrinks with it rather than being
+ * left oversized beside a cut-down mark. The variant→step map and the bands
+ * live in scripts/utils/brand-lockup.js, which is what the prompts and the
+ * validator read.
  *
  * ALIGNMENT. Horizontal variants align the mark to the wordmark's cap-height,
  * not to its line box. With line-height 1 the text box top sits about 0.1em
  * above the cap line and the cap band is 0.7em deep, so the cap band's centre
- * is 0.45em below the text box top. The text column is padded down by
- * (mark height / 2 − 0.45em) to bring the two centres together — always a
- * positive number, since the mark is at least 0.84em from centre to edge, so
- * nothing overflows the row.
+ * is 0.45em below the text box top. The mark's centre is 0.84em below the row
+ * top, so the text column is padded down by 0.39em to bring the two together.
+ * Positive, so nothing overflows the row upward.
  */
 
 export type BrandLockupVariant =
@@ -65,17 +66,25 @@ type BrandLockupProps = {
 }
 
 /**
- * Ramp step plus the mark-height clamp, one static rule per variant.
- * `--brand-mark-h` is read by both the mark and the cap-height padding, so the
- * two can never disagree about how tall the mark is.
+ * One static rule per variant: the ramp step the lockup is set at, bounded so
+ * the mark it drives lands inside the Brand Contract's band for that variant.
+ *
+ * The bound is on the FONT SIZE rather than on the mark, so the two never come
+ * apart. The mark is a flat 1.68em, which is 2.4 cap-heights, always. Clamping
+ * the mark instead would leave the wordmark at full ramp size beside a mark
+ * that had been cut down to fit — on a 1.5-ratio chassis that put an 81px
+ * "Doug March" next to a 96px mark and the wordmark won. Squeezing the step
+ * instead keeps the pair in proportion at every ratio in the catalog. The
+ * bounds are the band divided by 1.68; the table lives in
+ * scripts/utils/brand-lockup.js.
  */
 const variantStyles: Record<BrandLockupVariant, string> = {
-  'mark-only-sm': css({ fontSize: 'base', '--brand-mark-h': 'clamp(24px, 1.68em, 32px)' }),
-  'mark-only-md': css({ fontSize: 'lg', '--brand-mark-h': 'clamp(40px, 1.68em, 56px)' }),
-  'horizontal-sm': css({ fontSize: 'base', '--brand-mark-h': 'clamp(20px, 1.68em, 28px)' }),
-  'horizontal-md': css({ fontSize: 'lg', '--brand-mark-h': 'clamp(32px, 1.68em, 48px)' }),
-  'stacked-md': css({ fontSize: 'lg', '--brand-mark-h': 'clamp(40px, 1.68em, 56px)' }),
-  'stacked-lg': css({ fontSize: '2xl', '--brand-mark-h': 'clamp(64px, 1.68em, 96px)' }),
+  'mark-only-sm': css({ fontSize: 'clamp(14.286px, token(fontSizes.base), 19.048px)' }),
+  'mark-only-md': css({ fontSize: 'clamp(23.81px, token(fontSizes.lg), 33.333px)' }),
+  'horizontal-sm': css({ fontSize: 'clamp(11.905px, token(fontSizes.base), 16.667px)' }),
+  'horizontal-md': css({ fontSize: 'clamp(19.048px, token(fontSizes.lg), 28.571px)' }),
+  'stacked-md': css({ fontSize: 'clamp(23.81px, token(fontSizes.lg), 33.333px)' }),
+  'stacked-lg': css({ fontSize: 'clamp(38.095px, token(fontSizes.2xl), 57.143px)' }),
 }
 
 const colorStyles: Record<BrandLockupColor, string> = {
@@ -100,18 +109,21 @@ const rootColumn = css({
 
 const rootMark = css({ display: 'inline-flex' })
 
+/** 1.68em is 2.4 cap-heights, taking cap-height as 0.7em. The viewBox is
+ * 71x59, so the width follows from the height rather than being asserted. */
 const markStyle = css({
-  height: 'var(--brand-mark-h)',
-  width: 'calc(var(--brand-mark-h) * 71 / 59)',
+  height: '1.68em',
+  width: 'calc(1.68em * 71 / 59)',
   display: 'block',
   flexShrink: 0,
 })
 
-/** Cap-height alignment for the horizontal variants. See the note above. */
+/** Cap-height alignment for the horizontal variants: half the mark (0.84em)
+ * minus the 0.45em from text-box top to cap-band centre. See the note above. */
 const textColumnRow = css({
   display: 'flex',
   flexDirection: 'column',
-  paddingTop: 'calc(var(--brand-mark-h) / 2 - 0.45em)',
+  paddingTop: '0.39em',
 })
 
 const textColumnStacked = css({

@@ -29,8 +29,11 @@ every single day. It participates in the design without being reinvented by it.
 The wordmark step is the ramp step the name is set at, and the mark's height is
 derived from it rather than fixed: the mark stands 2.4 cap-heights tall, taking
 cap-height as 0.7em, so it grows and shrinks with the day's type instead of
-against it. That figure is then clamped to the band above, which is why the
-declared `mark_px` and the rendered mark cannot disagree by much.
+against it. The step is bounded either side so that figure lands inside the
+band above, which is why the declared `mark_px` and the rendered mark cannot
+disagree by much. The bound is on the step rather than on the mark, so the
+wordmark shrinks with the mark instead of being left oversized beside one that
+was cut down to fit.
 
 Orientation (horizontal vs stacked) may follow the day's header placement — a
 `left-rail` header usually wants a stacked lockup, a `top-bar` a horizontal one.

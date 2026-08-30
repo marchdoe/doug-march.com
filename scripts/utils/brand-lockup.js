@@ -56,9 +56,11 @@ export const MARK_EM = Math.round(CAP_RATIO * MARK_TO_CAP * 1000) / 1000
  * `step` is the ramp step the wordmark renders at, which is also what the
  * mark's height is derived from — pick the step and the mark follows, so the
  * lockup grows and shrinks with the day's chassis instead of against it.
- * `markMinPx`/`markMaxPx` are the contract's published bands; the component
- * clamps to them so an aggressive scale ratio can't push a `horizontal-sm`
- * mark to 70px, and a timid one can't shrink it to 14.
+ * `markMinPx`/`markMaxPx` are the contract's published bands. The component
+ * bounds the STEP to keep the mark inside them, rather than bounding the mark:
+ * clamping the mark alone would leave the wordmark at full ramp size beside a
+ * mark cut down to fit, which on a 1.5-ratio chassis put an 81px "Doug March"
+ * next to a 96px mark. See stepClamp below.
  */
 export const LOCKUP_VARIANTS = {
   'mark-only-sm': { orientation: 'mark', step: 'base', markMinPx: 24, markMaxPx: 32 },
@@ -71,6 +73,24 @@ export const LOCKUP_VARIANTS = {
 
 /** The six ids, in contract order. @type {string[]} */
 export const LOCKUP_IDS = Object.keys(LOCKUP_VARIANTS)
+
+/**
+ * The `font-size` a lockup variant is set at: its ramp step, bounded either
+ * side so that a mark of MARK_EM lands inside the variant's published band.
+ *
+ * The Panda `token()` call resolves at extract time to the chassis ramp's CSS
+ * variable, so the middle term follows the day's type and the two ends hold
+ * the contract. Bounds are the band divided by MARK_EM.
+ *
+ * @param {string} id one of LOCKUP_IDS
+ * @returns {string} a CSS clamp()
+ */
+export function stepClamp(id) {
+  const v = LOCKUP_VARIANTS[id]
+  if (!v) throw new Error(`unknown lockup variant: ${id}`)
+  const px = (n) => `${Number((n / MARK_EM).toFixed(3))}px`
+  return `clamp(${px(v.markMinPx)}, token(fontSizes.${v.step}), ${px(v.markMaxPx)})`
+}
 
 /**
  * Coordinate strings that appear in the mark's path data and nowhere else in

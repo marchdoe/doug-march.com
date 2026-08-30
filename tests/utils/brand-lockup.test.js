@@ -11,6 +11,7 @@ import {
   lockupIsDeclared,
   renderBrandLockupFile,
   resolveWordmarkWeight,
+  stepClamp,
 } from '../../scripts/utils/brand-lockup.js'
 
 const TEMPLATE = resolve(process.cwd(), 'scripts/templates/BrandLockup.tsx.template')
@@ -101,12 +102,19 @@ describe('renderBrandLockupFile', () => {
     expect(src).toContain("fontFamily: 'display'")
   })
 
-  it('clamps every variant to the band its Brand Contract row publishes', () => {
+  it('bounds every variant so the mark lands inside its Brand Contract band', () => {
     const src = renderBrandLockupFile(chassis([400]))
     for (const id of LOCKUP_IDS) {
-      const { markMinPx, markMaxPx } = LOCKUP_VARIANTS[id]
-      expect(src).toContain(`clamp(${markMinPx}px, ${MARK_EM}em, ${markMaxPx}px)`)
+      expect(src).toContain(stepClamp(id))
     }
+  })
+
+  it('draws the mark at a flat MARK_EM, so the wordmark can never outgrow it', () => {
+    // Bounding the mark instead of the step is what put an 81px wordmark next
+    // to a 96px mark on a 1.5-ratio chassis.
+    const src = renderBrandLockupFile(chassis([400]))
+    expect(src).toContain(`height: '${MARK_EM}em'`)
+    expect(src).not.toContain('--brand-mark-h')
   })
 
   it('is SSR-safe: no hooks, no browser globals, no inline style props', () => {
@@ -130,6 +138,24 @@ describe('renderBrandLockupFile', () => {
     expect(block).toContain("color: 'accent'")
     expect(block).not.toContain('textMuted')
     expect(block).not.toContain('textSecondary')
+  })
+})
+
+describe('stepClamp', () => {
+  it('divides the band by MARK_EM, so MARK_EM of the bound is the band', () => {
+    for (const id of LOCKUP_IDS) {
+      const { markMinPx, markMaxPx, step } = LOCKUP_VARIANTS[id]
+      const [, lo, hi] = /^clamp\(([\d.]+)px, token\(fontSizes\.[^)]+\), ([\d.]+)px\)$/.exec(
+        stepClamp(id)
+      )
+      expect(Number(lo) * MARK_EM).toBeCloseTo(markMinPx, 2)
+      expect(Number(hi) * MARK_EM).toBeCloseTo(markMaxPx, 2)
+      expect(stepClamp(id)).toContain(`token(fontSizes.${step})`)
+    }
+  })
+
+  it('throws on a variant that is not in the contract', () => {
+    expect(() => stepClamp('diagonal-xl')).toThrow(/unknown lockup variant/)
   })
 })
 

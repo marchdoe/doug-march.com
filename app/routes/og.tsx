@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import logoMono from '../assets/logo-mono.svg'
+import { BrandLockup } from '../components/BrandLockup'
 import { identity } from '../content/about'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
@@ -32,24 +32,11 @@ function OgCard() {
           overflow: 'hidden',
         })}
       >
-        <div className={css({ display: 'flex', alignItems: 'center', gap: '3' })}>
-          <img
-            src={logoMono}
-            alt=""
-            className={css({ width: '56px', height: 'auto', color: 'fieldInk' })}
-          />
-          <span
-            className={css({
-              fontFamily: 'display',
-              fontWeight: 'bold',
-              fontSize: 'xl',
-              letterSpacing: 'tight',
-              color: 'fieldInk',
-            })}
-          >
-            {identity.name}
-          </span>
-        </div>
+        <BrandLockup
+          variant="horizontal-md"
+          mode="single-color"
+          className={css({ color: 'fieldInk' })}
+        />
 
         <div>
           <p

@@ -234,8 +234,9 @@ of it against what you write here.
   not load renders as a synthesized bold that distorts the letterforms.
 - `role_line: present` puts the role under the name. Absent is a real choice,
   not a shortfall: a mark-only or `corner` header rarely wants one.
-- `nav_step` and `nav_case` set the nav links. Nothing in the ramp reads under
-  14px, so avoid `2xs` and `xs` on a chassis with an aggressive scale ratio.
+- `nav_step` and `nav_case` set the nav links. `hero` is not available to
+  either step: it is a viewport clamp built to carry a headline, and a nav
+  link set in it would be several hundred pixels tall.
 - `nav` stays prose because the character of a nav is not a number. Consult
   the Shell Mandate for recently-used placements, nav treatments and mark size
   bands, and move off them unless today's brief demands otherwise.
@@ -335,10 +336,10 @@ ground_strategy: light-ground | dark-void | drench | duotone | split-field
 placement: top-bar | left-rail | right-margin | corner | folded-into-hero | footer-only | none
 height_px: <integer, 32–800; exactly 0 when placement is none>
 mark_px: <integer, inside the band your brand_lockup publishes>
-wordmark_step: 2xs | xs | sm | base | md | lg | xl | 2xl | none
+wordmark_step: 2xs | xs | sm | base | md | lg | xl | 2xl | 3xl | 4xl | 5xl | none
 wordmark_weight: <integer 100–900>
 role_line: present | absent
-nav_step: 2xs | xs | sm | base | md | lg | xl | 2xl
+nav_step: 2xs | xs | sm | base | md | lg | xl | 2xl | 3xl | 4xl | 5xl
 nav_case: upper | lower | small-caps | title
 nav: <treatment in prose, e.g. bottom rail / corner mark / floating pills / left spine / top bar / none — must be "none" when placement is "none">
 
