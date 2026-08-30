@@ -1,5 +1,6 @@
-import { readFileSync, readdirSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync } from 'node:fs'
 import path from 'node:path'
+import { readRecentBuilds } from './recent-builds.js'
 
 /**
  * Shell variance mandate — structural clone of color-mandate.js applied to
@@ -15,32 +16,14 @@ import path from 'node:path'
  * @returns {Array<{ date: string, nav: string|null, footer: string|null, brand_lockup: string|null }>} newest first
  */
 export function extractRecentShells(archiveDir, lookbackDays) {
-  if (!existsSync(archiveDir)) return []
-  let dateDirs
-  try {
-    dateDirs = readdirSync(archiveDir)
-      .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))
-      .sort()
-      .reverse()
-      .slice(0, lookbackDays)
-  } catch {
-    return []
-  }
+  // readRecentBuilds resolves each date to the build that SHIPPED.
+  // Taking the newest build dir, as this did, reads designs the site
+  // never wore — see scripts/utils/recent-builds.js.
+  const recent = readRecentBuilds(archiveDir, { lookbackDays })
 
   const shells = []
-  for (const dateDir of dateDirs) {
-    const datePath = path.join(archiveDir, dateDir)
-    let buildDirs
-    try {
-      buildDirs = readdirSync(datePath)
-        .filter((b) => /^build-\d+$/.test(b))
-        .sort()
-        .reverse()
-    } catch {
-      continue
-    }
-    if (buildDirs.length === 0) continue
-    const shellPath = path.join(datePath, buildDirs[0], 'shell.json')
+  for (const { date: dateDir, buildDir } of recent) {
+    const shellPath = path.join(buildDir, 'shell.json')
     if (!existsSync(shellPath)) continue
     try {
       const s = JSON.parse(readFileSync(shellPath, 'utf8'))

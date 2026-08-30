@@ -52,27 +52,39 @@ export function blocksToText(contentBlocks) {
  * @param {number} [args.maxTokens]
  * @param {number} [args.timeoutMs]
  * @param {number} [args.stallTimeoutMs] - CLI path only
+ * @param {(channel: string) => void} [args.onChannel] - told which channel
+ *   actually answered: 'sdk-vision', 'cli-text-fallback' (the SDK failed) or
+ *   'cli-text-no-key'. Without this the degradation is invisible: a 400 from a
+ *   bad thinking param or a wrong model id silently turns both vision gates
+ *   into text-only, and a critic can APPROVE a design it never saw.
  * @returns {Promise<string>} raw assistant text (callers parse their own verdicts)
  */
 export async function callVisionAgent(args) {
   const { agentName, systemPrompt, contentBlocks, maxTokens, timeoutMs, stallTimeoutMs } = args
+  const onChannel = args.onChannel ?? (() => {})
   const imageCount = contentBlocks.filter((block) => block.type === 'image').length
 
   if (hasApiKey() && imageCount > 0) {
     try {
-      return await callClaudeSDK(agentName, systemPrompt, contentBlocks, {
+      const text = await callClaudeSDK(agentName, systemPrompt, contentBlocks, {
         maxTokens,
         timeoutMs,
       })
+      onChannel('sdk-vision')
+      return text
     } catch (err) {
       console.warn(
         `  [${agentName}] SDK vision call failed (${err.message}) — falling back to text-only CLI`
       )
+      onChannel('cli-text-fallback')
     }
   } else if (imageCount > 0) {
     console.warn(
       `  [${agentName}] no ANTHROPIC_API_KEY — ${imageCount} screenshot(s) dropped; text-only critique`
     )
+    onChannel('cli-text-no-key')
+  } else {
+    onChannel('cli-text-no-images')
   }
 
   const textPrompt = [NO_IMAGE_NOTICE, blocksToText(contentBlocks)].join('\n\n---\n\n')

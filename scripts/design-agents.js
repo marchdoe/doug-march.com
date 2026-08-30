@@ -1639,7 +1639,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         rationale,
         designBrief,
         changedPaths,
-        {},
+        // The weights this run actually used. Passing {} here meant archiver.js
+        // fell back to `?? 5` for all four and wrote those into build.json, so
+        // every archived night claimed the defaults — including the risk value
+        // derived from the build date, which is the whole point of the dial.
+        // Any later "did risk 9 produce better designs" reading was fiction.
+        weights,
         tokenResult.color_scheme ?? null,
         chosenArchetype ?? null,
         {
@@ -1737,6 +1742,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         })
 
         const t0ScreenshotCritic = Date.now()
+        // Which channel answered. A SHIP reached without pixels is a
+        // different claim from one reached with them, so verdicts.json says
+        // which it was.
+        let visionChannel = 'unknown'
         const criticResponse = await callVisionAgent({
           agentName: 'screenshot-critic',
           systemPrompt: screenshotCriticPrompt,
@@ -1747,7 +1756,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           // The SDK path uses timeoutMs only.
           timeoutMs: 600000,
           stallTimeoutMs: 300000,
+          onChannel: (c) => {
+            visionChannel = c
+          },
         })
+        if (visionChannel !== 'sdk-vision') {
+          console.warn(
+            `  [screenshot-critic] verdict reached WITHOUT images (${visionChannel}) — it did not see the design`
+          )
+        }
         const { verdict: screenshotVerdict } = parseCriticVerdict(criticResponse, 'SHIP')
         // BAR is only expected when a reference image was actually attached;
         // parseBarLine is tolerant regardless — absent is fine either way.
@@ -1758,6 +1775,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           critic: 'screenshot-critic',
           verdict: screenshotVerdict,
           feedback: criticResponse.slice(0, 2000),
+          channel: visionChannel,
           ts: Date.now(),
           ...(bar ? { bar } : {}),
         })
@@ -1776,11 +1794,20 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         if (screenshotVerdict === 'REVISE') {
           const agentMatch = criticResponse.match(/\*\*Responsible agent:\*\*\s*([\w-]+)/)
           const responsibleAgent = agentMatch?.[1] || 'react-engineer'
-          const feedback = criticResponse
-            .replace(/===VERDICT===/, '')
-            .replace(/===END===/, '')
-            .replace('REVISE', '')
-            .trim()
+          // Take the FEEDBACK block if the critic emitted one, as
+          // parseMockupCriticResponse already does. The old form stripped the
+          // first literal "REVISE" anywhere in the prose, so a critic writing
+          // "REVISE the hero scale" sent the engineer "the hero scale".
+          const feedbackBlock = criticResponse.match(
+            /===FEEDBACK===\s*\n([\s\S]*?)(?:===END===|$)/
+          )?.[1]
+          const feedback = (
+            feedbackBlock ??
+            criticResponse
+              .replace(/===VERDICT===/, '')
+              .replace(/===END===/, '')
+              .replace(/^\s*REVISE\b/m, '')
+          ).trim()
 
           console.log(`  [screenshot-critic] REVISE — responsible: ${responsibleAgent}`)
           console.log(`  feedback: ${feedback.slice(0, 200)}...`)

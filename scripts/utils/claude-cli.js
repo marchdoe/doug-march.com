@@ -66,7 +66,11 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
 
   const {
     timeoutMs: requestedTimeoutMs = 600000,
-    stallTimeoutMs = 900000,
+    // Default stall window, clamped below. It used to sit at 900000 against a
+    // 600000 hard timeout, so the stall check could never fire before the
+    // timeout did — dead unless every caller overrode it, and two call sites
+    // carry comments explaining that they had to.
+    stallTimeoutMs: requestedStallMs = 900000,
     cwd = ROOT,
     model = 'sonnet',
     extraCliArgs = [],
@@ -81,6 +85,26 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
   if (timeoutMs < requestedTimeoutMs) {
     console.log(
       `  [${agentName}] timeout clamped ${Math.round(requestedTimeoutMs / 60000)}m → ${Math.round(timeoutMs / 60000)}m by the run budget`
+    )
+  }
+
+  // A stall window at or above the hard timeout is not a stall window.
+  // Half the timeout is the most that can fire twice before the call is
+  // abandoned anyway. Derived from the budget-clamped timeout above, not the
+  // requested one, so a call started late in the run gets a proportionally
+  // shorter stall window too.
+  const stallTimeoutMs = Math.min(requestedStallMs, Math.floor(timeoutMs / 2))
+
+  // MOCK_MODE was read in exactly one place — a console.log in
+  // daily-redesign.js — and honoured nowhere. `pnpm pipeline` and
+  // `pipeline:dry` both set it, so anyone running "the mock pipeline" was
+  // making real, billed Claude calls. It is off those scripts now; if it is
+  // still set, stop rather than spend. The one thing a flag must never do is
+  // quietly mean the opposite of what it says.
+  if (process.env.MOCK_MODE === 'true') {
+    throw new Error(
+      `MOCK_MODE=true but there is no mock: this call to ${agentName} would be billed. ` +
+        'Unset MOCK_MODE to run for real, or implement fixture responses here.'
     )
   }
 

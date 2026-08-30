@@ -1,5 +1,6 @@
-import { readFileSync, readdirSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync } from 'node:fs'
 import path from 'node:path'
+import { readRecentBuilds } from './recent-builds.js'
 import { readRecentRatings } from './ratings.js'
 
 // Cheap token-overlap similarity for RECURRING detection — no need for
@@ -80,58 +81,35 @@ export function buildLessonsBlock(archiveDir, { limit = 7, lookbackDays = 14 } =
     const text = [r.didnt, r.try].filter(Boolean).join(' — try: ')
     if (text) entries.push({ date: r.date, source: `owner (grade ${r.grade})`, text })
   }
-
-  if (existsSync(archiveDir)) {
-    let dateDirs = []
+  // The build that shipped, not the newest — see scripts/utils/recent-builds.js
+  for (const { date: dateDir, buildDir } of readRecentBuilds(archiveDir, { lookbackDays })) {
+    const verdictsPath = path.join(buildDir, 'verdicts.json')
+    if (!existsSync(verdictsPath)) continue
     try {
-      dateDirs = readdirSync(archiveDir)
-        .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))
-        .sort()
-        .reverse()
-        .slice(0, lookbackDays)
-    } catch {
-      /* ignore */
-    }
-    for (const dateDir of dateDirs) {
-      const datePath = path.join(archiveDir, dateDir)
-      let buildDirs = []
-      try {
-        buildDirs = readdirSync(datePath)
-          .filter((b) => /^build-\d+$/.test(b))
-          .sort()
-          .reverse()
-      } catch {
-        continue
-      }
-      if (buildDirs.length === 0) continue
-      const verdictsPath = path.join(datePath, buildDirs[0], 'verdicts.json')
-      if (!existsSync(verdictsPath)) continue
-      try {
-        for (const v of JSON.parse(readFileSync(verdictsPath, 'utf8'))) {
-          if (v.verdict === 'REVISE' && v.feedback) {
-            entries.push({
-              date: dateDir,
-              source: v.critic,
-              text: String(v.feedback).slice(0, 400),
-            })
-          }
-          // The screenshot-critic's BAR self-eval (calibration against the
-          // owner's highest-rated past build) rides on the verdict, not
-          // gated by it — a SHIP can still land "below," which is exactly
-          // the signal worth carrying forward. Independent of the REVISE
-          // branch above so both can fire on the same verdict entry.
-          if (v.bar?.position) {
-            const reason = v.bar.reason ? ` — ${v.bar.reason}` : ''
-            entries.push({
-              date: dateDir,
-              source: `${v.critic} (BAR)`,
-              text: `BAR vs best build: ${v.bar.position}${reason}`.slice(0, 400),
-            })
-          }
+      for (const v of JSON.parse(readFileSync(verdictsPath, 'utf8'))) {
+        if (v.verdict === 'REVISE' && v.feedback) {
+          entries.push({
+            date: dateDir,
+            source: v.critic,
+            text: String(v.feedback).slice(0, 400),
+          })
         }
-      } catch {
-        /* ignore malformed */
+        // The screenshot-critic's BAR self-eval (calibration against the
+        // owner's highest-rated past build) rides on the verdict, not
+        // gated by it — a SHIP can still land "below," which is exactly
+        // the signal worth carrying forward. Independent of the REVISE
+        // branch above so both can fire on the same verdict entry.
+        if (v.bar?.position) {
+          const reason = v.bar.reason ? ` — ${v.bar.reason}` : ''
+          entries.push({
+            date: dateDir,
+            source: `${v.critic} (BAR)`,
+            text: `BAR vs best build: ${v.bar.position}${reason}`.slice(0, 400),
+          })
+        }
       }
+    } catch {
+      /* ignore malformed */
     }
   }
 

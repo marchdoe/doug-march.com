@@ -31,14 +31,21 @@ export function parseMockupCriticResponse(raw) {
  * @returns {Promise<{ verdict: 'APPROVE'|'REVISE', feedback: string }>}
  */
 export async function runMockupCritic(ctx) {
+  // Record which channel answered. A verdict reached without pixels is a
+  // different thing from one reached with them, and verdicts.json is where
+  // that has to be visible after the fact.
+  let channel = 'unknown'
   const raw = await callVisionAgent({
     agentName: 'mockup-critic',
     systemPrompt: ctx.systemPrompt,
     contentBlocks: buildMockupCriticBlocks(ctx),
     timeoutMs: 600000,
     stallTimeoutMs: 300000,
+    onChannel: (c) => {
+      channel = c
+    },
   })
-  return parseMockupCriticResponse(raw)
+  return { ...parseMockupCriticResponse(raw), channel }
 }
 
 /**
