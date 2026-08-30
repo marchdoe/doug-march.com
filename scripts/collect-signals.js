@@ -11,6 +11,7 @@
  */
 
 import { config } from 'dotenv'
+import { localDateString, tzOf } from './utils/local-time.js'
 import { readFile, writeFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -46,7 +47,7 @@ async function discoverProviders() {
   return providers
 }
 
-async function runProvider(provider, profile) {
+async function runProvider(provider, profile, now = new Date()) {
   // If the provider declares a required API key and it's missing, skip
   // cleanly with a 'skipped' status instead of letting it throw. This
   // distinguishes "no key configured" from actual runtime errors in logs.
@@ -63,7 +64,10 @@ async function runProvider(provider, profile) {
   // This prevents unhandled rejections when the race times out and the
   // provider's fetch later rejects with an AbortError or network error —
   // by the time that rejection settles, Promise.race has already moved on.
-  const providerPromise = provider.collect(profile, { signal: ac.signal })
+  // `now` is passed so every derived collector in a run agrees on the
+  // instant, instead of each calling new Date() a few milliseconds apart —
+  // which straddles midnight roughly once a year.
+  const providerPromise = provider.collect(profile, { signal: ac.signal, now })
   providerPromise.catch(() => {})
 
   let timeoutId
@@ -114,7 +118,7 @@ process.on('unhandledRejection', (reason) => {
   console.warn('[unhandledRejection]', msg)
 })
 
-export async function runCollector(providerOverrides, profileOverride) {
+export async function runCollector(providerOverrides, profileOverride, { now = new Date() } = {}) {
   const profile = profileOverride ?? (await loadProfile())
   const providers = providerOverrides ?? (await discoverProviders())
 
@@ -124,7 +128,7 @@ export async function runCollector(providerOverrides, profileOverride) {
   const results = await Promise.allSettled(
     providers.map(async (p) => {
       console.log(`  [${p.name}] fetching...`)
-      const result = await runProvider(p, profile)
+      const result = await runProvider(p, profile, now)
       console.log(`  [${p.name}] ${result.status} (${result.meta.latency_ms}ms)`)
       return { name: p.name, ...result }
     })
@@ -154,7 +158,10 @@ export async function runCollector(providerOverrides, profileOverride) {
         : { status: r.status, reason: r.reason, latency_ms: r.meta.latency_ms }
   }
 
-  signals.date = new Date().toISOString().slice(0, 10)
+  // The site's own day, not UTC's. These two disagree every evening: at
+  // 23:30 Eastern the UTC stamp reads tomorrow while every derived collector
+  // reads today.
+  signals.date = localDateString(now, tzOf(profile))
 
   const meta = {
     collected_at: new Date().toISOString(),

@@ -1,3 +1,5 @@
+import { localDayOfYear, tzOf, tzOffsetHours } from '../utils/local-time.js'
+
 export const name = 'sun'
 export const timeout = 1000
 
@@ -19,19 +21,15 @@ function formatTime(decimalHours) {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
 }
 
-// Calculate day of year (1-365/366)
-function getDayOfYear(date) {
-  const start = new Date(date.getFullYear(), 0, 0)
-  const diff = date - start
-  return Math.floor(diff / 86400000)
-}
-
-export async function collect(profile) {
+export async function collect(profile, { now = new Date() } = {}) {
+  // The profile is required in practice — collect-signals always passes it.
+  // The coordinate fallbacks duplicated signals/profile.yml, so a move would
+  // have had to be made in two places.
   const lat = profile?.location?.lat ?? 39.0438
   const lng = profile?.location?.lng ?? -77.4874
+  const tz = tzOf(profile)
 
-  const now = new Date()
-  const dayOfYear = getDayOfYear(now)
+  const dayOfYear = localDayOfYear(now, tz)
 
   // Solar declination (degrees)
   const declination = 23.45 * Math.sin(toRad((360 / 365) * (dayOfYear - 81)))
@@ -72,9 +70,12 @@ export async function collect(profile) {
     daylightHours = halfDayHours * 2
   }
 
-  // Approximate local time: offset from UTC using longitude (15 deg = 1 hr)
-  // Round to nearest whole hour for a reasonable local approximation
-  const localOffsetHours = Math.round(lng / 15)
+  // The zone's real offset, not one guessed from longitude.
+  // Math.round(lng / 15) gives -5 for Ashburn every day of the year, but
+  // America/New_York is -4 from March to November — so every sunrise and
+  // sunset reported in those months was an hour early. Checked against a
+  // 2026-08-30 sunrise of 06:41 EDT, which the old code called 05:42.
+  const localOffsetHours = tzOffsetHours(now, tz)
   const sunriseLocal = (((sunriseUTC + localOffsetHours) % 24) + 24) % 24
   const sunsetLocal = (((sunsetUTC + localOffsetHours) % 24) + 24) % 24
 

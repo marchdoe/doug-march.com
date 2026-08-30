@@ -7,6 +7,10 @@ location:
   name: "Ashburn, VA"
   lat: 39.0438
   lng: -77.4874
+  # IANA zone. Every derived collector reads its calendar day from this rather
+  # than from the runner's clock (UTC in CI) or from longitude, which cannot
+  # know about DST.
+  tz: "America/New_York"
 
 sports:
   teams:
