@@ -6,9 +6,6 @@
   "engines": {
     "node": "22.x"
   },
-  "imports": {
-    "#/*": "./app/*"
-  },
   "scripts": {
     "prepare": "panda codegen",
     "dev": "panda codegen && vite",
@@ -31,13 +28,9 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
-    "@tanstack/react-devtools": "^0.10.12",
     "@tanstack/react-router": "^1.170.31",
-    "@tanstack/react-router-devtools": "^1.167.1",
     "@tanstack/react-start": "^1.168.48",
-    "@tanstack/start-api-routes": "^1.120.19",
     "@vercel/functions": "^3.9.3",
-    "lucide-react": "^1.32.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-markdown": "^10.1.0",
@@ -48,7 +41,6 @@
     "@biomejs/biome": "^2.5.9",
     "@pandacss/dev": "^1.12.0",
     "@playwright/test": "^1.62.1",
-    "@tanstack/devtools-vite": "^0.8.5",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^22.20.0",
@@ -62,7 +54,6 @@
     "playwright": "^1.62.1",
     "typescript": "^7.0.2",
     "vite": "^8.2.1",
-    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.11"
   }
 }
