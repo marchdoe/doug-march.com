@@ -29,15 +29,17 @@ const RISK_WHEN_SET = 5
 
 export function WeightsTab({ initial }: { initial: Weights }) {
   const [weights, setWeights] = useState<Weights>(initial)
-  const [state, setState] = useState<'idle' | 'busy' | 'saved' | string>('idle')
+  const [state, setState] = useState<
+    { kind: 'idle' } | { kind: 'busy' } | { kind: 'saved' } | { kind: 'error'; message: string }
+  >({ kind: 'idle' })
 
   const save = async () => {
-    setState('busy')
+    setState({ kind: 'busy' })
     try {
       await saveWeights(weights)
-      setState('saved')
+      setState({ kind: 'saved' })
     } catch (err) {
-      setState(err instanceof Error ? err.message : 'Failed')
+      setState({ kind: 'error', message: err instanceof Error ? err.message : 'Failed' })
     }
   }
 
@@ -89,20 +91,20 @@ export function WeightsTab({ initial }: { initial: Weights }) {
       })}
       <button
         type="button"
-        disabled={state === 'busy'}
+        disabled={state.kind === 'busy'}
         onClick={save}
         className={button({ kind: 'primary' })}
       >
-        {state === 'busy' ? 'Saving…' : 'Save weights'}
+        {state.kind === 'busy' ? 'Saving…' : 'Save weights'}
       </button>
-      {state === 'saved' && (
+      {state.kind === 'saved' && (
         <p className={cx(successText, css({ marginTop: '10px' }))}>
           Saved — applies to the next run.
         </p>
       )}
-      {state !== 'idle' && state !== 'busy' && state !== 'saved' && (
+      {state.kind === 'error' && (
         <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>
-          {state}
+          {state.message}
         </p>
       )}
     </section>

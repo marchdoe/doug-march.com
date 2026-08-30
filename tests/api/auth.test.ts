@@ -59,3 +59,27 @@ describe('requireAuth', () => {
     expect(requireAuth(req)?.status).toBe(503)
   })
 })
+
+describe('non-ASCII credentials', () => {
+  // atob yields Latin-1, but browsers send Basic credentials UTF-8 encoded
+  // (RFC 7617). Decoding as Latin-1 meant a password with any non-ASCII
+  // character could never match — the owner locked out with no diagnostic.
+  const utf8Basic = (user: string, pass: string) => {
+    const bytes = new TextEncoder().encode(`${user}:${pass}`)
+    return `Basic ${btoa(String.fromCharCode(...bytes))}`
+  }
+
+  it('accepts a password with non-ASCII characters', () => {
+    expect(checkBasicAuth(utf8Basic('doug', 'pässwörd-ü'), 'doug', 'pässwörd-ü')).toBe(true)
+  })
+
+  it('accepts a password with an emoji', () => {
+    expect(checkBasicAuth(utf8Basic('doug', 'correct-horse-🐎'), 'doug', 'correct-horse-🐎')).toBe(
+      true
+    )
+  })
+
+  it('still rejects the wrong non-ASCII password', () => {
+    expect(checkBasicAuth(utf8Basic('doug', 'pässwörd-ü'), 'doug', 'pässwörd-x')).toBe(false)
+  })
+})

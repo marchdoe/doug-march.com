@@ -200,3 +200,51 @@ describe('dispatchRun / latestRun', () => {
     expect(await latestRun()).toBeNull()
   })
 })
+
+describe('responses that are not the shape we asked for', () => {
+  it('returns null when workflow_runs is absent instead of throwing TypeError', async () => {
+    // `raw.workflow_runs as Array<…>` then `runs[0]` threw a TypeError, which
+    // is not a GitHubError and so escaped the handler's 502 mapping.
+    fetchMock.mockResolvedValue(jsonRes({}))
+    await expect(latestRun()).resolves.toBeNull()
+  })
+
+  it('returns null when workflow_runs is empty', async () => {
+    fetchMock.mockResolvedValue(jsonRes({ workflow_runs: [] }))
+    await expect(latestRun()).resolves.toBeNull()
+  })
+
+  it('turns a 2xx with a non-JSON body into a GitHubError, not a SyntaxError', async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: () => Promise.reject(new SyntaxError('Unexpected token <')),
+    } as unknown as Response)
+    await expect(latestRun()).rejects.toBeInstanceOf(GitHubError)
+  })
+
+  it('falls back when a weight variable holds something non-numeric', async () => {
+    // parseInt('7abc') was 7; a value the PUT validator would then reject.
+    // A fresh Response per call: getWeights fans out to four in parallel and
+    // a single Response body can only be read once.
+    fetchMock.mockImplementation(() => Promise.resolve(jsonRes({ value: '7abc' })))
+    const w = await getWeights()
+    expect(w.signals).toBe(5)
+  })
+
+  it('falls back when a weight variable is outside 0-10', async () => {
+    // A fresh Response per call: getWeights fans out to four in parallel and
+    // a single Response body can only be read once.
+    fetchMock.mockImplementation(() => Promise.resolve(jsonRes({ value: '99' })))
+    const w = await getWeights()
+    expect(w.signals).toBe(5)
+  })
+
+  it('accepts a weight of 0, which is falsy but valid', async () => {
+    // A fresh Response per call: getWeights fans out to four in parallel and
+    // a single Response body can only be read once.
+    fetchMock.mockImplementation(() => Promise.resolve(jsonRes({ value: '0' })))
+    const w = await getWeights()
+    expect(w.signals).toBe(0)
+  })
+})

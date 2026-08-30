@@ -28,16 +28,24 @@ export function RunTab({
   onTriggered: () => void
 }) {
   const [dryRun, setDryRun] = useState(false)
-  const [state, setState] = useState<'idle' | 'busy' | 'dispatched' | string>('idle')
+  // A union with `| string` collapses to string, so the three literals
+  // checked nothing and the error text shared a channel with the state.
+  // RateTab in this same folder already had the right shape.
+  const [state, setState] = useState<
+    | { kind: 'idle' }
+    | { kind: 'busy' }
+    | { kind: 'dispatched' }
+    | { kind: 'error'; message: string }
+  >({ kind: 'idle' })
 
   const trigger = async () => {
-    setState('busy')
+    setState({ kind: 'busy' })
     try {
       await triggerRun(dryRun)
-      setState('dispatched')
+      setState({ kind: 'dispatched' })
       onTriggered()
     } catch (err) {
-      setState(err instanceof Error ? err.message : 'Failed')
+      setState({ kind: 'error', message: err instanceof Error ? err.message : 'Failed' })
     }
   }
 
@@ -72,20 +80,20 @@ export function RunTab({
       </label>
       <button
         type="button"
-        disabled={state === 'busy'}
+        disabled={state.kind === 'busy'}
         onClick={trigger}
         className={button({ kind: 'primary' })}
       >
-        {state === 'busy' ? 'Dispatching…' : 'Trigger build'}
+        {state.kind === 'busy' ? 'Dispatching…' : 'Trigger build'}
       </button>
-      {state === 'dispatched' && (
+      {state.kind === 'dispatched' && (
         <p className={cx(successText, css({ marginTop: '10px' }))}>
           Dispatched — refresh status in a minute.
         </p>
       )}
-      {state !== 'idle' && state !== 'busy' && state !== 'dispatched' && (
+      {state.kind === 'error' && (
         <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>
-          {state}
+          {state.message}
         </p>
       )}
     </section>
