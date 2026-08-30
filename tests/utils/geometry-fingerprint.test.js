@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 
 import {
   CENTER_SATURATION,
   CLASS_WEIGHTS,
   ELEMENT_CLASSES,
+  FINGERPRINT_VERSION,
   boxDistance,
   centerDistance,
   classDistance,
@@ -147,6 +150,16 @@ describe('fingerprintDistance', () => {
 
   it('lists every class it weights', () => {
     expect(ELEMENT_CLASSES).toEqual(['hero', 'section', 'nav', 'mark'])
+  })
+
+  it('stamps the version the module exports', () => {
+    // collectGeometry is serialized into the page and cannot read module scope,
+    // so it writes the number as a literal. Keep the two from drifting.
+    const source = readFileSync(
+      resolve(import.meta.dirname, '../../scripts/utils/geometry-fingerprint.js'),
+      'utf8'
+    )
+    expect(source).toContain(`version: ${FINGERPRINT_VERSION},`)
   })
 })
 

@@ -161,6 +161,8 @@ export function collectGeometry() {
     if (b) elements.push(b)
   }
 
+  // The literal rather than FINGERPRINT_VERSION: this function is serialized
+  // into the page, where module scope does not exist. A test pins the two together.
   return {
     version: 1,
     viewport: { width: vw, height: vh },
