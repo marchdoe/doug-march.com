@@ -179,6 +179,7 @@ Write a structured visual spec with these five sections (the Unified Designer re
 - **How sports scores are styled** — typography, color, prominence
 - **How the quote is displayed** — blockquote, hero text, pull quote, footnote? (If the quote IS the hero phrase, name that.)
 - **Holiday elements** — if relevant
+- **Music** — `signals.music` is a standing rotation from the owner's profile, picked by date (`rotation: true`). It is taste, not an event: give it a treatment if it earns one, but never present it as something that happened today beside a score or a market close that did.
 - Every noteworthy signal from today's data must appear with a concrete treatment.
 
 ## Self-Check (four lines, every run)

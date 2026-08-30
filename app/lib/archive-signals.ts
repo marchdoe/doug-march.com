@@ -100,8 +100,10 @@ function summarize(provider: string, value: JsonValue | undefined): string | nul
     }
 
     case 'music': {
+      // A standing rotation from profile.yml, picked by date — not something
+      // that happened that day, so it must not read like the score beside it.
       const bands = arr(isObj(value) ? value.bands : value)
-      return bands.length ? `Listening to ${list(bands)}` : null
+      return bands.length ? `From the standing rotation: ${list(bands)}` : null
     }
 
     case 'books': {
