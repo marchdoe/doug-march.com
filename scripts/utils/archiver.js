@@ -9,6 +9,17 @@ import { computeUniqueness } from './uniqueness-index.js'
 import { readUniquenessHistory } from './read-uniqueness-history.js'
 
 /**
+ * Where the day's screenshot is published, relative to the repo root.
+ *
+ * Exported because it is a cross-boundary contract, not a local detail: the
+ * nightly workflow embeds this path in every rating issue, and when #154 moved
+ * the directory the workflow's copy of it was not moved too, so the rating
+ * issues rendered a broken image for months. The workflow cannot import JS, so
+ * a test asserts the two agree — see tests/scripts/nightly-commits-its-output.
+ */
+export const PUBLIC_SCREENSHOT_DIR = 'public/archive-data'
+
+/**
  * Copy key archive artifacts to public/ for static serving.
  * - Site HTML  → public/archive/{date}/index.html, about.html, work/*.html
  * - Screenshot → public/archive-data/{date}.png
@@ -20,7 +31,7 @@ import { readUniquenessHistory } from './read-uniqueness-history.js'
  */
 async function copyToPublic(dateStr, buildDir) {
   const publicBase = path.join(ROOT, 'public', 'archive')
-  const publicData = path.join(ROOT, 'public', 'archive-data')
+  const publicData = path.join(ROOT, ...PUBLIC_SCREENSHOT_DIR.split('/'))
 
   // Copy screenshot if it exists
   const screenshotSrc = path.join(buildDir, 'screenshot.png')

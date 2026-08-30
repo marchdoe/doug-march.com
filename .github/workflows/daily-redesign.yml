@@ -45,15 +45,39 @@ jobs:
             echo "manual trigger (${{ github.event_name }}) — always runs"
             exit 0
           fi
-          hour=$(TZ=America/New_York date +%-H)
+          # Decide from WHICH cron entry fired, not from the clock when the job
+          # finally starts. Reading the arrival hour meant any queue lag past
+          # :59 pushed the run into hour 5, so the EDT entry was dropped as
+          # "the other one" and the EST entry an hour later was dropped too —
+          # the day silently produced no build. The comment at the top of this
+          # file documents 17-31 minutes of routine lag, so that was reachable
+          # on an ordinary night, not just a bad one.
+          #
+          # The season, unlike the arrival time, is stable: `date +%Z` is EDT
+          # or EST for the whole run. Pair it with the entry that fired and
+          # exactly one of the two survives per day.
+          sched='${{ github.event.schedule }}'
+          zone=$(TZ=America/New_York date +%Z)
           local_now=$(TZ=America/New_York date '+%Y-%m-%d %H:%M %Z')
-          if [ "$hour" -eq 4 ]; then
-            echo 'run=true' >> "$GITHUB_OUTPUT"
-            echo "$local_now — the 04:00 hour in New York, this is the day's run"
-          else
-            echo 'run=false' >> "$GITHUB_OUTPUT"
-            echo "$local_now — not the 04:00 hour, this is the other DST entry; skipping"
-          fi
+          case "$sched|$zone" in
+            '50 8 * * *|EDT' | '50 9 * * *|EST')
+              echo 'run=true' >> "$GITHUB_OUTPUT"
+              echo "$local_now — cron '$sched' is the $zone entry, this is the day's run"
+              ;;
+            '50 8 * * *|EST' | '50 9 * * *|EDT')
+              echo 'run=false' >> "$GITHUB_OUTPUT"
+              echo "$local_now — cron '$sched' is the other DST entry for $zone; skipping"
+              ;;
+            *)
+              # An unrecognised entry means the schedule was edited without
+              # updating this case. Build anyway: a missed morning is visible
+              # on a site whose whole claim is that it rebuilds every morning,
+              # and the concurrency group queues a duplicate rather than
+              # racing it.
+              echo 'run=true' >> "$GITHUB_OUTPUT"
+              echo "::warning::unrecognised schedule '$sched' in $zone — running rather than risk a missed day"
+              ;;
+          esac
 
   redesign:
     needs: guard
@@ -64,6 +88,11 @@ jobs:
       contents: write
       issues: write  # for failure notification issues
     env:
+      # Bound the pipeline's own deadline below the job timeout above, so the
+      # run ships what it has instead of being killed mid-call with no trace.
+      # design-agents.js reads this and clamps every model call to what is
+      # left of it (scripts/utils/run-budget.js).
+      RUN_BUDGET_MINUTES: '60'
       # Creative weights come from repo variables so the owner panel can
       # adjust them (PUT /api/panel/weights → GitHub Actions variables).
       # Fallbacks preserve the pre-panel defaults.
@@ -227,7 +256,10 @@ jobs:
               brief = briefMd.match(/\*\*Design Brief:\*\*\s*(.+)/)?.[1] || ''
             } catch {}
             const hero = brief.slice(0, 60) || today
-            const img = `https://raw.githubusercontent.com/${context.repo.owner}/${context.repo.repo}/main/public/archive/${today}.png`
+            // public/archive-data/, not public/archive/ — #154 moved the day's
+            // screenshot and this URL was not moved with it, so every rating
+            // issue since has shown a broken image.
+            const img = `https://raw.githubusercontent.com/${context.repo.owner}/${context.repo.repo}/main/public/archive-data/${today}.png`
             const body = [
               `![today's design](${img})`,
               ``,
@@ -264,7 +296,7 @@ jobs:
               `**Trigger:** ${context.eventName}`,
               `**Commit:** ${context.sha.slice(0, 7)}`,
               ``,
-              `Check the run logs for the failure reason. If a trace was saved, find it under \`archive/$(date -u +%Y-%m-%d)/build-failed-*/trace.json\`.`,
+              `Check the run logs for the failure reason. If a trace was saved, find it under \`archive/${new Date().toISOString().slice(0, 10)}/build-failed-*/trace.json\`.`,
             ].join('\n')
             await github.rest.issues.create({
               owner: context.repo.owner,
