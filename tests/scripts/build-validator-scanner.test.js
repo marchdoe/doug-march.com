@@ -3,7 +3,11 @@ import { describe, it, expect, afterEach } from 'vitest'
 import { writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { validateGenerated, contactLinkPresent } from '../../scripts/utils/build-validator.js'
+import {
+  validateGenerated,
+  contactLinkPresent,
+  staleContactAddresses,
+} from '../../scripts/utils/build-validator.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '../..')
@@ -209,5 +213,47 @@ describe('contact link detection (Check 6)', () => {
 
   it('finds no link in an empty set', () => {
     expect(contactLinkPresent([], EMAIL)).toBe(false)
+  })
+})
+
+describe('stale contact addresses at our own domains (Check 6)', () => {
+  const EMAIL = 'hello@dougmar.ch'
+  const HOSTS = ['doug-march.com', 'dougmar.ch']
+
+  it('catches the exact case that shipped: a right link and a wrong one', () => {
+    // Footer bound identity.email while Sidebar still hardcoded the old host,
+    // so contactLinkPresent passed and the live site advertised both — one of
+    // which has no MX records and silently discards mail.
+    const footer = `<a href={\`mailto:\${identity.email}\`}>mail</a>`
+    const sidebar = "{ href: 'mailto:hello@doug-march.com', label: 'Contact' }"
+    expect(contactLinkPresent([footer, sidebar], EMAIL)).toBe(true)
+    expect(staleContactAddresses([footer, sidebar], EMAIL, HOSTS)).toEqual(['hello@doug-march.com'])
+  })
+
+  it('accepts the canonical address', () => {
+    expect(staleContactAddresses(['mailto:hello@dougmar.ch'], EMAIL, HOSTS)).toEqual([])
+  })
+
+  it('ignores an interpolation, which only resolves at runtime', () => {
+    const src = `<a href={\`mailto:\${identity.email}\`}>x</a>`
+    expect(staleContactAddresses([src], EMAIL, HOSTS)).toEqual([])
+  })
+
+  it("leaves other people's domains alone", () => {
+    // A mailto to someone else is not this check's business.
+    const src = 'mailto:someone@example.com'
+    expect(staleContactAddresses([src], EMAIL, HOSTS)).toEqual([])
+  })
+
+  it('catches an old-host address even at a different mailbox', () => {
+    expect(staleContactAddresses(['mailto:doug@doug-march.com'], EMAIL, HOSTS)).toEqual([
+      'doug@doug-march.com',
+    ])
+  })
+
+  it('dedupes the same stale address across files', () => {
+    const a = 'mailto:hello@doug-march.com'
+    const b = 'href="mailto:hello@doug-march.com"'
+    expect(staleContactAddresses([a, b], EMAIL, HOSTS)).toEqual(['hello@doug-march.com'])
   })
 })

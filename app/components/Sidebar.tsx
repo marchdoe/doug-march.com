@@ -1,5 +1,6 @@
 import { css } from '../../styled-system/css'
 import logoMono from '../assets/logo-mono.svg'
+import { identity } from '../content/about'
 
 export function Sidebar() {
   return (
@@ -78,7 +79,7 @@ export function Sidebar() {
         {[
           { href: '/', label: 'Work' },
           { href: '/about', label: 'About' },
-          { href: 'mailto:hello@doug-march.com', label: 'Contact' },
+          { href: `mailto:${identity.email}`, label: 'Contact' },
         ].map((l) => (
           <a
             key={l.label}
