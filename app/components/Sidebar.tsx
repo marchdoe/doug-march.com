@@ -1,50 +1,25 @@
 import { css } from '../../styled-system/css'
 import { Box } from '../../styled-system/jsx'
-import logoMono from '../assets/logo-mono.svg'
-import { identity, personal } from '../content/about'
+import { BrandLockup } from './BrandLockup'
+import { personal } from '../content/about'
 import { capabilities, education } from '../content/timeline'
 import { projects } from '../content/projects'
 
 export type SidebarVariant = 'home' | 'about' | 'work'
 
 function Brand() {
-  return (
-    <div className={css({ display: 'flex', alignItems: 'center', gap: '3', color: 'fieldInk' })}>
-      <img
-        src={logoMono}
-        alt="Doug March logo"
-        className={css({ width: '44px', height: 'auto', display: 'block', color: 'fieldInk' })}
-      />
-      <div className={css({ display: 'flex', flexDirection: 'column' })}>
-        <span
-          className={css({
-            fontFamily: 'display',
-            fontWeight: 'bold',
-            fontSize: 'md',
-            letterSpacing: 'tight',
-            color: 'fieldInk',
-            whiteSpace: 'nowrap',
-          })}
-        >
-          {identity.name}
-        </span>
-        <span
-          className={css({
-            fontFamily: 'body',
-            fontWeight: 'medium',
-            fontSize: '2xs',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'gold.800',
-            marginTop: '1',
-          })}
-        >
-          {identity.role}
-        </span>
-      </div>
-    </div>
-  )
+  // The lockup is BrandLockup's, not this file's. It was a hand-built mark +
+  // wordmark here, and it kept going wrong: `width: '11'` meant a spacing token
+  // that does not exist, so Panda shipped an 11px mark against a mockup that
+  // had it at 44px. #252 patched that to a literal 44px, which fixes the
+  // symptom and leaves the cause — a size typed by hand into a file a model
+  // rewrites every night. Size, weight, tracking and cap-height alignment now
+  // come from the component, derived from the day's chassis (#254). The colour
+  // comes from the surrounding field.
+  return <BrandLockup variant="horizontal-md" mode="single-color" roleLine className={brandTint} />
 }
+
+const brandTint = css({ color: 'fieldInk' })
 
 function FootItem({ k, v }: { k: string; v: string }) {
   return (
