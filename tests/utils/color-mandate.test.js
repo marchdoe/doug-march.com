@@ -32,15 +32,40 @@ describe('extractRecentPrimaryHues', () => {
 
 describe('mapSignalsToTargetHue', () => {
   it('maps cold-winter mood to cool blue range', () => {
-    const { targetHueRange, mood } = mapSignalsToTargetHue({ weather: { mood: 'cold winter' } })
+    const { targetHueRange, mood } = mapSignalsToTargetHue({
+      weather: { conditions: 'Light snow' },
+      season: { season: 'winter' },
+    })
     expect(targetHueRange[0]).toBeGreaterThanOrEqual(180)
     expect(targetHueRange[1]).toBeLessThanOrEqual(260)
     expect(mood).toMatch(/cool/i)
   })
 
   it('maps energetic mood to vivid range', () => {
-    const { targetHueRange } = mapSignalsToTargetHue({ weather: { mood: 'energetic' } })
+    const { targetHueRange } = mapSignalsToTargetHue({ mood_override: 'energetic' })
     expect(targetHueRange.length).toBe(2)
+  })
+
+  it('reads the fields collectors actually write: conditions, season, lunar phase', () => {
+    // weather.js emits `conditions`, season.js `season`, lunar.js `phase`.
+    // The old code read `weather.mood` and `news.tone`, which nothing ever
+    // wrote, so in production the range was always open.
+    expect(mapSignalsToTargetHue({ weather: { conditions: 'Overcast' } }).mood).toMatch(/cyan/)
+    expect(mapSignalsToTargetHue({ season: { season: 'autumn' } }).mood).toMatch(/rust/)
+    expect(mapSignalsToTargetHue({ lunar: { phase: 'Full Moon' } }).mood).toMatch(/pink/)
+  })
+
+  it("lets the owner's mood override beat the weather", () => {
+    const { mood } = mapSignalsToTargetHue({
+      mood_override: 'moody',
+      weather: { conditions: 'Sunny' },
+    })
+    expect(mood).toMatch(/indigo/)
+  })
+
+  it('ignores fields no collector writes', () => {
+    const { targetHueRange } = mapSignalsToTargetHue({ weather: { mood: 'cold winter' } })
+    expect(targetHueRange).toEqual([0, 360])
   })
 
   it('returns permissive default when no mood', () => {
@@ -78,7 +103,7 @@ describe('computeColorMandate', () => {
   it('produces a full mandate from fixtures', () => {
     const mandate = computeColorMandate({
       archiveDir: FIXTURE_DIR,
-      signals: { weather: { mood: 'cold winter' } },
+      signals: { weather: { conditions: 'Snow' }, season: { season: 'winter' } },
       lookbackDays: 7,
     })
     expect(mandate.targetHueRange).toBeDefined()

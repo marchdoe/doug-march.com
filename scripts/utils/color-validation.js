@@ -4,6 +4,9 @@
  * Never fail the build — warnings only.
  */
 
+import { HUE_DECLARED_MISMATCH } from './hue-thresholds.js'
+import { parsePreset } from './preset-parser.js'
+
 /**
  * Convert a hex color (#rgb, #rrggbb, with or without #) to HSL.
  * @param {string} hex
@@ -65,16 +68,33 @@ export function hueDistance(a, b) {
 }
 
 /**
- * Extract the accent DEFAULT hex from a preset.ts source string.
- * Best-effort regex; returns null if not found.
+ * Read one ramp step out of a preset.ts source string, via the same literal
+ * parser archive-record uses. A regex here silently dropped whole months of
+ * history — bare numeric keys one night, quoted the next, a comment between
+ * ramps on a third (see preset-parser.js). Null when the preset has no
+ * theme block or the ramp is absent.
+ *
+ * @param {string} presetSrc
+ * @param {string} ramp e.g. 'accent'
+ * @param {string} step e.g. 'DEFAULT' or '500'
+ * @returns {string | null}
+ */
+function rampStep(presetSrc, ramp, step) {
+  try {
+    const value = parsePreset(presetSrc).colors?.ramps?.[ramp]?.[step]
+    return typeof value === 'string' && /^#[0-9a-f]{3,8}$/i.test(value) ? value : null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * The accent DEFAULT hex from a preset.ts source string, or null.
  * @param {string} presetSrc
  * @returns {string | null}
  */
 export function extractAccentHex(presetSrc) {
-  const match = presetSrc.match(
-    /accent\s*:\s*\{[^}]*?DEFAULT\s*:\s*\{\s*value:\s*['"](#[0-9a-f]{3,6})['"]/i
-  )
-  return match ? match[1] : null
+  return rampStep(presetSrc, 'accent', 'DEFAULT')
 }
 
 /**
@@ -96,12 +116,10 @@ export function detectCoffeeShopPalette(scheme, presetSrc) {
   const warmHue = h >= 10 && h <= 50
   const mutedAccent = s < 50
 
-  const neutralMatch = presetSrc.match(
-    /neutral\s*:\s*\{[^}]*?500\s*:\s*\{\s*value:\s*['"](#[0-9a-f]{3,6})['"]/i
-  )
+  const neutralHex = rampStep(presetSrc, 'neutral', '500')
   let neutralLowSat = false
-  if (neutralMatch) {
-    const hsl = hexToHsl(neutralMatch[1])
+  if (neutralHex) {
+    const hsl = hexToHsl(neutralHex)
     if (hsl && hsl.s < 11) neutralLowSat = true
   }
 
@@ -133,7 +151,7 @@ export function validateSchemeAgainstPreset(scheme, presetSrc) {
   if (!actualHsl) return { ok: true, warnings }
 
   const dist = hueDistance(scheme.primary_hue.h, actualHsl.h)
-  if (dist > 15) {
+  if (dist > HUE_DECLARED_MISMATCH) {
     warnings.push(
       `COLOR_SCHEME stated hue ${scheme.primary_hue.h}° (${scheme.primary_hue.name}) ` +
         `but actual hue from preset accent is ${actualHsl.h}° (distance ${dist}°).`

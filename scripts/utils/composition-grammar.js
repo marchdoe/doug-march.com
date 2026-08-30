@@ -156,11 +156,6 @@ export function isValidTuple(tuple) {
   return { valid: errors.length === 0, errors }
 }
 
-/** @returns {number} the size of the tuple space */
-export function tupleSpaceSize() {
-  return AXIS_NAMES.reduce((n, axis) => n * COMPOSITION_AXES[axis].length, 1)
-}
-
 /**
  * Render a tuple as the `===COMPOSITION===` block body — the same
  * `key: value` shape the Art Director emits, so what we send and what we
@@ -171,25 +166,4 @@ export function tupleSpaceSize() {
  */
 export function formatTuple(tuple) {
   return AXIS_NAMES.map((axis) => `${axis}: ${tuple?.[axis] ?? '?'}`).join('\n')
-}
-
-/**
- * Build the prompt block that explains the grammar and spells out what
- * today's tuple means, value by value.
- *
- * @param {object} tuple
- * @returns {string} markdown, or '' when the tuple is unusable
- */
-export function formatCompositionForPrompt(tuple) {
-  if (!isValidTuple(tuple).valid) return ''
-  const rows = AXIS_NAMES.map(
-    (axis) => `- **${axis}: \`${tuple[axis]}\`** — ${describeAxisValue(axis, tuple[axis])}`
-  )
-  return [
-    '## Composition',
-    '',
-    'These eight axes describe the page structure, and nothing about its aesthetic register — that comes from the lane. Compose from the axes; do not reach for a named layout and work backwards.',
-    '',
-    ...rows,
-  ].join('\n')
 }

@@ -1,19 +1,20 @@
-import { readFileSync, existsSync } from 'node:fs'
-import path from 'node:path'
-import { readRecentBuilds } from './recent-builds.js'
+import { lastDistinct, readRecentArtifacts } from './recency.js'
 
 /**
- * Shell variance mandate — structural clone of color-mandate.js applied to
- * the page shell (footer treatment, brand lockup) and to the header
- * (placement, nav treatment, mark size band). Reads the SHELL and HEADER
- * declarations persisted as shell.json and header.json in recent build dirs
- * and marks recently-used treatments as soft-forbidden. Guidance, never law:
- * "Fit > novelty" — deviation is allowed when justified.
+ * Shell variance mandate — applied to the page shell (footer treatment,
+ * brand lockup) and to the header (placement, nav treatment, mark size
+ * band). Reads the SHELL and HEADER declarations persisted as shell.json and
+ * header.json in recent build dirs and marks recently-used treatments as
+ * soft-forbidden. Guidance, never law: "Fit > novelty" — deviation is
+ * allowed when justified.
  *
  * The header half arrived with #254. Before it, `nav` was a line of prose
  * inside SHELL and the mark's size was nowhere at all, so the mandate could
  * push the nav around and had nothing to say about the thing three owner
  * ratings running complained about.
+ *
+ * The walk over recent builds lives in recency.js, shared with the other
+ * mandates.
  */
 
 /**
@@ -38,28 +39,12 @@ export function markBand(px) {
  * @returns {Array<{ date: string, nav: string|null, footer: string|null, brand_lockup: string|null, brand_color_mode: string|null, placement: string|null, mark_band: string|null }>} newest first
  */
 export function extractRecentShells(archiveDir, lookbackDays) {
-  // readRecentBuilds resolves each date to the build that SHIPPED.
-  // Taking the newest build dir, as this did, reads designs the site
-  // never wore — see scripts/utils/recent-builds.js.
-  const recent = readRecentBuilds(archiveDir, { lookbackDays })
-
-  const readJson = (dir, name) => {
-    const file = path.join(dir, name)
-    if (!existsSync(file)) return null
-    try {
-      return JSON.parse(readFileSync(file, 'utf8'))
-    } catch {
-      return null
-    }
-  }
-
-  const shells = []
-  for (const { date: dateDir, buildDir } of recent) {
-    const s = readJson(buildDir, 'shell.json')
-    const h = readJson(buildDir, 'header.json')
-    if (!s && !h) continue
-    shells.push({
-      date: dateDir,
+  return readRecentArtifacts(archiveDir, lookbackDays, ({ date, read }) => {
+    const s = read('shell.json')
+    const h = read('header.json')
+    if (!s && !h) return null
+    return {
+      date,
       // nav moved from shell.json to header.json on 2026-08-30. Archived
       // builds from before then only have the shell copy, so read both.
       nav: h?.nav ?? s?.nav ?? null,
@@ -68,19 +53,12 @@ export function extractRecentShells(archiveDir, lookbackDays) {
       brand_color_mode: s?.brand_color_mode ?? null,
       placement: h?.placement ?? null,
       mark_band: markBand(h?.mark_px),
-    })
-  }
-  return shells
+    }
+  })
 }
 
-function lastDistinct(values, n) {
-  const out = []
-  for (const v of values) {
-    if (v && !out.includes(v)) out.push(v)
-    if (out.length === n) break
-  }
-  return out
-}
+/** How many recent distinct values per key are discouraged. */
+const FORBID_WINDOW = 3
 
 /** Keys the mandate soft-forbids, in prompt order. */
 const FORBID_KEYS = ['placement', 'nav', 'footer', 'brand_lockup', 'mark_band']
@@ -95,7 +73,7 @@ export function computeShellMandate({ archiveDir, lookbackDays = 7 }) {
   for (const key of FORBID_KEYS) {
     softForbidden[key] = lastDistinct(
       recentShells.map((s) => s[key]),
-      3
+      FORBID_WINDOW
     )
   }
 

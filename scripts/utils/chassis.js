@@ -391,11 +391,6 @@ function quoteKey(key) {
   return /^[a-z][a-z0-9]*$/i.test(key) ? key : `'${key}'`
 }
 
-/** Look up a chassis by id. Returns undefined if not found. */
-export function getChassisById(catalog, id) {
-  return catalog.find((c) => c.id === id)
-}
-
 /**
  * Render the chassis catalog as a markdown table for inclusion in the
  * Art Director prompt. Each row shows id, name, description, moods,

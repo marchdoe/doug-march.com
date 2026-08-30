@@ -108,10 +108,9 @@ export function validateAffinities(lanes) {
 
 /**
  * Read the most recently used lane id for each of the last `lookbackDays`
- * dates, from the `lane.json` artifact Task 4 will persist per build.
- * Returns [] on the current archive — no build has ever written this
- * artifact — which is the expected, non-error case: every lane is equally
- * fresh until history exists.
+ * dates, from the `lane.json` artifact each build persists. Returns [] when
+ * no build in the window wrote one, which is the expected, non-error case:
+ * every lane is equally fresh until history exists.
  *
  * @param {string} archiveDir
  * @param {number} lookbackDays
@@ -169,6 +168,15 @@ export function selectLane({ archiveDir, date, tuple = {}, lookbackDays = 7 }) {
   const lanes = loadLanes()
   if (lanes.length === 0) {
     throw new Error(`selectLane: no lane files found under ${LANES_DIR}`)
+  }
+  // A typo'd affinity value scores nothing and forbids nothing, silently.
+  // This used to run only in the unit test, so a lane edited without the
+  // suite could sit broken for weeks. Now the pipeline itself refuses it.
+  const invalid = validateAffinities(lanes)
+  if (invalid.length) {
+    throw new Error(
+      `selectLane: unknown affinity values: ${invalid.map((i) => `${i.laneId}: ${i.value}`).join(', ')}`
+    )
   }
 
   const recent = extractRecentLanes(archiveDir, lookbackDays)

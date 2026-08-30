@@ -140,23 +140,6 @@ async function readCurrentFiles() {
 }
 
 /**
- * Read a subset of mutable files from disk.
- * @param {string[]} filePaths - relative paths to read
- * @returns {Promise<Array<{path: string, content: string}>>}
- */
-export async function readFileGroup(filePaths) {
-  const files = []
-  for (const relPath of filePaths) {
-    const absPath = path.join(ROOT, relPath)
-    if (existsSync(absPath)) {
-      const content = await readFile(absPath, 'utf8')
-      files.push({ path: relPath, content })
-    }
-  }
-  return files
-}
-
-/**
  * Read and return all context Claude needs to produce a redesign.
  * @returns {Promise<{ signals: object, contentSummary: string, currentFiles: Array<{path: string, content: string}> }>}
  */

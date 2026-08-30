@@ -4,9 +4,7 @@ import {
   AXIS_NAMES,
   describeAxisValue,
   isValidTuple,
-  tupleSpaceSize,
   formatTuple,
-  formatCompositionForPrompt,
 } from '../../scripts/utils/composition-grammar.js'
 
 /** A tuple made from the first value of every axis. */
@@ -28,10 +26,6 @@ describe('COMPOSITION_AXES', () => {
       'shell_posture',
       'field_ratio',
     ])
-  })
-
-  it('spans 230,400 tuples', () => {
-    expect(tupleSpaceSize()).toBe(230_400)
   })
 
   it('has 38 values in total, none duplicated within an axis', () => {
@@ -137,20 +131,5 @@ describe('formatTuple', () => {
   it('marks missing values rather than emitting "undefined"', () => {
     expect(formatTuple({})).not.toMatch(/undefined/)
     expect(formatTuple({}).split('\n')[0]).toBe('columns: ?')
-  })
-})
-
-describe('formatCompositionForPrompt', () => {
-  it('includes every axis and its description', () => {
-    const block = formatCompositionForPrompt(firstValueTuple())
-    for (const axis of AXIS_NAMES) {
-      expect(block).toContain(`**${axis}:`)
-      expect(block).toContain(describeAxisValue(axis, COMPOSITION_AXES[axis][0]))
-    }
-  })
-
-  it('returns empty string for an invalid tuple rather than half a block', () => {
-    expect(formatCompositionForPrompt({ columns: 'single' })).toBe('')
-    expect(formatCompositionForPrompt(null)).toBe('')
   })
 })
