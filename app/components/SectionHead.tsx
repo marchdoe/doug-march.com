@@ -18,7 +18,7 @@ export function SectionHead({ label }: SectionHeadProps) {
       >
         {label}
       </Box>
-      <Box height="1px" background="borderMuted" />
+      <Box height="1px" background="border" />
     </Box>
   )
 }
