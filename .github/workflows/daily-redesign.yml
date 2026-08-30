@@ -138,11 +138,15 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: '22'
+          node-version-file: '.node-version'
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        # --frozen-lockfile because this job pushes to main. Without it a
+        # resolution drift rewrites pnpm-lock.yaml and rides along in the
+        # nightly's commit, changing dependencies in a commit whose message
+        # says it changed a design. ci.yml and vercel.json both use the flag.
+        run: pnpm install --frozen-lockfile
 
       - name: Install Playwright browser
         # The pipeline renders screenshots with Playwright/Chromium: the OG
@@ -151,7 +155,7 @@ jobs:
         # browser-download postinstall (not in allowBuilds), so without this
         # every chromium.launch() throws and the callers silently skip —
         # leaving og:image a 404 and the screenshot critic a no-op in CI.
-        run: npx playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Install Claude CLI
         # Pinned to 2.1.207. The old 2.1.92 pin (0KB-output regression in

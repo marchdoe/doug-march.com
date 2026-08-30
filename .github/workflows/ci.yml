@@ -4,10 +4,17 @@ on:
   pull_request:
     branches: [main]
 
+# A new push to the same PR makes the run in flight worthless. Both other
+# workflows already do this.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: Lint (Biome)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
 
@@ -26,6 +33,7 @@ jobs:
   typecheck:
     name: Typecheck (tsc)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
 
@@ -44,6 +52,7 @@ jobs:
   test:
     name: Unit & E2E Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
 
@@ -56,19 +65,36 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # Keyed on the resolved @playwright/test version: browser builds are tied
+      # to it, so a cache hit on a stale key would install browsers the runner
+      # cannot drive. jq reads the version pnpm actually resolved rather than
+      # the range in package.json.
+      - name: Resolve Playwright version
+        id: pw
+        run: echo "version=$(pnpm ls @playwright/test --json | jq -r '.[0].devDependencies["@playwright/test"].version')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+
+      # Must run before unit tests — the responsive-scorer + viewport-screenshotter
+      # vitest suites launch real Chromium for accurate DOM measurements.
+      # --with-deps installs OS packages, which the cache does not cover, so it
+      # runs either way; only the browser download is skipped on a hit.
       - name: Install Playwright browsers
-        # Must run before unit tests — the responsive-scorer + viewport-screenshotter
-        # vitest suites launch real Chromium for accurate DOM measurements.
-        run: npx playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Run unit tests
-        run: npm test
+        run: pnpm test
 
       - name: Build site
-        run: pnpm run build
+        run: pnpm build
 
+      # playwright.config.ts starts `vite preview` itself via webServer and
+      # waits for the port to answer. This step used to background the server
+      # and sleep 5, which passed or failed on how busy the runner was.
       - name: Run E2E tests (site health)
-        run: |
-          npx vite preview --port 4173 &
-          sleep 5
-          PREVIEW_URL=http://localhost:4173 npx playwright test --project=site-health
+        run: pnpm test:e2e:site

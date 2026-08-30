@@ -34,11 +34,11 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: '22'
+          node-version-file: '.node-version'
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Roll back mutable files
         run: |
@@ -63,9 +63,8 @@ jobs:
           printf 'restoring %s\n' "${FILES[@]}"
           git checkout "HEAD~$N" -- "${FILES[@]}"
 
-      - name: Regenerate styled-system
-        run: pnpm panda codegen
-
+      # `pnpm build` is `panda codegen && ... && vite build`, so styled-system
+      # is regenerated here rather than in a step of its own.
       - name: Verify build
         run: pnpm build
 

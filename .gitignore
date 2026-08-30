@@ -5,15 +5,11 @@ dist
 dist-ssr
 *.local
 .env
-.nitro
 .tanstack
-.wrangler
-.output
-.vinxi
 __unconfig*
-todos.json
 .superpowers/
 .worktrees/
+.claude/worktrees/
 styled-system/
 
 .redesign-prompt.txt
@@ -37,6 +33,8 @@ signals/*-last-failed.txt
 archive/*/build-failed-*
 archive/*/build-pre-*
 
+public/_proto-*/
+
 references/*.png
 references/*.jpg
 references/*.jpeg
@@ -45,13 +43,9 @@ references/*.jpeg
 # The screenshots and viewport captures beside it are pipeline output and ARE
 # committed — nothing at build time can recreate them.
 public/archive-data/*.json
-# Retired by the record projection (#153); still on disk in older checkouts.
-public/archive/_data.json
-public/archive/*/_detail.json
 
 # Build/pipeline artifacts
 test-results/
-themes/
 .vercel
 
 # Coverage output (vitest --coverage)
