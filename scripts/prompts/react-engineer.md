@@ -248,16 +248,19 @@ is not yours to edit, only to present.
 
 ### Semantic token usage
 
-Never write raw hex in TSX. Use only these semantic token names as string values:
+Never write raw hex in TSX. Use only token names as string values.
 
-- **Backgrounds:** `bg`, `bg.side`, `bg.card`, `bg.tint`
-- **Text:** `text`, `text.mid`, `text.dim`
-- **Borders:** `border`, `border.mid`, `border.accent`
-- **Accent:** `accent`, `accent.dim`, `accent.glow`
-- **Font sizes:** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`
-- **Spacing:** `1`-`20` (4px-80px)
-- **Line heights:** `tight`, `snug`, `normal`, `loose`
-- **Letter spacings:** `tight`, `normal`, `wide`, `wider`, `widest`
+Panda does not fail on a token it has never heard of. It passes the name through, so `color: 'textSecondary'` ships as `color:textSecondary` and the browser drops the whole declaration. The element then renders with whatever it inherited and the page looks almost right. Treat every name below as a closed set.
+
+**Colors.** There is no fixed list. Use the exact names today's `elements/preset.ts` defines under `semanticTokens.colors`; that file is in your inputs, so read it before you style anything. Recent nights have shipped sets as different from each other as `bg`/`surface`/`field`/`fieldInk`/`text`/`textMuted`/`accent`/`border`. Any name that file does not define is a build failure.
+
+**Font sizes.** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `hero`. That is the whole ramp. `6xl`, `7xl`, `8xl` and anything past them do not exist and never have. `hero` is already a fluid clamp sized off the chassis, so reach for it on the headline rather than hand-writing `clamp(4rem,8.5vw,8.5rem)`.
+
+**Spacing.** `1` through `9`, mapping to 4px, 8px, 16px, 24px, 32px, 48px, 64px, 96px, 128px. There is no `10` or above. A bare number is always read as a spacing token: `width: '11'` asks for a token that does not exist and renders as 11px. When you want a literal size, write the unit (`width: '44px'`).
+
+**Line heights.** `tight`, `snug`, `normal`, `loose`
+
+**Letter spacings.** `tight`, `normal`, `wide`, `wider`, `widest`
 
 Reference font family tokens by name: `fontFamily: 'display'`, `fontFamily: 'body'`, `fontFamily: 'heading'`, `fontFamily: 'mono'` — whichever the current chassis exposes.
 
