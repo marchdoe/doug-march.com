@@ -61,17 +61,17 @@ export const Route = createRootRoute({
         content:
           "Front-page swagger — Woody Allen's confidence aphorism as a Spectral broadsheet lead, drenched in plum-black and hot magenta, the Tigers' 14–0 shutout pinned in the almanac column.",
       },
-      { property: 'og:image', content: 'https://doug-march.com/og/2026-07-29.png' },
+      { property: 'og:image', content: 'https://dougmar.ch/og/default.png' },
       { property: 'og:image:width', content: '1200' },
       { property: 'og:image:height', content: '630' },
-      { property: 'og:url', content: 'https://doug-march.com' },
+      { property: 'og:url', content: 'https://dougmar.ch' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },
       {
         name: 'twitter:title',
         content: 'Confidence is what you have before you understand the problem.',
       },
-      { name: 'twitter:image', content: 'https://doug-march.com/og/2026-07-29.png' },
+      { name: 'twitter:image', content: 'https://dougmar.ch/og/default.png' },
     ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
