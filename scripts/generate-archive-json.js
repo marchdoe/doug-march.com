@@ -123,7 +123,7 @@ function uniquenessInputs(date) {
 
 /**
  * The calendar and the dev panel both read the index, so it carries only what a
- * list needs: enough to label a day and colour a cell.
+ * list needs: enough to label a day and color a cell.
  */
 function indexEntry(record, { hasScreenshot, pages, uniqueness }) {
   return {

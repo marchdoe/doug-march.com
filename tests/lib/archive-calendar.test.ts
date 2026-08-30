@@ -123,7 +123,7 @@ describe('swatchFor', () => {
     expect(swatchFor(entry('2026-06-28'))).toBe('hsl(35 95% 48%)')
   })
 
-  it('falls back to a neutral on the dates with no colour recorded', () => {
+  it('falls back to a neutral on the dates with no color recorded', () => {
     expect(swatchFor(entry('2026-03-20', { primaryHue: null }))).toBe('#3a3a42')
   })
 })
@@ -149,7 +149,7 @@ describe('inkFor', () => {
     expect(ink(0, 0, 6)).toBe('#f2f2f4')
   })
 
-  it('defaults to light ink when no colour was recorded', () => {
+  it('defaults to light ink when no color was recorded', () => {
     expect(inkFor(entry('x', { primaryHue: null }))).toBe('#f2f2f4')
     expect(inkFor(null)).toBe('#f2f2f4')
   })

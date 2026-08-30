@@ -25,7 +25,7 @@ export const WINDOW = 7
 /** Shell fields with enumerated values. `nav` and `footer` are free prose and cannot be compared exactly. */
 export const SHELL_FIELDS = ['brand_lockup', 'brand_color_mode', 'ground_strategy']
 
-/** Composite weights. Keys absent from a build are dropped and the rest renormalised. */
+/** Composite weights. Keys absent from a build are dropped and the rest renormalized. */
 export const WEIGHTS = {
   composition: 0.35,
   hue: 0.2,
@@ -191,7 +191,7 @@ export function fidelity(declared, measured) {
 
 /**
  * Weighted mean over the metrics that produced a score. Metrics scoring null
- * are dropped and the remaining weights renormalised, so an early build with
+ * are dropped and the remaining weights renormalized, so an early build with
  * no history still gets a composite from whatever it could compute.
  * @param {Record<string, {score: number|null}>} metrics
  * @returns {number|null}
@@ -284,7 +284,7 @@ export function formatUniquenessForPrompt(index) {
   }
   if (typeof m.hue?.raw === 'number' && m.hue.raw < 30) {
     notes.push(
-      `- Primary hue sat ${Math.round(m.hue.raw)}° from ${m.hue.nearest}. Under 30° reads as the same colour. Pick a hue at least 60° away from the recent window.`
+      `- Primary hue sat ${Math.round(m.hue.raw)}° from ${m.hue.nearest}. Under 30° reads as the same color. Pick a hue at least 60° away from the recent window.`
     )
   }
   if (m.lane?.raw === 0 && m.lane?.lastSeen) {

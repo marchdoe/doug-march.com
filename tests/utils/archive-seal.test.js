@@ -1,4 +1,4 @@
-import { CANONICAL_ORIGIN, RECOGNISED_ORIGINS } from '../../scripts/utils/site-origin.js'
+import { CANONICAL_ORIGIN, RECOGNIZED_ORIGINS } from '../../scripts/utils/site-origin.js'
 import { describe, expect, it } from 'vitest'
 
 import {
@@ -60,11 +60,11 @@ describe('resolveHref', () => {
     expect(resolveHref('/work/teeturn', nested)).toBe('../work/teeturn.html')
   })
 
-  it('collapses every recognised origin onto the in-date page', () => {
+  it('collapses every recognized origin onto the in-date page', () => {
     // Loops rather than naming a host. A snapshot taken before the domain
     // move carries the old origin and one taken after carries the new one,
     // and both must collapse for as long as the archive exists.
-    for (const origin of RECOGNISED_ORIGINS) {
+    for (const origin of RECOGNIZED_ORIGINS) {
       expect(resolveHref(origin, top)).toBe('index.html')
       expect(resolveHref(`${origin}/about`, top)).toBe('about.html')
       expect(resolveHref(`${origin}/work/teeturn`, top)).toBe('work/teeturn.html')
@@ -101,7 +101,7 @@ describe('resolveHref', () => {
 
   it('does not mistake the dougmar-ch case study for the live host either', () => {
     // The new slug is a near-miss for the new origin the same way the old one
-    // was for the old origin, and RECOGNISED_ORIGINS now contains both.
+    // was for the old origin, and RECOGNIZED_ORIGINS now contains both.
     expect(resolveHref('work/dougmar-ch.html', top)).toBeNull()
     expect(resolveHref('/work/dougmar-ch', top)).toBe('work/dougmar-ch.html')
   })
@@ -111,7 +111,7 @@ describe('rewriteLinks', () => {
   it('rewrites the attribute and not the document text', () => {
     // Two snapshots print the live URL as the visible text of a link.
     // A string replace would edit what the design says.
-    for (const origin of RECOGNISED_ORIGINS) {
+    for (const origin of RECOGNIZED_ORIGINS) {
       const html = `<a href="${origin}">${origin}</a>`
       expect(rewriteLinks(html, { prefix: '' })).toBe(`<a href="index.html">${origin}</a>`)
     }
@@ -142,7 +142,7 @@ describe('rewriteMeta', () => {
     // Reads whichever origin the snapshot happens to carry; always writes the
     // canonical one. This is the pointer-vs-record distinction: og:url says
     // where the page lives NOW, so it follows a domain move.
-    for (const origin of RECOGNISED_ORIGINS) {
+    for (const origin of RECOGNIZED_ORIGINS) {
       const html = `<meta property="og:url" content="${origin}/">`
       expect(rewriteMeta(html, { date: '2026-06-28' })).toBe(
         `<meta property="og:url" content="${CANONICAL_ORIGIN}/archive/2026-06-28/">`
@@ -151,7 +151,7 @@ describe('rewriteMeta', () => {
   })
 
   it('drops image meta, which already 404s on 123 of 135 dates', () => {
-    const html = RECOGNISED_ORIGINS.map(
+    const html = RECOGNIZED_ORIGINS.map(
       (o) =>
         `<meta property="og:image" content="${o}/og/2026-07-17.png"><meta name="twitter:image" content="${o}/og/2026-07-17.png">`
     ).join('')

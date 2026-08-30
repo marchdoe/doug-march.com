@@ -18,7 +18,7 @@ export interface ArchiveTokens {
   colors: {
     /** Raw scales: `{ orange: { 500: '#F05428' } }` */
     ramps: Record<string, Record<string, string>>
-    /** Semantic colours, whose values are condition maps: `{ base, _light }` */
+    /** Semantic colors, whose values are condition maps: `{ base, _light }` */
     semantic: Record<string, Record<string, string> | string>
   }
   /** Every other token group the preset carried — varies by era. */

@@ -16,19 +16,19 @@ export const Route = createFileRoute('/how/$date')({
  * The explainer — #159.
  *
  * A day's build read as a sequence, not an inventory. The sections are named
- * for what happened in order — the day arrived, a brief was written, a colour
+ * for what happened in order — the day arrived, a brief was written, a color
  * was chosen — because that is what the record is: a morning's work, in the
  * order it was done.
  *
- * The brief leads, never the colour. Colour is absent on 31 of 123 dates, and a
- * colour-led hero on those days is a grey slab. Signals (107) and tokens (106)
- * are better covered than colour (92).
+ * The brief leads, never the color. Color is absent on 31 of 123 dates, and a
+ * color-led hero on those days is a grey slab. Signals (107) and tokens (106)
+ * are better covered than color (92).
  *
  * The preserved design is linked, never embedded. A live frame of that day's
  * site inside this page would put two identities on one screen, and this page's
  * whole job is to be the fixed one.
  *
- * Colours arrive at render time and Panda extracts styles statically, so each
+ * Colors arrive at render time and Panda extracts styles statically, so each
  * swatch passes its value as a CSS custom property that a static class reads.
  * That is the one thing `style` is used for here.
  */
@@ -43,7 +43,7 @@ interface Swatch {
 /**
  * Ramps kept as ramps, so a scale reads as a scale rather than a pile.
  *
- * Not every colour token is a ramp: a one-off like `glow: { value: '#FF8FC7' }`
+ * Not every color token is a ramp: a one-off like `glow: { value: '#FF8FC7' }`
  * unwraps to a bare string, and iterating that yields one swatch per character.
  */
 function ramps(tokens: ArchiveTokens | null): { name: string; stops: Swatch[] }[] {
@@ -442,7 +442,7 @@ function HowPage() {
           <RailRow label="Chassis" value={detail.chassis} />
           <RailRow label="Archetype" value={detail.legacyArchetype} />
           <RailRow label="Mood" value={(scheme?.mood_word as string) ?? null} />
-          <RailRow label="Colour" value={(hue?.name as string) ?? heroHex} />
+          <RailRow label="Color" value={(hue?.name as string) ?? heroHex} />
           <RailRow label="Build" value={detail.buildId} />
           <RailRow label="Attempts" value={detail.attempts ? String(detail.attempts) : null} />
           {detail.cost?.total_usd != null ? (
@@ -491,9 +491,9 @@ function HowPage() {
             ))}
           </Step>
 
-          <Step n="03" title="A colour was chosen">
+          <Step n="03" title="A color was chosen">
             {!scheme ? (
-              <Absent field="colorScheme" era={era} noun="colour direction" />
+              <Absent field="colorScheme" era={era} noun="color direction" />
             ) : (
               <>
                 {heroHex ? (
@@ -523,7 +523,7 @@ function HowPage() {
                 {colorRamps.length ? (
                   <>
                     <p className={subhead}>
-                      Colour — {colorRamps.length} ramps, {stopCount} stops
+                      Color — {colorRamps.length} ramps, {stopCount} stops
                     </p>
                     {colorRamps.map((r) => (
                       <div key={r.name} className={rampRow}>

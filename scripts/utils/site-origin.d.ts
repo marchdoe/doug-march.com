@@ -2,13 +2,13 @@
 // origins without allowJs. Keep in sync with the JS exports.
 
 /** Origins a URL in our own bytes may carry. Longest first. */
-export const RECOGNISED_ORIGINS: string[]
+export const RECOGNIZED_ORIGINS: string[]
 
 /** The origin serving the site today. Changes on cutover day. */
 export const CANONICAL_ORIGIN: string
 
-/** Host portion of every recognised origin. */
-export const RECOGNISED_HOSTS: string[]
+/** Host portion of every recognized origin. */
+export const RECOGNIZED_HOSTS: string[]
 
-/** The recognised origin `value` begins with, or null. */
+/** The recognized origin `value` begins with, or null. */
 export function matchOrigin(value: string): string | null

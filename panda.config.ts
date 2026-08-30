@@ -27,7 +27,7 @@ export default defineConfig({
        * and 3.157rem on 2026-07-24. Borrowing it would resize the archive's
        * headline every morning.
        *
-       * The palette is achromatic on purpose. The only colour on an archive
+       * The palette is achromatic on purpose. The only color on an archive
        * surface comes from the days themselves — the hue of each build, filling
        * its cell in the calendar. Chrome that competed with that would be
        * chrome arguing with the collection.
@@ -52,7 +52,7 @@ export default defineConfig({
           archive: {
             // Mono leads. The nightly designs are expressive — Anton, Fraunces,
             // Big Shoulders — so the archive reads as a record instead: a
-            // catalogue, not a poster.
+            // catalog, not a poster.
             mono: {
               value:
                 "'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace",

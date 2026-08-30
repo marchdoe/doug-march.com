@@ -25,7 +25,7 @@ export const ERA_LABELS: Record<Era, string> = {
   prose: 'prose',
   logged: 'logged',
   traced: 'traced',
-  'color-directed': 'colour-directed',
+  'color-directed': 'color-directed',
   'shell-directed': 'shell-directed',
   grammar: 'grammar',
 }

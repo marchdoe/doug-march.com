@@ -83,7 +83,7 @@ export const elementsPreset = definePreset({
 `
 
 describe('parsePreset', () => {
-  it('splits ramps from semantic colours and unwraps value wrappers', () => {
+  it('splits ramps from semantic colors and unwraps value wrappers', () => {
     const tokens = parsePreset(PRESET)
     expect(tokens.colors.ramps).toEqual({ orange: { 50: '#FFF3EE', 500: '#F05428' } })
     expect(tokens.colors.semantic).toEqual({

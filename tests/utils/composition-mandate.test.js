@@ -95,7 +95,7 @@ describe('extractRecentCompositions', () => {
     expect(entry.tuple.axis).toBe('vertical')
   })
 
-  it('normalises case and whitespace', () => {
+  it('normalizes case and whitespace', () => {
     writeBuild('2026-08-20', { columns: '  MASONRY ' })
     expect(extractRecentCompositions(archiveDir, 7)[0].tuple.columns).toBe('masonry')
   })

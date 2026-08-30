@@ -1,4 +1,4 @@
-import { RECOGNISED_ORIGINS } from '../../scripts/utils/site-origin.js'
+import { RECOGNIZED_ORIGINS } from '../../scripts/utils/site-origin.js'
 import { test, expect, type Page } from '@playwright/test'
 
 // Runs against PREVIEW_URL (Vercel preview deploy, or localhost dev server)
@@ -162,7 +162,7 @@ test.describe('site health — the archive frame', () => {
           .filter(
             (href) => href.startsWith('/') || origins.some((o: string) => href.startsWith(o))
           ),
-      RECOGNISED_ORIGINS
+      RECOGNIZED_ORIGINS
     )
     expect(escaping).toEqual([])
   })
@@ -254,7 +254,7 @@ test.describe('site health — the explainer', () => {
     await expect(page.locator('a[href="/archive/2026-03-12/"]')).toHaveCount(0)
   })
 
-  test('summarises each signal in words rather than counting items', async ({ page }) => {
+  test('summarizes each signal in words rather than counting items', async ({ page }) => {
     await page.goto('/how/2026-06-28')
     await expect(page.getByText(/full moon, \d+% lit/)).toBeVisible({ timeout: 15000 })
     await expect(page.getByText(/\d+ items/)).toHaveCount(0)
