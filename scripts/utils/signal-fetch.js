@@ -52,8 +52,33 @@ export async function signalFetch(
   return await fetch(url, {
     ...init,
     signal: combined,
-    headers: { ...(userAgent === null ? {} : { 'user-agent': userAgent }), ...headers },
+    headers: mergeHeaders(userAgent === null ? {} : { 'user-agent': userAgent }, headers),
   })
+}
+
+/**
+ * Merge header objects the way HTTP means it: case-insensitively.
+ *
+ * Object keys are case-sensitive and header names are not, so a plain spread
+ * does not overwrite — it keeps both. awwwards.js passes `'User-Agent'` with
+ * capitals to spoof a browser, which did not collide with the default
+ * `'user-agent'`, and `Headers` then combined the two:
+ *
+ *   user-agent: dougmar-ch-signals/1.0 (+https://dougmar.ch), Mozilla/5.0 …
+ *
+ * A bot announcing itself and then claiming to be Chrome is worse than either
+ * alone, and Awwwards refused it — 290ms rejections in CI from 2026-08-30,
+ * where the same collector had returned real data in July.
+ *
+ * @param {Record<string,string>} base
+ * @param {Record<string,string>} [extra] wins on conflict, whatever its casing
+ * @returns {Record<string,string>}
+ */
+function mergeHeaders(base, extra) {
+  const merged = {}
+  for (const [key, value] of Object.entries(base)) merged[key.toLowerCase()] = value
+  for (const [key, value] of Object.entries(extra ?? {})) merged[key.toLowerCase()] = value
+  return merged
 }
 
 /**

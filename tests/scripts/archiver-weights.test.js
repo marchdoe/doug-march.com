@@ -69,3 +69,23 @@ describe('archive() — build.json weights', () => {
     })
   })
 })
+
+describe('archetype.txt exists by the time the record is built', () => {
+  it('records the archetype instead of logging an anomaly', async () => {
+    // design-agents.js used to write archetype.txt AFTER archive(), and
+    // archive() is what builds record.json — so buildRecord looked for a file
+    // that did not exist yet. Every run logged
+    // `record anomaly: missing archetype.txt` and stored legacyArchetype:
+    // null, while the archetype sat on disk seconds later.
+    const date = '2099-01-13'
+    const { writeFileSync, mkdirSync: mk } = await import('node:fs')
+    const dateDir = path.join(ROOT, 'archive', date)
+    mk(dateDir, { recursive: true })
+    writeFileSync(path.join(dateDir, 'archetype.txt'), 'Gallery Wall', 'utf8')
+
+    await archive(date, { date }, 'r', 'b', [], {}, null, 'Gallery Wall', {}, { root: ROOT })
+
+    const record = JSON.parse(await readFile(path.join(dateDir, 'record.json'), 'utf8'))
+    expect(record.legacyArchetype).toBe('Gallery Wall')
+  })
+})

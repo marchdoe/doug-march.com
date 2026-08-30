@@ -1633,6 +1633,24 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const rationale = tokenResult.rationale || `Agent swarm redesign${rationaleSuffix}`
       const designBrief = tokenResult.design_brief || `Multi-agent redesign${rationaleSuffix}`
 
+      // Written BEFORE archive(), because archive() builds record.json and
+      // buildRecord reads this file. Writing it afterwards meant every record
+      // logged `record anomaly: missing archetype.txt` and stored
+      // legacyArchetype: null while the archetype sat on disk seconds later —
+      // an anomaly on every single run, which trains you to ignore the one
+      // list that would report a real one.
+      //
+      // Descriptive only: never validated or enforced. The load-bearing
+      // structural record is composition.json.
+      if (chosenArchetype && signals.date) {
+        try {
+          const datePath = path.join(ROOT, 'archive', signals.date)
+          await mkdir(datePath, { recursive: true })
+          await writeFile(path.join(datePath, 'archetype.txt'), chosenArchetype, 'utf8')
+          console.log(`  [archetype] saved: ${chosenArchetype}`)
+        } catch {}
+      }
+
       await archive(
         signals.date,
         signals,
@@ -1668,18 +1686,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         }
       )
       archiveRan = true
-
-      // Save the descriptive archetype label, when the Art Director supplied
-      // one, purely for archive continuity — it is never validated or
-      // enforced. The load-bearing structural record is composition.json.
-      if (chosenArchetype && signals.date) {
-        try {
-          const datePath = path.join(ROOT, 'archive', signals.date)
-          await mkdir(datePath, { recursive: true })
-          await writeFile(path.join(datePath, 'archetype.txt'), chosenArchetype, 'utf8')
-          console.log(`  [archetype] saved: ${chosenArchetype}`)
-        } catch {}
-      }
 
       return { rationale, design_brief: designBrief, files: allFiles }
     }
