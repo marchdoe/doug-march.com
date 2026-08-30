@@ -59,7 +59,7 @@ describe('archive() — record.json', () => {
     const record = JSON.parse(await readFile(recordPath, 'utf8'))
 
     expect(record.date).toBe(date)
-    expect(record.era).toBe('grammar')
+    expect(record.era).toBe('header-declared')
     expect(record.brief).toBe('A brief.')
     expect(record.rationale).toBe('A rationale.')
     expect(record.filesChanged).toEqual(['elements/preset.ts'])

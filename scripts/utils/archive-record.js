@@ -35,6 +35,7 @@ export const ERAS = [
     start: '2026-08-23',
     gains: ['composition.json', 'lane.json', 'hero-source.json', 'cost.json'],
   },
+  { era: 'header-declared', start: '2026-08-30', gains: ['header.json'] },
 ]
 
 /** The eight-name vocabulary the site was built on for five months. Kept as a
@@ -345,6 +346,7 @@ export function buildRecord(date, options = {}) {
 
     colorScheme: readJsonSafe(inBuild('color-scheme.json')),
     shell: readJsonSafe(inBuild('shell.json')),
+    header: readJsonSafe(inBuild('header.json')),
     verdicts: readJsonSafe(inBuild('verdicts.json')),
     composition: readJsonSafe(inBuild('composition.json')),
     lane: readJsonSafe(inBuild('lane.json')),
@@ -377,6 +379,7 @@ function findAnomalies(record, { dateDir, buildDir, tokensError }) {
     'preset.ts': record.tokens !== null,
     'color-scheme.json': record.colorScheme !== null,
     'shell.json': record.shell !== null,
+    'header.json': record.header !== null,
     'verdicts.json': record.verdicts !== null,
     'mockup.html': buildDir ? existsSync(join(buildDir, 'mockup.html')) : false,
     'composition.json': record.composition !== null,

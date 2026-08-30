@@ -31,6 +31,7 @@ import { spawnSync } from 'node:child_process'
 import { callClaudeCLI } from './utils/claude-cli.js'
 import {
   MUTABLE_FILES,
+  ORCHESTRATOR_FILES,
   STRUCTURE_FILES,
   COMPONENT_FILES,
   readContext,
@@ -53,11 +54,41 @@ import { parseDelimiterResponse } from './utils/delimiter-parser.js'
 import { parseCriticVerdict } from './utils/critic-verdict.js'
 import { modelFor, isDevModelTier } from './utils/models.js'
 import { runArtDirector } from './agents/art-director.js'
-import { parseCompositionBlock } from './utils/spec-blocks.js'
+import { parseCompositionBlock, parseHeaderBlock } from './utils/spec-blocks.js'
+import { renderBrandLockupFile } from './utils/brand-lockup.js'
+import { formatHeader } from './utils/header-grammar.js'
 import { formatTuple } from './utils/composition-grammar.js'
 import { findShellPostureViolation } from './utils/shell-posture-check.js'
 import { countArchivedDesigns } from './utils/archive-count.js'
 export { parseDelimiterResponse }
+
+/**
+ * Drop any orchestrator-owned file from an agent's output.
+ *
+ * react-engineer.md has told the engineer not to emit `__root.tsx`,
+ * `preset.ts` or `chassis-preset.ts` for months, and nothing enforced it —
+ * a stray block would simply overwrite the generated file after the
+ * orchestrator wrote it. `app/components/BrandLockup.tsx` joined that list
+ * with #254, and it is the one that matters most: the whole point of the
+ * component is that no model authors the mark.
+ *
+ * @param {Array<{path: string, content: string}>} files
+ * @param {string} agentName for the log line
+ * @returns {Array<{path: string, content: string}>}
+ */
+export function dropOrchestratorFiles(files, agentName = 'agent') {
+  const kept = []
+  for (const file of files ?? []) {
+    if (ORCHESTRATOR_FILES.includes(file.path)) {
+      console.warn(
+        `  ⚠ ${agentName} emitted ${file.path}, which the orchestrator owns — discarding that block`
+      )
+      continue
+    }
+    kept.push(file)
+  }
+  return kept
+}
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -843,6 +874,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // reasoning as shellDecl/measurablesDecl further down. This early value
     // only backs the log line and trace step right after this call.
     let chosenComposition = parseCompositionBlock(artDirectorResult.composition)
+    // Same story for the header: BrandLockup.tsx is generated below and needs
+    // the declared wordmark weight, which arrives in ===HEADER===. Re-parsed
+    // after any codegen retry, like the composition tuple.
+    let headerDecl = parseHeaderBlock(artDirectorResult.header)
     let chosenChassis = CHASSIS_CATALOG.find((c) => c.id === artDirectorResult.chassisId)
     if (!chosenChassis) {
       console.warn(
@@ -905,6 +940,16 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       await writeFile(rootPath, rootSrc, 'utf8')
       writtenPaths.add('app/routes/__root.tsx')
       console.log(`  [chassis] wrote __root.tsx from template`)
+
+      // The brand lockup, same ownership rule as __root.tsx: generated from a
+      // frozen template every run, never authored by an agent. The engineer
+      // places it and may tint it; it may not draw the mark (#254).
+      const lockupSrc = renderBrandLockupFile(chosenChassis, {
+        wordmarkWeight: headerDecl.wordmark_weight,
+      })
+      await writeFile(path.join(ROOT, 'app/components/BrandLockup.tsx'), lockupSrc, 'utf8')
+      writtenPaths.add('app/components/BrandLockup.tsx')
+      console.log(`  [chassis] wrote BrandLockup.tsx from template`)
     } catch (err) {
       await cleanupOrphans(writtenPaths, originalBackup)
       await restore(originalBackup)
@@ -979,6 +1024,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           )
           await writeFile(path.join(ROOT, 'app/routes/__root.tsx'), retryRootSrc, 'utf8')
           console.log('  [chassis] regenerated __root.tsx after codegen retry (og meta refreshed)')
+          // The retry may have moved the chassis or the declared wordmark
+          // weight, and both are baked into the lockup.
+          headerDecl = parseHeaderBlock(artDirectorResult.header)
+          await writeFile(
+            path.join(ROOT, 'app/components/BrandLockup.tsx'),
+            renderBrandLockupFile(chosenChassis, { wordmarkWeight: headerDecl.wordmark_weight }),
+            'utf8'
+          )
+          console.log('  [chassis] regenerated BrandLockup.tsx after codegen retry')
         } catch (rootErr) {
           console.warn(
             `  __root.tsx og-meta refresh after retry failed (non-blocking): ${rootErr.message}`
@@ -1006,10 +1060,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // used as archive artifacts below (shell.json, composition.json).
     const { parseShellBlock, parseMeasurablesBlock } = await import('./utils/spec-blocks.js')
     const shellDecl = parseShellBlock(artDirectorResult.shell)
+    headerDecl = parseHeaderBlock(artDirectorResult.header)
     const measurablesDecl = parseMeasurablesBlock(artDirectorResult.measurables)
     chosenComposition = parseCompositionBlock(artDirectorResult.composition)
     console.log(
-      `  shell: nav=${shellDecl.nav} | footer=${shellDecl.footer} | lockup=${shellDecl.brand_lockup} (${shellDecl.brand_color_mode}) | ground=${shellDecl.ground_strategy}`
+      `  header: ${headerDecl.placement} @ ${headerDecl.height_px}px | mark=${headerDecl.mark_px}px | wordmark=${headerDecl.wordmark_step}/${headerDecl.wordmark_weight} | role=${headerDecl.role_line} | nav=${headerDecl.nav} (${headerDecl.nav_step}, ${headerDecl.nav_case})`
+    )
+    console.log(
+      `  shell: footer=${shellDecl.footer} | lockup=${shellDecl.brand_lockup} (${shellDecl.brand_color_mode}) | ground=${shellDecl.ground_strategy}`
     )
     console.log(
       `  measurables: canvas>=${measurablesDecl.canvas_utilization_min}% color>=${measurablesDecl.color_coverage_min}% hero=${measurablesDecl.hero_scale}`
@@ -1294,6 +1352,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       contentSummary,
       measurables: artDirectorResult.measurables,
       shell: artDirectorResult.shell,
+      header: formatHeader(headerDecl),
       brandSvg,
       brandMonoSvg,
       googleFontsUrl,
@@ -1332,7 +1391,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
       console.log(`\n[phase-2b] Mockup Critic (round ${round})`)
       try {
-        mockupScreenshot = await captureHtmlFileScreenshot(mockupPath, { width: 1440, height: 900 })
+        mockupScreenshot = await captureHtmlFileScreenshot(mockupPath, {
+          width: 1440,
+          height: 900,
+          headerCrop: { placement: headerDecl.placement, heightPx: headerDecl.height_px },
+        })
       } catch (err) {
         console.warn(`  mockup screenshot failed (non-blocking — skipping critic): ${err.message}`)
         // Don't let an earlier round's screenshot masquerade as this mockup —
@@ -1345,9 +1408,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         critique = await runMockupCritic({
           systemPrompt: mockupCriticSystemPrompt,
           screenshotBuffer: mockupScreenshot.jpeg,
+          headerCrop: mockupScreenshot.headerJpeg,
           enrichedBrief,
           measurables: artDirectorResult.measurables,
           shell: artDirectorResult.shell,
+          header: formatHeader(headerDecl),
         })
       } catch (err) {
         console.warn(`  mockup critic failed (non-blocking — accepting mockup): ${err.message}`)
@@ -1413,6 +1478,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         `## Hero Copy\n\n${artDirectorResult.heroCopy}`,
         `## Composition\n\n${formatTuple(chosenComposition)}`,
         `## Shell Declaration\n\n${artDirectorResult.shell}`,
+        `## Header Declaration (execute these numbers exactly)\n\n${formatHeader(headerDecl)}`,
         '## One-line Design Brief (for og:description context)\n\n' +
           (artDirectorResult.designBrief || ''),
         responsiveLesson
@@ -1562,7 +1628,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       }
     }
 
-    // Write all files
+    // Write all files. Orchestrator-owned paths are dropped first — the
+    // engineer is told not to emit them and nothing used to check.
+    engineerResult.files = dropOrchestratorFiles(engineerResult.files, 'React Engineer')
     for (const p of await writeFiles(engineerResult.files)) writtenPaths.add(p)
 
     trace.addStep({
@@ -1592,7 +1660,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // Phase 4: Build validation
     // -----------------------------------------------------------------------
     console.log('\n[phase-4] Build validation')
-    const buildResult = validateBuild()
+    const buildResult = validateBuild({ shell: shellDecl })
 
     trace.addStep({
       name: 'build-validation',
@@ -1672,6 +1740,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           'mockup-screenshot.png': mockupScreenshot?.png ?? null,
           'verdicts.json': JSON.stringify(verdicts, null, 2),
           'shell.json': JSON.stringify(shellDecl, null, 2),
+          'header.json': JSON.stringify(headerDecl, null, 2),
           'hero-source.json': JSON.stringify(
             { source: artDirectorResult.heroSource || null },
             null,
@@ -1701,7 +1770,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       try {
         console.log('\n[screenshot-critic] Capturing screenshot...')
         const { captureScreenshot } = await import('./utils/snapshot.js')
-        const screenshotBuffer = await captureScreenshot()
+        const screenshotBuffer = await captureScreenshot(undefined, {
+          headerCrop: { placement: headerDecl.placement, heightPx: headerDecl.height_px },
+        })
         finalScreenshot = screenshotBuffer
         console.log(
           `  screenshot captured (png ${(screenshotBuffer.png.length / 1024).toFixed(0)}KB, jpeg ${(screenshotBuffer.jpeg.length / 1024).toFixed(0)}KB)`
@@ -1741,6 +1812,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           // spec. The nightly context has no `brief` key, so the old
           // `${brief}` here rendered the literal string "undefined".
           enrichedBrief,
+          header: formatHeader(headerDecl),
           references,
           mockupScreenshot,
           screenshotBuffer,
@@ -1846,7 +1918,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
               for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
               engineerResult = retryResult
 
-              const retryBuild = validateBuild()
+              const retryBuild = validateBuild({ shell: shellDecl })
               if (!retryBuild.success) {
                 console.warn(
                   '  post-critic revision broke the build — restoring known-passing state'
@@ -1861,7 +1933,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
                 // Prove the restored state actually rebuilds — falling
                 // through to archive() on faith is how broken hybrids ship.
-                const restoredBuild = validateBuild()
+                const restoredBuild = validateBuild({ shell: shellDecl })
                 if (!restoredBuild.success) {
                   await cleanupOrphans(writtenPaths, originalBackup)
                   await restore(originalBackup)
@@ -1880,7 +1952,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
                   const { captureScreenshot: captureScreenshotAfterRevision } = await import(
                     './utils/snapshot.js'
                   )
-                  finalScreenshot = await captureScreenshotAfterRevision()
+                  finalScreenshot = await captureScreenshotAfterRevision(undefined, {
+                    headerCrop: {
+                      placement: headerDecl.placement,
+                      heightPx: headerDecl.height_px,
+                    },
+                  })
                 } catch (recapErr) {
                   console.warn(`  screenshot re-capture failed (non-blocking): ${recapErr.message}`)
                 }
@@ -1991,7 +2068,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     }
 
     // Re-validate
-    const retryBuild = validateBuild()
+    const retryBuild = validateBuild({ shell: shellDecl })
     if (retryBuild.success) {
       console.log('\n=== Retry build passed! ===')
       const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])

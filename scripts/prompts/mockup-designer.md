@@ -116,10 +116,25 @@ them too:
 
 ## Shell and brand
 
-Execute the `===SHELL===` declaration exactly: the declared nav treatment,
-footer treatment, and brand lockup (per the Brand Contract in your inputs,
-including its two color modes). The brand mark is an inline SVG in the
-mockup — copy the provided SVG source; never redraw it.
+Execute the `===SHELL===` and `===HEADER===` declarations exactly.
+
+SHELL gives you the footer treatment and the brand lockup, including its color
+mode. HEADER gives you numbers, and they are numbers because the critic
+measures them off a 2x crop of the header region rather than off the full-page
+screenshot: header height, the rendered height of the circular mark, the ramp
+step and weight the wordmark is set at, whether the role line is on, and the
+step and case of the nav links. Build the header to those figures. A mark at
+half its declared `mark_px` is a REVISE, and it will be seen.
+
+The Brand Contract in your inputs governs the lockup's typography: display
+face, the tracking, the mark standing 2.4 cap-heights tall, horizontal lockups
+aligned to the wordmark's cap-height rather than its line box. The built site
+renders this from a component; your mockup is what that component is checked
+against, so match it.
+
+The brand mark is an inline SVG in the mockup — copy the provided SVG source;
+never redraw it. Use the original-color source for `brand_color_mode: original`
+and the `currentColor` source for `single-color`.
 
 ## Composition
 
@@ -160,7 +175,7 @@ Present this data in any visual form — large type, small label, tooltip, hover
 
 **About page (NOT in mockup.html):** The identity statement, timeline entries (year/role/company/description), capability strings, education (school/degree/concentration/years), and personal data (holes in one, sport, teams, current focus) are NOT rendered in the home-page mockup. Instead, ===INTERIOR_NOTES=== must state how the About page renders each of these items within the day's design system.
 
-**All sections:** Name, role, and nav links — rendered in whatever form today's SHELL declaration and `shell_posture` call for (masthead, floating pills, bottom bar, corner mark, overlay menu, classical sidebar, or none at all when `shell_posture: none`).
+**All sections:** Name, role, and nav links — rendered in whatever form today's HEADER placement, SHELL declaration and `shell_posture` call for (masthead, floating pills, bottom bar, corner mark, overlay menu, classical sidebar, or none at all when `shell_posture: none`).
 
 Layout, typography, color, spacing, and interaction of every element are entirely yours. The data must appear; the presentation is free.
 

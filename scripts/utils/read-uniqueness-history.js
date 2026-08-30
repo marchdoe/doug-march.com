@@ -59,24 +59,26 @@ export async function readUniquenessHistory({
 
     let entry = null
     for (const dir of candidates) {
-      const [composition, colorScheme, lane, shell] = await Promise.all([
+      const [composition, colorScheme, lane, shell, header] = await Promise.all([
         readJson(path.join(dir, 'composition.json')),
         readJson(path.join(dir, 'color-scheme.json')),
         readJson(path.join(dir, 'lane.json')),
         readJson(path.join(dir, 'shell.json')),
+        readJson(path.join(dir, 'header.json')),
       ])
-      if (composition || colorScheme || lane || shell) {
+      if (composition || colorScheme || lane || shell || header) {
         entry = {
           date,
           composition,
           hue: typeof colorScheme?.primary_hue?.h === 'number' ? colorScheme.primary_hue.h : null,
           lane: lane?.laneId ?? null,
           shell,
+          header,
         }
         break
       }
     }
-    out.push(entry ?? { date, composition: null, hue: null, lane: null, shell: null })
+    out.push(entry ?? { date, composition: null, hue: null, lane: null, shell: null, header: null })
   }
   return out
 }

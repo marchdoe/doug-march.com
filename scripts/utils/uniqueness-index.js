@@ -22,8 +22,16 @@ import { hueDistance } from './color-validation.js'
 /** Builds compared against. @type {number} */
 export const WINDOW = 7
 
-/** Shell fields with enumerated values. `nav` and `footer` are free prose and cannot be compared exactly. */
+/** Shell fields with enumerated values. `footer` is free prose and cannot be compared exactly. */
 export const SHELL_FIELDS = ['brand_lockup', 'brand_color_mode', 'ground_strategy']
+
+/**
+ * Header fields with enumerated values. `nav` moved here from shell.json with
+ * #254 and stays prose; `placement` is the enumerated half and is exactly the
+ * repetition the owner kept flagging — three ratings running complained about
+ * a top bar.
+ */
+export const HEADER_FIELDS = ['placement']
 
 /** Composite weights. Keys absent from a build are dropped and the rest renormalized. */
 export const WEIGHTS = {
@@ -122,15 +130,22 @@ export function laneNovelty(current, history = []) {
 }
 
 /**
- * Shell posture plus the enumerated shell treatments, against the nearest
- * neighbour. Posture lives on the composition tuple, the treatments on
- * shell.json, so this reads both.
- * @param {{ posture?: string|null, shell?: Record<string, string>|null }} current
- * @param {Array<{date?: string, posture?: string|null, shell?: Record<string, string>|null}>} history
+ * Shell posture plus the enumerated shell and header treatments, against the
+ * nearest neighbour. Posture lives on the composition tuple, the shell
+ * treatments on shell.json, the header placement on header.json, so this
+ * reads all three. A build with no header.json — every archived build before
+ * 2026-08-30 — contributes a null for placement, which the comparable-field
+ * filter below drops rather than scoring as a match.
+ * @param {{ posture?: string|null, shell?: Record<string, string>|null, header?: Record<string, string>|null }} current
+ * @param {Array<{date?: string, posture?: string|null, shell?: Record<string, string>|null, header?: Record<string, string>|null}>} history
  * @returns {{ raw: number|null, score: number|null, nearest: string|null, compared: number }}
  */
 export function shellNovelty(current, history = []) {
-  const fieldsOf = (e) => [e?.posture ?? null, ...SHELL_FIELDS.map((f) => e?.shell?.[f] ?? null)]
+  const fieldsOf = (e) => [
+    e?.posture ?? null,
+    ...SHELL_FIELDS.map((f) => e?.shell?.[f] ?? null),
+    ...HEADER_FIELDS.map((f) => e?.header?.[f] ?? null),
+  ]
   const mine = fieldsOf(current)
   if (mine.every((v) => v === null)) return { raw: null, score: null, nearest: null, compared: 0 }
 
@@ -217,6 +232,7 @@ export function composite(metrics) {
  * @param {number|null} [build.hue] primary_hue.h from color-scheme.json
  * @param {string|null} [build.lane] laneId from lane.json
  * @param {Record<string, string>|null} [build.shell] shell.json
+ * @param {Record<string, string>|null} [build.header] header.json
  * @param {object|null} [build.declared] parsed MEASURABLES
  * @param {object|null} [build.measured] measured render values, absent today
  * @param {Array<object>} history same shape, newest first, trimmed to WINDOW
@@ -227,6 +243,7 @@ export function computeUniqueness(build, history = []) {
   const asShell = (b) => ({
     posture: b?.composition?.shell_posture ?? null,
     shell: b?.shell ?? null,
+    header: b?.header ?? null,
   })
 
   const metrics = {
