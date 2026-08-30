@@ -783,8 +783,82 @@ export function validateBuild({ shell = null } = {}) {
     return { success: false, error: errorParts.join('\n') }
   }
 
+  // Compiles and renders is not the same as passes CI. See runStaticChecks.
+  const statics = runStaticChecks()
+  if (!statics.success) return statics
+
   console.log('  build succeeded')
   return { success: true }
+}
+
+/**
+ * Paths the static checks cover. The same three the nightly's push step
+ * stages, so what gets checked is exactly what would reach main. `elements/`
+ * is not here because biome.json excludes it — the presets are generated
+ * TypeScript that codegen validates on write.
+ */
+export const STATIC_CHECK_PATHS = ['app/components', 'app/routes']
+
+/**
+ * Lint, format and typecheck what the agents wrote.
+ *
+ * The nightly validated its output by building it, and Vite transpiles with
+ * esbuild: no type checking, and formatting is checked nowhere. So on
+ * 2026-08-30 it pushed an unused import and eight unformatted files straight
+ * to main, and every PR opened afterwards showed Lint and Typecheck red for a
+ * reason that was not in the PR (#251). CI runs both tools — on pull requests,
+ * which the nightly never opens.
+ *
+ * Shape, decided in #251: formatting is auto-fixed, because it is not a
+ * design decision and the engineer should not spend a retry on it. Whatever
+ * remains after that — a genuine lint error, a type error — fails the build
+ * the same way a compile error does, so it reaches the React Engineer as a
+ * retry with the tool output attached. Both tools run even if the first
+ * fails, so one retry sees everything.
+ *
+ * Cheap: biome under a second, tsc about one. The run budgets sixty minutes.
+ *
+ * @param {{ spawn?: typeof spawnSync, root?: string }} [deps] injectable for tests
+ * @returns {{ success: boolean, error?: string, fixed?: string }}
+ */
+export function runStaticChecks({ spawn = spawnSync, root = ROOT } = {}) {
+  const opts = { cwd: root, encoding: 'utf8', timeout: 60000 }
+  const combined = (r) => (r.stdout ?? '') + (r.stderr ?? '')
+  const failures = []
+
+  console.log('  running biome check --write...')
+  const biome = spawn('pnpm', ['exec', 'biome', 'check', '--write', ...STATIC_CHECK_PATHS], opts)
+  const biomeOut = combined(biome)
+  // Biome reports what it changed; keep that line so the log says the
+  // formatting fix happened rather than leaving it to be inferred.
+  const fixed = biomeOut.match(/Fixed \d+ files?/)?.[0]
+  if (fixed) console.log(`  biome: ${fixed}`)
+  if (biome.status !== 0) {
+    failures.push(`Lint errors remain after auto-fix (biome):\n${biomeOut.trim().slice(-3000)}`)
+  }
+
+  console.log('  running tsc --noEmit...')
+  const tsc = spawn('pnpm', ['exec', 'tsc', '--noEmit'], opts)
+  if (tsc.status !== 0) {
+    failures.push(`Type errors (tsc --noEmit):\n${combined(tsc).trim().slice(-3000)}`)
+  }
+
+  if (failures.length) {
+    console.log('  static checks failed')
+    return {
+      success: false,
+      ...(fixed ? { fixed } : {}),
+      error: [
+        'The build compiled but does not pass the checks CI runs on main.',
+        'Fix every error listed below; formatting has already been corrected.',
+        '',
+        ...failures,
+      ].join('\n'),
+    }
+  }
+
+  console.log('  static checks passed')
+  return { success: true, ...(fixed ? { fixed } : {}) }
 }
 
 /**
