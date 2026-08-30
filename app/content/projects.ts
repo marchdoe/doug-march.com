@@ -85,12 +85,102 @@ export const projects: Project[] = [
     role: 'Designer & Builder',
     timeline: 'Ongoing',
     status: 'Live',
+    context:
+      'Chad Fowler argues that once a machine writes the implementation, the architecture is whatever you cannot delete. He is writing about code. I wanted to know whether the argument holds when the thing being regenerated is visual design, where correct is a judgement rather than a test result.',
     problem:
-      'Most portfolio sites are static — built once, then abandoned. The design decisions are invisible, the process is hidden, and the whole thing slowly drifts out of date.',
+      'A portfolio argues that you can design and build things, then sits unchanged for years, which quietly undercuts the argument. The decisions behind it are invisible, the process is hidden, and none of it is falsifiable.',
+    constraints: [
+      'It redesigns itself unattended. Nothing may wait on me approving it before it ships.',
+      'A visitor arriving on a bad morning still has to be able to read the page and find the work.',
+      'Every past design has to survive exactly as it shipped, including the ones I would rather forget.',
+      'Every run costs tokens, so anything decidable by arithmetic should not be decided by a model.',
+    ],
     approach:
-      'A daily redesign pipeline powered by Claude. Each morning, a multi-agent system reads live signals — golf leaderboard, Hacker News, sports scores — and generates a fresh visual design from scratch. A design director agent sets the creative direction, a token designer defines the type and spacing scale, and a layout engineer assembles the final output. The design is archived automatically with a brief explaining what changed and why. The entire pipeline runs in CI.',
+      "Each morning a pipeline of Claude agents rebuilds the site from nothing. An art director reads the day's signals and writes a specification: a composition drawn from eight independent axes, a type and colour scale, the hero line, and whether the page carries a shell at all. A mockup designer renders that specification at full fidelity, an engineer rebuilds it as the real site, and three separate critics can send any of it back. What the agents may touch is enumerated in a list. The content files, this sentence included, are refused at the write layer.",
+    process: [
+      {
+        phase: 'Signals',
+        does: 'Reads nineteen sources: weather, air quality, the golf leaderboard, Hacker News, markets, the lunar phase, what I have been listening to.',
+        produces: "The day's raw material",
+      },
+      {
+        phase: 'Art Director',
+        does: 'Picks a composition from eight axes rather than a named layout, sets the tokens, writes the hero line, declares the shell.',
+        produces: 'A specification',
+      },
+      {
+        phase: 'Spec critic',
+        does: "Reads the specification against the day's brief and the standing mandates, and can send it back.",
+        produces: 'A verdict',
+      },
+      {
+        phase: 'Mockup Designer',
+        does: "Builds the day's design as one self-contained HTML file, at full fidelity, before any React exists.",
+        produces: 'A mockup',
+      },
+      {
+        phase: 'Mockup critic',
+        does: 'Judges the mockup on its own terms and can demand a revision.',
+        produces: 'A verdict',
+      },
+      {
+        phase: 'React Engineer',
+        does: 'Rebuilds the mockup as the real site: routes, components and tokens, bound to the content files.',
+        produces: 'The site',
+      },
+      {
+        phase: 'Build validation',
+        does: 'Scans the generated code, builds it, then smoke-checks the output for pages that compile and render blank.',
+        produces: 'A shippable build, or a retry',
+      },
+      {
+        phase: 'Screenshot critic',
+        does: 'Looks at the rendered page and judges what a visitor would actually see.',
+        produces: 'The last gate',
+      },
+      {
+        phase: 'Archive',
+        does: 'Seals the day into the wayback machine, writes its record, and scores it against the previous seven builds.',
+        produces: 'Provenance',
+      },
+    ],
+    decisions: [
+      {
+        decision: 'A composition grammar instead of named layouts',
+        why: 'Eight named archetypes became a cage. The model kept reaching for the same three. Replacing the names with eight independent axes removed the vocabulary that was causing the repetition.',
+      },
+      {
+        decision: 'The uniqueness score is arithmetic, not a model',
+        why: 'Asking a model whether today resembles last Tuesday costs tokens and answers differently each time. Hue distance, composition distance and shell novelty are cheap, deterministic, and do not flatter.',
+      },
+      {
+        decision: 'The archive is sealed, not re-rendered',
+        why: "A preserved design wearing tonight's stylesheet is a record of nothing. Each day is frozen as it shipped, with its outbound links rewritten so a visitor cannot leak out of the past.",
+      },
+      {
+        decision: 'The line between disposable and durable is a list, not a convention',
+        why: 'One file enumerates what the pipeline may rewrite. Everything else is refused when it tries to write, rather than asked politely not to.',
+      },
+    ],
     outcome:
-      'A portfolio that is never the same two days in a row. Every design is saved to an archive. The stack is TanStack Start in SPA mode, PandaCSS for tokens, and Vercel for hosting and CI.',
+      'Every design it has made is preserved exactly as it shipped, each with the brief that produced it and a score for how far it strays from the week before. The site is its own archive and its own evidence. The stack is TanStack Start in SPA mode, PandaCSS for tokens, and Vercel for hosting and CI.',
+    references: [
+      {
+        title: 'The Phoenix Primitives',
+        url: 'https://chadfowler.com/regenerative-software/3mjfruwwuck2d/',
+        note: 'Specification, evaluation, context boundary, provenance. Where this project started.',
+      },
+      {
+        title: 'The Deletion Test',
+        url: 'https://chadfowler.com/regenerative-software/3md5ftetaes2e/',
+        note: 'On architecture being defined by what you cannot remove.',
+      },
+      {
+        title: 'Evaluations Are the Real Codebase',
+        url: 'https://chadfowler.com/regenerative-software/3mb526js42k26/',
+        note: 'Why the critics outlast every design they judge.',
+      },
+    ],
     stack: ['TanStack Start', 'PandaCSS', 'TypeScript', 'Claude', 'GitHub Actions', 'Vercel'],
     liveUrl: 'https://dougmar.ch',
   },

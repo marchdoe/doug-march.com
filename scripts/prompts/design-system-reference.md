@@ -59,6 +59,12 @@ export const capabilities: string[]
 ### `../content/about`
 ```typescript
 export const identity: { name: string; role: string; statement: string; email: string }
+// Full-depth projects may also carry white-paper fields — all optional:
+//   context?: string
+//   constraints?: string[]
+//   process?: { phase, does, produces }[]      // ORDERED; order must be legible
+//   decisions?: { decision, why }[]            // never split the pair
+//   references?: { title, url, note? }[]       // real outbound anchors
 export const personal: { holesInOne: number; sport: string; teams: string[]; currentFocus: string }
 ```
 **WARNING:** There is NO `bio` export. Use `identity` for the Bio component.

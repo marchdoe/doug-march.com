@@ -135,6 +135,11 @@ function WorkPage() {
         })}
       >
         <section className={css({ gridColumn: { base: '1/-1', md: '1 / span 8' } })}>
+          {project.context && (
+            <p className={bodyPCss}>
+              <strong className={css({ color: 'accentGlow' })}>Context.</strong> {project.context}
+            </p>
+          )}
           {project.problem && (
             <p className={bodyPCss}>
               <strong className={css({ color: 'accentGlow' })}>Problem.</strong> {project.problem}
@@ -151,6 +156,121 @@ function WorkPage() {
             </p>
           )}
           {project.description && <p className={bodyPCss}>{project.description}</p>}
+
+          {project.constraints && project.constraints.length > 0 && (
+            <>
+              <h2 className={sectHeadCss}>Constraints</h2>
+              <ul className={css({ listStyle: 'none', marginBottom: '6' })}>
+                {project.constraints.map((c) => (
+                  <li
+                    key={c}
+                    className={css({
+                      display: 'flex',
+                      gap: '3',
+                      marginBottom: '2',
+                      alignItems: 'baseline',
+                    })}
+                  >
+                    <span className={css({ color: 'accentGlow', flexShrink: 0 })}>&mdash;</span>
+                    <span>{c}</span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {project.process && project.process.length > 0 && (
+            <>
+              <h2 className={sectHeadCss}>How a night runs</h2>
+              <ol className={css({ listStyle: 'none', marginBottom: '6' })}>
+                {project.process.map((step, i) => (
+                  <li
+                    key={step.phase}
+                    className={css({
+                      display: 'grid',
+                      gridTemplateColumns: '2.5rem 1fr',
+                      gap: '4',
+                      paddingY: '3',
+                      borderTop: '1px solid',
+                      borderColor: 'border',
+                    })}
+                  >
+                    <span
+                      className={css({
+                        fontFamily: 'mono',
+                        fontSize: 'xs',
+                        color: 'accentGlow',
+                        fontVariantNumeric: 'tabular-nums',
+                      })}
+                    >
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div>
+                      <strong className={css({ display: 'block', marginBottom: '1' })}>
+                        {step.phase}
+                      </strong>
+                      <span className={css({ display: 'block', marginBottom: '1' })}>
+                        {step.does}
+                      </span>
+                      <span
+                        className={css({ fontFamily: 'mono', fontSize: 'xs', color: 'textMuted' })}
+                      >
+                        &rarr; {step.produces}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )}
+
+          {project.decisions && project.decisions.length > 0 && (
+            <>
+              <h2 className={sectHeadCss}>Decisions</h2>
+              <dl className={css({ marginBottom: '6' })}>
+                {project.decisions.map((d) => (
+                  <div
+                    key={d.decision}
+                    className={css({
+                      paddingY: '3',
+                      borderTop: '1px solid',
+                      borderColor: 'border',
+                    })}
+                  >
+                    <dt className={css({ fontWeight: 'bold', marginBottom: '1' })}>{d.decision}</dt>
+                    <dd className={css({ margin: 0, color: 'textMuted' })}>{d.why}</dd>
+                  </div>
+                ))}
+              </dl>
+            </>
+          )}
+
+          {project.references && project.references.length > 0 && (
+            <>
+              <h2 className={sectHeadCss}>Further reading</h2>
+              <ul className={css({ listStyle: 'none' })}>
+                {project.references.map((r) => (
+                  <li key={r.url} className={css({ marginBottom: '3' })}>
+                    <a
+                      href={r.url}
+                      target="_blank"
+                      rel="noopener"
+                      className={css({ color: 'accentGlow', textDecoration: 'underline' })}
+                    >
+                      {r.title}
+                    </a>
+                    {r.note && (
+                      <span
+                        className={css({ display: 'block', fontSize: 'sm', color: 'textMuted' })}
+                      >
+                        {r.note}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </section>
 
         <aside className={css({ gridColumn: { base: '1/-1', md: '9 / span 4' } })}>
