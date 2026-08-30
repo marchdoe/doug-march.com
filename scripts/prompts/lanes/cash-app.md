@@ -24,14 +24,14 @@ Loud, confident, chunky — saturated and playful rather than soft and warm. Eac
 
 ## Component cues
 - Buttons: large, fully rounded, high-contrast fill (always the opposite color from the section's background), 16–18px, bold weight
-- Cards: rare — the saturated colour does the containing; a card that does appear is borderless with a solid contrasting fill, not a subtle elevation
+- Cards: rare — the saturated color does the containing; a card that does appear is borderless with a solid contrasting fill, not a subtle elevation
 - Wordmark: chunky and rounded, set in the bold display cut
 
 ## Anti-patterns specific to this style
 - DO NOT use a shared off-white base — each block of the page commits to ONE saturated color, with no neutral showing through
 - DO NOT use soft pastel tones — saturation stays high throughout
 - DO NOT use subtle drop-shadow elevation — flat color blocking only
-- DO NOT use rounded-corner containers — the edge of the colour is the only container this lane has
+- DO NOT use rounded-corner containers — the edge of the color is the only container this lane has
 
 ## Mobile strategy
-The saturated colour keeps its extent and its confidence at every width. Reduce padding modestly rather than proportionally — this lane should still feel chunky on a phone, not compressed into a muted list.
+The saturated color keeps its extent and its confidence at every width. Reduce padding modestly rather than proportionally — this lane should still feel chunky on a phone, not compressed into a muted list.

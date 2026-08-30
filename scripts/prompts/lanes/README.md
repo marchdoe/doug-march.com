@@ -32,7 +32,7 @@ The `Nav:` lines were the loudest leak, not the only one. A second sweep (#255)
 found column counts in a mobile strategy, tiles pinned to a regular grid or to
 varied heights, an annotation column placed beside its glyph, a thumbnail placed
 at the left of a row, a kicker in the top-left corner, and half a dozen
-instructions to stack, collapse or re-centre at a given width. Between them they
+instructions to stack, collapse or re-center at a given width. Between them they
 were quietly asserting `columns`, `symmetry`, `density` and `hero_zone` — four of
 the eight axes the Art Director is supposed to be free to set.
 

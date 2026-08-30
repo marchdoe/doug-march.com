@@ -34,4 +34,4 @@ Kinetic, high-contrast, motion-implied even in static images. Bold saturated col
 - DO NOT use pastel colors — saturation stays high throughout
 
 ## Mobile strategy
-The saturated colour keeps its extent and never thins into a stripe. Stat numbers scale via `clamp()` but keep their visual dominance — they should never read as smaller than the surrounding body text's weight would suggest.
+The saturated color keeps its extent and never thins into a stripe. Stat numbers scale via `clamp()` but keep their visual dominance — they should never read as smaller than the surrounding body text's weight would suggest.

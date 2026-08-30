@@ -28,7 +28,7 @@ Objectivity held to the millimetre. One gesture is permitted — an oversized nu
 - Cards: none — thin black rules do the separating, and nothing is boxed
 
 ## Anti-patterns specific to this style
-- DO NOT centre type — flush left, ragged right, everywhere
+- DO NOT center type — flush left, ragged right, everywhere
 - DO NOT use a third color beyond black, white, and signal red
 - DO NOT use gradients, drop shadows, or rounded corners anywhere
 - DO NOT use a serif typeface
