@@ -32,7 +32,7 @@ describe('detectCoffeeShopPalette', () => {
       primary_hue: { h: 30, s: 40, l: 50, name: 'amber' },
       neutral_family: { tinted_toward: 'warm' },
     }
-    const preset = `colors: { neutral: { 500: { value: '#8A7F70' } } }`
+    const preset = `theme: { tokens: { colors: { neutral: { 500: { value: '#8A7F70' } } } } }`
     const result = detectCoffeeShopPalette(scheme, preset)
     expect(result.ok).toBe(false)
     expect(result.warnings[0]).toMatch(/coffee-shop/i)
@@ -43,7 +43,7 @@ describe('detectCoffeeShopPalette', () => {
       primary_hue: { h: 340, s: 85, l: 55, name: 'magenta' },
       neutral_family: { tinted_toward: 'magenta' },
     }
-    const preset = `colors: { neutral: { 500: { value: '#8E7085' } } }`
+    const preset = `theme: { tokens: { colors: { neutral: { 500: { value: '#8E7085' } } } } }`
     const result = detectCoffeeShopPalette(scheme, preset)
     expect(result.ok).toBe(true)
     expect(result.warnings).toEqual([])
@@ -54,9 +54,13 @@ describe('validateSchemeAgainstPreset', () => {
   it('passes when preset accent hex matches scheme primary_hue', () => {
     const scheme = { primary_hue: { h: 215, s: 70, l: 50, name: 'ocean' } }
     const preset = `
-      colors: {
-        accent: {
-          DEFAULT: { value: '#2673BF' }
+      theme: {
+        tokens: {
+          colors: {
+            accent: {
+              DEFAULT: { value: '#2673BF' }
+            }
+          }
         }
       }
     `
@@ -67,9 +71,13 @@ describe('validateSchemeAgainstPreset', () => {
   it('warns when accent hex differs from stated primary_hue by >15°', () => {
     const scheme = { primary_hue: { h: 30, s: 70, l: 50, name: 'amber' } }
     const preset = `
-      colors: {
-        accent: {
-          DEFAULT: { value: '#2673BF' }
+      theme: {
+        tokens: {
+          colors: {
+            accent: {
+              DEFAULT: { value: '#2673BF' }
+            }
+          }
         }
       }
     `

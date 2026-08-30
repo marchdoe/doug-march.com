@@ -1,79 +1,84 @@
 import { readFileSync, existsSync } from 'node:fs'
 import path from 'node:path'
-import { readRecentBuilds } from './recent-builds.js'
-import { hexToHsl } from './color-validation.js'
+import { extractAccentHex, hexToHsl } from './color-validation.js'
+import { HUE_FORBIDDEN_ZONE_RADIUS } from './hue-thresholds.js'
+import { readRecentArtifacts } from './recency.js'
 
 /**
  * Read the last N days of archived builds and extract each build's primary
- * hue. Prefers color-scheme.json (Phase 1); falls back to regex extraction
- * from preset.ts.
+ * hue. Prefers color-scheme.json (Phase 1); falls back to the accent ramp
+ * in preset.ts, read with the same literal parser archive-record uses —
+ * the regex this used to inline dropped every night whose preset was
+ * formatted differently (#225).
  *
  * @param {string} archiveDir - path to `archive/` directory
  * @param {number} lookbackDays
  * @returns {number[]} primary hues (0-360)
  */
 export function extractRecentPrimaryHues(archiveDir, lookbackDays) {
-  // readRecentBuilds resolves each date to the build that SHIPPED.
-  // Taking the newest build dir, as this did, reads designs the site
-  // never wore — see scripts/utils/recent-builds.js.
-  const recent = readRecentBuilds(archiveDir, { lookbackDays })
+  return readRecentArtifacts(archiveDir, lookbackDays, ({ buildDir, read }) => {
+    const scheme = read('color-scheme.json')
+    if (scheme?.primary_hue?.h != null) return scheme.primary_hue.h
 
-  const hues = []
-  for (const { buildDir: latestBuild } of recent) {
-    const schemePath = path.join(latestBuild, 'color-scheme.json')
-    if (existsSync(schemePath)) {
-      try {
-        const scheme = JSON.parse(readFileSync(schemePath, 'utf8'))
-        if (scheme?.primary_hue?.h != null) {
-          hues.push(scheme.primary_hue.h)
-          continue
-        }
-      } catch {
-        /* fall through to preset.ts */
-      }
+    const presetPath = path.join(buildDir, 'preset.ts')
+    if (!existsSync(presetPath)) return null
+    try {
+      const hex = extractAccentHex(readFileSync(presetPath, 'utf8'))
+      return hex ? (hexToHsl(hex)?.h ?? null) : null
+    } catch {
+      return null
     }
-
-    const presetPath = path.join(latestBuild, 'preset.ts')
-    if (existsSync(presetPath)) {
-      try {
-        const src = readFileSync(presetPath, 'utf8')
-        const match = src.match(
-          /accent\s*:\s*\{[^}]*?DEFAULT\s*:\s*\{\s*value:\s*['"](#[0-9a-f]{3,6})['"]/i
-        )
-        if (match) {
-          const hsl = hexToHsl(match[1])
-          if (hsl) hues.push(hsl.h)
-        }
-      } catch {
-        /* ignore */
-      }
-    }
-  }
-  return hues
+  })
 }
 
 /**
- * Minimal mood → hue range lookup. Extend as needed.
+ * Mood → hue range. The rules are matched against what the collectors
+ * actually write: the weather conditions text, the season, the lunar phase,
+ * and the owner's mood override from the dev panel. The previous version
+ * read `weather.mood` and `news.tone`, which no collector has ever produced,
+ * so in production the target range was always open and these rules fired
+ * only in the unit test that fabricated the field (#225).
+ *
  * @param {object} signals
  * @returns {{ targetHueRange: [number, number], mood: string }}
  */
 export function mapSignalsToTargetHue(signals) {
-  const mood = String(signals?.weather?.mood || signals?.news?.tone || '').toLowerCase()
+  // Priority order. Each source is matched on its own, so the owner's
+  // override wins over the weather even when the weather would have hit an
+  // earlier rule — joining them into one string let "sunny" beat "moody".
+  const sources = [
+    signals?.mood_override,
+    signals?.weather?.conditions,
+    signals?.season?.season,
+    signals?.lunar?.phase,
+  ]
+    .filter((v) => typeof v === 'string' && v)
+    .map((v) => v.toLowerCase())
 
   const rules = [
-    { match: /cold|winter|snow|ice|frost/, range: [195, 240], label: 'cool blue' },
-    { match: /warm spring|coral|blossom/, range: [5, 35], label: 'warm coral' },
-    { match: /summer|bright|sunny/, range: [40, 80], label: 'warm sunny' },
+    { match: /cold|winter|snow|ice|frost|sleet|blizzard/, range: [195, 240], label: 'cool blue' },
+    { match: /warm spring|coral|blossom|spring/, range: [5, 35], label: 'warm coral' },
+    { match: /summer|bright|sunny|clear/, range: [40, 80], label: 'warm sunny' },
     { match: /autumn|fall|burn|rust/, range: [15, 40], label: 'rust/terracotta' },
-    { match: /energetic|electric|vivid/, range: [280, 340], label: 'electric magenta' },
-    { match: /calm|misty|overcast/, range: [140, 180], label: 'muted cyan-green' },
-    { match: /moody|dark|sombre/, range: [230, 280], label: 'deep indigo/violet' },
-    { match: /celebratory|party|upbeat/, range: [320, 360], label: 'hot pink' },
+    {
+      match: /energetic|electric|vivid|thunder|storm/,
+      range: [280, 340],
+      label: 'electric magenta',
+    },
+    {
+      match: /calm|misty|mist|fog|overcast|cloudy|drizzle/,
+      range: [140, 180],
+      label: 'muted cyan-green',
+    },
+    { match: /moody|dark|sombre|new moon/, range: [230, 280], label: 'deep indigo/violet' },
+    { match: /celebratory|party|upbeat|full moon/, range: [320, 360], label: 'hot pink' },
   ]
 
-  for (const rule of rules) {
-    if (rule.match.test(mood)) {
-      return { targetHueRange: rule.range, mood: rule.label }
+  for (const source of sources) {
+    for (const rule of rules) {
+      if (rule.match.test(source)) {
+        return { targetHueRange: rule.range, mood: rule.label }
+      }
     }
   }
   return { targetHueRange: [0, 360], mood: 'open (no strong signal)' }
@@ -122,7 +127,12 @@ export function computeForbiddenZones(hues, zoneRadius) {
  * @param {{ archiveDir: string, signals: object, lookbackDays?: number, zoneRadius?: number }} opts
  * @returns {{ targetHueRange: [number,number], forbiddenHues: Array<[number,number]>, recentPrimaryHues: number[], rationale: string }}
  */
-export function computeColorMandate({ archiveDir, signals, lookbackDays = 7, zoneRadius = 30 }) {
+export function computeColorMandate({
+  archiveDir,
+  signals,
+  lookbackDays = 7,
+  zoneRadius = HUE_FORBIDDEN_ZONE_RADIUS,
+}) {
   const recentPrimaryHues = extractRecentPrimaryHues(archiveDir, lookbackDays)
   const { targetHueRange, mood } = mapSignalsToTargetHue(signals)
   const forbiddenHues = computeForbiddenZones(recentPrimaryHues, zoneRadius)

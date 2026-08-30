@@ -34,8 +34,8 @@ import {
 const FORBID_WINDOW = 3
 
 /**
- * Read the newest build's `layout-signature.json` for each of the last
- * `lookbackDays` dates.
+ * Read the shipped build's `composition.json` (or its predecessor,
+ * `layout-signature.json`) for each of the last `lookbackDays` dates.
  *
  * @param {string} archiveDir
  * @param {number} lookbackDays

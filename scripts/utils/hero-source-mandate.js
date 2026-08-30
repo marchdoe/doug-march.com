@@ -1,13 +1,11 @@
-import { readFileSync, existsSync } from 'node:fs'
-import path from 'node:path'
-import { readRecentBuilds } from './recent-builds.js'
+import { readRecentArtifacts } from './recency.js'
 
 /**
- * Hero-source variance mandate — structural clone of shell-mandate.js
- * applied to where today's hero phrase came from (quote, composed,
- * content-lifted, signal-event). Reads the hero-source.json artifact
- * persisted in recent build dirs (see HERO_SOURCE block, Art Director) and
- * soft-forbids quote-sourcing after two consecutive quote-sourced days.
+ * Hero-source variance mandate — applied to where today's hero phrase came
+ * from (quote, composed, content-lifted, signal-event). Reads the
+ * hero-source.json artifact persisted in recent build dirs (see HERO_SOURCE
+ * block, Art Director) and soft-forbids quote-sourcing after two consecutive
+ * quote-sourced days.
  *
  * Empirical audit (2026-08-23, 122 archived builds): 45% of heroes are
  * quote-derived. This mandate doesn't ban quotes — a quote is a lane, not
@@ -15,7 +13,8 @@ import { readRecentBuilds } from './recent-builds.js'
  *
  * Old archives predate the hero-source.json artifact entirely; those
  * builds are simply skipped, so history degrades gracefully rather than
- * breaking.
+ * breaking. The walk itself lives in recency.js, shared with the other
+ * mandates.
  */
 
 /**
@@ -24,25 +23,10 @@ import { readRecentBuilds } from './recent-builds.js'
  * @returns {Array<{ date: string, source: string }>} newest first, entries without a declared source omitted
  */
 export function extractRecentHeroSources(archiveDir, lookbackDays) {
-  // readRecentBuilds resolves each date to the build that SHIPPED.
-  // Taking the newest build dir, as this did, reads designs the site
-  // never wore — see scripts/utils/recent-builds.js.
-  const recent = readRecentBuilds(archiveDir, { lookbackDays })
-
-  const sources = []
-  for (const { date: dateDir, buildDir } of recent) {
-    const heroSourcePath = path.join(buildDir, 'hero-source.json')
-    if (!existsSync(heroSourcePath)) continue
-    try {
-      const h = JSON.parse(readFileSync(heroSourcePath, 'utf8'))
-      if (h.source) {
-        sources.push({ date: dateDir, source: h.source })
-      }
-    } catch {
-      /* ignore malformed */
-    }
-  }
-  return sources
+  return readRecentArtifacts(archiveDir, lookbackDays, ({ date, read }) => {
+    const h = read('hero-source.json')
+    return h?.source ? { date, source: h.source } : null
+  })
 }
 
 /**

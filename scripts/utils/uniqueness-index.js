@@ -19,6 +19,7 @@
 import { AXIS_NAMES } from './composition-grammar.js'
 import { hueDistance } from './color-validation.js'
 import { geometryNovelty } from './geometry-fingerprint.js'
+import { HUE_ASK_FOR_DISTANCE, HUE_NEAR_REPEAT } from './hue-thresholds.js'
 
 /** Builds compared against. @type {number} */
 export const WINDOW = 7
@@ -313,9 +314,9 @@ export function formatUniquenessForPrompt(index) {
       `- Composition differed from ${m.composition.nearest} on only ${m.composition.raw} of 8 axes. Move more than one axis today.`
     )
   }
-  if (typeof m.hue?.raw === 'number' && m.hue.raw < 30) {
+  if (typeof m.hue?.raw === 'number' && m.hue.raw < HUE_NEAR_REPEAT) {
     notes.push(
-      `- Primary hue sat ${Math.round(m.hue.raw)}° from ${m.hue.nearest}. Under 30° reads as the same color. Pick a hue at least 60° away from the recent window.`
+      `- Primary hue sat ${Math.round(m.hue.raw)}° from ${m.hue.nearest}. Under ${HUE_NEAR_REPEAT}° reads as the same color. Pick a hue at least ${HUE_ASK_FOR_DISTANCE}° away from the recent window.`
     )
   }
   if (m.lane?.raw === 0 && m.lane?.lastSeen) {

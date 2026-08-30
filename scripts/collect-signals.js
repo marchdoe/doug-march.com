@@ -107,17 +107,6 @@ async function runProvider(provider, profile, now = new Date()) {
   }
 }
 
-// Safety net: if a provider's fetch rejects after the Promise.race already
-// settled (e.g., slow network response arriving post-timeout), Node 20+
-// would crash on unhandled rejection. We've already attached .catch() to
-// every provider promise, but this handler is belt-and-suspenders.
-process.on('unhandledRejection', (reason) => {
-  const msg = reason?.message || String(reason)
-  // Only suppress signal-provider related rejections; surface everything else
-  if (msg.includes('AbortError') || msg.includes('aborted')) return
-  console.warn('[unhandledRejection]', msg)
-})
-
 export async function runCollector(providerOverrides, profileOverride, { now = new Date() } = {}) {
   const profile = profileOverride ?? (await loadProfile())
   const providers = providerOverrides ?? (await discoverProviders())
@@ -187,6 +176,22 @@ async function writeOutputs(signals, meta) {
 }
 
 if (process.argv[1]?.endsWith('collect-signals.js')) {
+  // Safety net: if a provider's fetch rejects after the Promise.race already
+  // settled (e.g., slow network response arriving post-timeout), Node 20+
+  // would crash on unhandled rejection. We've already attached .catch() to
+  // every provider promise, but this handler is belt-and-suspenders.
+  //
+  // Installed only when run as the CLI. At module scope it was process-wide
+  // for anything that imported this file, including every vitest worker that
+  // loaded the collector tests — which then swallowed any rejection whose
+  // message contained "aborted", in any test (#225).
+  process.on('unhandledRejection', (reason) => {
+    const msg = reason?.message || String(reason)
+    // Only suppress signal-provider related rejections; surface everything else
+    if (msg.includes('AbortError') || msg.includes('aborted')) return
+    console.warn('[unhandledRejection]', msg)
+  })
+
   const { signals, meta } = await runCollector()
   await writeOutputs(signals, meta)
   console.log(`\nDone in ${meta.duration_ms}ms.`)
