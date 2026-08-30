@@ -26,13 +26,13 @@ A curator's black gallery wall — project tiles float on near-black with genero
 
 ## Component cues
 - Buttons: pill, outlined (not filled) on dark; blue fill reserved for the single primary CTA
-- Cards: tiles carry a visible 1px border and a title + one-line description below the image
+- Cards: tiles carry a visible 1px border, and every one carries a title and a one-line description as well as its image
 
 ## Anti-patterns specific to this style
 - DO NOT use a white background — this lane is dark-canvas by definition
-- DO NOT use masonry or varied-height tiles — this lane commits to a regular grid
-- DO NOT omit the title + description under each tile
+- DO NOT let a tile lose its border — on near-black the hairline is what separates one case study from the next
+- DO NOT omit the title and description — a tile without them is a mood board, not a portfolio
 - DO NOT use a red accent — blue only
 
 ## Mobile strategy
-Title + description stay directly under each image, never overlaid on top of it — overlaid text on a portfolio tile reads as a broken image, not a design choice.
+Title and description stay legible against the ground rather than overlaid on the image — overlaid text on a portfolio tile reads as a broken image, not a design choice.

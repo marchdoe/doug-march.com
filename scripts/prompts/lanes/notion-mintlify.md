@@ -32,9 +32,9 @@ Soft, banded sections — each with its own density and treatment (one is dense 
 
 ## Anti-patterns specific to this style
 - DO NOT use harsh black (#000) or pure white (#FFF) — warm off-whites and ink browns
-- DO NOT render a uniform treatment across every section — each one must vary internal density
+- DO NOT give every band the same treatment — one is bullets, one is a single illustration, one is a quote, and that variety is the voice
 - DO NOT use sharp square corners — rounded is the voice
 - DO NOT use saturated gradients or neon accents
 
 ## Mobile strategy
-Use `min-height` tokens that scale down — no `height: 100vh` without a mobile fallback like `min-height: 500px`. Sections should stack with clear visual breaks at all widths.
+Use `min-height` tokens that scale down — no `height: 100vh` without a mobile fallback like `min-height: 500px`. Bands keep a clear break between them at every width; the softness comes from the padding and the rounding, never from letting them run together.

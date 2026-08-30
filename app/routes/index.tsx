@@ -30,7 +30,7 @@ function HomePage() {
           className={css({
             marginTop: '5',
             maxWidth: '60ch',
-            color: 'sand.300',
+            color: 'textMuted',
             fontSize: 'base',
             lineHeight: 'loose',
             borderLeft: '2px solid',
@@ -47,7 +47,7 @@ function HomePage() {
             fontSize: 'xs',
             letterSpacing: 'wider',
             textTransform: 'uppercase',
-            color: 'sand.400',
+            color: 'textFaint',
             paddingLeft: '4',
           })}
         >
@@ -64,7 +64,7 @@ function HomePage() {
             fontSize: '2xs',
             letterSpacing: 'wide',
             textTransform: 'uppercase',
-            color: 'sand.400',
+            color: 'textFaint',
             marginBottom: '3',
           })}
         >
@@ -99,7 +99,7 @@ function HomePage() {
               className={css({
                 fontWeight: 'bold',
                 fontSize: 'md',
-                color: lead ? 'accent' : 'sand.300',
+                color: lead ? 'accent' : 'textMuted',
               })}
             >
               {sc}
@@ -142,7 +142,7 @@ function HomePage() {
           {featuredProject.problem && (
             <p
               className={css({
-                color: 'sand.300',
+                color: 'textMuted',
                 fontSize: 'base',
                 lineHeight: 'loose',
                 maxWidth: '52ch',
@@ -166,7 +166,7 @@ function HomePage() {
                 color: 'fieldInk',
                 bg: 'accent',
                 padding: '3 4',
-                _hover: { bg: 'gold.300' },
+                _hover: { bg: 'accentAlt' },
               })}
             >
               Visit the live build <span>→</span>

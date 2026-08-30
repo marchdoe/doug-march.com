@@ -28,10 +28,10 @@ Maximalist ornament, hand-lettered energy, clashing complementary colors, warped
 
 ## Anti-patterns specific to this style
 - DO NOT use a neutral or grey background — one saturated hue only
-- DO NOT align text to a strict grid — this lane is collage, not structure
+- DO NOT leave clean gaps between elements — shapes overlap and interlock, and the overlap is the ornament
 - DO NOT use a soft grey drop shadow — hard offset outlines only
 - DO NOT let body copy shrink below legible size chasing density
 - DO NOT restrain more than one element (e.g. the CTA) — maximalism is the point everywhere else
 
 ## Mobile strategy
-The collage simplifies to 2-3 layered elements instead of the desktop's full density — keep the boldest shape, the hero phrase, and one supporting mark; drop the rest rather than shrinking everything proportionally. A uniformly-shrunk collage reads as clutter, not energy.
+Drop elements rather than shrinking everything proportionally. The boldest shape, the hero phrase and one supporting mark keep their full size, and whatever cannot hold that size goes. A uniformly-shrunk collage reads as clutter, not energy.

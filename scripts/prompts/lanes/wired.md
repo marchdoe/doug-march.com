@@ -26,7 +26,7 @@ Paper-white density. Reads like an editorial front page: masthead, pull quotes, 
 
 ## Component cues
 - Buttons: underlined text-link style (no pill), ink-blue
-- Cards: no cards — use bordered columns and rule-separated sections
+- Cards: no cards — hairline rules do the separating, the way newspaper gutters do
 - Wordmark: all-caps section labels in the same grotesk as the heads
 
 ## Anti-patterns specific to this style
@@ -36,4 +36,4 @@ Paper-white density. Reads like an editorial front page: masthead, pull quotes, 
 - DO NOT use pure #FFFFFF or #000000 — warm paper and ink black only
 
 ## Mobile strategy
-Whatever the header is on desktop, it keeps its editorial register on mobile: rules stay rules, the wordmark stays in the display serif, the date stays visible. Section dividers stay styled like masthead rules (full-width horizontal lines, not gutters). Datelines and kickers stay visible; they define the register.
+Whatever the header is on desktop, it keeps its editorial register on mobile: rules stay rules, the wordmark stays in the display serif, the date stays visible. Section dividers keep the weight of a masthead rule rather than thinning into a default hairline. Datelines and kickers stay visible; they define the register.

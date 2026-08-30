@@ -25,7 +25,7 @@ Kinetic, high-contrast, motion-implied even in static images. Bold saturated col
 
 ## Component cues
 - Buttons: solid fill, sharp or barely-rounded (4px), bold uppercase label, high contrast
-- Cards: full-bleed photo/video blocks with a huge stat overlay (e.g. "26.2 MI") in one corner
+- Cards: full-bleed photo/video blocks carrying a huge stat overlay (e.g. "26.2 MI")
 
 ## Anti-patterns specific to this style
 - DO NOT stay monochrome — at least one full-bleed saturated color-block section is required
@@ -34,4 +34,4 @@ Kinetic, high-contrast, motion-implied even in static images. Bold saturated col
 - DO NOT use pastel colors — saturation stays high throughout
 
 ## Mobile strategy
-Color-block stat sections stay full-bleed and full-height (never shrink to a thin strip). Stat numbers scale via `clamp()` but keep their visual dominance — they should never read as smaller than the surrounding body text's weight would suggest.
+The saturated color keeps its extent and never thins into a stripe. Stat numbers scale via `clamp()` but keep their visual dominance — they should never read as smaller than the surrounding body text's weight would suggest.

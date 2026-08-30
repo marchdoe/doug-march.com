@@ -11,6 +11,7 @@ import { spawn } from 'node:child_process'
 import { mkdir, writeFile, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ROOT } from './file-manager.js'
+import { FINGERPRINT_VIEWPORT, collectGeometry } from './geometry-fingerprint.js'
 
 /**
  * Inline CSS, strip JavaScript, and rewrite nav links for self-contained browsing.
@@ -196,6 +197,35 @@ async function captureHeaderCrop(browser, url, opts) {
       targetWidth: HEADER_CROP_WIDTH,
       quality: HEADER_CROP_QUALITY,
     })
+  } catch {
+    return null
+  } finally {
+    if (page) await page.close().catch(() => {})
+  }
+}
+
+/**
+ * Read the rendered silhouette out of a served page at 1440.
+ *
+ * The critic screenshot is taken at 1280 and the header crop at 1440; the
+ * fingerprint gets its own page rather than borrowing either, because it has to
+ * be the same viewport every night for the numbers to mean anything, and both
+ * of those widths have moved before.
+ *
+ * Best-effort, like the header crop: a missing fingerprint costs the uniqueness
+ * index one metric, never the run.
+ *
+ * @param {import('playwright').Browser} browser
+ * @param {string} url
+ * @returns {Promise<object|null>} the fingerprint.json payload
+ */
+async function captureFingerprint(browser, url) {
+  let page = null
+  try {
+    page = await browser.newPage({ viewport: { ...FINGERPRINT_VIEWPORT } })
+    await page.goto(url, { waitUntil: 'networkidle' })
+    await page.waitForTimeout(1000) // fonts, so a headline's box is its real box
+    return await page.evaluate(collectGeometry)
   } catch {
     return null
   } finally {
@@ -392,7 +422,7 @@ export async function captureSnapshot(date, buildId) {
  * @param {number} [port] - Optional port if server is already running
  * @param {{ headerCrop?: { placement?: string|null, heightPx?: number|null } }} [opts]
  *   the day's HEADER declaration, which decides where the header crop is taken
- * @returns {Promise<{png: Buffer, jpeg: Buffer, darkPng: Buffer, darkJpeg: Buffer, headerJpeg: Buffer|null}>}
+ * @returns {Promise<{png: Buffer, jpeg: Buffer, darkPng: Buffer, darkJpeg: Buffer, headerJpeg: Buffer|null, fingerprint: object|null}>}
  */
 export async function captureScreenshot(port, { headerCrop } = {}) {
   const { chromium } = await import('playwright')
@@ -435,7 +465,12 @@ export async function captureScreenshot(port, { headerCrop } = {}) {
           declaredHeightPx: headerCrop?.heightPx ?? null,
         })
 
-        return { png, jpeg, darkPng, darkJpeg, headerJpeg }
+        // The rendered-geometry fingerprint (#255). Taken from the same served
+        // build the critic is about to judge, so the silhouette recorded is the
+        // silhouette that shipped.
+        const fingerprint = await captureFingerprint(browser, `${baseUrl}/`)
+
+        return { png, jpeg, darkPng, darkJpeg, headerJpeg, fingerprint }
       } finally {
         // Close in finally so a throw from page.goto / screenshot (dead preview
         // server, networkidle timeout) can't orphan the headless Chromium — the

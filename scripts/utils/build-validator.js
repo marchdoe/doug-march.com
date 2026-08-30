@@ -5,8 +5,13 @@ import { resolve, sep } from 'node:path'
 import { ROOT } from './file-manager.js'
 import { checkTokenExistence } from './token-existence.js'
 import { checkTokenResolution, readReachableSources } from './token-gate.js'
-import { MUTABLE_FILES } from './site-context.js'
+import { MUTABLE_FILES, ORCHESTRATOR_FILES } from './site-context.js'
 import { MARK_PATH_FINGERPRINTS, lockupIsDeclared } from './brand-lockup.js'
+import {
+  SEMANTIC_COLOR_NAMES,
+  checkPresetContract,
+  findOffContractColorValues,
+} from './semantic-contract.js'
 
 /**
  * Does any of `sources` wire up a mailto link to `email`?
@@ -58,6 +63,44 @@ export function staleContactAddresses(sources, email, hosts) {
     }
   }
   return [...found]
+}
+
+/**
+ * Source files under `app/` that no route can reach.
+ *
+ * The orphans #216 owns: roughly thirty components in `app/components/` that
+ * nothing imports any more, which Panda still scans and emits CSS for. They are
+ * worth reporting and never worth failing a nightly run over, so the semantic
+ * contract check warns on them.
+ *
+ * @param {string} root repo root
+ * @param {Map<string, string>} reachable output of readReachableSources
+ * @returns {string[]} repo-relative paths
+ */
+function unreachableSources(root, reachable) {
+  const out = []
+  const walk = (dir) => {
+    let entries
+    try {
+      entries = readdirSync(dir, { withFileTypes: true })
+    } catch {
+      return
+    }
+    for (const entry of entries) {
+      const full = resolve(dir, entry.name)
+      if (entry.isDirectory()) walk(full)
+      else if (/\.tsx?$/.test(entry.name) && !reachable.has(full)) {
+        out.push(
+          full
+            .slice(root.length + 1)
+            .split(sep)
+            .join('/')
+        )
+      }
+    }
+  }
+  walk(resolve(root, 'app'))
+  return out.sort()
 }
 
 /**
@@ -498,6 +541,86 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
     }
   } catch (err) {
     console.warn(`  brand lockup check skipped: ${err.message}`)
+  }
+
+  // Check 8: the frozen semantic colour contract (#255).
+  //
+  // Eight consecutive presets defined eight different semantic sets, so the
+  // engineer either named a token that did not exist that night or gave up on
+  // the semantic layer and reached into the palette — `sand.300` and
+  // `gold.800` throughout 2026-08-30's Layout.tsx. A raw scale step resolves,
+  // so no gate saw it, and it pins an ink to a value the day's design cannot
+  // move. scripts/utils/semantic-contract.js is the one list; this enforces it
+  // from both sides.
+  //
+  // (a) The preset defines the contract, all of it and nothing else. Extras are
+  //     rejected as firmly as omissions: an extra name is a role the engineer
+  //     cannot rely on tomorrow, and it is what leaves a component behind
+  //     referencing a name the next night no longer defines.
+  try {
+    const presetSource = readFileSync(resolve(root, 'elements/preset.ts'), 'utf8')
+    const contract = checkPresetContract(presetSource)
+    if (contract.missing.length > 0) {
+      errors.push(
+        `elements/preset.ts: semanticTokens.colors is missing ${contract.missing.join(', ')} — ` +
+          `the semantic set is frozen at ${SEMANTIC_COLOR_NAMES.length} names and every one must be ` +
+          'defined. Map the missing role onto the palette this design already has.'
+      )
+    }
+    if (contract.extra.length > 0) {
+      errors.push(
+        `elements/preset.ts: semanticTokens.colors defines ${contract.extra.join(', ')}, which is ` +
+          `not in the frozen set (${SEMANTIC_COLOR_NAMES.join(', ')}). A name invented for one ` +
+          'night is a name the next build cannot use. Map that colour onto one of the canonical roles.'
+      )
+    }
+  } catch {
+    // An unreadable preset is a bigger problem and check 1 already says so.
+  }
+
+  // (b) Engineer TSX names the contract and nothing else in a colour position.
+  //
+  //     Scoped the way the token gate and the lockup rules are: a finding in a
+  //     file the nightly agents own blocks, and a finding in an orphan (#216) or
+  //     a hand-maintained file warns. The error string is handed to a React
+  //     Engineer retry, and a finding in a file the agent may not open would
+  //     burn that retry and then fail the run anyway.
+  try {
+    const reachable = readReachableSources(root)
+    const relOf = (absPath) =>
+      absPath
+        .slice(root.length + 1)
+        .split(sep)
+        .join('/')
+    const owned = new Set(MUTABLE_FILES.filter((f) => !ORCHESTRATOR_FILES.includes(f)))
+    const describe = (rel, findings) =>
+      `${rel}: ${findings.map((f) => `${f.prop}: '${f.value}'`).join(', ')} — not in the frozen ` +
+      `semantic set (${SEMANTIC_COLOR_NAMES.join(', ')}). A raw palette step resolves and still ` +
+      "pins the colour to one scale value the day's design cannot move; use the semantic role."
+
+    const offContract = []
+    for (const [absPath, source] of reachable) {
+      const findings = findOffContractColorValues(source)
+      if (findings.length > 0) offContract.push([relOf(absPath), findings, true])
+    }
+    for (const rel of unreachableSources(root, reachable)) {
+      const findings = findOffContractColorValues(readFileSync(resolve(root, rel), 'utf8'))
+      if (findings.length > 0) offContract.push([rel, findings, false])
+    }
+
+    const warnings = []
+    for (const [rel, findings, isReachable] of offContract) {
+      if (isReachable && owned.has(rel)) errors.push(describe(rel, findings))
+      else warnings.push(describe(rel, findings))
+    }
+    for (const w of warnings.slice(0, 8)) {
+      console.warn(`  ⚠ ${w} (not a file the nightly agents own or render, so not blocking)`)
+    }
+    if (warnings.length > 8) {
+      console.warn(`  ⚠ ${warnings.length - 8} more off-contract colour reference(s) not shown`)
+    }
+  } catch (err) {
+    console.warn(`  semantic colour contract check skipped: ${err.message}`)
   }
 
   // Check: token references that resolve to nothing.

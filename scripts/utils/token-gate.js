@@ -144,7 +144,7 @@ export const CHECKED_PROPERTIES = new Map([
  * per-property lists because they are legal on so many of the checked properties
  * that splitting them out buys nothing.
  */
-const GLOBAL_KEYWORDS = new Set([
+export const GLOBAL_KEYWORDS = new Set([
   'inherit',
   'initial',
   'unset',
@@ -227,7 +227,7 @@ const PROPERTY_KEYWORDS = new Map([
  * property carrying one of these has resolved to something the browser will
  * paint, whatever the design system thinks of it.
  */
-const NAMED_COLORS = new Set(
+export const NAMED_COLORS = new Set(
   `aliceblue antiquewhite aqua aquamarine azure beige bisque black blanchedalmond blue blueviolet
    brown burlywood cadetblue chartreuse chocolate coral cornflowerblue cornsilk crimson cyan
    darkblue darkcyan darkgoldenrod darkgray darkgreen darkgrey darkkhaki darkmagenta darkolivegreen

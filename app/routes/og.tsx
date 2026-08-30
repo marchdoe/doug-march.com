@@ -46,7 +46,7 @@ function OgCard() {
               fontSize: 'sm',
               letterSpacing: 'widest',
               textTransform: 'uppercase',
-              color: 'gold.800',
+              color: 'fieldInkMuted',
               marginBottom: '5',
             })}
           >
@@ -72,7 +72,7 @@ function OgCard() {
         <div
           className={css({
             fontSize: 'sm',
-            color: 'gold.800',
+            color: 'fieldInkMuted',
             fontWeight: 'semibold',
             letterSpacing: 'wide',
           })}

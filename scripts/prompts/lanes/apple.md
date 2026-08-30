@@ -27,13 +27,13 @@ Cinematic, one idea at a time. Generous whitespace, photography-first, micro-typ
 
 ## Component cues
 - Buttons: pill (fully rounded), filled blue or ghost outline, 14–15px, medium weight
-- Cards: full-bleed image blocks with centered title + subhead, no borders, no shadows
+- Cards: full-bleed image blocks carrying a title and a subhead, no borders, no shadows
 
 ## Anti-patterns specific to this style
 - DO NOT use serif display type
-- DO NOT pack a section with more than one headline + one image + one caption
+- DO NOT let two things compete for attention at once — the quiet comes from restraint, not from whitespace alone
 - DO NOT use harsh borders or drop shadows
 - DO NOT use saturated color fills — palette stays near-monochrome with rare blue accent
 
 ## Mobile strategy
-Ensure signal marginalia (weather, scores, quotes) collapses to **inline** captions or small-caps labels, not floating pull-quotes. Don't place marginalia in the margin at 360px — there is no margin. Tuck them between content beats instead.
+Signal marginalia (weather, scores, quotes) keeps its quiet register at every width: captions and small-caps labels, never a floating pull-quote treatment. It reads as an aside because of how it is set, not because of where it sits.

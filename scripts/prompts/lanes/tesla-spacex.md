@@ -34,4 +34,4 @@ Radical subtraction — nearly everything is removed until the single dominant e
 - DO NOT use more than two type sizes on the hero viewport
 
 ## Mobile strategy
-When the composition centers on one dominant element, scale it via `clamp()` rather than shrinking it uniformly. Secondary info (nav, metadata, footer) stays anchored to its edge, not fighting the hero. If the hero needs to reflow (e.g. "DOUG / MARCH" instead of "DOUG MARCH"), the reflow should look intentional, not cramped.
+The dominant element stays dominant: scale it via `clamp()` rather than shrinking it uniformly. Secondary information stays secondary — small, quiet, and never competing with it. If the hero needs to reflow (e.g. "DOUG / MARCH" instead of "DOUG MARCH"), the reflow should look intentional, not cramped.

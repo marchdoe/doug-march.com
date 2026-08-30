@@ -89,7 +89,10 @@ You DO define:
 - `conditions` — `_light`, `_dark`, `_hover`
 - `theme.tokens.colors` — full hue scale (50–900) for the primary, the accent(s), and the neutral family
 - `theme.tokens.radii` — none, sm, md, lg, full
-- `theme.semanticTokens.colors` — bg, text, accent, border (with `_light` variants if dark-mode-flipping)
+- `theme.semanticTokens.colors` — the frozen set below
+
+{{SEMANTIC_COLOR_CONTRACT}}
+
 
 You do NOT define `spacing`, `lineHeights`, `letterSpacings`, `fontWeights`, `fonts`, or `fontSizes` — all chassis-owned, all silently overridden if you emit them anyway.
 

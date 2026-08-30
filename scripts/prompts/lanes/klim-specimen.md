@@ -20,7 +20,7 @@ A working type foundry's own specimen sheet — warmer and more tactile than a d
 
 ## Typography
 - Display: whatever chassis is assigned, set at genuinely enormous scale (240px+) with visible construction guides (baseline, cap-height as thin rules behind the glyph)
-- Body: 400, 15px, line-height 1.5, set in a narrow annotation column beside the glyph, not below it
+- Body: 400, 15px, line-height 1.5, set to a narrow annotation measure — 45 characters a line, not 70
 - Mono: for measurement callouts only (e.g. "x-height 512u")
 
 ## Component cues
@@ -34,4 +34,4 @@ A working type foundry's own specimen sheet — warmer and more tactile than a d
 - DO NOT omit annotation marks — measurement callouts are the point of this lane
 
 ## Mobile strategy
-The annotation column moves below the glyph instead of beside it. The glyph itself stays the dominant visual element at ≥ 55% of viewport height — the annotation detail can shrink, the glyph cannot.
+The glyph stays the dominant visual element at ≥ 55% of viewport height — the annotation detail can shrink, the glyph cannot. Measurement callouts stay legible at their smallest; an annotation nobody can read is decoration.

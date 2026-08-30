@@ -48,7 +48,7 @@ export function Layout({ children }: { children: ReactNode }) {
             className={css({
               fontWeight: 'medium',
               fontSize: 'md',
-              color: 'sand.300',
+              color: 'textMuted',
               padding: '1',
               _hover: { color: 'accent' },
             })}
@@ -60,7 +60,7 @@ export function Layout({ children }: { children: ReactNode }) {
             className={css({
               fontWeight: 'medium',
               fontSize: 'md',
-              color: 'sand.300',
+              color: 'textMuted',
               padding: '1',
               _hover: { color: 'accent' },
             })}
@@ -72,7 +72,7 @@ export function Layout({ children }: { children: ReactNode }) {
             className={css({
               fontWeight: 'medium',
               fontSize: 'md',
-              color: 'sand.300',
+              color: 'textMuted',
               padding: '1',
               _hover: { color: 'accent' },
             })}
@@ -103,7 +103,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 fontWeight: 'bold',
                 letterSpacing: 'wide',
                 textTransform: 'uppercase',
-                color: 'sand.500',
+                color: 'textFaint',
                 fontSize: '2xs',
                 marginRight: '2',
               })}
@@ -113,7 +113,7 @@ export function Layout({ children }: { children: ReactNode }) {
             <a
               href={`mailto:${identity.email}`}
               className={css({
-                color: 'sand.300',
+                color: 'textMuted',
                 fontWeight: 'semibold',
                 _hover: { color: 'accent' },
               })}
@@ -127,14 +127,14 @@ export function Layout({ children }: { children: ReactNode }) {
                 fontWeight: 'bold',
                 letterSpacing: 'wide',
                 textTransform: 'uppercase',
-                color: 'sand.500',
+                color: 'textFaint',
                 fontSize: '2xs',
                 marginRight: '2',
               })}
             >
               Now playing
             </span>
-            <b className={css({ color: 'sand.300', fontWeight: 'semibold' })}>My Morning Jacket</b>
+            <b className={css({ color: 'textMuted', fontWeight: 'semibold' })}>My Morning Jacket</b>
           </div>
           <div>
             <span
@@ -142,7 +142,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 fontWeight: 'bold',
                 letterSpacing: 'wide',
                 textTransform: 'uppercase',
-                color: 'sand.500',
+                color: 'textFaint',
                 fontSize: '2xs',
                 marginRight: '2',
               })}
@@ -157,7 +157,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 fontWeight: 'bold',
                 letterSpacing: 'wide',
                 textTransform: 'uppercase',
-                color: 'sand.500',
+                color: 'textFaint',
                 fontSize: '2xs',
                 marginRight: '2',
               })}
@@ -166,7 +166,7 @@ export function Layout({ children }: { children: ReactNode }) {
             </span>
             #2026.08.30 · 04:12 EDT
           </div>
-          <div className={css({ width: '100%', color: 'sand.500', fontStyle: 'italic' })}>
+          <div className={css({ width: '100%', color: 'textFaint', fontStyle: 'italic' })}>
             Hacker News, overheard: &ldquo;No AI Fridays&rdquo; — so this shipped Saturday.
           </div>
         </footer>

@@ -35,4 +35,4 @@ Playful, saturated, almost toylike confidence — one zone is a soft gradient-bl
 - DO NOT let the seam be a hard straight line — at least one shape crosses it
 
 ## Mobile strategy
-The bold zone becomes a shorter gradient band at the top (not a full section) with the hero phrase overlaid. The quiet zone becomes the scrollable body beneath it, proportionally larger than on desktop so content isn't crowded out by the gradient band.
+The gradient field keeps its saturation and its organic edge at every width. It may take less of the page, but it never thins into a flat stripe and never straightens out. The quiet ground stays warm neutral and keeps enough room that the content it carries is not crowded.

@@ -389,13 +389,81 @@ describe('computeUniqueness', () => {
   })
 
   it('stamps a version so the shape can change later', () => {
-    expect(computeUniqueness(build, []).version).toBe(1)
+    // 2 since #255 added the geometry metric to the payload.
+    expect(computeUniqueness(build, []).version).toBe(2)
   })
 
   it('does not throw on a wholly empty build', () => {
     const r = computeUniqueness({}, [])
     expect(r.composite).toBeNull()
     expect(r.date).toBeNull()
+  })
+})
+
+describe('geometry, wired into the index (#255)', () => {
+  const FINGERPRINT = {
+    version: 1,
+    viewport: { width: 1440, height: 900 },
+    elements: [
+      { class: 'hero', x: 0.0667, y: 0.3418, w: 0.4397, h: 0.3847 },
+      { class: 'nav', x: 0.6411, y: 0.1067, w: 0.2922, h: 0.1644 },
+      { class: 'mark', x: 0.0667, y: 0.1067, w: 0.0401, h: 0.0533 },
+    ],
+  }
+  const MIRRORED = {
+    ...FINGERPRINT,
+    elements: FINGERPRINT.elements.map((e) => ({ ...e, x: 1 - e.x - e.w })),
+  }
+
+  it('carries a weight, under composition and over shell', () => {
+    expect(WEIGHTS.geometry).toBeGreaterThan(0)
+    expect(WEIGHTS.geometry).toBeLessThan(WEIGHTS.composition)
+    expect(WEIGHTS.geometry).toBeGreaterThan(WEIGHTS.shell)
+  })
+
+  it('scores a repeated silhouette near zero even when the tuple is new', () => {
+    const r = computeUniqueness(
+      { date: '2026-08-30', composition: TUPLE, fingerprint: FINGERPRINT },
+      [
+        {
+          date: '2026-08-23',
+          composition: { ...TUPLE, columns: 'masonry', axis: 'radial', density: 'crowded' },
+          fingerprint: FINGERPRINT,
+        },
+      ]
+    )
+    expect(r.metrics.composition.raw).toBe(3)
+    expect(r.metrics.geometry.score).toBeLessThan(0.01)
+    expect(r.metrics.geometry.nearest).toBe('2026-08-23')
+  })
+
+  it('scores a new silhouette high', () => {
+    const r = computeUniqueness({ date: '2026-08-30', fingerprint: FINGERPRINT }, [
+      { date: '2026-08-29', fingerprint: MIRRORED },
+    ])
+    expect(r.metrics.geometry.score).toBeGreaterThan(0.8)
+  })
+
+  it('degrades to null for a build with no fingerprint, like composition does', () => {
+    const r = computeUniqueness({ date: '2026-08-30', composition: TUPLE }, [
+      { date: '2026-08-29', composition: TUPLE },
+    ])
+    expect(r.metrics.geometry.score).toBeNull()
+    expect(r.metrics.geometry.compared).toBe(0)
+    expect(r.composite).not.toBeNull()
+  })
+
+  it('renormalizes the composite around a null geometry', () => {
+    const withGeometry = computeUniqueness(
+      { date: 'a', composition: TUPLE, fingerprint: FINGERPRINT },
+      [{ date: 'b', composition: TUPLE, fingerprint: FINGERPRINT }]
+    )
+    const without = computeUniqueness({ date: 'a', composition: TUPLE }, [
+      { date: 'b', composition: TUPLE },
+    ])
+    // Both repeat everything they can be compared on, so both score 0.
+    expect(withGeometry.composite).toBeCloseTo(0)
+    expect(without.composite).toBeCloseTo(0)
   })
 })
 
@@ -468,5 +536,42 @@ describe('formatUniquenessForPrompt', () => {
   it('renders the composite as a percentage', () => {
     const out = formatUniquenessForPrompt(idx({}, 0.42))
     expect(out).toContain('42/100')
+  })
+})
+
+describe('formatUniquenessForPrompt — the silhouette note (#255)', () => {
+  const base = {
+    date: '2026-08-30',
+    window: 7,
+    composite: 0.4,
+    metrics: {
+      composition: { raw: 6, score: 0.75, nearest: '2026-08-23', compared: 7 },
+      hue: { raw: 90, score: 0.5, nearest: null, compared: 7 },
+      lane: { raw: 4, score: 0.57, lastSeen: null, compared: 7 },
+      shell: { raw: 2, score: 0.5, nearest: null, compared: 7 },
+      geometry: { raw: 0.9, score: 0.9, nearest: '2026-08-23', compared: 7 },
+      fidelity: { raw: null, score: null, checks: [] },
+    },
+  }
+
+  it('raises no note when the silhouette moved', () => {
+    expect(formatUniquenessForPrompt(base)).not.toMatch(/silhouette sat/)
+    expect(formatUniquenessForPrompt(base)).toMatch(/No axis repeated closely/)
+  })
+
+  it('names the day whose silhouette was repeated', () => {
+    const out = formatUniquenessForPrompt({
+      ...base,
+      metrics: {
+        ...base.metrics,
+        geometry: { raw: 0.08, score: 0.08, nearest: '2026-08-23', compared: 7 },
+      },
+    })
+    expect(out).toMatch(/silhouette sat 8\/100 from 2026-08-23/)
+    expect(out).toMatch(/measured off the built page/)
+  })
+
+  it('mentions the silhouette in the header sentence', () => {
+    expect(formatUniquenessForPrompt(base)).toMatch(/the silhouette the page actually rendered/)
   })
 })

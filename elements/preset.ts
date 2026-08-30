@@ -103,14 +103,11 @@ export const elementsPreset = definePreset({
         bg: {
           value: { base: '{colors.sand.900}', _light: '{colors.sand.50}' },
         },
+        bgAlt: {
+          value: { base: '{colors.sand.700}', _light: '{colors.sand.200}' },
+        },
         surface: {
           value: { base: '{colors.sand.800}', _light: '{colors.sand.100}' },
-        },
-        field: {
-          value: { base: '{colors.gold.400}', _light: '{colors.gold.400}' },
-        },
-        fieldInk: {
-          value: { base: '{colors.sand.900}', _light: '{colors.sand.900}' },
         },
         text: {
           value: { base: '{colors.sand.50}', _light: '{colors.sand.900}' },
@@ -118,14 +115,35 @@ export const elementsPreset = definePreset({
         textMuted: {
           value: { base: '{colors.sand.300}', _light: '{colors.sand.500}' },
         },
+        textFaint: {
+          value: { base: '{colors.sand.400}', _light: '{colors.sand.400}' },
+        },
         accent: {
           value: { base: '{colors.gold.400}', _light: '{colors.gold.500}' },
         },
         accentText: {
           value: { base: '{colors.sand.900}', _light: '{colors.sand.900}' },
         },
+        accentAlt: {
+          value: { base: '{colors.gold.300}', _light: '{colors.gold.400}' },
+        },
         border: {
           value: { base: '{colors.sand.700}', _light: '{colors.sand.200}' },
+        },
+        borderStrong: {
+          value: { base: '{colors.sand.500}', _light: '{colors.sand.400}' },
+        },
+        field: {
+          value: { base: '{colors.gold.400}', _light: '{colors.gold.400}' },
+        },
+        fieldInk: {
+          value: { base: '{colors.sand.900}', _light: '{colors.sand.900}' },
+        },
+        fieldInkMuted: {
+          value: { base: '{colors.gold.800}', _light: '{colors.gold.800}' },
+        },
+        fieldBorder: {
+          value: { base: '{colors.gold.600}', _light: '{colors.gold.600}' },
         },
       },
     },

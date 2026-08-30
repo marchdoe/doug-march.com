@@ -26,6 +26,22 @@ like a section label. Those are register. Where it sits, how tall the mark is,
 whether there is a role line under it — those are declared per day and
 measured by both critics.
 
+## A lane does not lay out the page either
+
+The `Nav:` lines were the loudest leak, not the only one. A second sweep (#255)
+found column counts in a mobile strategy, tiles pinned to a regular grid or to
+varied heights, an annotation column placed beside its glyph, a thumbnail placed
+at the left of a row, a kicker in the top-left corner, and half a dozen
+instructions to stack, collapse or re-center at a given width. Between them they
+were quietly asserting `columns`, `symmetry`, `density` and `hero_zone` — four of
+the eight axes the Art Director is supposed to be free to set.
+
+The rule those rewrites follow: say what a thing looks like, never where it goes.
+A mobile strategy may say the dominant element stays dominant, that a rule keeps
+its weight, that a caption stays a caption; it may not say what sits above what.
+Where something is placed is the composition tuple's, and how tall the header is
+and where it sits is the `===HEADER===` block's.
+
 `scripts/utils/select-lane.js` scores every lane for the day: a deterministic
 hash-derived base, a bonus per composition-axis value the lane's `affinity`
 shares with today's tuple, and a penalty if the lane ran in the last 3
