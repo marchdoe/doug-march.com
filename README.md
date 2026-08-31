@@ -1,195 +1,99 @@
-Welcome to your new TanStack Start app! 
+# dougmar.ch
 
-See [TODO.md](./TODO.md) for the current backlog.
+A portfolio site that redesigns itself every night.
 
-# Getting Started
+At 05:00 Eastern a pipeline collects the day's signals (weather, sports, the market, the moon, whatever else happened), hands them to an Art Director, and rebuilds the home page, the about page and every project page around what the day contained. Every design it has ever made is preserved at `/archive/<date>/`, with an explainer at `/how/<date>` of what it was given and what it decided. The archive is the point. The current design is one night of it.
 
-To run this application:
+Live at [dougmar.ch](https://dougmar.ch). Backlog is [the issues](https://github.com/marchdoe/dougmar.ch/issues); `TODO.md` is the pre-April plan and is not maintained.
 
-```bash
-npm install
-npm run dev
-```
+## Running it
 
-# Building For Production
-
-To build this application for production:
+pnpm only. Node 22, pinned in `.node-version`.
 
 ```bash
-npm run build
+pnpm install          # runs panda codegen on the way (prepare)
+pnpm dev              # vite dev with the dev panel at /dev
+pnpm build            # panda codegen, project the archive JSON, vite build
+pnpm preview          # serve dist/ the way Vercel does
 ```
 
-## Testing
-
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+Checks, which CI runs on every pull request:
 
 ```bash
-npm run test
+pnpm lint             # biome ci
+pnpm typecheck        # tsc --noEmit
+pnpm test             # vitest; some suites launch real Chromium
+pnpm test:e2e:site    # playwright against a preview server it starts itself
+pnpm test:e2e:dev     # the dev panel, against vite dev
 ```
 
-## Styling
+The pipeline, locally:
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-### Removing Tailwind CSS
-
-If you prefer not to use Tailwind CSS:
-
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `npm install @tailwindcss/vite tailwindcss -D`
-
-
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
+```bash
+pnpm pipeline:collect # write signals/today.yml from the 19 providers
+pnpm pipeline:dry     # full run, no commit
+pnpm pipeline         # full run
 ```
 
-Then anywhere in your JSX you can use it like so:
+Without `ANTHROPIC_API_KEY` the agents run through the Claude CLI on a Max plan, capped at Sonnet. With a key they run through the API at the production tier (Opus for the Art Director and Mockup Designer). `PIPELINE_TIER=dev|prod` overrides that. See `scripts/utils/models.js`.
 
-```tsx
-<Link to="/about">About</Link>
+## What is where
+
+```
+app/                 TanStack Start app
+  routes/            index, about, work.$slug, og   <- rewritten nightly
+                     archive, how.$date, elements, panel, experiments, work.index
+  components/        Layout, Sidebar, and the pieces the engineer composes  <- rewritten nightly
+  lib/               archive calendar, eras, signal readers (authored)
+  server/            server functions for the archive and signals
+  dev-server/        the /dev panel's HTTP endpoints (vite dev only)
+  dev-panel.tsx      the /dev panel itself
+elements/
+  preset.ts          today's PandaCSS tokens  <- written by the Art Director nightly
+  chassis/           15 typography systems the Art Director chooses between
+scripts/
+  run-pipeline.js    entry: collect -> design -> archive
+  daily-redesign.js  the nightly, as CI runs it
+  design-agents.js   the orchestrator: Art Director -> Mockup Designer -> critics -> React Engineer -> gates
+  collect-signals.js runs scripts/signals/*.js in parallel
+  agents/            one file per agent: prompt assembly and response parsing
+  prompts/           the agents' system prompts, lanes, and the brand contract
+  pipeline/          shared phases (the variance mandates)
+  utils/             validators, mandates, the surface gate, the archive record, models and budgets
+archive/<date>/      that night's record: brief, signals, verdicts, trace, cost, the built files
+public/archive/      the preserved sites, one directory per date, served as static HTML
+public/archive-data/ the archive projected to JSON for the calendar (generated at build)
+signals/             profile.yml (yours), today.* (the last collection)
+references/          design references the Art Director is shown
+docs/                evidence screenshots per issue, specs, and plans
+tests/               vitest, and tests/e2e for playwright
 ```
 
-This will create a link that will navigate to the `/about` route.
+The two arrows mark the split that everything else is organised around. Files the pipeline rewrites are listed in `scripts/utils/site-context.js` as `MUTABLE_FILES`; anything not on that list is authored and survives the night. Authored routes still sit inside the nightly `Layout.tsx`, so they inherit whatever column width it chose. Size type against the container, not the viewport, or it will overflow on a night the layout narrows (#215).
 
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
+## The nightly, in order
 
-### Using A Layout
+`.github/workflows/daily-redesign.yml`, two cron entries so the run lands at 05:00 Eastern in both halves of the year.
 
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
+1. `collect-ratings.js` harvests the owner's grade from yesterday's rating issue.
+2. `collect-signals.js` runs the providers. Ones without a key are skipped, not failed.
+3. `collect-references.js` picks design references for the brief.
+4. `daily-redesign.js` runs the agents. The Art Director decides the hero line, the composition, the chassis and the palette, and writes `preset.ts`. The Mockup Designer renders one HTML mockup; the Mockup Critic judges it from a screenshot. The React Engineer translates the approved mockup into the routes and components.
+5. Gates. The build must pass `pnpm build`, the token gate (no unresolved Panda tokens), the static checks (biome, tsc), and the surface gate, which measures every route at 360 and 1440 in both colour schemes and fails on horizontal overflow. Then the Screenshot Critic sees the home page, a project page and the share card.
+6. The result is archived, projected, sealed (the preserved pages get a frame with prev/next), and pushed to `main` over a deploy key. Vercel builds from there. A rating issue is opened for the owner.
 
-Here is an example layout that includes a header:
+Each of those gates exists because of a night it would have caught. The comments say which.
 
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+## Two panels
 
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
+`/dev`, under `vite dev` only, guarded to localhost and same-origin: today's signals, the archive, a prompt inspector, and a button that runs the pipeline and streams its log.
 
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
+`/panel`, on the live site behind HTTP basic auth (`middleware.ts`): rate the latest design, set the creative weights for tonight, trigger a run.
 
-## Server Functions
+## Conventions
 
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+- Biome for lint and format. PandaCSS for styling; no inline style props, no Tailwind.
+- Stage by path, never `git commit -a`. The working tree usually holds an uncommitted nightly build.
+- Do not run `seal-archive.js` with an uncommitted `public/archive/<date>/` present. The frame derives prev/next from what is on disk and will point committed pages at a date the repository does not have.
+- `grep` this repo's served HTML with `-a`. The minified single-line responses make `file` report `data`, and grep silently matches nothing.
+- One pull request per issue, based on `main`. No stacks.
