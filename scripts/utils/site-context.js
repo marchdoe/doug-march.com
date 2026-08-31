@@ -16,12 +16,13 @@ export const MUTABLE_FILES = [
   'app/components/SectionHead.tsx',
   'app/components/ProjectRow.tsx',
   'app/components/FeaturedProject.tsx',
-  'app/components/SelectedWork.tsx',
-  'app/components/Experiments.tsx',
-  'app/components/Bio.tsx',
-  'app/components/Timeline.tsx',
-  'app/components/Capabilities.tsx',
-  'app/components/Personal.tsx',
+  // SelectedWork, Experiments, Bio, Timeline, Capabilities and Personal used
+  // to sit here. No route had imported one since 2026-03-20 and no run has
+  // rewritten one since, so every night they were backed up, token-gated and
+  // handed to the engineer as files it owned, for a page that never rendered
+  // them (#216). Removing them narrows nothing: app/components/ is an allowed
+  // write prefix, which is how the engineer authored Ledger.tsx on 2026-08-30
+  // without any list naming it.
   'app/routes/__root.tsx',
   'app/routes/index.tsx',
   'app/routes/about.tsx',
@@ -93,7 +94,7 @@ async function buildContentSummary() {
     'Exports: `timeline` (array of career entries), `capabilities` (array of skill strings)'
   )
   lines.push(
-    'These are imported by app/components/Timeline.tsx and app/components/Capabilities.tsx — preserve those import statements.'
+    'Render both on the About page. There is no standing component for either — compose them wherever the layout wants them.'
   )
 
   return lines.join('\n')

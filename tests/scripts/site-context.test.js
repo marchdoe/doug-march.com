@@ -24,9 +24,10 @@ describe('file groups', () => {
     expect(ENGINEER_FILES.length + ORCHESTRATOR_FILES.length + 1).toBe(MUTABLE_FILES.length)
   })
 
-  it('tripwire: 11 component files and 4 route files reach the engineer', () => {
-    // Fails on purpose when a file joins or leaves the engineer's set.
-    expect(ENGINEER_FILES.filter((f) => f.startsWith('app/components/'))).toHaveLength(11)
+  it('tripwire: 5 component files and 4 route files reach the engineer', () => {
+    // Fails on purpose when a file joins or leaves the engineer's set. Was 11
+    // until #216 dropped the six components no route had imported since March.
+    expect(ENGINEER_FILES.filter((f) => f.startsWith('app/components/'))).toHaveLength(5)
     expect(ENGINEER_FILES.filter((f) => f.startsWith('app/routes/'))).toHaveLength(4)
   })
 })

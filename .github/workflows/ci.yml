@@ -119,12 +119,10 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # Advisory, not blocking. The repo carries 39 inherited findings that
-      # #216 exists to clear, and a gate that fails on day one on debt it did
-      # not cause is a gate people learn to ignore. Drop continue-on-error
-      # once #216 lands and the baseline is clean.
+      # Blocking as of #216: the inherited dead code this was waiting on is
+      # gone, and `audit --base` scopes findings to what the PR changed, so a
+      # failure here is something this branch introduced.
       - name: Architecture audit (fallow)
-        continue-on-error: true
         run: pnpm fallow audit --base origin/${{ github.base_ref }}
 
   dev-panel:

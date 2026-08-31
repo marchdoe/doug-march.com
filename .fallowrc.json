@@ -11,13 +11,26 @@
   // Roots nothing imports but everything runs: the nightly's scripts, the
   // signal collectors it discovers by directory listing, the chassis catalogue
   // design-agents.js loads by name, and the test files.
+  //
+  // Plus four roots fallow cannot infer. app/client.tsx, app/router.tsx and
+  // app/ssr.tsx are TanStack Start's convention entries — the framework loads
+  // them by path, so nothing imports them by name. app/dev-panel.html is a
+  // Vite HTML entry, and the whole dev panel hangs off it (dev-entry →
+  // dev-panel → dev/api, components/responsive-card). Without these, seven
+  // live files read as dead, which is most of what an "unused files" count
+  // would be reporting.
   "entry": [
     "scripts/*.js",
     "scripts/signals/*.js",
     "scripts/utils/*.js",
     "elements/chassis/*.js",
     "tests/**/*.test.*",
-    "tests/**/*.spec.*"
+    "tests/**/*.spec.*",
+    "app/client.tsx",
+    "app/router.tsx",
+    "app/ssr.tsx",
+    "app/dev-entry.tsx",
+    "app/stubs/*.ts"
   ],
 
   "duplicates": {
