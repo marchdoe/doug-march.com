@@ -207,21 +207,39 @@ describe('default timeout relationships', () => {
 })
 
 describe('MOCK_MODE', () => {
-  it('refuses to make a billed call rather than silently making one', async () => {
-    // `pnpm pipeline` and `pipeline:dry` both set MOCK_MODE=true, and nothing
-    // honoured it — "the mock pipeline" spent real tokens. The flag is off
-    // those scripts now; if it is set anyway, stop.
-    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+  // `pnpm pipeline` and `pipeline:dry` both set MOCK_MODE=true, and nothing
+  // honoured it — "the mock pipeline" spent real tokens (#220). It threw
+  // after that, which was safe but left the swarm runnable only by paying.
+  // It now replays a recorded response, and still refuses when there is
+  // nothing recorded (#221).
+  const withMock = async (fn) => {
     const prev = process.env.MOCK_MODE
     process.env.MOCK_MODE = 'true'
     try {
-      await expect(
-        callClaudeCLI('mockup-critic', 'sys', 'prompt', { model: 'claude-haiku-4-5' })
-      ).rejects.toThrow(/MOCK_MODE=true but there is no mock/)
+      return await fn()
     } finally {
       if (prev === undefined) delete process.env.MOCK_MODE
       else process.env.MOCK_MODE = prev
     }
+  }
+
+  it('replays a recorded response instead of spawning the CLI', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    const { resetFixtureCounts } = await import('../../scripts/utils/agent-fixtures.js')
+    resetFixtureCounts()
+    const result = await withMock(() =>
+      callClaudeCLI('mockup-critic', 'sys', 'prompt', { model: 'claude-haiku-4-5' })
+    )
+    // The checked-in fixture for this agent is a critic verdict.
+    expect(result).toContain('===VERDICT===')
+    resetFixtureCounts()
+  })
+
+  it('still refuses rather than spending when an agent has no fixture', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    await expect(
+      withMock(() => callClaudeCLI('no-such-agent', 'sys', 'prompt', { model: 'claude-haiku-4-5' }))
+    ).rejects.toThrow(/no fixtures for "no-such-agent"/)
   })
 })
 

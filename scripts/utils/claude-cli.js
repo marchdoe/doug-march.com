@@ -13,6 +13,13 @@ import { spawn } from 'node:child_process'
 import { ROOT } from './file-manager.js'
 import { clampToBudget } from './run-budget.js'
 import { recordUsage } from './cost-ledger.js'
+import {
+  assertNotAutomated,
+  isMockMode,
+  isRecording,
+  nextFixture,
+  recordFixture,
+} from './agent-fixtures.js'
 
 /**
  * Pull cost and token counts out of a stream-json `result` event.
@@ -108,14 +115,14 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
   // MOCK_MODE was read in exactly one place — a console.log in
   // daily-redesign.js — and honoured nowhere. `pnpm pipeline` and
   // `pipeline:dry` both set it, so anyone running "the mock pipeline" was
-  // making real, billed Claude calls. It is off those scripts now; if it is
-  // still set, stop rather than spend. The one thing a flag must never do is
-  // quietly mean the opposite of what it says.
-  if (process.env.MOCK_MODE === 'true') {
-    throw new Error(
-      `MOCK_MODE=true but there is no mock: this call to ${agentName} would be billed. ` +
-        'Unset MOCK_MODE to run for real, or implement fixture responses here.'
-    )
+  // making real, billed Claude calls (#220). It threw after that, which was
+  // safe but left the swarm executable only by paying for it. It now replays
+  // recorded responses: same seam, same parsers, no spend (#221).
+  assertNotAutomated()
+  if (isMockMode()) {
+    const response = nextFixture(agentName)
+    console.log(`  [${agentName}] replayed fixture (${(response.length / 1024).toFixed(0)}KB)`)
+    return response
   }
 
   // A Claude CLI settings file (hooks off, plugins off), not pipeline config;
@@ -393,7 +400,11 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
         reject(new Error(`[${agentName}] claude exited with code ${code}: ${stderr.slice(0, 500)}`))
       } else {
         // Prefer finalResult (from result event), fall back to accumulated text
-        resolve(finalResult || fullText)
+        const response = finalResult || fullText
+        // Recorded here rather than at the call sites so every agent is
+        // captured by the one seam they all pass through.
+        if (isRecording()) recordFixture(agentName, response)
+        resolve(response)
       }
     })
 

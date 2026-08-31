@@ -1,0 +1,5 @@
+===VERDICT===
+APPROVE
+
+<!-- reconstructed from the archive; see build-fixtures-from-archive.js -->
+===END===

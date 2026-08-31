@@ -1,0 +1,218 @@
+===HERO_COPY===
+Select a busy man.
+
+===HERO_RATIONALE===
+The phrase is an order: "Select a busy man." Elbert Hubbard's line is a command with a reason attached, and it happens to describe this site exactly — a portfolio too busy to sit still, rebuilt nightly. Because the aphorism is structurally two-part (the choice, then "the other kind has no time"), the composition wants to argue with itself across a divide, not stack down a column. So the page splits: a `two-asymmetric` grid with a gold thesis field weighing left and a dark evidence panel answering right — echoing the owner's beloved fairway Split gold standard without copying its green or its subject.
+
+Chassis follows the register of the phrase, not habit. This is a confident imperative, not an editorial murmur and not another condensed billboard — the last weeks leaned on Anton, Bebas, and Spectral, so I reached past them for `unbounded-figtree` (1.500), whose blocky wide geometric caps render "SELECT / A BUSY / MAN" as a monumental modern knockout while Figtree keeps the ledger tabular and clean. Palette is the committed gesture: 46° industry gold sits squarely inside the allowed 39°–87° corridor and reads as the pigment of a working day — value, energy, daylight. It is load-bearing, flooding the left field as ink-on-gold and glinting through the ledger's leaders; warm sand neutrals tint everything toward the same amber so both halves read as one world.
+
+Layout answers the standing complaints head-on. Radii are zero on every surface. The brand is unmistakably present — the real circular mark in horizontal-md, single-color ink, top-left of the gold field. The nav is genuinely fresh against seven days of mastheads, spines, rails and pills: a quiet marginal stack in the ledger's top-right corner. And the form is dictated by content, not menu-picked — the dark panel is literally the busy man's ledger, where the Tigers' 2–1 win, Hovland's −15 at East Lake, the moon, the market, and the music become the evidence that today, too, the work got done.
+
+===HERO_SOURCE===
+source: quote
+
+===ARCHETYPE===
+A busy man's ledger, split against a gold marquee.
+
+===CHASSIS_ID===
+unbounded-figtree
+
+===VISUAL_SPEC===
+<!-- reconstructed from the archive; see build-fixtures-from-archive.js -->
+### 1. Color Specification
+- **Primary hue** — 46° (industry gold). Inside the allowed 39°–87° corridor; gold reads as value, energy, and productivity — the pigment of work well done. One dominant accent, no second hue.
+- **Neutral palette** (warm amber-tinted sand): 50 `#FAF7EF`, 100 `#F1EBDA`, 200 `#E2D8BF`, 300 `#C9BB97`, 400 `#A38F63`, 500 `#7A6A41`, 600 `#574B2C`, 700 `#3A311C`, 800 `#221D10`, 900 `#16130B`
+- **Accent color** — light `#F7CB3F`, default `#F4B90A`, dark `#DA9E00`, glow `#FADF
+
+===SELF_CHECK===
+1. Hero quotability: Yes — "Select a busy man." is a standalone imperative aphorism, screenshot-worthy on its own.
+2. Because-of chain: Yes — the two-part quote drove the split composition, the split drove split-field ground, gold drove the industrious palette, Unbounded drove the confident marquee.
+
+===MEASURABLES===
+# synthesized: not persisted by this build
+canvas_utilization_min: 85
+hero_scale: clamp(64px, 8.5vw, 136px)
+color_coverage_min: 40
+
+===SHELL===
+footer: ledger foot — build stamp + season + music folded into the base of the right ledger column
+brand_lockup: horizontal-md
+brand_color_mode: single-color
+ground_strategy: split-field
+
+===HEADER===
+# synthesized: this build predates the HEADER declaration (#254)
+placement: right-margin
+height_px: 72
+mark_px: 40
+wordmark_step: sm
+wordmark_weight: 600
+role_line: absent
+nav_step: sm
+nav_case: lower
+nav: marginal — three lowercase links stacked in the top-right margin of the dark ledger panel, no band, no pills, no border
+
+===COMPOSITION===
+columns: two-asymmetric
+axis: horizontal
+symmetry: left-weighted
+hero_zone: edge-bound
+density: measured
+rhythm: syncopated
+shell_posture: marginal
+field_ratio: balanced
+
+===COMPOSITION_RATIONALE===
+The phrase is an order: "Select a busy man." Elbert Hubbard's line is a command with a reason attached, and it happens to describe this site exactly — a portfolio too busy to sit still, rebuilt nightly. Because the aphorism is structurally two-part (the choice, then "the other kind has no time"), the composition wants to argue with itself across a divide, not stack down a column. So the page splits: a `two-asymmetric` grid with a gold thesis field weighing left and a dark evidence panel answering right — echoing the owner's beloved fairway Split gold standard without copying its green or its s
+
+===COLOR_SCHEME===
+{
+  "primary_hue": {
+    "h": 46,
+    "s": 94,
+    "l": 50,
+    "name": "industry gold"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "warm amber",
+    "name": "sand"
+  },
+  "mood_word": "industrious",
+  "color_story": "A saturated 46° gold — the honeyed hum of a working day — floods the left field as the busy man's daylight, while the idle 'other kind' recedes into warm near-black on the right."
+}
+
+===FILE:elements/preset.ts===
+import { definePreset } from '@pandacss/dev'
+
+export const elementsPreset = definePreset({
+  name: 'elements',
+  globalCss: {
+    body: {
+      background: 'bg',
+      color: 'text',
+      margin: '0',
+      padding: '0',
+      fontFeatureSettings: '"kern", "liga"',
+      WebkitFontSmoothing: 'antialiased',
+      textRendering: 'optimizeLegibility',
+    },
+    'h1, h2, h3, h4, h5, h6': {
+      margin: '0',
+      lineHeight: 'tight',
+      fontWeight: 'bold',
+    },
+    p: { margin: '0' },
+    a: {
+      color: 'inherit',
+      textDecoration: 'none',
+      transition: 'color 140ms ease',
+    },
+    'a:hover': { color: 'accent' },
+    '*': { boxSizing: 'border-box' },
+  },
+  conditions: {
+    light: '[data-theme=light] &',
+    dark: '[data-theme=dark] &',
+    hover: '&:hover',
+  },
+  theme: {
+    tokens: {
+      colors: {
+        gold: {
+          50: { value: '#FEF9E6' },
+          100: { value: '#FCEFB8' },
+          200: { value: '#FADF7E' },
+          300: { value: '#F7CB3F' },
+          400: { value: '#F4B90A' },
+          500: { value: '#DA9E00' },
+          600: { value: '#B07E00' },
+          700: { value: '#855E00' },
+          800: { value: '#5C4000' },
+          900: { value: '#362600' },
+        },
+        sand: {
+          50: { value: '#FAF7EF' },
+          100: { value: '#F1EBDA' },
+          200: { value: '#E2D8BF' },
+          300: { value: '#C9BB97' },
+          400: { value: '#A38F63' },
+          500: { value: '#7A6A41' },
+          600: { value: '#574B2C' },
+          700: { value: '#3A311C' },
+          800: { value: '#221D10' },
+          900: { value: '#16130B' },
+        },
+      },
+      spacing: {
+        1: { value: '4px' },
+        2: { value: '8px' },
+        3: { value: '16px' },
+        4: { value: '24px' },
+        5: { value: '32px' },
+        6: { value: '48px' },
+        7: { value: '64px' },
+        8: { value: '96px' },
+        9: { value: '128px' },
+      },
+      lineHeights: {
+        tight: { value: '0.92' },
+        snug: { value: '1.1' },
+        normal: { value: '1.5' },
+        loose: { value: '1.7' },
+      },
+      letterSpacings: {
+        tight: { value: '-0.01em' },
+        normal: { value: '0' },
+        wide: { value: '0.04em' },
+        wider: { value: '0.08em' },
+        widest: { value: '0.14em' },
+      },
+      radii: {
+        none: { value: '0' },
+        sm: { value: '0' },
+        md: { value: '0' },
+        lg: { value: '0' },
+        full: { value: '9999px' },
+      },
+      fontWeights: {
+        light: { value: '300' },
+        normal: { value: '400' },
+        medium: { value: '500' },
+        semibold: { value: '600' },
+        bold: { value: '800' },
+      },
+    },
+    semanticTokens: {
+      colors: {
+        bg: {
+          value: { base: '{colors.sand.900}', _light: '{colors.sand.50}' },
+        },
+        surface: {
+          value: { base: '{colors.sand.800}', _light: '{colors.sand.100}' },
+        },
+        field: {
+          value: { base: '{colors.gold.400}', _light: '{colors.gold.400}' },
+        },
+        fieldInk: {
+          value: { base: '{colors.sand.900}', _light: '{colors.sand.900}' },
+        },
+        text: {
+          value: { base: '{colors.sand.50}', _light: '{colors.sand.900}' },
+        },
+        textMuted: {
+          value: { base: '{colors.sand.300}', _light: '{colors.sand.500}' },
+        },
+        accent: {
+          value: { base: '{colors.gold.400}', _light: '{colors.gold.500}' },
+        },
+        accentText: {
+          value: { base: '{colors.sand.900}', _light: '{colors.sand.900}' },
+        },
+        border: {
+          value: { base: '{colors.sand.700}', _light: '{colors.sand.200}' },
+        },
+      },
+    },
+  },
+})
