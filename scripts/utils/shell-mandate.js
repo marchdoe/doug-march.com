@@ -1,4 +1,5 @@
 import { lastDistinct, readRecentArtifacts } from './recency.js'
+import { FORBID_WINDOW } from './recency-mandate.js'
 
 /**
  * Shell variance mandate — applied to the page shell (footer treatment,
@@ -13,8 +14,11 @@ import { lastDistinct, readRecentArtifacts } from './recency.js'
  * push the nav around and had nothing to say about the thing three owner
  * ratings running complained about.
  *
- * The walk over recent builds lives in recency.js, shared with the other
- * mandates.
+ * The walk over recent builds lives in recency.js, and the discouraged
+ * window is the one recency-mandate.js hands the others. The rest stays
+ * here: this mandate reads five keys across two artifacts and carries a
+ * colour-mode nudge, so putting it through the factory would cost more
+ * config than the shared code saves (#225).
  */
 
 /**
@@ -56,9 +60,6 @@ export function extractRecentShells(archiveDir, lookbackDays) {
     }
   })
 }
-
-/** How many recent distinct values per key are discouraged. */
-const FORBID_WINDOW = 3
 
 /** Keys the mandate soft-forbids, in prompt order. */
 const FORBID_KEYS = ['placement', 'nav', 'footer', 'brand_lockup', 'mark_band']
