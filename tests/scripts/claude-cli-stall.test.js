@@ -207,21 +207,46 @@ describe('default timeout relationships', () => {
 })
 
 describe('MOCK_MODE', () => {
-  it('refuses to make a billed call rather than silently making one', async () => {
-    // `pnpm pipeline` and `pipeline:dry` both set MOCK_MODE=true, and nothing
-    // honoured it — "the mock pipeline" spent real tokens. The flag is off
-    // those scripts now; if it is set anyway, stop.
-    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
-    const prev = process.env.MOCK_MODE
+  // `pnpm pipeline` and `pipeline:dry` both set MOCK_MODE=true, and nothing
+  // honoured it — "the mock pipeline" spent real tokens (#220). It threw
+  // after that, which was safe but left the swarm runnable only by paying.
+  // It now replays a recorded response, and still refuses when there is
+  // nothing recorded (#221).
+  // GITHUB_ACTIONS is cleared as well as MOCK_MODE set: replaying is refused
+  // inside Actions, so on a runner these two cases would assert against the
+  // guard's message instead of the behaviour they are about.
+  const withMock = async (fn) => {
+    const prevMock = process.env.MOCK_MODE
+    const prevCi = process.env.GITHUB_ACTIONS
     process.env.MOCK_MODE = 'true'
+    delete process.env.GITHUB_ACTIONS
     try {
-      await expect(
-        callClaudeCLI('mockup-critic', 'sys', 'prompt', { model: 'claude-haiku-4-5' })
-      ).rejects.toThrow(/MOCK_MODE=true but there is no mock/)
+      return await fn()
     } finally {
-      if (prev === undefined) delete process.env.MOCK_MODE
-      else process.env.MOCK_MODE = prev
+      if (prevMock === undefined) delete process.env.MOCK_MODE
+      else process.env.MOCK_MODE = prevMock
+      if (prevCi === undefined) delete process.env.GITHUB_ACTIONS
+      else process.env.GITHUB_ACTIONS = prevCi
     }
+  }
+
+  it('replays a recorded response instead of spawning the CLI', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    const { resetFixtureCounts } = await import('../../scripts/utils/agent-fixtures.js')
+    resetFixtureCounts()
+    const result = await withMock(() =>
+      callClaudeCLI('mockup-critic', 'sys', 'prompt', { model: 'claude-haiku-4-5' })
+    )
+    // The checked-in fixture for this agent is a critic verdict.
+    expect(result).toContain('===VERDICT===')
+    resetFixtureCounts()
+  })
+
+  it('still refuses rather than spending when an agent has no fixture', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    await expect(
+      withMock(() => callClaudeCLI('no-such-agent', 'sys', 'prompt', { model: 'claude-haiku-4-5' }))
+    ).rejects.toThrow(/no fixtures for "no-such-agent"/)
   })
 })
 
