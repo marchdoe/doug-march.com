@@ -10,10 +10,13 @@ allowBuilds:
 #
 # Scoped with pnpm's `name@range` selector so each rule only rewrites the
 # versions that are actually vulnerable, leaving other majors in the tree
-# untouched (h3 2.x RC in particular). Re-derive this list with `pnpm audit`
-# after dependency bumps and delete entries that upstream has fixed — every
-# rule here should map to a live advisory.
+# untouched. Re-derive with `pnpm audit` after dependency bumps and delete
+# entries that upstream has fixed — every rule here should map to a live
+# advisory.
+#
+# The esbuild and h3 rules were dropped once nothing in the tree resolved
+# below their floors. Do not drop this one on the same reasoning: postcss
+# reads as 8.5.26 only because this rule puts it there. Remove the line and
+# it falls back to 8.5.14, and `pnpm audit` reports one high and one moderate.
 overrides:
-  'esbuild@<0.24.3': '>=0.24.3'
-  'h3@<1.15.9': '>=1.15.9'
   'postcss@<8.5.23': '>=8.5.23'
