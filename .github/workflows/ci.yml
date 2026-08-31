@@ -98,3 +98,45 @@ jobs:
       # and sleep 5, which passed or failed on how busy the runner was.
       - name: Run E2E tests (site health)
         run: pnpm test:e2e:site
+
+  dev-panel:
+    name: Dev panel (E2E)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Resolve Playwright version
+        id: pw
+        run: echo "version=$(pnpm ls @playwright/test --json | jq -r '.[0].devDependencies["@playwright/test"].version')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      # The panel reads signals/today.yml. /api/dev-data would collect it on
+      # the first request, but that races the first test against a 15s spawn;
+      # collecting up front makes the run deterministic. Providers without a
+      # key are skipped, the date-derived ones always succeed, and the file is
+      # written either way.
+      - name: Collect signals
+        run: node scripts/collect-signals.js
+
+      # E2E_DEV=1 brings the dev-panel project and its `vite dev` webServer
+      # into the Playwright config, which otherwise leaves both out under CI.
+      - name: Run E2E tests (dev panel)
+        run: E2E_DEV=1 pnpm test:e2e:dev

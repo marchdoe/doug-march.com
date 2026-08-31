@@ -20,22 +20,21 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { ROOT } from './utils/file-manager.js'
+import { isMain } from './utils/cli.js'
 import { archivedDates, readJsonSafe } from './utils/archive-fs.js'
 import { anomaliesOf, buildRecord } from './utils/archive-record.js'
 import { readRatingForDate } from './utils/ratings.js'
 import { WINDOW, computeUniqueness } from './utils/uniqueness-index.js'
 
-const ARCHIVE_PATH = join(ROOT, 'archive')
-const OUT_DIR = join(ROOT, 'public', 'archive-data')
-
 /**
  * Read the record the pipeline wrote. Rebuilding when it is absent keeps this
  * script honest on a fresh clone; the log line says which happened.
  * @param {string} date
+ * @param {string} archiveDir
  * @returns {{record: object|null, rebuilt: boolean}}
  */
-function loadRecord(date) {
-  const path = join(ARCHIVE_PATH, date, 'record.json')
+export function loadRecord(date, archiveDir) {
+  const path = join(archiveDir, date, 'record.json')
   if (existsSync(path)) {
     try {
       return { record: JSON.parse(readFileSync(path, 'utf8')), rebuilt: false }
@@ -43,7 +42,7 @@ function loadRecord(date) {
       /* fall through to a rebuild */
     }
   }
-  return { record: buildRecord(date, { archiveDir: ARCHIVE_PATH }), rebuilt: true }
+  return { record: buildRecord(date, { archiveDir }), rebuilt: true }
 }
 
 /**
@@ -51,9 +50,11 @@ function loadRecord(date) {
  *
  * Counted rather than assumed: three dates have a record and no capture, and
  * the ten earliest have five pages instead of nine.
+ * @param {string} date
+ * @param {string} publicDir
  */
-function countSnapshotPages(date) {
-  const dir = join(ROOT, 'public', 'archive', date)
+export function countSnapshotPages(date, publicDir) {
+  const dir = join(publicDir, 'archive', date)
   if (!existsSync(dir)) return 0
   let n = 0
   const walk = (d, rel) => {
@@ -80,10 +81,11 @@ function countSnapshotPages(date) {
  * readers together so the next artifact cannot arrive on one side alone.
  *
  * @param {string} date
+ * @param {string} archiveDir
  * @returns {{date: string, composition: object|null, hue: number|null, lane: string|null, shell: object|null, header: object|null, fingerprint: object|null}}
  */
-function uniquenessInputs(date) {
-  const dateDir = join(ARCHIVE_PATH, date)
+export function uniquenessInputs(date, archiveDir) {
+  const dateDir = join(archiveDir, date)
   const readJson = (dir, name) => readJsonSafe(join(dir, name))
   let builds = []
   try {
@@ -128,7 +130,7 @@ function uniquenessInputs(date) {
  * The calendar and the dev panel both read the index, so it carries only what a
  * list needs: enough to label a day and color a cell.
  */
-function indexEntry(record, { hasScreenshot, pages, uniqueness }) {
+export function indexEntry(record, { hasScreenshot, pages, uniqueness }, archiveDir) {
   return {
     date: record.date,
     era: record.era,
@@ -151,7 +153,7 @@ function indexEntry(record, { hasScreenshot, pages, uniqueness }) {
           retries: record.cost.retries,
         }
       : null,
-    rating: readRatingForDate(ARCHIVE_PATH, record.date),
+    rating: readRatingForDate(archiveDir, record.date),
     // Composite 0..1, or null when nothing about the day was comparable.
     // `window` says how many builds it was measured against, so a chart can
     // dim the early dates rather than treating a 2-build window as a verdict.
@@ -159,55 +161,72 @@ function indexEntry(record, { hasScreenshot, pages, uniqueness }) {
   }
 }
 
-console.log('[generate-archive-json] Projecting archive records...')
+/**
+ * Project every archived day into `outDir`. Returns what it wrote so a test
+ * can look without reading the files back.
+ *
+ * @param {{ archiveDir: string, publicDir: string, outDir: string }} paths
+ * @returns {{ index: object[], rebuilt: number, anomalous: string[] }}
+ */
+export function projectArchive({ archiveDir, publicDir, outDir }) {
+  console.log('[generate-archive-json] Projecting archive records...')
 
-const dates = archivedDates(ARCHIVE_PATH, { newestFirst: true })
-mkdirSync(OUT_DIR, { recursive: true })
+  const dates = archivedDates(archiveDir, { newestFirst: true })
+  mkdirSync(outDir, { recursive: true })
 
-const index = []
-let rebuilt = 0
-const anomalous = []
+  const index = []
+  let rebuilt = 0
+  const anomalous = []
 
-// Uniqueness inputs for every date, oldest first, so each date can be scored
-// against the WINDOW dates that actually preceded it.
-const chronological = [...dates].sort()
-const inputsByDate = new Map(chronological.map((d) => [d, uniquenessInputs(d)]))
-const uniquenessByDate = new Map()
-for (let i = 0; i < chronological.length; i++) {
-  const date = chronological[i]
-  const history = chronological
-    .slice(Math.max(0, i - WINDOW), i)
-    .reverse()
-    .map((d) => inputsByDate.get(d))
-  uniquenessByDate.set(date, computeUniqueness(inputsByDate.get(date), history))
-}
-
-for (const date of dates) {
-  const { record, rebuilt: wasRebuilt } = loadRecord(date)
-  if (!record) continue
-  if (wasRebuilt) {
-    rebuilt++
-    for (const anomaly of anomaliesOf(record)) anomalous.push(`${date}: ${anomaly}`)
+  // Uniqueness inputs for every date, oldest first, so each date can be scored
+  // against the WINDOW dates that actually preceded it.
+  const chronological = [...dates].sort()
+  const inputsByDate = new Map(chronological.map((d) => [d, uniquenessInputs(d, archiveDir)]))
+  const uniquenessByDate = new Map()
+  for (let i = 0; i < chronological.length; i++) {
+    const date = chronological[i]
+    const history = chronological
+      .slice(Math.max(0, i - WINDOW), i)
+      .reverse()
+      .map((d) => inputsByDate.get(d))
+    uniquenessByDate.set(date, computeUniqueness(inputsByDate.get(date), history))
   }
 
-  const hasScreenshot = existsSync(join(OUT_DIR, `${date}.png`))
-  const pages = countSnapshotPages(date)
+  for (const date of dates) {
+    const { record, rebuilt: wasRebuilt } = loadRecord(date, archiveDir)
+    if (!record) continue
+    if (wasRebuilt) {
+      rebuilt++
+      for (const anomaly of anomaliesOf(record)) anomalous.push(`${date}: ${anomaly}`)
+    }
 
-  const uniqueness = uniquenessByDate.get(date) ?? null
+    const hasScreenshot = existsSync(join(outDir, `${date}.png`))
+    const pages = countSnapshotPages(date, publicDir)
+    const uniqueness = uniquenessByDate.get(date) ?? null
 
-  writeFileSync(
-    join(OUT_DIR, `${date}.json`),
-    JSON.stringify({ ...record, hasScreenshot, pages, uniqueness }),
-    'utf8'
+    writeFileSync(
+      join(outDir, `${date}.json`),
+      JSON.stringify({ ...record, hasScreenshot, pages, uniqueness }),
+      'utf8'
+    )
+    index.push(indexEntry(record, { hasScreenshot, pages, uniqueness }, archiveDir))
+  }
+
+  writeFileSync(join(outDir, 'index.json'), JSON.stringify(index), 'utf8')
+
+  console.log(`  wrote ${join(outDir, 'index.json')} (${index.length} entries)`)
+  console.log(
+    `  wrote ${index.length} per-date files${rebuilt ? `, ${rebuilt} rebuilt from artifacts` : ''}`
   )
-  index.push(indexEntry(record, { hasScreenshot, pages, uniqueness }))
+  for (const anomaly of anomalous) console.warn(`  record anomaly — ${anomaly}`)
+  console.log('[generate-archive-json] Done')
+  return { index, rebuilt, anomalous }
 }
 
-writeFileSync(join(OUT_DIR, 'index.json'), JSON.stringify(index), 'utf8')
-
-console.log(`  wrote public/archive-data/index.json (${index.length} entries)`)
-console.log(
-  `  wrote ${index.length} per-date files${rebuilt ? `, ${rebuilt} rebuilt from artifacts` : ''}`
-)
-for (const anomaly of anomalous) console.warn(`  record anomaly — ${anomaly}`)
-console.log('[generate-archive-json] Done')
+if (isMain(import.meta.url)) {
+  projectArchive({
+    archiveDir: join(ROOT, 'archive'),
+    publicDir: join(ROOT, 'public'),
+    outDir: join(ROOT, 'public', 'archive-data'),
+  })
+}
