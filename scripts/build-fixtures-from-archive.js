@@ -24,6 +24,26 @@ import { execFileSync } from 'node:child_process'
 import path from 'node:path'
 import { ROOT } from './utils/file-manager.js'
 import { FIXTURE_DIR } from './utils/agent-fixtures.js'
+import { SEMANTIC_COLOR_NAMES, parsePresetSemanticColors } from './utils/semantic-contract.js'
+
+/**
+ * Where a missing semantic role borrows its value from.
+ *
+ * The token contract froze at fifteen names after most of the archive was
+ * written, so an older preset is short a few — the 2026-08-30 build declares
+ * nine. The gate's own instruction is to "map the missing role onto the
+ * palette this design already has", which is what these pairs do: each
+ * missing name takes the value of the defined sibling nearest its role, so
+ * the fixture stays inside the design's palette instead of inventing colour.
+ */
+const SEMANTIC_FALLBACKS = {
+  bgAlt: 'surface',
+  textFaint: 'textMuted',
+  accentAlt: 'accent',
+  borderStrong: 'border',
+  fieldInkMuted: 'fieldInk',
+  fieldBorder: 'fieldInk',
+}
 
 const RECONSTRUCTED = '<!-- reconstructed from the archive; see build-fixtures-from-archive.js -->'
 
@@ -87,6 +107,66 @@ function write(agent, index, body) {
   console.log(`  ${path.relative(ROOT, file)}  (${(body.length / 1024).toFixed(1)}KB)`)
 }
 
+/**
+ * Add any semantic colours the preset predates, borrowing each from the
+ * defined sibling nearest its role.
+ *
+ * Without this the replay reaches build validation and stops there: the
+ * archived preset is valid for the night it shipped and short of a contract
+ * that tightened afterwards. Reconstructing what the Art Director would emit
+ * today is the point — a fixture frozen against a retired contract can only
+ * ever exercise the failure path.
+ *
+ * @param {string} source contents of the archived elements/preset.ts
+ * @returns {string}
+ */
+function completeSemanticTokens(source) {
+  const declared = new Set(parsePresetSemanticColors(source))
+  const missing = SEMANTIC_COLOR_NAMES.filter((n) => !declared.has(n))
+  if (missing.length === 0) return source
+
+  // Read a declared token's `value: { ... }` object back out of the source so
+  // the borrowed entry is written exactly as the design wrote it. Brace-
+  // counted rather than matched with `\{[^}]*\}`: every value contains
+  // `{colors.x.y}` token references, so a non-greedy class stops at the first
+  // inner brace and emits an unterminated string.
+  const declaredValue = (name) => {
+    const head = new RegExp(`\\b${name}\\s*:\\s*\\{\\s*value\\s*:\\s*`).exec(source)
+    if (!head) return null
+    const open = source.indexOf('{', head.index + head[0].length - 1)
+    if (open < 0) return null
+    let depth = 0
+    for (let i = open; i < source.length; i++) {
+      if (source[i] === '{') depth++
+      else if (source[i] === '}' && --depth === 0) return source.slice(open, i + 1)
+    }
+    return null
+  }
+
+  const added = []
+  for (const name of missing) {
+    const donor = SEMANTIC_FALLBACKS[name]
+    const value = donor ? declaredValue(donor) : null
+    if (!value) {
+      console.log(`  (cannot synthesize semantic token ${name} — no donor in this preset)`)
+      continue
+    }
+    added.push(
+      `        // synthesized from ${donor}: this build predates the ${name} role\n        ${name}: {\n          value: ${value},\n        },`
+    )
+  }
+  if (added.length === 0) return source
+
+  // Insert just inside `semanticTokens: { colors: {`.
+  const anchor = /semanticTokens\s*:\s*\{\s*\n\s*colors\s*:\s*\{\s*\n/.exec(source)
+  if (!anchor) throw new Error('Could not locate semanticTokens.colors in the archived preset')
+  const at = anchor.index + anchor[0].length
+  console.log(
+    `  added ${added.length} semantic token(s) the preset predates: ${missing.join(', ')}`
+  )
+  return source.slice(0, at) + added.join('\n') + '\n' + source.slice(at)
+}
+
 function artDirector(build, date) {
   const trace = readJson(path.join(build, 'trace.json'))
   const ad = trace?.steps?.find((s) => s.name === 'art-director')?.output ?? {}
@@ -96,7 +176,7 @@ function artDirector(build, date) {
   const composition = readJson(path.join(build, 'composition.json')) ?? {}
   const scheme = readJson(path.join(build, 'color-scheme.json'))
   const heroSource = readJson(path.join(build, 'hero-source.json'))
-  const preset = readFileSync(path.join(build, 'preset.ts'), 'utf8')
+  const preset = completeSemanticTokens(readFileSync(path.join(build, 'preset.ts'), 'utf8'))
   const rationale = briefSection(brief, "Claude's Rationale")
 
   // Builds before #254 kept nav in shell.json and declared no header at all.

@@ -505,14 +505,66 @@ export function parseTokenScaleKeys(source, category) {
  * @param {Record<string, Set<string>>} scales token keys by category
  * @returns {Array<{prop: string, value: string, category: string}>}
  */
+/**
+ * Remove comments so the gate reads code, not prose about code.
+ *
+ * `app/components/Sidebar.tsx` carries a comment explaining that `width: '11'`
+ * once meant a spacing token that does not exist — and the gate flagged the
+ * comment, reporting an 11px mark in a file that renders none. A rule that
+ * fires on its own documentation teaches people to delete the documentation.
+ *
+ * String literals are tracked so a `//` inside one — every https:// URL in
+ * the tree — is not mistaken for the start of a comment.
+ *
+ * @param {string} source
+ * @returns {string} same length, comment bodies blanked
+ */
+export function stripComments(source) {
+  let out = ''
+  let quote = null
+  for (let i = 0; i < source.length; i++) {
+    const c = source[i]
+    const next = source[i + 1]
+    if (quote) {
+      out += c
+      if (c === '\\') {
+        out += next ?? ''
+        i++
+      } else if (c === quote) quote = null
+      continue
+    }
+    if (c === "'" || c === '"' || c === '`') {
+      quote = c
+      out += c
+      continue
+    }
+    if (c === '/' && next === '/') {
+      while (i < source.length && source[i] !== '\n') i++
+      out += '\n'
+      continue
+    }
+    if (c === '/' && next === '*') {
+      const end = source.indexOf('*/', i + 2)
+      const body = source.slice(i, end < 0 ? source.length : end + 2)
+      // Keep the newlines so reported line numbers stay true.
+      out += body.replace(/[^\n]/g, ' ')
+      i = end < 0 ? source.length : end + 1
+      continue
+    }
+    out += c
+  }
+  return out
+}
+
 export function findNumericScaleMisses(source, scales) {
   const out = []
   const seen = new Set()
+  const code = stripComments(source)
   for (const [prop, category] of NUMERIC_SCALE_PROPS) {
     // Both spellings: `css({ width: '11' })` and the JSX prop `<Box width="11">`.
     // Today's tree uses each in a different file and both compile to the same px.
     const re = new RegExp(`\\b${prop}\\s*[:=]\\s*['"\`](\\d+(?:\\.\\d+)?)['"\`]`, 'g')
-    for (const [, value] of source.matchAll(re)) {
+    for (const [, value] of code.matchAll(re)) {
       if (Number(value) === 0) continue
       if (scales[category]?.has(value)) continue
       const key = `${prop}:${value}`

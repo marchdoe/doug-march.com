@@ -20,6 +20,7 @@ import {
   parseAtomicSelector,
   parseDeclarations,
   parseTokenScaleKeys,
+  stripComments,
 } from '../../scripts/utils/token-gate.js'
 
 describe('the properties the gate checks', () => {
@@ -362,5 +363,40 @@ describe('the message handed to the retry', () => {
     expect(message).toContain('fontSizes.5xl')
     expect(message).toContain("width: '11'")
     expect(message).toContain('1, 2, 3')
+  })
+})
+
+describe('stripComments', () => {
+  it('does not mistake a URL inside a string for a comment', () => {
+    const src = `const u = 'https://dougmar.ch/work'\nconst w = { width: '11' }`
+    expect(stripComments(src)).toContain("'https://dougmar.ch/work'")
+    expect(findNumericScaleMisses(src, { sizes: new Set(), spacing: new Set() })).toEqual([
+      { prop: 'width', value: '11', category: 'sizes' },
+    ])
+  })
+
+  it('does not flag a bare number that only appears in a comment', () => {
+    // Sidebar.tsx carries a comment explaining that `width: '11'` once meant a
+    // spacing token that does not exist. The gate flagged the comment and
+    // reported an 11px mark in a file that renders none — a rule firing on its
+    // own documentation.
+    const src = `// it kept going wrong: \`width: '11'\` meant a spacing token\nexport const x = 1`
+    expect(findNumericScaleMisses(src, { sizes: new Set(), spacing: new Set() })).toEqual([])
+  })
+
+  it('blanks block comments without moving line numbers', () => {
+    const src = `/* width: '11'\n   height: '9' */\nconst gap = { gap: '3' }`
+    const stripped = stripComments(src)
+    expect(stripped.split('\n')).toHaveLength(src.split('\n').length)
+    expect(findNumericScaleMisses(src, { sizes: new Set(), spacing: new Set() })).toEqual([
+      { prop: 'gap', value: '3', category: 'spacing' },
+    ])
+  })
+
+  it('keeps an escaped quote from ending a string early', () => {
+    const src = `const s = 'it\\'s fine // not a comment'\nconst w = { width: '11' }`
+    expect(findNumericScaleMisses(src, { sizes: new Set(), spacing: new Set() })).toEqual([
+      { prop: 'width', value: '11', category: 'sizes' },
+    ])
   })
 })

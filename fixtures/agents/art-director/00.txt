@@ -185,6 +185,30 @@ export const elementsPreset = definePreset({
     },
     semanticTokens: {
       colors: {
+        // synthesized from surface: this build predates the bgAlt role
+        bgAlt: {
+          value: { base: '{colors.sand.800}', _light: '{colors.sand.100}' },
+        },
+        // synthesized from textMuted: this build predates the textFaint role
+        textFaint: {
+          value: { base: '{colors.sand.300}', _light: '{colors.sand.500}' },
+        },
+        // synthesized from accent: this build predates the accentAlt role
+        accentAlt: {
+          value: { base: '{colors.gold.400}', _light: '{colors.gold.500}' },
+        },
+        // synthesized from border: this build predates the borderStrong role
+        borderStrong: {
+          value: { base: '{colors.sand.700}', _light: '{colors.sand.200}' },
+        },
+        // synthesized from fieldInk: this build predates the fieldInkMuted role
+        fieldInkMuted: {
+          value: { base: '{colors.sand.900}', _light: '{colors.sand.900}' },
+        },
+        // synthesized from fieldInk: this build predates the fieldBorder role
+        fieldBorder: {
+          value: { base: '{colors.sand.900}', _light: '{colors.sand.900}' },
+        },
         bg: {
           value: { base: '{colors.sand.900}', _light: '{colors.sand.50}' },
         },
