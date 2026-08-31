@@ -2834,7 +2834,7 @@ function ProductHuntCard({
         cardStyle={cardStyle}
         headerStyle={headerStyle}
         label="// PRODUCT HUNT"
-        reason="PRODUCT_HUNT_TOKEN not set"
+        reason="PRODUCT_HUNT_CLIENT_ID and PRODUCT_HUNT_CLIENT_SECRET not set"
       />
     )
 

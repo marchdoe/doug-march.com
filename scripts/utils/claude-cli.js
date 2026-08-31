@@ -153,7 +153,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
 
   // Allowlist env vars passed to the child process. Previously we passed
   // the full parent env, leaking every GitHub Actions secret (WEATHER_API_KEY,
-  // NEWS_API_KEY, ALPHA_VANTAGE_API_KEY, PRODUCT_HUNT_TOKEN, GITHUB_TOKEN,
+  // NEWS_API_KEY, ALPHA_VANTAGE_API_KEY, PRODUCT_HUNT_CLIENT_ID, GITHUB_TOKEN,
   // etc.) to the Claude CLI. The CLI needs almost nothing from the env —
   // only ANTHROPIC_API_KEY, basic shell vars, and Node.js options.
   const cliEnv = {

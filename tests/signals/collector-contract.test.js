@@ -31,7 +31,6 @@ const providers = await Promise.all(
 const NETWORK = [
   'air-quality.js',
   'awwwards.js',
-  'dribbble.js',
   'github.js',
   'golf.js',
   'hacker-news.js',
@@ -39,6 +38,7 @@ const NETWORK = [
   'news.js',
   'product-hunt.js',
   'quote.js',
+  'sidebar.js',
   'sports.js',
   'weather.js',
 ]
@@ -64,7 +64,9 @@ describe('every provider', () => {
       // collect-signals.js returns status 'skipped' when requiresApiKey is
       // unset, so an in-collector `if (!key) throw` was never reached. Three
       // tests existed for that dead path.
-      if (mod.requiresApiKey !== undefined) expect(typeof mod.requiresApiKey).toBe('string')
+      if (mod.requiresApiKey === undefined) return
+      // One name, or several: product_hunt needs a client id and a secret.
+      for (const key of [mod.requiresApiKey].flat()) expect(typeof key).toBe('string')
     }
   )
 })

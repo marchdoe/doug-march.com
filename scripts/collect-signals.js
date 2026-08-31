@@ -49,13 +49,16 @@ async function discoverProviders() {
 }
 
 async function runProvider(provider, profile, now = new Date()) {
-  // If the provider declares a required API key and it's missing, skip
+  // If the provider declares required API keys and any is missing, skip
   // cleanly with a 'skipped' status instead of letting it throw. This
   // distinguishes "no key configured" from actual runtime errors in logs.
-  if (provider.requiresApiKey && !process.env[provider.requiresApiKey]) {
+  // A provider may name more than one: product_hunt exchanges a client id
+  // and secret for a token, and half a credential is not a configuration.
+  const missing = [provider.requiresApiKey ?? []].flat().filter((key) => !process.env[key])
+  if (missing.length > 0) {
     return {
       status: 'skipped',
-      reason: `${provider.requiresApiKey} not set`,
+      reason: `${missing.join(' and ')} not set`,
       meta: { latency_ms: 0 },
     }
   }
