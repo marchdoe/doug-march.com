@@ -1,5 +1,22 @@
 import { chromium } from '@playwright/test'
 
+/**
+ * What each check measures against. The checks below run inside the page
+ * via page.evaluate, where module scope does not exist, so these are passed
+ * in as an argument rather than closed over — that is why they were bare
+ * numbers in three places until #225. Values unchanged.
+ */
+export const RESPONSIVE_THRESHOLDS = {
+  /** Smallest body text that is comfortably readable on a phone. */
+  bodyTextMinPx: 16,
+  /** WCAG 2.5.5 target size, and Apple's HIG minimum. */
+  tapTargetMinPx: 44,
+  /** Tap targets are only judged at widths a thumb operates. */
+  tapTargetMaxViewportPx: 768,
+  /** Average characters per rendered line before a paragraph reads as a wall. */
+  lineLengthMaxChars: 75,
+}
+
 const CHECKS = {
   horizontalScroll: () => document.documentElement.scrollWidth > window.innerWidth,
   clippedElements: () => {
@@ -39,7 +56,7 @@ const CHECKS = {
     }
     return overlaps
   },
-  bodyTextSize: () => {
+  bodyTextSize: (_vw, t) => {
     const root = document.querySelector('main') || document.body
     let min = Infinity
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
@@ -54,16 +71,16 @@ const CHECKS = {
       if (fs && fs < min) min = fs
     }
     if (min === Infinity) return { min: null, passing: true }
-    return { min: Math.round(min * 10) / 10, passing: min >= 16 }
+    return { min: Math.round(min * 10) / 10, passing: min >= t.bodyTextMinPx }
   },
-  tapTargetFailures: (viewportWidth) => {
-    if (viewportWidth > 768) return []
+  tapTargetFailures: (viewportWidth, t) => {
+    if (viewportWidth > t.tapTargetMaxViewportPx) return []
     const selectors = 'a[href], button, [role="button"], input[type="button"], input[type="submit"]'
     const out = []
     for (const el of document.querySelectorAll(selectors)) {
       const r = el.getBoundingClientRect()
       if (r.width === 0 || r.height === 0) continue
-      if (r.width < 44 || r.height < 44) {
+      if (r.width < t.tapTargetMinPx || r.height < t.tapTargetMinPx) {
         out.push({
           tag: el.tagName,
           text: (el.textContent || '').trim().slice(0, 30),
@@ -74,7 +91,7 @@ const CHECKS = {
     }
     return out
   },
-  lineLengthFailures: () => {
+  lineLengthFailures: (_vw, t) => {
     // Approximate: chars per paragraph / rendered line count.
     // Rendered lines ≈ clientHeight / computed line-height.
     const out = []
@@ -85,7 +102,7 @@ const CHECKS = {
       const lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.5
       const lines = Math.max(1, Math.round(p.clientHeight / lh))
       const avgChars = text.length / lines
-      if (avgChars > 75) {
+      if (avgChars > t.lineLengthMaxChars) {
         out.push({
           chars: text.length,
           lines,
@@ -142,11 +159,11 @@ function formatFailureDetail(check, viewportResult) {
     case 'headerOverlap':
       return `${c.headerOverlap.length} overlapping pair(s) in the header`
     case 'bodyTextSize':
-      return `body text min ${c.bodyTextSize.min}px (floor 16px)`
+      return `body text min ${c.bodyTextSize.min}px (floor ${RESPONSIVE_THRESHOLDS.bodyTextMinPx}px)`
     case 'tapTargetFailures':
-      return `${c.tapTargetFailures.length} interactive element(s) below 44×44px`
+      return `${c.tapTargetFailures.length} interactive element(s) below ${RESPONSIVE_THRESHOLDS.tapTargetMinPx}×${RESPONSIVE_THRESHOLDS.tapTargetMinPx}px`
     case 'lineLengthFailures':
-      return `${c.lineLengthFailures.length} paragraph(s) over 75 chars per line`
+      return `${c.lineLengthFailures.length} paragraph(s) over ${RESPONSIVE_THRESHOLDS.lineLengthMaxChars} chars per line`
     default:
       return 'unknown'
   }
@@ -178,14 +195,15 @@ export async function scoreResponsive(url, viewports, opts = {}) {
 
       const checks = {}
       for (const [name, fn] of Object.entries(CHECKS)) {
-        // Pass viewport width as second arg — most checks ignore it.
+        // The check runs in the page, so it gets the viewport width and the
+        // thresholds as arguments — module scope is not there to close over.
         checks[name] = await page.evaluate(
-          ([fnStr, vw]) => {
+          ([fnStr, vw, thresholds]) => {
             // eslint-disable-next-line no-new-func
             const f = new Function(`return ${fnStr}`)()
-            return f(vw)
+            return f(vw, thresholds)
           },
-          [fn.toString(), vp.width]
+          [fn.toString(), vp.width, RESPONSIVE_THRESHOLDS]
         )
       }
 
