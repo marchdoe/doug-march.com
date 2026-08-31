@@ -67,7 +67,7 @@ export const identity: { name: string; role: string; statement: string; email: s
 //   references?: { title, url, note? }[]       // real outbound anchors
 export const personal: { holesInOne: number; sport: string; teams: string[]; currentFocus: string }
 ```
-**WARNING:** There is NO `bio` export. Use `identity` for the Bio component.
+**WARNING:** There is NO `bio` export. The identity statement comes from `identity`.
 
 ## PandaCSS Preset Structure
 
