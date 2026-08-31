@@ -40,6 +40,20 @@
     // ignored, so a genuinely unwieldy helper inside a test still surfaces.
     "thresholdOverrides": [
       {
+        // Named debt, not a loosened rule. These three predate the gate and
+        // sit in files any pipeline change has to touch, so without an entry
+        // here the gate fails PRs for code they did not write. callClaudeCLI
+        // and resultPromise are two of the functions #221 exists to split;
+        // when that lands, this entry goes with them. Anything NEW crossing
+        // the ceiling in these files still fails.
+        "files": ["scripts/utils/claude-cli.js", "scripts/utils/token-gate.js"],
+        "maxUnitSize": 400,
+        "maxCyclomatic": 40,
+        "maxCognitive": 60,
+        "maxCrap": 500,
+        "reason": "pre-existing; callClaudeCLI/resultPromise are #221's split targets"
+      },
+      {
         "files": ["tests/**"],
         "maxUnitSize": 250,
         "maxCyclomatic": 30,
