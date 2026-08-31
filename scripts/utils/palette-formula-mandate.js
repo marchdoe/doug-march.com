@@ -1,4 +1,4 @@
-import { lastDistinct, readRecentArtifacts } from './recency.js'
+import { recencyMandate } from './recency-mandate.js'
 
 /**
  * Palette-formula variance mandate — applied to the "ground strategy" a
@@ -14,39 +14,36 @@ import { lastDistinct, readRecentArtifacts } from './recency.js'
  *
  * Old archives predate the ground_strategy field entirely; those builds
  * are simply skipped, so history degrades gracefully rather than breaking.
- * The walk itself lives in recency.js, shared with the other mandates.
+ * The read, the window and the prose scaffolding live in
+ * recency-mandate.js, shared with hero-source-mandate (#225).
  */
-
-/** How many recent distinct formulas are discouraged. */
-const FORBID_WINDOW = 3
+const mandate = recencyMandate({
+  artifact: 'shell.json',
+  field: 'ground_strategy',
+  valueKey: 'groundStrategy',
+  historyKey: 'recentGroundStrategies',
+  title: 'Palette Formula Mandate',
+  intro: `Computed from recent builds. The audit that motivated this mandate found 49% of days land on the same "saturated accent on near-black void" FORMULA regardless of hue — hue rotation alone doesn't prevent sameness. Treat this as strong guidance, not law.`,
+  rationaleLabel: 'declared ground strategies',
+  emptyRationale: 'No recent ground-strategy history available; the formula is open.',
+  forbiddenBullet: (forbidden) =>
+    `- **Ground strategies used recently (avoid):** ${forbidden.join(', ')}`,
+  emptyBullet: `- **Ground strategies:** no recent history.`,
+  closing: `Prefer a formula NOT in the recent list (light-ground, dark-void, drench, duotone, split-field). If today's brief genuinely calls for a recently-used formula, you may reuse it — justify why in your rationale. Fit > novelty.`,
+})
 
 /**
  * @param {string} archiveDir
  * @param {number} lookbackDays
  * @returns {Array<{ date: string, groundStrategy: string }>} newest first, entries without a declared ground strategy omitted
  */
-export function extractRecentGroundStrategies(archiveDir, lookbackDays) {
-  return readRecentArtifacts(archiveDir, lookbackDays, ({ date, read }) => {
-    const s = read('shell.json')
-    return s?.ground_strategy ? { date, groundStrategy: s.ground_strategy } : null
-  })
-}
+export const extractRecentGroundStrategies = mandate.extract
 
 /**
  * @param {{ archiveDir: string, lookbackDays?: number }} opts
  * @returns {{ recentGroundStrategies: object[], softForbidden: string[], rationale: string }}
  */
-export function computePaletteFormulaMandate({ archiveDir, lookbackDays = 7 }) {
-  const recentGroundStrategies = extractRecentGroundStrategies(archiveDir, lookbackDays)
-  const softForbidden = lastDistinct(
-    recentGroundStrategies.map((s) => s.groundStrategy),
-    FORBID_WINDOW
-  )
-  const rationale = recentGroundStrategies.length
-    ? `Last ${recentGroundStrategies.length} declared ground strategies: ${recentGroundStrategies.map((s) => `${s.date}: ${s.groundStrategy}`).join(' | ')}`
-    : 'No recent ground-strategy history available; the formula is open.'
-  return { recentGroundStrategies, softForbidden, rationale }
-}
+export const computePaletteFormulaMandate = mandate.compute
 
 /**
  * @param {object} mandate
@@ -54,20 +51,4 @@ export function computePaletteFormulaMandate({ archiveDir, lookbackDays = 7 }) {
  *   no ground-strategy history to react to (e.g. every recent archive
  *   predates this field)
  */
-export function formatPaletteFormulaMandateForPrompt(mandate) {
-  if (!mandate.recentGroundStrategies.length) return ''
-  const lines = [
-    `## Palette Formula Mandate`,
-    ``,
-    `Computed from recent builds. The audit that motivated this mandate found 49% of days land on the same "saturated accent on near-black void" FORMULA regardless of hue — hue rotation alone doesn't prevent sameness. Treat this as strong guidance, not law.`,
-    ``,
-    mandate.softForbidden.length
-      ? `- **Ground strategies used recently (avoid):** ${mandate.softForbidden.join(', ')}`
-      : `- **Ground strategies:** no recent history.`,
-    ``,
-    `- **Rationale:** ${mandate.rationale}`,
-    ``,
-    `Prefer a formula NOT in the recent list (light-ground, dark-void, drench, duotone, split-field). If today's brief genuinely calls for a recently-used formula, you may reuse it — justify why in your rationale. Fit > novelty.`,
-  ]
-  return lines.join('\n')
-}
+export const formatPaletteFormulaMandateForPrompt = mandate.format
