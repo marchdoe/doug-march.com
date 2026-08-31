@@ -212,14 +212,21 @@ describe('MOCK_MODE', () => {
   // after that, which was safe but left the swarm runnable only by paying.
   // It now replays a recorded response, and still refuses when there is
   // nothing recorded (#221).
+  // GITHUB_ACTIONS is cleared as well as MOCK_MODE set: replaying is refused
+  // inside Actions, so on a runner these two cases would assert against the
+  // guard's message instead of the behaviour they are about.
   const withMock = async (fn) => {
-    const prev = process.env.MOCK_MODE
+    const prevMock = process.env.MOCK_MODE
+    const prevCi = process.env.GITHUB_ACTIONS
     process.env.MOCK_MODE = 'true'
+    delete process.env.GITHUB_ACTIONS
     try {
       return await fn()
     } finally {
-      if (prev === undefined) delete process.env.MOCK_MODE
-      else process.env.MOCK_MODE = prev
+      if (prevMock === undefined) delete process.env.MOCK_MODE
+      else process.env.MOCK_MODE = prevMock
+      if (prevCi === undefined) delete process.env.GITHUB_ACTIONS
+      else process.env.GITHUB_ACTIONS = prevCi
     }
   }
 

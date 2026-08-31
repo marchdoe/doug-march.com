@@ -23,6 +23,10 @@ describe('agent fixtures', () => {
   let root
   beforeEach(() => {
     root = mkdtempSync(path.join(tmpdir(), 'fixtures-'))
+    // These tests exercise both sides of the Actions guard, so neither may
+    // read whatever the runner happens to have set. Ambient GITHUB_ACTIONS is
+    // exactly what made this suite pass locally and fail in CI.
+    vi.stubEnv('GITHUB_ACTIONS', '')
   })
   afterEach(() => {
     rmSync(root, { recursive: true, force: true })
@@ -94,6 +98,7 @@ describe('agent fixtures', () => {
 
   it('is inert outside GitHub Actions', async () => {
     const m = await loadWithRoot(root)
+    vi.stubEnv('GITHUB_ACTIONS', '')
     vi.stubEnv('MOCK_MODE', 'true')
     expect(() => m.assertNotAutomated()).not.toThrow()
   })
