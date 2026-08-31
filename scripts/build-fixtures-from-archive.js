@@ -25,6 +25,7 @@ import path from 'node:path'
 import { ROOT } from './utils/file-manager.js'
 import { FIXTURE_DIR } from './utils/agent-fixtures.js'
 import { SEMANTIC_COLOR_NAMES, parsePresetSemanticColors } from './utils/semantic-contract.js'
+import { isMain } from './utils/cli.js'
 
 /**
  * Where a missing semantic role borrows its value from.
@@ -52,7 +53,7 @@ function readJson(file) {
 }
 
 /** The build that shipped for a date: newest that is neither failed nor pre. */
-function shippedBuildDir(date) {
+export function shippedBuildDir(date) {
   const dateDir = path.join(ROOT, 'archive', date)
   if (!existsSync(dateDir)) throw new Error(`No archive for ${date}`)
   const builds = readdirSync(dateDir)
@@ -65,7 +66,7 @@ function shippedBuildDir(date) {
 }
 
 /** `key: value` lines, the shape every declaration block uses. */
-const kvBlock = (obj) =>
+export const kvBlock = (obj) =>
   Object.entries(obj)
     .filter(([, v]) => v !== null && v !== undefined)
     .map(([k, v]) => `${k}: ${v}`)
@@ -79,7 +80,7 @@ const kvBlock = (obj) =>
  * also makes `$` match the end of every line, which cut every section down to
  * its first line. `(?![\\s\\S])` is end-of-input regardless of the flag.
  */
-function briefSection(brief, heading) {
+export function briefSection(brief, heading) {
   const re = new RegExp(`^## ${heading}\\s*\\n([\\s\\S]*?)(?=\\n## |(?![\\s\\S]))`, 'm')
   return (re.exec(brief)?.[1] ?? '').trim()
 }
@@ -120,7 +121,7 @@ function write(agent, index, body) {
  * @param {string} source contents of the archived elements/preset.ts
  * @returns {string}
  */
-function completeSemanticTokens(source) {
+export function completeSemanticTokens(source) {
   const declared = new Set(parsePresetSemanticColors(source))
   const missing = SEMANTIC_COLOR_NAMES.filter((n) => !declared.has(n))
   if (missing.length === 0) return source
@@ -174,7 +175,7 @@ function completeSemanticTokens(source) {
  * one has to be synthesized. It is marked as such in the block itself: these
  * numbers were nobody's design decision.
  */
-function headerBlock(header, shell, composition) {
+export function headerBlock(header, shell, composition) {
   if (header) return kvBlock(header)
   return [
     '# synthesized: this build predates the HEADER declaration (#254)',
@@ -296,16 +297,26 @@ function reactEngineer(build, date) {
   write('react-engineer', 0, blocks.join('\n\n'))
 }
 
-const date = process.argv[2]
-if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-  console.error('Usage: node scripts/build-fixtures-from-archive.js <YYYY-MM-DD>')
-  process.exit(1)
+/**
+ * @param {string} date
+ * @returns {string} the build the fixtures were rebuilt from
+ */
+export function buildFixturesFromArchive(date) {
+  const build = shippedBuildDir(date)
+  console.log(`Rebuilding fixtures from ${path.relative(ROOT, build)}\n`)
+  artDirector(build)
+  mockupDesigner(build)
+  critics(build)
+  reactEngineer(build, date)
+  return build
 }
 
-const build = shippedBuildDir(date)
-console.log(`Rebuilding fixtures from ${path.relative(ROOT, build)}\n`)
-artDirector(build)
-mockupDesigner(build)
-critics(build)
-reactEngineer(build, date)
-console.log(`\nDone. Run the pipeline against them with MOCK_MODE=true.`)
+if (isMain(import.meta.url)) {
+  const date = process.argv[2]
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    console.error('Usage: node scripts/build-fixtures-from-archive.js <YYYY-MM-DD>')
+    process.exit(1)
+  }
+  buildFixturesFromArchive(date)
+  console.log(`\nDone. Run the pipeline against them with MOCK_MODE=true.`)
+}
