@@ -9,8 +9,9 @@
 
 import { readdirSync, existsSync, cpSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
+// Not process.cwd(): that made the script wrong from any other directory.
+import { ROOT } from './utils/file-manager.js'
 
-const ROOT = process.cwd()
 const archiveDir = join(ROOT, 'archive')
 const publicArchive = join(ROOT, 'public', 'archive')
 const publicData = join(ROOT, 'public', 'archive-data')

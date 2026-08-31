@@ -1,10 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import {
   FILE_OWNERSHIP,
-  buildAgentPrompt,
   identifyFailingAgent,
   parseDelimiterResponse,
-  resolveChassisFromDirectorOutput,
   buildCompositionContractBlock,
   describeRiskTier,
   resolveRiskWeight,
@@ -76,97 +74,6 @@ describe('identifyFailingAgent', () => {
   it('returns "both" when no file can be identified', () => {
     const error = 'Unknown build error'
     expect(identifyFailingAgent(error)).toBe('both')
-  })
-})
-
-describe('buildAgentPrompt', () => {
-  it('includes the brief in the prompt', () => {
-    const prompt = buildAgentPrompt('token-designer', {
-      brief: '## Palette Direction\nWarm and golden.',
-      referenceFiles: [],
-      tokenContext: null,
-    })
-    expect(prompt).toContain('Warm and golden')
-  })
-
-  it('includes token context for structure-agent', () => {
-    const prompt = buildAgentPrompt('structure-agent', {
-      brief: 'brief text',
-      referenceFiles: [],
-      tokenContext: 'export const elementsPreset = ...',
-    })
-    expect(prompt).toContain('elementsPreset')
-  })
-
-  it('does not include token context for token-designer', () => {
-    const prompt = buildAgentPrompt('token-designer', {
-      brief: 'brief text',
-      referenceFiles: [],
-      tokenContext: null,
-    })
-    expect(prompt).not.toContain('## Design Tokens')
-  })
-
-  it('includes reference files', () => {
-    const prompt = buildAgentPrompt('component-agent', {
-      brief: 'brief text',
-      referenceFiles: [{ path: 'app/components/Bio.tsx', content: 'const Bio = ...' }],
-      tokenContext: 'tokens',
-    })
-    expect(prompt).toContain('Bio.tsx')
-    expect(prompt).toContain('const Bio')
-  })
-
-  it('includes anti-anchoring instructions when reference files are present', () => {
-    const prompt = buildAgentPrompt('structure-agent', {
-      brief: 'brief text',
-      referenceFiles: [
-        { path: 'app/components/Layout.tsx', content: 'export function Layout() {}' },
-      ],
-      tokenContext: 'tokens',
-    })
-    expect(prompt).toContain('Do NOT use these as a design starting point')
-    expect(prompt).toContain('entirely new')
-    expect(prompt).toContain('Technical Reference ONLY')
-  })
-
-  it('does not include anti-anchoring instructions when no reference files', () => {
-    const prompt = buildAgentPrompt('token-designer', {
-      brief: 'brief text',
-      referenceFiles: [],
-      tokenContext: null,
-    })
-    expect(prompt).not.toContain('Do NOT use these as a design starting point')
-  })
-})
-
-describe('resolveChassisFromDirectorOutput', () => {
-  const catalog = [
-    { id: 'bricolage-manrope', name: 'Bricolage Grotesque + Manrope' },
-    { id: 'spectral-albert', name: 'Spectral + Albert Sans' },
-  ]
-
-  it('extracts a chassis id from the explicit ===CHASSIS_ID=== block', () => {
-    const text = '===CHASSIS_ID===\nbricolage-manrope\n\n===VISUAL_SPEC===\nstuff'
-    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('bricolage-manrope')
-  })
-
-  it('tolerates surrounding whitespace and backticks', () => {
-    const text = '===CHASSIS_ID===\n  `spectral-albert`  \n'
-    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('spectral-albert')
-  })
-
-  it('falls back to scanning the spec for a backtick-quoted catalog id', () => {
-    const text = 'no block here. uses `bricolage-manrope` somewhere.'
-    expect(resolveChassisFromDirectorOutput(text, catalog)?.id).toBe('bricolage-manrope')
-  })
-
-  it('returns null when no catalog id is present', () => {
-    expect(resolveChassisFromDirectorOutput('===CHASSIS_ID===\nunknown-id\n', catalog)).toBeNull()
-  })
-
-  it('returns null on empty input', () => {
-    expect(resolveChassisFromDirectorOutput('', catalog)).toBeNull()
   })
 })
 

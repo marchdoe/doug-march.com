@@ -16,6 +16,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { sealPage } from './utils/archive-seal.js'
+import { isMain } from './utils/cli.js'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const ARCHIVE_ROOT = path.join(ROOT, 'public', 'archive')
@@ -79,7 +80,7 @@ export async function sealArchive({ archiveRoot = ARCHIVE_ROOT, check = false, o
   return { dates: dates.length, scanned, changed }
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   const check = process.argv.includes('--check')
   const dateArg = process.argv.find((a) => a.startsWith('--date='))
   const only = dateArg ? dateArg.slice('--date='.length) : null

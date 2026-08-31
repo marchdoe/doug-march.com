@@ -26,6 +26,7 @@ import { isValidTuple } from '../utils/composition-grammar.js'
 import { isValidHeader } from '../utils/header-grammar.js'
 import { LOCKUP_IDS } from '../utils/brand-lockup.js'
 import { modelFor } from '../utils/models.js'
+import { budgetFor } from '../utils/budgets.js'
 
 const BRAND_LOCKUP_IDS = new Set(LOCKUP_IDS)
 
@@ -204,8 +205,7 @@ export async function runArtDirector(ctx) {
   // unified-designer config (30 min total / 25 min stall) one register
   // tighter — the AD prompt is smaller and shouldn't need that much.
   const result = await callClaudeCLI('art-director', ctx.systemPrompt, userPrompt, {
-    timeoutMs: 1500000, // 25 min hard cap — AD has run 8-17 min of extended thinking
-    stallTimeoutMs: 480000, // 8 min of TRUE silence (zero events) = dead process
+    ...budgetFor('art-director'),
     model: modelFor('art-director'),
   })
 

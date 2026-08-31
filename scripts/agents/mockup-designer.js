@@ -7,6 +7,7 @@ import { writeFile } from 'node:fs/promises'
 import { callClaudeCLI } from '../utils/claude-cli.js'
 import { parseDelimiterResponse } from '../utils/delimiter-parser.js'
 import { modelFor } from '../utils/models.js'
+import { budgetFor } from '../utils/budgets.js'
 
 export function buildMockupDesignerUserPrompt({
   enrichedBrief,
@@ -73,8 +74,7 @@ export function validateMockupResult(parsed) {
 export async function runMockupDesigner(ctx) {
   const userPrompt = buildMockupDesignerUserPrompt(ctx)
   const result = await callClaudeCLI('mockup-designer', ctx.systemPrompt, userPrompt, {
-    timeoutMs: 1800000, // 30 min hard cap — bounds long extended-thinking phases
-    stallTimeoutMs: 480000, // 8 min of TRUE silence (zero events) = dead process
+    ...budgetFor('mockup-designer'),
     model: modelFor('mockup-designer'), // opus in prod, sonnet in dev
   })
   let parsed

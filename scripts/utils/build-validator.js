@@ -3,6 +3,7 @@ import { spawnSync } from 'node:child_process'
 import { readFileSync, readdirSync, existsSync, statSync, writeFileSync, mkdirSync } from 'node:fs'
 import { resolve, sep } from 'node:path'
 import { ROOT } from './file-manager.js'
+import { STEP_BUDGETS } from './budgets.js'
 import { checkTokenExistence } from './token-existence.js'
 import { checkTokenResolution, readReachableSources } from './token-gate.js'
 import { MUTABLE_FILES, ORCHESTRATOR_FILES } from './site-context.js'
@@ -352,7 +353,7 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
   const PATTERN_EXCEPTIONS = {
     // __root.tsx contains the theme-init script (dark mode detection on
     // first paint). The AI must preserve this pattern when regenerating.
-    // The content of the script is validated separately via the THEME_INIT_SCRIPT
+    // The script's content is not validated here — only that a theme init script exists.
     // check in Check 3.
     'app/routes/__root.tsx': ['script tag'],
   }
@@ -689,7 +690,7 @@ export function validateBuild({ shell = null } = {}) {
   const result = spawnSync('pnpm', ['build'], {
     cwd: ROOT,
     encoding: 'utf8',
-    timeout: 120000, // 2 minute timeout
+    timeout: STEP_BUDGETS.buildMs,
   })
 
   if (result.status !== 0) {
@@ -822,7 +823,7 @@ export const STATIC_CHECK_PATHS = ['app/components', 'app/routes']
  * @returns {{ success: boolean, error?: string, fixed?: string }}
  */
 export function runStaticChecks({ spawn = spawnSync, root = ROOT } = {}) {
-  const opts = { cwd: root, encoding: 'utf8', timeout: 60000 }
+  const opts = { cwd: root, encoding: 'utf8', timeout: STEP_BUDGETS.staticCheckMs }
   const combined = (r) => (r.stdout ?? '') + (r.stderr ?? '')
   const failures = []
 

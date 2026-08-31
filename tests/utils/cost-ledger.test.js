@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import {
-  PRICING,
   resetLedger,
   recordUsage,
   noteRetry,
@@ -8,6 +7,7 @@ import {
   summarizeLedger,
   estimateCostUsd,
 } from '../../scripts/utils/cost-ledger.js'
+import { pricingFor } from '../../scripts/utils/models.js'
 import { extractResultUsage } from '../../scripts/utils/claude-cli.js'
 
 beforeEach(() => {
@@ -25,7 +25,7 @@ describe('estimateCostUsd', () => {
   })
 
   it('discounts cache reads and surcharges cache writes', () => {
-    const rate = PRICING['claude-haiku-4-5'].input
+    const rate = pricingFor('claude-haiku-4-5').input
     expect(estimateCostUsd('claude-haiku-4-5', { cache_read_input_tokens: 1_000_000 })).toBeCloseTo(
       rate * 0.1,
       6

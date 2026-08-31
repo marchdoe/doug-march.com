@@ -16,6 +16,7 @@ import { existsSync, statSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import * as yaml from 'js-yaml'
+import { isMain } from './utils/cli.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -172,7 +173,7 @@ export async function collectReferences(briefText) {
 
 // --- CLI ---
 
-if (process.argv[1]?.endsWith('collect-references.js')) {
+if (isMain(import.meta.url)) {
   const briefFlag = process.argv.indexOf('--brief')
   const briefPath = briefFlag !== -1 ? process.argv[briefFlag + 1] : BRIEF_PATH
 

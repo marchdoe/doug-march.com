@@ -32,8 +32,7 @@ import { callClaudeCLI } from './utils/claude-cli.js'
 import {
   MUTABLE_FILES,
   ORCHESTRATOR_FILES,
-  STRUCTURE_FILES,
-  COMPONENT_FILES,
+  ENGINEER_FILES,
   readContext,
 } from './utils/site-context.js'
 import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-manager.js'
@@ -59,6 +58,10 @@ import {
 import { parseDelimiterResponse } from './utils/delimiter-parser.js'
 import { parseCriticVerdict } from './utils/critic-verdict.js'
 import { modelFor, isDevModelTier } from './utils/models.js'
+import { STEP_BUDGETS, budgetFor } from './utils/budgets.js'
+import { runDate } from './utils/run-date.js'
+import { isMain } from './utils/cli.js'
+import { computeMandateSections } from './pipeline/mandates.js'
 import { runArtDirector } from './agents/art-director.js'
 import { parseCompositionBlock, parseHeaderBlock } from './utils/spec-blocks.js'
 import { renderBrandLockupFile } from './utils/brand-lockup.js'
@@ -111,8 +114,7 @@ export function dropOrchestratorFiles(files, agentName = 'agent') {
  */
 export const FILE_OWNERSHIP = Object.fromEntries([
   ['elements/preset.ts', 'art-director'],
-  ...STRUCTURE_FILES.map((f) => [f, 'react-engineer']),
-  ...COMPONENT_FILES.map((f) => [f, 'react-engineer']),
+  ...ENGINEER_FILES.map((f) => [f, 'react-engineer']),
 ])
 
 /**
@@ -136,37 +138,6 @@ export function resolveRiskWeight(envValue, date) {
   const explicitlySet = envValue !== undefined && envValue !== ''
   const risk = explicitlySet ? parseInt(envValue, 10) : hashToRange(`risk:${date}`, 3, 10)
   return { risk, explicitlySet }
-}
-
-/**
- * Extract the Director-chosen typography chassis from its response.
- *
- * Looks for a `===CHASSIS_ID===` delimiter block and matches the next
- * meaningful token against the catalog. Tolerates: surrounding whitespace,
- * backtick-quoted ids, and trailing punctuation. If the explicit block is
- * missing (Director ignored format), falls back to scanning the whole
- * spec for any catalog id appearing as a backtick-quoted code span.
- *
- * Returns the matching ChassisEntry or null. Caller falls back to
- * CHASSIS_CATALOG[0] on null.
- */
-export function resolveChassisFromDirectorOutput(text, catalog) {
-  if (!text) return null
-
-  const blockMatch = text.match(/===CHASSIS_ID===\s*\n?\s*`?([a-z0-9-]+)`?/i)
-  if (blockMatch) {
-    const id = blockMatch[1].trim().toLowerCase()
-    const hit = catalog.find((c) => c.id === id)
-    if (hit) return hit
-  }
-
-  // Fallback: scan for any catalog id mentioned in backticks anywhere.
-  for (const c of catalog) {
-    const re = new RegExp(`\`\\s*${c.id.replace(/-/g, '\\-')}\\s*\``, 'i')
-    if (re.test(text)) return c
-  }
-
-  return null
 }
 
 /**
@@ -203,45 +174,6 @@ export function describeRiskTier(risk) {
     return 'Balanced. Mix proven patterns with one deliberate point of risk — not maximum safety, not maximum novelty.'
   }
   return 'SAFE, POLISHED today. Proven patterns, minimal deviation from what has worked before.'
-}
-
-// ---------------------------------------------------------------------------
-// Exported helpers (also used by tests)
-// ---------------------------------------------------------------------------
-
-/**
- * Build the user prompt for a given agent.
- *
- * @param {string} agentName
- * @param {{ brief: string, referenceFiles: Array<{path: string, content: string}>, tokenContext: string|null }} ctx
- * @returns {string}
- */
-export function buildAgentPrompt(_agentName, { brief, referenceFiles, tokenContext }) {
-  const sections = []
-
-  // Section 1: Creative Brief
-  sections.push(`## Creative Brief\n\n${brief}`)
-
-  // Section 2: Design Tokens (for downstream agents that consume preset.ts)
-  if (tokenContext) {
-    sections.push(
-      `## Design Tokens (from elements/preset.ts)\n\nUse these token names in your components. Do not invent new tokens — only reference what exists here.\n\n\`\`\`typescript\n${tokenContext}\n\`\`\``
-    )
-  }
-
-  // Section 3: Reference Files — with explicit anti-anchoring instruction
-  if (referenceFiles && referenceFiles.length > 0) {
-    const fileBlocks = referenceFiles.map(
-      (f) => `### ${f.path}\n\n\`\`\`typescript\n${f.content}\n\`\`\``
-    )
-    sections.push(`## Reference Files — Technical Reference ONLY
-
-These are the CURRENT files on disk. They show you the component API, TypeScript interfaces, import paths, and export names you must preserve. Do NOT use these as a design starting point. Your layout, structure, styling, and spatial organization should be entirely new — as if you have never seen these files before. The only thing to preserve is the technical contract (imports, exports, prop interfaces).
-
-${fileBlocks.join('\n\n')}`)
-  }
-
-  return sections.join('\n\n')
 }
 
 /**
@@ -319,13 +251,20 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
 
   fullPrompt += `\n\n---\n\nIMPORTANT: Use the ===FILE:path=== delimiter format described in your instructions. Write complete file contents after each delimiter. No JSON, no markdown code fences, no explanation — just the delimiters and raw file content.`
 
+  // Explicit IDs only — the 'sonnet' alias this used to fall back to is what
+  // models.js exists to prevent (a pinned CLI freezes what the alias means).
+  if (!options.model) throw new Error(`[${agentName}] callAgent requires an explicit model ID`)
+  const budget = budgetFor(agentName)
   const result = await callClaudeCLI(agentName, systemPrompt, fullPrompt, {
-    timeoutMs: options.timeoutMs || 600000, // default 10 minutes
-    stallTimeoutMs: options.stallTimeoutMs, // undefined → claude-cli.js default (15 min)
-    model: options.model || 'sonnet',
+    timeoutMs: options.timeoutMs ?? budget.timeoutMs,
+    stallTimeoutMs: options.stallTimeoutMs ?? budget.stallTimeoutMs,
+    model: options.model,
   })
 
-  // Parse response — supports verdict, delimiter, visual spec, and JSON formats
+  // Two response shapes remain: a critic verdict, or delimited files. The
+  // ===VISUAL_SPEC=== branch served the Design Director (retired 2026-04-29)
+  // and the three-stage JSON fallback served the Unified Designer (also
+  // retired); neither agent exists, so neither shape can arrive.
   let parsed
 
   if (result.includes('===VERDICT===')) {
@@ -341,45 +280,15 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
       _rawResponse: verdictBody,
       _fullResponse: result,
     }
-  } else if (result.includes('===VISUAL_SPEC===')) {
-    // Design Director response — the entire content after the delimiter is the spec
-    const specMatch = result.match(/===VISUAL_SPEC===([\s\S]*)/)
-    const spec = specMatch ? specMatch[1].trim() : result.trim()
-    parsed = { files: [], rationale: spec, design_brief: '', _rawResponse: spec }
   } else if (result.match(/^===FILE:/m)) {
     parsed = parseDelimiterResponse(result)
   } else {
-    // JSON fallback
-    try {
-      parsed = JSON.parse(result)
-    } catch {
-      const cleaned = result
-        .replace(/```(?:json|JSON)?\s*\n?/g, '')
-        .replace(/\n?\s*```\s*$/g, '')
-        .trim()
-      try {
-        parsed = JSON.parse(cleaned)
-      } catch {
-        const jsonStart = cleaned.indexOf('{')
-        const jsonEnd = cleaned.lastIndexOf('}')
-        if (jsonStart >= 0 && jsonEnd > jsonStart) {
-          try {
-            parsed = JSON.parse(cleaned.slice(jsonStart, jsonEnd + 1))
-          } catch (e3) {
-            throw new Error(
-              `[${agentName}] failed to parse response: ${e3.message}\nFirst 300 chars: ${result.slice(0, 300)}`
-            )
-          }
-        } else {
-          throw new Error(
-            `[${agentName}] no parseable response found\nFirst 300 chars: ${result.slice(0, 300)}`
-          )
-        }
-      }
-    }
+    throw new Error(
+      `[${agentName}] response is neither a ===VERDICT=== block nor ===FILE:=== delimited\nFirst 300 chars: ${result.slice(0, 300)}`
+    )
   }
 
-  // Validate files array (Design Director may have no files — that's OK)
+  // A critic verdict carries no files; that is fine.
   if (!parsed.files) parsed.files = []
   if (!Array.isArray(parsed.files)) {
     throw new Error(
@@ -407,7 +316,7 @@ function validateCodegen() {
   const result = spawnSync('pnpm', ['panda', 'codegen'], {
     cwd: ROOT,
     encoding: 'utf8',
-    timeout: 60000, // 1 minute
+    timeout: STEP_BUDGETS.codegenMs,
   })
 
   if (result.status === 0) {
@@ -460,15 +369,27 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // build date instead — reproducible per day, varied across days. An
   // explicitly-set repo var (including '0', which is falsy in JS but not
   // "unset") always wins over the derived value.
-  const today = signals.date || new Date().toISOString().slice(0, 10)
+  const today = runDate(signals)
   const { risk: riskWeight, explicitlySet: riskExplicitlySet } = resolveRiskWeight(
     process.env.WEIGHT_RISK,
     today
   )
+  // A repo var set to something that is not a number used to reach the
+  // prompt as "signals=NaN". Fall back to the default, and say so.
+  const weightFromEnv = (name, fallback) => {
+    const raw = process.env[name]
+    if (raw === undefined || raw === '') return fallback
+    const n = Number.parseInt(raw, 10)
+    if (Number.isNaN(n)) {
+      console.warn(`  ${name}=${JSON.stringify(raw)} is not a number — using ${fallback}`)
+      return fallback
+    }
+    return n
+  }
   const weights = {
-    signals: parseInt(process.env.WEIGHT_SIGNALS || '5', 10),
-    inspiration: parseInt(process.env.WEIGHT_INSPIRATION || '5', 10),
-    ratings: parseInt(process.env.WEIGHT_RATINGS || '5', 10),
+    signals: weightFromEnv('WEIGHT_SIGNALS', 5),
+    inspiration: weightFromEnv('WEIGHT_INSPIRATION', 5),
+    ratings: weightFromEnv('WEIGHT_RATINGS', 5),
     risk: riskWeight,
   }
   console.log(
@@ -488,7 +409,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // rather than each agent's cap being checked only between phases.
   setRunDeadline(runDeadline)
 
-  const trace = createTrace(signals.date || new Date().toISOString().slice(0, 10), {
+  const trace = createTrace(runDate(signals), {
     onStep: (step) => {
       console.log(`[TRACE] ${JSON.stringify(step)}`)
       onTraceStep?.(step)
@@ -717,105 +638,21 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       })
     }
 
-    // Compute the deterministic color mandate once per run; inject into
-    // Director and Token Designer user prompts. Pure data — no LLM.
-    const { computeColorMandate, formatMandateForPrompt } = await import('./utils/color-mandate.js')
-    let colorMandate
-    try {
-      colorMandate = computeColorMandate({
-        archiveDir: path.join(ROOT, 'archive'),
-        signals,
-        lookbackDays: 7,
-        zoneRadius: 30,
-      })
-    } catch (err) {
-      console.warn(`[color-mandate] computation failed, using permissive default: ${err.message}`)
-      colorMandate = {
-        targetHueRange: [0, 360],
-        forbiddenHues: [],
-        recentPrimaryHues: [],
-        rationale: 'Mandate computation unavailable; palette is open.',
-      }
-    }
-    const colorMandateSection = formatMandateForPrompt(colorMandate)
-    console.log(
-      `  color-mandate: target ${colorMandate.targetHueRange[0]}-${colorMandate.targetHueRange[1]}°, ${colorMandate.forbiddenHues.length} forbidden zone(s)`
-    )
-
-    const { computeShellMandate, formatShellMandateForPrompt } = await import(
-      './utils/shell-mandate.js'
-    )
-    let shellMandateSection = ''
-    try {
-      shellMandateSection = formatShellMandateForPrompt(
-        computeShellMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 7 })
-      )
-    } catch (err) {
-      console.warn(`[shell-mandate] computation failed (non-blocking): ${err.message}`)
-    }
-
-    // Anti-sameness mandates (2026-08-23 audit): palette FORMULA (not just
-    // hue), hero-source rotation, and layout composition. Same soft-forbid
-    // shape as color/shell mandates above — deterministic, zero-LLM,
-    // advisory only. Each formatter returns '' when there's no history to
-    // react to (old archives predate these fields), so the section is
-    // simply omitted from the prompt rather than showing empty guidance.
-    const { computePaletteFormulaMandate, formatPaletteFormulaMandateForPrompt } = await import(
-      './utils/palette-formula-mandate.js'
-    )
-    let paletteFormulaMandateSection = ''
-    try {
-      paletteFormulaMandateSection = formatPaletteFormulaMandateForPrompt(
-        computePaletteFormulaMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 7 })
-      )
-    } catch (err) {
-      console.warn(`[palette-formula-mandate] computation failed (non-blocking): ${err.message}`)
-    }
-
-    const { computeHeroSourceMandate, formatHeroSourceMandateForPrompt } = await import(
-      './utils/hero-source-mandate.js'
-    )
-    let heroSourceMandateSection = ''
-    try {
-      heroSourceMandateSection = formatHeroSourceMandateForPrompt(
-        computeHeroSourceMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 7 })
-      )
-    } catch (err) {
-      console.warn(`[hero-source-mandate] computation failed (non-blocking): ${err.message}`)
-    }
-
-    const { computeCompositionMandate, formatCompositionMandateForPrompt } = await import(
-      './utils/composition-mandate.js'
-    )
-    const buildDate = signals.date || new Date().toISOString().slice(0, 10)
-    let compositionMandateSection = ''
-    try {
-      compositionMandateSection = formatCompositionMandateForPrompt(
-        computeCompositionMandate({
-          archiveDir: path.join(ROOT, 'archive'),
-          date: buildDate,
-          lookbackDays: 7,
-        })
-      )
-    } catch (err) {
-      console.warn(`[composition-mandate] computation failed (non-blocking): ${err.message}`)
-    }
-
-    // Chassis recency mandate (#253) — same shape as the shell mandate,
-    // reading the chassis field record.json already carries at the date
-    // level, so nothing new is persisted. Kept minimal pending the mandate
-    // consolidation in #225.
-    const { computeChassisMandate, formatChassisMandateForPrompt } = await import(
-      './utils/chassis-mandate.js'
-    )
-    let chassisMandateSection = ''
-    try {
-      chassisMandateSection = formatChassisMandateForPrompt(
-        computeChassisMandate({ archiveDir: path.join(ROOT, 'archive'), lookbackDays: 14 })
-      )
-    } catch (err) {
-      console.warn(`[chassis-mandate] computation failed (non-blocking): ${err.message}`)
-    }
+    // The variance mandates: deterministic, free, advisory. Computed in one
+    // place so the six "try, warn, carry on" blocks that sat here are one.
+    const { colorMandate, sections: mandate } = computeMandateSections({
+      root: ROOT,
+      signals,
+      date: today,
+    })
+    const {
+      color: colorMandateSection,
+      shell: shellMandateSection,
+      paletteFormula: paletteFormulaMandateSection,
+      heroSource: heroSourceMandateSection,
+      composition: compositionMandateSection,
+      chassis: chassisMandateSection,
+    } = mandate
 
     // -----------------------------------------------------------------------
     // Phase 0+1: Art Director — single decision (hero copy, archetype,
@@ -834,7 +671,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const { computeUniqueness, formatUniquenessForPrompt } = await import(
         './utils/uniqueness-index.js'
       )
-      const todayStr = signals.date || new Date().toISOString().slice(0, 10)
+      const todayStr = runDate(signals)
       const [previous, ...before] = await readUniquenessHistory({
         root: ROOT,
         limit: 8,
@@ -987,7 +824,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
       const { buildOgMetaEntries } = await import('./utils/og-meta.js')
       const ogMeta = buildOgMetaEntries({
-        date: signals.date || new Date().toISOString().slice(0, 10),
+        date: runDate(signals),
         heroCopy: artDirectorResult.heroCopy,
         designBrief: artDirectorResult.designBrief,
       })
@@ -1074,7 +911,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         try {
           const { buildOgMetaEntries } = await import('./utils/og-meta.js')
           const retryOgMeta = buildOgMetaEntries({
-            date: signals.date || new Date().toISOString().slice(0, 10),
+            date: runDate(signals),
             heroCopy: artDirectorResult.heroCopy,
             designBrief: artDirectorResult.designBrief,
           })
@@ -1186,11 +1023,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         specCriticPrompt,
         criticUserPrompt,
         null,
-        // Explicit stallTimeoutMs below the 10m hard timeout (same 10m/5m
-        // proportion as mockup-critic) — the claude-cli.js default (15m)
-        // exceeds this call's hard timeout, so a throttled-but-alive run
-        // could never trip the stall check and would just ride to the cap.
-        { model: modelFor('spec-critic'), stallTimeoutMs: 300000 }
+        // Timeouts come from budgets.js, keyed by agent.
+        { model: modelFor('spec-critic') }
       )
       const rawResponse = criticResult._rawResponse || criticResult.rationale || ''
       // Parse from the full response — _rawResponse has the ===VERDICT=== block
@@ -1289,7 +1123,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         const { readResponsiveHistory } = await import('./utils/read-responsive-history.js')
         const { selectRecentFailure } = await import('./utils/prompt-feedback-selector.js')
         const history = await readResponsiveHistory({ limit: 7 })
-        const today = new Date().toISOString().slice(0, 10)
         const { lesson, selectedBuildId } = selectRecentFailure({
           history,
           todayArchetype: chosenArchetype,
@@ -1358,7 +1191,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       forbidden: forbiddenLanes,
     } = selectLane({
       archiveDir,
-      date: buildDate,
+      date: today,
       tuple: chosenComposition,
     })
     console.log(
@@ -1566,7 +1399,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const reactEngineerAgentConfig = {
       prompt: reactEngineerSystemPrompt,
       user: buildEngineerUserPrompt,
-      options: { model: modelFor('react-engineer'), timeoutMs: 1800000, stallTimeoutMs: 480000 },
+      options: { model: modelFor('react-engineer'), ...budgetFor('react-engineer') },
     }
 
     const engineerUserPrompt = buildEngineerUserPrompt()
@@ -1973,12 +1806,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           agentName: 'screenshot-critic',
           systemPrompt: screenshotCriticPrompt,
           contentBlocks: criticBlocks,
-          // See spec-critic above: explicit stallTimeoutMs below the 10m
-          // hard timeout so the CLI fallback path can't ride the
-          // claude-cli.js default (15m) stall window past its own cap.
-          // The SDK path uses timeoutMs only.
-          timeoutMs: 600000,
-          stallTimeoutMs: 300000,
+          // The SDK path uses timeoutMs only; the CLI fallback uses both.
+          ...budgetFor('screenshot-critic'),
           onChannel: (c) => {
             visionChannel = c
           },
@@ -2265,24 +2094,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 // CLI entry point
 // ---------------------------------------------------------------------------
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   ;(async () => {
     console.log('\n=== Designer Agent Swarm ===\n')
 
+    // The nightly (daily-redesign.js) passes readContext() straight in; the
+    // Art Director writes today's brief itself. This entry used to refuse to
+    // start without signals/today.brief.md, which nothing else produced, so
+    // it could not run on a clean checkout.
     const context = await readContext()
-
-    // Read interpreted brief
-    const briefPath = path.resolve(
-      path.dirname(fileURLToPath(import.meta.url)),
-      '../signals/today.brief.md'
-    )
-    if (existsSync(briefPath)) {
-      context.brief = await readFile(briefPath, 'utf8')
-      console.log(`  using brief (${context.brief.length} chars)`)
-    } else {
-      console.error('Error: signals/today.brief.md not found. Run the PM agent first.')
-      process.exit(1)
-    }
 
     try {
       const result = await runAgentSwarm(context)

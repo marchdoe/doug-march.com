@@ -26,6 +26,13 @@ describe('parseMeasurablesBlock', () => {
     expect(m.color_coverage_min).toBeNull()
   })
 
+  it('keeps a # that is part of the value, and still strips a trailing comment', () => {
+    // The old parser split on the first '#' anywhere, so any hex colour or a
+    // role line like "Designer #1" was cut off mid-value.
+    const m = parseMeasurablesBlock('hero_scale: clamp(96px,13vw,200px)#nospace   # real comment')
+    expect(m.hero_scale).toBe('clamp(96px,13vw,200px)#nospace')
+  })
+
   it('returns all-null for garbage input', () => {
     const m = parseMeasurablesBlock('not even close')
     expect(m.canvas_utilization_min).toBeNull()

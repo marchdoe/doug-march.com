@@ -18,23 +18,16 @@
  */
 
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { join } from 'node:path'
+import { ROOT } from './utils/file-manager.js'
+import { archivedDates } from './utils/archive-fs.js'
 import { anomaliesOf, buildRecord } from './utils/archive-record.js'
 
-const ROOT = resolve(import.meta.dirname, '..')
 const ARCHIVE_DIR = join(ROOT, 'archive')
 
 const args = process.argv.slice(2)
 const checkOnly = args.includes('--check')
 const only = args.filter((a) => /^\d{4}-\d{2}-\d{2}$/.test(a))
-
-function archivedDates() {
-  if (!existsSync(ARCHIVE_DIR)) return []
-  return readdirSync(ARCHIVE_DIR, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(d.name))
-    .map((d) => d.name)
-    .sort()
-}
 
 function readExisting(recordPath) {
   if (!existsSync(recordPath)) return null
@@ -45,7 +38,7 @@ function readExisting(recordPath) {
   }
 }
 
-const dates = only.length > 0 ? only : archivedDates()
+const dates = only.length > 0 ? only : archivedDates(ARCHIVE_DIR)
 console.log(`[backfill-archive-records] ${dates.length} date(s)`)
 
 let written = 0

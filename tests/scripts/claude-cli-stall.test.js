@@ -71,6 +71,7 @@ describe('claude-cli stall detection', () => {
     const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
 
     const promise = callClaudeCLI('test-agent', 'system', 'user prompt', {
+      model: 'claude-sonnet-5',
       timeoutMs: 60 * 60 * 1000, // 1 hour — much longer than stall
       stallTimeoutMs: 1000, // 1 second stall timeout for the test
     })
@@ -106,6 +107,7 @@ describe('claude-cli stall detection', () => {
     const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
 
     const promise = callClaudeCLI('test-agent', 'system', 'user prompt', {
+      model: 'claude-sonnet-5',
       timeoutMs: 60 * 60 * 1000,
       stallTimeoutMs: 10000, // 10s stall
     })
@@ -145,6 +147,7 @@ describe('claude-cli stall detection', () => {
     const { getUsageRecords } = await import('../../scripts/utils/cost-ledger.js')
 
     const promise = callClaudeCLI('timeout-agent', 'system', 'user prompt', {
+      model: 'claude-sonnet-5',
       timeoutMs: 1000,
       stallTimeoutMs: 60 * 60 * 1000, // stall check must not fire first
     })
@@ -166,6 +169,7 @@ describe('claude-cli stall detection', () => {
     const { getUsageRecords } = await import('../../scripts/utils/cost-ledger.js')
 
     const promise = callClaudeCLI('crash-agent', 'system', 'user prompt', {
+      model: 'claude-sonnet-5',
       timeoutMs: 60 * 60 * 1000,
       stallTimeoutMs: 60 * 60 * 1000,
     })
@@ -211,12 +215,26 @@ describe('MOCK_MODE', () => {
     const prev = process.env.MOCK_MODE
     process.env.MOCK_MODE = 'true'
     try {
-      await expect(callClaudeCLI('mockup-critic', 'sys', 'prompt')).rejects.toThrow(
-        /MOCK_MODE=true but there is no mock/
-      )
+      await expect(
+        callClaudeCLI('mockup-critic', 'sys', 'prompt', { model: 'claude-haiku-4-5' })
+      ).rejects.toThrow(/MOCK_MODE=true but there is no mock/)
     } finally {
       if (prev === undefined) delete process.env.MOCK_MODE
       else process.env.MOCK_MODE = prev
     }
+  })
+})
+
+describe('callClaudeCLI refuses an implicit model', () => {
+  it('throws before spawning when no model ID is given', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    // The old default was the 'sonnet' alias, which a pinned CLI resolves to
+    // whatever was current when that CLI version shipped.
+    await expect(callClaudeCLI('some-agent', 'sys', 'prompt', {})).rejects.toThrow(
+      /requires an explicit model ID/
+    )
+    await expect(callClaudeCLI('some-agent', 'sys', 'prompt', { model: 'sonnet' })).rejects.toThrow(
+      /requires an explicit model ID/
+    )
   })
 })
