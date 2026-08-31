@@ -89,14 +89,15 @@ function formatCuratedSection(refs) {
 function formatTrendingSection(signals) {
   const sections = []
 
-  const dribbble = signals?.dribbble?.trending
-  if (Array.isArray(dribbble) && dribbble.length > 0) {
-    const lines = ['## Dribbble Trending', '']
-    for (const shot of dribbble) {
-      const title = shot.title ?? 'Untitled'
-      const url = shot.url ?? ''
-      const author = shot.author ?? shot.designer ?? ''
-      lines.push(`- **${title}**${author ? ` by ${author}` : ''}${url ? ` — ${url}` : ''}`)
+  const sidebar = signals?.sidebar?.links
+  if (Array.isArray(sidebar) && sidebar.length > 0) {
+    const lines = ['## Sidebar — Today in Design', '']
+    for (const link of sidebar) {
+      const title = link.title ?? 'Untitled'
+      const url = link.url ?? ''
+      const source = link.source ?? ''
+      lines.push(`- **${title}**${source ? ` (${source})` : ''}${url ? ` — ${url}` : ''}`)
+      if (link.description) lines.push(`  ${link.description}`)
     }
     lines.push('')
     sections.push(lines.join('\n'))
