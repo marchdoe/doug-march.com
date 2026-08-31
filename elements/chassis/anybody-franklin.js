@@ -26,7 +26,8 @@ import { fluid, scaleSteps } from './scale.js'
 export const anybodyFranklin = {
   id: 'anybody-franklin',
   name: 'Anybody + Libre Franklin',
-  description: 'Wide squarish grotesk with true italics + Franklin Gothic body — broad, sporty, emphatic.',
+  description:
+    'Wide squarish grotesk with true italics + Franklin Gothic body — broad, sporty, emphatic.',
   moods: ['wide', 'sporty', 'confident', 'italic-forward', 'modern'],
   archetypes: ['Poster', 'Split', 'Stack'],
 

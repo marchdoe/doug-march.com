@@ -1,0 +1,31 @@
+{
+  // This file is JSONC: fallow reads these comments; generic JSON tools may not.
+  "$schema": "./node_modules/fallow/schema.json",
+
+  // The nightly commits a full built site per day under archive/ and a copy of
+  // the same pages under public/archive/. Together they are 2,693 of the 3,042
+  // files fallow would otherwise walk, and every one of them is bundler output
+  // — dead code in a snapshot of 2026-04-14 is not a finding anyone can act on.
+  "ignorePatterns": ["archive/**", "public/**", ".superpowers/**", "app/routeTree.gen.ts"],
+
+  // Roots nothing imports but everything runs: the nightly's scripts, the
+  // signal collectors it discovers by directory listing, the chassis catalogue
+  // design-agents.js loads by name, and the test files.
+  "entry": [
+    "scripts/*.js",
+    "scripts/signals/*.js",
+    "scripts/utils/*.js",
+    "elements/chassis/*.js",
+    "tests/**/*.test.*",
+    "tests/**/*.spec.*"
+  ],
+
+  "duplicates": {
+    // Hide pair-only clones; focus on widespread copy-paste
+    // worth refactoring. Lower to 2 to report every duplicate pair.
+    "minOccurrences": 3
+  },
+  "rules": {
+    "unused-dependencies": "warn"
+  }
+}

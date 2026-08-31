@@ -24,7 +24,8 @@ import { scaleSteps } from './scale.js'
 export const unboundedFigtree = {
   id: 'unbounded-figtree',
   name: 'Unbounded + Figtree',
-  description: 'Blocky, wide geometric display with warm neutral grotesk body — expanded, confident, modern-loud.',
+  description:
+    'Blocky, wide geometric display with warm neutral grotesk body — expanded, confident, modern-loud.',
   moods: ['geometric', 'expanded', 'blocky', 'confident', 'modern'],
   archetypes: ['Poster', 'Specimen', 'Gallery Wall'],
 

@@ -793,10 +793,12 @@ export function validateBuild({ shell = null } = {}) {
 }
 
 /**
- * Paths the static checks cover. The same three the nightly's push step
+ * Paths the static checks cover. The same ones the nightly's push step
  * stages, so what gets checked is exactly what would reach main. `elements/`
- * is not here because biome.json excludes it — the presets are generated
- * TypeScript that codegen validates on write.
+ * is not here because the nightly does not write it: the two generated
+ * presets are the only files a run may touch, and codegen validates those on
+ * write. Biome excludes exactly those two and lints the hand-written chassis
+ * catalogue like any other source.
  */
 export const STATIC_CHECK_PATHS = ['app/components', 'app/routes']
 

@@ -99,6 +99,34 @@ jobs:
       - name: Run E2E tests (site health)
         run: pnpm test:e2e:site
 
+  architecture:
+    name: Architecture (fallow)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # `audit --base` diffs against the merge base, so the shallow default
+      # checkout is not enough.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      # Advisory, not blocking. The repo carries 39 inherited findings that
+      # #216 exists to clear, and a gate that fails on day one on debt it did
+      # not cause is a gate people learn to ignore. Drop continue-on-error
+      # once #216 lands and the baseline is clean.
+      - name: Architecture audit (fallow)
+        continue-on-error: true
+        run: pnpm fallow audit --base origin/${{ github.base_ref }}
+
   dev-panel:
     name: Dev panel (E2E)
     runs-on: ubuntu-latest

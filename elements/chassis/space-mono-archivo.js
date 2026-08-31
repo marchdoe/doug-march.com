@@ -27,7 +27,8 @@ import { scaleSteps } from './scale.js'
 export const spaceMonoArchivo = {
   id: 'space-mono-archivo',
   name: 'Space Mono + Archivo',
-  description: 'Retro-futurist monospace display with neutral grotesk body — technical, precise, terminal-adjacent.',
+  description:
+    'Retro-futurist monospace display with neutral grotesk body — technical, precise, terminal-adjacent.',
   moods: ['technical', 'retro-futurist', 'terminal', 'precise', 'quirky'],
   archetypes: ['Specimen', 'Index', 'Split'],
 

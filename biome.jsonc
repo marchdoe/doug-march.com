@@ -12,7 +12,8 @@
       "!styled-system",
       "!public",
       "!dist",
-      "!elements",
+      "!elements/preset.ts",
+      "!elements/chassis-preset.ts",
       "!app/routeTree.gen.ts",
       "!docs",
       "!references",
@@ -71,6 +72,30 @@
     }
   },
   "overrides": [
+    {
+      // fallow writes and reads its own config as JSONC. Biome's JSON parser
+      // rejects the comments unless told to expect them.
+      "includes": [".fallowrc.json"],
+      "json": {
+        "parser": {
+          "allowComments": true
+        }
+      }
+    },
+    {
+      // Chassis type scales are typographic ratios written the way a designer
+      // reads them: 1.414 is the augmented fourth, not an approximation of
+      // Math.SQRT2. Swapping in the standard-library constant would move every
+      // computed step size.
+      "includes": ["**/chassis/*.js"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noApproximativeNumericConstant": "off"
+          }
+        }
+      }
+    },
     {
       "includes": ["app/dev-panel.tsx"],
       "linter": {

@@ -1,5 +1,0 @@
-Art Director failed: [art-director] timed out after 10 minutes (generated 2KB before timeout)
-
-Error: Art Director failed: [art-director] timed out after 10 minutes (generated 2KB before timeout)
-    at runAgentSwarm (file:///Users/dougmarch/Projects/dougmarch/scripts/design-agents.js:734:11)
-    at async main (file:///Users/dougmarch/Projects/dougmarch/scripts/daily-redesign.js:56:14)
