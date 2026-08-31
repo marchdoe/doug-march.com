@@ -24,6 +24,7 @@ styled-system/
 signals/today.yml
 signals/today.meta.yml
 signals/today.brief.md
+signals/today.references.md
 signals/today.mockup.html
 signals/cli-diag-*.txt
 signals/*-last-failed.txt
@@ -50,3 +51,6 @@ test-results/
 
 # Coverage output (vitest --coverage)
 coverage/
+
+# fallow's analysis cache
+.fallow/

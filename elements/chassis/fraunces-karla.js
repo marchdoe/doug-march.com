@@ -27,7 +27,8 @@ import { scaleSteps } from './scale.js'
 export const fraucesKarla = {
   id: 'fraunces-karla',
   name: 'Fraunces + Karla',
-  description: 'Fat, soft variable display serif with humanist grotesk body — warm, tactile, generous.',
+  description:
+    'Fat, soft variable display serif with humanist grotesk body — warm, tactile, generous.',
   moods: ['warm', 'soft', 'tactile', 'editorial', 'friendly'],
   archetypes: ['Gallery Wall', 'Stack', 'Broadsheet'],
 

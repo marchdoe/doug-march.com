@@ -28,7 +28,8 @@ import { scaleSteps } from './scale.js'
 export const sourceSerifText = {
   id: 'source-serif-text',
   name: 'Source Serif 4, alone',
-  description: 'Optically-sized text serif running display and body alike — literary, quiet, bookish.',
+  description:
+    'Optically-sized text serif running display and body alike — literary, quiet, bookish.',
   moods: ['literary', 'quiet', 'bookish', 'warm', 'text-led'],
   archetypes: ['Broadsheet', 'Scroll', 'Stack'],
 

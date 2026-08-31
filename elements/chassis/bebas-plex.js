@@ -25,7 +25,8 @@ import { scaleSteps } from './scale.js'
 export const bebasPlex = {
   id: 'bebas-plex',
   name: 'Bebas Neue + IBM Plex Sans',
-  description: 'Condensed editorial display + humanist workhorse body — editorial, catalog, declarative.',
+  description:
+    'Condensed editorial display + humanist workhorse body — editorial, catalog, declarative.',
   moods: ['editorial', 'catalog', 'declarative', 'condensed', 'humanist'],
   archetypes: ['Specimen', 'Index', 'Split'],
 
