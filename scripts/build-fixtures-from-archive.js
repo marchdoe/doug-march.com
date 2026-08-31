@@ -167,37 +167,50 @@ function completeSemanticTokens(source) {
   return source.slice(0, at) + added.join('\n') + '\n' + source.slice(at)
 }
 
-function artDirector(build, date) {
-  const trace = readJson(path.join(build, 'trace.json'))
-  const ad = trace?.steps?.find((s) => s.name === 'art-director')?.output ?? {}
-  const brief = readFileSync(path.join(build, 'brief.md'), 'utf8')
-  const shell = readJson(path.join(build, 'shell.json')) ?? {}
-  const header = readJson(path.join(build, 'header.json'))
-  const composition = readJson(path.join(build, 'composition.json')) ?? {}
-  const scheme = readJson(path.join(build, 'color-scheme.json'))
-  const heroSource = readJson(path.join(build, 'hero-source.json'))
-  const preset = completeSemanticTokens(readFileSync(path.join(build, 'preset.ts'), 'utf8'))
-  const rationale = briefSection(brief, "Claude's Rationale")
+/**
+ * A HEADER block the grammar accepts.
+ *
+ * Builds before #254 kept nav in shell.json and declared no header at all, so
+ * one has to be synthesized. It is marked as such in the block itself: these
+ * numbers were nobody's design decision.
+ */
+function headerBlock(header, shell, composition) {
+  if (header) return kvBlock(header)
+  return [
+    '# synthesized: this build predates the HEADER declaration (#254)',
+    kvBlock({
+      placement: composition.shell_posture === 'marginal' ? 'right-margin' : 'top-bar',
+      height_px: 72,
+      mark_px: 40,
+      wordmark_step: 'sm',
+      wordmark_weight: 600,
+      role_line: 'absent',
+      nav_step: 'sm',
+      nav_case: 'lower',
+      nav: shell.nav ?? 'three lowercase links in the top-right margin',
+    }),
+  ].join('\n')
+}
 
-  // Builds before #254 kept nav in shell.json and declared no header at all.
-  // A header the grammar accepts has to be synthesized, and is marked as such
-  // so nobody reads these numbers as something the Art Director chose.
-  const headerBlock = header
-    ? kvBlock(header)
-    : [
-        '# synthesized: this build predates the HEADER declaration (#254)',
-        kvBlock({
-          placement: composition.shell_posture === 'marginal' ? 'right-margin' : 'top-bar',
-          height_px: 72,
-          mark_px: 40,
-          wordmark_step: 'sm',
-          wordmark_weight: 600,
-          role_line: 'absent',
-          nav_step: 'sm',
-          nav_case: 'lower',
-          nav: shell.nav ?? 'three lowercase links in the top-right margin',
-        }),
-      ].join('\n')
+/** Everything the Art Director declares, read back off disk. */
+function artDirectorArtifacts(build) {
+  const trace = readJson(path.join(build, 'trace.json'))
+  return {
+    ad: trace?.steps?.find((s) => s.name === 'art-director')?.output ?? {},
+    brief: readFileSync(path.join(build, 'brief.md'), 'utf8'),
+    shell: readJson(path.join(build, 'shell.json')) ?? {},
+    header: readJson(path.join(build, 'header.json')),
+    composition: readJson(path.join(build, 'composition.json')) ?? {},
+    scheme: readJson(path.join(build, 'color-scheme.json')),
+    heroSource: readJson(path.join(build, 'hero-source.json')),
+    preset: completeSemanticTokens(readFileSync(path.join(build, 'preset.ts'), 'utf8')),
+  }
+}
+
+function artDirector(build) {
+  const { ad, brief, shell, header, composition, scheme, heroSource, preset } =
+    artDirectorArtifacts(build)
+  const rationale = briefSection(brief, "Claude's Rationale")
 
   const blocks = [
     `===HERO_COPY===\n${ad.hero_copy ?? ''}`,
@@ -220,7 +233,7 @@ function artDirector(build, date) {
       brand_color_mode: shell.brand_color_mode,
       ground_strategy: shell.ground_strategy,
     })}`,
-    `===HEADER===\n${headerBlock}`,
+    `===HEADER===\n${headerBlock(header, shell, composition)}`,
     `===COMPOSITION===\n${kvBlock(composition)}`,
     `===COMPOSITION_RATIONALE===\n${rationale.slice(0, 600) || 'Reconstructed from the archived brief.'}`,
     scheme ? `===COLOR_SCHEME===\n${JSON.stringify(scheme, null, 2)}` : null,
@@ -228,7 +241,6 @@ function artDirector(build, date) {
   ].filter(Boolean)
 
   write('art-director', 0, blocks.join('\n\n'))
-  return { date }
 }
 
 function critics(build) {
@@ -292,7 +304,7 @@ if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
 
 const build = shippedBuildDir(date)
 console.log(`Rebuilding fixtures from ${path.relative(ROOT, build)}\n`)
-artDirector(build, date)
+artDirector(build)
 mockupDesigner(build)
 critics(build)
 reactEngineer(build, date)
