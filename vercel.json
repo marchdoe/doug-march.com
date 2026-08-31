@@ -88,10 +88,6 @@
       "destination": "/archive/:date/index.html"
     },
     {
-      "source": "/archive/:path+",
-      "destination": "/archive/:path+"
-    },
-    {
       "source": "/((?!og/.|archive/.).*)",
       "destination": "/_shell.html"
     }

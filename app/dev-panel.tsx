@@ -1,43 +1,18 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import type { ArchiveEntry } from './dev-server/dev-data'
+import {
+  type Meta,
+  type Signals,
+  collectSignals,
+  fetchDevData,
+  saveOverrides,
+  startPipeline,
+} from './dev/api'
 import { ResponsiveCard } from './components/responsive-card'
 import { readResponsiveMetrics, readArchiveDetail } from './server/archive'
 import type { ResponsiveMetrics } from './server/archive'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-
-// Signals is now a dynamic bag — each key is a provider name with arbitrary data
-type Signals = Record<string, unknown> & {
-  date: string
-  mood_override?: string | null
-  notes?: string | null
-}
-
-interface MetaSource {
-  status: 'ok' | 'error' | 'skipped'
-  source?: string
-  reason?: string
-  latency_ms: number
-  items?: number
-}
-
-interface Meta {
-  collected_at: string
-  duration_ms: number
-  providers_total: number
-  providers_ok: number
-  providers_failed: number
-  sources: Record<string, MetaSource>
-}
-
-interface ArchiveEntry {
-  date: string
-  buildId: string
-  timestamp: number
-  brief: string
-  weights?: PanelWeights
-  rationale?: string
-  filesChanged?: string[]
-}
 
 // One step of the pipeline trace, as emitted on the SSE stream ({ type:
 // 'trace', step }) and persisted in each build's trace.json.
@@ -261,18 +236,18 @@ export function DevPanel() {
   }
 
   // ── Load initial data ──────────────────────────────────────────────────────
+  const [apiError, setApiError] = useState<string | null>(null)
   useEffect(() => {
-    fetch('/api/dev-data')
-      .then((r) => r.json())
+    fetchDevData()
       .then((data) => {
         setSignals(data.signals)
-        setMeta(data.meta ?? null)
+        setMeta(data.meta)
         setArchive(data.archive)
         setMoodOverride(data.signals?.mood_override ?? '')
         setNotes(data.signals?.notes ?? '')
-        setLoading(false)
       })
-      .catch(() => setLoading(false))
+      .catch((err: unknown) => setApiError(err instanceof Error ? err.message : String(err)))
+      .finally(() => setLoading(false))
   }, [])
 
   // ── Refresh signals ───────────────────────────────────────────────────────
@@ -280,13 +255,14 @@ export function DevPanel() {
   const handleRefreshSignals = useCallback(async () => {
     setRefreshingSignals(true)
     try {
-      await fetch('/api/collect-signals')
-      const resp = await fetch('/api/dev-data')
-      const data = await resp.json()
+      await collectSignals()
+      const data = await fetchDevData()
       setSignals(data.signals)
-      setMeta(data.meta ?? null)
+      setMeta(data.meta)
       setMoodOverride(data.signals?.mood_override ?? '')
       setNotes(data.signals?.notes ?? '')
+    } catch (err: unknown) {
+      setApiError(err instanceof Error ? err.message : String(err))
     } finally {
       setRefreshingSignals(false)
     }
@@ -298,6 +274,7 @@ export function DevPanel() {
       esRef.current?.close()
       if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
       if (cooldownTimerRef.current) clearInterval(cooldownTimerRef.current)
+      if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current)
     }
   }, [])
 
@@ -327,11 +304,9 @@ export function DevPanel() {
   const handleSaveOverrides = async () => {
     setSavingOverrides(true)
     try {
-      await fetch('/api/dev-overrides', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ moodOverride: moodOverride || null, notes: notes || null }),
-      })
+      await saveOverrides({ moodOverride: moodOverride || null, notes: notes || null })
+    } catch (err: unknown) {
+      setApiError(err instanceof Error ? err.message : String(err))
     } finally {
       setSavingOverrides(false)
     }
@@ -339,6 +314,7 @@ export function DevPanel() {
 
   // ── SSE stream handler — shared by initial run and reconnect ─────────────
   const reconnectAttemptsRef = useRef(0)
+  const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const MAX_RECONNECT_ATTEMPTS = 5
 
   const connectToStream = useCallback((startTime: number) => {
@@ -348,10 +324,16 @@ export function DevPanel() {
     es.onmessage = (e) => {
       // Reset reconnect counter on successful message
       reconnectAttemptsRef.current = 0
-      const event = JSON.parse(e.data) as
+      let event:
         | { type: 'log'; line: string }
         | { type: 'trace'; step: TraceStep }
         | { type: 'done'; success: boolean; error?: string }
+      try {
+        event = JSON.parse(e.data)
+      } catch {
+        // A truncated frame is a log line nobody can read, not a crash.
+        return
+      }
 
       if (event.type === 'trace') {
         traceAccumRef.current.push(event.step)
@@ -439,9 +421,9 @@ export function DevPanel() {
             timestamp,
             totalMs,
           })
-          fetch('/api/dev-data')
-            .then((r) => r.json())
+          fetchDevData()
             .then((data) => setArchive(data.archive))
+            .catch(() => {})
           // Rating state is fresh per build — SuccessSection starts with empty state by default
         } else {
           setPipelineStatus('error')
@@ -457,8 +439,11 @@ export function DevPanel() {
       // On HMR-triggered reconnect, try reconnecting to a still-running pipeline
       // instead of immediately reporting an error (max 5 attempts)
       if (reconnectAttemptsRef.current <= MAX_RECONNECT_ATTEMPTS) {
-        setTimeout(() => {
-          const savedStart = sessionStorage.getItem('pipeline-start-time')
+        reconnectTimerRef.current = setTimeout(() => {
+          let savedStart: string | null = null
+          try {
+            savedStart = sessionStorage.getItem('pipeline-start-time')
+          } catch {}
           if (savedStart) {
             connectToStream(Number(savedStart))
           }
@@ -478,7 +463,10 @@ export function DevPanel() {
 
   // ── Reconnect on mount if pipeline was running before HMR ────────────────
   useEffect(() => {
-    const savedStart = sessionStorage.getItem('pipeline-start-time')
+    let savedStart: string | null = null
+    try {
+      savedStart = sessionStorage.getItem('pipeline-start-time')
+    } catch {}
     if (savedStart) {
       const startTime = Number(savedStart)
       setPipelineStatus('running')
@@ -523,21 +511,26 @@ export function DevPanel() {
       setElapsedMs(Date.now() - startTime)
     }, 250)
 
-    // Launch the pipeline via POST, then connect to SSE stream
-    const resp = await fetch('/api/pipeline/start', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ dryRun, mock: true, weights }),
-    })
-
-    if (!resp.ok) {
-      const data = await resp.json().catch(() => ({ error: 'Failed to start pipeline' }))
+    // Launch the pipeline via POST, then connect to SSE stream. A refusal
+    // and a thrown fetch end the same way: the run never started, so
+    // nothing may be left claiming that it did.
+    const abandon = (error: string) => {
       if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
       try {
         sessionStorage.removeItem('pipeline-start-time')
       } catch {}
       setPipelineStatus('error')
-      setResult({ error: data.error ?? 'Failed to start pipeline', totalMs: 0 })
+      setResult({ error, totalMs: 0 })
+    }
+    let refusal: string | null
+    try {
+      refusal = await startPipeline({ dryRun, mock: true, weights })
+    } catch (err: unknown) {
+      abandon(err instanceof Error ? err.message : 'Failed to start pipeline')
+      return
+    }
+    if (refusal) {
+      abandon(refusal)
       return
     }
 
@@ -556,6 +549,11 @@ export function DevPanel() {
     return (
       <main style={s.page}>
         <div style={{ padding: '2rem 28px 2rem 32px', maxWidth: 480 }}>
+          {apiError && (
+            <p style={{ color: c.orange, marginBottom: '1rem', fontFamily: c.font, fontSize: 12 }}>
+              {apiError}
+            </p>
+          )}
           <p style={{ color: c.dim, marginBottom: '1rem' }}>No signals collected yet.</p>
           <p style={{ color: c.dim, fontSize: '0.85rem', lineHeight: 1.6 }}>
             Run{' '}
@@ -955,7 +953,7 @@ function PipelinePane({
   return (
     <>
       {/* Zone 1: Signals Header */}
-      <SignalsHeader meta={meta} date={signals.date} />
+      <SignalsHeader meta={meta} date={signals.date ?? ''} />
 
       {/* Zone 2: Atmosphere Strip */}
       <AtmosphereStrip signals={signals} />
