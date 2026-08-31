@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
+  artDirectorBlocks,
   briefSection,
   completeSemanticTokens,
   headerBlock,
@@ -97,5 +98,67 @@ describe('headerBlock', () => {
 describe('kvBlock', () => {
   it('drops null and undefined rather than writing them as values', () => {
     expect(kvBlock({ a: 1, b: null, c: undefined, d: 'x' })).toBe('a: 1\nd: x')
+  })
+})
+
+describe('artDirectorBlocks', () => {
+  const artifacts = {
+    ad: {
+      hero_copy: 'Select a busy man.',
+      archetype: "A busy man's ledger.",
+      chassisId: 'unbounded-figtree',
+      specPreview: '### 1. Color Specification',
+      selfCheck: '1. Hero quotability: Yes',
+    },
+    brief:
+      "# 2026-08-30\n\n## Claude's Rationale\n\nThe phrase is an order.\n\n## Files Changed\n\n- a.ts",
+    shell: {
+      footer: 'ledger foot',
+      brand_lockup: 'horizontal-md',
+      brand_color_mode: 'single-color',
+    },
+    header: null,
+    composition: { columns: 'two-asymmetric', shell_posture: 'marginal' },
+    scheme: { primary_hue: { h: 46 } },
+    heroSource: { source: 'quote' },
+    preset: 'export const preset = {}',
+  }
+
+  it('emits every block the Art Director validator requires', () => {
+    const out = artDirectorBlocks(artifacts)
+    for (const block of [
+      'HERO_COPY',
+      'COMPOSITION',
+      'COMPOSITION_RATIONALE',
+      'CHASSIS_ID',
+      'VISUAL_SPEC',
+      'SELF_CHECK',
+      'MEASURABLES',
+      'SHELL',
+      'HEADER',
+    ]) {
+      expect(out).toContain(`===${block}===`)
+    }
+    expect(out).toContain('===FILE:elements/preset.ts===')
+  })
+
+  it('carries the rationale from the brief into both rationale blocks', () => {
+    const out = artDirectorBlocks(artifacts)
+    expect(out).toContain('===HERO_RATIONALE===\nThe phrase is an order.')
+    expect(out).toContain('===COMPOSITION_RATIONALE===\nThe phrase is an order.')
+  })
+
+  it('omits optional blocks the build never recorded rather than emitting them empty', () => {
+    const out = artDirectorBlocks({ ...artifacts, heroSource: null, scheme: null, ad: {} })
+    expect(out).not.toContain('===HERO_SOURCE===')
+    expect(out).not.toContain('===ARCHETYPE===')
+    expect(out).not.toContain('===COLOR_SCHEME===')
+    // The required ones still appear, with their stated fallbacks.
+    expect(out).toContain('===SELF_CHECK===\n1. Reconstructed from the archive.')
+  })
+
+  it('falls back to a stated line when the brief has no rationale section', () => {
+    const out = artDirectorBlocks({ ...artifacts, brief: '# no sections here' })
+    expect(out).toContain('===HERO_RATIONALE===\nReconstructed from the archived brief.')
   })
 })

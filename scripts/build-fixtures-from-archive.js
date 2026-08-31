@@ -193,8 +193,15 @@ export function headerBlock(header, shell, composition) {
   ].join('\n')
 }
 
+/** MEASURABLES is never persisted; these are the values the gate accepts. */
+const MEASURABLE_DEFAULTS = {
+  canvas_utilization_min: 85,
+  hero_scale: 'clamp(64px, 8.5vw, 136px)',
+  color_coverage_min: 40,
+}
+
 /** Everything the Art Director declares, read back off disk. */
-function artDirectorArtifacts(build) {
+export function artDirectorArtifacts(build) {
   const trace = readJson(path.join(build, 'trace.json'))
   return {
     ad: trace?.steps?.find((s) => s.name === 'art-director')?.output ?? {},
@@ -208,14 +215,24 @@ function artDirectorArtifacts(build) {
   }
 }
 
-function artDirector(build) {
-  const { ad, brief, shell, header, composition, scheme, heroSource, preset } =
-    artDirectorArtifacts(build)
+/**
+ * The Art Director's response, assembled from what the build recorded.
+ *
+ * Exported and pure so the assembly can be asserted: this is the fixture the
+ * whole replay hangs off, and every `??` here is a decision about what to do
+ * when a build predates a block.
+ *
+ * @param {ReturnType<typeof artDirectorArtifacts>} artifacts
+ * @returns {string}
+ */
+export function artDirectorBlocks(artifacts) {
+  const { ad, brief, shell, header, composition, scheme, heroSource, preset } = artifacts
   const rationale = briefSection(brief, "Claude's Rationale")
+  const fallbackRationale = 'Reconstructed from the archived brief.'
 
-  const blocks = [
+  return [
     `===HERO_COPY===\n${ad.hero_copy ?? ''}`,
-    `===HERO_RATIONALE===\n${rationale || 'Reconstructed from the archived brief.'}`,
+    `===HERO_RATIONALE===\n${rationale || fallbackRationale}`,
     heroSource?.source ? `===HERO_SOURCE===\nsource: ${heroSource.source}` : null,
     ad.archetype ? `===ARCHETYPE===\n${ad.archetype}` : null,
     `===CHASSIS_ID===\n${ad.chassisId ?? ''}`,
@@ -223,11 +240,7 @@ function artDirector(build) {
     `===VISUAL_SPEC===\n${RECONSTRUCTED}\n${ad.specPreview ?? '### Specification\nReconstructed.'}`,
     `===SELF_CHECK===\n${ad.selfCheck ?? '1. Reconstructed from the archive.'}`,
     // Never persisted as an artifact; these are the defaults the gate accepts.
-    `===MEASURABLES===\n# synthesized: not persisted by this build\n${kvBlock({
-      canvas_utilization_min: 85,
-      hero_scale: 'clamp(64px, 8.5vw, 136px)',
-      color_coverage_min: 40,
-    })}`,
+    `===MEASURABLES===\n# synthesized: not persisted by this build\n${kvBlock(MEASURABLE_DEFAULTS)}`,
     `===SHELL===\n${kvBlock({
       footer: shell.footer,
       brand_lockup: shell.brand_lockup,
@@ -236,12 +249,16 @@ function artDirector(build) {
     })}`,
     `===HEADER===\n${headerBlock(header, shell, composition)}`,
     `===COMPOSITION===\n${kvBlock(composition)}`,
-    `===COMPOSITION_RATIONALE===\n${rationale.slice(0, 600) || 'Reconstructed from the archived brief.'}`,
+    `===COMPOSITION_RATIONALE===\n${rationale.slice(0, 600) || fallbackRationale}`,
     scheme ? `===COLOR_SCHEME===\n${JSON.stringify(scheme, null, 2)}` : null,
     `===FILE:elements/preset.ts===\n${preset}`,
-  ].filter(Boolean)
+  ]
+    .filter(Boolean)
+    .join('\n\n')
+}
 
-  write('art-director', 0, blocks.join('\n\n'))
+function artDirector(build) {
+  write('art-director', 0, artDirectorBlocks(artDirectorArtifacts(build)))
 }
 
 function critics(build) {
