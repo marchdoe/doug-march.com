@@ -16,7 +16,7 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk'
-import { modelFor } from './models.js'
+import { modelFor, supportsAdaptiveThinking } from './models.js'
 import { recordUsage } from './cost-ledger.js'
 
 /**
@@ -64,17 +64,6 @@ export function textBlock(text) {
  */
 export function hasApiKey() {
   return Boolean(process.env.ANTHROPIC_API_KEY)
-}
-
-/**
- * Adaptive thinking exists on the 4.6-and-later families. Haiku 4.5 rejects
- * it with a 400, so a tier change in models.js can't be allowed to break the
- * call — resolve the flag from the model ID rather than assuming.
- * @param {string} model
- * @returns {boolean}
- */
-function supportsAdaptiveThinking(model) {
-  return !model.startsWith('claude-haiku-4-5')
 }
 
 /**

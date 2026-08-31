@@ -21,23 +21,11 @@
  * @module
  */
 
-/**
- * USD per million tokens, by model ID. Anthropic first-party API rates.
- *
- * Cache reads bill at ~0.1x input and cache writes at ~1.25x input; those
- * multipliers are applied below rather than stored per model.
- *
- * Only used to price the SDK path. A model missing from this table prices
- * to null (unknown), never to zero — a silent $0 would read as "free".
- */
-export const PRICING = {
-  'claude-opus-4-8': { input: 5, output: 25 },
-  'claude-opus-5': { input: 5, output: 25 },
-  'claude-sonnet-5': { input: 3, output: 15 },
-  'claude-sonnet-4-6': { input: 3, output: 15 },
-  'claude-haiku-4-5': { input: 1, output: 5 },
-}
+import { pricingFor } from './models.js'
 
+// Pricing lives on the model catalog in models.js, beside the IDs the
+// pipeline actually emits, so a tier bump cannot silently make every call
+// on the new model unpriceable (#221).
 const CACHE_READ_MULTIPLIER = 0.1
 const CACHE_WRITE_MULTIPLIER = 1.25
 
@@ -61,7 +49,7 @@ export function resetLedger() {
  * @returns {number|null} USD
  */
 export function estimateCostUsd(model, usage = {}) {
-  const rate = PRICING[model]
+  const rate = pricingFor(model)
   if (!rate) return null
   const input = usage.input_tokens ?? 0
   const output = usage.output_tokens ?? 0

@@ -6,6 +6,7 @@
  */
 
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { writeFile, unlink } from 'node:fs/promises'
 import { createReadStream } from 'node:fs'
 import { spawn } from 'node:child_process'
@@ -72,10 +73,19 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     // carry comments explaining that they had to.
     stallTimeoutMs: requestedStallMs = 900000,
     cwd = ROOT,
-    model = 'sonnet',
+    model,
     extraCliArgs = [],
     onTimeout,
   } = options
+
+  // An explicit model ID is required. The 'sonnet' alias this defaulted to is
+  // exactly what models.js exists to keep out of the pipeline: CI pins the
+  // CLI, and a pinned CLI's alias means whatever was current when it shipped.
+  if (typeof model !== 'string' || !model.startsWith('claude-')) {
+    throw new Error(
+      `[${agentName}] callClaudeCLI requires an explicit model ID (got ${JSON.stringify(model)}); use modelFor()`
+    )
+  }
 
   // Never start a call with a timeout that outlives the run's own deadline.
   // The agent caps (25-30 min) are sized for a call in isolation; late in a
@@ -108,10 +118,11 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     )
   }
 
-  // Determine the pipeline-settings.json path (sibling to the scripts/ dir)
+  // A Claude CLI settings file (hooks off, plugins off), not pipeline config;
+  // it was named pipeline-settings.json, which invited the wrong edits.
   const PIPELINE_SETTINGS = path.resolve(
-    path.dirname(new URL(import.meta.url).pathname),
-    '../pipeline-settings.json'
+    path.dirname(fileURLToPath(import.meta.url)),
+    '../claude-cli-settings.json'
   )
 
   // Write prompt to temp file (too long for command line args)

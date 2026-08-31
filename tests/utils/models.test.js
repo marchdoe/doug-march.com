@@ -1,5 +1,13 @@
 import { describe, it, expect, afterEach } from 'vitest'
-import { modelFor, isDevModelTier, PROD_MODELS, MODEL_IDS } from '../../scripts/utils/models.js'
+import {
+  modelFor,
+  isDevModelTier,
+  PROD_MODELS,
+  MODEL_IDS,
+  MODEL_CATALOG,
+  pricingFor,
+  supportsAdaptiveThinking,
+} from '../../scripts/utils/models.js'
 
 const ENV_KEYS = ['PIPELINE_TIER', 'ANTHROPIC_API_KEY']
 const saved = {}
@@ -78,5 +86,31 @@ describe('model tier resolution', () => {
   it('exposes the prod model map for reference', () => {
     expect(PROD_MODELS['mockup-designer']).toBe('opus')
     expect(PROD_MODELS['art-director']).toBe('opus')
+  })
+})
+
+describe('MODEL_CATALOG', () => {
+  it('prices every ID a tier can emit, and nothing else', () => {
+    // Pricing used to sit in cost-ledger.js beside two IDs models.js never
+    // emitted; bumping a tier made every call on the new model unpriceable
+    // and the ledger marked it partial without a word.
+    const emitted = Object.values(MODEL_IDS).sort()
+    expect(Object.keys(MODEL_CATALOG).sort()).toEqual(emitted)
+    for (const id of emitted) {
+      const p = pricingFor(id)
+      expect(p, `${id} has no price`).not.toBeNull()
+      expect(p.input).toBeGreaterThan(0)
+      expect(p.output).toBeGreaterThan(p.input)
+    }
+  })
+
+  it('knows Haiku 4.5 rejects the thinking parameter', () => {
+    expect(supportsAdaptiveThinking('claude-haiku-4-5')).toBe(false)
+    expect(supportsAdaptiveThinking('claude-sonnet-5')).toBe(true)
+    expect(supportsAdaptiveThinking('claude-opus-4-8')).toBe(true)
+  })
+
+  it('prices an unknown model to null, never zero', () => {
+    expect(pricingFor('claude-from-the-future')).toBeNull()
   })
 })

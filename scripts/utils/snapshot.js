@@ -11,6 +11,7 @@ import { spawn } from 'node:child_process'
 import { mkdir, writeFile, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ROOT } from './file-manager.js'
+import { STEP_BUDGETS } from './budgets.js'
 import { FINGERPRINT_VIEWPORT, collectGeometry } from './geometry-fingerprint.js'
 
 /**
@@ -273,7 +274,10 @@ async function captureFingerprint(browser, url) {
  * @returns {Promise<T>}
  * @template T
  */
-export async function withPreviewServer(fn, { port, timeoutMs = 30000 } = {}) {
+export async function withPreviewServer(
+  fn,
+  { port, timeoutMs = STEP_BUDGETS.previewReadyMs } = {}
+) {
   if (port) return await fn(`http://localhost:${port}`, port)
 
   const serverPort = 14000 + Math.floor(Math.random() * 1000)

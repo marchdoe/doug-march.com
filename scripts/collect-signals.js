@@ -17,6 +17,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import * as yaml from 'js-yaml'
 import { sanitizeSignals } from './utils/sanitize-signal.js'
+import { isMain } from './utils/cli.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -175,7 +176,7 @@ async function writeOutputs(signals, meta) {
   console.log(`Written: signals/today.meta.yml (${meta.providers_ok}/${meta.providers_total} ok)`)
 }
 
-if (process.argv[1]?.endsWith('collect-signals.js')) {
+if (isMain(import.meta.url)) {
   // Safety net: if a provider's fetch rejects after the Promise.race already
   // settled (e.g., slow network response arriving post-timeout), Node 20+
   // would crash on unhandled rejection. We've already attached .catch() to

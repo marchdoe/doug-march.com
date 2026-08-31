@@ -16,6 +16,7 @@ import {
   copyFileSync,
 } from 'node:fs'
 import { resolve, join } from 'node:path'
+import { isMain } from './utils/cli.js'
 
 const ROOT = resolve(import.meta.dirname, '..')
 
@@ -204,6 +205,6 @@ function harvest() {
   console.log(`[collect-ratings] harvested ${harvested} rating(s)`)
 }
 
-if (process.argv[1] === new URL(import.meta.url).pathname) {
+if (isMain(import.meta.url)) {
   harvest()
 }

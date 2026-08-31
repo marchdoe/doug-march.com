@@ -2,6 +2,7 @@
  * Mockup Critic — blocking vision gate over the mockup screenshot.
  * Fail-closed: malformed responses count as REVISE.
  */
+import { budgetFor } from '../utils/budgets.js'
 import { imageBlock, textBlock } from '../utils/claude-sdk.js'
 import { parseCriticVerdict } from '../utils/critic-verdict.js'
 import { callVisionAgent } from '../utils/vision-router.js'
@@ -39,8 +40,7 @@ export async function runMockupCritic(ctx) {
     agentName: 'mockup-critic',
     systemPrompt: ctx.systemPrompt,
     contentBlocks: buildMockupCriticBlocks(ctx),
-    timeoutMs: 600000,
-    stallTimeoutMs: 300000,
+    ...budgetFor('mockup-critic'),
     onChannel: (c) => {
       channel = c
     },

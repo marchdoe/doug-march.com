@@ -24,6 +24,7 @@ config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.e
 import { execSync } from 'node:child_process'
 import { readContext } from './utils/site-context.js'
 import { runAgentSwarm } from './design-agents.js'
+import { isMain } from './utils/cli.js'
 
 const DRY_RUN = process.env.DRY_RUN === 'true'
 
@@ -70,7 +71,7 @@ async function main() {
 }
 
 // Run main only when executed directly (not when imported for testing)
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   main().catch((err) => {
     console.error('Fatal error:', err)
     process.exit(1)

@@ -18,23 +18,15 @@
  */
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { join } from 'node:path'
+import { ROOT } from './utils/file-manager.js'
+import { archivedDates, readJsonSafe } from './utils/archive-fs.js'
 import { anomaliesOf, buildRecord } from './utils/archive-record.js'
 import { readRatingForDate } from './utils/ratings.js'
 import { WINDOW, computeUniqueness } from './utils/uniqueness-index.js'
 
-const ROOT = resolve(import.meta.dirname, '..')
 const ARCHIVE_PATH = join(ROOT, 'archive')
 const OUT_DIR = join(ROOT, 'public', 'archive-data')
-
-function archivedDates() {
-  if (!existsSync(ARCHIVE_PATH)) return []
-  return readdirSync(ARCHIVE_PATH, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(d.name))
-    .map((d) => d.name)
-    .sort()
-    .reverse()
-}
 
 /**
  * Read the record the pipeline wrote. Rebuilding when it is absent keeps this
@@ -92,13 +84,7 @@ function countSnapshotPages(date) {
  */
 function uniquenessInputs(date) {
   const dateDir = join(ARCHIVE_PATH, date)
-  const readJson = (dir, name) => {
-    try {
-      return JSON.parse(readFileSync(join(dir, name), 'utf8'))
-    } catch {
-      return null
-    }
-  }
+  const readJson = (dir, name) => readJsonSafe(join(dir, name))
   let builds = []
   try {
     builds = readdirSync(dateDir)
@@ -175,7 +161,7 @@ function indexEntry(record, { hasScreenshot, pages, uniqueness }) {
 
 console.log('[generate-archive-json] Projecting archive records...')
 
-const dates = archivedDates()
+const dates = archivedDates(ARCHIVE_PATH, { newestFirst: true })
 mkdirSync(OUT_DIR, { recursive: true })
 
 const index = []

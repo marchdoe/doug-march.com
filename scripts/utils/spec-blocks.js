@@ -8,7 +8,10 @@
 function parseKeyValues(text) {
   const out = {}
   for (const rawLine of String(text || '').split('\n')) {
-    const line = rawLine.split('#')[0]
+    // A comment starts at a `#` that begins the line or follows whitespace.
+    // Splitting on any `#` truncated every value that contained one — a hex
+    // colour, or a role line like "Designer #1" (#221).
+    const line = rawLine.replace(/(^|\s)#.*$/, '')
     const m = /^\s*([a-z_]+)\s*:\s*(.+?)\s*$/.exec(line)
     if (m) out[m[1]] = m[2]
   }

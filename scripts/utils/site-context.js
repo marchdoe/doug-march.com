@@ -30,14 +30,11 @@ export const MUTABLE_FILES = [
   'elements/chassis-preset.ts',
 ]
 
-/** Files owned by the Token Designer agent. */
-export const TOKEN_FILES = ['elements/preset.ts']
-
 /**
  * Files owned by the orchestrator (generated deterministically from the
  * Director-chosen chassis, never authored by an agent). Listed in
- * MUTABLE_FILES so backup/restore covers them, but kept out of TOKEN_FILES
- * so the Token Designer is never asked to author them.
+ * MUTABLE_FILES so backup/restore covers them, but never handed to an agent
+ * to author.
  */
 export const ORCHESTRATOR_FILES = [
   'app/routes/__root.tsx',
@@ -48,36 +45,16 @@ export const ORCHESTRATOR_FILES = [
   'app/components/BrandLockup.tsx',
 ]
 
-/** Files owned by the Layout Architect agent. */
-export const LAYOUT_FILES = [
-  'app/components/Layout.tsx',
-  'app/routes/index.tsx',
-  'app/routes/about.tsx',
-  'app/routes/work.$slug.tsx',
-  'app/routes/og.tsx',
-]
-
-/** Files owned by the Sidebar Designer agent. */
-export const SIDEBAR_FILES = ['app/components/Sidebar.tsx']
-
-/** Files owned by the Footer Designer agent (currently empty). */
-export const FOOTER_FILES = []
-
-/** All structure files (Layout + Sidebar) for backwards compat. */
-export const STRUCTURE_FILES = [...LAYOUT_FILES, ...SIDEBAR_FILES, ...FOOTER_FILES]
-
-/** Files owned by the Component Agent. */
-export const COMPONENT_FILES = [
-  'app/components/FeaturedProject.tsx',
-  'app/components/ProjectRow.tsx',
-  'app/components/SectionHead.tsx',
-  'app/components/SelectedWork.tsx',
-  'app/components/Experiments.tsx',
-  'app/components/Bio.tsx',
-  'app/components/Timeline.tsx',
-  'app/components/Capabilities.tsx',
-  'app/components/Personal.tsx',
-]
+/**
+ * Files the React Engineer writes: everything mutable that is neither the
+ * Art Director's preset nor the orchestrator's. The Token Designer, Layout
+ * Architect, Sidebar Designer and Footer Designer this file used to keep
+ * separate lists for were retired with the mockup pipeline; their lists
+ * survived as exports nothing but a test read (#221).
+ */
+export const ENGINEER_FILES = MUTABLE_FILES.filter(
+  (f) => f !== 'elements/preset.ts' && !ORCHESTRATOR_FILES.includes(f)
+)
 
 /**
  * Build a human-readable summary of projects content.
