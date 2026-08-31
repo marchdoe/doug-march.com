@@ -134,18 +134,22 @@ describe('the DST guard', () => {
     expect(src).not.toMatch(/hour=\$\(TZ=America\/New_York date/)
   })
 
-  it('schedules both entries for 05:00 in New York, not 04:50', () => {
-    // 05:00 EDT is 09:00 UTC; 05:00 EST is 10:00 UTC. The pairing below is
-    // what stops the wrong one running out of season.
-    expect(src).toContain("- cron: '0 9 * * *'")
-    expect(src).toContain("- cron: '0 10 * * *'")
-    expect(src).not.toContain("cron: '50 8")
-    expect(src).not.toContain("cron: '50 9")
+  it('schedules both entries for 00:15 in New York', () => {
+    // 00:15 EDT is 04:15 UTC; 00:15 EST is 05:15 UTC. Just past midnight is
+    // the earliest moment that is unambiguously the new day, and it leaves
+    // five to six hours of slack for a scheduler that has delivered late
+    // since the 2026-08-26 Actions outage (#193). The pairing below is what
+    // stops the wrong one running out of season.
+    expect(src).toContain("- cron: '15 4 * * *'")
+    expect(src).toContain("- cron: '15 5 * * *'")
+    for (const old of ["cron: '50 8", "cron: '50 9", "cron: '0 9 ", "cron: '0 10 "]) {
+      expect(src).not.toContain(old)
+    }
   })
 
   it('pairs each cron entry with the season it belongs to', () => {
-    expect(src).toContain("'0 9 * * *|EDT' | '0 10 * * *|EST'")
-    expect(src).toContain("'0 9 * * *|EST' | '0 10 * * *|EDT'")
+    expect(src).toContain("'15 4 * * *|EDT' | '15 5 * * *|EST'")
+    expect(src).toContain("'15 4 * * *|EST' | '15 5 * * *|EDT'")
   })
 
   it('runs rather than skips when the schedule is unrecognised', () => {

@@ -2,20 +2,25 @@ name: Daily Redesign
 
 on:
   schedule:
-    # 05:00 America/New_York, year-round. GitHub cron is UTC-only with no DST
-    # support, so one entry cannot track a local time across the switch: a fixed
-    # '0 10 * * *' is 5am in EST but 6am in EDT. Both entries below fire every
-    # day and the `guard` job drops whichever one is an hour wrong for the
-    # current offset, so exactly one survives per day in either season.
+    # 00:15 America/New_York, year-round. The site is a new design every day,
+    # and a quarter past midnight is the earliest moment that is unambiguously
+    # the new day; it also leaves five to six hours before anyone is likely to
+    # look, so a scheduler that delivers late still lands before morning.
+    #
+    # GitHub cron is UTC-only with no DST support, so one entry cannot track a
+    # local time across the switch: a fixed '15 5 * * *' is 00:15 in EST but
+    # 01:15 in EDT. Both entries below fire every day and the `guard` job drops
+    # whichever one is an hour wrong for the current offset, so exactly one
+    # survives per day in either season.
     #
     # These are the trigger times, not the start times. Scheduled workflows
-    # queue behind everything else on the hour — runs 2026-08-19 through 08-26
-    # started 17-31 minutes late, and 08-27, 08-28 and 08-30 were hours late.
-    # An earlier :50 trigger was tried to absorb the small case; it cannot
-    # touch the large one, and it made the configured time disagree with the
-    # intended one. 5am means 5am; lateness is #193's problem to solve.
-    - cron: '0 9 * * *' # 05:00 EDT (skipped in winter — 04:00 EST)
-    - cron: '0 10 * * *' # 05:00 EST (skipped in summer — 06:00 EDT)
+    # queue behind everything else on the hour, and after the 2026-08-26
+    # Actions outage this repo's triggers arrived 5-11 hours late or not at
+    # all (#193). Moving the trigger to just after midnight is the budget for
+    # that: a run that starts hours late is still a morning design. The :15
+    # keeps it off the top of the hour, which GitHub's own docs say to avoid.
+    - cron: '15 4 * * *' # 00:15 EDT (skipped in winter — 23:15 EST the day before)
+    - cron: '15 5 * * *' # 00:15 EST (skipped in summer — 01:15 EDT)
   workflow_dispatch:
     inputs:
       dry_run:
@@ -62,11 +67,11 @@ jobs:
           zone=$(TZ=America/New_York date +%Z)
           local_now=$(TZ=America/New_York date '+%Y-%m-%d %H:%M %Z')
           case "$sched|$zone" in
-            '0 9 * * *|EDT' | '0 10 * * *|EST')
+            '15 4 * * *|EDT' | '15 5 * * *|EST')
               echo 'run=true' >> "$GITHUB_OUTPUT"
               echo "$local_now — cron '$sched' is the $zone entry, this is the day's run"
               ;;
-            '0 9 * * *|EST' | '0 10 * * *|EDT')
+            '15 4 * * *|EST' | '15 5 * * *|EDT')
               echo 'run=false' >> "$GITHUB_OUTPUT"
               echo "$local_now — cron '$sched' is the other DST entry for $zone; skipping"
               ;;

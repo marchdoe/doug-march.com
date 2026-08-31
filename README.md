@@ -2,7 +2,7 @@
 
 A portfolio site that redesigns itself every night.
 
-At 05:00 Eastern a pipeline collects the day's signals (weather, sports, the market, the moon, whatever else happened), hands them to an Art Director, and rebuilds the home page, the about page and every project page around what the day contained. Every design it has ever made is preserved at `/archive/<date>/`, with an explainer at `/how/<date>` of what it was given and what it decided. The archive is the point. The current design is one night of it.
+A quarter past midnight Eastern, a pipeline collects the day's signals (weather, sports, the market, the moon, whatever else happened), hands them to an Art Director, and rebuilds the home page, the about page and every project page around what the day contained. Every design it has ever made is preserved at `/archive/<date>/`, with an explainer at `/how/<date>` of what it was given and what it decided. The archive is the point. The current design is one night of it.
 
 Live at [dougmar.ch](https://dougmar.ch). Backlog is [the issues](https://github.com/marchdoe/dougmar.ch/issues); `TODO.md` is the pre-April plan and is not maintained.
 
@@ -73,7 +73,7 @@ The two arrows mark the split that everything else is organised around. Files th
 
 ## The nightly, in order
 
-`.github/workflows/daily-redesign.yml`, two cron entries so the run lands at 05:00 Eastern in both halves of the year.
+`.github/workflows/daily-redesign.yml`, two cron entries so the run triggers at 00:15 Eastern in both halves of the year. GitHub has delivered that trigger hours late since late August (#193); starting at midnight is the margin for it.
 
 1. `collect-ratings.js` harvests the owner's grade from yesterday's rating issue.
 2. `collect-signals.js` runs the providers. Ones without a key are skipped, not failed.
