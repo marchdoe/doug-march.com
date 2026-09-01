@@ -99,6 +99,51 @@ describe('the template and the generated file agree', () => {
 // a declared Art Director choice. It now lives in the root template, outside
 // <Layout>, where no agent can delete it.
 
+describe('every import the template declares is one it uses', () => {
+  // `import { styled }` sat unused at the top of this template. Nothing caught
+  // it: Biome has noUnusedImports at "warn", so `biome --write` leaves it and
+  // lint stays green — but `tsc --noEmit` fails TS6133, and the orchestrator
+  // regenerates __root.tsx from this template on EVERY run. So first-pass
+  // static checks failed every night on an orchestrator typo, and Phase 5
+  // spent its single React Engineer retry undoing it before any real agent
+  // mistake could be looked at. The retry budget was not one, it was zero.
+  //
+  // Asserted against the template rather than the generated file because the
+  // template is the source; the generated file is only ever as good as this.
+  const importedNames = [
+    ...template.matchAll(/^import\s+(?:type\s+)?(?:\{([^}]*)\}|(\w+))\s+from/gm),
+  ]
+    .flatMap(([, braced, bare]) =>
+      braced
+        ? braced.split(',').map((n) =>
+            n
+              .trim()
+              .split(/\s+as\s+/)
+              .pop()
+              .trim()
+          )
+        : [bare]
+    )
+    .filter(Boolean)
+
+  const body = template
+    .split('\n')
+    .filter((line) => !line.startsWith('import'))
+    .join('\n')
+
+  it('finds the imports it is meant to be checking', () => {
+    // Guards the parser itself: a regex that silently matches nothing would
+    // make every assertion below vacuously true.
+    expect(importedNames).toContain('createRootRoute')
+    expect(importedNames).toContain('Layout')
+    expect(importedNames.length).toBeGreaterThan(5)
+  })
+
+  it.each(importedNames.map((name) => [name]))('uses %s', (name) => {
+    expect(new RegExp(`\\b${name}\\b`).test(body)).toBe(true)
+  })
+})
+
 describe('renderRootTemplate — the archive link', () => {
   it('substitutes the count into the rendered source', () => {
     const src = renderRootTemplate('https://fonts.example/x', '', 123)

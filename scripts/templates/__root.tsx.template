@@ -1,7 +1,6 @@
 import '../styles/panda.css'
 import { createRootRoute, Outlet, HeadContent, ScrollRestoration, Scripts, useRouterState } from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
-import { styled } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
 import type { ReactNode } from 'react'
 
