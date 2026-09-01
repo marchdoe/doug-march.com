@@ -72,6 +72,32 @@ export default defineConfig({
             display: { value: '2.25rem' },
           },
         },
+        /**
+         * The four keyword sizes, restored.
+         *
+         * Naming any preset in `presets` replaces `@pandacss/preset-panda`
+         * (the base preset still loads; only the theme is dropped), so this
+         * theme has no `sizes` scale beyond the breakpoint-* keys Panda
+         * derives on its own. `width: 'full'` — the most ordinary thing anyone
+         * who knows Panda or Tailwind will write — therefore resolved to
+         * nothing and shipped the literal `width:full`, which the browser
+         * drops. That failed the 2026-09-01 dry run.
+         *
+         * Values copied from @pandacss/preset-panda so the idiom means what it
+         * means everywhere else. Deliberately no numeric keys: upstream has
+         * none either, and `width: '11'` must keep failing — an 11px brand
+         * mark against a 44px mockup is the defect the token gate was built
+         * for.
+         *
+         * Here rather than in a preset because agents cannot write
+         * panda.config.ts, so a bad night cannot remove them.
+         */
+        sizes: {
+          full: { value: '100%' },
+          min: { value: 'min-content' },
+          max: { value: 'max-content' },
+          fit: { value: 'fit-content' },
+        },
       },
       breakpoints: {
         sm: '640px',

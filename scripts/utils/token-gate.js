@@ -692,8 +692,54 @@ export function readReachableSources(root) {
  * ------------------------------------------------------------------ */
 
 function quotedOccurrence(value) {
-  const escaped = value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const escaped = escapeRegExp(value)
   return new RegExp(`['"\`]${escaped}['"\`]`)
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+/**
+ * Panda shorthands, keyed by the CSS property they compile to.
+ *
+ * A finding comes back from the stylesheet as a CSS property — `background`,
+ * `min-width` — and has to be matched against what someone could have typed in
+ * TSX. The camelCase spelling is derivable; the shorthands are not.
+ */
+const PROPERTY_ALIASES = new Map([
+  ['background', ['bg', 'bgColor', 'backgroundColor']],
+  ['background-color', ['bg', 'bgColor']],
+  ['color', ['textColor']],
+  ['width', ['w']],
+  ['height', ['h']],
+  ['min-width', ['minW']],
+  ['max-width', ['maxW']],
+  ['min-height', ['minH']],
+  ['max-height', ['maxH']],
+  ['border-radius', ['rounded']],
+  ['box-shadow', ['shadow']],
+  ['padding', ['p']],
+  ['padding-top', ['pt']],
+  ['padding-bottom', ['pb']],
+  ['padding-left', ['pl']],
+  ['padding-right', ['pr']],
+  ['margin', ['m']],
+  ['margin-top', ['mt']],
+  ['margin-bottom', ['mb']],
+  ['margin-left', ['ml']],
+  ['margin-right', ['mr']],
+])
+
+/**
+ * Every spelling that could have authored a given CSS property.
+ *
+ * @param {string} cssProperty e.g. `min-width`
+ * @returns {string[]} e.g. ['min-width', 'minWidth', 'minW']
+ */
+export function authoringSpellings(cssProperty) {
+  const camel = cssProperty.replace(/-([a-z])/g, (_, c) => c.toUpperCase())
+  return [...new Set([cssProperty, camel, ...(PROPERTY_ALIASES.get(cssProperty) ?? [])])]
 }
 
 /**
@@ -722,13 +768,34 @@ export function checkTokenResolution({
   const findings = []
 
   // Which file names a given authored value, among the files that render.
-  const attribute = (value) => {
-    const re = quotedOccurrence(value)
-    const files = []
+  // Which file authored a given declaration, among the files that render.
+  //
+  // Two passes, because a value alone is not evidence. `width:full` in the
+  // stylesheet used to be blamed on every file containing the string 'full',
+  // which on 2026-09-01 meant `depth: 'full'` — project metadata, not a style
+  // prop — in app/content/projects.ts and two others. The retry then received
+  // a message naming three files the React Engineer is not allowed to open,
+  // and there is only one retry to spend.
+  //
+  // So: name the files that wrote this property with this value. Fall back to
+  // the value-only match when none do, because a missed attribution drops the
+  // finding entirely (see the orphan filter below) and a vague file list beats
+  // a silently swallowed defect.
+  const attribute = (value, property) => {
+    const valueRe = quotedOccurrence(value)
+    const escaped = escapeRegExp(value)
+    const propRes = authoringSpellings(property).map(
+      (prop) => new RegExp(`\\b${escapeRegExp(prop)}\\s*[:=]\\s*['"\`]${escaped}['"\`]`)
+    )
+    const precise = []
+    const loose = []
     for (const [file, source] of reachable) {
-      if (re.test(source)) files.push(path.relative(root, file))
+      const code = stripComments(source)
+      const rel = path.relative(root, file)
+      if (propRes.some((re) => re.test(code))) precise.push(rel)
+      else if (valueRe.test(code)) loose.push(rel)
     }
-    return files
+    return precise.length > 0 ? precise : loose
   }
 
   const assetsDir = path.join(distDir, 'assets')
@@ -745,7 +812,7 @@ export function checkTokenResolution({
 
   for (const sheet of stylesheets) {
     for (const hit of findUnresolvedCssValues(readFileSync(sheet, 'utf8'))) {
-      const files = attribute(hit.authoredValue)
+      const files = attribute(hit.authoredValue, hit.property)
       if (files.length === 0) continue // orphan component, see #216
       findings.push({
         kind: 'unresolved',
