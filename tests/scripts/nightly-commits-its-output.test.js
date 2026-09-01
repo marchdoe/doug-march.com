@@ -99,6 +99,13 @@ describe('the push', () => {
     expect(src).toMatch(/pushed" != "true"/)
     expect(src).toMatch(/::error::push failed/)
   })
+
+  it('clears a stale rebase before retrying the push (#342)', () => {
+    // A conflicted rebase leaves a rebase-merge directory behind; without
+    // clearing it first, attempts 2 and 3 fail on "there is already a
+    // rebase-merge directory" instead of retrying anything.
+    expect(src).toMatch(/rebase --abort 2>\/dev\/null \|\| true\s*\n\s*if git pull --rebase/)
+  })
 })
 
 describe('the nightly agrees with the pipeline about which day it is', () => {
@@ -299,5 +306,11 @@ describe('the rollback workflow', () => {
   it('fails loudly when the rollback does not leave the runner', () => {
     expect(rollbackSrc).toMatch(/pushed" != "true"/)
     expect(rollbackSrc).toMatch(/::error::push failed/)
+  })
+
+  it('clears a stale rebase before retrying the push (#342)', () => {
+    expect(rollbackSrc).toMatch(
+      /rebase --abort 2>\/dev\/null \|\| true\s*\n\s*if git pull --rebase/
+    )
   })
 })
