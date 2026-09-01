@@ -1,4 +1,5 @@
 import { RECOGNIZED_HOSTS } from './site-origin.js'
+import { localDateString } from './local-time.js'
 import { spawnSync } from 'node:child_process'
 import { readFileSync, readdirSync, existsSync, statSync, writeFileSync, mkdirSync } from 'node:fs'
 import { resolve, sep } from 'node:path'
@@ -678,7 +679,7 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
  *
  * @returns {{ success: boolean, error?: string }}
  */
-export function validateBuild({ shell = null } = {}) {
+export function validateBuild({ shell = null, date = localDateString(new Date()) } = {}) {
   // Run pre-build checks first
   const preCheck = validateGenerated({ shell })
   if (!preCheck.success) {
@@ -700,7 +701,10 @@ export function validateBuild({ shell = null } = {}) {
     //    The 3000-char tail returned to callers truncated the real Vite /
     //    @tanstack/router-plugin error last time the pipeline failed; this
     //    preserves the complete log alongside the archive tree.
-    const today = new Date().toISOString().slice(0, 10)
+    // Every other path in the run keys the day on America/New_York, not
+    // UTC — use the caller's run date so the build log lands beside the
+    // rest of that day's archive instead of a UTC-shifted neighbor (#311).
+    const today = date
     const outputDir = resolve(ROOT, 'archive', today)
     const outputPath = resolve(outputDir, 'last-build-output.txt')
     try {
@@ -747,7 +751,8 @@ export function validateBuild({ shell = null } = {}) {
     // too — a status-0-but-no-shell failure is otherwise invisible (the
     // non-zero path above is the only other place this gets written).
     try {
-      const today = new Date().toISOString().slice(0, 10)
+      // Same run date as the non-zero-exit path above (#311).
+      const today = date
       const outputDir = resolve(ROOT, 'archive', today)
       mkdirSync(outputDir, { recursive: true })
       writeFileSync(resolve(outputDir, 'last-build-output.txt'), combined, 'utf8')

@@ -1653,7 +1653,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // Phase 4: Build validation
     // -----------------------------------------------------------------------
     console.log('\n[phase-4] Build validation')
-    const buildResult = validateBuild({ shell: shellDecl })
+    const buildResult = validateBuild({ shell: shellDecl, date: today })
 
     trace.addStep({
       name: 'build-validation',
@@ -2023,7 +2023,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
                 writtenPaths.add(p)
               engineerResult = retryResult
 
-              const retryBuild = validateBuild({ shell: shellDecl })
+              const retryBuild = validateBuild({ shell: shellDecl, date: today })
               if (!retryBuild.success) {
                 console.warn(
                   '  post-critic revision broke the build — restoring known-passing state'
@@ -2038,7 +2038,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
                 // Prove the restored state actually rebuilds — falling
                 // through to archive() on faith is how broken hybrids ship.
-                const restoredBuild = validateBuild({ shell: shellDecl })
+                const restoredBuild = validateBuild({ shell: shellDecl, date: today })
                 if (!restoredBuild.success) {
                   await cleanupOrphans(writtenPaths, originalBackup)
                   await restore(originalBackup)
@@ -2224,7 +2224,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         continue
       }
 
-      const attemptBuild = validateBuild({ shell: shellDecl })
+      const attemptBuild = validateBuild({ shell: shellDecl, date: today })
       if (attemptBuild.success) {
         console.log(`\n=== Repair build passed on attempt ${attempt}! ===`)
         const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])

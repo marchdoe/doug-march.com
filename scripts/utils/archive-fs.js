@@ -1,4 +1,5 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { localDateString } from './local-time.js'
 
 /**
  * The two reads every script over `archive/` starts with, written once.
@@ -18,8 +19,12 @@ const DATE_DIR = /^\d{4}-\d{2}-\d{2}$/
  */
 export function archivedDates(archiveDir, { newestFirst = false } = {}) {
   if (!existsSync(archiveDir)) return []
+  // A directory dated after today (Eastern, the run's own calendar) is not a
+  // real archived day — a UTC-derived write, a clock skew, a typo — and
+  // becomes a phantom calendar cell with 0 pages if it is not skipped (#311).
+  const todayEastern = localDateString(new Date())
   const dates = readdirSync(archiveDir, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && DATE_DIR.test(d.name))
+    .filter((d) => d.isDirectory() && DATE_DIR.test(d.name) && d.name <= todayEastern)
     .map((d) => d.name)
     .sort()
   return newestFirst ? dates.reverse() : dates
