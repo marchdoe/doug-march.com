@@ -313,4 +313,20 @@ describe('the rollback workflow', () => {
       /rebase --abort 2>\/dev\/null \|\| true\s*\n\s*if git pull --rebase/
     )
   })
+
+  it('passes commits_back through env, not straight into the run body (#345)', () => {
+    // type: number on the input is a UI hint, not server-side validation —
+    // interpolating ${{ inputs.commits_back }} directly into the run: body
+    // is the template-injection pattern the rest of the workflow avoids.
+    const start = rollbackSrc.indexOf('Roll back mutable files')
+    const nextStep = rollbackSrc.indexOf('- name:', start + 1)
+    const step = rollbackSrc.slice(start, nextStep === -1 ? undefined : nextStep)
+    expect(step).toMatch(/COMMITS_BACK:\s*\$\{\{\s*inputs\.commits_back\s*\}\}/)
+
+    // The run: body itself — after the env: block, which is allowed to
+    // reference inputs — must never interpolate an expression directly.
+    const runBody = step.slice(step.indexOf('run: |'))
+    expect(runBody).not.toMatch(/\$\{\{\s*inputs\./)
+    expect(runBody).toMatch(/N="\$COMMITS_BACK"/)
+  })
 })
