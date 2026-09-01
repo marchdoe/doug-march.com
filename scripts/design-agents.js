@@ -20,7 +20,7 @@
  */
 
 import { config } from 'dotenv'
-import { setRunDeadline } from './utils/run-budget.js'
+import { pastDeadline, setRunDeadline } from './utils/run-budget.js'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env'), quiet: true })
@@ -425,9 +425,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // (which kills the process with no trace). Past the deadline we stop
   // STARTING expensive optional work and ship what we have.
   const runDeadline = Date.now() + parseInt(process.env.RUN_BUDGET_MINUTES || '60', 10) * 60000
-  const pastDeadline = () => Date.now() > runDeadline
   // Publish it so every model call clamps its own timeout to what is left,
   // rather than each agent's cap being checked only between phases.
+  // pastDeadline() is run-budget's: "past" means less than one call's worth
+  // remains, the same floor the clamp refuses at, so a phase never starts a
+  // call the clamp is about to throw on (#299).
   setRunDeadline(runDeadline)
 
   const trace = createTrace(runDate(signals), {
@@ -1286,6 +1288,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     let revisionFeedback = ''
     const MAX_MOCKUP_REVISIONS = 2
     for (let round = 0; round <= MAX_MOCKUP_REVISIONS; round++) {
+      // The optional steps check the deadline before starting; the two
+      // required calls (this and the engineer below) did not, so an Art
+      // Director that burned the budget on retries took the night down with
+      // "timed out after 0 minutes" instead of a reason (#299).
+      if (round === 0 && pastDeadline()) {
+        throw new Error(
+          'run budget exhausted before the Mockup Designer could start — nothing to ship'
+        )
+      }
       const t0Mockup = Date.now()
       try {
         mockup = await runMockupDesigner({ ...mockupCtxBase, revisionFeedback })
@@ -1426,6 +1437,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     const engineerUserPrompt = buildEngineerUserPrompt()
 
     let engineerResult
+    if (pastDeadline()) {
+      throw new Error(
+        'run budget exhausted before the React Engineer could start — nothing to ship'
+      )
+    }
     const t0Engineer = Date.now()
     try {
       engineerResult = await callAgent(

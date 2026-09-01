@@ -48,12 +48,48 @@ export function remainingBudgetMs() {
 }
 
 /**
+ * The least a model call is worth starting with. Below this the clamp used to
+ * hand back whatever was left, down to 0: setTimeout(cb, 0) fired before the
+ * child emitted a byte and the run died with "timed out after 0 minutes
+ * (generated 0KB before timeout)", which reads like a model failure and was
+ * a budget failure (#299).
+ */
+export const MIN_CALL_MS = 30_000
+
+/** Thrown when a call cannot be started inside the run's remaining budget. */
+export class DeadlineExceeded extends Error {
+  /**
+   * @param {number} remainingMs
+   * @param {number} requestedMs
+   */
+  constructor(remainingMs, requestedMs) {
+    super(
+      `run deadline: ${(remainingMs / 60000).toFixed(1)} min left, refusing to start a ${Math.round(requestedMs / 60000)} min call`
+    )
+    this.name = 'DeadlineExceeded'
+    this.remainingMs = remainingMs
+    this.requestedMs = requestedMs
+  }
+}
+
+/**
+ * Whether the run is past its deadline. Infinity (no deadline) is never past.
+ * @returns {boolean}
+ */
+export function pastDeadline() {
+  return remainingBudgetMs() < MIN_CALL_MS
+}
+
+/**
  * Clamp a call's timeout to what the run has left.
  *
  * @param {number} timeoutMs the agent's own hard cap
  * @returns {number} the smaller of the cap and the remaining budget
+ * @throws {DeadlineExceeded} when less than MIN_CALL_MS remains
  */
 export function clampToBudget(timeoutMs) {
   const remaining = remainingBudgetMs()
-  return Number.isFinite(remaining) ? Math.min(timeoutMs, remaining) : timeoutMs
+  if (!Number.isFinite(remaining)) return timeoutMs
+  if (remaining < MIN_CALL_MS) throw new DeadlineExceeded(remaining, timeoutMs)
+  return Math.min(timeoutMs, remaining)
 }
