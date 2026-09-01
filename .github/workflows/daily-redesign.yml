@@ -153,6 +153,21 @@ jobs:
         # says it changed a design. ci.yml and vercel.json both use the flag.
         run: pnpm install --frozen-lockfile
 
+      # Keyed on the resolved @playwright/test version: browser builds are tied
+      # to it, so a cache hit on a stale key would install browsers the runner
+      # cannot drive. jq reads the version pnpm actually resolved rather than
+      # the range in package.json.
+      - name: Resolve Playwright version
+        id: pw
+        run: echo "version=$(pnpm ls @playwright/test --json | jq -r '.[0].devDependencies["@playwright/test"].version')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}
+
       - name: Install Playwright browser
         # The pipeline renders screenshots with Playwright/Chromium: the OG
         # share card (public/og/<date>.png), the screenshot-critic vision
@@ -160,6 +175,8 @@ jobs:
         # browser-download postinstall (not in allowBuilds), so without this
         # every chromium.launch() throws and the callers silently skip —
         # leaving og:image a 404 and the screenshot critic a no-op in CI.
+        # The cache above skips the download on a hit; --with-deps still
+        # installs the OS packages either way (#346).
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Install Claude CLI
