@@ -29,10 +29,14 @@ export const MAX_BODY_SIZE = 64 * 1024
 const LOOPBACK = new Set(['127.0.0.1', '::1', '::ffff:127.0.0.1'])
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '::1', '[::1]'])
 
+/** An address is this machine's loopback, in any spelling. */
+export function isLoopbackAddress(addr: unknown): boolean {
+  return typeof addr === 'string' && LOOPBACK.has(addr)
+}
+
 /** The TCP peer is this machine. */
 export function isLocalRequest(req: Pick<IncomingMessage, 'socket'>): boolean {
-  const addr = req.socket?.remoteAddress
-  return typeof addr === 'string' && LOOPBACK.has(addr)
+  return isLoopbackAddress(req.socket?.remoteAddress)
 }
 
 /** The hostname in a Host or Origin value, or null when it does not parse. */
