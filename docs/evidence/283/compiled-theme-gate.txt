@@ -1,0 +1,35 @@
+Why the gate now reads styled-system/tokens instead of the preset sources.
+
+#284 unioned the two preset files. This replaces that with the compiled theme.
+Three conditions, each run against a replayed nightly with the Art Director
+fixture stripped of its spacing block — the shape the live agent leaves it in.
+
+1. SCALE IN EITHER PRESET  (today: chassis-preset.ts owns it)
+   $ grep -c 'spacing:' elements/preset.ts
+   0
+   spacing from compiled theme = {1, 2, 3, 4, 5, 6, 7, 8, 9}
+   sizes   from compiled theme = {breakpoint-sm .. breakpoint-2xl}
+   ok=true  blocking=0  bare-number=0
+   $ MOCK_MODE=true node scripts/design-agents.js   -> exit 0, 8 files written
+
+2. SCALE IN NEITHER PRESET  (genuinely gone — the gate must still fire)
+   spacing from compiled theme = {}
+   ok=false  blocking=44  bare-number=44
+
+3. NO styled-system  (codegen never ran — the gate knows nothing)
+   [token-gate] styled-system/tokens not generated — skipping the bare-number check
+   readGeneratedTokenScales(...) === null
+
+Case 2 is the one that matters. Reading the compiled theme is not a way of
+finding fewer problems; it is a way of finding the real ones. The compiled
+`sizes` scale is NOT empty — Panda injects breakpoint-* — and it still carries
+no numeric step, which is what keeps `width: '11'` a finding. That was the
+11px brand mark, and it is the case the gate exists for.
+
+What the source-parsing approach could not distinguish, and this can:
+
+  empty scale      -> authoritative. Flag.
+  unreadable theme -> we know nothing. Skip, and say so.
+
+Conflating those two is exactly how #283 reported 49 findings against correct
+code and took the nightly down.

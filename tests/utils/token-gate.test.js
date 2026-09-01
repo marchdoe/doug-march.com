@@ -19,8 +19,8 @@ import {
   isUnresolvedTokenValue,
   parseAtomicSelector,
   parseDeclarations,
-  mergeTokenScaleKeys,
-  parseTokenScaleKeys,
+  parseGeneratedTokenKeys,
+  readGeneratedTokenScales,
   stripComments,
 } from '../../scripts/utils/token-gate.js'
 
@@ -251,104 +251,67 @@ describe('parsing an escaped Panda selector', () => {
   })
 })
 
-describe('reading a token scale out of the preset', () => {
-  // The Art Director rewrites elements/preset.ts every night, so the scale is
-  // parsed rather than hardcoded.
-  const preset = `
-    export const elementsPreset = definePreset({
-      theme: {
-        tokens: {
-          colors: { gold: { 400: { value: '#F4B90A' } } },
-          spacing: {
-            1: { value: '4px' },
-            2: { value: '8px' },
-            9: { value: '128px' },
-          },
-          fontSizes: { '2xs': { value: '10px' }, base: { value: '1rem' } },
-        },
-      },
-    })`
+describe('reading the scale out of what Panda compiled', () => {
+  // The gate reads styled-system/tokens, not the preset sources. The sources
+  // cannot answer the question: panda.config.ts merges two presets that own
+  // different halves of the theme, and only the merge knows what won.
+  const generated = `
+    const tokens = {
+      "colors.gold.400": { "value": "#F4B90A", "variable": "var(--colors-gold-400)" },
+      "spacing.1": { "value": "4px", "variable": "var(--spacing-1)" },
+      "spacing.4": { "value": "24px", "variable": "var(--spacing-4)" },
+      "spacing.9": { "value": "128px", "variable": "var(--spacing-9)" },
+      "spacing.-1": { "value": "calc(var(--spacing-1) * -1)" },
+      "sizes.breakpoint-lg": { "value": "1024px", "variable": "var(--sizes-breakpoint-lg)" },
+      "fontSizes.2xs": { "value": "10px" },
+      "fontSizes.hero": { "value": "clamp(72px, 11vw, 148px)" }
+    }`
 
   it('reads the keys of the scale it was asked for', () => {
-    expect([...parseTokenScaleKeys(preset, 'spacing')]).toEqual(['1', '2', '9'])
+    expect([...parseGeneratedTokenKeys(generated, 'spacing')]).toEqual(['1', '4', '9', '-1'])
   })
 
-  it('reads quoted keys', () => {
-    expect([...parseTokenScaleKeys(preset, 'fontSizes')]).toEqual(['2xs', 'base'])
+  it('reads a scale whose keys are not numbers', () => {
+    expect([...parseGeneratedTokenKeys(generated, 'fontSizes')]).toEqual(['2xs', 'hero'])
   })
 
-  it('does not descend into a nested palette', () => {
-    expect([...parseTokenScaleKeys(preset, 'colors')]).toEqual(['gold'])
+  it('keeps a dotted key whole', () => {
+    expect([...parseGeneratedTokenKeys(generated, 'colors')]).toEqual(['gold.400'])
   })
 
-  it('returns nothing for a scale the preset does not define', () => {
-    expect(parseTokenScaleKeys(preset, 'sizes')).toEqual(new Set())
-  })
-})
-
-describe('the scale spans both presets', () => {
-  // panda.config.ts merges [elementsPreset, chassisPreset]. The Art Director
-  // writes the first and is told not to emit `spacing`; the orchestrator
-  // generates it into the second. Reading only the first is what failed the
-  // 2026-09-01 run — see the regression below.
-  const artDirectorPreset = `
-    export const elementsPreset = definePreset({
-      theme: { tokens: { colors: { gold: { 400: { value: '#F4B90A' } } } } },
-    })`
-
-  const chassisPreset = `
-    export const chassisPreset = definePreset({
-      theme: {
-        tokens: {
-          spacing: {
-            '1': { value: '4px' },
-            '4': { value: '24px' },
-            '9': { value: '128px' },
-          },
-        },
-      },
-    })`
-
-  it('unions the keys across the presets that define them', () => {
-    expect([...mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'spacing')]).toEqual([
-      '1',
-      '4',
-      '9',
-    ])
+  it('returns nothing for a scale the theme does not define', () => {
+    expect(parseGeneratedTokenKeys(generated, 'radii')).toEqual(new Set())
   })
 
-  it('reads a scale the Art Director preset alone does not carry', () => {
-    // The regression, stated plainly: the Art Director's own preset has no
-    // spacing block, because it is under orders not to write one.
-    expect(parseTokenScaleKeys(artDirectorPreset, 'spacing')).toEqual(new Set())
-    expect(mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'spacing').size).toBe(3)
-  })
-
-  it('does not flag a legal spacing token that lives in the chassis preset', () => {
-    // 49 of these killed 2026-09-01. Every one was correct code.
+  it('does not flag a legal spacing token the Art Director never wrote', () => {
+    // The 2026-09-01 regression. The Art Director is told not to emit
+    // `spacing`; the orchestrator generates it into the chassis preset. 49 of
+    // these killed that run and every one was correct code.
     const scales = {
-      spacing: mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'spacing'),
-      sizes: mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'sizes'),
+      spacing: parseGeneratedTokenKeys(generated, 'spacing'),
+      sizes: parseGeneratedTokenKeys(generated, 'sizes'),
     }
     expect(findNumericScaleMisses(`css({ gap: '4', marginTop: '9' })`, scales)).toEqual([])
   })
 
-  it('still flags the 11px mark when neither preset defines sizes', () => {
-    // The union must not disarm the case the gate was built for. `sizes` is
-    // empty in both presets today and has to stay checkable while empty.
+  it('still flags the 11px mark against the compiled sizes scale', () => {
+    // The compiled `sizes` scale is not empty — Panda injects breakpoint-*.
+    // It carries no numeric step, which is what makes `width: '11'` a finding,
+    // and that case is the reason this gate exists.
     const scales = {
-      spacing: mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'spacing'),
-      sizes: mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'sizes'),
+      spacing: parseGeneratedTokenKeys(generated, 'spacing'),
+      sizes: parseGeneratedTokenKeys(generated, 'sizes'),
     }
+    expect(scales.sizes.size).toBeGreaterThan(0)
     expect(findNumericScaleMisses(`css({ width: '11' })`, scales)).toEqual([
       { prop: 'width', value: '11', category: 'sizes' },
     ])
   })
 
-  it('still flags a spacing key past the end of the merged scale', () => {
+  it('still flags a spacing key past the end of the compiled scale', () => {
     const scales = {
-      spacing: mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'spacing'),
-      sizes: new Set(),
+      spacing: parseGeneratedTokenKeys(generated, 'spacing'),
+      sizes: parseGeneratedTokenKeys(generated, 'sizes'),
     }
     expect(findNumericScaleMisses(`css({ marginBottom: '12' })`, scales)).toEqual([
       { prop: 'marginBottom', value: '12', category: 'spacing' },
@@ -434,6 +397,41 @@ describe('the message handed to the retry', () => {
     expect(message).toContain('fontSizes.5xl')
     expect(message).toContain("width: '11'")
     expect(message).toContain('1, 2, 3')
+  })
+
+  it('tells an agent to use a unit when the scale has no numbered steps', () => {
+    // What `width: '11'` should hear back. The compiled sizes scale carries
+    // breakpoint-* and nothing numeric, so there is no step to point at.
+    const message = formatFindings([
+      {
+        kind: 'numeric',
+        property: 'width',
+        value: '11',
+        category: 'sizes',
+        available: [],
+        files: ['app/components/Sidebar.tsx'],
+      },
+    ])
+    expect(message).toContain('no numbered steps at all')
+    expect(message).toContain('write the length you mean with a unit')
+  })
+})
+
+describe('a theme the gate cannot read', () => {
+  it('returns null rather than an empty scale when codegen has not run', () => {
+    // An empty scale and an unreadable one are different facts. Empty is
+    // authoritative and must still flag `width: '11'`; unreadable means the
+    // gate knows nothing, and a gate that knows nothing must not invent 49
+    // findings — which is exactly how #283 took the nightly down.
+    expect(readGeneratedTokenScales('/nonexistent-root-for-this-test')).toBeNull()
+  })
+
+  it('reads the real generated scale from this repo', () => {
+    // Guards the path and the file shape together: if Panda ever moves or
+    // renames its output, this fails here instead of at 4am.
+    const scales = readGeneratedTokenScales(process.cwd())
+    expect(scales).not.toBeNull()
+    expect(scales.spacing.size).toBeGreaterThan(0)
   })
 })
 

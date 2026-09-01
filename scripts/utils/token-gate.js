@@ -445,82 +445,72 @@ export const NUMERIC_SCALE_PROPS = new Map([
 ])
 
 /**
- * Every preset whose tokens are merged into the theme the site compiles
- * against, in the order `panda.config.ts` lists them.
+ * Where Panda writes the theme it actually compiled.
  *
- * The two own different halves of the theme. The Art Director writes the
- * colour scales into `elements/preset.ts` and is told in so many words NOT to
- * write `spacing` (scripts/prompts/art-director.md): the orchestrator derives
- * it from the day's chassis rhythm and generates it into
- * `elements/chassis-preset.ts`, which is merged second and wins.
- *
- * Reading only the first one is what killed the 2026-09-01 run. The Art
- * Director followed its contract, so `spacing` was absent from preset.ts, so
- * this gate parsed an empty scale and reported all 49 legal `gap: '4'`s as
- * bare-number misses. The scale is only ever complete across both files.
+ * `panda codegen` runs before every build (`pnpm build` is
+ * `panda codegen && …`) and again in the pipeline right after the Art Director
+ * writes its preset, so by the time this gate runs the file is present and
+ * current.
  */
-export const PRESET_FILES = ['preset.ts', 'chassis-preset.ts']
+const GENERATED_TOKENS = ['styled-system', 'tokens', 'index.mjs']
 
 /**
- * The keys of one token scale, unioned across the presets that define it.
+ * The keys of one token scale, read out of Panda's generated token map.
  *
- * @param {string[]} sources contents of each file in `PRESET_FILES`
+ * The map is flat and fully merged — `"spacing.4": { value, variable }` — so a
+ * key is whatever follows the category and a dot.
+ *
+ * @param {string} source contents of styled-system/tokens/index.mjs
  * @param {string} category e.g. `spacing`
- * @returns {Set<string>} every key defined under theme.tokens[category]
+ * @returns {Set<string>} every key the compiled theme defines in that scale
  */
-export function mergeTokenScaleKeys(sources, category) {
+export function parseGeneratedTokenKeys(source, category) {
   const keys = new Set()
-  for (const source of sources) {
-    for (const key of parseTokenScaleKeys(source, category)) keys.add(key)
-  }
+  const re = new RegExp(`"${category}\\.([^"]+)"\\s*:`, 'g')
+  for (const [, key] of source.matchAll(re)) keys.add(key)
   return keys
 }
 
 /**
- * The keys of one token scale in a single preset source.
+ * The token scales the built site resolves against.
  *
- * Parsed rather than hardcoded because the Art Director rewrites
- * `elements/preset.ts` every night and the scale moves with it: nine steps of
- * 4px-128px on 2026-08-30, something else tomorrow.
+ * Read from Panda's own output rather than parsed back out of the preset
+ * sources, because the sources cannot answer this question. `panda.config.ts`
+ * merges `[elementsPreset, chassisPreset]` and the two own different halves of
+ * the theme: the Art Director writes `elements/preset.ts` and is told in so
+ * many words NOT to emit `spacing` (scripts/prompts/art-director.md), while
+ * the orchestrator derives it from the day's chassis rhythm into
+ * `elements/chassis-preset.ts`, merged second. Only the merge knows what won.
  *
- * @param {string} source contents of one preset file
- * @param {string} category e.g. `spacing`
- * @returns {Set<string>} the keys defined under theme.tokens[category]
+ * Reading preset.ts alone is what killed the 2026-09-01 run: the Art Director
+ * followed its contract, the gate parsed an empty spacing scale, and all 49
+ * legal `gap: '4'`s in the tree were reported as bare-number misses. Reading a
+ * hardcoded list of both presets was the same guess with one more entry in it,
+ * and would have gone stale the day a third preset joined the merge.
+ *
+ * Returns null when the generated map is absent, which is a different fact
+ * from an empty scale and has to stay distinguishable. An empty scale is
+ * authoritative: `sizes` carries no numeric keys today, and `width: '11'`
+ * shipping an 11px brand mark is the case this gate was built for, so it must
+ * still flag. A missing map means we know nothing about the theme, and a gate
+ * that knows nothing must not invent findings.
+ *
+ * @param {string} root repo root
+ * @returns {Record<string, Set<string>> | null}
  */
-export function parseTokenScaleKeys(source, category) {
-  const keys = new Set()
-  const header = new RegExp(`\\b${category}\\s*:\\s*\\{`).exec(source)
-  if (!header) return keys
-
-  let depth = 0
-  let end = source.length
-  for (let i = header.index + header[0].length - 1; i < source.length; i++) {
-    if (source[i] === '{') depth++
-    else if (source[i] === '}') {
-      depth--
-      if (depth === 0) {
-        end = i
-        break
-      }
-    }
+export function readGeneratedTokenScales(root) {
+  const generated = path.join(root, ...GENERATED_TOKENS)
+  if (!existsSync(generated)) return null
+  let source
+  try {
+    source = readFileSync(generated, 'utf8')
+  } catch {
+    return null
   }
-  const block = source.slice(header.index + header[0].length, end)
-
-  // Only keys at the top level of the block: `1: { value: '4px' }`, `'2xl': {…}`.
-  let nesting = 0
-  for (let i = 0; i < block.length; i++) {
-    if (block[i] === '{') nesting++
-    else if (block[i] === '}') nesting--
-    else if (nesting === 0) {
-      const rest = block.slice(i)
-      const m = /^(?:'([^']+)'|"([^"]+)"|([A-Za-z0-9_$-]+))\s*:/.exec(rest)
-      if (m) {
-        keys.add(m[1] ?? m[2] ?? m[3])
-        i += m[0].length - 1
-      }
-    }
+  return {
+    spacing: parseGeneratedTokenKeys(source, 'spacing'),
+    sizes: parseGeneratedTokenKeys(source, 'sizes'),
   }
-  return keys
 }
 
 /**
@@ -768,19 +758,14 @@ export function checkTokenResolution({
     }
   }
 
-  const presetSources = PRESET_FILES.map((file) => path.join(root, 'elements', file))
-    .filter((p) => existsSync(p))
-    .map((p) => readFileSync(p, 'utf8'))
-  if (presetSources.length > 0) {
-    // `sizes` is legitimately empty in both presets today, and it has to stay
-    // checkable while empty: `width: '11'` shipping an 11px brand mark is the
-    // case this gate was built for. So an empty scale still flags — only a
-    // scale that is empty because we read the wrong file is a bug, and that is
-    // what the union above fixes.
-    const scales = {
-      spacing: mergeTokenScaleKeys(presetSources, 'spacing'),
-      sizes: mergeTokenScaleKeys(presetSources, 'sizes'),
-    }
+  const scales = readGeneratedTokenScales(root)
+  if (!scales) {
+    // Codegen runs before the build, so this only happens if the build never
+    // did. Say so rather than reporting every bare number in the tree.
+    console.warn(
+      '  [token-gate] styled-system/tokens not generated — skipping the bare-number check'
+    )
+  } else {
     for (const [file, source] of reachable) {
       for (const hit of findNumericScaleMisses(source, scales)) {
         findings.push({
@@ -788,7 +773,12 @@ export function checkTokenResolution({
           property: hit.prop,
           value: hit.value,
           category: hit.category,
-          available: [...(scales[hit.category] ?? [])],
+          // Only the numeric steps. The finding is about a bare number, and
+          // the compiled `sizes` scale carries `breakpoint-lg` and friends —
+          // true, and useless as advice to an agent that wrote `width: '11'`.
+          available: [...(scales[hit.category] ?? [])]
+            .filter((key) => /^\d+$/.test(key))
+            .sort((a, b) => Number(a) - Number(b)),
           files: [path.relative(root, file)],
         })
       }
@@ -843,7 +833,7 @@ export function formatFindings(findings) {
     for (const f of numeric) {
       const advice = f.available?.length
         ? `The ${f.category} scale defines ${f.available.join(', ')} — use one of those, or write the length you mean with a unit.`
-        : `The preset defines no ${f.category} scale at all, so write the length you mean with a unit.`
+        : `The ${f.category} scale defines no numbered steps at all, so write the length you mean with a unit.`
       lines.push(
         `  - ${f.files.join(', ')}: ${f.property}: '${f.value}' is not a ${f.category} token, so ` +
           `Panda appended px and shipped ${f.value}px. ${advice}`
