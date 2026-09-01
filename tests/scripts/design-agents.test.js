@@ -481,6 +481,16 @@ describe('resolveRiskWeight', () => {
     expect(resolveRiskWeight('0', '2026-08-23')).toEqual({ risk: 0, explicitlySet: true })
   })
 
+  it('a non-number derives from the date, like the other three dials (#301)', () => {
+    // parseInt('high') is NaN; describeRiskTier(NaN) read as SAFE and
+    // build.json stored null.
+    const fromBad = resolveRiskWeight('high', '2026-08-23')
+    const fromUnset = resolveRiskWeight(undefined, '2026-08-23')
+    expect(fromBad).toEqual(fromUnset)
+    expect(fromBad.explicitlySet).toBe(false)
+    expect(Number.isNaN(fromBad.risk)).toBe(false)
+  })
+
   it('undefined and empty string both derive risk from the date instead', () => {
     const fromUndefined = resolveRiskWeight(undefined, '2026-08-23')
     const fromEmpty = resolveRiskWeight('', '2026-08-23')
