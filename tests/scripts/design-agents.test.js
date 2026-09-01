@@ -141,6 +141,17 @@ describe('the Phase 5 repair loop', () => {
   })
 })
 
+describe('one run date', () => {
+  // #302: run-date.js unified six derivations of "today"; five raw reads of
+  // signals.date survived, and they disagreed on a missing date (path.join
+  // threw, archive() stringified undefined into archive/undefined/).
+  it('never reads signals.date directly after runDate() has answered', () => {
+    const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
+    const after = SOURCE.slice(SOURCE.indexOf('const today = runDate(signals)'))
+    expect(after).not.toMatch(/signals\.date/)
+  })
+})
+
 describe('the two required calls check the deadline before starting', () => {
   // #299: the optional steps checked pastDeadline(); the mockup designer and
   // the primary engineer did not, and past the deadline the clamp handed

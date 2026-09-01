@@ -457,7 +457,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   async function saveTrace(error) {
     try {
-      const archiveDateDir = path.join(ROOT, 'archive', signals.date)
+      const archiveDateDir = path.join(ROOT, 'archive', today)
 
       if (archiveRan) {
         // Success path: find the build dir that archive() just created
@@ -514,7 +514,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // has exactly this gap).
   async function archiveFailedSources(paths) {
     try {
-      const dir = path.join(ROOT, 'archive', signals.date, `build-failed-sources-${Date.now()}`)
+      const dir = path.join(ROOT, 'archive', today, `build-failed-sources-${Date.now()}`)
       let count = 0
       for (const relPath of paths) {
         const abs = path.join(ROOT, relPath)
@@ -894,7 +894,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const briefArtifactPath = path.join(ROOT, 'signals', 'today.brief.md')
       await writeFile(
         briefArtifactPath,
-        `# Signals Brief — ${signals.date || 'today'}\n\n${artDirectorResult.brief}\n`,
+        `# Signals Brief — ${today}\n\n${artDirectorResult.brief}\n`,
         'utf8'
       )
     } catch (err) {
@@ -1585,19 +1585,17 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       // Capture the runtime-generated /og card to public/og/<date>.png so it
       // serves at the og:image URL injected into __root.tsx. Best-effort: a
       // missing og.tsx or a capture failure must never block shipping.
-      if (signals.date) {
-        try {
-          const { captureRouteScreenshot } = await import('./utils/snapshot.js')
-          const ogBuffer = await captureRouteScreenshot('/og')
-          const ogDir = path.join(ROOT, 'public', 'og')
-          await mkdir(ogDir, { recursive: true })
-          await writeFile(path.join(ogDir, `${signals.date}.png`), ogBuffer)
-          console.log(
-            `  [og] captured public/og/${signals.date}.png (${(ogBuffer.length / 1024).toFixed(0)}KB)`
-          )
-        } catch (err) {
-          console.warn(`  [og] capture failed (non-blocking): ${err.message}`)
-        }
+      try {
+        const { captureRouteScreenshot } = await import('./utils/snapshot.js')
+        const ogBuffer = await captureRouteScreenshot('/og')
+        const ogDir = path.join(ROOT, 'public', 'og')
+        await mkdir(ogDir, { recursive: true })
+        await writeFile(path.join(ogDir, `${today}.png`), ogBuffer)
+        console.log(
+          `  [og] captured public/og/${today}.png (${(ogBuffer.length / 1024).toFixed(0)}KB)`
+        )
+      } catch (err) {
+        console.warn(`  [og] capture failed (non-blocking): ${err.message}`)
       }
 
       const allFiles = [...tokenResult.files, ...filesResult.files]
@@ -1615,17 +1613,21 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       //
       // Descriptive only: never validated or enforced. The load-bearing
       // structural record is composition.json.
-      if (chosenArchetype && signals.date) {
+      if (chosenArchetype) {
         try {
-          const datePath = path.join(ROOT, 'archive', signals.date)
+          const datePath = path.join(ROOT, 'archive', today)
           await mkdir(datePath, { recursive: true })
           await writeFile(path.join(datePath, 'archetype.txt'), chosenArchetype, 'utf8')
           console.log(`  [archetype] saved: ${chosenArchetype}`)
         } catch {}
       }
 
+      // `today` is runDate(signals). The five raw reads of the signals' date
+      // field this replaces behaved differently on a missing date: path.join
+      // threw (caught, trace lost) while archive() stringified it and created
+      // archive/undefined/ (#302).
       await archive(
-        signals.date,
+        today,
         signals,
         rationale,
         designBrief,
