@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { describe, it, expect } from 'vitest'
 import {
   FILE_OWNERSHIP,
@@ -76,6 +79,52 @@ describe('identifyFailingAgent', () => {
   it('returns "both" when no file can be identified', () => {
     const error = 'Unknown build error'
     expect(identifyFailingAgent(error)).toBe('both')
+  })
+})
+
+describe('the Phase 5 repair loop', () => {
+  // runAgentSwarm is one large closure, so these read the source — the same
+  // approach this suite already takes for the workflow YAML and the root
+  // template. What matters is the invariants, and each one is a bug that has
+  // actually cost a night.
+  const SOURCE = readFileSync(
+    path.join(
+      path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..'),
+      'scripts/design-agents.js'
+    ),
+    'utf8'
+  )
+  const phase5 = SOURCE.slice(SOURCE.indexOf('Phase 5: Build failed'))
+
+  it('allows more than one attempt', () => {
+    // A single attempt reliably trades the error it was given for a different
+    // one: 2026-09-01 saw width:'full' -> surfaceDeep in CI and gap:'10' ->
+    // Footer TS2769 locally, both fatal.
+    const max = /const MAX_REPAIR_ATTEMPTS = (\d+)/.exec(phase5)
+    expect(max).not.toBeNull()
+    expect(Number(max[1])).toBeGreaterThan(1)
+  })
+
+  it('carries each new error forward instead of re-sending the first', () => {
+    // Handing attempt 3 the error from attempt 1 would ask it to fix something
+    // already fixed.
+    expect(phase5).toMatch(/repairError = attemptBuild\.error/)
+  })
+
+  it('stops when the run budget is spent', () => {
+    // A repair that starts past the deadline cannot finish and archive.
+    expect(phase5).toMatch(/pastDeadline\(\)/)
+  })
+
+  it('drops orchestrator-owned files from the repair output', () => {
+    // `app/routes/` is an allowed write prefix, so without this a repair can
+    // overwrite the generated __root.tsx — and the error text handed to a
+    // repair has named __root.tsx, which invites exactly that.
+    expect(phase5).toMatch(/dropOrchestratorFiles\(retryResult\.files/)
+  })
+
+  it('reports how many attempts were made when it gives up', () => {
+    expect(phase5).toMatch(/Build failed after \$\{attempt\} repair attempt/)
   })
 })
 
