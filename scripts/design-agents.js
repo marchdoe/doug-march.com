@@ -120,6 +120,84 @@ async function writeEngineerFiles(result, agentLabel) {
   return await writeFiles(result.files)
 }
 
+/**
+ * Capture the runtime-generated /og card to public/og/<date>.png so it
+ * serves at the og:image URL injected into __root.tsx. Best-effort: a
+ * missing og.tsx or a capture failure must never block shipping.
+ * @param {string} date YYYY-MM-DD
+ */
+async function captureOgCard(date) {
+  try {
+    const { captureRouteScreenshot } = await import('./utils/snapshot.js')
+    const ogBuffer = await captureRouteScreenshot('/og')
+    const ogDir = path.join(ROOT, 'public', 'og')
+    await mkdir(ogDir, { recursive: true })
+    await writeFile(path.join(ogDir, `${date}.png`), ogBuffer)
+    console.log(`  [og] captured public/og/${date}.png (${(ogBuffer.length / 1024).toFixed(0)}KB)`)
+  } catch (err) {
+    console.warn(`  [og] capture failed (non-blocking): ${err.message}`)
+  }
+}
+
+/**
+ * Write the day's archetype beside its record. Descriptive only: never
+ * validated or enforced. The load-bearing structural record is
+ * composition.json.
+ * @param {string} date YYYY-MM-DD
+ * @param {string|null|undefined} archetype
+ */
+async function writeArchetype(date, archetype) {
+  if (!archetype) return
+  try {
+    const datePath = path.join(ROOT, 'archive', date)
+    await mkdir(datePath, { recursive: true })
+    await writeFile(path.join(datePath, 'archetype.txt'), archetype, 'utf8')
+    console.log(`  [archetype] saved: ${archetype}`)
+  } catch {}
+}
+
+/**
+ * The per-build artifacts archive() writes beside the record, keyed by file
+ * name. A null value means "write nothing", which the readers distinguish
+ * from an empty file.
+ *
+ * Pulled out of archiveAndReturn so the assembly is a pure function with a
+ * test, rather than nine defaults inside a closure nothing can reach.
+ *
+ * @param {object} run
+ * @param {{png?: Buffer, darkPng?: Buffer, fingerprint?: object}|null} run.finalScreenshot
+ * @param {{mockupHtml?: string}|null} run.mockup
+ * @param {{png?: Buffer}|null} run.mockupScreenshot
+ * @param {Array<object>} run.verdicts
+ * @param {object} run.shellDecl
+ * @param {object} run.headerDecl
+ * @param {string|null|undefined} run.heroSource
+ * @param {object} run.chosenComposition
+ * @param {{id: string, register: string}} run.chosenLane
+ * @returns {Record<string, Buffer|string|null>}
+ */
+export function archiveArtifacts(run) {
+  const json = (value) => JSON.stringify(value, null, 2)
+  return {
+    'screenshot.png': run.finalScreenshot?.png ?? null,
+    'screenshot-dark.png': run.finalScreenshot?.darkPng ?? null,
+    'mockup.html': run.mockup?.mockupHtml ?? null,
+    'mockup-screenshot.png': run.mockupScreenshot?.png ?? null,
+    'verdicts.json': json(run.verdicts),
+    'shell.json': json(run.shellDecl),
+    'header.json': json(run.headerDecl),
+    'hero-source.json': json({ source: run.heroSource || null }),
+    'composition.json': json(run.chosenComposition),
+    // The rendered silhouette (#255). Null when the capture failed, and
+    // written as nothing rather than as an empty object so the uniqueness
+    // index reads "no fingerprint" instead of "an empty page".
+    'fingerprint.json': run.finalScreenshot?.fingerprint
+      ? json(run.finalScreenshot.fingerprint)
+      : null,
+    'lane.json': json({ laneId: run.chosenLane.id, register: run.chosenLane.register }),
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
@@ -457,7 +535,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   async function saveTrace(error) {
     try {
-      const archiveDateDir = path.join(ROOT, 'archive', signals.date)
+      const archiveDateDir = path.join(ROOT, 'archive', today)
 
       if (archiveRan) {
         // Success path: find the build dir that archive() just created
@@ -514,7 +592,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // has exactly this gap).
   async function archiveFailedSources(paths) {
     try {
-      const dir = path.join(ROOT, 'archive', signals.date, `build-failed-sources-${Date.now()}`)
+      const dir = path.join(ROOT, 'archive', today, `build-failed-sources-${Date.now()}`)
       let count = 0
       for (const relPath of paths) {
         const abs = path.join(ROOT, relPath)
@@ -894,7 +972,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const briefArtifactPath = path.join(ROOT, 'signals', 'today.brief.md')
       await writeFile(
         briefArtifactPath,
-        `# Signals Brief — ${signals.date || 'today'}\n\n${artDirectorResult.brief}\n`,
+        `# Signals Brief — ${today}\n\n${artDirectorResult.brief}\n`,
         'utf8'
       )
     } catch (err) {
@@ -1582,23 +1660,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // archive artifacts, persist the archetype, shape the return value.
     // Behavior is identical between callers apart from the rationale suffix.
     async function archiveAndReturn(filesResult, rationaleSuffix = '') {
-      // Capture the runtime-generated /og card to public/og/<date>.png so it
-      // serves at the og:image URL injected into __root.tsx. Best-effort: a
-      // missing og.tsx or a capture failure must never block shipping.
-      if (signals.date) {
-        try {
-          const { captureRouteScreenshot } = await import('./utils/snapshot.js')
-          const ogBuffer = await captureRouteScreenshot('/og')
-          const ogDir = path.join(ROOT, 'public', 'og')
-          await mkdir(ogDir, { recursive: true })
-          await writeFile(path.join(ogDir, `${signals.date}.png`), ogBuffer)
-          console.log(
-            `  [og] captured public/og/${signals.date}.png (${(ogBuffer.length / 1024).toFixed(0)}KB)`
-          )
-        } catch (err) {
-          console.warn(`  [og] capture failed (non-blocking): ${err.message}`)
-        }
-      }
+      await captureOgCard(today)
 
       const allFiles = [...tokenResult.files, ...filesResult.files]
       const changedPaths = allFiles.map((f) => f.path)
@@ -1615,17 +1677,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       //
       // Descriptive only: never validated or enforced. The load-bearing
       // structural record is composition.json.
-      if (chosenArchetype && signals.date) {
-        try {
-          const datePath = path.join(ROOT, 'archive', signals.date)
-          await mkdir(datePath, { recursive: true })
-          await writeFile(path.join(datePath, 'archetype.txt'), chosenArchetype, 'utf8')
-          console.log(`  [archetype] saved: ${chosenArchetype}`)
-        } catch {}
-      }
+      await writeArchetype(today, chosenArchetype)
 
+      // `today` is runDate(signals). The five raw reads of the signals' date
+      // field this replaces behaved differently on a missing date: path.join
+      // threw (caught, trace lost) while archive() stringified it and created
+      // archive/undefined/ (#302).
       await archive(
-        signals.date,
+        today,
         signals,
         rationale,
         designBrief,
@@ -1638,32 +1697,17 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         weights,
         tokenResult.color_scheme ?? null,
         chosenArchetype ?? null,
-        {
-          'screenshot.png': finalScreenshot?.png ?? null,
-          'screenshot-dark.png': finalScreenshot?.darkPng ?? null,
-          'mockup.html': mockup?.mockupHtml ?? null,
-          'mockup-screenshot.png': mockupScreenshot?.png ?? null,
-          'verdicts.json': JSON.stringify(verdicts, null, 2),
-          'shell.json': JSON.stringify(shellDecl, null, 2),
-          'header.json': JSON.stringify(headerDecl, null, 2),
-          'hero-source.json': JSON.stringify(
-            { source: artDirectorResult.heroSource || null },
-            null,
-            2
-          ),
-          'composition.json': JSON.stringify(chosenComposition, null, 2),
-          // The rendered silhouette (#255). Null when the capture failed, and
-          // written as nothing rather than as an empty object so the uniqueness
-          // index reads "no fingerprint" instead of "an empty page".
-          'fingerprint.json': finalScreenshot?.fingerprint
-            ? JSON.stringify(finalScreenshot.fingerprint, null, 2)
-            : null,
-          'lane.json': JSON.stringify(
-            { laneId: chosenLane.id, register: chosenLane.register },
-            null,
-            2
-          ),
-        }
+        archiveArtifacts({
+          finalScreenshot,
+          mockup,
+          mockupScreenshot,
+          verdicts,
+          shellDecl,
+          headerDecl,
+          heroSource: artDirectorResult.heroSource,
+          chosenComposition,
+          chosenLane,
+        })
       )
       archiveRan = true
 
