@@ -36,6 +36,22 @@ import { withPreviewServer } from './snapshot.js'
  * mockup and the header crop. Every defect the audit found was
  * width-dependent, so the width that defines "reviewed" is doing real work.
  */
+/**
+ * When a block of prose stops being a phrase and starts being a wall.
+ *
+ * 2026-09-01's /about set a 340-character paragraph at 110px. It filled several
+ * screens, and the owner's reaction was "notice how this takes up a ton of the
+ * screen?" Every other running-copy block on that same build measured 14-16px,
+ * so the boundary is not delicate: the next largest was 205 characters at 14px.
+ *
+ * Deliberately wide of both. A hero phrase is short and may be enormous; a
+ * pull quote may be 180 characters at 48px and still be a design decision.
+ * Only the combination — long AND huge — is the defect, because that is prose
+ * nobody can read at a glance and nobody chose to set that way.
+ */
+export const RUNNING_COPY_MIN_CHARS = 180
+export const RUNNING_COPY_MAX_PX = 48
+
 export const VIEWPORT_RUNGS = [
   { name: 'mobile', width: 360, height: 640 },
   { name: 'desktop', width: 1440, height: 900 },
@@ -121,6 +137,23 @@ export function evaluateMeasurement(m, { tolerancePx = OVERFLOW_TOLERANCE_PX } =
     })
   }
 
+  // Running copy set at display size. The owner's words on the build that
+  // prompted this: "notice how this takes up a ton of the screen?"
+  if (
+    m.worstCopy &&
+    m.worstCopy.chars >= RUNNING_COPY_MIN_CHARS &&
+    m.worstCopy.fontSizePx > RUNNING_COPY_MAX_PX
+  ) {
+    findings.push({
+      kind: 'running-copy',
+      severity: 'error',
+      detail:
+        `${m.worstCopy.chars} characters of running copy set at ${m.worstCopy.fontSizePx}px ` +
+        `(over ${RUNNING_COPY_MAX_PX}px) — "${m.worstCopy.sample}..." . A paragraph at display ` +
+        'size is a wall, not a hero. Set prose on the body step and give the display step a phrase.',
+    })
+  }
+
   if (m.consoleErrors?.length) {
     findings.push({
       kind: 'console',
@@ -161,11 +194,34 @@ export async function measureRoute(browser, baseUrl, surface, viewport, scheme) 
     })
     // Fonts change metrics, and metrics are the entire point of this gate.
     await page.waitForTimeout(900)
-    const box = await page.evaluate(() => ({
-      scrollWidth: document.documentElement.scrollWidth,
-      clientWidth: document.documentElement.clientWidth,
-      allowsXOverflow: document.body?.hasAttribute('data-allow-x-overflow') ?? false,
-    }))
+    const box = await page.evaluate(
+      ({ minChars }) => {
+        // Leaf elements only. A wrapper's textContent is the sum of its
+        // children's, which would report a whole page as one giant block.
+        let worstCopy = null
+        for (const el of document.querySelectorAll('body *')) {
+          if (el.children.length > 0) continue
+          const text = (el.textContent || '').trim()
+          if (text.length < minChars) continue
+          const size = Number.parseFloat(getComputedStyle(el).fontSize)
+          if (!Number.isFinite(size)) continue
+          if (!worstCopy || size > worstCopy.fontSizePx) {
+            worstCopy = {
+              chars: text.length,
+              fontSizePx: Math.round(size),
+              sample: text.slice(0, 60),
+            }
+          }
+        }
+        return {
+          scrollWidth: document.documentElement.scrollWidth,
+          clientWidth: document.documentElement.clientWidth,
+          allowsXOverflow: document.body?.hasAttribute('data-allow-x-overflow') ?? false,
+          worstCopy,
+        }
+      },
+      { minChars: RUNNING_COPY_MIN_CHARS }
+    )
     return { ...base, status: resp?.status() ?? null, ...box, consoleErrors }
   } catch (err) {
     return { ...base, error: err.message, consoleErrors }

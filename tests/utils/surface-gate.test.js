@@ -9,6 +9,8 @@ import {
   ownerForSurface,
   OVERFLOW_TOLERANCE_PX,
   VIEWPORT_RUNGS,
+  RUNNING_COPY_MAX_PX,
+  RUNNING_COPY_MIN_CHARS,
 } from '../../scripts/utils/surface-gate.js'
 
 const ok = {
@@ -156,5 +158,61 @@ describe('ownerForSurface', () => {
 describe('VIEWPORT_RUNGS', () => {
   it('stays on the archiver ladder, and off the 1280 the critic used to capture at', () => {
     expect(VIEWPORT_RUNGS.map((v) => v.width)).toEqual([360, 1440])
+  })
+})
+
+describe('running copy set at display size', () => {
+  // 2026-09-01's /about set a 340-character paragraph at 110px. It filled
+  // several screens. Every other running-copy block on that same build
+  // measured 14-16px, so the boundary is not delicate — but it does have to
+  // leave a hero phrase and a pull quote alone, because both are legitimate.
+  const base = {
+    id: 'about',
+    route: '/about',
+    viewport: 'desktop',
+    scheme: 'light',
+    status: 200,
+    scrollWidth: 1440,
+    clientWidth: 1440,
+    allowsXOverflow: false,
+    consoleErrors: [],
+  }
+  const copyFindings = (worstCopy) =>
+    evaluateMeasurement({ ...base, worstCopy }).filter((f) => f.kind === 'running-copy')
+
+  it('flags the paragraph that shipped', () => {
+    const found = copyFindings({ chars: 340, fontSizePx: 110, sample: 'I work at the' })
+    expect(found).toHaveLength(1)
+    expect(found[0].severity).toBe('error')
+    expect(found[0].detail).toContain('340 characters')
+    expect(found[0].detail).toContain('110px')
+  })
+
+  it('leaves a hero phrase alone however large', () => {
+    // Short and enormous is the whole point of the homepage.
+    expect(copyFindings({ chars: 20, fontSizePx: 200, sample: '97.7, still summer.' })).toEqual([])
+  })
+
+  it('leaves real body copy alone however long', () => {
+    expect(copyFindings({ chars: 440, fontSizePx: 16, sample: 'Spaceman is the LLC' })).toEqual([])
+  })
+
+  it('leaves a large pull quote at the boundary alone', () => {
+    // Long and large is a judgement call until it is clearly neither.
+    expect(
+      copyFindings({ chars: RUNNING_COPY_MIN_CHARS, fontSizePx: RUNNING_COPY_MAX_PX, sample: 'q' })
+    ).toEqual([])
+  })
+
+  it('needs both length and size, not either', () => {
+    expect(
+      copyFindings({ chars: RUNNING_COPY_MIN_CHARS - 1, fontSizePx: 110, sample: 'x' })
+    ).toEqual([])
+    expect(copyFindings({ chars: 400, fontSizePx: RUNNING_COPY_MAX_PX, sample: 'x' })).toEqual([])
+  })
+
+  it('reports nothing when the page had no block long enough to measure', () => {
+    expect(copyFindings(null)).toEqual([])
+    expect(evaluateMeasurement(base).filter((f) => f.kind === 'running-copy')).toEqual([])
   })
 })
