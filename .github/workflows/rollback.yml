@@ -41,8 +41,12 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Roll back mutable files
+        env:
+          COMMITS_BACK: ${{ inputs.commits_back }}
         run: |
-          N=${{ inputs.commits_back }}
+          N="$COMMITS_BACK"
+          # type: number is a UI hint, not validation — reject anything but a plain positive integer before it reaches HEAD~$N (#345).
+          case "$N" in ''|*[!0-9]*) echo "::error::commits_back must be a positive integer, got '$N'"; exit 1;; esac
           echo "Rolling back mutable files to HEAD~$N"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
