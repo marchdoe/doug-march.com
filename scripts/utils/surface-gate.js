@@ -166,6 +166,48 @@ export function evaluateMeasurement(m, { tolerancePx = OVERFLOW_TOLERANCE_PX } =
 }
 
 /**
+ * Runs inside the page. Self-contained on purpose: Playwright serialises it
+ * with toString(), so it can reference nothing from this module.
+ *
+ * A running-copy block is an element whose children are all inline boxes.
+ * The first version measured leaf elements only, so a paragraph holding one
+ * <a>, <em> or <br> was never measured and the 340-character paragraph at
+ * 110px that this exists for (2026-09-01's /about) slipped through as soon
+ * as it carried a link (#307). Leaves still qualify: they have no children.
+ *
+ * @param {{ minChars: number }} args
+ * @returns {{ scrollWidth: number, clientWidth: number, allowsXOverflow: boolean,
+ *   worstCopy: null | { chars: number, fontSizePx: number, sample: string } }}
+ */
+export function collectSurfaceMetrics({ minChars }) {
+  const isInlineBox = (child) => {
+    const display = getComputedStyle(child).display
+    return display === 'none' || display === 'contents' || display.startsWith('inline')
+  }
+  let worstCopy = null
+  for (const el of document.querySelectorAll('body *')) {
+    if (!Array.from(el.children).every(isInlineBox)) continue
+    const text = (el.textContent || '').trim()
+    if (text.length < minChars) continue
+    const size = Number.parseFloat(getComputedStyle(el).fontSize)
+    if (!Number.isFinite(size)) continue
+    if (!worstCopy || size > worstCopy.fontSizePx) {
+      worstCopy = {
+        chars: text.length,
+        fontSizePx: Math.round(size),
+        sample: text.slice(0, 60),
+      }
+    }
+  }
+  return {
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+    allowsXOverflow: document.body?.hasAttribute('data-allow-x-overflow') ?? false,
+    worstCopy,
+  }
+}
+
+/**
  * Measure one route at one viewport in one colour scheme.
  *
  * @param {import('playwright').Browser} browser
@@ -194,34 +236,7 @@ export async function measureRoute(browser, baseUrl, surface, viewport, scheme) 
     })
     // Fonts change metrics, and metrics are the entire point of this gate.
     await page.waitForTimeout(900)
-    const box = await page.evaluate(
-      ({ minChars }) => {
-        // Leaf elements only. A wrapper's textContent is the sum of its
-        // children's, which would report a whole page as one giant block.
-        let worstCopy = null
-        for (const el of document.querySelectorAll('body *')) {
-          if (el.children.length > 0) continue
-          const text = (el.textContent || '').trim()
-          if (text.length < minChars) continue
-          const size = Number.parseFloat(getComputedStyle(el).fontSize)
-          if (!Number.isFinite(size)) continue
-          if (!worstCopy || size > worstCopy.fontSizePx) {
-            worstCopy = {
-              chars: text.length,
-              fontSizePx: Math.round(size),
-              sample: text.slice(0, 60),
-            }
-          }
-        }
-        return {
-          scrollWidth: document.documentElement.scrollWidth,
-          clientWidth: document.documentElement.clientWidth,
-          allowsXOverflow: document.body?.hasAttribute('data-allow-x-overflow') ?? false,
-          worstCopy,
-        }
-      },
-      { minChars: RUNNING_COPY_MIN_CHARS }
-    )
+    const box = await page.evaluate(collectSurfaceMetrics, { minChars: RUNNING_COPY_MIN_CHARS })
     return { ...base, status: resp?.status() ?? null, ...box, consoleErrors }
   } catch (err) {
     return { ...base, error: err.message, consoleErrors }
