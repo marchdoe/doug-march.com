@@ -1475,6 +1475,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         break
       }
       console.log(`  [mockup-critic] REVISE — feeding back to designer`)
+      // Every other retry path counts itself in cost.json; this loop starts
+      // another Mockup Designer call (Opus, the most expensive model in
+      // PROD_MODELS) but never told the ledger, so `retries` undercounted
+      // whether the critic loop earned its keep (#303).
+      noteRetry()
       revisionFeedback = critique.feedback
     }
 

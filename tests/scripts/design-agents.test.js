@@ -605,3 +605,16 @@ describe('resolveRiskWeight', () => {
     expect(risks.size).toBeGreaterThan(1)
   })
 })
+
+describe('a mockup revision round is counted as a retry', () => {
+  // #303: every other retry path calls noteRetry(), but the MAX_MOCKUP_REVISIONS
+  // loop started another Mockup Designer call without telling the ledger, so
+  // cost.json's retries undercounted whether the critic loop earned its keep.
+  const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
+  const loopStart = SOURCE.indexOf('const MAX_MOCKUP_REVISIONS = 2')
+  const loop = SOURCE.slice(loopStart, SOURCE.indexOf('Phase 2c: React Engineer', loopStart))
+
+  it('calls noteRetry() before feeding critique back into another revision round', () => {
+    expect(loop).toMatch(/noteRetry\(\)\s*\n\s*revisionFeedback = critique\.feedback/)
+  })
+})
