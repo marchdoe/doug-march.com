@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   callClaudeSDK,
   hasApiKey,
@@ -8,6 +8,7 @@ import {
 } from '../../scripts/utils/claude-sdk.js'
 import { APIConnectionError } from '@anthropic-ai/sdk'
 import { getUsageRecords, resetLedger, summarizeLedger } from '../../scripts/utils/cost-ledger.js'
+import { clearRunDeadline, setRunDeadline } from '../../scripts/utils/run-budget.js'
 
 /** Minimal stand-in for the Anthropic client — never touches the network. */
 function stubClient(response) {
@@ -261,6 +262,37 @@ describe('callClaudeSDK', () => {
       // 1.5s spent, 2s backoff would land past the 3s deadline: one attempt only.
       expect(create).toHaveBeenCalledTimes(1)
       expect(summarizeLedger().retries).toBe(0)
+    })
+  })
+
+  // #295: clampToBudget was applied in callClaudeCLI only.
+  describe('run deadline', () => {
+    afterEach(() => {
+      clearRunDeadline()
+      vi.useRealTimers()
+    })
+
+    it('clamps the timeout to what the run has left', async () => {
+      vi.useFakeTimers()
+      setRunDeadline(Date.now() + 5000)
+      const { client, create } = stubClient(OK)
+
+      await callClaudeSDK('screenshot-critic', 'sys', [textBlock('x')], {
+        client,
+        timeoutMs: 600000,
+      })
+
+      expect(create.mock.calls[0][1].timeout).toBeLessThanOrEqual(5000)
+      expect(create.mock.calls[0][1].timeout).toBeGreaterThanOrEqual(1000)
+    })
+
+    it('leaves the timeout alone when no run registered a deadline', async () => {
+      const { client, create } = stubClient(OK)
+      await callClaudeSDK('screenshot-critic', 'sys', [textBlock('x')], {
+        client,
+        timeoutMs: 600000,
+      })
+      expect(create.mock.calls[0][1].timeout).toBe(600000)
     })
   })
 

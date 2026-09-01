@@ -18,6 +18,7 @@
 import Anthropic, { APIConnectionError } from '@anthropic-ai/sdk'
 import { modelFor, supportsAdaptiveThinking } from './models.js'
 import { noteRetry, recordUsage } from './cost-ledger.js'
+import { clampToBudget } from './run-budget.js'
 
 /**
  * @typedef {{ type: 'text', text: string }} TextBlock
@@ -201,7 +202,17 @@ export async function callClaudeSDK(agentName, systemPrompt, contentBlocks, opts
 
   const model = opts.model ?? modelFor(agentName)
   const maxTokens = opts.maxTokens ?? DEFAULT_MAX_TOKENS
-  const timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS
+  // Same bound as callClaudeCLI (#295). Without it the two vision critics
+  // were the only calls that could outlive the run deadline: at minute 58 of
+  // a 60-minute budget the screenshot critic could start a 10-minute call
+  // and be killed by the Actions timeout with no trace written.
+  const requestedTimeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS
+  const timeoutMs = clampToBudget(requestedTimeoutMs)
+  if (timeoutMs < requestedTimeoutMs) {
+    console.log(
+      `  [${agentName}] timeout clamped ${Math.round(requestedTimeoutMs / 60000)}m → ${Math.round(timeoutMs / 60000)}m by the run budget`
+    )
+  }
   const thinking = resolveThinking(model, opts.thinking)
   const retries = opts.retries ?? DEFAULT_RETRIES
   const client = opts.client ?? new Anthropic({ apiKey, timeout: timeoutMs, maxRetries: 0 })
