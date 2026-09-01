@@ -2073,6 +2073,22 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       // Update the result so the archive records the repair output, not stale originals
       engineerResult = retryResult
 
+      // A repair regenerates what it chooses to. If it omitted a required
+      // file, what is on disk at that path is what restore() put back —
+      // yesterday's — and a passing build would ship it as "repair N" with a
+      // record listing only the files the repair wrote (#297). Same for a nav
+      // the posture forbids. The Phase 2c pass checks both; this path did not.
+      // Spend the attempt on the problem instead of the build.
+      const outputProblem = findEngineerOutputProblem(
+        retryResult.files,
+        chosenComposition.shell_posture
+      )
+      if (outputProblem) {
+        console.warn(`  ⚠ ${outputProblem.message} — repair attempt ${attempt} not built`)
+        repairError = `${outputProblem.message}\n\n${outputProblem.reminder}`
+        continue
+      }
+
       const attemptBuild = validateBuild({ shell: shellDecl })
       if (attemptBuild.success) {
         console.log(`\n=== Repair build passed on attempt ${attempt}! ===`)
