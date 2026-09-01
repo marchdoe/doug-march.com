@@ -10,6 +10,11 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# No job in this workflow uses the token, and branch code — including on a
+# main-based PR — runs here, some of it LLM-written (#341).
+permissions:
+  contents: read
+
 jobs:
   lint:
     name: Lint (Biome)

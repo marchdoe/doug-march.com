@@ -8,12 +8,17 @@
  * process.exit(0) immediately after its last console.log; on a pipe, which
  * is what GitHub Actions gives it, stdout is async and the exit can cut off
  * the last lines before they flush.
+ *
+ * #341: ci.yml declared no permissions block at all, so every one of its
+ * jobs held the repository's default token scope for a workflow that never
+ * reads a secret and runs branch code, some of it LLM-written.
  */
 
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
+import * as yaml from 'js-yaml'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 const read = (rel) => readFileSync(path.join(ROOT, rel), 'utf8')
@@ -45,5 +50,27 @@ describe('daily-redesign.js', () => {
       ''
     )
     expect(withoutDrain).not.toMatch(/process\.exit\(0\)/)
+  })
+})
+
+describe('ci.yml holds a read-only token', () => {
+  const src = read('.github/workflows/ci.yml')
+
+  it('declares a top-level permissions: block before jobs:', () => {
+    const permIndex = src.indexOf('\npermissions:')
+    const jobsIndex = src.indexOf('\njobs:')
+    expect(permIndex).toBeGreaterThan(-1)
+    expect(jobsIndex).toBeGreaterThan(-1)
+    expect(permIndex).toBeLessThan(jobsIndex)
+  })
+
+  it('sets contents: read at the top level once parsed', () => {
+    const doc = yaml.load(src)
+    expect(doc.permissions).toEqual({ contents: 'read' })
+  })
+
+  it('still uses no secret or token — nothing here needed write access', () => {
+    expect(src).not.toMatch(/secrets\./)
+    expect(src).not.toMatch(/GITHUB_TOKEN/)
   })
 })
