@@ -14,6 +14,14 @@ vi.mock('../../scripts/utils/claude-sdk.js', async (importOriginal) => {
 })
 vi.mock('../../scripts/utils/claude-cli.js', () => ({ callClaudeCLI: cliMock }))
 
+const nextFixtureMock = vi.fn()
+const recordFixtureMock = vi.fn()
+vi.mock('../../scripts/utils/agent-fixtures.js', async (importOriginal) => {
+  /** @type {typeof import('../../scripts/utils/agent-fixtures.js')} */
+  const actual = await importOriginal()
+  return { ...actual, nextFixture: nextFixtureMock, recordFixture: recordFixtureMock }
+})
+
 const { imageBlock, textBlock } = await import('../../scripts/utils/claude-sdk.js')
 const { NO_IMAGE_NOTICE, blocksToText, callVisionAgent } = await import(
   '../../scripts/utils/vision-router.js'
@@ -35,6 +43,8 @@ describe('callVisionAgent', () => {
   beforeEach(() => {
     sdkMock.mockReset()
     cliMock.mockReset()
+    nextFixtureMock.mockReset()
+    recordFixtureMock.mockReset()
     vi.unstubAllEnvs()
     vi.stubEnv('PIPELINE_TIER', 'prod')
   })
@@ -133,6 +143,72 @@ describe('callVisionAgent', () => {
     expect(cliMock.mock.calls[0][3]).toMatchObject({
       timeoutMs: 600000,
       stallTimeoutMs: 300000,
+    })
+  })
+
+  // #293: the fixture seam used to live only in callClaudeCLI, so with a key
+  // set MOCK_MODE replayed the text agents and billed the vision critics.
+  describe('fixtures', () => {
+    it('replays a fixture under MOCK_MODE even when an API key would route to the SDK', async () => {
+      vi.stubEnv('ANTHROPIC_API_KEY', 'sk-test')
+      vi.stubEnv('MOCK_MODE', 'true')
+      nextFixtureMock.mockReturnValue('===VERDICT===\nAPPROVE\n===END===')
+      const channels = []
+
+      const result = await callVisionAgent({
+        agentName: 'mockup-critic',
+        systemPrompt: 'sys',
+        contentBlocks: BLOCKS,
+        onChannel: (c) => channels.push(c),
+      })
+
+      expect(result).toBe('===VERDICT===\nAPPROVE\n===END===')
+      expect(nextFixtureMock).toHaveBeenCalledWith('mockup-critic')
+      expect(sdkMock).not.toHaveBeenCalled()
+      expect(cliMock).not.toHaveBeenCalled()
+      expect(channels).toEqual(['fixture-replay'])
+    })
+
+    it('refuses MOCK_MODE inside GitHub Actions before touching the SDK', async () => {
+      vi.stubEnv('ANTHROPIC_API_KEY', 'sk-test')
+      vi.stubEnv('MOCK_MODE', 'true')
+      vi.stubEnv('GITHUB_ACTIONS', 'true')
+
+      await expect(
+        callVisionAgent({ agentName: 'mockup-critic', systemPrompt: 'sys', contentBlocks: BLOCKS })
+      ).rejects.toThrow(/MOCK_MODE=true inside GitHub Actions/)
+      expect(sdkMock).not.toHaveBeenCalled()
+      expect(cliMock).not.toHaveBeenCalled()
+    })
+
+    it('records the SDK response as a fixture under RECORD_FIXTURES', async () => {
+      vi.stubEnv('ANTHROPIC_API_KEY', 'sk-test')
+      vi.stubEnv('RECORD_FIXTURES', 'true')
+      sdkMock.mockResolvedValue('sdk text')
+
+      await callVisionAgent({
+        agentName: 'screenshot-critic',
+        systemPrompt: 'sys',
+        contentBlocks: BLOCKS,
+      })
+
+      expect(recordFixtureMock).toHaveBeenCalledWith('screenshot-critic', 'sdk text')
+    })
+
+    it('does not record twice when the SDK fails and the CLI answers', async () => {
+      vi.stubEnv('ANTHROPIC_API_KEY', 'sk-test')
+      vi.stubEnv('RECORD_FIXTURES', 'true')
+      sdkMock.mockRejectedValue(new Error('overloaded'))
+      cliMock.mockResolvedValue('cli fallback')
+
+      await callVisionAgent({
+        agentName: 'screenshot-critic',
+        systemPrompt: 'sys',
+        contentBlocks: BLOCKS,
+      })
+
+      // callClaudeCLI records its own response; the router must not add one.
+      expect(recordFixtureMock).not.toHaveBeenCalled()
     })
   })
 })

@@ -16,6 +16,13 @@
  * @module
  */
 
+import {
+  assertNotAutomated,
+  isMockMode,
+  isRecording,
+  nextFixture,
+  recordFixture,
+} from './agent-fixtures.js'
 import { callClaudeCLI } from './claude-cli.js'
 import { callClaudeSDK, hasApiKey } from './claude-sdk.js'
 import { modelFor } from './models.js'
@@ -53,10 +60,11 @@ export function blocksToText(contentBlocks) {
  * @param {number} [args.timeoutMs]
  * @param {number} [args.stallTimeoutMs] - CLI path only
  * @param {(channel: string) => void} [args.onChannel] - told which channel
- *   actually answered: 'sdk-vision', 'cli-text-fallback' (the SDK failed) or
- *   'cli-text-no-key'. Without this the degradation is invisible: a 400 from a
- *   bad thinking param or a wrong model id silently turns both vision gates
- *   into text-only, and a critic can APPROVE a design it never saw.
+ *   actually answered: 'sdk-vision', 'cli-text-fallback' (the SDK failed),
+ *   'cli-text-no-key', or 'fixture-replay' (MOCK_MODE, nothing was called).
+ *   Without this the degradation is invisible: a 400 from a bad thinking param
+ *   or a wrong model id silently turns both vision gates into text-only, and a
+ *   critic can APPROVE a design it never saw.
  * @returns {Promise<string>} raw assistant text (callers parse their own verdicts)
  */
 export async function callVisionAgent(args) {
@@ -64,12 +72,28 @@ export async function callVisionAgent(args) {
   const onChannel = args.onChannel ?? (() => {})
   const imageCount = contentBlocks.filter((block) => block.type === 'image').length
 
+  // The fixture seam sits in front of BOTH channels. It used to live only in
+  // callClaudeCLI, so with a key in the environment MOCK_MODE replayed the
+  // text agents and quietly billed the two vision critics through the SDK
+  // (#293) — #220 again on the second door. Same for the CI refusal: a mocked
+  // run inside Actions failed partially instead of fast.
+  assertNotAutomated()
+  if (isMockMode()) {
+    const response = nextFixture(agentName)
+    console.log(`  [${agentName}] replayed fixture (${(response.length / 1024).toFixed(0)}KB)`)
+    onChannel('fixture-replay')
+    return response
+  }
+
   if (hasApiKey() && imageCount > 0) {
     try {
       const text = await callClaudeSDK(agentName, systemPrompt, contentBlocks, {
         maxTokens,
         timeoutMs,
       })
+      // The CLI path records inside callClaudeCLI; the SDK path has to do it
+      // here or a recorded run would have no fixture for either critic.
+      if (isRecording()) recordFixture(agentName, text)
       onChannel('sdk-vision')
       return text
     } catch (err) {
