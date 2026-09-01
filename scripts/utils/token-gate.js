@@ -578,6 +578,48 @@ export function stripComments(source) {
   return out
 }
 
+// Tag names whose own attributes are SVG geometry, not Panda style props —
+// `<svg width="24" height="24">` and `<rect width="10" height="10"/>` are not
+// the same `width` as `<Box width="24">`. resolveImport already excludes an
+// imported `.svg` asset for the same reason; this covers the inline case (#316).
+const SVG_GEOMETRY_TAGS = new Set([
+  'svg',
+  'rect',
+  'circle',
+  'ellipse',
+  'line',
+  'image',
+  'path',
+  'use',
+  'pattern',
+  'mask',
+  'clippath',
+  'foreignobject',
+  'marker',
+  'symbol',
+  'view',
+])
+
+/**
+ * Is `index` inside the opening tag of an SVG geometry element — i.e. does
+ * the nearest unclosed `<` before it start an `<svg>`, `<rect>`, etc.?
+ *
+ * @param {string} code
+ * @param {number} index
+ * @returns {boolean}
+ */
+function isInsideSvgTag(code, index) {
+  const openIndex = code.lastIndexOf('<', index)
+  if (openIndex === -1) return false
+  const closeIndex = code.lastIndexOf('>', index)
+  // A `>` after the last `<` means that tag already closed — we are between
+  // tags (or inside text/children), not inside one.
+  if (closeIndex > openIndex) return false
+  const tagMatch = /^<\s*([A-Za-z][\w:-]*)/.exec(code.slice(openIndex))
+  if (!tagMatch) return false
+  return SVG_GEOMETRY_TAGS.has(tagMatch[1].toLowerCase())
+}
+
 export function findNumericScaleMisses(source, scales) {
   const out = []
   const seen = new Set()
@@ -586,7 +628,9 @@ export function findNumericScaleMisses(source, scales) {
     // Both spellings: `css({ width: '11' })` and the JSX prop `<Box width="11">`.
     // Today's tree uses each in a different file and both compile to the same px.
     const re = new RegExp(`\\b${prop}\\s*[:=]\\s*['"\`](\\d+(?:\\.\\d+)?)['"\`]`, 'g')
-    for (const [, value] of code.matchAll(re)) {
+    for (const match of code.matchAll(re)) {
+      const [, value] = match
+      if (isInsideSvgTag(code, match.index)) continue
       if (Number(value) === 0) continue
       if (scales[category]?.has(value)) continue
       const key = `${prop}:${value}`
