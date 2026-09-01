@@ -22,11 +22,35 @@ import path from 'node:path'
 config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env'), quiet: true })
 
 import { execSync } from 'node:child_process'
+import { appendFileSync } from 'node:fs'
 import { readContext } from './utils/site-context.js'
 import { runAgentSwarm } from './design-agents.js'
 import { isMain } from './utils/cli.js'
+import { runDate } from './utils/run-date.js'
 
 const DRY_RUN = process.env.DRY_RUN === 'true'
+
+/**
+ * Tell the workflow which day this run is for.
+ *
+ * The push step derived its own `TODAY` with `date -u`, while every archive
+ * path in this process is keyed on `signals.date`, the Eastern day. Between
+ * 20:00 and 23:59 Eastern the two differ, and /panel's "trigger a run"
+ * button lands in exactly that window: the site changed, `git add
+ * archive/$TODAY/...` matched nothing, and the run reported success with no
+ * record for the day (#338). One source now: the workflow reads this output.
+ *
+ * @param {{ date?: string } | null | undefined} signals
+ * @param {string | undefined} [outputFile] GITHUB_OUTPUT; absent outside Actions
+ * @returns {string} the date published
+ */
+export function publishRunDate(signals, outputFile = process.env.GITHUB_OUTPUT) {
+  const date = runDate(signals)
+  if (outputFile && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    appendFileSync(outputFile, `date=${date}\n`)
+  }
+  return date
+}
 
 async function main() {
   // Validate claude CLI is available (required in all modes)
@@ -46,6 +70,7 @@ async function main() {
   console.log('[1/3] Reading site context...')
   const context = await readContext()
   console.log(`  signals date: ${context.signals.date}`)
+  publishRunDate(context.signals)
   console.log(`  mutable files found: ${context.currentFiles.length}`)
 
   // Step 2: Run agent swarm (handles its own backup/restore/retry/archive)
