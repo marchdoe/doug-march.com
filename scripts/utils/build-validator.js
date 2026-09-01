@@ -637,6 +637,39 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
   // display/body, so blocking on it today would fail every run before the
   // prompt is taught otherwise. Making it blocking is changing `console.warn`
   // to `errors.push` — worth doing once a green run confirms a clean baseline.
+  // Check 9: every internal link goes somewhere.
+  //
+  // 2026-09-01 shipped a nav reading WORK / ABOUT / NOW. There is no `/now`
+  // route and never has been, so every page on the site — the nav lives in the
+  // shell — carried a link straight to the 404. Nothing caught it: the route
+  // renders, the build compiles, the token gate is about colour and spacing,
+  // and the surface gate only walks routes it already knows exist. A link to a
+  // route that does not exist is invisible to all of them.
+  //
+  // The engineer invents nav labels from the day's composition, which is the
+  // point — the shell is a design surface. It just has to point at real pages.
+  const routes = knownRoutes(ROOT)
+  const deadLinks = []
+  for (const file of MUTABLE_FILES) {
+    let source
+    try {
+      source = readFileSync(resolve(ROOT, file), 'utf8')
+    } catch {
+      continue
+    }
+    for (const href of internalHrefs(source)) {
+      if (!routeExists(href, routes)) deadLinks.push(`${file} -> ${href}`)
+    }
+  }
+  if (deadLinks.length > 0) {
+    errors.push(
+      `link(s) to routes that do not exist: ${deadLinks.join(', ')}. ` +
+        `The routes that exist are: ${routes.static.join(', ')}` +
+        (routes.dynamic.length > 0 ? `, plus ${routes.dynamic.join(', ')}` : '') +
+        '. Link to one of those, or drop the item.'
+    )
+  }
+
   try {
     const unknownTokens = checkTokenExistence({ root: ROOT, files: MUTABLE_FILES })
     for (const { file, prop, value, category } of unknownTokens) {
@@ -658,6 +691,101 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
 
   console.log('  pre-build validation passed')
   return { success: true }
+}
+
+/**
+ * The routes this app actually serves.
+ *
+ * Derived from the route files on disk plus the project slugs, rather than a
+ * hardcoded list, because both move: `app/routes/*.tsx` is how TanStack Router
+ * defines them and app/content/projects.ts is what fills `work.$slug`.
+ *
+ * @param {string} root repo root
+ * @returns {{ static: string[], dynamic: string[] }}
+ */
+export function knownRoutes(root) {
+  let files = []
+  try {
+    files = readdirSync(resolve(root, 'app/routes')).filter((f) => f.endsWith('.tsx'))
+  } catch {
+    return { static: ['/'], dynamic: [] }
+  }
+
+  const staticRoutes = new Set(['/'])
+  const dynamic = []
+  for (const file of files) {
+    const stem = file.replace(/\.tsx$/, '')
+    if (stem === '__root') continue
+    // TanStack file routing: dots are path separators, `$x` is a parameter,
+    // and `index` names the parent segment itself.
+    const segments = stem.split('.')
+    if (segments.some((seg) => seg.startsWith('$'))) {
+      dynamic.push(
+        '/' + segments.map((seg) => (seg.startsWith('$') ? ':' + seg.slice(1) : seg)).join('/')
+      )
+      continue
+    }
+    if (segments[segments.length - 1] === 'index') segments.pop()
+    staticRoutes.add(segments.length === 0 ? '/' : '/' + segments.join('/'))
+  }
+
+  // The slugs that make `work.$slug` resolve. A link to /work/<real-slug> is
+  // good; one to /work/<invented> is exactly the bug this check exists for,
+  // so they are listed concretely rather than matched by the pattern.
+  let enumeratedSlugs = false
+  try {
+    const projects = readFileSync(resolve(root, 'app/content/projects.ts'), 'utf8')
+    for (const [, slug] of projects.matchAll(/slug:\s*'([^']+)'/g)) {
+      staticRoutes.add(`/work/${slug}`)
+      enumeratedSlugs = true
+    }
+  } catch {}
+
+  // With the real slugs listed, `/work/:slug` must stop matching — otherwise a
+  // link to an invented project passes the check, which is the same bug as
+  // /now wearing a different name. Patterns we cannot enumerate (`/how/:date`,
+  // one page per archived build) stay as patterns.
+  const narrowed = enumeratedSlugs ? dynamic.filter((p) => p !== '/work/:slug') : dynamic
+
+  return { static: [...staticRoutes].sort(), dynamic: narrowed }
+}
+
+/**
+ * Internal link targets written in a source file.
+ *
+ * Both spellings the tree uses: TanStack's `to="/about"` and a plain
+ * `href="/about"`. External links, mailto, anchors and template expressions
+ * are not ours to check.
+ *
+ * @param {string} source
+ * @returns {string[]}
+ */
+export function internalHrefs(source) {
+  const found = new Set()
+  for (const [, value] of source.matchAll(/\b(?:to|href)=["']([^"'{}]+)["']/g)) {
+    if (!value.startsWith('/')) continue
+    const path = value.split(/[?#]/)[0]
+    if (path.length > 1) found.add(path.replace(/\/$/, ''))
+    else found.add('/')
+  }
+  return [...found]
+}
+
+/**
+ * Does a link target resolve against the app's routes?
+ *
+ * @param {string} href
+ * @param {{ static: string[], dynamic: string[] }} routes
+ * @returns {boolean}
+ */
+export function routeExists(href, routes) {
+  if (routes.static.includes(href)) return true
+  const parts = href.split('/').filter(Boolean)
+  return routes.dynamic.some((pattern) => {
+    const segs = pattern.split('/').filter(Boolean)
+    if (segs.length !== parts.length) return false
+    return segs.every((seg, i) => seg.startsWith(':') || seg === parts[i])
+  })
 }
 
 /**
