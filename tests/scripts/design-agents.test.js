@@ -141,6 +141,33 @@ describe('the Phase 5 repair loop', () => {
   })
 })
 
+describe('the two required calls check the deadline before starting', () => {
+  // #299: the optional steps checked pastDeadline(); the mockup designer and
+  // the primary engineer did not, and past the deadline the clamp handed
+  // them a 0ms timeout. The run died with "timed out after 0 minutes".
+  const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
+
+  it('uses the one deadline predicate from run-budget, not a local copy', () => {
+    expect(SOURCE).toMatch(
+      /import \{ pastDeadline, setRunDeadline \} from '\.\/utils\/run-budget\.js'/
+    )
+    expect(SOURCE).not.toMatch(/const pastDeadline = /)
+  })
+
+  it('refuses to start the mockup designer or the engineer past the deadline', () => {
+    const mockup = SOURCE.indexOf('mockup = await runMockupDesigner(')
+    const before = SOURCE.slice(mockup - 600, mockup)
+    expect(before).toMatch(/if \(round === 0 && pastDeadline\(\)\)/)
+    expect(before).toMatch(/run budget exhausted before the Mockup Designer/)
+
+    const engineer = SOURCE.indexOf("engineerResult = await callAgent(\n        'react-engineer'")
+    expect(engineer).toBeGreaterThan(-1)
+    const before2 = SOURCE.slice(engineer - 400, engineer)
+    expect(before2).toMatch(/if \(pastDeadline\(\)\)/)
+    expect(before2).toMatch(/run budget exhausted before the React Engineer/)
+  })
+})
+
 describe('the surface gate decides, not just measures', () => {
   // #306: runSurfaceGate returned an errorCount that was logged, traced and
   // pushed into a verdicts list nothing read. The revision was gated on the

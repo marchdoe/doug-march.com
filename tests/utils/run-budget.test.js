@@ -9,8 +9,11 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
+  DeadlineExceeded,
+  MIN_CALL_MS,
   clampToBudget,
   clearRunDeadline,
+  pastDeadline,
   remainingBudgetMs,
   setRunDeadline,
 } from '../../scripts/utils/run-budget.js'
@@ -60,9 +63,34 @@ describe('clampToBudget', () => {
     expect(clampToBudget(1_800_000)).toBe(1_800_000)
   })
 
-  it('gives an overrun run zero rather than a negative timeout', () => {
+  it('refuses to start a call an overrun run cannot finish', () => {
+    // #299: this used to return 0. setTimeout(cb, 0) fired before the child
+    // emitted a byte and the run died with "timed out after 0 minutes".
     vi.useFakeTimers()
     setRunDeadline(Date.now() - 1)
-    expect(clampToBudget(600_000)).toBe(0)
+    expect(() => clampToBudget(600_000)).toThrow(DeadlineExceeded)
+    expect(() => clampToBudget(600_000)).toThrow(/refusing to start a 10 min call/)
+  })
+
+  it('refuses below the floor, not only at zero', () => {
+    vi.useFakeTimers()
+    setRunDeadline(Date.now() + MIN_CALL_MS - 1)
+    expect(() => clampToBudget(600_000)).toThrow(DeadlineExceeded)
+    setRunDeadline(Date.now() + MIN_CALL_MS)
+    expect(clampToBudget(600_000)).toBe(MIN_CALL_MS)
+  })
+})
+
+describe('pastDeadline', () => {
+  it('is never past with no deadline registered', () => {
+    expect(pastDeadline()).toBe(false)
+  })
+
+  it("turns true once less than a call's worth remains", () => {
+    vi.useFakeTimers()
+    setRunDeadline(Date.now() + 60_000)
+    expect(pastDeadline()).toBe(false)
+    vi.advanceTimersByTime(60_000 - MIN_CALL_MS + 1)
+    expect(pastDeadline()).toBe(true)
   })
 })
