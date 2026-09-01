@@ -61,8 +61,17 @@ export async function sealArchive({ archiveRoot = ARCHIVE_ROOT, check = false, o
   const changed = []
   let scanned = 0
 
+  // Sealing only `only` leaves its neighbours' prev/next stale — they were
+  // never rewritten to point at it. Reseal the neighbours too (#315).
+  const onlyIndex = only ? dates.indexOf(only) : -1
+  const wanted = only
+    ? new Set(
+        onlyIndex === -1 ? [] : [dates[onlyIndex - 1], only, dates[onlyIndex + 1]].filter(Boolean)
+      )
+    : null
+
   for (const [i, date] of dates.entries()) {
-    if (only && date !== only) continue
+    if (wanted && !wanted.has(date)) continue
     const prev = i > 0 ? dates[i - 1] : null
     const next = i < dates.length - 1 ? dates[i + 1] : null
 

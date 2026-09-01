@@ -131,12 +131,44 @@ describe('sealArchive', () => {
     expect(await read('2026-05-05/index.html')).toBe(before)
   })
 
-  it('seals one day when asked, leaving the rest alone', async () => {
+  it('seals the requested day and its immediate neighbour, leaving non-adjacent days alone', async () => {
     const untouched = await read('2026-05-10/index.html')
-    const { changed } = await sealArchive({ archiveRoot: root, only: '2026-05-05' })
-    expect(changed).toHaveLength(2)
+    const { changed } = await sealArchive({ archiveRoot: root, only: '2026-05-01' })
+    // 2026-05-01 has no prev, so only it and its next neighbour, 2026-05-05,
+    // reseal — 2 dates × 2 pages each.
+    expect(changed).toHaveLength(4)
+    expect(await read('2026-05-01/index.html')).toContain('data-archive-frame')
     expect(await read('2026-05-05/index.html')).toContain('data-archive-frame')
     expect(await read('2026-05-10/index.html')).toBe(untouched)
+  })
+
+  it('reseals both neighbours of the target day, not just the target (#315)', async () => {
+    // A single-date reseal used to under-repair: the day before, whose next
+    // pointer should now point at the target, and the day after, whose prev
+    // pointer should, were both skipped because they were not `only` either.
+    await write('2026-05-20/index.html', PAGE('<a href="/about">About</a>'))
+    const untouched = await read('2026-05-20/index.html')
+
+    const { changed } = await sealArchive({ archiveRoot: root, only: '2026-05-05' })
+
+    // 2026-05-01, 2026-05-05 and 2026-05-10 each get 2 pages resealed;
+    // 2026-05-20 is not adjacent to the target and is left alone.
+    expect(changed).toHaveLength(6)
+    expect(await read('2026-05-01/index.html')).toContain('href="/archive/2026-05-05/"')
+    expect(await read('2026-05-10/index.html')).toContain('href="/archive/2026-05-05/"')
+    expect(await read('2026-05-20/index.html')).toBe(untouched)
+  })
+
+  it('seals nothing for an --date that has no snapshot on disk', async () => {
+    const before = await Promise.all(
+      ['2026-05-01', '2026-05-05', '2026-05-10'].map((d) => read(`${d}/index.html`))
+    )
+    const { changed } = await sealArchive({ archiveRoot: root, only: '2026-05-06' })
+    expect(changed).toEqual([])
+    const after = await Promise.all(
+      ['2026-05-01', '2026-05-05', '2026-05-10'].map((d) => read(`${d}/index.html`))
+    )
+    expect(after).toEqual(before)
   })
 
   it('gives a new day a prev arrow and hands the old last day a next one', async () => {
