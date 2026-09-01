@@ -12,6 +12,12 @@
  * #341: ci.yml declared no permissions block at all, so every one of its
  * jobs held the repository's default token scope for a workflow that never
  * reads a secret and runs branch code, some of it LLM-written.
+ *
+ * #340: references/*.png was gitignored with no exception, so the nightly's
+ * own promoted A/B-graded screenshot (references/own-<date>.png, written by
+ * promoteRatingToReferences in collect-ratings.js) was discarded on the
+ * runner every time — the file promoted, and the index.yml entry pointing at
+ * it, never survived to be committed.
  */
 
 import { readFileSync } from 'node:fs'
@@ -72,5 +78,27 @@ describe('ci.yml holds a read-only token', () => {
   it('still uses no secret or token — nothing here needed write access', () => {
     expect(src).not.toMatch(/secrets\./)
     expect(src).not.toMatch(/GITHUB_TOKEN/)
+  })
+})
+
+describe('references/own-*.png survives the runner (#340)', () => {
+  const src = read('.gitignore')
+
+  it('un-ignores the promoted screenshot right after the blanket png rule', () => {
+    expect(src).toMatch(/references\/\*\.png\n[^\n]*\n!references\/own-\*\.png/)
+  })
+
+  it('leaves the jpg rules alone — only png is negated', () => {
+    expect(src).not.toMatch(/!references\/own-\*\.jpe?g/)
+  })
+})
+
+describe('the nightly stages references/ (#340)', () => {
+  const src = read('.github/workflows/daily-redesign.yml')
+
+  it('adds references/ to the staging loop', () => {
+    const m = /for p in ([^;]+); do/.exec(src)
+    expect(m).not.toBeNull()
+    expect(m[1].trim().split(/\s+/)).toContain('references/')
   })
 })
