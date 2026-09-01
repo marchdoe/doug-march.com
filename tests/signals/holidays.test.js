@@ -34,4 +34,23 @@ describe('holidays provider', () => {
     expect(july4).toBeDefined()
     expect(july4.days_away).toBe(3)
   })
+
+  it('counts days_away in the site zone, not the runner zone (#343)', async () => {
+    // 21:00 Eastern on 2026-11-25 is already 2026-11-26 UTC — the date GitHub
+    // Actions' own clock reads. Thanksgiving must still be "tomorrow" in
+    // Eastern, not "today" by the runner's date.
+    const originalTz = process.env.TZ
+    process.env.TZ = 'UTC'
+    try {
+      const now = new Date('2026-11-26T02:00:00Z')
+      const result = await collect(profile, { now })
+      expect(result.data.today).toBeNull()
+      const thanksgiving = result.data.upcoming.find((h) => /Thanksgiving/i.test(h.name))
+      expect(thanksgiving).toBeDefined()
+      expect(thanksgiving.days_away).toBe(1)
+    } finally {
+      if (originalTz === undefined) delete process.env.TZ
+      else process.env.TZ = originalTz
+    }
+  })
 })

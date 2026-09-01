@@ -103,7 +103,8 @@ export async function collect(profile, { now = new Date() } = {}) {
   // Local to the site's zone, not the runner's — see scripts/utils/local-time.js
   const tz = tzOf(profile)
   const todayStr = localDateString(now, tz)
-  const year = zonedParts(now, tz).year
+  const zoned = zonedParts(now, tz)
+  const year = zoned.year
 
   // Gather holidays for this year and next to handle year-boundary lookups.
   const holidays = [...getHolidays(year), ...getHolidays(year + 1)]
@@ -119,7 +120,10 @@ export async function collect(profile, { now = new Date() } = {}) {
 
   // upcoming: holidays within the next 7 days (excluding today), sorted by date
   const msPerDay = 24 * 60 * 60 * 1000
-  const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  // now.getFullYear()/getMonth()/getDate() read the runner's own zone,
+  // UTC in Actions — build todayMidnight from the site's zone instead, via
+  // the same zonedParts() call above (local-time.js) (#343).
+  const todayMidnight = new Date(zoned.year, zoned.month - 1, zoned.day)
   const upcoming = holidays
     .map((h) => {
       const holidayMidnight = new Date(h.date.getFullYear(), h.date.getMonth(), h.date.getDate())
