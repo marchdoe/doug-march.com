@@ -7,6 +7,7 @@ import {
   identifyFailingAgent,
   parseDelimiterResponse,
   buildCompositionContractBlock,
+  archiveArtifacts,
   describeRiskTier,
   resolveRiskWeight,
 } from '../../scripts/design-agents.js'
@@ -138,6 +139,53 @@ describe('the Phase 5 repair loop', () => {
 
   it('reports how many attempts were made when it gives up', () => {
     expect(phase5).toMatch(/Build failed after \$\{attempt\} repair attempt/)
+  })
+})
+
+describe('archiveArtifacts', () => {
+  const base = {
+    finalScreenshot: null,
+    mockup: null,
+    mockupScreenshot: null,
+    verdicts: [{ critic: 'surface-gate', verdict: 'SHIP' }],
+    shellDecl: { posture: 'standard' },
+    headerDecl: { placement: 'top' },
+    heroSource: undefined,
+    chosenComposition: { hero: 'poster' },
+    chosenLane: { id: 'quiet', register: 'plain' },
+  }
+
+  it('writes nothing, not an empty file, for captures that did not happen', () => {
+    const out = archiveArtifacts(base)
+    for (const name of [
+      'screenshot.png',
+      'screenshot-dark.png',
+      'mockup.html',
+      'mockup-screenshot.png',
+      'fingerprint.json',
+    ]) {
+      expect(out[name], name).toBeNull()
+    }
+    expect(out['hero-source.json']).toBe(JSON.stringify({ source: null }, null, 2))
+  })
+
+  it('carries every capture through when it happened', () => {
+    const png = Buffer.from([1])
+    const out = archiveArtifacts({
+      ...base,
+      finalScreenshot: { png, darkPng: png, fingerprint: { elements: [1] } },
+      mockup: { mockupHtml: '<html>' },
+      mockupScreenshot: { png },
+      heroSource: 'weather',
+    })
+    expect(out['screenshot.png']).toBe(png)
+    expect(out['screenshot-dark.png']).toBe(png)
+    expect(out['mockup.html']).toBe('<html>')
+    expect(out['mockup-screenshot.png']).toBe(png)
+    expect(JSON.parse(out['fingerprint.json'])).toEqual({ elements: [1] })
+    expect(JSON.parse(out['hero-source.json'])).toEqual({ source: 'weather' })
+    expect(JSON.parse(out['lane.json'])).toEqual({ laneId: 'quiet', register: 'plain' })
+    expect(JSON.parse(out['verdicts.json'])).toEqual(base.verdicts)
   })
 })
 
