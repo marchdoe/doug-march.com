@@ -21,10 +21,11 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import { join } from 'node:path'
 import { ROOT } from './utils/file-manager.js'
 import { isMain } from './utils/cli.js'
-import { archivedDates, readJsonSafe } from './utils/archive-fs.js'
+import { archivedDates } from './utils/archive-fs.js'
 import { anomaliesOf, buildRecord } from './utils/archive-record.js'
 import { readRatingForDate } from './utils/ratings.js'
 import { WINDOW, computeUniqueness } from './utils/uniqueness-index.js'
+import { readUniquenessInputs } from './utils/read-uniqueness-history.js'
 
 /**
  * Read the record the pipeline wrote. Rebuilding when it is absent keeps this
@@ -75,55 +76,16 @@ export function countSnapshotPages(date, publicDir) {
  * corpus on the first run instead of starting from whenever the index shipped.
  * The persisted file stays the per-build record; this is the projection.
  *
- * Every artifact `scripts/utils/read-uniqueness-history.js` reads has to be read
- * here too, or the chart scores a day on less than the pipeline did. `header`
- * was missed when #254 added it and only shipped with #255; a test pins the two
- * readers together so the next artifact cannot arrive on one side alone.
+ * It delegates to the pipeline's own reader. The two used to be separate
+ * copies, drifted once (#254 added header.json on one side only), and were
+ * both taking the newest build dir instead of the one that shipped (#308).
  *
  * @param {string} date
  * @param {string} archiveDir
- * @returns {{date: string, composition: object|null, hue: number|null, lane: string|null, shell: object|null, header: object|null, fingerprint: object|null}}
+ * @returns {import('./utils/read-uniqueness-history.js').UniquenessInputs}
  */
 export function uniquenessInputs(date, archiveDir) {
-  const dateDir = join(archiveDir, date)
-  const readJson = (dir, name) => readJsonSafe(join(dir, name))
-  let builds = []
-  try {
-    builds = readdirSync(dateDir)
-      .filter((b) => b.startsWith('build-') && !b.includes('failed'))
-      .sort()
-      .reverse()
-  } catch {
-    /* no build dirs */
-  }
-  for (const dir of [...builds.map((b) => join(dateDir, b)), dateDir]) {
-    const composition = readJson(dir, 'composition.json')
-    const colorScheme = readJson(dir, 'color-scheme.json')
-    const lane = readJson(dir, 'lane.json')
-    const shell = readJson(dir, 'shell.json')
-    const header = readJson(dir, 'header.json')
-    const fingerprint = readJson(dir, 'fingerprint.json')
-    if (composition || colorScheme || lane || shell || header || fingerprint) {
-      return {
-        date,
-        composition,
-        hue: typeof colorScheme?.primary_hue?.h === 'number' ? colorScheme.primary_hue.h : null,
-        lane: lane?.laneId ?? null,
-        shell,
-        header,
-        fingerprint,
-      }
-    }
-  }
-  return {
-    date,
-    composition: null,
-    hue: null,
-    lane: null,
-    shell: null,
-    header: null,
-    fingerprint: null,
-  }
+  return readUniquenessInputs(join(archiveDir, date), date)
 }
 
 /**
