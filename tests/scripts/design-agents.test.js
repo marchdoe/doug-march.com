@@ -120,11 +120,38 @@ describe('the Phase 5 repair loop', () => {
     // `app/routes/` is an allowed write prefix, so without this a repair can
     // overwrite the generated __root.tsx — and the error text handed to a
     // repair has named __root.tsx, which invites exactly that.
-    expect(phase5).toMatch(/dropOrchestratorFiles\(retryResult\.files/)
+    expect(phase5).toMatch(/writeEngineerFiles\(retryResult, 'React Engineer repair'\)/)
   })
 
   it('reports how many attempts were made when it gives up', () => {
     expect(phase5).toMatch(/Build failed after \$\{attempt\} repair attempt/)
+  })
+})
+
+describe('engineer output reaches disk through one function', () => {
+  // #296: the drop was applied at the primary write, added to the repair
+  // write after a repair overwrote __root.tsx, and never reached the
+  // post-critic revision. A revision answering "the header is wrong" could
+  // overwrite BrandLockup.tsx after the orchestrator wrote it.
+  const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
+
+  it('never writes an engineer result with writeFiles directly', () => {
+    expect(SOURCE).not.toMatch(/writeFiles\(engineerResult\.files/)
+    expect(SOURCE).not.toMatch(/writeFiles\(retryResult\.files/)
+    expect(SOURCE).not.toMatch(/writeFiles\(retry\.files/)
+  })
+
+  it('routes all three engineer write sites through writeEngineerFiles', () => {
+    expect(SOURCE).toMatch(/writeEngineerFiles\(engineerResult, 'React Engineer'\)/)
+    expect(SOURCE).toMatch(/writeEngineerFiles\(retryResult, 'React Engineer revision'\)/)
+    expect(SOURCE).toMatch(/writeEngineerFiles\(retryResult, 'React Engineer repair'\)/)
+  })
+
+  it('drops orchestrator files inside writeEngineerFiles before writing', () => {
+    const fn = SOURCE.slice(SOURCE.indexOf('async function writeEngineerFiles'))
+    const body = fn.slice(0, fn.indexOf('\n}\n'))
+    expect(body.indexOf('dropOrchestratorFiles(')).toBeGreaterThan(-1)
+    expect(body.indexOf('dropOrchestratorFiles(')).toBeLessThan(body.indexOf('writeFiles('))
   })
 })
 

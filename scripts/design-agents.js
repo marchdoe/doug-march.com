@@ -99,6 +99,27 @@ export function dropOrchestratorFiles(files, agentName = 'agent') {
   return kept
 }
 
+/**
+ * The one way an engineer response reaches disk.
+ *
+ * Three call sites write engineer output: the primary Phase 2c pass, the
+ * post-critic revision, and the Phase 5 repair. The drop above was applied at
+ * the first, added to the third after a repair overwrote __root.tsx, and
+ * never reached the second (#296) — so a revision answering "the header is
+ * wrong" could overwrite BrandLockup.tsx after the orchestrator wrote it, and
+ * nothing logged it. One function, so a fourth site cannot repeat that.
+ *
+ * Mutates `result.files` so the archive records what was actually written.
+ *
+ * @param {{ files: Array<{path: string, content: string}> }} result
+ * @param {string} agentLabel for the log line
+ * @returns {Promise<string[]>} the paths written
+ */
+async function writeEngineerFiles(result, agentLabel) {
+  result.files = dropOrchestratorFiles(result.files, agentLabel)
+  return await writeFiles(result.files)
+}
+
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
@@ -1531,8 +1552,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     // Write all files. Orchestrator-owned paths are dropped first — the
     // engineer is told not to emit them and nothing used to check.
-    engineerResult.files = dropOrchestratorFiles(engineerResult.files, 'React Engineer')
-    for (const p of await writeFiles(engineerResult.files)) writtenPaths.add(p)
+    for (const p of await writeEngineerFiles(engineerResult, 'React Engineer')) writtenPaths.add(p)
 
     trace.addStep({
       name: 'react-engineer',
@@ -1916,7 +1936,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
                 feedback,
                 config.options
               )
-              for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
+              for (const p of await writeEngineerFiles(retryResult, 'React Engineer revision'))
+                writtenPaths.add(p)
               engineerResult = retryResult
 
               const retryBuild = validateBuild({ shell: shellDecl })
@@ -2088,13 +2109,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         throw new Error(`react-engineer repair crashed: ${err.message}`)
       }
 
-      // The first pass drops orchestrator-owned files from the engineer's
-      // output and this path did not, even though `app/routes/` is an allowed
-      // write prefix — so a repair could overwrite the generated __root.tsx.
-      // That is not hypothetical: the error text handed to a repair has named
-      // __root.tsx, which invites the agent to "fix" a file it does not own.
-      retryResult.files = dropOrchestratorFiles(retryResult.files, 'React Engineer repair')
-      for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
+      // The error text handed to a repair has named __root.tsx before, which
+      // invites the agent to "fix" a file it does not own; writeEngineerFiles
+      // drops it.
+      for (const p of await writeEngineerFiles(retryResult, 'React Engineer repair'))
+        writtenPaths.add(p)
       // Update the result so the archive records the repair output, not stale originals
       engineerResult = retryResult
 
