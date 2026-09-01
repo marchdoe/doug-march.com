@@ -371,6 +371,38 @@ describe('bare numbers where a token key was meant', () => {
       findNumericScaleMisses(`css({ width: '11' }); css({ width: '11' })`, scales)
     ).toHaveLength(1)
   })
+
+  it('does not flag inline SVG geometry attributes (#316)', () => {
+    // <svg width="24"> is not the same width as <Box width="24">.
+    // resolveImport already excludes an imported .svg asset for the same
+    // reason; this is the inline case.
+    const src = `<svg width="24" height="24" viewBox="0 0 24 24"/>`
+    expect(findNumericScaleMisses(src, scales)).toEqual([])
+  })
+
+  it('does not flag geometry attributes on an SVG child element either (#316)', () => {
+    const src = `<svg viewBox="0 0 24 24"><rect width="10" height="10"/></svg>`
+    expect(findNumericScaleMisses(src, scales)).toEqual([])
+  })
+
+  it('still flags a real prop of the same value elsewhere in the file (#316)', () => {
+    // The skip is by tag, not by value — an SVG width="24" must not shadow a
+    // later <Box width="24"> or css({ width: '24' }) that reads the token scale.
+    const src = `<svg width="24" height="24" viewBox="0 0 24 24"/><Box width="24">X</Box>css({ width: '24' })`
+    expect(findNumericScaleMisses(src, scales)).toEqual([
+      { prop: 'width', value: '24', category: 'sizes' },
+    ])
+  })
+
+  it('does not mistake a closed SVG tag for still being inside it, later in the file (#316)', () => {
+    const src = `<svg width="24" height="24">
+  <rect width="10" height="10"/>
+</svg>
+css({ width: '11' })`
+    expect(findNumericScaleMisses(src, scales)).toEqual([
+      { prop: 'width', value: '11', category: 'sizes' },
+    ])
+  })
 })
 
 describe('the message handed to the retry', () => {
