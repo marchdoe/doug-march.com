@@ -618,3 +618,17 @@ describe('a mockup revision round is counted as a retry', () => {
     expect(loop).toMatch(/noteRetry\(\)\s*\n\s*revisionFeedback = critique\.feedback/)
   })
 })
+
+describe('the mockup critic verdict keeps its channel', () => {
+  // #304: the screenshot critic's push already records channel: visionChannel,
+  // so verdicts.json shows whether that verdict was reached with or without
+  // pixels. The mockup critic's push dropped critique.channel on the way in,
+  // so the same distinction was invisible for every mockup revision round.
+  const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
+  const loopStart = SOURCE.indexOf('const MAX_MOCKUP_REVISIONS = 2')
+  const loop = SOURCE.slice(loopStart, SOURCE.indexOf('Phase 2c: React Engineer', loopStart))
+
+  it('records channel: critique.channel on the mockup-critic verdicts.push', () => {
+    expect(loop).toMatch(/critic: 'mockup-critic',[\s\S]*?channel: critique\.channel,/)
+  })
+})

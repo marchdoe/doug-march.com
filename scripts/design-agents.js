@@ -1440,6 +1440,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         round,
         verdict: critique.verdict,
         feedback: critique.feedback.slice(0, 2000),
+        // A verdict reached without pixels is a different thing from one
+        // reached with them, and verdicts.json is where that has to stay
+        // visible after the fact — the screenshot critic already records
+        // this; the mockup critic dropped it on the way into the array (#304).
+        channel: critique.channel,
         ts: Date.now(),
       })
       trace.addStep({
