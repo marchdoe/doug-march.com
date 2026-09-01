@@ -15,9 +15,9 @@
  * @module
  */
 
-import Anthropic from '@anthropic-ai/sdk'
+import Anthropic, { APIConnectionError } from '@anthropic-ai/sdk'
 import { modelFor, supportsAdaptiveThinking } from './models.js'
-import { recordUsage } from './cost-ledger.js'
+import { noteRetry, recordUsage } from './cost-ledger.js'
 
 /**
  * @typedef {{ type: 'text', text: string }} TextBlock
@@ -30,6 +30,35 @@ const DEFAULT_MAX_TOKENS = 16000
 
 /** Matches the CLI path's default hard timeout (10 min). */
 const DEFAULT_TIMEOUT_MS = 600000
+
+/**
+ * Retries on a transient failure, same count as the SDK's own default. The
+ * SDK's retries are turned off (#294): they were invisible to the cost
+ * ledger's retry count and each one restarted the per-request timeout, so a
+ * critic budgeted at 10 minutes could hold 30. Ours are booked with
+ * noteRetry() and share one deadline with the first attempt.
+ */
+const DEFAULT_RETRIES = 2
+
+/** Backoff before the Nth retry (1-based): 2s, 4s. */
+const RETRY_BACKOFF_MS = [2000, 4000]
+
+/**
+ * Whether an SDK error is worth another attempt: connection errors, rate
+ * limits, overload and other server-side failures. A 400 (bad thinking
+ * param, wrong model id) is not going to get better, and neither is an error
+ * that did not come from the API at all.
+ * @param {unknown} err
+ * @returns {boolean}
+ */
+export function isRetryableSdkError(err) {
+  if (err instanceof APIConnectionError) return true
+  const status = err && typeof err === 'object' ? err.status : undefined
+  if (typeof status !== 'number') return false
+  return status === 408 || status === 409 || status === 429 || status >= 500
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 /**
  * Wrap an image buffer as an Anthropic image content block.
@@ -76,7 +105,8 @@ export function hasApiKey() {
  * @param {string} [opts.apiKey] - defaults to process.env.ANTHROPIC_API_KEY
  * @param {string} [opts.model] - defaults to modelFor(agentName)
  * @param {number} [opts.maxTokens=16000]
- * @param {number} [opts.timeoutMs=600000]
+ * @param {number} [opts.timeoutMs=600000] - hard cap for ALL attempts together
+ * @param {number} [opts.retries=2] - extra attempts on a transient failure
  * @param {object|null} [opts.thinking] - null disables; defaults to adaptive where supported
  * @param {object} [opts.client] - injectable Anthropic client (tests)
  * @returns {Promise<string>} concatenated assistant text blocks
@@ -98,7 +128,8 @@ export async function callClaudeSDK(agentName, systemPrompt, contentBlocks, opts
         : null
       : opts.thinking
 
-  const client = opts.client ?? new Anthropic({ apiKey, timeout: timeoutMs })
+  const retries = opts.retries ?? DEFAULT_RETRIES
+  const client = opts.client ?? new Anthropic({ apiKey, timeout: timeoutMs, maxRetries: 0 })
 
   const imageCount = contentBlocks.filter((b) => b.type === 'image').length
   const textChars = contentBlocks.reduce((n, b) => n + (b.type === 'text' ? b.text.length : 0), 0)
@@ -106,14 +137,35 @@ export async function callClaudeSDK(agentName, systemPrompt, contentBlocks, opts
     `  [${agentName}] calling Anthropic SDK (model=${model}, ${imageCount} image block(s), ${(textChars / 1024).toFixed(0)}KB text)`
   )
 
-  const started = Date.now()
-  const response = await client.messages.create({
+  const params = {
     model,
     max_tokens: maxTokens,
     system: systemPrompt,
     messages: [{ role: 'user', content: contentBlocks }],
     ...(thinking ? { thinking } : {}),
-  })
+  }
+
+  const started = Date.now()
+  const deadline = started + timeoutMs
+  let response
+  for (let attempt = 0; ; attempt++) {
+    // Each attempt gets only what is left of the one budget, so three
+    // attempts cannot outlive the timeout the caller asked for.
+    const timeout = Math.max(1000, deadline - Date.now())
+    try {
+      response = await client.messages.create(params, { timeout, maxRetries: 0 })
+      break
+    } catch (err) {
+      const backoff = RETRY_BACKOFF_MS[Math.min(attempt, RETRY_BACKOFF_MS.length - 1)]
+      const outOfTime = Date.now() + backoff >= deadline
+      if (attempt >= retries || !isRetryableSdkError(err) || outOfTime) throw err
+      noteRetry()
+      console.warn(
+        `  [${agentName}] SDK call failed (${err.status ?? 'no status'}: ${err.message}) — retry ${attempt + 1}/${retries} in ${backoff / 1000}s`
+      )
+      await sleep(backoff)
+    }
+  }
 
   const text = (response.content ?? [])
     .filter((block) => block.type === 'text')

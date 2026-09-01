@@ -1,6 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { callClaudeSDK, hasApiKey, imageBlock, textBlock } from '../../scripts/utils/claude-sdk.js'
-import { resetLedger, getUsageRecords } from '../../scripts/utils/cost-ledger.js'
+import {
+  callClaudeSDK,
+  hasApiKey,
+  imageBlock,
+  isRetryableSdkError,
+  textBlock,
+} from '../../scripts/utils/claude-sdk.js'
+import { APIConnectionError } from '@anthropic-ai/sdk'
+import { getUsageRecords, resetLedger, summarizeLedger } from '../../scripts/utils/cost-ledger.js'
 
 /** Minimal stand-in for the Anthropic client — never touches the network. */
 function stubClient(response) {
@@ -142,6 +149,119 @@ describe('callClaudeSDK', () => {
     await expect(
       callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], { client })
     ).rejects.toThrow(/rate_limit/)
+  })
+
+  // #294: the SDK's own retries were invisible to the ledger and each one
+  // restarted the per-request timeout. callClaudeSDK owns them now.
+  describe('retries', () => {
+    const overloaded = () => Object.assign(new Error('overloaded'), { status: 529 })
+
+    beforeEach(() => {
+      resetLedger()
+      vi.useFakeTimers()
+    })
+
+    it('classifies transient statuses and connection errors as retryable', () => {
+      expect(isRetryableSdkError(overloaded())).toBe(true)
+      expect(isRetryableSdkError(Object.assign(new Error('x'), { status: 429 }))).toBe(true)
+      expect(isRetryableSdkError(new APIConnectionError({ message: 'ECONNRESET' }))).toBe(true)
+      expect(isRetryableSdkError(Object.assign(new Error('x'), { status: 400 }))).toBe(false)
+      // Not from the API at all: a thrown assertion, a bug in a stub.
+      expect(isRetryableSdkError(new Error('boom'))).toBe(false)
+      expect(isRetryableSdkError(Object.assign(new Error('x'), { status: 401 }))).toBe(false)
+    })
+
+    it('retries a transient failure, books each retry, and passes maxRetries: 0 to the SDK', async () => {
+      const create = vi
+        .fn()
+        .mockRejectedValueOnce(overloaded())
+        .mockRejectedValueOnce(overloaded())
+        .mockResolvedValue(OK)
+      const client = { messages: { create } }
+
+      const promise = callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], { client })
+      await vi.runAllTimersAsync()
+      const text = await promise
+
+      expect(text).toBe(OK.content[0].text)
+      expect(create).toHaveBeenCalledTimes(3)
+      for (const call of create.mock.calls) expect(call[1]).toMatchObject({ maxRetries: 0 })
+      expect(summarizeLedger().retries).toBe(2)
+      expect(getUsageRecords()).toHaveLength(1)
+    })
+
+    it('gives up after the configured retries', async () => {
+      const create = vi.fn().mockRejectedValue(overloaded())
+      const client = { messages: { create } }
+
+      const promise = callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], { client })
+      const settled = promise.catch((err) => err)
+      await vi.runAllTimersAsync()
+      const err = await settled
+
+      expect(err.message).toMatch(/overloaded/)
+      expect(create).toHaveBeenCalledTimes(3)
+      expect(summarizeLedger().retries).toBe(2)
+    })
+
+    it('does not retry a 400', async () => {
+      const create = vi
+        .fn()
+        .mockRejectedValue(Object.assign(new Error('bad request'), { status: 400 }))
+      const client = { messages: { create } }
+
+      await expect(
+        callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], { client })
+      ).rejects.toThrow(/bad request/)
+      expect(create).toHaveBeenCalledTimes(1)
+      expect(summarizeLedger().retries).toBe(0)
+    })
+
+    it('keeps every attempt inside the one timeout instead of restarting it', async () => {
+      const create = vi
+        .fn()
+        .mockImplementationOnce(async () => {
+          // The first attempt burns most of the budget before failing.
+          await vi.advanceTimersByTimeAsync(9000)
+          throw overloaded()
+        })
+        .mockResolvedValue(OK)
+      const client = { messages: { create } }
+
+      const promise = callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], {
+        client,
+        timeoutMs: 20000,
+      })
+      await vi.runAllTimersAsync()
+      await promise
+
+      expect(create).toHaveBeenCalledTimes(2)
+      expect(create.mock.calls[0][1].timeout).toBe(20000)
+      // 9s spent, 2s backoff: the second attempt gets the ~9s left, not a fresh 20s.
+      expect(create.mock.calls[1][1].timeout).toBeLessThanOrEqual(9000)
+      expect(create.mock.calls[1][1].timeout).toBeGreaterThan(8500)
+    })
+
+    it('does not start a retry that cannot finish before the deadline', async () => {
+      const create = vi.fn().mockImplementation(async () => {
+        await vi.advanceTimersByTimeAsync(1500)
+        throw overloaded()
+      })
+      const client = { messages: { create } }
+
+      const promise = callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], {
+        client,
+        timeoutMs: 3000,
+      })
+      const settled = promise.catch((err) => err)
+      await vi.runAllTimersAsync()
+      const err = await settled
+
+      expect(err.message).toMatch(/overloaded/)
+      // 1.5s spent, 2s backoff would land past the 3s deadline: one attempt only.
+      expect(create).toHaveBeenCalledTimes(1)
+      expect(summarizeLedger().retries).toBe(0)
+    })
   })
 
   describe('cost telemetry', () => {
