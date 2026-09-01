@@ -141,6 +141,43 @@ describe('the Phase 5 repair loop', () => {
   })
 })
 
+describe('the surface gate decides, not just measures', () => {
+  // #306: runSurfaceGate returned an errorCount that was logged, traced and
+  // pushed into a verdicts list nothing read. The revision was gated on the
+  // screenshot critic alone, and the gate was never re-run after it.
+  const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
+  const gate = SOURCE.slice(
+    SOURCE.indexOf('async function runScreenshotCriticGate'),
+    SOURCE.indexOf('Phase 5: Build failed')
+  )
+
+  it('forces a revision on an engineer-owned gate error even when the critic says SHIP', () => {
+    expect(gate).toMatch(/faultsForOwner\(surfaceFindings, 'react-engineer'\)/)
+    expect(gate).toMatch(/if \(screenshotVerdict === 'REVISE' \|\| gateDemandsRevision\)/)
+  })
+
+  it('hands the measured faults to the engineer as feedback', () => {
+    expect(gate).toMatch(/formatFindingsForCritic\(engineerFaults\)/)
+  })
+
+  it('measures again after a revision that rebuilt', () => {
+    const passed = gate.indexOf("console.log('  post-critic revision build passed')")
+    expect(passed).toBeGreaterThan(-1)
+    const after = gate.slice(passed)
+    expect(after.indexOf('measureSurfaces(2)')).toBeGreaterThan(-1)
+    // Before the re-capture, so the archive's screenshot and its measurements
+    // describe the same render.
+    expect(after.indexOf('measureSurfaces(2)')).toBeLessThan(
+      after.indexOf('captureScreenshotAfterRevision')
+    )
+  })
+
+  it('records which round each surface-gate verdict came from', () => {
+    const fn = gate.slice(gate.indexOf('async function measureSurfaces'))
+    expect(fn.slice(0, fn.indexOf('return gate'))).toMatch(/critic: 'surface-gate',\s*round,/)
+  })
+})
+
 describe('engineer output reaches disk through one function', () => {
   // #296: the drop was applied at the primary write, added to the repair
   // write after a repair overwrote __root.tsx, and never reached the
