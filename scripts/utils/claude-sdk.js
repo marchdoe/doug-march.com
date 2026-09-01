@@ -124,6 +124,22 @@ function bookUsage(agentName, model, usage, ms) {
 }
 
 /**
+ * A max_tokens stop is a truncated answer, not an answer. A critic cut off
+ * before its ===VERDICT=== block used to fail closed to REVISE and buy a
+ * full engineer round for a formatting accident (#300). Called after the
+ * usage is booked: the tokens were spent either way.
+ * @param {string} agentName
+ * @param {{ stop_reason?: string, usage?: { output_tokens?: number } }} response
+ * @param {number} maxTokens
+ */
+function assertNotTruncated(agentName, response, maxTokens) {
+  if (response.stop_reason !== 'max_tokens') return
+  throw new Error(
+    `[${agentName}] response truncated at max_tokens (${response.usage?.output_tokens ?? '?'} output tokens, cap ${maxTokens})`
+  )
+}
+
+/**
  * The thinking param to send: an explicit choice wins (null disables),
  * otherwise adaptive where the model supports it.
  * @param {string} model
@@ -245,6 +261,7 @@ export async function callClaudeSDK(agentName, systemPrompt, contentBlocks, opts
   const usage = response.usage ?? {}
   const elapsedMs = Date.now() - started
   bookUsage(agentName, model, usage, elapsedMs)
+  assertNotTruncated(agentName, response, maxTokens)
   console.log(
     `  [${agentName}] SDK finished in ${Math.round(elapsedMs / 1000)}s ` +
       `(in=${usage.input_tokens ?? '?'}, out=${usage.output_tokens ?? '?'}, stop=${response.stop_reason ?? '?'}, ${(text.length / 1024).toFixed(0)}KB text)`

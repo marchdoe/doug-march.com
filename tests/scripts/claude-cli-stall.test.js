@@ -192,6 +192,64 @@ describe('claude-cli stall detection', () => {
   })
 })
 
+describe('a finished process is not always a response (#300)', () => {
+  beforeEach(async () => {
+    mockChildren.length = 0
+    vi.useFakeTimers()
+    const { resetLedger } = await import('../../scripts/utils/cost-ledger.js')
+    resetLedger()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.clearAllMocks()
+  })
+
+  it('rejects a crash after partial streaming instead of resolving the fragment', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    const promise = callClaudeCLI('partial-agent', 'system', 'user prompt', {
+      model: 'claude-sonnet-5',
+      timeoutMs: 60 * 60 * 1000,
+      stallTimeoutMs: 60 * 60 * 1000,
+    })
+    const rejected = promise.catch((err) => err)
+    await vi.advanceTimersByTimeAsync(10)
+    const child = mockChildren[0]
+    const event = {
+      type: 'assistant',
+      message: {
+        content: [{ type: 'text', text: '===FILE:app/routes/index.tsx===\nexport function' }],
+      },
+    }
+    child.stdout.emit('data', Buffer.from(`${JSON.stringify(event)}\n`))
+    child.emit('close', 1)
+    const err = await rejected
+    expect(err.message).toMatch(/exited with code 1 after 0KB of partial output/)
+  })
+
+  it('rejects a result event flagged is_error even on a clean exit', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    const promise = callClaudeCLI('error-agent', 'system', 'user prompt', {
+      model: 'claude-sonnet-5',
+      timeoutMs: 60 * 60 * 1000,
+      stallTimeoutMs: 60 * 60 * 1000,
+    })
+    const rejected = promise.catch((err) => err)
+    await vi.advanceTimersByTimeAsync(10)
+    const child = mockChildren[0]
+    const event = {
+      type: 'result',
+      subtype: 'error_max_turns',
+      is_error: true,
+      result: 'max turns reached',
+    }
+    child.stdout.emit('data', Buffer.from(`${JSON.stringify(event)}\n`))
+    child.emit('close', 0)
+    const err = await rejected
+    expect(err.message).toMatch(/claude reported error_max_turns \(is_error\): max turns reached/)
+  })
+})
+
 describe('default timeout relationships', () => {
   it('clamps the stall window below the hard timeout', async () => {
     // The defaults were timeoutMs 600000 and stallTimeoutMs 900000, so the
