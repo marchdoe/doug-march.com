@@ -101,6 +101,47 @@ describe('the push', () => {
   })
 })
 
+describe('the nightly agrees with the pipeline about which day it is', () => {
+  // #338: the push step derived TODAY with `date -u` while every archive path
+  // is keyed on signals.date, the Eastern day. Between 20:00 and 23:59
+  // Eastern, which is when a /panel-triggered run lands, the site was staged
+  // and the day's record was not, and the run reported success.
+  it('never derives the day from UTC', () => {
+    expect(src).not.toMatch(/\$\(date -u/)
+    expect(src).not.toMatch(/toISOString\(\)\.slice\(0, 10\)/)
+  })
+
+  it('reads the day the pipeline published, with the Eastern clock as the fallback', () => {
+    expect(src).toMatch(/- name: Run daily redesign\s*\n\s*id: redesign/)
+    const push = src.slice(src.indexOf('Push changes'), src.indexOf('Open today'))
+    expect(push).toMatch(/RUN_DATE: \$\{\{ steps\.redesign\.outputs\.date \}\}/)
+    expect(push).toMatch(/TODAY="\$\{RUN_DATE:-\$\(TZ=America\/New_York date \+%Y-%m-%d\)\}"/)
+    const rating = src.slice(src.indexOf('Open today'), src.indexOf('Upload failure'))
+    expect(rating).toMatch(/RUN_DATE: \$\{\{ steps\.redesign\.outputs\.date \}\}/)
+    expect(rating).toMatch(/process\.env\.RUN_DATE/)
+  })
+
+  it('has the pipeline publish signals.date, the day every archive path is keyed on', async () => {
+    const { publishRunDate } = await import('../../scripts/daily-redesign.js')
+    const { mkdtempSync, readFileSync } = await import('node:fs')
+    const { tmpdir } = await import('node:os')
+    const path = await import('node:path')
+    const out = path.join(mkdtempSync(path.join(tmpdir(), 'gh-output-')), 'output')
+    expect(publishRunDate({ date: '2026-09-01' }, out)).toBe('2026-09-01')
+    expect(readFileSync(out, 'utf8')).toBe('date=2026-09-01\n')
+  })
+
+  it('publishes nothing that is not a date', async () => {
+    const { publishRunDate } = await import('../../scripts/daily-redesign.js')
+    const { mkdtempSync, existsSync } = await import('node:fs')
+    const { tmpdir } = await import('node:os')
+    const path = await import('node:path')
+    const out = path.join(mkdtempSync(path.join(tmpdir(), 'gh-output-')), 'output')
+    publishRunDate({ date: 'today; rm -rf /' }, out)
+    expect(existsSync(out)).toBe(false)
+  })
+})
+
 describe('what the nightly links to', () => {
   it('points the rating issue at where the screenshot is actually written', async () => {
     // #154 moved the day's screenshot from public/archive/<date>.png to
@@ -117,10 +158,12 @@ describe('what the nightly links to', () => {
   it('resolves dates in the failure issue in JS, not in a dead shell substitution', () => {
     // `$(date -u +%Y-%m-%d)` inside a JS template literal is never expanded;
     // the issue body showed the literal text. Scoped to the github-script
-    // block — the same substitution in the shell push step is correct there.
+    // block — a shell substitution in the push step is correct there.
     const notify = src.slice(src.indexOf('Notify on failure'))
     expect(notify).not.toMatch(/\$\(date /)
-    expect(notify).toMatch(/new Date\(\)\.toISOString\(\)/)
+    expect(notify).toMatch(
+      /new Date\(\)\.toLocaleDateString\('en-CA', \{ timeZone: 'America\/New_York' \}\)/
+    )
   })
 
   it('points the failure issue at diagnostics that outlive the runner', () => {

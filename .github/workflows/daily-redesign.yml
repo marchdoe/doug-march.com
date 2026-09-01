@@ -193,17 +193,27 @@ jobs:
         run: node scripts/collect-references.js
 
       - name: Run daily redesign
+        id: redesign
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        # Writes `date=<YYYY-MM-DD>` to GITHUB_OUTPUT: the day the run is FOR,
+        # which is signals.date, the Eastern day every archive path is keyed
+        # on. The steps below read it rather than deriving their own.
         run: node scripts/daily-redesign.js
 
       - name: Push changes
         if: ${{ !inputs.dry_run }}
+        env:
+          RUN_DATE: ${{ steps.redesign.outputs.date }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          TODAY=$(date -u +%Y-%m-%d)
+          # `date -u` here disagreed with the pipeline's Eastern day every
+          # evening, so a /panel-triggered run after 20:00 staged the site and
+          # none of the day's archive record (#338). The pipeline's own answer
+          # comes first; the fallback is the same clock it uses.
+          TODAY="${RUN_DATE:-$(TZ=America/New_York date +%Y-%m-%d)}"
           # Stage only today's completed build — explicitly exclude
           # build-pre-* (snapshot temp dirs) and build-failed-* (failure
           # diagnostic dirs) so they never leak into main. Uses explicit
@@ -258,10 +268,15 @@ jobs:
       - name: Open today's rating issue
         if: ${{ !inputs.dry_run && success() }}
         uses: actions/github-script@v7
+        env:
+          RUN_DATE: ${{ steps.redesign.outputs.date }}
         with:
           script: |
             const fs = require('fs')
-            const today = new Date().toISOString().slice(0, 10)
+            // The day the run was for (see the redesign step), not UTC now.
+            const today =
+              process.env.RUN_DATE ||
+              new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
             let brief = ''
             try {
               const briefMd = fs.readFileSync(`archive/${today}/brief.md`, 'utf8')
@@ -318,7 +333,10 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const title = `Daily redesign failed — ${new Date().toISOString().slice(0, 10)}`
+            // The run may have died before it published its date; the
+            // Eastern calendar day is the same clock the pipeline keys on.
+            const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+            const title = `Daily redesign failed — ${today}`
             const body = [
               `The daily redesign pipeline failed.`,
               ``,
