@@ -92,7 +92,12 @@ async function main() {
     console.log('\nDone. GitHub Actions will commit and push.')
   }
 
-  process.exit(0)
+  // Actions pipes stdout, which is async — exiting immediately after the
+  // last console.log can cut those lines off before they flush. A plain
+  // fall-through instead of an explicit exit is not safe here: the swarm
+  // opens browsers and preview servers, and a leaked handle would hang the
+  // unattended nightly run until the job timeout (#305).
+  process.stdout.write('', () => process.exit(0))
 }
 
 // Run main only when executed directly (not when imported for testing)
