@@ -156,9 +156,21 @@ export const FILE_OWNERSHIP = Object.fromEntries([
  * @returns {{ risk: number, explicitlySet: boolean }}
  */
 export function resolveRiskWeight(envValue, date) {
-  const explicitlySet = envValue !== undefined && envValue !== ''
-  const risk = explicitlySet ? parseInt(envValue, 10) : hashToRange(`risk:${date}`, 3, 10)
-  return { risk, explicitlySet }
+  const derived = () => ({ risk: hashToRange(`risk:${date}`, 3, 10), explicitlySet: false })
+  if (envValue === undefined || envValue === '') return derived()
+  const risk = Number.parseInt(envValue, 10)
+  // The other three dials fall back on a non-number and say so; this one
+  // carried NaN through (#301). describeRiskTier(NaN) fails every >= and
+  // reads as SAFE, the log printed risk=NaN, and archiver's `?? 5` does not
+  // catch NaN so build.json stored null. The owner panel writes this as a
+  // repo variable and the workflow passes it through raw.
+  if (Number.isNaN(risk)) {
+    console.warn(
+      `  WEIGHT_RISK=${JSON.stringify(envValue)} is not a number — deriving from the date`
+    )
+    return derived()
+  }
+  return { risk, explicitlySet: true }
 }
 
 /**
