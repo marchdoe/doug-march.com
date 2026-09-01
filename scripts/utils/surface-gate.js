@@ -354,6 +354,24 @@ export function formatFindingsForCritic(findings) {
 }
 
 /**
+ * The error-severity findings a given owner can act on.
+ *
+ * This is what makes the gate a gate (#306): the orchestrator used to log
+ * `errorCount`, push a verdict nobody read, and leave the revision decision
+ * to the screenshot critic alone. A 657px overflow the critic could not see
+ * shipped with a SHIP.
+ *
+ * @param {Array<object>} findings
+ * @param {'react-engineer'|'human'} owner
+ * @returns {Array<object>}
+ */
+export function faultsForOwner(findings, owner) {
+  return (findings ?? []).filter(
+    (f) => f.severity === 'error' && ownerForSurface(f.surface) === owner
+  )
+}
+
+/**
  * Which agent can act on a finding.
  *
  * The revision loop routes every REVISE to `react-engineer`

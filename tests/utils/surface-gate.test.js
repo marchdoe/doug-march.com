@@ -7,6 +7,7 @@ import {
   formatFindingsForCritic,
   listGeneratedRoutes,
   ownerForSurface,
+  faultsForOwner,
   OVERFLOW_TOLERANCE_PX,
   VIEWPORT_RUNGS,
   RUNNING_COPY_MAX_PX,
@@ -152,6 +153,39 @@ describe('ownerForSurface', () => {
     // The old fallback sent these to react-engineer regardless.
     expect(ownerForSurface('/experiments')).toBe('human')
     expect(ownerForSurface('/work')).toBe('human')
+  })
+})
+
+describe('faultsForOwner', () => {
+  // #306: the gate measured and pushed a verdict nobody read. This is the
+  // predicate the orchestrator now forces a revision on.
+  const finding = (surface, severity) => ({
+    surface,
+    viewport: 'desktop',
+    width: 1440,
+    scheme: 'light',
+    kind: 'overflow',
+    severity,
+    detail: 'x',
+  })
+
+  it('keeps only error-severity findings on surfaces the owner can edit', () => {
+    const findings = [
+      finding('/', 'error'),
+      finding('/about', 'warning'),
+      finding('/work/spaceman', 'error'),
+      finding('/experiments', 'error'),
+    ]
+    expect(faultsForOwner(findings, 'react-engineer').map((f) => f.surface)).toEqual([
+      '/',
+      '/work/spaceman',
+    ])
+    expect(faultsForOwner(findings, 'human').map((f) => f.surface)).toEqual(['/experiments'])
+  })
+
+  it('is empty for no findings', () => {
+    expect(faultsForOwner([], 'react-engineer')).toEqual([])
+    expect(faultsForOwner(undefined, 'react-engineer')).toEqual([])
   })
 })
 

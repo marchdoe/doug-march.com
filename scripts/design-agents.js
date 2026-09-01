@@ -1657,37 +1657,68 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       // the single-page critic could never have seen. Measurements cost no
       // tokens, so this runs in full on every build; its findings are handed
       // to the critic below as text rather than as more image blocks.
-      let surfaceFindings = []
-      try {
-        const { runSurfaceGate } = await import('./utils/surface-gate.js')
-        const t0Gate = Date.now()
-        const gate = await runSurfaceGate()
-        surfaceFindings = gate.findings
-        console.log(
-          `  [surface-gate] ${gate.measured} measurements, ${gate.errorCount} error(s) in ${((Date.now() - t0Gate) / 1000).toFixed(1)}s`
-        )
-        for (const f of gate.findings) {
-          console.log(`    [${f.severity}] ${f.surface} @${f.width} (${f.scheme}): ${f.detail}`)
+      const { runSurfaceGate, faultsForOwner, formatFindingsForCritic } = await import(
+        './utils/surface-gate.js'
+      )
+
+      /**
+       * Measure every route and record what was found. Round 1 runs before
+       * the critic; round 2 runs after a revision that rebuilt, so the archive
+       * says whether the revision fixed what the gate measured (#306).
+       * @param {number} round
+       * @returns {Promise<{findings: Array<object>, measured: number, errorCount: number}|null>}
+       */
+      async function measureSurfaces(round) {
+        try {
+          const t0Gate = Date.now()
+          const gate = await runSurfaceGate()
+          console.log(
+            `  [surface-gate] round ${round}: ${gate.measured} measurements, ${gate.errorCount} error(s) in ${((Date.now() - t0Gate) / 1000).toFixed(1)}s`
+          )
+          for (const f of gate.findings) {
+            console.log(`    [${f.severity}] ${f.surface} @${f.width} (${f.scheme}): ${f.detail}`)
+          }
+          trace.addStep({
+            name: 'surface-gate',
+            phase: 4,
+            input: { round },
+            output: {
+              measured: gate.measured,
+              errorCount: gate.errorCount,
+              findings: gate.findings,
+            },
+            durationMs: Date.now() - t0Gate,
+          })
+          verdicts.push({
+            critic: 'surface-gate',
+            round,
+            verdict: gate.errorCount > 0 ? 'REVISE' : 'SHIP',
+            feedback: gate.findings.length
+              ? gate.findings.map((f) => `${f.surface} @${f.width}: ${f.detail}`).join('\n')
+              : 'all surfaces fit their viewport',
+            ts: Date.now(),
+          })
+          return gate
+        } catch (err) {
+          // Non-blocking, exactly like the critic below: a gate that cannot run
+          // must not stop a build that otherwise passed.
+          console.warn(`  [surface-gate] failed (non-blocking): ${err.message}`)
+          return null
         }
-        trace.addStep({
-          name: 'surface-gate',
-          phase: 4,
-          input: {},
-          output: { measured: gate.measured, errorCount: gate.errorCount, findings: gate.findings },
-          durationMs: Date.now() - t0Gate,
-        })
-        verdicts.push({
-          critic: 'surface-gate',
-          verdict: gate.errorCount > 0 ? 'REVISE' : 'SHIP',
-          feedback: gate.findings.length
-            ? gate.findings.map((f) => `${f.surface} @${f.width}: ${f.detail}`).join('\n')
-            : 'all surfaces fit their viewport',
-          ts: Date.now(),
-        })
-      } catch (err) {
-        // Non-blocking, exactly like the critic below: a gate that cannot run
-        // must not stop a build that otherwise passed.
-        console.warn(`  [surface-gate] failed (non-blocking): ${err.message}`)
+      }
+
+      const surfaceFindings = (await measureSurfaces(1))?.findings ?? []
+
+      // The gate decides, not just measures. An error on a surface the
+      // engineer owns forces a revision whether or not the critic, who looks
+      // at three images, noticed it. Errors on authored routes are reported
+      // for a human below and cannot force anything: no agent can edit them.
+      const engineerFaults = faultsForOwner(surfaceFindings, 'react-engineer')
+      const gateDemandsRevision = engineerFaults.length > 0
+      if (gateDemandsRevision) {
+        console.warn(
+          `  [surface-gate] ${engineerFaults.length} error(s) on engineer-owned surfaces — a revision is required regardless of the critic's verdict`
+        )
       }
 
       try {
@@ -1757,8 +1788,6 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           routeShots = []
         }
 
-        const { formatFindingsForCritic } = await import('./utils/surface-gate.js')
-
         const criticBlocks = buildScreenshotCriticBlocks({
           // enrichedBrief carries hero copy, rationale, and the full visual
           // spec. The nightly context has no `brief` key, so the old
@@ -1819,9 +1848,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           durationMs: Date.now() - t0ScreenshotCritic,
         })
 
-        if (screenshotVerdict === 'REVISE') {
+        if (screenshotVerdict === 'REVISE' || gateDemandsRevision) {
           const agentMatch = criticResponse.match(/\*\*Responsible agent:\*\*\s*([\w-]+)/)
-          const responsibleAgent = agentMatch?.[1] || 'react-engineer'
+          // A gate-forced revision goes to the engineer: the faults are on
+          // surfaces faultsForOwner already attributed to it.
+          const responsibleAgent =
+            screenshotVerdict === 'REVISE' ? agentMatch?.[1] || 'react-engineer' : 'react-engineer'
 
           // Surfaces the critic can now see but no agent can edit. `/work` and
           // `/experiments` are authored route files outside MUTABLE_FILES: the
@@ -1856,15 +1888,28 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           const feedbackBlock = criticResponse.match(
             /===FEEDBACK===\s*\n([\s\S]*?)(?:===END===|$)/
           )?.[1]
-          const feedback = (
-            feedbackBlock ??
-            criticResponse
-              .replace(/===VERDICT===/, '')
-              .replace(/===END===/, '')
-              .replace(/^\s*REVISE\b/m, '')
-          ).trim()
+          const criticFeedback =
+            screenshotVerdict === 'REVISE'
+              ? (
+                  feedbackBlock ??
+                  criticResponse
+                    .replace(/===VERDICT===/, '')
+                    .replace(/===END===/, '')
+                    .replace(/^\s*REVISE\b/m, '')
+                ).trim()
+              : ''
+          // The measured faults ride along whether or not the critic mentioned
+          // them: they are exact, and they are the reason a SHIP is being
+          // revised when the gate forced it.
+          const feedback = [criticFeedback, formatFindingsForCritic(engineerFaults)]
+            .filter(Boolean)
+            .join('\n\n')
 
-          console.log(`  [screenshot-critic] REVISE — responsible: ${responsibleAgent}`)
+          console.log(
+            screenshotVerdict === 'REVISE'
+              ? `  [screenshot-critic] REVISE — responsible: ${responsibleAgent}`
+              : `  [surface-gate] critic said SHIP; revising anyway for ${engineerFaults.length} measured fault(s)`
+          )
           console.log(`  feedback: ${feedback.slice(0, 200)}...`)
 
           // Shared reactEngineerAgentConfig keeps this retry path in sync
@@ -1924,6 +1969,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
                 console.log('  known-passing state restored and re-validated')
               } else {
                 console.log('  post-critic revision build passed')
+                // Measure again so the record says whether the revision
+                // fixed what round 1 found, rather than assuming it did.
+                const regate = await measureSurfaces(2)
+                if (regate && faultsForOwner(regate.findings, 'react-engineer').length) {
+                  console.warn(
+                    '  [surface-gate] revision did not clear every engineer-owned fault — shipping with the record saying so'
+                  )
+                }
                 // Re-capture so the persisted screenshot reflects the revised
                 // render, not the pre-revision one the critic rejected.
                 try {
