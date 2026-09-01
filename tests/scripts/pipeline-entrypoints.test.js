@@ -18,6 +18,10 @@
  * promoteRatingToReferences in collect-ratings.js) was discarded on the
  * runner every time — the file promoted, and the index.yml entry pointing at
  * it, never survived to be committed.
+ *
+ * #339: ci.yml triggered on pull_request only. The nightly pushes to main
+ * over a deploy key, bypassing the ruleset entirely, so lint, typecheck, the
+ * test suite and the fallow audit never ran against what actually shipped.
  */
 
 import { readFileSync } from 'node:fs'
@@ -78,6 +82,22 @@ describe('ci.yml holds a read-only token', () => {
   it('still uses no secret or token — nothing here needed write access', () => {
     expect(src).not.toMatch(/secrets\./)
     expect(src).not.toMatch(/GITHUB_TOKEN/)
+  })
+
+  it('also runs on a push to main, not just a pull_request (#339)', () => {
+    // The nightly pushes to main over a deploy key with no PR — this is the
+    // first time the full suite ever sees a nightly commit.
+    const doc = yaml.load(src)
+    expect(doc.on.pull_request).toEqual({ branches: ['main'] })
+    expect(doc.on.push).toEqual({ branches: ['main'] })
+  })
+
+  it('audits a push against the previous main SHA, not an empty base_ref (#339)', () => {
+    // github.base_ref is only set on a pull_request; on a push it is empty,
+    // which would turn `--base origin/` into a command that fails outright.
+    const doc = yaml.load(src)
+    const audit = doc.jobs.architecture.steps.find((s) => s.name === 'Architecture audit (fallow)')
+    expect(audit.run).toContain('github.event.before')
   })
 })
 
