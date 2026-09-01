@@ -2037,51 +2037,87 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // the pipeline, so a build failure on preset.ts at this stage means
     // a downstream typing problem — best handled by React Engineer
     // retry rather than full Art Director re-run (which is more expensive).
-    const retryAgents = ['react-engineer']
+    // One attempt was never enough. The engineer averages about one small slip
+    // per generation, and a repair regenerates every file it owns — so a single
+    // attempt reliably trades the error it was given for a different one and
+    // the night is lost. Observed three times in one day on 2026-09-01:
+    //
+    //   CI dry run   width: 'full'  -> repair -> bg: 'surfaceDeep'
+    //   local run 3  gap: '10'      -> repair -> Footer.tsx TS2769
+    //
+    // Each attempt costs one engineer regeneration. A lost night costs the
+    // whole run, so the trade is worth making up to a bound. Attempts stop
+    // early when the run budget is spent — a repair that starts after the
+    // deadline cannot finish and archive.
+    const MAX_REPAIR_ATTEMPTS = 3
+    const engineerConfig = agentConfig['react-engineer']
 
-    for (const agent of retryAgents) {
-      const config = agentConfig[agent]
-      if (!config) continue
+    let repairError = buildResult.error
+    let attempt = 0
 
-      console.log(`\n  retrying ${agent} with build error context...`)
-      noteRetry()
-      try {
-        const retryResult = await callAgent(
-          agent,
-          config.prompt,
-          config.user(),
-          buildResult.error,
-          config.options
+    while (attempt < MAX_REPAIR_ATTEMPTS) {
+      if (pastDeadline()) {
+        console.warn(
+          `  [deadline] run budget exhausted after ${attempt} repair attempt(s) — stopping`
         )
-        for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
-        // Update the result so the archive records the retry output, not stale originals
-        if (agent === 'react-engineer') engineerResult = retryResult
+        break
+      }
+      attempt++
+
+      console.log(
+        `\n  repair attempt ${attempt}/${MAX_REPAIR_ATTEMPTS} — retrying react-engineer with build error context...`
+      )
+      noteRetry()
+      let retryResult
+      try {
+        retryResult = await callAgent(
+          'react-engineer',
+          engineerConfig.prompt,
+          engineerConfig.user(),
+          repairError,
+          engineerConfig.options
+        )
       } catch (err) {
-        console.error(`  ${agent} retry failed: ${err.message}`)
-        // If the retry agent itself crashed, don't silently continue to
+        console.error(`  react-engineer repair failed: ${err.message}`)
+        // If the repair agent itself crashed, don't silently continue to
         // validateBuild — bail out with the real error so debugging points
         // at the actual cause (code review #14).
         await archiveFailedSources(writtenPaths)
         await cleanupOrphans(writtenPaths, originalBackup)
         await restore(originalBackup)
-        throw new Error(`${agent} retry crashed: ${err.message}`)
+        throw new Error(`react-engineer repair crashed: ${err.message}`)
       }
+
+      // The first pass drops orchestrator-owned files from the engineer's
+      // output and this path did not, even though `app/routes/` is an allowed
+      // write prefix — so a repair could overwrite the generated __root.tsx.
+      // That is not hypothetical: the error text handed to a repair has named
+      // __root.tsx, which invites the agent to "fix" a file it does not own.
+      retryResult.files = dropOrchestratorFiles(retryResult.files, 'React Engineer repair')
+      for (const p of await writeFiles(retryResult.files)) writtenPaths.add(p)
+      // Update the result so the archive records the repair output, not stale originals
+      engineerResult = retryResult
+
+      const attemptBuild = validateBuild({ shell: shellDecl })
+      if (attemptBuild.success) {
+        console.log(`\n=== Repair build passed on attempt ${attempt}! ===`)
+        const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])
+        await runScreenshotCriticGate(passingBackup)
+        // await required — see first-pass call site
+        return await archiveAndReturn(engineerResult, ` (repair ${attempt})`)
+      }
+
+      repairError = attemptBuild.error
+      console.warn(`  repair attempt ${attempt} did not pass — carrying the new error forward`)
     }
 
-    // Re-validate
-    const retryBuild = validateBuild({ shell: shellDecl })
-    if (retryBuild.success) {
-      console.log('\n=== Retry build passed! ===')
-      const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])
-      await runScreenshotCriticGate(passingBackup)
-      return await archiveAndReturn(engineerResult, ' (retry)') // await required — see first-pass call site
-    }
-
-    // All retries exhausted — snapshot the failing sources, then restore and throw
+    // All attempts exhausted — snapshot the failing sources, then restore and throw
     await archiveFailedSources(writtenPaths)
     await cleanupOrphans(writtenPaths, originalBackup)
     await restore(originalBackup)
-    throw new Error(`Build failed after retry. Error:\n${retryBuild.error?.slice(0, 2500)}`)
+    throw new Error(
+      `Build failed after ${attempt} repair attempt(s). Error:\n${repairError?.slice(0, 2500)}`
+    )
   } catch (err) {
     swarmError = err
     throw err
