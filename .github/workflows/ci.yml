@@ -3,6 +3,11 @@ name: CI
 on:
   pull_request:
     branches: [main]
+  # The nightly pushes to main over a deploy key with no PR, so this push
+  # trigger is the first time the full suite sees a nightly commit — a red
+  # check on main is the signal for now, not a gate (#339).
+  push:
+    branches: [main]
 
 # A new push to the same PR makes the run in flight worthless. Both other
 # workflows already do this.
@@ -128,7 +133,10 @@ jobs:
       # gone, and `audit --base` scopes findings to what the PR changed, so a
       # failure here is something this branch introduced.
       - name: Architecture audit (fallow)
-        run: pnpm fallow audit --base origin/${{ github.base_ref }}
+        # On a pull_request, base_ref is the target branch. On a push (the
+        # nightly landing on main with no PR), base_ref is empty; audit the
+        # pushed range against the previous main SHA instead (#339).
+        run: pnpm fallow audit --base ${{ github.event_name == 'push' && github.event.before || format('origin/{0}', github.base_ref) }}
 
   dev-panel:
     name: Dev panel (E2E)
