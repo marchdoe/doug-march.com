@@ -4,7 +4,8 @@
  * Full Daily Redesign Pipeline
  *
  * Runs all stages in sequence:
- *   1. Collect signals (scripts/collect-signals.js) — skipped if already collected today
+ *   1. Collect signals (scripts/collect-signals.js) — always runs; there is
+ *      no freshness check anywhere in this pipeline (#305)
  *   2. Collect references (scripts/collect-references.js) — non-blocking
  *   3. Design + Build + Archive (scripts/daily-redesign.js)
  *
