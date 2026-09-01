@@ -4,6 +4,7 @@ import {
   MAX_BODY_SIZE,
   guardRequest,
   isAllowedOrigin,
+  isLocalHost,
   isLocalRequest,
   readBodyLimited,
 } from '../../app/dev-server/guards'
@@ -13,7 +14,14 @@ import {
 // network when Vite is bound to 0.0.0.0. It had no test until #227.
 
 const req = (remoteAddress: string | undefined, origin?: string) =>
-  ({ socket: { remoteAddress }, headers: origin ? { origin } : {} }) as never
+  ({
+    socket: { remoteAddress },
+    headers: { host: 'localhost:5173', ...(origin ? { origin } : {}) },
+  }) as never
+
+/** A request with arbitrary headers, for the Host and Sec-Fetch-Site cases. */
+const reqWith = (remoteAddress: string | undefined, headers: Record<string, string>) =>
+  ({ socket: { remoteAddress }, headers }) as never
 
 function fakeRes() {
   const res = { status: 0, body: '', writeHead: vi.fn(), end: vi.fn() }
@@ -57,7 +65,82 @@ describe('isAllowedOrigin', () => {
   })
 })
 
+describe('isAllowedOrigin with Sec-Fetch-Site', () => {
+  // #322: browsers omit Origin on no-cors subresource GETs, so a missing
+  // Origin is not proof of same-origin. Sec-Fetch-Site is sent on those.
+  it('refuses a cross-site or same-site fetch even with no Origin', () => {
+    for (const site of ['cross-site', 'same-site']) {
+      expect(
+        isAllowedOrigin(reqWith('127.0.0.1', { host: 'localhost:5173', 'sec-fetch-site': site }))
+      ).toBe(false)
+    }
+  })
+
+  it('allows same-origin and none', () => {
+    for (const site of ['same-origin', 'none']) {
+      expect(
+        isAllowedOrigin(reqWith('127.0.0.1', { host: 'localhost:5173', 'sec-fetch-site': site }))
+      ).toBe(true)
+    }
+  })
+
+  it('still checks Origin when Sec-Fetch-Site is same-origin', () => {
+    expect(
+      isAllowedOrigin(
+        reqWith('127.0.0.1', {
+          host: 'localhost:5173',
+          'sec-fetch-site': 'same-origin',
+          origin: 'https://evil.example',
+        })
+      )
+    ).toBe(false)
+  })
+})
+
+describe('isLocalHost', () => {
+  it('accepts a local Host on any port', () => {
+    for (const host of ['localhost:5173', '127.0.0.1:5173', '[::1]:5173', 'localhost']) {
+      expect(isLocalHost(reqWith('127.0.0.1', { host }))).toBe(true)
+    }
+  })
+
+  it('refuses a rebinding host, a lookalike, and no Host at all', () => {
+    for (const host of ['evil.example:5173', 'localhost.evil.example', '192.168.1.20:5173', '']) {
+      expect(isLocalHost(reqWith('127.0.0.1', { host }))).toBe(false)
+    }
+    expect(isLocalHost(reqWith('127.0.0.1', {}))).toBe(false)
+  })
+})
+
 describe('guardRequest', () => {
+  it('403s the subresource GET from another site: loopback peer, no Origin, cross-site', () => {
+    // <img src="http://127.0.0.1:5173/api/collect-signals"> on any page.
+    const res = fakeRes()
+    const r = reqWith('127.0.0.1', { host: '127.0.0.1:5173', 'sec-fetch-site': 'cross-site' })
+    expect(guardRequest(r, res as never)).toBe(false)
+    expect(res.status).toBe(403)
+    expect(res.body).toContain('invalid origin')
+  })
+
+  it('403s a rebinding Host from a loopback peer', () => {
+    const res = fakeRes()
+    const r = reqWith('127.0.0.1', { host: 'evil.example', 'sec-fetch-site': 'same-origin' })
+    expect(guardRequest(r, res as never)).toBe(false)
+    expect(res.status).toBe(403)
+    expect(res.body).toContain('host is not local')
+  })
+
+  it('lets the panel call its own API', () => {
+    const res = fakeRes()
+    const r = reqWith('127.0.0.1', {
+      host: 'localhost:5173',
+      origin: 'http://localhost:5173',
+      'sec-fetch-site': 'same-origin',
+    })
+    expect(guardRequest(r, res as never)).toBe(true)
+    expect(res.writeHead).not.toHaveBeenCalled()
+  })
+
   it('403s a remote peer before the handler runs, and says why', () => {
     const res = fakeRes()
     expect(guardRequest(req('192.168.1.20'), res as never)).toBe(false)
