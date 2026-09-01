@@ -295,6 +295,24 @@ jobs:
               labels: ['daily-rating'],
             })
 
+      # The failure diagnostics never survived the runner. `Push changes`
+      # deliberately keeps build-failed-* out of main — they are diagnostics,
+      # not history — and nothing else collected them, so every failure notice
+      # since the workflow was written has pointed at a path that does not
+      # exist. Thirty days is long enough to debug a bad night and short
+      # enough that failed builds do not accumulate.
+      - name: Upload failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-failed-${{ github.run_id }}
+          path: |
+            archive/*/build-failed-*/
+            archive/*/build-failed-sources-*/
+            archive/*/last-build-output.txt
+          retention-days: 30
+          if-no-files-found: ignore
+
       - name: Notify on failure
         if: failure()
         uses: actions/github-script@v7
@@ -308,7 +326,7 @@ jobs:
               `**Trigger:** ${context.eventName}`,
               `**Commit:** ${context.sha.slice(0, 7)}`,
               ``,
-              `Check the run logs for the failure reason. If a trace was saved, find it under \`archive/${new Date().toISOString().slice(0, 10)}/build-failed-*/trace.json\`.`,
+              `The trace, the failing sources and the full build output are attached to that run as the \`build-failed-${context.runId}\` artifact (kept 30 days). Download it and start at \`trace.json\`; the run log has the same story in line order.`,
             ].join('\n')
             await github.rest.issues.create({
               owner: context.repo.owner,

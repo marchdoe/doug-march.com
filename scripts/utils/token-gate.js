@@ -445,13 +445,45 @@ export const NUMERIC_SCALE_PROPS = new Map([
 ])
 
 /**
- * The keys of one token scale in the preset source.
+ * Every preset whose tokens are merged into the theme the site compiles
+ * against, in the order `panda.config.ts` lists them.
+ *
+ * The two own different halves of the theme. The Art Director writes the
+ * colour scales into `elements/preset.ts` and is told in so many words NOT to
+ * write `spacing` (scripts/prompts/art-director.md): the orchestrator derives
+ * it from the day's chassis rhythm and generates it into
+ * `elements/chassis-preset.ts`, which is merged second and wins.
+ *
+ * Reading only the first one is what killed the 2026-09-01 run. The Art
+ * Director followed its contract, so `spacing` was absent from preset.ts, so
+ * this gate parsed an empty scale and reported all 49 legal `gap: '4'`s as
+ * bare-number misses. The scale is only ever complete across both files.
+ */
+export const PRESET_FILES = ['preset.ts', 'chassis-preset.ts']
+
+/**
+ * The keys of one token scale, unioned across the presets that define it.
+ *
+ * @param {string[]} sources contents of each file in `PRESET_FILES`
+ * @param {string} category e.g. `spacing`
+ * @returns {Set<string>} every key defined under theme.tokens[category]
+ */
+export function mergeTokenScaleKeys(sources, category) {
+  const keys = new Set()
+  for (const source of sources) {
+    for (const key of parseTokenScaleKeys(source, category)) keys.add(key)
+  }
+  return keys
+}
+
+/**
+ * The keys of one token scale in a single preset source.
  *
  * Parsed rather than hardcoded because the Art Director rewrites
  * `elements/preset.ts` every night and the scale moves with it: nine steps of
  * 4px-128px on 2026-08-30, something else tomorrow.
  *
- * @param {string} source contents of elements/preset.ts
+ * @param {string} source contents of one preset file
  * @param {string} category e.g. `spacing`
  * @returns {Set<string>} the keys defined under theme.tokens[category]
  */
@@ -736,12 +768,18 @@ export function checkTokenResolution({
     }
   }
 
-  const presetPath = path.join(root, 'elements', 'preset.ts')
-  if (existsSync(presetPath)) {
-    const preset = readFileSync(presetPath, 'utf8')
+  const presetSources = PRESET_FILES.map((file) => path.join(root, 'elements', file))
+    .filter((p) => existsSync(p))
+    .map((p) => readFileSync(p, 'utf8'))
+  if (presetSources.length > 0) {
+    // `sizes` is legitimately empty in both presets today, and it has to stay
+    // checkable while empty: `width: '11'` shipping an 11px brand mark is the
+    // case this gate was built for. So an empty scale still flags — only a
+    // scale that is empty because we read the wrong file is a bug, and that is
+    // what the union above fixes.
     const scales = {
-      spacing: parseTokenScaleKeys(preset, 'spacing'),
-      sizes: parseTokenScaleKeys(preset, 'sizes'),
+      spacing: mergeTokenScaleKeys(presetSources, 'spacing'),
+      sizes: mergeTokenScaleKeys(presetSources, 'sizes'),
     }
     for (const [file, source] of reachable) {
       for (const hit of findNumericScaleMisses(source, scales)) {

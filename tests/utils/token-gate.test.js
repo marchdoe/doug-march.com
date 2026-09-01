@@ -19,6 +19,7 @@ import {
   isUnresolvedTokenValue,
   parseAtomicSelector,
   parseDeclarations,
+  mergeTokenScaleKeys,
   parseTokenScaleKeys,
   stripComments,
 } from '../../scripts/utils/token-gate.js'
@@ -282,6 +283,76 @@ describe('reading a token scale out of the preset', () => {
 
   it('returns nothing for a scale the preset does not define', () => {
     expect(parseTokenScaleKeys(preset, 'sizes')).toEqual(new Set())
+  })
+})
+
+describe('the scale spans both presets', () => {
+  // panda.config.ts merges [elementsPreset, chassisPreset]. The Art Director
+  // writes the first and is told not to emit `spacing`; the orchestrator
+  // generates it into the second. Reading only the first is what failed the
+  // 2026-09-01 run — see the regression below.
+  const artDirectorPreset = `
+    export const elementsPreset = definePreset({
+      theme: { tokens: { colors: { gold: { 400: { value: '#F4B90A' } } } } },
+    })`
+
+  const chassisPreset = `
+    export const chassisPreset = definePreset({
+      theme: {
+        tokens: {
+          spacing: {
+            '1': { value: '4px' },
+            '4': { value: '24px' },
+            '9': { value: '128px' },
+          },
+        },
+      },
+    })`
+
+  it('unions the keys across the presets that define them', () => {
+    expect([...mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'spacing')]).toEqual([
+      '1',
+      '4',
+      '9',
+    ])
+  })
+
+  it('reads a scale the Art Director preset alone does not carry', () => {
+    // The regression, stated plainly: the Art Director's own preset has no
+    // spacing block, because it is under orders not to write one.
+    expect(parseTokenScaleKeys(artDirectorPreset, 'spacing')).toEqual(new Set())
+    expect(mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'spacing').size).toBe(3)
+  })
+
+  it('does not flag a legal spacing token that lives in the chassis preset', () => {
+    // 49 of these killed 2026-09-01. Every one was correct code.
+    const scales = {
+      spacing: mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'spacing'),
+      sizes: mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'sizes'),
+    }
+    expect(findNumericScaleMisses(`css({ gap: '4', marginTop: '9' })`, scales)).toEqual([])
+  })
+
+  it('still flags the 11px mark when neither preset defines sizes', () => {
+    // The union must not disarm the case the gate was built for. `sizes` is
+    // empty in both presets today and has to stay checkable while empty.
+    const scales = {
+      spacing: mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'spacing'),
+      sizes: mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'sizes'),
+    }
+    expect(findNumericScaleMisses(`css({ width: '11' })`, scales)).toEqual([
+      { prop: 'width', value: '11', category: 'sizes' },
+    ])
+  })
+
+  it('still flags a spacing key past the end of the merged scale', () => {
+    const scales = {
+      spacing: mergeTokenScaleKeys([artDirectorPreset, chassisPreset], 'spacing'),
+      sizes: new Set(),
+    }
+    expect(findNumericScaleMisses(`css({ marginBottom: '12' })`, scales)).toEqual([
+      { prop: 'marginBottom', value: '12', category: 'spacing' },
+    ])
   })
 })
 

@@ -1,0 +1,51 @@
+Reproduction of the 2026-09-01 failure, end to end.
+
+The Art Director fixture was edited to drop its `spacing` block — which is what
+scripts/prompts/art-director.md instructs the agent to do, and what the live
+agent did on 2026-09-01. Everything else is the recorded nightly.
+
+  $ MOCK_MODE=true node scripts/design-agents.js
+
+BEFORE (gate reads elements/preset.ts only)
+-------------------------------------------
+exit=1
+  ✗ 44 token references did not resolve. PandaCSS passes an unknown token
+    through as a literal, so these shipped as invalid CSS that the browser
+    drops, or as a px value nobody asked for.
+
+  Bare numbers where a token key was meant:
+    - app/routes/work.$slug.tsx: marginTop: '2' is not a spacing token, so
+      Panda appended px and shipped 2px. The preset defines no spacing scale
+      at all, so write the length you mean with a unit.
+    ... 43 more
+
+  Agent swarm failed: Build failed after retry.
+
+Every one of the 44 is correct code. The scale they resolve against lives in
+elements/chassis-preset.ts, which panda.config.ts merges second.
+
+Production said the same thing with 49 of them:
+https://github.com/marchdoe/dougmar.ch/actions/runs/33492021240
+
+AFTER (gate reads both presets)
+-------------------------------
+exit=0
+  static checks passed
+  build succeeded
+  post-critic revision build passed
+  archived to archive/2026-08-31/build-1788266718380/
+  Done. 8 files written.
+
+  $ grep -c 'spacing:' elements/preset.ts
+  0            <- the Art Director wrote no spacing block, per its contract
+
+The gate still flags what it should. In the same run, against files the
+nightly agents do not own:
+
+  ⚠ app/routes/work.index.tsx: marginBottom: '12' is not a spacing token
+  ⚠ app/routes/work.index.tsx: marginBottom: '16' is not a spacing token
+  ⚠ app/routes/work.index.tsx: paddingBottom: '10' is not a spacing token
+
+12, 16 and 10 are past the end of the 1-9 scale, so they are real. And with
+`sizes` empty in both presets — which it is today — `width: '11'` is still
+caught, which is the case the gate was built for.

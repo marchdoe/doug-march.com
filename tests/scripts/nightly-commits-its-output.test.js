@@ -114,14 +114,41 @@ describe('what the nightly links to', () => {
     expect(src).not.toContain('main/public/archive/${today}.png')
   })
 
-  it('resolves the failure-issue trace path in JS, not in a dead shell substitution', () => {
+  it('resolves dates in the failure issue in JS, not in a dead shell substitution', () => {
     // `$(date -u +%Y-%m-%d)` inside a JS template literal is never expanded;
     // the issue body showed the literal text. Scoped to the github-script
     // block — the same substitution in the shell push step is correct there.
     const notify = src.slice(src.indexOf('Notify on failure'))
-    expect(notify).toMatch(/build-failed-\*\/trace\.json/)
     expect(notify).not.toMatch(/\$\(date /)
     expect(notify).toMatch(/new Date\(\)\.toISOString\(\)/)
+  })
+
+  it('points the failure issue at diagnostics that outlive the runner', () => {
+    // The notice used to send you to `archive/<date>/build-failed-*/trace.json`.
+    // Nothing ever put that file anywhere you could reach: `Push changes`
+    // excludes build-failed-* from main on purpose, so the trace died with the
+    // job and #283 sent a reader to a path that has never existed.
+    const notify = src.slice(src.indexOf('Notify on failure'))
+    expect(notify).not.toMatch(/archive\/\$\{[^}]*\}\/build-failed-\*/)
+    expect(notify).toContain('artifact')
+  })
+
+  it('uploads the diagnostics under the name the failure issue cites', () => {
+    // The issue body names an artifact. If the two ever drift apart the notice
+    // is a dead pointer again, which is the whole bug this pair guards.
+    const upload = src.slice(src.indexOf('Upload failure diagnostics'))
+    expect(upload).toContain('actions/upload-artifact')
+    expect(upload).toMatch(/name:\s*build-failed-\$\{\{\s*github\.run_id\s*\}\}/)
+    expect(upload).toContain('build-failed-*/')
+    expect(upload).toContain('last-build-output.txt')
+
+    const notify = src.slice(src.indexOf('Notify on failure'))
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting on the literal text the workflow YAML contains, not interpolating
+    expect(notify).toContain('build-failed-${context.runId}')
+  })
+
+  it('collects the diagnostics before it opens the issue that links them', () => {
+    expect(src.indexOf('Upload failure diagnostics')).toBeLessThan(src.indexOf('Notify on failure'))
   })
 })
 
