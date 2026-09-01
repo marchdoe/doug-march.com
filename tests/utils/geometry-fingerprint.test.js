@@ -209,4 +209,24 @@ describe('geometryNovelty', () => {
     expect(r.compared).toBe(1)
     expect(r.nearest).toBe('2026-08-29')
   })
+
+  it('skips a history entry from a different FINGERPRINT_VERSION (#320)', () => {
+    // Comparing across a version bump measures a change in what was
+    // collected, not a change in the design — that distance is meaningless.
+    const otherVersion = { ...TODAY, version: FINGERPRINT_VERSION + 1 }
+    const r = geometryNovelty(TODAY, [
+      { date: '2026-08-28', fingerprint: otherVersion },
+      { date: '2026-08-29', fingerprint: { ...TODAY, version: FINGERPRINT_VERSION } },
+    ])
+    expect(r.compared).toBe(1)
+    expect(r.nearest).toBe('2026-08-29')
+  })
+
+  it('skips a history entry with no version field at all (#320)', () => {
+    const noVersion = { ...TODAY }
+    delete noVersion.version
+    const r = geometryNovelty(TODAY, [{ date: '2026-08-28', fingerprint: noVersion }])
+    expect(r.compared).toBe(0)
+    expect(r.score).toBeNull()
+  })
 })

@@ -295,7 +295,12 @@ export function fingerprintDistance(a, b) {
  */
 export function geometryNovelty(current, history = []) {
   if (!current?.elements?.length) return { raw: null, score: null, nearest: null, compared: 0 }
-  const usable = history.filter((h) => h?.fingerprint?.elements?.length)
+  // A fingerprint from another FINGERPRINT_VERSION has a different collected
+  // shape; comparing it against the current one produces a meaningless
+  // distance rather than a missing one (#320).
+  const usable = history.filter(
+    (h) => h?.fingerprint?.elements?.length && h?.fingerprint?.version === FINGERPRINT_VERSION
+  )
   if (usable.length === 0) return { raw: null, score: null, nearest: null, compared: 0 }
 
   let best = null
