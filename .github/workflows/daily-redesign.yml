@@ -86,14 +86,29 @@ jobs:
               ;;
           esac
 
+  # Two jobs where there was one (#337). The agents job runs model-authored
+  # code — `pnpm build` executes the TSX the React Engineer wrote from
+  # inputs that include public, attacker-writable text (HN titles, NewsAPI
+  # headlines, RSS descriptions) — and it used to do so with the deploy key
+  # already in its git config, because `ssh-key` checkout ran first and
+  # persist-credentials defaults to true. sanitize-signal.js and the build
+  # validator are real defenses, but they are pattern matchers standing
+  # between a public feed and a credential that can write to main.
+  #
+  # Now nothing that runs generated code can reach the key. The agents job
+  # checks out with no credential at all, stages exactly what the push step
+  # used to stage, and hands it over as one binary patch. The publish job
+  # checks out with the key, applies the patch, and pushes.
   redesign:
     needs: guard
     if: needs.guard.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 80  # mockup revision rounds add ~10-15m each; 45m could not absorb one
     permissions:
-      contents: write
-      issues: write  # for failure notification issues
+      contents: read
+      issues: write  # collect-ratings.js closes the harvested rating issue
+    outputs:
+      date: ${{ steps.redesign.outputs.date }}
     env:
       # Bound the pipeline's own deadline below the job timeout above, so the
       # run ships what it has instead of being killed mid-call with no trace.
@@ -117,27 +132,12 @@ jobs:
       WEIGHT_RISK: ${{ vars.WEIGHT_RISK == '' && '' || vars.WEIGHT_RISK }}
 
     steps:
-      # Checks out over SSH with a deploy key rather than GITHUB_TOKEN.
-      #
-      # The `biome-gate` ruleset requires Lint and Typecheck on the default
-      # branch, and this job pushes to main directly. github-actions[bot] is
-      # not in the ruleset's bypass list and cannot be added: GitHub does not
-      # offer it as a bypass actor on a personal-account repository, only
-      # Copilot's apps appear under Apps. Deploy keys are offered, and are
-      # scoped to this repository rather than carrying a person's identity.
-      #
-      # Opening a PR and auto-merging is not an alternative. A pull request
-      # created with GITHUB_TOKEN deliberately does not trigger workflow runs,
-      # so the required checks would never start and the merge would wait on
-      # checks that cannot run.
-      #
-      # `ssh-key` makes actions/checkout set the remote to SSH, so the push
-      # step below needs no change. GITHUB_TOKEN is still used for the API
-      # calls further down — issues and the rating comment — which are not
-      # pushes and are not gated by the ruleset.
+      # No credential of any kind in this job's git config: the deploy key
+      # lives in `publish`, and GITHUB_TOKEN is not persisted either. The
+      # harvest step below is handed the token explicitly for the issues API.
       - uses: actions/checkout@v7
         with:
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          persist-credentials: false
 
       - uses: pnpm/action-setup@v6
 
@@ -202,13 +202,11 @@ jobs:
         # on. The steps below read it rather than deriving their own.
         run: node scripts/daily-redesign.js
 
-      - name: Push changes
+      - name: Stage the night's output
         if: ${{ !inputs.dry_run }}
         env:
           RUN_DATE: ${{ steps.redesign.outputs.date }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           # `date -u` here disagreed with the pipeline's Eastern day every
           # evening, so a /panel-triggered run after 20:00 staged the site and
           # none of the day's archive record (#338). The pipeline's own answer
@@ -243,6 +241,85 @@ jobs:
           for p in elements/ app/components/ app/routes/ public/archive/ public/archive-data/ public/og/ signals/today.references.md; do
             git add "$p" 2>/dev/null || true
           done
+          # One patch, binary-safe, carrying exactly the staged set. The
+          # publish job applies it to a clean checkout that has the key.
+          git diff --cached --binary > "$RUNNER_TEMP/nightly.patch"
+          echo "staged $(git diff --cached --name-only | wc -l | tr -d ' ') path(s), $(wc -c < "$RUNNER_TEMP/nightly.patch" | tr -d ' ') bytes"
+
+      - name: Upload the night's output
+        if: ${{ !inputs.dry_run }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-${{ github.run_id }}
+          path: ${{ runner.temp }}/nightly.patch
+          retention-days: 7
+          if-no-files-found: error
+
+      # The failure diagnostics never survived the runner. `Push changes`
+      # deliberately keeps build-failed-* out of main — they are diagnostics,
+      # not history — and nothing else collected them, so every failure notice
+      # since the workflow was written has pointed at a path that does not
+      # exist. Thirty days is long enough to debug a bad night and short
+      # enough that failed builds do not accumulate.
+      - name: Upload failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-failed-${{ github.run_id }}
+          path: |
+            archive/*/build-failed-*/
+            archive/*/build-failed-sources-*/
+            archive/*/last-build-output.txt
+          retention-days: 30
+          if-no-files-found: ignore
+
+
+  publish:
+    needs: redesign
+    if: ${{ needs.redesign.result == 'success' && !inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read  # the push goes over SSH with the deploy key, not the token
+      issues: write   # the rating issue
+    steps:
+      # Checks out over SSH with a deploy key rather than GITHUB_TOKEN.
+      #
+      # The `biome-gate` ruleset requires Lint and Typecheck on the default
+      # branch, and this job pushes to main directly. github-actions[bot] is
+      # not in the ruleset's bypass list and cannot be added: GitHub does not
+      # offer it as a bypass actor on a personal-account repository, only
+      # Copilot's apps appear under Apps. Deploy keys are offered, and are
+      # scoped to this repository rather than carrying a person's identity.
+      #
+      # Opening a PR and auto-merging is not an alternative. A pull request
+      # created with GITHUB_TOKEN deliberately does not trigger workflow runs,
+      # so the required checks would never start and the merge would wait on
+      # checks that cannot run.
+      #
+      # `ssh-key` makes actions/checkout set the remote to SSH, so the push
+      # step below needs no change. No generated code runs in this job: it
+      # applies a patch and pushes.
+      - uses: actions/checkout@v7
+        with:
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: nightly-${{ github.run_id }}
+          path: ${{ runner.temp }}
+
+      - name: Push changes
+        env:
+          RUN_DATE: ${{ needs.redesign.outputs.date }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          TODAY="${RUN_DATE:-$(TZ=America/New_York date +%Y-%m-%d)}"
+          # An empty patch is a night that changed nothing; not an error.
+          if [ -s "$RUNNER_TEMP/nightly.patch" ]; then
+            git apply --index --binary "$RUNNER_TEMP/nightly.patch"
+          fi
           git diff --cached --quiet || git commit -m "chore: daily redesign $TODAY"
           # Retry push up to 3 times in case of concurrent pushes to main.
           # --autostash: the pipeline leaves runner-local modifications to
@@ -266,10 +343,9 @@ jobs:
           fi
 
       - name: Open today's rating issue
-        if: ${{ !inputs.dry_run && success() }}
         uses: actions/github-script@v7
         env:
-          RUN_DATE: ${{ steps.redesign.outputs.date }}
+          RUN_DATE: ${{ needs.redesign.outputs.date }}
         with:
           script: |
             const fs = require('fs')
@@ -310,26 +386,16 @@ jobs:
               labels: ['daily-rating'],
             })
 
-      # The failure diagnostics never survived the runner. `Push changes`
-      # deliberately keeps build-failed-* out of main — they are diagnostics,
-      # not history — and nothing else collected them, so every failure notice
-      # since the workflow was written has pointed at a path that does not
-      # exist. Thirty days is long enough to debug a bad night and short
-      # enough that failed builds do not accumulate.
-      - name: Upload failure diagnostics
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-failed-${{ github.run_id }}
-          path: |
-            archive/*/build-failed-*/
-            archive/*/build-failed-sources-*/
-            archive/*/last-build-output.txt
-          retention-days: 30
-          if-no-files-found: ignore
-
+  # One notification for either job. `failure()` inside a job only sees that
+  # job, so a push that failed after the agents succeeded used to be silent.
+  notify:
+    needs: [redesign, publish]
+    if: ${{ always() && (needs.redesign.result == 'failure' || needs.publish.result == 'failure') }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
       - name: Notify on failure
-        if: failure()
         uses: actions/github-script@v7
         with:
           script: |
@@ -342,6 +408,7 @@ jobs:
               ``,
               `**Run:** [${context.runId}](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
               `**Trigger:** ${context.eventName}`,
+              `**Failed job:** ${'${{ needs.redesign.result }}' === 'failure' ? 'redesign (the agents)' : 'publish (the push)'}`,
               `**Commit:** ${context.sha.slice(0, 7)}`,
               ``,
               `The trace, the failing sources and the full build output are attached to that run as the \`build-failed-${context.runId}\` artifact (kept 30 days). Download it and start at \`trace.json\`; the run log has the same story in line order.`,
