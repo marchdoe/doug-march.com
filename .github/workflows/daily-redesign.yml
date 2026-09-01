@@ -255,7 +255,7 @@ jobs:
           # it, so screenshots stopped being committed at all. The JSON beside
           # them is gitignored and generated at build time, so adding the whole
           # directory stages only the images.
-          for p in elements/ app/components/ app/routes/ public/archive/ public/archive-data/ public/og/ signals/today.references.md; do
+          for p in elements/ app/components/ app/routes/ public/archive/ public/archive-data/ public/og/ references/ signals/today.references.md; do
             git add "$p" 2>/dev/null || true
           done
           # One patch, binary-safe, carrying exactly the staged set. The

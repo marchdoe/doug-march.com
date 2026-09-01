@@ -37,6 +37,8 @@ archive/*/build-pre-*
 public/_proto-*/
 
 references/*.png
+# The nightly promotes the owner's own A/B-graded screenshot here; it must survive the runner, not just the collected references (#340).
+!references/own-*.png
 references/*.jpg
 references/*.jpeg
 

@@ -40,6 +40,7 @@ const OUTPUTS = [
   ['public/archive/', 'the sealed, framed snapshot of the day (#156, #158)'],
   ['public/archive-data/', 'the screenshot and viewport captures (#154)'],
   ['public/og/', 'the share card'],
+  ['references/', "the owner's promoted A/B-graded screenshots (#340)"],
   ['signals/today.references.md', 'the references the run consumed'],
 ]
 
