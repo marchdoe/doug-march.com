@@ -149,6 +149,13 @@ describe('callVisionAgent', () => {
   // #293: the fixture seam used to live only in callClaudeCLI, so with a key
   // set MOCK_MODE replayed the text agents and billed the vision critics.
   describe('fixtures', () => {
+    beforeEach(() => {
+      // CI sets GITHUB_ACTIONS=true, which is precisely what assertNotAutomated
+      // refuses on. The replay and record cases are about a local run; only
+      // the refusal case below opts back in.
+      vi.stubEnv('GITHUB_ACTIONS', '')
+    })
+
     it('replays a fixture under MOCK_MODE even when an API key would route to the SDK', async () => {
       vi.stubEnv('ANTHROPIC_API_KEY', 'sk-test')
       vi.stubEnv('MOCK_MODE', 'true')
