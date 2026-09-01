@@ -325,8 +325,11 @@ jobs:
           # --autostash: the pipeline leaves runner-local modifications to
           # tracked files (e.g. regenerated styled-system codegen) that
           # otherwise make `pull --rebase` refuse to run.
+          # A conflicted rebase leaves a rebase-merge directory behind; the next
+          # attempt must clear it first or it fails on that alone, not a retry (#342).
           pushed=false
           for i in 1 2 3; do
+            git rebase --abort 2>/dev/null || true
             if git pull --rebase --autostash origin main && git push origin main; then
               pushed=true
               break

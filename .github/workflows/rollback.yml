@@ -75,8 +75,11 @@ jobs:
           # Same guard as the nightly's push step: a for-loop's exit status is
           # its last command (sleep), so three failed pushes would report
           # success and leave the rollback sitting on the runner.
+          # A conflicted rebase leaves a rebase-merge directory behind; the next
+          # attempt must clear it first or it fails on that alone, not a retry (#342).
           pushed=false
           for i in 1 2 3; do
+            git rebase --abort 2>/dev/null || true
             if git pull --rebase --autostash origin main && git push origin main; then
               pushed=true
               break
