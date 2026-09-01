@@ -2,7 +2,8 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { chromium } from '@playwright/test'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-import { scoreResponsive } from '../../scripts/utils/responsive-scorer.js'
+import { RESPONSIVE_THRESHOLDS, scoreResponsive } from '../../scripts/utils/responsive-scorer.js'
+import { OVERFLOW_TOLERANCE_PX } from '../../scripts/utils/surface-gate.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const FIXTURES = path.join(__dirname, '../fixtures/responsive')
@@ -34,6 +35,31 @@ describe('responsive-scorer', () => {
         { browser }
       )
       expect(metrics.viewports.mobile.checks.horizontalScroll).toBe(false)
+    }, 30_000)
+
+    it('shares the surface gate overflow tolerance (#319)', () => {
+      expect(RESPONSIVE_THRESHOLDS.overflowTolerancePx).toBe(OVERFLOW_TOLERANCE_PX)
+    })
+
+    it('does not flag an overflow within tolerance (#319)', async () => {
+      // scrollWidth exceeds clientWidth by exactly OVERFLOW_TOLERANCE_PX
+      // (1px) — the same document the surface gate would not flag either.
+      const metrics = await scoreResponsive(
+        fixtureUrl('overflow-1px.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.horizontalScroll).toBe(false)
+    }, 30_000)
+
+    it('flags an overflow past tolerance (#319)', async () => {
+      // scrollWidth exceeds clientWidth by 2px, one more than the tolerance.
+      const metrics = await scoreResponsive(
+        fixtureUrl('overflow-2px.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.horizontalScroll).toBe(true)
     }, 30_000)
   })
 

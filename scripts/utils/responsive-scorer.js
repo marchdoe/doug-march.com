@@ -1,4 +1,5 @@
 import { chromium } from '@playwright/test'
+import { OVERFLOW_TOLERANCE_PX } from './surface-gate.js'
 
 /**
  * What each check measures against. The checks below run inside the page
@@ -15,10 +16,23 @@ export const RESPONSIVE_THRESHOLDS = {
   tapTargetMaxViewportPx: 768,
   /** Average characters per rendered line before a paragraph reads as a wall. */
   lineLengthMaxChars: 75,
+  /**
+   * The surface gate's own overflow tolerance, imported rather than
+   * redeclared, so this check and evaluateMeasurement in surface-gate.js
+   * never disagree on what counts as overflow (#319).
+   */
+  overflowTolerancePx: OVERFLOW_TOLERANCE_PX,
 }
 
 const CHECKS = {
-  horizontalScroll: () => document.documentElement.scrollWidth > window.innerWidth,
+  // window.innerWidth includes the vertical scrollbar; clientWidth does not,
+  // so the two disagreed on any overflow smaller than a scrollbar. Matching
+  // the surface gate's own scrollWidth - clientWidth definition, with the
+  // same tolerance, keeps the two from disagreeing in the nightly record
+  // (#319).
+  horizontalScroll: (_vw, t) =>
+    document.documentElement.scrollWidth - document.documentElement.clientWidth >
+    t.overflowTolerancePx,
   clippedElements: () => {
     const vw = window.innerWidth
     const out = []
@@ -153,7 +167,10 @@ function formatFailureDetail(check, viewportResult) {
   const c = viewportResult.checks
   switch (check) {
     case 'horizontalScroll':
-      return `document.scrollWidth exceeded viewport ${viewportResult.width}px`
+      // scrollWidth vs clientWidth now, not innerWidth (#319) — the message
+      // named "viewport" for the reader's context, not the comparison basis,
+      // so it still reads correctly with the tolerance spelled out.
+      return `document.scrollWidth exceeded clientWidth by more than ${RESPONSIVE_THRESHOLDS.overflowTolerancePx}px at the ${viewportResult.width}px viewport`
     case 'clippedElements':
       return `${c.clippedElements.length} element(s) extended past the viewport (first: <${c.clippedElements[0].tag}>)`
     case 'headerOverlap':
