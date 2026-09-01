@@ -11,6 +11,7 @@
  */
 import { describe, it, expect } from 'vitest'
 import {
+  authoringSpellings,
   CHECKED_PROPERTIES,
   findNumericScaleMisses,
   findUnresolvedCssValues,
@@ -414,6 +415,50 @@ describe('the message handed to the retry', () => {
     ])
     expect(message).toContain('no numbered steps at all')
     expect(message).toContain('write the length you mean with a unit')
+  })
+})
+
+describe('blaming the file that actually wrote it', () => {
+  // `width:full` in the stylesheet used to be blamed on every file containing
+  // the string 'full'. On 2026-09-01 that meant `depth: 'full'` — project
+  // metadata, not a style prop — in app/content/projects.ts and two others,
+  // and the retry was handed a message naming files the React Engineer is not
+  // allowed to open. There is only one retry to spend.
+  it('derives the camelCase spelling', () => {
+    expect(authoringSpellings('font-size')).toEqual(['font-size', 'fontSize'])
+  })
+
+  it('includes the Panda shorthands a CSS property could have been written as', () => {
+    expect(authoringSpellings('min-width')).toEqual(['min-width', 'minWidth', 'minW'])
+    expect(authoringSpellings('background')).toContain('bg')
+    expect(authoringSpellings('width')).toContain('w')
+  })
+
+  it('leaves a property with no shorthand alone', () => {
+    expect(authoringSpellings('color')).toEqual(['color', 'textColor'])
+  })
+})
+
+describe('the keyword sizes the theme must keep', () => {
+  // Naming any preset in `presets` replaces @pandacss/preset-panda, which took
+  // the whole sizes scale with it. `width: 'full'` then shipped the literal
+  // `width:full` and the browser dropped it — that failed the 2026-09-01 dry
+  // run. Restored in panda.config.ts, which agents cannot write.
+  const scales = readGeneratedTokenScales(process.cwd())
+
+  it('resolves the four keyword sizes', () => {
+    for (const key of ['full', 'min', 'max', 'fit']) {
+      expect(scales.sizes.has(key)).toBe(true)
+    }
+  })
+
+  it('defines no numeric sizes key, so the 11px mark still fails', () => {
+    // Upstream has none either. `width: '11'` against a 44px mockup is the
+    // defect this gate was built for and it must keep failing.
+    expect([...scales.sizes].filter((k) => /^\d+$/.test(k))).toEqual([])
+    expect(findNumericScaleMisses(`css({ width: '11' })`, scales)).toEqual([
+      { prop: 'width', value: '11', category: 'sizes' },
+    ])
   })
 })
 

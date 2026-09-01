@@ -33,3 +33,43 @@ What the source-parsing approach could not distinguish, and this can:
 
 Conflating those two is exactly how #283 reported 49 findings against correct
 code and took the nightly down.
+
+--------------------------------------------------------------------------
+2026-09-01 dry run (33510359627) — what it proved and what it exposed
+--------------------------------------------------------------------------
+
+PROVED: the #283 fix works. Zero spacing false positives, where the scheduled
+run the same morning produced 49. The 44-finding storm did not happen.
+
+EXPOSED: two further defects, both real, neither the agent's fault.
+
+1. width: 'full' -> `width:full`, dropped by the browser.
+   Naming any preset in `presets` replaces @pandacss/preset-panda, so this
+   theme has had no sizes scale beyond the breakpoint-* keys Panda derives on
+   its own. Confirmed against the Panda docs and against
+   @pandacss/preset-panda@1.12.0 itself, which defines exactly four keyword
+   sizes and no numeric ones.
+
+     before:  sizes = {breakpoint-sm .. breakpoint-2xl}
+     after:   sizes = {full, min, max, fit, breakpoint-sm .. breakpoint-2xl}
+     numeric sizes keys added: 0
+     width: '11' still flagged: yes
+
+2. Attribution named files the engineer cannot write.
+   `width:full` was blamed on every file containing the string 'full' —
+   `depth: 'full'` in app/content/projects.ts is project metadata, not a style
+   prop. With one retry to spend, that message sent it at the wrong files.
+
+   Decoy `depth: 'zzz'` in app/content/projects.ts,
+   real `width: 'zzz'` in app/components/Sidebar.tsx:
+
+     before -> app/content/projects.ts, app/components/Sidebar.tsx
+     after  -> app/components/Sidebar.tsx
+
+STILL OPEN, not addressed here: the retry budget is exactly one. On the dry
+run, pass 1 carried defect A, the retry fixed A and introduced B
+(`bg: 'surfaceDeep'`, a colour outside the frozen fifteen), and the run died.
+Removing the `width: 'full'` trap removes that particular sequence, but two
+unrelated single-token slips are still enough to lose a night. Widening the
+budget costs a full engineer regeneration per attempt, so it is a spend
+decision rather than a bug fix.
