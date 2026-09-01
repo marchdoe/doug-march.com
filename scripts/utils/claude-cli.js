@@ -42,6 +42,35 @@ export function extractResultUsage(event = {}) {
 }
 
 /**
+ * Why a finished `claude` process is not a usable response, or null.
+ *
+ * Exported so the decision is testable without a child process.
+ *
+ * @param {number|null} code exit code (null when killed by a signal)
+ * @param {object|null} resultEvent the stream-json `result` event, if one arrived
+ * @param {string} fullText text accumulated from assistant events
+ * @param {string} stderr
+ * @returns {string|null}
+ */
+export function describeCliFailure(code, resultEvent, fullText, stderr) {
+  if (resultEvent) {
+    const subtype = resultEvent.subtype ?? 'success'
+    if (resultEvent.is_error || subtype !== 'success') {
+      const detail = String(resultEvent.result ?? '').slice(0, 300)
+      return `claude reported ${subtype}${resultEvent.is_error ? ' (is_error)' : ''}: ${detail || stderr.slice(0, 300)}`
+    }
+    return null
+  }
+  if (code !== 0) {
+    const partial = fullText.length
+      ? ` after ${(fullText.length / 1024).toFixed(0)}KB of partial output`
+      : ''
+    return `claude exited with code ${code}${partial}: ${stderr.slice(0, 500)}`
+  }
+  return null
+}
+
+/**
  * Spawn a `claude` CLI process and return the raw text response.
  *
  * Writes the prompt to a temp file, pipes it to stdin, parses stream-json
@@ -188,6 +217,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
 
     let fullText = '' // Accumulated response text from content blocks
     let finalResult = '' // The result field from the final message
+    let resultEvent = null // The final message itself: is_error and subtype live here
     // Cost/usage from the result event. Older CLI pins omit these fields —
     // stays null rather than throwing, and the ledger records what it got.
     let resultUsage = null
@@ -268,6 +298,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
           } else if (event.type === 'result') {
             // Final result -- this is the complete response
             finalResult = event.result || ''
+            resultEvent = event
             resultUsage = extractResultUsage(event)
             lastOutputTime = Date.now()
           }
@@ -383,6 +414,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
           const event = JSON.parse(lineBuffer)
           if (event.type === 'result') {
             finalResult = event.result || ''
+            resultEvent = event
             resultUsage = extractResultUsage(event)
           }
           if (event.type === 'assistant' && event.message?.content) {
@@ -395,9 +427,16 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
       console.log(`  [${agentName}] finished (${(charCount / 1024).toFixed(0)}KB total)`)
       bookCall()
 
-      if (code !== 0 && !finalResult && !fullText) {
-        console.error(`  [${agentName}] stderr: ${stderr.slice(0, 500)}`)
-        reject(new Error(`[${agentName}] claude exited with code ${code}: ${stderr.slice(0, 500)}`))
+      // A response is only a response when the CLI said so. Three things
+      // used to resolve as one (#300): a result event flagged is_error or a
+      // non-success subtype (error_max_turns is reachable with --max-turns 1);
+      // a crash after partial streaming, which parseDelimiterResponse then
+      // sealed with its END sentinel so a half-written index.tsx parsed as a
+      // complete file; and an honest exit. Only the last one resolves.
+      const failure = describeCliFailure(code, resultEvent, fullText, stderr)
+      if (failure) {
+        console.error(`  [${agentName}] ${failure}`)
+        reject(new Error(`[${agentName}] ${failure}`))
       } else {
         // Prefer finalResult (from result event), fall back to accumulated text
         const response = finalResult || fullText

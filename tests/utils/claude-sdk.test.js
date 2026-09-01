@@ -135,6 +135,22 @@ describe('callClaudeSDK', () => {
     expect(text).toBe('part one part two')
   })
 
+  it('throws on a max_tokens stop, after booking the tokens that were spent', async () => {
+    // #300: stop_reason was logged and never checked. A critic cut off before
+    // its ===VERDICT=== block failed closed to REVISE and bought a full
+    // engineer round.
+    resetLedger()
+    const { client } = stubClient({
+      ...OK,
+      stop_reason: 'max_tokens',
+      usage: { input_tokens: 10, output_tokens: 16000 },
+    })
+    await expect(
+      callClaudeSDK('mockup-critic', 'sys', [textBlock('x')], { client })
+    ).rejects.toThrow(/truncated at max_tokens \(16000 output tokens, cap 16000\)/)
+    expect(getUsageRecords()).toHaveLength(1)
+  })
+
   it('throws without an API key', async () => {
     vi.stubEnv('ANTHROPIC_API_KEY', '')
     const { client } = stubClient(OK)
