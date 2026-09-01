@@ -123,6 +123,19 @@ describe('the Phase 5 repair loop', () => {
     expect(phase5).toMatch(/writeEngineerFiles\(retryResult, 'React Engineer repair'\)/)
   })
 
+  it('checks each repair for required files and posture before building it', () => {
+    // #297: a repair that omitted Sidebar.tsx left yesterday's on disk, the
+    // build passed, and the night shipped as "repair N". The Phase 2c pass
+    // ran both checks; this path ran neither.
+    const check = phase5.indexOf('findEngineerOutputProblem(')
+    const build = phase5.indexOf('const attemptBuild = validateBuild(')
+    expect(check).toBeGreaterThan(-1)
+    expect(check).toBeLessThan(build)
+    // A failed check consumes the attempt rather than shipping.
+    expect(phase5.slice(check, build)).toMatch(/repairError = /)
+    expect(phase5.slice(check, build)).toMatch(/continue/)
+  })
+
   it('reports how many attempts were made when it gives up', () => {
     expect(phase5).toMatch(/Build failed after \$\{attempt\} repair attempt/)
   })
