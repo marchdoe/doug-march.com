@@ -15,9 +15,9 @@
  * @module
  */
 
-import Anthropic from '@anthropic-ai/sdk'
+import Anthropic, { APIConnectionError } from '@anthropic-ai/sdk'
 import { modelFor, supportsAdaptiveThinking } from './models.js'
-import { recordUsage } from './cost-ledger.js'
+import { noteRetry, recordUsage } from './cost-ledger.js'
 
 /**
  * @typedef {{ type: 'text', text: string }} TextBlock
@@ -30,6 +30,35 @@ const DEFAULT_MAX_TOKENS = 16000
 
 /** Matches the CLI path's default hard timeout (10 min). */
 const DEFAULT_TIMEOUT_MS = 600000
+
+/**
+ * Retries on a transient failure, same count as the SDK's own default. The
+ * SDK's retries are turned off (#294): they were invisible to the cost
+ * ledger's retry count and each one restarted the per-request timeout, so a
+ * critic budgeted at 10 minutes could hold 30. Ours are booked with
+ * noteRetry() and share one deadline with the first attempt.
+ */
+const DEFAULT_RETRIES = 2
+
+/** Backoff before the Nth retry (1-based): 2s, 4s. */
+const RETRY_BACKOFF_MS = [2000, 4000]
+
+/**
+ * Whether an SDK error is worth another attempt: connection errors, rate
+ * limits, overload and other server-side failures. A 400 (bad thinking
+ * param, wrong model id) is not going to get better, and neither is an error
+ * that did not come from the API at all.
+ * @param {unknown} err
+ * @returns {boolean}
+ */
+export function isRetryableSdkError(err) {
+  if (err instanceof APIConnectionError) return true
+  const status = err && typeof err === 'object' ? err.status : undefined
+  if (typeof status !== 'number') return false
+  return status === 408 || status === 409 || status === 429 || status >= 500
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 /**
  * Wrap an image buffer as an Anthropic image content block.
@@ -67,6 +96,90 @@ export function hasApiKey() {
 }
 
 /**
+ * @param {string} agentName
+ * @param {string|undefined} apiKey
+ * @param {unknown} contentBlocks
+ */
+function assertSdkInputs(agentName, apiKey, contentBlocks) {
+  if (!apiKey) throw new Error(`[${agentName}] callClaudeSDK requires ANTHROPIC_API_KEY`)
+  if (!Array.isArray(contentBlocks) || contentBlocks.length === 0) {
+    throw new Error(`[${agentName}] callClaudeSDK requires at least one content block`)
+  }
+}
+
+/**
+ * The API returns token counts and no price; the ledger prices these from
+ * its own table and marks them estimated. A ledger failure must not fail a
+ * call that succeeded.
+ * @param {string} agentName
+ * @param {string} model
+ * @param {object} usage
+ * @param {number} ms
+ */
+function bookUsage(agentName, model, usage, ms) {
+  try {
+    recordUsage({ agent: agentName, model, source: 'sdk', usage, ms })
+  } catch {}
+}
+
+/**
+ * The thinking param to send: an explicit choice wins (null disables),
+ * otherwise adaptive where the model supports it.
+ * @param {string} model
+ * @param {object|null|undefined} explicit
+ * @returns {object|null}
+ */
+function resolveThinking(model, explicit) {
+  if (explicit !== undefined) return explicit
+  return supportsAdaptiveThinking(model) ? { type: 'adaptive' } : null
+}
+
+/**
+ * Counts for the call log.
+ * @param {ContentBlock[]} contentBlocks
+ * @returns {{ imageCount: number, textChars: number }}
+ */
+function describeBlocks(contentBlocks) {
+  let imageCount = 0
+  let textChars = 0
+  for (const block of contentBlocks) {
+    if (block.type === 'image') imageCount += 1
+    else if (block.type === 'text') textChars += block.text.length
+  }
+  return { imageCount, textChars }
+}
+
+/**
+ * One messages.create with the pipeline's own retry policy.
+ *
+ * Each attempt gets only what is left of the one budget, so three attempts
+ * cannot outlive the timeout the caller asked for, and a retry is not started
+ * when its backoff would land past the deadline.
+ *
+ * @param {object} client - Anthropic client (or a test stub with messages.create)
+ * @param {object} params - messages.create params
+ * @param {{ agentName: string, retries: number, deadline: number }} opts
+ * @returns {Promise<object>} the API response
+ */
+async function createWithRetries(client, params, { agentName, retries, deadline }) {
+  for (let attempt = 0; ; attempt++) {
+    const timeout = Math.max(1000, deadline - Date.now())
+    try {
+      return await client.messages.create(params, { timeout, maxRetries: 0 })
+    } catch (err) {
+      const backoff = RETRY_BACKOFF_MS[Math.min(attempt, RETRY_BACKOFF_MS.length - 1)]
+      const outOfTime = Date.now() + backoff >= deadline
+      if (attempt >= retries || !isRetryableSdkError(err) || outOfTime) throw err
+      noteRetry()
+      console.warn(
+        `  [${agentName}] SDK call failed (${err.status ?? 'no status'}: ${err.message}) — retry ${attempt + 1}/${retries} in ${backoff / 1000}s`
+      )
+      await sleep(backoff)
+    }
+  }
+}
+
+/**
  * Call Claude with structured content blocks (text + image) via the API.
  *
  * @param {string} agentName - pipeline agent name; also selects the model via modelFor()
@@ -76,43 +189,41 @@ export function hasApiKey() {
  * @param {string} [opts.apiKey] - defaults to process.env.ANTHROPIC_API_KEY
  * @param {string} [opts.model] - defaults to modelFor(agentName)
  * @param {number} [opts.maxTokens=16000]
- * @param {number} [opts.timeoutMs=600000]
+ * @param {number} [opts.timeoutMs=600000] - hard cap for ALL attempts together
+ * @param {number} [opts.retries=2] - extra attempts on a transient failure
  * @param {object|null} [opts.thinking] - null disables; defaults to adaptive where supported
  * @param {object} [opts.client] - injectable Anthropic client (tests)
  * @returns {Promise<string>} concatenated assistant text blocks
  */
 export async function callClaudeSDK(agentName, systemPrompt, contentBlocks, opts = {}) {
   const apiKey = opts.apiKey ?? process.env.ANTHROPIC_API_KEY
-  if (!apiKey) throw new Error(`[${agentName}] callClaudeSDK requires ANTHROPIC_API_KEY`)
-  if (!Array.isArray(contentBlocks) || contentBlocks.length === 0) {
-    throw new Error(`[${agentName}] callClaudeSDK requires at least one content block`)
-  }
+  assertSdkInputs(agentName, apiKey, contentBlocks)
 
   const model = opts.model ?? modelFor(agentName)
   const maxTokens = opts.maxTokens ?? DEFAULT_MAX_TOKENS
   const timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS
-  const thinking =
-    opts.thinking === undefined
-      ? supportsAdaptiveThinking(model)
-        ? { type: 'adaptive' }
-        : null
-      : opts.thinking
+  const thinking = resolveThinking(model, opts.thinking)
+  const retries = opts.retries ?? DEFAULT_RETRIES
+  const client = opts.client ?? new Anthropic({ apiKey, timeout: timeoutMs, maxRetries: 0 })
 
-  const client = opts.client ?? new Anthropic({ apiKey, timeout: timeoutMs })
-
-  const imageCount = contentBlocks.filter((b) => b.type === 'image').length
-  const textChars = contentBlocks.reduce((n, b) => n + (b.type === 'text' ? b.text.length : 0), 0)
+  const { imageCount, textChars } = describeBlocks(contentBlocks)
   console.log(
     `  [${agentName}] calling Anthropic SDK (model=${model}, ${imageCount} image block(s), ${(textChars / 1024).toFixed(0)}KB text)`
   )
 
-  const started = Date.now()
-  const response = await client.messages.create({
+  const params = {
     model,
     max_tokens: maxTokens,
     system: systemPrompt,
     messages: [{ role: 'user', content: contentBlocks }],
     ...(thinking ? { thinking } : {}),
+  }
+
+  const started = Date.now()
+  const response = await createWithRetries(client, params, {
+    agentName,
+    retries,
+    deadline: started + timeoutMs,
   })
 
   const text = (response.content ?? [])
@@ -122,11 +233,7 @@ export async function callClaudeSDK(agentName, systemPrompt, contentBlocks, opts
 
   const usage = response.usage ?? {}
   const elapsedMs = Date.now() - started
-  // The API returns token counts and no price; the ledger prices these from
-  // its own table and marks them estimated.
-  try {
-    recordUsage({ agent: agentName, model, source: 'sdk', usage, ms: elapsedMs })
-  } catch {}
+  bookUsage(agentName, model, usage, elapsedMs)
   console.log(
     `  [${agentName}] SDK finished in ${Math.round(elapsedMs / 1000)}s ` +
       `(in=${usage.input_tokens ?? '?'}, out=${usage.output_tokens ?? '?'}, stop=${response.stop_reason ?? '?'}, ${(text.length / 1024).toFixed(0)}KB text)`
