@@ -59,6 +59,36 @@ describe('readUniquenessHistory', () => {
     expect(got.map((g) => g.hue)).toEqual([210, null])
   })
 
+  it('reads the build that shipped, not the newest one on disk', async () => {
+    // #308: 2026-04-30 has a complete-looking retry (build-1777547559412,
+    // hue 285) newer than the build record.json names (build-1777546126760,
+    // hue 340). Both readers took the retry and scored a week of designs
+    // against a hue the site never wore. pickBuild matches the date's
+    // brief.md to the build whose brief.md is identical.
+    writeBuild(
+      '2026-04-30',
+      { 'brief.md': 'shipped', 'color-scheme.json': { primary_hue: { h: 340 } } },
+      '1777546126760'
+    )
+    writeBuild(
+      '2026-04-30',
+      { 'brief.md': 'retry', 'color-scheme.json': { primary_hue: { h: 285 } } },
+      '1777547559412'
+    )
+    writeFileSync(path.join(root, 'archive', '2026-04-30', 'brief.md'), 'shipped')
+    const got = await readUniquenessHistory({ root })
+    expect(got.map((g) => g.hue)).toEqual([340])
+  })
+
+  it('does not read a build-pre-* dir, which pickBuild rejects', async () => {
+    const pre = path.join(root, 'archive', '2026-08-20', 'build-pre-5')
+    mkdirSync(pre, { recursive: true })
+    writeFileSync(path.join(pre, 'lane.json'), JSON.stringify({ laneId: 'pre' }))
+    writeBuild('2026-08-20', { 'lane.json': { laneId: 'shipped' } }, '5')
+    const got = await readUniquenessHistory({ root })
+    expect(got[0].lane).toBe('shipped')
+  })
+
   it('skips failed builds and falls back to the date dir for pre-build-id layouts', async () => {
     const failed = path.join(root, 'archive', '2026-08-20', 'build-failed-9')
     mkdirSync(failed, { recursive: true })
