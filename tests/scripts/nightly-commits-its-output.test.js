@@ -113,11 +113,20 @@ describe('the nightly agrees with the pipeline about which day it is', () => {
 
   it('reads the day the pipeline published, with the Eastern clock as the fallback', () => {
     expect(src).toMatch(/- name: Run daily redesign\s*\n\s*id: redesign/)
+    const today = /TODAY="\$\{RUN_DATE:-\$\(TZ=America\/New_York date \+%Y-%m-%d\)\}"/
+    // The agents job stages under the step output.
+    const stage = src.slice(
+      src.indexOf("Stage the night's output"),
+      src.indexOf("Upload the night's output")
+    )
+    expect(stage).toMatch(/RUN_DATE: \$\{\{ steps\.redesign\.outputs\.date \}\}/)
+    expect(stage).toMatch(today)
+    // The publish job commits and files the rating under the job output.
     const push = src.slice(src.indexOf('Push changes'), src.indexOf('Open today'))
-    expect(push).toMatch(/RUN_DATE: \$\{\{ steps\.redesign\.outputs\.date \}\}/)
-    expect(push).toMatch(/TODAY="\$\{RUN_DATE:-\$\(TZ=America\/New_York date \+%Y-%m-%d\)\}"/)
-    const rating = src.slice(src.indexOf('Open today'), src.indexOf('Upload failure'))
-    expect(rating).toMatch(/RUN_DATE: \$\{\{ steps\.redesign\.outputs\.date \}\}/)
+    expect(push).toMatch(/RUN_DATE: \$\{\{ needs\.redesign\.outputs\.date \}\}/)
+    expect(push).toMatch(today)
+    const rating = src.slice(src.indexOf('Open today'), src.indexOf('  notify:'))
+    expect(rating).toMatch(/RUN_DATE: \$\{\{ needs\.redesign\.outputs\.date \}\}/)
     expect(rating).toMatch(/process\.env\.RUN_DATE/)
   })
 
@@ -139,6 +148,46 @@ describe('the nightly agrees with the pipeline about which day it is', () => {
     const out = path.join(mkdtempSync(path.join(tmpdir(), 'gh-output-')), 'output')
     publishRunDate({ date: 'today; rm -rf /' }, out)
     expect(existsSync(out)).toBe(false)
+  })
+})
+
+describe('the deploy key never shares a job with generated code', () => {
+  // #337: `ssh-key` checkout ran first with persist-credentials defaulting
+  // to true, so the push-to-main key sat in git config while `pnpm build`
+  // executed TSX an LLM wrote from public headlines. Now the agents job has
+  // no credential and hands its output to a publish job as a patch.
+  const agents = src.slice(src.indexOf('  redesign:'), src.indexOf('  publish:'))
+  const publish = src.slice(src.indexOf('  publish:'), src.indexOf('  notify:'))
+
+  it('runs the pipeline in a job that checks out with no credential', () => {
+    expect(agents).toContain('Run daily redesign')
+    expect(agents).toMatch(
+      /- uses: actions\/checkout@v\d+\s*\n\s*with:\s*\n\s*persist-credentials: false/
+    )
+    expect(agents).not.toContain('DEPLOY_KEY')
+    expect(agents).toMatch(/permissions:\s*\n\s*contents: read/)
+  })
+
+  it('pushes from a job that runs no generated code', () => {
+    expect(publish).toMatch(/ssh-key:\s*\$\{\{\s*secrets\.DEPLOY_KEY\s*\}\}/)
+    expect(publish).not.toContain('daily-redesign.js')
+    expect(publish).not.toContain('pnpm install')
+    expect(publish).toMatch(/needs: redesign/)
+  })
+
+  it('hands the staged set over as one artifact, by the same name on both sides', () => {
+    expect(agents).toMatch(/git diff --cached --binary > "\$RUNNER_TEMP\/nightly\.patch"/)
+    expect(agents).toMatch(/upload-artifact[\s\S]*name: nightly-\$\{\{ github\.run_id \}\}/)
+    expect(publish).toMatch(/download-artifact[\s\S]*name: nightly-\$\{\{ github\.run_id \}\}/)
+    expect(publish).toMatch(/git apply --index --binary "\$RUNNER_TEMP\/nightly\.patch"/)
+  })
+
+  it('notifies when either job fails, not only the agents', () => {
+    const notify = src.slice(src.indexOf('  notify:'))
+    expect(notify).toMatch(/needs: \[redesign, publish\]/)
+    expect(notify).toMatch(
+      /always\(\) && \(needs\.redesign\.result == 'failure' \|\| needs\.publish\.result == 'failure'\)/
+    )
   })
 })
 
