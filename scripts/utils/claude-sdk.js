@@ -96,6 +96,90 @@ export function hasApiKey() {
 }
 
 /**
+ * @param {string} agentName
+ * @param {string|undefined} apiKey
+ * @param {unknown} contentBlocks
+ */
+function assertSdkInputs(agentName, apiKey, contentBlocks) {
+  if (!apiKey) throw new Error(`[${agentName}] callClaudeSDK requires ANTHROPIC_API_KEY`)
+  if (!Array.isArray(contentBlocks) || contentBlocks.length === 0) {
+    throw new Error(`[${agentName}] callClaudeSDK requires at least one content block`)
+  }
+}
+
+/**
+ * The API returns token counts and no price; the ledger prices these from
+ * its own table and marks them estimated. A ledger failure must not fail a
+ * call that succeeded.
+ * @param {string} agentName
+ * @param {string} model
+ * @param {object} usage
+ * @param {number} ms
+ */
+function bookUsage(agentName, model, usage, ms) {
+  try {
+    recordUsage({ agent: agentName, model, source: 'sdk', usage, ms })
+  } catch {}
+}
+
+/**
+ * The thinking param to send: an explicit choice wins (null disables),
+ * otherwise adaptive where the model supports it.
+ * @param {string} model
+ * @param {object|null|undefined} explicit
+ * @returns {object|null}
+ */
+function resolveThinking(model, explicit) {
+  if (explicit !== undefined) return explicit
+  return supportsAdaptiveThinking(model) ? { type: 'adaptive' } : null
+}
+
+/**
+ * Counts for the call log.
+ * @param {ContentBlock[]} contentBlocks
+ * @returns {{ imageCount: number, textChars: number }}
+ */
+function describeBlocks(contentBlocks) {
+  let imageCount = 0
+  let textChars = 0
+  for (const block of contentBlocks) {
+    if (block.type === 'image') imageCount += 1
+    else if (block.type === 'text') textChars += block.text.length
+  }
+  return { imageCount, textChars }
+}
+
+/**
+ * One messages.create with the pipeline's own retry policy.
+ *
+ * Each attempt gets only what is left of the one budget, so three attempts
+ * cannot outlive the timeout the caller asked for, and a retry is not started
+ * when its backoff would land past the deadline.
+ *
+ * @param {object} client - Anthropic client (or a test stub with messages.create)
+ * @param {object} params - messages.create params
+ * @param {{ agentName: string, retries: number, deadline: number }} opts
+ * @returns {Promise<object>} the API response
+ */
+async function createWithRetries(client, params, { agentName, retries, deadline }) {
+  for (let attempt = 0; ; attempt++) {
+    const timeout = Math.max(1000, deadline - Date.now())
+    try {
+      return await client.messages.create(params, { timeout, maxRetries: 0 })
+    } catch (err) {
+      const backoff = RETRY_BACKOFF_MS[Math.min(attempt, RETRY_BACKOFF_MS.length - 1)]
+      const outOfTime = Date.now() + backoff >= deadline
+      if (attempt >= retries || !isRetryableSdkError(err) || outOfTime) throw err
+      noteRetry()
+      console.warn(
+        `  [${agentName}] SDK call failed (${err.status ?? 'no status'}: ${err.message}) — retry ${attempt + 1}/${retries} in ${backoff / 1000}s`
+      )
+      await sleep(backoff)
+    }
+  }
+}
+
+/**
  * Call Claude with structured content blocks (text + image) via the API.
  *
  * @param {string} agentName - pipeline agent name; also selects the model via modelFor()
@@ -113,26 +197,16 @@ export function hasApiKey() {
  */
 export async function callClaudeSDK(agentName, systemPrompt, contentBlocks, opts = {}) {
   const apiKey = opts.apiKey ?? process.env.ANTHROPIC_API_KEY
-  if (!apiKey) throw new Error(`[${agentName}] callClaudeSDK requires ANTHROPIC_API_KEY`)
-  if (!Array.isArray(contentBlocks) || contentBlocks.length === 0) {
-    throw new Error(`[${agentName}] callClaudeSDK requires at least one content block`)
-  }
+  assertSdkInputs(agentName, apiKey, contentBlocks)
 
   const model = opts.model ?? modelFor(agentName)
   const maxTokens = opts.maxTokens ?? DEFAULT_MAX_TOKENS
   const timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS
-  const thinking =
-    opts.thinking === undefined
-      ? supportsAdaptiveThinking(model)
-        ? { type: 'adaptive' }
-        : null
-      : opts.thinking
-
+  const thinking = resolveThinking(model, opts.thinking)
   const retries = opts.retries ?? DEFAULT_RETRIES
   const client = opts.client ?? new Anthropic({ apiKey, timeout: timeoutMs, maxRetries: 0 })
 
-  const imageCount = contentBlocks.filter((b) => b.type === 'image').length
-  const textChars = contentBlocks.reduce((n, b) => n + (b.type === 'text' ? b.text.length : 0), 0)
+  const { imageCount, textChars } = describeBlocks(contentBlocks)
   console.log(
     `  [${agentName}] calling Anthropic SDK (model=${model}, ${imageCount} image block(s), ${(textChars / 1024).toFixed(0)}KB text)`
   )
@@ -146,26 +220,11 @@ export async function callClaudeSDK(agentName, systemPrompt, contentBlocks, opts
   }
 
   const started = Date.now()
-  const deadline = started + timeoutMs
-  let response
-  for (let attempt = 0; ; attempt++) {
-    // Each attempt gets only what is left of the one budget, so three
-    // attempts cannot outlive the timeout the caller asked for.
-    const timeout = Math.max(1000, deadline - Date.now())
-    try {
-      response = await client.messages.create(params, { timeout, maxRetries: 0 })
-      break
-    } catch (err) {
-      const backoff = RETRY_BACKOFF_MS[Math.min(attempt, RETRY_BACKOFF_MS.length - 1)]
-      const outOfTime = Date.now() + backoff >= deadline
-      if (attempt >= retries || !isRetryableSdkError(err) || outOfTime) throw err
-      noteRetry()
-      console.warn(
-        `  [${agentName}] SDK call failed (${err.status ?? 'no status'}: ${err.message}) — retry ${attempt + 1}/${retries} in ${backoff / 1000}s`
-      )
-      await sleep(backoff)
-    }
-  }
+  const response = await createWithRetries(client, params, {
+    agentName,
+    retries,
+    deadline: started + timeoutMs,
+  })
 
   const text = (response.content ?? [])
     .filter((block) => block.type === 'text')
@@ -174,11 +233,7 @@ export async function callClaudeSDK(agentName, systemPrompt, contentBlocks, opts
 
   const usage = response.usage ?? {}
   const elapsedMs = Date.now() - started
-  // The API returns token counts and no price; the ledger prices these from
-  // its own table and marks them estimated.
-  try {
-    recordUsage({ agent: agentName, model, source: 'sdk', usage, ms: elapsedMs })
-  } catch {}
+  bookUsage(agentName, model, usage, elapsedMs)
   console.log(
     `  [${agentName}] SDK finished in ${Math.round(elapsedMs / 1000)}s ` +
       `(in=${usage.input_tokens ?? '?'}, out=${usage.output_tokens ?? '?'}, stop=${response.stop_reason ?? '?'}, ${(text.length / 1024).toFixed(0)}KB text)`
