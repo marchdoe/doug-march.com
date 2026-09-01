@@ -31,6 +31,14 @@ describe('archivedDates', () => {
   it('is [] for a missing archive', () => {
     expect(archivedDates(path.join(dir, 'nope'))).toEqual([])
   })
+
+  it('skips a future-dated directory (#311)', () => {
+    // A dir dated after today is not a real archived day — a UTC-derived
+    // write, a clock skew, a typo — and would otherwise show up as a
+    // phantom calendar cell with 0 pages.
+    for (const d of ['2026-08-18', '2999-01-01']) mkdirSync(path.join(dir, d))
+    expect(archivedDates(dir)).toEqual(['2026-08-18'])
+  })
 })
 
 describe('readJsonSafe', () => {

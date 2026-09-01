@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { describe, it, expect, vi } from 'vitest'
 import { runStaticChecks, STATIC_CHECK_PATHS } from '../../scripts/utils/build-validator.js'
 
@@ -91,5 +92,27 @@ describe('runStaticChecks', () => {
     const { spawn } = fakeSpawn({ tsc: { status: 2, stdout: 'x'.repeat(10000) } })
     const result = runStaticChecks({ spawn, root: '/repo' })
     expect(result.error.length).toBeLessThan(3500)
+  })
+})
+
+describe("the build log lands under the run's own Eastern date", () => {
+  // #311: two build-log writes derived the date from `new Date().toISOString()`
+  // (UTC) while every other path in the run, including the archive directory
+  // the log is written beside, keys the day on America/New_York. Between
+  // 20:00 and 23:59 Eastern the two disagree, so the log landed in tomorrow's
+  // archive dir while the rest of the run wrote to today's.
+  const SOURCE = readFileSync(
+    new URL('../../scripts/utils/build-validator.js', import.meta.url),
+    'utf8'
+  )
+
+  it('never derives the build-log date from toISOString()', () => {
+    expect(SOURCE).not.toMatch(/toISOString\(\)\.slice\(0, 10\)/)
+  })
+
+  it('validateBuild accepts a date and defaults it from localDateString', () => {
+    expect(SOURCE).toMatch(
+      /export function validateBuild\(\{ shell = null, date = localDateString\(new Date\(\)\) \} = \{\}\)/
+    )
   })
 })
