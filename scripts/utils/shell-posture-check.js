@@ -5,8 +5,9 @@
  * don't guarantee this: the React Engineer can silently emit a `<nav>` out
  * of habit, and until now nothing caught it before the build shipped.
  *
- * Mirrors the REQUIRED_FILES check in design-agents.js — a pure predicate so
- * the retry-with-reminder wiring stays in the orchestrator.
+ * A pure predicate so the retry-with-reminder wiring stays in the
+ * orchestrator. engineer-output-check.js combines it with the required-files
+ * check into the one problem the orchestrator retries on.
  */
 
 /**

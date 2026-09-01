@@ -67,7 +67,7 @@ import { parseCompositionBlock, parseHeaderBlock } from './utils/spec-blocks.js'
 import { renderBrandLockupFile } from './utils/brand-lockup.js'
 import { formatHeader } from './utils/header-grammar.js'
 import { formatTuple } from './utils/composition-grammar.js'
-import { findShellPostureViolation } from './utils/shell-posture-check.js'
+import { findEngineerOutputProblem } from './utils/engineer-output-check.js'
 import { countArchivedDesigns } from './utils/archive-count.js'
 export { parseDelimiterResponse }
 
@@ -1464,30 +1464,28 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       }
     }
 
-    // Enforce that ALL required files are present. The most common failure
-    // mode is the engineer omitting Layout.tsx or Sidebar.tsx, which silently
-    // preserves yesterday's nav and causes the "designs all look the same"
-    // complaint. Retry once if any is missing.
-    const REQUIRED_FILES = [
-      'app/components/Layout.tsx',
-      'app/components/Sidebar.tsx',
-      'app/routes/index.tsx',
-      'app/routes/about.tsx',
-      'app/routes/work.$slug.tsx',
-      'app/routes/og.tsx',
-    ]
-    const producedPaths = new Set(engineerResult.files.map((f) => f.path))
-    const missing = REQUIRED_FILES.filter((p) => !producedPaths.has(p))
-    if (missing.length > 0 && pastDeadline()) {
-      console.warn(
-        `  ⚠ React Engineer omitted required files: ${missing.join(', ')} — [deadline] run budget exhausted, skipping retry and proceeding with original output`
+    // The response must be complete (every required file) and respect the
+    // declared shell posture. These were two retry blocks in sequence; the
+    // second rebuilt from the original prompt and was accepted for fixing its
+    // own problem alone, so it could re-omit the file the first had just
+    // restored (#298). One loop, one predicate, and a retry is kept only when
+    // it is clean on both counts.
+    const MAX_OUTPUT_RETRIES = 2
+    for (let outputRetry = 0; outputRetry < MAX_OUTPUT_RETRIES; outputRetry++) {
+      const problem = findEngineerOutputProblem(
+        engineerResult.files,
+        chosenComposition.shell_posture
       )
-    } else if (missing.length > 0) {
-      console.warn(
-        `  ⚠ React Engineer omitted required files: ${missing.join(', ')} — retrying with explicit reminder`
-      )
+      if (!problem) break
+      if (pastDeadline()) {
+        console.warn(
+          `  ⚠ ${problem.message} — [deadline] run budget exhausted, skipping retry and proceeding with original output`
+        )
+        break
+      }
+      console.warn(`  ⚠ ${problem.message} — retrying with explicit reminder`)
       noteRetry()
-      const reminderPrompt = `${engineerUserPrompt}\n\n---\n\n## REQUIRED FILES MISSING — RETRY\n\nYour previous response omitted these required files: ${missing.join(', ')}\n\nThis silently preserves yesterday's chrome and breaks the day's archetype. Re-emit your COMPLETE response. Every required file must appear, including these you missed:\n${missing.map((m) => `- ${m}`).join('\n')}`
+      const reminderPrompt = `${engineerUserPrompt}\n\n---\n\n${problem.reminder}`
       try {
         const retry = await callAgent(
           'react-engineer',
@@ -1496,54 +1494,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           null,
           reactEngineerAgentConfig.options
         )
-        const retryProduced = new Set(retry.files.map((f) => f.path))
-        const stillMissing = REQUIRED_FILES.filter((p) => !retryProduced.has(p))
-        if (stillMissing.length === 0) {
+        const remaining = findEngineerOutputProblem(retry.files, chosenComposition.shell_posture)
+        if (!remaining) {
           engineerResult = retry
-          console.log(`  ✓ retry produced all required files`)
+          console.log(`  ✓ retry resolved: ${problem.kind}`)
         } else {
-          console.warn(
-            `  ⚠ retry still missing ${stillMissing.join(', ')} — proceeding with original output`
-          )
-        }
-      } catch (err) {
-        console.warn(`  ⚠ retry failed: ${err.message} — proceeding with original output`)
-      }
-    }
-
-    // shell_posture: none means "no nav element at all" (see
-    // utils/composition-grammar.js) — a structural declaration, not a
-    // suggestion. The React Engineer can still emit a <nav> out of habit;
-    // catch it deterministically rather than trusting the prompt alone.
-    const postureViolation = findShellPostureViolation(
-      engineerResult.files,
-      chosenComposition.shell_posture
-    )
-    if (postureViolation && pastDeadline()) {
-      console.warn(`  ⚠ ${postureViolation} — [deadline] run budget exhausted, skipping retry`)
-    } else if (postureViolation) {
-      console.warn(`  ⚠ ${postureViolation} — retrying with explicit reminder`)
-      noteRetry()
-      const postureReminderPrompt = `${engineerUserPrompt}\n\n---\n\n## SHELL POSTURE VIOLATION — RETRY\n\n${postureViolation}\n\n\`shell_posture: none\` means no <nav> element anywhere in the output — navigation happens through in-content links only. Re-emit your COMPLETE response with every <nav> removed.`
-      try {
-        const retry = await callAgent(
-          'react-engineer',
-          reactEngineerSystemPrompt,
-          postureReminderPrompt,
-          null,
-          reactEngineerAgentConfig.options
-        )
-        const stillViolating = findShellPostureViolation(
-          retry.files,
-          chosenComposition.shell_posture
-        )
-        if (!stillViolating) {
-          engineerResult = retry
-          console.log(`  ✓ retry removed the nav element`)
-        } else {
-          console.warn(
-            `  ⚠ retry still violates shell_posture: none — proceeding with original output`
-          )
+          console.warn(`  ⚠ retry not accepted: ${remaining.message} — keeping original output`)
         }
       } catch (err) {
         console.warn(`  ⚠ retry failed: ${err.message} — proceeding with original output`)
