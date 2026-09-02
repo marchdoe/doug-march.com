@@ -34,6 +34,13 @@ signals/*-last-failed.txt
 archive/*/build-failed-*
 archive/*/build-pre-*
 
+# The raw built site the pipeline captures before sealing. public/archive/ is
+# the sealed copy the site serves, and it was being committed a second time
+# here, about 400 KB a night (#278). The pipeline still writes these so the
+# seal step has something to copy; they just do not get tracked.
+archive/*/build-*/site/
+archive/*/site/
+
 public/_proto-*/
 
 references/*.png
