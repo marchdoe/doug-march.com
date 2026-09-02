@@ -1,5 +1,12 @@
 import '../styles/panda.css'
-import { createRootRoute, Outlet, HeadContent, ScrollRestoration, Scripts, useRouterState } from '@tanstack/react-router'
+import {
+  createRootRoute,
+  Outlet,
+  HeadContent,
+  ScrollRestoration,
+  Scripts,
+  useRouterState,
+} from '@tanstack/react-router'
 import { Layout } from '../components/Layout'
 import { css } from '../../styled-system/css'
 import type { ReactNode } from 'react'
@@ -43,17 +50,21 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { title: "Simplicity is the glory of expression." },
-        { property: 'og:title', content: "Simplicity is the glory of expression." },
-        { property: 'og:description', content: "Sunlit acid-yellow drench, Whitman's simplicity set quiet in a single grotesk, the symmetry broken exactly once — and that break is the whole expression." },
-        { property: 'og:image', content: "https://dougmar.ch/og/2026-09-02.png" },
-        { property: 'og:image:width', content: '1200' },
-        { property: 'og:image:height', content: '630' },
-        { property: 'og:url', content: "https://dougmar.ch" },
-        { property: 'og:type', content: 'website' },
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: "Simplicity is the glory of expression." },
-        { name: 'twitter:image', content: "https://dougmar.ch/og/2026-09-02.png" },
+      { title: 'Simplicity is the glory of expression.' },
+      { property: 'og:title', content: 'Simplicity is the glory of expression.' },
+      {
+        property: 'og:description',
+        content:
+          "Sunlit acid-yellow drench, Whitman's simplicity set quiet in a single grotesk, the symmetry broken exactly once — and that break is the whole expression.",
+      },
+      { property: 'og:image', content: 'https://dougmar.ch/og/2026-09-02.png' },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { property: 'og:url', content: 'https://dougmar.ch' },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: 'Simplicity is the glory of expression.' },
+      { name: 'twitter:image', content: 'https://dougmar.ch/og/2026-09-02.png' },
     ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -219,9 +230,9 @@ function RootDocument({ children, bare = false }: { children: ReactNode; bare?: 
       <body>
         {children}
         {bare ? null : (
-        <a href="/archive" className={archiveLink} data-archive-link>
-          Archive — 123 designs
-        </a>
+          <a href="/archive" className={archiveLink} data-archive-link>
+            Archive — 123 designs
+          </a>
         )}
         <ScrollRestoration />
         <Scripts />
