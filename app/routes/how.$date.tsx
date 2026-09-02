@@ -9,6 +9,11 @@ import { isArchiveDetail } from '../types/archive-record'
 import type { ArchiveDetail, ArchiveTokens, JsonValue } from '../types/archive-record'
 import { CANONICAL_ORIGIN } from '../../scripts/utils/site-origin.js'
 
+// Which dates have a real captured OG card under public/og/, baked in by
+// vite.config.ts at build time (#399) — head() ships in the client bundle,
+// so it cannot ask the filesystem itself.
+declare const __OG_IMAGE_DATES__: string[]
+
 export const Route = createFileRoute('/how/$date')({
   component: HowPage,
   // Without its own og:url and canonical, this page carried the day's home
@@ -18,12 +23,14 @@ export const Route = createFileRoute('/how/$date')({
   // included) — meta dedupes per key, so a key left out leaks the day's
   // value through next to this page's own og:title/og:image. The image
   // follows the same /og/<date>.png convention the home page card uses; a
-  // date the pipeline never captured a card for falls back the way any
-  // missing image does, same as the home page's own og:image today.
+  // date the pipeline never captured a card for names default.png instead,
+  // same as the home page's own og:image falls back today (#399).
   head: ({ params }) => {
     const title = `How the ${params.date} design was made`
     const url = `${CANONICAL_ORIGIN}/how/${params.date}`
-    const image = `${CANONICAL_ORIGIN}/og/${params.date}.png`
+    const image = __OG_IMAGE_DATES__.includes(params.date)
+      ? `${CANONICAL_ORIGIN}/og/${params.date}.png`
+      : `${CANONICAL_ORIGIN}/og/default.png`
     return {
       meta: [
         { title },

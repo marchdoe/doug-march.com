@@ -12,14 +12,35 @@
  * the child's title overrides this one without either file knowing about
  * the other.
  */
+import { existsSync } from 'node:fs'
+import path from 'node:path'
 import { CANONICAL_ORIGIN } from './site-origin.js'
 
-export function buildOgMetaEntries({ date, heroCopy, designBrief, siteUrl = CANONICAL_ORIGIN }) {
+/**
+ * @param {object} args
+ * @param {string} args.date
+ * @param {string} [args.heroCopy]
+ * @param {string} [args.designBrief]
+ * @param {string} [args.siteUrl]
+ * @param {string} [args.root] repo root. When given, the entry names
+ *   default.png unless `public/og/<date>.png` is actually on disk — the
+ *   capture that produces it is best-effort and can fail (#399). Omitted by
+ *   the two calls that write __root.tsx before that capture has run, since
+ *   the file can't exist yet; the call after capture passes it.
+ */
+export function buildOgMetaEntries({
+  date,
+  heroCopy,
+  designBrief,
+  siteUrl = CANONICAL_ORIGIN,
+  root,
+}) {
   const title = JSON.stringify(heroCopy || 'Doug March')
   const description = JSON.stringify(
     designBrief || 'A multi-agent pipeline redesigns this site every morning.'
   )
-  const image = JSON.stringify(`${siteUrl}/og/${date}.png`)
+  const hasImage = !root || existsSync(path.join(root, 'public', 'og', `${date}.png`))
+  const image = JSON.stringify(`${siteUrl}/og/${hasImage ? `${date}.png` : 'default.png'}`)
   const url = JSON.stringify(siteUrl)
   return [
     `{ title: ${title} },`,

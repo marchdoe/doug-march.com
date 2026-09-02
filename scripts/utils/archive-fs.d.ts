@@ -4,3 +4,6 @@
 
 /** Every dated directory under `archiveDir`, sorted (ascending unless newestFirst). */
 export function archivedDates(archiveDir: string, opts?: { newestFirst?: boolean }): string[]
+
+/** Dates with a real captured OG card under `ogDir` (not just default.png). */
+export function datesWithOgImage(ogDir: string): string[]

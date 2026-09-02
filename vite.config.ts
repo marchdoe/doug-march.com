@@ -3,7 +3,7 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { archiveStaticPlugin, browserStorageContextStub, devPanelPlugin } from './app/dev-server'
-import { archivedDates } from './scripts/utils/archive-fs.js'
+import { archivedDates, datesWithOgImage } from './scripts/utils/archive-fs.js'
 
 // The dev panel's HTTP surface — /dev, its data endpoints, the pipeline
 // runner — lives in app/dev-server/. This file is the Vite config.
@@ -17,7 +17,18 @@ const HOW_DATE_PAGES = archivedDates(path.join(process.cwd(), 'archive')).map((d
   prerender: { enabled: true, crawlLinks: false },
 }))
 
+// how.$date.tsx's head() names /og/<date>.png for every date, but the
+// pipeline's capture is best-effort and some dates never got one (#399).
+// head() ships in the client bundle alongside every other route, so it
+// cannot stat public/og/ itself at runtime — only this file, which Vite
+// never bundles, can. `define` bakes the answer in as a literal at build
+// time, the same way HOW_DATE_PAGES bakes in which dates prerender at all.
+const OG_IMAGE_DATES = datesWithOgImage(path.join(process.cwd(), 'public', 'og'))
+
 export default defineConfig({
+  define: {
+    __OG_IMAGE_DATES__: JSON.stringify(OG_IMAGE_DATES),
+  },
   plugins: [
     archiveStaticPlugin(),
     devPanelPlugin(),

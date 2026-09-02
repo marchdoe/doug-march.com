@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { archivedDates, readJsonSafe } from '../../scripts/utils/archive-fs.js'
+import { archivedDates, datesWithOgImage, readJsonSafe } from '../../scripts/utils/archive-fs.js'
 
 let dir
 
@@ -38,6 +38,20 @@ describe('archivedDates', () => {
     // phantom calendar cell with 0 pages.
     for (const d of ['2026-08-18', '2999-01-01']) mkdirSync(path.join(dir, d))
     expect(archivedDates(dir)).toEqual(['2026-08-18'])
+  })
+})
+
+describe('datesWithOgImage', () => {
+  it('lists dates with a real dated PNG, not default.png or other files', () => {
+    writeFileSync(path.join(dir, '2026-08-18.png'), 'fake png')
+    writeFileSync(path.join(dir, '2026-08-19.png'), 'fake png')
+    writeFileSync(path.join(dir, 'default.png'), 'fake png')
+    writeFileSync(path.join(dir, '2026-08-20.json'), '{}')
+    expect(datesWithOgImage(dir)).toEqual(['2026-08-18', '2026-08-19'])
+  })
+
+  it('is [] for a missing directory', () => {
+    expect(datesWithOgImage(path.join(dir, 'nope'))).toEqual([])
   })
 })
 

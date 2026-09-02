@@ -1672,6 +1672,30 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     async function archiveAndReturn(filesResult, rationaleSuffix = '') {
       await captureOgCard(today)
 
+      // __root.tsx was written (and possibly rewritten, on a codegen retry)
+      // before the capture above ran, so its og:image named today's PNG on
+      // the strength of a capture that hadn't happened yet. Refresh it now
+      // that the capture has had its one chance: buildOgMetaEntries checks
+      // disk this time, so a failed capture ships default.png instead of a
+      // 404 (#399).
+      try {
+        const { buildOgMetaEntries } = await import('./utils/og-meta.js')
+        const finalOgMeta = buildOgMetaEntries({
+          date: today,
+          heroCopy: artDirectorResult.heroCopy,
+          designBrief: artDirectorResult.designBrief,
+          root: ROOT,
+        })
+        const finalRootSrc = renderRootTemplate(
+          buildGoogleFontsUrl(chosenChassis),
+          finalOgMeta,
+          countArchivedDesigns()
+        )
+        await writeFile(path.join(ROOT, 'app/routes/__root.tsx'), finalRootSrc, 'utf8')
+      } catch (err) {
+        console.warn(`  __root.tsx og-image fallback check failed (non-blocking): ${err.message}`)
+      }
+
       const allFiles = [...tokenResult.files, ...filesResult.files]
       const changedPaths = allFiles.map((f) => f.path)
 

@@ -1,4 +1,7 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import path from 'node:path'
 import { buildOgMetaEntries } from '../../scripts/utils/og-meta.js'
 import { CANONICAL_ORIGIN, RECOGNIZED_ORIGINS } from '../../scripts/utils/site-origin.js'
 
@@ -45,6 +48,43 @@ describe('the host is not baked in', () => {
   })
 
   it('defaults to the canonical origin, whatever that currently is', () => {
+    const code = buildOgMetaEntries({ date: '2026-06-12' })
+    expect(code).toContain(`${CANONICAL_ORIGIN}/og/2026-06-12.png`)
+  })
+})
+
+describe('the root-checked fallback (#399)', () => {
+  // The capture that produces public/og/<date>.png is best-effort and can
+  // fail or not have run yet. Passing `root` is what turns the check on —
+  // the two calls that write __root.tsx before capture runs omit it, since
+  // the file can never exist yet at that point.
+  let root
+
+  beforeEach(() => {
+    root = mkdtempSync(path.join(tmpdir(), 'og-meta-'))
+    mkdirSync(path.join(root, 'public', 'og'), { recursive: true })
+  })
+
+  afterEach(() => {
+    rmSync(root, { recursive: true, force: true })
+  })
+
+  it('names the dated image when it is on disk', () => {
+    writeFileSync(path.join(root, 'public', 'og', '2026-06-12.png'), 'fake png')
+    const code = buildOgMetaEntries({ date: '2026-06-12', root })
+    expect(code).toContain(`${CANONICAL_ORIGIN}/og/2026-06-12.png`)
+    expect(code).not.toContain('/og/default.png')
+  })
+
+  it('falls back to default.png when the dated image is missing', () => {
+    const code = buildOgMetaEntries({ date: '2026-06-12', root })
+    expect(code).toContain(`${CANONICAL_ORIGIN}/og/default.png`)
+    expect(code).not.toContain('/og/2026-06-12.png')
+  })
+
+  it('does not check disk at all when root is omitted', () => {
+    // No public/og/ under this root has 2026-06-12.png, but root was never
+    // passed, so the check never runs — today's behavior, preserved.
     const code = buildOgMetaEntries({ date: '2026-06-12' })
     expect(code).toContain(`${CANONICAL_ORIGIN}/og/2026-06-12.png`)
   })
