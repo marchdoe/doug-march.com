@@ -28,6 +28,7 @@ function detail(over: Partial<ArchiveDetail> = {}): ArchiveDetail {
     hasScreenshot: true,
     pages: 9,
     uniqueness: null,
+    run: null,
     ...over,
   }
 }

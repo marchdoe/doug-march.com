@@ -40,6 +40,7 @@ export const FIELD_ERA = {
   tokens: 'traced',
   adBrief: 'traced',
   chassis: 'traced',
+  run: 'traced',
   colorScheme: 'color-directed',
   shell: 'shell-directed',
   verdicts: 'shell-directed',
