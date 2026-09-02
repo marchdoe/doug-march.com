@@ -219,6 +219,7 @@ export function DevPanel() {
   // Cooldown state
   const [cooldownLeft, setCooldownLeft] = useState(0)
   const cooldownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const handleRunRef = useRef<() => Promise<void>>(async () => {})
 
   // Pane navigation — persisted in sessionStorage so HMR reloads don't reset it
   const [activePane, setActivePaneRaw] = useState<PaneName>(() => {
@@ -285,6 +286,9 @@ export function DevPanel() {
   }, [logLines])
 
   // ── Start cooldown ────────────────────────────────────────────────────────
+  // "RUN AGAIN IN 10s" counts down and then runs. The countdown used to end
+  // in 'idle' and nothing started (#329). handleRun is redefined every render,
+  // so the interval reads it through a ref rather than closing over a stale one.
   const startCooldown = useCallback(() => {
     setCooldownLeft(COOLDOWN_SECONDS)
     setPipelineStatus('cooldown')
@@ -292,7 +296,7 @@ export function DevPanel() {
       setCooldownLeft((prev) => {
         if (prev <= 1) {
           if (cooldownTimerRef.current) clearInterval(cooldownTimerRef.current)
-          setPipelineStatus('idle')
+          void handleRunRef.current()
           return 0
         }
         return prev - 1
@@ -536,6 +540,8 @@ export function DevPanel() {
 
     connectToStream(startTime)
   }
+
+  handleRunRef.current = handleRun
 
   const isRunDisabled = pipelineStatus === 'running' || pipelineStatus === 'cooldown'
 
