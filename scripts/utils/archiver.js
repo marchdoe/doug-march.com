@@ -292,7 +292,7 @@ export async function archive(
 
   // Capture static HTML snapshot into the build directory (non-blocking)
   try {
-    await captureSnapshot(dateStr, buildId)
+    await captureSnapshot(dateStr, buildId, { root })
   } catch (err) {
     console.warn(`  snapshot failed (non-blocking): ${err.message}`)
   }
@@ -447,7 +447,9 @@ export async function archive(
   // snapshot is worth more than a failed build.
   try {
     const { sealArchive } = await import('../seal-archive.js')
-    const { changed, scanned, dates } = await sealArchive()
+    const { changed, scanned, dates } = await sealArchive({
+      archiveRoot: path.join(root, 'public', 'archive'),
+    })
     console.log(`  sealed ${changed.length} of ${scanned} pages across ${dates} dates`)
   } catch (err) {
     console.warn(`  archive seal failed (non-blocking): ${err.message}`)

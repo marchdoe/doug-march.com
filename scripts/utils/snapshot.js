@@ -346,9 +346,13 @@ export async function withPreviewServer(
  * to `archive/<date>/site/`.
  *
  * @param {string} date - archive date string, e.g. "2026-03-16"
+ * @param {string} [buildId]
+ * @param {{ root?: string }} [options] - where to write. Defaults to the repo
+ *   (ROOT); tests pass a temp dir so the site snapshot never lands in the
+ *   working tree (#314).
  * @returns {Promise<void>}
  */
-export async function captureSnapshot(date, buildId) {
+export async function captureSnapshot(date, buildId, { root = ROOT } = {}) {
   return await withPreviewServer(async (baseUrl) => {
     console.log('  capturing snapshot...')
 
@@ -381,15 +385,15 @@ export async function captureSnapshot(date, buildId) {
 
     // Save files — to build-specific directory if buildId provided, otherwise top-level
     const baseDir = buildId
-      ? path.join(ROOT, 'archive', date, `build-${buildId}`)
-      : path.join(ROOT, 'archive', date)
+      ? path.join(root, 'archive', date, `build-${buildId}`)
+      : path.join(root, 'archive', date)
     const siteDir = path.join(baseDir, 'site')
     await mkdir(siteDir, { recursive: true })
     await mkdir(path.join(siteDir, 'work'), { recursive: true })
 
     // Also save to top-level site/ for backwards compatibility
     if (buildId) {
-      const latestSiteDir = path.join(ROOT, 'archive', date, 'site')
+      const latestSiteDir = path.join(root, 'archive', date, 'site')
       await mkdir(latestSiteDir, { recursive: true })
       await mkdir(path.join(latestSiteDir, 'work'), { recursive: true })
       for (const route of routes) {
