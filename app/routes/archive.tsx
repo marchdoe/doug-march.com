@@ -138,13 +138,15 @@ const btn = css({
     cursor: 'not-allowed',
     _hover: { borderColor: 'archive.line', color: 'archive.dim' },
   },
-})
-
-const btnOn = css({
-  borderColor: 'archive.text',
-  color: 'archive.bg',
-  background: 'archive.text',
-  _hover: { borderColor: 'archive.text', color: 'archive.bg' },
+  // The pressed state lives inside this recipe on purpose. As a second class
+  // it lost the cascade: Panda emits `bg_transparent` after `bg_archive.text`,
+  // so the active button rendered dark text on the page ground (#423).
+  '&[aria-pressed="true"]': {
+    borderColor: 'archive.text',
+    color: 'archive.bg',
+    background: 'archive.text',
+    _hover: { borderColor: 'archive.text', color: 'archive.bg' },
+  },
 })
 
 const wrap = css({ padding: { base: '20px 20px 96px', md: '24px 48px 120px' } })
@@ -390,14 +392,16 @@ function ArchivePage() {
             ) : null}
             <button
               type="button"
-              className={`${btn} ${view === 'month' ? btnOn : ''}`}
+              className={btn}
+              aria-pressed={view === 'month'}
               onClick={() => setView('month')}
             >
               Month
             </button>
             <button
               type="button"
-              className={`${btn} ${view === 'all' ? btnOn : ''}`}
+              className={btn}
+              aria-pressed={view === 'all'}
               onClick={() => setView('all')}
             >
               All

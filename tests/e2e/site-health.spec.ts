@@ -252,6 +252,25 @@ test.describe('site health — the calendar', () => {
     await expect(page.locator('button', { hasText: 'next' })).toBeDisabled()
   })
 
+  test('the active view toggle is legible: light label on a filled button (#423)', async ({
+    page,
+  }) => {
+    await page.goto('/archive')
+    const pressed = page.locator('button[aria-pressed="true"]')
+    await expect(pressed).toHaveCount(1)
+    await expect(pressed).toHaveText('Month')
+    // The bug was two classes both setting `background`, with the transparent
+    // one winning the cascade; the label was then page-colored text on the page.
+    const { background, color } = await pressed.evaluate((el) => {
+      const s = getComputedStyle(el)
+      return { background: s.backgroundColor, color: s.color }
+    })
+    expect(background).not.toBe('rgba(0, 0, 0, 0)')
+    expect(background).not.toBe(color)
+    await page.locator('button', { hasText: 'All' }).click()
+    await expect(page.locator('button[aria-pressed="true"]')).toHaveText('All')
+  })
+
   test('a day opens the design it shipped', async ({ page }) => {
     await page.goto('/archive')
     // The workhorse day is in June; the calendar opens on the newest month.
