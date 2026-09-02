@@ -48,6 +48,25 @@ describe('pipelineEnv', () => {
     expect(env.WEIGHT_INSPIRATION).toBe('5')
     expect(env.WEIGHT_RATINGS).toBe('5')
   })
+
+  it('never forwards a weight that fails the integer 0-10 check the production write path enforces', () => {
+    // The request body is JSON.parse'd and cast to Partial<Weights> without
+    // a runtime check (#325), so any of these can arrive from the panel.
+    for (const bad of ['7abc', 99, -1, [5]]) {
+      const env = pipelineEnv(base, { weights: { signals: bad } as never })
+      expect(env.WEIGHT_SIGNALS, JSON.stringify(bad)).toBe('5')
+    }
+    for (const bad of ['7abc', 99, -1, [5]]) {
+      const env = pipelineEnv(base, { weights: { risk: bad } as never })
+      expect(env.WEIGHT_RISK, JSON.stringify(bad)).toBe('')
+    }
+  })
+
+  it('still forwards a valid weight', () => {
+    const env = pipelineEnv(base, { weights: { signals: 5, risk: 5 } })
+    expect(env.WEIGHT_SIGNALS).toBe('5')
+    expect(env.WEIGHT_RISK).toBe('5')
+  })
 })
 
 describe('parseBriefSections', () => {
