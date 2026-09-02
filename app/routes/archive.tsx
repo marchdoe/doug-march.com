@@ -6,12 +6,13 @@ import {
   WEEKDAYS,
   cellLabel,
   cellsFor,
-  densestMonth,
   hrefFor,
   inkFor,
   monthLabel,
   monthOf,
   monthsSpanned,
+  newestDate,
+  newestMonth,
   swatchFor,
 } from '../lib/archive-calendar'
 import { css } from '../../styled-system/css'
@@ -190,6 +191,7 @@ const built = css({
   outlineOffset: '2px',
   _hover: { outlineColor: 'archive.text' },
   _focusVisible: { outlineColor: 'archive.text' },
+  '&[aria-current="date"]': { outlineColor: 'archive.text' },
 })
 
 const recordOnly = css({
@@ -199,6 +201,7 @@ const recordOnly = css({
   textDecoration: 'none',
   cursor: 'pointer',
   _hover: { borderColor: 'archive.text', color: 'archive.text' },
+  '&[aria-current="date"]': { borderColor: 'archive.text', color: 'archive.text' },
 })
 
 const mood = css({
@@ -315,7 +318,7 @@ function ArchivePage() {
         if (cancelled) return
         if (!isArchiveIndex(data)) throw new Error('archive index was not the expected shape')
         setEntries(data)
-        setYm(densestMonth(data))
+        setYm(newestMonth(data))
         setStatus('ready')
       })
       .catch(() => {
@@ -330,6 +333,7 @@ function ArchivePage() {
   const months = useMemo(() => monthsSpanned(entries), [entries])
   const sorted = useMemo(() => [...entries].sort((a, b) => a.date.localeCompare(b.date)), [entries])
   const withHue = useMemo(() => entries.filter((e) => e.primaryHue).length, [entries])
+  const newest = newestDate(entries)
 
   const idx = ym ? months.indexOf(ym) : -1
 
@@ -402,7 +406,7 @@ function ArchivePage() {
 
           <div className={wrap}>
             {view === 'month' && ym ? (
-              <MonthGrid ym={ym} entries={sorted} />
+              <MonthGrid ym={ym} entries={sorted} newest={newest} />
             ) : (
               <ContactSheet
                 months={months}
@@ -420,11 +424,25 @@ function ArchivePage() {
   )
 }
 
-function MonthGrid({ ym, entries }: { ym: string; entries: ArchiveIndexEntry[] }) {
+/**
+ * The newest day carries `aria-current="date"`, so the eye lands on it rather
+ * than on the empty cells around it when the calendar opens on a month that
+ * is a few days in.
+ */
+function MonthGrid({
+  ym,
+  entries,
+  newest,
+}: {
+  ym: string
+  entries: ArchiveIndexEntry[]
+  newest: string | null
+}) {
   const cells = cellsFor(
     ym,
     entries.filter((e) => monthOf(e.date) === ym)
   )
+  const current = (date: string) => (date === newest ? 'date' : undefined)
 
   return (
     <div className={grid}>
@@ -446,6 +464,7 @@ function MonthGrid({ ym, entries }: { ym: string; entries: ArchiveIndexEntry[] }
             key={c.date}
             href={hrefFor(c.entry)}
             className={`${cell} ${recordOnly}`}
+            aria-current={current(c.date)}
             title={`${c.date} — record only, no design preserved`}
           >
             <span>{c.day}</span>
@@ -456,6 +475,7 @@ function MonthGrid({ ym, entries }: { ym: string; entries: ArchiveIndexEntry[] }
             key={c.date}
             href={hrefFor(c.entry)}
             className={`${cell} ${built}`}
+            aria-current={current(c.date)}
             style={hueVars(c.entry)}
             title={`${c.date}${c.entry.primaryHue?.name ? ` — ${c.entry.primaryHue.name}` : ''}`}
           >
