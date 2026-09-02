@@ -66,6 +66,10 @@ export function createPipelineRunner(scriptPath = resolve('scripts/run-pipeline.
   let child: ChildProcess | null = null
   let log: PipelineEvent[] = []
   let done = false
+  // Set synchronously before the first await in start(), so a second POST
+  // that arrives while the first is still reading its body sees a run in
+  // progress instead of racing it into a second spawn() (#324).
+  let starting = false
   const listeners = new Set<(data: PipelineEvent) => void>()
 
   function broadcast(data: PipelineEvent) {
@@ -87,15 +91,17 @@ export function createPipelineRunner(scriptPath = resolve('scripts/run-pipeline.
       res.end()
       return
     }
-    if (child && !done) {
+    if ((child && !done) || starting) {
       sendJson(res, 409, { error: 'Pipeline already running' })
       return
     }
+    starting = true
 
     let body: string
     try {
       body = await readBodyLimited(req)
     } catch (err) {
+      starting = false
       sendJson(res, 413, { error: String(err) })
       return
     }
@@ -104,6 +110,7 @@ export function createPipelineRunner(scriptPath = resolve('scripts/run-pipeline.
       try {
         parsed = JSON.parse(body)
       } catch {
+        starting = false
         sendJson(res, 400, { error: 'Invalid JSON' })
         return
       }
@@ -129,6 +136,7 @@ export function createPipelineRunner(scriptPath = resolve('scripts/run-pipeline.
     child.on('close', (code) => {
       if (done) return
       done = true
+      starting = false
       broadcast({
         type: 'done',
         success: code === 0,
@@ -139,6 +147,7 @@ export function createPipelineRunner(scriptPath = resolve('scripts/run-pipeline.
     child.on('error', (err) => {
       if (done) return
       done = true
+      starting = false
       broadcast({ type: 'done', success: false, error: err.message })
       child = null
     })
