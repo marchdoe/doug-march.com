@@ -11,7 +11,7 @@ import {
   errorText,
   mutedText,
 } from '../components/panel/styles'
-import { fetchStatus, type PanelStatus } from '../components/panel/api'
+import { fetchStatus, type PanelStatus, type Weights } from '../components/panel/api'
 import { RateTab } from '../components/panel/RateTab'
 import { ArchiveTab } from '../components/panel/ArchiveTab'
 import { WeightsTab } from '../components/panel/WeightsTab'
@@ -78,10 +78,14 @@ function RateSection({ status, reload }: { status: PanelStatus; reload: () => vo
   return <RateTab unrated={status.unrated} onRated={reload} />
 }
 
+/** Remount the sliders only when the saved weights change; the tab copies `initial` into state once (#330). */
+const weightsKey = (w: Weights) => [w.signals, w.inspiration, w.ratings, w.risk ?? 'auto'].join('-')
+
 function WeightsSection({ status }: { status: PanelStatus }) {
-  if (!status.weights)
+  if (!status.weights) {
     return <SectionAlert message={status.errors.weights ?? 'Weights unavailable'} />
-  return <WeightsTab initial={status.weights} />
+  }
+  return <WeightsTab key={weightsKey(status.weights)} initial={status.weights} />
 }
 
 function RunSection({ status, reload }: { status: PanelStatus; reload: () => void }) {

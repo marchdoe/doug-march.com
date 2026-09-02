@@ -33,6 +33,18 @@ export function WeightsTab({ initial }: { initial: Weights }) {
     { kind: 'idle' } | { kind: 'busy' } | { kind: 'saved' } | { kind: 'error'; message: string }
   >({ kind: 'idle' })
 
+  // Base UI hands back number | number[]. The computed-key spread this
+  // replaced accepted either silently and the PUT validator then returned 400.
+  const update = (key: keyof Weights, v: number | readonly number[]) => {
+    const n = Array.isArray(v) ? v[0] : v
+    if (typeof n !== 'number') return
+    setWeights((w) => {
+      const next: Weights = { ...w }
+      next[key] = n
+      return next
+    })
+  }
+
   const save = async () => {
     setState({ kind: 'busy' })
     try {
@@ -59,7 +71,7 @@ export function WeightsTab({ initial }: { initial: Weights }) {
               step={1}
               disabled={auto}
               value={value}
-              onValueChange={(v) => setWeights((w) => ({ ...w, [key]: v }))}
+              onValueChange={(v) => update(key, v)}
             >
               <div className={sliderLabelRow}>
                 <Slider.Label>{label}</Slider.Label>
