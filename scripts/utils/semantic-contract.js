@@ -30,7 +30,7 @@
  * @see https://github.com/marchdoe/dougmar.ch/issues/255
  */
 
-import { GLOBAL_KEYWORDS, NAMED_COLORS, isBareIdentifier } from './token-gate.js'
+import { GLOBAL_KEYWORDS, NAMED_COLORS, isBareIdentifier, stripComments } from './token-gate.js'
 
 /**
  * The canonical fifteen, in the order the prompts list them.
@@ -222,15 +222,20 @@ export const COLOR_PROPS = Object.freeze([
  * keywords all pass. `react-engineer.md` asks for tokens over hexes, but a hex
  * paints, and a build should not die over one.
  *
+ * Comments are stripped first (`token-gate.js`'s `stripComments`), so a note
+ * explaining why a raw palette step was removed does not itself get reported
+ * as the violation it describes (#310).
+ *
  * @param {string} source TSX contents
  * @returns {Array<{prop: string, value: string}>} one entry per distinct pair
  */
 export function findOffContractColorValues(source) {
   const out = []
   const seen = new Set()
+  const stripped = stripComments(source)
   for (const prop of COLOR_PROPS) {
     const re = new RegExp(`\\b${prop}\\s*[:=]\\s*['"\`]([^'"\`]*)['"\`]`, 'g')
-    for (const [, raw] of source.matchAll(re)) {
+    for (const [, raw] of stripped.matchAll(re)) {
       const value = raw.trim()
       if (!isBareIdentifier(value)) continue
       if (CANONICAL.has(value)) continue

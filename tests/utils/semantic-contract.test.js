@@ -187,6 +187,21 @@ describe('findOffContractColorValues', () => {
       expect(COLOR_PROPS).toContain(prop)
     }
   })
+
+  it('ignores a raw palette step mentioned only in a comment (#310)', () => {
+    const source = "// historic: color: 'sand.300' was the old ink\n"
+    expect(findOffContractColorValues(source)).toEqual([])
+  })
+
+  it('still reports a real off-contract value alongside an explanatory comment', () => {
+    const source = "// historic: color: 'sand.300' was the old ink\ncss({ color: 'sand.300' })"
+    expect(findOffContractColorValues(source)).toEqual([{ prop: 'color', value: 'sand.300' }])
+  })
+
+  it('does not let a `//` inside a string hide a real value that follows', () => {
+    const source = "const url = 'https://example.com'; css({ color: 'sand.300' })"
+    expect(findOffContractColorValues(source)).toEqual([{ prop: 'color', value: 'sand.300' }])
+  })
 })
 
 describe('the generated prompt copy', () => {
