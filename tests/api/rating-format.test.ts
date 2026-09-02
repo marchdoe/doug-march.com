@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import * as yaml from 'js-yaml'
 import { formatRatingComment } from '../../api/_lib/rating-format'
 // Real harvest parser — the round-trip target.
 import { parseRatingFromIssue } from '../../scripts/collect-ratings.js'
@@ -56,5 +57,23 @@ describe('formatRatingComment', () => {
     const parsed = parseRatingFromIssue(issueWith(comment))
     expect(parsed?.grade).toBe('C')
     expect(parsed?.didnt).toBe("the '''code''' blocks clipped")
+  })
+})
+
+describe('formatRatingComment emits valid YAML', () => {
+  const yamlBody = (comment: string) => comment.split('\n').slice(1, -1).join('\n')
+
+  it('neutralises a trailing backslash so the scalar does not run into the next line', () => {
+    const comment = formatRatingComment({
+      grade: 'B',
+      worked: 'nice \\',
+      didnt: 'C:\\Users\\doug',
+      try: '',
+    })
+    expect(() => yaml.load(yamlBody(comment))).not.toThrow()
+    const parsed = parseRatingFromIssue(issueWith(comment))
+    expect(parsed?.worked).toBe('nice /')
+    expect(parsed?.didnt).toBe('C:/Users/doug')
+    expect(yaml.load(yamlBody(comment))).toMatchObject({ worked: 'nice /', didnt: 'C:/Users/doug' })
   })
 })

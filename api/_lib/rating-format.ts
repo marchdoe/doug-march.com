@@ -8,7 +8,7 @@ export interface RatingInput {
 }
 
 function clean(value: string): string {
-  return value.replace(/\s+/g, ' ').replace(/"/g, "'").replace(/`/g, "'").trim()
+  return value.replace(/\s+/g, ' ').replace(/"/g, "'").replace(/`/g, "'").replace(/\\/g, '/').trim()
 }
 
 /** Build the YAML-fenced comment that scripts/collect-ratings.js harvests. */
