@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { RAMP_STEPS as CHASSIS_RAMP_STEPS } from '../../elements/chassis/scale.js'
 import {
   HEADER_FIELDS,
   HEADER_FIELD_NAMES,
@@ -114,6 +115,11 @@ describe('isValidHeader', () => {
     for (const step of RAMP_STEPS) {
       expect(isValidHeader(valid({ nav_step: step }), ctx).valid).toBe(true)
     }
+  })
+
+  it("is the chassis ramp minus 'hero', not a hand-kept copy of it", () => {
+    expect(RAMP_STEPS).toEqual(CHASSIS_RAMP_STEPS.filter((s) => s !== 'hero'))
+    expect(RAMP_STEPS).not.toContain('hero')
   })
 
   it('requires a numeric height and mark size', () => {

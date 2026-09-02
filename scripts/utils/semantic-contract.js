@@ -30,6 +30,7 @@
  * @see https://github.com/marchdoe/dougmar.ch/issues/255
  */
 
+import { parseObjectLiteral } from './preset-parser.js'
 import { GLOBAL_KEYWORDS, NAMED_COLORS, isBareIdentifier, stripComments } from './token-gate.js'
 
 /**
@@ -110,7 +111,13 @@ const CANONICAL = new Set(SEMANTIC_COLOR_NAMES)
  *
  * Parsed out of the source rather than imported, because `elements/preset.ts` is
  * TypeScript and these are plain `.js` scripts — the same regex-over-the-source
- * idiom `token-gate.js` and `site-context.js` already use.
+ * idiom `token-gate.js` and `site-context.js` already use. Anchoring on the
+ * `semanticTokens` / `colors:` text is still regex, but the block itself is
+ * handed to `parseObjectLiteral` (preset-parser.js) rather than counted by
+ * hand: a hand-rolled counter does not know a brace inside a comment is not
+ * a real one, and miscounting it runs the scan past the real close, which is
+ * exactly the shape that once reported every canonical name missing over a
+ * comment.
  *
  * @param {string} source contents of elements/preset.ts
  * @returns {string[]} declared names, in file order
@@ -123,34 +130,11 @@ export function parsePresetSemanticColors(source) {
   if (!header) return []
 
   const open = section.indexOf('{', header.index)
-  let depth = 0
-  let end = section.length
-  for (let i = open; i < section.length; i++) {
-    if (section[i] === '{') depth++
-    else if (section[i] === '}') {
-      depth--
-      if (depth === 0) {
-        end = i
-        break
-      }
-    }
+  try {
+    return Object.keys(parseObjectLiteral(section, open))
+  } catch {
+    return []
   }
-  const block = section.slice(open + 1, end)
-
-  const names = []
-  let nesting = 0
-  for (let i = 0; i < block.length; i++) {
-    if (block[i] === '{') nesting++
-    else if (block[i] === '}') nesting--
-    else if (nesting === 0) {
-      const m = /^(?:'([^']+)'|"([^"]+)"|([A-Za-z0-9_$-]+))\s*:/.exec(block.slice(i))
-      if (m) {
-        names.push(m[1] ?? m[2] ?? m[3])
-        i += m[0].length - 1
-      }
-    }
-  }
-  return names
 }
 
 /**
