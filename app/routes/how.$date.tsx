@@ -5,9 +5,8 @@ import { useEffect, useState } from 'react'
 import { type RecordField, absenceNote } from '../lib/archive-era'
 import { signalLines } from '../lib/archive-signals'
 import { css } from '../../styled-system/css'
-import type { ArchiveRecord, ArchiveTokens, JsonValue } from '../types/archive-record'
-
-type ArchiveDetail = ArchiveRecord & { hasScreenshot: boolean; pages?: number }
+import { isArchiveDetail } from '../types/archive-record'
+import type { ArchiveDetail, ArchiveTokens, JsonValue } from '../types/archive-record'
 
 export const Route = createFileRoute('/how/$date')({
   component: HowPage,
@@ -419,9 +418,10 @@ function HowPage() {
       .then((res) => (res.ok ? res.json() : null))
       .then((data: unknown) => {
         if (cancelled) return
-        // `res.json()` is `any`; assigning it straight to state was an
-        // unchecked cast into a typed component.
-        if (data && typeof data === 'object') setDetail(data as ArchiveDetail)
+        // `res.json()` is `any`; `isArchiveDetail` is what stands between that
+        // and a typed component. `{}` passes a bare `typeof x === 'object'`
+        // check, and reading `detail.tokens.colors.ramps` through it throws.
+        if (isArchiveDetail(data)) setDetail(data)
         else setError(true)
       })
       .catch(() => {
@@ -445,7 +445,13 @@ function HowPage() {
     )
   }
 
-  if (!detail) return null
+  if (!detail) {
+    return (
+      <div className={notFound}>
+        <p>Loading {formatDate(date)}…</p>
+      </div>
+    )
+  }
 
   const era = detail.era
   const scheme = asRecord(detail.colorScheme as JsonValue)
