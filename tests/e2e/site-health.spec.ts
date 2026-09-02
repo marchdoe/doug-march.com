@@ -1,3 +1,6 @@
+import { extname, join } from 'node:path'
+import { readFile, stat } from 'node:fs/promises'
+import { createServer, type Server } from 'node:http'
 import { CANONICAL_ORIGIN, RECOGNIZED_ORIGINS } from '../../scripts/utils/site-origin.js'
 import { test, expect, type Page } from '@playwright/test'
 
@@ -363,6 +366,107 @@ test.describe('site health — archive link (#155)', () => {
     await link.click()
     await expect(page).toHaveURL(/\/archive/, { timeout: 15000 })
   })
+})
+
+const STATIC_MIME: Record<string, string> = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript',
+  '.mjs': 'text/javascript',
+  '.css': 'text/css',
+  '.json': 'application/json',
+  '.png': 'image/png',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+}
+
+/**
+ * A minimal static server over `dist/client`, covering just enough of
+ * vercel.json's rewrites (`/` → `_shell.html`, `/<dir>` → `<dir>/index.html`)
+ * to serve the routes below — nothing else touches this server.
+ *
+ * It exists because `vite preview`, which every other test in this file runs
+ * against, does not serve these bytes. TanStack Start's own preview plugin
+ * (`previewServerPlugin` in `@tanstack/start-plugin-core`) intercepts every
+ * request and re-renders the route live through `dist/server/server.js`, so a
+ * page loaded through `vite preview` never carries the `Content-Security-
+ * Policy` meta `pin-inline-scripts.js` wrote into the file on disk — that
+ * step only touches `dist/client`, and `vite preview` never reads it for an
+ * app route. Confirmed by hand: appending a marker string to
+ * `dist/client/archive/index.html` and requesting `/archive` from
+ * `vite preview` does not return it. Production is unaffected — Vercel's
+ * `outputDirectory: dist/client` serves the static files directly, with no
+ * server in front of them for these routes — so this is the one place a real
+ * static host needs standing in for `vite preview`, which is what the
+ * decision in #332 assumed would work.
+ */
+function serveDistClient(root: string): Promise<{ server: Server; baseURL: string }> {
+  const server = createServer(async (req, res) => {
+    const url = new URL(req.url ?? '/', 'http://localhost')
+    const pathname =
+      decodeURIComponent(url.pathname) === '/' ? '/_shell.html' : decodeURIComponent(url.pathname)
+
+    for (const candidate of [join(root, pathname), join(root, pathname, 'index.html')]) {
+      try {
+        const info = await stat(candidate)
+        if (!info.isFile()) continue
+        res.writeHead(200, {
+          'Content-Type': STATIC_MIME[extname(candidate)] ?? 'application/octet-stream',
+        })
+        res.end(await readFile(candidate))
+        return
+      } catch {
+        // try the next candidate
+      }
+    }
+    res.writeHead(404)
+    res.end('not found')
+  })
+
+  return new Promise((resolve, reject) => {
+    server.on('error', reject)
+    server.listen(0, '127.0.0.1', () => {
+      const address = server.address()
+      const port = typeof address === 'object' && address ? address.port : 0
+      resolve({ server, baseURL: `http://127.0.0.1:${port}` })
+    })
+  })
+}
+
+test.describe('site health — inline script pinning (#332)', () => {
+  let server: Server
+  let baseURL: string
+
+  test.beforeAll(async () => {
+    ;({ server, baseURL } = await serveDistClient(join(process.cwd(), 'dist', 'client')))
+  })
+
+  test.afterAll(() => {
+    server.close()
+  })
+
+  for (const path of ['/', '/archive', `/how/${CORPUS.built}`]) {
+    test(`${path} carries a pinned CSP and logs no violation`, async ({ page }) => {
+      const violations: string[] = []
+      page.on('console', (msg) => {
+        if (/Content-Security-Policy|Refused to execute/.test(msg.text())) {
+          violations.push(msg.text())
+        }
+      })
+      page.on('pageerror', (err) => {
+        const text = String(err)
+        if (/Content-Security-Policy|Refused to execute/.test(text)) violations.push(text)
+      })
+
+      await page.goto(`${baseURL}${path}`)
+      await expect(page.locator('h1')).toBeVisible({ timeout: 15000 })
+
+      const meta = page.locator('meta[http-equiv="Content-Security-Policy"]')
+      await expect(meta).toHaveCount(1)
+      expect(await meta.getAttribute('content')).toContain('sha256-')
+
+      expect(violations).toEqual([])
+    })
+  }
 })
 
 test.describe('site health — navigation', () => {
