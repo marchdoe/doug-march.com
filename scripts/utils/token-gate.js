@@ -532,7 +532,7 @@ export function readGeneratedTokenScales(root) {
 // anywhere else (after a word character, `>`, a closing quote, …) is prose,
 // not the start of a string — `Doug's studio` and `<p>It's here</p>` are the
 // motivating cases. Also permitted at the very start of the source.
-const CAN_OPEN_STRING = new Set(['=', '(', ',', ':', '[', '{', '|', '&', '?', '+', ';'])
+export const CAN_OPEN_STRING = new Set(['=', '(', ',', ':', '[', '{', '|', '&', '?', '+', ';'])
 
 /**
  * Find the end of a `/regex/` literal starting at `source[start]`, or -1 if

