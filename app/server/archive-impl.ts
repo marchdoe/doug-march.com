@@ -3,12 +3,28 @@
 import { readdirSync, existsSync } from 'node:fs'
 import { resolve, join } from 'node:path'
 import type { ArchiveRecord } from '../types/archive-record'
+import type { Weights } from '../types/panel'
 import { BUILD_DIR_RE, DATE_RE, isArchiveDate, isBuildId } from './archive-paths'
 import { isRecord, readJson } from './read-json'
 
 export const ARCHIVE_PATH = resolve(process.cwd(), 'archive')
 
-export type ArchiveEntry = ArchiveRecord
+/**
+ * One archived build as the dev panel's archive listing shows it: a record
+ * with `brief` coerced to `''` rather than `null` (the panel renders it
+ * straight into JSX) and two build-time fields the canonical `record.json`
+ * doesn't carry — `timestamp` and `weights` live in that build's own
+ * `build.json`. `dev-server/dev-data.ts`'s `readArchiveListing` is the one
+ * place that builds these; `_readArchiveHandler` below returns the plain
+ * `ArchiveRecord`s everything else (the production archive route, the
+ * calendar) reads (#331 — this used to be a second, differently-shaped
+ * `ArchiveEntry` declared in dev-data.ts).
+ */
+export type ArchiveEntry = Omit<ArchiveRecord, 'brief'> & {
+  brief: string
+  timestamp?: number
+  weights?: Weights
+}
 
 /**
  * Read one day's record. The pipeline writes it at build time and
@@ -29,7 +45,7 @@ export function _readArchiveRecord(date: string, archivePath = ARCHIVE_PATH): Ar
   return readJson(join(archivePath, date, 'record.json'), isArchiveRecord)
 }
 
-export function _readArchiveHandler(archivePath = ARCHIVE_PATH): ArchiveEntry[] {
+export function _readArchiveHandler(archivePath = ARCHIVE_PATH): ArchiveRecord[] {
   if (!existsSync(archivePath)) return []
 
   return readdirSync(archivePath, { withFileTypes: true })

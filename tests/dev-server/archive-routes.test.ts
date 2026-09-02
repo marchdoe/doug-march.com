@@ -86,4 +86,16 @@ describe('archive preview', () => {
     expect(resolvePreviewPath('/2026-03-20/build-1/../../../.env', base)).toBeNull()
     expect(resolvePreviewPath('/nope', base)).toBeNull()
   })
+
+  it('strips a cache-busting query string before resolving a path (#331)', () => {
+    // A preserved snapshot links its own assets with a cache-busting query
+    // string (`style.css?v=2`); the file on disk has no such name.
+    const base = '/repo/archive'
+    expect(resolvePreviewPath('/2026-03-20/build-123/style.css?v=2', base)).toBe(
+      '/repo/archive/2026-03-20/build-123/site/style.css'
+    )
+    expect(resolvePreviewPath('/2026-03-16/style.css?v=2', base)).toBe(
+      '/repo/archive/2026-03-16/site/style.css'
+    )
+  })
 })

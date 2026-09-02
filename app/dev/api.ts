@@ -1,4 +1,4 @@
-import type { ArchiveEntry } from '../dev-server/dev-data'
+import type { ArchiveEntry } from '../server/archive-impl'
 
 // The panel's side of the dev API, typed and checked at the boundary.
 //
