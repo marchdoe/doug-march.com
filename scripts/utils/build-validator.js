@@ -1082,10 +1082,15 @@ export const STATIC_CHECK_PATHS = ['app/components', 'app/routes']
  * design decision and the engineer should not spend a retry on it. Whatever
  * remains after that — a genuine lint error, a type error — fails the build
  * the same way a compile error does, so it reaches the React Engineer as a
- * retry with the tool output attached. Both tools run even if the first
+ * retry with the tool output attached. All tools run even if the first
  * fails, so one retry sees everything.
  *
- * Cheap: biome under a second, tsc about one. The run budgets sixty minutes.
+ * The architecture audit joined on 2026-09-02 (#413), after a 321-line route
+ * component passed biome and tsc, shipped, and turned the fallow job on main
+ * red the next morning. CI's gate and the nightly's are now the same command.
+ *
+ * Cheap: biome under a second, tsc about one, fallow about two. The run
+ * budgets sixty minutes.
  *
  * @param {{ spawn?: typeof spawnSync, root?: string }} [deps] injectable for tests
  * @returns {{ success: boolean, error?: string, fixed?: string }}
@@ -1112,6 +1117,20 @@ export function runStaticChecks({ spawn = spawnSync, root = ROOT } = {}) {
     failures.push(`Type errors (tsc --noEmit):\n${combined(tsc).trim().slice(-3000)}`)
   }
 
+  // The third check CI runs on main. `--base HEAD` diffs the working tree
+  // against the commit the run started from, which is exactly the set of
+  // files the agents wrote tonight, and the new-only gate means an inherited
+  // finding in a file the engineer had to touch cannot fail the run.
+  console.log('  running fallow audit --base HEAD...')
+  const fallow = spawn(
+    'pnpm',
+    ['exec', 'fallow', 'audit', '--base', 'HEAD', '--format', 'json'],
+    opts
+  )
+  const audit = summarizeFallowAudit(combined(fallow))
+  if (audit.error) failures.push(audit.error)
+  else if (audit.warning) console.warn(`  ${audit.warning}`)
+
   if (failures.length) {
     console.log('  static checks failed')
     return {
@@ -1128,6 +1147,63 @@ export function runStaticChecks({ spawn = spawnSync, root = ROOT } = {}) {
 
   console.log('  static checks passed')
   return { success: true, ...(fixed ? { fixed } : {}) }
+}
+
+/**
+ * What the React Engineer needs to hear from a failed architecture audit,
+ * and nothing else (#413).
+ *
+ * The audit's JSON is thousands of lines, most of it inherited findings and
+ * fix menus. The engineer needs the introduced ones: which function, in which
+ * file, at what size, and which unused export. Paths stay verbatim so the
+ * retry routing (`identifyFailingAgent`) can read them.
+ *
+ * The JSON starts after whatever pnpm prints first (a lockfile banner, on
+ * some machines). Output that does not parse is a tool problem, not an
+ * engineer problem, so it is reported and not gated on; a wedged tool must
+ * not lose the night.
+ *
+ * @param {string} output stdout and stderr of `fallow audit --format json`
+ * @returns {{ error?: string, warning?: string }}
+ */
+export function summarizeFallowAudit(output) {
+  const start = output.indexOf('{')
+  let report
+  try {
+    report = JSON.parse(output.slice(start))
+  } catch {
+    return { warning: 'fallow audit output could not be read; skipping the architecture gate' }
+  }
+  if (report.verdict !== 'fail') return {}
+
+  const lines = []
+  for (const f of report.complexity?.findings ?? []) {
+    if (!f.introduced) continue
+    lines.push(
+      `${f.path}:${f.line} ${f.name} — cyclomatic ${f.cyclomatic}, cognitive ${f.cognitive}, ` +
+        `${f.line_count} lines (over the ${f.exceeded} threshold)`
+    )
+  }
+  for (const f of report.dead_code?.unused_exports ?? []) {
+    if (!f.introduced) continue
+    lines.push(`${f.path}:${f.line} export ${f.export_name} — nothing imports it`)
+  }
+  if (lines.length === 0) {
+    lines.push(`fallow reported: ${JSON.stringify(report.attribution ?? report.summary ?? {})}`)
+  }
+
+  return {
+    error: [
+      'Architecture audit (fallow, the check CI runs on main):',
+      ...lines,
+      '',
+      'Split each function listed above into section components under app/components/,',
+      'each with at most three branch points, and let the route page only compose them.',
+      'Remove any export nothing imports. See "Size and shape" in your brief.',
+    ]
+      .join('\n')
+      .slice(0, 3000),
+  }
 }
 
 /**

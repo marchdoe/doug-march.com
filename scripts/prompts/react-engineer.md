@@ -306,9 +306,31 @@ Panda does not fail on a token it has never heard of. It passes the name through
 
 Reference font family tokens by name: `fontFamily: 'display'`, `fontFamily: 'body'`, `fontFamily: 'heading'`, `fontFamily: 'mono'` — whichever the current chassis exposes.
 
+## Size and shape
+
+CI runs an architecture audit (fallow) on every push to main, and the
+nightly runs the same audit as a static check, so an oversized function comes
+back to you as a retry with the function named. The audit scores each
+function on its own, and code with no tests is scored on branch count alone:
+a function with four or more branch points (`if`, ternary, `&&`, `||`, `??`,
+`switch` case, loop) fails it. A 321-line `WorkDetailPage` with eighteen
+branches failed on 2026-09-02.
+
+- A route page composes sections. It should read as a list of
+  `<Section ... />` elements with data passed in, and nothing else.
+- Each section is its own component under `app/components/`, under 80 lines,
+  with at most three branch points. A data-driven `.map()` over a list beats
+  a chain of conditionals; two small components beat one that switches on a
+  prop.
+- Optional content gets one guard per section for the field that may be
+  missing, not a guard on every line.
+- Export only what another file imports. An export nothing uses is a finding.
+
 ## Self-check before responding
 
 1. Every required file present, including og.tsx?
 2. Zero raw hex values in TSX (tokens only)?
 3. Side-by-side with the mockup: same composition, same scale register,
    same shell? If anything diverges, fix it before responding.
+4. No function with four or more branch points; every route page only
+   composes section components.
