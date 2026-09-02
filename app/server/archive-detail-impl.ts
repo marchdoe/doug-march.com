@@ -10,13 +10,18 @@ import type { ArchiveRecord } from '../types/archive-record'
  * trace. The dev panel's step inspector replays it, and #153 keeps it out of the
  * record because storing 12KB of agent conversation per date was most of the
  * old `_detail.json`'s weight.
+ *
+ * Not the same shape as `ArchiveDetail` in `app/types/archive-record.ts` —
+ * that one is the public `/archive-data/{date}.json` a browser fetches
+ * (`pages`, `uniqueness`, no trace); this is the dev-only payload behind
+ * `readArchiveDetail`, gated by `devOnly`.
  */
-export interface ArchiveDetail extends ArchiveRecord {
+export interface TraceDetail extends ArchiveRecord {
   trace: string
   hasScreenshot: boolean
 }
 
-export function _readArchiveDetail(date: string, archivePath = ARCHIVE_PATH): ArchiveDetail | null {
+export function _readArchiveDetail(date: string, archivePath = ARCHIVE_PATH): TraceDetail | null {
   const record = _readArchiveRecord(date, archivePath)
   if (!record) return null
 
