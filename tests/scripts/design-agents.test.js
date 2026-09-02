@@ -121,7 +121,9 @@ describe('the Phase 5 repair loop', () => {
     // `app/routes/` is an allowed write prefix, so without this a repair can
     // overwrite the generated __root.tsx — and the error text handed to a
     // repair has named __root.tsx, which invites exactly that.
-    expect(phase5).toMatch(/writeEngineerFiles\(retryResult, 'React Engineer repair'\)/)
+    expect(phase5).toMatch(
+      /writeEngineerFiles\(retryResult, 'React Engineer repair', \{\s*root,?\s*\}\)/
+    )
   })
 
   it('checks each repair for required files and posture before building it', () => {
@@ -278,9 +280,15 @@ describe('engineer output reaches disk through one function', () => {
   })
 
   it('routes all three engineer write sites through writeEngineerFiles', () => {
-    expect(SOURCE).toMatch(/writeEngineerFiles\(engineerResult, 'React Engineer'\)/)
-    expect(SOURCE).toMatch(/writeEngineerFiles\(retryResult, 'React Engineer revision'\)/)
-    expect(SOURCE).toMatch(/writeEngineerFiles\(retryResult, 'React Engineer repair'\)/)
+    expect(SOURCE).toMatch(
+      /writeEngineerFiles\(engineerResult, 'React Engineer', \{\s*root,?\s*\}\)/
+    )
+    expect(SOURCE).toMatch(
+      /writeEngineerFiles\(retryResult, 'React Engineer revision', \{\s*root,?\s*\}\)/
+    )
+    expect(SOURCE).toMatch(
+      /writeEngineerFiles\(retryResult, 'React Engineer repair', \{\s*root,?\s*\}\)/
+    )
   })
 
   it('drops orchestrator files inside writeEngineerFiles before writing', () => {
@@ -630,5 +638,25 @@ describe('the mockup critic verdict keeps its channel', () => {
 
   it('records channel: critique.channel on the mockup-critic verdicts.push', () => {
     expect(loop).toMatch(/critic: 'mockup-critic',[\s\S]*?channel: critique\.channel,/)
+  })
+})
+
+describe('the swarm takes a root', () => {
+  // #221: every path the swarm reads or writes derives from the `root`
+  // option, so a test can run the real function against a temp checkout.
+  // The one `ROOT` left is the option's default in the signature.
+  const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
+  const start = SOURCE.indexOf('export async function runAgentSwarm')
+  const bodyStart = SOURCE.indexOf('{\n', start)
+  const end = SOURCE.indexOf('\nif (isMain(', bodyStart)
+
+  it('defaults the root option to the module constant', () => {
+    expect(SOURCE.slice(start, bodyStart)).toMatch(/\{ onTraceStep, root = ROOT \} = \{\}/)
+  })
+
+  it('never reads the module constant inside the body', () => {
+    expect(bodyStart).toBeGreaterThan(-1)
+    expect(end).toBeGreaterThan(bodyStart)
+    expect(SOURCE.slice(bodyStart, end)).not.toMatch(/\bROOT\b/)
   })
 })

@@ -113,11 +113,12 @@ export function dropOrchestratorFiles(files, agentName = 'agent') {
  *
  * @param {{ files: Array<{path: string, content: string}> }} result
  * @param {string} agentLabel for the log line
+ * @param {{ root?: string }} [options] repo root to write under
  * @returns {Promise<string[]>} the paths written
  */
-async function writeEngineerFiles(result, agentLabel) {
+async function writeEngineerFiles(result, agentLabel, { root = ROOT } = {}) {
   result.files = dropOrchestratorFiles(result.files, agentLabel)
-  return await writeFiles(result.files)
+  return await writeFiles(result.files, { root })
 }
 
 /**
@@ -125,12 +126,13 @@ async function writeEngineerFiles(result, agentLabel) {
  * serves at the og:image URL injected into __root.tsx. Best-effort: a
  * missing og.tsx or a capture failure must never block shipping.
  * @param {string} date YYYY-MM-DD
+ * @param {{ root?: string }} [options] repo root to write under
  */
-async function captureOgCard(date) {
+async function captureOgCard(date, { root = ROOT } = {}) {
   try {
     const { captureRouteScreenshot } = await import('./utils/snapshot.js')
     const ogBuffer = await captureRouteScreenshot('/og')
-    const ogDir = path.join(ROOT, 'public', 'og')
+    const ogDir = path.join(root, 'public', 'og')
     await mkdir(ogDir, { recursive: true })
     await writeFile(path.join(ogDir, `${date}.png`), ogBuffer)
     console.log(`  [og] captured public/og/${date}.png (${(ogBuffer.length / 1024).toFixed(0)}KB)`)
@@ -145,11 +147,12 @@ async function captureOgCard(date) {
  * composition.json.
  * @param {string} date YYYY-MM-DD
  * @param {string|null|undefined} archetype
+ * @param {{ root?: string }} [options] repo root to write under
  */
-async function writeArchetype(date, archetype) {
+async function writeArchetype(date, archetype, { root = ROOT } = {}) {
   if (!archetype) return
   try {
-    const datePath = path.join(ROOT, 'archive', date)
+    const datePath = path.join(root, 'archive', date)
     await mkdir(datePath, { recursive: true })
     await writeFile(path.join(datePath, 'archetype.txt'), archetype, 'utf8')
     console.log(`  [archetype] saved: ${archetype}`)
@@ -420,12 +423,13 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
 
 /**
  * Run `pnpm panda codegen` to regenerate styled-system from the new preset.
+ * @param {{ root?: string }} [options] repo root to run in
  * @returns {{ success: boolean, error?: string }}
  */
-function validateCodegen() {
+function validateCodegen({ root = ROOT } = {}) {
   console.log('  running pnpm panda codegen...')
   const result = spawnSync('pnpm', ['panda', 'codegen'], {
-    cwd: ROOT,
+    cwd: root,
     encoding: 'utf8',
     timeout: STEP_BUDGETS.codegenMs,
   })
@@ -461,9 +465,12 @@ function validateCodegen() {
  * Phase 5: Retry on failure
  *
  * @param {{ signals: object, brief: string, contentSummary: string }} context
+ * @param {{ onTraceStep?: Function, root?: string }} [options] `root` is the
+ *   checkout the swarm reads prompts from and writes generated files, signals
+ *   and the archive under; defaults to the repo
  * @returns {Promise<{ rationale: string, design_brief: string, files: Array<{path: string, content: string}> }>}
  */
-export async function runAgentSwarm(context, { onTraceStep } = {}) {
+export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) {
   const { signals, brief, contentSummary } = context
 
   // Start this run's cost accounting from zero. The ledger is module-level,
@@ -535,7 +542,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
   async function saveTrace(error) {
     try {
-      const archiveDateDir = path.join(ROOT, 'archive', today)
+      const archiveDateDir = path.join(root, 'archive', today)
 
       if (archiveRan) {
         // Success path: find the build dir that archive() just created
@@ -592,10 +599,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
   // has exactly this gap).
   async function archiveFailedSources(paths) {
     try {
-      const dir = path.join(ROOT, 'archive', today, `build-failed-sources-${Date.now()}`)
+      const dir = path.join(root, 'archive', today, `build-failed-sources-${Date.now()}`)
       let count = 0
       for (const relPath of paths) {
-        const abs = path.join(ROOT, relPath)
+        const abs = path.join(root, relPath)
         if (!existsSync(abs)) continue
         const dest = path.join(dir, relPath)
         await mkdir(path.dirname(dest), { recursive: true })
@@ -627,7 +634,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // scripts/prompts/impeccable/README.md. They replace the previous library-*.md
     // files which authored generic guidance; impeccable provides anti-pattern-aware,
     // OKLCH-native, register-aware design knowledge tuned to fight AI design slop.
-    const promptDir = path.join(path.dirname(fileURLToPath(import.meta.url)), 'prompts')
+    const promptDir = path.join(root, 'scripts', 'prompts')
     const refDir = path.join(promptDir, 'impeccable', 'reference')
     const [
       specCriticPromptRaw,
@@ -686,13 +693,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     // Backup all mutable files
     console.log('\n[backup] Backing up mutable files...')
-    const originalBackup = await backup(MUTABLE_FILES)
+    const originalBackup = await backup(MUTABLE_FILES, { root })
     console.log(`  backed up ${originalBackup.size} files`)
 
     // -----------------------------------------------------------------------
     // Read recent archive briefs for Design Director context
     // -----------------------------------------------------------------------
-    const archiveDir = path.join(ROOT, 'archive')
+    const archiveDir = path.join(root, 'archive')
     let recentBriefs = ''
     try {
       const dirs = readdirSync(archiveDir)
@@ -713,7 +720,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // Read recent ratings for taste feedback (new-schema GitHub-issue ratings)
     // -----------------------------------------------------------------------
     const { buildRecentRatingsBlock } = await import('./utils/ratings.js')
-    const recentRatings = buildRecentRatingsBlock(path.join(ROOT, 'archive'), { lookbackDays: 10 })
+    const recentRatings = buildRecentRatingsBlock(path.join(root, 'archive'), { lookbackDays: 10 })
 
     // -----------------------------------------------------------------------
     // Owner-curated permanent taste memory (signals/taste.md) — unlike the
@@ -721,12 +728,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // Fed to both the Art Director and the Mockup Designer.
     // -----------------------------------------------------------------------
     const { buildTasteMemoryBlock } = await import('./utils/taste-memory.js')
-    const tasteMemoryBlock = buildTasteMemoryBlock(ROOT)
+    const tasteMemoryBlock = buildTasteMemoryBlock(root)
 
     // -----------------------------------------------------------------------
     // Read design references (collected by collect-references.js)
     // -----------------------------------------------------------------------
-    const referencesPath = path.resolve(ROOT, 'signals/today.references.md')
+    const referencesPath = path.resolve(root, 'signals/today.references.md')
     let references = ''
     if (existsSync(referencesPath)) {
       references = await readFile(referencesPath, 'utf8')
@@ -754,7 +761,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // The variance mandates: deterministic, free, advisory. Computed in one
     // place so the six "try, warn, carry on" blocks that sat here are one.
     const { colorMandate, sections: mandate } = computeMandateSections({
-      root: ROOT,
+      root,
       signals,
       date: today,
     })
@@ -786,7 +793,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       )
       const todayStr = runDate(signals)
       const [previous, ...before] = await readUniquenessHistory({
-        root: ROOT,
+        root,
         limit: 8,
         before: todayStr,
       })
@@ -841,7 +848,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         weightsBlock,
         tasteMemoryBlock,
         uniquenessBlock,
-        failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
+        failureDumpPath: path.join(root, 'signals', 'art-director-last-failed.txt'),
         systemPrompt: artDirectorSystemPrompt,
       })
     } catch (firstErr) {
@@ -867,12 +874,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           tasteMemoryBlock,
           uniquenessBlock,
           retryContext: `## Previous attempt was rejected\n\nYour previous response failed validation: ${firstErr.message}\nEmit ALL required blocks with exact delimiters and exact field formats this time.`,
-          failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
+          failureDumpPath: path.join(root, 'signals', 'art-director-last-failed.txt'),
           systemPrompt: artDirectorSystemPrompt,
         })
       } catch (err) {
         console.error(`  Art Director failed after retry: ${err.message}`)
-        await restore(originalBackup)
+        await restore(originalBackup, { root })
         throw new Error(`Art Director failed after retry: ${err.message}`)
       }
     }
@@ -923,14 +930,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     // Write the Art Director's preset.ts to disk
     const presetFile = { path: 'elements/preset.ts', content: artDirectorResult.presetTs }
-    for (const p of await writeFiles([presetFile])) writtenPaths.add(p)
+    for (const p of await writeFiles([presetFile], { root })) writtenPaths.add(p)
 
     // Orchestrator generates the chassis preset (fonts + fontSizes) and
     // __root.tsx (Google Fonts URL substituted into the frozen template).
     // These two files are NEVER written by an agent.
     try {
       const chassisPresetSrc = renderChassisPresetFile(chosenChassis)
-      const chassisPresetPath = path.join(ROOT, 'elements/chassis-preset.ts')
+      const chassisPresetPath = path.join(root, 'elements/chassis-preset.ts')
       await writeFile(chassisPresetPath, chassisPresetSrc, 'utf8')
       writtenPaths.add('elements/chassis-preset.ts')
       console.log(`  [chassis] wrote chassis-preset.ts (${chosenChassis.id})`)
@@ -944,11 +951,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const rootSrc = renderRootTemplate(
         buildGoogleFontsUrl(chosenChassis),
         ogMeta,
-        countArchivedDesigns()
+        countArchivedDesigns(path.join(root, 'archive'))
       )
-      const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
+      const rootPath = path.join(root, 'app/routes/__root.tsx')
       await writeFile(rootPath, rootSrc, 'utf8')
-      formatGeneratedFile('app/routes/__root.tsx')
+      formatGeneratedFile('app/routes/__root.tsx', { root })
       writtenPaths.add('app/routes/__root.tsx')
       console.log(`  [chassis] wrote __root.tsx from template`)
 
@@ -958,20 +965,20 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       const lockupSrc = renderBrandLockupFile(chosenChassis, {
         wordmarkWeight: headerDecl.wordmark_weight,
       })
-      await writeFile(path.join(ROOT, 'app/components/BrandLockup.tsx'), lockupSrc, 'utf8')
-      formatGeneratedFile('app/components/BrandLockup.tsx')
+      await writeFile(path.join(root, 'app/components/BrandLockup.tsx'), lockupSrc, 'utf8')
+      formatGeneratedFile('app/components/BrandLockup.tsx', { root })
       writtenPaths.add('app/components/BrandLockup.tsx')
       console.log(`  [chassis] wrote BrandLockup.tsx from template`)
     } catch (err) {
-      await cleanupOrphans(writtenPaths, originalBackup)
-      await restore(originalBackup)
+      await cleanupOrphans(writtenPaths, originalBackup, { root })
+      await restore(originalBackup, { root })
       throw new Error(`Chassis file generation failed: ${err.message}`)
     }
 
     // Write today's brief.md so the archive has a human-readable artifact
     // (replaces the old signals/today.brief.md from interpret-signals.js).
     try {
-      const briefArtifactPath = path.join(ROOT, 'signals', 'today.brief.md')
+      const briefArtifactPath = path.join(root, 'signals', 'today.brief.md')
       await writeFile(
         briefArtifactPath,
         `# Signals Brief — ${today}\n\n${artDirectorResult.brief}\n`,
@@ -982,7 +989,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     }
 
     // Codegen on the Art Director's preset.ts
-    const codegenResult = validateCodegen()
+    const codegenResult = validateCodegen({ root })
     if (!codegenResult.success) {
       console.log('  codegen failed — retrying Art Director with error context...')
       noteRetry()
@@ -991,7 +998,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       for (const [k, v] of originalBackup.entries()) {
         if (k === 'elements/preset.ts') presetBackup.set(k, v)
       }
-      await restore(presetBackup)
+      await restore(presetBackup, { root })
       try {
         // Re-invoke Art Director with codegen error appended to context.
         // The full Director re-run is expensive but rare — codegen failures
@@ -1015,11 +1022,11 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           tasteMemoryBlock,
           uniquenessBlock,
           retryContext: `## Previous attempt failed codegen\n\n${codegenResult.error?.slice(0, 1500) || ''}`,
-          failureDumpPath: path.join(ROOT, 'signals', 'art-director-last-failed.txt'),
+          failureDumpPath: path.join(root, 'signals', 'art-director-last-failed.txt'),
           systemPrompt: artDirectorSystemPrompt,
         })
         const retryPresetFile = { path: 'elements/preset.ts', content: artDirectorResult.presetTs }
-        for (const p of await writeFiles([retryPresetFile])) writtenPaths.add(p)
+        for (const p of await writeFiles([retryPresetFile], { root })) writtenPaths.add(p)
         // The codegen retry re-ran the Art Director, so heroCopy/designBrief may
         // have changed since __root.tsx was first written. Regenerate it so the
         // og:title/og:description reflect the settled result, not the stale one.
@@ -1033,20 +1040,20 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           const retryRootSrc = renderRootTemplate(
             buildGoogleFontsUrl(chosenChassis),
             retryOgMeta,
-            countArchivedDesigns()
+            countArchivedDesigns(path.join(root, 'archive'))
           )
-          await writeFile(path.join(ROOT, 'app/routes/__root.tsx'), retryRootSrc, 'utf8')
-          formatGeneratedFile('app/routes/__root.tsx')
+          await writeFile(path.join(root, 'app/routes/__root.tsx'), retryRootSrc, 'utf8')
+          formatGeneratedFile('app/routes/__root.tsx', { root })
           console.log('  [chassis] regenerated __root.tsx after codegen retry (og meta refreshed)')
           // The retry may have moved the chassis or the declared wordmark
           // weight, and both are baked into the lockup.
           headerDecl = parseHeaderBlock(artDirectorResult.header)
           await writeFile(
-            path.join(ROOT, 'app/components/BrandLockup.tsx'),
+            path.join(root, 'app/components/BrandLockup.tsx'),
             renderBrandLockupFile(chosenChassis, { wordmarkWeight: headerDecl.wordmark_weight }),
             'utf8'
           )
-          formatGeneratedFile('app/components/BrandLockup.tsx')
+          formatGeneratedFile('app/components/BrandLockup.tsx', { root })
           console.log('  [chassis] regenerated BrandLockup.tsx after codegen retry')
         } catch (rootErr) {
           console.warn(
@@ -1054,14 +1061,14 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           )
         }
       } catch (err) {
-        await cleanupOrphans(writtenPaths, originalBackup)
-        await restore(originalBackup)
+        await cleanupOrphans(writtenPaths, originalBackup, { root })
+        await restore(originalBackup, { root })
         throw new Error(`Art Director codegen retry failed: ${err.message}`)
       }
-      const retryCodegen = validateCodegen()
+      const retryCodegen = validateCodegen({ root })
       if (!retryCodegen.success) {
-        await cleanupOrphans(writtenPaths, originalBackup)
-        await restore(originalBackup)
+        await cleanupOrphans(writtenPaths, originalBackup, { root })
+        await restore(originalBackup, { root })
         throw new Error(
           `Codegen failed after Art Director retry: ${retryCodegen.error?.slice(0, 500)}`
         )
@@ -1207,7 +1214,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // -----------------------------------------------------------------------
     // Phase 2: mockup pipeline (reads tokens from disk)
     // -----------------------------------------------------------------------
-    const presetPath = path.join(ROOT, 'elements/preset.ts')
+    const presetPath = path.join(root, 'elements/preset.ts')
     const tokenContext = await readFile(presetPath, 'utf8')
 
     const enrichedBrief = [
@@ -1239,7 +1246,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       try {
         const { readResponsiveHistory } = await import('./utils/read-responsive-history.js')
         const { selectRecentFailure } = await import('./utils/prompt-feedback-selector.js')
-        const history = await readResponsiveHistory({ limit: 7 })
+        const history = await readResponsiveHistory({ root, limit: 7 })
         const { lesson, selectedBuildId } = selectRecentFailure({
           history,
           todayArchetype: chosenArchetype,
@@ -1250,7 +1257,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
             const b = history.find((x) => x.buildId === selectedBuildId)
             if (b) {
               const metricsPath = path.join(
-                ROOT,
+                root,
                 'archive',
                 b.date,
                 `build-${b.buildId}`,
@@ -1332,7 +1339,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       // Fail fast rather than let the CLI emit a 0KB mockup near the ~56KB
       // ceiling (the failure that pinned us to 2.1.92). Restore + throw so
       // the day's run rolls back cleanly instead of shipping nothing.
-      await restore(originalBackup)
+      await restore(originalBackup, { root })
       throw new Error(
         `mockup-designer system prompt is ${(mockupDesignerSystemPrompt.length / 1024).toFixed(0)}KB — over the 55KB ceiling (CLI 2.1.92 fails ~56KB). Trim a reference doc.`
       )
@@ -1343,7 +1350,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     let calibrationNote = ''
     try {
       const { readRecentRatings } = await import('./utils/ratings.js')
-      const rated = readRecentRatings(path.join(ROOT, 'archive'), { lookbackDays: 30 })
+      const rated = readRecentRatings(path.join(root, 'archive'), { lookbackDays: 30 })
       const best = rated.find((r) => r.grade === 'A') || rated.find((r) => r.grade === 'B')
       if (best)
         calibrationNote = `## Calibration\n\nThe owner graded ${best.date} an ${best.grade}${best.worked ? ` — what worked: ${best.worked}` : ''}. That is the execution bar.`
@@ -1351,13 +1358,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       /* non-blocking */
     }
 
-    const lessonsBlock = buildLessonsBlock(path.join(ROOT, 'archive'), { limit: 7 })
+    const lessonsBlock = buildLessonsBlock(path.join(root, 'archive'), { limit: 7 })
     const compositionContractBlock = buildCompositionContractBlock(chosenComposition) || ''
-    const brandSvg = await readFile(path.join(ROOT, 'app/assets/logo.svg'), 'utf8')
-    const brandMonoSvg = await readFile(path.join(ROOT, 'app/assets/logo-mono.svg'), 'utf8')
+    const brandSvg = await readFile(path.join(root, 'app/assets/logo.svg'), 'utf8')
+    const brandMonoSvg = await readFile(path.join(root, 'app/assets/logo-mono.svg'), 'utf8')
     const googleFontsUrl = buildGoogleFontsUrl(chosenChassis)
 
-    const mockupPath = path.join(ROOT, 'signals', 'today.mockup.html')
+    const mockupPath = path.join(root, 'signals', 'today.mockup.html')
     const mockupCtxBase = {
       enrichedBrief,
       tokenContext,
@@ -1374,7 +1381,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       tasteMemoryBlock,
       polishRef: refPolish,
       systemPrompt: mockupDesignerSystemPrompt,
-      failureDumpPath: path.join(ROOT, 'signals', 'mockup-designer-last-failed.txt'),
+      failureDumpPath: path.join(root, 'signals', 'mockup-designer-last-failed.txt'),
     }
 
     let mockup
@@ -1405,7 +1412,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           break
         }
         console.error(`  Mockup Designer failed (round ${round}): ${err.message}`)
-        await restore(originalBackup)
+        await restore(originalBackup, { root })
         throw new Error(`Mockup Designer failed: ${err.message}`)
       }
       await writeFile(mockupPath, mockup.mockupHtml, 'utf8')
@@ -1574,12 +1581,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           )
         } catch (retryErr) {
           console.error(`  React Engineer failed after stall retry: ${retryErr.message}`)
-          await restore(originalBackup)
+          await restore(originalBackup, { root })
           throw new Error(`React Engineer failed after stall retry: ${retryErr.message}`)
         }
       } else {
         console.error(`  React Engineer failed: ${err.message}`)
-        await restore(originalBackup)
+        await restore(originalBackup, { root })
         throw new Error(`React Engineer failed: ${err.message}`)
       }
     }
@@ -1628,7 +1635,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     // Write all files. Orchestrator-owned paths are dropped first — the
     // engineer is told not to emit them and nothing used to check.
-    for (const p of await writeEngineerFiles(engineerResult, 'React Engineer')) writtenPaths.add(p)
+    for (const p of await writeEngineerFiles(engineerResult, 'React Engineer', { root }))
+      writtenPaths.add(p)
 
     trace.addStep({
       name: 'react-engineer',
@@ -1646,10 +1654,10 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     })
 
     // Verify Layout.tsx was written (critical for the site to function)
-    const layoutPath = path.join(ROOT, 'app/components/Layout.tsx')
+    const layoutPath = path.join(root, 'app/components/Layout.tsx')
     if (!existsSync(layoutPath)) {
-      await cleanupOrphans(writtenPaths, originalBackup)
-      await restore(originalBackup)
+      await cleanupOrphans(writtenPaths, originalBackup, { root })
+      await restore(originalBackup, { root })
       throw new Error('React Engineer did not produce Layout.tsx — site cannot function without it')
     }
 
@@ -1657,7 +1665,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // Phase 4: Build validation
     // -----------------------------------------------------------------------
     console.log('\n[phase-4] Build validation')
-    const buildResult = validateBuild({ shell: shellDecl, date: today })
+    const buildResult = validateBuild({ root, shell: shellDecl, date: today })
 
     trace.addStep({
       name: 'build-validation',
@@ -1674,7 +1682,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
     // archive artifacts, persist the archetype, shape the return value.
     // Behavior is identical between callers apart from the rationale suffix.
     async function archiveAndReturn(filesResult, rationaleSuffix = '') {
-      await captureOgCard(today)
+      await captureOgCard(today, { root })
 
       // __root.tsx was written (and possibly rewritten, on a codegen retry)
       // before the capture above ran, so its og:image named today's PNG on
@@ -1688,15 +1696,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           date: today,
           heroCopy: artDirectorResult.heroCopy,
           designBrief: artDirectorResult.designBrief,
-          root: ROOT,
+          root,
         })
         const finalRootSrc = renderRootTemplate(
           buildGoogleFontsUrl(chosenChassis),
           finalOgMeta,
-          countArchivedDesigns()
+          countArchivedDesigns(path.join(root, 'archive'))
         )
-        await writeFile(path.join(ROOT, 'app/routes/__root.tsx'), finalRootSrc, 'utf8')
-        formatGeneratedFile('app/routes/__root.tsx')
+        await writeFile(path.join(root, 'app/routes/__root.tsx'), finalRootSrc, 'utf8')
+        formatGeneratedFile('app/routes/__root.tsx', { root })
       } catch (err) {
         console.warn(`  __root.tsx og-image fallback check failed (non-blocking): ${err.message}`)
       }
@@ -1716,7 +1724,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       //
       // Descriptive only: never validated or enforced. The load-bearing
       // structural record is composition.json.
-      await writeArchetype(today, chosenArchetype)
+      await writeArchetype(today, chosenArchetype, { root })
 
       // `today` is runDate(signals). The five raw reads of the signals' date
       // field this replaces behaved differently on a missing date: path.join
@@ -1746,7 +1754,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           heroSource: artDirectorResult.heroSource,
           chosenComposition,
           chosenLane,
-        })
+        }),
+        { root }
       )
       archiveRan = true
 
@@ -1782,7 +1791,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       async function measureSurfaces(round) {
         try {
           const t0Gate = Date.now()
-          const gate = await runSurfaceGate()
+          const gate = await runSurfaceGate({ root })
           console.log(
             `  [surface-gate] round ${round}: ${gate.measured} measurements, ${gate.errorCount} error(s) in ${((Date.now() - t0Gate) / 1000).toFixed(1)}s`
           )
@@ -1859,7 +1868,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         // a missing/unreadable reference just means no calibration question.
         let bestReference = null
         try {
-          const found = findBestRatedReference(path.join(ROOT, 'references'))
+          const found = findBestRatedReference(path.join(root, 'references'))
           if (found) {
             bestReference = { buffer: await readFile(found.path), description: found.description }
             console.log(
@@ -1882,7 +1891,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         try {
           const { captureRouteScreenshot } = await import('./utils/snapshot.js')
           const { listGeneratedRoutes } = await import('./utils/surface-gate.js')
-          const slugRoute = (await listGeneratedRoutes()).find((r) => r.route.startsWith('/work/'))
+          const slugRoute = (await listGeneratedRoutes(root)).find((r) =>
+            r.route.startsWith('/work/')
+          )
           const extra = [
             slugRoute ? { label: 'A project page', route: slugRoute.route, w: 1440, h: 900 } : null,
             { label: 'The share card', route: '/og', w: 1200, h: 630 },
@@ -2048,11 +2059,13 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
                 feedback,
                 config.options
               )
-              for (const p of await writeEngineerFiles(retryResult, 'React Engineer revision'))
+              for (const p of await writeEngineerFiles(retryResult, 'React Engineer revision', {
+                root,
+              }))
                 writtenPaths.add(p)
               engineerResult = retryResult
 
-              const retryBuild = validateBuild({ shell: shellDecl, date: today })
+              const retryBuild = validateBuild({ root, shell: shellDecl, date: today })
               if (!retryBuild.success) {
                 console.warn(
                   '  post-critic revision broke the build — restoring known-passing state'
@@ -2061,16 +2074,16 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
                 // build — NOT originalBackup. cleanupOrphans against the same
                 // snapshot deletes any paths the failed revision invented
                 // beyond it.
-                await cleanupOrphans(writtenPaths, passingBackup)
-                await restore(passingBackup)
+                await cleanupOrphans(writtenPaths, passingBackup, { root })
+                await restore(passingBackup, { root })
                 engineerResult = passingEngineerResult
 
                 // Prove the restored state actually rebuilds — falling
                 // through to archive() on faith is how broken hybrids ship.
-                const restoredBuild = validateBuild({ shell: shellDecl, date: today })
+                const restoredBuild = validateBuild({ root, shell: shellDecl, date: today })
                 if (!restoredBuild.success) {
-                  await cleanupOrphans(writtenPaths, originalBackup)
-                  await restore(originalBackup)
+                  await cleanupOrphans(writtenPaths, originalBackup, { root })
+                  await restore(originalBackup, { root })
                   const fatal = new Error(
                     `Restore of passing state failed to rebuild after post-critic revision. Error:\n${restoredBuild.error?.slice(0, 1000)}`
                   )
@@ -2109,8 +2122,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
               console.warn(`  ${responsibleAgent} revision failed (non-blocking): ${err.message}`)
               // A mid-batch writeFiles abort can leave a partial hybrid on
               // disk — put the known-passing state back before shipping.
-              await cleanupOrphans(writtenPaths, passingBackup)
-              await restore(passingBackup)
+              await cleanupOrphans(writtenPaths, passingBackup, { root })
+              await restore(passingBackup, { root })
               engineerResult = passingEngineerResult
             }
           }
@@ -2131,7 +2144,9 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       // paths the agents wrote). If a post-critic revision breaks the build we
       // restore THIS — originalBackup holds yesterday's files, incompatible
       // with today's preset.ts.
-      const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])
+      const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])], {
+        root,
+      })
       await runScreenshotCriticGate(passingBackup)
       // MUST await: a bare `return promise` inside this try/finally lets the
       // finally (saveTrace) run while archiveAndReturn is still archiving —
@@ -2163,7 +2178,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         filesToRestore.set(filePath, content)
       }
     }
-    await restore(filesToRestore)
+    await restore(filesToRestore, { root })
 
     // Build agent lookup for retry. Per-agent `options` carry the model +
     // timeout overrides so new agents added later don't need re-wiring at the
@@ -2224,15 +2239,15 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         // validateBuild — bail out with the real error so debugging points
         // at the actual cause (code review #14).
         await archiveFailedSources(writtenPaths)
-        await cleanupOrphans(writtenPaths, originalBackup)
-        await restore(originalBackup)
+        await cleanupOrphans(writtenPaths, originalBackup, { root })
+        await restore(originalBackup, { root })
         throw new Error(`react-engineer repair crashed: ${err.message}`)
       }
 
       // The error text handed to a repair has named __root.tsx before, which
       // invites the agent to "fix" a file it does not own; writeEngineerFiles
       // drops it.
-      for (const p of await writeEngineerFiles(retryResult, 'React Engineer repair'))
+      for (const p of await writeEngineerFiles(retryResult, 'React Engineer repair', { root }))
         writtenPaths.add(p)
       // Update the result so the archive records the repair output, not stale originals
       engineerResult = retryResult
@@ -2253,10 +2268,12 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         continue
       }
 
-      const attemptBuild = validateBuild({ shell: shellDecl, date: today })
+      const attemptBuild = validateBuild({ root, shell: shellDecl, date: today })
       if (attemptBuild.success) {
         console.log(`\n=== Repair build passed on attempt ${attempt}! ===`)
-        const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])])
+        const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])], {
+          root,
+        })
         await runScreenshotCriticGate(passingBackup)
         // await required — see first-pass call site
         return await archiveAndReturn(engineerResult, ` (repair ${attempt})`)
@@ -2268,8 +2285,8 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
 
     // All attempts exhausted — snapshot the failing sources, then restore and throw
     await archiveFailedSources(writtenPaths)
-    await cleanupOrphans(writtenPaths, originalBackup)
-    await restore(originalBackup)
+    await cleanupOrphans(writtenPaths, originalBackup, { root })
+    await restore(originalBackup, { root })
     throw new Error(
       `Build failed after ${attempt} repair attempt(s). Error:\n${repairError?.slice(0, 2500)}`
     )

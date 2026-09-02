@@ -103,12 +103,13 @@ export function validateWritePath(relPath) {
  * Read each file in filePaths. Returns Map<relativePath, content|null>.
  * null means the file did not exist at backup time.
  * @param {string[]} filePaths - relative paths from repo root
+ * @param {{ root?: string }} [options] repo root to read under
  * @returns {Promise<Map<string, string|null>>}
  */
-export async function backup(filePaths) {
+export async function backup(filePaths, { root = ROOT } = {}) {
   const map = new Map()
   for (const relPath of filePaths) {
-    const absPath = path.join(ROOT, relPath)
+    const absPath = path.join(root, relPath)
     if (existsSync(absPath)) {
       const content = await readFile(absPath, 'utf8')
       map.set(relPath, content)
@@ -153,10 +154,11 @@ export async function writeFiles(filesArray, { root = ROOT } = {}) {
  * Restore files from a backup Map.
  * Files that were null in the backup (did not exist before) are deleted.
  * @param {Map<string, string|null>} backupMap
+ * @param {{ root?: string }} [options] repo root to write under
  */
-export async function restore(backupMap) {
+export async function restore(backupMap, { root = ROOT } = {}) {
   for (const [relPath, content] of backupMap.entries()) {
-    const absPath = path.join(ROOT, relPath)
+    const absPath = path.join(root, relPath)
     if (content === null) {
       // File didn't exist before — delete it if it now exists
       if (existsSync(absPath)) {
@@ -180,12 +182,13 @@ export async function restore(backupMap) {
  *
  * @param {Set<string>|string[]} writtenPaths - all paths written in this run
  * @param {Map<string, string|null>} backupMap - the original backup
+ * @param {{ root?: string }} [options] repo root to delete under
  */
-export async function cleanupOrphans(writtenPaths, backupMap) {
+export async function cleanupOrphans(writtenPaths, backupMap, { root = ROOT } = {}) {
   const paths = writtenPaths instanceof Set ? writtenPaths : new Set(writtenPaths)
   for (const relPath of paths) {
     if (backupMap.has(relPath)) continue // covered by restore()
-    const absPath = path.join(ROOT, relPath)
+    const absPath = path.join(root, relPath)
     if (existsSync(absPath)) {
       try {
         await unlink(absPath)
