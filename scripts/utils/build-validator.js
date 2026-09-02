@@ -639,7 +639,7 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
   // prompt is taught otherwise. Making it blocking is changing `console.warn`
   // to `errors.push` — worth doing once a green run confirms a clean baseline.
   try {
-    const unknownTokens = checkTokenExistence({ root: ROOT, files: MUTABLE_FILES })
+    const unknownTokens = checkTokenExistence({ root, files: MUTABLE_FILES })
     for (const { file, prop, value, category } of unknownTokens) {
       console.warn(
         `  ⚠ ${file}: ${prop}: '${value}' is not a token (no ${category}.${value}) — Panda emits the bare string and the browser drops the declaration`
@@ -679,9 +679,13 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
  *
  * @returns {{ success: boolean, error?: string }}
  */
-export function validateBuild({ shell = null, date = localDateString(new Date()) } = {}) {
+export function validateBuild({
+  root = ROOT,
+  shell = null,
+  date = localDateString(new Date()),
+} = {}) {
   // Run pre-build checks first
-  const preCheck = validateGenerated({ shell })
+  const preCheck = validateGenerated({ root, shell })
   if (!preCheck.success) {
     return preCheck
   }
@@ -742,7 +746,7 @@ export function validateBuild({ shell = null, date = localDateString(new Date())
   // An AI designer can produce a preset that compiles but renders blank
   // pages, or an __root.tsx that omits Scripts so the page never hydrates.
   // Run smoke checks on the built output before declaring success.
-  const smokeCheck = validateBuildOutput()
+  const smokeCheck = validateBuildOutput({ root })
   if (!smokeCheck.success) {
     console.log('  build output smoke check failed')
     for (const e of smokeCheck.errors) console.log(`  ✗ ${e}`)
@@ -870,97 +874,109 @@ export function runStaticChecks({ spawn = spawnSync, root = ROOT } = {}) {
 }
 
 /**
- * Post-build smoke checks: verify the built output is actually usable.
- * Runs after `pnpm build` exits 0 but before we declare success.
+ * Check 1 of `validateBuildOutput`: dist/client must exist and be non-empty.
+ * Returns errors, if any; a non-empty result means the caller should stop
+ * (nothing under dist/client to check further).
  *
- * Catches cases where the build compiles but produces unusable output —
- * blank pages, missing asset bundles, or a SPA shell with no scripts.
- *
- * @returns {{ success: boolean, errors: string[] }}
+ * @param {string} distClient
+ * @returns {string[]}
  */
-export function validateBuildOutput() {
-  const errors = []
-  const distClient = resolve(ROOT, 'dist/client')
-
-  // Check 1: dist/client must exist
+function checkDistClientExists(distClient) {
   try {
     const entries = readdirSync(distClient)
-    if (entries.length === 0) {
-      errors.push('dist/client/ is empty — build produced no output')
-      return { success: false, errors }
-    }
+    if (entries.length === 0) return ['dist/client/ is empty — build produced no output']
+    return []
   } catch (err) {
-    errors.push(`dist/client/ does not exist: ${err.message}`)
-    return { success: false, errors }
+    return [`dist/client/ does not exist: ${err.message}`]
   }
+}
 
-  // Check 2: SPA shell HTML must exist and contain expected markers
+/**
+ * Check 2 of `validateBuildOutput`: the SPA shell HTML exists and carries
+ * what hydration needs — a body to mount into and a script tag to load.
+ *
+ * @param {string} distClient
+ * @returns {string[]}
+ */
+function checkSpaShell(distClient) {
   const shellPath = resolve(distClient, '_shell.html')
   const indexPath = resolve(distClient, 'index.html')
   let shellHtml = ''
   try {
     shellHtml = readFileSync(existsSync(shellPath) ? shellPath : indexPath, 'utf8')
   } catch {
-    errors.push('dist/client/_shell.html and index.html are both missing')
-    return { success: false, errors }
+    return ['dist/client/_shell.html and index.html are both missing']
   }
 
+  const errors = []
   if (shellHtml.length < 500) {
     errors.push(
       `SPA shell HTML is suspiciously small (${shellHtml.length} bytes) — likely empty or malformed`
     )
   }
-
   // Must load client JS for hydration
   if (!shellHtml.includes('<script') && !shellHtml.includes('modulepreload')) {
     errors.push('SPA shell has no <script> or modulepreload tags — client JS will not load')
   }
-
   // Must have a root/mount point
   if (!shellHtml.match(/<body[^>]*>/)) {
     errors.push('SPA shell has no <body> tag')
   }
+  return errors
+}
 
-  // Check 3: asset bundles must exist
+/**
+ * Check 3 of `validateBuildOutput`: asset bundles exist, and the CSS bundle
+ * carries meaningful content. A preset with empty globalCss + no semantic
+ * tokens still emits utility CSS from component usage, but the total stays
+ * under ~1KB. Healthy builds produce 5-15KB. The 2KB floor catches "preset
+ * produced no CSS" without false positives on legitimately small builds.
+ *
+ * @param {string} distClient
+ * @returns {string[]}
+ */
+function checkAssetBundles(distClient) {
   const assetsDir = resolve(distClient, 'assets')
   try {
     const assets = readdirSync(assetsDir)
     const hasJS = assets.some((f) => f.endsWith('.js'))
     const cssFiles = assets.filter((f) => f.endsWith('.css'))
+    const errors = []
     if (!hasJS) errors.push('dist/client/assets/ has no .js bundles')
     if (cssFiles.length === 0) {
       errors.push('dist/client/assets/ has no .css bundles')
-    } else {
-      // Check 4: CSS bundle must contain meaningful content. A preset with
-      // empty globalCss + no semantic tokens still emits utility CSS from
-      // component usage, but the total stays under ~1KB. Healthy builds
-      // produce 5-15KB. The 2KB floor catches "preset produced no CSS"
-      // without false positives on legitimately small builds.
-      const totalCssBytes = cssFiles.reduce(
-        (sum, f) => sum + statSync(resolve(assetsDir, f)).size,
-        0
-      )
-      const MIN_CSS_BYTES = 2000
-      if (totalCssBytes < MIN_CSS_BYTES) {
-        errors.push(
-          `CSS bundles total only ${totalCssBytes} bytes (minimum ${MIN_CSS_BYTES}). ` +
-            'The preset likely produced no globalCss or semanticTokens — site will render unstyled.'
-        )
-      }
+      return errors
     }
+    const totalCssBytes = cssFiles.reduce((sum, f) => sum + statSync(resolve(assetsDir, f)).size, 0)
+    const MIN_CSS_BYTES = 2000
+    if (totalCssBytes < MIN_CSS_BYTES) {
+      errors.push(
+        `CSS bundles total only ${totalCssBytes} bytes (minimum ${MIN_CSS_BYTES}). ` +
+          'The preset likely produced no globalCss or semanticTokens — site will render unstyled.'
+      )
+    }
+    return errors
   } catch (err) {
-    errors.push(`dist/client/assets/ missing or unreadable: ${err.message}`)
+    return [`dist/client/assets/ missing or unreadable: ${err.message}`]
   }
+}
 
-  // Check 5: every token name in the emitted CSS actually resolved.
-  //
-  // A build can exit 0, produce a healthy 30KB stylesheet, and still ship
-  // `font-size:5xl` — Panda passes an unknown token through as a literal and
-  // the browser drops the declaration. On 2026-08-30 that put the home hero at
-  // 32px on mobile against an approved 64px mockup, and nothing noticed. See
-  // scripts/utils/token-gate.js and #252.
+/**
+ * Check 4 of `validateBuildOutput`: every token name in the emitted CSS
+ * actually resolved.
+ *
+ * A build can exit 0, produce a healthy 30KB stylesheet, and still ship
+ * `font-size:5xl` — Panda passes an unknown token through as a literal and
+ * the browser drops the declaration. On 2026-08-30 that put the home hero at
+ * 32px on mobile against an approved 64px mockup, and nothing noticed. See
+ * scripts/utils/token-gate.js and #252.
+ *
+ * @param {string} root
+ * @returns {string[]}
+ */
+function checkEmittedTokensResolve(root) {
   try {
-    const gate = checkTokenResolution({ root: ROOT, ownedFiles: MUTABLE_FILES })
+    const gate = checkTokenResolution({ root, ownedFiles: MUTABLE_FILES })
     for (const w of gate.warnings) {
       const what =
         w.kind === 'numeric'
@@ -971,12 +987,38 @@ export function validateBuildOutput() {
           ' (not a file the nightly agents own, so not blocking)'
       )
     }
-    if (!gate.ok) errors.push(gate.error)
-    else if (gate.warnings.length === 0) console.log('  every token in the emitted CSS resolved')
+    if (!gate.ok) return [gate.error]
+    if (gate.warnings.length === 0) console.log('  every token in the emitted CSS resolved')
+    return []
   } catch (err) {
     // A gate that throws must not be the reason a good build is thrown away.
     console.warn(`  token resolution gate skipped: ${err.message}`)
+    return []
   }
+}
+
+/**
+ * Post-build smoke checks: verify the built output is actually usable.
+ * Runs after `pnpm build` exits 0 but before we declare success.
+ *
+ * Catches cases where the build compiles but produces unusable output —
+ * blank pages, missing asset bundles, or a SPA shell with no scripts.
+ *
+ * @param {{ root?: string }} [options] where the build was written; tests pass
+ *   a temp tree so this reads that instead of the real repo's `dist/client`.
+ * @returns {{ success: boolean, errors: string[] }}
+ */
+export function validateBuildOutput({ root = ROOT } = {}) {
+  const distClient = resolve(root, 'dist/client')
+
+  const distErrors = checkDistClientExists(distClient)
+  if (distErrors.length > 0) return { success: false, errors: distErrors }
+
+  const errors = [
+    ...checkSpaShell(distClient),
+    ...checkAssetBundles(distClient),
+    ...checkEmittedTokensResolve(root),
+  ]
 
   return { success: errors.length === 0, errors }
 }
