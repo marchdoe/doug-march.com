@@ -1,6 +1,10 @@
 import { readFileSync } from 'node:fs'
 import { describe, it, expect, vi } from 'vitest'
-import { runStaticChecks, STATIC_CHECK_PATHS } from '../../scripts/utils/build-validator.js'
+import {
+  runStaticChecks,
+  STATIC_CHECK_PATHS,
+  formatGeneratedFile,
+} from '../../scripts/utils/build-validator.js'
 
 /** A spawnSync stand-in keyed on the tool being invoked. */
 function fakeSpawn({ biome = {}, tsc = {} } = {}) {
@@ -92,6 +96,40 @@ describe('runStaticChecks', () => {
     const { spawn } = fakeSpawn({ tsc: { status: 2, stdout: 'x'.repeat(10000) } })
     const result = runStaticChecks({ spawn, root: '/repo' })
     expect(result.error.length).toBeLessThan(3500)
+  })
+})
+
+describe('formatGeneratedFile', () => {
+  /** A spawnSync stand-in that records the call and returns a fixed result. */
+  function fakeSpawn({ status = 0, stdout = '', stderr = '' } = {}) {
+    const calls = []
+    const spawn = vi.fn((cmd, args) => {
+      calls.push([cmd, ...args])
+      return { status, stdout, stderr }
+    })
+    return { spawn, calls }
+  }
+
+  it('runs biome format --write on the given path', () => {
+    const { spawn, calls } = fakeSpawn()
+    formatGeneratedFile('app/routes/__root.tsx', { spawn, root: '/repo' })
+    expect(calls).toEqual([['pnpm', 'exec', 'biome', 'format', '--write', 'app/routes/__root.tsx']])
+  })
+
+  it('returns success on a clean exit', () => {
+    const { spawn } = fakeSpawn()
+    const result = formatGeneratedFile('app/routes/__root.tsx', { spawn, root: '/repo' })
+    expect(result).toEqual({ success: true, output: '' })
+  })
+
+  it('returns success: false without throwing on a non-zero exit', () => {
+    const { spawn } = fakeSpawn({ status: 1, stderr: 'biome: could not parse file' })
+    expect(() =>
+      formatGeneratedFile('app/components/BrandLockup.tsx', { spawn, root: '/repo' })
+    ).not.toThrow()
+    const result = formatGeneratedFile('app/components/BrandLockup.tsx', { spawn, root: '/repo' })
+    expect(result.success).toBe(false)
+    expect(result.output).toContain('could not parse file')
   })
 })
 

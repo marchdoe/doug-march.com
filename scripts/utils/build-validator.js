@@ -1131,6 +1131,33 @@ export function runStaticChecks({ spawn = spawnSync, root = ROOT } = {}) {
 }
 
 /**
+ * Format one generated file in place. For the files the orchestrator writes
+ * from a frozen template (`__root.tsx`, `BrandLockup.tsx`) rather than an
+ * agent — `runStaticChecks` only covers whatever exists on disk at the point
+ * it runs, so any write after that point ships unformatted. Formatting at
+ * the write site holds regardless of where a later rewrite turns out to be.
+ *
+ * Never throws: a formatting failure is logged and swallowed rather than
+ * blocking the run, the same tradeoff `runStaticChecks` makes for lint.
+ *
+ * @param {string} relPath - path relative to `root`, e.g. 'app/routes/__root.tsx'
+ * @param {{ spawn?: typeof spawnSync, root?: string }} [deps] injectable for tests
+ * @returns {{ success: boolean, output: string }}
+ */
+export function formatGeneratedFile(relPath, { spawn = spawnSync, root = ROOT } = {}) {
+  const result = spawn('pnpm', ['exec', 'biome', 'format', '--write', relPath], {
+    cwd: root,
+    encoding: 'utf8',
+  })
+  const output = (result.stdout ?? '') + (result.stderr ?? '')
+  if (result.status !== 0) {
+    console.warn(`  formatGeneratedFile: biome format failed for ${relPath} (non-blocking)`)
+    return { success: false, output }
+  }
+  return { success: true, output }
+}
+
+/**
  * Check 1 of `validateBuildOutput`: dist/client must exist and be non-empty.
  * Returns errors, if any; a non-empty result means the caller should stop
  * (nothing under dist/client to check further).
