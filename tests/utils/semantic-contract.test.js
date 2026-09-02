@@ -85,6 +85,17 @@ describe('parsePresetSemanticColors', () => {
     expect(parsePresetSemanticColors('export const x = 1')).toEqual([])
     expect(parsePresetSemanticColors('semanticTokens: { fonts: {} }')).toEqual([])
   })
+
+  it('is not thrown off by a comment holding an unbalanced brace (#318)', () => {
+    const source = `semanticTokens: {
+      colors: {
+        /* legacy note: this used to read { base: '#000' } */
+        bg: { value: '#000' },
+        text: { value: '#fff' },
+      },
+    }`
+    expect(parsePresetSemanticColors(source)).toEqual(['bg', 'text'])
+  })
 })
 
 describe('checkPresetContract', () => {
@@ -99,6 +110,31 @@ describe('checkPresetContract', () => {
     const r = checkPresetContract(presetWith(SEMANTIC_COLOR_NAMES.filter((n) => n !== 'textFaint')))
     expect(r.ok).toBe(false)
     expect(r.missing).toEqual(['textFaint'])
+  })
+
+  it('reports exactly the one real missing name, not all fifteen, when a comment in the block holds an unbalanced brace (#318)', () => {
+    const names = SEMANTIC_COLOR_NAMES.filter((n) => n !== 'textFaint')
+    const entries = names
+      .map(
+        (n) => `        ${n}: { value: { base: '{colors.sand.900}', _light: '{colors.sand.50}' } },`
+      )
+      .join('\n')
+    const source = `import { definePreset } from '@pandacss/dev'
+export const elementsPreset = definePreset({
+  name: 'elements',
+  theme: {
+    tokens: { colors: { sand: { 50: { value: '#fff' }, 900: { value: '#000' } } } },
+    semanticTokens: {
+      colors: {
+        /* legacy note: this role used to read { base: '#000' } */
+${entries}
+      },
+    },
+  },
+})`
+    const r = checkPresetContract(source)
+    expect(r.missing).toEqual(['textFaint'])
+    expect(r.extra).toEqual([])
   })
 
   it('reports an invented name, which is the drift this exists to stop', () => {

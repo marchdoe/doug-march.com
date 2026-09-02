@@ -15,6 +15,7 @@ import {
 } from './token-gate.js'
 import { MUTABLE_FILES, ORCHESTRATOR_FILES } from './site-context.js'
 import { MARK_PATH_FINGERPRINTS, lockupIsDeclared } from './brand-lockup.js'
+import { parseObjectLiteral } from './preset-parser.js'
 import {
   SEMANTIC_COLOR_NAMES,
   checkPresetContract,
@@ -255,26 +256,28 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
         // Find if this category appears in semantic tokens
         const catRegex = new RegExp(`${category}\\s*:\\s*\\{`, 'g')
         for (const catMatch of semanticSection.matchAll(catRegex)) {
-          // Get the block content (rough — find matching brace)
-          const blockStart = catMatch.index
-          let depth = 0
-          let blockEnd = blockStart
-          for (let i = catMatch.index + catMatch[0].length - 1; i < semanticSection.length; i++) {
-            if (semanticSection[i] === '{') depth++
-            if (semanticSection[i] === '}') depth--
-            if (depth === 0) {
-              blockEnd = i
-              break
-            }
+          // Parse the block itself (preset-parser.js) rather than counting
+          // braces by hand — a hand-rolled counter treats a brace inside a
+          // comment or a string as a real one, which misplaces the close and
+          // was reporting a matching contract name as missing over nothing
+          // but a comment (#318).
+          const openBrace = catMatch.index + catMatch[0].length - 1
+          let block
+          try {
+            block = parseObjectLiteral(semanticSection, openBrace)
+          } catch {
+            continue
           }
-          const block = semanticSection.slice(blockStart, blockEnd + 1)
 
-          // Check for self-references within this block
-          const localPattern = new RegExp(`'\\{${category}\\.(\\w+)\\}'`, 'g')
-          for (const refMatch of block.matchAll(localPattern)) {
-            const tokenName = refMatch[1]
-            // Check if this token name appears as a key in this block
-            if (block.match(new RegExp(`${tokenName}\\s*:`))) {
+          // Check for self-references: a value of exactly '{category.tokenName}'
+          // under that same tokenName, whether written bare or wrapped in
+          // `{ value: ... }`.
+          for (const [tokenName, rawValue] of Object.entries(block)) {
+            const value =
+              rawValue !== null && typeof rawValue === 'object' && 'value' in rawValue
+                ? rawValue.value
+                : rawValue
+            if (value === `{${category}.${tokenName}}`) {
               errors.push(
                 `Circular token: semanticTokens.${category}.${tokenName} references '{${category}.${tokenName}}' (self-reference breaks PandaCSS)`
               )
