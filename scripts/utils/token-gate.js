@@ -527,6 +527,39 @@ export function readGeneratedTokenScales(root) {
  * @param {Record<string, Set<string>>} scales token keys by category
  * @returns {Array<{prop: string, value: string, category: string}>}
  */
+// Characters that can legally precede a `'` / `"` / regex opening — an
+// assignment, an opening bracket, a separator, an operator. A quote seen
+// anywhere else (after a word character, `>`, a closing quote, …) is prose,
+// not the start of a string — `Doug's studio` and `<p>It's here</p>` are the
+// motivating cases. Also permitted at the very start of the source.
+const CAN_OPEN_STRING = new Set(['=', '(', ',', ':', '[', '{', '|', '&', '?', '+', ';'])
+
+/**
+ * Find the end of a `/regex/` literal starting at `source[start]`, or -1 if
+ * `start` is not a regex opening (division, or an unterminated `/`). A `/`
+ * inside a `[...]` character class does not end the literal; regex literals
+ * cannot span a line.
+ *
+ * @param {string} source
+ * @param {number} start index of the opening `/`
+ * @returns {number} index of the closing `/`, or -1
+ */
+function findRegexEnd(source, start) {
+  let inClass = false
+  for (let i = start + 1; i < source.length; i++) {
+    const c = source[i]
+    if (c === '\n') return -1
+    if (c === '\\') {
+      i++
+      continue
+    }
+    if (c === '[') inClass = true
+    else if (c === ']') inClass = false
+    else if (c === '/' && !inClass) return i
+  }
+  return -1
+}
+
 /**
  * Remove comments so the gate reads code, not prose about code.
  *
@@ -536,7 +569,14 @@ export function readGeneratedTokenScales(root) {
  * fires on its own documentation teaches people to delete the documentation.
  *
  * String literals are tracked so a `//` inside one — every https:// URL in
- * the tree — is not mistaken for the start of a comment.
+ * the tree — is not mistaken for the start of a comment. A `'` or `"` only
+ * opens a string when what precedes it looks like a value is expected
+ * (`CAN_OPEN_STRING`, or the start of the source); otherwise — prose in JSX
+ * text, an apostrophe in a comment — it is left alone (#309). Template
+ * literals keep the old, unconditional toggle: a tagged template's backtick
+ * is preceded by an identifier, which the same heuristic would reject. A `/`
+ * in an opening position is checked for a regex literal first, so a character
+ * class like `/['"]/` does not open a fake string.
  *
  * @param {string} source
  * @returns {string} same length, comment bodies blanked
@@ -544,6 +584,7 @@ export function readGeneratedTokenScales(root) {
 export function stripComments(source) {
   let out = ''
   let quote = null
+  let lastSignificant = null
   for (let i = 0; i < source.length; i++) {
     const c = source[i]
     const next = source[i + 1]
@@ -552,10 +593,19 @@ export function stripComments(source) {
       if (c === '\\') {
         out += next ?? ''
         i++
-      } else if (c === quote) quote = null
+      } else if (c === quote) {
+        quote = null
+        lastSignificant = c
+      }
       continue
     }
-    if (c === "'" || c === '"' || c === '`') {
+    const canOpen = lastSignificant === null || CAN_OPEN_STRING.has(lastSignificant)
+    if ((c === "'" || c === '"') && canOpen) {
+      quote = c
+      out += c
+      continue
+    }
+    if (c === '`') {
       quote = c
       out += c
       continue
@@ -573,7 +623,19 @@ export function stripComments(source) {
       i = end < 0 ? source.length : end + 1
       continue
     }
+    if (c === '/' && canOpen) {
+      const end = findRegexEnd(source, i)
+      if (end !== -1) {
+        let flagEnd = end + 1
+        while (flagEnd < source.length && /[a-zA-Z]/.test(source[flagEnd])) flagEnd++
+        out += source.slice(i, flagEnd)
+        lastSignificant = source[flagEnd - 1]
+        i = flagEnd - 1
+        continue
+      }
+    }
     out += c
+    if (!/\s/.test(c)) lastSignificant = c
   }
   return out
 }

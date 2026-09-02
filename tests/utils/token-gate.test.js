@@ -545,4 +545,48 @@ describe('stripComments', () => {
       { prop: 'width', value: '11', category: 'sizes' },
     ])
   })
+
+  it('does not let an apostrophe in JSX text open a fake string (#309)', () => {
+    // Doug's studio: the apostrophe used to open a string that ran to the
+    // next one, swallowing the `//` comment on the next line and never
+    // stripping it, resurrecting the exact false positive this gate exists
+    // to kill.
+    const src =
+      "export function A(){ return <p>Doug's studio</p> }\n" +
+      "// width: '11' was the old spacing token"
+    expect(findNumericScaleMisses(src, { sizes: new Set(), spacing: new Set() })).toEqual([])
+  })
+
+  it('still flags a real numeric miss elsewhere in the file (#309)', () => {
+    const src = "export function A(){ return <p>Doug's studio</p> }\ncss({ width: '11' })"
+    expect(findNumericScaleMisses(src, { sizes: new Set(), spacing: new Set() })).toEqual([
+      { prop: 'width', value: '11', category: 'sizes' },
+    ])
+  })
+
+  it('leaves a `//` inside a real string untouched', () => {
+    const src = "const u = 'https://dougmar.ch/work'"
+    expect(stripComments(src)).toBe(src)
+  })
+
+  it('leaves a `/* */` inside a string untouched', () => {
+    const src = "const s = 'a /* not a comment */ b'"
+    expect(stripComments(src)).toBe(src)
+  })
+
+  it('still strips a real comment after JSX text with apostrophes on two lines', () => {
+    const src =
+      "<p>Doug's studio</p>\n" +
+      "<p>It's here</p>\n" +
+      "// width: '11' was the old spacing token\n" +
+      'export const x = 1'
+    expect(findNumericScaleMisses(src, { sizes: new Set(), spacing: new Set() })).toEqual([])
+  })
+
+  it('does not let a regex character class open a fake string (#309)', () => {
+    const src = "const RE = /['\"]/\nconst w = { width: '11' }"
+    expect(findNumericScaleMisses(src, { sizes: new Set(), spacing: new Set() })).toEqual([
+      { prop: 'width', value: '11', category: 'sizes' },
+    ])
+  })
 })
