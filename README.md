@@ -4,7 +4,7 @@ A portfolio site that redesigns itself every night.
 
 A quarter past midnight Eastern, a pipeline collects the day's signals (weather, sports, the market, the moon, whatever else happened), hands them to an Art Director, and rebuilds the home page, the about page and every project page around what the day contained. Every design it has ever made is preserved at `/archive/<date>/`, with an explainer at `/how/<date>` of what it was given and what it decided. The archive is the point. The current design is one night of it.
 
-Live at [dougmar.ch](https://dougmar.ch). Backlog is [the issues](https://github.com/marchdoe/dougmar.ch/issues); `TODO.md` is the pre-April plan and is not maintained.
+Live at [dougmar.ch](https://dougmar.ch). Backlog is [the issues](https://github.com/marchdoe/dougmar.ch/issues).
 
 ## Running it
 
