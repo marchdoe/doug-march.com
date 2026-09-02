@@ -1,0 +1,10 @@
+{
+  "columns": "single",
+  "axis": "vertical",
+  "symmetry": "broken",
+  "hero_zone": "full-bleed",
+  "density": "sparse",
+  "rhythm": "interrupted",
+  "shell_posture": "folded-into-hero",
+  "field_ratio": "type-dominant"
+}

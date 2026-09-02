@@ -1,205 +1,72 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { SectionLabel, Row, WorkRow, Featured } from '../components/Ledger'
-import { featuredProject, selectedWork, experiments } from '../content/projects'
+import { Nav } from '../components/Nav'
 
 export const Route = createFileRoute('/')({ component: HomePage })
 
 function HomePage() {
-  const totalCount = selectedWork.length + experiments.length + (featuredProject ? 1 : 0)
-
   return (
-    <>
-      <div className={css({ marginBottom: { base: '2', md: '3' } })}>
-        <h2
+    <div
+      className={css({
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        height: '100%',
+        minHeight: { base: 'auto', md: '100%' },
+        paddingX: 'clamp(24px, 6vw, 96px)',
+        paddingY: 'clamp(32px, 8vh, 120px)',
+        gap: 'clamp(28px, 4vh, 52px)',
+        minWidth: 0,
+      })}
+    >
+      <h1
+        className={css({
+          textStyle: 'hero',
+          fontFamily: 'display',
+          fontWeight: '800',
+          color: 'text',
+          maxWidth: '16ch',
+          margin: 0,
+          overflowWrap: 'break-word',
+        })}
+      >
+        Simplicity is the glory
+        <span
           className={css({
-            fontFamily: 'display',
-            fontWeight: 'bold',
-            fontSize: { base: '2xl', md: 'clamp(1.5rem,3vw,2.5rem)' },
-            lineHeight: 'snug',
-            letterSpacing: 'tight',
-            textTransform: 'lowercase',
+            display: 'block',
+            marginLeft: 'clamp(24px, 14vw, 240px)',
             color: 'accent',
           })}
         >
-          the other kind
-          <br />
-          has no time.
-        </h2>
+          of expression.
+        </span>
+      </h1>
+
+      <div className={css({ maxWidth: '44ch', minWidth: 0 })}>
         <p
           className={css({
-            marginTop: '5',
-            maxWidth: '60ch',
+            textStyle: 'xl',
+            fontWeight: '600',
+            color: 'text',
+            margin: 0,
+          })}
+        >
+          — Walt Whitman
+        </p>
+        <p
+          className={css({
+            textStyle: 'base',
             color: 'textMuted',
-            fontSize: 'base',
-            lineHeight: 'loose',
-            borderLeft: '2px solid',
-            borderColor: 'border',
-            paddingLeft: '4',
-          })}
-        >
-          &ldquo;If you want work well done, select a busy man; the other kind has no time.&rdquo;
-        </p>
-        <p
-          className={css({
             marginTop: '2',
-            fontWeight: 'semibold',
-            fontSize: 'xs',
-            letterSpacing: 'wider',
-            textTransform: 'uppercase',
-            color: 'textFaint',
-            paddingLeft: '4',
+            maxWidth: '52ch',
           })}
         >
-          — Elbert Hubbard
+          A portfolio that tears itself down and rebuilds every night, taking the line as both creed
+          and dare — proving restraint in the layout itself.
         </p>
       </div>
 
-      <SectionLabel label="Today's ledger" count="the work got done" />
-      <Row label="Detroit Tigers" main="vs. Cleveland Guardians" value="W 2–1" />
-
-      <div className={css({ padding: '4 0', borderBottom: '1px solid', borderColor: 'border' })}>
-        <div
-          className={css({
-            fontSize: '2xs',
-            letterSpacing: 'wide',
-            textTransform: 'uppercase',
-            color: 'textFaint',
-            marginBottom: '3',
-          })}
-        >
-          TOUR Championship · East Lake
-        </div>
-        {[
-          ['Viktor Hovland', '−15', true],
-          ['Ryan Gerard', '−14', false],
-          ['Adam Scott', '−12', false],
-          ['Ludvig Åberg', '−12', false],
-          ['Scottie Scheffler', '−12', false],
-        ].map(([who, sc, lead]) => (
-          <div
-            key={who as string}
-            className={css({
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'baseline',
-              padding: '1 0',
-            })}
-          >
-            <span
-              className={css({
-                fontSize: 'sm',
-                color: 'text',
-                fontWeight: lead ? 'semibold' : 'normal',
-              })}
-            >
-              {who}
-            </span>
-            <span
-              className={css({
-                fontWeight: 'bold',
-                fontSize: 'md',
-                color: lead ? 'accent' : 'textMuted',
-              })}
-            >
-              {sc}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      <Row label="Markets" main="SPY · S&P 500 ETF" value="−0.23%" muted />
-      <Row label="On rotation" main="My Morning Jacket · Guided by Voices" value="♪" muted />
-
-      <SectionLabel label="The work" count={`${totalCount} shipped & underway`} />
-
-      {featuredProject && (
-        <Featured>
-          <span
-            className={css({
-              fontWeight: 'bold',
-              fontSize: '2xs',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'accent',
-            })}
-          >
-            Featured · {featuredProject.year}
-          </span>
-          <h3
-            className={css({
-              fontFamily: 'display',
-              fontWeight: 'bold',
-              fontSize: { base: 'xl', md: 'clamp(1.5rem,3vw,2rem)' },
-              letterSpacing: 'tight',
-              color: 'text',
-              margin: '3 0 3',
-              textTransform: 'uppercase',
-            })}
-          >
-            {featuredProject.title}
-          </h3>
-          {featuredProject.problem && (
-            <p
-              className={css({
-                color: 'textMuted',
-                fontSize: 'base',
-                lineHeight: 'loose',
-                maxWidth: '52ch',
-              })}
-            >
-              {featuredProject.problem}
-            </p>
-          )}
-          {featuredProject.externalUrl && (
-            <a
-              href={featuredProject.externalUrl}
-              target="_blank"
-              rel="noopener"
-              className={css({
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '2',
-                marginTop: '4',
-                fontWeight: 'bold',
-                fontSize: 'sm',
-                color: 'fieldInk',
-                bg: 'accent',
-                padding: '3 4',
-                _hover: { bg: 'accentAlt' },
-              })}
-            >
-              Visit the live build <span>→</span>
-            </a>
-          )}
-        </Featured>
-      )}
-
-      <div>
-        {selectedWork.map((p) => (
-          <WorkRow
-            key={p.slug}
-            title={p.title}
-            type={p.type}
-            year={p.year}
-            href={`/work/${p.slug}`}
-          />
-        ))}
-      </div>
-
-      <SectionLabel label="Experiments" count="the idle hours, spent anyway" />
-      <div>
-        {experiments.map((p) => (
-          <WorkRow
-            key={p.slug}
-            title={p.title}
-            type={p.type}
-            year={p.year}
-            href={p.externalUrl ?? `/work/${p.slug}`}
-            external={Boolean(p.externalUrl)}
-          />
-        ))}
-      </div>
-    </>
+      <Nav />
+    </div>
   )
 }

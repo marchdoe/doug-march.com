@@ -1,188 +1,251 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { SectionLabel } from '../components/Ledger'
+import { Nav } from '../components/Nav'
 import { projects } from '../content/projects'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkPage })
+export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
 
-function WorkPage() {
+function WorkDetailPage() {
   const { slug } = Route.useParams()
-  const index = projects.findIndex((p) => p.slug === slug)
-  const project = projects[index]
+  const project = projects.find((p) => p.slug === slug)
 
   if (!project) {
-    return (
-      <div className={css({ padding: '6 0' })}>
-        <h1 className={css({ fontFamily: 'display', fontSize: '2xl', color: 'text' })}>
-          Project not found
-        </h1>
-        <a href="/" className={css({ color: 'accent', fontWeight: 'semibold' })}>
-          ← back to index
-        </a>
-      </div>
-    )
+    return <div className={css({ padding: '9', color: 'text' })}>Project not found.</div>
   }
 
-  const prev = projects[(index - 1 + projects.length) % projects.length]
-  const next = projects[(index + 1) % projects.length]
+  const strong = css({ color: 'fieldInk' })
 
   return (
-    <>
-      <SectionLabel
-        label="Case study"
-        count={project.depth === 'full' ? 'full depth' : 'lightweight'}
-      />
+    <div
+      className={css({
+        background: 'field',
+        color: 'fieldInk',
+        minHeight: '100%',
+        paddingX: 'clamp(24px, 6vw, 96px)',
+        paddingY: 'clamp(28px, 6vh, 72px)',
+        minWidth: 0,
+        overflowX: 'hidden',
+      })}
+    >
+      <Nav tone="dark" />
 
       <div
         className={css({
-          display: 'grid',
-          gap: '5',
-          padding: '5 0',
-          borderBottom: '1px solid',
-          borderColor: 'border',
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '2',
+          fontSize: 'xs',
+          textTransform: 'uppercase',
+          letterSpacing: 'wide',
+          color: 'fieldInkMuted',
+          marginTop: 'clamp(28px, 6vh, 64px)',
         })}
       >
-        {project.problem && (
-          <div>
-            <h3 className={sectionTitle}>Problem</h3>
-            <p className={sectionBody}>{project.problem}</p>
-          </div>
-        )}
-        {project.approach && (
-          <div>
-            <h3 className={sectionTitle}>Approach</h3>
-            <p className={sectionBody}>{project.approach}</p>
-          </div>
-        )}
-        {project.outcome && (
-          <div>
-            <h3 className={sectionTitle}>Outcome</h3>
-            <p className={sectionBody}>{project.outcome}</p>
-          </div>
+        <span>{project.type}</span>
+        <span>·</span>
+        <span>{project.year}</span>
+        {project.liveUrl && (
+          <>
+            <span>·</span>
+            <a
+              href={project.liveUrl}
+              className={css({ color: 'fieldInk', textDecoration: 'underline' })}
+            >
+              Visit ↗
+            </a>
+          </>
         )}
       </div>
 
-      {project.stack && project.stack.length > 0 && (
-        <div className={css({ padding: '4 0', borderBottom: '1px solid', borderColor: 'border' })}>
-          <h3 className={sectionTitle}>Stack</h3>
-          <div className={css({ display: 'flex', flexWrap: 'wrap', gap: '2', marginTop: '2' })}>
-            {project.stack.map((s) => (
-              <span
-                key={s}
-                className={css({
-                  fontSize: '2xs',
-                  fontWeight: 'semibold',
-                  letterSpacing: 'wider',
-                  textTransform: 'uppercase',
-                  color: 'textMuted',
-                  border: '1px solid',
-                  borderColor: 'border',
-                  padding: '1 2',
-                })}
-              >
-                {s}
-              </span>
-            ))}
+      <h1
+        className={css({
+          textStyle: 'hero',
+          fontFamily: 'display',
+          fontWeight: '800',
+          color: 'fieldInk',
+          marginTop: '4',
+          maxWidth: '20ch',
+          overflowWrap: 'break-word',
+        })}
+      >
+        {project.title}
+      </h1>
+
+      {project.problem && (
+        <p
+          className={css({
+            textStyle: 'xl',
+            color: 'fieldInkMuted',
+            marginTop: '6',
+            maxWidth: '50ch',
+          })}
+        >
+          {project.problem}
+        </p>
+      )}
+
+      {project.approach && (
+        <section className={css({ marginTop: '9', maxWidth: '60ch' })}>
+          <div
+            className={css({
+              fontSize: '2xs',
+              textTransform: 'uppercase',
+              letterSpacing: 'wide',
+              color: 'fieldInkMuted',
+              marginBottom: '2',
+            })}
+          >
+            Approach
           </div>
+          <p className={css({ fontSize: 'base', color: 'fieldInk', lineHeight: 'loose' })}>
+            {project.approach}
+          </p>
+        </section>
+      )}
+
+      {project.outcome && (
+        <section className={css({ marginTop: '6', maxWidth: '60ch' })}>
+          <div
+            className={css({
+              fontSize: '2xs',
+              textTransform: 'uppercase',
+              letterSpacing: 'wide',
+              color: 'fieldInkMuted',
+              marginBottom: '2',
+            })}
+          >
+            Outcome
+          </div>
+          <p className={css({ fontSize: 'base', color: 'fieldInk', lineHeight: 'loose' })}>
+            {project.outcome}
+          </p>
+        </section>
+      )}
+
+      {project.role && (
+        <div className={css({ marginTop: '6', fontSize: 'sm', color: 'fieldInkMuted' })}>
+          Role: <b className={strong}>{project.role}</b>
         </div>
       )}
 
-      {project.liveUrl && (
-        <a
-          href={project.liveUrl}
-          target="_blank"
-          rel="noopener"
-          className={css({
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '2',
-            marginTop: '5',
-            fontWeight: 'bold',
-            fontSize: 'sm',
-            color: 'fieldInk',
-            bg: 'accent',
-            padding: '3 4',
-            _hover: { bg: 'accentAlt' },
-          })}
-        >
-          Visit live <span>→</span>
-        </a>
-      )}
-      {project.githubUrl && (
-        <a
-          href={project.githubUrl}
-          target="_blank"
-          rel="noopener"
-          className={css({
-            display: 'block',
-            marginTop: '3',
-            color: 'textMuted',
-            fontWeight: 'semibold',
-            _hover: { color: 'accent' },
-          })}
-        >
-          View source →
-        </a>
+      {project.stack && project.stack.length > 0 && (
+        <div className={css({ marginTop: '6', display: 'flex', flexWrap: 'wrap', gap: '2' })}>
+          {project.stack.map((s) => (
+            <span
+              key={s}
+              className={css({
+                fontSize: '2xs',
+                textTransform: 'uppercase',
+                letterSpacing: 'wide',
+                border: '1px solid',
+                borderColor: 'fieldBorder',
+                color: 'fieldInkMuted',
+                padding: '1 2',
+              })}
+            >
+              {s}
+            </span>
+          ))}
+        </div>
       )}
 
       {project.context && (
-        <div className={css({ marginTop: '7' })}>
-          <h3 className={sectionTitle}>Context</h3>
-          <p className={sectionBody}>{project.context}</p>
-        </div>
+        <section
+          className={css({
+            marginTop: '9',
+            maxWidth: '60ch',
+            borderTop: '1px solid',
+            borderColor: 'fieldBorder',
+            paddingTop: '6',
+          })}
+        >
+          <div
+            className={css({
+              fontSize: '2xs',
+              textTransform: 'uppercase',
+              letterSpacing: 'wide',
+              color: 'fieldInkMuted',
+              marginBottom: '2',
+            })}
+          >
+            Context
+          </div>
+          <p className={css({ fontSize: 'base', color: 'fieldInk', lineHeight: 'loose' })}>
+            {project.context}
+          </p>
+        </section>
       )}
 
       {project.constraints && project.constraints.length > 0 && (
-        <div className={css({ marginTop: '6' })}>
-          <h3 className={sectionTitle}>Constraints</h3>
-          <ul className={css({ marginTop: '2', paddingLeft: '4', display: 'grid', gap: '1' })}>
+        <section className={css({ marginTop: '6', maxWidth: '60ch' })}>
+          <div
+            className={css({
+              fontSize: '2xs',
+              textTransform: 'uppercase',
+              letterSpacing: 'wide',
+              color: 'fieldInkMuted',
+              marginBottom: '2',
+            })}
+          >
+            Constraints
+          </div>
+          <ul
+            className={css({
+              margin: 0,
+              paddingLeft: '5',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1',
+            })}
+          >
             {project.constraints.map((c, i) => (
-              <li key={i} className={sectionBody}>
+              <li key={i} className={css({ fontSize: 'base', color: 'fieldInk' })}>
                 {c}
               </li>
             ))}
           </ul>
-        </div>
+        </section>
       )}
 
       {project.process && project.process.length > 0 && (
-        <div className={css({ marginTop: '6' })}>
-          <h3 className={sectionTitle}>Process</h3>
+        <section className={css({ marginTop: '9', maxWidth: '60ch' })}>
+          <div
+            className={css({
+              fontSize: '2xs',
+              textTransform: 'uppercase',
+              letterSpacing: 'wide',
+              color: 'fieldInkMuted',
+              marginBottom: '3',
+            })}
+          >
+            Process
+          </div>
           <ol
             className={css({
-              marginTop: '3',
-              display: 'grid',
-              gap: '4',
+              margin: 0,
+              padding: 0,
               listStyle: 'none',
-              padding: '0',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4',
             })}
           >
             {project.process.map((step, i) => (
-              <li
-                key={i}
-                className={css({
-                  display: 'grid',
-                  gridTemplateColumns: '28px 1fr',
-                  gap: '3',
-                  borderBottom: '1px solid',
-                  borderColor: 'border',
-                  paddingBottom: '3',
-                })}
-              >
-                <span className={css({ color: 'accent', fontWeight: 'bold', fontSize: 'sm' })}>
+              <li key={i} className={css({ display: 'flex', gap: '3' })}>
+                <div className={css({ fontSize: 'xs', color: 'fieldInkMuted', flex: '0 0 24px' })}>
                   {i + 1}
-                </span>
-                <div>
-                  <div className={css({ fontWeight: 'semibold', color: 'text', fontSize: 'sm' })}>
+                </div>
+                <div className={css({ minWidth: 0 })}>
+                  <div className={css({ fontSize: 'base', fontWeight: '700', color: 'fieldInk' })}>
                     {step.phase}
                   </div>
-                  <div className={css({ color: 'textMuted', fontSize: 'sm', marginTop: '1' })}>
+                  <div className={css({ fontSize: 'sm', color: 'fieldInkMuted', marginTop: '1' })}>
                     {step.does}
                   </div>
                   <div
                     className={css({
-                      color: 'textFaint',
-                      fontSize: 'xs',
+                      fontSize: 'sm',
+                      color: 'fieldInkMuted',
                       marginTop: '1',
                       fontStyle: 'italic',
                     })}
@@ -193,120 +256,73 @@ function WorkPage() {
               </li>
             ))}
           </ol>
-        </div>
+        </section>
       )}
 
       {project.decisions && project.decisions.length > 0 && (
-        <div className={css({ marginTop: '6' })}>
-          <h3 className={sectionTitle}>Decisions</h3>
-          <div className={css({ marginTop: '3', display: 'grid', gap: '4' })}>
+        <section className={css({ marginTop: '9', maxWidth: '60ch' })}>
+          <div
+            className={css({
+              fontSize: '2xs',
+              textTransform: 'uppercase',
+              letterSpacing: 'wide',
+              color: 'fieldInkMuted',
+              marginBottom: '3',
+            })}
+          >
+            Decisions
+          </div>
+          <div className={css({ display: 'flex', flexDirection: 'column', gap: '4' })}>
             {project.decisions.map((d, i) => (
-              <div
-                key={i}
-                className={css({
-                  borderLeft: '2px solid',
-                  borderColor: 'accent',
-                  paddingLeft: '3',
-                })}
-              >
-                <div className={css({ fontWeight: 'semibold', color: 'text', fontSize: 'sm' })}>
+              <div key={i}>
+                <div className={css({ fontSize: 'base', fontWeight: '700', color: 'fieldInk' })}>
                   {d.decision}
                 </div>
-                <div className={css({ color: 'textMuted', fontSize: 'sm', marginTop: '1' })}>
+                <div className={css({ fontSize: 'sm', color: 'fieldInkMuted', marginTop: '1' })}>
                   {d.why}
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
       {project.references && project.references.length > 0 && (
-        <div className={css({ marginTop: '6' })}>
-          <h3 className={sectionTitle}>References</h3>
-          <div className={css({ marginTop: '3', display: 'grid', gap: '3' })}>
+        <section className={css({ marginTop: '9', maxWidth: '60ch', paddingBottom: '9' })}>
+          <div
+            className={css({
+              fontSize: '2xs',
+              textTransform: 'uppercase',
+              letterSpacing: 'wide',
+              color: 'fieldInkMuted',
+              marginBottom: '3',
+            })}
+          >
+            References
+          </div>
+          <div className={css({ display: 'flex', flexDirection: 'column', gap: '3' })}>
             {project.references.map((r, i) => (
               <div key={i}>
                 <a
                   href={r.url}
-                  target="_blank"
-                  rel="noopener"
                   className={css({
-                    color: 'accent',
-                    fontWeight: 'semibold',
-                    fontSize: 'sm',
-                    _hover: { color: 'accentAlt' },
+                    fontSize: 'base',
+                    color: 'fieldInk',
+                    textDecoration: 'underline',
                   })}
                 >
                   {r.title}
                 </a>
                 {r.note && (
-                  <div className={css({ color: 'textFaint', fontSize: 'xs', marginTop: '1' })}>
+                  <div className={css({ fontSize: 'sm', color: 'fieldInkMuted', marginTop: '1' })}>
                     {r.note}
                   </div>
                 )}
               </div>
             ))}
           </div>
-        </div>
+        </section>
       )}
-
-      <SectionLabel label="More work" count="prev / next" />
-      {[
-        { p: prev, dir: '← prev' },
-        { p: next, dir: 'next →' },
-      ].map(({ p, dir }) => (
-        <a
-          key={dir}
-          href={`/work/${p.slug}`}
-          className={css({
-            display: 'grid',
-            gridTemplateColumns: '1fr auto',
-            padding: '4 0',
-            borderBottom: '1px solid',
-            borderColor: 'border',
-            _hover: { color: 'accent' },
-          })}
-        >
-          <span
-            className={css({
-              fontFamily: 'display',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              color: 'text',
-            })}
-          >
-            {p.title}
-          </span>
-          <span
-            className={css({
-              color: 'textFaint',
-              fontSize: 'xs',
-              letterSpacing: 'wide',
-              textTransform: 'uppercase',
-            })}
-          >
-            {dir}
-          </span>
-        </a>
-      ))}
-    </>
+    </div>
   )
 }
-
-const sectionTitle = css({
-  fontFamily: 'body',
-  fontWeight: 'bold',
-  fontSize: 'xs',
-  letterSpacing: 'widest',
-  textTransform: 'uppercase',
-  color: 'accent',
-})
-
-const sectionBody = css({
-  color: 'textMuted',
-  fontSize: 'base',
-  lineHeight: 'loose',
-  marginTop: '2',
-  maxWidth: '65ch',
-})

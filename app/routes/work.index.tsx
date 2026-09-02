@@ -1,80 +1,63 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Box, Stack, Flex } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
+import { identity } from '../content/about'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 
-export const Route = createFileRoute('/work/')({
-  component: WorkIndexPage,
-  head: () => ({ meta: [{ title: 'Work' }] }),
-})
+export const Route = createFileRoute('/work/')({ component: WorkIndex })
 
-function WorkIndexPage() {
+function WorkIndex() {
   return (
-    <Box
-      as="main"
+    <div
       className={css({
-        // See experiments.tsx: type is sized against this container, because
-        // the width of the column Layout.tsx hands this page changes nightly.
-        containerType: 'inline-size',
-        paddingX: { base: '6', md: '12', lg: '24' },
-        paddingY: { base: '10', md: '14', lg: '20' },
+        display: 'flex',
+        flexDirection: 'column',
+        gap: { base: '8', md: '9' },
+        paddingX: { base: '6', md: '9' },
+        paddingY: { base: '8', md: '9' },
       })}
     >
-      <h1
-        className={css({
-          fontFamily: 'heading',
-          fontWeight: 'bold',
-          fontSize: 'clamp(28px, 9cqi, 72px)',
-          lineHeight: 'tight',
-          letterSpacing: 'tight',
-          color: 'text',
-          marginBottom: '12',
-        })}
-      >
-        Work
-      </h1>
+      <nav aria-label="Primary" className={navClass}>
+        <a href="/work" className={navLink}>
+          Work
+        </a>
+        <span className={sep}>·</span>
+        <a href="/about" className={navLink}>
+          About
+        </a>
+        <span className={sep}>·</span>
+        <a href={`mailto:${identity.email}`} className={navLink}>
+          Contact
+        </a>
+      </nav>
 
       {featuredProject && (
-        <Box
-          className={css({
-            marginBottom: '16',
-            paddingBottom: '10',
-            borderBottom: '1px solid',
-            borderColor: 'border',
-          })}
+        <section
+          className={css({ display: 'flex', flexDirection: 'column', gap: '3', maxWidth: '58ch' })}
         >
-          <Box
+          <p
             className={css({
-              fontFamily: 'body',
-              fontSize: '2xs',
-              letterSpacing: 'wider',
+              textStyle: 'xs',
+              letterSpacing: 'wide',
               textTransform: 'uppercase',
-              color: 'textMuted',
-              marginBottom: '2',
+              color: 'textFaint',
+              margin: 0,
             })}
           >
             Featured
-          </Box>
+          </p>
           <h2
             className={css({
-              fontFamily: 'heading',
-              fontSize: 'xl',
+              textStyle: '3xl',
+              fontWeight: '800',
+              letterSpacing: 'tight',
               color: 'text',
-              margin: '0 0 4',
+              margin: 0,
             })}
           >
             {featuredProject.title}
           </h2>
           {featuredProject.problem && (
-            <p
-              className={css({
-                fontFamily: 'body',
-                fontSize: 'md',
-                color: 'textSecondary',
-                maxWidth: '65ch',
-                marginBottom: '4',
-              })}
-            >
+            <p className={css({ textStyle: 'base', color: 'textMuted', margin: 0 })}>
               {featuredProject.problem}
             </p>
           )}
@@ -82,118 +65,110 @@ function WorkIndexPage() {
             <a
               href={featuredProject.externalUrl}
               className={css({
-                display: 'inline-block',
-                border: '1px solid',
-                borderColor: 'border.accent',
-                borderRadius: '0',
-                padding: '2',
-                fontFamily: 'body',
-                fontSize: 'xs',
-                letterSpacing: 'wider',
+                textStyle: 'xs',
+                letterSpacing: 'wide',
                 textTransform: 'uppercase',
                 color: 'accent',
-                _hover: { color: 'accentGlow', borderColor: 'accentGlow' },
+                width: 'fit-content',
+                _hover: { textDecoration: 'underline' },
               })}
             >
-              Visit site ↗
+              Visit ↗
             </a>
           )}
-        </Box>
+        </section>
       )}
 
-      <Stack gap="0" className={css({ marginBottom: '16' })}>
+      <section
+        aria-label="Selected work"
+        className={css({ display: 'flex', flexDirection: 'column' })}
+      >
         {selectedWork.map((project) => (
           <a
             key={project.slug}
             href={`/work/${project.slug}`}
             className={css({
-              display: 'block',
-              paddingY: '4',
-              borderBottom: '1px solid',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'baseline',
+              gap: '5',
+              borderTop: '1px solid',
               borderColor: 'border',
-              _hover: { color: 'accentGlow' },
+              paddingY: '5',
+              _hover: { color: 'accent' },
             })}
           >
-            <Flex align="baseline" gap="4" wrap="wrap">
-              <Box
-                className={css({
-                  fontFamily: 'heading',
-                  fontSize: 'lg',
-                  color: 'text',
-                })}
-              >
-                {project.title}
-              </Box>
-              <Box
-                className={css({
-                  fontFamily: 'body',
-                  fontSize: 'xs',
-                  letterSpacing: 'wider',
-                  textTransform: 'uppercase',
-                  color: 'textMuted',
-                })}
-              >
-                {project.type} · {project.year}
-              </Box>
-            </Flex>
+            <span className={css({ textStyle: 'lg', fontWeight: '600', color: 'text' })}>
+              {project.title}
+            </span>
+            <span
+              className={css({
+                textStyle: 'xs',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                color: 'textFaint',
+              })}
+            >
+              {project.type} · {project.year}
+            </span>
           </a>
         ))}
-      </Stack>
+      </section>
 
-      {experiments.length > 0 && (
-        <Box>
-          <Box
+      <section
+        aria-label="Experiments"
+        className={css({ display: 'flex', flexDirection: 'column' })}
+      >
+        {experiments.map((project) => (
+          <a
+            key={project.slug}
+            href={project.externalUrl ?? `/work/${project.slug}`}
             className={css({
-              fontFamily: 'body',
-              fontSize: '2xs',
-              letterSpacing: 'wider',
-              textTransform: 'uppercase',
-              color: 'textMuted',
-              marginBottom: '4',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'baseline',
+              gap: '5',
+              borderTop: '1px solid',
+              borderColor: 'border',
+              paddingY: '5',
+              _hover: { color: 'accent' },
             })}
           >
-            Experiments
-          </Box>
-          <Stack gap="0">
-            {experiments.map((project) => (
-              <a
-                key={project.slug}
-                href={project.externalUrl ?? project.liveUrl ?? `/work/${project.slug}`}
-                className={css({
-                  display: 'block',
-                  paddingY: '3',
-                  borderBottom: '1px solid',
-                  borderColor: 'border',
-                  _hover: { color: 'accentGlow' },
-                })}
-              >
-                <Flex align="baseline" gap="4" wrap="wrap">
-                  <Box
-                    className={css({
-                      fontFamily: 'heading',
-                      fontSize: 'md',
-                      color: 'text',
-                    })}
-                  >
-                    {project.title}
-                  </Box>
-                  <Box
-                    className={css({
-                      fontFamily: 'body',
-                      fontSize: 'xs',
-                      letterSpacing: 'wider',
-                      textTransform: 'uppercase',
-                      color: 'textMuted',
-                    })}
-                  >
-                    {project.type} · {project.year}
-                  </Box>
-                </Flex>
-              </a>
-            ))}
-          </Stack>
-        </Box>
-      )}
-    </Box>
+            <span className={css({ textStyle: 'base', fontWeight: '600', color: 'text' })}>
+              {project.title}
+            </span>
+            <span
+              className={css({
+                textStyle: 'xs',
+                letterSpacing: 'wide',
+                textTransform: 'uppercase',
+                color: 'textFaint',
+              })}
+            >
+              {project.type} · {project.year}
+            </span>
+          </a>
+        ))}
+      </section>
+    </div>
   )
 }
+
+const navClass = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  textStyle: 'xs',
+  letterSpacing: 'wide',
+  textTransform: 'uppercase',
+  fontWeight: '600',
+  color: 'textMuted',
+})
+const navLink = css({
+  paddingY: '3',
+  minHeight: '44px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  _hover: { color: 'accent' },
+})
+const sep = css({ color: 'border', paddingX: '3' })

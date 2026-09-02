@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
 import { BrandLockup } from '../components/BrandLockup'
-import { identity } from '../content/about'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
@@ -10,9 +9,9 @@ function OgCard() {
     <div
       className={css({
         position: 'fixed',
-        inset: '0',
-        zIndex: '9999',
-        bg: 'accent',
+        inset: 0,
+        zIndex: 9999,
+        background: 'bg',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -23,62 +22,33 @@ function OgCard() {
           width: '1200px',
           height: '630px',
           position: 'relative',
-          bg: 'accent',
-          color: 'fieldInk',
+          background: 'bg',
+          overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '9',
-          overflow: 'hidden',
+          justifyContent: 'center',
+          paddingX: '80px',
         })}
       >
-        <BrandLockup
-          variant="horizontal-md"
-          mode="single-color"
-          className={css({ color: 'fieldInk' })}
-        />
-
-        <div>
-          <p
-            className={css({
-              fontFamily: 'body',
-              fontWeight: 'bold',
-              fontSize: 'sm',
-              letterSpacing: 'widest',
-              textTransform: 'uppercase',
-              color: 'fieldInkMuted',
-              marginBottom: '5',
-            })}
-          >
-            The busy man — rebuilt nightly
-          </p>
-          <h1
-            className={css({
-              fontFamily: 'display',
-              fontWeight: 'bold',
-              fontSize: 'clamp(4rem,10vw,7.5rem)',
-              lineHeight: 'tight',
-              letterSpacing: 'tight',
-              color: 'fieldInk',
-              textTransform: 'uppercase',
-              margin: '0',
-            })}
-          >
-            <span className={css({ display: 'block' })}>Select</span>
-            <span className={css({ display: 'block' })}>a busy man.</span>
-          </h1>
+        <div className={css({ position: 'absolute', top: '48px', left: '80px', color: 'accent' })}>
+          <BrandLockup variant="horizontal-sm" mode="single-color" roleLine={false} />
         </div>
 
-        <div
+        <h1
           className={css({
-            fontSize: 'sm',
-            color: 'fieldInkMuted',
-            fontWeight: 'semibold',
-            letterSpacing: 'wide',
+            textStyle: 'hero',
+            fontFamily: 'display',
+            fontWeight: '800',
+            color: 'text',
+            maxWidth: '14ch',
+            margin: 0,
           })}
         >
-          dougmar.ch · {identity.role}
-        </div>
+          Simplicity is the glory
+          <span className={css({ display: 'block', marginLeft: '160px', color: 'accent' })}>
+            of expression.
+          </span>
+        </h1>
       </div>
     </div>
   )

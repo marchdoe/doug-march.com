@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 78,
+    "s": 78,
+    "l": 53,
+    "name": "sunlit acid-yellow"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "olive-yellow",
+    "name": "warm olive-neutral"
+  },
+  "mood_word": "clear",
+  "color_story": "One sunlit acid-yellow floods the whole field so the single quiet line about simplicity has nothing to compete with — the color is the confidence, the type is the expression."
+}

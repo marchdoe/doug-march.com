@@ -1,0 +1,59 @@
+[
+  {
+    "critic": "spec-critic",
+    "verdict": "REVISE",
+    "feedback": "REVISE\n\n- **Color token mismatch (Check 2)**: Visual spec declares dark knockout plane as `#17140A`, but preset.ts assigns `field: {colors.neutral.900}` = `#141207`. These must be identical; either update the visual spec to match the preset, or add a new neutral-900 value to the preset matching spec's `#17140A`.\n\n- **Reversed text color on dark field (Check 2)**: Visual spec names dark-plane ink as `#D4E24A`, but preset.ts offers `fieldInk: {colors.yellow.300}` = `#DBEA5F` — and `#D4E24A` is not defined in the palette at all. Decide: does the dark plane use `#D4E24A` (add it to preset and semanticTokens), or is `#DBEA5F` the correct choice (update visual spec to reflect the preset value)? The Unified Designer will render the preset value, not the spec value, so they must align before render.",
+    "ts": 1788339187933
+  },
+  {
+    "critic": "mockup-critic",
+    "round": 0,
+    "verdict": "REVISE",
+    "feedback": "1. **Sanity**: Page renders cleanly. Fonts loaded (hanken-solo confirmed). No overflow or blank regions. ✓\n\n2. **Measurables**:\n   - **Canvas utilization**: ~82% (the yellow drench field + hero phrase + standfirst + nav occupy the intentional composition; the colophon tile is a deliberate footnote, not wasted space). Meets floor of 70%. ✓\n   - **Hero scale**: The phrase renders at approximately **72–76px** (measured as fraction of viewport width in the screenshot). Declared floor is `clamp(60px, 8.5vw, 96px)` — at 1440px viewport, 8.5vw = 122px, so the clamp floor is 60px and ceiling is 96px. The rendered phrase at 72–76px sits comfortably within range. ✓\n   - **Color coverage**: Yellow field covers **~78%** of the viewport (drench strategy). Meets floor of 75%. ✓\n\n3. **Brief fidelity**: The composition executes the brief with confidence. Single column, full-bleed drench, sparse rhythm, the phrase as the sole marquee statement — all declared. The broken symmetry (the final clause \"of expression.\" dropping and indenting) is present and legible, mapping the sentence structure onto the grid break. The standfirst attribution + gloss line sits at mid-register scale, avoiding the title→caption jump. Poster restraint is earned, not timid. ✓\n\n4. **Shell and header**:\n   - **Mark size** (from 2x crop): The circular mark measures approximately **~18–20px** in rendered height. Declared `mark_px: 26`. This is **~73–77% of declared size** — **below the 60% floor that would trigger automatic REVISE, but visibly undersized**. The mark is present and correct (single-color, green-and-blue original palette visible), but noticeably smaller than spec.\n   - **Lockup variant**: `horizontal-sm` declared; the crop shows mark-left, wordmark-right on one baseline. ✓\n   - **Color mode**: Single-color (olive-yellow `#4C560B` on yellow field). ✓\n   - **Placement**: Top-left of hero field, folded in. ✓\n   - **Nav**: `WORK · ABOUT · CONTACT` in uppercase, dot-separated, positioned directly below ",
+    "channel": "sdk-vision",
+    "ts": 1788339292513
+  },
+  {
+    "critic": "mockup-critic",
+    "round": 1,
+    "verdict": "REVISE",
+    "feedback": "**1. Sanity** ✓ — Page renders cleanly, fonts load (hanken-solo is present, no serif fallback), no overflow or blank regions.\n\n**2. Measurables**\n\n- **Canvas utilization**: ~85%. The full-bleed yellow field is a deliberate compositional surface, not void. The phrase occupies the center with substantial breathing room on all sides — this is the intended sparse, poster-like discipline. The standfirst, body line, and nav sit below in rhythm. Estimate: 85% (well above 70% floor). ✓\n\n- **Hero scale**: ~72px rendered. The declared floor is `clamp(60px, 8.5vw, 96px)`. At 1440px, 8.5vw = ~122px; the clamp permits 60–96px. The phrase measures ~72px across the largest words — within range, but landing in the lower half of the declared band. This reads as a committed scale, not timid. ✓\n\n- **Color coverage**: ~93%. The acid-yellow (#CFDE33) drench covers the entire viewport; the only non-yellow regions are the black text, the olive-tinted mark, and the bottom dark colophon rule. Estimate: 93% (well above 75% floor). ✓\n\n**3. Brief Fidelity**\n\nThe composition executes the brief with conviction. The phrase \"Simplicity is the glory of expression.\" is the page's sole marquee statement, set at poster scale in a single full-bleed column. The broken symmetry — \"of expression.\" hanging indented on its own baseline — is the declared one deliberate gesture, and it lands exactly as intended. The standfirst attribution and editorial gloss sit at mid-register, the body line follows, and the nav baseline is clean and sparse. The page *enacts* simplicity rather than merely quoting it. The drench strategy is fully committed, the typography is restrained (humanist grotesk, not shouting), and the signal elements (Tigers loss, holiday, weather, market) are properly demoted to the colophon footnote. ✓\n\n**4. Shell and Header**\n\n**Mark size**: The circular mark in the 2x crop measures approximately **16–18px** rendered height. The declared `mark_px: 26`. This is **62–69% of the declared size** — bel",
+    "channel": "sdk-vision",
+    "ts": 1788339390268
+  },
+  {
+    "critic": "mockup-critic",
+    "round": 2,
+    "verdict": "APPROVE",
+    "feedback": "The mockup executes the brief with genuine confidence and restraint. Canvas utilization is strong at ~82% (the acid-yellow drench is working surface, not void; the phrase and attribution occupy the centered zone; the colophon grounds the bottom). Hero phrase renders at approximately 88–92px, meeting the declared `clamp(60px, 8.5vw, 96px)` floor. Color coverage is commanding at ~78%, the single acid-yellow hue (#CFDE33) flooding the majority of the viewport with no competing palette. The broken symmetry lands exactly as intended — \"of expression.\" drops and indents onto its own baseline, making the structural break *the* visual flourish and mapping it perfectly onto the sentence's meaning.\n\n**Header check** (from the 2x crop): The circular mark renders at approximately 24–25px, meeting the declared `mark_px: 26` within acceptable tolerance (~92% of target). The mark is present and solid. Lockup is `horizontal-sm` with `single-color` (deep olive-ink #4C560B on the yellow field), exactly as declared. Placement is top-left, folded into the hero field; height is visibly ~88px; role line is correctly absent; nav case is uppercase; the three dot-separated nav links sit directly beneath the phrase. All header elements are in spec.\n\nTypography is restrained and coherent — hanken-solo at display weight for the phrase, a standfirst line (attribution + editorial gloss) at mid-register, body text in base step, micro nav in uppercase xs. No serif/sans fallback degradation. Spacing rhythm is consistent and generous; the composition reads as deliberate calm, not accidental emptiness. The colophon footer is present as a stacked micro-type block in the bottom-left, carrying the build stamp, season, moon, market, Tigers line, Labor Day note, and music rotation — all legible and demoted appropriately.\n\nOne minor note: the editorial gloss beneath the attribution (\"A portfolio that tears itself down...\") is in the brief's `xl`/`lg` standfirst step and reads at a comfortable register betw",
+    "channel": "sdk-vision",
+    "ts": 1788339482633
+  },
+  {
+    "critic": "surface-gate",
+    "round": 1,
+    "verdict": "REVISE",
+    "feedback": "/ @360: document is 91px wider than the 360px viewport (scrollWidth 451)\n/ @360: document is 91px wider than the 360px viewport (scrollWidth 451)\n/about @360: document is 79px wider than the 360px viewport (scrollWidth 439)\n/about @360: document is 79px wider than the 360px viewport (scrollWidth 439)\n/work @360: document is 154px wider than the 360px viewport (scrollWidth 514)\n/work @360: document is 154px wider than the 360px viewport (scrollWidth 514)\n/work/spaceman @360: document is 30px wider than the 360px viewport (scrollWidth 390)\n/work/spaceman @360: document is 30px wider than the 360px viewport (scrollWidth 390)\n/work/fishsticks @360: document is 20px wider than the 360px viewport (scrollWidth 380)\n/work/fishsticks @360: document is 20px wider than the 360px viewport (scrollWidth 380)\n/work/dougmar-ch @360: document is 65px wider than the 360px viewport (scrollWidth 425)\n/work/dougmar-ch @360: document is 65px wider than the 360px viewport (scrollWidth 425)\n/work/politweets @360: document is 26px wider than the 360px viewport (scrollWidth 386)\n/work/politweets @360: document is 26px wider than the 360px viewport (scrollWidth 386)\n/work/twittertale @360: document is 46px wider than the 360px viewport (scrollWidth 406)\n/work/twittertale @360: document is 46px wider than the 360px viewport (scrollWidth 406)",
+    "ts": 1788339799845
+  },
+  {
+    "critic": "screenshot-critic",
+    "verdict": "REVISE",
+    "feedback": "===VERDICT===\nREVISE\n\n**Responsible agent:** react-engineer\n\n**Issues:**\n- The approved mockup includes a full-width dark colophon bar at the bottom of the page (a `#17140A`-range dark knockout plane) containing \"DOUG MARCH · DOUGMARCH.CH\", \"Build 2026-09-02 · Labor Day in 5\", plus the AD-specified signal stack (Tigers `2–15 L`, `on rotation ·` music line, `clear · 78°`, SPY `−0.69%`, moon phase `◑ 64%`). Both rendered schemes (light and dark) end the page immediately after the WORK · ABOUT · CONTACT nav line — there is no colophon, no dark plane, and none of the day's signal data anywhere on the homepage. This drops the entire Signal Integration section of the spec and is a clear divergence from the approved mockup, not a minor omission.\n- Because the colophon (the only place the dark knockout plane `#17140A` was meant to appear) is missing, the page never uses its second color value at all — the \"value jump between yellow field and dark knockout plane\" that the Component Character spec calls out as the sole source of depth is entirely absent from the render.\n- The light and dark scheme screenshots are pixel-identical, meaning no dark-mode adaptation exists; combined with the missing colophon this makes it impossible to judge whether a coherent dark adaptation was even attempted — restore the colophon in both schemes so the dark plane can do its job.\n\nFix: add the bottom `auto` grid row back — a dark (`#17140A`) full-bleed bar, left-aligned colophon stack in `textMuted`/`textFaint` reversed tone, showing brand name/domain, build date, holiday countdown, sports score (demoted), music rotation line, weather, market, and moon phase — matching the mockup's bottom third exactly.\n===END===",
+    "channel": "sdk-vision",
+    "ts": 1788339860433
+  },
+  {
+    "critic": "surface-gate",
+    "verdict": "NEEDS-HUMAN",
+    "feedback": "Authored routes outside MUTABLE_FILES failed the gate: /work",
+    "ts": 1788339860433
+  },
+  {
+    "critic": "surface-gate",
+    "round": 2,
+    "verdict": "SHIP",
+    "feedback": "all surfaces fit their viewport",
+    "ts": 1788340161162
+  }
+]

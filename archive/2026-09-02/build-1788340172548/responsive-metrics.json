@@ -1,0 +1,116 @@
+{
+  "viewports": {
+    "mobile": {
+      "width": 360,
+      "height": 640,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 16,
+          "passing": true
+        },
+        "tapTargetFailures": [
+          {
+            "tag": "A",
+            "text": "Doug March",
+            "w": 125,
+            "h": 27
+          },
+          {
+            "tag": "A",
+            "text": "Work",
+            "w": 39,
+            "h": 44
+          },
+          {
+            "tag": "A",
+            "text": "About",
+            "w": 43,
+            "h": 44
+          }
+        ],
+        "lineLengthFailures": []
+      },
+      "score": 4
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 16,
+          "passing": true
+        },
+        "tapTargetFailures": [
+          {
+            "tag": "A",
+            "text": "Doug March",
+            "w": 125,
+            "h": 27
+          },
+          {
+            "tag": "A",
+            "text": "Work",
+            "w": 39,
+            "h": 44
+          },
+          {
+            "tag": "A",
+            "text": "About",
+            "w": 43,
+            "h": 44
+          }
+        ],
+        "lineLengthFailures": []
+      },
+      "score": 4
+    },
+    "laptop": {
+      "width": 1024,
+      "height": 768,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 16,
+          "passing": true
+        },
+        "tapTargetFailures": [],
+        "lineLengthFailures": []
+      },
+      "score": 5
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 16,
+          "passing": true
+        },
+        "tapTargetFailures": [],
+        "lineLengthFailures": []
+      },
+      "score": 5
+    }
+  },
+  "overallScore": 4,
+  "worstFailure": {
+    "viewport": "mobile",
+    "check": "tapTargetFailures",
+    "detail": "3 interactive element(s) below 44×44px"
+  },
+  "buildId": "1788340172548",
+  "date": "2026-09-02",
+  "archetype": "a poster that argues its own thesis — restraint as the loud move",
+  "usedInPromptFor": []
+}
