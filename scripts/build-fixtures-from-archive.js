@@ -19,13 +19,14 @@
  *
  * Usage: node scripts/build-fixtures-from-archive.js 2026-08-30
  */
-import { readFileSync, existsSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs'
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import path from 'node:path'
 import { ROOT } from './utils/file-manager.js'
 import { FIXTURE_DIR } from './utils/agent-fixtures.js'
 import { SEMANTIC_COLOR_NAMES, parsePresetSemanticColors } from './utils/semantic-contract.js'
 import { isMain } from './utils/cli.js'
+import { pickBuild } from './utils/archive-record.js'
 
 /**
  * Where a missing semantic role borrows its value from.
@@ -52,17 +53,20 @@ function readJson(file) {
   return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null
 }
 
-/** The build that shipped for a date: newest that is neither failed nor pre. */
-export function shippedBuildDir(date) {
-  const dateDir = path.join(ROOT, 'archive', date)
+/**
+ * The build that shipped for a date, per `pickBuild` — the archive's one
+ * answer to which build went live, not simply the newest that is neither
+ * failed nor pre.
+ *
+ * @param {string} date
+ * @param {{archiveDir?: string}} [options]
+ */
+export function shippedBuildDir(date, { archiveDir = path.join(ROOT, 'archive') } = {}) {
+  const dateDir = path.join(archiveDir, date)
   if (!existsSync(dateDir)) throw new Error(`No archive for ${date}`)
-  const builds = readdirSync(dateDir)
-    .filter(
-      (b) => b.startsWith('build-') && !b.startsWith('build-failed-') && !b.startsWith('build-pre-')
-    )
-    .sort()
-  if (builds.length === 0) throw new Error(`No shipped build under archive/${date}`)
-  return path.join(dateDir, builds[builds.length - 1])
+  const { buildDir } = pickBuild(dateDir)
+  if (!buildDir) throw new Error(`No shipped build under archive/${date}`)
+  return buildDir
 }
 
 /** `key: value` lines, the shape every declaration block uses. */
