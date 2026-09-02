@@ -14,18 +14,21 @@
 //
 // (The comment this replaces described a `saveOverrides` server function that
 // does not exist — the override write lives in vite.config.ts behind its own
-// localhost guard — and a `beforeLoad` redirect that dev.responsive.tsx does
-// not do; it throws notFound().)
+// localhost guard — and a `beforeLoad` redirect that dev.responsive.tsx did
+// not do; it threw notFound(). That route is gone now (#328): /dev/responsive
+// is served by app/dev-server/index.ts, not the router.)
 
 import { getRequestHeader, getRequestIP } from '@tanstack/react-start/server'
 import { isAllowedOrigin, isLocalHost, isLoopbackAddress } from '../dev-server/guards'
 
 /**
- * The single production flag for server-side code.
+ * The single production flag, for server-side code and client routes alike.
  *
- * Routes test `import.meta.env.PROD` and this module tested
- * `process.env.NODE_ENV`, so "is this production" had two answers that could
- * disagree under a bundler that only defines one of them.
+ * dev.responsive.tsx used to test `import.meta.env.PROD` in its own
+ * `beforeLoad` while this module tested `process.env.NODE_ENV`, so "is this
+ * production" had two answers that could disagree under a bundler that only
+ * defines one of them. That route is gone (#328); this is the only answer
+ * left.
  */
 function isProduction(): boolean {
   return process.env.NODE_ENV === 'production'

@@ -12,13 +12,16 @@
   // signal collectors it discovers by directory listing, the chassis catalogue
   // design-agents.js loads by name, and the test files.
   //
-  // Plus four roots fallow cannot infer. app/client.tsx, app/router.tsx and
+  // Plus five roots fallow cannot infer. app/client.tsx, app/router.tsx and
   // app/ssr.tsx are TanStack Start's convention entries — the framework loads
   // them by path, so nothing imports them by name. app/dev-panel.html is a
   // Vite HTML entry, and the whole dev panel hangs off it (dev-entry →
-  // dev-panel → dev/api, components/responsive-card). Without these, seven
-  // live files read as dead, which is most of what an "unused files" count
-  // would be reporting.
+  // dev-panel → dev/api, components/responsive-card). app/dev-responsive.html
+  // is the same pattern for /dev/responsive (#328): dev-responsive-entry →
+  // dev-responsive-page, served by app/dev-server/index.ts instead of the
+  // router so the page's chunk never reaches a production build. Without
+  // these, live files read as dead, which is most of what an "unused files"
+  // count would be reporting.
   "entry": [
     "scripts/*.js",
     "scripts/signals/*.js",
@@ -30,6 +33,7 @@
     "app/router.tsx",
     "app/ssr.tsx",
     "app/dev-entry.tsx",
+    "app/dev-responsive-entry.tsx",
     "app/stubs/*.ts"
   ],
 
