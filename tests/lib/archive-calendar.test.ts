@@ -4,12 +4,13 @@ import {
   cellLabel,
   cellsFor,
   daysInMonth,
-  densestMonth,
   firstWeekday,
   hrefFor,
   inkFor,
   monthLabel,
   monthsSpanned,
+  newestDate,
+  newestMonth,
   stateFor,
   swatchFor,
 } from '../../app/lib/archive-calendar'
@@ -71,31 +72,24 @@ describe('monthsSpanned', () => {
   })
 })
 
-describe('densestMonth', () => {
-  it('opens on the fullest month, not the newest', () => {
-    // August has one build; June has three. June opens.
+describe('newestDate', () => {
+  it('is the latest day, whatever order the index arrives in', () => {
     const entries = [
-      entry('2026-06-01'),
       entry('2026-06-02'),
-      entry('2026-06-03'),
+      entry('2026-09-02'),
+      entry('2026-06-01'),
       entry('2026-08-23'),
     ]
-    expect(densestMonth(entries)).toBe('2026-06')
+    expect(newestDate(entries)).toBe('2026-09-02')
   })
 
-  it('compares proportion of the month, not raw count', () => {
-    // 20 of 28 in February beats 21 of 31 in July.
-    const feb = Array.from({ length: 20 }, (_, i) =>
-      entry(`2026-02-${String(i + 1).padStart(2, '0')}`)
-    )
-    const jul = Array.from({ length: 21 }, (_, i) =>
-      entry(`2026-07-${String(i + 1).padStart(2, '0')}`)
-    )
-    expect(densestMonth([...feb, ...jul])).toBe('2026-02')
+  it('is null when nothing has been built', () => {
+    expect(newestDate([])).toBeNull()
   })
 
-  it('has nothing to open when there is nothing', () => {
-    expect(densestMonth([])).toBeNull()
+  it('names the month the calendar opens on', () => {
+    expect(newestMonth([entry('2026-06-30'), entry('2026-09-02')])).toBe('2026-09')
+    expect(newestMonth([])).toBeNull()
   })
 })
 

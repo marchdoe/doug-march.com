@@ -235,15 +235,27 @@ test.describe('site health — the archive keeps its own identity', () => {
 })
 
 test.describe('site health — the calendar', () => {
-  test('opens on a month with builds in it, not an empty grid', async ({ page }) => {
+  test('opens on the newest month with the newest day marked (#414)', async ({ page }) => {
     await page.goto('/archive')
-    const cells = page.locator('a[href^="/archive/2026-"]')
-    await expect(cells.first()).toBeVisible({ timeout: 15000 })
-    expect(await cells.count()).toBeGreaterThan(10)
+    const current = page.locator('a[aria-current="date"]')
+    await expect(current).toBeVisible({ timeout: 15000 })
+    // The marked cell is the latest day in the index, and it is on screen
+    // without pressing Next — which is the whole point of the change.
+    const index = await page.evaluate(() =>
+      fetch('/archive-data/index.json').then((r) => r.json() as Promise<{ date: string }[]>)
+    )
+    const newest = index
+      .map((e) => e.date)
+      .sort()
+      .at(-1)
+    await expect(current).toHaveAttribute('href', new RegExp(`/${newest}/?$`))
+    await expect(page.locator('button', { hasText: 'next' })).toBeDisabled()
   })
 
   test('a day opens the design it shipped', async ({ page }) => {
     await page.goto('/archive')
+    // The workhorse day is in June; the calendar opens on the newest month.
+    await page.locator('button', { hasText: 'All' }).click()
     const cell = page.locator(`a[href="/archive/${CORPUS.built}/"]`).first()
     await expect(cell).toBeVisible({ timeout: 15000 })
     await cell.click()

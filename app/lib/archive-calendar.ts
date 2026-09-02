@@ -67,26 +67,23 @@ export function monthsSpanned(entries: ArchiveIndexEntry[]): string[] {
 }
 
 /**
- * The month with the highest proportion of days built.
+ * The newest archived day, which is what a visitor came to see (#414).
  *
- * The calendar opens here rather than on the newest month, which is usually a
- * few days in and reads as an empty grid — today's month is 1 of 31.
+ * The calendar used to open on the month with the highest share of days
+ * built, so June, at 30 of 30, would have won forever and September never
+ * appeared without three presses of Next. A sparse month with last night's
+ * square lit is still the right landing; the All view is one click away.
  */
-export function densestMonth(entries: ArchiveIndexEntry[]): string | null {
-  if (entries.length === 0) return null
-  const counts = new Map<string, number>()
-  for (const e of entries) counts.set(monthOf(e.date), (counts.get(monthOf(e.date)) ?? 0) + 1)
+export function newestDate(entries: ArchiveIndexEntry[]): string | null {
+  let newest: string | null = null
+  for (const e of entries) if (newest === null || e.date > newest) newest = e.date
+  return newest
+}
 
-  let best: string | null = null
-  let bestRatio = -1
-  for (const [ym, n] of [...counts].sort(([a], [b]) => a.localeCompare(b))) {
-    const ratio = n / daysInMonth(ym)
-    if (ratio > bestRatio) {
-      bestRatio = ratio
-      best = ym
-    }
-  }
-  return best
+/** The month the calendar opens on: the newest day's, or null with nothing built. */
+export function newestMonth(entries: ArchiveIndexEntry[]): string | null {
+  const newest = newestDate(entries)
+  return newest ? monthOf(newest) : null
 }
 
 /**
