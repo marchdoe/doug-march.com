@@ -8,6 +8,11 @@
   "buildCommand": "corepack pnpm run build",
   "outputDirectory": "dist/client",
   "framework": null,
+  "functions": {
+    "api/panel/status.ts": {
+      "maxDuration": 30
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",

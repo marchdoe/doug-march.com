@@ -26,7 +26,13 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
 function isPanelStatus(value: unknown): value is PanelStatus {
   if (typeof value !== 'object' || value === null) return false
   const v = value as Record<string, unknown>
-  return Array.isArray(v.unrated) && typeof v.weights === 'object' && v.weights !== null
+  return (
+    Array.isArray(v.unrated) &&
+    'weights' in v &&
+    typeof v.weights === 'object' &&
+    typeof v.errors === 'object' &&
+    v.errors !== null
+  )
 }
 
 /**

@@ -30,8 +30,13 @@ export interface RunInfo {
   createdAt: string
 }
 
+export type StatusSection = 'unrated' | 'weights' | 'latestRun'
+
 export interface PanelStatus {
   unrated: RatingIssue[]
-  weights: Weights
+  /** null when the weights read failed; see `errors.weights`. */
+  weights: Weights | null
   latestRun: RunInfo | null
+  /** One message per section whose GitHub read failed. The rest is real. */
+  errors: Partial<Record<StatusSection, string>>
 }

@@ -114,6 +114,7 @@ describe('GET /api/panel/status', () => {
       unrated: [],
       weights: { signals: 5, inspiration: 5, ratings: 5, risk: 8 },
       latestRun: null,
+      errors: {},
     })
   })
 })
@@ -204,18 +205,57 @@ describe('guards apply to every endpoint, not just rate', () => {
     expect(github.dispatchRun).not.toHaveBeenCalled()
   })
 
-  it('status maps a GitHubError to 502 rather than throwing', async () => {
-    vi.mocked(github.listOpenRatingIssues).mockRejectedValue(
-      new github.GitHubError('GitHub GET x → 500', 500)
-    )
+  it('status maps a GitHubError to 502 when every section fails', async () => {
+    const boom = new github.GitHubError('GitHub GET x → 500', 500)
+    vi.mocked(github.listOpenRatingIssues).mockRejectedValue(boom)
+    vi.mocked(github.getWeights).mockRejectedValue(boom)
+    vi.mocked(github.latestRun).mockRejectedValue(boom)
     const res = await statusGet(new Request('https://x/api/panel/status', { headers: auth }))
     expect(res.status).toBe(502)
+  })
+
+  it('status keeps the sections that succeeded when one GitHub read fails (#334)', async () => {
+    vi.mocked(github.listOpenRatingIssues).mockResolvedValue([
+      { number: 1, date: '2026-09-01', title: 'Rate: 2026-09-01', url: 'https://x/1' },
+    ])
+    vi.mocked(github.getWeights).mockRejectedValue(
+      new github.GitHubError('GitHub GET x → 403', 403)
+    )
+    vi.mocked(github.latestRun).mockResolvedValue(null)
+    const res = await statusGet(new Request('https://x/api/panel/status', { headers: auth }))
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({
+      unrated: [{ number: 1, date: '2026-09-01', title: 'Rate: 2026-09-01', url: 'https://x/1' }],
+      weights: null,
+      latestRun: null,
+      errors: { weights: 'GitHub error (403) — try again' },
+    })
+  })
+
+  it('status reports a non-GitHub failure per section without leaking its message', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    vi.mocked(github.listOpenRatingIssues).mockRejectedValue(new TypeError('boom'))
+    vi.mocked(github.getWeights).mockResolvedValue({
+      signals: 5,
+      inspiration: 5,
+      ratings: 5,
+      risk: null,
+    })
+    vi.mocked(github.latestRun).mockResolvedValue(null)
+    const res = await statusGet(new Request('https://x/api/panel/status', { headers: auth }))
+    expect(res.status).toBe(200)
+    expect(((await res.json()) as { errors: Record<string, string> }).errors).toEqual({
+      unrated: 'Internal error',
+    })
   })
 
   it('turns a non-GitHubError into JSON 500, not an HTML crash page', async () => {
     // These used to be rethrown, so the panel's res.json() got Vercel's
     // generic HTML error page and showed "Request failed (500)".
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     vi.mocked(github.listOpenRatingIssues).mockRejectedValue(new TypeError('boom'))
+    vi.mocked(github.getWeights).mockRejectedValue(new TypeError('boom'))
+    vi.mocked(github.latestRun).mockRejectedValue(new TypeError('boom'))
     const res = await statusGet(new Request('https://x/api/panel/status', { headers: auth }))
     expect(res.status).toBe(500)
     expect(res.headers.get('content-type')).toContain('application/json')
