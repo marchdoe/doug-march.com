@@ -5,6 +5,7 @@ import { join } from 'node:path'
 import {
   countSnapshotPages,
   indexEntry,
+  liftRun,
   projectArchive,
 } from '../../scripts/generate-archive-json.js'
 
@@ -43,10 +44,17 @@ const record = (date, extra = {}) => ({
   ...extra,
 })
 
-function writeDay(date, { pages = [], withRecord = true } = {}) {
+function writeDay(date, { pages = [], withRecord = true, trace, cost } = {}) {
   mkdirSync(join(archiveDir, date, 'build-1'), { recursive: true })
   if (withRecord) {
     writeFileSync(join(archiveDir, date, 'record.json'), JSON.stringify(record(date)))
+  }
+  if (trace !== undefined) {
+    const body = typeof trace === 'string' ? trace : JSON.stringify(trace)
+    writeFileSync(join(archiveDir, date, 'build-1', 'trace.json'), body)
+  }
+  if (cost !== undefined) {
+    writeFileSync(join(archiveDir, date, 'build-1', 'cost.json'), JSON.stringify(cost))
   }
   for (const p of pages) {
     const file = join(publicDir, 'archive', date, p)
@@ -65,6 +73,106 @@ describe('countSnapshotPages', () => {
   it('is 0 for a day with a record and no capture', () => {
     writeDay('2026-08-20')
     expect(countSnapshotPages('2026-08-20', publicDir)).toBe(0)
+  })
+})
+
+// A short run in the shape the pipeline writes: two markers with no duration,
+// two agent steps, one gate.
+const trace = {
+  date: '2026-08-20',
+  startedAt: '2026-08-20T08:00:00.000Z',
+  completedAt: '2026-08-20T08:10:00.000Z',
+  steps: [
+    { name: 'signals-loaded', phase: 0, durationMs: 0, timestamp: '2026-08-20T08:00:00.100Z' },
+    { name: 'art-director', phase: 1, durationMs: 300000, timestamp: '2026-08-20T08:05:00.000Z' },
+    { name: 'build-validation', phase: 4, durationMs: 0, timestamp: '2026-08-20T08:09:00.000Z' },
+    { name: 'surface-gate', phase: 4, durationMs: 20000, timestamp: '2026-08-20T08:09:20.000Z' },
+  ],
+}
+
+const cost = {
+  total_usd: 0.8,
+  estimated: true,
+  partial: false,
+  retries: 0,
+  calls: 1,
+  byAgent: [
+    {
+      agent: 'art-director',
+      model: 'claude-opus-4-8',
+      source: 'cli',
+      input: 1000,
+      output: 500,
+      cache_read: 0,
+      cache_write: 0,
+      cost_usd: 0.8,
+      estimated: true,
+      ms: 299000,
+      num_turns: 3,
+    },
+  ],
+}
+
+describe('liftRun', () => {
+  it('lifts the steps that took time and every call, and nothing else', () => {
+    writeDay('2026-08-20', { trace, cost })
+    expect(liftRun('2026-08-20', archiveDir)).toEqual({
+      startedAt: '2026-08-20T08:00:00.000Z',
+      completedAt: '2026-08-20T08:10:00.000Z',
+      steps: [
+        {
+          name: 'art-director',
+          phase: 1,
+          durationMs: 300000,
+          endedAt: '2026-08-20T08:05:00.000Z',
+        },
+        { name: 'surface-gate', phase: 4, durationMs: 20000, endedAt: '2026-08-20T08:09:20.000Z' },
+      ],
+      calls: [
+        {
+          agent: 'art-director',
+          model: 'claude-opus-4-8',
+          ms: 299000,
+          costUsd: 0.8,
+          estimated: true,
+        },
+      ],
+      totalUsd: 0.8,
+      estimated: true,
+      retries: 0,
+    })
+  })
+
+  it('is time only when the day has a trace and no cost file', () => {
+    writeDay('2026-08-20', { trace })
+    const run = liftRun('2026-08-20', archiveDir)
+    expect(run.steps).toHaveLength(2)
+    expect(run.calls).toBeNull()
+    expect(run.totalUsd).toBeNull()
+    expect(run.estimated).toBe(false)
+    expect(run.retries).toBeNull()
+  })
+
+  it('is null when the day has neither', () => {
+    writeDay('2026-08-20')
+    expect(liftRun('2026-08-20', archiveDir)).toBeNull()
+  })
+
+  it('is null for a day with no build directory at all', () => {
+    mkdirSync(join(archiveDir, '2026-03-12'), { recursive: true })
+    expect(liftRun('2026-03-12', archiveDir)).toBeNull()
+  })
+
+  it('treats a malformed trace as absent rather than throwing', () => {
+    writeDay('2026-08-20', { trace: '{not json', cost })
+    expect(liftRun('2026-08-20', archiveDir)).toBeNull()
+    writeDay('2026-08-21', { trace: { steps: 'nope' } })
+    expect(liftRun('2026-08-21', archiveDir)).toBeNull()
+  })
+
+  it('treats a malformed cost file as no cost file', () => {
+    writeDay('2026-08-20', { trace, cost: { total_usd: 1 } })
+    expect(liftRun('2026-08-20', archiveDir).calls).toBeNull()
   })
 })
 
@@ -110,6 +218,16 @@ describe('projectArchive', () => {
     expect(day.pages).toBe(2)
     expect(day.hasScreenshot).toBe(false)
     expect(day.uniqueness).not.toBeNull()
+    expect(day.run).toBeNull()
+  })
+
+  it('writes the run into the day file and keeps it out of the index', () => {
+    writeDay('2026-08-20', { trace, cost })
+    const { index } = projectArchive({ archiveDir, publicDir, outDir })
+    const day = JSON.parse(readFileSync(join(outDir, '2026-08-20.json'), 'utf8'))
+    expect(day.run.calls).toHaveLength(1)
+    expect(day.run.totalUsd).toBe(0.8)
+    expect(index[0]).not.toHaveProperty('run')
   })
 
   it('marks a day whose screenshot is beside the record', () => {

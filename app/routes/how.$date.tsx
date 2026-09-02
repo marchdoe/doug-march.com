@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { type RecordField, absenceNote } from '../lib/archive-era'
 import { signalLines } from '../lib/archive-signals'
 import { css } from '../../styled-system/css'
+import { RunStages } from '../components/RunStages'
 import { isArchiveDetail } from '../types/archive-record'
 import type { ArchiveDetail, ArchiveTokens, JsonValue } from '../types/archive-record'
 import { CANONICAL_ORIGIN } from '../../scripts/utils/site-origin.js'
@@ -402,6 +403,8 @@ const fileList = css({
   gap: '4px',
 })
 
+const runAbsent = css({ marginBottom: '26px' })
+
 const notFound = css({
   minHeight: '100vh',
   background: 'archive.bg',
@@ -540,14 +543,6 @@ function HowPage() {
           <RailRow label="Color" value={(hue?.name as string) ?? heroHex} />
           <RailRow label="Build" value={detail.buildId} />
           <RailRow label="Attempts" value={detail.attempts ? String(detail.attempts) : null} />
-          {detail.cost?.total_usd != null ? (
-            <RailRow
-              label="Cost"
-              value={`$${Number(detail.cost.total_usd).toFixed(2)}${
-                detail.cost.estimated ? ' est.' : ''
-              }`}
-            />
-          ) : null}
         </aside>
 
         <div className={bodyCol}>
@@ -717,6 +712,13 @@ function HowPage() {
           </Step>
 
           <Step n="06" title="It was built">
+            {detail.run ? (
+              <RunStages run={detail.run} />
+            ) : (
+              <div className={runAbsent}>
+                <Absent field="run" era={era} noun="run record" />
+              </div>
+            )}
             <div className={defList}>
               <div className={defRow}>
                 <span className={defKey}>Attempts</span>

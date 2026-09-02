@@ -3,6 +3,8 @@
 // scripts/utils/archive-record.js. Blocks lifted from a build's own artifacts
 // keep their native snake_case; fields this project authors are camelCase.
 
+import type { Run } from '../lib/archive-run'
+
 /** Anything that survives a JSON round-trip. Server functions validate that
  * every field they return is serializable, so lifted blocks are typed as data
  * rather than as `unknown`. */
@@ -67,7 +69,7 @@ export interface ArchiveRecord {
 /**
  * The wire shape of `public/archive-data/{date}.json`, written by
  * `scripts/generate-archive-json.js` as `{ ...record, hasScreenshot, pages,
- * uniqueness }`. Distinct from `TraceDetail` in
+ * uniqueness, run }`. Distinct from `TraceDetail` in
  * `app/server/archive-detail-impl.ts`, which is a dev-only payload (it adds
  * the build's trace instead of `pages`/`uniqueness`) served to the dev panel,
  * never to this file's fetch.
@@ -79,6 +81,9 @@ export interface ArchiveDetail extends ArchiveRecord {
    * nothing about the day was comparable. Not rendered today, so kept as
    * data rather than a fully modeled shape. */
   uniqueness: JsonValue | null
+  /** The build's trace and cost, lifted for the stage view (#415). Null when
+   * the day has no trace, which is every day before 2026-03-29. */
+  run: Run | null
 }
 
 function isObjectRecord(value: unknown): value is Record<string, unknown> {

@@ -6,6 +6,7 @@
  * Produces:
  *   public/archive-data/index.json    — one light entry per archived day
  *   public/archive-data/{date}.json   — that day's record, plus display extras
+ *                                       and the run the day page draws (#415)
  *
  * This derives nothing. `archive/{date}/record.json` (#153) is the record; this
  * only decides what a browser receives. Any date missing a record is rebuilt
@@ -21,8 +22,8 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 
 import { join } from 'node:path'
 import { ROOT } from './utils/file-manager.js'
 import { isMain } from './utils/cli.js'
-import { archivedDates } from './utils/archive-fs.js'
-import { anomaliesOf, buildRecord } from './utils/archive-record.js'
+import { archivedDates, readJsonSafe } from './utils/archive-fs.js'
+import { anomaliesOf, buildRecord, pickBuild } from './utils/archive-record.js'
 import { readRatingForDate } from './utils/ratings.js'
 import { WINDOW, computeUniqueness } from './utils/uniqueness-index.js'
 import { readUniquenessInputs } from './utils/read-uniqueness-history.js'
@@ -86,6 +87,73 @@ export function countSnapshotPages(date, publicDir) {
  */
 export function uniquenessInputs(date, archiveDir) {
   return readUniquenessInputs(join(archiveDir, date), date)
+}
+
+/**
+ * A trace step that took time. The pipeline also logs markers with a duration
+ * of zero — `signals-loaded`, `brief-loaded`, `build-validation` — which say
+ * that something happened, not how long it took, and the day page has no row
+ * to give them.
+ */
+const isStage = (step) =>
+  step &&
+  typeof step.name === 'string' &&
+  typeof step.durationMs === 'number' &&
+  step.durationMs > 0 &&
+  typeof step.timestamp === 'string'
+
+/**
+ * The run, lifted for the day page (#415): each traced step's name, phase and
+ * duration, when the run started and ended, and each agent call's model, time
+ * and cost. A plain lift of `trace.json` and `cost.json` with the fields the
+ * page needs and nothing else; `app/lib/archive-run.ts` does the merging.
+ *
+ * Read from the build that shipped, like the uniqueness inputs. `record.json`
+ * cannot carry the trace because the pipeline writes the record before
+ * `trace.json` exists, so both files are read off disk at projection time.
+ * A missing or malformed trace is an absent run; a missing or malformed cost
+ * file leaves `calls` null and the run is time only.
+ *
+ * @param {string} date
+ * @param {string} archiveDir
+ * @returns {object|null}
+ */
+export function liftRun(date, archiveDir) {
+  const { buildDir } = pickBuild(join(archiveDir, date))
+  if (!buildDir) return null
+
+  const trace = readJsonSafe(join(buildDir, 'trace.json'))
+  if (!trace || typeof trace !== 'object' || !Array.isArray(trace.steps)) return null
+
+  const steps = trace.steps.filter(isStage).map((s) => ({
+    name: s.name,
+    phase: typeof s.phase === 'number' ? s.phase : null,
+    durationMs: s.durationMs,
+    endedAt: s.timestamp,
+  }))
+
+  const cost = readJsonSafe(join(buildDir, 'cost.json'))
+  const calls = Array.isArray(cost?.byAgent)
+    ? cost.byAgent
+        .filter((c) => c && typeof c.agent === 'string')
+        .map((c) => ({
+          agent: c.agent,
+          model: typeof c.model === 'string' ? c.model : null,
+          ms: typeof c.ms === 'number' ? c.ms : null,
+          costUsd: typeof c.cost_usd === 'number' ? c.cost_usd : null,
+          estimated: Boolean(c.estimated),
+        }))
+    : null
+
+  return {
+    startedAt: typeof trace.startedAt === 'string' ? trace.startedAt : null,
+    completedAt: typeof trace.completedAt === 'string' ? trace.completedAt : null,
+    steps,
+    calls,
+    totalUsd: calls && typeof cost.total_usd === 'number' ? cost.total_usd : null,
+    estimated: calls ? Boolean(cost.estimated) : false,
+    retries: calls && typeof cost.retries === 'number' ? cost.retries : null,
+  }
 }
 
 /**
@@ -165,10 +233,11 @@ export function projectArchive({ archiveDir, publicDir, outDir }) {
     const hasScreenshot = existsSync(join(outDir, `${date}.png`))
     const pages = countSnapshotPages(date, publicDir)
     const uniqueness = uniquenessByDate.get(date) ?? null
+    const run = liftRun(date, archiveDir)
 
     writeFileSync(
       join(outDir, `${date}.json`),
-      JSON.stringify({ ...record, hasScreenshot, pages, uniqueness }),
+      JSON.stringify({ ...record, hasScreenshot, pages, uniqueness, run }),
       'utf8'
     )
     index.push(indexEntry(record, { hasScreenshot, pages, uniqueness }, archiveDir))
