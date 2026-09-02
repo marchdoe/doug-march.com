@@ -1,0 +1,11 @@
+{
+  "placement": "right-margin",
+  "height_px": 72,
+  "mark_px": 40,
+  "wordmark_step": "sm",
+  "wordmark_weight": 600,
+  "role_line": "absent",
+  "nav_step": "sm",
+  "nav_case": "lower",
+  "nav": "marginal — three lowercase links stacked in the top-right margin of the dark ledger panel, no band, no pills, no border"
+}

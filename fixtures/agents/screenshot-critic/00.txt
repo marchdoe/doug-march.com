@@ -1,5 +1,5 @@
 ===VERDICT===
-APPROVE
+SHIP
 
 <!-- reconstructed from the archive; see build-fixtures-from-archive.js -->
 ===END===

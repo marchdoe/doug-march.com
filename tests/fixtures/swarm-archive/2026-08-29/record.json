@@ -1,0 +1,54 @@
+{
+  "date": "2026-08-29",
+  "era": "grammar",
+  "generatedAt": "2026-08-29T15:20:00.000Z",
+  "buildId": "1788016800000",
+  "attempts": 1,
+  "brief": "Night edition — a single violet column of oversized serif set against near-black, the day's signals folded into a running footer.",
+  "rationale": "An overcast Saturday reads as a late edition. One centered column, a violet accent used sparingly on a dark ground.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "Night edition.",
+  "signals": {
+    "date": "2026-08-29",
+    "weather": { "location": "Aldie, Virginia", "conditions": "Overcast" }
+  },
+  "hero": { "copy": "Late edition.", "source": "weather" },
+  "chassis": "spectral-albert",
+  "adBrief": "Night edition in violet on near-black.",
+  "tokens": { "accent": "#8B5CF6" },
+  "colorScheme": {
+    "primary_hue": { "h": 285, "s": 70, "l": 60, "name": "late violet" },
+    "secondary_accent": null,
+    "neutral_family": { "tinted_toward": "cool slate", "name": "graphite" },
+    "mood_word": "nocturnal",
+    "color_story": "A restrained 285° violet on a near-black ground."
+  },
+  "shell": {
+    "nav": "band — a full-width masthead bar with three uppercase links right-aligned",
+    "footer": "running foot — signals as one line of small caps across the base",
+    "brand_lockup": "masthead-lg",
+    "brand_color_mode": "original",
+    "ground_strategy": "dark-field"
+  },
+  "verdicts": 3,
+  "composition": {
+    "columns": "single",
+    "axis": "vertical",
+    "symmetry": "symmetric",
+    "hero_zone": "center",
+    "density": "sparse",
+    "rhythm": "even",
+    "shell_posture": "standard",
+    "field_ratio": "drenched"
+  },
+  "lane": { "laneId": "economist", "register": "editorial" },
+  "cost": { "total_usd": 3.9, "retries": 1, "calls": 7 }
+}
