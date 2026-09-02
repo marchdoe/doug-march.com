@@ -41,6 +41,16 @@ export function eventsFromChunk(chunk: string): PipelineEvent[] {
 }
 
 /**
+ * `weights` comes from `JSON.parse`d request body, cast to `Partial<Weights>`
+ * without any runtime check — a value can be any JSON type. This is the same
+ * integer/0-10 check `api/panel/weights.ts` applies to the production write
+ * path; anything that fails it is treated as unset rather than forwarded.
+ */
+function validWeight(v: unknown): number | undefined {
+  return typeof v === 'number' && Number.isInteger(v) && v >= 0 && v <= 10 ? v : undefined
+}
+
+/**
  * The environment a run gets. `WEIGHT_RISK` is the empty string when unset,
  * not a number: design-agents.js treats '' as unset and derives risk from the
  * build date. A literal here would pin it. Mock runs never see the API key.
@@ -53,10 +63,10 @@ export function pipelineEnv(
     ...base,
     DRY_RUN: dryRun ? 'true' : 'false',
     MOCK_MODE: mock ? 'true' : 'false',
-    WEIGHT_SIGNALS: String(weights.signals ?? 5),
-    WEIGHT_INSPIRATION: String(weights.inspiration ?? 5),
-    WEIGHT_RATINGS: String(weights.ratings ?? 5),
-    WEIGHT_RISK: weights.risk == null ? '' : String(weights.risk),
+    WEIGHT_SIGNALS: String(validWeight(weights.signals) ?? 5),
+    WEIGHT_INSPIRATION: String(validWeight(weights.inspiration) ?? 5),
+    WEIGHT_RATINGS: String(validWeight(weights.ratings) ?? 5),
+    WEIGHT_RISK: weights.risk == null ? '' : String(validWeight(weights.risk) ?? ''),
   }
   if (mock) delete env.ANTHROPIC_API_KEY
   return env
