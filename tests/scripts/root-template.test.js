@@ -93,6 +93,38 @@ describe('the template and the generated file agree', () => {
   })
 })
 
+// ─── The default title, and no default canonical (#327) ─────────────────────
+//
+// Every route used to fall back to whatever the shell's `head()` carried, and
+// the shell carried no `<title>` at all — a shared or crawled /archive or
+// /how/<date> showed the home page's card. The shell now always carries a
+// title (via the {{OG_META}} block — buildOgMetaEntries leads with a plain
+// `{ title: ... }` entry, and TanStack dedupes `title` the same way it
+// dedupes `meta`, so a child route's own title always overrides it).
+//
+// The shell does NOT get a default canonical link. A canonical pointing at
+// the home page is wrong for every route that still serves the shell
+// (/about, /work/<slug>, /panel, …) — there is no single default that is
+// right for all of them, so the shell carries none. /archive and
+// /how/$date, the two routes that are prerendered into their own HTML,
+// declare their own canonical instead.
+
+describe.each([
+  [TEMPLATE_PATH, template],
+  [GENERATED_PATH, generated],
+])('%s (#327)', (_rel, src) => {
+  it('carries no canonical link — there is no default that is right for every shell route', () => {
+    expect(src).not.toContain('canonical')
+  })
+})
+
+describe('app/routes/__root.tsx carries a default title (#327)', () => {
+  it('emits a title in its head() meta, from the OG_META block', () => {
+    expect(generated).toMatch(/head:\s*\(\)\s*=>/)
+    expect(generated).toContain('{ title:')
+  })
+})
+
 // ─── The archive link (#155) ─────────────────────────────────────────────────
 //
 // The link silently disappeared for sixteen builds when the page shell became

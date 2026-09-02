@@ -7,10 +7,43 @@ import { signalLines } from '../lib/archive-signals'
 import { css } from '../../styled-system/css'
 import { isArchiveDetail } from '../types/archive-record'
 import type { ArchiveDetail, ArchiveTokens, JsonValue } from '../types/archive-record'
+import { CANONICAL_ORIGIN } from '../../scripts/utils/site-origin.js'
 
 export const Route = createFileRoute('/how/$date')({
   component: HowPage,
-  head: ({ params }) => ({ meta: [{ title: `How the ${params.date} design was made` }] }),
+  // Without its own og:url and canonical, this page carried the day's home
+  // page card and the home page's URL — the shell's default, meant for pages
+  // that don't say otherwise (#327). This page always says otherwise. Every
+  // og:/twitter: key the shell sets is repeated here (og:image:width
+  // included) — meta dedupes per key, so a key left out leaks the day's
+  // value through next to this page's own og:title/og:image. The image
+  // follows the same /og/<date>.png convention the home page card uses; a
+  // date the pipeline never captured a card for falls back the way any
+  // missing image does, same as the home page's own og:image today.
+  head: ({ params }) => {
+    const title = `How the ${params.date} design was made`
+    const url = `${CANONICAL_ORIGIN}/how/${params.date}`
+    const image = `${CANONICAL_ORIGIN}/og/${params.date}.png`
+    return {
+      meta: [
+        { title },
+        { property: 'og:title', content: title },
+        {
+          property: 'og:description',
+          content: `A day-by-day look at how this site built its ${params.date} design.`,
+        },
+        { property: 'og:image', content: image },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:url', content: url },
+        { property: 'og:type', content: 'website' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: title },
+        { name: 'twitter:image', content: image },
+      ],
+      links: [{ rel: 'canonical', href: url }],
+    }
+  },
 })
 
 /**
