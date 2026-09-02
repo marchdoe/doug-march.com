@@ -22,22 +22,52 @@ function prettyDate(iso: string): string {
     : d.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
 }
 
+function SavedNote({ url }: { url: string }) {
+  return (
+    <p className={cx(successText, css({ marginTop: '10px' }))}>
+      Saved —{' '}
+      <a className={inlineLink} href={url}>
+        view issue
+      </a>
+      . Harvested on the next run.
+    </p>
+  )
+}
+
+type SubmitState =
+  | { kind: 'idle' }
+  | { kind: 'busy' }
+  | { kind: 'done'; url: string }
+  | { kind: 'error'; message: string }
+
+function NothingWaiting({ state }: { state: SubmitState }) {
+  return (
+    <>
+      <p className={mutedText}>Nothing waiting for a rating. 🎉</p>
+      {state.kind === 'done' && <SavedNote url={state.url} />}
+    </>
+  )
+}
+
+/**
+ * The list shrinks after a save and onRated's refetch. A chosen date that is
+ * no longer unrated falls back to the newest one, so a second click can never
+ * file a duplicate on the day just rated (#330).
+ */
+function activeFrom(unrated: RatingIssue[], chosen: string): string {
+  return unrated.some((i) => i.date === chosen) ? chosen : (unrated[0]?.date ?? '')
+}
+
 export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated: () => void }) {
-  const [activeDate, setActiveDate] = useState(unrated[0]?.date ?? '')
+  const [chosenDate, setActiveDate] = useState(unrated[0]?.date ?? '')
+  const activeDate = activeFrom(unrated, chosenDate)
   const [grade, setGrade] = useState<'A' | 'B' | 'C' | 'D' | null>(null)
   const [worked, setWorked] = useState('')
   const [didnt, setDidnt] = useState('')
   const [tryNext, setTryNext] = useState('')
-  const [state, setState] = useState<
-    | { kind: 'idle' }
-    | { kind: 'busy' }
-    | { kind: 'done'; url: string }
-    | { kind: 'error'; message: string }
-  >({ kind: 'idle' })
+  const [state, setState] = useState<SubmitState>({ kind: 'idle' })
 
-  if (unrated.length === 0 && state.kind !== 'done') {
-    return <p className={mutedText}>Nothing waiting for a rating. 🎉</p>
-  }
+  if (unrated.length === 0) return <NothingWaiting state={state} />
 
   const submit = async () => {
     if (!grade || !activeDate) return
@@ -45,6 +75,10 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
     try {
       const res = await submitRating({ date: activeDate, grade, worked, didnt, try: tryNext })
       setState({ kind: 'done', url: res.issueUrl })
+      setGrade(null)
+      setWorked('')
+      setDidnt('')
+      setTryNext('')
       onRated()
     } catch (err) {
       setState({ kind: 'error', message: err instanceof Error ? err.message : 'Failed' })
@@ -124,15 +158,7 @@ export function RateTab({ unrated, onRated }: { unrated: RatingIssue[]; onRated:
       >
         {state.kind === 'busy' ? 'Submitting…' : 'Submit rating'}
       </button>
-      {state.kind === 'done' && (
-        <p className={cx(successText, css({ marginTop: '10px' }))}>
-          Saved —{' '}
-          <a className={inlineLink} href={state.url}>
-            view issue
-          </a>
-          . Harvested on the next run.
-        </p>
-      )}
+      {state.kind === 'done' && <SavedNote url={state.url} />}
       {state.kind === 'error' && (
         <p role="alert" className={cx(errorText, css({ marginTop: '10px' }))}>
           {state.message}
