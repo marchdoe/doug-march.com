@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import type { ArchiveEntry } from './dev-server/dev-data'
 import {
   type Meta,
   type Signals,
@@ -10,7 +9,7 @@ import {
 } from './dev/api'
 import { ResponsiveCard } from './components/responsive-card'
 import { readResponsiveMetrics, readArchiveDetail } from './server/archive'
-import type { ResponsiveMetrics } from './server/archive'
+import type { ArchiveEntry, ResponsiveMetrics } from './server/archive'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

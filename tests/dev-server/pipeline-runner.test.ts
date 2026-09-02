@@ -6,7 +6,6 @@ import {
   eventsFromChunk,
   pipelineEnv,
 } from '../../app/dev-server/pipeline-runner'
-import { parseBriefSections } from '../../app/dev-server/dev-data'
 
 // createPipelineRunner spawns a real child process; two POSTs racing the
 // spawn is exactly what #324 is about, so spawn is mocked to return a bare
@@ -139,28 +138,5 @@ describe('createPipelineRunner start()', () => {
     expect(JSON.parse(res2.status === 409 ? res2.body : res1.body)).toEqual({
       error: 'Pipeline already running',
     })
-  })
-})
-
-describe('parseBriefSections', () => {
-  it('reads the rationale and the files list out of a brief', () => {
-    const md = [
-      '# Brief',
-      "## Claude's Rationale",
-      'Because the moon.',
-      'Two lines.',
-      '## Files Changed',
-      '- app/routes/index.tsx',
-      '- elements/preset.ts',
-      '',
-    ].join('\n')
-    expect(parseBriefSections(md)).toEqual({
-      rationale: 'Because the moon.\nTwo lines.',
-      filesChanged: ['app/routes/index.tsx', 'elements/preset.ts'],
-    })
-  })
-
-  it('degrades to empty when a section is missing', () => {
-    expect(parseBriefSections('# nothing here')).toEqual({ rationale: '', filesChanged: [] })
   })
 })

@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { resolve } from 'node:path'
 import type { Plugin } from 'vite'
+import { DATE_FRAGMENT } from '../server/archive-paths'
 
 // Serve preserved designs the way production does (#154).
 //
@@ -22,7 +23,7 @@ import type { Plugin } from 'vite'
  * can hold it against the `redirects` entry in vercel.json: the two encode
  * the same rule and used to be written independently.
  */
-export const ARCHIVE_DATE_URL = /^\/archive\/(\d{4}-\d{2}-\d{2})(\/?)$/
+export const ARCHIVE_DATE_URL = new RegExp(`^/archive/(${DATE_FRAGMENT})(/?)$`)
 
 /** The date pattern as vercel.json spells it, for the same test. */
 export const VERCEL_DATE_SEGMENT = '\\d{4}-\\d{2}-\\d{2}'
