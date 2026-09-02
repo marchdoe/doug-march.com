@@ -4,19 +4,67 @@ import {
   runStaticChecks,
   STATIC_CHECK_PATHS,
   formatGeneratedFile,
+  summarizeFallowAudit,
 } from '../../scripts/utils/build-validator.js'
 
+/** What a clean `fallow audit --format json` prints, reduced to what is read. */
+const FALLOW_PASS = JSON.stringify({ verdict: 'pass', complexity: { findings: [] }, dead_code: {} })
+
 /** A spawnSync stand-in keyed on the tool being invoked. */
-function fakeSpawn({ biome = {}, tsc = {} } = {}) {
+function fakeSpawn({ biome = {}, tsc = {}, fallow = { stdout: FALLOW_PASS } } = {}) {
   const calls = []
   const spawn = vi.fn((cmd, args) => {
     calls.push([cmd, ...args])
     const tool = args[1]
-    const r = tool === 'biome' ? biome : tsc
+    const r = tool === 'biome' ? biome : tool === 'tsc' ? tsc : fallow
     return { status: r.status ?? 0, stdout: r.stdout ?? '', stderr: r.stderr ?? '' }
   })
   return { spawn, calls }
 }
+
+// The 2026-09-02 nightly's finding, as the audit reported it, beside an
+// inherited one from the same file and an unused export the engineer added.
+const FALLOW_FAIL = JSON.stringify({
+  verdict: 'fail',
+  attribution: { gate: 'new-only', complexity_introduced: 1, dead_code_introduced: 1 },
+  complexity: {
+    findings: [
+      {
+        path: 'app/routes/work.$slug.tsx',
+        name: 'WorkDetailPage',
+        line: 8,
+        cyclomatic: 18,
+        cognitive: 12,
+        line_count: 321,
+        crap: 342,
+        exceeded: 'crap',
+        introduced: true,
+      },
+      {
+        path: 'app/components/BrandLockup.tsx',
+        name: 'Mark',
+        line: 166,
+        cyclomatic: 9,
+        cognitive: 15,
+        line_count: 40,
+        crap: 90,
+        exceeded: 'crap',
+        introduced: false,
+      },
+    ],
+  },
+  dead_code: {
+    unused_exports: [
+      { path: 'app/components/Hero.tsx', export_name: 'HeroProps', line: 3, introduced: true },
+      {
+        path: 'app/components/BrandLockup.tsx',
+        export_name: 'BrandLockupMode',
+        line: 43,
+        introduced: false,
+      },
+    ],
+  },
+})
 
 describe('runStaticChecks', () => {
   it('passes when both tools are clean', () => {
@@ -92,10 +140,68 @@ describe('runStaticChecks', () => {
     expect(result.error).toContain('formatting has already been corrected')
   })
 
+  it('runs the architecture audit against HEAD, as JSON', () => {
+    const { spawn, calls } = fakeSpawn()
+    runStaticChecks({ spawn, root: '/repo' })
+    const fallowCall = calls.find((c) => c.includes('fallow'))
+    expect(fallowCall).toEqual([
+      'pnpm',
+      'exec',
+      'fallow',
+      'audit',
+      '--base',
+      'HEAD',
+      '--format',
+      'json',
+    ])
+  })
+
+  it('fails on an introduced audit finding, naming the function and its file', () => {
+    const { spawn } = fakeSpawn({ fallow: { status: 1, stdout: FALLOW_FAIL } })
+    const result = runStaticChecks({ spawn, root: '/repo' })
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('app/routes/work.$slug.tsx:8 WorkDetailPage')
+    expect(result.error).toContain('321 lines')
+    expect(result.error).toContain('app/components/Hero.tsx:3 export HeroProps')
+  })
+
+  it('leaves inherited findings out of what the engineer is told', () => {
+    const { spawn } = fakeSpawn({ fallow: { status: 1, stdout: FALLOW_FAIL } })
+    const result = runStaticChecks({ spawn, root: '/repo' })
+    expect(result.error).not.toContain('Mark')
+    expect(result.error).not.toContain('BrandLockupMode')
+  })
+
+  it('does not gate on audit output it cannot read', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const { spawn } = fakeSpawn({ fallow: { status: 1, stdout: 'fallow: panicked' } })
+    const result = runStaticChecks({ spawn, root: '/repo' })
+    expect(result).toEqual({ success: true })
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('could not be read'))
+    warn.mockRestore()
+  })
+
   it('caps each tool output so a runaway log cannot swamp the retry prompt', () => {
     const { spawn } = fakeSpawn({ tsc: { status: 2, stdout: 'x'.repeat(10000) } })
     const result = runStaticChecks({ spawn, root: '/repo' })
     expect(result.error.length).toBeLessThan(3500)
+  })
+})
+
+describe('summarizeFallowAudit', () => {
+  it('skips whatever pnpm prints before the JSON', () => {
+    expect(summarizeFallowAudit(`✓ Lockfile passes supply-chain policies\n${FALLOW_PASS}`)).toEqual(
+      {}
+    )
+  })
+
+  it('is silent on a passing verdict', () => {
+    expect(summarizeFallowAudit(FALLOW_PASS)).toEqual({})
+  })
+
+  it('still says something when a failing verdict has no introduced finding it can name', () => {
+    const report = JSON.stringify({ verdict: 'fail', attribution: { duplication_introduced: 1 } })
+    expect(summarizeFallowAudit(report).error).toContain('duplication_introduced')
   })
 })
 

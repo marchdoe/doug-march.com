@@ -32,7 +32,7 @@ import { identity } from '../content/about'
  * Positive, so nothing overflows the row upward.
  */
 
-export type BrandLockupVariant =
+type BrandLockupVariant =
   | 'mark-only-sm'
   | 'mark-only-md'
   | 'horizontal-sm'
@@ -40,7 +40,7 @@ export type BrandLockupVariant =
   | 'stacked-md'
   | 'stacked-lg'
 
-export type BrandLockupMode = 'original' | 'single-color'
+type BrandLockupMode = 'original' | 'single-color'
 
 /**
  * Colour tokens the lockup will accept for single-color mode.
@@ -54,7 +54,7 @@ export type BrandLockupMode = 'original' | 'single-color'
  * from wherever it is placed, which is the more idiomatic route: wrap the
  * lockup in an element whose `color` you set, or pass a `className`.
  */
-export type BrandLockupColor = 'text' | 'bg' | 'accent'
+type BrandLockupColor = 'text' | 'bg' | 'accent'
 
 type BrandLockupProps = {
   variant?: BrandLockupVariant
