@@ -6,7 +6,13 @@ import { resolve, sep } from 'node:path'
 import { ROOT } from './file-manager.js'
 import { STEP_BUDGETS } from './budgets.js'
 import { checkTokenExistence } from './token-existence.js'
-import { checkTokenResolution, readReachableSources } from './token-gate.js'
+import {
+  CAN_OPEN_STRING,
+  EXPRESSION_KEYWORDS,
+  checkTokenResolution,
+  readReachableSources,
+  stripComments,
+} from './token-gate.js'
 import { MUTABLE_FILES, ORCHESTRATOR_FILES } from './site-context.js'
 import { MARK_PATH_FINGERPRINTS, lockupIsDeclared } from './brand-lockup.js'
 import {
@@ -103,6 +109,104 @@ function unreachableSources(root, reachable) {
   }
   walk(resolve(root, 'app'))
   return out.sort()
+}
+
+/**
+ * Read one quoted literal's body starting just after its opening `quote`.
+ *
+ * @param {string} source
+ * @param {number} start index just past the opening quote
+ * @param {string} quote the quote character that opened it (`'`, `"`, or `` ` ``)
+ * @returns {{ content: string, endIndex: number }} the body, and the index of
+ *   the closing quote (or `source.length` if the literal never closes)
+ */
+function readQuotedBody(source, start, quote) {
+  let content = ''
+  for (let i = start; i < source.length; i++) {
+    const c = source[i]
+    if (c === '\\') {
+      content += c + (source[i + 1] ?? '')
+      i++
+      continue
+    }
+    if (c === quote) return { content, endIndex: i }
+    content += c
+  }
+  return { content, endIndex: source.length }
+}
+
+/**
+ * Read the identifier/keyword run starting at `source[start]`.
+ *
+ * @param {string} source
+ * @param {number} start
+ * @returns {{ word: string, endIndex: number }} the word, and the index
+ *   just past it
+ */
+function readWord(source, start) {
+  let end = start
+  while (end < source.length && /[A-Za-z0-9_$]/.test(source[end])) end++
+  return { word: source.slice(start, end), endIndex: end }
+}
+
+/**
+ * Would a `'` / `"` right here open a string, given what came before it?
+ * Mirrors token-gate.js's `CAN_OPEN_STRING` heuristic — an apostrophe in JSX
+ * text like `don't` must not be mistaken for an opening quote — plus
+ * `EXPRESSION_KEYWORDS`: `return 'https://…'` has no punctuation before the
+ * quote at all, only whitespace after a keyword (#313).
+ *
+ * @param {string|null} lastSignificant
+ * @param {string} lastWord
+ * @returns {boolean}
+ */
+function quoteCanOpen(lastSignificant, lastWord) {
+  return (
+    lastSignificant === null ||
+    CAN_OPEN_STRING.has(lastSignificant) ||
+    EXPRESSION_KEYWORDS.has(lastWord)
+  )
+}
+
+/**
+ * The contents of every quoted string and template literal in `source`,
+ * quotes stripped, in source order.
+ *
+ * The security scan's URL allowlist is only meaningful against a string a
+ * runtime value could carry — `fetch(someUrl)` matters, `// see
+ * https://evil.example.com/docs` never runs. Meant to run on output already
+ * passed through `stripComments`.
+ *
+ * @param {string} source
+ * @returns {string[]}
+ */
+function stringLiterals(source) {
+  const literals = []
+  let lastSignificant = null
+  let lastWord = ''
+  for (let i = 0; i < source.length; i++) {
+    const c = source[i]
+    if (/[A-Za-z0-9_$]/.test(c)) {
+      const word = readWord(source, i)
+      lastWord = word.word
+      i = word.endIndex - 1
+      continue
+    }
+    const canOpen = c === '`' || quoteCanOpen(lastSignificant, lastWord)
+    if ((c === "'" || c === '"' || c === '`') && canOpen) {
+      const { content, endIndex } = readQuotedBody(source, i + 1, c)
+      literals.push(content)
+      lastSignificant = c
+      lastWord = ''
+      i = endIndex
+      continue
+    }
+    if (!/\s/.test(c)) {
+      lastSignificant = c
+      lastWord = ''
+    }
+  }
+  return literals
 }
 
 /**
@@ -403,12 +507,13 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
     }
 
     // Strip comments so patterns in comments don't trigger false positives.
-    // Only strip standalone line comments (start of line + whitespace) to
-    // avoid breaking URLs like https:// — a trailing comment rarely contains
-    // a dangerous pattern that isn't also in the code itself.
-    const stripped = content
-      .replace(/\/\*[\s\S]*?\*\//g, '') // block comments
-      .replace(/^\s*\/\/[^\n]*/gm, '') // standalone line comments only
+    // Uses the shared, string-aware stripComments (#309) rather than a plain
+    // regex: a trailing `// see https://…` line comment used to survive
+    // (only a standalone comment line was removed), and the old block-comment
+    // regex was not string-aware, so `const a = "/*"` followed later by
+    // `const b = "*/"` deleted every real line in between, fetch() calls
+    // included (#313).
+    const stripped = stripComments(content)
 
     const fileExceptions = PATTERN_EXCEPTIONS[file] || []
 
@@ -419,14 +524,18 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
       }
     }
 
-    // Check all URLs in the code against allowlist
-    const urlMatches = stripped.matchAll(/https?:\/\/([a-zA-Z0-9.-]+)/g)
-    for (const match of urlMatches) {
-      const host = match[1].toLowerCase()
-      if (!ALLOWED_URL_HOSTS.has(host)) {
-        errors.push(
-          `${file}: contains disallowed URL to ${host} (only ${[...ALLOWED_URL_HOSTS].join(', ')} are allowed)`
-        )
+    // Check URLs against the allowlist, but only inside string literals —
+    // a URL mentioned in JSX prose or left over in a comment is not a value
+    // any runtime code will fetch (#313).
+    for (const literal of stringLiterals(stripped)) {
+      const urlMatches = literal.matchAll(/https?:\/\/([a-zA-Z0-9.-]+)/g)
+      for (const match of urlMatches) {
+        const host = match[1].toLowerCase()
+        if (!ALLOWED_URL_HOSTS.has(host)) {
+          errors.push(
+            `${file}: contains disallowed URL to ${host} (only ${[...ALLOWED_URL_HOSTS].join(', ')} are allowed)`
+          )
+        }
       }
     }
   }

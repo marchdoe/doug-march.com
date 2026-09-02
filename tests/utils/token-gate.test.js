@@ -589,4 +589,27 @@ describe('stripComments', () => {
       { prop: 'width', value: '11', category: 'sizes' },
     ])
   })
+
+  it('opens a string right after `return`, with only whitespace before the quote (#313)', () => {
+    // No punctuation precedes the quote at all -- `n` (the last letter of
+    // "return") is not in CAN_OPEN_STRING, so a naive heuristic leaves the
+    // string unopened and the `//` inside the URL reads as a real comment,
+    // silently deleting the rest of the line.
+    const src = "function f() {\n  doSomething()\n  return 'https://dougmar.ch/a'\n}"
+    expect(stripComments(src)).toContain("'https://dougmar.ch/a'")
+  })
+
+  it('opens a string right after `case`, `throw`, `typeof`, `yield`, and `await` (#313)', () => {
+    for (const keyword of ['case', 'throw', 'typeof', 'yield', 'await']) {
+      const src = `${keyword} 'https://dougmar.ch/a'`
+      expect(stripComments(src)).toContain("'https://dougmar.ch/a'")
+    }
+  })
+
+  it('does not open a string after a non-keyword identifier (#313)', () => {
+    // "returning" is not "return" -- a word-boundary miss here would silently
+    // widen the heuristic to any identifier, not just the keyword set.
+    const src = "returning 'https://dougmar.ch/a'"
+    expect(stripComments(src)).not.toContain("'https://dougmar.ch/a'")
+  })
 })

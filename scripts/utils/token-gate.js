@@ -532,7 +532,31 @@ export function readGeneratedTokenScales(root) {
 // anywhere else (after a word character, `>`, a closing quote, …) is prose,
 // not the start of a string — `Doug's studio` and `<p>It's here</p>` are the
 // motivating cases. Also permitted at the very start of the source.
-const CAN_OPEN_STRING = new Set(['=', '(', ',', ':', '[', '{', '|', '&', '?', '+', ';'])
+export const CAN_OPEN_STRING = new Set(['=', '(', ',', ':', '[', '{', '|', '&', '?', '+', ';'])
+
+// Keywords that grammatically precede an expression, so the quote right
+// after one opens a string even though the keyword's last letter is not in
+// CAN_OPEN_STRING — `return 'https://…'`, `case 'https://…':`, `throw '…'`,
+// `typeof '…'`, `yield '…'`, `await '…'` have no punctuation before the
+// quote at all. Without this, the build-validator security scan's raw-text
+// URL check (which this stripComments feeds) silently stopped scanning
+// exactly the shapes an LLM writes (#313 follow-up).
+export const EXPRESSION_KEYWORDS = new Set([
+  'return',
+  'case',
+  'throw',
+  'typeof',
+  'yield',
+  'await',
+  'in',
+  'of',
+  'instanceof',
+  'void',
+  'delete',
+  'new',
+  'else',
+  'do',
+])
 
 /**
  * Find the end of a `/regex/` literal starting at `source[start]`, or -1 if
@@ -571,12 +595,14 @@ function findRegexEnd(source, start) {
  * String literals are tracked so a `//` inside one — every https:// URL in
  * the tree — is not mistaken for the start of a comment. A `'` or `"` only
  * opens a string when what precedes it looks like a value is expected
- * (`CAN_OPEN_STRING`, or the start of the source); otherwise — prose in JSX
- * text, an apostrophe in a comment — it is left alone (#309). Template
- * literals keep the old, unconditional toggle: a tagged template's backtick
- * is preceded by an identifier, which the same heuristic would reject. A `/`
- * in an opening position is checked for a regex literal first, so a character
- * class like `/['"]/` does not open a fake string.
+ * (`CAN_OPEN_STRING`, the start of the source, or the previous word being an
+ * `EXPRESSION_KEYWORDS` entry — `return 'https://…'` has no punctuation
+ * before the quote at all, #313); otherwise — prose in JSX text, an
+ * apostrophe in a comment — it is left alone (#309). Template literals keep
+ * the old, unconditional toggle: a tagged template's backtick is preceded by
+ * an identifier, which the same heuristic would reject. A `/` in an opening
+ * position is checked for a regex literal first, so a character class like
+ * `/['"]/` does not open a fake string.
  *
  * @param {string} source
  * @returns {string} same length, comment bodies blanked
@@ -585,6 +611,12 @@ export function stripComments(source) {
   let out = ''
   let quote = null
   let lastSignificant = null
+  // The most recently completed identifier/keyword, tracked alongside
+  // lastSignificant so `return 'https://…'` is recognized even though the
+  // char right before the quote is whitespace, not punctuation. Persists
+  // across whitespace, cleared by real punctuation or once consumed.
+  let lastWord = ''
+  let currentWord = ''
   for (let i = 0; i < source.length; i++) {
     const c = source[i]
     const next = source[i + 1]
@@ -599,20 +631,36 @@ export function stripComments(source) {
       }
       continue
     }
-    const canOpen = lastSignificant === null || CAN_OPEN_STRING.has(lastSignificant)
+    if (/[A-Za-z0-9_$]/.test(c)) {
+      currentWord += c
+      out += c
+      lastSignificant = c
+      continue
+    }
+    if (currentWord) {
+      lastWord = currentWord
+      currentWord = ''
+    }
+    const canOpen =
+      lastSignificant === null ||
+      CAN_OPEN_STRING.has(lastSignificant) ||
+      EXPRESSION_KEYWORDS.has(lastWord)
     if ((c === "'" || c === '"') && canOpen) {
       quote = c
       out += c
+      lastWord = ''
       continue
     }
     if (c === '`') {
       quote = c
       out += c
+      lastWord = ''
       continue
     }
     if (c === '/' && next === '/') {
       while (i < source.length && source[i] !== '\n') i++
       out += '\n'
+      lastWord = ''
       continue
     }
     if (c === '/' && next === '*') {
@@ -621,6 +669,7 @@ export function stripComments(source) {
       // Keep the newlines so reported line numbers stay true.
       out += body.replace(/[^\n]/g, ' ')
       i = end < 0 ? source.length : end + 1
+      lastWord = ''
       continue
     }
     if (c === '/' && canOpen) {
@@ -630,12 +679,16 @@ export function stripComments(source) {
         while (flagEnd < source.length && /[a-zA-Z]/.test(source[flagEnd])) flagEnd++
         out += source.slice(i, flagEnd)
         lastSignificant = source[flagEnd - 1]
+        lastWord = ''
         i = flagEnd - 1
         continue
       }
     }
     out += c
-    if (!/\s/.test(c)) lastSignificant = c
+    if (!/\s/.test(c)) {
+      lastSignificant = c
+      lastWord = ''
+    }
   }
   return out
 }
