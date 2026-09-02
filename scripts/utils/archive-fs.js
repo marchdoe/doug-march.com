@@ -30,6 +30,25 @@ export function archivedDates(archiveDir, { newestFirst = false } = {}) {
   return newestFirst ? dates.reverse() : dates
 }
 
+const OG_IMAGE_FILE = /^(\d{4}-\d{2}-\d{2})\.png$/
+
+/**
+ * Dates with a real captured OG card under `public/og/`, as opposed to only
+ * the shared `default.png` every checkout carries. Read the same way
+ * `archivedDates` reads `archive/` — a plain directory listing, no per-file
+ * stat — because `vite.config.ts` needs this list at config-eval time, before
+ * a dev server or build exists to ask (#399).
+ *
+ * @param {string} ogDir
+ * @returns {string[]}
+ */
+export function datesWithOgImage(ogDir) {
+  if (!existsSync(ogDir)) return []
+  return readdirSync(ogDir)
+    .map((name) => OG_IMAGE_FILE.exec(name)?.[1])
+    .filter((date) => date !== undefined)
+}
+
 /**
  * Parse a JSON file, or null when it is missing or malformed. An archive
  * predating an artifact is history, not an error.
