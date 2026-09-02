@@ -37,6 +37,12 @@ interface Phase {
 
 type PaneName = 'pipeline' | 'archive' | 'inspector' | 'run'
 
+const PANE_NAMES: readonly PaneName[] = ['pipeline', 'archive', 'inspector', 'run']
+
+function isPaneName(value: unknown): value is PaneName {
+  return typeof value === 'string' && (PANE_NAMES as readonly string[]).includes(value)
+}
+
 const COOLDOWN_SECONDS = 10
 
 function makePhases(): Phase[] {
@@ -224,7 +230,8 @@ export function DevPanel() {
   // Pane navigation — persisted in sessionStorage so HMR reloads don't reset it
   const [activePane, setActivePaneRaw] = useState<PaneName>(() => {
     try {
-      return (sessionStorage.getItem('dev-panel-pane') as PaneName) || 'pipeline'
+      const stored = sessionStorage.getItem('dev-panel-pane')
+      return isPaneName(stored) ? stored : 'pipeline'
     } catch {
       return 'pipeline'
     }
