@@ -24,6 +24,7 @@ vi.mock('../../scripts/utils/snapshot.js', (o) => m['scripts/utils/snapshot.js']
 vi.mock('../../scripts/utils/surface-gate.js', (o) => m['scripts/utils/surface-gate.js'](o))
 vi.mock('../../scripts/utils/archiver.js', (o) => m['scripts/utils/archiver.js'](o))
 vi.mock('../../scripts/seal-archive.js', (o) => m['scripts/seal-archive.js'](o))
+vi.mock('../../scripts/utils/file-manager.js', (o) => m['scripts/utils/file-manager.js'](o))
 vi.mock('node:child_process', (o) => m['node:child_process'](o))
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')

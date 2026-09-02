@@ -5,7 +5,9 @@
  * with copies of the real prompts, chassis, preset, assets and two archived
  * days. The model calls, the process spawns and the browser captures are the
  * only fakes; every parser, validator, gate, backup and restore in between is
- * the production code (#221).
+ * the production code (#221). `restore` and `cleanupOrphans` stay real but are
+ * wrapped to record what they were handed, so a rollback can be asserted by
+ * the map it received as well as by the disk it left behind.
  *
  * The `vi.mock` declarations cannot live here — vitest hoists them per test
  * file — so a test file pastes this block at its top and the factories below
@@ -19,12 +21,15 @@
  *   vi.mock('../../scripts/utils/surface-gate.js', (o) => m['scripts/utils/surface-gate.js'](o))
  *   vi.mock('../../scripts/utils/archiver.js', (o) => m['scripts/utils/archiver.js'](o))
  *   vi.mock('../../scripts/seal-archive.js', (o) => m['scripts/seal-archive.js'](o))
+ *   vi.mock('../../scripts/utils/file-manager.js', (o) => m['scripts/utils/file-manager.js'](o))
  *   vi.mock('node:child_process', (o) => m['node:child_process'](o))
  *
  * The arrow wrappers matter: `vi.mock` is hoisted above the import, so the
  * factory may only touch `m` when it eventually runs, not when it is declared.
  * Nothing in this module imports a mocked module at top level for the same
- * reason; `design-agents.js` is imported inside `runSwarm`.
+ * reason; `design-agents.js` is imported inside `runSwarm`. A test file that
+ * needs `site-context.js` (it imports file-manager.js) loads it with a
+ * top-level `await import` placed after the block.
  */
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
@@ -99,6 +104,10 @@ const state = {
     runSurfaceGate: [],
     listGeneratedRoutes: [],
     archive: [],
+    /** `{ seq, paths, map, root }` per real `restore` call */
+    restore: [],
+    /** `{ seq, written, root }` per real `cleanupOrphans` call */
+    cleanupOrphans: [],
   },
 }
 
@@ -338,6 +347,38 @@ async function fakeArchive(
 }
 
 // ---------------------------------------------------------------------------
+// The rollback recorders: the real functions run, their arguments are kept
+// ---------------------------------------------------------------------------
+
+/** Position across both rollback lists, so a test can say which ran first. */
+function rollbackSeq() {
+  return state.fakes.restore.length + state.fakes.cleanupOrphans.length
+}
+
+function recordingFileManager(real) {
+  return {
+    ...real,
+    restore: async (backupMap, opts) => {
+      state.fakes.restore.push({
+        seq: rollbackSeq(),
+        paths: [...backupMap.keys()],
+        map: new Map(backupMap),
+        root: opts?.root,
+      })
+      return real.restore(backupMap, opts)
+    },
+    cleanupOrphans: async (writtenPaths, backupMap, opts) => {
+      state.fakes.cleanupOrphans.push({
+        seq: rollbackSeq(),
+        written: [...writtenPaths],
+        root: opts?.root,
+      })
+      return real.cleanupOrphans(writtenPaths, backupMap, opts)
+    },
+  }
+}
+
+// ---------------------------------------------------------------------------
 // The vi.mock factories, keyed by module path from the repo root
 // ---------------------------------------------------------------------------
 
@@ -374,6 +415,8 @@ export const mockFactories = {
   'scripts/seal-archive.js': async () => ({
     sealArchive: async () => ({ changed: [], scanned: 0, dates: 0 }),
   }),
+  'scripts/utils/file-manager.js': async (importOriginal) =>
+    recordingFileManager(await importOriginal()),
   'node:child_process': async (importOriginal) => ({
     ...(await importOriginal()),
     spawnSync: fakeSpawnSync,
