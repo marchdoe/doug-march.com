@@ -112,7 +112,7 @@ describe("the build log lands under the run's own Eastern date", () => {
 
   it('validateBuild accepts a date and defaults it from localDateString', () => {
     expect(SOURCE).toMatch(
-      /export function validateBuild\(\{ shell = null, date = localDateString\(new Date\(\)\) \} = \{\}\)/
+      /export function validateBuild\(\{\s*root = ROOT,\s*shell = null,\s*date = localDateString\(new Date\(\)\),\s*\} = \{\}\)/
     )
   })
 })
