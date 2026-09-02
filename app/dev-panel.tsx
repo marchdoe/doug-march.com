@@ -635,21 +635,12 @@ export function DevPanel() {
               active={activePane === 'pipeline'}
               onClick={() => setActivePane('pipeline')}
               widget={
-                // biome-ignore lint/a11y/useSemanticElements: nested inside SidebarItem's own <button> — a real <button> can't nest inside another button (invalid HTML, breaks hydration).
-                <span
-                  role="button"
-                  tabIndex={0}
+                <button
+                  type="button"
                   title="Refresh signals"
                   onClick={(e) => {
                     e.stopPropagation()
                     handleRefreshSignals()
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      handleRefreshSignals()
-                    }
                   }}
                   style={{
                     display: 'inline-flex',
@@ -694,7 +685,7 @@ export function DevPanel() {
                     ↻
                   </span>
                   <span>{refreshingSignals ? '...' : meta ? `${meta.providers_ok}` : '–'}</span>
-                </span>
+                </button>
               }
             />
             <SidebarItem
@@ -880,56 +871,69 @@ function SidebarItem({
   widget?: React.ReactNode
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
+    <div
       style={{
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
         width: '100%',
+        boxSizing: 'border-box',
         padding: '9px 14px',
         background: active ? 'rgba(0,229,255,0.06)' : 'transparent',
-        border: 'none',
         borderLeft: active ? `2px solid ${c.cyan}` : '2px solid transparent',
-        color: active ? c.primary : c.muted,
-        fontSize: '11px',
-        fontFamily: c.font,
-        cursor: 'pointer',
-        textAlign: 'left',
-        letterSpacing: '.02em',
       }}
     >
-      {icon === 'play' && <span style={{ fontSize: '10px' }}>&#9654;</span>}
-      {icon === 'amber-dot' && (
-        <span
-          style={{
-            width: '6px',
-            height: '6px',
-            borderRadius: '50%',
-            background: c.orange,
-            animation: 'pulse-dot 1.5s ease-in-out infinite',
-            flexShrink: 0,
-          }}
-        />
-      )}
-      <span style={{ flex: 1 }}>{label}</span>
+      <button
+        type="button"
+        onClick={onClick}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          flex: 1,
+          minWidth: 0,
+          padding: 0,
+          background: 'transparent',
+          border: 'none',
+          color: active ? c.primary : c.muted,
+          fontSize: '11px',
+          fontFamily: c.font,
+          cursor: 'pointer',
+          textAlign: 'left',
+          letterSpacing: '.02em',
+        }}
+      >
+        {icon === 'play' && <span style={{ fontSize: '10px' }}>&#9654;</span>}
+        {icon === 'amber-dot' && (
+          <span
+            style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: c.orange,
+              animation: 'pulse-dot 1.5s ease-in-out infinite',
+              flexShrink: 0,
+            }}
+          />
+        )}
+        <span style={{ flex: 1 }}>{label}</span>
+        {badge && (
+          <span
+            style={{
+              fontSize: '9px',
+              color: c.muted,
+              background: c.cardBg,
+              padding: '1px 6px',
+              borderRadius: '8px',
+              border: `1px solid ${c.border}`,
+            }}
+          >
+            {badge}
+          </span>
+        )}
+      </button>
       {widget}
-      {badge && (
-        <span
-          style={{
-            fontSize: '9px',
-            color: c.muted,
-            background: c.cardBg,
-            padding: '1px 6px',
-            borderRadius: '8px',
-            border: `1px solid ${c.border}`,
-          }}
-        >
-          {badge}
-        </span>
-      )}
-    </button>
+    </div>
   )
 }
 
@@ -1165,6 +1169,7 @@ function ArchivePane({ archive }: { archive: ArchiveEntry[] }) {
               <div style={{ marginTop: '6px' }}>
                 <button
                   type="button"
+                  aria-expanded={expandedBuild === entryKey}
                   onClick={() => setExpandedBuild(expandedBuild === entryKey ? null : entryKey)}
                   style={{
                     background: 'none',
@@ -1443,54 +1448,64 @@ function TraceStepCard({
   const phase = TRACE_PHASES[step.phase] || { name: `P${step.phase}`, color: c.muted }
 
   return (
-    <button
-      type="button"
+    <div
       style={{
-        display: 'block',
-        width: '100%',
-        textAlign: 'left',
-        font: 'inherit',
-        color: 'inherit',
         background: c.cardBg,
         border: `1px solid ${c.border}`,
         borderLeft: `3px solid ${phase.color}`,
         borderRadius: '4px',
-        padding: '10px 12px',
         marginBottom: '6px',
-        cursor: 'pointer',
       }}
-      onClick={onToggle}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span
-            style={{
-              fontSize: '9px',
-              color: phase.color,
-              fontWeight: 700,
-              fontFamily: c.font,
-              letterSpacing: '0.05em',
-              background: `${phase.color}18`,
-              padding: '2px 6px',
-              borderRadius: '3px',
-            }}
-          >
-            {phase.name}
-          </span>
-          <span style={{ fontSize: '12px', color: c.primary, fontWeight: 700, fontFamily: c.font }}>
-            {step.name}
-          </span>
-          {(step.durationMs ?? 0) > 0 && (
-            <span style={{ fontSize: '10px', color: c.muted, fontFamily: c.font }}>
-              {fmtStepDuration(step.durationMs ?? 0)}
+      <button
+        type="button"
+        aria-expanded={expanded}
+        style={{
+          display: 'block',
+          width: '100%',
+          textAlign: 'left',
+          font: 'inherit',
+          color: 'inherit',
+          background: 'transparent',
+          border: 'none',
+          padding: '10px 12px',
+          cursor: 'pointer',
+        }}
+        onClick={onToggle}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span
+              style={{
+                fontSize: '9px',
+                color: phase.color,
+                fontWeight: 700,
+                fontFamily: c.font,
+                letterSpacing: '0.05em',
+                background: `${phase.color}18`,
+                padding: '2px 6px',
+                borderRadius: '3px',
+              }}
+            >
+              {phase.name}
             </span>
-          )}
+            <span
+              style={{ fontSize: '12px', color: c.primary, fontWeight: 700, fontFamily: c.font }}
+            >
+              {step.name}
+            </span>
+            {(step.durationMs ?? 0) > 0 && (
+              <span style={{ fontSize: '10px', color: c.muted, fontFamily: c.font }}>
+                {fmtStepDuration(step.durationMs ?? 0)}
+              </span>
+            )}
+          </div>
+          <span style={{ fontSize: '11px', color: c.muted }}>{expanded ? '▾' : '▸'}</span>
         </div>
-        <span style={{ fontSize: '11px', color: c.muted }}>{expanded ? '▾' : '▸'}</span>
-      </div>
+      </button>
 
       {expanded && (
-        <div style={{ marginTop: '12px' }}>
+        <div style={{ padding: '0 12px 10px' }}>
           {step.input && Object.keys(step.input).length > 0 && (
             <TraceJsonBlock label="INPUT" value={step.input} />
           )}
@@ -1499,7 +1514,7 @@ function TraceStepCard({
           )}
         </div>
       )}
-    </button>
+    </div>
   )
 }
 
@@ -1802,7 +1817,7 @@ function RunPane({
         </div>
       )}
 
-      <div role="status" aria-live="polite">
+      <div>
         {(pipelineStatus === 'success' || pipelineStatus === 'cooldown') && result && (
           <SuccessSection
             brief={result.brief ?? ''}
@@ -3315,7 +3330,7 @@ function SuccessSection({
         >
           +
         </div>
-        <div>
+        <div role="status" aria-live="polite">
           <div style={{ fontSize: '12px', fontWeight: 700, color: c.green, fontFamily: c.font }}>
             Build passed -- committed
           </div>
