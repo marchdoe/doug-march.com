@@ -13,6 +13,7 @@ import {
   readReachableSources,
   stripComments,
 } from './token-gate.js'
+import { shouldPin } from '../pin-inline-scripts.js'
 import { MUTABLE_FILES, ORCHESTRATOR_FILES } from './site-context.js'
 import { MARK_PATH_FINGERPRINTS, lockupIsDeclared } from './brand-lockup.js'
 import {
@@ -1251,6 +1252,42 @@ function checkEmittedTokensResolve(root) {
 }
 
 /**
+ * Check 5 of `validateBuildOutput`: every page `scripts/pin-inline-scripts.js`
+ * is supposed to touch actually carries its pinned CSP meta.
+ *
+ * `pnpm build` runs the pin step as its last stage, so this only fires if
+ * that step was skipped, reordered ahead of `vite build`, or removed from
+ * `package.json` — the nightly's own gate noticing what CI would otherwise
+ * catch a build later. `archive/<date>/` and `404.html` are excluded for the
+ * same reason `pin-inline-scripts.js` excludes them: see `shouldPin`.
+ *
+ * @param {string} distClient
+ * @returns {string[]}
+ */
+function checkInlineScriptsPinned(distClient) {
+  let relativePaths
+  try {
+    relativePaths = readdirSync(distClient, { recursive: true }).filter(
+      (p) => p.endsWith('.html') && shouldPin(p)
+    )
+  } catch (err) {
+    return [`could not walk dist/client/ to check CSP pinning: ${err.message}`]
+  }
+
+  const errors = []
+  for (const relativePath of relativePaths) {
+    const html = readFileSync(resolve(distClient, relativePath), 'utf8')
+    const meta = html.match(/<meta\s+http-equiv=["']Content-Security-Policy["'][^>]*>/i)
+    if (!meta?.[0].includes('sha256-')) {
+      errors.push(
+        `dist/client/${relativePath} has no pinned Content-Security-Policy meta (sha256- hash missing)`
+      )
+    }
+  }
+  return errors
+}
+
+/**
  * Post-build smoke checks: verify the built output is actually usable.
  * Runs after `pnpm build` exits 0 but before we declare success.
  *
@@ -1271,6 +1308,7 @@ export function validateBuildOutput({ root = ROOT } = {}) {
     ...checkSpaShell(distClient),
     ...checkAssetBundles(distClient),
     ...checkEmittedTokensResolve(root),
+    ...checkInlineScriptsPinned(distClient),
   ]
 
   return { success: errors.length === 0, errors }

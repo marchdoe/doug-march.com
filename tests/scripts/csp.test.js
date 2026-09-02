@@ -132,12 +132,26 @@ describe('the site policy', () => {
   const d = directives(cspFor(SITE))
 
   it('permits inline script, because the framework emits hydration scripts', () => {
-    // TanStack Start emits two inline scripts whose content changes with the
-    // framework, plus the theme-init script. Hashes would break silently on any
-    // upgrade and static hosting cannot issue a nonce, so this is the honest
-    // ceiling. External script origins are still refused.
+    // One of the three inline scripts TanStack Start emits — the stream
+    // barrier — embeds a build timestamp and hashed asset paths, so its
+    // content is different on every build. A static header cannot carry a
+    // hash for that, and static hosting cannot issue a nonce, so this stays
+    // the outer bound. The real fence is per-page: scripts/pin-inline-scripts.js
+    // writes a `Content-Security-Policy` meta into each page's own `<head>`
+    // with the exact hashes of its three scripts, and browsers enforce the
+    // intersection of the header and the meta — so a page missing its meta,
+    // or carrying a script this policy never authored, still has no
+    // 'unsafe-inline' to fall back on there. External script origins are
+    // still refused here regardless.
     expect(d['script-src']).toContain("'self'")
     expect(d['script-src']).toContain("'unsafe-inline'")
+  })
+
+  it('refuses inline event handler attributes outright', () => {
+    // Unlike inline <script> elements, no legitimate page needs an inline
+    // handler attribute (onclick=, onerror=, …), so this is refused
+    // unconditionally rather than pinned per page.
+    expect(d['script-src-attr']).toEqual(["'none'"])
   })
 
   it('loads script from nowhere else', () => {

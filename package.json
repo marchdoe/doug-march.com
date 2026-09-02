@@ -9,7 +9,7 @@
   "scripts": {
     "prepare": "panda codegen",
     "dev": "panda codegen && vite",
-    "build": "panda codegen && node scripts/generate-archive-json.js && vite build",
+    "build": "panda codegen && node scripts/generate-archive-json.js && vite build && node scripts/pin-inline-scripts.js",
     "preview": "vite preview",
     "test": "panda codegen && vitest run",
     "test:coverage": "panda codegen && vitest run --coverage",
