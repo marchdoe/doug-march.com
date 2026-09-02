@@ -16,7 +16,6 @@ import { Route as ElementsRouteImport } from './routes/elements'
 import { Route as ExperimentsRouteImport } from './routes/experiments'
 import { Route as OgRouteImport } from './routes/og'
 import { Route as PanelRouteImport } from './routes/panel'
-import { Route as DevResponsiveRouteImport } from './routes/dev.responsive'
 import { Route as HowDateRouteImport } from './routes/how.$date'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
@@ -56,11 +55,6 @@ const PanelRoute = PanelRouteImport.update({
   path: '/panel',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DevResponsiveRoute = DevResponsiveRouteImport.update({
-  id: '/dev/responsive',
-  path: '/dev/responsive',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const HowDateRoute = HowDateRouteImport.update({
   id: '/how/$date',
   path: '/how/$date',
@@ -85,7 +79,6 @@ export interface FileRoutesByFullPath {
   '/experiments': typeof ExperimentsRoute
   '/og': typeof OgRoute
   '/panel': typeof PanelRoute
-  '/dev/responsive': typeof DevResponsiveRoute
   '/how/$date': typeof HowDateRoute
   '/work/$slug': typeof WorkSlugRoute
   '/work/': typeof WorkIndexRoute
@@ -98,7 +91,6 @@ export interface FileRoutesByTo {
   '/experiments': typeof ExperimentsRoute
   '/og': typeof OgRoute
   '/panel': typeof PanelRoute
-  '/dev/responsive': typeof DevResponsiveRoute
   '/how/$date': typeof HowDateRoute
   '/work/$slug': typeof WorkSlugRoute
   '/work': typeof WorkIndexRoute
@@ -112,7 +104,6 @@ export interface FileRoutesById {
   '/experiments': typeof ExperimentsRoute
   '/og': typeof OgRoute
   '/panel': typeof PanelRoute
-  '/dev/responsive': typeof DevResponsiveRoute
   '/how/$date': typeof HowDateRoute
   '/work/$slug': typeof WorkSlugRoute
   '/work/': typeof WorkIndexRoute
@@ -127,7 +118,6 @@ export interface FileRouteTypes {
     | '/experiments'
     | '/og'
     | '/panel'
-    | '/dev/responsive'
     | '/how/$date'
     | '/work/$slug'
     | '/work/'
@@ -140,7 +130,6 @@ export interface FileRouteTypes {
     | '/experiments'
     | '/og'
     | '/panel'
-    | '/dev/responsive'
     | '/how/$date'
     | '/work/$slug'
     | '/work'
@@ -153,7 +142,6 @@ export interface FileRouteTypes {
     | '/experiments'
     | '/og'
     | '/panel'
-    | '/dev/responsive'
     | '/how/$date'
     | '/work/$slug'
     | '/work/'
@@ -167,7 +155,6 @@ export interface RootRouteChildren {
   ExperimentsRoute: typeof ExperimentsRoute
   OgRoute: typeof OgRoute
   PanelRoute: typeof PanelRoute
-  DevResponsiveRoute: typeof DevResponsiveRoute
   HowDateRoute: typeof HowDateRoute
   WorkSlugRoute: typeof WorkSlugRoute
   WorkIndexRoute: typeof WorkIndexRoute
@@ -224,13 +211,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PanelRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dev/responsive': {
-      id: '/dev/responsive'
-      path: '/dev/responsive'
-      fullPath: '/dev/responsive'
-      preLoaderRoute: typeof DevResponsiveRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/how/$date': {
       id: '/how/$date'
       path: '/how/$date'
@@ -263,7 +243,6 @@ const rootRouteChildren: RootRouteChildren = {
   ExperimentsRoute: ExperimentsRoute,
   OgRoute: OgRoute,
   PanelRoute: PanelRoute,
-  DevResponsiveRoute: DevResponsiveRoute,
   HowDateRoute: HowDateRoute,
   WorkSlugRoute: WorkSlugRoute,
   WorkIndexRoute: WorkIndexRoute,
