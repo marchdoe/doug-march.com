@@ -39,4 +39,20 @@ describe('readResponsiveHistory', () => {
     expect(h.length).toBe(2)
     expect(h[0].buildId).toBe('3')
   })
+
+  it('skips a recorded measurement miss rather than returning it as history', async () => {
+    // archiver.js writes { date, buildId, error, measuredAt } — no scores —
+    // when the responsive measurement itself fails (#280). It is not a
+    // build to learn from, so it must not occupy a slot in the window.
+    await plantBuild('2026-04-10', '1', { buildId: '1', overallScore: 3 })
+    await plantBuild('2026-04-11', '2', {
+      buildId: '2',
+      date: '2026-04-11',
+      error: 'vite preview did not answer',
+      measuredAt: '2026-04-11T00:00:00.000Z',
+    })
+    await plantBuild('2026-04-12', '3', { buildId: '3', overallScore: 4 })
+    const h = await readResponsiveHistory({ root, limit: 10 })
+    expect(h.map((m) => m.buildId)).toEqual(['3', '1'])
+  })
 })

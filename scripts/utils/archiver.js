@@ -303,62 +303,71 @@ export async function archive(
   await writeArtifacts(buildDir, artifacts)
 
   // Responsive measurement — soft-fail, non-blocking.
-  // Only runs when the dev server is up (the only way we can point a
-  // headless browser at the built site).
+  //
+  // This used to probe 127.0.0.1:5173 with a raw socket and skip the whole
+  // measurement when nothing answered — which was always, since the nightly
+  // serves the built site on a different port and nothing runs a dev server
+  // in CI at all. That made responsive-metrics.json empty for every build
+  // this project has ever produced (#280). The measurement wants a URL, not
+  // a port: `withPreviewServer` builds one by starting `vite preview` itself
+  // against the same `dist/` the rest of `archive()` already assumes exists.
+  //
+  // A miss is now recorded rather than swallowed, so its absence is data a
+  // reader can see (`read-responsive-history.js` skips these) instead of
+  // silence that looks identical to "the site scored perfectly."
   try {
-    const net = await import('node:net')
-    const portOpen = await new Promise((resolve) => {
-      const sock = new net.Socket()
-      sock.setTimeout(2000)
-      sock.once('connect', () => {
-        sock.destroy()
-        resolve(true)
-      })
-      sock.once('error', () => resolve(false))
-      sock.once('timeout', () => {
-        sock.destroy()
-        resolve(false)
-      })
-      sock.connect(5173, '127.0.0.1')
-    })
-    if (portOpen) {
-      const previewUrl = 'http://localhost:5173/'
-      const viewports = [
-        { name: 'mobile', width: 360, height: 640 },
-        { name: 'tablet', width: 768, height: 1024 },
-        { name: 'laptop', width: 1024, height: 768 },
-        { name: 'desktop', width: 1440, height: 900 },
-      ]
-      const { chromium } = await import('@playwright/test')
-      const { screenshotViewports } = await import('./viewport-screenshotter.js')
-      const { scoreResponsive } = await import('./responsive-scorer.js')
+    const { withPreviewServer } = await import('./snapshot.js')
+    const { chromium } = await import('@playwright/test')
+    const { screenshotViewports } = await import('./viewport-screenshotter.js')
+    const { scoreResponsive } = await import('./responsive-scorer.js')
 
+    const viewports = [
+      { name: 'mobile', width: 360, height: 640 },
+      { name: 'tablet', width: 768, height: 1024 },
+      { name: 'laptop', width: 1024, height: 768 },
+      { name: 'desktop', width: 1440, height: 900 },
+    ]
+
+    const metrics = await withPreviewServer(async (previewUrl) => {
       const browser = await chromium.launch({ headless: true })
       try {
         const vpDir = path.join(buildDir, 'viewports')
         await mkdir(vpDir, { recursive: true })
         await screenshotViewports(previewUrl, viewports, vpDir, { browser })
-
-        const metrics = await scoreResponsive(previewUrl, viewports, { browser })
-        metrics.buildId = buildId
-        metrics.date = dateStr
-        metrics.archetype = archetype
-        metrics.usedInPromptFor = []
-
-        await writeFile(
-          path.join(buildDir, 'responsive-metrics.json'),
-          JSON.stringify(metrics, null, 2),
-          'utf8'
-        )
-        console.log(`  responsive metrics written (overall ${metrics.overallScore}/5)`)
+        return await scoreResponsive(previewUrl, viewports, { browser })
       } finally {
         await browser.close()
       }
-    } else {
-      console.log(`  dev server not running, skipping responsive measurement`)
-    }
+    })
+
+    metrics.buildId = buildId
+    metrics.date = dateStr
+    metrics.archetype = archetype
+    metrics.usedInPromptFor = []
+
+    await writeFile(
+      path.join(buildDir, 'responsive-metrics.json'),
+      JSON.stringify(metrics, null, 2),
+      'utf8'
+    )
+    console.log(`  responsive metrics written (overall ${metrics.overallScore}/5)`)
   } catch (err) {
     console.warn(`  responsive scoring failed (non-blocking): ${err.message}`)
+    try {
+      const miss = {
+        date: dateStr,
+        buildId,
+        error: err.message,
+        measuredAt: new Date().toISOString(),
+      }
+      await writeFile(
+        path.join(buildDir, 'responsive-metrics.json'),
+        JSON.stringify(miss, null, 2),
+        'utf8'
+      )
+    } catch (writeErr) {
+      console.warn(`  could not record the responsive-metrics.json miss: ${writeErr.message}`)
+    }
   }
 
   // The day's canonical record (#153). Written last, so every artifact above is
