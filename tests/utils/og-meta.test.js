@@ -21,6 +21,14 @@ describe('buildOgMetaEntries', () => {
     expect(code).toContain('Doug March')
     expect(code).toContain(`${CANONICAL_ORIGIN}/og/2026-06-12.png`)
   })
+
+  it('leads with a plain `title` entry, the shell default (#327)', () => {
+    // __root.tsx.template has no title of its own — this is the one place
+    // the shell's <title> comes from, so a rewrite of this function that
+    // dropped the entry would leave every page without a title again.
+    const code = buildOgMetaEntries({ date: '2026-06-12', heroCopy: 'SAY "LESS"' })
+    expect(code.trim().split('\n')[0]).toBe(`{ title: ${JSON.stringify('SAY "LESS"')} },`)
+  })
 })
 
 describe('the host is not baked in', () => {

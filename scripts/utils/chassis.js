@@ -28,6 +28,7 @@ import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { RAMP_STEPS } from '../../elements/chassis/scale.js'
+import { CANONICAL_ORIGIN } from './site-origin.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const TEMPLATE_PATH = resolve(__dirname, '../templates/__root.tsx.template')
@@ -264,7 +265,7 @@ export function stepPxAt(step, viewportPx) {
 
 /**
  * Read the frozen __root.tsx template and substitute its placeholders:
- * {{GOOGLE_FONTS_URL}}, {{OG_META}}, and {{ARCHIVE_COUNT}}.
+ * {{GOOGLE_FONTS_URL}}, {{OG_META}}, {{ARCHIVE_COUNT}}, and {{CANONICAL_URL}}.
  *
  * The template lives at scripts/templates/__root.tsx.template. Agents never
  * author it, which is why the archive link lives there (#155).
@@ -272,7 +273,12 @@ export function stepPxAt(step, viewportPx) {
  * Read fresh on every call so a developer editing the template during a
  * dev loop sees changes without a node restart. Cost is negligible.
  */
-export function renderRootTemplate(googleFontsUrl, ogMeta = '', archiveCount = 0) {
+export function renderRootTemplate(
+  googleFontsUrl,
+  ogMeta = '',
+  archiveCount = 0,
+  canonicalUrl = CANONICAL_ORIGIN
+) {
   const template = readFileSync(TEMPLATE_PATH, 'utf8')
   if (!template.includes('{{GOOGLE_FONTS_URL}}')) {
     throw new Error('__root.tsx.template missing {{GOOGLE_FONTS_URL}} placeholder')
@@ -283,10 +289,14 @@ export function renderRootTemplate(googleFontsUrl, ogMeta = '', archiveCount = 0
   if (!template.includes('{{ARCHIVE_COUNT}}')) {
     throw new Error('__root.tsx.template missing {{ARCHIVE_COUNT}} placeholder')
   }
+  if (!template.includes('{{CANONICAL_URL}}')) {
+    throw new Error('__root.tsx.template missing {{CANONICAL_URL}} placeholder')
+  }
   return template
     .replace('{{GOOGLE_FONTS_URL}}', googleFontsUrl)
     .replace('{{OG_META}}', ogMeta)
     .replace('{{ARCHIVE_COUNT}}', String(archiveCount))
+    .replace('{{CANONICAL_URL}}', canonicalUrl)
 }
 
 function parseRem(value) {

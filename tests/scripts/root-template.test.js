@@ -13,6 +13,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { renderRootTemplate } from '../../scripts/utils/chassis.js'
+import { CANONICAL_ORIGIN } from '../../scripts/utils/site-origin.js'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 const read = (rel) => readFileSync(path.join(ROOT, rel), 'utf8')
@@ -93,6 +94,45 @@ describe('the template and the generated file agree', () => {
   })
 })
 
+// ─── The default title and canonical link (#327) ────────────────────────────
+//
+// Every route used to fall back to whatever the shell's `head()` carried, and
+// the shell carried no `<title>` at all — a shared or crawled /archive or
+// /how/<date> showed the home page's card and URL. The root always emits a
+// title and a canonical link now; /archive and /how/$date opt out of the
+// canonical (they declare their own) but never the title, since TanStack
+// dedupes `title` the same way it dedupes `meta` and a child's title always
+// wins regardless of what the root emits.
+
+describe.each([
+  [TEMPLATE_PATH, template],
+  [GENERATED_PATH, generated],
+])('%s carries a default title and canonical (#327)', (_rel, src) => {
+  it('emits its title from the OG_META block, not a separate literal', () => {
+    // The template carries the {{OG_META}} placeholder; the generated file
+    // carries what it expanded to. Either way, a `{ title:` entry must be in
+    // the meta array — buildOgMetaEntries always writes one first (#327).
+    expect(src).toMatch(/head:\s*\(\{\s*matches\s*\}\)\s*=>/)
+    expect(src).toMatch(/\{\{OG_META\}\}|\{ title:/)
+  })
+
+  it('emits a default canonical link, gated so /archive and /how/$date can opt out', () => {
+    expect(src).toContain("rel: 'canonical'")
+    expect(src).toContain('hasOwnCanonical')
+    // The gate is the same surface check the shell already uses to leave
+    // /archive and /how/$date out of the nightly shell — one predicate, not
+    // a second copy that can drift from it.
+    expect(src).toMatch(/hasOwnCanonical\s*=\s*isArchiveSurface\(/)
+  })
+
+  it('never omits the canonical unconditionally — the gate always leaves a default branch', () => {
+    // A rewrite that deleted the ternary/spread and just stopped emitting the
+    // link entirely would still contain the string 'canonical'; this checks
+    // the link is reachable from a false gate, not just present in the file.
+    expect(src).toMatch(/hasOwnCanonical\s*\?\s*\[\]\s*:\s*\[\{\s*rel:\s*'canonical'/)
+  })
+})
+
 // ─── The archive link (#155) ─────────────────────────────────────────────────
 //
 // The link silently disappeared for sixteen builds when the page shell became
@@ -169,9 +209,24 @@ describe('renderRootTemplate — the archive link', () => {
 
   it('the template still carries every placeholder the renderer fills', () => {
     // Guards against a future template edit silently dropping one.
-    for (const p of ['{{ARCHIVE_COUNT}}', '{{OG_META}}', '{{GOOGLE_FONTS_URL}}']) {
+    for (const p of [
+      '{{ARCHIVE_COUNT}}',
+      '{{OG_META}}',
+      '{{GOOGLE_FONTS_URL}}',
+      '{{CANONICAL_URL}}',
+    ]) {
       expect(template).toContain(p)
     }
+  })
+
+  it('substitutes the canonical URL into the default link', () => {
+    const src = renderRootTemplate('u', '', 1, 'https://example.test')
+    expect(src).toContain("href: 'https://example.test'")
+    expect(src).not.toContain('{{CANONICAL_URL}}')
+  })
+
+  it('defaults the canonical URL to the site origin when none is given', () => {
+    expect(renderRootTemplate('u')).toContain(`href: '${CANONICAL_ORIGIN}'`)
   })
 
   it('uses only tokens that survive a nightly preset rewrite', () => {

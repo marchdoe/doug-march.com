@@ -93,6 +93,14 @@
       "destination": "/archive/:date/index.html"
     },
     {
+      "source": "/archive",
+      "destination": "/archive/index.html"
+    },
+    {
+      "source": "/how/:date(\\d{4}-\\d{2}-\\d{2})",
+      "destination": "/how/:date/index.html"
+    },
+    {
       "source": "/((?!og/.|archive/.).*)",
       "destination": "/_shell.html"
     }

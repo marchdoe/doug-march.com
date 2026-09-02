@@ -16,13 +16,39 @@ import {
 } from '../lib/archive-calendar'
 import { css } from '../../styled-system/css'
 import type { ArchiveIndexEntry } from '../types/archive-record'
+import { CANONICAL_ORIGIN } from '../../scripts/utils/site-origin.js'
+
+const TITLE = 'Archive — every design this site has made'
+const ARCHIVE_URL = `${CANONICAL_ORIGIN}/archive`
+const IMAGE = `${CANONICAL_ORIGIN}/og/default.png`
 
 export const Route = createFileRoute('/archive')({
   component: ArchivePage,
-  // No route declared a title, so every page shared the shell's — /archive,
-  // /how/<date>, /work and /experiments all announced themselves as the home
-  // page in a tab, a bookmark and a search result.
-  head: () => ({ meta: [{ title: 'Archive — every design this site has made' }] }),
+  // Without its own og:url and canonical, this page carried the day's home
+  // page card and the home page's URL — the root's default, meant for pages
+  // that don't say otherwise (#327). This page always says otherwise. Every
+  // og:/twitter: key the root sets is repeated here (og:image:width included)
+  // — meta dedupes per key, so a key left out leaks the day's value through
+  // next to this page's own og:title/og:image.
+  head: () => ({
+    meta: [
+      { title: TITLE },
+      { property: 'og:title', content: TITLE },
+      {
+        property: 'og:description',
+        content: 'Every design this site has shipped, one per night, browsable by day.',
+      },
+      { property: 'og:image', content: IMAGE },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { property: 'og:url', content: ARCHIVE_URL },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: TITLE },
+      { name: 'twitter:image', content: IMAGE },
+    ],
+    links: [{ rel: 'canonical', href: ARCHIVE_URL }],
+  }),
 })
 
 /**

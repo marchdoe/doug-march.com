@@ -46,35 +46,45 @@ const THEME_INIT_SCRIPT = `(function(){
 })();`
 
 export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { property: 'og:title', content: 'Select a busy man.' },
-      {
-        property: 'og:description',
-        content:
-          'Split-field imperative — "Select a busy man." reversed out of an industry-gold marquee, the day\'s work stacked as a warm-black ledger opposite, the divide as the argument.',
-      },
-      { property: 'og:image', content: 'https://dougmar.ch/og/2026-08-30.png' },
-      { property: 'og:image:width', content: '1200' },
-      { property: 'og:image:height', content: '630' },
-      { property: 'og:url', content: 'https://dougmar.ch' },
-      { property: 'og:type', content: 'website' },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'Select a busy man.' },
-      { name: 'twitter:image', content: 'https://dougmar.ch/og/2026-08-30.png' },
-    ],
-    links: [
-      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Figtree:wght@400;500;700&display=swap',
-      },
-    ],
-    scripts: [{ children: THEME_INIT_SCRIPT }],
-  }),
+  head: ({ matches }) => {
+    // /archive and every /how/$date declare their own canonical link (#327),
+    // pointing at themselves rather than the day's home page. TanStack does
+    // not dedupe `links` the way it dedupes `title`/`meta`, so this default
+    // is left out for those routes rather than emitted and overridden.
+    const leafPathname = matches[matches.length - 1]?.pathname ?? ''
+    const hasOwnCanonical = isArchiveSurface(leafPathname)
+    return {
+      meta: [
+        { charSet: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { title: 'Select a busy man.' },
+        { property: 'og:title', content: 'Select a busy man.' },
+        {
+          property: 'og:description',
+          content:
+            'Split-field imperative — "Select a busy man." reversed out of an industry-gold marquee, the day\'s work stacked as a warm-black ledger opposite, the divide as the argument.',
+        },
+        { property: 'og:image', content: 'https://dougmar.ch/og/2026-08-30.png' },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:url', content: 'https://dougmar.ch' },
+        { property: 'og:type', content: 'website' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Select a busy man.' },
+        { name: 'twitter:image', content: 'https://dougmar.ch/og/2026-08-30.png' },
+      ],
+      links: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Figtree:wght@400;500;700&display=swap',
+        },
+        ...(hasOwnCanonical ? [] : [{ rel: 'canonical', href: 'https://dougmar.ch' }]),
+      ],
+      scripts: [{ children: THEME_INIT_SCRIPT }],
+    }
+  },
   notFoundComponent: () => (
     // Mirrors public/404.html, which is the page Vercel serves for real 404s
     // (missing files under /og/ and /archive/). This one covers a mistyped
