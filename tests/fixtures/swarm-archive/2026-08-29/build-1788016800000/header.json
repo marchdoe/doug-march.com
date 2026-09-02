@@ -1,0 +1,11 @@
+{
+  "placement": "masthead",
+  "height_px": 96,
+  "mark_px": 32,
+  "wordmark_step": "lg",
+  "wordmark_weight": 700,
+  "role_line": "present",
+  "nav_step": "xs",
+  "nav_case": "upper",
+  "nav": "band — a full-width masthead bar with three uppercase links right-aligned"
+}

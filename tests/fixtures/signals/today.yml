@@ -1,0 +1,44 @@
+# A day's collected signals, the shape scripts/collect-signals.js writes to
+# signals/today.yml. Only `date` is load-bearing for the swarm; the rest is
+# what the Art Director reads as "Today's Raw Signals" and what archive()
+# renders into brief.md. Dated the day after the newest seeded archive entry.
+date: '2026-08-31'
+day_of_week:
+  day: Monday
+  is_weekend: false
+  day_index: 1
+weather:
+  location: Aldie, Virginia
+  conditions: Clear
+  temperature_f: 74
+  feel: crisp
+season:
+  season: late summer
+  days_until_next: 22
+lunar:
+  phase: Waxing Gibbous
+  illumination: 0.81
+sports:
+  - team: Detroit Tigers
+    result: W 4-2
+    opponent: Kansas City Royals
+    notes: Skubal seven innings, eleven strikeouts
+golf:
+  tournament: TOUR Championship
+  status: Final
+  leaders:
+    - name: Viktor Hovland
+      position: '1'
+      score: '-18'
+    - name: Ryan Gerard
+      position: '2'
+      score: '-15'
+markets:
+  sp500: '+0.4%'
+  nasdaq: '+0.7%'
+music:
+  currently_playing: Talk Talk — Spirit of Eden
+  top_artist: Talk Talk
+quote:
+  text: Select a busy man; the other kind has no time.
+  author: Elbert Hubbard

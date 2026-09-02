@@ -1,0 +1,25 @@
+[
+  { "critic": "spec-critic", "verdict": "APPROVED", "feedback": "APPROVED", "ts": 1788016000000 },
+  {
+    "critic": "mockup-critic",
+    "round": 0,
+    "verdict": "APPROVE",
+    "feedback": "Column holds; the violet is used once and lands.",
+    "channel": "sdk-vision",
+    "ts": 1788016300000
+  },
+  {
+    "critic": "surface-gate",
+    "round": 1,
+    "verdict": "SHIP",
+    "feedback": "all surfaces fit their viewport",
+    "ts": 1788016700000
+  },
+  {
+    "critic": "screenshot-critic",
+    "verdict": "REVISE",
+    "feedback": "The masthead lockup renders at half the declared mark_px and the footer line wraps at 1024. Set the mark to 32px and let the footer truncate.\n\n**Responsible agent:** react-engineer",
+    "channel": "sdk-vision",
+    "ts": 1788016750000
+  }
+]

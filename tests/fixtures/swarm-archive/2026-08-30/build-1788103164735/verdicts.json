@@ -1,0 +1,33 @@
+[
+  { "critic": "spec-critic", "verdict": "APPROVED", "feedback": "APPROVED", "ts": 1788102735528 },
+  {
+    "critic": "mockup-critic",
+    "round": 0,
+    "verdict": "REVISE",
+    "feedback": "The ledger rows run past the right edge at 1440 and the nav links sit inside the gutter. Pull the ledger column in and give the nav its own margin.",
+    "channel": "sdk-vision",
+    "ts": 1788102862364
+  },
+  {
+    "critic": "mockup-critic",
+    "round": 1,
+    "verdict": "APPROVE",
+    "feedback": "Ledger fits; nav has its margin. The split lands.",
+    "channel": "sdk-vision",
+    "ts": 1788103001000
+  },
+  {
+    "critic": "surface-gate",
+    "round": 1,
+    "verdict": "SHIP",
+    "feedback": "all surfaces fit their viewport",
+    "ts": 1788103150000
+  },
+  {
+    "critic": "screenshot-critic",
+    "verdict": "SHIP",
+    "feedback": "SHIP",
+    "channel": "sdk-vision",
+    "ts": 1788103160000
+  }
+]

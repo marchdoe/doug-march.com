@@ -1,6 +1,4 @@
 import { readFileSync } from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { describe, it, expect } from 'vitest'
 import {
   FILE_OWNERSHIP,
@@ -83,65 +81,6 @@ describe('identifyFailingAgent', () => {
   })
 })
 
-describe('the Phase 5 repair loop', () => {
-  // runAgentSwarm is one large closure, so these read the source — the same
-  // approach this suite already takes for the workflow YAML and the root
-  // template. What matters is the invariants, and each one is a bug that has
-  // actually cost a night.
-  const SOURCE = readFileSync(
-    path.join(
-      path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..'),
-      'scripts/design-agents.js'
-    ),
-    'utf8'
-  )
-  const phase5 = SOURCE.slice(SOURCE.indexOf('Phase 5: Build failed'))
-
-  it('allows more than one attempt', () => {
-    // A single attempt reliably trades the error it was given for a different
-    // one: 2026-09-01 saw width:'full' -> surfaceDeep in CI and gap:'10' ->
-    // Footer TS2769 locally, both fatal.
-    const max = /const MAX_REPAIR_ATTEMPTS = (\d+)/.exec(phase5)
-    expect(max).not.toBeNull()
-    expect(Number(max[1])).toBeGreaterThan(1)
-  })
-
-  it('carries each new error forward instead of re-sending the first', () => {
-    // Handing attempt 3 the error from attempt 1 would ask it to fix something
-    // already fixed.
-    expect(phase5).toMatch(/repairError = attemptBuild\.error/)
-  })
-
-  it('stops when the run budget is spent', () => {
-    // A repair that starts past the deadline cannot finish and archive.
-    expect(phase5).toMatch(/pastDeadline\(\)/)
-  })
-
-  it('drops orchestrator-owned files from the repair output', () => {
-    // `app/routes/` is an allowed write prefix, so without this a repair can
-    // overwrite the generated __root.tsx — and the error text handed to a
-    // repair has named __root.tsx, which invites exactly that.
-    expect(phase5).toMatch(/writeEngineerFiles\(retryResult, 'React Engineer repair'\)/)
-  })
-
-  it('checks each repair for required files and posture before building it', () => {
-    // #297: a repair that omitted Sidebar.tsx left yesterday's on disk, the
-    // build passed, and the night shipped as "repair N". The Phase 2c pass
-    // ran both checks; this path ran neither.
-    const check = phase5.indexOf('findEngineerOutputProblem(')
-    const build = phase5.indexOf('const attemptBuild = validateBuild(')
-    expect(check).toBeGreaterThan(-1)
-    expect(check).toBeLessThan(build)
-    // A failed check consumes the attempt rather than shipping.
-    expect(phase5.slice(check, build)).toMatch(/repairError = /)
-    expect(phase5.slice(check, build)).toMatch(/continue/)
-  })
-
-  it('reports how many attempts were made when it gives up', () => {
-    expect(phase5).toMatch(/Build failed after \$\{attempt\} repair attempt/)
-  })
-})
-
 describe('archiveArtifacts', () => {
   const base = {
     finalScreenshot: null,
@@ -197,97 +136,6 @@ describe('one run date', () => {
     const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
     const after = SOURCE.slice(SOURCE.indexOf('const today = runDate(signals)'))
     expect(after).not.toMatch(/signals\.date/)
-  })
-})
-
-describe('the two required calls check the deadline before starting', () => {
-  // #299: the optional steps checked pastDeadline(); the mockup designer and
-  // the primary engineer did not, and past the deadline the clamp handed
-  // them a 0ms timeout. The run died with "timed out after 0 minutes".
-  const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
-
-  it('uses the one deadline predicate from run-budget, not a local copy', () => {
-    expect(SOURCE).toMatch(
-      /import \{ pastDeadline, setRunDeadline \} from '\.\/utils\/run-budget\.js'/
-    )
-    expect(SOURCE).not.toMatch(/const pastDeadline = /)
-  })
-
-  it('refuses to start the mockup designer or the engineer past the deadline', () => {
-    const mockup = SOURCE.indexOf('mockup = await runMockupDesigner(')
-    const before = SOURCE.slice(mockup - 600, mockup)
-    expect(before).toMatch(/if \(round === 0 && pastDeadline\(\)\)/)
-    expect(before).toMatch(/run budget exhausted before the Mockup Designer/)
-
-    const engineer = SOURCE.indexOf("engineerResult = await callAgent(\n        'react-engineer'")
-    expect(engineer).toBeGreaterThan(-1)
-    const before2 = SOURCE.slice(engineer - 400, engineer)
-    expect(before2).toMatch(/if \(pastDeadline\(\)\)/)
-    expect(before2).toMatch(/run budget exhausted before the React Engineer/)
-  })
-})
-
-describe('the surface gate decides, not just measures', () => {
-  // #306: runSurfaceGate returned an errorCount that was logged, traced and
-  // pushed into a verdicts list nothing read. The revision was gated on the
-  // screenshot critic alone, and the gate was never re-run after it.
-  const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
-  const gate = SOURCE.slice(
-    SOURCE.indexOf('async function runScreenshotCriticGate'),
-    SOURCE.indexOf('Phase 5: Build failed')
-  )
-
-  it('forces a revision on an engineer-owned gate error even when the critic says SHIP', () => {
-    expect(gate).toMatch(/faultsForOwner\(surfaceFindings, 'react-engineer'\)/)
-    expect(gate).toMatch(/if \(screenshotVerdict === 'REVISE' \|\| gateDemandsRevision\)/)
-  })
-
-  it('hands the measured faults to the engineer as feedback', () => {
-    expect(gate).toMatch(/formatFindingsForCritic\(engineerFaults\)/)
-  })
-
-  it('measures again after a revision that rebuilt', () => {
-    const passed = gate.indexOf("console.log('  post-critic revision build passed')")
-    expect(passed).toBeGreaterThan(-1)
-    const after = gate.slice(passed)
-    expect(after.indexOf('measureSurfaces(2)')).toBeGreaterThan(-1)
-    // Before the re-capture, so the archive's screenshot and its measurements
-    // describe the same render.
-    expect(after.indexOf('measureSurfaces(2)')).toBeLessThan(
-      after.indexOf('captureScreenshotAfterRevision')
-    )
-  })
-
-  it('records which round each surface-gate verdict came from', () => {
-    const fn = gate.slice(gate.indexOf('async function measureSurfaces'))
-    expect(fn.slice(0, fn.indexOf('return gate'))).toMatch(/critic: 'surface-gate',\s*round,/)
-  })
-})
-
-describe('engineer output reaches disk through one function', () => {
-  // #296: the drop was applied at the primary write, added to the repair
-  // write after a repair overwrote __root.tsx, and never reached the
-  // post-critic revision. A revision answering "the header is wrong" could
-  // overwrite BrandLockup.tsx after the orchestrator wrote it.
-  const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
-
-  it('never writes an engineer result with writeFiles directly', () => {
-    expect(SOURCE).not.toMatch(/writeFiles\(engineerResult\.files/)
-    expect(SOURCE).not.toMatch(/writeFiles\(retryResult\.files/)
-    expect(SOURCE).not.toMatch(/writeFiles\(retry\.files/)
-  })
-
-  it('routes all three engineer write sites through writeEngineerFiles', () => {
-    expect(SOURCE).toMatch(/writeEngineerFiles\(engineerResult, 'React Engineer'\)/)
-    expect(SOURCE).toMatch(/writeEngineerFiles\(retryResult, 'React Engineer revision'\)/)
-    expect(SOURCE).toMatch(/writeEngineerFiles\(retryResult, 'React Engineer repair'\)/)
-  })
-
-  it('drops orchestrator files inside writeEngineerFiles before writing', () => {
-    const fn = SOURCE.slice(SOURCE.indexOf('async function writeEngineerFiles'))
-    const body = fn.slice(0, fn.indexOf('\n}\n'))
-    expect(body.indexOf('dropOrchestratorFiles(')).toBeGreaterThan(-1)
-    expect(body.indexOf('dropOrchestratorFiles(')).toBeLessThan(body.indexOf('writeFiles('))
   })
 })
 
@@ -630,5 +478,25 @@ describe('the mockup critic verdict keeps its channel', () => {
 
   it('records channel: critique.channel on the mockup-critic verdicts.push', () => {
     expect(loop).toMatch(/critic: 'mockup-critic',[\s\S]*?channel: critique\.channel,/)
+  })
+})
+
+describe('the swarm takes a root', () => {
+  // #221: every path the swarm reads or writes derives from the `root`
+  // option, so a test can run the real function against a temp checkout.
+  // The one `ROOT` left is the option's default in the signature.
+  const SOURCE = readFileSync(new URL('../../scripts/design-agents.js', import.meta.url), 'utf8')
+  const start = SOURCE.indexOf('export async function runAgentSwarm')
+  const bodyStart = SOURCE.indexOf('{\n', start)
+  const end = SOURCE.indexOf('\nif (isMain(', bodyStart)
+
+  it('defaults the root option to the module constant', () => {
+    expect(SOURCE.slice(start, bodyStart)).toMatch(/\{ onTraceStep, root = ROOT \} = \{\}/)
+  })
+
+  it('never reads the module constant inside the body', () => {
+    expect(bodyStart).toBeGreaterThan(-1)
+    expect(end).toBeGreaterThan(bodyStart)
+    expect(SOURCE.slice(bodyStart, end)).not.toMatch(/\bROOT\b/)
   })
 })

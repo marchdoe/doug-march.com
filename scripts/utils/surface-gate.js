@@ -252,7 +252,9 @@ export async function measureRoute(browser, baseUrl, surface, viewport, scheme) 
  * the normal case inside the pipeline — the screenshot capture has one open.
  *
  * @param {{ port?: number, routes?: Array<{id:string,route:string}>,
- *          viewports?: typeof VIEWPORT_RUNGS, schemes?: string[] }} [opts]
+ *          viewports?: typeof VIEWPORT_RUNGS, schemes?: string[],
+ *          root?: string }} [opts] `root` is where the generated routes are
+ *   listed from when `routes` is not given; defaults to the repo
  * @returns {Promise<{ findings: Array<object>, measured: number, errorCount: number }>}
  */
 export async function runSurfaceGate({
@@ -261,9 +263,10 @@ export async function runSurfaceGate({
   viewports = VIEWPORT_RUNGS,
   schemes = COLOR_SCHEMES,
   concurrency = GATE_CONCURRENCY,
+  root = ROOT,
 } = {}) {
   const { chromium } = await import('playwright')
-  const surfaces = routes ?? (await listGeneratedRoutes())
+  const surfaces = routes ?? (await listGeneratedRoutes(root))
 
   const jobs = []
   for (const surface of surfaces) {

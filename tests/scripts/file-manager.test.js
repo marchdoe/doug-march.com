@@ -1,8 +1,15 @@
 import { describe, beforeEach, it, expect } from 'vitest'
-import { writeFiles, validateWritePath } from '../../scripts/utils/file-manager.js'
+import {
+  ROOT,
+  backup,
+  cleanupOrphans,
+  restore,
+  writeFiles,
+  validateWritePath,
+} from '../../scripts/utils/file-manager.js'
 import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
-import { tempDir } from '../helpers/tmp.js'
+import { tempDir, tempRepoRoot, writeUnder } from '../helpers/tmp.js'
 
 describe('validateWritePath', () => {
   describe('allowlist — permits legitimate writes', () => {
@@ -184,5 +191,52 @@ describe('file-manager writeFiles', () => {
 
   it('throws on .env writes', async () => {
     await expect(writeFiles([{ path: '.env', content: 'STOLEN=1' }])).rejects.toThrow(/Dotfile/)
+  })
+})
+
+describe('backup, restore and cleanupOrphans take a root', () => {
+  // #221: the swarm runs against a temp root in tests. These three used the
+  // module constant, so a test that exercised a rollback would have written
+  // into the real checkout while the paths it was asked about sat in the
+  // temp root.
+  const existing = 'app/components/__root_opt_existing.tsx'
+  const missing = 'app/components/__root_opt_missing.tsx'
+  const orphan = 'app/components/__root_opt_orphan.tsx'
+  let root
+
+  beforeEach(async () => {
+    root = await tempRepoRoot('dm-root-opt-')
+    writeUnder(root, existing, 'before')
+  })
+
+  it('backup reads under the given root and records what is absent there', async () => {
+    const map = await backup([existing, missing], { root })
+    expect(map.get(existing)).toBe('before')
+    expect(map.get(missing)).toBeNull()
+    expect(existsSync(path.join(ROOT, existing))).toBe(false)
+  })
+
+  it('restore rewrites and deletes under the given root only', async () => {
+    const map = await backup([existing, missing], { root })
+    writeUnder(root, existing, 'after')
+    writeUnder(root, missing, 'invented')
+
+    await restore(map, { root })
+
+    expect(readFileSync(path.join(root, existing), 'utf8')).toBe('before')
+    expect(existsSync(path.join(root, missing))).toBe(false)
+    expect(existsSync(path.join(ROOT, existing))).toBe(false)
+    expect(existsSync(path.join(ROOT, missing))).toBe(false)
+  })
+
+  it('cleanupOrphans deletes unbacked paths under the given root only', async () => {
+    const map = await backup([existing], { root })
+    writeUnder(root, orphan, 'stray')
+
+    await cleanupOrphans(new Set([existing, orphan]), map, { root })
+
+    expect(existsSync(path.join(root, orphan))).toBe(false)
+    expect(readFileSync(path.join(root, existing), 'utf8')).toBe('before')
+    expect(existsSync(path.join(ROOT, orphan))).toBe(false)
   })
 })

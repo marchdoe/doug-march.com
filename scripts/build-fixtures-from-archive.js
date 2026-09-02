@@ -276,7 +276,7 @@ function critics(build) {
   if (!seen.has('screenshot-critic')) {
     // Not every run reaches the screenshot gate, but a replay that does needs
     // an answer rather than a missing-fixture error.
-    write('screenshot-critic', 0, `===VERDICT===\nAPPROVE\n\n${RECONSTRUCTED}\n===END===`)
+    write('screenshot-critic', 0, `===VERDICT===\nSHIP\n\n${RECONSTRUCTED}\n===END===`)
   }
 }
 

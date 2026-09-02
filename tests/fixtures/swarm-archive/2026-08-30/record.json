@@ -1,0 +1,55 @@
+{
+  "date": "2026-08-30",
+  "era": "grammar",
+  "generatedAt": "2026-08-30T15:19:26.491Z",
+  "buildId": "1788103164735",
+  "attempts": 1,
+  "brief": "Split-field imperative — \"Select a busy man.\" reversed out of an industry-gold marquee, the day's work stacked as a warm-black ledger opposite, the divide as the argument.",
+  "rationale": "The phrase is an order. Because the aphorism is two-part, the composition argues with itself across a divide.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Ledger.tsx",
+    "app/components/Sidebar.tsx",
+    "app/components/Layout.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": "A busy man's ledger, split against a gold marquee.",
+  "signals": {
+    "date": "2026-08-30",
+    "weather": { "location": "Aldie, Virginia", "conditions": "Sunny" }
+  },
+  "hero": { "copy": "Select a busy man.", "source": "quote" },
+  "chassis": "unbounded-figtree",
+  "adBrief": "Split-field imperative on industry gold.",
+  "tokens": { "accent": "#F4B90A" },
+  "colorScheme": {
+    "primary_hue": { "h": 46, "s": 94, "l": 50, "name": "industry gold" },
+    "secondary_accent": null,
+    "neutral_family": { "tinted_toward": "warm amber", "name": "sand" },
+    "mood_word": "industrious",
+    "color_story": "A saturated 46° gold floods the left field while the idle other kind recedes into warm near-black on the right."
+  },
+  "shell": {
+    "nav": "marginal — three lowercase links stacked in the top-right margin of the dark ledger panel, no band, no pills, no border",
+    "footer": "ledger foot — build stamp + season + music folded into the base of the right ledger column",
+    "brand_lockup": "horizontal-md",
+    "brand_color_mode": "single-color",
+    "ground_strategy": "split-field"
+  },
+  "verdicts": 3,
+  "composition": {
+    "columns": "two-asymmetric",
+    "axis": "horizontal",
+    "symmetry": "left-weighted",
+    "hero_zone": "edge-bound",
+    "density": "measured",
+    "rhythm": "syncopated",
+    "shell_posture": "marginal",
+    "field_ratio": "balanced"
+  },
+  "lane": { "laneId": "notion-mintlify", "register": "soft-warm-minimalism" },
+  "cost": { "total_usd": 4.21, "retries": 0, "calls": 6 }
+}
