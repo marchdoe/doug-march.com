@@ -36,7 +36,7 @@ import {
   readContext,
 } from './utils/site-context.js'
 import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-manager.js'
-import { validateBuild } from './utils/build-validator.js'
+import { validateBuild, formatGeneratedFile } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
 import { resetLedger, noteRetry } from './utils/cost-ledger.js'
 import { createTrace } from './utils/trace.js'
@@ -948,6 +948,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
       )
       const rootPath = path.join(ROOT, 'app/routes/__root.tsx')
       await writeFile(rootPath, rootSrc, 'utf8')
+      formatGeneratedFile('app/routes/__root.tsx')
       writtenPaths.add('app/routes/__root.tsx')
       console.log(`  [chassis] wrote __root.tsx from template`)
 
@@ -958,6 +959,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
         wordmarkWeight: headerDecl.wordmark_weight,
       })
       await writeFile(path.join(ROOT, 'app/components/BrandLockup.tsx'), lockupSrc, 'utf8')
+      formatGeneratedFile('app/components/BrandLockup.tsx')
       writtenPaths.add('app/components/BrandLockup.tsx')
       console.log(`  [chassis] wrote BrandLockup.tsx from template`)
     } catch (err) {
@@ -1034,6 +1036,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
             countArchivedDesigns()
           )
           await writeFile(path.join(ROOT, 'app/routes/__root.tsx'), retryRootSrc, 'utf8')
+          formatGeneratedFile('app/routes/__root.tsx')
           console.log('  [chassis] regenerated __root.tsx after codegen retry (og meta refreshed)')
           // The retry may have moved the chassis or the declared wordmark
           // weight, and both are baked into the lockup.
@@ -1043,6 +1046,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
             renderBrandLockupFile(chosenChassis, { wordmarkWeight: headerDecl.wordmark_weight }),
             'utf8'
           )
+          formatGeneratedFile('app/components/BrandLockup.tsx')
           console.log('  [chassis] regenerated BrandLockup.tsx after codegen retry')
         } catch (rootErr) {
           console.warn(
@@ -1692,6 +1696,7 @@ export async function runAgentSwarm(context, { onTraceStep } = {}) {
           countArchivedDesigns()
         )
         await writeFile(path.join(ROOT, 'app/routes/__root.tsx'), finalRootSrc, 'utf8')
+        formatGeneratedFile('app/routes/__root.tsx')
       } catch (err) {
         console.warn(`  __root.tsx og-image fallback check failed (non-blocking): ${err.message}`)
       }
