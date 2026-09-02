@@ -64,6 +64,43 @@ export interface ArchiveRecord {
   cost: ArchiveCost | null
 }
 
+/**
+ * The wire shape of `public/archive-data/{date}.json`, written by
+ * `scripts/generate-archive-json.js` as `{ ...record, hasScreenshot, pages,
+ * uniqueness }`. Distinct from `ArchiveDetail` in
+ * `app/server/archive-detail-impl.ts`, which is a dev-only payload (it adds
+ * the build's trace instead of `pages`/`uniqueness`) served to the dev panel,
+ * never to this file's fetch.
+ */
+export interface ArchiveDetail extends ArchiveRecord {
+  hasScreenshot: boolean
+  pages: number
+  /** Composite novelty score against the preceding window, or null when
+   * nothing about the day was comparable. Not rendered today, so kept as
+   * data rather than a fully modeled shape. */
+  uniqueness: JsonValue | null
+}
+
+function isObjectRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+/** The two fields `generate-archive-json.js` adds beyond `ArchiveRecord`
+ * that aren't optional — `uniqueness` legitimately comes and goes. */
+function hasWireFields(v: Record<string, unknown>): boolean {
+  return typeof v.hasScreenshot === 'boolean' && typeof v.pages === 'number'
+}
+
+/**
+ * Narrows a parsed fetch response to `ArchiveDetail`. `{}` and `null` both
+ * pass a bare `typeof x === 'object'` check, and a record missing `tokens`
+ * would otherwise reach `detail.tokens.colors.ramps` and throw.
+ */
+export function isArchiveDetail(value: unknown): value is ArchiveDetail {
+  if (!isObjectRecord(value)) return false
+  return typeof value.date === 'string' && 'tokens' in value && hasWireFields(value)
+}
+
 /** One entry of `public/archive-data/index.json`. */
 export interface ArchiveIndexEntry {
   date: string

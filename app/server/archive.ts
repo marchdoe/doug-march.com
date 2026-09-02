@@ -6,7 +6,7 @@ import { DATE_RE, BUILD_ID_RE } from './archive-paths'
 import { _readArchiveHandler, _readResponsiveMetrics, _readResponsiveHistory } from './archive-impl'
 import { _readArchiveDetail } from './archive-detail-impl'
 export type { ArchiveEntry } from './archive-impl'
-export type { ArchiveDetail } from './archive-detail-impl'
+export type { TraceDetail } from './archive-detail-impl'
 export type { ResponsiveMetrics } from './archive-impl'
 
 // The validators are named exports so they can be tested. Inline in the

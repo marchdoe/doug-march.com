@@ -5,9 +5,8 @@ import { useEffect, useState } from 'react'
 import { type RecordField, absenceNote } from '../lib/archive-era'
 import { signalLines } from '../lib/archive-signals'
 import { css } from '../../styled-system/css'
-import type { ArchiveRecord, ArchiveTokens, JsonValue } from '../types/archive-record'
-
-type ArchiveDetail = ArchiveRecord & { hasScreenshot: boolean; pages?: number }
+import { isArchiveDetail } from '../types/archive-record'
+import type { ArchiveDetail, ArchiveTokens, JsonValue } from '../types/archive-record'
 
 export const Route = createFileRoute('/how/$date')({
   component: HowPage,
@@ -43,25 +42,27 @@ interface Swatch {
 }
 
 /**
- * Ramps kept as ramps, so a scale reads as a scale rather than a pile.
- *
- * Not every color token is a ramp: a one-off like `glow: { value: '#FF8FC7' }`
- * unwraps to a bare string, and iterating that yields one swatch per character.
+ * One ramp's raw value read as a scale — or, for a one-off like
+ * `glow: { value: '#FF8FC7' }`, as a single bare stop rather than one swatch
+ * per character.
  */
+function ramp(
+  name: string,
+  stops: Record<string, string> | string
+): { name: string; stops: Swatch[] } | null {
+  if (typeof stops === 'string') return { name, stops: [{ name, hex: stops }] }
+  const scale = Object.entries(stops)
+    .filter((e): e is [string, string] => typeof e[1] === 'string')
+    .map(([stop, hex]) => ({ name: stop, hex }))
+  return scale.length ? { name, stops: scale } : null
+}
+
+/** Ramps kept as ramps, so a scale reads as a scale rather than a pile. */
 function ramps(tokens: ArchiveTokens | null): { name: string; stops: Swatch[] }[] {
   if (!tokens) return []
-  const out: { name: string; stops: Swatch[] }[] = []
-  for (const [name, stops] of Object.entries(tokens.colors.ramps)) {
-    if (typeof stops === 'string') {
-      out.push({ name, stops: [{ name, hex: stops }] })
-      continue
-    }
-    const scale = Object.entries(stops)
-      .filter((e): e is [string, string] => typeof e[1] === 'string')
-      .map(([stop, hex]) => ({ name: stop, hex }))
-    if (scale.length) out.push({ name, stops: scale })
-  }
-  return out
+  return Object.entries(tokens.colors.ramps)
+    .map(([name, stops]) => ramp(name, stops))
+    .filter((r): r is { name: string; stops: Swatch[] } => r !== null)
 }
 
 /** A token group flattened to name/value pairs, or [] when the era had none. */
@@ -108,6 +109,62 @@ function formatDate(date: string): string {
 
 const asRecord = (v: JsonValue | null | undefined): Record<string, JsonValue> | null =>
   typeof v === 'object' && v !== null && !Array.isArray(v) ? v : null
+
+/** `res.json()` only makes sense once, so a 404 or a 500 short-circuits to
+ * `null` here rather than reaching `isArchiveDetail` with a body that was
+ * never JSON. */
+function jsonIfOk(res: Response): Promise<unknown> | null {
+  return res.ok ? res.json() : null
+}
+
+/** True when a hue carries the three numbers a swatch needs. */
+function isHslTriple(
+  hue: Record<string, JsonValue> | null
+): hue is Record<string, JsonValue> & { h: number; s: number; l: number } {
+  return (
+    !!hue && typeof hue.h === 'number' && typeof hue.s === 'number' && typeof hue.l === 'number'
+  )
+}
+
+function heroHexOf(hue: Record<string, JsonValue> | null): string | null {
+  return isHslTriple(hue) ? `hsl(${hue.h} ${hue.s}% ${hue.l}%)` : null
+}
+
+/** The named color when the record has one, falling back to the raw hex. */
+function heroLabel(hue: Record<string, JsonValue> | null, heroHex: string | null): string | null {
+  return (hue?.name as string) ?? heroHex
+}
+
+function moodLabel(scheme: Record<string, JsonValue> | null): string | null {
+  return (scheme?.mood_word as string) ?? null
+}
+
+function attemptsLabel(attempts: number): string | null {
+  return attempts ? String(attempts) : null
+}
+
+function costLabel(cost: ArchiveDetail['cost']): string | null {
+  if (cost?.total_usd == null) return null
+  return `$${Number(cost.total_usd).toFixed(2)}${cost.estimated ? ' est.' : ''}`
+}
+
+/** The color scheme's prose, when the era wrote one. */
+function colorStory(scheme: Record<string, JsonValue> | null): string | null {
+  if (!scheme) return null
+  return typeof scheme.color_story === 'string' && scheme.color_story ? scheme.color_story : null
+}
+
+function hasNoTokens(colorRamps: unknown[], fonts: unknown[], fontSizes: unknown[]): boolean {
+  return colorRamps.length === 0 && fonts.length === 0 && fontSizes.length === 0
+}
+
+function hasNoComposition(
+  composition: Record<string, JsonValue> | null,
+  lane: Record<string, JsonValue> | null,
+  shell: Record<string, JsonValue> | null
+): boolean {
+  return !composition && !lane && !shell
+}
 
 /* ------------------------------------------------------------------- styles */
 
@@ -399,6 +456,339 @@ function RailRow({ label, value }: { label: string; value: string | null | undef
   )
 }
 
+/** The cost line and its "Open the design" companion. */
+function DetailRail({
+  detail,
+  date,
+  era,
+  scheme,
+  hue,
+  heroHex,
+  hasDesign,
+}: {
+  detail: ArchiveDetail
+  date: string
+  era: string | null
+  scheme: Record<string, JsonValue> | null
+  hue: Record<string, JsonValue> | null
+  heroHex: string | null
+  hasDesign: boolean
+}) {
+  return (
+    <aside className={rail}>
+      {hasDesign ? (
+        <a href={`/archive/${date}/`} className={openDesign}>
+          Open the design
+        </a>
+      ) : (
+        <p className={absent}>
+          The record for this day survived; the pages did not. There is no design to open.
+        </p>
+      )}
+
+      <RailRow label="Era" value={era} />
+      <RailRow label="Chassis" value={detail.chassis} />
+      <RailRow label="Archetype" value={detail.legacyArchetype} />
+      <RailRow label="Mood" value={moodLabel(scheme)} />
+      <RailRow label="Color" value={heroLabel(hue, heroHex)} />
+      <RailRow label="Build" value={detail.buildId} />
+      <RailRow label="Attempts" value={attemptsLabel(detail.attempts)} />
+      <RailRow label="Cost" value={costLabel(detail.cost)} />
+    </aside>
+  )
+}
+
+function SignalsStep({
+  signals,
+  era,
+}: {
+  signals: ReturnType<typeof signalLines>
+  era: string | null
+}) {
+  return (
+    <Step n="01" title="The day arrived">
+      {signals.length === 0 ? (
+        <Absent field="signals" era={era} noun="record of the day" />
+      ) : (
+        <div className={signalGrid}>
+          {signals.map((s) => (
+            <div key={s.provider} className={signalRow}>
+              <span className={signalName}>{s.label}</span>
+              <span className={s.empty ? signalNone : signalText}>{s.summary}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </Step>
+  )
+}
+
+function BriefStep({
+  brief,
+  rationale,
+  sections,
+  era,
+}: {
+  brief: string | null
+  rationale: string | null
+  sections: ReturnType<typeof briefSections>
+  era: string | null
+}) {
+  return (
+    <Step n="02" title="A brief was written">
+      {brief ? <p className={prose}>{brief}</p> : <Absent field="brief" era={era} noun="brief" />}
+      {rationale ? (
+        <>
+          <p className={subhead}>Why</p>
+          <Suspense fallback={<p className={prose}>{rationale}</p>}>
+            <ArchiveMarkdown>{rationale}</ArchiveMarkdown>
+          </Suspense>
+        </>
+      ) : null}
+      {sections.length > 0 && (
+        <details className={specDetails}>
+          <summary className={specSummary}>
+            The full specification ({sections.length} sections)
+          </summary>
+          <div className={specBody}>
+            {sections.map((s) => (
+              <div key={s.heading}>
+                <p className={subhead}>{s.heading}</p>
+                <Suspense fallback={<p className={prose}>{s.body}</p>}>
+                  <ArchiveMarkdown>{s.body}</ArchiveMarkdown>
+                </Suspense>
+              </div>
+            ))}
+          </div>
+        </details>
+      )}
+    </Step>
+  )
+}
+
+function ColorStep({
+  era,
+  scheme,
+  hue,
+  heroHex,
+}: {
+  era: string | null
+  scheme: Record<string, JsonValue> | null
+  hue: Record<string, JsonValue> | null
+  heroHex: string | null
+}) {
+  const story = colorStory(scheme)
+  return (
+    <Step n="03" title="A color was chosen">
+      {!scheme ? (
+        <Absent field="colorScheme" era={era} noun="color direction" />
+      ) : (
+        <>
+          {heroHex ? (
+            <div className={heroSwatch}>
+              <div className={heroChip} style={{ '--hero': heroHex } as React.CSSProperties} />
+              <div>
+                <p className={defValue}>{heroLabel(hue, heroHex)}</p>
+                <p className={defEmpty}>{heroHex}</p>
+              </div>
+            </div>
+          ) : null}
+          {story ? <p className={prose}>{story}</p> : null}
+        </>
+      )}
+    </Step>
+  )
+}
+
+/** One ramp's color scale, and the stops in it. */
+function ColorRamps({
+  colorRamps,
+  stopCount,
+}: {
+  colorRamps: ReturnType<typeof ramps>
+  stopCount: number
+}) {
+  if (!colorRamps.length) return null
+  return (
+    <>
+      <p className={subhead}>
+        Color — {colorRamps.length} ramps, {stopCount} stops
+      </p>
+      {colorRamps.map((r) => (
+        <div key={r.name} className={rampRow}>
+          <p className={rampName}>{r.name}</p>
+          <div className={rampStops}>
+            {r.stops.map((s) => (
+              <div
+                key={`${r.name}.${s.name}`}
+                className={stop}
+                style={{ '--stop': s.hex } as React.CSSProperties}
+                title={`${r.name}.${s.name} — ${s.hex}`}
+              >
+                <span className={stopMeta}>{s.name}</span>
+                <span className={stopMeta}>{s.hex}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </>
+  )
+}
+
+/** A flat name/value token group — fonts, then font sizes, in the same shape. */
+function TokenList({ heading, items }: { heading: string; items: ReturnType<typeof pairs> }) {
+  if (!items.length) return null
+  return (
+    <>
+      <p className={subhead}>{heading}</p>
+      <div className={defList}>
+        {items.map((f) => (
+          <div key={f.name} className={defRow}>
+            <span className={defKey}>{f.name}</span>
+            <span className={defValue}>{f.value}</span>
+          </div>
+        ))}
+      </div>
+    </>
+  )
+}
+
+function TokensStep({
+  era,
+  colorRamps,
+  stopCount,
+  fonts,
+  fontSizes,
+}: {
+  era: string | null
+  colorRamps: ReturnType<typeof ramps>
+  stopCount: number
+  fonts: ReturnType<typeof pairs>
+  fontSizes: ReturnType<typeof pairs>
+}) {
+  return (
+    <Step n="04" title="Tokens were generated">
+      {hasNoTokens(colorRamps, fonts, fontSizes) ? (
+        <Absent field="tokens" era={era} noun="token set" />
+      ) : (
+        <>
+          <ColorRamps colorRamps={colorRamps} stopCount={stopCount} />
+          <TokenList heading="Type" items={fonts} />
+          <TokenList heading="Scale" items={fontSizes} />
+        </>
+      )}
+    </Step>
+  )
+}
+
+/** A composition or shell record, flattened to def rows. `keyPrefix`
+ * disambiguates composition and shell keys that share a name. */
+function EntryRows({
+  entries,
+  keyPrefix = '',
+}: {
+  entries: Record<string, JsonValue> | null
+  keyPrefix?: string
+}) {
+  if (!entries) return null
+  return (
+    <>
+      {Object.entries(entries).map(([k, v]) => (
+        <div key={`${keyPrefix}${k}`} className={defRow}>
+          <span className={defKey}>{k.replace(/_/g, ' ')}</span>
+          <span className={defValue}>{String(v)}</span>
+        </div>
+      ))}
+    </>
+  )
+}
+
+function LaneRow({ lane }: { lane: Record<string, JsonValue> | null }) {
+  if (!lane?.name) return null
+  return (
+    <div className={defRow}>
+      <span className={defKey}>Lane</span>
+      <span className={defValue}>{String(lane.name)}</span>
+    </div>
+  )
+}
+
+function CompositionStep({
+  era,
+  composition,
+  lane,
+  shell,
+}: {
+  era: string | null
+  composition: Record<string, JsonValue> | null
+  lane: Record<string, JsonValue> | null
+  shell: Record<string, JsonValue> | null
+}) {
+  return (
+    <Step n="05" title="A composition was decided">
+      {hasNoComposition(composition, lane, shell) ? (
+        <Absent field="composition" era={era} noun="composition grammar" />
+      ) : (
+        <div className={defList}>
+          <EntryRows entries={composition} />
+          <LaneRow lane={lane} />
+          <EntryRows entries={shell} keyPrefix="shell-" />
+        </div>
+      )}
+    </Step>
+  )
+}
+
+function AttemptsRow({ attempts }: { attempts: number }) {
+  return (
+    <div className={defRow}>
+      <span className={defKey}>Attempts</span>
+      <span className={attempts ? defValue : defEmpty}>{attempts ? attempts : 'not logged'}</span>
+    </div>
+  )
+}
+
+function FilesChangedRow({ files }: { files: string[] }) {
+  return (
+    <div className={defRow}>
+      <span className={defKey}>Files changed</span>
+      {files?.length ? (
+        <span className={`${defValue} ${fileList}`}>
+          {files.map((f) => (
+            <span key={f}>{f}</span>
+          ))}
+        </span>
+      ) : (
+        <span className={defEmpty}>not logged</span>
+      )}
+    </div>
+  )
+}
+
+function PagesRow({ hasDesign, pages }: { hasDesign: boolean; pages: number }) {
+  return (
+    <div className={defRow}>
+      <span className={defKey}>Pages kept</span>
+      <span className={hasDesign ? defValue : defEmpty}>
+        {hasDesign ? pages : 'none — the capture did not survive'}
+      </span>
+    </div>
+  )
+}
+
+function BuildStep({ detail, hasDesign }: { detail: ArchiveDetail; hasDesign: boolean }) {
+  return (
+    <Step n="06" title="It was built">
+      <div className={defList}>
+        <AttemptsRow attempts={detail.attempts} />
+        <FilesChangedRow files={detail.filesChanged} />
+        <PagesRow hasDesign={hasDesign} pages={detail.pages} />
+      </div>
+    </Step>
+  )
+}
+
 function HowPage() {
   const { date } = Route.useParams()
   const [detail, setDetail] = useState<ArchiveDetail | null>(null)
@@ -416,12 +806,13 @@ function HowPage() {
     // previous day's detail stayed on screen until the new fetch resolved.
     let cancelled = false
     fetch(`/archive-data/${date}.json`)
-      .then((res) => (res.ok ? res.json() : null))
+      .then(jsonIfOk)
       .then((data: unknown) => {
         if (cancelled) return
-        // `res.json()` is `any`; assigning it straight to state was an
-        // unchecked cast into a typed component.
-        if (data && typeof data === 'object') setDetail(data as ArchiveDetail)
+        // `res.json()` is `any`; `isArchiveDetail` is what stands between that
+        // and a typed component. `{}` passes a bare `typeof x === 'object'`
+        // check, and reading `detail.tokens.colors.ramps` through it throws.
+        if (isArchiveDetail(data)) setDetail(data)
         else setError(true)
       })
       .catch(() => {
@@ -445,7 +836,13 @@ function HowPage() {
     )
   }
 
-  if (!detail) return null
+  if (!detail) {
+    return (
+      <div className={notFound}>
+        <p>Loading {formatDate(date)}…</p>
+      </div>
+    )
+  }
 
   const era = detail.era
   const scheme = asRecord(detail.colorScheme as JsonValue)
@@ -459,12 +856,9 @@ function HowPage() {
   const composition = asRecord(detail.composition as JsonValue)
   const lane = asRecord(detail.lane as JsonValue)
   const shell = asRecord(detail.shell as JsonValue)
-  const hasDesign = (detail.pages ?? 0) > 0
-
-  const heroHex =
-    hue && typeof hue.h === 'number' && typeof hue.s === 'number' && typeof hue.l === 'number'
-      ? `hsl(${hue.h} ${hue.s}% ${hue.l}%)`
-      : null
+  // `isArchiveDetail` guarantees `pages` is a number — no `?? 0` needed.
+  const hasDesign = detail.pages > 0
+  const heroHex = heroHexOf(hue)
 
   return (
     <div className={page}>
@@ -476,228 +870,34 @@ function HowPage() {
       </header>
 
       <div className={columns}>
-        <aside className={rail}>
-          {hasDesign ? (
-            <a href={`/archive/${date}/`} className={openDesign}>
-              Open the design
-            </a>
-          ) : (
-            <p className={absent}>
-              The record for this day survived; the pages did not. There is no design to open.
-            </p>
-          )}
-
-          <RailRow label="Era" value={era} />
-          <RailRow label="Chassis" value={detail.chassis} />
-          <RailRow label="Archetype" value={detail.legacyArchetype} />
-          <RailRow label="Mood" value={(scheme?.mood_word as string) ?? null} />
-          <RailRow label="Color" value={(hue?.name as string) ?? heroHex} />
-          <RailRow label="Build" value={detail.buildId} />
-          <RailRow label="Attempts" value={detail.attempts ? String(detail.attempts) : null} />
-          {detail.cost?.total_usd != null ? (
-            <RailRow
-              label="Cost"
-              value={`$${Number(detail.cost.total_usd).toFixed(2)}${
-                detail.cost.estimated ? ' est.' : ''
-              }`}
-            />
-          ) : null}
-        </aside>
+        <DetailRail
+          detail={detail}
+          date={date}
+          era={era}
+          scheme={scheme}
+          hue={hue}
+          heroHex={heroHex}
+          hasDesign={hasDesign}
+        />
 
         <div className={bodyCol}>
-          <Step n="01" title="The day arrived">
-            {signals.length === 0 ? (
-              <Absent field="signals" era={era} noun="record of the day" />
-            ) : (
-              <div className={signalGrid}>
-                {signals.map((s) => (
-                  <div key={s.provider} className={signalRow}>
-                    <span className={signalName}>{s.label}</span>
-                    <span className={s.empty ? signalNone : signalText}>{s.summary}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </Step>
-
-          <Step n="02" title="A brief was written">
-            {detail.brief ? (
-              <p className={prose}>{detail.brief}</p>
-            ) : (
-              <Absent field="brief" era={era} noun="brief" />
-            )}
-            {detail.rationale ? (
-              <>
-                <p className={subhead}>Why</p>
-                <Suspense fallback={<p className={prose}>{detail.rationale}</p>}>
-                  <ArchiveMarkdown>{detail.rationale}</ArchiveMarkdown>
-                </Suspense>
-              </>
-            ) : null}
-            {sections.length > 0 && (
-              <details className={specDetails}>
-                <summary className={specSummary}>
-                  The full specification ({sections.length} sections)
-                </summary>
-                <div className={specBody}>
-                  {sections.map((s) => (
-                    <div key={s.heading}>
-                      <p className={subhead}>{s.heading}</p>
-                      <Suspense fallback={<p className={prose}>{s.body}</p>}>
-                        <ArchiveMarkdown>{s.body}</ArchiveMarkdown>
-                      </Suspense>
-                    </div>
-                  ))}
-                </div>
-              </details>
-            )}
-          </Step>
-
-          <Step n="03" title="A color was chosen">
-            {!scheme ? (
-              <Absent field="colorScheme" era={era} noun="color direction" />
-            ) : (
-              <>
-                {heroHex ? (
-                  <div className={heroSwatch}>
-                    <div
-                      className={heroChip}
-                      style={{ '--hero': heroHex } as React.CSSProperties}
-                    />
-                    <div>
-                      <p className={defValue}>{(hue?.name as string) ?? heroHex}</p>
-                      <p className={defEmpty}>{heroHex}</p>
-                    </div>
-                  </div>
-                ) : null}
-                {typeof scheme.color_story === 'string' && scheme.color_story ? (
-                  <p className={prose}>{scheme.color_story}</p>
-                ) : null}
-              </>
-            )}
-          </Step>
-
-          <Step n="04" title="Tokens were generated">
-            {colorRamps.length === 0 && fonts.length === 0 && fontSizes.length === 0 ? (
-              <Absent field="tokens" era={era} noun="token set" />
-            ) : (
-              <>
-                {colorRamps.length ? (
-                  <>
-                    <p className={subhead}>
-                      Color — {colorRamps.length} ramps, {stopCount} stops
-                    </p>
-                    {colorRamps.map((r) => (
-                      <div key={r.name} className={rampRow}>
-                        <p className={rampName}>{r.name}</p>
-                        <div className={rampStops}>
-                          {r.stops.map((s) => (
-                            <div
-                              key={`${r.name}.${s.name}`}
-                              className={stop}
-                              style={{ '--stop': s.hex } as React.CSSProperties}
-                              title={`${r.name}.${s.name} — ${s.hex}`}
-                            >
-                              <span className={stopMeta}>{s.name}</span>
-                              <span className={stopMeta}>{s.hex}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </>
-                ) : null}
-
-                {fonts.length ? (
-                  <>
-                    <p className={subhead}>Type</p>
-                    <div className={defList}>
-                      {fonts.map((f) => (
-                        <div key={f.name} className={defRow}>
-                          <span className={defKey}>{f.name}</span>
-                          <span className={defValue}>{f.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                ) : null}
-
-                {fontSizes.length ? (
-                  <>
-                    <p className={subhead}>Scale</p>
-                    <div className={defList}>
-                      {fontSizes.map((f) => (
-                        <div key={f.name} className={defRow}>
-                          <span className={defKey}>{f.name}</span>
-                          <span className={defValue}>{f.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                ) : null}
-              </>
-            )}
-          </Step>
-
-          <Step n="05" title="A composition was decided">
-            {!composition && !lane && !shell ? (
-              <Absent field="composition" era={era} noun="composition grammar" />
-            ) : (
-              <div className={defList}>
-                {composition
-                  ? Object.entries(composition).map(([k, v]) => (
-                      <div key={k} className={defRow}>
-                        <span className={defKey}>{k.replace(/_/g, ' ')}</span>
-                        <span className={defValue}>{String(v)}</span>
-                      </div>
-                    ))
-                  : null}
-                {lane?.name ? (
-                  <div className={defRow}>
-                    <span className={defKey}>Lane</span>
-                    <span className={defValue}>{String(lane.name)}</span>
-                  </div>
-                ) : null}
-                {shell
-                  ? Object.entries(shell).map(([k, v]) => (
-                      <div key={`shell-${k}`} className={defRow}>
-                        <span className={defKey}>{k.replace(/_/g, ' ')}</span>
-                        <span className={defValue}>{String(v)}</span>
-                      </div>
-                    ))
-                  : null}
-              </div>
-            )}
-          </Step>
-
-          <Step n="06" title="It was built">
-            <div className={defList}>
-              <div className={defRow}>
-                <span className={defKey}>Attempts</span>
-                <span className={detail.attempts ? defValue : defEmpty}>
-                  {detail.attempts ? detail.attempts : 'not logged'}
-                </span>
-              </div>
-              <div className={defRow}>
-                <span className={defKey}>Files changed</span>
-                {detail.filesChanged?.length ? (
-                  <span className={`${defValue} ${fileList}`}>
-                    {detail.filesChanged.map((f) => (
-                      <span key={f}>{f}</span>
-                    ))}
-                  </span>
-                ) : (
-                  <span className={defEmpty}>not logged</span>
-                )}
-              </div>
-              <div className={defRow}>
-                <span className={defKey}>Pages kept</span>
-                <span className={hasDesign ? defValue : defEmpty}>
-                  {hasDesign ? detail.pages : 'none — the capture did not survive'}
-                </span>
-              </div>
-            </div>
-          </Step>
+          <SignalsStep signals={signals} era={era} />
+          <BriefStep
+            brief={detail.brief}
+            rationale={detail.rationale}
+            sections={sections}
+            era={era}
+          />
+          <ColorStep era={era} scheme={scheme} hue={hue} heroHex={heroHex} />
+          <TokensStep
+            era={era}
+            colorRamps={colorRamps}
+            stopCount={stopCount}
+            fonts={fonts}
+            fontSizes={fontSizes}
+          />
+          <CompositionStep era={era} composition={composition} lane={lane} shell={shell} />
+          <BuildStep detail={detail} hasDesign={hasDesign} />
         </div>
       </div>
     </div>
