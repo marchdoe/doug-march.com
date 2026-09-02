@@ -25,7 +25,7 @@ import { GitHubError } from './github.js'
  * display. Every exit from here is JSON.
  */
 
-export interface PanelContext {
+interface PanelContext {
   request: Request
   /** Parsed JSON body; `undefined` for methods that carry none. */
   body: Record<string, unknown>

@@ -19,9 +19,9 @@ export const ERA_ORDER = [
   'grammar',
 ] as const
 
-export type Era = (typeof ERA_ORDER)[number]
+type Era = (typeof ERA_ORDER)[number]
 
-export const ERA_LABELS: Record<Era, string> = {
+const ERA_LABELS: Record<Era, string> = {
   prose: 'prose',
   logged: 'logged',
   traced: 'traced',

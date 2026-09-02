@@ -5,7 +5,7 @@ import { resolve } from 'node:path'
 import * as yaml from 'js-yaml'
 import { isRecord } from './read-json'
 
-export const SIGNALS_PATH = resolve(process.cwd(), 'signals/today.yml')
+const SIGNALS_PATH = resolve(process.cwd(), 'signals/today.yml')
 
 /**
  * Parse today.yml into an object, or say why it could not be.
