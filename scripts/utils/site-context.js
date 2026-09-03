@@ -86,7 +86,7 @@ async function buildContentSummary() {
       lines.push('')
       lines.push('Exports: `projects`, `featuredProject`, `selectedWork`, `experiments`')
       lines.push(
-        "The `Project` and `Client` types are exported from `app/content/types.ts`, not from `projects.ts` — import them with `import type { Project } from '../content/types'`."
+        "The `Project` and `Client` types live in `app/content/types.ts` and are re-exported from `projects.ts` — import them with `import type { Project } from '../content/projects'` or `'../content/types'`."
       )
     }
   }

@@ -1,5 +1,12 @@
 import type { Project, Client } from './types'
 
+// Re-exported so `import type { Project } from '../content/projects'` works
+// alongside the value imports above — see #432. No caller uses this path
+// yet; it exists for the engineer, which every failed run this week got
+// wrong by importing Project from here before it was re-exported.
+// fallow-ignore-next-line unused-type
+export type { Project, Client } from './types'
+
 const spacemanClients: Client[] = [
   { name: 'Jeffrey Zeldman', url: 'https://studio.zeldman.com' },
   { name: 'Rolex', logo: '/clients/rolex.svg', url: 'https://rolex.com' },
