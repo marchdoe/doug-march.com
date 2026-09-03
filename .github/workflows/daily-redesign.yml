@@ -290,6 +290,7 @@ jobs:
             archive/*/build-failed-*/
             archive/*/build-failed-sources-*/
             archive/*/last-build-output.txt
+            archive/*/last-static-checks.txt
           retention-days: 30
           if-no-files-found: ignore
 

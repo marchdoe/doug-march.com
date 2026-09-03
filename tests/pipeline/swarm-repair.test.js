@@ -136,6 +136,15 @@ describe('Phase 5: the build fails', () => {
       expect(existsSync(path.join(run.root, rel)), `${rel} under the root`).toBe(true)
     }
     expect(dirsUnder(run.root, run.date, 'build-failed')).toEqual([])
+
+    const repairSteps = run.trace.steps.filter((s) => s.name === 'repair')
+    expect(repairSteps).toHaveLength(1)
+    expect(repairSteps[0]).toMatchObject({
+      phase: 5,
+      input: { attempt: 1 },
+      output: { success: true },
+    })
+    expect(repairSteps[0].output.files).toBeGreaterThan(0)
   })
 
   it('gives up after three repairs, keeps the failing sources, and puts the original back', async () => {
@@ -189,6 +198,19 @@ describe('Phase 5: the build fails', () => {
     )
     expect(errorTxt.startsWith('Build failed after 3 repair attempt(s)')).toBe(true)
     expect(run.trace.steps.find((s) => s.name === 'build-validation').output.success).toBe(false)
+
+    const repairSteps = run.trace.steps.filter((s) => s.name === 'repair')
+    expect(repairSteps).toHaveLength(3)
+    expect(repairSteps.map((s) => s.input.attempt)).toEqual([1, 2, 3])
+    for (const step of repairSteps) {
+      expect(step.phase).toBe(5)
+      expect(step.output.success).toBe(false)
+    }
+
+    const costJson = JSON.parse(
+      readFileSync(path.join(run.root, 'archive', run.date, run.trace.dir, 'cost.json'), 'utf8')
+    )
+    expect(costJson.retries).toBe(run.retries)
   })
 
   it('spends a repair attempt on an incomplete reply and reminds the next one', async () => {
@@ -223,6 +245,18 @@ describe('Phase 5: the build fails', () => {
     expect(repair2.userPrompt).toContain(
       'Your previous response omitted these required files: app/routes/about.tsx'
     )
+
+    const repairSteps = run.trace.steps.filter((s) => s.name === 'repair')
+    expect(repairSteps).toHaveLength(2)
+    const [rejected, succeeded] = repairSteps
+    expect(rejected.input.attempt).toBe(1)
+    expect(rejected.output.success).toBe(false)
+    expect(rejected.output.error).toContain('## REQUIRED FILES MISSING — RETRY')
+    expect(rejected.output.error).toContain(
+      'Your previous response omitted these required files: app/routes/about.tsx'
+    )
+    expect(succeeded.input.attempt).toBe(2)
+    expect(succeeded.output.success).toBe(true)
     expect(repair2.userPrompt).toContain(
       'React Engineer omitted required files: app/routes/about.tsx'
     )
