@@ -20,6 +20,7 @@ import {
   nextFixture,
   recordFixture,
 } from './agent-fixtures.js'
+import { ModelTransportError } from './model-transport-error.js'
 
 /**
  * Pull cost and token counts out of a stream-json `result` event.
@@ -88,6 +89,9 @@ export function describeCliFailure(code, resultEvent, fullText, stderr) {
  * @param {string[]} [options.extraCliArgs] - Additional CLI args (e.g. ['--fallback-model', 'haiku'])
  * @param {function} [options.onTimeout] - Async callback invoked just before rejecting on timeout.
  *   Receives { charCount: number } and should return a string to append to the error message (or '').
+ * @param {'cli'|'cli-text-fallback'} [options.channel='cli'] - Attributed to a ModelTransportError
+ *   thrown from this call, if any. vision-router.js passes 'cli-text-fallback' when this call is the
+ *   text-only fallback after the SDK vision path failed, so the channel names which path went dead.
  * @returns {Promise<string>} The raw text response from Claude
  */
 export async function callClaudeCLI(agentName, systemPrompt, promptText, options = {}) {
@@ -112,6 +116,7 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
     model,
     extraCliArgs = [],
     onTimeout,
+    channel = 'cli',
   } = options
 
   // An explicit model ID is required. The 'sonnet' alias this defaulted to is
@@ -436,10 +441,37 @@ export async function callClaudeCLI(agentName, systemPrompt, promptText, options
       const failure = describeCliFailure(code, resultEvent, fullText, stderr)
       if (failure) {
         console.error(`  [${agentName}] ${failure}`)
-        reject(new Error(`[${agentName}] ${failure}`))
+        // A non-zero exit with no text at all and no result event is not a
+        // malformed response for a parser to reject — the model never
+        // answered (dead key, auth failure, crash before first token). A
+        // non-zero exit WITH partial text, or one that produced a (possibly
+        // error-flagged) result event, stays a plain Error: something did
+        // come back, even if it was bad.
+        if (code !== 0 && !resultEvent && !fullText.trim()) {
+          reject(
+            new ModelTransportError({
+              agent: agentName,
+              channel,
+              exitCode: code,
+              stderrTail: stderr.slice(-500),
+            })
+          )
+        } else {
+          reject(new Error(`[${agentName}] ${failure}`))
+        }
       } else {
         // Prefer finalResult (from result event), fall back to accumulated text
         const response = finalResult || fullText
+        if (!response.trim()) {
+          // The process exited clean and reported success, but said nothing.
+          // #432: an out-of-credits key returns exactly this — exit 0, empty
+          // string — and it used to reach the delimiter parser, which blamed
+          // a missing block instead of the dead API.
+          reject(
+            new ModelTransportError({ agent: agentName, channel, exitCode: code, emptyReply: true })
+          )
+          return
+        }
         // Recorded here rather than at the call sites so every agent is
         // captured by the one seam they all pass through.
         if (isRecording()) recordFixture(agentName, response)

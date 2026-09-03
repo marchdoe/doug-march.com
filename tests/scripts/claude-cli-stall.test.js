@@ -167,6 +167,7 @@ describe('claude-cli stall detection', () => {
   it('books an unpriceable call, not a $0 one, when the process crashes with no result event', async () => {
     const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
     const { getUsageRecords } = await import('../../scripts/utils/cost-ledger.js')
+    const { ModelTransportError } = await import('../../scripts/utils/model-transport-error.js')
 
     const promise = callClaudeCLI('crash-agent', 'system', 'user prompt', {
       model: 'claude-sonnet-5',
@@ -180,8 +181,17 @@ describe('claude-cli stall detection', () => {
     child.stderr.emit('data', Buffer.from('fatal: bad auth config\n'))
     child.emit('close', 1)
 
+    // A non-zero exit with no text at all and no result event (#432): the
+    // model never answered, so this is a transport failure, not a malformed
+    // response for a parser to reject.
     const err = await rejected
-    expect(err.message).toMatch(/exited with code 1/)
+    expect(err).toBeInstanceOf(ModelTransportError)
+    expect(err.transport).toBe(true)
+    expect(err.agent).toBe('crash-agent')
+    expect(err.channel).toBe('cli')
+    expect(err.exitCode).toBe(1)
+    expect(err.message).toMatch(/no response from the model for crash-agent \(cli, exit 1\)/)
+    expect(err.message).toMatch(/fatal: bad auth config/)
 
     const [record] = getUsageRecords()
     expect(record.agent).toBe('crash-agent')
@@ -189,6 +199,76 @@ describe('claude-cli stall detection', () => {
     // that would read as "this call was free" instead of "we don't know".
     expect(record.cost_usd).toBeNull()
     expect(record.estimated).toBe(false)
+  })
+
+  it('rejects with a ModelTransportError, named for the channel, when the CLI exits 0 with no text', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    const { ModelTransportError } = await import('../../scripts/utils/model-transport-error.js')
+
+    // #432: an out-of-credits API key returns exactly this shape — the
+    // process exits clean and reports success, but the reply is empty.
+    const promise = callClaudeCLI('empty-agent', 'system', 'user prompt', {
+      model: 'claude-sonnet-5',
+      timeoutMs: 60 * 60 * 1000,
+      stallTimeoutMs: 60 * 60 * 1000,
+    })
+    const rejected = promise.catch((err) => err)
+
+    await vi.advanceTimersByTimeAsync(10)
+    const child = mockChildren[0]
+    child.emit('close', 0)
+
+    const err = await rejected
+    expect(err).toBeInstanceOf(ModelTransportError)
+    expect(err.transport).toBe(true)
+    expect(err.emptyReply).toBe(true)
+    expect(err.message).toBe('no response from the model for empty-agent (cli, empty reply)')
+  })
+
+  it('rejects the same way when the CLI exits 0 with a whitespace-only reply', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+    const { ModelTransportError } = await import('../../scripts/utils/model-transport-error.js')
+
+    const promise = callClaudeCLI('whitespace-agent', 'system', 'user prompt', {
+      model: 'claude-sonnet-5',
+      timeoutMs: 60 * 60 * 1000,
+      stallTimeoutMs: 60 * 60 * 1000,
+    })
+    const rejected = promise.catch((err) => err)
+
+    await vi.advanceTimersByTimeAsync(10)
+    const child = mockChildren[0]
+    const event = {
+      type: 'assistant',
+      message: { content: [{ type: 'text', text: '   \n\t  ' }] },
+    }
+    child.stdout.emit('data', Buffer.from(`${JSON.stringify(event)}\n`))
+    child.emit('close', 0)
+
+    const err = await rejected
+    expect(err).toBeInstanceOf(ModelTransportError)
+    expect(err.emptyReply).toBe(true)
+  })
+
+  it('resolves normally when the CLI exits 0 with real text — unaffected by the transport check', async () => {
+    const { callClaudeCLI } = await import('../../scripts/utils/claude-cli.js')
+
+    const promise = callClaudeCLI('happy-agent', 'system', 'user prompt', {
+      model: 'claude-sonnet-5',
+      timeoutMs: 60 * 60 * 1000,
+      stallTimeoutMs: 60 * 60 * 1000,
+    })
+
+    await vi.advanceTimersByTimeAsync(10)
+    const child = mockChildren[0]
+    const event = {
+      type: 'assistant',
+      message: { content: [{ type: 'text', text: 'a real response' }] },
+    }
+    child.stdout.emit('data', Buffer.from(`${JSON.stringify(event)}\n`))
+    child.emit('close', 0)
+
+    await expect(promise).resolves.toBe('a real response')
   })
 })
 
