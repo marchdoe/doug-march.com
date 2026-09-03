@@ -32,7 +32,7 @@ vi.mock('../../scripts/utils/file-manager.js', (o) => m['scripts/utils/file-mana
 vi.mock('node:child_process', (o) => m['node:child_process'](o))
 
 // site-context.js imports file-manager.js, so it loads after the mock block.
-const { ENGINEER_FILES, MUTABLE_FILES } = await import('../../scripts/utils/site-context.js')
+const { MUTABLE_FILES } = await import('../../scripts/utils/site-context.js')
 
 // The harness keeps `restore` and `cleanupOrphans` real and records each call
 // as `run.fakes.restore` / `run.fakes.cleanupOrphans`, with a `seq` that says
@@ -394,32 +394,28 @@ describe('the run deadline between phases', () => {
     expect(run.fakes.validateBuild).toHaveLength(1)
     expect(run.retries).toBe(0)
 
-    // The deadline breaks the loop before attempt 1's slate reset (gated on
-    // attempt === 0, inside the loop, after this same check) ever runs — it
-    // must not, or the orphan Ledger.tsx it would delete is exactly what
-    // archiveFailedSources below needs to still be on disk. So Phase 5 only
-    // restores the failing agent's files, then the exhausted loop restores
-    // the original backup after cleaning orphans.
-    expect(run.fakes.restore).toHaveLength(2)
-    expect(restoredKeySets(run)).toEqual([[...ENGINEER_FILES].sort(), ORIGINAL_BACKUP_KEYS])
+    // The deadline breaks the loop before attempt 1. Nothing is restored or
+    // reset ahead of a repair any more (a repair patches Phase 3's files,
+    // #432), so the exhausted loop's rollback is the only one: orphans
+    // cleaned, then the original backup restored.
+    expect(run.fakes.restore).toHaveLength(1)
+    expect(restoredKeySets(run)).toEqual([ORIGINAL_BACKUP_KEYS])
     expect(run.fakes.cleanupOrphans).toHaveLength(1)
-    expect(run.fakes.cleanupOrphans[0].seq).toBeLessThan(run.fakes.restore[1].seq)
+    expect(run.fakes.cleanupOrphans[0].seq).toBeLessThan(run.fakes.restore[0].seq)
 
     for (const rel of ENGINEER_OUTPUT) {
       expect(under(run.root, rel), `${rel} gone from the root`).toBe(false)
     }
     expect(presetUnder(run.root)).toBe(SEEDED_PRESET)
     expect(run.fakes.archive).toHaveLength(0)
-    // The engineer's required files were already reverted by the Phase 5
-    // restore, so only its orphan Ledger.tsx is left to snapshot.
+    // Phase 3's files were still on disk when the failing sources were
+    // snapshotted, so every one of them is in the archive, not only the
+    // orphan Ledger.tsx.
     const sources = failedSourceDirs(run)
     expect(sources).toHaveLength(1)
-    expect(under(run.root, `archive/${run.date}/${sources[0]}/app/components/Ledger.tsx`)).toBe(
-      true
-    )
-    expect(under(run.root, `archive/${run.date}/${sources[0]}/app/components/Layout.tsx`)).toBe(
-      false
-    )
+    for (const rel of ENGINEER_OUTPUT) {
+      expect(under(run.root, `archive/${run.date}/${sources[0]}/${rel}`), rel).toBe(true)
+    }
     expect(run.trace.dir).toMatch(/^build-failed-\d+$/)
     expect(errorTxt(run)).toMatch(/^Build failed after 0 repair attempt\(s\)/)
     const build = run.trace.steps.find((s) => s.name === 'build-validation')
