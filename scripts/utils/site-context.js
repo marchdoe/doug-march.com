@@ -85,6 +85,9 @@ async function buildContentSummary() {
     if (src.includes('featuredProject')) {
       lines.push('')
       lines.push('Exports: `projects`, `featuredProject`, `selectedWork`, `experiments`')
+      lines.push(
+        "The `Project` and `Client` types are exported from `app/content/types.ts`, not from `projects.ts` — import them with `import type { Project } from '../content/types'`."
+      )
     }
   }
 
