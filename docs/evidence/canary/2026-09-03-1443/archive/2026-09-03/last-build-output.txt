@@ -1,0 +1,590 @@
+$ panda codegen && node scripts/generate-archive-json.js && vite build && node scripts/pin-inline-scripts.js
+  record anomaly — 2026-09-03: missing brief.md
+  record anomaly — 2026-09-03: missing archetype.txt
+  record anomaly — 2026-09-03: missing build.json
+  record anomaly — 2026-09-03: missing trace.json
+  record anomaly — 2026-09-03: missing signals-brief.md
+  record anomaly — 2026-09-03: missing preset.ts
+  record anomaly — 2026-09-03: missing color-scheme.json
+  record anomaly — 2026-09-03: missing shell.json
+  record anomaly — 2026-09-03: missing verdicts.json
+  record anomaly — 2026-09-03: missing mockup.html
+  record anomaly — 2026-09-03: missing composition.json
+  record anomaly — 2026-09-03: missing lane.json
+  record anomaly — 2026-09-03: missing hero-source.json
+  record anomaly — 2026-09-03: missing cost.json
+  record anomaly — 2026-09-03: missing header.json
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - import "./app/dev-server" resolves to a directory index (vite.config.ts:5:80). Import the index file directly
+  - import "./archive-preview" without a file extension (app/dev-server/index.ts:5:39). Add the file extension
+  - import "./dev-data" without a file extension (app/dev-server/index.ts:6:32). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/index.ts:7:30). Add the file extension
+  - import "./pipeline-runner" without a file extension (app/dev-server/index.ts:8:38). Add the file extension
+  - import "./signals-endpoints" without a file extension (app/dev-server/index.ts:9:60). Add the file extension
+  - import "./archive-static" without a file extension (app/dev-server/index.ts:11:37). Add the file extension
+  - import "./storage-context-stub" without a file extension (app/dev-server/index.ts:12:43). Add the file extension
+  - import "../server/archive-paths" without a file extension (app/dev-server/archive-preview.ts:4:51). Add the file extension
+  - import "../server/archive-impl" without a file extension (app/dev-server/dev-data.ts:6:37). Add the file extension
+  - import "../server/signals-impl" without a file extension (app/dev-server/signals-endpoints.ts:4:39). Add the file extension
+  - import "../types/panel" without a file extension (app/dev-server/pipeline-runner.ts:4:30). Add the file extension
+  - import "../server/archive-paths" without a file extension (app/dev-server/archive-static.ts:5:31). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/archive-preview.ts:5:30). Add the file extension
+  - import "../server/archive-impl" without a file extension (app/dev-server/dev-data.ts:7:35). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/signals-endpoints.ts:5:57). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/pipeline-runner.ts:5:57). Add the file extension
+  - import "../server/read-json" without a file extension (app/dev-server/dev-data.ts:8:36). Add the file extension
+  - import "../server/signals-impl" without a file extension (app/dev-server/dev-data.ts:9:37). Add the file extension
+  - import "../types/archive-record" without a file extension (app/dev-server/dev-data.ts:10:36). Add the file extension
+  - import "./read-json" without a file extension (app/server/signals-impl.ts:6:26). Add the file extension
+  - import "../types/panel" without a file extension (app/dev-server/dev-data.ts:11:30). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/dev-data.ts:12:40). Add the file extension
+  - import "../types/archive-record" without a file extension (app/server/archive-impl.ts:5:36). Add the file extension
+  - import "../types/panel" without a file extension (app/server/archive-impl.ts:6:30). Add the file extension
+  - import "./archive-paths" without a file extension (app/server/archive-impl.ts:7:65). Add the file extension
+  - import "./read-json" without a file extension (app/server/archive-impl.ts:8:36). Add the file extension
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - import "./app/dev-server" resolves to a directory index (vite.config.ts:5:80). Import the index file directly
+  - import "./archive-preview" without a file extension (app/dev-server/index.ts:5:39). Add the file extension
+  - import "./dev-data" without a file extension (app/dev-server/index.ts:6:32). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/index.ts:7:30). Add the file extension
+  - import "./pipeline-runner" without a file extension (app/dev-server/index.ts:8:38). Add the file extension
+  - import "./signals-endpoints" without a file extension (app/dev-server/index.ts:9:60). Add the file extension
+  - import "./archive-static" without a file extension (app/dev-server/index.ts:11:37). Add the file extension
+  - import "./storage-context-stub" without a file extension (app/dev-server/index.ts:12:43). Add the file extension
+  - import "../server/archive-paths" without a file extension (app/dev-server/archive-preview.ts:4:51). Add the file extension
+  - import "../server/signals-impl" without a file extension (app/dev-server/signals-endpoints.ts:4:39). Add the file extension
+  - import "../server/archive-paths" without a file extension (app/dev-server/archive-static.ts:5:31). Add the file extension
+  - import "../types/panel" without a file extension (app/dev-server/pipeline-runner.ts:4:30). Add the file extension
+  - import "../server/archive-impl" without a file extension (app/dev-server/dev-data.ts:6:37). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/archive-preview.ts:5:30). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/signals-endpoints.ts:5:57). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/pipeline-runner.ts:5:57). Add the file extension
+  - import "../server/archive-impl" without a file extension (app/dev-server/dev-data.ts:7:35). Add the file extension
+  - import "../server/read-json" without a file extension (app/dev-server/dev-data.ts:8:36). Add the file extension
+  - import "../server/signals-impl" without a file extension (app/dev-server/dev-data.ts:9:37). Add the file extension
+  - import "../types/archive-record" without a file extension (app/dev-server/dev-data.ts:10:36). Add the file extension
+  - import "../types/panel" without a file extension (app/dev-server/dev-data.ts:11:30). Add the file extension
+  - import "./read-json" without a file extension (app/server/signals-impl.ts:6:26). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/dev-data.ts:12:40). Add the file extension
+  - import "../types/archive-record" without a file extension (app/server/archive-impl.ts:5:36). Add the file extension
+  - import "../types/panel" without a file extension (app/server/archive-impl.ts:6:30). Add the file extension
+  - import "./archive-paths" without a file extension (app/server/archive-impl.ts:7:65). Add the file extension
+  - import "./read-json" without a file extension (app/server/archive-impl.ts:8:36). Add the file extension
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - import "./app/dev-server" resolves to a directory index (vite.config.ts:5:80). Import the index file directly
+  - import "./archive-preview" without a file extension (app/dev-server/index.ts:5:39). Add the file extension
+  - import "./dev-data" without a file extension (app/dev-server/index.ts:6:32). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/index.ts:7:30). Add the file extension
+  - import "./pipeline-runner" without a file extension (app/dev-server/index.ts:8:38). Add the file extension
+  - import "./signals-endpoints" without a file extension (app/dev-server/index.ts:9:60). Add the file extension
+  - import "./archive-static" without a file extension (app/dev-server/index.ts:11:37). Add the file extension
+  - import "./storage-context-stub" without a file extension (app/dev-server/index.ts:12:43). Add the file extension
+  - import "../server/archive-impl" without a file extension (app/dev-server/dev-data.ts:6:37). Add the file extension
+  - import "../server/archive-paths" without a file extension (app/dev-server/archive-static.ts:5:31). Add the file extension
+  - import "../server/archive-paths" without a file extension (app/dev-server/archive-preview.ts:4:51). Add the file extension
+  - import "../types/panel" without a file extension (app/dev-server/pipeline-runner.ts:4:30). Add the file extension
+  - import "../server/signals-impl" without a file extension (app/dev-server/signals-endpoints.ts:4:39). Add the file extension
+  - import "../server/archive-impl" without a file extension (app/dev-server/dev-data.ts:7:35). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/archive-preview.ts:5:30). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/pipeline-runner.ts:5:57). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/signals-endpoints.ts:5:57). Add the file extension
+  - import "../server/read-json" without a file extension (app/dev-server/dev-data.ts:8:36). Add the file extension
+  - import "../server/signals-impl" without a file extension (app/dev-server/dev-data.ts:9:37). Add the file extension
+  - import "../types/archive-record" without a file extension (app/dev-server/dev-data.ts:10:36). Add the file extension
+  - import "../types/panel" without a file extension (app/dev-server/dev-data.ts:11:30). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/dev-data.ts:12:40). Add the file extension
+  - import "./read-json" without a file extension (app/server/signals-impl.ts:6:26). Add the file extension
+  - import "../types/archive-record" without a file extension (app/server/archive-impl.ts:5:36). Add the file extension
+  - import "../types/panel" without a file extension (app/server/archive-impl.ts:6:30). Add the file extension
+  - import "./archive-paths" without a file extension (app/server/archive-impl.ts:7:65). Add the file extension
+  - import "./read-json" without a file extension (app/server/archive-impl.ts:8:36). Add the file extension
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - import "./app/dev-server" resolves to a directory index (vite.config.ts:5:80). Import the index file directly
+  - import "./archive-preview" without a file extension (app/dev-server/index.ts:5:39). Add the file extension
+  - import "./dev-data" without a file extension (app/dev-server/index.ts:6:32). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/index.ts:7:30). Add the file extension
+  - import "./pipeline-runner" without a file extension (app/dev-server/index.ts:8:38). Add the file extension
+  - import "./signals-endpoints" without a file extension (app/dev-server/index.ts:9:60). Add the file extension
+  - import "./archive-static" without a file extension (app/dev-server/index.ts:11:37). Add the file extension
+  - import "./storage-context-stub" without a file extension (app/dev-server/index.ts:12:43). Add the file extension
+  - import "../server/archive-impl" without a file extension (app/dev-server/dev-data.ts:6:37). Add the file extension
+  - import "../types/panel" without a file extension (app/dev-server/pipeline-runner.ts:4:30). Add the file extension
+  - import "../server/archive-paths" without a file extension (app/dev-server/archive-static.ts:5:31). Add the file extension
+  - import "../server/archive-paths" without a file extension (app/dev-server/archive-preview.ts:4:51). Add the file extension
+  - import "../server/signals-impl" without a file extension (app/dev-server/signals-endpoints.ts:4:39). Add the file extension
+  - import "../server/archive-impl" without a file extension (app/dev-server/dev-data.ts:7:35). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/pipeline-runner.ts:5:57). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/archive-preview.ts:5:30). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/signals-endpoints.ts:5:57). Add the file extension
+  - import "../server/read-json" without a file extension (app/dev-server/dev-data.ts:8:36). Add the file extension
+  - import "../server/signals-impl" without a file extension (app/dev-server/dev-data.ts:9:37). Add the file extension
+  - import "../types/archive-record" without a file extension (app/dev-server/dev-data.ts:10:36). Add the file extension
+  - import "../types/panel" without a file extension (app/dev-server/dev-data.ts:11:30). Add the file extension
+  - import "./read-json" without a file extension (app/server/signals-impl.ts:6:26). Add the file extension
+  - import "./guards" without a file extension (app/dev-server/dev-data.ts:12:40). Add the file extension
+  - import "../types/archive-record" without a file extension (app/server/archive-impl.ts:5:36). Add the file extension
+  - import "../types/panel" without a file extension (app/server/archive-impl.ts:6:30). Add the file extension
+  - import "./archive-paths" without a file extension (app/server/archive-impl.ts:7:65). Add the file extension
+  - import "./read-json" without a file extension (app/server/archive-impl.ts:8:36). Add the file extension
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+✔️ `styled-system/css`: the css function to author styles
+✔️ `styled-system/tokens`: the css variables and js function to query your tokens
+✔️ `styled-system/patterns`: functions to implement and apply common layout patterns
+✔️ `styled-system/jsx`: styled jsx elements for react
+
+
+[generate-archive-json] Projecting archive records...
+  wrote /private/var/folders/q9/mvx1zsl504qgk28zwt9t_7ch0000gn/T/canary-1788458370069-47759/public/archive-data/index.json (125 entries)
+  wrote 125 per-date files, 1 rebuilt from artifacts
+[generate-archive-json] Done
+vite v8.2.1 building client environment for production...
+[2Ktransforming...🐼 info [hrtime] Extracted in (139.56ms)
+✓ 603 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/client/assets/index-CgpQ0BRI.css            25.65 kB │ gzip:  7.02 kB
+dist/client/assets/cx-UCgG8eGY.js                 0.13 kB │ gzip:  0.13 kB
+dist/client/assets/work._slug-DAAxfLBz.js         0.48 kB │ gzip:  0.32 kB
+dist/client/assets/SourceQuote-C39bwzSs.js        0.53 kB │ gzip:  0.35 kB
+dist/client/assets/about-BuATpUb2.js              0.62 kB │ gzip:  0.41 kB
+dist/client/assets/FeaturedProject-BArG8qBp.js    0.76 kB │ gzip:  0.42 kB
+dist/client/assets/og-MtkSQZxQ.js                 1.04 kB │ gzip:  0.55 kB
+dist/client/assets/experiments-vfbyqA4x.js        1.18 kB │ gzip:  0.60 kB
+dist/client/assets/how._date-EHHuP_9_.js          1.22 kB │ gzip:  0.63 kB
+dist/client/assets/routes-BCj34Ghv.js             2.66 kB │ gzip:  0.91 kB
+dist/client/assets/work.index-DZPFYWBw.js         2.92 kB │ gzip:  0.86 kB
+dist/client/assets/react-dom-D2LPrhg5.js          3.57 kB │ gzip:  1.35 kB
+dist/client/assets/work._slug-BkLQ4jLX.js         4.86 kB │ gzip:  1.29 kB
+dist/client/assets/BrandLockup-CBlZtFps.js        5.38 kB │ gzip:  2.35 kB
+dist/client/assets/preload-helper-BtpFG70C.js     6.00 kB │ gzip:  2.24 kB
+dist/client/assets/react-DFwYz9sd.js              7.51 kB │ gzip:  2.87 kB
+dist/client/assets/elements-CXaRWA6T.js           8.07 kB │ gzip:  2.47 kB
+dist/client/assets/about-CfuDQLTa.js              8.55 kB │ gzip:  3.07 kB
+dist/client/assets/projects-QnsqKedm.js           9.61 kB │ gzip:  4.07 kB
+dist/client/assets/archive-CC7IZV8X.js           10.01 kB │ gzip:  3.40 kB
+dist/client/assets/css-h6Wgx1-o.js               16.34 kB │ gzip:  6.51 kB
+dist/client/assets/jsx-DnzQH4Bu.js               18.51 kB │ gzip:  5.58 kB
+dist/client/assets/link-CN89Fii1.js              21.57 kB │ gzip:  8.28 kB
+dist/client/assets/how._date-m3K3s2l7.js         23.85 kB │ gzip:  7.36 kB
+dist/client/assets/panel-BwABd8bB.js             61.14 kB │ gzip: 21.21 kB
+dist/client/assets/ArchiveMarkdown-D4o8hPvJ.js  156.60 kB │ gzip: 46.49 kB
+dist/client/assets/index-DoQjMzhl.js            281.97 kB │ gzip: 90.34 kB
+
+✓ built in 934ms
+vite v8.2.1 building ssr environment for production...
+[2Ktransforming...🐼 info [hrtime] Extracted in (0.03ms)
+✓ 221 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/server/assets/cx-CzOLGznS.js                            0.25 kB │ gzip:  0.20 kB
+dist/server/assets/start-Da7kMKR6.js                         0.28 kB │ gzip:  0.22 kB
+dist/server/assets/empty-plugin-adapters-CBCFjJEV.js         0.31 kB │ gzip:  0.21 kB
+dist/server/assets/about-B_A0SXAM.js                         0.75 kB │ gzip:  0.48 kB
+dist/server/assets/SourceQuote-CwuSheKn.js                   0.83 kB │ gzip:  0.47 kB
+dist/server/assets/FeaturedProject-_IR6XqWR.js               1.26 kB │ gzip:  0.55 kB
+dist/server/assets/og-C-Txx185.js                            1.65 kB │ gzip:  0.70 kB
+dist/server/assets/experiments-aS-MmhoB.js                   2.29 kB │ gzip:  1.06 kB
+dist/server/assets/_tanstack-start-manifest_v-DbyEOXTo.js    3.33 kB │ gzip:  0.87 kB
+dist/server/assets/routes-CK499x2e.js                        4.40 kB │ gzip:  1.20 kB
+dist/server/assets/work.index-CQYzqXkh.js                    4.94 kB │ gzip:  1.15 kB
+dist/server/assets/ArchiveMarkdown-Dz35IikP.js               5.18 kB │ gzip:  1.70 kB
+dist/server/assets/work._slug-Djw5JfWV.js                    8.43 kB │ gzip:  1.86 kB
+dist/server/assets/projects-CyFO7oKW.js                     10.85 kB │ gzip:  4.21 kB
+dist/server/assets/about-CkAu7GFx.js                        11.60 kB │ gzip:  3.52 kB
+dist/server/assets/elements-DWh2871z.js                     12.79 kB │ gzip:  3.14 kB
+dist/server/assets/archive-Ds_i1cUT.js                      17.53 kB │ gzip:  5.59 kB
+dist/server/assets/css-B4tM38B5.js                          21.44 kB │ gzip:  7.36 kB
+dist/server/assets/panel-CudnpScz.js                        24.58 kB │ gzip:  6.20 kB
+dist/server/assets/how._date-D0Iv7zbn.js                    43.86 kB │ gzip: 12.06 kB
+dist/server/assets/router-CPAAK_lv.js                       63.74 kB │ gzip: 18.55 kB
+dist/server/server.js                                      219.30 kB │ gzip: 49.65 kB
+
+✓ built in 256ms
+[prerender] Prerendering pages...
+[prerender] Concurrency: 14
+[prerender] Crawling: /archive
+[prerender] Crawling: /how/2026-03-12
+[prerender] Crawling: /how/2026-03-14
+[prerender] Crawling: /how/2026-03-15
+[prerender] Crawling: /how/2026-03-16
+[prerender] Crawling: /how/2026-03-17
+[prerender] Crawling: /how/2026-03-18
+[prerender] Crawling: /how/2026-03-19
+[prerender] Crawling: /how/2026-03-20
+[prerender] Crawling: /how/2026-03-21
+[prerender] Crawling: /how/2026-03-22
+[prerender] Crawling: /how/2026-03-24
+[prerender] Crawling: /how/2026-03-25
+[prerender] Crawling: /how/2026-03-26
+[prerender] Crawling: /how/2026-03-27
+[prerender] Crawling: /how/2026-03-29
+[prerender] Crawling: /how/2026-03-31
+[prerender] Crawling: /how/2026-04-01
+[prerender] Crawling: /how/2026-04-02
+[prerender] Crawling: /how/2026-04-03
+[prerender] Crawling: /how/2026-04-04
+[prerender] Crawling: /how/2026-04-05
+[prerender] Crawling: /how/2026-04-06
+[prerender] Crawling: /how/2026-04-07
+[prerender] Crawling: /how/2026-04-10
+[prerender] Crawling: /how/2026-04-11
+[prerender] Crawling: /how/2026-04-13
+[prerender] Crawling: /how/2026-04-14
+[prerender] Crawling: /how/2026-04-15
+[prerender] Crawling: /how/2026-04-17
+[prerender] Crawling: /how/2026-04-18
+[prerender] Crawling: /how/2026-04-19
+[prerender] Crawling: /how/2026-04-20
+[prerender] Crawling: /how/2026-04-26
+[prerender] Crawling: /how/2026-04-27
+[prerender] Crawling: /how/2026-04-28
+[prerender] Crawling: /how/2026-04-29
+[prerender] Crawling: /how/2026-04-30
+[prerender] Crawling: /how/2026-05-01
+[prerender] Crawling: /how/2026-05-02
+[prerender] Crawling: /how/2026-05-03
+[prerender] Crawling: /how/2026-05-04
+[prerender] Crawling: /how/2026-05-05
+[prerender] Crawling: /how/2026-05-06
+[prerender] Crawling: /how/2026-05-07
+[prerender] Crawling: /how/2026-05-08
+[prerender] Crawling: /how/2026-05-09
+[prerender] Crawling: /how/2026-05-10
+[prerender] Crawling: /how/2026-05-11
+[prerender] Crawling: /how/2026-05-12
+[prerender] Crawling: /how/2026-05-13
+[prerender] Crawling: /how/2026-05-14
+[prerender] Crawling: /how/2026-05-15
+[prerender] Crawling: /how/2026-05-16
+[prerender] Crawling: /how/2026-05-17
+[prerender] Crawling: /how/2026-05-18
+[prerender] Crawling: /how/2026-05-19
+[prerender] Crawling: /how/2026-05-20
+[prerender] Crawling: /how/2026-05-21
+[prerender] Crawling: /how/2026-05-22
+[prerender] Crawling: /how/2026-05-23
+[prerender] Crawling: /how/2026-05-24
+[prerender] Crawling: /how/2026-05-25
+[prerender] Crawling: /how/2026-05-27
+[prerender] Crawling: /how/2026-05-28
+[prerender] Crawling: /how/2026-05-29
+[prerender] Crawling: /how/2026-05-30
+[prerender] Crawling: /how/2026-05-31
+[prerender] Crawling: /how/2026-06-01
+[prerender] Crawling: /how/2026-06-02
+[prerender] Crawling: /how/2026-06-03
+[prerender] Crawling: /how/2026-06-04
+[prerender] Crawling: /how/2026-06-05
+[prerender] Crawling: /how/2026-06-06
+[prerender] Crawling: /how/2026-06-07
+[prerender] Crawling: /how/2026-06-08
+[prerender] Crawling: /how/2026-06-09
+[prerender] Crawling: /how/2026-06-10
+[prerender] Crawling: /how/2026-06-11
+[prerender] Crawling: /how/2026-06-12
+[prerender] Crawling: /how/2026-06-13
+[prerender] Crawling: /how/2026-06-14
+[prerender] Crawling: /how/2026-06-15
+[prerender] Crawling: /how/2026-06-16
+[prerender] Crawling: /how/2026-06-17
+[prerender] Crawling: /how/2026-06-18
+[prerender] Crawling: /how/2026-06-19
+[prerender] Crawling: /how/2026-06-20
+[prerender] Crawling: /how/2026-06-21
+[prerender] Crawling: /how/2026-06-22
+[prerender] Crawling: /how/2026-06-23
+[prerender] Crawling: /how/2026-06-24
+[prerender] Crawling: /how/2026-06-25
+[prerender] Crawling: /how/2026-06-26
+[prerender] Crawling: /how/2026-06-27
+[prerender] Crawling: /how/2026-06-28
+[prerender] Crawling: /how/2026-06-29
+[prerender] Crawling: /how/2026-06-30
+[prerender] Crawling: /how/2026-07-01
+[prerender] Crawling: /how/2026-07-02
+[prerender] Crawling: /how/2026-07-03
+[prerender] Crawling: /how/2026-07-04
+[prerender] Crawling: /how/2026-07-05
+[prerender] Crawling: /how/2026-07-06
+[prerender] Crawling: /how/2026-07-07
+[prerender] Crawling: /how/2026-07-08
+[prerender] Crawling: /how/2026-07-09
+[prerender] Crawling: /how/2026-07-10
+[prerender] Crawling: /how/2026-07-12
+[prerender] Crawling: /how/2026-07-13
+[prerender] Crawling: /how/2026-07-14
+[prerender] Crawling: /how/2026-07-16
+[prerender] Crawling: /how/2026-07-17
+[prerender] Crawling: /how/2026-07-18
+[prerender] Crawling: /how/2026-07-19
+[prerender] Crawling: /how/2026-07-20
+[prerender] Crawling: /how/2026-07-21
+[prerender] Crawling: /how/2026-07-22
+[prerender] Crawling: /how/2026-07-23
+[prerender] Crawling: /how/2026-07-24
+[prerender] Crawling: /how/2026-07-26
+[prerender] Crawling: /how/2026-07-27
+[prerender] Crawling: /how/2026-07-29
+[prerender] Crawling: /how/2026-08-30
+[prerender] Crawling: /how/2026-09-02
+[prerender] Crawling: /how/2026-09-03
+[prerender] Crawling: /
+[prerender] Prerendered 127 pages:
+[prerender] - /archive
+[prerender] - /how/2026-03-18
+[prerender] - /how/2026-03-19
+[prerender] - /how/2026-03-14
+[prerender] - /how/2026-03-16
+[prerender] - /how/2026-03-15
+[prerender] - /how/2026-03-17
+[prerender] - /how/2026-03-20
+[prerender] - /how/2026-03-12
+[prerender] - /how/2026-03-22
+[prerender] - /how/2026-03-21
+[prerender] - /how/2026-03-24
+[prerender] - /how/2026-03-25
+[prerender] - /how/2026-03-26
+[prerender] - /how/2026-03-27
+[prerender] - /how/2026-03-29
+[prerender] - /how/2026-03-31
+[prerender] - /how/2026-04-01
+[prerender] - /how/2026-04-02
+[prerender] - /how/2026-04-03
+[prerender] - /how/2026-04-05
+[prerender] - /how/2026-04-04
+[prerender] - /how/2026-04-06
+[prerender] - /how/2026-04-07
+[prerender] - /how/2026-04-10
+[prerender] - /how/2026-04-11
+[prerender] - /how/2026-04-13
+[prerender] - /how/2026-04-14
+[prerender] - /how/2026-04-17
+[prerender] - /how/2026-04-15
+[prerender] - /how/2026-04-18
+[prerender] - /how/2026-04-19
+[prerender] - /how/2026-04-26
+[prerender] - /how/2026-04-27
+[prerender] - /how/2026-04-20
+[prerender] - /how/2026-04-28
+[prerender] - /how/2026-04-29
+[prerender] - /how/2026-04-30
+[prerender] - /how/2026-05-01
+[prerender] - /how/2026-05-02
+[prerender] - /how/2026-05-03
+[prerender] - /how/2026-05-04
+[prerender] - /how/2026-05-05
+[prerender] - /how/2026-05-07
+[prerender] - /how/2026-05-06
+[prerender] - /how/2026-05-08
+[prerender] - /how/2026-05-09
+[prerender] - /how/2026-05-10
+[prerender] - /how/2026-05-11
+[prerender] - /how/2026-05-12
+[prerender] - /how/2026-05-13
+[prerender] - /how/2026-05-14
+[prerender] - /how/2026-05-15
+[prerender] - /how/2026-05-16
+[prerender] - /how/2026-05-17
+[prerender] - /how/2026-05-18
+[prerender] - /how/2026-05-19
+[prerender] - /how/2026-05-20
+[prerender] - /how/2026-05-21
+[prerender] - /how/2026-05-23
+[prerender] - /how/2026-05-22
+[prerender] - /how/2026-05-24
+[prerender] - /how/2026-05-25
+[prerender] - /how/2026-05-27
+[prerender] - /how/2026-05-28
+[prerender] - /how/2026-05-29
+[prerender] - /how/2026-05-30
+[prerender] - /how/2026-05-31
+[prerender] - /how/2026-06-01
+[prerender] - /how/2026-06-04
+[prerender] - /how/2026-06-03
+[prerender] - /how/2026-06-02
+[prerender] - /how/2026-06-06
+[prerender] - /how/2026-06-05
+[prerender] - /how/2026-06-07
+[prerender] - /how/2026-06-08
+[prerender] - /how/2026-06-09
+[prerender] - /how/2026-06-10
+[prerender] - /how/2026-06-11
+[prerender] - /how/2026-06-12
+[prerender] - /how/2026-06-13
+[prerender] - /how/2026-06-14
+[prerender] - /how/2026-06-15
+[prerender] - /how/2026-06-17
+[prerender] - /how/2026-06-16
+[prerender] - /how/2026-06-19
+[prerender] - /how/2026-06-18
+[prerender] - /how/2026-06-20
+[prerender] - /how/2026-06-21
+[prerender] - /how/2026-06-22
+[prerender] - /how/2026-06-23
+[prerender] - /how/2026-06-24
+[prerender] - /how/2026-06-25
+[prerender] - /how/2026-06-26
+[prerender] - /how/2026-06-27
+[prerender] - /how/2026-06-28
+[prerender] - /how/2026-06-29
+[prerender] - /how/2026-07-01
+[prerender] - /how/2026-06-30
+[prerender] - /how/2026-07-02
+[prerender] - /how/2026-07-03
+[prerender] - /how/2026-07-04
+[prerender] - /how/2026-07-05
+[prerender] - /how/2026-07-06
+[prerender] - /how/2026-07-07
+[prerender] - /how/2026-07-08
+[prerender] - /how/2026-07-09
+[prerender] - /how/2026-07-10
+[prerender] - /how/2026-07-12
+[prerender] - /how/2026-07-13
+[prerender] - /how/2026-07-14
+[prerender] - /how/2026-07-17
+[prerender] - /how/2026-07-16
+[prerender] - /how/2026-07-18
+[prerender] - /how/2026-07-19
+[prerender] - /how/2026-07-20
+[prerender] - /how/2026-07-21
+[prerender] - /how/2026-07-22
+[prerender] - /how/2026-07-23
+[prerender] - /how/2026-07-24
+[prerender] - /how/2026-07-26
+[prerender] - /
+[prerender] - /how/2026-07-29
+[prerender] - /how/2026-07-27
+[prerender] - /how/2026-08-30
+[prerender] - /how/2026-09-02
+[prerender] - /how/2026-09-03
+  _shell.html: 3 hashes
+  archive/index.html: 3 hashes
+  how/2026-03-12/index.html: 3 hashes
+  how/2026-03-14/index.html: 3 hashes
+  how/2026-03-15/index.html: 3 hashes
+  how/2026-03-16/index.html: 3 hashes
+  how/2026-03-17/index.html: 3 hashes
+  how/2026-03-18/index.html: 3 hashes
+  how/2026-03-19/index.html: 3 hashes
+  how/2026-03-20/index.html: 3 hashes
+  how/2026-03-21/index.html: 3 hashes
+  how/2026-03-22/index.html: 3 hashes
+  how/2026-03-24/index.html: 3 hashes
+  how/2026-03-25/index.html: 3 hashes
+  how/2026-03-26/index.html: 3 hashes
+  how/2026-03-27/index.html: 3 hashes
+  how/2026-03-29/index.html: 3 hashes
+  how/2026-03-31/index.html: 3 hashes
+  how/2026-04-01/index.html: 3 hashes
+  how/2026-04-02/index.html: 3 hashes
+  how/2026-04-03/index.html: 3 hashes
+  how/2026-04-04/index.html: 3 hashes
+  how/2026-04-05/index.html: 3 hashes
+  how/2026-04-06/index.html: 3 hashes
+  how/2026-04-07/index.html: 3 hashes
+  how/2026-04-10/index.html: 3 hashes
+  how/2026-04-11/index.html: 3 hashes
+  how/2026-04-13/index.html: 3 hashes
+  how/2026-04-14/index.html: 3 hashes
+  how/2026-04-15/index.html: 3 hashes
+  how/2026-04-17/index.html: 3 hashes
+  how/2026-04-18/index.html: 3 hashes
+  how/2026-04-19/index.html: 3 hashes
+  how/2026-04-20/index.html: 3 hashes
+  how/2026-04-26/index.html: 3 hashes
+  how/2026-04-27/index.html: 3 hashes
+  how/2026-04-28/index.html: 3 hashes
+  how/2026-04-29/index.html: 3 hashes
+  how/2026-04-30/index.html: 3 hashes
+  how/2026-05-01/index.html: 3 hashes
+  how/2026-05-02/index.html: 3 hashes
+  how/2026-05-03/index.html: 3 hashes
+  how/2026-05-04/index.html: 3 hashes
+  how/2026-05-05/index.html: 3 hashes
+  how/2026-05-06/index.html: 3 hashes
+  how/2026-05-07/index.html: 3 hashes
+  how/2026-05-08/index.html: 3 hashes
+  how/2026-05-09/index.html: 3 hashes
+  how/2026-05-10/index.html: 3 hashes
+  how/2026-05-11/index.html: 3 hashes
+  how/2026-05-12/index.html: 3 hashes
+  how/2026-05-13/index.html: 3 hashes
+  how/2026-05-14/index.html: 3 hashes
+  how/2026-05-15/index.html: 3 hashes
+  how/2026-05-16/index.html: 3 hashes
+  how/2026-05-17/index.html: 3 hashes
+  how/2026-05-18/index.html: 3 hashes
+  how/2026-05-19/index.html: 3 hashes
+  how/2026-05-20/index.html: 3 hashes
+  how/2026-05-21/index.html: 3 hashes
+  how/2026-05-22/index.html: 3 hashes
+  how/2026-05-23/index.html: 3 hashes
+  how/2026-05-24/index.html: 3 hashes
+  how/2026-05-25/index.html: 3 hashes
+  how/2026-05-27/index.html: 3 hashes
+  how/2026-05-28/index.html: 3 hashes
+  how/2026-05-29/index.html: 3 hashes
+  how/2026-05-30/index.html: 3 hashes
+  how/2026-05-31/index.html: 3 hashes
+  how/2026-06-01/index.html: 3 hashes
+  how/2026-06-02/index.html: 3 hashes
+  how/2026-06-03/index.html: 3 hashes
+  how/2026-06-04/index.html: 3 hashes
+  how/2026-06-05/index.html: 3 hashes
+  how/2026-06-06/index.html: 3 hashes
+  how/2026-06-07/index.html: 3 hashes
+  how/2026-06-08/index.html: 3 hashes
+  how/2026-06-09/index.html: 3 hashes
+  how/2026-06-10/index.html: 3 hashes
+  how/2026-06-11/index.html: 3 hashes
+  how/2026-06-12/index.html: 3 hashes
+  how/2026-06-13/index.html: 3 hashes
+  how/2026-06-14/index.html: 3 hashes
+  how/2026-06-15/index.html: 3 hashes
+  how/2026-06-16/index.html: 3 hashes
+  how/2026-06-17/index.html: 3 hashes
+  how/2026-06-18/index.html: 3 hashes
+  how/2026-06-19/index.html: 3 hashes
+  how/2026-06-20/index.html: 3 hashes
+  how/2026-06-21/index.html: 3 hashes
+  how/2026-06-22/index.html: 3 hashes
+  how/2026-06-23/index.html: 3 hashes
+  how/2026-06-24/index.html: 3 hashes
+  how/2026-06-25/index.html: 3 hashes
+  how/2026-06-26/index.html: 3 hashes
+  how/2026-06-27/index.html: 3 hashes
+  how/2026-06-28/index.html: 3 hashes
+  how/2026-06-29/index.html: 3 hashes
+  how/2026-06-30/index.html: 3 hashes
+  how/2026-07-01/index.html: 3 hashes
+  how/2026-07-02/index.html: 3 hashes
+  how/2026-07-03/index.html: 3 hashes
+  how/2026-07-04/index.html: 3 hashes
+  how/2026-07-05/index.html: 3 hashes
+  how/2026-07-06/index.html: 3 hashes
+  how/2026-07-07/index.html: 3 hashes
+  how/2026-07-08/index.html: 3 hashes
+  how/2026-07-09/index.html: 3 hashes
+  how/2026-07-10/index.html: 3 hashes
+  how/2026-07-12/index.html: 3 hashes
+  how/2026-07-13/index.html: 3 hashes
+  how/2026-07-14/index.html: 3 hashes
+  how/2026-07-16/index.html: 3 hashes
+  how/2026-07-17/index.html: 3 hashes
+  how/2026-07-18/index.html: 3 hashes
+  how/2026-07-19/index.html: 3 hashes
+  how/2026-07-20/index.html: 3 hashes
+  how/2026-07-21/index.html: 3 hashes
+  how/2026-07-22/index.html: 3 hashes
+  how/2026-07-23/index.html: 3 hashes
+  how/2026-07-24/index.html: 3 hashes
+  how/2026-07-26/index.html: 3 hashes
+  how/2026-07-27/index.html: 3 hashes
+  how/2026-07-29/index.html: 3 hashes
+  how/2026-08-30/index.html: 3 hashes
+  how/2026-09-02/index.html: 3 hashes
+  how/2026-09-03/index.html: 3 hashes
+[pin-inline-scripts] pinned 127 file(s) in 35ms
