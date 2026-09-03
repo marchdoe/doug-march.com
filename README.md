@@ -33,9 +33,12 @@ The pipeline, locally:
 pnpm pipeline:collect # write signals/today.yml from the 19 providers
 pnpm pipeline:dry     # full run, no commit
 pnpm pipeline         # full run
+pnpm pipeline:canary  # a $0 dry run in a disposable worktree, evidence kept
 ```
 
 Without `ANTHROPIC_API_KEY` the agents run through the Claude CLI on a Max plan, capped at Sonnet. With a key they run through the API at the production tier (Opus for the Art Director and Mockup Designer). `PIPELINE_TIER=dev|prod` overrides that. See `scripts/utils/models.js`.
+
+`pnpm pipeline:canary` worktrees HEAD, installs, and runs the full pipeline there with `MOCK_MODE=false DRY_RUN=true`, so it reproduces exactly what a paid run would do without spending anything, and files the log, trace, cost and any build errors under `docs/evidence/canary/<date>-<time>/`. Run it before merging a change to `scripts/prompts/**`, `scripts/design-agents.js` or `scripts/utils/build-validator.js`, and weekly otherwise — it's the only check that catches what only shows up against the real Claude CLI.
 
 ## What is where
 
