@@ -433,6 +433,14 @@ export const mockFactories = {
  * and two archived days. The directories the swarm writes into exist and are
  * empty; `app/components/Layout.tsx` in particular is NOT pre-created, since
  * the Layout gate is an `existsSync` on disk.
+ *
+ * Also carries the `.d.ts` files `readPatternProps` reads to render the
+ * `{{PATTERN_PROPS}}` block: every `styled-system/patterns/*.d.ts` and
+ * `styled-system/jsx/index.d.ts`, copied file-by-file rather than as a
+ * recursive directory copy — `styled-system/` also holds the compiled `.mjs`
+ * runtime the swarm never reads, and this keeps the seed small (#432). Copied
+ * from `REPO`'s own generated `styled-system/`, so it must exist there first
+ * (`pnpm panda codegen` — gitignored, not committed).
  * @returns {Promise<{ root: string, signals: object }>}
  */
 export async function seedRoot() {
@@ -447,6 +455,15 @@ export async function seedRoot() {
   for (const d of ['app/components', 'app/routes', 'app/stubs', 'public/og', 'references']) {
     mkdirSync(path.join(root, d), { recursive: true })
   }
+
+  const patternsDir = path.join(REPO, 'styled-system', 'patterns')
+  mkdirSync(path.join(root, 'styled-system', 'patterns'), { recursive: true })
+  for (const f of readdirSync(patternsDir)) {
+    if (f.endsWith('.d.ts')) copy(path.join('styled-system', 'patterns', f))
+  }
+  mkdirSync(path.join(root, 'styled-system', 'jsx'), { recursive: true })
+  copy(path.join('styled-system', 'jsx', 'index.d.ts'))
+
   cpSync(path.join(FIXTURES, 'swarm-archive'), path.join(root, 'archive'), { recursive: true })
   const signalsYaml = readFileSync(path.join(FIXTURES, 'signals', 'today.yml'), 'utf8')
   writeUnder(root, 'signals/today.yml', signalsYaml)

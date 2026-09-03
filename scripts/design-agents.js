@@ -55,6 +55,7 @@ import {
   formatSemanticContractForArtDirector,
   formatSemanticContractForPrompt,
 } from './utils/semantic-contract.js'
+import { formatPatternPropsForPrompt, readPatternProps } from './utils/pattern-props.js'
 import { parseDelimiterResponse } from './utils/delimiter-parser.js'
 import { parseCriticVerdict } from './utils/critic-verdict.js'
 import { modelFor, isDevModelTier } from './utils/models.js'
@@ -686,10 +687,17 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         'design-system-reference.md is missing its {{SEMANTIC_COLOR_CONTRACT}} placeholder'
       )
     }
-    const designSystemReference = designSystemRef.replace(
-      '{{SEMANTIC_COLOR_CONTRACT}}',
-      formatSemanticContractForPrompt()
-    )
+
+    // The pattern-prop list is generated from styled-system/patterns/*.d.ts at
+    // assembly time, so the engineer prompt cannot list a prop a pattern doesn't
+    // have — that's how `wrap` ended up on HStack, `align` on VStack, and `href`
+    // on `<Box as="a">` in the run that failed issue #432.
+    if (!designSystemRef.includes('{{PATTERN_PROPS}}')) {
+      throw new Error('design-system-reference.md is missing its {{PATTERN_PROPS}} placeholder')
+    }
+    const designSystemReference = designSystemRef
+      .replace('{{SEMANTIC_COLOR_CONTRACT}}', formatSemanticContractForPrompt())
+      .replace('{{PATTERN_PROPS}}', formatPatternPropsForPrompt(readPatternProps(root)))
 
     // Backup all mutable files
     console.log('\n[backup] Backing up mutable files...')

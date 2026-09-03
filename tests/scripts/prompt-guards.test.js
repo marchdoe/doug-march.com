@@ -3,13 +3,10 @@ import { readFileSync, readdirSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const promptDir = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '..',
-  '..',
-  'scripts',
-  'prompts'
-)
+import { formatPatternPropsForPrompt, readPatternProps } from '../../scripts/utils/pattern-props.js'
+
+const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
+const promptDir = path.join(repoRoot, 'scripts', 'prompts')
 const read = (f) => readFileSync(path.join(promptDir, f), 'utf8')
 
 describe('brand-contract.md load-bearing directives', () => {
@@ -104,6 +101,38 @@ describe('screenshot-critic.md load-bearing directives', () => {
     expect(c).toContain('BAR:')
     expect(c).toMatch(/above\|at\|below/)
     expect(c).toMatch(/Skip this section entirely if no reference image/i)
+  })
+})
+
+describe('design-system-reference.md pattern-prop block', () => {
+  // #432: the React Engineer wrote `wrap` on `HStack`, `align` on `VStack`,
+  // and `href` on `<Box as="a">` — none of which the generated pattern types
+  // allow. The hand-written line the prompt used to carry ("Stack/VStack/
+  // HStack: gap, align, justify") is exactly what told it `align` was fair
+  // game on HStack. It's a placeholder now, rendered from the real types at
+  // load time (scripts/design-agents.js), so the prompt can't drift from
+  // what actually compiles the way that line did.
+  it('carries the {{PATTERN_PROPS}} placeholder rather than a hand-written prop list', () => {
+    const source = read('design-system-reference.md')
+    expect(source).toContain('{{PATTERN_PROPS}}')
+  })
+
+  it('no longer hand-lists Stack/VStack/HStack props next to each other', () => {
+    const source = read('design-system-reference.md')
+    expect(source).not.toMatch(/Stack\/VStack\/HStack/)
+  })
+
+  it('the rendered block names HStack with gap and justify, and attributes align to neither HStack nor VStack', () => {
+    const rendered = formatPatternPropsForPrompt(readPatternProps(repoRoot))
+    const lines = rendered.split('\n')
+    const hstackLine = lines.find((l) => l.startsWith('- `HStack`'))
+    const vstackLine = lines.find((l) => l.startsWith('- `VStack`'))
+    expect(hstackLine).toBeDefined()
+    expect(vstackLine).toBeDefined()
+    expect(hstackLine).toContain('`gap`')
+    expect(hstackLine).toContain('`justify`')
+    expect(hstackLine).not.toContain('align')
+    expect(vstackLine).not.toContain('align')
   })
 })
 
