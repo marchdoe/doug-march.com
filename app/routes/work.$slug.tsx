@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { Nav } from '../components/Nav'
+import { Nav } from '../components/generated/Nav'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })

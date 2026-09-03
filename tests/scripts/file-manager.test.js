@@ -1,5 +1,6 @@
 import { describe, beforeEach, it, expect } from 'vitest'
 import {
+  ENGINEER_COMPONENT_FILES,
   ROOT,
   backup,
   cleanupOrphans,
@@ -7,14 +8,62 @@ import {
   writeFiles,
   validateWritePath,
 } from '../../scripts/utils/file-manager.js'
+import { ENGINEER_FILES } from '../../scripts/utils/site-context.js'
 import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { tempDir, tempRepoRoot, writeUnder } from '../helpers/tmp.js'
 
 describe('validateWritePath', () => {
   describe('allowlist — permits legitimate writes', () => {
-    it('allows app/components/ paths', () => {
-      expect(validateWritePath('app/components/Foo.tsx')).toBe('app/components/Foo.tsx')
+    it('allows app/components/generated/ paths', () => {
+      expect(validateWritePath('app/components/generated/Foo.tsx')).toBe(
+        'app/components/generated/Foo.tsx'
+      )
+      expect(validateWritePath('app/components/generated/sections/Hero.tsx')).toBe(
+        'app/components/generated/sections/Hero.tsx'
+      )
+    })
+
+    it('allows the two shell components the engineer must write, by exact path', () => {
+      expect(validateWritePath('app/components/Layout.tsx')).toBe('app/components/Layout.tsx')
+      expect(validateWritePath('app/components/Sidebar.tsx')).toBe('app/components/Sidebar.tsx')
+      expect(ENGINEER_COMPONENT_FILES).toEqual([
+        'app/components/Layout.tsx',
+        'app/components/Sidebar.tsx',
+      ])
+    })
+
+    it('every engineer-owned file on MUTABLE_FILES is writable', () => {
+      // file-manager.js cannot import site-context.js (site-context imports
+      // ROOT from here), so ENGINEER_COMPONENT_FILES is a hand-kept list.
+      // This is what stops it drifting from the mutable list (#448).
+      for (const f of ENGINEER_FILES) {
+        expect(validateWritePath(f), f).toBe(f)
+      }
+    })
+
+    it('rejects any other path under app/components/ (#448)', () => {
+      // The hand-written components: /elements renders these three, one run
+      // overwrote FeaturedProject.tsx, and nothing the engineer writes may
+      // reach them again.
+      for (const f of [
+        'app/components/FeaturedProject.tsx',
+        'app/components/SectionHead.tsx',
+        'app/components/ProjectRow.tsx',
+        'app/components/MobileFooter.tsx',
+        'app/components/ArchiveMarkdown.tsx',
+        'app/components/RunStages.tsx',
+        'app/components/panel/api.ts',
+        'app/components/Foo.tsx',
+        'app/components/BrandLockup.tsx',
+      ]) {
+        expect(() => validateWritePath(f), f).toThrow(/allowlist/)
+      }
+      // A traversal out of generated/ back into components/ is still a
+      // components/ write once normalized.
+      expect(() => validateWritePath('app/components/generated/../SectionHead.tsx')).toThrow(
+        /allowlist/
+      )
     })
 
     it('allows app/routes/ paths', () => {
@@ -43,11 +92,15 @@ describe('validateWritePath', () => {
     })
 
     it('normalizes ./ prefix', () => {
-      expect(validateWritePath('./app/components/Foo.tsx')).toBe('app/components/Foo.tsx')
+      expect(validateWritePath('./app/components/generated/Foo.tsx')).toBe(
+        'app/components/generated/Foo.tsx'
+      )
     })
 
     it('normalizes duplicate slashes', () => {
-      expect(validateWritePath('app//components//Foo.tsx')).toBe('app/components/Foo.tsx')
+      expect(validateWritePath('app//components//generated//Foo.tsx')).toBe(
+        'app/components/generated/Foo.tsx'
+      )
     })
   })
 
@@ -155,7 +208,7 @@ describe('file-manager writeFiles', () => {
   // A temp root. This wrote into the repo's real app/components/ while
   // build-validator-scanner.test.js was doing the same thing in a parallel
   // worker, and both were scanned by whatever ran validateGenerated.
-  const testFile = 'app/components/__test_write.tsx'
+  const testFile = 'app/components/generated/__test_write.tsx'
   let ROOT
   let testAbsPath
 
@@ -173,12 +226,12 @@ describe('file-manager writeFiles', () => {
 
   it('normalizes paths on write', async () => {
     const written = await writeFiles(
-      [{ path: './app/components/__test_write.tsx', content: 'x' }],
+      [{ path: './app/components/generated/__test_write.tsx', content: 'x' }],
       {
         root: ROOT,
       }
     )
-    expect(written).toEqual(['app/components/__test_write.tsx'])
+    expect(written).toEqual(['app/components/generated/__test_write.tsx'])
   })
 
   it('throws on disallowed paths', async () => {
@@ -199,9 +252,9 @@ describe('backup, restore and cleanupOrphans take a root', () => {
   // module constant, so a test that exercised a rollback would have written
   // into the real checkout while the paths it was asked about sat in the
   // temp root.
-  const existing = 'app/components/__root_opt_existing.tsx'
-  const missing = 'app/components/__root_opt_missing.tsx'
-  const orphan = 'app/components/__root_opt_orphan.tsx'
+  const existing = 'app/components/generated/__root_opt_existing.tsx'
+  const missing = 'app/components/generated/__root_opt_missing.tsx'
+  const orphan = 'app/components/generated/__root_opt_orphan.tsx'
   let root
 
   beforeEach(async () => {

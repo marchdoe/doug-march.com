@@ -26,6 +26,7 @@ import { REQUIRED_FILES } from './engineer-output-check.js'
 import {
   ALLOWED_EXACT,
   ALLOWED_WRITE_PREFIXES,
+  ENGINEER_COMPONENT_FILES,
   FORBIDDEN_EXACT,
   FORBIDDEN_PREFIXES,
 } from './file-manager.js'
@@ -101,13 +102,15 @@ function requiredFilesRule() {
  * @returns {GateRule}
  */
 function writeLocationsRule() {
-  const exact = [...ALLOWED_EXACT].sort()
+  const engineerExact = [...ENGINEER_COMPONENT_FILES].sort()
+  const presetExact = [...ALLOWED_EXACT].filter((p) => !ENGINEER_COMPONENT_FILES.includes(p)).sort()
   const forbiddenExact = [...FORBIDDEN_EXACT].sort()
   return {
     gate: 'write-locations',
     rule:
       `A file may be written only under ${ALLOWED_WRITE_PREFIXES.join(', ')}, or at the exact path ` +
-      `${exact.join(' or ')} (both owned by the Art Director and the orchestrator — never write them yourself). ` +
+      `${engineerExact.join(' or ')}; every component you invent goes under app/components/generated/, and any other path under app/components/ is rejected. ` +
+      `${presetExact.join(' and ')} are the Art Director's and the orchestrator's — never write them yourself. ` +
       `${forbiddenExact.join(', ')} and anything under ${FORBIDDEN_PREFIXES.join(', ')} are rejected outright, even though the prefix would otherwise match.`,
     source: 'file-manager.js validateWritePath allowlist',
   }

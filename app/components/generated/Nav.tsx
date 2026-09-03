@@ -1,5 +1,5 @@
-import { css } from '../../styled-system/css'
-import { identity } from '../content/about'
+import { css } from '../../../styled-system/css'
+import { identity } from '../../content/about'
 
 export function Nav({ tone = 'light' }: { tone?: 'light' | 'dark' }) {
   const linkColor = tone === 'dark' ? 'fieldInkMuted' : 'textMuted'

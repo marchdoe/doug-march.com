@@ -6,7 +6,20 @@
   // the same pages under public/archive/. Together they are 2,693 of the 3,042
   // files fallow would otherwise walk, and every one of them is bundler output
   // — dead code in a snapshot of 2026-04-14 is not a finding anyone can act on.
-  "ignorePatterns": ["archive/**", "public/**", ".superpowers/**", "app/routeTree.gen.ts"],
+  //
+  // app/components/generated/ holds the components the React Engineer invents
+  // for one night's design (#448). The next night's routes may import none of
+  // them, and `export X — nothing imports it` on a file the engineer did not
+  // write and cannot fix from a repair brief failed the static checks. The
+  // nightly sweeps what nothing imports (scripts/utils/generated-sweep.js);
+  // tsc, biome and the build still run on the directory. Fallow does not.
+  "ignorePatterns": [
+    "archive/**",
+    "public/**",
+    ".superpowers/**",
+    "app/routeTree.gen.ts",
+    "app/components/generated/**"
+  ],
 
   // Roots nothing imports but everything runs: the nightly's scripts, the
   // signal collectors it discovers by directory listing, the chassis catalogue

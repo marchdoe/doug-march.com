@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { css } from '../../styled-system/css'
 import { Sidebar } from './Sidebar'
-import { Colophon } from './Colophon'
+import { Colophon } from './generated/Colophon'
 
 export function Layout({ children }: { children: ReactNode }) {
   return (

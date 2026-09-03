@@ -1,5 +1,5 @@
 /**
- * #432: a local run's rollback deleted app/components/Ledger.tsx — a tracked
+ * #432: a local run's rollback deleted app/components/generated/Ledger.tsx — a tracked
  * file the engineer overwrote that was never on MUTABLE_FILES, so
  * originalBackup had no entry for it and cleanupOrphans treated it as a
  * brand-new orphan. writeFiles(..., { backup }) fixes this by capturing any
@@ -24,8 +24,8 @@ import { tempRepoRoot, writeUnder } from '../helpers/tmp.js'
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 
 describe('swarm-shaped rollback: untracked file overwritten mid-run', () => {
-  const canonical = 'app/components/ProjectRow.tsx' // stands in for a MUTABLE_FILES entry
-  const untracked = 'app/components/Ledger.tsx' // tracked on disk, not on MUTABLE_FILES
+  const canonical = 'app/components/Layout.tsx' // stands in for a MUTABLE_FILES entry
+  const untracked = 'app/components/generated/Ledger.tsx' // tracked on disk, not on MUTABLE_FILES
   let root
 
   beforeEach(async () => {
@@ -61,7 +61,7 @@ describe('swarm-shaped rollback: untracked file overwritten mid-run', () => {
   })
 
   it('still cleans up a genuinely new path the engineer invented', async () => {
-    const invented = 'app/components/BrandNew.tsx'
+    const invented = 'app/components/generated/BrandNew.tsx'
     const originalBackup = await backup([canonical], { root })
 
     const written = await writeFiles([{ path: invented, content: 'new' }], {

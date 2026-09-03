@@ -1,4 +1,4 @@
-import { css } from '../../styled-system/css'
+import { css } from '../../../styled-system/css'
 
 // Signal stack strings are the day's flavor content, matching the approved
 // mockup's colophon exactly — not bound from content/* (there is no signal

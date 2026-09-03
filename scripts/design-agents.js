@@ -77,6 +77,7 @@ import {
   mergeEngineerPatch,
   deleteFiles,
 } from './utils/engineer-patch.js'
+import { sweepGenerated } from './utils/generated-sweep.js'
 import { countArchivedDesigns } from './utils/archive-count.js'
 export { parseDelimiterResponse }
 
@@ -1722,6 +1723,33 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       }
     }
 
+    /**
+     * Delete every file under app/components/generated/ that nothing on disk
+     * imports, each recorded into the run's backup first so a rollback puts
+     * it back (#448). Runs after every engineer write and before the build,
+     * so a component from a previous night that today's files dropped never
+     * reaches tsc or fallow. The required files live outside the directory
+     * and are never candidates.
+     * @param {3|5} phase
+     * @param {string} after the write this sweep follows, for the trace
+     */
+    async function sweepAndTrace(phase, after) {
+      const t0Sweep = Date.now()
+      const { kept, removed } = await sweepGenerated({ root, backup: originalBackup })
+      console.log(
+        `  [generated-sweep] kept ${kept.length}, removed ${removed.length}${
+          removed.length ? `: ${removed.join(', ')}` : ''
+        }`
+      )
+      trace.addStep({
+        name: 'generated-sweep',
+        phase,
+        input: { after },
+        output: { kept, removed },
+        durationMs: Date.now() - t0Sweep,
+      })
+    }
+
     // Write all files. Orchestrator-owned paths are dropped first — the
     // engineer is told not to emit them and nothing used to check.
     for (const p of await writeEngineerFiles(engineerResult, 'React Engineer', {
@@ -1752,6 +1780,8 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       await restore(originalBackup, { root })
       throw new Error('React Engineer did not produce Layout.tsx — site cannot function without it')
     }
+
+    await sweepAndTrace(3, 'react-engineer')
 
     // -----------------------------------------------------------------------
     // Phase 4: Build validation
@@ -1917,6 +1947,9 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       console.log(
         `  ${label}: ${summary.written} written, ${summary.deleted} deleted, ${patch.files.length} on disk`
       )
+      // The merged set may have stopped importing a generated file; the
+      // build that follows must not see it.
+      await sweepAndTrace(5, label)
       return { problem: null, ...summary }
     }
 
