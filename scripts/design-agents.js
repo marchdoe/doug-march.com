@@ -1443,19 +1443,60 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       const t0Mockup = Date.now()
       try {
         mockup = await runMockupDesigner({ ...mockupCtxBase, revisionFeedback })
-      } catch (err) {
-        if (round > 0 && mockup) {
-          // A revision round crashed but a previous round produced a complete
-          // mockup — don't throw away a viable design over a failed polish
-          // pass. mockup/mockupScreenshot still hold the previous round.
-          console.warn(
-            `  Mockup Designer revision failed (round ${round}, non-blocking — proceeding with previous mockup): ${err.message}`
-          )
-          break
+      } catch (firstErr) {
+        if (firstErr.transport) {
+          // A dead model answers the retry the same way it answered the
+          // first call (see the Art Director's identical guard, #432) — skip
+          // straight to the same fallback/throw a crash always got.
+          if (round > 0 && mockup) {
+            console.warn(
+              `  Mockup Designer revision failed (round ${round}, non-blocking — proceeding with previous mockup): ${firstErr.message}`
+            )
+            break
+          }
+          console.error(`  Mockup Designer failed (round ${round}): ${firstErr.message}`)
+          await restore(originalBackup, { root })
+          throw new Error(`Mockup Designer failed: ${firstErr.message}`)
         }
-        console.error(`  Mockup Designer failed (round ${round}): ${err.message}`)
-        await restore(originalBackup, { root })
-        throw new Error(`Mockup Designer failed: ${err.message}`)
+        console.warn(
+          `  Mockup Designer failed (${firstErr.message}) — retrying once with the reason`
+        )
+        noteRetry()
+        trace.addStep({
+          name: 'mockup-designer-rejected',
+          phase: 2,
+          input: { round },
+          output: { error: firstErr.message },
+          durationMs: Date.now() - t0Mockup,
+        })
+        try {
+          mockup = await runMockupDesigner({
+            ...mockupCtxBase,
+            revisionFeedback,
+            retryContext: `## Previous attempt was rejected\n\nYour previous mockup failed validation: ${firstErr.message}\nReturn a JS-free mockup.html and every required block this time.`,
+          })
+        } catch (err) {
+          if (round > 0 && mockup) {
+            // A revision round crashed (twice) but a previous round produced
+            // a complete mockup — don't throw away a viable design over a
+            // failed polish pass. mockup/mockupScreenshot still hold the
+            // previous round.
+            console.warn(
+              `  Mockup Designer revision failed (round ${round}, non-blocking — proceeding with previous mockup): ${err.message}`
+            )
+            break
+          }
+          console.error(`  Mockup Designer failed after retry (round ${round}): ${err.message}`)
+          trace.addStep({
+            name: 'mockup-designer-rejected',
+            phase: 2,
+            input: { round },
+            output: { error: err.message },
+            durationMs: Date.now() - t0Mockup,
+          })
+          await restore(originalBackup, { root })
+          throw new Error(`Mockup Designer failed after retry: ${err.message}`)
+        }
       }
       await writeFile(mockupPath, mockup.mockupHtml, 'utf8')
 
