@@ -119,6 +119,49 @@ describe('callVisionAgent', () => {
     expect(cliMock).toHaveBeenCalledTimes(1)
   })
 
+  // #432: an out-of-credits key returns a clean SDK response with no text
+  // content at all — not an exception. That must be treated as a transport
+  // failure and fall through to the CLI, not resolve as an empty verdict.
+  it('falls back to the CLI when the SDK returns no text', async () => {
+    vi.stubEnv('ANTHROPIC_API_KEY', 'sk-test')
+    sdkMock.mockResolvedValue('')
+    cliMock.mockResolvedValue('cli fallback')
+
+    const channels = []
+    const result = await callVisionAgent({
+      agentName: 'mockup-critic',
+      systemPrompt: 'sys',
+      contentBlocks: BLOCKS,
+      onChannel: (c) => channels.push(c),
+    })
+
+    expect(result).toBe('cli fallback')
+    expect(sdkMock).toHaveBeenCalledTimes(1)
+    expect(cliMock).toHaveBeenCalledTimes(1)
+    expect(channels).toEqual(['cli-text-fallback'])
+    // The CLI fallback call is told it IS the fallback, so a transport error
+    // out of that call names 'cli-text-fallback' rather than the generic 'cli'.
+    const [, , , opts] = cliMock.mock.calls[0]
+    expect(opts.channel).toBe('cli-text-fallback')
+  })
+
+  it('raises the CLI fallback as a transport error too when it also comes back empty', async () => {
+    vi.stubEnv('ANTHROPIC_API_KEY', 'sk-test')
+    const { ModelTransportError } = await import('../../scripts/utils/model-transport-error.js')
+    sdkMock.mockResolvedValue('   ')
+    cliMock.mockRejectedValue(
+      new ModelTransportError({
+        agent: 'mockup-critic',
+        channel: 'cli-text-fallback',
+        emptyReply: true,
+      })
+    )
+
+    await expect(
+      callVisionAgent({ agentName: 'mockup-critic', systemPrompt: 'sys', contentBlocks: BLOCKS })
+    ).rejects.toBeInstanceOf(ModelTransportError)
+  })
+
   it('passes timeouts through to both paths', async () => {
     vi.stubEnv('ANTHROPIC_API_KEY', 'sk-test')
     sdkMock.mockResolvedValue('ok')

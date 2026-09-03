@@ -26,6 +26,7 @@ import {
 import { callClaudeCLI } from './claude-cli.js'
 import { callClaudeSDK, hasApiKey } from './claude-sdk.js'
 import { modelFor } from './models.js'
+import { ModelTransportError } from './model-transport-error.js'
 
 /** Prepended to the CLI fallback prompt so the critic never invents pixels. */
 export const NO_IMAGE_NOTICE =
@@ -85,12 +86,27 @@ export async function callVisionAgent(args) {
     return response
   }
 
+  // Which channel a ModelTransportError from the CLI call below should name.
+  // 'cli' unless the SDK path was actually tried and came back dead — then
+  // this text call IS the fallback, and the error should say so.
+  let cliChannel = 'cli'
+
   if (hasApiKey() && imageCount > 0) {
     try {
       const text = await callClaudeSDK(agentName, systemPrompt, contentBlocks, {
         maxTokens,
         timeoutMs,
       })
+      if (!text || !text.trim()) {
+        // The SDK call completed with no error but no text either — treat it
+        // the same as a hard failure so it falls through to the CLI fallback
+        // below instead of resolving an empty verdict.
+        throw new ModelTransportError({
+          agent: agentName,
+          channel: 'sdk-vision',
+          emptyReply: true,
+        })
+      }
       // The CLI path records inside callClaudeCLI; the SDK path has to do it
       // here or a recorded run would have no fixture for either critic.
       if (isRecording()) recordFixture(agentName, text)
@@ -101,6 +117,7 @@ export async function callVisionAgent(args) {
         `  [${agentName}] SDK vision call failed (${err.message}) — falling back to text-only CLI`
       )
       onChannel('cli-text-fallback')
+      cliChannel = 'cli-text-fallback'
     }
   } else if (imageCount > 0) {
     console.warn(
@@ -116,5 +133,6 @@ export async function callVisionAgent(args) {
     model: modelFor(agentName),
     timeoutMs,
     stallTimeoutMs,
+    channel: cliChannel,
   })
 }
