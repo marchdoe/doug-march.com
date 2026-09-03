@@ -8,7 +8,7 @@
  * as `run.fakes.restore` so a scenario can say which backup map was put
  * back, not only what the disk looks like afterwards.
  */
-import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it, vi } from 'vitest'
@@ -57,6 +57,15 @@ function withMarker(text, relPath, marker) {
   const head = `===FILE:${relPath}===\n`
   if (!text.includes(head)) throw new Error(`fixture has no block for ${relPath}`)
   return text.replace(head, `${head}// ${marker}\n`)
+}
+
+/** The recorded engineer reply with extra `===FILE:===` blocks inserted before the rationale. */
+function withAddedFiles(text, files) {
+  const marker = '===RATIONALE==='
+  const idx = text.indexOf(marker)
+  if (idx === -1) throw new Error('fixture has no ===RATIONALE=== marker')
+  const blocks = files.map(({ path: relPath, content }) => `===FILE:${relPath}===\n${content}\n\n`)
+  return text.slice(0, idx) + blocks.join('') + text.slice(idx)
 }
 
 const REVISE_FEEDBACK =
@@ -117,12 +126,21 @@ describe('Phase 5: the build fails', () => {
 
     // The restore before the repair puts back only the engineer's files: the
     // Art Director's preset stays, and so do the orchestrator's.
-    expect(run.fakes.restore).toHaveLength(1)
+    expect(run.fakes.restore).toHaveLength(2)
     expect(run.fakes.restore[0].root).toBe(run.root)
     const restored = [...run.fakes.restore[0].map.keys()].sort()
     expect(restored).toEqual([...ENGINEER_OWNED].sort())
     expect(restored).not.toContain('elements/preset.ts')
     for (const p of ORCHESTRATOR_FILES) expect(restored).not.toContain(p)
+
+    // The slate reset ahead of attempt 1: only the files the initial pass
+    // actually wrote and this attempt's reply also keeps count as stale, so
+    // just the required files come back (the invented Ledger.tsx has no
+    // backup entry and is deleted by cleanupOrphans instead).
+    expect(run.fakes.restore[1].root).toBe(run.root)
+    expect([...run.fakes.restore[1].map.keys()].sort()).toEqual([...REQUIRED_ENGINEER_FILES].sort())
+    expect(run.fakes.cleanupOrphans).toHaveLength(1)
+    expect(run.fakes.cleanupOrphans[0].written).toContain('app/components/Ledger.tsx')
 
     expect(run.fakes.archive).toHaveLength(1)
     expect(run.fakes.archive[0]).toMatchObject({
@@ -181,9 +199,13 @@ describe('Phase 5: the build fails', () => {
       ).toBe(true)
     }
 
-    // restore(filesToRestore) before the first repair, restore(originalBackup) at the end.
-    expect(run.fakes.restore).toHaveLength(2)
-    expect([...run.fakes.restore[1].map.keys()].sort()).toEqual([...MUTABLE_FILES].sort())
+    // restore(filesToRestore) before the first repair, the slate reset ahead
+    // of attempt 1 (every attempt replays the same fixture, so attempts 2
+    // and 3 find nothing stale and reset nothing), then restore(originalBackup)
+    // at the end.
+    expect(run.fakes.restore).toHaveLength(3)
+    expect([...run.fakes.restore[1].map.keys()].sort()).toEqual([...REQUIRED_ENGINEER_FILES].sort())
+    expect([...run.fakes.restore[2].map.keys()].sort()).toEqual([...MUTABLE_FILES].sort())
     for (const rel of ['app/components/Ledger.tsx', ...REQUIRED_ENGINEER_FILES]) {
       expect(existsSync(path.join(run.root, rel)), `${rel} gone from the root`).toBe(false)
     }
@@ -267,6 +289,81 @@ describe('Phase 5: the build fails', () => {
     for (const rel of REQUIRED_ENGINEER_FILES) {
       expect(existsSync(path.join(run.root, rel)), `${rel} under the root`).toBe(true)
     }
+  })
+
+  it('a repair reply that drops files from the earlier attempt clears them before the rebuild', async () => {
+    const engineer = fixtureFor('react-engineer')
+    const seededFeaturedProject =
+      '// seeded before the run, never touched by an agent\nexport function FeaturedProject() {\n  return null\n}\n'
+    // Attempt 1 invents a file no reply ever names again, and rewrites a
+    // file (in MUTABLE_FILES) attempt 1 owns for this one reply only.
+    const staleAttempt = withAddedFiles(engineer, [
+      {
+        path: 'app/components/Stale.tsx',
+        content: 'export function Stale() {\n  return null\n}\n',
+      },
+      {
+        path: 'app/components/FeaturedProject.tsx',
+        content:
+          '// rewritten by repair attempt 1, dropped by attempt 2\nexport function FeaturedProject() {\n  return null\n}\n',
+      },
+    ])
+
+    const run = await runSwarm({
+      build: [false, false, true],
+      agents: { 'react-engineer': [engineer, staleAttempt, engineer] },
+      beforeRun: (root) => {
+        writeFileSync(
+          path.join(root, 'app/components/FeaturedProject.tsx'),
+          seededFeaturedProject,
+          'utf8'
+        )
+      },
+    })
+
+    expect(run.error).toBeNull()
+    expect(run.calls.map((c) => c.agent)).toEqual([
+      'art-director',
+      'spec-critic',
+      'mockup-designer',
+      'mockup-critic',
+      'react-engineer',
+      'react-engineer',
+      'react-engineer',
+      'screenshot-critic',
+    ])
+    expect(run.retries).toBe(2)
+    expect(run.fakes.validateBuild).toHaveLength(3)
+
+    // Attempt 2 dropped both files attempt 1 wrote — neither survives to the
+    // build that shipped.
+    expect(existsSync(path.join(run.root, 'app/components/Stale.tsx'))).toBe(false)
+    expect(readFileSync(path.join(run.root, 'app/components/FeaturedProject.tsx'), 'utf8')).toBe(
+      seededFeaturedProject
+    )
+
+    expect(run.fakes.archive).toHaveLength(1)
+    expect(run.fakes.archive[0]).toMatchObject({ rationale: 'Agent swarm redesign (repair 2)' })
+    expect(run.result).toMatchObject({ rationale: 'Agent swarm redesign (repair 2)' })
+    expect(run.trace.dir).toMatch(/^build-\d+$/)
+
+    // The slate reset ahead of attempt 2's write is the only one that puts
+    // FeaturedProject.tsx back and the only one that names Stale.tsx as an
+    // orphan — everything earlier either predates Stale.tsx/the rewrite or
+    // doesn't touch FeaturedProject.tsx at all.
+    const lastRestore = run.fakes.restore.at(-1)
+    expect([...lastRestore.map.keys()]).toEqual(['app/components/FeaturedProject.tsx'])
+    expect(lastRestore.map.get('app/components/FeaturedProject.tsx')).toBe(seededFeaturedProject)
+    expect(lastRestore.root).toBe(run.root)
+
+    const lastCleanup = run.fakes.cleanupOrphans.at(-1)
+    expect(lastCleanup.written).toEqual(
+      expect.arrayContaining(['app/components/Stale.tsx', 'app/components/FeaturedProject.tsx'])
+    )
+    expect(lastCleanup.root).toBe(run.root)
+
+    // Both ran before attempt 2's write reached the build that shipped.
+    expect(lastRestore.seq).toBeLessThan(lastCleanup.seq)
   })
 })
 

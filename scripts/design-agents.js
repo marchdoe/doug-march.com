@@ -221,6 +221,56 @@ export const FILE_OWNERSHIP = Object.fromEntries([
 ])
 
 /**
+ * Clear whatever the engineer's previous attempts left on disk that the
+ * upcoming write does not carry forward.
+ *
+ * Every repair reply (#432) is a complete regeneration of the engineer's
+ * output, and replies rename or drop files freely. Nothing used to clean up
+ * after a dropped file — `writeFiles` only ever adds — so a file attempt N
+ * wrote that attempt N+1 no longer includes stayed on disk holding attempt
+ * N's (now stale) content, and both `tsc --noEmit` and `fallow audit` check
+ * the whole tree. Both 2026-09-03 repair traces showed exactly this: the
+ * attempt's own files were type-clean, and every reported error lived in a
+ * file an earlier attempt had written and this one had dropped.
+ *
+ * `writtenPaths` accumulates paths from every write this run, including the
+ * Art Director's `elements/preset.ts` (via `writeFiles`) and the
+ * orchestrator's own `__root.tsx` / `chassis-preset.ts` / `BrandLockup.tsx`
+ * (written straight to disk and added to the same set) — none of those are
+ * the engineer's to reset, so both are excluded here regardless of `keep`.
+ *
+ * @param {object} params
+ * @param {Set<string>} params.writtenPaths - every path written so far this run
+ * @param {Set<string>|string[]} params.keep - paths the upcoming write carries forward
+ * @param {Map<string, string|null>} params.originalBackup - the pre-run snapshot;
+ *   a stale path present here is restored to that content, otherwise deleted
+ * @param {{ root?: string }} [params] repo root
+ * @returns {Promise<{ restored: number, removed: number }>}
+ */
+export async function resetEngineerSlate({ writtenPaths, keep, originalBackup, root = ROOT }) {
+  const keepSet = keep instanceof Set ? keep : new Set(keep)
+  const stale = [...writtenPaths].filter(
+    (p) =>
+      FILE_OWNERSHIP[p] !== 'art-director' && !ORCHESTRATOR_FILES.includes(p) && !keepSet.has(p)
+  )
+  if (stale.length === 0) return { restored: 0, removed: 0 }
+
+  const toRestore = new Map()
+  for (const p of stale) {
+    if (originalBackup.has(p)) toRestore.set(p, originalBackup.get(p))
+  }
+  if (toRestore.size > 0) await restore(toRestore, { root })
+
+  // Everything in `stale` not covered by the backup is an invented path
+  // (e.g. `app/components/WhitePaper.tsx`) — cleanupOrphans deletes exactly
+  // those and leaves backup-covered paths (just restored above) alone.
+  const removed = stale.length - toRestore.size
+  if (removed > 0) await cleanupOrphans(stale, originalBackup, { root })
+
+  return { restored: toRestore.size, removed }
+}
+
+/**
  * Resolve the WEIGHT_RISK creative weight. An explicitly-set env value
  * (anything other than undefined or the empty string — including '0',
  * which is falsy in JS but not "unset") always wins. Otherwise risk is
@@ -2240,6 +2290,24 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         )
         break
       }
+
+      // filesToRestore (above) only covers canonical MUTABLE_FILES paths —
+      // it says nothing about paths the engineer invented beyond that list,
+      // and those are exactly the orphans #432 is about: they must not
+      // survive from the failed first pass into the repair about to run.
+      // Gated on the deadline check above and on attempt === 0 so it runs
+      // exactly once, immediately before attempt 1 — never when the
+      // deadline breaks the loop before any attempt happens, which would
+      // otherwise delete files archiveFailedSources still needs below.
+      if (attempt === 0) {
+        const { restored, removed } = await resetEngineerSlate({
+          writtenPaths,
+          keep: [],
+          originalBackup,
+          root,
+        })
+        console.log(`  slate reset: ${restored} restored, ${removed} removed`)
+      }
       attempt++
 
       console.log(
@@ -2278,20 +2346,14 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         throw new Error(`react-engineer repair crashed: ${err.message}`)
       }
 
-      // The error text handed to a repair has named __root.tsx before, which
-      // invites the agent to "fix" a file it does not own; writeEngineerFiles
-      // drops it.
-      for (const p of await writeEngineerFiles(retryResult, 'React Engineer repair', { root }))
-        writtenPaths.add(p)
-      // Update the result so the archive records the repair output, not stale originals
-      engineerResult = retryResult
-
       // A repair regenerates what it chooses to. If it omitted a required
       // file, what is on disk at that path is what restore() put back —
       // yesterday's — and a passing build would ship it as "repair N" with a
       // record listing only the files the repair wrote (#297). Same for a nav
       // the posture forbids. The Phase 2c pass checks both; this path did not.
-      // Spend the attempt on the problem instead of the build.
+      // Spend the attempt on the problem instead of the build — checked
+      // before anything is written, so a reply that fails this never touches
+      // disk at all.
       const outputProblem = findEngineerOutputProblem(
         retryResult.files,
         chosenComposition.shell_posture
@@ -2312,6 +2374,27 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         })
         continue
       }
+
+      // Update the result so the archive records the repair output, not stale originals
+      engineerResult = retryResult
+
+      // Each reply is a complete regeneration; a file an earlier attempt
+      // wrote and this one drops must not survive as a stale error source
+      // for tsc/fallow (#432) — clear it before the new files land.
+      const keep = new Set(retryResult.files.map((f) => f.path))
+      const { restored, removed } = await resetEngineerSlate({
+        writtenPaths,
+        keep,
+        originalBackup,
+        root,
+      })
+      console.log(`  slate reset: ${restored} restored, ${removed} removed`)
+
+      // The error text handed to a repair has named __root.tsx before, which
+      // invites the agent to "fix" a file it does not own; writeEngineerFiles
+      // drops it.
+      for (const p of await writeEngineerFiles(retryResult, 'React Engineer repair', { root }))
+        writtenPaths.add(p)
 
       const attemptBuild = validateBuild({ root, shell: shellDecl, date: today })
       if (attemptBuild.success) {

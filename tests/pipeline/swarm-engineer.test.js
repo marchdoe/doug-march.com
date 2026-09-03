@@ -394,8 +394,12 @@ describe('the run deadline between phases', () => {
     expect(run.fakes.validateBuild).toHaveLength(1)
     expect(run.retries).toBe(0)
 
-    // Phase 5 first restores the failing agent's files, then the exhausted
-    // loop restores the original backup after cleaning orphans.
+    // The deadline breaks the loop before attempt 1's slate reset (gated on
+    // attempt === 0, inside the loop, after this same check) ever runs — it
+    // must not, or the orphan Ledger.tsx it would delete is exactly what
+    // archiveFailedSources below needs to still be on disk. So Phase 5 only
+    // restores the failing agent's files, then the exhausted loop restores
+    // the original backup after cleaning orphans.
     expect(run.fakes.restore).toHaveLength(2)
     expect(restoredKeySets(run)).toEqual([[...ENGINEER_FILES].sort(), ORIGINAL_BACKUP_KEYS])
     expect(run.fakes.cleanupOrphans).toHaveLength(1)
