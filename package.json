@@ -24,7 +24,8 @@
     "codegen:watch": "panda codegen --watch",
     "pipeline": "node scripts/run-pipeline.js",
     "pipeline:dry": "DRY_RUN=true node scripts/run-pipeline.js",
-    "pipeline:collect": "node scripts/collect-signals.js"
+    "pipeline:collect": "node scripts/collect-signals.js",
+    "pipeline:canary": "node scripts/canary.js"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
