@@ -96,6 +96,16 @@ describe('refusalReason', () => {
     writeFileSync(path.join(root, '.env'), 'SOME_OTHER_VAR=1\n')
     expect(refusalReason({ root, env: {} })).toBeNull()
   })
+
+  it('does not refuse for ANTHROPIC_API_KEY under --mock (env or .env)', () => {
+    writeFileSync(path.join(root, '.env'), 'ANTHROPIC_API_KEY=sk-live-x\n')
+    expect(refusalReason({ root, env: { ANTHROPIC_API_KEY: 'sk-live-x' }, mock: true })).toBeNull()
+  })
+
+  it('still refuses under --mock when GITHUB_ACTIONS is set', () => {
+    const reason = refusalReason({ root, env: { GITHUB_ACTIONS: 'true' }, mock: true })
+    expect(reason).toMatch(/GITHUB_ACTIONS/)
+  })
 })
 
 describe('runCanary — refusal', () => {
@@ -119,6 +129,25 @@ describe('runCanary — refusal', () => {
         return { status: 0, stdout: '', stderr: '' }
       }
       const result = await runCanary({ exec, root, worktreePath: worktree })
+      expect(result.exitCode).toBe(2)
+      expect(calls).toEqual([])
+    }))
+
+  it('--mock does not refuse when ANTHROPIC_API_KEY is set', async () =>
+    withEnv({ ...clearGuardEnv, ANTHROPIC_API_KEY: 'sk-live-x' }, async () => {
+      const exec = () => ({ status: 0, stdout: '', stderr: '' })
+      const result = await runCanary({ exec, root, worktreePath: worktree, mock: true })
+      expect(result.exitCode).not.toBe(2)
+    }))
+
+  it('--mock still exits 2 and never calls exec when GITHUB_ACTIONS is set', async () =>
+    withEnv({ ...clearGuardEnv, GITHUB_ACTIONS: 'true' }, async () => {
+      const calls = []
+      const exec = (command, options) => {
+        calls.push({ command, options })
+        return { status: 0, stdout: '', stderr: '' }
+      }
+      const result = await runCanary({ exec, root, worktreePath: worktree, mock: true })
       expect(result.exitCode).toBe(2)
       expect(calls).toEqual([])
     }))
@@ -168,6 +197,20 @@ describe('runCanary — the pipeline call', () => {
       const exec = () => ({ status: 0, stdout: '', stderr: '' })
       await runCanary({ exec, root, worktreePath: worktree })
       expect(readFileSync(path.join(worktree, '.env'), 'utf8')).toContain('SOME_OTHER_VAR=1')
+    }))
+
+  it('--mock forces MOCK_MODE=true (and still DRY_RUN=true) regardless of the ambient env', async () =>
+    withEnv({ ...clearGuardEnv, MOCK_MODE: 'false', DRY_RUN: 'false' }, async () => {
+      const calls = []
+      const exec = (command, options) => {
+        calls.push({ command, options })
+        return { status: 0, stdout: '', stderr: '' }
+      }
+      await runCanary({ exec, root, worktreePath: worktree, mock: true })
+      const pipelineCall = calls.find((c) => c.command.includes('run-pipeline.js'))
+      expect(pipelineCall).toBeDefined()
+      expect(pipelineCall.options.env.MOCK_MODE).toBe('true')
+      expect(pipelineCall.options.env.DRY_RUN).toBe('true')
     }))
 })
 
@@ -234,6 +277,30 @@ describe('runCanary — a shipped night', () => {
       }
       const files = walk(result.evidenceDir)
       expect(files.some((f) => f.endsWith('.png'))).toBe(false)
+    }))
+
+  it('--mock writes evidence under a <stamp>-mock/ dir with a "(mock)" summary title', async () =>
+    withEnv(clearGuardEnv, async () => {
+      writeArchiveFixture({
+        date: '2026-09-02',
+        buildName: 'build-100',
+        trace: { steps: [] },
+        cost: { total_usd: 0, calls: 0, retries: 0 },
+      })
+      const exec = () => ({ status: 0, stdout: '', stderr: '' })
+      const result = await runCanary({
+        exec,
+        now: fixedNow,
+        root,
+        worktreePath: worktree,
+        mock: true,
+      })
+
+      const evidenceDir = path.join(root, 'docs', 'evidence', 'canary', '2026-09-02-1405-mock')
+      expect(result.evidenceDir).toBe(evidenceDir)
+      expect(existsSync(evidenceDir)).toBe(true)
+      const summary = readFileSync(path.join(evidenceDir, 'summary.md'), 'utf8')
+      expect(summary).toContain('Canary run (mock)')
     }))
 
   it('summary.md reports PASS, the trace steps and the cost from the fixture', async () =>

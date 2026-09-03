@@ -40,6 +40,8 @@ Without `ANTHROPIC_API_KEY` the agents run through the Claude CLI on a Max plan,
 
 `pnpm pipeline:canary` worktrees HEAD, installs, and runs the full pipeline there with `MOCK_MODE=false DRY_RUN=true`, so it reproduces exactly what a paid run would do without spending anything, and files the log, trace, cost and any build errors under `docs/evidence/canary/<date>-<time>/`. Run it before merging a change to `scripts/prompts/**`, `scripts/design-agents.js` or `scripts/utils/build-validator.js`, and weekly otherwise — it's the only check that catches what only shows up against the real Claude CLI.
 
+`pnpm pipeline:canary --mock` replays the recorded fixtures through the real loop and gates in about three minutes, with no model call, and is the quick check after a gate or loop change.
+
 ## What is where
 
 ```

@@ -28,8 +28,17 @@
  *   4. Removes the worktree unless `--keep`. Exits 0 on a shipped night, 1
  *      on a failed one, 2 on refusal.
  *
+ * `--mock` runs the other seam instead: `MOCK_MODE=true` replays the
+ * recorded fixtures (`fixtures/agents/<agent>/00.txt`, see
+ * `scripts/utils/agent-fixtures.js`) through the same loop and gates, no
+ * model called, evidence under `docs/evidence/canary/<date>-<HHMM>-mock/`.
+ * It skips the `ANTHROPIC_API_KEY` refusal — no model is called, so a key
+ * being set doesn't matter — but still refuses under `GITHUB_ACTIONS`. It's
+ * the three-minute smoke test after a change to a gate or the loop itself,
+ * not a substitute for the real dry run above.
+ *
  * Usage:
- *   node scripts/canary.js [--keep] [--worktree <path>]
+ *   node scripts/canary.js [--keep] [--worktree <path>] [--mock]
  */
 
 import { spawnSync } from 'node:child_process'
@@ -79,14 +88,17 @@ function envFileHasApiKey(root) {
 }
 
 /**
- * Why the canary should refuse to run, or null if it's clear to go.
- * @param {{ root: string, env: NodeJS.ProcessEnv }} args
+ * Why the canary should refuse to run, or null if it's clear to go. Under
+ * `--mock` no model is called, so the `ANTHROPIC_API_KEY` checks don't
+ * apply — only the `GITHUB_ACTIONS` refusal still fires.
+ * @param {{ root: string, env: NodeJS.ProcessEnv, mock?: boolean }} args
  * @returns {string|null}
  */
-export function refusalReason({ root, env }) {
+export function refusalReason({ root, env, mock = false }) {
   if (env.GITHUB_ACTIONS) {
     return 'GITHUB_ACTIONS is set — this is the $0 local path, not a CI job.'
   }
+  if (mock) return null
   if (env.ANTHROPIC_API_KEY) {
     return 'ANTHROPIC_API_KEY is set in the environment — the canary only runs the $0 CLI path.'
   }
@@ -122,15 +134,18 @@ function defaultExec(command, { cwd, env } = {}) {
 /**
  * `YYYY-MM-DD-HHMM` as read on the machine's own clock — a filesystem-safe
  * label for when this evidence was collected, not the pipeline's own
- * site-local run date (that's `findArchiveDate` below).
+ * site-local run date (that's `findArchiveDate` below). `-mock` is appended
+ * under `--mock` so a replay run never overwrites a real dry run's evidence
+ * from the same minute.
  * @param {Date} date
+ * @param {boolean} [mock]
  */
-function evidenceStamp(date) {
+function evidenceStamp(date, mock = false) {
   const pad = (n) => String(n).padStart(2, '0')
-  return (
+  const stamp =
     `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}` +
     `-${pad(date.getHours())}${pad(date.getMinutes())}`
-  )
+  return mock ? `${stamp}-mock` : stamp
 }
 
 /**
@@ -264,14 +279,18 @@ function findErrorHead({ archiveDateDir, failedDir, trace, log }) {
   return log ? log.slice(-ERROR_HEAD_CHARS) : null
 }
 
-/** `# Canary run — <date>`, the pass/fail line, and the phase it ended in. */
-function renderHeader({ date, shipped, trace }) {
+/**
+ * `# Canary run — <date>` (or `# Canary run (mock) — <date>` under
+ * `--mock`), the pass/fail line, and the phase it ended in.
+ */
+function renderHeader({ date, shipped, trace, mock }) {
   const lastStep = (trace?.steps ?? []).at(-1)
   const endedIn = lastStep
     ? `phase ${lastStep.phase ?? '—'} (${lastStep.name})`
     : 'unknown — no trace recorded'
+  const title = mock ? 'Canary run (mock)' : 'Canary run'
   return [
-    `# Canary run — ${date ?? 'unknown date'}`,
+    `# ${title} — ${date ?? 'unknown date'}`,
     '',
     `**Result:** ${shipped ? 'PASS — shipped' : 'FAIL'}`,
     `**Ended in:** ${endedIn}`,
@@ -323,14 +342,14 @@ function renderErrorSection({ shipped, errorHead }) {
  * Render `summary.md`: pass/fail, the phase the run ended in, the trace's
  * step list with durations, repair attempts with file counts and outcomes,
  * the cost estimate, and (on a loss) the head of the final error.
- * @param {{ date: string|null, shipped: boolean, trace: object|null, cost: object|null, errorHead: string|null }} args
+ * @param {{ date: string|null, shipped: boolean, trace: object|null, cost: object|null, errorHead: string|null, mock?: boolean }} args
  * @returns {string}
  */
-function buildSummary({ date, shipped, trace, cost, errorHead }) {
+function buildSummary({ date, shipped, trace, cost, errorHead, mock = false }) {
   const steps = trace?.steps ?? []
   const repairs = steps.filter((s) => s?.name === 'repair')
   return [
-    ...renderHeader({ date, shipped, trace }),
+    ...renderHeader({ date, shipped, trace, mock }),
     ...renderTraceSection(steps),
     ...renderRepairSection(repairs),
     ...renderCostSection(cost),
@@ -380,11 +399,13 @@ function copyEnvFile({ root, worktree }) {
 
 /**
  * The $0 run itself: MOCK_MODE and DRY_RUN forced regardless of whatever the
- * shell or the copied .env set them to.
+ * shell or the copied .env set them to. `mock` forces `MOCK_MODE=true` (the
+ * recorded-fixture replay) instead of `false` (the real CLI dry run).
  */
-function runPipeline({ exec, worktree }) {
-  console.log('  MOCK_MODE=false DRY_RUN=true node scripts/run-pipeline.js')
-  const env = { ...process.env, MOCK_MODE: 'false', DRY_RUN: 'true' }
+function runPipeline({ exec, worktree, mock = false }) {
+  const mockModeValue = mock ? 'true' : 'false'
+  console.log(`  MOCK_MODE=${mockModeValue} DRY_RUN=true node scripts/run-pipeline.js`)
+  const env = { ...process.env, MOCK_MODE: mockModeValue, DRY_RUN: 'true' }
   return exec('node scripts/run-pipeline.js', { cwd: worktree, env })
 }
 
@@ -424,16 +445,17 @@ function readRunArtifacts({ archiveDateDir, shippedBuild }) {
 
 /**
  * Collect the log, the run's trace/cost/verdicts/build-output files and a
- * summary.md into `docs/evidence/canary/<stamp>/`.
+ * summary.md into `docs/evidence/canary/<stamp>/` (`<stamp>-mock/` under
+ * `--mock`).
  * @returns {{ evidenceDir: string, shipped: boolean, date: string|null }}
  */
-function collectEvidence({ worktree, root, now, log }) {
+function collectEvidence({ worktree, root, now, log, mock = false }) {
   const date = findArchiveDate(worktree)
   const archiveDateDir = date ? path.join(worktree, 'archive', date) : null
   const shippedBuild = archiveDateDir ? findShippedBuild(archiveDateDir) : null
   const shipped = Boolean(shippedBuild)
 
-  const evidenceDir = path.join(root, 'docs', 'evidence', 'canary', evidenceStamp(now()))
+  const evidenceDir = path.join(root, 'docs', 'evidence', 'canary', evidenceStamp(now(), mock))
   mkdirSync(evidenceDir, { recursive: true })
   writeFileSync(path.join(evidenceDir, 'canary.log'), log, 'utf8')
 
@@ -443,7 +465,7 @@ function collectEvidence({ worktree, root, now, log }) {
   if (archiveDateDir) copyEvidenceFiles({ archiveDateDir, evidenceDir, date })
 
   const errorHead = shipped ? null : findErrorHead({ archiveDateDir, failedDir, trace, log })
-  const summary = buildSummary({ date, shipped, trace, cost, errorHead })
+  const summary = buildSummary({ date, shipped, trace, cost, errorHead, mock })
   writeFileSync(path.join(evidenceDir, 'summary.md'), summary, 'utf8')
 
   console.log('')
@@ -464,6 +486,7 @@ function collectEvidence({ worktree, root, now, log }) {
  *   `docs/evidence/` receives the result
  * @param {boolean} [args.keep] leave the worktree behind instead of removing it
  * @param {string|null} [args.worktreePath] reuse this worktree instead of creating one — skips install
+ * @param {boolean} [args.mock] replay recorded fixtures (`MOCK_MODE=true`) instead of calling the real CLI (`MOCK_MODE=false`); skips the `ANTHROPIC_API_KEY` refusal and suffixes the evidence dir with `-mock`
  * @returns {Promise<{ exitCode: number, reason?: string, shipped?: boolean, date?: string|null, evidenceDir?: string }>}
  */
 export async function runCanary({
@@ -472,8 +495,9 @@ export async function runCanary({
   root = ROOT,
   keep = false,
   worktreePath = null,
+  mock = false,
 } = {}) {
-  const reason = refusalReason({ root, env: process.env })
+  const reason = refusalReason({ root, env: process.env, mock })
   if (reason) {
     console.error(`[canary] refusing to run: ${reason}`)
     return { exitCode: 2, reason }
@@ -486,12 +510,13 @@ export async function runCanary({
       copyEnvFile({ root, worktree }) ? '  copied .env into worktree' : '  no .env to copy'
     )
 
-    const { stdout, stderr } = runPipeline({ exec, worktree })
+    const { stdout, stderr } = runPipeline({ exec, worktree, mock })
     const { evidenceDir, shipped, date } = collectEvidence({
       worktree,
       root,
       now,
       log: `${stdout}${stderr}`,
+      mock,
     })
 
     return { exitCode: shipped ? 0 : 1, shipped, date, evidenceDir }
@@ -508,14 +533,15 @@ export async function runCanary({
 
 function parseArgs(argv) {
   const keep = argv.includes('--keep')
+  const mock = argv.includes('--mock')
   const worktreeIdx = argv.indexOf('--worktree')
   const worktreePath = worktreeIdx !== -1 ? argv[worktreeIdx + 1] : null
-  return { keep, worktreePath }
+  return { keep, worktreePath, mock }
 }
 
 async function main() {
-  const { keep, worktreePath } = parseArgs(process.argv.slice(2))
-  const result = await runCanary({ keep, worktreePath })
+  const { keep, worktreePath, mock } = parseArgs(process.argv.slice(2))
+  const result = await runCanary({ keep, worktreePath, mock })
   process.exit(result.exitCode)
 }
 
