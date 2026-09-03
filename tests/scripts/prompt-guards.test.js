@@ -4,6 +4,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { formatPatternPropsForPrompt, readPatternProps } from '../../scripts/utils/pattern-props.js'
+import { collectGateRules, formatGateRulesForPrompt } from '../../scripts/utils/gate-rules.js'
 
 const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 const promptDir = path.join(repoRoot, 'scripts', 'prompts')
@@ -91,6 +92,24 @@ describe('react-engineer.md load-bearing directives', () => {
   })
   it('forbids raw hex in TSX', () => {
     expect(re()).toMatch(/raw hex|never.*hex|hex.*(token|never)/i)
+  })
+
+  // #432: run 33756500843 failed on dangerouslySetInnerHTML and a disallowed
+  // URL host in one attempt each, and the prompt named neither. The gate list
+  // is generated from the validator's own constants now (scripts/utils/gate-
+  // rules.js) rather than hand-transcribed, so it can't go stale the way the
+  // hand-written host list did (missing doug-march.com and www.w3.org).
+  it('carries the {{GATES}} placeholder rather than a hand-written gate list', () => {
+    expect(re()).toContain('{{GATES}}')
+  })
+
+  it('the rendered prompt states the innerHTML rule and the allowed hosts', () => {
+    const rendered = re().replace(
+      '{{GATES}}',
+      formatGateRulesForPrompt(collectGateRules({ root: repoRoot }))
+    )
+    expect(rendered).toContain('dangerouslySetInnerHTML')
+    expect(rendered).toMatch(/hosts?\s*—.*fonts\.googleapis\.com/i)
   })
 })
 

@@ -56,6 +56,7 @@ import {
   formatSemanticContractForPrompt,
 } from './utils/semantic-contract.js'
 import { formatPatternPropsForPrompt, readPatternProps } from './utils/pattern-props.js'
+import { collectGateRules, formatGateRulesForPrompt } from './utils/gate-rules.js'
 import { parseDelimiterResponse } from './utils/delimiter-parser.js'
 import { parseCriticVerdict } from './utils/critic-verdict.js'
 import { modelFor, isDevModelTier } from './utils/models.js'
@@ -1579,10 +1580,19 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
     if (!reactEngineerPromptRaw.includes('{{SEMANTIC_COLOR_CONTRACT}}')) {
       throw new Error('react-engineer.md is missing its {{SEMANTIC_COLOR_CONTRACT}} placeholder')
     }
-    const reactEngineerSystemPrompt = `${reactEngineerPromptRaw.replace(
-      '{{SEMANTIC_COLOR_CONTRACT}}',
-      formatSemanticContractForPrompt()
-    )}\n\n${designSystemReference}${brandRegisterDeclaration}`
+    // The gate list is generated from the validator's own exported constants
+    // at assembly time, so `react-engineer.md` cannot state a host allowlist
+    // or a forbidden-pattern list that has drifted from what actually fails
+    // the build the way it did for #432.
+    if (!reactEngineerPromptRaw.includes('{{GATES}}')) {
+      throw new Error('react-engineer.md is missing its {{GATES}} placeholder')
+    }
+    const reactEngineerSystemPrompt = `${reactEngineerPromptRaw
+      .replace('{{SEMANTIC_COLOR_CONTRACT}}', formatSemanticContractForPrompt())
+      .replace(
+        '{{GATES}}',
+        formatGateRulesForPrompt(collectGateRules({ root }))
+      )}\n\n${designSystemReference}${brandRegisterDeclaration}`
 
     const buildEngineerUserPrompt = () =>
       [
