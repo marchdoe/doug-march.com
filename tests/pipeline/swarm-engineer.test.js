@@ -13,6 +13,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it, vi } from 'vitest'
 import { setRunDeadline } from '../../scripts/utils/run-budget.js'
+import { ModelTransportError } from '../../scripts/utils/model-transport-error.js'
+import { writeUnder } from '../helpers/tmp.js'
 import {
   DEFAULT_BUILD_ERROR,
   REQUIRED_ENGINEER_FILES,
@@ -83,7 +85,9 @@ function restoredKeySets(run) {
   return run.fakes.restore.map((r) => [...r.paths].sort())
 }
 
-const ORIGINAL_BACKUP_KEYS = [...MUTABLE_FILES].sort()
+// The engineer's invented Ledger.tsx joins the backup at write time (as null,
+// it did not exist), so the final restore covers it and deletes it (#432).
+const ORIGINAL_BACKUP_KEYS = [...MUTABLE_FILES, 'app/components/Ledger.tsx'].sort()
 
 describe('the React Engineer omits a required file', () => {
   it('omits Sidebar once: the retry carries the reminder and ships six files', async () => {
@@ -277,7 +281,8 @@ describe('the React Engineer stalls', () => {
     expect(run.retries).toBe(0)
 
     expect(run.fakes.restore).toHaveLength(1)
-    expect(restoredKeySets(run)).toEqual([ORIGINAL_BACKUP_KEYS])
+    // Nothing was written before the throw, so the backup is the pre-run list alone.
+    expect(restoredKeySets(run)).toEqual([[...MUTABLE_FILES].sort()])
     expect(run.fakes.cleanupOrphans).toEqual([])
     for (const rel of ENGINEER_OUTPUT) {
       expect(under(run.root, rel), `${rel} absent from the root`).toBe(false)
@@ -420,5 +425,51 @@ describe('the run deadline between phases', () => {
     expect(errorTxt(run)).toMatch(/^Build failed after 0 repair attempt\(s\)/)
     const build = run.trace.steps.find((s) => s.name === 'build-validation')
     expect(build.output.success).toBe(false)
+  })
+})
+
+describe('a dead model during the engineer phase (#432)', () => {
+  it('is not retried: one call, the original restored, and the transport named', async () => {
+    const dead = new ModelTransportError({
+      agent: 'react-engineer',
+      channel: 'cli',
+      exitCode: 1,
+      stderrTail: 'credit balance too low',
+    })
+    const run = await runSwarm({
+      agents: { 'react-engineer': [dead, fixtureFor('react-engineer')] },
+    })
+
+    expect(run.result).toBeNull()
+    expect(run.error.message).toMatch(
+      /^React Engineer failed: no response from the model for react-engineer \(cli, exit 1\): credit balance too low/
+    )
+    expect(run.callsFor('react-engineer')).toHaveLength(1)
+    expect(run.retries).toBe(0)
+    expect(run.fakes.restore.map((r) => r.paths)).toContainEqual(MUTABLE_FILES)
+    expect(run.fakes.archive).toHaveLength(0)
+  })
+})
+
+describe('an existing file the engineer overwrites (#432)', () => {
+  const ORIGINAL = 'export const Hand = "written by a person, not on the mutable list"\n'
+  const REWRITE =
+    '===FILE:app/components/Hand.tsx===\nexport const Hand = "rewritten by the engineer"\n'
+
+  it('comes back on rollback instead of being deleted', async () => {
+    const run = await runSwarm({
+      build: [false, false, false, false],
+      agents: { 'react-engineer': [REWRITE + fixtureFor('react-engineer')] },
+      beforeRun: (root) => {
+        writeUnder(root, 'app/components/Hand.tsx', ORIGINAL)
+      },
+    })
+
+    expect(run.error.message).toMatch(/^Build failed after 3 repair attempt\(s\)/)
+    const hand = path.join(run.root, 'app', 'components', 'Hand.tsx')
+    expect(existsSync(hand)).toBe(true)
+    expect(readFileSync(hand, 'utf8')).toBe(ORIGINAL)
+    // The invented Ledger.tsx, which did not exist before the run, is gone.
+    expect(existsSync(path.join(run.root, 'app', 'components', 'Ledger.tsx'))).toBe(false)
   })
 })

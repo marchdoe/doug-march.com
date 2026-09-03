@@ -127,9 +127,9 @@ export function dropOrchestratorFiles(files, agentName = 'agent') {
  * @param {{ root?: string }} [options] repo root to write under
  * @returns {Promise<string[]>} the paths written
  */
-async function writeEngineerFiles(result, agentLabel, { root = ROOT } = {}) {
+async function writeEngineerFiles(result, agentLabel, { root = ROOT, backup } = {}) {
   result.files = dropOrchestratorFiles(result.files, agentLabel)
-  return await writeFiles(result.files, { root })
+  return await writeFiles(result.files, { root, backup })
 }
 
 /**
@@ -885,6 +885,14 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         systemPrompt: artDirectorSystemPrompt,
       })
     } catch (firstErr) {
+      if (firstErr.transport) {
+        // A dead model (no credits, an outage) answers the retry the same way
+        // it answered the first call. Twenty-six August nights spent their
+        // retry on exactly that and reported it as a missing block (#432).
+        console.error(`  Art Director failed: ${firstErr.message}`)
+        await restore(originalBackup, { root })
+        throw new Error(`Art Director failed: no response from the model — ${firstErr.message}`)
+      }
       console.warn(`  Art Director failed (${firstErr.message}) — retrying once with error context`)
       noteRetry()
       try {
@@ -963,7 +971,8 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
 
     // Write the Art Director's preset.ts to disk
     const presetFile = { path: 'elements/preset.ts', content: artDirectorResult.presetTs }
-    for (const p of await writeFiles([presetFile], { root })) writtenPaths.add(p)
+    for (const p of await writeFiles([presetFile], { root, backup: originalBackup }))
+      writtenPaths.add(p)
 
     // Orchestrator generates the chassis preset (fonts + fontSizes) and
     // __root.tsx (Google Fonts URL substituted into the frozen template).
@@ -1059,7 +1068,8 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
           systemPrompt: artDirectorSystemPrompt,
         })
         const retryPresetFile = { path: 'elements/preset.ts', content: artDirectorResult.presetTs }
-        for (const p of await writeFiles([retryPresetFile], { root })) writtenPaths.add(p)
+        for (const p of await writeFiles([retryPresetFile], { root, backup: originalBackup }))
+          writtenPaths.add(p)
         // The codegen retry re-ran the Art Director, so heroCopy/designBrief may
         // have changed since __root.tsx was first written. Regenerate it so the
         // og:title/og:description reflect the settled result, not the stale one.
@@ -1608,7 +1618,7 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       // run (AD + 3 mockup rounds) when one more attempt often succeeds.
       // Retry ONCE on a stall, unless we're already past the run deadline.
       const isStall = /stalled|0KB|no output/i.test(err.message)
-      if (isStall && !pastDeadline()) {
+      if (isStall && !err.transport && !pastDeadline()) {
         console.warn(`  React Engineer stalled (${err.message}) — retrying once`)
         noteRetry()
         try {
@@ -1673,7 +1683,10 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
 
     // Write all files. Orchestrator-owned paths are dropped first — the
     // engineer is told not to emit them and nothing used to check.
-    for (const p of await writeEngineerFiles(engineerResult, 'React Engineer', { root }))
+    for (const p of await writeEngineerFiles(engineerResult, 'React Engineer', {
+      root,
+      backup: originalBackup,
+    }))
       writtenPaths.add(p)
 
     trace.addStep({
@@ -1856,8 +1869,9 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       for (const p of patch.ignoredDeletes) {
         console.warn(`  ⚠ ${label} emptied ${p}, which it does not own this run — ignoring`)
       }
-      for (const p of await writeFiles(patch.writes, { root })) writtenPaths.add(p)
-      await deleteFiles(patch.deletes, { root })
+      for (const p of await writeFiles(patch.writes, { root, backup: originalBackup }))
+        writtenPaths.add(p)
+      await deleteFiles(patch.deletes, { root, backup: originalBackup })
       reply.files = patch.files
       console.log(
         `  ${label}: ${summary.written} written, ${summary.deleted} deleted, ${patch.files.length} on disk`

@@ -11,6 +11,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
+import { ModelTransportError } from '../../scripts/utils/model-transport-error.js'
 import {
   fixtureFor,
   mockFactories as m,
@@ -225,6 +226,28 @@ describe('the Art Director retry', () => {
     expect(run.trace.steps.map((s) => s.name)).not.toContain('art-director')
     expect(read(run.root, `archive/${run.date}/${run.trace.dir}/error.txt`)).toMatch(
       /^Art Director failed after retry: second stall/
+    )
+  })
+  it('fails fast on a dead model: one call, the original restored, no retry (#432)', async () => {
+    const dead = new ModelTransportError({
+      agent: 'art-director',
+      channel: 'cli',
+      emptyReply: true,
+    })
+    const run = await runSwarm({ agents: { 'art-director': [dead, dead] } })
+
+    expect(run.result).toBeNull()
+    expect(run.error.message).toMatch(
+      /^Art Director failed: no response from the model — no response from the model for art-director \(cli, empty reply\)/
+    )
+    // The August nights spent a second call on the same dead API; this one does not.
+    expect(run.calls.map((c) => c.agent)).toEqual(['art-director'])
+    expect(run.retries).toBe(0)
+    expect(restored(run)).toEqual([{ paths: MUTABLE_FILES, root: run.root }])
+    expect(run.fakes.archive).toHaveLength(0)
+    expect(run.trace.dir).toMatch(/^build-failed-\d+$/)
+    expect(read(run.root, `archive/${run.date}/${run.trace.dir}/error.txt`)).toMatch(
+      /^Art Director failed: no response from the model/
     )
   })
 })

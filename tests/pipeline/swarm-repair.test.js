@@ -405,7 +405,10 @@ describe('Phase 5: the build fails', () => {
     // Nothing is restored ahead of a repair; the one restore is the original
     // backup when the loop runs out.
     expect(run.fakes.restore).toHaveLength(1)
-    expect([...run.fakes.restore[0].map.keys()].sort()).toEqual([...MUTABLE_FILES].sort())
+    // Ledger.tsx joined the backup at write time (#432), so the rollback covers it.
+    expect([...run.fakes.restore[0].map.keys()].sort()).toEqual(
+      [...MUTABLE_FILES, 'app/components/Ledger.tsx'].sort()
+    )
     for (const rel of FIXTURE_PATHS) {
       expect(existsSync(path.join(run.root, rel)), `${rel} gone from the root`).toBe(false)
     }
@@ -596,7 +599,9 @@ describe('after the build passes: the screenshot critic and the surface gate', (
     // restore(passingBackup) first, then restore(originalBackup) when that did not build.
     expect(run.fakes.restore).toHaveLength(2)
     expect([...run.fakes.restore[0].map.keys()]).toContain('app/components/Ledger.tsx')
-    expect([...run.fakes.restore[1].map.keys()].sort()).toEqual([...MUTABLE_FILES].sort())
+    expect([...run.fakes.restore[1].map.keys()].sort()).toEqual(
+      [...MUTABLE_FILES, 'app/components/Ledger.tsx'].sort()
+    )
     for (const rel of FIXTURE_PATHS) {
       expect(existsSync(path.join(run.root, rel)), `${rel} gone from the root`).toBe(false)
     }

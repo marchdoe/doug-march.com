@@ -124,12 +124,15 @@ export function mergeEngineerPatch(owned, reply) {
  * @param {{ root?: string }} [options]
  * @returns {Promise<string[]>} the normalized paths removed
  */
-export async function deleteFiles(relPaths, { root = ROOT } = {}) {
+export async function deleteFiles(relPaths, { root = ROOT, backup } = {}) {
   const removed = []
   for (const rel of relPaths) {
     const normalized = validateWritePath(rel)
     const abs = path.resolve(root, normalized)
     if (!existsSync(abs)) continue
+    // A deleted file the run did not create must come back on rollback, so
+    // it is recorded the way writeFiles records an overwrite (#432).
+    if (backup && !backup.has(normalized)) backup.set(normalized, await readFile(abs, 'utf8'))
     await unlink(abs)
     console.log(`  deleted: ${normalized}`)
     removed.push(normalized)
