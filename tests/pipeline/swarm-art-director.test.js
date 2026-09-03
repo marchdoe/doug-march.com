@@ -11,6 +11,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
+import { ModelTransportError } from '../../scripts/utils/model-transport-error.js'
 import {
   fixtureFor,
   mockFactories as m,
@@ -225,6 +226,102 @@ describe('the Art Director retry', () => {
     expect(run.trace.steps.map((s) => s.name)).not.toContain('art-director')
     expect(read(run.root, `archive/${run.date}/${run.trace.dir}/error.txt`)).toMatch(
       /^Art Director failed after retry: second stall/
+    )
+  })
+  it('fails fast on a dead model: one call, the original restored, no retry (#432)', async () => {
+    const dead = new ModelTransportError({
+      agent: 'art-director',
+      channel: 'cli',
+      emptyReply: true,
+    })
+    const run = await runSwarm({ agents: { 'art-director': [dead, dead] } })
+
+    expect(run.result).toBeNull()
+    expect(run.error.message).toMatch(
+      /^Art Director failed: no response from the model — no response from the model for art-director \(cli, empty reply\)/
+    )
+    // The August nights spent a second call on the same dead API; this one does not.
+    expect(run.calls.map((c) => c.agent)).toEqual(['art-director'])
+    expect(run.retries).toBe(0)
+    expect(restored(run)).toEqual([{ paths: MUTABLE_FILES, root: run.root }])
+    expect(run.fakes.archive).toHaveLength(0)
+    expect(run.trace.dir).toMatch(/^build-failed-\d+$/)
+    expect(read(run.root, `archive/${run.date}/${run.trace.dir}/error.txt`)).toMatch(
+      /^Art Director failed: no response from the model/
+    )
+  })
+})
+
+describe('the mockup designer retry', () => {
+  const scriptTagError = 'mockup.html contains a <script> tag — the mockup must be JS-free'
+  /** The fixture with a `<script>` planted inside `===FILE:mockup.html===`. */
+  const rejectedMockup = () =>
+    fixtureFor('mockup-designer').replace('<body>', '<body><script>alert(1)</script>')
+
+  it('retries once with the failure in the prompt and then ships', async () => {
+    const run = await runSwarm({
+      agents: {
+        'mockup-designer': [rejectedMockup(), fixtureFor('mockup-designer')],
+      },
+    })
+
+    expect(run.error).toBeNull()
+    expect(run.calls.map((c) => c.agent)).toEqual([
+      'art-director',
+      'spec-critic',
+      'mockup-designer',
+      'mockup-designer',
+      'mockup-critic',
+      'react-engineer',
+      'screenshot-critic',
+    ])
+
+    const designer = run.callsFor('mockup-designer')
+    expect(designer).toHaveLength(2)
+    expect(designer[0].userPrompt).not.toContain('Your previous mockup failed validation')
+    expect(designer[1].userPrompt).toContain(
+      `Your previous mockup failed validation: ${scriptTagError}`
+    )
+    expect(designer[1].systemPrompt).toBe(designer[0].systemPrompt)
+
+    expect(run.retries).toBe(1)
+    expect(run.fakes.restore).toEqual([])
+    expect(run.fakes.archive).toHaveLength(1)
+
+    const rejected = run.trace.steps.filter((s) => s.name === 'mockup-designer-rejected')
+    expect(rejected).toHaveLength(1)
+    expect(rejected[0]).toMatchObject({ phase: 2, input: { round: 0 } })
+    expect(rejected[0].output.error).toBe(scriptTagError)
+  })
+
+  it('restores the original backup and throws after the second failure', async () => {
+    let seededPreset = ''
+    const run = await runSwarm({
+      agents: { 'mockup-designer': [rejectedMockup(), rejectedMockup()] },
+      beforeRun: (root) => {
+        seededPreset = read(root, 'elements/preset.ts')
+      },
+    })
+
+    expect(run.result).toBeNull()
+    expect(run.error.message).toBe(`Mockup Designer failed after retry: ${scriptTagError}`)
+    expect(run.calls.map((c) => c.agent)).toEqual([
+      'art-director',
+      'spec-critic',
+      'mockup-designer',
+      'mockup-designer',
+    ])
+    expect(run.retries).toBe(1)
+
+    expect(restored(run)).toEqual([{ paths: MUTABLE_FILES, root: run.root }])
+    expect(run.fakes.cleanupOrphans).toEqual([])
+    expect(read(run.root, 'elements/preset.ts')).toBe(seededPreset)
+
+    expect(run.fakes.archive).toHaveLength(0)
+    expect(run.verdicts).toBeNull()
+    expect(run.trace.dir).toMatch(/^build-failed-\d+$/)
+    expect(read(run.root, `archive/${run.date}/${run.trace.dir}/error.txt`)).toMatch(
+      /^Mockup Designer failed after retry: mockup\.html contains a <script> tag/
     )
   })
 })

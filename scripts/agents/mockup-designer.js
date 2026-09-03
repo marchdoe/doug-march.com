@@ -25,6 +25,7 @@ export function buildMockupDesignerUserPrompt({
   polishRef,
   revisionFeedback,
   tasteMemoryBlock,
+  retryContext,
 }) {
   const sections = []
   if (compositionContractBlock) sections.push(compositionContractBlock)
@@ -52,6 +53,7 @@ export function buildMockupDesignerUserPrompt({
     sections.push(
       `## CRITIC REVISION FEEDBACK — fix these before anything else\n\n${revisionFeedback}`
     )
+  if (retryContext) sections.push(retryContext)
   return sections.join('\n\n---\n\n')
 }
 

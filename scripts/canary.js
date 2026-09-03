@@ -280,14 +280,42 @@ function findErrorHead({ archiveDateDir, failedDir, trace, log }) {
 }
 
 /**
+ * The phase whose agent's own error message names it, read off the head of
+ * the run's final error rather than the trace's last step — a rejected
+ * Mockup Designer reply logs a `mockup-designer-rejected` step ahead of the
+ * throw, so "the last step" is a retry artifact, not where the run actually
+ * ended (canary reported "phase 1 (spec-critic)" for a phase-2 failure).
+ */
+const ERROR_PHASE_OWNERS = [
+  { prefix: 'Art Director failed', phase: 1, name: 'art-director' },
+  { prefix: 'Mockup Designer failed', phase: 2, name: 'mockup-designer' },
+  { prefix: 'React Engineer failed', phase: 3, name: 'react-engineer' },
+  { prefix: 'Restore of passing state failed', phase: 4, name: 'revision' },
+  { prefix: 'Build failed', phase: 5, name: 'repair' },
+]
+
+/** The `{ phase, name }` an error's own message names, or null when it names none. */
+function phaseOwnerFromError(errorHead) {
+  if (!errorHead) return null
+  const owner = ERROR_PHASE_OWNERS.find((o) => errorHead.startsWith(o.prefix))
+  return owner ? { phase: owner.phase, name: owner.name } : null
+}
+
+/** The `Ended in:` line: the error's named owner, else the trace's last step. */
+function computeEndedIn({ shipped, errorHead, trace }) {
+  const owner = shipped ? null : phaseOwnerFromError(errorHead)
+  if (owner) return `phase ${owner.phase} (${owner.name})`
+  const lastStep = (trace?.steps ?? []).at(-1)
+  if (!lastStep) return 'unknown — no trace recorded'
+  return `phase ${lastStep.phase ?? '—'} (${lastStep.name})`
+}
+
+/**
  * `# Canary run — <date>` (or `# Canary run (mock) — <date>` under
  * `--mock`), the pass/fail line, and the phase it ended in.
  */
-function renderHeader({ date, shipped, trace, mock }) {
-  const lastStep = (trace?.steps ?? []).at(-1)
-  const endedIn = lastStep
-    ? `phase ${lastStep.phase ?? '—'} (${lastStep.name})`
-    : 'unknown — no trace recorded'
+function renderHeader({ date, shipped, trace, mock, errorHead }) {
+  const endedIn = computeEndedIn({ shipped, errorHead, trace })
   const title = mock ? 'Canary run (mock)' : 'Canary run'
   return [
     `# ${title} — ${date ?? 'unknown date'}`,
@@ -349,7 +377,7 @@ function buildSummary({ date, shipped, trace, cost, errorHead, mock = false }) {
   const steps = trace?.steps ?? []
   const repairs = steps.filter((s) => s?.name === 'repair')
   return [
-    ...renderHeader({ date, shipped, trace, mock }),
+    ...renderHeader({ date, shipped, trace, mock, errorHead }),
     ...renderTraceSection(steps),
     ...renderRepairSection(repairs),
     ...renderCostSection(cost),

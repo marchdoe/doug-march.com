@@ -70,6 +70,13 @@ import { renderBrandLockupFile } from './utils/brand-lockup.js'
 import { formatHeader } from './utils/header-grammar.js'
 import { formatTuple } from './utils/composition-grammar.js'
 import { findEngineerOutputProblem } from './utils/engineer-output-check.js'
+import {
+  readOwnedFiles,
+  loadRepairBriefTemplate,
+  renderRepairBrief,
+  mergeEngineerPatch,
+  deleteFiles,
+} from './utils/engineer-patch.js'
 import { countArchivedDesigns } from './utils/archive-count.js'
 export { parseDelimiterResponse }
 
@@ -102,14 +109,16 @@ export function dropOrchestratorFiles(files, agentName = 'agent') {
 }
 
 /**
- * The one way an engineer response reaches disk.
+ * How a full engineer generation reaches disk.
  *
- * Three call sites write engineer output: the primary Phase 2c pass, the
- * post-critic revision, and the Phase 5 repair. The drop above was applied at
- * the first, added to the third after a repair overwrote __root.tsx, and
+ * Three call sites used to write engineer output: the primary Phase 2c pass,
+ * the post-critic revision, and the Phase 5 repair. The drop above was applied
+ * at the first, added to the third after a repair overwrote __root.tsx, and
  * never reached the second (#296) — so a revision answering "the header is
  * wrong" could overwrite BrandLockup.tsx after the orchestrator wrote it, and
- * nothing logged it. One function, so a fourth site cannot repeat that.
+ * nothing logged it. The revision and the repair are patches now (#432) and
+ * go through `applyEngineerPatch` inside the swarm, which applies the same
+ * drop before it merges; this stays the one path for a whole generation.
  *
  * Mutates `result.files` so the archive records what was actually written.
  *
@@ -118,9 +127,9 @@ export function dropOrchestratorFiles(files, agentName = 'agent') {
  * @param {{ root?: string }} [options] repo root to write under
  * @returns {Promise<string[]>} the paths written
  */
-async function writeEngineerFiles(result, agentLabel, { root = ROOT } = {}) {
+async function writeEngineerFiles(result, agentLabel, { root = ROOT, backup } = {}) {
   result.files = dropOrchestratorFiles(result.files, agentLabel)
-  return await writeFiles(result.files, { root })
+  return await writeFiles(result.files, { root, backup })
 }
 
 /**
@@ -220,56 +229,6 @@ export const FILE_OWNERSHIP = Object.fromEntries([
   ['elements/preset.ts', 'art-director'],
   ...ENGINEER_FILES.map((f) => [f, 'react-engineer']),
 ])
-
-/**
- * Clear whatever the engineer's previous attempts left on disk that the
- * upcoming write does not carry forward.
- *
- * Every repair reply (#432) is a complete regeneration of the engineer's
- * output, and replies rename or drop files freely. Nothing used to clean up
- * after a dropped file — `writeFiles` only ever adds — so a file attempt N
- * wrote that attempt N+1 no longer includes stayed on disk holding attempt
- * N's (now stale) content, and both `tsc --noEmit` and `fallow audit` check
- * the whole tree. Both 2026-09-03 repair traces showed exactly this: the
- * attempt's own files were type-clean, and every reported error lived in a
- * file an earlier attempt had written and this one had dropped.
- *
- * `writtenPaths` accumulates paths from every write this run, including the
- * Art Director's `elements/preset.ts` (via `writeFiles`) and the
- * orchestrator's own `__root.tsx` / `chassis-preset.ts` / `BrandLockup.tsx`
- * (written straight to disk and added to the same set) — none of those are
- * the engineer's to reset, so both are excluded here regardless of `keep`.
- *
- * @param {object} params
- * @param {Set<string>} params.writtenPaths - every path written so far this run
- * @param {Set<string>|string[]} params.keep - paths the upcoming write carries forward
- * @param {Map<string, string|null>} params.originalBackup - the pre-run snapshot;
- *   a stale path present here is restored to that content, otherwise deleted
- * @param {{ root?: string }} [params] repo root
- * @returns {Promise<{ restored: number, removed: number }>}
- */
-export async function resetEngineerSlate({ writtenPaths, keep, originalBackup, root = ROOT }) {
-  const keepSet = keep instanceof Set ? keep : new Set(keep)
-  const stale = [...writtenPaths].filter(
-    (p) =>
-      FILE_OWNERSHIP[p] !== 'art-director' && !ORCHESTRATOR_FILES.includes(p) && !keepSet.has(p)
-  )
-  if (stale.length === 0) return { restored: 0, removed: 0 }
-
-  const toRestore = new Map()
-  for (const p of stale) {
-    if (originalBackup.has(p)) toRestore.set(p, originalBackup.get(p))
-  }
-  if (toRestore.size > 0) await restore(toRestore, { root })
-
-  // Everything in `stale` not covered by the backup is an invented path
-  // (e.g. `app/components/WhitePaper.tsx`) — cleanupOrphans deletes exactly
-  // those and leaves backup-covered paths (just restored above) alone.
-  const removed = stale.length - toRestore.size
-  if (removed > 0) await cleanupOrphans(stale, originalBackup, { root })
-
-  return { restored: toRestore.size, removed }
-}
 
 /**
  * Resolve the WEIGHT_RISK creative weight. An explicitly-set env value
@@ -401,19 +360,20 @@ index.tsx is a single-composition canvas today, not a portfolio hub.`
 /**
  * Spawn a `claude` CLI process for one agent.
  *
+ * The build error used to be appended here, after the agent's whole original
+ * task, and the reply was a regeneration of everything (#432). A repair or
+ * revision now sends a repair brief as `userPrompt` instead, with
+ * `options.patch` set so an empty `===FILE:path===` block survives parsing
+ * as the instruction to delete that file.
+ *
  * @param {string} agentName
  * @param {string} systemPrompt
  * @param {string} userPrompt
- * @param {string} [buildError]
- * @param {{ timeoutMs?: number }} [options]
+ * @param {{ timeoutMs?: number, stallTimeoutMs?: number, model?: string, patch?: boolean }} [options]
  * @returns {Promise<{ files: Array<{path: string, content: string}>, rationale?: string, design_brief?: string }>}
  */
-async function callAgent(agentName, systemPrompt, userPrompt, buildError, options = {}) {
+async function callAgent(agentName, systemPrompt, userPrompt, options = {}) {
   let fullPrompt = userPrompt
-
-  if (buildError) {
-    fullPrompt += `\n\n---\n\nThe previous attempt failed with this build error:\n\n${buildError}\n\nPlease fix the issues and try again.`
-  }
 
   fullPrompt += `\n\n---\n\nIMPORTANT: Use the ===FILE:path=== delimiter format described in your instructions. Write complete file contents after each delimiter. No JSON, no markdown code fences, no explanation — just the delimiters and raw file content.`
 
@@ -447,7 +407,7 @@ async function callAgent(agentName, systemPrompt, userPrompt, buildError, option
       _fullResponse: result,
     }
   } else if (result.match(/^===FILE:/m)) {
-    parsed = parseDelimiterResponse(result)
+    parsed = parseDelimiterResponse(result, { keepEmptyFiles: options.patch === true })
   } else {
     throw new Error(
       `[${agentName}] response is neither a ===VERDICT=== block nor ===FILE:=== delimited\nFirst 300 chars: ${result.slice(0, 300)}`
@@ -925,6 +885,14 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         systemPrompt: artDirectorSystemPrompt,
       })
     } catch (firstErr) {
+      if (firstErr.transport) {
+        // A dead model (no credits, an outage) answers the retry the same way
+        // it answered the first call. Twenty-six August nights spent their
+        // retry on exactly that and reported it as a missing block (#432).
+        console.error(`  Art Director failed: ${firstErr.message}`)
+        await restore(originalBackup, { root })
+        throw new Error(`Art Director failed: no response from the model — ${firstErr.message}`)
+      }
       console.warn(`  Art Director failed (${firstErr.message}) — retrying once with error context`)
       noteRetry()
       try {
@@ -1003,7 +971,8 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
 
     // Write the Art Director's preset.ts to disk
     const presetFile = { path: 'elements/preset.ts', content: artDirectorResult.presetTs }
-    for (const p of await writeFiles([presetFile], { root })) writtenPaths.add(p)
+    for (const p of await writeFiles([presetFile], { root, backup: originalBackup }))
+      writtenPaths.add(p)
 
     // Orchestrator generates the chassis preset (fonts + fontSizes) and
     // __root.tsx (Google Fonts URL substituted into the frozen template).
@@ -1099,7 +1068,8 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
           systemPrompt: artDirectorSystemPrompt,
         })
         const retryPresetFile = { path: 'elements/preset.ts', content: artDirectorResult.presetTs }
-        for (const p of await writeFiles([retryPresetFile], { root })) writtenPaths.add(p)
+        for (const p of await writeFiles([retryPresetFile], { root, backup: originalBackup }))
+          writtenPaths.add(p)
         // The codegen retry re-ran the Art Director, so heroCopy/designBrief may
         // have changed since __root.tsx was first written. Regenerate it so the
         // og:title/og:description reflect the settled result, not the stale one.
@@ -1219,7 +1189,6 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         'spec-critic',
         specCriticPrompt,
         criticUserPrompt,
-        null,
         // Timeouts come from budgets.js, keyed by agent.
         { model: modelFor('spec-critic') }
       )
@@ -1474,19 +1443,60 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       const t0Mockup = Date.now()
       try {
         mockup = await runMockupDesigner({ ...mockupCtxBase, revisionFeedback })
-      } catch (err) {
-        if (round > 0 && mockup) {
-          // A revision round crashed but a previous round produced a complete
-          // mockup — don't throw away a viable design over a failed polish
-          // pass. mockup/mockupScreenshot still hold the previous round.
-          console.warn(
-            `  Mockup Designer revision failed (round ${round}, non-blocking — proceeding with previous mockup): ${err.message}`
-          )
-          break
+      } catch (firstErr) {
+        if (firstErr.transport) {
+          // A dead model answers the retry the same way it answered the
+          // first call (see the Art Director's identical guard, #432) — skip
+          // straight to the same fallback/throw a crash always got.
+          if (round > 0 && mockup) {
+            console.warn(
+              `  Mockup Designer revision failed (round ${round}, non-blocking — proceeding with previous mockup): ${firstErr.message}`
+            )
+            break
+          }
+          console.error(`  Mockup Designer failed (round ${round}): ${firstErr.message}`)
+          await restore(originalBackup, { root })
+          throw new Error(`Mockup Designer failed: ${firstErr.message}`)
         }
-        console.error(`  Mockup Designer failed (round ${round}): ${err.message}`)
-        await restore(originalBackup, { root })
-        throw new Error(`Mockup Designer failed: ${err.message}`)
+        console.warn(
+          `  Mockup Designer failed (${firstErr.message}) — retrying once with the reason`
+        )
+        noteRetry()
+        trace.addStep({
+          name: 'mockup-designer-rejected',
+          phase: 2,
+          input: { round },
+          output: { error: firstErr.message },
+          durationMs: Date.now() - t0Mockup,
+        })
+        try {
+          mockup = await runMockupDesigner({
+            ...mockupCtxBase,
+            revisionFeedback,
+            retryContext: `## Previous attempt was rejected\n\nYour previous mockup failed validation: ${firstErr.message}\nReturn a JS-free mockup.html and every required block this time.`,
+          })
+        } catch (err) {
+          if (round > 0 && mockup) {
+            // A revision round crashed (twice) but a previous round produced
+            // a complete mockup — don't throw away a viable design over a
+            // failed polish pass. mockup/mockupScreenshot still hold the
+            // previous round.
+            console.warn(
+              `  Mockup Designer revision failed (round ${round}, non-blocking — proceeding with previous mockup): ${err.message}`
+            )
+            break
+          }
+          console.error(`  Mockup Designer failed after retry (round ${round}): ${err.message}`)
+          trace.addStep({
+            name: 'mockup-designer-rejected',
+            phase: 2,
+            input: { round },
+            output: { error: err.message },
+            durationMs: Date.now() - t0Mockup,
+          })
+          await restore(originalBackup, { root })
+          throw new Error(`Mockup Designer failed after retry: ${err.message}`)
+        }
       }
       await writeFile(mockupPath, mockup.mockupHtml, 'utf8')
 
@@ -1641,7 +1651,6 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         'react-engineer',
         reactEngineerSystemPrompt,
         engineerUserPrompt,
-        null,
         reactEngineerAgentConfig.options
       )
     } catch (err) {
@@ -1650,7 +1659,7 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       // run (AD + 3 mockup rounds) when one more attempt often succeeds.
       // Retry ONCE on a stall, unless we're already past the run deadline.
       const isStall = /stalled|0KB|no output/i.test(err.message)
-      if (isStall && !pastDeadline()) {
+      if (isStall && !err.transport && !pastDeadline()) {
         console.warn(`  React Engineer stalled (${err.message}) — retrying once`)
         noteRetry()
         try {
@@ -1658,7 +1667,6 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
             'react-engineer',
             reactEngineerSystemPrompt,
             engineerUserPrompt,
-            null,
             reactEngineerAgentConfig.options
           )
         } catch (retryErr) {
@@ -1700,7 +1708,6 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
           'react-engineer',
           reactEngineerSystemPrompt,
           reminderPrompt,
-          null,
           reactEngineerAgentConfig.options
         )
         const remaining = findEngineerOutputProblem(retry.files, chosenComposition.shell_posture)
@@ -1717,7 +1724,10 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
 
     // Write all files. Orchestrator-owned paths are dropped first — the
     // engineer is told not to emit them and nothing used to check.
-    for (const p of await writeEngineerFiles(engineerResult, 'React Engineer', { root }))
+    for (const p of await writeEngineerFiles(engineerResult, 'React Engineer', {
+      root,
+      backup: originalBackup,
+    }))
       writtenPaths.add(p)
 
     trace.addStep({
@@ -1842,6 +1852,72 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       archiveRan = true
 
       return { rationale, design_brief: designBrief, files: allFiles }
+    }
+
+    // -----------------------------------------------------------------------
+    // A repair is a patch (#432, docs/adr/0001-repair-as-a-patch.md). The
+    // Phase 5 repair and the post-critic revision both go through these two.
+    // -----------------------------------------------------------------------
+
+    let repairBriefTemplate = null
+
+    /**
+     * The user prompt for a repair or revision call: the engineer's files as
+     * they stand on disk, and the report verbatim. The system prompt is the
+     * engineer's own, unchanged, so it keeps every rule it was given.
+     * @param {string} errors a build error, or the critic's feedback plus the
+     *   measured faults
+     * @returns {Promise<{ owned: Array<{path: string, content: string}>, brief: string }>}
+     */
+    async function buildRepairBrief(errors) {
+      repairBriefTemplate ??= await loadRepairBriefTemplate({ root })
+      const owned = await readOwnedFiles(writtenPaths, FILE_OWNERSHIP, { root })
+      return { owned, brief: renderRepairBrief(repairBriefTemplate, { owned, errors }) }
+    }
+
+    /**
+     * Merge a patch reply over the owned files and apply it.
+     *
+     * The required-file and shell-posture check runs on the MERGED set: a
+     * reply that changes one file omits every other required file by design,
+     * so the reply alone can never pass it. When the merged set fails, nothing
+     * is written and the problem comes back for the caller to spend the
+     * attempt on. Otherwise the reply's files are written, its empty blocks
+     * delete the owned files they name, and everything else stays as it is.
+     *
+     * Mutates `reply.files` to the merged set so the archive records what
+     * shipped, not the three files the reply happened to carry.
+     *
+     * @param {Array<{path: string, content: string}>} owned from buildRepairBrief
+     * @param {{ files: Array<{path: string, content: string}> }} reply
+     * @param {string} label for the log lines
+     * @returns {Promise<{ problem: import('./utils/engineer-output-check.js').OutputProblem|null,
+     *   replied: number, written: number, deleted: number }>}
+     */
+    async function applyEngineerPatch(owned, reply, label) {
+      // The error text has named __root.tsx before, which invites the agent to
+      // "fix" a file it does not own.
+      const files = dropOrchestratorFiles(reply.files, label)
+      const patch = mergeEngineerPatch(owned, files)
+      const summary = {
+        replied: files.length,
+        written: patch.writes.length,
+        deleted: patch.deletes.length,
+      }
+      const problem = findEngineerOutputProblem(patch.files, chosenComposition.shell_posture)
+      if (problem) return { problem, ...summary }
+
+      for (const p of patch.ignoredDeletes) {
+        console.warn(`  ⚠ ${label} emptied ${p}, which it does not own this run — ignoring`)
+      }
+      for (const p of await writeFiles(patch.writes, { root, backup: originalBackup }))
+        writtenPaths.add(p)
+      await deleteFiles(patch.deletes, { root, backup: originalBackup })
+      reply.files = patch.files
+      console.log(
+        `  ${label}: ${summary.written} written, ${summary.deleted} deleted, ${patch.files.length} on disk`
+      )
+      return { problem: null, ...summary }
     }
 
     // -----------------------------------------------------------------------
@@ -2134,17 +2210,28 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
             // what's actually on disk; keep the passing result to fall back to.
             const passingEngineerResult = engineerResult
             try {
-              const retryResult = await callAgent(
-                responsibleAgent,
-                config.prompt,
-                config.user(),
-                feedback,
-                config.options
+              // A revision is a patch too (#432): the brief lists the files
+              // that passed, the feedback is the error report, and the reply
+              // is merged over the passing state rather than replacing it.
+              const { owned, brief } = await buildRepairBrief(
+                `The build passed. The screenshot critic and the surface gate found:\n\n${feedback}`
               )
-              for (const p of await writeEngineerFiles(retryResult, 'React Engineer revision', {
-                root,
-              }))
-                writtenPaths.add(p)
+              const retryResult = await callAgent(responsibleAgent, config.prompt, brief, {
+                ...config.options,
+                patch: true,
+              })
+              const applied = await applyEngineerPatch(
+                owned,
+                retryResult,
+                'React Engineer revision'
+              )
+              if (applied.problem) {
+                // Nothing was written; the passing state is still on disk.
+                console.warn(
+                  `  ⚠ ${applied.problem.message} — revision not applied, shipping as-is`
+                )
+                return
+              }
               engineerResult = retryResult
 
               const retryBuild = validateBuild({ root, shell: shellDecl, date: today })
@@ -2245,22 +2332,16 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
     const failingAgent = identifyFailingAgent(buildResult.error)
     console.log(`  identified failing agent: ${failingAgent}`)
 
-    // Restore only the failing agent's files. Art Director files are
-    // intentionally NEVER restored here — by design (see retryAgents comment
-    // below), build failures involving preset.ts are handled by the React
-    // Engineer adapting to today's tokens, not by reverting the preset and
-    // re-running the Art Director. Reverting would leave preset.ts and
-    // styled-system/ incoherent (codegen is not re-run in Phase 5) and
-    // produce archive/disk-state divergence.
-    const filesToRestore = new Map()
-    for (const [filePath, content] of originalBackup.entries()) {
-      const owner = FILE_OWNERSHIP[filePath]
-      if (owner === 'art-director') continue
-      if (failingAgent === 'both' || owner === failingAgent) {
-        filesToRestore.set(filePath, content)
-      }
-    }
-    await restore(filesToRestore, { root })
+    // Nothing is restored or reset before the repairs. Phase 3's files ARE
+    // the base a repair patches (#432): the engineer is told what is on disk
+    // and returns only what must change. The restore of the engineer's files
+    // from originalBackup that used to run here would put yesterday's
+    // Layout.tsx under today's patched og.tsx, and the slate reset #437 added
+    // for full regenerations (drop what the reply omits) would delete the
+    // very files a patch leaves alone on purpose, so both are gone. Art
+    // Director files were never restored here: a build failure involving
+    // preset.ts is handled by the engineer adapting to today's tokens, since
+    // codegen is not re-run in Phase 5.
 
     // Build agent lookup for retry. Per-agent `options` carry the model +
     // timeout overrides so new agents added later don't need re-wiring at the
@@ -2276,15 +2357,16 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
     // a downstream typing problem — best handled by React Engineer
     // retry rather than full Art Director re-run (which is more expensive).
     // One attempt was never enough. The engineer averages about one small slip
-    // per generation, and a repair regenerates every file it owns — so a single
-    // attempt reliably trades the error it was given for a different one and
-    // the night is lost. Observed three times in one day on 2026-09-01:
+    // per generation, and while a repair regenerated every file it owned a
+    // single attempt reliably traded the error it was given for a different
+    // one and the night was lost. Observed three times in one day on 2026-09-01:
     //
     //   CI dry run   width: 'full'  -> repair -> bg: 'surfaceDeep'
     //   local run 3  gap: '10'      -> repair -> Footer.tsx TS2769
     //
-    // Each attempt costs one engineer regeneration. A lost night costs the
-    // whole run, so the trade is worth making up to a bound. Attempts stop
+    // A repair is a patch now (#432), which shrinks the surface each attempt
+    // can break; the bound stays because a patch can still miss. A lost night
+    // costs the whole run, so the trade is worth making up to a bound. Attempts stop
     // early when the run budget is spent — a repair that starts after the
     // deadline cannot finish and archive.
     const MAX_REPAIR_ATTEMPTS = 3
@@ -2300,28 +2382,10 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         )
         break
       }
-
-      // filesToRestore (above) only covers canonical MUTABLE_FILES paths —
-      // it says nothing about paths the engineer invented beyond that list,
-      // and those are exactly the orphans #432 is about: they must not
-      // survive from the failed first pass into the repair about to run.
-      // Gated on the deadline check above and on attempt === 0 so it runs
-      // exactly once, immediately before attempt 1 — never when the
-      // deadline breaks the loop before any attempt happens, which would
-      // otherwise delete files archiveFailedSources still needs below.
-      if (attempt === 0) {
-        const { restored, removed } = await resetEngineerSlate({
-          writtenPaths,
-          keep: [],
-          originalBackup,
-          root,
-        })
-        console.log(`  slate reset: ${restored} restored, ${removed} removed`)
-      }
       attempt++
 
       console.log(
-        `\n  repair attempt ${attempt}/${MAX_REPAIR_ATTEMPTS} — retrying react-engineer with build error context...`
+        `\n  repair attempt ${attempt}/${MAX_REPAIR_ATTEMPTS} — sending react-engineer a repair brief...`
       )
       noteRetry()
       const t0Repair = Date.now()
@@ -2330,14 +2394,14 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       // given, not what the next one will be.
       const errorGivenToAttempt = repairError
       let retryResult
+      let owned
       try {
-        retryResult = await callAgent(
-          'react-engineer',
-          engineerConfig.prompt,
-          engineerConfig.user(),
-          repairError,
-          engineerConfig.options
-        )
+        const briefed = await buildRepairBrief(repairError)
+        owned = briefed.owned
+        retryResult = await callAgent('react-engineer', engineerConfig.prompt, briefed.brief, {
+          ...engineerConfig.options,
+          patch: true,
+        })
       } catch (err) {
         console.error(`  react-engineer repair failed: ${err.message}`)
         trace.addStep({
@@ -2356,27 +2420,21 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         throw new Error(`react-engineer repair crashed: ${err.message}`)
       }
 
-      // A repair regenerates what it chooses to. If it omitted a required
-      // file, what is on disk at that path is what restore() put back —
-      // yesterday's — and a passing build would ship it as "repair N" with a
-      // record listing only the files the repair wrote (#297). Same for a nav
-      // the posture forbids. The Phase 2c pass checks both; this path did not.
-      // Spend the attempt on the problem instead of the build — checked
-      // before anything is written, so a reply that fails this never touches
-      // disk at all.
-      const outputProblem = findEngineerOutputProblem(
-        retryResult.files,
-        chosenComposition.shell_posture
-      )
-      if (outputProblem) {
-        console.warn(`  ⚠ ${outputProblem.message} — repair attempt ${attempt} not built`)
-        repairError = `${outputProblem.message}\n\n${outputProblem.reminder}`
+      // The merged set (disk plus the reply) must still hold every required
+      // file and respect the posture: a reply that empties Sidebar.tsx, or a
+      // nav the posture forbids, would otherwise ship as "repair N" (#297).
+      // applyEngineerPatch checks before it writes, so a reply that fails
+      // never touches disk; the attempt is spent on the problem, not a build.
+      const applied = await applyEngineerPatch(owned, retryResult, 'React Engineer repair')
+      if (applied.problem) {
+        console.warn(`  ⚠ ${applied.problem.message} — repair attempt ${attempt} not built`)
+        repairError = `${applied.problem.message}\n\n${applied.problem.reminder}`
         trace.addStep({
           name: 'repair',
           phase: 5,
           input: { attempt, error: errorGivenToAttempt?.slice(0, 2000) },
           output: {
-            files: retryResult.files.length,
+            files: applied.replied,
             success: false,
             error: repairError.slice(0, 2000),
           },
@@ -2385,26 +2443,9 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         continue
       }
 
-      // Update the result so the archive records the repair output, not stale originals
+      // The merged set, so the archive records what is on disk after the
+      // patch rather than the files the reply happened to carry.
       engineerResult = retryResult
-
-      // Each reply is a complete regeneration; a file an earlier attempt
-      // wrote and this one drops must not survive as a stale error source
-      // for tsc/fallow (#432) — clear it before the new files land.
-      const keep = new Set(retryResult.files.map((f) => f.path))
-      const { restored, removed } = await resetEngineerSlate({
-        writtenPaths,
-        keep,
-        originalBackup,
-        root,
-      })
-      console.log(`  slate reset: ${restored} restored, ${removed} removed`)
-
-      // The error text handed to a repair has named __root.tsx before, which
-      // invites the agent to "fix" a file it does not own; writeEngineerFiles
-      // drops it.
-      for (const p of await writeEngineerFiles(retryResult, 'React Engineer repair', { root }))
-        writtenPaths.add(p)
 
       const attemptBuild = validateBuild({ root, shell: shellDecl, date: today })
       if (attemptBuild.success) {
@@ -2413,7 +2454,14 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
           name: 'repair',
           phase: 5,
           input: { attempt, error: errorGivenToAttempt?.slice(0, 2000) },
-          output: { files: retryResult.files.length, success: true, error: undefined },
+          output: {
+            files: applied.replied,
+            written: applied.written,
+            deleted: applied.deleted,
+            merged: retryResult.files.length,
+            success: true,
+            error: undefined,
+          },
           durationMs: Date.now() - t0Repair,
         })
         const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])], {
@@ -2430,7 +2478,10 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         phase: 5,
         input: { attempt, error: errorGivenToAttempt?.slice(0, 2000) },
         output: {
-          files: retryResult.files.length,
+          files: applied.replied,
+          written: applied.written,
+          deleted: applied.deleted,
+          merged: retryResult.files.length,
           success: false,
           error: repairError?.slice(0, 2000),
         },

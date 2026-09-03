@@ -386,3 +386,57 @@ describe('runCanary — a lost night', () => {
       expect(summary).toContain('collect-signals crashed')
     }))
 })
+
+describe('runCanary — "Ended in" reads the failing agent off the error, not the last step', () => {
+  const fixedNow = () => new Date(2026, 8, 2, 14, 5, 0)
+
+  // The trace's last step is always spec-critic (phase 1) — a retry (e.g.
+  // #432's mockup-designer-rejected) can log a step for the phase that
+  // eventually failed, so the last step in the trace is not always where the
+  // run actually ended. Only the thrown error's own message says that.
+  const traceEndingInSpecCritic = {
+    steps: [{ name: 'spec-critic', phase: 1, durationMs: 200, timestamp: 't1' }],
+  }
+
+  it.each([
+    ['Art Director failed: claude exited 1 before any output', 'phase 1 (art-director)'],
+    ['Mockup Designer failed: mockup.html contains a <script> tag', 'phase 2 (mockup-designer)'],
+    ['React Engineer failed: claude exited 1 before any output', 'phase 3 (react-engineer)'],
+    [
+      'Restore of passing state failed to rebuild after post-critic revision. Error:\nTS2769',
+      'phase 4 (revision)',
+    ],
+    ['Build failed after 3 repair attempt(s).\nTS2769: no overload matches', 'phase 5 (repair)'],
+  ])('maps %j to %s', async (errorText, expectedPhase) =>
+    withEnv(clearGuardEnv, async () => {
+      writeArchiveFixture({
+        date: '2026-09-02',
+        buildName: 'build-failed-999',
+        trace: traceEndingInSpecCritic,
+        cost: { total_usd: 0.1, calls: 1, retries: 1 },
+        extraFiles: { 'error.txt': errorText },
+      })
+      const exec = () => ({ status: 1, stdout: '', stderr: 'pipeline failed\n' })
+      const result = await runCanary({ exec, now: fixedNow, root, worktreePath: worktree })
+      expect(result.exitCode).toBe(1)
+      const summary = readFileSync(path.join(result.evidenceDir, 'summary.md'), 'utf8')
+      expect(summary).toContain(`**Ended in:** ${expectedPhase}`)
+      expect(summary).not.toContain('**Ended in:** phase 1 (spec-critic)')
+    })
+  )
+
+  it('falls back to the last trace step when the error names no phase owner', async () =>
+    withEnv(clearGuardEnv, async () => {
+      writeArchiveFixture({
+        date: '2026-09-02',
+        buildName: 'build-failed-999',
+        trace: traceEndingInSpecCritic,
+        cost: { total_usd: 0.1, calls: 1, retries: 0 },
+        extraFiles: { 'error.txt': 'run budget exhausted before the Mockup Designer could start' },
+      })
+      const exec = () => ({ status: 1, stdout: '', stderr: 'pipeline failed\n' })
+      const result = await runCanary({ exec, now: fixedNow, root, worktreePath: worktree })
+      const summary = readFileSync(path.join(result.evidenceDir, 'summary.md'), 'utf8')
+      expect(summary).toContain('**Ended in:** phase 1 (spec-critic)')
+    }))
+})

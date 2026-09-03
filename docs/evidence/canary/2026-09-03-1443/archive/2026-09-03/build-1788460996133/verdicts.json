@@ -1,0 +1,36 @@
+[
+  {
+    "critic": "spec-critic",
+    "verdict": "APPROVED",
+    "feedback": "APPROVED",
+    "ts": 1788458719918
+  },
+  {
+    "critic": "mockup-critic",
+    "round": 0,
+    "verdict": "REVISE",
+    "feedback": "malformed critic response: I cannot issue a verdict. You've flagged that **no screenshot is attached** and emphasized: \"Do NOT describe, guess at, or invent anything about the rendered pixels; base your verdict on the declared brief, measurables, and shell alone.\"\n\nBut all five checks demand visual evidence:\n\n1. **Sanity** — ",
+    "channel": "cli-text-no-key",
+    "ts": 1788459115612
+  },
+  {
+    "critic": "surface-gate",
+    "round": 1,
+    "verdict": "REVISE",
+    "feedback": "/ @360: document is 259px wider than the 360px viewport (scrollWidth 619)\n/ @360: document is 259px wider than the 360px viewport (scrollWidth 619)\n/about @360: document is 168px wider than the 360px viewport (scrollWidth 528)\n/about @360: 340 characters of running copy set at 54px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @1440: 340 characters of running copy set at 54px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @360: document is 168px wider than the 360px viewport (scrollWidth 528)\n/about @360: 340 characters of running copy set at 54px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @1440: 340 characters of running copy set at 54px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work @360: document is 288px wider than the 360px viewport (scrollWidth 648)\n/work @360: document is 288px wider than the 360px viewport (scrollWidth 648)\n/work/spaceman @360: document is 537px wider than the 360px viewport (scrollWidth 897)\n/work/spaceman @360: document is 537px wider than the 360px viewport (scrollWidth 897)\n/work/fishsticks @1440: document is 29px wider than the 1440px viewport (scrollWidth 1469)\n/work/fishsticks @1440: document is 29px wider than the 1440px viewport (scrollWidth 1469)\n/work/fishsticks @360: document is 749px wider than the 360px viewport (scrollWidth 1109)\n/work/fishsticks @360: document is 749px wider than the 360px viewport (scrollWidth 1109)\n/work/15th-club @360: document is 112px wider than the 360px viewport (scrollWidth 472)\n/work/15th-club @360: document is 112px wider than the 360px viewport (scrollWidth 472)\n/work/dougmar-ch @360: document is 749px wider than the 360px viewport (scrollWidth 1109)\n/work/dougmar-ch @360: document is 749px wider than the 360px viewport (scrollWidth 1109)\n/work/dougmar-ch @1440: document is 29px wider than the 1440px viewport (scrollWidth 1469)\n/work/dougmar-ch @1440: document is 29px wider than the 1440px viewport (scrollWidth 1469)\n/work/teeturn @360: document is 431px wider than the 360px viewport (scrollWidth 791)\n/work/teeturn @360: document is 431px wider than the 360px viewport (scrollWidth 791)\n/work/politweets @1440: document is 29px wider than the 1440px viewport (scrollWidth 1469)\n/work/politweets @360: document is 749px wider than the 360px viewport (scrollWidth 1109)\n/work/politweets @360: document is 749px wider than the 360px viewport (scrollWidth 1109)\n/work/politweets @1440: document is 29px wider than the 1440px viewport (scrollWidth 1469)\n/work/twittertale @360: document is 855px wider than the 360px viewport (scrollWidth 1215)\n/work/twittertale @1440: document is 135px wider than the 1440px viewport (scrollWidth 1575)\n/work/twittertale @1440: document is 135px wider than the 1440px viewport (scrollWidth 1575)\n/work/twittertale @360: document is 855px wider than the 360px viewport (scrollWidth 1215)",
+    "ts": 1788460538500
+  },
+  {
+    "critic": "screenshot-critic",
+    "verdict": "REVISE",
+    "feedback": "===VERDICT===\nREVISE\n\n**Responsible agent:** react-engineer\n\n**Issues:**\n- Horizontal overflow at the 360px viewport, both color schemes, on nearly every rewritten page: /about (168px over, scrollWidth 528), /work (288px over, scrollWidth 648), /work/spaceman (537px over, scrollWidth 897), /work/fishsticks (749px over, scrollWidth 1109), /work/15th-club (112px over, scrollWidth 472), /work/dougmar-ch (749px over, scrollWidth 1109), /work/teeturn (431px over, scrollWidth 791), /work/politweets (749px over, scrollWidth 1109), /work/twittertale (855px over, scrollWidth 1215). A mobile visitor to any of these pages gets a horizontal scrollbar and clipped content — this is not one outlier page, it's the majority of the surfaces this build touched. Find and constrain whatever fixed-width element (image, code block, table, or unconstrained flex/grid child) is forcing these widths; every container should respect `max-width: 100vw` with proper wrapping.\n- Horizontal overflow persists even at the 1440px desktop viewport on four project pages, both schemes: /work/fishsticks (29px over, scrollWidth 1469), /work/dougmar-ch (29px over, scrollWidth 1469), /work/politweets (29px over, scrollWidth 1469), /work/twittertale (135px over, scrollWidth 1575). Desktop should never overflow; the consistent ~29px overage across three of the four suggests a shared component (likely a shared media/embed block) with a hardcoded width instead of a fluid one.\n- /about: the running paragraph (\"I work at the intersection of design and engineering — not a...\", 340 characters) is set at 54px — above the 48px display threshold — at both 360px and 1440px, both schemes. Per the typography spec, the display step is reserved for short hero-scale phrases; body copy belongs on the body/workhorse step (sm/base). A 340-character block at near-hero size reads as a wall of text rather than a hierarchy decision, and directly contradicts the ramp discipline the brief specifies elsewhere (numeral in display, capti",
+    "channel": "cli-text-no-key",
+    "ts": 1788460577331
+  },
+  {
+    "critic": "surface-gate",
+    "verdict": "NEEDS-HUMAN",
+    "feedback": "Authored routes outside MUTABLE_FILES failed the gate: /work",
+    "ts": 1788460577331
+  }
+]

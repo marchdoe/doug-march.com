@@ -10,6 +10,11 @@
  * Director needs the parser.
  *
  * @param {string} result - raw response text
+ * @param {{ keepEmptyFiles?: boolean }} [options] `keepEmptyFiles` keeps a
+ *   `===FILE:path===` block with nothing after it as `{ path, content: '' }`.
+ *   Off by default: for a full generation an empty block is a slip and is
+ *   dropped, as it always was. A repair reply (#432) is a patch, and there an
+ *   empty block is the one way to say "delete this file".
  * @returns {{
  *   files: Array<{path: string, content: string}>,
  *   rationale?: string,
@@ -30,7 +35,7 @@
  *   composition_rationale?: string,
  * }}
  */
-export function parseDelimiterResponse(result) {
+export function parseDelimiterResponse(result, { keepEmptyFiles = false } = {}) {
   const files = []
   const sentinel = '\n===END_SENTINEL===\n'
   // Strip outer markdown code fence if the model wraps its entire response.
@@ -44,7 +49,7 @@ export function parseDelimiterResponse(result) {
   for (const match of withSentinel.matchAll(filePattern)) {
     const filePath = match[1].trim()
     const content = match[2].trim()
-    if (filePath && content) {
+    if (filePath && (content || keepEmptyFiles)) {
       files.push({ path: filePath, content })
     }
   }
