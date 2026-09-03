@@ -1,5 +1,7 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
+import path from 'node:path'
 import { describe, it, expect, vi } from 'vitest'
+import { tempDir } from '../helpers/tmp.js'
 import {
   runStaticChecks,
   STATIC_CHECK_PATHS,
@@ -180,6 +182,41 @@ describe('runStaticChecks', () => {
     expect(result).toEqual({ success: true })
     expect(warn).toHaveBeenCalledWith(expect.stringContaining('could not be read'))
     warn.mockRestore()
+  })
+
+  it('writes the raw output of all three tools to last-static-checks.txt, one section per tool', async () => {
+    const root = await tempDir('dm-static-checks-')
+    const { spawn } = fakeSpawn({
+      biome: { stdout: 'Checked 40 files in 9ms.' },
+      tsc: { status: 2, stdout: 'app/components/Layout.tsx(1,1): error TS2322: bad.' },
+      fallow: { status: 1, stdout: FALLOW_FAIL },
+    })
+    const result = runStaticChecks({ spawn, root, date: '2026-09-03' })
+    expect(result.success).toBe(false)
+
+    const outputPath = path.join(root, 'archive', '2026-09-03', 'last-static-checks.txt')
+    expect(existsSync(outputPath)).toBe(true)
+    const written = readFileSync(outputPath, 'utf8')
+    expect(written).toContain('=== biome check --write ===')
+    expect(written).toContain('Checked 40 files in 9ms.')
+    expect(written).toContain('=== tsc --noEmit ===')
+    expect(written).toContain('app/components/Layout.tsx(1,1): error TS2322: bad.')
+    expect(written).toContain('=== fallow audit --base HEAD ===')
+    expect(written).toContain(FALLOW_FAIL)
+  })
+
+  it('overwrites last-static-checks.txt on the next call', async () => {
+    const root = await tempDir('dm-static-checks-')
+    runStaticChecks({
+      spawn: fakeSpawn({ tsc: { status: 2, stdout: 'first run error' } }).spawn,
+      root,
+      date: '2026-09-03',
+    })
+    runStaticChecks({ spawn: fakeSpawn().spawn, root, date: '2026-09-03' })
+
+    const outputPath = path.join(root, 'archive', '2026-09-03', 'last-static-checks.txt')
+    const written = readFileSync(outputPath, 'utf8')
+    expect(written).not.toContain('first run error')
   })
 
   it('caps a runaway biome log from the end, saying so, keeping the head', () => {

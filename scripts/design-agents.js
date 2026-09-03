@@ -38,7 +38,7 @@ import {
 import { backup, writeFiles, restore, cleanupOrphans, ROOT } from './utils/file-manager.js'
 import { validateBuild, formatGeneratedFile } from './utils/build-validator.js'
 import { archive } from './utils/archiver.js'
-import { resetLedger, noteRetry } from './utils/cost-ledger.js'
+import { resetLedger, noteRetry, summarizeLedger } from './utils/cost-ledger.js'
 import { createTrace } from './utils/trace.js'
 import { selectLane } from './utils/select-lane.js'
 import { hashToRange } from './utils/deterministic-hash.js'
@@ -579,6 +579,20 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
           `${error.message || String(error)}\n\n${error.stack || ''}`,
           'utf8'
         )
+      }
+      // A failed night's spend used to vanish: archive()'s cost.json only
+      // exists on the success path, so a night that burned three repair
+      // attempts and still lost left no record of what it cost (#432). Same
+      // object, same shape as the archiver writes on success — non-blocking,
+      // like every other telemetry write.
+      try {
+        await writeFile(
+          path.join(failedDir, 'cost.json'),
+          JSON.stringify(summarizeLedger(), null, 2),
+          'utf8'
+        )
+      } catch (costErr) {
+        console.warn(`  could not write cost.json: ${costErr.message}`)
       }
       console.log(`  failure trace saved to ${path.basename(failedDir)}/trace.json`)
       // Also emit trace to stdout so it's captured in Actions logs even if
@@ -2232,6 +2246,11 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         `\n  repair attempt ${attempt}/${MAX_REPAIR_ATTEMPTS} — retrying react-engineer with build error context...`
       )
       noteRetry()
+      const t0Repair = Date.now()
+      // Snapshotted before this attempt can reassign `repairError` below —
+      // the trace step for this attempt must record what THIS attempt was
+      // given, not what the next one will be.
+      const errorGivenToAttempt = repairError
       let retryResult
       try {
         retryResult = await callAgent(
@@ -2243,6 +2262,13 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         )
       } catch (err) {
         console.error(`  react-engineer repair failed: ${err.message}`)
+        trace.addStep({
+          name: 'repair',
+          phase: 5,
+          input: { attempt, error: errorGivenToAttempt?.slice(0, 2000) },
+          output: { files: 0, success: false, error: err.message.slice(0, 2000) },
+          durationMs: Date.now() - t0Repair,
+        })
         // If the repair agent itself crashed, don't silently continue to
         // validateBuild — bail out with the real error so debugging points
         // at the actual cause (code review #14).
@@ -2273,12 +2299,30 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       if (outputProblem) {
         console.warn(`  ⚠ ${outputProblem.message} — repair attempt ${attempt} not built`)
         repairError = `${outputProblem.message}\n\n${outputProblem.reminder}`
+        trace.addStep({
+          name: 'repair',
+          phase: 5,
+          input: { attempt, error: errorGivenToAttempt?.slice(0, 2000) },
+          output: {
+            files: retryResult.files.length,
+            success: false,
+            error: repairError.slice(0, 2000),
+          },
+          durationMs: Date.now() - t0Repair,
+        })
         continue
       }
 
       const attemptBuild = validateBuild({ root, shell: shellDecl, date: today })
       if (attemptBuild.success) {
         console.log(`\n=== Repair build passed on attempt ${attempt}! ===`)
+        trace.addStep({
+          name: 'repair',
+          phase: 5,
+          input: { attempt, error: errorGivenToAttempt?.slice(0, 2000) },
+          output: { files: retryResult.files.length, success: true, error: undefined },
+          durationMs: Date.now() - t0Repair,
+        })
         const passingBackup = await backup([...new Set([...MUTABLE_FILES, ...writtenPaths])], {
           root,
         })
@@ -2288,6 +2332,17 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
       }
 
       repairError = attemptBuild.error
+      trace.addStep({
+        name: 'repair',
+        phase: 5,
+        input: { attempt, error: errorGivenToAttempt?.slice(0, 2000) },
+        output: {
+          files: retryResult.files.length,
+          success: false,
+          error: repairError?.slice(0, 2000),
+        },
+        durationMs: Date.now() - t0Repair,
+      })
       console.warn(`  repair attempt ${attempt} did not pass — carrying the new error forward`)
     }
 

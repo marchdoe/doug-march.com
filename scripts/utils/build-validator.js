@@ -1051,7 +1051,7 @@ export function validateBuild({
   }
 
   // Compiles and renders is not the same as passes CI. See runStaticChecks.
-  const statics = runStaticChecks()
+  const statics = runStaticChecks({ root, date })
   if (!statics.success) return statics
 
   console.log('  build succeeded')
@@ -1211,17 +1211,31 @@ export const STATIC_CHECK_PATHS = ['app/components', 'app/routes']
  * Cheap: biome under a second, tsc about one, fallow about two. The run
  * budgets sixty minutes.
  *
- * @param {{ spawn?: typeof spawnSync, root?: string }} [deps] injectable for tests
+ * The raw combined output of all three tools is also written to
+ * `archive/<date>/last-static-checks.txt`, one section per tool, overwriting
+ * whatever the previous call left there — `validateBuild`'s own
+ * `last-build-output.txt` does the same for `pnpm build`. Without it, a
+ * failing night's static-check output existed only in the process log: the
+ * artifact the nightly workflow uploads on failure held zero tsc errors
+ * because nothing on disk ever recorded them (#432).
+ *
+ * @param {{ spawn?: typeof spawnSync, root?: string, date?: string }} [deps] injectable for tests
  * @returns {{ success: boolean, error?: string, fixed?: string }}
  */
-export function runStaticChecks({ spawn = spawnSync, root = ROOT } = {}) {
+export function runStaticChecks({
+  spawn = spawnSync,
+  root = ROOT,
+  date = localDateString(new Date()),
+} = {}) {
   const opts = { cwd: root, encoding: 'utf8', timeout: STEP_BUDGETS.staticCheckMs }
   const combined = (r) => (r.stdout ?? '') + (r.stderr ?? '')
   const failures = []
+  const sections = []
 
   console.log('  running biome check --write...')
   const biome = spawn('pnpm', ['exec', 'biome', 'check', '--write', ...STATIC_CHECK_PATHS], opts)
   const biomeOut = combined(biome)
+  sections.push(`=== biome check --write ===\n${biomeOut}`)
   // Biome reports what it changed; keep that line so the log says the
   // formatting fix happened rather than leaving it to be inferred.
   const fixed = biomeOut.match(/Fixed \d+ files?/)?.[0]
@@ -1234,7 +1248,9 @@ export function runStaticChecks({ spawn = spawnSync, root = ROOT } = {}) {
 
   console.log('  running tsc --noEmit...')
   const tsc = spawn('pnpm', ['exec', 'tsc', '--noEmit'], opts)
-  if (tsc.status !== 0) failures.push(formatTscFailure(combined(tsc)))
+  const tscOut = combined(tsc)
+  sections.push(`=== tsc --noEmit ===\n${tscOut}`)
+  if (tsc.status !== 0) failures.push(formatTscFailure(tscOut))
 
   // The third check CI runs on main. `--base HEAD` diffs the working tree
   // against the commit the run started from, which is exactly the set of
@@ -1246,9 +1262,20 @@ export function runStaticChecks({ spawn = spawnSync, root = ROOT } = {}) {
     ['exec', 'fallow', 'audit', '--base', 'HEAD', '--format', 'json'],
     opts
   )
-  const audit = summarizeFallowAudit(combined(fallow))
+  const fallowOut = combined(fallow)
+  sections.push(`=== fallow audit --base HEAD ===\n${fallowOut}`)
+  const audit = summarizeFallowAudit(fallowOut)
   if (audit.error) failures.push(audit.error)
   else if (audit.warning) console.warn(`  ${audit.warning}`)
+
+  try {
+    const outputDir = resolve(root, 'archive', date)
+    mkdirSync(outputDir, { recursive: true })
+    writeFileSync(resolve(outputDir, 'last-static-checks.txt'), sections.join('\n\n'), 'utf8')
+    console.log(`  static-check output written to archive/${date}/last-static-checks.txt`)
+  } catch (writeErr) {
+    console.warn(`  could not write static-check output: ${writeErr.message}`)
+  }
 
   if (failures.length) {
     console.log('  static checks failed')
