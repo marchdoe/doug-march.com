@@ -126,14 +126,27 @@ export async function backup(filePaths, { root = ROOT } = {}) {
  * path throws an error that aborts the whole write batch. The caller
  * is expected to restore from backup on failure.
  *
+ * When `backup` is passed, any file this call is about to overwrite is
+ * captured at write time if the map doesn't already have an entry for
+ * it: existing content is read in before the write, a not-yet-existing
+ * path is recorded as null (the same convention `backup()` uses). This
+ * covers paths the engineer writes outside the caller's original
+ * MUTABLE_FILES snapshot, so `restore()` and `cleanupOrphans()` stay
+ * correct even for files never on that list. The swarm passes its
+ * `originalBackup` map here (see scripts/design-agents.js) so a write
+ * to an untracked file like app/components/Ledger.tsx is captured
+ * before it's clobbered, instead of being treated as a brand-new
+ * orphan on rollback. Without a `backup` map, nothing changes.
+ *
  * Returns the list of normalized paths that were written (for tracking
  * what needs cleanup on rollback, including files the AI may have
  * invented beyond the canonical mutable list).
  *
  * @param {{ path: string, content: string }[]} filesArray
+ * @param {{ root?: string, backup?: Map<string, string|null> }} [options]
  * @returns {Promise<string[]>} normalized paths written
  */
-export async function writeFiles(filesArray, { root = ROOT } = {}) {
+export async function writeFiles(filesArray, { root = ROOT, backup } = {}) {
   const written = []
   for (const { path: relPath, content } of filesArray) {
     // validateWritePath throws on any violation — we let it propagate
@@ -141,6 +154,16 @@ export async function writeFiles(filesArray, { root = ROOT } = {}) {
     const normalized = validateWritePath(relPath)
 
     const absPath = path.resolve(root, normalized)
+
+    if (backup && !backup.has(normalized)) {
+      if (existsSync(absPath)) {
+        const existing = await readFile(absPath, 'utf8')
+        backup.set(normalized, existing)
+      } else {
+        backup.set(normalized, null)
+      }
+    }
+
     const dir = path.dirname(absPath)
     await mkdir(dir, { recursive: true })
     await writeFile(absPath, content, 'utf8')

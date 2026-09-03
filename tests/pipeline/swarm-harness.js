@@ -479,7 +479,7 @@ export const CONTENT_SUMMARY = [
   '- Second Sample (experiment, 2025, slug: second)',
   '',
   'Exports: `projects`, `featuredProject`, `selectedWork`, `experiments`',
-  "The `Project` and `Client` types are exported from `app/content/types.ts`, not from `projects.ts` — import them with `import type { Project } from '../content/types'`.",
+  "The `Project` and `Client` types live in `app/content/types.ts` and are re-exported from `projects.ts` — import them with `import type { Project } from '../content/projects'` or `'../content/types'`.",
   '',
   '## Timeline (from app/content/timeline.ts)',
   'Exports: `timeline` (array of career entries), `capabilities` (array of skill strings)',
