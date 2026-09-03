@@ -44,7 +44,7 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const SEEDED_PRESET = readFileSync(path.join(REPO, 'elements', 'preset.ts'), 'utf8')
 
 /** Everything the recorded engineer writes: the six required files plus its Ledger. */
-const ENGINEER_OUTPUT = ['app/components/Ledger.tsx', ...REQUIRED_ENGINEER_FILES]
+const ENGINEER_OUTPUT = ['app/components/generated/Ledger.tsx', ...REQUIRED_ENGINEER_FILES]
 
 const REQUIRED_FILES_REMINDER = '## REQUIRED FILES MISSING — RETRY'
 const LAYOUT_GATE_MESSAGE =
@@ -87,7 +87,7 @@ function restoredKeySets(run) {
 
 // The engineer's invented Ledger.tsx joins the backup at write time (as null,
 // it did not exist), so the final restore covers it and deletes it (#432).
-const ORIGINAL_BACKUP_KEYS = [...MUTABLE_FILES, 'app/components/Ledger.tsx'].sort()
+const ORIGINAL_BACKUP_KEYS = [...MUTABLE_FILES, 'app/components/generated/Ledger.tsx'].sort()
 
 describe('the React Engineer omits a required file', () => {
   it('omits Sidebar once: the retry carries the reminder and ships six files', async () => {
@@ -154,7 +154,7 @@ describe('the React Engineer omits a required file', () => {
     const written = run.result.files.map((f) => f.path)
     expect(written).toEqual([
       'elements/preset.ts',
-      'app/components/Ledger.tsx',
+      'app/components/generated/Ledger.tsx',
       'app/components/Layout.tsx',
       'app/routes/index.tsx',
       'app/routes/about.tsx',
@@ -454,22 +454,24 @@ describe('a dead model during the engineer phase (#432)', () => {
 describe('an existing file the engineer overwrites (#432)', () => {
   const ORIGINAL = 'export const Hand = "written by a person, not on the mutable list"\n'
   const REWRITE =
-    '===FILE:app/components/Hand.tsx===\nexport const Hand = "rewritten by the engineer"\n'
+    '===FILE:app/components/generated/Hand.tsx===\nexport const Hand = "rewritten by the engineer"\n'
 
   it('comes back on rollback instead of being deleted', async () => {
     const run = await runSwarm({
       build: [false, false, false, false],
       agents: { 'react-engineer': [REWRITE + fixtureFor('react-engineer')] },
       beforeRun: (root) => {
-        writeUnder(root, 'app/components/Hand.tsx', ORIGINAL)
+        writeUnder(root, 'app/components/generated/Hand.tsx', ORIGINAL)
       },
     })
 
     expect(run.error.message).toMatch(/^Build failed after 3 repair attempt\(s\)/)
-    const hand = path.join(run.root, 'app', 'components', 'Hand.tsx')
+    const hand = path.join(run.root, 'app', 'components', 'generated', 'Hand.tsx')
     expect(existsSync(hand)).toBe(true)
     expect(readFileSync(hand, 'utf8')).toBe(ORIGINAL)
     // The invented Ledger.tsx, which did not exist before the run, is gone.
-    expect(existsSync(path.join(run.root, 'app', 'components', 'Ledger.tsx'))).toBe(false)
+    expect(existsSync(path.join(run.root, 'app', 'components', 'generated', 'Ledger.tsx'))).toBe(
+      false
+    )
   })
 })

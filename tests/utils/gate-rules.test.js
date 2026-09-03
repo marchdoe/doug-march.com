@@ -6,7 +6,10 @@ import { fileURLToPath } from 'node:url'
 import { collectGateRules, formatGateRulesForPrompt } from '../../scripts/utils/gate-rules.js'
 import { ALLOWED_URL_HOSTS, DANGEROUS_PATTERNS } from '../../scripts/utils/build-validator.js'
 import { REQUIRED_FILES } from '../../scripts/utils/engineer-output-check.js'
-import { ALLOWED_WRITE_PREFIXES } from '../../scripts/utils/file-manager.js'
+import {
+  ALLOWED_WRITE_PREFIXES,
+  ENGINEER_COMPONENT_FILES,
+} from '../../scripts/utils/file-manager.js'
 import { SEMANTIC_COLOR_NAMES } from '../../scripts/utils/semantic-contract.js'
 
 const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
@@ -35,6 +38,19 @@ describe('collectGateRules', () => {
     for (const prefix of ALLOWED_WRITE_PREFIXES) {
       expect(rendered, `missing write prefix ${prefix}`).toContain(prefix)
     }
+  })
+
+  it('sends invented components to app/components/generated/ and names the two shell files (#448)', () => {
+    const rule = rules.find((r) => r.gate === 'write-locations').rule
+    expect(rule).toContain('app/components/generated/')
+    for (const file of ENGINEER_COMPONENT_FILES) {
+      expect(rule, `missing exact path ${file}`).toContain(file)
+    }
+    expect(rule).toContain('any other path under app/components/ is rejected')
+    // The presets are still named, and still not the engineer's to write.
+    expect(rule).toMatch(
+      /elements\/chassis-preset\.ts and elements\/preset\.ts are the Art Director's/
+    )
   })
 
   it('names the frozen semantic set', () => {

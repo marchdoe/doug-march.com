@@ -76,6 +76,32 @@ export function staleContactAddresses(sources, email, hosts) {
 }
 
 /**
+ * Every `.ts`/`.tsx` directly under app/components/ and under
+ * app/components/generated/, repo-relative. The two scans in
+ * `validateGenerated` that used to read app/components/ alone would have
+ * missed the engineer's invented components once they moved a level down
+ * (#448); fallow ignores that directory, the security scan must not. The
+ * panel/ subdirectory is hand-written dev tooling and stays out, as before.
+ * @param {string} root
+ * @returns {string[]}
+ */
+function listComponentSources(root) {
+  const out = []
+  for (const dir of ['app/components', 'app/components/generated']) {
+    let entries
+    try {
+      entries = readdirSync(resolve(root, dir), { withFileTypes: true })
+    } catch {
+      continue
+    }
+    for (const entry of entries) {
+      if (entry.isFile() && /\.tsx?$/.test(entry.name)) out.push(`${dir}/${entry.name}`)
+    }
+  }
+  return out
+}
+
+/**
  * Source files under `app/` that no route can reach.
  *
  * The orphans #216 owns: roughly thirty components in `app/components/` that
@@ -385,13 +411,10 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
 
   // Check 2: Non-type imports of React types in component files
   // e.g., import { ReactNode } from 'react' breaks SSR — must be import type { ReactNode }
-  // Dynamically scan all .tsx files in app/components/ (designer may create any components)
-  let componentFiles = []
-  try {
-    componentFiles = readdirSync(resolve(root, 'app/components'))
-      .filter((f) => f.endsWith('.tsx'))
-      .map((f) => `app/components/${f}`)
-  } catch {
+  // Dynamically scan all .tsx files in app/components/ and app/components/generated/
+  // (the engineer may invent any component under generated/)
+  let componentFiles = listComponentSources(root).filter((f) => f.endsWith('.tsx'))
+  if (componentFiles.length === 0) {
     componentFiles = ['app/components/Layout.tsx', 'app/components/Sidebar.tsx']
   }
 
@@ -515,17 +538,14 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
   // Files to scan: only AI-generated mutable files. Hand-maintained
   // files like elements.tsx, archive.tsx, archive.$date.tsx, dev.tsx are
   // excluded — they have different trust boundaries.
-  // Plus any components/ files the designer may have added beyond the
-  // canonical list (dynamically discovered).
+  // Plus any components/ files the engineer may have added beyond the
+  // canonical list (dynamically discovered), including everything under
+  // app/components/generated/ — fallow ignores that directory, this scan
+  // does not (#448).
   const filesToScan = [...MUTABLE_FILES]
-  try {
-    const componentsDir = resolve(root, 'app/components')
-    for (const f of readdirSync(componentsDir)) {
-      if (!f.endsWith('.tsx') && !f.endsWith('.ts')) continue
-      const relPath = `app/components/${f}`
-      if (!filesToScan.includes(relPath)) filesToScan.push(relPath)
-    }
-  } catch {}
+  for (const relPath of listComponentSources(root)) {
+    if (!filesToScan.includes(relPath)) filesToScan.push(relPath)
+  }
 
   for (const file of filesToScan) {
     let content
@@ -1431,7 +1451,7 @@ export function summarizeFallowAudit(output) {
       'Architecture audit (fallow, the check CI runs on main):',
       ...lines,
       '',
-      'Split each function listed above into section components under app/components/,',
+      'Split each function listed above into section components under app/components/generated/,',
       'each with at most three branch points, and let the route page only compose them.',
       'Remove any export nothing imports. See "Size and shape" in your brief.',
     ]

@@ -165,18 +165,25 @@ describe('mergeEngineerPatch', () => {
 describe('deleteFiles', () => {
   it('removes the files, skips one already gone, and refuses a path outside the allowlist', async () => {
     const root = await tempRepoRoot()
-    writeUnder(root, 'app/components/Ledger.tsx', 'x')
+    writeUnder(root, 'app/components/generated/Ledger.tsx', 'x')
     writeUnder(root, 'app/content/projects.ts', 'hands off')
+    writeUnder(root, 'app/components/SectionHead.tsx', 'hand-written')
 
-    const removed = await deleteFiles(['app/components/Ledger.tsx', 'app/components/Missing.tsx'], {
-      root,
-    })
-    expect(removed).toEqual(['app/components/Ledger.tsx'])
-    expect(existsSync(path.join(root, 'app/components/Ledger.tsx'))).toBe(false)
+    const removed = await deleteFiles(
+      ['app/components/generated/Ledger.tsx', 'app/components/generated/Missing.tsx'],
+      { root }
+    )
+    expect(removed).toEqual(['app/components/generated/Ledger.tsx'])
+    expect(existsSync(path.join(root, 'app/components/generated/Ledger.tsx'))).toBe(false)
 
     await expect(deleteFiles(['app/content/projects.ts'], { root })).rejects.toThrow(
       'Forbidden directory write'
     )
     expect(readFileSync(path.join(root, 'app/content/projects.ts'), 'utf8')).toBe('hands off')
+    // A hand-written component beside generated/ is off the allowlist (#448).
+    await expect(deleteFiles(['app/components/SectionHead.tsx'], { root })).rejects.toThrow(
+      /allowlist/
+    )
+    expect(existsSync(path.join(root, 'app/components/SectionHead.tsx'))).toBe(true)
   })
 })

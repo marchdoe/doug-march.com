@@ -211,12 +211,18 @@ describe('Phase 5: the build fails', () => {
 
   it('a patch that names no required file is fine when they are all on disk', async () => {
     const fix = {
-      path: 'app/components/Fix.tsx',
+      path: 'app/components/generated/Fix.tsx',
       content: 'export function Fix() {\n  return null\n}\n',
+    }
+    // Ledger.tsx, which the routes import, takes an import of the new file:
+    // a generated file nothing imports is swept before the build (#448).
+    const ledger = {
+      path: 'app/components/generated/Ledger.tsx',
+      content: `import { Fix } from './Fix'\n${fixtureContent('app/components/generated/Ledger.tsx')}`,
     }
     const run = await runSwarm({
       build: [false, true],
-      agents: { 'react-engineer': [ENGINEER_FIXTURE, patchReply([fix])] },
+      agents: { 'react-engineer': [ENGINEER_FIXTURE, patchReply([fix, ledger])] },
     })
 
     expect(run.error).toBeNull()
@@ -224,19 +230,19 @@ describe('Phase 5: the build fails', () => {
     expect(run.fakes.validateBuild).toHaveLength(2)
     // The reply alone would fail the required-file check; the merged set passes it.
     expect(run.callsFor('react-engineer')).toHaveLength(2)
-    expect(onDisk(run.root, 'app/components/Fix.tsx')).toBe(fix.content.trim())
+    expect(onDisk(run.root, 'app/components/generated/Fix.tsx')).toBe(fix.content.trim())
     for (const rel of REQUIRED_ENGINEER_FILES) {
       expect(onDisk(run.root, rel), rel).toBe(fixtureContent(rel))
     }
     expect(run.result.files.map((f) => f.path)).toEqual([
       'elements/preset.ts',
       ...FIXTURE_PATHS,
-      'app/components/Fix.tsx',
+      'app/components/generated/Fix.tsx',
     ])
     expect(run.fakes.archive[0].changedFiles).toEqual(run.result.files.map((f) => f.path))
     expect(run.trace.steps.find((s) => s.name === 'repair').output).toMatchObject({
-      files: 1,
-      written: 1,
+      files: 2,
+      written: 2,
       deleted: 0,
       merged: FIXTURE_PATHS.length + 1,
       success: true,
@@ -246,9 +252,13 @@ describe('Phase 5: the build fails', () => {
   it('an empty block deletes that file; a file the patch omits stays', async () => {
     const marker = 'repair attempt 2'
     const stale = {
-      path: 'app/components/Stale.tsx',
+      path: 'app/components/generated/Stale.tsx',
       content: 'export function Stale() {\n  return null\n}\n',
     }
+    // Layout imports Stale in both attempts so the sweep keeps it (#448); the
+    // point here is what the patch omits, not what nothing imports.
+    const layout = fixtureContent('app/components/Layout.tsx')
+    const layoutWithStale = `import { Stale } from './generated/Stale'\n${layout}`
     // Attempt 1 adds Stale.tsx and fails the build. Attempt 2 fixes Layout,
     // deletes Ledger.tsx with an empty block, and says nothing about Stale.
     const run = await runSwarm({
@@ -256,10 +266,10 @@ describe('Phase 5: the build fails', () => {
       agents: {
         'react-engineer': [
           ENGINEER_FIXTURE,
-          withAddedFiles(ENGINEER_FIXTURE, [stale]),
+          withAddedFiles(ENGINEER_FIXTURE.replace(layout, layoutWithStale), [stale]),
           patchReply([
-            markedFile('app/components/Layout.tsx', marker),
-            { path: 'app/components/Ledger.tsx', content: '' },
+            { path: 'app/components/Layout.tsx', content: `// ${marker}\n${layoutWithStale}` },
+            { path: 'app/components/generated/Ledger.tsx', content: '' },
           ]),
         ],
       },
@@ -283,18 +293,18 @@ describe('Phase 5: the build fails', () => {
     // Attempt 2's brief lists Stale.tsx, which attempt 1 added, as a file the
     // engineer owns this run.
     const [, , repair2] = run.callsFor('react-engineer')
-    expect(repair2.userPrompt).toContain(briefLine(run.root, 'app/components/Stale.tsx'))
+    expect(repair2.userPrompt).toContain(briefLine(run.root, 'app/components/generated/Stale.tsx'))
     expect(repair2.userPrompt).toContain(DEFAULT_BUILD_ERROR)
 
-    expect(existsSync(path.join(run.root, 'app/components/Ledger.tsx'))).toBe(false)
-    expect(onDisk(run.root, 'app/components/Stale.tsx')).toBe(stale.content.trim())
+    expect(existsSync(path.join(run.root, 'app/components/generated/Ledger.tsx'))).toBe(false)
+    expect(onDisk(run.root, 'app/components/generated/Stale.tsx')).toBe(stale.content.trim())
     expect(onDisk(run.root, 'app/components/Layout.tsx')).toContain(marker)
 
     const shipped = run.result.files.map((f) => f.path)
     expect(shipped).toEqual([
       'elements/preset.ts',
-      ...FIXTURE_PATHS.filter((p) => p !== 'app/components/Ledger.tsx'),
-      'app/components/Stale.tsx',
+      ...FIXTURE_PATHS.filter((p) => p !== 'app/components/generated/Ledger.tsx'),
+      'app/components/generated/Stale.tsx',
     ])
     expect(run.fakes.archive[0].changedFiles).toEqual(shipped)
     expect(run.fakes.archive[0]).toMatchObject({ rationale: 'Agent swarm redesign (repair 2)' })
@@ -407,7 +417,7 @@ describe('Phase 5: the build fails', () => {
     expect(run.fakes.restore).toHaveLength(1)
     // Ledger.tsx joined the backup at write time (#432), so the rollback covers it.
     expect([...run.fakes.restore[0].map.keys()].sort()).toEqual(
-      [...MUTABLE_FILES, 'app/components/Ledger.tsx'].sort()
+      [...MUTABLE_FILES, 'app/components/generated/Ledger.tsx'].sort()
     )
     for (const rel of FIXTURE_PATHS) {
       expect(existsSync(path.join(run.root, rel)), `${rel} gone from the root`).toBe(false)
@@ -547,11 +557,11 @@ describe('after the build passes: the screenshot critic and the surface gate', (
     const passing = run.fakes.restore[0].map
     expect(run.fakes.restore[0].root).toBe(run.root)
     expect([...passing.keys()].sort()).toEqual(
-      [...MUTABLE_FILES, 'app/components/Ledger.tsx'].sort()
+      [...MUTABLE_FILES, 'app/components/generated/Ledger.tsx'].sort()
     )
     expect(typeof passing.get('app/components/Layout.tsx')).toBe('string')
     expect(passing.get('app/components/Layout.tsx')).not.toContain(marker)
-    expect(typeof passing.get('app/components/Ledger.tsx')).toBe('string')
+    expect(typeof passing.get('app/components/generated/Ledger.tsx')).toBe('string')
 
     const layoutOnDisk = onDisk(run.root, 'app/components/Layout.tsx')
     expect(layoutOnDisk).not.toContain(marker)
@@ -598,9 +608,9 @@ describe('after the build passes: the screenshot critic and the surface gate', (
 
     // restore(passingBackup) first, then restore(originalBackup) when that did not build.
     expect(run.fakes.restore).toHaveLength(2)
-    expect([...run.fakes.restore[0].map.keys()]).toContain('app/components/Ledger.tsx')
+    expect([...run.fakes.restore[0].map.keys()]).toContain('app/components/generated/Ledger.tsx')
     expect([...run.fakes.restore[1].map.keys()].sort()).toEqual(
-      [...MUTABLE_FILES, 'app/components/Ledger.tsx'].sort()
+      [...MUTABLE_FILES, 'app/components/generated/Ledger.tsx'].sort()
     )
     for (const rel of FIXTURE_PATHS) {
       expect(existsSync(path.join(run.root, rel)), `${rel} gone from the root`).toBe(false)

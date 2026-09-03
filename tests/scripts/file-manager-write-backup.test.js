@@ -11,8 +11,8 @@ import { tempRepoRoot, writeUnder } from '../helpers/tmp.js'
 // without it, a tracked-but-unlisted file the engineer overwrites looks like
 // a brand-new orphan and gets deleted on rollback instead of restored.
 describe('writeFiles({ backup }) captures pre-write state', () => {
-  const unlisted = 'app/components/Unlisted.tsx'
-  const fresh = 'app/components/BrandNew.tsx'
+  const unlisted = 'app/components/generated/Unlisted.tsx'
+  const fresh = 'app/components/generated/BrandNew.tsx'
   let root
 
   beforeEach(async () => {

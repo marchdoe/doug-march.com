@@ -20,7 +20,7 @@ returned file complete, in the same `===FILE:path===` format as before.
 - A file you do not return stays on disk unchanged. Do not re-send a file
   to show it is fine; return a file unchanged only when a fix requires it.
 - A new file is allowed when a fix needs one. Give it a path under
-  `app/components/` or `app/routes/`.
+  `app/components/generated/` or `app/routes/`.
 - To delete a file, return its `===FILE:path===` block with nothing after
   the delimiter. Only files in the list above can be deleted.
 - Every error above is yours to fix, including one in a file you did not

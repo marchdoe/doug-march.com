@@ -452,7 +452,13 @@ export async function seedRoot() {
   copy('elements/chassis')
   copy('elements/preset.ts')
   copy('app/assets')
-  for (const d of ['app/components', 'app/routes', 'app/stubs', 'public/og', 'references']) {
+  for (const d of [
+    'app/components/generated',
+    'app/routes',
+    'app/stubs',
+    'public/og',
+    'references',
+  ]) {
     mkdirSync(path.join(root, d), { recursive: true })
   }
 

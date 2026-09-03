@@ -21,11 +21,12 @@ describe('FILE_OWNERSHIP', () => {
     }
   })
 
-  it('tripwire: 10 owned files', () => {
+  it('tripwire: 7 owned files', () => {
     // Fails on purpose when a file is added to or removed from the mutable
     // set, so the change is a decision rather than a side effect. Was 16
-    // until #216 dropped the six components no route had imported since March.
-    expect(Object.keys(FILE_OWNERSHIP)).toHaveLength(10)
+    // until #216 dropped the six components no route had imported since March,
+    // then 10 until #448 took the three hand-written /elements components off.
+    expect(Object.keys(FILE_OWNERSHIP)).toHaveLength(7)
   })
 
   it('maps preset.ts to art-director', () => {
@@ -36,12 +37,16 @@ describe('FILE_OWNERSHIP', () => {
     expect(FILE_OWNERSHIP['app/routes/__root.tsx']).toBeUndefined()
   })
 
-  it('maps layout, route, sidebar, and component files to react-engineer', () => {
+  it('maps layout, route and sidebar files to react-engineer', () => {
     expect(FILE_OWNERSHIP['app/components/Layout.tsx']).toBe('react-engineer')
     expect(FILE_OWNERSHIP['app/routes/index.tsx']).toBe('react-engineer')
     expect(FILE_OWNERSHIP['app/components/Sidebar.tsx']).toBe('react-engineer')
-    expect(FILE_OWNERSHIP['app/components/SectionHead.tsx']).toBe('react-engineer')
-    expect(FILE_OWNERSHIP['app/components/FeaturedProject.tsx']).toBe('react-engineer')
+  })
+
+  it('the hand-written /elements components belong to no agent (#448)', () => {
+    expect(FILE_OWNERSHIP['app/components/SectionHead.tsx']).toBeUndefined()
+    expect(FILE_OWNERSHIP['app/components/ProjectRow.tsx']).toBeUndefined()
+    expect(FILE_OWNERSHIP['app/components/FeaturedProject.tsx']).toBeUndefined()
   })
 
   it('maps og.tsx to react-engineer (share card is engineer-authored)', () => {
@@ -59,8 +64,8 @@ describe('identifyFailingAgent', () => {
     expect(identifyFailingAgent(error)).toBe('react-engineer')
   })
 
-  it('identifies react-engineer from a build error mentioning SectionHead.tsx', () => {
-    const error = 'app/components/SectionHead.tsx(8,3): error TS2304'
+  it('identifies react-engineer from a build error mentioning Sidebar.tsx', () => {
+    const error = 'app/components/Sidebar.tsx(8,3): error TS2304'
     expect(identifyFailingAgent(error)).toBe('react-engineer')
   })
 
@@ -70,8 +75,7 @@ describe('identifyFailingAgent', () => {
   })
 
   it('returns react-engineer when errors span multiple react-engineer files', () => {
-    const error =
-      'app/components/Layout.tsx(15,7): error\napp/components/SectionHead.tsx(8,3): error'
+    const error = 'app/components/Layout.tsx(15,7): error\napp/components/Sidebar.tsx(8,3): error'
     expect(identifyFailingAgent(error)).toBe('react-engineer')
   })
 

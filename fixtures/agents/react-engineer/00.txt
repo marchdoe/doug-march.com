@@ -1,6 +1,6 @@
-===FILE:app/components/Ledger.tsx===
+===FILE:app/components/generated/Ledger.tsx===
 import type { ReactNode } from 'react'
-import { css } from '../../styled-system/css'
+import { css } from '../../../styled-system/css'
 
 export function SectionLabel({ label, count }: { label: string; count: string }) {
   return (
@@ -665,7 +665,7 @@ export function Layout({ children }: { children: ReactNode }) {
 ===FILE:app/routes/index.tsx===
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { SectionLabel, Row, WorkRow, Featured } from '../components/Ledger'
+import { SectionLabel, Row, WorkRow, Featured } from '../components/generated/Ledger'
 import { featuredProject, selectedWork, experiments } from '../content/projects'
 
 export const Route = createFileRoute('/')({ component: HomePage })
@@ -873,7 +873,7 @@ function HomePage() {
 ===FILE:app/routes/about.tsx===
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { SectionLabel, Row } from '../components/Ledger'
+import { SectionLabel, Row } from '../components/generated/Ledger'
 import { identity } from '../content/about'
 import { timeline } from '../content/timeline'
 
@@ -950,7 +950,7 @@ function AboutPage() {
 ===FILE:app/routes/work.$slug.tsx===
 import { createFileRoute } from '@tanstack/react-router'
 import { css } from '../../styled-system/css'
-import { SectionLabel } from '../components/Ledger'
+import { SectionLabel } from '../components/generated/Ledger'
 import { projects } from '../content/projects'
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkPage })

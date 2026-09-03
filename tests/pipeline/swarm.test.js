@@ -48,7 +48,7 @@ describe('runAgentSwarm on the recorded night', () => {
     // allows it and it ships with the six required files.
     expect(run.result.files.map((f) => f.path)).toEqual([
       'elements/preset.ts',
-      'app/components/Ledger.tsx',
+      'app/components/generated/Ledger.tsx',
       'app/components/Sidebar.tsx',
       'app/components/Layout.tsx',
       'app/routes/index.tsx',

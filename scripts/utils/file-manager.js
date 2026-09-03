@@ -10,15 +10,32 @@ export const ROOT = path.resolve(__dirname, '../..')
 // Any path outside these prefixes is rejected. This is the primary defense
 // against a malicious or prompt-injected agent overwriting the pipeline,
 // workflows, package.json, .env, or other sensitive files.
-export const ALLOWED_WRITE_PREFIXES = ['app/components/', 'app/routes/', 'app/stubs/']
+//
+// app/components/ itself is not a prefix (#448). The components the engineer
+// invents go under app/components/generated/, which fallow ignores and the
+// nightly sweeps (generated-sweep.js); the hand-written components beside it
+// (ArchiveMarkdown, RunStages, MobileFooter, SectionHead, ProjectRow,
+// FeaturedProject, the panel) are out of the engineer's reach. One run
+// overwrote FeaturedProject.tsx, which only /elements renders (#432).
+export const ALLOWED_WRITE_PREFIXES = ['app/components/generated/', 'app/routes/', 'app/stubs/']
+
+// The two components under app/components/ the engineer still writes: the
+// required shell files, on MUTABLE_FILES and REQUIRED_FILES. Listed here by
+// hand because site-context.js imports this module; the file-manager tests
+// check every engineer-owned component on MUTABLE_FILES is one of these.
+export const ENGINEER_COMPONENT_FILES = ['app/components/Layout.tsx', 'app/components/Sidebar.tsx']
 
 // Exact paths allowed for writes outside the prefix list. elements/ is
 // deliberately NOT a prefix: elements/chassis/index.js
 // are imported and executed by the pipeline itself (design-agents.js), so a
 // prefix-level allow would let a prompt-injected agent plant code that runs
 // with repo write access on the next nightly run. Only the two generated
-// preset files are writable.
-export const ALLOWED_EXACT = new Set(['elements/preset.ts', 'elements/chassis-preset.ts'])
+// preset files are writable there.
+export const ALLOWED_EXACT = new Set([
+  'elements/preset.ts',
+  'elements/chassis-preset.ts',
+  ...ENGINEER_COMPONENT_FILES,
+])
 
 // Within allowed prefixes, these exact files are still forbidden.
 // Protects generated files (routeTree.gen.ts) and content files that
@@ -86,7 +103,8 @@ export function validateWritePath(relPath) {
   if (!inAllowedPrefix && !inAllowedExact) {
     throw new Error(
       `Path not in write allowlist: ${normalized}. ` +
-        `Allowed prefixes: ${ALLOWED_WRITE_PREFIXES.join(', ')}`
+        `Allowed prefixes: ${ALLOWED_WRITE_PREFIXES.join(', ')}; ` +
+        `exact paths: ${[...ALLOWED_EXACT].join(', ')}`
     )
   }
 
@@ -134,7 +152,7 @@ export async function backup(filePaths, { root = ROOT } = {}) {
  * MUTABLE_FILES snapshot, so `restore()` and `cleanupOrphans()` stay
  * correct even for files never on that list. The swarm passes its
  * `originalBackup` map here (see scripts/design-agents.js) so a write
- * to an untracked file like app/components/Ledger.tsx is captured
+ * to an untracked file like app/components/generated/Ledger.tsx is captured
  * before it's clobbered, instead of being treated as a brand-new
  * orphan on rollback. Without a `backup` map, nothing changes.
  *

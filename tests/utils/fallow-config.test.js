@@ -64,6 +64,25 @@ describe('generated-UI CRAP override', () => {
   })
 })
 
+describe("the engineer's generated directory (#448)", () => {
+  const config = readFallowConfig()
+
+  it('is ignored by fallow', () => {
+    expect(config.ignorePatterns).toContain('app/components/generated/**')
+  })
+
+  it('is still covered by the static checks and the security scan', () => {
+    // Ignored by fallow is not ignored by everything: STATIC_CHECK_PATHS runs
+    // biome and tsc over app/components recursively, and the validator's
+    // scans list the directory by name.
+    const validator = readFileSync(
+      path.join(ROOT, 'scripts', 'utils', 'build-validator.js'),
+      'utf-8'
+    )
+    expect(validator).toContain("'app/components/generated'")
+  })
+})
+
 describe('react-engineer.md advice', () => {
   it('still carries the "Size and shape" section', () => {
     const promptPath = path.join(ROOT, 'scripts', 'prompts', 'react-engineer.md')

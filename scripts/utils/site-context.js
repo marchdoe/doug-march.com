@@ -13,16 +13,15 @@ export const MUTABLE_FILES = [
   'app/components/BrandLockup.tsx',
   'app/components/Layout.tsx',
   'app/components/Sidebar.tsx',
-  'app/components/SectionHead.tsx',
-  'app/components/ProjectRow.tsx',
-  'app/components/FeaturedProject.tsx',
   // SelectedWork, Experiments, Bio, Timeline, Capabilities and Personal used
   // to sit here. No route had imported one since 2026-03-20 and no run has
   // rewritten one since, so every night they were backed up, token-gated and
   // handed to the engineer as files it owned, for a page that never rendered
-  // them (#216). Removing them narrows nothing: app/components/ is an allowed
-  // write prefix, which is how the engineer authored Ledger.tsx on 2026-08-30
-  // without any list naming it.
+  // them (#216). SectionHead, ProjectRow and FeaturedProject followed on
+  // 2026-09-03 (#448): hand-written, rendered only by /elements, and one run
+  // had overwritten FeaturedProject. The engineer's write surface is now
+  // Layout, Sidebar, the routes and app/components/generated/ (see
+  // file-manager.js), so a file off this list is a file it cannot touch.
   'app/routes/__root.tsx',
   'app/routes/index.tsx',
   'app/routes/about.tsx',

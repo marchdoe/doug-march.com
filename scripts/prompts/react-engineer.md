@@ -27,7 +27,11 @@ Respond with ===FILE:...=== blocks for ALL of these, every time:
 - app/routes/work.$slug.tsx
 - app/routes/og.tsx
 
-plus any additional components the translation genuinely needs.
+plus any additional components the translation genuinely needs, each under
+`app/components/generated/`. That directory is yours alone: the nightly
+deletes whatever in it today's files do not import, so a component from a
+previous night is gone unless you import it again. The other files under
+`app/components/` are hand-written and the write is rejected.
 
 Layout.tsx must use a named export (`export function Layout`), import and render Sidebar, and wrap `{children}` — __root.tsx imports it by name and passes the route outlet as children; forgetting `{children}` compiles but renders blank pages.
 
@@ -48,8 +52,10 @@ Layout.tsx must use a named export (`export function Layout`), import and render
   off-limits and the write will be rejected). Reference fonts ONLY via the
   `fontFamily` tokens. The mockup may contain a `<link>`/`<style>` for fonts;
   drop it — that concern is already handled in the production shell.
-- Write ONLY these file types: `.tsx` under `app/components/` and `app/routes/`.
-  No `.css`, no new directories, nothing under `app/styles/` or `elements/`.
+- Write ONLY these file types: `.tsx` at `app/components/Layout.tsx` and
+  `app/components/Sidebar.tsx`, under `app/components/generated/` and under
+  `app/routes/`. No `.css`, no other directories, nothing under `app/styles/`
+  or `elements/`.
 - The mockup's home page maps to index.tsx + Layout.tsx + Sidebar.tsx.
   The ===INTERIOR_NOTES=== block specifies how about.tsx and work.$slug.tsx
   adapt the system — follow it.
@@ -112,6 +118,9 @@ import { Box, Flex, Grid, Stack, VStack, HStack, Container, Center, styled } fro
 import { css } from '../../styled-system/css'
 ```
 
+Those paths are from `app/routes/` and `app/components/`. A component under
+`app/components/generated/` sits one level deeper: `'../../../styled-system/css'`.
+
 ### PandaCSS `css()` usage rules
 
 - Use `css()` for all className generation. Pass a style object — never a string.
@@ -140,7 +149,7 @@ import type { ReactNode } from 'react'  // CORRECT
 
 ### Content imports
 
-All content imports use the same relative path `../content/...` from both `app/routes/` and `app/components/`:
+All content imports use the same relative path `../content/...` from both `app/routes/` and `app/components/`; from `app/components/generated/` it is `../../content/...`:
 
 ```tsx
 import { featuredProject, selectedWork, experiments, projects } from '../content/projects'
@@ -250,7 +259,8 @@ place it; you never draw it.
 
 ```tsx
 import { BrandLockup } from '../components/BrandLockup'   // from a route
-import { BrandLockup } from './BrandLockup'               // from a component
+import { BrandLockup } from './BrandLockup'               // from Layout or Sidebar
+import { BrandLockup } from '../BrandLockup'              // from app/components/generated/
 
 <BrandLockup variant="horizontal-md" mode="single-color" roleLine />
 ```
@@ -316,7 +326,7 @@ case, loop) or a cognitive score past 15, it fails. A 321-line
 
 - A route page composes sections. It should read as a list of
   `<Section ... />` elements with data passed in, and nothing else.
-- Each section is its own component under `app/components/`, under 80 lines,
+- Each section is its own component under `app/components/generated/`, under 80 lines,
   with at most three branch points. A data-driven `.map()` over a list beats
   a chain of conditionals; two small components beat one that switches on a
   prop.
