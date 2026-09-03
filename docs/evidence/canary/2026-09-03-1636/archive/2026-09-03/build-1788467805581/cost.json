@@ -1,0 +1,100 @@
+{
+  "total_usd": 1.891493,
+  "estimated": false,
+  "partial": false,
+  "retries": 1,
+  "calls": 7,
+  "byAgent": [
+    {
+      "agent": "art-director",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 29404,
+      "cache_read": 0,
+      "cache_write": 61449,
+      "cost_usd": 0.53984,
+      "estimated": false,
+      "ms": 325165,
+      "num_turns": 1
+    },
+    {
+      "agent": "spec-critic",
+      "model": "claude-haiku-4-5",
+      "source": "cli",
+      "input": 10,
+      "output": 2761,
+      "cache_read": 0,
+      "cache_write": 30683,
+      "cost_usd": 0.075181,
+      "estimated": false,
+      "ms": 34081,
+      "num_turns": 1
+    },
+    {
+      "agent": "mockup-designer",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 7529,
+      "cache_read": 19696,
+      "cache_write": 41647,
+      "cost_usd": 0.24582120000000002,
+      "estimated": false,
+      "ms": 67796,
+      "num_turns": 1
+    },
+    {
+      "agent": "mockup-critic",
+      "model": "claude-haiku-4-5",
+      "source": "cli",
+      "input": 10,
+      "output": 786,
+      "cache_read": 14785,
+      "cache_write": 11866,
+      "cost_usd": 0.0291505,
+      "estimated": false,
+      "ms": 10797,
+      "num_turns": 1
+    },
+    {
+      "agent": "react-engineer",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 45078,
+      "cache_read": 19696,
+      "cache_write": 31304,
+      "cost_usd": 0.5799392,
+      "estimated": false,
+      "ms": 412147,
+      "num_turns": 1
+    },
+    {
+      "agent": "screenshot-critic",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 2062,
+      "cache_read": 19696,
+      "cache_write": 21318,
+      "cost_usd": 0.1098352,
+      "estimated": false,
+      "ms": 24690,
+      "num_turns": 1
+    },
+    {
+      "agent": "react-engineer",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 27579,
+      "cache_read": 34857,
+      "cache_write": 7240,
+      "cost_usd": 0.3117254,
+      "estimated": false,
+      "ms": 249042,
+      "num_turns": 1
+    }
+  ]
+}

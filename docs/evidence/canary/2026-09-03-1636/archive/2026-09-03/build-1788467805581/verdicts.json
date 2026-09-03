@@ -1,0 +1,43 @@
+[
+  {
+    "critic": "spec-critic",
+    "verdict": "APPROVED",
+    "feedback": "APPROVED",
+    "ts": 1788466949119
+  },
+  {
+    "critic": "mockup-critic",
+    "round": 0,
+    "verdict": "REVISE",
+    "feedback": "malformed critic response: I'm ready to critique this mockup, but **no screenshot images were attached to your message**.\n\nYou've provided a comprehensive brief, visual spec, measurables floors, and shell/header declarations — excellent groundwork. But the critique framework requires:\n\n1. **The full-page screenshot** (1440×90",
+    "channel": "cli-text-no-key",
+    "ts": 1788467034896
+  },
+  {
+    "critic": "surface-gate",
+    "round": 1,
+    "verdict": "REVISE",
+    "feedback": "/about @1440: 340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @1440: 340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @360: 340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @360: 340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work @360: document is 574px wider than the 360px viewport (scrollWidth 934)\n/work @360: document is 574px wider than the 360px viewport (scrollWidth 934)",
+    "ts": 1788467476670
+  },
+  {
+    "critic": "screenshot-critic",
+    "verdict": "REVISE",
+    "feedback": "===VERDICT===\nREVISE\n\n**Responsible agent:** react-engineer\n\n**Issues:**\n- `/about`, both viewports (1440px and 360px): running body copy — \"I work at the intersection of design and engineering — not a...\" (340 characters) — is set at 68px, the display/hero step, not the body step. Display-scale type is for a short phrase or heading, not a paragraph; at 340 characters this reads as a wall of oversized text rather than a hero statement. Move this copy to the body textStyle (well under 48px) and reserve the display step for an actual short phrase on that page.\n- `/work` at 360px: the document is 574px wider than the viewport (scrollWidth 934 vs viewport 360) — a horizontal overflow bug causing mobile layout collapse. Something on that page (likely a fixed-width grid, an unwrapped long string, or a component not respecting the mobile breakpoint) is forcing the page wider than the screen. Constrain the offending element to `max-width: 100%` / `overflow-x: hidden` at the mobile breakpoint and re-check scrollWidth matches viewport width.\n===END===",
+    "channel": "cli-text-no-key",
+    "ts": 1788467517547
+  },
+  {
+    "critic": "surface-gate",
+    "verdict": "NEEDS-HUMAN",
+    "feedback": "Authored routes outside MUTABLE_FILES failed the gate: /work",
+    "ts": 1788467517547
+  },
+  {
+    "critic": "surface-gate",
+    "round": 2,
+    "verdict": "REVISE",
+    "feedback": "/about @1440: 340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @1440: 340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work @360: document is 574px wider than the 360px viewport (scrollWidth 934)\n/work @360: document is 574px wider than the 360px viewport (scrollWidth 934)",
+    "ts": 1788467794563
+  }
+]
