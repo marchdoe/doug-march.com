@@ -63,6 +63,24 @@
         "maxCyclomatic": 30,
         "maxCognitive": 30,
         "reason": "a describe block is a file, not a function"
+      },
+      {
+        // The React Engineer's route pages and components have no unit
+        // tests by design (#432) — the build, the surface gate and the
+        // screenshot critic exercise them instead. With zero coverage,
+        // CRAP collapses to cyclomatic² + cyclomatic, so a function sitting
+        // right at the repo's cyclomatic ceiling of 20 scores 420 and fails
+        // on branch count alone before cyclomatic or cognitive ever get a
+        // say. maxCrap here clears that (420 plus headroom) so these paths
+        // are judged the same way as the rest of the repo: on cyclomatic
+        // and cognitive complexity. Those two ceilings are repeated at
+        // their repo defaults, unchanged — a route page that actually earns
+        // cyclomatic 21 or cognitive 16 still fails.
+        "files": ["app/routes/**", "app/components/**"],
+        "maxCyclomatic": 20,
+        "maxCognitive": 15,
+        "maxCrap": 450,
+        "reason": "generated UI has no unit tests by design; judge on cyclomatic/cognitive, not zero-coverage CRAP"
       }
     ]
   },

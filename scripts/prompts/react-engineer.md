@@ -311,10 +311,10 @@ Reference font family tokens by name: `fontFamily: 'display'`, `fontFamily: 'bod
 CI runs an architecture audit (fallow) on every push to main, and the
 nightly runs the same audit as a static check, so an oversized function comes
 back to you as a retry with the function named. The audit scores each
-function on its own, and code with no tests is scored on branch count alone:
-a function with four or more branch points (`if`, ternary, `&&`, `||`, `??`,
-`switch` case, loop) fails it. A 321-line `WorkDetailPage` with eighteen
-branches failed on 2026-09-02.
+function on cyclomatic and cognitive complexity, same as everywhere else in
+the repo: past 20 branch points (`if`, ternary, `&&`, `||`, `??`, `switch`
+case, loop) or a cognitive score past 15, it fails. A 321-line
+`WorkDetailPage` with eighteen branches failed on 2026-09-02.
 
 - A route page composes sections. It should read as a list of
   `<Section ... />` elements with data passed in, and nothing else.
