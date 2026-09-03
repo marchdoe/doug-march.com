@@ -10,7 +10,7 @@ export const ROOT = path.resolve(__dirname, '../..')
 // Any path outside these prefixes is rejected. This is the primary defense
 // against a malicious or prompt-injected agent overwriting the pipeline,
 // workflows, package.json, .env, or other sensitive files.
-const ALLOWED_WRITE_PREFIXES = ['app/components/', 'app/routes/', 'app/stubs/']
+export const ALLOWED_WRITE_PREFIXES = ['app/components/', 'app/routes/', 'app/stubs/']
 
 // Exact paths allowed for writes outside the prefix list. elements/ is
 // deliberately NOT a prefix: elements/chassis/index.js
@@ -18,14 +18,14 @@ const ALLOWED_WRITE_PREFIXES = ['app/components/', 'app/routes/', 'app/stubs/']
 // prefix-level allow would let a prompt-injected agent plant code that runs
 // with repo write access on the next nightly run. Only the two generated
 // preset files are writable.
-const ALLOWED_EXACT = new Set(['elements/preset.ts', 'elements/chassis-preset.ts'])
+export const ALLOWED_EXACT = new Set(['elements/preset.ts', 'elements/chassis-preset.ts'])
 
 // Within allowed prefixes, these exact files are still forbidden.
 // Protects generated files (routeTree.gen.ts) and content files that
 // ship real hand-maintained data (projects, timeline).
-const FORBIDDEN_EXACT = new Set(['app/routeTree.gen.ts'])
+export const FORBIDDEN_EXACT = new Set(['app/routeTree.gen.ts'])
 
-const FORBIDDEN_PREFIXES = [
+export const FORBIDDEN_PREFIXES = [
   'app/content/', // projects.ts, timeline.ts — hand-maintained
   'app/server/', // server functions — hand-maintained
   'app/styles/', // panda css base styles

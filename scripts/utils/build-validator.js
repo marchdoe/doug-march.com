@@ -212,6 +212,98 @@ function stringLiterals(source) {
 }
 
 /**
+ * Security-sensitive code patterns Check 5 of `validateGenerated` scans for.
+ * AI output is untrusted — a compromised or prompt-injected agent can emit
+ * code that exfiltrates data, runs arbitrary scripts, or loads third-party
+ * resources. This is the second line of defense after signal sanitization in
+ * collect-signals.js.
+ *
+ * Hoisted to module scope and exported (rather than declared inside
+ * `validateGenerated`) so `scripts/utils/gate-rules.js` can render the same
+ * list into `react-engineer.md` — the prompt cannot list a pattern the scan
+ * does not also check, or vice versa (#432).
+ *
+ * @type {ReadonlyArray<{ name: string, regex: RegExp, severity: string }>}
+ */
+export const DANGEROUS_PATTERNS = [
+  { name: 'fetch() call', regex: /\bfetch\s*\(/, severity: 'blocks network exfiltration' },
+  {
+    name: 'XMLHttpRequest',
+    regex: /\bXMLHttpRequest\b/,
+    severity: 'blocks network exfiltration',
+  },
+  {
+    name: 'sendBeacon',
+    regex: /\bnavigator\.sendBeacon\b/,
+    severity: 'blocks network exfiltration',
+  },
+  { name: 'WebSocket', regex: /\bnew\s+WebSocket\b/, severity: 'blocks network exfiltration' },
+  {
+    name: 'EventSource',
+    regex: /\bnew\s+EventSource\b/,
+    severity: 'blocks network exfiltration',
+  },
+  { name: 'eval()', regex: /\beval\s*\(/, severity: 'blocks arbitrary code execution' },
+  {
+    name: 'new Function()',
+    regex: /\bnew\s+Function\s*\(/,
+    severity: 'blocks arbitrary code execution',
+  },
+  {
+    name: 'dynamic import()',
+    regex: /\bimport\s*\(\s*[`'"]/,
+    severity: 'blocks arbitrary module loading',
+  },
+  { name: 'dangerouslySetInnerHTML', regex: /dangerouslySetInnerHTML/, severity: 'blocks XSS' },
+  { name: 'document.write', regex: /document\.write\s*\(/, severity: 'blocks XSS' },
+  { name: 'innerHTML assignment', regex: /\.innerHTML\s*=/, severity: 'blocks XSS' },
+  { name: 'script tag', regex: /<script[\s>]/i, severity: 'blocks inline scripts' },
+  { name: 'javascript: URL', regex: /javascript:/i, severity: 'blocks XSS via URL' },
+  // onerror/onclick as HTML attributes only (not JS property assignments like es.onerror = fn)
+  {
+    name: 'inline onerror attribute',
+    regex: /\sonerror\s*=\s*["']/i,
+    severity: 'blocks inline event handlers',
+  },
+  {
+    name: 'inline onclick attribute',
+    regex: /\sonclick\s*=\s*["']/i,
+    severity: 'blocks inline event handlers',
+  },
+  { name: 'atob/btoa', regex: /\b(?:atob|btoa)\s*\(/, severity: 'blocks obfuscated payloads' },
+]
+
+/**
+ * Allowlist of domains permitted in URL strings in generated code. Fonts,
+ * project-owned URLs, and XML namespace identifiers. Any other domain is
+ * flagged by Check 5 of `validateGenerated`.
+ *
+ * Hoisted to module scope and exported for the same reason as
+ * `DANGEROUS_PATTERNS` above — `scripts/utils/gate-rules.js` renders this
+ * exact set into `react-engineer.md`, so the prompt's host list cannot go
+ * stale against the scan the way it did for #432 (missing `doug-march.com`
+ * and `www.w3.org`).
+ *
+ * @type {ReadonlySet<string>}
+ */
+export const ALLOWED_URL_HOSTS = new Set([
+  'fonts.googleapis.com',
+  'fonts.gstatic.com',
+  'spaceman.llc',
+  'getfishsticks.com',
+  '15th.club',
+  // Every recognized site host, not just today's: archived designs and
+  // hand-written links may reference either side of a domain move.
+  ...RECOGNIZED_HOSTS,
+  'github.com',
+  // XML namespace URIs that appear in xmlns / xmlns:xlink attributes on
+  // inline SVG. These are identifiers, not fetchable URLs — no network
+  // request is ever made to them, and inline SVG without xmlns can fail
+  // to render in some environments.
+  'www.w3.org',
+])
+
+/**
  * Pre-build validation: check for known bad patterns in generated code.
  * Catches issues that `pnpm build` misses but break SSR at runtime.
  *
@@ -407,53 +499,6 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
   // emit code that exfiltrates data, runs arbitrary scripts, or loads
   // third-party resources. This is the second line of defense after
   // signal sanitization in collect-signals.js.
-  const DANGEROUS_PATTERNS = [
-    { name: 'fetch() call', regex: /\bfetch\s*\(/, severity: 'blocks network exfiltration' },
-    {
-      name: 'XMLHttpRequest',
-      regex: /\bXMLHttpRequest\b/,
-      severity: 'blocks network exfiltration',
-    },
-    {
-      name: 'sendBeacon',
-      regex: /\bnavigator\.sendBeacon\b/,
-      severity: 'blocks network exfiltration',
-    },
-    { name: 'WebSocket', regex: /\bnew\s+WebSocket\b/, severity: 'blocks network exfiltration' },
-    {
-      name: 'EventSource',
-      regex: /\bnew\s+EventSource\b/,
-      severity: 'blocks network exfiltration',
-    },
-    { name: 'eval()', regex: /\beval\s*\(/, severity: 'blocks arbitrary code execution' },
-    {
-      name: 'new Function()',
-      regex: /\bnew\s+Function\s*\(/,
-      severity: 'blocks arbitrary code execution',
-    },
-    {
-      name: 'dynamic import()',
-      regex: /\bimport\s*\(\s*[`'"]/,
-      severity: 'blocks arbitrary module loading',
-    },
-    { name: 'dangerouslySetInnerHTML', regex: /dangerouslySetInnerHTML/, severity: 'blocks XSS' },
-    { name: 'document.write', regex: /document\.write\s*\(/, severity: 'blocks XSS' },
-    { name: 'innerHTML assignment', regex: /\.innerHTML\s*=/, severity: 'blocks XSS' },
-    { name: 'script tag', regex: /<script[\s>]/i, severity: 'blocks inline scripts' },
-    { name: 'javascript: URL', regex: /javascript:/i, severity: 'blocks XSS via URL' },
-    // onerror/onclick as HTML attributes only (not JS property assignments like es.onerror = fn)
-    {
-      name: 'inline onerror attribute',
-      regex: /\sonerror\s*=\s*["']/i,
-      severity: 'blocks inline event handlers',
-    },
-    {
-      name: 'inline onclick attribute',
-      regex: /\sonclick\s*=\s*["']/i,
-      severity: 'blocks inline event handlers',
-    },
-    { name: 'atob/btoa', regex: /\b(?:atob|btoa)\s*\(/, severity: 'blocks obfuscated payloads' },
-  ]
 
   // Per-file exceptions for legitimate current uses in AI-generated files.
   // Keep this small and explicit — every exception is an increase in
@@ -466,26 +511,6 @@ export function validateGenerated({ root = ROOT, shell = null } = {}) {
     // check in Check 3.
     'app/routes/__root.tsx': ['script tag'],
   }
-
-  // Allowlist of domains permitted in URL strings in generated code.
-  // Fonts, project-owned URLs, and XML namespace identifiers. Any other
-  // domain is flagged.
-  const ALLOWED_URL_HOSTS = new Set([
-    'fonts.googleapis.com',
-    'fonts.gstatic.com',
-    'spaceman.llc',
-    'getfishsticks.com',
-    '15th.club',
-    // Every recognized site host, not just today's: archived designs and
-    // hand-written links may reference either side of a domain move.
-    ...RECOGNIZED_HOSTS,
-    'github.com',
-    // XML namespace URIs that appear in xmlns / xmlns:xlink attributes on
-    // inline SVG. These are identifiers, not fetchable URLs — no network
-    // request is ever made to them, and inline SVG without xmlns can fail
-    // to render in some environments.
-    'www.w3.org',
-  ])
 
   // Files to scan: only AI-generated mutable files. Hand-maintained
   // files like elements.tsx, archive.tsx, archive.$date.tsx, dev.tsx are
