@@ -1058,6 +1058,125 @@ export function validateBuild({
   return { success: true }
 }
 
+/** A `path(line,col): error TSxxxx: message` line — the start of one tsc diagnostic. */
+const TSC_ERROR_START = /^(\S.*\(\d+,\d+\): error TS\d+:.*)$/
+
+/** The one summary line `--noEmit` prints when it is not run under `--pretty`. */
+const TSC_SUMMARY_LINE = /^Found \d+ errors?\b/
+
+/**
+ * Parses `tsc --noEmit` output into one line per error, in the order tsc
+ * emitted them, deduplicated.
+ *
+ * A message that runs past one line continues on a line tsc indents deeper
+ * than the last, e.g.:
+ *
+ *   app/components/Roster.tsx(4,6): error TS2345: Argument of type '{ name: number; }[]' is not assignable to parameter of type 'RosterItem[]'.
+ *     Type '{ name: number; }' is not assignable to type 'RosterItem'.
+ *
+ * That continuation is joined onto the error line with a single space, so
+ * the retry prompt reads one error per line instead of splitting it across
+ * two and losing the second half to whatever truncates next.
+ *
+ * A GitHub Actions problem matcher can prefix a line with `##[error]`; that
+ * prefix is stripped before matching so the file path — which
+ * `identifyFailingAgent` matches by substring — still lines up at the start.
+ *
+ * Anything that is not part of a diagnostic — the `Found N errors` summary,
+ * blank lines, a pnpm banner — ends whatever error was accumulating and is
+ * otherwise dropped.
+ *
+ * @param {string} output raw stdout+stderr from `tsc --noEmit`
+ * @returns {{ errors: string[], count: number }}
+ */
+export function formatTscErrors(output) {
+  const errors = []
+  let current = null
+
+  for (const rawLine of output.split('\n')) {
+    const line = rawLine.replace(/^##\[error\]/, '').replace(/\r$/, '')
+    const start = line.match(TSC_ERROR_START)
+    if (start) {
+      if (current !== null) errors.push(current)
+      current = start[1].trim()
+      continue
+    }
+    if (current === null) continue
+    const isIndentedContinuation = /^\s+\S/.test(line) && !TSC_SUMMARY_LINE.test(line.trim())
+    if (isIndentedContinuation) {
+      current += ` ${line.trim()}`
+    } else {
+      errors.push(current)
+      current = null
+    }
+  }
+  if (current !== null) errors.push(current)
+
+  const seen = new Set()
+  const deduped = errors.filter((e) => (seen.has(e) ? false : seen.add(e)))
+  return { errors: deduped, count: deduped.length }
+}
+
+/**
+ * Keeps `text` up to `maxChars`, cutting the END — never the head, where the
+ * first and most actionable line lives — and saying so explicitly when it
+ * had to cut. Mirrors the tradeoff `capErrorList` makes for a parsed error
+ * list, for output that is not parsed (biome's).
+ *
+ * @param {string} text
+ * @param {number} maxChars
+ * @returns {string}
+ */
+function capOutputFromEnd(text, maxChars) {
+  if (text.length <= maxChars) return text
+  const omittedChars = text.length - maxChars
+  return `${text.slice(0, maxChars)}\n\n… (${omittedChars} more characters omitted)`
+}
+
+/**
+ * Joins `errors` up to `maxChars`, keeping only whole error lines and
+ * cutting the END — never the head — so the retry prompt always sees the
+ * first errors tsc reported, the ones nearest whatever broke the build.
+ *
+ * @param {string[]} errors
+ * @param {number} maxChars
+ * @returns {{ text: string, omitted: number }}
+ */
+function capErrorList(errors, maxChars) {
+  let text = ''
+  let included = 0
+  for (const line of errors) {
+    const candidate = included === 0 ? line : `${text}\n${line}`
+    if (candidate.length > maxChars) break
+    text = candidate
+    included++
+  }
+  return { text, omitted: errors.length - included }
+}
+
+/**
+ * The tsc branch of `runStaticChecks`'s failure message: every parsed
+ * error, capped from the end. Pulled out on its own so the "did this even
+ * parse as a diagnostic" branching lives in one place instead of inline in
+ * `runStaticChecks`.
+ *
+ * @param {string} tscOut combined stdout+stderr from a failing `tsc --noEmit`
+ * @returns {string}
+ */
+function formatTscFailure(tscOut) {
+  const { errors, count } = formatTscErrors(tscOut)
+  if (count === 0) {
+    // tsc exited non-zero without a line the parser recognizes as a
+    // diagnostic — a crash, a tsconfig problem — so fall back to the raw
+    // output rather than reporting zero errors on a failed run.
+    return `Type errors (tsc --noEmit):\n${capOutputFromEnd(tscOut.trim(), 12000)}`
+  }
+  const { text, omitted } = capErrorList(errors, 12000)
+  const omittedNote =
+    omitted > 0 ? `\n\n… (${omitted} more error${omitted === 1 ? '' : 's'} omitted)` : ''
+  return `Type errors (tsc --noEmit), ${count} total, every one listed:\n${text}${omittedNote}`
+}
+
 /**
  * Paths the static checks cover. The same ones the nightly's push step
  * stages, so what gets checked is exactly what would reach main. `elements/`
@@ -1108,14 +1227,14 @@ export function runStaticChecks({ spawn = spawnSync, root = ROOT } = {}) {
   const fixed = biomeOut.match(/Fixed \d+ files?/)?.[0]
   if (fixed) console.log(`  biome: ${fixed}`)
   if (biome.status !== 0) {
-    failures.push(`Lint errors remain after auto-fix (biome):\n${biomeOut.trim().slice(-3000)}`)
+    failures.push(
+      `Lint errors remain after auto-fix (biome):\n${capOutputFromEnd(biomeOut.trim(), 12000)}`
+    )
   }
 
   console.log('  running tsc --noEmit...')
   const tsc = spawn('pnpm', ['exec', 'tsc', '--noEmit'], opts)
-  if (tsc.status !== 0) {
-    failures.push(`Type errors (tsc --noEmit):\n${combined(tsc).trim().slice(-3000)}`)
-  }
+  if (tsc.status !== 0) failures.push(formatTscFailure(combined(tsc)))
 
   // The third check CI runs on main. `--base HEAD` diffs the working tree
   // against the commit the run started from, which is exactly the set of

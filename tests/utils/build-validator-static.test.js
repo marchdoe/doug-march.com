@@ -5,6 +5,7 @@ import {
   STATIC_CHECK_PATHS,
   formatGeneratedFile,
   summarizeFallowAudit,
+  formatTscErrors,
 } from '../../scripts/utils/build-validator.js'
 
 /** What a clean `fallow audit --format json` prints, reduced to what is read. */
@@ -181,10 +182,52 @@ describe('runStaticChecks', () => {
     warn.mockRestore()
   })
 
-  it('caps each tool output so a runaway log cannot swamp the retry prompt', () => {
-    const { spawn } = fakeSpawn({ tsc: { status: 2, stdout: 'x'.repeat(10000) } })
+  it('caps a runaway biome log from the end, saying so, keeping the head', () => {
+    const { spawn } = fakeSpawn({
+      biome: { status: 1, stdout: `head-of-the-log ${'x'.repeat(20000)}` },
+    })
     const result = runStaticChecks({ spawn, root: '/repo' })
-    expect(result.error.length).toBeLessThan(3500)
+    expect(result.error).toContain('head-of-the-log')
+    expect(result.error).toMatch(/more characters omitted/)
+    expect(result.error.length).toBeLessThan(13000)
+  })
+
+  it('caps tsc output it could not parse as diagnostics the same way, from the end', () => {
+    // No `path(line,col): error TSxxxx:` line in here — a crash or a
+    // tsconfig problem, not a diagnostic the parser recognizes — so this
+    // exercises the raw fallback, not the per-error list.
+    const { spawn } = fakeSpawn({
+      tsc: { status: 2, stdout: `error TS5023: Unknown option '${'x'.repeat(20000)}'.` },
+    })
+    const result = runStaticChecks({ spawn, root: '/repo' })
+    expect(result.error).toContain("error TS5023: Unknown option '")
+    expect(result.error).toMatch(/more characters omitted/)
+    expect(result.error.length).toBeLessThan(13000)
+  })
+
+  it('lists every tsc error, not the last 3000 characters of the log', () => {
+    // The shape that broke the 2026-09-02 nightly (#432): with errors across
+    // enough files, `combined(tsc).trim().slice(-3000)` cut off the head, so
+    // the recorded text began mid-word. Build stdout long enough that the
+    // old tail-slice would have discarded this first error entirely.
+    const firstError =
+      "app/components/Roster.tsx(4,6): error TS2345: Argument of type '{ name: number; }[]' is not assignable to parameter of type 'RosterItem[]'.\n" +
+      "  Type '{ name: number; }' is not assignable to type 'RosterItem'."
+    const filler = Array.from(
+      { length: 80 },
+      (_, i) =>
+        `app/components/Filler${i}.tsx(1,1): error TS6133: 'x' is declared but its value is never read.`
+    ).join('\n')
+    const stdout = `${firstError}\n${filler}`
+    expect(stdout.length).toBeGreaterThan(3000)
+
+    const { spawn } = fakeSpawn({ tsc: { status: 2, stdout } })
+    const result = runStaticChecks({ spawn, root: '/repo' })
+    expect(result.success).toBe(false)
+    expect(result.error).toContain(
+      "app/components/Roster.tsx(4,6): error TS2345: Argument of type '{ name: number; }[]' is not assignable to parameter of type 'RosterItem[]'. Type '{ name: number; }' is not assignable to type 'RosterItem'."
+    )
+    expect(result.error).toContain('81 total, every one listed')
   })
 })
 
@@ -236,6 +279,59 @@ describe('formatGeneratedFile', () => {
     const result = formatGeneratedFile('app/components/BrandLockup.tsx', { spawn, root: '/repo' })
     expect(result.success).toBe(false)
     expect(result.output).toContain('could not parse file')
+  })
+})
+
+describe('formatTscErrors', () => {
+  it('parses a fixture with a two-line message, a ##[error] prefix, a duplicate and the summary line', () => {
+    const output = [
+      "##[error]app/routes/__root.tsx(4,10): error TS6133: 'styled' is declared but its value is never read.",
+      '',
+      "app/components/Roster.tsx(4,6): error TS2345: Argument of type '{ name: number; }[]' is not assignable to parameter of type 'RosterItem[]'.",
+      "  Type '{ name: number; }' is not assignable to type 'RosterItem'.",
+      "    Types of property 'name' are incompatible.",
+      "      Type 'number' is not assignable to type 'string'.",
+      // A duplicate of the first error, as a retry might reproduce verbatim.
+      "app/routes/__root.tsx(4,10): error TS6133: 'styled' is declared but its value is never read.",
+      '',
+      'Found 2 errors.',
+    ].join('\n')
+
+    const { errors, count } = formatTscErrors(output)
+
+    expect(count).toBe(2)
+    expect(errors).toEqual([
+      "app/routes/__root.tsx(4,10): error TS6133: 'styled' is declared but its value is never read.",
+      "app/components/Roster.tsx(4,6): error TS2345: Argument of type '{ name: number; }[]' is not assignable to parameter of type 'RosterItem[]'. Type '{ name: number; }' is not assignable to type 'RosterItem'. Types of property 'name' are incompatible. Type 'number' is not assignable to type 'string'.",
+    ])
+  })
+
+  it('preserves the order tsc emitted the errors in', () => {
+    const output = [
+      "app/b.tsx(1,1): error TS6133: 'b' is declared but its value is never read.",
+      "app/a.tsx(1,1): error TS6133: 'a' is declared but its value is never read.",
+    ].join('\n')
+    const { errors } = formatTscErrors(output)
+    expect(errors[0]).toContain('app/b.tsx')
+    expect(errors[1]).toContain('app/a.tsx')
+  })
+
+  it('drops a pnpm banner line with no diagnostic before it', () => {
+    const output = [
+      '> dougmarch@0.0.0 typecheck /repo',
+      '> panda codegen && tsc --noEmit',
+      '',
+      "app/a.tsx(1,1): error TS6133: 'a' is declared but its value is never read.",
+    ].join('\n')
+    const { errors, count } = formatTscErrors(output)
+    expect(count).toBe(1)
+    expect(errors[0]).toBe(
+      "app/a.tsx(1,1): error TS6133: 'a' is declared but its value is never read."
+    )
+  })
+
+  it('returns no errors and a zero count on clean output', () => {
+    expect(formatTscErrors('')).toEqual({ errors: [], count: 0 })
   })
 })
 
