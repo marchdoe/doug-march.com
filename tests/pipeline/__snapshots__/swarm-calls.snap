@@ -3997,10 +3997,35 @@ const Card = styled('div', {
 ```
 
 ### Layout component props:
-- **Flex**: `align`, `justify`, `direction`, `wrap`, `gap`
-- **Grid**: `columns`, `gap`, `columnGap`, `rowGap`, `minChildWidth`
-- **Stack/VStack/HStack**: `gap`, `align`, `justify`
-- **All components**: accept CSS props directly — `fontSize`, `color`, `padding`, `margin`, `background`, etc.
+
+This is the exact prop surface Panda compiled tonight, read straight from `styled-system/patterns/*.d.ts`. A component takes only what's listed here.
+
+- `Box` — no pattern props; use style props directly.
+- `Flex` — `align` (→ `alignItems`), `justify` (→ `justifyContent`), `direction` (→ `flexDirection`), `wrap` (→ `flexWrap`), `basis` (→ `flexBasis`), `grow` (→ `flexGrow`), `shrink` (→ `flexShrink`)
+- `Stack` — `align` (→ `alignItems`), `justify` (→ `justifyContent`), `direction` (→ `flexDirection`), `gap`
+- `VStack` — `justify` (→ `justifyContent`), `gap`
+- `HStack` — `justify` (→ `justifyContent`), `gap`
+- `Spacer` — `size`
+- `Square` — `size` (→ `width`)
+- `Circle` — `size` (→ `width`)
+- `Center` — `inline`
+- `LinkOverlay` — no pattern props; use style props directly.
+- `AspectRatio` — `ratio`
+- `Grid` — `gap`, `columnGap` (→ `gap`), `rowGap` (→ `gap`), `columns`, `minChildWidth`
+- `GridItem` — `colSpan`, `rowSpan`, `colStart`, `rowStart`, `colEnd`, `rowEnd`
+- `Wrap` — `gap`, `rowGap` (→ `gap`), `columnGap` (→ `gap`), `align` (→ `alignItems`), `justify` (→ `justifyContent`)
+- `Container` — no pattern props; use style props directly.
+- `Divider` — `orientation`, `thickness`, `color`
+- `Float` — `offsetX`, `offsetY`, `offset`, `placement`
+- `Bleed` — `inline` (→ `marginInline`), `block` (→ `marginBlock`)
+- `VisuallyHidden` — no pattern props; use style props directly.
+- `Cq` — `name`, `type` (→ `containerType`)
+
+Any prop not listed above for that component is not a pattern prop — set it as a style prop on the element (`css()` or a direct style prop), not by guessing it exists.
+The `as` prop changes which element renders. It does not change which props that element accepts — `<Box as="a">` still only takes Box's props, not `href`.
+For navigation, use plain `<a href="/">` tags styled with `css()`, as above.
+
+**All components** also accept CSS props directly — `fontSize`, `color`, `padding`, `margin`, `background`, etc.
 
 ## CSS Function (from `../../styled-system/css`)
 

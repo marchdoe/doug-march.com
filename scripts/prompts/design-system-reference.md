@@ -20,10 +20,10 @@ const Card = styled('div', {
 ```
 
 ### Layout component props:
-- **Flex**: `align`, `justify`, `direction`, `wrap`, `gap`
-- **Grid**: `columns`, `gap`, `columnGap`, `rowGap`, `minChildWidth`
-- **Stack/VStack/HStack**: `gap`, `align`, `justify`
-- **All components**: accept CSS props directly — `fontSize`, `color`, `padding`, `margin`, `background`, etc.
+
+{{PATTERN_PROPS}}
+
+**All components** also accept CSS props directly — `fontSize`, `color`, `padding`, `margin`, `background`, etc.
 
 ## CSS Function (from `../../styled-system/css`)
 
