@@ -919,14 +919,44 @@ export function checkInternalLinks({ root = ROOT, files = MUTABLE_FILES } = {}) 
 }
 
 /**
- * Run `pnpm build` in the repo root.
- * Returns { success: true } on success.
- * Returns { success: false, error: string } on failure.
+ * Persist the FULL combined stdout+stderr of a `pnpm build` run to
+ * `archive/<date>/last-build-output.txt` (overwritten each attempt), so
+ * future diagnostics have the untruncated log — the 3000-char tail kept in
+ * the returned `error` string truncated the real Vite / @tanstack/router-plugin
+ * error the last time the pipeline failed.
+ *
+ * Every other path in the run keys the day on America/New_York, not UTC —
+ * `date` is always the caller's run date, so the log lands beside the rest
+ * of that day's archive instead of a UTC-shifted neighbor (#311).
+ *
+ * @param {string} combined
+ * @param {string} date
+ */
+function writeBuildOutputLog(combined, date) {
+  const outputDir = resolve(ROOT, 'archive', date)
+  const outputPath = resolve(outputDir, 'last-build-output.txt')
+  try {
+    mkdirSync(outputDir, { recursive: true })
+    writeFileSync(outputPath, combined, 'utf8')
+    console.log(
+      `  full build output written to archive/${date}/last-build-output.txt (${combined.length} chars)`
+    )
+  } catch (writeErr) {
+    console.warn(`  could not write full build output to ${outputPath}: ${writeErr.message}`)
+  }
+}
+
+/**
+ * Run `pnpm build` in the repo root — the `pnpm build` gate of `validateBuild`.
+ *
+ * Returns `{ success: true, combined }` on success, `{ success: false, error,
+ * combined }` on failure — `combined` (the raw stdout+stderr) is returned
+ * either way so a caller whose build DID succeed can still search the log for
+ * runtime errors if the smoke checks that follow find a status-0 build with
+ * unusable output.
  *
  * On failure:
- *   1. The FULL combined stdout+stderr is written to
- *      `archive/<today>/last-build-output.txt` (overwritten each attempt)
- *      so future diagnostics have the untruncated log.
+ *   1. The full log is written to disk via `writeBuildOutputLog`.
  *   2. The last ~2000 chars of combined output are printed to the console.
  *   3. If the output contains a line matching `/^Error: /m` (typical
  *      `@tanstack/router-plugin` configResolved crashes surface the real
@@ -934,128 +964,161 @@ export function checkInternalLinks({ root = ROOT, files = MUTABLE_FILES } = {}) 
  *      is hoisted to the top of the returned `error` string so callers see
  *      it first.
  *
+ * @param {{ spawn: typeof spawnSync, date: string }} deps
+ * @returns {{ success: boolean, error?: string, combined: string }}
+ */
+function runBuildGate({ spawn, date }) {
+  console.log('  running pnpm build...')
+
+  const result = spawn('pnpm', ['build'], {
+    cwd: ROOT,
+    encoding: 'utf8',
+    timeout: STEP_BUDGETS.buildMs,
+  })
+  const combined = (result.stderr ?? '') + (result.stdout ?? '')
+
+  if (result.status === 0) {
+    return { success: true, combined }
+  }
+
+  writeBuildOutputLog(combined, date)
+
+  // Surface `@tanstack/router-plugin` / Vite `Error: …` lines that would
+  // otherwise be buried above the stack trace tail.
+  const errorLineMatch = combined.match(/^Error: .*$/m)
+  const headline = errorLineMatch ? errorLineMatch[0] : null
+
+  const tail = combined.slice(-3000)
+  const error = headline
+    ? `${headline}\n\n---\n(last 3000 chars of build output follows)\n---\n\n${tail}`
+    : tail
+
+  console.log('  build failed')
+  if (headline) {
+    console.log(`  headline: ${headline}`)
+  }
+  console.log('  --- last 2000 chars of build output ---')
+  console.log(combined.slice(-2000))
+  console.log('  ---')
+
+  return { success: false, error, combined }
+}
+
+/**
+ * The build output smoke check gate of `validateBuild` — only reachable when
+ * `pnpm build` exited 0. An AI designer can produce a preset that compiles
+ * but renders blank pages, or an `__root.tsx` that omits `Scripts` so the
+ * page never hydrates; `validateBuildOutput` catches that class of failure.
+ *
+ * On failure the full build log is persisted too — a status-0-but-no-shell
+ * failure is otherwise invisible, since `runBuildGate` only writes the log
+ * on a non-zero exit.
+ *
+ * @param {{ root: string, combined: string, date: string }} deps
  * @returns {{ success: boolean, error?: string }}
+ */
+function runSmokeCheckGate({ root, combined, date }) {
+  const smokeCheck = validateBuildOutput({ root })
+  if (smokeCheck.success) return { success: true }
+
+  console.log('  build output smoke check failed')
+  for (const e of smokeCheck.errors) console.log(`  ✗ ${e}`)
+  writeBuildOutputLog(combined, date)
+
+  // A status-0 build with missing shell output almost always means the
+  // prerender step crashed — i.e. the app COMPILED but threw when
+  // server-rendered (2026-07-10: "Unhandled rejection: Failed to fetch /:
+  // Internal Server Error"). The retry agent can only fix what it can see,
+  // so surface the runtime error lines and the log tail, not just the
+  // missing-file symptom.
+  const runtimeErrorLines = combined
+    .split('\n')
+    .filter((l) =>
+      /unhandled rejection|internal server error|prerender.*(fail|error)|^\s*error/i.test(l)
+    )
+    .slice(-6)
+  const errorParts = [
+    'Build output smoke check failed:',
+    smokeCheck.errors.map((e) => `  - ${e}`).join('\n'),
+  ]
+  if (runtimeErrorLines.length) {
+    errorParts.push(
+      '\nThe build COMPILED but the app crashed during prerender (server-side render). Runtime error lines from the build log:',
+      runtimeErrorLines.join('\n'),
+      '\nThis usually means SSR-unsafe code (window/document/localStorage accessed at module scope or unconditionally during render) in a route or component file — the server bundle loads EVERY route module, so one unsafe file breaks every page.'
+    )
+  }
+  errorParts.push(`\n--- last 1500 chars of build output ---\n${combined.slice(-1500)}`)
+  return { success: false, error: errorParts.join('\n') }
+}
+
+/**
+ * Run every gate of the nightly build validation and report every failure
+ * together, grouped by gate, instead of stopping at the first one.
+ *
+ * Before #432, `validateBuild` returned at the first failing gate — pre-build
+ * validation, then `pnpm build`, then the build-output smoke checks, then
+ * `runStaticChecks`. Run 33756500843 met a different gate on each of four
+ * retry attempts because each attempt only ever saw the first one, so no
+ * single repair could fix what was actually wrong. Every gate that CAN run
+ * now runs regardless of whether an earlier one failed:
+ *   - pre-build validation and `pnpm build` always run.
+ *   - the smoke checks run only when `pnpm build` produced output; otherwise
+ *     the report notes them as skipped rather than pretending they passed.
+ *   - `runStaticChecks` always runs — it needs no build output at all.
+ *
+ * @param {{ root?: string, shell?: object|null, date?: string, spawn?: typeof spawnSync }} [options]
+ * @returns {{ success: boolean, error?: string, fixed?: string }}
  */
 export function validateBuild({
   root = ROOT,
   shell = null,
   date = localDateString(new Date()),
+  spawn = spawnSync,
 } = {}) {
-  // Run pre-build checks first
+  console.log('  running pre-build validation...')
   const preCheck = validateGenerated({ root, shell })
-  if (!preCheck.success) {
-    return preCheck
+
+  const buildGate = runBuildGate({ spawn, date })
+
+  const smokeGate = buildGate.success
+    ? runSmokeCheckGate({ root, combined: buildGate.combined, date })
+    : { success: false, skipped: true }
+
+  console.log('  running static checks...')
+  const statics = runStaticChecks({ root, date, spawn })
+
+  // One entry per gate that did not cleanly pass, in the fixed order the
+  // report presents them — the order the pipeline runs them in.
+  const failures = []
+  if (!preCheck.success) failures.push({ name: 'Pre-build validation', body: preCheck.error })
+  if (!buildGate.success) failures.push({ name: 'pnpm build', body: buildGate.error })
+  if (smokeGate.skipped) {
+    failures.push({ body: 'build output smoke checks: skipped, the build did not produce output' })
+  } else if (!smokeGate.success) {
+    failures.push({ name: 'Build output smoke checks', body: smokeGate.error })
+  }
+  if (!statics.success) failures.push({ body: statics.error })
+
+  // Skips don't count as failures for the headline — only gates that
+  // actually ran and did not pass do.
+  const realFailures = [
+    preCheck,
+    buildGate,
+    ...(smokeGate.skipped ? [] : [smokeGate]),
+    statics,
+  ].filter((g) => !g.success).length
+
+  if (realFailures === 0) {
+    console.log('  build succeeded')
+    return { success: true }
   }
 
-  console.log('  running pnpm build...')
+  const sections = failures.map((f) => (f.name ? `${f.name}:\n${f.body}` : f.body))
+  const error = [`${realFailures} of 4 gates failed:`, ...sections].join('\n\n')
 
-  const result = spawnSync('pnpm', ['build'], {
-    cwd: ROOT,
-    encoding: 'utf8',
-    timeout: STEP_BUDGETS.buildMs,
-  })
-
-  if (result.status !== 0) {
-    const combined = (result.stderr ?? '') + (result.stdout ?? '')
-
-    // 1. Write the FULL combined output to disk for post-mortem diagnosis.
-    //    The 3000-char tail returned to callers truncated the real Vite /
-    //    @tanstack/router-plugin error last time the pipeline failed; this
-    //    preserves the complete log alongside the archive tree.
-    // Every other path in the run keys the day on America/New_York, not
-    // UTC — use the caller's run date so the build log lands beside the
-    // rest of that day's archive instead of a UTC-shifted neighbor (#311).
-    const today = date
-    const outputDir = resolve(ROOT, 'archive', today)
-    const outputPath = resolve(outputDir, 'last-build-output.txt')
-    try {
-      mkdirSync(outputDir, { recursive: true })
-      writeFileSync(outputPath, combined, 'utf8')
-      console.log(
-        `  full build output written to archive/${today}/last-build-output.txt (${combined.length} chars)`
-      )
-    } catch (writeErr) {
-      console.warn(`  could not write full build output to ${outputPath}: ${writeErr.message}`)
-    }
-
-    // 3. Surface `@tanstack/router-plugin` / Vite `Error: …` lines that
-    //    would otherwise be buried above the stack trace tail.
-    const errorLineMatch = combined.match(/^Error: .*$/m)
-    const headline = errorLineMatch ? errorLineMatch[0] : null
-
-    const tail = combined.slice(-3000)
-    const error = headline
-      ? `${headline}\n\n---\n(last 3000 chars of build output follows)\n---\n\n${tail}`
-      : tail
-
-    console.log('  build failed')
-    if (headline) {
-      console.log(`  headline: ${headline}`)
-    }
-    console.log('  --- last 2000 chars of build output ---')
-    console.log(combined.slice(-2000))
-    console.log('  ---')
-
-    return { success: false, error }
-  }
-
-  // Build exited 0 — but that doesn't mean the output is usable.
-  // An AI designer can produce a preset that compiles but renders blank
-  // pages, or an __root.tsx that omits Scripts so the page never hydrates.
-  // Run smoke checks on the built output before declaring success.
-  const smokeCheck = validateBuildOutput({ root })
-  if (!smokeCheck.success) {
-    console.log('  build output smoke check failed')
-    for (const e of smokeCheck.errors) console.log(`  ✗ ${e}`)
-    const combined = (result.stderr ?? '') + (result.stdout ?? '')
-    // Build exited 0 but produced unusable output. Persist the full build log
-    // too — a status-0-but-no-shell failure is otherwise invisible (the
-    // non-zero path above is the only other place this gets written).
-    try {
-      // Same run date as the non-zero-exit path above (#311).
-      const today = date
-      const outputDir = resolve(ROOT, 'archive', today)
-      mkdirSync(outputDir, { recursive: true })
-      writeFileSync(resolve(outputDir, 'last-build-output.txt'), combined, 'utf8')
-      console.log(
-        `  full build output written to archive/${today}/last-build-output.txt (${combined.length} chars)`
-      )
-    } catch (writeErr) {
-      console.warn(`  could not write full build output: ${writeErr.message}`)
-    }
-    // A status-0 build with missing shell output almost always means the
-    // prerender step crashed — i.e. the app COMPILED but threw when
-    // server-rendered (2026-07-10: "Unhandled rejection: Failed to fetch /:
-    // Internal Server Error"). The retry agent can only fix what it can see,
-    // so surface the runtime error lines and the log tail, not just the
-    // missing-file symptom.
-    const runtimeErrorLines = combined
-      .split('\n')
-      .filter((l) =>
-        /unhandled rejection|internal server error|prerender.*(fail|error)|^\s*error/i.test(l)
-      )
-      .slice(-6)
-    const errorParts = [
-      'Build output smoke check failed:',
-      smokeCheck.errors.map((e) => `  - ${e}`).join('\n'),
-    ]
-    if (runtimeErrorLines.length) {
-      errorParts.push(
-        '\nThe build COMPILED but the app crashed during prerender (server-side render). Runtime error lines from the build log:',
-        runtimeErrorLines.join('\n'),
-        '\nThis usually means SSR-unsafe code (window/document/localStorage accessed at module scope or unconditionally during render) in a route or component file — the server bundle loads EVERY route module, so one unsafe file breaks every page.'
-      )
-    }
-    errorParts.push(`\n--- last 1500 chars of build output ---\n${combined.slice(-1500)}`)
-    return { success: false, error: errorParts.join('\n') }
-  }
-
-  // Compiles and renders is not the same as passes CI. See runStaticChecks.
-  const statics = runStaticChecks({ root, date })
-  if (!statics.success) return statics
-
-  console.log('  build succeeded')
-  return { success: true }
+  console.log(`  ${realFailures} of 4 gates failed`)
+  return { success: false, error, ...(statics.fixed ? { fixed: statics.fixed } : {}) }
 }
 
 /** A `path(line,col): error TSxxxx: message` line — the start of one tsc diagnostic. */
