@@ -255,14 +255,18 @@ describe('runCanary — a shipped night', () => {
       ).toBe(true)
     }))
 
-  it('keeps images out of the evidence dir', async () =>
+  it('keeps stray images out of the evidence dir, but copies the shipped render to render.png', async () =>
     withEnv(clearGuardEnv, async () => {
       writeArchiveFixture({
         date: '2026-09-02',
         buildName: 'build-100',
         trace: { steps: [] },
         cost: { total_usd: 0, calls: 0, retries: 0 },
-        extraFiles: { 'screenshot.png': 'not-really-a-png' },
+        extraFiles: {
+          'screenshot.png': 'the shipped render',
+          'screenshot-dark.png': 'not the render',
+          'mockup-screenshot.png': 'not the render either',
+        },
       })
       const exec = () => ({ status: 0, stdout: '', stderr: '' })
       const result = await runCanary({ exec, now: fixedNow, root, worktreePath: worktree })
@@ -276,7 +280,14 @@ describe('runCanary — a shipped night', () => {
         return found
       }
       const files = walk(result.evidenceDir)
-      expect(files.some((f) => f.endsWith('.png'))).toBe(false)
+      const pngs = files.filter((f) => f.endsWith('.png'))
+      // #454: the taste-note invite needs a durable path to the render the
+      // owner would be reacting to (the worktree it lived in is gone by the
+      // time they act on the invite) — everything else stays text-only.
+      expect(pngs).toEqual([path.join(result.evidenceDir, 'render.png')])
+      expect(readFileSync(path.join(result.evidenceDir, 'render.png'), 'utf8')).toBe(
+        'the shipped render'
+      )
     }))
 
   it('--mock writes evidence under a <stamp>-mock/ dir with a "(mock)" summary title', async () =>

@@ -6,7 +6,15 @@ import path from 'node:path'
 // permanent, all-time truth that survives forever. Hard-cap it so a future
 // edit can't silently blow the prompt budget the way an unbounded reference
 // or lessons block can.
-const MAX_BYTES = 3 * 1024
+// 8KB. On 2026-09-04 the file was 5,638 bytes against a 3KB cap, so five
+// standing complaints and the whole grade ledger were cut off before the Art
+// Director ever read them — a "do not repeat" list the director could not
+// see. This is the owner's only taste channel that never expires, and at
+// roughly 2k tokens it is among the cheapest things in a prompt that runs
+// tens of thousands. Raise it again rather than let the tail fall off; the
+// truncation notice is the signal that it needs raising.
+export const MAX_TASTE_MEMORY_BYTES = 8 * 1024
+const MAX_BYTES = MAX_TASTE_MEMORY_BYTES
 
 /**
  * Read signals/taste.md (owner-curated, permanent taste memory) and return
