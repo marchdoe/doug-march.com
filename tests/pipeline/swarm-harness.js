@@ -250,7 +250,14 @@ async function fakeCaptureHtmlFileScreenshot(filePath, opts) {
   const scripted = nextScript('mockupCapture', null)
   const r = typeof scripted === 'function' ? scripted() : scripted
   if (r instanceof Error) throw r
-  return r ?? { png: PNG('mockup'), jpeg: JPEG('mockup'), headerJpeg: JPEG('mockup-header') }
+  return (
+    r ?? {
+      png: PNG('mockup'),
+      jpeg: JPEG('mockup'),
+      headerJpeg: JPEG('mockup-header'),
+      mobileJpeg: JPEG('mockup-360'),
+    }
+  )
 }
 
 async function fakeCaptureScreenshot(port, opts) {
@@ -265,6 +272,7 @@ async function fakeCaptureScreenshot(port, opts) {
       darkPng: PNG('home-dark'),
       darkJpeg: JPEG('home-dark'),
       headerJpeg: JPEG('home-header'),
+      mobileJpeg: JPEG('home-360'),
       fingerprint: null,
     }
   )

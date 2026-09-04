@@ -44,8 +44,10 @@ No code fences anywhere — not around the response, not around the HTML inside 
 - Content: real content from the Site Content summary — real project names,
   real timeline entries. Placeholder text ("Lorem", "Project One") is a
   failure.
-- Viewport target: design for 1440×900 first; include responsive behavior
-  with the same rules as production (see Responsive section).
+- Viewport target: the composition has to hold at 360 and at 1440. Write the
+  base CSS for 360 and enhance upward with `@media (min-width: ...)`, under the
+  same rules as production (see Responsive section). Both widths are
+  screenshotted and both are reviewed.
 - The document must render correctly from a `file://` URL (no absolute
   local paths, no same-origin fetches).
 
@@ -193,12 +195,18 @@ You are designing for three characters: phone (360px), tablet (768px), laptop/de
 - Line length ≤ 75 characters at all viewports.
 
 **What gets checked automatically:**
-Every build runs at 360 / 768 / 1024 / 1440 and is scored on: horizontal scroll, content clipping, header overlap, body text size, tap-target size, line length. Failures are logged and fed back into tomorrow's prompt as negative examples.
+Every build runs at 360 / 768 / 1024 / 1440 and is scored on: horizontal scroll, content clipping, header overlap, body text size, tap-target size, line length. Horizontal scroll and clipped text are errors that force a revision on the spot — note that they are different faults, and that a parent with `overflow: hidden` cuts content off while leaving the page measuring clean.
+
+**What gets looked at:**
+The measurements cannot tell whether the design is still a design at 360, so both critics now see the phone render beside the 1440 render and judge it: whether the composition's idea survives at one column or only its parts do, whether the hierarchy still reads, whether the type scaled to the column or stacked into a wall. A mockup that only works at 1440 is a REVISE at the mockup gate, before an engineer ever builds it.
 
 ## Self-check before responding
 
-1. Screenshot test: if the critic renders this at 1440×900 right now, does
-   it meet every number in MEASURABLES? Estimate honestly.
+1. Screenshot test: the critic renders this at 1440×900 and at 360×640 right
+   now. At 1440, does it meet every number in MEASURABLES? At 360, name the
+   one thing the composition is about and say what carries it there — if the
+   answer is "the same parts, no longer related", the design is not finished.
+   Estimate honestly.
 2. Is every visible string real content?
 3. Does the shell match the SHELL declaration?
 If any answer is No, revise before responding.

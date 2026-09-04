@@ -125,15 +125,16 @@ describe('buildScreenshotCriticBlocks', () => {
     )
   })
 
-  it('fits mockup, both schemes, both header crops, two routes and a reference exactly', () => {
+  it('fits mockup, both schemes, the phone, both header crops, one route and a reference exactly', () => {
     const blocks = buildScreenshotCriticBlocks({
       ...baseCtx,
-      screenshotBuffer: { ...baseCtx.screenshotBuffer, headerJpeg: Buffer.from([0x05]) },
+      screenshotBuffer: {
+        ...baseCtx.screenshotBuffer,
+        mobileJpeg: Buffer.from([0x07]),
+        headerJpeg: Buffer.from([0x05]),
+      },
       mockupScreenshot: { jpeg: Buffer.from([0x01]), headerJpeg: Buffer.from([0x06]) },
-      routeShots: [
-        { label: 'A project page (/work/spaceman):', png: Buffer.from([0x02]) },
-        { label: 'The share card (/og):', png: Buffer.from([0x03]) },
-      ],
+      routeShots: [{ label: 'A project page (/work/spaceman):', png: Buffer.from([0x02]) }],
       bestReference: { buffer: Buffer.from([0x89, 0x50, 0x4e, 0x47]), description: 'ref' },
     })
     const images = blocks.filter((b) => b.type === 'image')
@@ -145,6 +146,57 @@ describe('buildScreenshotCriticBlocks', () => {
     const at = (needle) => labels.findIndex((t) => t.includes(needle))
     expect(at('RENDERED page')).toBeLessThan(at('Other surfaces'))
     expect(at('Other surfaces')).toBeLessThan(at('highest-rated'))
+  })
+
+  it('carries the phone render next to its desktop counterpart, both labelled', () => {
+    const blocks = buildScreenshotCriticBlocks({
+      ...baseCtx,
+      screenshotBuffer: { ...baseCtx.screenshotBuffer, mobileJpeg: Buffer.from([0x07]) },
+    })
+    const images = blocks.filter((b) => b.type === 'image')
+    expect(images).toHaveLength(3)
+
+    const kinds = blocks.map((b) => (b.type === 'image' ? 'image' : b.text))
+    const light = kinds.findIndex((k) => k.includes('LIGHT scheme, 1440×900'))
+    const phone = kinds.findIndex((k) => k.includes('360×640 (PHONE)'))
+    const dark = kinds.findIndex((k) => k.includes('DARK scheme, 1440×900'))
+    // light label, light image, phone label, phone image, dark label, dark image
+    expect(phone).toBe(light + 2)
+    expect(dark).toBe(phone + 2)
+    expect(kinds[phone + 1]).toBe('image')
+    expect(images[1].source.data).toBe(Buffer.from([0x07]).toString('base64'))
+  })
+
+  it('drops the phone block rather than the run when the capture failed', () => {
+    const blocks = buildScreenshotCriticBlocks({
+      ...baseCtx,
+      screenshotBuffer: { ...baseCtx.screenshotBuffer, mobileJpeg: null },
+    })
+    expect(blocks.filter((b) => b.type === 'image')).toHaveLength(2)
+    expect(blocks.some((b) => b.type === 'text' && b.text.includes('PHONE'))).toBe(false)
+  })
+
+  it('drops a share card before the phone when the ceiling binds', () => {
+    // The phone is inside the fixed head of the list; route shots are what the
+    // ceiling squeezes. A caller that still passes /og loses it, not the 360.
+    const blocks = buildScreenshotCriticBlocks({
+      ...baseCtx,
+      screenshotBuffer: {
+        ...baseCtx.screenshotBuffer,
+        mobileJpeg: Buffer.from([0x07]),
+        headerJpeg: Buffer.from([0x05]),
+      },
+      mockupScreenshot: { jpeg: Buffer.from([0x01]), headerJpeg: Buffer.from([0x06]) },
+      routeShots: [
+        { label: 'A project page (/work/spaceman):', png: Buffer.from([0x02]) },
+        { label: 'The share card (/og):', png: Buffer.from([0x03]) },
+      ],
+      bestReference: { buffer: Buffer.from([0x89, 0x50, 0x4e, 0x47]), description: 'ref' },
+    })
+    const images = blocks.filter((b) => b.type === 'image')
+    expect(images).toHaveLength(MAX_SCREENSHOT_CRITIC_IMAGES)
+    expect(blocks.some((b) => b.type === 'text' && b.text.includes('360×640 (PHONE)'))).toBe(true)
+    expect(blocks.some((b) => b.type === 'text' && b.text.includes('share card'))).toBe(false)
   })
 
   it('never inlines screenshot bytes as base64 text', () => {
