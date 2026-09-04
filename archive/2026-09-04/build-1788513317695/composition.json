@@ -1,0 +1,10 @@
+{
+  "columns": "three",
+  "axis": "diagonal",
+  "symmetry": "right-weighted",
+  "hero_zone": "upper-left",
+  "density": "dense",
+  "rhythm": "even",
+  "shell_posture": "footer-only",
+  "field_ratio": "field-dominant"
+}

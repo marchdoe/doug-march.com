@@ -1,0 +1,276 @@
+{
+  "viewports": {
+    "mobile": {
+      "width": 360,
+      "height": 640,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [
+          {
+            "tag": "H2",
+            "text": "Selected work",
+            "right": 621
+          },
+          {
+            "tag": "DIV",
+            "text": "01 — SaaS",
+            "right": 397
+          },
+          {
+            "tag": "DIV",
+            "text": "SaaS2025",
+            "right": 397
+          },
+          {
+            "tag": "SPAN",
+            "text": "2025",
+            "right": 397
+          },
+          {
+            "tag": "DIV",
+            "text": "03 — AI",
+            "right": 397
+          },
+          {
+            "tag": "DIV",
+            "text": "AI2026",
+            "right": 397
+          },
+          {
+            "tag": "SPAN",
+            "text": "2026",
+            "right": 397
+          },
+          {
+            "tag": "DIV",
+            "text": "05 — Experiment",
+            "right": 442
+          },
+          {
+            "tag": "DIV",
+            "text": "Experiment2008",
+            "right": 442
+          },
+          {
+            "tag": "SPAN",
+            "text": "2008",
+            "right": 442
+          },
+          {
+            "tag": "DIV",
+            "text": "06 — Experiment",
+            "right": 474
+          },
+          {
+            "tag": "DIV",
+            "text": "Twittertale",
+            "right": 391
+          },
+          {
+            "tag": "DIV",
+            "text": "Experiment2008",
+            "right": 474
+          },
+          {
+            "tag": "SPAN",
+            "text": "2008",
+            "right": 474
+          }
+        ],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 11.2,
+          "passing": false
+        },
+        "tapTargetFailures": [],
+        "lineLengthFailures": []
+      },
+      "score": 3
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [
+          {
+            "tag": "H2",
+            "text": "Selected work",
+            "right": 915
+          },
+          {
+            "tag": "DIV",
+            "text": "05 — Experiment",
+            "right": 966
+          },
+          {
+            "tag": "DIV",
+            "text": "Politweets",
+            "right": 884
+          },
+          {
+            "tag": "DIV",
+            "text": "Experiment2008",
+            "right": 966
+          },
+          {
+            "tag": "SPAN",
+            "text": "2008",
+            "right": 966
+          }
+        ],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 11.2,
+          "passing": false
+        },
+        "tapTargetFailures": [
+          {
+            "tag": "A",
+            "text": "Work",
+            "w": 33,
+            "h": 21
+          },
+          {
+            "tag": "A",
+            "text": "About",
+            "w": 39,
+            "h": 21
+          },
+          {
+            "tag": "A",
+            "text": "hello@dougmar.ch",
+            "w": 113,
+            "h": 18
+          }
+        ],
+        "lineLengthFailures": []
+      },
+      "score": 2
+    },
+    "laptop": {
+      "width": 1024,
+      "height": 768,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [
+          {
+            "tag": "DIV",
+            "text": "03 — AI",
+            "right": 1207
+          },
+          {
+            "tag": "DIV",
+            "text": "dougmar.ch",
+            "right": 1169
+          },
+          {
+            "tag": "DIV",
+            "text": "AI2026",
+            "right": 1207
+          },
+          {
+            "tag": "SPAN",
+            "text": "2026",
+            "right": 1207
+          },
+          {
+            "tag": "DIV",
+            "text": "06 — Experiment",
+            "right": 1300
+          },
+          {
+            "tag": "DIV",
+            "text": "Twittertale",
+            "right": 1218
+          },
+          {
+            "tag": "DIV",
+            "text": "Experiment2008",
+            "right": 1300
+          },
+          {
+            "tag": "SPAN",
+            "text": "2008",
+            "right": 1300
+          }
+        ],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 11.2,
+          "passing": false
+        },
+        "tapTargetFailures": [],
+        "lineLengthFailures": []
+      },
+      "score": 3
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [
+          {
+            "tag": "DIV",
+            "text": "03 — AI",
+            "right": 1484
+          },
+          {
+            "tag": "DIV",
+            "text": "dougmar.ch",
+            "right": 1446
+          },
+          {
+            "tag": "DIV",
+            "text": "AI2026",
+            "right": 1484
+          },
+          {
+            "tag": "SPAN",
+            "text": "2026",
+            "right": 1484
+          },
+          {
+            "tag": "DIV",
+            "text": "06 — Experiment",
+            "right": 1577
+          },
+          {
+            "tag": "DIV",
+            "text": "Twittertale",
+            "right": 1495
+          },
+          {
+            "tag": "DIV",
+            "text": "Experiment2008",
+            "right": 1577
+          },
+          {
+            "tag": "SPAN",
+            "text": "2008",
+            "right": 1577
+          }
+        ],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 11.2,
+          "passing": false
+        },
+        "tapTargetFailures": [],
+        "lineLengthFailures": []
+      },
+      "score": 3
+    }
+  },
+  "overallScore": 2,
+  "worstFailure": {
+    "viewport": "tablet",
+    "check": "clippedElements",
+    "detail": "5 element(s) extended past the viewport (first: <H2>)"
+  },
+  "buildId": "1788513317695",
+  "date": "2026-09-04",
+  "archetype": "the machine asks where the work went — a mono statement over a warm-dark void",
+  "usedInPromptFor": []
+}

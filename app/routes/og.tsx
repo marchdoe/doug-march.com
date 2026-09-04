@@ -1,55 +1,51 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { css } from '../../styled-system/css'
+import { Box } from '../../styled-system/jsx'
 import { BrandLockup } from '../components/BrandLockup'
 
 export const Route = createFileRoute('/og')({ component: OgCard })
 
 function OgCard() {
   return (
-    <div
-      className={css({
-        position: 'fixed',
-        inset: 0,
-        zIndex: 9999,
-        background: 'bg',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      })}
-    >
-      <div
-        className={css({
-          width: '1200px',
-          height: '630px',
-          position: 'relative',
-          background: 'bg',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          paddingX: '80px',
-        })}
+    <Box position="fixed" inset="0" zIndex="9999" bg="bg">
+      <Box
+        w="1200px"
+        h="630px"
+        mx="auto"
+        my="0"
+        bg="field"
+        color="fieldInk"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        px="72px"
+        py="64px"
+        position="relative"
       >
-        <div className={css({ position: 'absolute', top: '48px', left: '80px', color: 'accent' })}>
-          <BrandLockup variant="horizontal-sm" mode="single-color" roleLine={false} />
-        </div>
-
-        <h1
-          className={css({
-            textStyle: 'hero',
-            fontFamily: 'display',
-            fontWeight: '800',
-            color: 'text',
-            maxWidth: '14ch',
-            margin: 0,
-          })}
+        <Box color="fieldInk">
+          <BrandLockup variant="mark-only-md" mode="single-color" color="bg" />
+        </Box>
+        <Box
+          fontFamily="display"
+          fontWeight="700"
+          fontSize="hero"
+          lineHeight="tight"
+          letterSpacing="tight"
+          color="fieldInk"
         >
-          Simplicity is the glory
-          <span className={css({ display: 'block', marginLeft: '160px', color: 'accent' })}>
-            of expression.
-          </span>
-        </h1>
-      </div>
-    </div>
+          Where did
+          <br />
+          the work go?
+        </Box>
+        <Box
+          fontFamily="display"
+          fontSize="sm"
+          letterSpacing="wide"
+          textTransform="uppercase"
+          color="fieldInkMuted"
+        >
+          dougmar.ch · AI · 2026 · running nightly
+        </Box>
+      </Box>
+    </Box>
   )
 }

@@ -1,0 +1,666 @@
+{
+  "date": "2026-09-04",
+  "era": "header-declared",
+  "generatedAt": "2026-09-04T09:15:24.741Z",
+  "buildId": "1788513317695",
+  "attempts": 1,
+  "brief": "A machine asks where the work went — \"Where did the work go?\" stacked in monospace over a warm terracotta-lit void, the whole body of work packed dense as the deadpan answer.",
+  "rationale": "The hero phrase is a question the whole internet is asking this week and that this site answers just by existing: \"Where did the work go?\" It came out of the day's densest signal lane — the sidebar and Hacker News are entirely AI-and-labor anxiety — and I chose it over the perfectly poster-worthy Cervantes quote specifically to break the two-day quote streak the mandate flagged. A four-word question is the entire expression, so every other decision protects its punch: it gets one anchor in the upper-left, not a fragmented interleave, and the fold carries no furniture at all.\n\nBecause a machine now designs this portfolio nightly, the honest voice for that question is the machine's own: Space Mono at 120px, stacked into three short returns. Mono is normally a brand-register red flag (\"costume technical\"), but here it is thematically load-bearing rather than decorative, and space-mono-archivo has effectively never shipped — it dodges the three-chassis monoculture the mandate calls out. Archivo answers Space Mono's construction as the body, keeping display and body on a shared grotesque skeleton (the 09-01 standing complaint), and a mid-register Archivo standfirst plus mono index titles spend the middle of the type scale the owner asked for.\n\nThe palette commits to one hue at volume without hedging: 22° terracotta, dead-center in the mandated 15–40° corridor, glowing off a warm rust-tinted near-black void. I chose dark-void (fresh against the recent drench and split-field) and can justify the darkness against the \"favor vibrancy\" default: this is a wry, late-hour question, quietly shadowed by Cassandra Wilson's passing, and the void makes the terracotta question read like a single lit line in a dim room — not grey, not dreary, a warm charcoal drenched toward clay with a full-saturation accent doing all the pointing. Radii are zero everywhere but the mark, navigation and the entire signal manifest defer to a footer strip (footer-only posture, fresh against recent folded-into-hero and marginal headers), and the dense three-column index below the fold is the deadpan answer to the question hanging above it — the work never went anywhere; it's all right here.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Layout.tsx",
+    "app/components/Sidebar.tsx",
+    "app/components/generated/HeroPanel.tsx",
+    "app/components/generated/FieldPanel.tsx",
+    "app/components/generated/FeaturedProjectCard.tsx",
+    "app/components/generated/WorkRowList.tsx",
+    "app/components/generated/CapabilityRail.tsx",
+    "app/components/generated/TimelineList.tsx",
+    "app/components/generated/EducationBlock.tsx",
+    "app/components/generated/PersonalField.tsx",
+    "app/components/generated/CaseStudyMeta.tsx",
+    "app/components/generated/ProblemApproachOutcome.tsx",
+    "app/components/generated/StackList.tsx",
+    "app/components/generated/WhitePaperContext.tsx",
+    "app/components/generated/WhitePaperProcess.tsx",
+    "app/components/generated/WhitePaperDecisions.tsx",
+    "app/components/generated/WhitePaperReferences.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": null,
+  "signals": {
+    "air_quality": {
+      "aqi_index": 1,
+      "uv_index": 0,
+      "air_quality_label": "Good"
+    },
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "CHASING THE MOMENT",
+          "description": "A webfilm in five cinematic scenes: a mannequin chasing the moment their work finally lands, and the long stretch before it does. The second half turns...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a85df674c750673809599.jpg"
+        },
+        {
+          "title": "The Studio by Julie Granger",
+          "description": "The Studio, founded by Julie Granger, pioneered barre au sol in France. Its website blends custom development, Uscreen integration, e-commerce and Julie’s...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a918a077e5d1453716631.jpg"
+        },
+        {
+          "title": "The Donut Studio",
+          "description": "The Donut Studio’s website is a portfolio of an art-first creative studio, showcasing its bold, playful, and experimental approach across branding, identity,...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a84025ecb0b9604685522.png"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Friday",
+      "is_weekend": false,
+      "day_index": 5
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "fmtlib/fmt/stargazers",
+          "description": "",
+          "language": "C++",
+          "stars": null
+        },
+        {
+          "name": "sponsors/mattpocock",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "NousResearch/hermes-agent/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "sponsors/DietrichGebert",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "anthropics/skills/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Biltmore Championship Asheville",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "GPT-6 Astra",
+          "url": "https://openai.com/index/gpt-6-astra/",
+          "score": 1755,
+          "by": "kibae"
+        },
+        {
+          "title": ".name Termination",
+          "url": "https://neil.fraser.name/news/2026/09/03/",
+          "score": 1769,
+          "by": "pavel_lishin"
+        },
+        {
+          "title": "Qwen 3.8 27B available on Cerebras at 1500 tokens/s",
+          "url": "https://inference-docs.cerebras.ai/models/overview",
+          "score": 547,
+          "by": "altertable"
+        },
+        {
+          "title": "Authorization terminology is a mess: Let's fix it",
+          "url": "https://idpro.org/authorization-terminology-is-a-mess-lets-fix-it/",
+          "score": 22,
+          "by": "andychiare"
+        },
+        {
+          "title": "The largest electric aircraft just flew [video]",
+          "url": "https://www.youtube.com/watch",
+          "score": 307,
+          "by": "feb"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Labor Day",
+          "date": "2026-09-07",
+          "days_away": 3
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "last quarter",
+      "illumination": 0.43,
+      "days_into_cycle": 22.81
+    },
+    "market": {
+      "symbol": "SPY",
+      "price": "773.1700",
+      "change": "8.0100",
+      "change_percent": "1.0468%",
+      "direction": "up"
+    },
+    "music": {
+      "bands": [
+        "Tobin Sprout",
+        "The War on Drugs"
+      ],
+      "rotation": true
+    },
+    "news": {
+      "headlines": [
+        {
+          "title": "Cassandra Wilson, the two-time Grammy Award-winning jazz singer, has died - AP News",
+          "source": "Associated Press",
+          "url": "https://apnews.com/article/cassandra-wilson-dead-7bbf74ead70df41b8341be9e4969c3ce"
+        },
+        {
+          "title": "EU and Nato vow to step up pressure on Russia after 'new escalation' in Germany - bbc.com",
+          "source": "BBC News",
+          "url": "https://www.bbc.com/news/articles/ce9e810pg7ko"
+        },
+        {
+          "title": "Galaxy S27 Ultra teased to come with a surprising chip - PhoneArena",
+          "source": "PhoneArena",
+          "url": "https://www.phonearena.com/news/Galaxy-S27-Ultra-teased-to-come-with-a-surprising-chip_id183047"
+        },
+        {
+          "title": "Dutch central bank shifts billions in gold from US to Britain in ‘crisis preparedness’ move - CNN",
+          "source": "CNN",
+          "url": "https://www.cnn.com/2026/09/02/europe/dutch-central-bank-shifts-gold-to-britain-intl-hnk"
+        },
+        {
+          "title": "Jennifer Aniston and Boyfriend Jim Curtis Discuss His Past Partial Paralysis - E! News",
+          "source": "Eonline.com",
+          "url": "https://www.eonline.com/news/1435697/jennifer-anistons-boyfriend-jim-curtis-shares-health-issue-past-paralysis"
+        }
+      ]
+    },
+    "quote": {
+      "text": "Facts are the enemy of truth.",
+      "author": "Miguel de Cervantes"
+    },
+    "season": {
+      "season": "fall",
+      "month": 9,
+      "day": 4,
+      "day_of_year": 247,
+      "month_name": "September"
+    },
+    "sidebar": {
+      "links": [
+        {
+          "title": "AI is making development faster. But where did the work go?",
+          "url": "https://medium.com/design-bootcamp/ai-is-making-product-development-faster-57a86bc3ffa0",
+          "source": "medium.com",
+          "description": "When AI makes one part of product development faster, what happens to the rest of the system?"
+        },
+        {
+          "title": "A geometric typeface made for the age of AI",
+          "url": "https://the-brandidentity.com/typeface/ren%C3%A9-bieders-neurath-x-is-a-geometric-typeface-made-for-the-age-of-ai",
+          "source": "the-brandidentity.com",
+          "description": "The Neurath X Collection began with a question: what might geometric typography look like in the age of AI?"
+        },
+        {
+          "title": "Normal Tools",
+          "url": "https://www.normaltools.com/",
+          "source": "normaltools.com",
+          "description": "Small, useful online tools that work directly in your browser."
+        },
+        {
+          "title": "Unwinding the great tech power grab",
+          "url": "https://rebeccawilliams.info/unwinding-the-great-tech-power-grab/",
+          "source": "rebeccawilliams.info",
+          "description": "How tech has atrophied the exact civic muscle we’ll need to reclaim power over it."
+        },
+        {
+          "title": "JudgmentKit",
+          "url": "https://judgmentkit.ai/",
+          "source": "judgmentkit.ai",
+          "description": "Stop AI from building the wrong interface. Help AI agents understand the user’s work, choose the right interface, and repair what does not fit."
+        }
+      ]
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "06:47",
+      "sunset": "19:30",
+      "daylight_hours": 12.7
+    },
+    "weather": {
+      "location": "Aldie, Virginia",
+      "conditions": "Light rain",
+      "temp_f": 72.3,
+      "temp_c": 22.4,
+      "humidity": 92,
+      "wind_mph": 4,
+      "wind_dir": "W",
+      "feels_like_f": 77.7
+    },
+    "date": "2026-09-04"
+  },
+  "hero": {
+    "copy": "Where did the work go?",
+    "rationale": "Today's signal field is saturated with one anxiety: the sidebar and Hacker News are wall-to-wall AI-and-labor (\"AI is making development faster. But where did the work go?\", \"a typeface for the age of AI\", \"JudgmentKit: stop AI from building the wrong interface\"). This site is the exact object that question interrogates — a portfolio designed nightly by an AI agent. Turning that headline into a bare four-word question lets the page indict itself with productive irony: the question hangs over the fold, and the dense catalog of real projects beneath it is the deadpan answer. I composed it from the day's dominant theme rather than reaching for the (poster-worthy but streak-flagged) Cervantes quote.",
+    "source": "composed"
+  },
+  "chassis": "space-mono-archivo",
+  "adBrief": {
+    "visualSpecification": "**1. Color Specification**\n- **Primary hue** — 22° terracotta. Sits squarely inside the mandated 15–40° corridor; warm clay is the color of made things and honest labor, the right pigment to ask a question about disappearing work without going grey or dreary.\n- **Neutral palette (sand, warm rust-tinted)** — 50 `#FBF4EC` · 100 `#F3E7D9` · 200 `#E4D0BC` · 300 `#CDB097` · 400 `#AC8A6E` · 500 `#8A6A52` · 600 `#6A4E3B` · 700 `#4A3529` · 800 `#281C14` · 900 `#1B130D`\n- **Accent color** — light `#EC8E63`, default `#E67240`, dark `#B4451F`, glow `#F4B48E`\n- **Secondary accent** — none. One hue carries the page.\n- **Background** — page `#1B130D` (warm near-black void), card/surface `#34261B`, terracotta field band `#D2582F`\n- **Text colors** — primary `#FBF4EC`, secondary `#CDB097`, muted `#8A6A52`\n\n**2. Typography**\n- **Hero phrase rendering** — Set in the `display` face (Space Mono) at the `hero` ramp step, clamped `clamp(60px, 8.5vw, 120px)`. Mono is thematically load-bearing here, not costume: this is a machine-authored site asking, in the machine's own monospaced voice, where the human work went. The wide mono forces \"Where did / the work / go?\" to stack across three short lines in the upper-left — the returns become part of the composition.\n- **Type treatment** — `hero` for the question (its per-step tracking is slightly negative to hold the mono together at scale); `xl`/`2xl` (Space Mono) for project titles in the index; `md` (Archivo) as the standfirst under the hero — the mid-register element that keeps inner pages from jumping title-to-caption; `base` (Archivo) for body/rows; `sm`/`xs` mono for tabular signal data and metadata. Numerals ride Space Mono's tabular figures for aligned scores and prices.\n\n**3. Layout Specification**\n- **Composition** — three / diagonal / right-weighted / upper-left / dense / even / footer-only / field-dominant. The hero question anchors upper-left over the dark field; the body of work cascades down and to the right as a dense three-column index, so the eye searches diagonally from question toward evidence — the layout enacts \"where did it go?\" and answers \"here, all of it.\"\n- **CSS grid/flex structure** — page grid `display: grid; grid-template-rows: minmax(58vh, auto) auto auto`. Hero row: `display: grid; grid-template-columns: 7fr 5fr` (question left, terracotta field motif bleeding right). Work index: `display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 2vw` with hairline rules between rows.\n- **Major dimensions**:\n  - Hero area `min-height: 58vh`\n  - No fixed sidebar; work index is full-bleed three columns\n  - Max content width `max-width: none`; side padding `padding: 72px 6vw`\n  - Section padding `clamp(48px, 6vw, 96px)` vertical; row rhythm on a single 24px-derived interval (even rhythm)\n- **Nav placement** — deferred entirely to the foot (footer-only posture). A full-width bottom manifest strip, `min-height: 160px`, single hairline top border, brand mark left, uppercase links, tabulated signals right.\n- **Hero phrase grid zone** — hero row, columns 1–7 (left field), occupying roughly the top-left 60% of the fold at `clamp(60px, 8.5vw, 120px)`.\n\n**4. Component Character**\n- **Border radius** — 0 everywhere (cards, buttons, tags). Full (9999px) reserved only for the circular mark. Owner's standing complaint on rounded corners: honored.\n- **Border treatment** — bordered by hairline only: `1px solid` `border` between index rows and around the footer top; `borderStrong` for the one emphatic section rule.\n- **Shadow** — none. Depth comes from surface lightness (`surface` `#34261B` above `bg` `#1B130D`), not shadow.\n- **Density** — dense. Small gutters, information-forward index; the question breathes, the evidence packs.\n- **Interactive states** — links shift `text` → `accent` on hover, with a terracotta underline rule appearing beneath project rows; no scale/transform tricks.\n\n**5. Signal Integration**\n- **Where signals live** — the footer manifest strip only; the hero fold stays a clean poster with zero furniture.\n- **Sports scores** — Detroit teams all off-season; noted as a single muted `textFaint` line \"Detroit — off-season, all four.\" No score styling needed today.\n- **Quote** — \"Facts are the enemy of truth.\" — Cervantes runs as a small muted pull-line inside the footer manifest, NOT the hero (breaking the two-day quote streak deliberately).\n- **Market** — SPY 773.17 ▲ 1.05% in tabular mono, up-tick in `accent` terracotta — the one signal allowed a touch of color.\n- **Music** — Tobin Sprout · The War on Drugs, tagged \"on rotation\" in `textMuted` — presented as standing taste, not an event.\n- **In memoriam** — Cassandra Wilson (jazz, 2x Grammy) gets a quiet single muted line; the warm-dark, late-hour palette quietly honors the smoky register.\n- **Weather / almanac** — Aldie VA, light rain 72°, last-quarter moon 43%, AQI good, Labor Day in 3 days — one dot-separated tabular row in the footer.",
+    "selfCheck": "1. Hero quotability: Yes — \"Where did the work go?\" is a screenshot-able question, pointed and self-aware for an AI-built portfolio.\n2. Because-of chain: Yes — the wry meta-question drove mono voice (machine's own register), dark warm void (a question that hangs), diagonal question→evidence layout, and footer-deferred furniture.\n3. Render feasibility: Yes — Space Mono at 120px stacks \"Where did / the work / go?\" cleanly in the left 60% of a 1440×900 fold without overflow.\n4. Canvas floor feasible: Yes — dense three-column index plus full-fold hero and footer manifest genuinely fills 82% of the viewport.",
+    "rationale": "The hero phrase is a question the whole internet is asking this week and that this site answers just by existing: \"Where did the work go?\" It came out of the day's densest signal lane — the sidebar and Hacker News are entirely AI-and-labor anxiety — and I chose it over the perfectly poster-worthy Cervantes quote specifically to break the two-day quote streak the mandate flagged. A four-word question is the entire expression, so every other decision protects its punch: it gets one anchor in the upper-left, not a fragmented interleave, and the fold carries no furniture at all.\n\nBecause a machine now designs this portfolio nightly, the honest voice for that question is the machine's own: Space Mono at 120px, stacked into three short returns. Mono is normally a brand-register red flag (\"costume technical\"), but here it is thematically load-bearing rather than decorative, and space-mono-archivo has effectively never shipped — it dodges the three-chassis monoculture the mandate calls out. Archivo answers Space Mono's construction as the body, keeping display and body on a shared grotesque skeleton (the 09-01 standing complaint), and a mid-register Archivo standfirst plus mono index titles spend the middle of the type scale the owner asked for.\n\nThe palette commits to one hue at volume without hedging: 22° terracotta, dead-center in the mandated 15–40° corridor, glowing off a warm rust-tinted near-black void. I chose dark-void (fresh against the recent drench and split-field) and can justify the darkness against the \"favor vibrancy\" default: this is a wry, late-hour question, quietly shadowed by Cassandra Wilson's passing, and the void makes the terracotta question read like a single lit line in a dim room — not grey, not dreary, a warm charcoal drenched toward clay with a full-saturation accent doing all the pointing. Radii are zero everywhere but the mark, navigation and the entire signal manifest defer to a footer strip (footer-only posture, fresh against recent folded-into-hero and marginal headers), and the dense three-column index below the fold is the deadpan answer to the question hanging above it — the work never went anywhere; it's all right here.",
+    "compositionRationale": "I kept the date-derived suggestions on six axes (three, right-weighted, dense, even, footer-only, field-dominant) because they already model exactly what today needs: a dense catalog of evidence gathering to the right, answering the question. I moved axis from radial→diagonal because the question searches — the eye should travel from the upper-left question down toward the work, and a diagonal descent renders that \"where did it go?\" motion more legibly than an orbit on a polished low-risk day. I moved hero_zone from interleaved→upper-left because a pointed four-word question loses all its punch if it is broken up and threaded through content; it needs one strong anchor to hang from."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "terracotta": {
+          "50": "#FCEAE0",
+          "100": "#F8D3C0",
+          "200": "#F2B092",
+          "300": "#EC8E63",
+          "400": "#E67240",
+          "500": "#D2582F",
+          "600": "#B4451F",
+          "700": "#8F3517",
+          "800": "#6B2712",
+          "900": "#481A0C"
+        },
+        "sand": {
+          "50": "#FBF4EC",
+          "100": "#F3E7D9",
+          "200": "#E4D0BC",
+          "300": "#CDB097",
+          "400": "#AC8A6E",
+          "500": "#8A6A52",
+          "600": "#6A4E3B",
+          "700": "#4A3529",
+          "800": "#281C14",
+          "900": "#1B130D"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.sand.900}"
+        },
+        "bgAlt": {
+          "base": "{colors.sand.800}"
+        },
+        "surface": {
+          "base": "#34261B"
+        },
+        "text": {
+          "base": "{colors.sand.50}"
+        },
+        "textMuted": {
+          "base": "{colors.sand.300}"
+        },
+        "textFaint": {
+          "base": "{colors.sand.500}"
+        },
+        "accent": {
+          "base": "{colors.terracotta.400}"
+        },
+        "accentText": {
+          "base": "#160F0A"
+        },
+        "accentAlt": {
+          "base": "{colors.terracotta.300}"
+        },
+        "border": {
+          "base": "{colors.sand.700}"
+        },
+        "borderStrong": {
+          "base": "{colors.sand.600}"
+        },
+        "field": {
+          "base": "{colors.terracotta.500}"
+        },
+        "fieldInk": {
+          "base": "#160F0A"
+        },
+        "fieldInkMuted": {
+          "base": "{colors.terracotta.900}"
+        },
+        "fieldBorder": {
+          "base": "{colors.terracotta.600}"
+        }
+      }
+    },
+    "radii": {
+      "none": "0",
+      "sm": "0",
+      "md": "0",
+      "lg": "0",
+      "full": "9999px"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 22,
+      "s": 76,
+      "l": 58,
+      "name": "terracotta"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "warm rust / clay",
+      "name": "sand"
+    },
+    "mood_word": "wry",
+    "color_story": "A warm rust-tinted void makes 'Where did the work go?' hang like a lit question in a late room, one terracotta glow doing all the pointing."
+  },
+  "shell": {
+    "nav": null,
+    "footer": "manifest strip — full-width bottom band, hairline top rule, brand mark left, uppercase nav center-left, day's signals + Cervantes pull-line tabulated right",
+    "brand_lockup": "mark-only-md",
+    "brand_color_mode": "single-color",
+    "ground_strategy": "dark-void"
+  },
+  "header": {
+    "placement": "footer-only",
+    "height_px": 160,
+    "mark_px": 48,
+    "wordmark_step": "none",
+    "wordmark_weight": 700,
+    "role_line": "absent",
+    "nav_step": "sm",
+    "nav_case": "upper",
+    "nav": "footer manifest rail — circular mark left, WORK · ABOUT · CONTACT as spaced uppercase mono links, signals tabulated right, one hairline top border, full-width"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "APPROVED",
+      "feedback": "APPROVED",
+      "ts": 1788512420104
+    },
+    {
+      "critic": "mockup-critic",
+      "round": 0,
+      "verdict": "REVISE",
+      "feedback": "**Check 1: Sanity** — PASS. Fonts loaded (Space Mono rendering crisply at scale), no overflow, no blank regions. Page structure intact.\n\n**Check 2: Measurables**\n\n- **Canvas utilization**: ~88%. The dark void field (left, ~42% of fold) is a committed compositional surface; the terracotta field (right, ~58%) is fully saturated color doing structural work. The hero phrase and standfirst occupy purposeful real estate; the fold reads as a drenched, intentional poster, not sparse. ✓ Exceeds 82% floor.\n\n- **Hero scale**: ~95px rendered. The brief specifies `clamp(60px, 8.5vw, 120px)`. At 1440px viewport, 8.5vw = ~122px; the phrase appears to render at roughly 95px, which is within the clamp range but sits in the lower-middle band of the declared scale. At 1440px you should see closer to ~120px for maximum punch. This reads as undershooting the ambition slightly. **FLAG: hero is ~79% of peak declared scale; should land nearer 110–120px to own the fold with full force.**\n\n- **Color coverage**: ~67%. The terracotta field dominates the right half and extends down past the fold. The dark void is neutral but compositionally intentional (not dead space). Saturated hue covers well over the 40% floor. ✓ Passes.\n\n**Check 3: Brief Fidelity** — QUALIFIED PASS. The composition enacts \"where did the work go?\" with the phrase anchored upper-left and the terracotta field bleeding right—the diagonal descent is legible. The standfirst grounds the question in context. However, **the question's punch is softened by scale**. The brief's rationale emphasizes that four words \"loses all its punch if it is broken up\" and \"needs one strong anchor\"—that anchor should command the fold with maximum authority, and 95px reads as respectful rather than commanding. The terracotta field motif and void are correctly executed; the gestural ambition is there but attenuated by the hero undershooting its declared ceiling.\n\n**Check 4: Shell and Header** — CRITICAL FAILURE.\n\n- **Mark presence and size**: The cro",
+      "channel": "sdk-vision",
+      "ts": 1788512598585
+    },
+    {
+      "critic": "mockup-critic",
+      "round": 1,
+      "verdict": "REVISE",
+      "feedback": "**1. Sanity** — PASS. Page rendered cleanly, Space Mono and Archivo loaded, no overflow or blank regions.\n\n**2. Measurables**\n\n- **Canvas utilization**: ~78%. The hero zone (left ~60% of fold) is 95%+ utilized—the question, standfirst, and terracotta field are all working surfaces. The right side (terracotta card zone) is ~60% utilized; the card sits centered with breathing room, which is compositionally intentional but still registers as negative space. Blended across the fold: ~78%. **BELOW the 82% floor by 4 points.** This is close, but the brief demands density and field-dominant positioning; the card's centered placement with surrounding void is the shortfall.\n\n- **Hero scale**: Rendered at approximately **90–95px**. The declared range is `clamp(60px, 8.5vw, 120px)`. At 1440px viewport, 8.5vw = 122px, so the clamp ceiling is 120px. The hero \"Where did / the work / go?\" reads as comfortably within range, leaning mid-to-upper. **PASS** — hero is bold and legible at declared magnitude.\n\n- **Color coverage**: ~48%. The terracotta field band (#D2582F) occupies roughly the right 40% of the fold; the accent text \"go?\" adds ~2–3%. Left side is dark void with cream/sand text. Total saturated hue coverage: approximately 45–48%. **ABOVE the 40% floor, but just barely.** The coverage is legitimate—a full field band is committed color, not hedged—but the brief's tone (\"drenched toward clay\") implies slightly more terracotta presence than is currently delivered. The void is correct; the field could expand or deepen slightly.\n\n**3. Brief Fidelity** — The composition *nearly* lands. The hero question anchors upper-left in mono at scale; the standfirst explains the premise in Archivo; the terracotta field motif bleeds right. The diagonal search from question down-right toward evidence is *gestured* but not fully enacted—the fold ends before \"the work\" catalog begins, so the eye doesn't complete the diagonal journey. The card is read as isolated evidence, not part of a dense cas",
+      "channel": "sdk-vision",
+      "ts": 1788512763468
+    },
+    {
+      "critic": "mockup-critic",
+      "round": 2,
+      "verdict": "REVISE",
+      "feedback": "1. **Sanity** — PASS. Page rendered cleanly, fonts loaded (Space Mono and Archivo are live; no fallback serif), no overflow, no blank regions.\n\n2. **Measurables** — FAIL on hero scale and canvas utilization.\n   - **Hero scale**: The phrase \"Where did the work go?\" measures ~90px on the left side of the fold. The declared `clamp(60px, 8.5vw, 120px)` at 1440px viewport should resolve to ~122px (8.5vw = 122.4px). Rendered ~90px is ~74% of spec. REVISE.\n   - **Canvas utilization**: ~68% utilized. The left dark field contains the hero phrase (strong), a metadata line (DISPATCH · 2025-08-04 · ALDIE VA), and explanatory standfirst (compact, legible). The right terracotta field carries a secondary \"Here, all of it.\" phrase (which contradicts the brief—this is supposed to answer via catalog below, not a second statement) and a site description (dougmar.ch). Dead zones: thin neutral rails at top-left (metadata band) and margins. Estimated utilization is closer to 65–70%, below the declared 82% floor. REVISE.\n   - **Color coverage**: ~52% of viewport is saturated terracotta (`#D2582F` or accent variants); remainder is warm near-black. PASS (above 40% floor).\n\n3. **Brief fidelity** — PARTIAL FAIL.\n   - The hero phrase \"Where did the work go?\" IS rendered at upper-left and anchored (good), but it is underscale (see #2).\n   - The brief states: *\"the question hangs over the fold, and the dense catalog of real projects beneath it is the deadpan answer.\"* The mockup has no visible catalog below the fold—only the top hero area is shown. This is a 1440×900 screenshot; the work index should be visible or at least hinted at below. The brief's compositional intent (question above, evidence cascading down-right) cannot be judged from this crop.\n   - **Critical brief breach**: The right field shows \"Here, all of it.\" as a secondary headline. The brief explicitly reserves the hero zone for the single four-word question: *\"a pointed four-word question loses all its punch if it is broken up a",
+      "channel": "sdk-vision",
+      "ts": 1788512898411
+    },
+    {
+      "critic": "surface-gate",
+      "round": 1,
+      "verdict": "REVISE",
+      "feedback": "/work/spaceman @360: 234 characters of running copy set at 81px (over 48px) — \"Independent design and engineering work doesn't always fit n...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/spaceman @360: 234 characters of running copy set at 81px (over 48px) — \"Independent design and engineering work doesn't always fit n...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/spaceman @1440: 234 characters of running copy set at 81px (over 48px) — \"Independent design and engineering work doesn't always fit n...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/spaceman @1440: 234 characters of running copy set at 81px (over 48px) — \"Independent design and engineering work doesn't always fit n...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/fishsticks @360: 186 characters of running copy set at 81px (over 48px) — \"Kids struggle to practice spelling lists from school — the t...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/fishsticks @360: 186 characters of running copy set at 81px (over 48px) — \"Kids struggle to practice spelling lists from school — the t...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/fishsticks @1440: 186 characters of running copy set at 81px (over 48px) — \"Kids struggle to practice spelling lists from school — the t...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/fishsticks @1440: 186 characters of running copy set at 81px (over 48px) — \"Kids struggle to practice spelling lists from school — the t...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/dougmar-ch @360: 218 characters of running copy set at 81px (over 48px) — \"A portfolio argues that you can design and build things, the...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/dougmar-ch @360: 218 characters of running copy set at 81px (over 48px) — \"A portfolio argues that you can design and build things, the...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/dougmar-ch @1440: 218 characters of running copy set at 81px (over 48px) — \"A portfolio argues that you can design and build things, the...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/dougmar-ch @1440: 218 characters of running copy set at 81px (over 48px) — \"A portfolio argues that you can design and build things, the...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.",
+      "ts": 1788513164409
+    },
+    {
+      "critic": "screenshot-critic",
+      "verdict": "REVISE",
+      "feedback": "===VERDICT===\nREVISE\n\n**Responsible agent:** react-engineer\n\n**Issues:**\n- On `/work/spaceman`, `/work/fishsticks`, and `/work/dougmar-ch` (both at 360px and 1440px, both color schemes), the case-study body copy is set at 81px — the `display` step — instead of the `base` (Archivo) step the spec calls for prose/rows. This produces 186–234 characters of running paragraph text rendered as an oversized wall (e.g. \"Independent design and engineering work doesn't always fit n…\" at 81px on `/work/spaceman`). This directly violates the typography spec (\"`base` (Archivo) for body/rows\") and the general rule that a paragraph at display size is a wall, not a hero. Fix: move this copy to the `base`/body step and reserve the 81px `display` step for a short phrase or standfirst, matching the homepage's standfirst treatment under the hero question.\n- This is a systemic pattern (not a one-off), hitting all three project detail pages at both measured viewports, so it reads as a component-level typography bug in the case-study template rather than an isolated content issue — the fix should be applied to the shared project-page component, not per-page.\n\nBAR: below — the homepage composition itself is a faithful, committed execution of the mockup (dense terracotta split, mono hero at scale), but the reference build didn't ship with a systemic typography defect bleeding across every project detail page the way this build's oversized-paragraph bug does.\n===END===",
+      "channel": "sdk-vision",
+      "ts": 1788513265558
+    },
+    {
+      "critic": "surface-gate",
+      "round": 2,
+      "verdict": "REVISE",
+      "feedback": "/work/spaceman @360: 234 characters of running copy set at 81px (over 48px) — \"Independent design and engineering work doesn't always fit n...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/spaceman @360: 234 characters of running copy set at 81px (over 48px) — \"Independent design and engineering work doesn't always fit n...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/spaceman @1440: 234 characters of running copy set at 81px (over 48px) — \"Independent design and engineering work doesn't always fit n...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/spaceman @1440: 234 characters of running copy set at 81px (over 48px) — \"Independent design and engineering work doesn't always fit n...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/fishsticks @360: 186 characters of running copy set at 81px (over 48px) — \"Kids struggle to practice spelling lists from school — the t...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/fishsticks @360: 186 characters of running copy set at 81px (over 48px) — \"Kids struggle to practice spelling lists from school — the t...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/fishsticks @1440: 186 characters of running copy set at 81px (over 48px) — \"Kids struggle to practice spelling lists from school — the t...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/fishsticks @1440: 186 characters of running copy set at 81px (over 48px) — \"Kids struggle to practice spelling lists from school — the t...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/dougmar-ch @360: 218 characters of running copy set at 81px (over 48px) — \"A portfolio argues that you can design and build things, the...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/dougmar-ch @360: 218 characters of running copy set at 81px (over 48px) — \"A portfolio argues that you can design and build things, the...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/dougmar-ch @1440: 218 characters of running copy set at 81px (over 48px) — \"A portfolio argues that you can design and build things, the...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work/dougmar-ch @1440: 218 characters of running copy set at 81px (over 48px) — \"A portfolio argues that you can design and build things, the...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.",
+      "ts": 1788513305571
+    }
+  ],
+  "composition": {
+    "columns": "three",
+    "axis": "diagonal",
+    "symmetry": "right-weighted",
+    "hero_zone": "upper-left",
+    "density": "dense",
+    "rhythm": "even",
+    "shell_posture": "footer-only",
+    "field_ratio": "field-dominant"
+  },
+  "lane": {
+    "laneId": "linear",
+    "register": "dark-keyboard-first-density"
+  },
+  "cost": {
+    "total_usd": 2.746786,
+    "estimated": true,
+    "partial": false,
+    "calls": 13,
+    "retries": 5,
+    "byAgent": [
+      {
+        "agent": "art-director",
+        "model": "claude-opus-4-8",
+        "source": "cli",
+        "input": 2,
+        "output": 18100,
+        "cache_read": 0,
+        "cache_write": 37081,
+        "cost_usd": 0.6980422500000001,
+        "estimated": false,
+        "ms": 274083,
+        "num_turns": 1
+      },
+      {
+        "agent": "spec-critic",
+        "model": "claude-haiku-4-5",
+        "source": "cli",
+        "input": 10,
+        "output": 3464,
+        "cache_read": 0,
+        "cache_write": 11024,
+        "cost_usd": 0.037354,
+        "estimated": false,
+        "ms": 38631,
+        "num_turns": 1
+      },
+      {
+        "agent": "mockup-designer",
+        "model": "claude-opus-4-8",
+        "source": "cli",
+        "input": 1,
+        "output": 12021,
+        "cache_read": 0,
+        "cache_write": 33376,
+        "cost_usd": 0.521917,
+        "estimated": false,
+        "ms": 153398,
+        "num_turns": 1
+      },
+      {
+        "agent": "mockup-critic",
+        "model": "claude-haiku-4-5",
+        "source": "sdk",
+        "input": 8753,
+        "output": 1231,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cost_usd": 0.014908000000000001,
+        "estimated": true,
+        "ms": 18708,
+        "num_turns": null
+      },
+      {
+        "agent": "mockup-designer",
+        "model": "claude-opus-4-8",
+        "source": "cli",
+        "input": 2,
+        "output": 11070,
+        "cache_read": 17581,
+        "cache_write": 17499,
+        "cost_usd": 0.40893225,
+        "estimated": false,
+        "ms": 139912,
+        "num_turns": 1
+      },
+      {
+        "agent": "mockup-critic",
+        "model": "claude-haiku-4-5",
+        "source": "sdk",
+        "input": 8753,
+        "output": 1270,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cost_usd": 0.015103000000000002,
+        "estimated": true,
+        "ms": 20269,
+        "num_turns": null
+      },
+      {
+        "agent": "mockup-designer",
+        "model": "claude-opus-4-8",
+        "source": "cli",
+        "input": 2,
+        "output": 8895,
+        "cache_read": 17581,
+        "cache_write": 17562,
+        "cost_usd": 0.354995,
+        "estimated": false,
+        "ms": 109388,
+        "num_turns": 1
+      },
+      {
+        "agent": "mockup-critic",
+        "model": "claude-haiku-4-5",
+        "source": "sdk",
+        "input": 8753,
+        "output": 1346,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cost_usd": 0.015483,
+        "estimated": true,
+        "ms": 20886,
+        "num_turns": null
+      },
+      {
+        "agent": "react-engineer",
+        "model": "claude-sonnet-5",
+        "source": "cli",
+        "input": 2,
+        "output": 20230,
+        "cache_read": 0,
+        "cache_write": 25945,
+        "cost_usd": 0.41030075,
+        "estimated": false,
+        "ms": 178309,
+        "num_turns": 1
+      },
+      {
+        "agent": "react-engineer",
+        "model": "claude-sonnet-5",
+        "source": "cli",
+        "input": 2,
+        "output": 1841,
+        "cache_read": 15191,
+        "cache_write": 1714,
+        "cost_usd": 0.0404148,
+        "estimated": false,
+        "ms": 17707,
+        "num_turns": 1
+      },
+      {
+        "agent": "react-engineer",
+        "model": "claude-sonnet-5",
+        "source": "cli",
+        "input": 2,
+        "output": 1324,
+        "cache_read": 15191,
+        "cache_write": 1477,
+        "cost_usd": 0.03158905000000001,
+        "estimated": false,
+        "ms": 12677,
+        "num_turns": 1
+      },
+      {
+        "agent": "screenshot-critic",
+        "model": "claude-sonnet-5",
+        "source": "sdk",
+        "input": 22486,
+        "output": 6954,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cost_usd": 0.17176799999999998,
+        "estimated": true,
+        "ms": 86287,
+        "num_turns": null
+      },
+      {
+        "agent": "react-engineer",
+        "model": "claude-sonnet-5",
+        "source": "cli",
+        "input": 2,
+        "output": 714,
+        "cache_read": 15191,
+        "cache_write": 2261,
+        "cost_usd": 0.02597905,
+        "estimated": false,
+        "ms": 7973,
+        "num_turns": 1
+      }
+    ]
+  }
+}

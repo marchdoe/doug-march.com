@@ -1,328 +1,131 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Box } from '../../styled-system/jsx'
 import { css } from '../../styled-system/css'
-import { Nav } from '../components/generated/Nav'
-import { projects } from '../content/projects'
+import { HeroPanel } from '../components/generated/HeroPanel'
+import { FieldPanel } from '../components/generated/FieldPanel'
+import { CaseStudyMeta } from '../components/generated/CaseStudyMeta'
+import { ProblemApproachOutcome } from '../components/generated/ProblemApproachOutcome'
+import { StackList } from '../components/generated/StackList'
+import { WhitePaperContext } from '../components/generated/WhitePaperContext'
+import { WhitePaperProcess } from '../components/generated/WhitePaperProcess'
+import { WhitePaperDecisions } from '../components/generated/WhitePaperDecisions'
+import { WhitePaperReferences } from '../components/generated/WhitePaperReferences'
+import { WorkRowList } from '../components/generated/WorkRowList'
+import { projects, selectedWork, type Project } from '../content/projects'
+
+type ProjectFull = Project & { timeline?: string; status?: string }
 
 export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
 
 function WorkDetailPage() {
   const { slug } = Route.useParams()
-  const project = projects.find((p) => p.slug === slug)
+  const project = projects.find((p) => p.slug === slug) as ProjectFull | undefined
 
   if (!project) {
-    return <div className={css({ padding: '9', color: 'text' })}>Project not found.</div>
+    return (
+      <Box px="6" py="10" fontFamily="display" color="text">
+        Not found.
+      </Box>
+    )
   }
 
-  const strong = css({ color: 'fieldInk' })
+  const related = selectedWork.filter((p) => p.slug !== project.slug)
 
   return (
-    <div
-      className={css({
-        background: 'field',
-        color: 'fieldInk',
-        minHeight: '100%',
-        paddingX: 'clamp(24px, 6vw, 96px)',
-        paddingY: 'clamp(28px, 6vh, 72px)',
-        minWidth: 0,
-        overflowX: 'hidden',
-      })}
-    >
-      <Nav tone="dark" />
-
-      <div
-        className={css({
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '2',
-          fontSize: 'xs',
-          textTransform: 'uppercase',
-          letterSpacing: 'wide',
-          color: 'fieldInkMuted',
-          marginTop: 'clamp(28px, 6vh, 64px)',
-        })}
+    <>
+      <Box
+        display="grid"
+        gridTemplateColumns={{ base: '1fr', md: '7fr 5fr' }}
+        minH={{ md: '55vh' }}
       >
-        <span>{project.type}</span>
-        <span>·</span>
-        <span>{project.year}</span>
-        {project.liveUrl && (
-          <>
-            <span>·</span>
+        <HeroPanel
+          eyebrow={`Case study · ${project.type}`}
+          heading={project.title}
+          standfirst={project.description ?? ''}
+        />
+        <FieldPanel tag="The problem">
+          <Box
+            fontFamily="display"
+            fontWeight="700"
+            fontSize="2xl"
+            letterSpacing="tight"
+            color="fieldInk"
+          >
+            {project.problem}
+          </Box>
+          {project.liveUrl && (
             <a
               href={project.liveUrl}
-              className={css({ color: 'fieldInk', textDecoration: 'underline' })}
-            >
-              Visit ↗
-            </a>
-          </>
-        )}
-      </div>
-
-      <h1
-        className={css({
-          textStyle: 'hero',
-          fontFamily: 'display',
-          fontWeight: '800',
-          color: 'fieldInk',
-          marginTop: '4',
-          maxWidth: '20ch',
-          overflowWrap: 'break-word',
-        })}
-      >
-        {project.title}
-      </h1>
-
-      {project.problem && (
-        <p
-          className={css({
-            textStyle: 'xl',
-            color: 'fieldInkMuted',
-            marginTop: '6',
-            maxWidth: '50ch',
-          })}
-        >
-          {project.problem}
-        </p>
-      )}
-
-      {project.approach && (
-        <section className={css({ marginTop: '9', maxWidth: '60ch' })}>
-          <div
-            className={css({
-              fontSize: '2xs',
-              textTransform: 'uppercase',
-              letterSpacing: 'wide',
-              color: 'fieldInkMuted',
-              marginBottom: '2',
-            })}
-          >
-            Approach
-          </div>
-          <p className={css({ fontSize: 'base', color: 'fieldInk', lineHeight: 'loose' })}>
-            {project.approach}
-          </p>
-        </section>
-      )}
-
-      {project.outcome && (
-        <section className={css({ marginTop: '6', maxWidth: '60ch' })}>
-          <div
-            className={css({
-              fontSize: '2xs',
-              textTransform: 'uppercase',
-              letterSpacing: 'wide',
-              color: 'fieldInkMuted',
-              marginBottom: '2',
-            })}
-          >
-            Outcome
-          </div>
-          <p className={css({ fontSize: 'base', color: 'fieldInk', lineHeight: 'loose' })}>
-            {project.outcome}
-          </p>
-        </section>
-      )}
-
-      {project.role && (
-        <div className={css({ marginTop: '6', fontSize: 'sm', color: 'fieldInkMuted' })}>
-          Role: <b className={strong}>{project.role}</b>
-        </div>
-      )}
-
-      {project.stack && project.stack.length > 0 && (
-        <div className={css({ marginTop: '6', display: 'flex', flexWrap: 'wrap', gap: '2' })}>
-          {project.stack.map((s) => (
-            <span
-              key={s}
+              target="_blank"
+              rel="noopener"
               className={css({
-                fontSize: '2xs',
-                textTransform: 'uppercase',
+                fontFamily: 'display',
+                fontSize: 'xs',
                 letterSpacing: 'wide',
-                border: '1px solid',
-                borderColor: 'fieldBorder',
-                color: 'fieldInkMuted',
-                padding: '1 2',
+                textTransform: 'uppercase',
+                color: 'fieldInk',
+                borderBottom: '1px solid',
+                borderColor: 'fieldInk',
+                alignSelf: 'flex-start',
+                display: 'inline-flex',
+                minH: '44px',
+                alignItems: 'center',
               })}
             >
-              {s}
-            </span>
-          ))}
-        </div>
-      )}
+              Visit live ↗
+            </a>
+          )}
+        </FieldPanel>
+      </Box>
 
-      {project.context && (
-        <section
-          className={css({
-            marginTop: '9',
-            maxWidth: '60ch',
-            borderTop: '1px solid',
-            borderColor: 'fieldBorder',
-            paddingTop: '6',
-          })}
+      <Box
+        as="section"
+        bg="bg"
+        px={{ base: '5', md: '6' }}
+        py={{ base: '10', md: '9' }}
+        borderTop="1px solid"
+        borderColor="borderStrong"
+      >
+        <CaseStudyMeta
+          rows={[
+            { label: 'Role', value: project.role },
+            { label: 'Year', value: String(project.year) },
+            { label: 'Timeline', value: project.timeline },
+            { label: 'Status', value: project.status },
+          ]}
+        />
+        <ProblemApproachOutcome
+          problem={project.problem}
+          approach={project.approach}
+          outcome={project.outcome}
+        />
+        <StackList stack={project.stack} />
+        <WhitePaperContext context={project.context} constraints={project.constraints} />
+        <WhitePaperProcess process={project.process} />
+        <WhitePaperDecisions decisions={project.decisions} />
+        <WhitePaperReferences references={project.references} />
+      </Box>
+
+      <Box
+        as="section"
+        bg="bg"
+        px={{ base: '5', md: '6' }}
+        py={{ base: '10', md: '9' }}
+        borderTop="1px solid"
+        borderColor="borderStrong"
+      >
+        <Box
+          fontFamily="display"
+          fontWeight="700"
+          fontSize={{ base: '2xl', md: '3xl' }}
+          letterSpacing="tight"
+          color="text"
+          mb="8"
         >
-          <div
-            className={css({
-              fontSize: '2xs',
-              textTransform: 'uppercase',
-              letterSpacing: 'wide',
-              color: 'fieldInkMuted',
-              marginBottom: '2',
-            })}
-          >
-            Context
-          </div>
-          <p className={css({ fontSize: 'base', color: 'fieldInk', lineHeight: 'loose' })}>
-            {project.context}
-          </p>
-        </section>
-      )}
-
-      {project.constraints && project.constraints.length > 0 && (
-        <section className={css({ marginTop: '6', maxWidth: '60ch' })}>
-          <div
-            className={css({
-              fontSize: '2xs',
-              textTransform: 'uppercase',
-              letterSpacing: 'wide',
-              color: 'fieldInkMuted',
-              marginBottom: '2',
-            })}
-          >
-            Constraints
-          </div>
-          <ul
-            className={css({
-              margin: 0,
-              paddingLeft: '5',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1',
-            })}
-          >
-            {project.constraints.map((c, i) => (
-              <li key={i} className={css({ fontSize: 'base', color: 'fieldInk' })}>
-                {c}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {project.process && project.process.length > 0 && (
-        <section className={css({ marginTop: '9', maxWidth: '60ch' })}>
-          <div
-            className={css({
-              fontSize: '2xs',
-              textTransform: 'uppercase',
-              letterSpacing: 'wide',
-              color: 'fieldInkMuted',
-              marginBottom: '3',
-            })}
-          >
-            Process
-          </div>
-          <ol
-            className={css({
-              margin: 0,
-              padding: 0,
-              listStyle: 'none',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '4',
-            })}
-          >
-            {project.process.map((step, i) => (
-              <li key={i} className={css({ display: 'flex', gap: '3' })}>
-                <div className={css({ fontSize: 'xs', color: 'fieldInkMuted', flex: '0 0 24px' })}>
-                  {i + 1}
-                </div>
-                <div className={css({ minWidth: 0 })}>
-                  <div className={css({ fontSize: 'base', fontWeight: '700', color: 'fieldInk' })}>
-                    {step.phase}
-                  </div>
-                  <div className={css({ fontSize: 'sm', color: 'fieldInkMuted', marginTop: '1' })}>
-                    {step.does}
-                  </div>
-                  <div
-                    className={css({
-                      fontSize: 'sm',
-                      color: 'fieldInkMuted',
-                      marginTop: '1',
-                      fontStyle: 'italic',
-                    })}
-                  >
-                    → {step.produces}
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-      )}
-
-      {project.decisions && project.decisions.length > 0 && (
-        <section className={css({ marginTop: '9', maxWidth: '60ch' })}>
-          <div
-            className={css({
-              fontSize: '2xs',
-              textTransform: 'uppercase',
-              letterSpacing: 'wide',
-              color: 'fieldInkMuted',
-              marginBottom: '3',
-            })}
-          >
-            Decisions
-          </div>
-          <div className={css({ display: 'flex', flexDirection: 'column', gap: '4' })}>
-            {project.decisions.map((d, i) => (
-              <div key={i}>
-                <div className={css({ fontSize: 'base', fontWeight: '700', color: 'fieldInk' })}>
-                  {d.decision}
-                </div>
-                <div className={css({ fontSize: 'sm', color: 'fieldInkMuted', marginTop: '1' })}>
-                  {d.why}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {project.references && project.references.length > 0 && (
-        <section className={css({ marginTop: '9', maxWidth: '60ch', paddingBottom: '9' })}>
-          <div
-            className={css({
-              fontSize: '2xs',
-              textTransform: 'uppercase',
-              letterSpacing: 'wide',
-              color: 'fieldInkMuted',
-              marginBottom: '3',
-            })}
-          >
-            References
-          </div>
-          <div className={css({ display: 'flex', flexDirection: 'column', gap: '3' })}>
-            {project.references.map((r, i) => (
-              <div key={i}>
-                <a
-                  href={r.url}
-                  className={css({
-                    fontSize: 'base',
-                    color: 'fieldInk',
-                    textDecoration: 'underline',
-                  })}
-                >
-                  {r.title}
-                </a>
-                {r.note && (
-                  <div className={css({ fontSize: 'sm', color: 'fieldInkMuted', marginTop: '1' })}>
-                    {r.note}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-    </div>
+          Other work
+        </Box>
+        <WorkRowList projects={related} startIndex={1} />
+      </Box>
+    </>
   )
 }

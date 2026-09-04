@@ -50,28 +50,28 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'Simplicity is the glory of expression.' },
-      { property: 'og:title', content: 'Simplicity is the glory of expression.' },
+      { title: 'Where did the work go?' },
+      { property: 'og:title', content: 'Where did the work go?' },
       {
         property: 'og:description',
         content:
-          "Sunlit acid-yellow drench, Whitman's simplicity set quiet in a single grotesk, the symmetry broken exactly once — and that break is the whole expression.",
+          'A machine asks where the work went — "Where did the work go?" stacked in monospace over a warm terracotta-lit void, the whole body of work packed dense as the deadpan answer.',
       },
-      { property: 'og:image', content: 'https://dougmar.ch/og/2026-09-02.png' },
+      { property: 'og:image', content: 'https://dougmar.ch/og/2026-09-04.png' },
       { property: 'og:image:width', content: '1200' },
       { property: 'og:image:height', content: '630' },
       { property: 'og:url', content: 'https://dougmar.ch' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'Simplicity is the glory of expression.' },
-      { name: 'twitter:image', content: 'https://dougmar.ch/og/2026-09-02.png' },
+      { name: 'twitter:title', content: 'Where did the work go?' },
+      { name: 'twitter:image', content: 'https://dougmar.ch/og/2026-09-04.png' },
     ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400;0,600;0,800;1,400;1,600;1,800&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Archivo:wght@400;500;700&display=swap',
       },
     ],
     scripts: [{ children: THEME_INIT_SCRIPT }],
@@ -231,7 +231,7 @@ function RootDocument({ children, bare = false }: { children: ReactNode; bare?: 
         {children}
         {bare ? null : (
           <a href="/archive" className={archiveLink} data-archive-link>
-            Archive — 123 designs
+            Archive — 125 designs
           </a>
         )}
         <ScrollRestoration />

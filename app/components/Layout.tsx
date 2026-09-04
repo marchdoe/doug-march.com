@@ -1,26 +1,23 @@
 import type { ReactNode } from 'react'
-import { css } from '../../styled-system/css'
+import { Box } from '../../styled-system/jsx'
 import { Sidebar } from './Sidebar'
-import { Colophon } from './generated/Colophon'
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <div
-      className={css({
-        display: 'grid',
-        gridTemplateRows: 'auto 1fr auto',
-        minHeight: '100dvh',
-        width: '100%',
-        maxWidth: '100vw',
-        overflowX: 'hidden',
-        background: 'bg',
-        color: 'text',
-        fontFamily: 'body',
-      })}
+    <Box
+      minH="100vh"
+      maxW="100vw"
+      overflowX="hidden"
+      bg="bg"
+      color="text"
+      fontFamily="body"
+      display="flex"
+      flexDirection="column"
     >
+      <Box flex="1" minWidth="0">
+        {children}
+      </Box>
       <Sidebar />
-      <main className={css({ minWidth: 0, overflowX: 'hidden' })}>{children}</main>
-      <Colophon />
-    </div>
+    </Box>
   )
 }

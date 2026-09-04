@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 22,
+    "s": 76,
+    "l": 58,
+    "name": "terracotta"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "warm rust / clay",
+    "name": "sand"
+  },
+  "mood_word": "wry",
+  "color_story": "A warm rust-tinted void makes 'Where did the work go?' hang like a lit question in a late room, one terracotta glow doing all the pointing."
+}
