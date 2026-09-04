@@ -55,6 +55,7 @@ import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { parse as parseEnvFile } from 'dotenv'
 import { isMain } from './utils/cli.js'
+import { compositionLabel, readDesignIdentity } from './utils/design-identity.js'
 import { ROOT } from './utils/file-manager.js'
 
 /** How many characters of an error to keep in the summary. */
@@ -63,7 +64,12 @@ const ERROR_HEAD_CHARS = 1500
 /** A build dir the pipeline shipped from — never build-failed-* or build-pre-*. */
 const SHIPPED_BUILD_RE = /^build-\d+$/
 
-/** Evidence worth keeping, wherever under archive/<date>/ it lands. Images excluded on purpose. */
+/**
+ * Evidence worth keeping, wherever under archive/<date>/ it lands. Images
+ * excluded on purpose — a routine canary run shouldn't accumulate binaries
+ * in git. The one exception, the shipped render, is copied separately as
+ * `render.png` by `copyRenderScreenshot` below, for the taste-note invite.
+ */
 const EVIDENCE_FILENAMES = new Set([
   'trace.json',
   'cost.json',
@@ -247,6 +253,52 @@ function copyEvidenceFiles({ archiveDateDir, evidenceDir, date }) {
     copied.push(rel)
   })
   return copied
+}
+
+/**
+ * Copy the shipped build's own `screenshot.png` to `<evidenceDir>/render.png`
+ * — the one image this evidence dir ever keeps (#454: everything else stays
+ * text so a routine canary run doesn't accumulate binaries in git; this one
+ * exists so the taste-note invite below has a real render to point at,
+ * since the worktree it lived in is gone by the time the owner reads that
+ * invite). No-op, returning null, when there's no shipped build or its
+ * screenshot is missing.
+ * @param {{ archiveDateDir: string, shippedBuild: string|null, evidenceDir: string }} args
+ * @returns {string|null} path to the copy, or null
+ */
+function copyRenderScreenshot({ archiveDateDir, shippedBuild, evidenceDir }) {
+  if (!shippedBuild) return null
+  const src = path.join(archiveDateDir, shippedBuild, 'screenshot.png')
+  if (!existsSync(src)) return null
+  const dest = path.join(evidenceDir, 'render.png')
+  copyFileSync(src, dest)
+  return dest
+}
+
+/**
+ * The invite: what the run's design was, where its render landed, and the
+ * exact `pnpm taste` invocation to react to it — printed only for a shipped,
+ * non-mock run, since a mock replay has no real design and a failed run has
+ * no render. Reads the design identity back from the evidence copy of
+ * trace.json rather than the (about-to-be-removed) worktree.
+ * @param {{ root: string, evidenceDir: string, date: string, shippedBuild: string, renderPath: string|null }} args
+ */
+function printTasteInvite({ root, evidenceDir, date, shippedBuild, renderPath }) {
+  const identity = readDesignIdentity(path.join(evidenceDir, 'archive', date, shippedBuild))
+  const composition = compositionLabel(identity.composition)
+
+  console.log('')
+  const idBits = []
+  if (identity.heroCopy) idBits.push(`"${identity.heroCopy}"`)
+  const tags = [identity.chassisId, composition].filter(Boolean)
+  if (tags.length > 0) idBits.push(`(${tags.join(', ')})`)
+  if (idBits.length > 0) console.log(`[canary] design: ${idBits.join(' ')}`)
+
+  if (renderPath) console.log(`[canary] render: ${path.relative(root, renderPath)}`)
+
+  console.log(
+    `[canary] got a reaction? while it's on screen: pnpm taste --evidence ${path.relative(root, evidenceDir)} "..."`
+  )
 }
 
 /** The last repair step's own error, wherever it landed in the trace. */
@@ -487,10 +539,12 @@ function collectEvidence({ worktree, root, now, log, mock = false }) {
   mkdirSync(evidenceDir, { recursive: true })
   writeFileSync(path.join(evidenceDir, 'canary.log'), log, 'utf8')
 
-  const { trace, cost, failedDir } = archiveDateDir
-    ? readRunArtifacts({ archiveDateDir, shippedBuild })
-    : { trace: null, cost: null, failedDir: null }
-  if (archiveDateDir) copyEvidenceFiles({ archiveDateDir, evidenceDir, date })
+  const { trace, cost, failedDir, renderPath } = collectArchiveArtifacts({
+    archiveDateDir,
+    shippedBuild,
+    evidenceDir,
+    date,
+  })
 
   const errorHead = shipped ? null : findErrorHead({ archiveDateDir, failedDir, trace, log })
   const summary = buildSummary({ date, shipped, trace, cost, errorHead, mock })
@@ -500,7 +554,41 @@ function collectEvidence({ worktree, root, now, log, mock = false }) {
   console.log(summary)
   console.log(`[canary] evidence: ${path.relative(root, evidenceDir)}`)
 
+  maybePrintTasteInvite({ root, evidenceDir, date, shippedBuild, renderPath, shipped, mock })
+
   return { evidenceDir, shipped, date }
+}
+
+/**
+ * Everything read out of, and copied out of, the (still-live) worktree's
+ * archive dir — trace/cost/the failed-build dir, plus this evidence dir's
+ * own copies of the text evidence and the shipped render. All-null / no
+ * copies when the run never wrote an archive dir at all.
+ */
+function collectArchiveArtifacts({ archiveDateDir, shippedBuild, evidenceDir, date }) {
+  if (!archiveDateDir) return { trace: null, cost: null, failedDir: null, renderPath: null }
+  const { trace, cost, failedDir } = readRunArtifacts({ archiveDateDir, shippedBuild })
+  copyEvidenceFiles({ archiveDateDir, evidenceDir, date })
+  const renderPath = copyRenderScreenshot({ archiveDateDir, shippedBuild, evidenceDir })
+  return { trace, cost, failedDir, renderPath }
+}
+
+/**
+ * A mock replay has no real design to react to (same fixtures every time);
+ * a lost night never reached a render. Only a shipped, real run gets the
+ * taste-note invite.
+ */
+function maybePrintTasteInvite({
+  root,
+  evidenceDir,
+  date,
+  shippedBuild,
+  renderPath,
+  shipped,
+  mock,
+}) {
+  if (!shipped || mock || !date) return
+  printTasteInvite({ root, evidenceDir, date, shippedBuild, renderPath })
 }
 
 /**

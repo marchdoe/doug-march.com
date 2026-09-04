@@ -6,7 +6,8 @@ import path from 'node:path'
 // permanent, all-time truth that survives forever. Hard-cap it so a future
 // edit can't silently blow the prompt budget the way an unbounded reference
 // or lessons block can.
-const MAX_BYTES = 3 * 1024
+export const MAX_TASTE_MEMORY_BYTES = 3 * 1024
+const MAX_BYTES = MAX_TASTE_MEMORY_BYTES
 
 /**
  * Read signals/taste.md (owner-curated, permanent taste memory) and return

@@ -25,7 +25,8 @@
     "pipeline": "node scripts/run-pipeline.js",
     "pipeline:dry": "DRY_RUN=true node scripts/run-pipeline.js",
     "pipeline:collect": "node scripts/collect-signals.js",
-    "pipeline:canary": "node scripts/canary.js"
+    "pipeline:canary": "node scripts/canary.js",
+    "taste": "node scripts/taste-note.js"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
