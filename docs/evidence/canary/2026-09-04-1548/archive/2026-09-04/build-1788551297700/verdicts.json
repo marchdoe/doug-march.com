@@ -1,0 +1,36 @@
+[
+  {
+    "critic": "spec-critic",
+    "verdict": "REVISE",
+    "feedback": "REVISE\n\n- **Check 5: Measurable-spec consistency — hero_scale mismatch.** Visual spec states hero should render at \"~64→96px fluid\" on spectral-albert (96px at 1440px viewport). Measurables declare `hero_scale: clamp(64px, 9vw, 104px)`, which evaluates to 104px at 1440px — 8px above the spec target and above what spectral-albert delivers. Align them: either adjust hero_scale to `clamp(64px, 6.7vw, 96px)` to match the spec and the chassis's actual voice, or revise the visual spec to document the 104px target. Given your composition_rationale explicitly owns the restraint (\"a two-clause philosophical aphorism needs room to breathe\"), recommend adjusting hero_scale downward to match what spectral-albert delivers.",
+    "ts": 1788550354919
+  },
+  {
+    "critic": "mockup-critic",
+    "round": 0,
+    "verdict": "REVISE",
+    "feedback": "malformed critic response: ===VERDICT===\nCANNOT PROCEED\n===FEEDBACK===\nNo screenshots are attached, and you've instructed me not to invent or describe rendered pixels. The Mockup Critic role requires visual inspection of three images:\n\n1. Desktop mockup (1440×900)\n2. Phone mockup (360×640)\n3. 2x crop of header region (for mar",
+    "channel": "cli-text-no-key",
+    "ts": 1788550455200
+  },
+  {
+    "critic": "surface-gate",
+    "round": 1,
+    "verdict": "REVISE",
+    "feedback": "/ @360: document is 49px wider than the 360px viewport (scrollWidth 409)\n/ @360: document is 49px wider than the 360px viewport (scrollWidth 409)\n/about @360: document is 5px wider than the 360px viewport (scrollWidth 365)\n/about @360: 340 characters of running copy set at 64px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @1440: 340 characters of running copy set at 96px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @360: document is 5px wider than the 360px viewport (scrollWidth 365)\n/about @360: 340 characters of running copy set at 64px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @1440: 340 characters of running copy set at 96px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work @360: document is 6px wider than the 360px viewport (scrollWidth 366)\n/work @360: document is 6px wider than the 360px viewport (scrollWidth 366)\n/work/politweets @360: document is 16px wider than the 360px viewport (scrollWidth 376)\n/work/politweets @360: document is 16px wider than the 360px viewport (scrollWidth 376)",
+    "ts": 1788550905843
+  },
+  {
+    "critic": "screenshot-critic",
+    "verdict": "REVISE",
+    "feedback": "===VERDICT===\nREVISE\n\n**Responsible agent:** react-engineer\n\n**Issues:**\n- Homepage (`/`) at 360px, both schemes: document scrollWidth is 409px against a 360px viewport — 49px of horizontal overflow. This is a hard Section 10 failure (phone layout must not scroll horizontally); some element in the hero diptych or below-fold grid is not constrained to the mobile column and is forcing the page wider than the screen.\n- `/about` at both 1440px and 360px: 340 characters of running body copy are set at display scale (96px at desktop, 64px at phone) — over the 48px ceiling for prose. The spec is explicit that the hero/display step carries a short phrase, not a paragraph; this reads as a wall of oversized text rather than a considered headline. Move this copy to the body step (`lg`/`xl` range) and reserve the display serif for an actual short phrase or drop it to a proper subhead.\n- `/about` at 360px: additional 5px horizontal overflow (scrollWidth 365 vs 360) — same class of layout containment bug as the homepage, likely from the same oversized display-text block not wrapping inside its column.\n- `/work` at 360px: 6px horizontal overflow (scrollWidth 366 vs 360) — index/list content is not fully contained to the mobile viewport.\n- `/work/politweets` at 360px: 16px horizontal overflow (scrollWidth 376 vs 360) — a project detail page bleeding past the viewport edge, the largest overflow of the set and worth checking for a fixed-width element (image, code block, or table) that isn't set to scale down.\n\nThese are measured, objective viewport-containment failures across every mobile route tested, not a matter of taste — the build needs a pass to constrain full-bleed/full-width elements to `100vw` with proper `box-sizing`/`overflow-x` handling, and to move the `/about` running copy off the display type scale.\n===END===",
+    "channel": "cli-text-no-key",
+    "ts": 1788550945607
+  },
+  {
+    "critic": "surface-gate",
+    "verdict": "NEEDS-HUMAN",
+    "feedback": "Authored routes outside MUTABLE_FILES failed the gate: /work",
+    "ts": 1788550945607
+  }
+]
