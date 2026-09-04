@@ -1520,6 +1520,7 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         critique = await runMockupCritic({
           systemPrompt: mockupCriticSystemPrompt,
           screenshotBuffer: mockupScreenshot.jpeg,
+          mobileScreenshot: mockupScreenshot.mobileJpeg,
           headerCrop: mockupScreenshot.headerJpeg,
           enrichedBrief,
           measurables: artDirectorResult.measurables,
@@ -2072,12 +2073,17 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
           )
         }
 
-        // A project page and the share card, in the design's canonical scheme
-        // only. Both are rewritten nightly and neither has ever been reviewed:
-        // /work/<slug> shipped with its prev/next navigation rendered twice,
-        // in two different type treatments, at every viewport (#215). Two
-        // images is the whole cost — the geometry across every other route is
-        // already covered above, for free, by measurement.
+        // A project page, in the design's canonical scheme only. It is
+        // rewritten nightly and had never been reviewed: /work/<slug> shipped
+        // with its prev/next navigation rendered twice, in two different type
+        // treatments, at every viewport (#215). One image is the whole cost —
+        // the geometry across every other route is already covered above, for
+        // free, by measurement.
+        //
+        // The share card used to be captured here too. It gave up its slot to
+        // the 360 render of the homepage: /og is a fixed 1200×630 composition
+        // that measurement covers, and the phone is where a design either
+        // survives the width or stops existing.
         let routeShots = []
         try {
           const { captureRouteScreenshot } = await import('./utils/snapshot.js')
@@ -2087,7 +2093,6 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
           )
           const extra = [
             slugRoute ? { label: 'A project page', route: slugRoute.route, w: 1440, h: 900 } : null,
-            { label: 'The share card', route: '/og', w: 1200, h: 630 },
           ].filter(Boolean)
           for (const e of extra) {
             const png = await captureRouteScreenshot(e.route, { width: e.w, height: e.h })

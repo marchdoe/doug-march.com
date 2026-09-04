@@ -69,6 +69,16 @@ export const COLOR_SCHEMES = ['light', 'dark']
 export const OVERFLOW_TOLERANCE_PX = 1
 
 /**
+ * How many clipped elements one measurement reports.
+ *
+ * 2026-09-04 measured fourteen at 360 before deduplication. One is enough to
+ * force the revision and three is enough to describe the shape of the fault;
+ * past that the critic prompt fills with restatements of the same broken
+ * column and the model starts counting one defect as many.
+ */
+export const MAX_CLIPPED_REPORTED = 3
+
+/**
  * How many pages to measure at once. Four keeps one headless Chromium
  * comfortable on a CI runner while cutting the walk from over a minute to
  * roughly twenty seconds.
@@ -154,6 +164,33 @@ export function evaluateMeasurement(m, { tolerancePx = OVERFLOW_TOLERANCE_PX } =
     })
   }
 
+  // Content cut off inside a parent that clips it. Distinct from `overflow`
+  // above: on 2026-09-04 the document did not scroll horizontally, because an
+  // ancestor carried `overflow: hidden`, and the answer panel's type was
+  // severed mid-word anyway — "Here," and "Spacem". The measurement existed
+  // (responsive-scorer wrote fourteen of them into responsive-metrics.json)
+  // and nothing read it, so a clipped hero could neither fail a build nor earn
+  // a revision.
+  for (const c of (m.clipped ?? []).slice(0, MAX_CLIPPED_REPORTED)) {
+    const carriesText = Boolean(c.text)
+    findings.push({
+      kind: 'clipped',
+      // Type that is cut off is content the visitor cannot read. A cut
+      // decorative box is a crop, which is often what the design wanted, so it
+      // is reported without failing the build.
+      severity: carriesText ? 'error' : 'warning',
+      detail:
+        `<${c.tag}> is cut off: its right edge lands at ${c.right}px, ${c.over}px past the ` +
+        `${m.clientWidth}px viewport` +
+        (carriesText
+          ? `, severing "${c.text}...". The document does not scroll here, so that content is ` +
+            'gone, not merely offscreen. Scale the element to its column at this width instead ' +
+            'of carrying a wider layout down.'
+          : '. Nothing readable is lost, but the element is being severed rather than fitted. ' +
+            'Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.'),
+    })
+  }
+
   if (m.consoleErrors?.length) {
     findings.push({
       kind: 'console',
@@ -163,6 +200,73 @@ export function evaluateMeasurement(m, { tolerancePx = OVERFLOW_TOLERANCE_PX } =
   }
 
   return findings
+}
+
+/**
+ * Every element the viewport cuts off, outermost first, worst first.
+ *
+ * Runs inside the page, and is serialised there two different ways — this
+ * module hands it to `page.evaluate` through `new Function`, and
+ * `responsive-scorer.js` drops it straight into its CHECKS map, which does the
+ * same. So it closes over nothing, and its signature is the
+ * `(viewportWidth, thresholds)` shape every check in that map is called with.
+ *
+ * It lives here, in the gate, because the two consumers used to answer the
+ * same question with two different pieces of code: the scorer measured
+ * `right > innerWidth` into `responsive-metrics.json` nightly, which nothing
+ * read, while the gate had no clipping check at all. One definition, two
+ * callers, no drift — the same move #319 made for the overflow tolerance.
+ *
+ * Two things a bare `right > viewport` walk gets wrong:
+ *
+ * - It double-counts. 2026-09-04 reported the same fault as
+ *   `{DIV "Daylight06:46…" right:392}` and `{DIV "Daylight" right:368}`; a
+ *   clipped parent and the child it carries are one fault, so only the
+ *   outermost element of a clipped subtree is reported. `querySelectorAll`
+ *   walks in document order, which puts every ancestor ahead of its
+ *   descendants, so a set of what has already been reported is enough.
+ * - It has no opt-out. `data-allow-x-overflow` already tells the overflow
+ *   check that a page's horizontal scroll is deliberate; the same attribute on
+ *   any element declares a full-bleed crop deliberate here, and on `body` it
+ *   covers the page, since `closest` walks to the root.
+ *
+ * The viewport is `documentElement.clientWidth`, not `window.innerWidth`:
+ * innerWidth includes the vertical scrollbar, so the two disagreed with the
+ * overflow check on anything narrower than one (#319).
+ *
+ * @param {number} [_viewportWidth] unused; present for the CHECKS signature
+ * @param {{ overflowTolerancePx?: number }} [thresholds]
+ * @returns {Array<{ tag: string, text: string, right: number, over: number }>}
+ */
+export function findClippedElements(_viewportWidth, thresholds) {
+  const tolerance = thresholds?.overflowTolerancePx ?? 1
+  const limit = document.documentElement.clientWidth
+
+  // Everything the viewport cuts, in document order, which puts every ancestor
+  // ahead of its descendants.
+  const past = []
+  for (const el of document.querySelectorAll('body *')) {
+    const r = el.getBoundingClientRect()
+    const rendered = r.width > 0 && r.height > 0
+    if (rendered && r.right > limit + tolerance) past.push([el, r])
+  }
+
+  const outermost = []
+  const found = []
+  for (const [el, r] of past) {
+    const inside = outermost.some((p) => p.contains(el))
+    if (inside || el.closest('[data-allow-x-overflow]')) continue
+    outermost.push(el)
+    found.push({
+      tag: el.tagName,
+      // Whitespace collapsed: formatFindingsForCritic renders one finding as
+      // one bullet, and a newline out of the DOM would split it into two.
+      text: (el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 50),
+      right: Math.round(r.right),
+      over: Math.round(r.right - limit),
+    })
+  }
+  return found.sort((a, b) => b.over - a.over)
 }
 
 /**
@@ -237,7 +341,15 @@ export async function measureRoute(browser, baseUrl, surface, viewport, scheme) 
     // Fonts change metrics, and metrics are the entire point of this gate.
     await page.waitForTimeout(900)
     const box = await page.evaluate(collectSurfaceMetrics, { minChars: RUNNING_COPY_MIN_CHARS })
-    return { ...base, status: resp?.status() ?? null, ...box, consoleErrors }
+    // A second evaluate rather than a branch inside collectSurfaceMetrics:
+    // findClippedElements is shared with responsive-scorer.js, and a function
+    // Playwright serialises cannot call another one. Rebuilding it from its
+    // own source in the page is how the scorer already runs its checks.
+    const clipped = await page.evaluate(
+      ([src, thresholds]) => new Function(`return ${src}`)()(window.innerWidth, thresholds),
+      [findClippedElements.toString(), { overflowTolerancePx: OVERFLOW_TOLERANCE_PX }]
+    )
+    return { ...base, status: resp?.status() ?? null, ...box, clipped, consoleErrors }
   } catch (err) {
     return { ...base, error: err.message, consoleErrors }
   } finally {

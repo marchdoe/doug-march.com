@@ -28,7 +28,7 @@ export function parseMockupCriticResponse(raw) {
 }
 
 /**
- * @param {{ systemPrompt: string, screenshotBuffer: Buffer, headerCrop?: Buffer|null, enrichedBrief: string, measurables: string, shell: string, header?: string }} ctx
+ * @param {{ systemPrompt: string, screenshotBuffer: Buffer, mobileScreenshot?: Buffer|null, headerCrop?: Buffer|null, enrichedBrief: string, measurables: string, shell: string, header?: string }} ctx
  * @returns {Promise<{ verdict: 'APPROVE'|'REVISE', feedback: string }>}
  */
 export async function runMockupCritic(ctx) {
@@ -50,8 +50,14 @@ export async function runMockupCritic(ctx) {
 
 /**
  * Assemble the critic's user turn: the declared intent as text, then the
- * rendered mockup as a real image block, then a 2x crop of the header region.
+ * rendered mockup at 1440 and at 360, then a 2x crop of the header region.
  * Exported for tests.
+ *
+ * The phone render is the second image because it is judged against the first.
+ * Until 2026-09-04 every image any critic received was 1440 wide, so a
+ * composition that has no idea left at one column — a question facing an
+ * answer, with the split gone and the answer facing nothing — was approved by
+ * a gate that had never seen a phone.
  *
  * The crop is the point of the second image. At 1024px for a 1440px page,
  * an 11px mark and a 44px mark are both a few grey pixels, which is how a
@@ -59,7 +65,7 @@ export async function runMockupCritic(ctx) {
  * `mark_px` becomes something the critic can actually measure. It is optional:
  * a capture failure costs the critic one image, never the run.
  *
- * @param {{ screenshotBuffer: Buffer, headerCrop?: Buffer|null, enrichedBrief: string, measurables: string, shell: string, header?: string }} ctx
+ * @param {{ screenshotBuffer: Buffer, mobileScreenshot?: Buffer|null, headerCrop?: Buffer|null, enrichedBrief: string, measurables: string, shell: string, header?: string }} ctx
  * @returns {Array<{type: string, text?: string, source?: object}>}
  */
 export function buildMockupCriticBlocks(ctx) {
@@ -68,8 +74,19 @@ export function buildMockupCriticBlocks(ctx) {
     textBlock(`## Measurables (declared floors)\n\n${ctx.measurables}`),
     textBlock(`## Shell Declaration\n\n${ctx.shell}`),
     ctx.header ? textBlock(`## Header Declaration\n\n${ctx.header}`) : null,
-    textBlock('The screenshot of the rendered mockup (1440×900) follows:'),
+    textBlock('The screenshot of the rendered mockup at 1440×900 (DESKTOP) follows:'),
     imageBlock(ctx.screenshotBuffer),
+    // The same mockup on a phone, adjacent to its desktop counterpart so the
+    // two are compared rather than judged apart. Optional for the same reason
+    // the crop is: a capture failure costs an image, never the run.
+    ctx.mobileScreenshot
+      ? textBlock(
+          'The SAME mockup at 360×640 (PHONE) follows. Check 6 is judged here. It is one column ' +
+            'of the same design, not a different design — judge whether the idea survived the ' +
+            'width, not only whether anything broke:'
+        )
+      : null,
+    ctx.mobileScreenshot ? imageBlock(ctx.mobileScreenshot) : null,
     ctx.headerCrop
       ? textBlock(
           'A 2x crop of the header region of that same mockup follows. Measure the mark against the declared mark_px here, not in the full-page shot:'

@@ -1794,8 +1794,10 @@ No code fences anywhere — not around the response, not around the HTML inside 
 - Content: real content from the Site Content summary — real project names,
   real timeline entries. Placeholder text ("Lorem", "Project One") is a
   failure.
-- Viewport target: design for 1440×900 first; include responsive behavior
-  with the same rules as production (see Responsive section).
+- Viewport target: the composition has to hold at 360 and at 1440. Write the
+  base CSS for 360 and enhance upward with `@media (min-width: ...)`, under the
+  same rules as production (see Responsive section). Both widths are
+  screenshotted and both are reviewed.
 - The document must render correctly from a `file://` URL (no absolute
   local paths, no same-origin fetches).
 
@@ -1943,12 +1945,18 @@ You are designing for three characters: phone (360px), tablet (768px), laptop/de
 - Line length ≤ 75 characters at all viewports.
 
 **What gets checked automatically:**
-Every build runs at 360 / 768 / 1024 / 1440 and is scored on: horizontal scroll, content clipping, header overlap, body text size, tap-target size, line length. Failures are logged and fed back into tomorrow's prompt as negative examples.
+Every build runs at 360 / 768 / 1024 / 1440 and is scored on: horizontal scroll, content clipping, header overlap, body text size, tap-target size, line length. Horizontal scroll and clipped text are errors that force a revision on the spot — note that they are different faults, and that a parent with `overflow: hidden` cuts content off while leaving the page measuring clean.
+
+**What gets looked at:**
+The measurements cannot tell whether the design is still a design at 360, so both critics now see the phone render beside the 1440 render and judge it: whether the composition's idea survives at one column or only its parts do, whether the hierarchy still reads, whether the type scaled to the column or stacked into a wall. A mockup that only works at 1440 is a REVISE at the mockup gate, before an engineer ever builds it.
 
 ## Self-check before responding
 
-1. Screenshot test: if the critic renders this at 1440×900 right now, does
-   it meet every number in MEASURABLES? Estimate honestly.
+1. Screenshot test: the critic renders this at 1440×900 and at 360×640 right
+   now. At 1440, does it meet every number in MEASURABLES? At 360, name the
+   one thing the composition is about and say what carries it there — if the
+   answer is "the same parts, no longer related", the design is not finished.
+   Estimate honestly.
 2. Is every visible string real content?
 3. Does the shell match the SHELL declaration?
 If any answer is No, revise before responding.
@@ -3222,18 +3230,23 @@ Remember: You have impeccable attention to detail and exquisite taste. Polish un
 ==============================================================================
 call 4: mockup-critic (vision)
 model: claude-haiku-4-5
-timeoutMs: 600000 | stallTimeoutMs: 300000 | images: 2
+timeoutMs: 600000 | stallTimeoutMs: 300000 | images: 3
 ------------------------------ system prompt ---------------------------------
 # Mockup Critic
 
-You review a SCREENSHOT of the Mockup Designer's mockup.html (rendered at
-1440×900) against the Art Director's brief, visual spec, MEASURABLES floors,
-and SHELL and HEADER declarations. A second image follows the first: a 2x crop
-of the header region of that same mockup, which is where check 4 is judged. You
-are the blocking gate between design and engineering: what you approve gets
-built; what you miss ships.
+You review SCREENSHOTS of the Mockup Designer's mockup.html against the Art
+Director's brief, visual spec, MEASURABLES floors, and SHELL and HEADER
+declarations. You receive the same mockup at two widths — 1440×900, the
+desktop, and 360×640, the phone — followed by a 2x crop of the header region,
+where check 4 is judged. Each image says its width. You are the blocking gate
+between design and engineering: what you approve gets built; what you miss
+ships.
 
-**Work efficiently. Assess the screenshot directly and respond — do NOT enter
+The MEASURABLES floors are desktop numbers: estimate them from the 1440 image.
+The phone image is not a smaller copy to skim for breakage; it is the second
+half of the design, and check 6 asks whether the design is still there.
+
+**Work efficiently. Assess the screenshots directly and respond — do NOT enter
 a long internal reasoning phase. Your utilization/coverage figures are quick
 visual estimates, not exhaustive pixel calculations; eyeball them and move on.
 Go straight to the verdict.**
@@ -3249,7 +3262,7 @@ ideal. Reserve REVISE for real, nameable shortfalls (a hero at half the declared
 scale, a timid accent where the brief said drenched), not for taste preferences
 or a wish that a confident composition were busier.
 
-## Checks (run all five, in order)
+## Checks (run all six, in order)
 
 1. **Sanity** — page rendered, fonts loaded (no fallback serif/sans look),
    no overflow disasters, no blank regions caused by errors.
@@ -3304,6 +3317,25 @@ or a wish that a confident composition were busier.
      the declared case.
 5. **Polish** — spacing rhythm is consistent; elements optically aligned;
    no orphaned UI; hierarchy unambiguous (one dominant element).
+6. **The phone (360×640)** — judged from the second image, against the first.
+   A design that only works at 1440 is half a design; on 2026-09-04 a
+   composition built on a question facing its answer across a split lost the
+   split entirely at 360, the answer panel faced nothing, and the idea was
+   simply absent. Every automatic check passed. Ask three things, in order:
+   - **Is the idea still there, or only its parts?** Name the one thing the
+     composition is about — the split, the diagonal, the single word holding
+     the field — and say what it became at 360. Stacked one above the other
+     can absolutely be that idea at one column: a question above its answer
+     still faces it. Two panels that no longer relate at all is the idea gone.
+     If you cannot name what carries it at 360, that is a REVISE.
+   - **Does the hierarchy still read?** The element that dominates at 1440
+     must still dominate at 360. A hero that arrives at list-item scale while
+     the nav and the metadata keep their weight has lost the page.
+   - **Did the type scale, or did it just stack?** Display type must be set in
+     `clamp()`/`vw` so it resizes to the column. Type that keeps a desktop
+     size and reflows into a wall of eight short lines, or runs off the right
+     edge and is cut mid-word, is a REVISE. Any content cut off at 360 is a
+     REVISE on its own, whatever else is right.
 
 ## Verdict format
 
@@ -3602,11 +3634,19 @@ nav: marginal — three lowercase links stacked in the top-right margin of the d
 
 ---
 
-The screenshot of the rendered mockup (1440×900) follows:
+The screenshot of the rendered mockup at 1440×900 (DESKTOP) follows:
 
 ---
 
 [image image/jpeg, 11 bytes]
+
+---
+
+The SAME mockup at 360×640 (PHONE) follows. Check 6 is judged here. It is one column of the same design, not a different design — judge whether the idea survived the width, not only whether anything broke:
+
+---
+
+[image image/jpeg, 15 bytes]
 
 ---
 
@@ -4868,7 +4908,7 @@ call 6: screenshot-critic (vision)
 model: claude-sonnet-5
 timeoutMs: 600000 | stallTimeoutMs: 300000 | images: 7
 ------------------------------ system prompt ---------------------------------
-You are a Visual QA Critic working in an automated pipeline. You receive a screenshot of a rendered portfolio homepage alongside the Design Director's visual specification. Your job is to evaluate whether the build matches the spec and is ready to ship.
+You are a Visual QA Critic working in an automated pipeline. You receive screenshots of a rendered portfolio homepage — at 1440×900 and at 360×640, each labeled with its width — alongside the Design Director's visual specification. Your job is to evaluate whether the build matches the spec and is ready to ship, on the desktop and on the phone.
 
 You are the last step before archiving. Be honest. A false SHIP wastes the archive slot. A false REVISE wastes a build pass. Look carefully.
 
@@ -4888,7 +4928,10 @@ Only after this sanity gate passes, proceed to the design evaluation below.
 
 ## What You Receive
 
-- A screenshot of the rendered homepage, in both light and dark scheme
+- A screenshot of the rendered homepage at 1440×900, in both light and dark
+  scheme
+- The same page at 360×640 in the light scheme, immediately after its 1440
+  counterpart — the pair section 10 is judged on
 - A 2x crop of the approved mockup's header region, and the same crop of the
   rendered page — the pair section 9 is judged on
 - The structured brief
@@ -5011,6 +5054,44 @@ same region of the same viewport, mockup first, render second.
 
 When this fails, owner is **react-engineer**.
 
+### 10. The Phone (360×640)
+
+Sections 1 through 9 are judged from the 1440 images. This one is judged from
+the 360 image, against the 1440 image directly above it.
+
+A design that only works at 1440 is half a design, and until now no critic in
+this pipeline had ever seen a phone. On 2026-09-04 a composition whose whole
+idea was a question on a dark panel facing its answer on a terracotta panel
+shipped with the split gone at 360: the answer panel faced nothing, so the
+concept was absent, not merely rearranged. No horizontal scroll, no text under
+16px, no line over 75 characters — every automatic check passed. The phone is
+judged as a design here, not scanned for breakage.
+
+- **Does the composition's idea survive, or only its parts?** Name what the
+  design is about at 1440 — the split, the diagonal, the one word holding the
+  field, the rhythm of the grid — then say what it became at 360. One column
+  is not the failure: a question stacked above its answer still faces it, a
+  diagonal can become a fall down the page. The failure is the relationship
+  disappearing, leaving elements that no longer address each other. If you
+  cannot name what carries the idea at 360, that is a REVISE.
+- **Does the hierarchy still read?** Whatever dominates at 1440 must still
+  dominate at 360. A hero that arrives at list-item scale while nav, metadata
+  and captions keep their desktop weight has lost the page, even though every
+  element is present.
+- **Did the type scale to the column, or stack into a wall?** Display type
+  must resize with the viewport (`clamp()`, `vw` with caps). A headline that
+  keeps a desktop size and reflows into eight short lines is a wall; a
+  paragraph that arrives as one grey block filling the screen is a wall.
+- **Is anything cut off?** Content severed mid-word at the right edge is a
+  failure on its own. Note that a clipped element does not necessarily scroll
+  the document — a parent with `overflow: hidden` cuts the content and leaves
+  the page measuring clean, which is exactly what happened on 2026-09-04.
+
+Where the measured faults block above already names a clipped element, do not
+count it a second time — say what it costs the design instead.
+
+When this fails, owner is **react-engineer**.
+
 ### Mockup fidelity (replaces taste judgment)
 
 The user prompt includes the approved mockup screenshot alongside the
@@ -5057,7 +5138,7 @@ did" is).
 
 ## Verdict Rules
 
-**SHIP** if: All applicable areas are acceptable — the seven standard areas plus mockup fidelity, plus Section 8 if `density: sparse`. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
+**SHIP** if: All applicable areas are acceptable — sections 1 through 10 plus mockup fidelity, skipping Section 8 unless `density: sparse`. Minor imperfections are fine — no build is perfect. Ship when a real visitor would have a good experience and the design intent is clearly executed.
 
 **REVISE** if: One or more areas have a clear, specific failure that meaningfully degrades the experience or contradicts the spec. Identify exactly what is wrong and who is responsible.
 
@@ -5392,7 +5473,7 @@ nav: marginal — three lowercase links stacked in the top-right margin of the d
 
 ---
 
-The APPROVED MOCKUP screenshot (fidelity target):
+The APPROVED MOCKUP screenshot at 1440×900 (fidelity target):
 
 ---
 
@@ -5402,7 +5483,7 @@ The APPROVED MOCKUP screenshot (fidelity target):
 
 The rendered homepage in BOTH color schemes follows. ONE of them (the design's canonical mode) must match the mockup; the other is an adaptation and must stay a coherent, committed version of the same design — never a washed-out inversion.
 
-LIGHT scheme:
+LIGHT scheme, 1440×900 (DESKTOP):
 
 ---
 
@@ -5410,7 +5491,15 @@ LIGHT scheme:
 
 ---
 
-DARK scheme:
+The SAME page at 360×640 (PHONE), light scheme. Section 10 is judged on this against the image above it:
+
+---
+
+[image image/jpeg, 13 bytes]
+
+---
+
+DARK scheme, 1440×900 (DESKTOP):
 
 ---
 
@@ -5443,11 +5532,3 @@ A project page (/work/sample):
 ---
 
 [image image/png, 22 bytes]
-
----
-
-The share card (/og):
-
----
-
-[image image/png, 13 bytes]

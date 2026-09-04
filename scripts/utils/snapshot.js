@@ -206,6 +206,50 @@ async function captureHeaderCrop(browser, url, opts) {
 }
 
 /**
+ * The phone the critics are shown, matching `VIEWPORT_RUNGS`' mobile rung in
+ * `surface-gate.js`. Declared here rather than imported because surface-gate
+ * imports this module; `tests/scripts/agents/critic-viewports.test.js` asserts
+ * the two numbers stay equal.
+ *
+ * Until now every image any critic received was 1440 wide. On 2026-09-04 a
+ * design whose whole idea is a question facing its answer lost the split
+ * entirely at 360 — the answer panel faced nothing, the concept was absent —
+ * and every automatic check passed. Mobile reached a critic only as text.
+ */
+export const CRITIC_MOBILE_VIEWPORT = { width: 360, height: 640 }
+
+/**
+ * One page at one viewport, downscaled for a critic. Best-effort, like the
+ * header crop: a missing image costs a critic one block, never the run.
+ *
+ * At 360 wide the downscale is a no-op — `computeDownscaleDimensions` never
+ * upscales — so the phone render costs roughly a fifth of the desktop one in
+ * image tokens.
+ *
+ * @param {import('playwright').Browser} browser
+ * @param {string} url
+ * @param {{ width: number, height: number, colorScheme?: 'light'|'dark' }} opts
+ * @returns {Promise<Buffer|null>}
+ */
+async function captureViewportJpeg(browser, url, { width, height, colorScheme }) {
+  let page = null
+  try {
+    page = await browser.newPage({
+      viewport: { width, height },
+      ...(colorScheme ? { colorScheme } : {}),
+    })
+    await page.goto(url, { waitUntil: 'networkidle' })
+    await page.waitForTimeout(1000) // fonts
+    const png = await page.screenshot({ type: 'png', fullPage: false })
+    return await downscaleForCritic(page, png)
+  } catch {
+    return null
+  } finally {
+    if (page) await page.close().catch(() => {})
+  }
+}
+
+/**
  * Read the rendered silhouette out of a served page at 1440.
  *
  * The critic screenshot and the header crop are both taken at 1440; the
@@ -430,7 +474,7 @@ export async function captureSnapshot(date, buildId, { root = ROOT } = {}) {
  * @param {number} [port] - Optional port if server is already running
  * @param {{ headerCrop?: { placement?: string|null, heightPx?: number|null } }} [opts]
  *   the day's HEADER declaration, which decides where the header crop is taken
- * @returns {Promise<{png: Buffer, jpeg: Buffer, darkPng: Buffer, darkJpeg: Buffer, headerJpeg: Buffer|null, fingerprint: object|null}>}
+ * @returns {Promise<{png: Buffer, jpeg: Buffer, darkPng: Buffer, darkJpeg: Buffer, headerJpeg: Buffer|null, mobileJpeg: Buffer|null, fingerprint: object|null}>}
  */
 export async function captureScreenshot(port, { headerCrop } = {}) {
   const { chromium } = await import('playwright')
@@ -473,12 +517,19 @@ export async function captureScreenshot(port, { headerCrop } = {}) {
           declaredHeightPx: headerCrop?.heightPx ?? null,
         })
 
+        // The same page on a phone. Both critics now receive it beside the
+        // 1440 render, because the desktop-only diet is how a design that has
+        // no idea left at 360 shipped with every check green.
+        const mobileJpeg = await captureViewportJpeg(browser, `${baseUrl}/`, {
+          ...CRITIC_MOBILE_VIEWPORT,
+        })
+
         // The rendered-geometry fingerprint (#255). Taken from the same served
         // build the critic is about to judge, so the silhouette recorded is the
         // silhouette that shipped.
         const fingerprint = await captureFingerprint(browser, `${baseUrl}/`)
 
-        return { png, jpeg, darkPng, darkJpeg, headerJpeg, fingerprint }
+        return { png, jpeg, darkPng, darkJpeg, headerJpeg, mobileJpeg, fingerprint }
       } finally {
         // Close in finally so a throw from page.goto / screenshot (dead preview
         // server, networkidle timeout) can't orphan the headless Chromium — the
@@ -497,9 +548,10 @@ export async function captureScreenshot(port, { headerCrop } = {}) {
  *
  * @param {string} filePath - absolute path to the HTML file
  * @param {{ width?: number, height?: number, headerCrop?: { placement?: string|null, heightPx?: number|null } }} [opts]
- * @returns {Promise<{png: Buffer, jpeg: Buffer, headerJpeg: Buffer|null}>} image
- *   buffers — PNG for archives, JPEG (downscaled, q70) for critic prompts (see
- *   captureScreenshot), plus a 2x crop of the declared header region
+ * @returns {Promise<{png: Buffer, jpeg: Buffer, headerJpeg: Buffer|null, mobileJpeg: Buffer|null}>}
+ *   image buffers — PNG for archives, JPEG (downscaled, q70) for critic
+ *   prompts (see captureScreenshot), plus a 2x crop of the declared header
+ *   region and the same mockup rendered at the phone rung
  */
 export async function captureHtmlFileScreenshot(
   filePath,
@@ -519,7 +571,13 @@ export async function captureHtmlFileScreenshot(
       placement: headerCrop?.placement ?? null,
       declaredHeightPx: headerCrop?.heightPx ?? null,
     })
-    return { png, jpeg, headerJpeg }
+    // The mockup on a phone, for the same reason the shipped page gets one:
+    // the mockup critic is the blocking gate between design and engineering,
+    // and until now it had never seen anything but 1440.
+    const mobileJpeg = await captureViewportJpeg(browser, `file://${filePath}`, {
+      ...CRITIC_MOBILE_VIEWPORT,
+    })
+    return { png, jpeg, headerJpeg, mobileJpeg }
   } finally {
     await browser.close()
   }

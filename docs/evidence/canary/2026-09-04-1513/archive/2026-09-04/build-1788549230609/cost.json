@@ -1,0 +1,100 @@
+{
+  "total_usd": 2.224553,
+  "estimated": false,
+  "partial": false,
+  "retries": 1,
+  "calls": 7,
+  "byAgent": [
+    {
+      "agent": "art-director",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 33918,
+      "cache_read": 0,
+      "cache_write": 62161,
+      "cost_usd": 0.587828,
+      "estimated": false,
+      "ms": 388182,
+      "num_turns": 1
+    },
+    {
+      "agent": "spec-critic",
+      "model": "claude-haiku-4-5",
+      "source": "cli",
+      "input": 10,
+      "output": 3469,
+      "cache_read": 0,
+      "cache_write": 30804,
+      "cost_usd": 0.078963,
+      "estimated": false,
+      "ms": 41442,
+      "num_turns": 1
+    },
+    {
+      "agent": "mockup-designer",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 8553,
+      "cache_read": 19696,
+      "cache_write": 42244,
+      "cost_usd": 0.2584492,
+      "estimated": false,
+      "ms": 75721,
+      "num_turns": 1
+    },
+    {
+      "agent": "mockup-critic",
+      "model": "claude-haiku-4-5",
+      "source": "cli",
+      "input": 10,
+      "output": 681,
+      "cache_read": 14785,
+      "cache_write": 12555,
+      "cost_usd": 0.030003500000000002,
+      "estimated": false,
+      "ms": 12323,
+      "num_turns": 1
+    },
+    {
+      "agent": "react-engineer",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 47176,
+      "cache_read": 19696,
+      "cache_write": 32325,
+      "cost_usd": 0.6050032,
+      "estimated": false,
+      "ms": 411294,
+      "num_turns": 1
+    },
+    {
+      "agent": "screenshot-critic",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 1763,
+      "cache_read": 19696,
+      "cache_write": 23392,
+      "cost_usd": 0.1151412,
+      "estimated": false,
+      "ms": 25444,
+      "num_turns": 1
+    },
+    {
+      "agent": "react-engineer",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 50743,
+      "cache_read": 34857,
+      "cache_write": 8690,
+      "cost_usd": 0.5491654,
+      "estimated": false,
+      "ms": 418958,
+      "num_turns": 1
+    }
+  ]
+}
