@@ -1,5 +1,5 @@
 import { chromium } from '@playwright/test'
-import { OVERFLOW_TOLERANCE_PX } from './surface-gate.js'
+import { OVERFLOW_TOLERANCE_PX, findClippedElements } from './surface-gate.js'
 
 /**
  * What each check measures against. The checks below run inside the page
@@ -33,22 +33,12 @@ const CHECKS = {
   horizontalScroll: (_vw, t) =>
     document.documentElement.scrollWidth - document.documentElement.clientWidth >
     t.overflowTolerancePx,
-  clippedElements: () => {
-    const vw = window.innerWidth
-    const out = []
-    for (const el of document.querySelectorAll('body *')) {
-      const r = el.getBoundingClientRect()
-      if (r.width === 0 || r.height === 0) continue
-      if (r.right > vw + 1) {
-        out.push({
-          tag: el.tagName,
-          text: (el.textContent || '').trim().slice(0, 50),
-          right: Math.round(r.right),
-        })
-      }
-    }
-    return out
-  },
+  // The surface gate's own detector, imported rather than kept as a second
+  // copy. This one used to be the only place clipping was measured, it
+  // double-counted a clipped parent and its children, it honoured no opt-out,
+  // and the file it wrote had no reader. The gate now fails a build on the
+  // same numbers, so the two must not be able to disagree.
+  clippedElements: findClippedElements,
   headerOverlap: () => {
     const header = document.querySelector('header') || document.querySelector('nav')
     if (!header) return []

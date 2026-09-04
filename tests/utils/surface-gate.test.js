@@ -9,6 +9,7 @@ import {
   ownerForSurface,
   faultsForOwner,
   OVERFLOW_TOLERANCE_PX,
+  MAX_CLIPPED_REPORTED,
   VIEWPORT_RUNGS,
   RUNNING_COPY_MAX_PX,
   RUNNING_COPY_MIN_CHARS,
@@ -66,6 +67,64 @@ describe('evaluateMeasurement', () => {
     const findings = evaluateMeasurement({ ...ok, consoleErrors: ['boom'] })
     expect(findings[0].kind).toBe('console')
     expect(findings[0].severity).toBe('warning')
+  })
+
+  it('makes a clipped text element an error, with the numbers and the words', () => {
+    const findings = evaluateMeasurement({
+      ...ok,
+      clientWidth: 360,
+      scrollWidth: 360,
+      clipped: [{ tag: 'DIV', text: 'Daylight06:46', right: 392, over: 32 }],
+    })
+    expect(findings).toHaveLength(1)
+    expect(findings[0].kind).toBe('clipped')
+    expect(findings[0].severity).toBe('error')
+    expect(findings[0].detail).toContain('392px')
+    expect(findings[0].detail).toContain('32px past the 360px viewport')
+    expect(findings[0].detail).toContain('Daylight06:46')
+  })
+
+  it('makes a clipped element carrying no text a warning that cannot fail a build', () => {
+    const findings = evaluateMeasurement({
+      ...ok,
+      clientWidth: 360,
+      scrollWidth: 360,
+      clipped: [{ tag: 'IMG', text: '', right: 420, over: 60 }],
+    })
+    expect(findings).toHaveLength(1)
+    expect(findings[0].kind).toBe('clipped')
+    expect(findings[0].severity).toBe('warning')
+    expect(findings[0].detail).toContain('data-allow-x-overflow')
+    // A warning is not an engineer fault, so it cannot force a revision.
+    expect(faultsForOwner([{ ...findings[0], surface: '/' }], 'react-engineer')).toEqual([])
+  })
+
+  it('reports clipping even when the document itself does not scroll', () => {
+    // 2026-09-04: a parent carried overflow: hidden, so scrollWidth never
+    // exceeded clientWidth and the only fault the gate could name was one it
+    // did not have.
+    const kinds = evaluateMeasurement({
+      ...ok,
+      clientWidth: 360,
+      scrollWidth: 360,
+      clipped: [{ tag: 'H1', text: 'Spacem', right: 500, over: 140 }],
+    }).map((f) => f.kind)
+    expect(kinds).toEqual(['clipped'])
+  })
+
+  it('stops after a few clipped elements rather than filling the prompt', () => {
+    const clipped = Array.from({ length: 14 }, (_, i) => ({
+      tag: 'DIV',
+      text: `block ${i}`,
+      right: 400 + i,
+      over: 40 + i,
+    }))
+    const findings = evaluateMeasurement({ ...ok, clientWidth: 360, scrollWidth: 360, clipped })
+    expect(findings).toHaveLength(MAX_CLIPPED_REPORTED)
+  })
+
+  it('says nothing when nothing is clipped', () => {
+    expect(evaluateMeasurement({ ...ok, clipped: [] })).toEqual([])
   })
 
   it('reports overflow and status together when both are wrong', () => {

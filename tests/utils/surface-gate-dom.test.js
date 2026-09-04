@@ -8,7 +8,12 @@
  */
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { chromium } from '@playwright/test'
-import { RUNNING_COPY_MIN_CHARS, collectSurfaceMetrics } from '../../scripts/utils/surface-gate.js'
+import {
+  OVERFLOW_TOLERANCE_PX,
+  RUNNING_COPY_MIN_CHARS,
+  collectSurfaceMetrics,
+  findClippedElements,
+} from '../../scripts/utils/surface-gate.js'
 
 const LONG =
   'I work at the intersection of product and engineering, mostly on things that ship to people who did not ask for them and have to like them anyway. '.repeat(
@@ -92,5 +97,107 @@ describe('collectSurfaceMetrics', () => {
     } finally {
       await page.close()
     }
+  })
+})
+
+/**
+ * The clipping detector, against real geometry.
+ *
+ * It is rebuilt from its own source inside the page, the way `measureRoute`
+ * and `responsive-scorer.js` both run it, so this exercises the serialisation
+ * as well as the rules.
+ */
+describe('findClippedElements', () => {
+  let browser
+  beforeAll(async () => {
+    browser = await chromium.launch({ headless: true })
+  })
+  afterAll(async () => {
+    await browser?.close()
+  })
+
+  async function clipped(html, { width = 360, height = 640 } = {}) {
+    const page = await browser.newPage({ viewport: { width, height } })
+    try {
+      await page.setContent(
+        `<!doctype html><html><head><style>html,body{margin:0;padding:0;overflow:hidden}</style>` +
+          `</head><body>${html}</body></html>`
+      )
+      return await page.evaluate(
+        ([src, thresholds]) => new Function(`return ${src}`)()(window.innerWidth, thresholds),
+        [findClippedElements.toString(), { overflowTolerancePx: OVERFLOW_TOLERANCE_PX }]
+      )
+    } finally {
+      await page.close()
+    }
+  }
+
+  it('reports a clipped parent once, not once per clipped child', async () => {
+    // 2026-09-04 reported {DIV "Daylight06:46…" right:392} and
+    // {DIV "Daylight" right:368} as two faults. They are one.
+    const found = await clipped(
+      `<div style="width:800px"><div style="width:700px">Daylight</div>` +
+        `<div style="width:700px">06:46</div></div>`
+    )
+    expect(found).toHaveLength(1)
+    expect(found[0].tag).toBe('DIV')
+    expect(found[0].text.startsWith('Daylight')).toBe(true)
+    expect(found[0].over).toBe(440)
+  })
+
+  it('marks an element that carries text apart from one that does not', async () => {
+    const [withText] = await clipped(`<h1 style="width:800px;font-size:20px">Spaceman</h1>`)
+    expect(withText.text).toBe('Spaceman')
+
+    const [decorative] = await clipped(`<div style="width:800px;height:40px;background:red"></div>`)
+    expect(decorative.text).toBe('')
+  })
+
+  it('honours the opt-out on the element and on body', async () => {
+    expect(
+      await clipped(`<div data-allow-x-overflow style="width:800px">Deliberate crop</div>`)
+    ).toEqual([])
+    // A child of an opted-out element is covered too — closest walks up.
+    expect(
+      await clipped(
+        `<div data-allow-x-overflow style="width:800px"><span>Deliberate crop</span></div>`
+      )
+    ).toEqual([])
+    // And the page-level attribute the overflow check already honours.
+    const page = await browser.newPage({ viewport: { width: 360, height: 640 } })
+    try {
+      await page.setContent(
+        '<!doctype html><html><head><style>html,body{margin:0;overflow:hidden}</style></head>' +
+          '<body data-allow-x-overflow><div style="width:800px">Full bleed</div></body></html>'
+      )
+      const out = await page.evaluate(
+        ([src, thresholds]) => new Function(`return ${src}`)()(window.innerWidth, thresholds),
+        [findClippedElements.toString(), { overflowTolerancePx: OVERFLOW_TOLERANCE_PX }]
+      )
+      expect(out).toEqual([])
+    } finally {
+      await page.close()
+    }
+  })
+
+  it('leaves an element that fits alone, and ignores sub-pixel overhang', async () => {
+    expect(await clipped(`<div style="width:340px">Fits</div>`)).toEqual([])
+    // 360.5px in a 360px viewport is layout arithmetic, not a defect.
+    expect(await clipped(`<div style="width:360.5px">Rounding</div>`)).toEqual([])
+  })
+
+  it('collapses whitespace in the sample so one finding stays one bullet', async () => {
+    const [found] = await clipped(
+      `<div style="width:800px">\n  <h1>Where does the day go?</h1>\n  <p>Here, and Spaceman</p>\n</div>`
+    )
+    expect(found.text).not.toContain('\n')
+    expect(found.text).toBe('Where does the day go? Here, and Spaceman')
+  })
+
+  it('puts the worst offender first', async () => {
+    const found = await clipped(
+      `<div style="width:400px">near</div><div style="width:900px">far</div>`
+    )
+    expect(found.map((f) => f.text)).toEqual(['far', 'near'])
   })
 })

@@ -113,6 +113,23 @@ const OVERFLOW_AT_390 = {
   detail: 'document is 640px wide in a 390px viewport',
 }
 
+/**
+ * A clipped element on an engineer-owned route. Distinct from OVERFLOW_AT_390:
+ * on 2026-09-04 the document did not scroll horizontally at all — a parent
+ * carried `overflow: hidden` — and the hero's type was severed mid-word
+ * anyway. The measurement was taken every night into responsive-metrics.json
+ * and no reader existed, so it could neither fail a build nor earn a revision.
+ */
+const CLIPPED_AT_360 = {
+  surface: '/',
+  viewport: 'mobile',
+  width: 360,
+  scheme: 'light',
+  kind: 'clipped',
+  severity: 'error',
+  detail: '<H1> is cut off: its right edge lands at 392px, 32px past the 360px viewport',
+}
+
 const OLD_FRAMING = 'The previous attempt failed with this build error'
 
 function dirsUnder(root, date, prefix) {
@@ -683,5 +700,57 @@ describe('after the build passes: the screenshot critic and the surface gate', (
       },
     ])
     expect(run.trace.dir).toMatch(/^build-\d+$/)
+  })
+
+  it('revises on a SHIP when the gate measured a clipped element at 360', async () => {
+    const run = await runSwarm({
+      gate: [{ findings: [CLIPPED_AT_360], measured: 8, errorCount: 1 }, CLEAN_GATE],
+    })
+
+    expect(run.error).toBeNull()
+    expect(run.calls.map((c) => c.agent)).toEqual([
+      'art-director',
+      'spec-critic',
+      'mockup-designer',
+      'mockup-critic',
+      'react-engineer',
+      'screenshot-critic',
+      'react-engineer',
+    ])
+
+    // The finding routes to the engineer through ownerForSurface('/'), so the
+    // clipped hero is fixed by the same path an overflow is.
+    const faults = formatFindingsForCritic([CLIPPED_AT_360])
+    expect(faults).toContain('- [error] / at 360px (light): <H1> is cut off')
+    expect(run.callsFor('screenshot-critic')[0].userPrompt).toContain(faults)
+    const [first, revision] = run.callsFor('react-engineer')
+    expect(first.userPrompt).not.toContain('## Measured layout faults')
+    expect(revision.userPrompt).toContain(faults)
+    expect(run.retries).toBe(1)
+    expect(run.fakes.runSurfaceGate).toHaveLength(2)
+    expect(run.fakes.archive).toHaveLength(1)
+
+    const gateVerdicts = run.verdicts.filter((v) => v.critic === 'surface-gate')
+    expect(gateVerdicts.map((v) => v.verdict)).toEqual(['REVISE', 'SHIP'])
+    expect(gateVerdicts[0].feedback).toContain('<H1> is cut off')
+  })
+
+  it('does not revise on a clipped element the design declared deliberate', async () => {
+    // A warning is what the gate reports for a clipped element carrying no
+    // text. It reaches the critic and cannot force anything.
+    const run = await runSwarm({
+      gate: [
+        {
+          findings: [{ ...CLIPPED_AT_360, severity: 'warning' }],
+          measured: 8,
+          errorCount: 0,
+        },
+      ],
+    })
+
+    expect(run.error).toBeNull()
+    expect(run.callsFor('react-engineer')).toHaveLength(1)
+    expect(run.fakes.runSurfaceGate).toHaveLength(1)
+    expect(run.fakes.archive).toHaveLength(1)
   })
 })
