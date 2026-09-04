@@ -3791,8 +3791,45 @@ Those paths are from `app/routes/` and `app/components/`. A component under
 - Never use raw hex values in TSX. Map every color to a token name. Raw hex in TSX is a defect.
 - Semantic token syntax: bare token name as string, e.g. `color: 'accent'`, `bg: 'field'`.
 - Responsive values use the conditional (object) syntax: `fontSize: { base: 'sm', md: 'lg' }`.
-- Translate the mockup's px media queries to Panda's base/md/lg conditions.
+- Translate the mockup's px media queries to Panda conditions — see "Responsive" immediately below.
 - No inline `style` props. No Tailwind classes. PandaCSS only.
+
+### Responsive: the mockup's breakpoints are the design
+
+The mockup is authored mobile-first and Panda reads the same way. The mockup's
+unqueried CSS **is** the 360px design and becomes `base`; each
+`@media (min-width: N)` block is what a wider viewport adds, and becomes the
+Panda condition for that width.
+
+| in the mockup | in Panda |
+| --- | --- |
+| a declaration with no media query around it | `base` |
+| inside `@media (min-width: 640px)` | `sm` |
+| inside `@media (min-width: 768px)` | `md` |
+| inside `@media (min-width: 1024px)` | `lg` |
+| inside `@media (min-width: 1280px)` | `xl` |
+
+A query between two of those goes to the next condition **at or above** it, so
+the wide layout never arrives in a narrower box than the mockup proved it in:
+`min-width: 900px` is `lg`.
+
+```tsx
+/* mockup */                       /* what you write */
+.hero { font-size: 40px }          fontSize: { base: '40px', lg: '120px' }
+@media (min-width: 900px) {
+  .hero { font-size: 120px }
+}
+```
+
+Writing a queried value as `base` inverts the design — the phone gets the
+desktop layout and the condition becomes a no-op. That is a real failure, not a
+hypothetical: a build shipped overflowing 360 by 969px, with a severed `<h2>`
+and 340 characters of body copy set at 177px, because `min-width` values were
+written as `base`.
+
+A value the mockup never restates inside a query is the same at every width;
+write it plainly, with no conditional. Do not invent breakpoints the mockup
+does not have, and do not drop the ones it does.
 
 ### Forbidden imports
 
@@ -4031,6 +4068,13 @@ case, loop) or a cognitive score past 15, it fails. A 321-line
    same shell? If anything diverges, fix it before responding.
 4. No function with four or more branch points; every route page only
    composes section components.
+5. Walk the mockup's `@media (min-width: ...)` blocks, not your files: for each
+   one, is the value it sets present as a Panda condition in what you wrote,
+   with the unqueried value as `base`? A mockup with breakpoints and an output
+   with none means the phone was dropped.
+6. Every fixed px size you wrote as `base` — width, min-width, gap, font-size:
+   does it fit inside 360 with whatever sits beside it? If it only fits at
+   1440, it belongs in a condition, not in `base`.
 
 
 # Design System API Reference
