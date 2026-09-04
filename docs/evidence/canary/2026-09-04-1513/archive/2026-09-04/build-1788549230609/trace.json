@@ -1,0 +1,717 @@
+{
+  "date": "2026-09-04",
+  "startedAt": "2026-09-04T18:49:12.381Z",
+  "completedAt": "2026-09-04T19:13:56.791Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 15
+      },
+      "output": {
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "CHASING THE MOMENT",
+              "description": "A webfilm in five cinematic scenes: a mannequin chasing the moment their work finally lands, and the long stretch before it does. The second half turns...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a85df674c750673809599.jpg"
+            },
+            {
+              "title": "The Studio by Julie Granger",
+              "description": "The Studio, founded by Julie Granger, pioneered barre au sol in France. Its website blends custom development, Uscreen integration, e-commerce and Julie’s...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a918a077e5d1453716631.jpg"
+            },
+            {
+              "title": "The Donut Studio",
+              "description": "The Donut Studio’s website is a portfolio of an art-first creative studio, showcasing its bold, playful, and experimental approach across branding, identity,...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a84025ecb0b9604685522.png"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Friday",
+          "is_weekend": false,
+          "day_index": 5
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/mattpocock",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "sponsors/DietrichGebert",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "fmtlib/fmt/stargazers",
+              "description": "",
+              "language": "C++",
+              "stars": null
+            },
+            {
+              "name": "sponsors/affaan-m",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "anthropics/skills/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Biltmore Championship Asheville",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Discovery of a new OpenAI agent message board",
+              "url": "https://collusion.wiki/",
+              "score": 1090,
+              "by": "moultano"
+            },
+            {
+              "title": "Show HN: Open-Source eInk Bike Computer",
+              "url": "https://opentrailpaper.com",
+              "score": 83,
+              "by": "stingrae"
+            },
+            {
+              "title": "Formalizing Fermat's Last Theorem",
+              "url": "https://www.anthropic.com/research/formalizing-fermats-last-theorem",
+              "score": 5,
+              "by": "jlebar"
+            },
+            {
+              "title": "Project HydraFusion: Frontier quality via multi-model orchestration",
+              "url": "https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/",
+              "score": 34,
+              "by": "qainsights"
+            },
+            {
+              "title": "IBM Bob",
+              "url": "https://bob.ibm.com/",
+              "score": 145,
+              "by": "artpar"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Labor Day",
+              "date": "2026-09-07",
+              "days_away": 3
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "last quarter",
+          "illumination": 0.387,
+          "days_into_cycle": 23.22
+        },
+        "music": {
+          "bands": [
+            "Tobin Sprout",
+            "The War on Drugs"
+          ],
+          "rotation": true
+        },
+        "quote": {
+          "text": "Power is not what we do but what we do not - hasty and unwise actions that we repeat every day and which ultimately bring us into trouble.",
+          "author": "Robert Greene"
+        },
+        "season": {
+          "season": "fall",
+          "month": 9,
+          "day": 4,
+          "day_of_year": 247,
+          "month_name": "September"
+        },
+        "sidebar": {
+          "links": [
+            {
+              "title": "AI is making development faster. But where did the work go?",
+              "url": "https://medium.com/design-bootcamp/ai-is-making-product-development-faster-57a86bc3ffa0",
+              "source": "medium.com",
+              "description": "When AI makes one part of product development faster, what happens to the rest of the system?"
+            },
+            {
+              "title": "A geometric typeface made for the age of AI",
+              "url": "https://the-brandidentity.com/typeface/ren%C3%A9-bieders-neurath-x-is-a-geometric-typeface-made-for-the-age-of-ai",
+              "source": "the-brandidentity.com",
+              "description": "The Neurath X Collection began with a question: what might geometric typography look like in the age of AI?"
+            },
+            {
+              "title": "Normal Tools",
+              "url": "https://www.normaltools.com/",
+              "source": "normaltools.com",
+              "description": "Small, useful online tools that work directly in your browser."
+            },
+            {
+              "title": "Unwinding the great tech power grab",
+              "url": "https://rebeccawilliams.info/unwinding-the-great-tech-power-grab/",
+              "source": "rebeccawilliams.info",
+              "description": "How tech has atrophied the exact civic muscle we’ll need to reclaim power over it."
+            },
+            {
+              "title": "JudgmentKit",
+              "url": "https://judgmentkit.ai/",
+              "source": "judgmentkit.ai",
+              "description": "Stop AI from building the wrong interface. Help AI agents understand the user’s work, choose the right interface, and repair what does not fit."
+            }
+          ]
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "06:47",
+          "sunset": "19:30",
+          "daylight_hours": 12.7
+        },
+        "date": "2026-09-04"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-09-04T18:49:12.391Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "compositionMandate": "## Composition Mandate\n\nRecency is tracked per axis, not per whole tuple: a value used on any of the last 3 builds is discouraged for that axis. The starting values below are derived from today's date — they are a specific place to begin, not an instruction.\n\n- **columns** — start from `irregular-twelve` (avoid `three`, `single`, `two-asymmetric`)\n- **axis** — start from `radial` (avoid `diagonal`, `vertical`, `horizontal`)\n- **symmetry** — start from `symmetric` (avoid `right-weighted`, `broken"
+      },
+      "output": {
+        "hero_copy": "Power is not what we do but what we do not.",
+        "archetype": "a mirrored aphorism — the loud clause and the quiet one, facing each other",
+        "composition": {
+          "columns": "two-equal",
+          "axis": "horizontal",
+          "symmetry": "mirrored",
+          "hero_zone": "center",
+          "density": "crowded",
+          "rhythm": "accelerating",
+          "shell_posture": "standard",
+          "field_ratio": "drenched"
+        },
+        "chassisId": "dm-serif-public",
+        "specLength": 5587,
+        "specPreview": "**1. Color Specification**\n- Primary hue: 265° (imperial violet) — the color of the loud, misleading half of the aphorism (\"Power\"). Note on the mandate: today's stated target corridor (15°–40°) sits entirely inside the mandate's own forbidden zone (0°–180°), a direct contradiction, so I honored the explicit avoid-zones over the self-conflicting target and chose 265°, safely inside the untouched 181°–297° corridor and fresh against all seven recent primary hues (22, 78, 46, 328, 118, 150, 8).\n- ",
+        "selfCheck": "1. Hero quotability: Yes — a complete aphorism about restraint, screenshot-ready in isolation.\n2. Because-of chain: Yes — the two-clause structure of the phrase directly produced the mirrored two-equal-column, horizontal-axis, center-seam composition and the duotone violet/blue palette.\n3. Render fe"
+      },
+      "durationMs": 391856,
+      "timestamp": "2026-09-04T18:55:44.255Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 5587
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 44653,
+      "timestamp": "2026-09-04T18:56:33.636Z"
+    },
+    {
+      "name": "mockup-critic",
+      "phase": 2,
+      "input": {
+        "round": 0
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "malformed critic response: ===VERDICT===\nBLOCKED\n===FEEDBACK===\nNo screenshots are visible to me. You've noted in your preamble that \"no screenshot is attached to this request — this run has no API key, so image input is unavailable,\" which I confirm: I cannot see the three images you reference (1440×900 desktop, 360×640 phon"
+      },
+      "durationMs": 100660,
+      "timestamp": "2026-09-04T18:58:14.352Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 3224,
+        "briefLength": 9779,
+        "mockupLength": 16246
+      },
+      "output": {
+        "files": [
+          "app/components/Layout.tsx",
+          "app/components/Sidebar.tsx",
+          "app/components/generated/LedgerRow.tsx",
+          "app/components/generated/HeroPanel.tsx",
+          "app/components/generated/MoonGlyph.tsx",
+          "app/components/generated/ClausePanel.tsx",
+          "app/components/generated/FeaturedSection.tsx",
+          "app/components/generated/SelectedWorkGrid.tsx",
+          "app/components/generated/ExperimentsList.tsx",
+          "app/components/generated/TimelineLedger.tsx",
+          "app/components/generated/CapabilitiesList.tsx",
+          "app/components/generated/EducationRow.tsx",
+          "app/components/generated/PersonalCard.tsx",
+          "app/components/generated/CaseStudyHero.tsx",
+          "app/components/generated/NarrativeBand.tsx",
+          "app/components/generated/StackList.tsx",
+          "app/components/generated/WhitePaperContext.tsx",
+          "app/components/generated/ProcessList.tsx",
+          "app/components/generated/DecisionsList.tsx",
+          "app/components/generated/ReferencesList.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 414871,
+      "timestamp": "2026-09-04T19:05:09.224Z"
+    },
+    {
+      "name": "generated-sweep",
+      "phase": 3,
+      "input": {
+        "after": "react-engineer"
+      },
+      "output": {
+        "kept": [
+          "app/components/generated/CapabilitiesList.tsx",
+          "app/components/generated/CaseStudyHero.tsx",
+          "app/components/generated/ClausePanel.tsx",
+          "app/components/generated/DecisionsList.tsx",
+          "app/components/generated/EducationRow.tsx",
+          "app/components/generated/ExperimentsList.tsx",
+          "app/components/generated/FeaturedSection.tsx",
+          "app/components/generated/HeroPanel.tsx",
+          "app/components/generated/LedgerRow.tsx",
+          "app/components/generated/MoonGlyph.tsx",
+          "app/components/generated/NarrativeBand.tsx",
+          "app/components/generated/PersonalCard.tsx",
+          "app/components/generated/ProcessList.tsx",
+          "app/components/generated/ReferencesList.tsx",
+          "app/components/generated/SelectedWorkGrid.tsx",
+          "app/components/generated/StackList.tsx",
+          "app/components/generated/TimelineLedger.tsx",
+          "app/components/generated/WhitePaperContext.tsx"
+        ],
+        "removed": [
+          "app/components/generated/CapabilityRail.tsx",
+          "app/components/generated/CaseStudyMeta.tsx",
+          "app/components/generated/EducationBlock.tsx",
+          "app/components/generated/FeaturedProjectCard.tsx",
+          "app/components/generated/FieldPanel.tsx",
+          "app/components/generated/PersonalField.tsx",
+          "app/components/generated/ProblemApproachOutcome.tsx",
+          "app/components/generated/TimelineList.tsx",
+          "app/components/generated/WhitePaperDecisions.tsx",
+          "app/components/generated/WhitePaperProcess.tsx",
+          "app/components/generated/WhitePaperReferences.tsx",
+          "app/components/generated/WorkRowList.tsx"
+        ]
+      },
+      "durationMs": 15,
+      "timestamp": "2026-09-04T19:05:09.239Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-09-04T19:05:20.921Z"
+    },
+    {
+      "name": "surface-gate",
+      "phase": 4,
+      "input": {
+        "round": 1
+      },
+      "output": {
+        "measured": 44,
+        "errorCount": 32,
+        "findings": [
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 122px wider than the 1440px viewport (scrollWidth 1562)"
+          },
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1562px, 122px past the 1440px viewport, severing \"Independent design and engineering work doesn't al...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 122px wider than the 1440px viewport (scrollWidth 1562)"
+          },
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1562px, 122px past the 1440px viewport, severing \"Independent design and engineering work doesn't al...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 969px wider than the 360px viewport (scrollWidth 1329)"
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<H2> is cut off: its right edge lands at 1329px, 969px past the 360px viewport, severing \"Spaceman...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1329px, 969px past the 360px viewport, severing \"Independent design and engineering work doesn't al...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 554px, 194px past the 360px viewport, severing \"PowerToday’s Hasty MotionDiscovery of a new OpenAI...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 969px wider than the 360px viewport (scrollWidth 1329)"
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<H2> is cut off: its right edge lands at 1329px, 969px past the 360px viewport, severing \"Spaceman...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1329px, 969px past the 360px viewport, severing \"Independent design and engineering work doesn't al...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 554px, 194px past the 360px viewport, severing \"PowerToday’s Hasty MotionDiscovery of a new OpenAI...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 599px wider than the 360px viewport (scrollWidth 959)"
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "running-copy",
+            "severity": "error",
+            "detail": "340 characters of running copy set at 177px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase."
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "running-copy",
+            "severity": "error",
+            "detail": "340 characters of running copy set at 177px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase."
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "running-copy",
+            "severity": "error",
+            "detail": "340 characters of running copy set at 177px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase."
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 599px wider than the 360px viewport (scrollWidth 959)"
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "running-copy",
+            "severity": "error",
+            "detail": "340 characters of running copy set at 177px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase."
+          },
+          {
+            "surface": "/work",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 574px wider than the 360px viewport (scrollWidth 934)"
+          },
+          {
+            "surface": "/work",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 574px wider than the 360px viewport (scrollWidth 934)"
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 161px wider than the 360px viewport (scrollWidth 521)"
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 161px wider than the 360px viewport (scrollWidth 521)"
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 148px wider than the 360px viewport (scrollWidth 508)"
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 148px wider than the 360px viewport (scrollWidth 508)"
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 239px wider than the 360px viewport (scrollWidth 599)"
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 239px wider than the 360px viewport (scrollWidth 599)"
+          },
+          {
+            "surface": "/work/teeturn",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 65px wider than the 360px viewport (scrollWidth 425)"
+          },
+          {
+            "surface": "/work/teeturn",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 65px wider than the 360px viewport (scrollWidth 425)"
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 165px wider than the 360px viewport (scrollWidth 525)"
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 165px wider than the 360px viewport (scrollWidth 525)"
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 209px wider than the 360px viewport (scrollWidth 569)"
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 209px wider than the 360px viewport (scrollWidth 569)"
+          }
+        ]
+      },
+      "durationMs": 24506,
+      "timestamp": "2026-09-04T19:05:45.435Z"
+    },
+    {
+      "name": "screenshot-critic",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "===VERDICT===\nREVISE\n\n**Responsible agent:** react-engineer\n\n**Issues:**\n- Homepage at 1440px (both schemes): document overflows to 1562px (122px past viewport), severing \"Independent design and engineering work doesn't al...\" with no scroll to recover it. The panel/grid must be constrained to `1fr 1fr` at exactly viewport width per the layout spec's own `grid-template-columns: 1fr 1fr; min-height: 100vh` — something inside a panel (likely the ledger row or the quiet-panel clause block) is forci"
+      },
+      "durationMs": 28239,
+      "timestamp": "2026-09-04T19:06:28.297Z"
+    },
+    {
+      "name": "generated-sweep",
+      "phase": 5,
+      "input": {
+        "after": "React Engineer revision"
+      },
+      "output": {
+        "kept": [
+          "app/components/generated/CapabilitiesList.tsx",
+          "app/components/generated/CaseStudyHero.tsx",
+          "app/components/generated/ClausePanel.tsx",
+          "app/components/generated/DecisionsList.tsx",
+          "app/components/generated/EducationRow.tsx",
+          "app/components/generated/ExperimentsList.tsx",
+          "app/components/generated/FeaturedSection.tsx",
+          "app/components/generated/HeroPanel.tsx",
+          "app/components/generated/LedgerRow.tsx",
+          "app/components/generated/MoonGlyph.tsx",
+          "app/components/generated/NarrativeBand.tsx",
+          "app/components/generated/PersonalCard.tsx",
+          "app/components/generated/ProcessList.tsx",
+          "app/components/generated/ReferencesList.tsx",
+          "app/components/generated/SelectedWorkGrid.tsx",
+          "app/components/generated/StackList.tsx",
+          "app/components/generated/TimelineLedger.tsx",
+          "app/components/generated/WhitePaperContext.tsx"
+        ],
+        "removed": []
+      },
+      "durationMs": 9,
+      "timestamp": "2026-09-04T19:13:29.389Z"
+    }
+  ]
+}
