@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 40,
+    "s": 88,
+    "l": 61,
+    "name": "burnished amber"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "warm brown / amber",
+    "name": "espresso"
+  },
+  "mood_word": "burnished",
+  "color_story": "A burnished-amber field that concentrates from honey at the rim to bronze at the core is 'intense focus applied to a particular field' rendered as color — the phrase glows out of the point where the field is most saturated."
+}

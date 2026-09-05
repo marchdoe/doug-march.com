@@ -50,28 +50,28 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'Where did the work go?' },
-      { property: 'og:title', content: 'Where did the work go?' },
+      { title: 'Mastery is a function of time and intense focus.' },
+      { property: 'og:title', content: 'Mastery is a function of time and intense focus.' },
       {
         property: 'og:description',
         content:
-          'A machine asks where the work went — "Where did the work go?" stacked in monospace over a warm terracotta-lit void, the whole body of work packed dense as the deadpan answer.',
+          "A focus target — Greene's mastery creed reversed out of a bronze core inside a radial honey-to-amber duotone field, one bookish serif, the day's signals orbiting outward and falling faster toward the base.",
       },
-      { property: 'og:image', content: 'https://dougmar.ch/og/2026-09-04.png' },
+      { property: 'og:image', content: 'https://dougmar.ch/og/2026-09-05.png' },
       { property: 'og:image:width', content: '1200' },
       { property: 'og:image:height', content: '630' },
       { property: 'og:url', content: 'https://dougmar.ch' },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:title', content: 'Where did the work go?' },
-      { name: 'twitter:image', content: 'https://dougmar.ch/og/2026-09-04.png' },
+      { name: 'twitter:title', content: 'Mastery is a function of time and intense focus.' },
+      { name: 'twitter:image', content: 'https://dougmar.ch/og/2026-09-05.png' },
     ],
     links: [
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Archivo:wght@400;500;700&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap',
       },
     ],
     scripts: [{ children: THEME_INIT_SCRIPT }],
@@ -231,7 +231,7 @@ function RootDocument({ children, bare = false }: { children: ReactNode; bare?: 
         {children}
         {bare ? null : (
           <a href="/archive" className={archiveLink} data-archive-link>
-            Archive — 125 designs
+            Archive — 126 designs
           </a>
         )}
         <ScrollRestoration />

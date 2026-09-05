@@ -1,0 +1,590 @@
+{
+  "date": "2026-09-05",
+  "era": "header-declared",
+  "generatedAt": "2026-09-05T08:57:57.644Z",
+  "buildId": "1788598670558",
+  "attempts": 1,
+  "brief": "A focus target — Greene's mastery creed reversed out of a bronze core inside a radial honey-to-amber duotone field, one bookish serif, the day's signals orbiting outward and falling faster toward the base.",
+  "rationale": "The phrase is a quiet, contrarian creed — mastery is not genius or talent, it is time and intense focus — and the honest word inside it is *focus*. That single word decides the whole composition: the page converges. A radial axis with a symmetric center hero makes focus literal, the marquee sits in the calm eye, and the day's signals orbit it in concentric rings that pack denser toward the base (crowded, accelerating), turning \"a particular field of knowledge\" into the busy field around the point of concentration. I invoke the Max-Risk License to break one named brand-lane anti-pattern — **\"Don't default to centering everything\"** / a centered hero reads as template — deliberately, because a phrase about *intense focus* demands radial convergence on a single center, and a target-diagram of orbiting signals is the opposite of an icon-title-subtitle stack. Everything else stays fully compliant.\n\nChassis follows the register, not the loudness ladder. A literary aphorism about study should not be shouted off a condensed billboard, so I reached past the recently-worn display faces for **source-serif-text** — one optically-sized serif running display and body alike. A single book voice is the strongest possible answer to the standing \"display and body must share a skeleton\" complaint (here they are the same face), and it reads like a page from a book of mastery, which is exactly what \"field of knowledge\" wants. Its quiet 96px hero is the point: reserved marquee scale for a reflective line.\n\nPalette commits to one hue at volume — burnished amber at 40°, inside the mandated 40–80° corridor — but escapes the recent warm-flood monoculture on FORMULA rather than hue. The ground is **duotone**: a radial gradient concentrating from honey at the rim to bronze at the core, two warm hues carrying the page with no neutral void, fresh against the recent dark-void, drench and split-field. The marquee reverses cream out of the bronze core so the phrase is the lit center of the field — focus, as pigment. On a drenched amber ground the green-and-blue mark would fight the field, so the Brand Contract's honest answer is single-color; radii are zero everywhere but the mark, the header is a clean corner cluster (never the thrice-rejected top-bar), and every signal from the Tigers' close 6–7 loss to the Labor-Day tie-in lives in the orbit rings as tabular texture.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Layout.tsx",
+    "app/components/Sidebar.tsx",
+    "app/components/generated/RadialField.tsx",
+    "app/components/generated/HeroContent.tsx",
+    "app/components/generated/SignalColumn.tsx",
+    "app/components/generated/ContactColophon.tsx",
+    "app/components/generated/WorkFooter.tsx",
+    "app/components/generated/AboutMasthead.tsx",
+    "app/components/generated/TimelineList.tsx",
+    "app/components/generated/CapabilitiesChips.tsx",
+    "app/components/generated/EducationBlock.tsx",
+    "app/components/generated/PersonalColophon.tsx",
+    "app/components/generated/CaseStudyHero.tsx",
+    "app/components/generated/CaseStudyBody.tsx",
+    "app/components/generated/ContextProse.tsx",
+    "app/components/generated/ConstraintsList.tsx",
+    "app/components/generated/ProcessSection.tsx",
+    "app/components/generated/DecisionsSection.tsx",
+    "app/components/generated/ReferencesSection.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": null,
+  "signals": {
+    "air_quality": {
+      "aqi_index": 1,
+      "uv_index": 0,
+      "air_quality_label": "Good"
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Saturday",
+      "is_weekend": true,
+      "day_index": 6
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/mattpocock",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "sponsors/DietrichGebert",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "fmtlib/fmt/stargazers",
+          "description": "",
+          "language": "C++",
+          "stars": null
+        },
+        {
+          "name": "sponsors/affaan-m",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "anthropics/skills/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Biltmore Championship Asheville",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Actively exploited sandbox RCE in all Chromium versions",
+          "url": "https://nvd.nist.gov/vuln/detail/cve-2026-85046",
+          "score": 464,
+          "by": "negura"
+        },
+        {
+          "title": "Discovery of a new OpenAI agent message board",
+          "url": "https://collusion.wiki/",
+          "score": 1671,
+          "by": "moultano"
+        },
+        {
+          "title": "Formalizing Fermat's Last Theorem",
+          "url": "https://www.anthropic.com/research/formalizing-fermats-last-theorem",
+          "score": 594,
+          "by": "jlebar"
+        },
+        {
+          "title": "Nitter has more working instances than before the takedowns",
+          "url": "https://codeberg.org/mv12star/shitter/wiki/Instances",
+          "score": 166,
+          "by": "Cider9986"
+        },
+        {
+          "title": "Statichost.eu – European static site hosting",
+          "url": "https://www.statichost.eu/",
+          "score": 260,
+          "by": "p4bl0"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Labor Day",
+          "date": "2026-09-07",
+          "days_away": 2
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "last quarter",
+      "illumination": 0.329,
+      "days_into_cycle": 23.78
+    },
+    "market": {
+      "symbol": "SPY",
+      "price": "770.1900",
+      "change": "-2.9800",
+      "change_percent": "-0.3854%",
+      "direction": "down"
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "My Morning Jacket",
+        "Radiohead"
+      ],
+      "rotation": true
+    },
+    "news": {
+      "headlines": [
+        {
+          "title": "Two people rescued from Nepal hydropower tunnel more than a week after flash flood - BBC",
+          "source": "BBC News",
+          "url": "https://www.bbc.com/news/live/cmwyz5er2lwnt"
+        },
+        {
+          "title": "Before 5-year-old’s death, parents had a history of child abuse charges and drugs - NBC News",
+          "source": "NBC News",
+          "url": "https://www.nbcnews.com/news/us-news/5-year-olds-death-parents-history-child-abuse-charges-drugs-rcna596017"
+        },
+        {
+          "title": "Deadly downtown Minneapolis shooting started as a custody exchange — here's what else we know - 5 EYEWITNESS NEWS",
+          "source": "Kstp.com",
+          "url": "https://kstp.com/kstp-news/top-news/deadly-downtown-minneapolis-shooting-started-as-a-custody-exchange-heres-what-else-we-know/"
+        },
+        {
+          "title": "Tesla unveils Cybercab robotaxi at Austin event: Live updates - Austin American-Statesman",
+          "source": "Austin American-Statesman",
+          "url": "https://www.statesman.com/business/article/tesla-cybercab-austin-launch-live-updates-22414898.php"
+        },
+        {
+          "title": "Six Sleeps Until iPhone 18 Pro: Here's What We Know - MacRumors",
+          "source": "MacRumors",
+          "url": "https://www.macrumors.com/2026/09/03/iphone-18-pro-heres-what-we-know/"
+        }
+      ]
+    },
+    "quote": {
+      "text": "Mastery is not a function of genius or talent, it is a function of time and intense focus applied to a particular field of knowledge.",
+      "author": "Robert Greene"
+    },
+    "season": {
+      "season": "fall",
+      "month": 9,
+      "day": 5,
+      "day_of_year": 248,
+      "month_name": "September"
+    },
+    "sidebar": {
+      "links": [
+        {
+          "title": "AI is making development faster. But where did the work go?",
+          "url": "https://medium.com/design-bootcamp/ai-is-making-product-development-faster-57a86bc3ffa0",
+          "source": "medium.com",
+          "description": "When AI makes one part of product development faster, what happens to the rest of the system?"
+        },
+        {
+          "title": "A geometric typeface made for the age of AI",
+          "url": "https://the-brandidentity.com/typeface/ren%C3%A9-bieders-neurath-x-is-a-geometric-typeface-made-for-the-age-of-ai",
+          "source": "the-brandidentity.com",
+          "description": "The Neurath X Collection began with a question: what might geometric typography look like in the age of AI?"
+        },
+        {
+          "title": "Normal Tools",
+          "url": "https://www.normaltools.com/",
+          "source": "normaltools.com",
+          "description": "Small, useful online tools that work directly in your browser."
+        },
+        {
+          "title": "Unwinding the great tech power grab",
+          "url": "https://rebeccawilliams.info/unwinding-the-great-tech-power-grab/",
+          "source": "rebeccawilliams.info",
+          "description": "How tech has atrophied the exact civic muscle we’ll need to reclaim power over it."
+        },
+        {
+          "title": "JudgmentKit",
+          "url": "https://judgmentkit.ai/",
+          "source": "judgmentkit.ai",
+          "description": "Stop AI from building the wrong interface. Help AI agents understand the user’s work, choose the right interface, and repair what does not fit."
+        }
+      ]
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-09-04T18:10Z",
+          "result": "loss",
+          "score": "6-7"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "06:48",
+      "sunset": "19:28",
+      "daylight_hours": 12.7
+    },
+    "weather": {
+      "location": "Aldie, Virginia",
+      "conditions": "Clear",
+      "temp_f": 73,
+      "temp_c": 22.8,
+      "humidity": 77,
+      "wind_mph": 3.6,
+      "wind_dir": "WNW",
+      "feels_like_f": 76.6
+    },
+    "date": "2026-09-05"
+  },
+  "hero": {
+    "copy": "Mastery is a function of time and intense focus.",
+    "rationale": "Robert Greene's line is the day's `signals.quote`, and for a portfolio that tears itself down and rebuilds every night it reads as the site's own confession of method — not genius, not talent, but accumulated time and concentration. It lands two days before Labor Day, and the mastery-through-labor angle turns a holiday-weekend into a thesis instead of a decoration. It is genuinely the strongest quotable line today, and using it after yesterday's *composed* hero is not a streak — the mandate flagged none.",
+    "source": "quote"
+  },
+  "chassis": "source-serif-text",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 40° burnished amber/marigold. Held within the mandated 40–80° warm corridor; it sits between the recent 46° and 78° neighbors (16° from each, the least-recently-used slot in a 40-wide range). I differentiate from the recent warm floods on FORMULA (radial duotone, not flat drench/void/split) and COMPOSITION (radial concentric), per the audit that says formula sameness beats hue distance.\n- **Neutral palette (warm espresso, tinted toward 40°)** — 50 `#FBF3E4`, 100 `#F5E7CC`, 200 `#E9D4A6`, 300 `#D6B776`, 400 `#BC9048`, 500 `#96692C`, 600 `#71491A`, 700 `#513313`, 800 `#35210C`, 900 `#1F1305`\n- **Accent color** — light `#F1B948`, default `#A9620A`, dark `#7E470A`, glow `#E7A31F`\n- **Secondary accent** — none. One hue at volume, committed.\n- **Background** — page (honey field) `#F1B948`, card/surface (warm cream) `#FBF3E4`, field/focal core (bronze) `#7E470A`\n- **Text colors** — primary `#1F1305`, secondary `#513313`, muted `#71491A`; reversed marquee ink on the bronze core `#FBF3E4`\n\n### 2. Typography\n- **Hero phrase rendering** — Source Serif 4 at the `hero` ramp step (fluid clamp topping ~96–104px at 1440), centered in the focal zone, wrapping to three short returns (\"Mastery is a / function of time / and intense focus.\"), reversed cream out of the bronze radial core so it reads as the lit center of the field.\n- **Type treatment** — single-face book voice; `hero` marquee → `sm` small-caps eyebrow (\"Not genius or talent.\") set with 0.09em tracking above the marquee → `md` attribution (\"— Robert Greene, *Mastery*\") → `base` body held to 62–66ch at 1.55 leading in the orbit rings → `xs` tabular captions for signals. The mid-scale eyebrow + attribution spend the middle of the ramp so the page is never \"big title then default text.\"\n\n### 3. Layout Specification\n- **Composition** — `irregular-twelve · radial · symmetric · center · crowded · accelerating · standard · drenched`. The phrase is *intense focus*; a radial field converging on a centered marquee makes focus literal, and the concentric orbit of signals turns \"a particular field of knowledge\" into the packed rings around the eye.\n- **CSS grid/flex** — `display: grid; grid-template-columns: repeat(12, 1fr); place-items: center;` with a radial background `radial-gradient(circle at 50% 46%, #7E470A 0%, #A9620A 22%, #E7A31F 52%, #F1B948 100%)`. Orbit rows are absolutely/grid-placed at increasing radius; the marquee spans cols 3–10.\n- **Major dimensions** — hero/focal area `min-height: 92vh`; no fixed sidebar; **max-width: none**, side padding `clamp(48px, 5vw, 96px)`; body columns capped at 62–66ch inside their orbit blocks; vertical intervals shrink toward the base (accelerating: 96px → 64px → 40px → 24px).\n- **Nav placement** — corner cluster, top-left: mark + wordmark, three small-caps links (work · about · contact) tucked under the wordmark. Header height ~64px, no band, no border, not the rejected top-bar-links-right pattern.\n- **Hero phrase grid zone** — rows 4–7, columns 3–10, dead-centered in the viewport with clearance on all four sides; rendered at `clamp(60px, 8vw, 104px)`.\n\n### 4. Component Character\n- **Border radius** — cards 0, buttons 0, tags 0. Only the circular brand mark is round (radii.full). Owner-flagged: no rounded corners anywhere.\n- **Border treatment** — hairlines in `border` (`#BC9048`) between orbit rings; `borderStrong` for the base colophon rule. Inside the bronze core, `fieldBorder`.\n- **Shadow** — none. Depth is value (bronze core vs honey rim), never shadow.\n- **Density** — crowded: signal rings packed to the edge as texture, calm only at the eye.\n- **Interactive states** — links shift to `accent` and underline on `_hover`; no motion beyond a single staggered radial reveal on load.\n\n### 5. Signal Integration\n- **Signal placement** — the day's data IS the orbit: signals ring the marquee at increasing radius, densest toward the base.\n- **Sports** — Tigers 6–7 loss set in tabular `xs`, muted brown (`textMuted`), a small down-tick — a close loss, stated plainly, not lit.\n- **Quote** — the quote IS the hero marquee; the full Greene line lives as the `md` attribution deck beneath it.\n- **Holiday** — Labor Day (Sep 7, 2 days) gets a one-line callout tying labor to the mastery creed — the reason this phrase runs today.\n- **Music** — Wet Leg · My Morning Jacket · Radiohead folded into the base colophon as standing rotation (\"on rotation\"), never presented as an event beside the score.\n- **Other** — SPY −0.39% (muted down-tick), last-quarter moon at 33% rendered as a small waning-disc glyph echoing the concentric rings, Biltmore Championship \"tees off\" (scheduled), AQI Good / clear 73° Aldie as a micro weather line, GitHub stars as a quiet \"watching\" line — all in the outer ring, tabular `xs`.",
+    "selfCheck": "1. Hero quotability: Yes — \"Mastery is a function of time and intense focus.\" is a standalone aphorism, screenshot-worthy without any surrounding copy.\n2. Because-of chain: Yes — focus → radial convergence → centered marquee → a single bookish serif that reads like a page of a field of knowledge → a burnished-amber field that concentrates where focus does.\n3. Render feasibility: Yes — 8 words at ~96px Source Serif wrap to three centered lines inside cols 3–10 at 1440×900 with clearance, no overflow.\n4. Canvas floor feasible: Yes — crowded orbit rings + a drenched radial field fill 82%+ of the viewport as designed texture.",
+    "rationale": "The phrase is a quiet, contrarian creed — mastery is not genius or talent, it is time and intense focus — and the honest word inside it is *focus*. That single word decides the whole composition: the page converges. A radial axis with a symmetric center hero makes focus literal, the marquee sits in the calm eye, and the day's signals orbit it in concentric rings that pack denser toward the base (crowded, accelerating), turning \"a particular field of knowledge\" into the busy field around the point of concentration. I invoke the Max-Risk License to break one named brand-lane anti-pattern — **\"Don't default to centering everything\"** / a centered hero reads as template — deliberately, because a phrase about *intense focus* demands radial convergence on a single center, and a target-diagram of orbiting signals is the opposite of an icon-title-subtitle stack. Everything else stays fully compliant.\n\nChassis follows the register, not the loudness ladder. A literary aphorism about study should not be shouted off a condensed billboard, so I reached past the recently-worn display faces for **source-serif-text** — one optically-sized serif running display and body alike. A single book voice is the strongest possible answer to the standing \"display and body must share a skeleton\" complaint (here they are the same face), and it reads like a page from a book of mastery, which is exactly what \"field of knowledge\" wants. Its quiet 96px hero is the point: reserved marquee scale for a reflective line.\n\nPalette commits to one hue at volume — burnished amber at 40°, inside the mandated 40–80° corridor — but escapes the recent warm-flood monoculture on FORMULA rather than hue. The ground is **duotone**: a radial gradient concentrating from honey at the rim to bronze at the core, two warm hues carrying the page with no neutral void, fresh against the recent dark-void, drench and split-field. The marquee reverses cream out of the bronze core so the phrase is the lit center of the field — focus, as pigment. On a drenched amber ground the green-and-blue mark would fight the field, so the Brand Contract's honest answer is single-color; radii are zero everywhere but the mark, the header is a clean corner cluster (never the thrice-rejected top-bar), and every signal from the Tigers' close 6–7 loss to the Labor-Day tie-in lives in the orbit rings as tabular texture.",
+    "compositionRationale": "The phrase is \"intense focus,\" so the page converges: a radial axis with a symmetric center hero makes focus literal, and crowded orbit rings on an irregular-twelve grid turn \"a particular field of knowledge\" into the packed field around a calm eye. I moved `shell_posture` off the suggested `none` to `standard` because the owner has graded the site down three times for a missing brand mark — a header must exist — and I moved `symmetry` off the suggested `mirrored` to `symmetric` because concentric focus is inherently balanced about its center, not reflected across an axis.",
+    "signalIntegration": "- **Signal placement** — the day's data IS the orbit: signals ring the marquee at increasing radius, densest toward the base.\n- **Sports** — Tigers 6–7 loss set in tabular `xs`, muted brown (`textMuted`), a small down-tick — a close loss, stated plainly, not lit.\n- **Quote** — the quote IS the hero marquee; the full Greene line lives as the `md` attribution deck beneath it.\n- **Holiday** — Labor Day (Sep 7, 2 days) gets a one-line callout tying labor to the mastery creed — the reason this phrase runs today.\n- **Music** — Wet Leg · My Morning Jacket · Radiohead folded into the base colophon as standing rotation (\"on rotation\"), never presented as an event beside the score.\n- **Other** — SPY −0.39% (muted down-tick), last-quarter moon at 33% rendered as a small waning-disc glyph echoing the concentric rings, Biltmore Championship \"tees off\" (scheduled), AQI Good / clear 73° Aldie as a micro weather line, GitHub stars as a quiet \"watching\" line — all in the outer ring, tabular `xs`."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "amber": {
+          "50": "#FDF3DC",
+          "100": "#FBE4B2",
+          "200": "#F7CE77",
+          "300": "#F1B948",
+          "400": "#E7A31F",
+          "500": "#CE8610",
+          "600": "#A9620A",
+          "700": "#7E470A",
+          "800": "#5A330A",
+          "900": "#3A2107"
+        },
+        "espresso": {
+          "50": "#FBF3E4",
+          "100": "#F5E7CC",
+          "200": "#E9D4A6",
+          "300": "#D6B776",
+          "400": "#BC9048",
+          "500": "#96692C",
+          "600": "#71491A",
+          "700": "#513313",
+          "800": "#35210C",
+          "900": "#1F1305"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "{colors.amber.300}"
+        },
+        "bgAlt": {
+          "base": "{colors.amber.400}"
+        },
+        "surface": {
+          "base": "{colors.espresso.50}"
+        },
+        "text": {
+          "base": "{colors.espresso.900}"
+        },
+        "textMuted": {
+          "base": "{colors.espresso.700}"
+        },
+        "textFaint": {
+          "base": "{colors.espresso.600}"
+        },
+        "accent": {
+          "base": "{colors.amber.600}"
+        },
+        "accentText": {
+          "base": "{colors.espresso.50}"
+        },
+        "accentAlt": {
+          "base": "{colors.amber.400}"
+        },
+        "border": {
+          "base": "{colors.espresso.400}"
+        },
+        "borderStrong": {
+          "base": "{colors.espresso.700}"
+        },
+        "field": {
+          "base": "{colors.amber.700}"
+        },
+        "fieldInk": {
+          "base": "{colors.espresso.50}"
+        },
+        "fieldInkMuted": {
+          "base": "{colors.amber.200}"
+        },
+        "fieldBorder": {
+          "base": "{colors.amber.600}"
+        }
+      }
+    },
+    "radii": {
+      "none": "0",
+      "sm": "0",
+      "md": "0",
+      "lg": "0",
+      "full": "9999px"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 40,
+      "s": 88,
+      "l": 61,
+      "name": "burnished amber"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "warm brown / amber",
+      "name": "espresso"
+    },
+    "mood_word": "burnished",
+    "color_story": "A burnished-amber field that concentrates from honey at the rim to bronze at the core is 'intense focus applied to a particular field' rendered as color — the phrase glows out of the point where the field is most saturated."
+  },
+  "shell": {
+    "nav": null,
+    "footer": "orbit base — the day's signals set as the outermost concentric ring along the page base, one hairline top rule",
+    "brand_lockup": "horizontal-md",
+    "brand_color_mode": "single-color",
+    "ground_strategy": "duotone"
+  },
+  "header": {
+    "placement": "corner",
+    "height_px": 64,
+    "mark_px": 40,
+    "wordmark_step": "lg",
+    "wordmark_weight": 600,
+    "role_line": "absent",
+    "nav_step": "sm",
+    "nav_case": "small-caps",
+    "nav": "corner cluster top-left — circular mark + \"Doug March\" wordmark, three small-caps links (work · about · contact) tucked beneath the wordmark; no band, no border, not a top-bar"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "REVISE",
+      "feedback": "REVISE\n\n- **Check 3 & 5: Hero scale exceeds chassis capability** — hero_scale declared as clamp(60px, 8vw, 104px) computes to 104px at 1440px viewport, but source-serif-text chassis delivers maximum hero of 96px at 1440px per catalog. The visual spec anticipates \"~96–104px at 1440,\" treating it as a range, but the declared clamp's 104px cap is unachievable with this chassis. Resolve by either: (a) revising hero_scale to clamp(60px, 8vw, 96px) to match source-serif-text's actual output, (b) switching to a louder chassis (big-shoulders-atkinson, alfa-rubik, or dm-serif-public all reach 177px at 1440, providing headroom above the 104px target), or (c) updating the visual spec from \"~96–104px\" to \"~96px anchored\" and documenting the constraint.\n\n- **Check 2: Preset–spec semantic token naming mismatch** — Visual spec names text colors as \"primary\" / \"secondary\" / \"muted,\" but preset.ts defines them as \"text\" / \"textMuted\" / \"textFaint.\" All hex values are correct (#1F1305, #513313, #71491A), so rendering will work, but vocabulary divergence risks implementation confusion in handoff. Rename preset.ts semantic tokens to align with spec language, or update visual spec to reference actual token names (text, textMuted, textFaint).",
+      "ts": 1788597051916
+    },
+    {
+      "critic": "mockup-critic",
+      "round": 0,
+      "verdict": "REVISE",
+      "feedback": "1. **Sanity** — PASS. Page rendered cleanly, fonts loaded (Source Serif 4 visible), no overflow or blank regions.\n\n2. **Measurables** — CRITICAL SHORTFALLS:\n   - **Canvas utilization**: ~58%. The composition wastes significant space: the header cluster (top-left ~8% of viewport), a wide emotional void in the upper-right quadrant, the hero phrase occupying only the center-right band, and the orbit signals scattered in small pockets across the left and lower margins. A \"crowded, drenched\" field should read as nearly all working surface; this reads as 40% phrase + header + signals, 58% intentional composition. The brief demanded 82% minimum. The radial gradient helps, but it's occupied by negative space, not working surface.\n   - **Hero scale**: ~72px rendered (measured from the desktop crop). Declared clamp floors at 60px minimum and 104px maximum at 1440. At 1440 you should be hitting ~96–104px; 72px is undersized and reads timid for a \"marquee\" phrase that is the entire page. This is the timid-execution trap—the phrase is present but not at declared ambition.\n   - **Color coverage**: ~68%. The duotone radial gradient (honey to bronze) covers most of the viewport in warm hue, but the actual *working* coverage—elements, text, signals—is only the small pockets of signal text and the hero phrase itself. The brief required \"drenched\" field_ratio and 65% minimum coverage. You meet the floor, but barely, and the duotone is not doing the work it should: it is decorative ground, not active composition. The signals should be denser, larger, more visible in the rings.\n\n3. **Brief Fidelity** — PARTIAL MISS:\n   - The *radial, symmetric, center* composition is there—the phrase converges toward center, the gradient radiates outward. But the brief said \"crowded\" density and \"accelerating\" rhythm (shrinking intervals), and the orbit rings are *sparse*, not packed. Signals are isolated tokens (weather line top-right, GitHub line bottom-right, sports score left-middle) rather than a d",
+      "channel": "sdk-vision",
+      "ts": 1788597342345
+    },
+    {
+      "critic": "mockup-critic",
+      "round": 1,
+      "verdict": "APPROVE",
+      "feedback": "The design executes the brief at full commitment. The radial convergence is literal and powerful — the marquee phrase sits centered in a bronze core surrounded by concentric orbit rings of signal data, making \"intense focus\" both concept and visual fact. Canvas utilization ~88% (duotone gradient field + packed orbit rings + marquee core; only the thin nav cluster at top-left reads as negative space, and it is compositionally intentional). Color coverage ~72% (amber/marigold duotone dominates the full viewport; neutral text and the cream-reversed marquee are supporting, not the field). Hero phrase renders at ~96px, matching the declared clamp(60px, 8vw, 104px). \n\nHeader: mark measures ~38px in the crop (comparing mark height to crop width: the circular mark is roughly 38–40% of the crop's stated width, which scales to 38–40px at 1440). Declared mark_px is 40; this is 95% of spec, well above the 60% floor. Lockup is horizontal-md (mark + \"Doug March\" wordmark beside it), single-color (mark in dark brown/bronze, matching the radial core), corner-placed top-left, no role line, nav in small-caps (WORK · ABOUT · CONTACT) tucked beneath the wordmark. All declared elements present and correctly positioned.\n\nFooter: orbit base is visible in the desktop shot — the outermost concentric ring carries the signal tabular data (moon phase, Tigers score, SPY, weather, featured project callout). One hairline rule tops the base ring. Shell posture is standard (header present, footer as orbit base).\n\nPhone (360×640): the radial idea **survives intact**. At narrow width, the concentric orbit becomes a vertical stack — signals flow from top to bottom (moon, Tigers, weather, then the marquee). The marquee phrase still commands the center, still reversed cream out of a bronze core, still flanked by the eyebrow (\"Not genius or talent.\") and attribution. The hierarchy holds: marquee dominates at ~96px, scaled fluidly for the column. Type does not cut off or reflow into walls; the phrase wrap",
+      "channel": "sdk-vision",
+      "ts": 1788597704027
+    },
+    {
+      "critic": "surface-gate",
+      "round": 1,
+      "verdict": "REVISE",
+      "feedback": "/ @360: document is 21px wider than the 360px viewport (scrollWidth 381)\n/ @360: <DIV> is cut off: its right edge lands at 381px, 21px past the 360px viewport, severing \"Selected workFishSticksSaaS · 202515th ClubAI · 20...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @360: <DIV> is cut off: its right edge lands at 381px, 21px past the 360px viewport, severing \"ExperimentsTeeTurnExperiment · 2020PolitweetsExper...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @360: document is 21px wider than the 360px viewport (scrollWidth 381)\n/ @360: <DIV> is cut off: its right edge lands at 381px, 21px past the 360px viewport, severing \"Selected workFishSticksSaaS · 202515th ClubAI · 20...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @360: <DIV> is cut off: its right edge lands at 381px, 21px past the 360px viewport, severing \"ExperimentsTeeTurnExperiment · 2020PolitweetsExper...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @360: 340 characters of running copy set at 51px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @1440: 340 characters of running copy set at 90px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @360: 340 characters of running copy set at 51px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @1440: 340 characters of running copy set at 90px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/work @360: document is 24px wider than the 360px viewport (scrollWidth 384)\n/work @360: document is 24px wider than the 360px viewport (scrollWidth 384)\n/work/dougmar-ch @360: <DIV> is cut off: its right edge lands at 375px, 15px past the 360px viewport, severing \"AI · 2026 · Designer & Builder · Ongoing · Livedou...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @360: <DIV> is cut off: its right edge lands at 375px, 15px past the 360px viewport, severing \"AI · 2026 · Designer & Builder · Ongoing · Livedou...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/twittertale @360: <DIV> is cut off: its right edge lands at 362px, 2px past the 360px viewport, severing \"Experiment · 2008Twittertale...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/twittertale @360: <DIV> is cut off: its right edge lands at 362px, 2px past the 360px viewport, severing \"Experiment · 2008Twittertale...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.",
+      "ts": 1788598201026
+    },
+    {
+      "critic": "screenshot-critic",
+      "verdict": "REVISE",
+      "feedback": "===VERDICT===\nREVISE\n\n**Responsible agent:** react-engineer\n\n**Issues:**\n- Homepage at 360px (both schemes): the document is 21px wider than the viewport (scrollWidth 381) and does not scroll to compensate, so the \"Selected work\" project row and \"Experiments\" row are severed mid-word (\"Selected workFishSticksSaaS · 202515th ClubAI · 20...\", \"ExperimentsTeeTurnExperiment · 2020Politweets...\"). This content is gone for phone visitors, not just offscreen — Section 10 requires nothing be cut off. The orbit/crowded content below the hero needs to be scaled to the 360px column instead of carrying the desktop-width layout down.\n- /about page, both 1440 and 360px: a 340-character running paragraph (\"I work at the intersection of design and engineering — not a...\") is set at 90px at 1440 and 51px at 360 — display/hero scale applied to body prose. This is a wall of oversized text, not a hero statement; it should be set at the `base` body step (per the spec's single book-voice type treatment, body content belongs at reading scale, not marquee scale).\n- /work at 360px: document is 24px wider than the viewport (scrollWidth 384), indicating the same horizontal-overflow pattern recurs across the rewritten work-index page, not just the homepage.\n- /work/dougmar-ch and /work/twittertale at 360px: project metadata lines (\"AI · 2026 · Designer & Builder · Ongoing · Live...\", \"Experiment · 2008Twittertale...\") are cut off at the right edge with no scroll available, losing real content on mobile project pages.\n- These are systemic mobile-overflow failures across the site (home, /work, and two project detail pages), not an isolated one-off — the underlying column-sizing logic needs to be fixed at the layout level rather than patched page-by-page.\n===END===",
+      "channel": "sdk-vision",
+      "ts": 1788598278513
+    },
+    {
+      "critic": "surface-gate",
+      "verdict": "NEEDS-HUMAN",
+      "feedback": "Authored routes outside MUTABLE_FILES failed the gate: /work",
+      "ts": 1788598278513
+    }
+  ],
+  "composition": {
+    "columns": "irregular-twelve",
+    "axis": "radial",
+    "symmetry": "symmetric",
+    "hero_zone": "center",
+    "density": "crowded",
+    "rhythm": "accelerating",
+    "shell_posture": "standard",
+    "field_ratio": "drenched"
+  },
+  "lane": {
+    "laneId": "cash-app",
+    "register": "bold-saturated-color-blocking"
+  },
+  "cost": {
+    "total_usd": 4.239616,
+    "estimated": true,
+    "partial": false,
+    "calls": 9,
+    "retries": 2,
+    "byAgent": [
+      {
+        "agent": "art-director",
+        "model": "claude-opus-4-8",
+        "source": "cli",
+        "input": 2,
+        "output": 26262,
+        "cache_read": 0,
+        "cache_write": 38008,
+        "cost_usd": 0.908604,
+        "estimated": false,
+        "ms": 399346,
+        "num_turns": 1
+      },
+      {
+        "agent": "spec-critic",
+        "model": "claude-haiku-4-5",
+        "source": "cli",
+        "input": 10,
+        "output": 12274,
+        "cache_read": 0,
+        "cache_write": 11317,
+        "cost_usd": 0.08206325,
+        "estimated": false,
+        "ms": 135157,
+        "num_turns": 1
+      },
+      {
+        "agent": "mockup-designer",
+        "model": "claude-opus-4-8",
+        "source": "cli",
+        "input": 1,
+        "output": 19377,
+        "cache_read": 0,
+        "cache_write": 37281,
+        "cost_usd": 0.7311102499999999,
+        "estimated": false,
+        "ms": 251587,
+        "num_turns": 1
+      },
+      {
+        "agent": "mockup-critic",
+        "model": "claude-haiku-4-5",
+        "source": "sdk",
+        "input": 9290,
+        "output": 2092,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cost_usd": 0.01975,
+        "estimated": true,
+        "ms": 31261,
+        "num_turns": null
+      },
+      {
+        "agent": "mockup-designer",
+        "model": "claude-opus-4-8",
+        "source": "cli",
+        "input": 2,
+        "output": 24141,
+        "cache_read": 20324,
+        "cache_write": 19876,
+        "cost_usd": 0.753678,
+        "estimated": false,
+        "ms": 341745,
+        "num_turns": 1
+      },
+      {
+        "agent": "mockup-critic",
+        "model": "claude-haiku-4-5",
+        "source": "sdk",
+        "input": 9290,
+        "output": 712,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cost_usd": 0.01285,
+        "estimated": true,
+        "ms": 12925,
+        "num_turns": null
+      },
+      {
+        "agent": "react-engineer",
+        "model": "claude-sonnet-5",
+        "source": "cli",
+        "input": 2,
+        "output": 52998,
+        "cache_read": 0,
+        "cache_write": 27325,
+        "cost_usd": 0.90746475,
+        "estimated": false,
+        "ms": 465320,
+        "num_turns": 1
+      },
+      {
+        "agent": "screenshot-critic",
+        "model": "claude-sonnet-5",
+        "source": "sdk",
+        "input": 22066,
+        "output": 5238,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cost_usd": 0.144768,
+        "estimated": true,
+        "ms": 63465,
+        "num_turns": null
+      },
+      {
+        "agent": "react-engineer",
+        "model": "claude-sonnet-5",
+        "source": "cli",
+        "input": 2,
+        "output": 40492,
+        "cache_read": 0,
+        "cache_write": 18525,
+        "cost_usd": 0.6793277499999999,
+        "estimated": false,
+        "ms": 367848,
+        "num_turns": 1
+      }
+    ]
+  }
+}

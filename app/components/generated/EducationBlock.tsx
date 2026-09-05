@@ -1,26 +1,43 @@
 import { Box } from '../../../styled-system/jsx'
-import type { Education } from '../../content/timeline'
+import { css } from '../../../styled-system/css'
+
+type Education = { school: string; degree: string; concentration: string; years: string }
 
 export function EducationBlock({ education }: { education: Education }) {
   return (
     <Box
-      border="1px solid"
-      borderColor="borderStrong"
-      p="6"
-      fontFamily="display"
-      fontSize="sm"
-      color="textMuted"
-      display="flex"
-      flexDirection="column"
-      gap="2"
-      mt="8"
+      mx={{ base: '5', md: '7', lg: '9' }}
+      mb={{ base: '9', lg: '9' }}
+      bg="field"
+      borderTop="1px solid"
+      borderColor="fieldBorder"
+      p={{ base: '5', lg: '7' }}
+      color="fieldInk"
     >
-      <Box color="text" fontWeight="700" letterSpacing="wide" textTransform="uppercase">
+      <p
+        className={css({
+          fontSize: '2xs',
+          textTransform: 'uppercase',
+          letterSpacing: 'wide',
+          color: 'fieldInkMuted',
+          mb: '2',
+        })}
+      >
+        Education
+      </p>
+      <p
+        className={css({
+          fontSize: { base: 'xl', lg: '2xl' },
+          fontWeight: '600',
+          color: 'fieldInk',
+          mb: '1',
+        })}
+      >
         {education.school}
-      </Box>
-      <Box>{education.degree}</Box>
-      <Box color="textFaint">{education.concentration}</Box>
-      <Box color="textFaint">{education.years}</Box>
+      </p>
+      <p className={css({ fontSize: 'base', color: 'fieldInkMuted' })}>
+        {education.degree} · {education.concentration} · {education.years}
+      </p>
     </Box>
   )
 }

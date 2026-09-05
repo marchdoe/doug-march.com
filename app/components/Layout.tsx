@@ -4,20 +4,9 @@ import { Sidebar } from './Sidebar'
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <Box
-      minH="100vh"
-      maxW="100vw"
-      overflowX="hidden"
-      bg="bg"
-      color="text"
-      fontFamily="body"
-      display="flex"
-      flexDirection="column"
-    >
-      <Box flex="1" minWidth="0">
-        {children}
-      </Box>
+    <Box position="relative" minH="100vh" bg="bg" color="text">
       <Sidebar />
+      {children}
     </Box>
   )
 }
