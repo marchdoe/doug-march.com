@@ -27,11 +27,12 @@
  *   one; on a 1.333 chassis it lifts the hero from 50.5px to a real
  *   64px-to-96px range, which is the undershoot #257 found and left for
  *   #253.
- * - `2xl` through `5xl` are clamps too (#457). Each keeps its geometric
- *   value as the 1440px maximum, so desktop is untouched, and interpolates
- *   down to a compressed 360px minimum. See NARROW_MAX_REM below for why
- *   they had to move: a fixed 5xl is 273px on a 1.5-ratio chassis, which is
- *   most of a 360px viewport before the first character is drawn.
+ * - `xl` through `5xl` are clamps too (#457, then `xl` in #469). Each keeps
+ *   its geometric value as the 1440px maximum, so desktop is untouched, and
+ *   interpolates down to a compressed 360px minimum. See NARROW_MAX_REM
+ *   below for why they had to move: a fixed 5xl is 273px on a 1.5-ratio
+ *   chassis, which is most of a 360px viewport before the first character
+ *   is drawn.
  */
 
 /** The ramp, small to large. Order matters: it is the emission order. */
@@ -65,9 +66,15 @@ const FLUID_MAX_VW_REM = 90 // 1440px
 const HERO_MIN_REM = 4
 const HERO_SPAN = 1.5
 
-/** The display steps that run fluid, nearest `xl` first. `xl` and below stay
- *  fixed: `xl` is 38-68px across the catalog, sizes a 360px column carries. */
-const FLUID_STEPS = ['2xl', '3xl', '4xl', '5xl']
+/** The display steps that run fluid, nearest `lg` first. `lg` and below stay
+ *  fixed: `lg` is 28-42px across the catalog, sizes a 360px column carries
+ *  with room to spare. `xl` used to be the last fixed step, but at 68px on a
+ *  1.618 chassis it sat at 94% of the narrow ceiling and left the four steps
+ *  above it within 1.5% of each other at 360 (#469). */
+const FLUID_STEPS = ['xl', '2xl', '3xl', '4xl', '5xl']
+
+/** The last fixed step, the one the compressed narrow ramp climbs from. */
+const NARROW_ANCHOR_STEP = 'lg'
 
 /**
  * The largest display size a 360px viewport can carry, in rem.
@@ -82,7 +89,7 @@ const NARROW_MAX_REM = 4.5
 
 /**
  * Floor for the compressed narrow-end ratio. Purely an inversion guard for a
- * chassis whose fixed `xl` already sits at the narrow ceiling — it keeps the
+ * chassis whose fixed `lg` already sits at the narrow ceiling — it keeps the
  * ramp strictly ascending at 360 instead of flat or reversed. Inert for every
  * chassis in the catalog.
  */
@@ -191,28 +198,29 @@ export function scaleSteps(ratio, base, overrides = {}) {
   const heroMin = Math.max(rems['2xl'], HERO_MIN_REM)
   const heroMax = Math.max(rems['3xl'], heroMin * HERO_SPAN)
 
-  // The narrow end of the display ramp. `2xl`..`5xl` keep their geometric
+  // The narrow end of the display ramp. `xl`..`5xl` keep their geometric
   // values at 1440 and interpolate down to a ramp that is compressed rather
-  // than re-based: it starts where the fixed `xl` step leaves off and climbs
+  // than re-based: it starts where the fixed `lg` step leaves off and climbs
   // on a smaller ratio, the fix Cloud Four recommends for a fixed scale that
   // has to survive a narrow column. The compressed ratio is derived, not
-  // picked — it is whatever lands `5xl` on the narrow ceiling in four steps.
+  // picked — it is whatever lands `5xl` on the narrow ceiling in five steps.
   //
   // The ceiling is the lower of two limits. The hero's own 360px size, because
   // the marquee is the loudest thing on the page and no other step has any
   // business out-shouting it on a phone; and NARROW_MAX_REM, because a 360px
   // column only fits so many characters however loud the chassis wants to be.
-  // Whichever binds, `5xl` at 360 lands exactly on it and the three steps
+  // Whichever binds, `5xl` at 360 lands exactly on it and the four steps
   // below fall out geometrically.
   const narrowTop = Math.min(heroMin, NARROW_MAX_REM)
+  const anchorRem = rems[NARROW_ANCHOR_STEP]
   const narrowRatio = clamp(
     NARROW_MIN_RATIO,
-    (narrowTop / rems.xl) ** (1 / FLUID_STEPS.length),
+    (narrowTop / anchorRem) ** (1 / FLUID_STEPS.length),
     ratio
   )
   const narrowRems = {}
   FLUID_STEPS.forEach((step, i) => {
-    narrowRems[step] = rems.xl * narrowRatio ** (i + 1)
+    narrowRems[step] = anchorRem * narrowRatio ** (i + 1)
   })
 
   const steps = {}

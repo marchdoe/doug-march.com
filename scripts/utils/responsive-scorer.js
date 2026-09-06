@@ -60,18 +60,18 @@ const CHECKS = {
     }
     return overlaps
   },
+  // Running copy only: paragraphs, list items and block quotes. This used to
+  // take the minimum over every text node in main, and since the chassis
+  // `small` step is 11.2px (#257) a caption or label failed it every night,
+  // which made the mobile score noise (#469). The 16px floor is a reading
+  // floor; captions sit below it by design.
   bodyTextSize: (_vw, t) => {
     const root = document.querySelector('main') || document.body
     let min = Infinity
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
-    let n
-    // biome-ignore lint/suspicious/noAssignInExpressions: TreeWalker has no matchAll-style iteration; this is the standard DOM traversal idiom.
-    while ((n = walker.nextNode())) {
-      const text = (n.textContent || '').trim()
+    for (const el of root.querySelectorAll('p, li, blockquote')) {
+      const text = (el.textContent || '').trim()
       if (text.length < 8) continue
-      const parent = n.parentElement
-      if (!parent) continue
-      const fs = parseFloat(getComputedStyle(parent).fontSize)
+      const fs = parseFloat(getComputedStyle(el).fontSize)
       if (fs && fs < min) min = fs
     }
     if (min === Infinity) return { min: null, passing: true }
