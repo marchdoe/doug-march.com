@@ -1,0 +1,113 @@
+{
+  "total_usd": 2.386732,
+  "estimated": false,
+  "partial": false,
+  "retries": 2,
+  "calls": 8,
+  "byAgent": [
+    {
+      "agent": "art-director",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 30050,
+      "cache_read": 0,
+      "cache_write": 63949,
+      "cost_usd": 0.5563,
+      "estimated": false,
+      "ms": 355206,
+      "num_turns": 1
+    },
+    {
+      "agent": "spec-critic",
+      "model": "claude-haiku-4-5",
+      "source": "cli",
+      "input": 10,
+      "output": 9523,
+      "cache_read": 0,
+      "cache_write": 31271,
+      "cost_usd": 0.11016700000000001,
+      "estimated": false,
+      "ms": 100896,
+      "num_turns": 1
+    },
+    {
+      "agent": "mockup-designer",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 19669,
+      "cache_read": 0,
+      "cache_write": 42480,
+      "cost_usd": 0.366614,
+      "estimated": false,
+      "ms": 191830,
+      "num_turns": 1
+    },
+    {
+      "agent": "mockup-critic",
+      "model": "claude-haiku-4-5",
+      "source": "cli",
+      "input": 10,
+      "output": 878,
+      "cache_read": 0,
+      "cache_write": 11737,
+      "cost_usd": 0.027873999999999996,
+      "estimated": false,
+      "ms": 13072,
+      "num_turns": 1
+    },
+    {
+      "agent": "react-engineer",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 57370,
+      "cache_read": 0,
+      "cache_write": 33465,
+      "cost_usd": 0.707564,
+      "estimated": false,
+      "ms": 502913,
+      "num_turns": 1
+    },
+    {
+      "agent": "react-engineer",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 15041,
+      "cache_read": 19696,
+      "cache_write": 24380,
+      "cost_usd": 0.2518732,
+      "estimated": false,
+      "ms": 168367,
+      "num_turns": 1
+    },
+    {
+      "agent": "screenshot-critic",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 2798,
+      "cache_read": 19696,
+      "cache_write": 24311,
+      "cost_usd": 0.12916719999999998,
+      "estimated": false,
+      "ms": 33116,
+      "num_turns": 1
+    },
+    {
+      "agent": "react-engineer",
+      "model": "claude-sonnet-5",
+      "source": "cli",
+      "input": 2,
+      "output": 20042,
+      "cache_read": 16025,
+      "cache_write": 8386,
+      "cost_usd": 0.23717300000000002,
+      "estimated": false,
+      "ms": 206130,
+      "num_turns": 1
+    }
+  ]
+}
