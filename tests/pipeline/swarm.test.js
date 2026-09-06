@@ -133,4 +133,43 @@ describe('runAgentSwarm on the recorded night', () => {
     ]
     expect(names.filter((n) => expected.includes(n))).toEqual(expected)
   })
+
+  it('writes a NEEDS-HUMAN verdict for a human-owned surface even when the critic ships (#468)', async () => {
+    // `/work` is an authored route (ownerForSurface): no agent can fix it, so
+    // this must not force a revision, and the default screenshot-critic
+    // fixture answers SHIP. Before #468 the NEEDS-HUMAN record only ever
+    // landed inside the REVISE-or-gateDemandsRevision branch, so this exact
+    // combination — SHIP verdict, only a human-owned surface at fault — wrote
+    // nothing at all.
+    const run = await runSwarm({
+      gate: [
+        {
+          findings: [
+            {
+              surface: '/work',
+              viewport: 'mobile',
+              width: 360,
+              scheme: 'light',
+              kind: 'overflow',
+              severity: 'error',
+              detail: 'document is 70px wider than the 360px viewport (scrollWidth 430)',
+            },
+          ],
+          measured: 8,
+          errorCount: 1,
+        },
+      ],
+    })
+
+    expect(run.error).toBeNull()
+    expect(run.retries).toBe(0)
+
+    const screenshotVerdict = run.verdicts.find((v) => v.critic === 'screenshot-critic')
+    expect(screenshotVerdict.verdict).toBe('SHIP')
+
+    const needsHuman = run.verdicts.find((v) => v.verdict === 'NEEDS-HUMAN')
+    expect(needsHuman).toMatchObject({ critic: 'surface-gate', verdict: 'NEEDS-HUMAN' })
+    expect(needsHuman.feedback).toContain('/work')
+    expect(needsHuman.feedback).toContain('70px wider than the 360px viewport')
+  })
 })

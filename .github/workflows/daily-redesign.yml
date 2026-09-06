@@ -366,6 +366,22 @@ jobs:
             exit 1
           fi
 
+      - name: Read needs-a-human findings
+        # Run right after `Push changes`: that step's commit is what puts
+        # archive/$TODAY/build-*/verdicts.json on this runner in the first
+        # place, so this cannot run any earlier in the job. A standalone
+        # script rather than inline github-script JS — the repo is ESM and
+        # github-script's sandbox is CommonJS, so the section-building logic
+        # lives in scripts/utils/needs-human.js instead, where it is unit
+        # tested (#468).
+        id: needs_human
+        env:
+          RUN_DATE: ${{ needs.redesign.outputs.date }}
+        run: |
+          TODAY="${RUN_DATE:-$(TZ=America/New_York date +%Y-%m-%d)}"
+          node scripts/print-needs-human-section.js "$TODAY" > "$RUNNER_TEMP/needs-human.md"
+          echo "wrote $(wc -c < "$RUNNER_TEMP/needs-human.md" | tr -d ' ') byte(s)"
+
       - name: Open today's rating issue
         uses: actions/github-script@v7
         env:
@@ -387,6 +403,13 @@ jobs:
             // screenshot and this URL was not moved with it, so every rating
             // issue since has shown a broken image.
             const img = `https://raw.githubusercontent.com/${context.repo.owner}/${context.repo.repo}/main/public/archive-data/${today}.png`
+            // Written by the previous step from verdicts.json — see #468.
+            // Empty when nothing needs a human, which leaves the body below
+            // unchanged.
+            let needsHuman = ''
+            try {
+              needsHuman = fs.readFileSync(process.env.RUNNER_TEMP + '/needs-human.md', 'utf8').trim()
+            } catch {}
             const body = [
               `![today's design](${img})`,
               ``,
@@ -401,6 +424,7 @@ jobs:
               `didnt: ""`,
               'try: ""',
               '```',
+              ...(needsHuman ? ['', needsHuman] : []),
             ].join('\n')
             await github.rest.issues.create({
               owner: context.repo.owner,

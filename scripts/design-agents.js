@@ -2033,6 +2033,29 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         )
       }
 
+      // Surfaces the critic can see but no agent can edit. `/work` and
+      // `/experiments` are authored route files outside MUTABLE_FILES: the
+      // 657px overflow on `/experiments` (#215) lived in a file the React
+      // Engineer is never given, so routing that feedback to it produces a
+      // confident edit to something it cannot open. This record is written
+      // whenever a human-owned surface errors, independent of the critic's
+      // verdict and of whether an engineer revision runs below — a hand-
+      // written route can break on a night the critic says SHIP, and that
+      // must still leave a record (#468).
+      const humanFaults = faultsForOwner(surfaceFindings, 'human')
+      if (humanFaults.length > 0) {
+        const unownableRoutes = [...new Set(humanFaults.map((f) => f.surface))]
+        console.warn(
+          `  [surface-gate] ${unownableRoutes.join(', ')} — authored route(s), no agent owns these files; needs a human`
+        )
+        verdicts.push({
+          critic: 'surface-gate',
+          verdict: 'NEEDS-HUMAN',
+          feedback: `Authored routes outside MUTABLE_FILES failed the gate: ${unownableRoutes.join(', ')}\n\n${formatFindingsForCritic(humanFaults)}`,
+          ts: Date.now(),
+        })
+      }
+
       try {
         console.log('\n[screenshot-critic] Capturing screenshot...')
         const { captureScreenshot } = await import('./utils/snapshot.js')
@@ -2173,32 +2196,6 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
           const responsibleAgent =
             screenshotVerdict === 'REVISE' ? agentMatch?.[1] || 'react-engineer' : 'react-engineer'
 
-          // Surfaces the critic can now see but no agent can edit. `/work` and
-          // `/experiments` are authored route files outside MUTABLE_FILES: the
-          // 657px overflow on `/experiments` (#215) lived in a file the React
-          // Engineer is never given, so routing that feedback to it produces a
-          // confident edit to something it cannot open. Widening what the gate
-          // watches without widening where its findings can go is how a critic
-          // starts issuing instructions nobody can carry out.
-          const { ownerForSurface } = await import('./utils/surface-gate.js')
-          const unownable = [
-            ...new Set(
-              surfaceFindings
-                .filter((f) => f.severity === 'error' && ownerForSurface(f.surface) === 'human')
-                .map((f) => f.surface)
-            ),
-          ]
-          if (unownable.length) {
-            console.warn(
-              `  [screenshot-critic] ${unownable.join(', ')} — authored route(s), no agent owns these files; needs a human`
-            )
-            verdicts.push({
-              critic: 'surface-gate',
-              verdict: 'NEEDS-HUMAN',
-              feedback: `Authored routes outside MUTABLE_FILES failed the gate: ${unownable.join(', ')}`,
-              ts: Date.now(),
-            })
-          }
           // Take the FEEDBACK block if the critic emitted one, as
           // parseMockupCriticResponse already does. The old form stripped the
           // first literal "REVISE" anywhere in the prose, so a critic writing
