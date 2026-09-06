@@ -765,6 +765,17 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
     const tasteMemoryBlock = buildTasteMemoryBlock(root)
 
     // -----------------------------------------------------------------------
+    // What the last several shipped nights' compositions actually became on
+    // a phone — 360px surface-gate findings and critic phone notes, dated
+    // and tagged with each night's tuple (#470). Fed to the Art Director so
+    // it sees its own mobile track record before picking today's tuple,
+    // rather than only the mockup designer and engineer seeing it via
+    // lessonsBlock further down.
+    // -----------------------------------------------------------------------
+    const { buildMobileLessonBlock } = await import('./utils/lessons.js')
+    const mobileLessonBlock = buildMobileLessonBlock(archiveDir)
+
+    // -----------------------------------------------------------------------
     // Read design references (collected by collect-references.js)
     // -----------------------------------------------------------------------
     const referencesPath = path.resolve(root, 'signals/today.references.md')
@@ -881,6 +892,7 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
         brandContract,
         weightsBlock,
         tasteMemoryBlock,
+        mobileLessonBlock,
         uniquenessBlock,
         failureDumpPath: path.join(root, 'signals', 'art-director-last-failed.txt'),
         systemPrompt: artDirectorSystemPrompt,
@@ -914,6 +926,7 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
           brandContract,
           weightsBlock,
           tasteMemoryBlock,
+          mobileLessonBlock,
           uniquenessBlock,
           retryContext: `## Previous attempt was rejected\n\nYour previous response failed validation: ${firstErr.message}\nEmit ALL required blocks with exact delimiters and exact field formats this time.`,
           failureDumpPath: path.join(root, 'signals', 'art-director-last-failed.txt'),
@@ -1063,6 +1076,7 @@ export async function runAgentSwarm(context, { onTraceStep, root = ROOT } = {}) 
           brandContract,
           weightsBlock,
           tasteMemoryBlock,
+          mobileLessonBlock,
           uniquenessBlock,
           retryContext: `## Previous attempt failed codegen\n\n${codegenResult.error?.slice(0, 1500) || ''}`,
           failureDumpPath: path.join(root, 'signals', 'art-director-last-failed.txt'),

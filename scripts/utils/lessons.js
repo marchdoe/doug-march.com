@@ -136,3 +136,148 @@ export function buildLessonsBlock(archiveDir, { limit = 7, lookbackDays = 14 } =
   }
   return lines.join('\n')
 }
+
+const MOBILE_KEYWORDS = ['360', 'phone', 'mobile']
+const MOBILE_TEXT_MAX = 220
+
+/** `columns/hero_zone/density` — the three composition axes a phone visitor
+ * actually experiences, out of the full eight-axis tuple. */
+function compositionSummary(composition) {
+  const { columns = '?', hero_zone = '?', density = '?' } = composition || {}
+  return `${columns}/${hero_zone}/${density}`
+}
+
+/** Split prose into rough sentences and strip leading bullet markers. Good
+ * enough for keyword-matching critic feedback, not meant to be exact. */
+function splitSentences(text) {
+  return String(text)
+    .split(/(?<=[.!?])\s+/)
+    .map((s) => s.replace(/^[\s*-]+/, '').trim())
+    .filter(Boolean)
+}
+
+/**
+ * The surface-gate's @360 lines from one verdict's feedback. Surface-gate
+ * feedback is newline-joined "<surface> @<width>: <detail>" lines (see
+ * design-agents.js) — @360 is the phone width; @1440 is not.
+ * @param {string} feedback
+ * @returns {string[]}
+ */
+function surfaceGatePhoneLines(feedback) {
+  return String(feedback)
+    .split('\n')
+    .filter((line) => line.includes('@360'))
+    .map((line) => line.trim())
+}
+
+/**
+ * The mockup-critic/screenshot-critic sentences that mention the phone.
+ * @param {string} feedback
+ * @returns {string[]}
+ */
+function criticPhoneSentences(feedback) {
+  return splitSentences(feedback).filter((sentence) => {
+    const lower = sentence.toLowerCase()
+    return MOBILE_KEYWORDS.some((k) => lower.includes(k))
+  })
+}
+
+/** Which extractor, if any, applies to a verdict's critic. */
+function phoneTextExtractorFor(critic) {
+  if (critic === 'surface-gate') return surfaceGatePhoneLines
+  if (critic === 'mockup-critic' || critic === 'screenshot-critic') return criticPhoneSentences
+  return null
+}
+
+/**
+ * Pull the phone-relevant lines out of one shipped night's already-parsed
+ * verdicts and composition tuple. No filesystem access — the thin reader
+ * below (`buildMobileLessonBlock`) is the only caller that touches disk, so
+ * this is directly testable with inline fixtures.
+ *
+ * @param {string} date YYYY-MM-DD
+ * @param {Array<object>} verdicts parsed verdicts.json, or [] when missing
+ * @param {{columns?: string, hero_zone?: string, density?: string}|null} composition
+ *   parsed composition.json, or null when missing
+ * @returns {Array<{date: string, tuple: string, text: string}>}
+ */
+export function extractMobileSignals(date, verdicts, composition) {
+  const tuple = compositionSummary(composition)
+  const out = []
+  for (const v of verdicts || []) {
+    if (!v?.feedback) continue
+    const extractor = phoneTextExtractorFor(v.critic)
+    if (!extractor) continue
+    for (const text of extractor(v.feedback)) out.push({ date, tuple, text })
+  }
+  return out
+}
+
+/**
+ * Render deduplicated, capped mobile-lesson entries as the block the Art
+ * Director reads. Pure — assumes `entries` already newest-first, which
+ * `buildMobileLessonBlock` guarantees by walking dates newest-first.
+ *
+ * @param {Array<{date: string, tuple: string, text: string}>} entries
+ * @param {{limit?: number}} [options]
+ * @returns {string} markdown block, or '' when there is nothing to report
+ */
+export function formatMobileLessonBlock(entries, { limit = 6 } = {}) {
+  const seen = new Set()
+  const lines = []
+  for (const e of entries) {
+    const text = e.text.length > MOBILE_TEXT_MAX ? `${e.text.slice(0, MOBILE_TEXT_MAX)}…` : e.text
+    const key = text.toLowerCase().replace(/\s+/g, ' ').trim()
+    if (!key || seen.has(key)) continue
+    seen.add(key)
+    lines.push(`${e.date} · ${e.tuple} · ${text}`)
+    if (lines.length >= limit) break
+  }
+  if (!lines.length) return ''
+  return [
+    '## Mobile Reality — what recent compositions actually became at 360px',
+    '',
+    ...lines,
+  ].join('\n')
+}
+
+/**
+ * The feedback half of #470 (the declaration half — a structured mobile
+ * collapse the Art Director must name — is #452): a short, dated record of
+ * what the last several shipped nights' compositions actually became on a
+ * phone, built from the same archive the desktop-facing lessons block above
+ * reads. Built before the Art Director call so the Art Director sees its
+ * own recent mobile track record before picking today's tuple, rather than
+ * only the mockup designer and engineer seeing it afterward.
+ *
+ * Thin filesystem reader around the two pure functions above.
+ *
+ * @param {string} archiveDir path to `archive/`
+ * @param {{lookbackDays?: number, limit?: number}} [options]
+ * @returns {string} markdown block, or '' when there is nothing to report
+ */
+export function buildMobileLessonBlock(archiveDir, { lookbackDays = 7, limit = 6 } = {}) {
+  const entries = []
+  for (const { date, buildDir } of readRecentBuilds(archiveDir, { lookbackDays })) {
+    const verdictsPath = path.join(buildDir, 'verdicts.json')
+    const compositionPath = path.join(buildDir, 'composition.json')
+    let verdicts = []
+    if (existsSync(verdictsPath)) {
+      try {
+        verdicts = JSON.parse(readFileSync(verdictsPath, 'utf8'))
+      } catch {
+        /* ignore malformed */
+      }
+    }
+    let composition = null
+    if (existsSync(compositionPath)) {
+      try {
+        composition = JSON.parse(readFileSync(compositionPath, 'utf8'))
+      } catch {
+        /* ignore malformed */
+      }
+    }
+    entries.push(...extractMobileSignals(date, verdicts, composition))
+  }
+  return formatMobileLessonBlock(entries, { limit })
+}

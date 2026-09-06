@@ -23,6 +23,35 @@ describe('buildArtDirectorUserPrompt', () => {
     expect(prompt).toContain('Risk: 8/10')
   })
 
+  it('includes mobileLessonBlock alongside tasteMemoryBlock when both are present', () => {
+    const prompt = buildArtDirectorUserPrompt({
+      signals: { date: '2026-09-06' },
+      contentSummary: 'content',
+      chassisCatalogBlock: 'catalog',
+      recentBriefs: '',
+      recentRatings: '',
+      references: '',
+      colorMandateSection: '',
+      weightsBlock: '',
+      tasteMemoryBlock: '## Taste Memory\nkeep the footer quiet',
+      mobileLessonBlock: '## Mobile Reality\n2026-09-05 · single/center/sparse · gone at 360',
+    })
+    expect(prompt).toContain('## Taste Memory')
+    expect(prompt).toContain('## Mobile Reality')
+    expect(prompt.indexOf('## Taste Memory')).toBeLessThan(prompt.indexOf('## Mobile Reality'))
+  })
+
+  it('omits mobileLessonBlock when empty (no recent mobile signal)', () => {
+    const prompt = buildArtDirectorUserPrompt({
+      signals: { date: '2026-09-06' },
+      contentSummary: 'content',
+      chassisCatalogBlock: 'catalog',
+      weightsBlock: '',
+      mobileLessonBlock: '',
+    })
+    expect(prompt).not.toContain('Mobile Reality')
+  })
+
   it('includes the variance mandate sections when provided', () => {
     const prompt = buildArtDirectorUserPrompt({
       signals: { date: '2026-08-23' },

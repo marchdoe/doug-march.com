@@ -56,6 +56,14 @@ Naming what you made (`===ARCHETYPE===`) is optional and purely descriptive
 It is recorded for archive continuity and never validated. Do not work
 backwards from a name to a tuple; compose from the axes first.
 
+Consult the Mobile Reality block in your inputs, when present: it lists what
+the last several shipped nights' compositions actually became at 360px —
+surface-gate findings and critic phone notes, dated and tagged with that
+night's tuple. As you commit to today's tuple, be able to say in one
+sentence what it becomes at one column; a composition that only reads at
+1440 is not finished. (A structured mobile-collapse declaration is scoped
+to #452, not asked for here.)
+
 ## Chassis Selection
 
 Typography — fonts AND type scale — is selected from the curated chassis catalog appended below. You do NOT pick fonts or sizes freely. Pick ONE chassis ID from the table.

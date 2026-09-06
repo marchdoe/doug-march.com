@@ -2,12 +2,19 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { mkdtempSync, rmSync, mkdirSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { buildLessonsBlock } from '../../scripts/utils/lessons.js'
+import {
+  buildLessonsBlock,
+  buildMobileLessonBlock,
+  extractMobileSignals,
+  formatMobileLessonBlock,
+} from '../../scripts/utils/lessons.js'
 
-function seed(archiveDir, date, { verdicts, rating } = {}) {
+function seed(archiveDir, date, { verdicts, rating, composition } = {}) {
   const buildDir = path.join(archiveDir, date, `build-${Date.parse(date)}`)
   mkdirSync(buildDir, { recursive: true })
   if (verdicts) writeFileSync(path.join(buildDir, 'verdicts.json'), JSON.stringify(verdicts))
+  if (composition)
+    writeFileSync(path.join(buildDir, 'composition.json'), JSON.stringify(composition))
   if (rating)
     writeFileSync(
       path.join(archiveDir, date, `rating-${Date.parse(date)}.json`),
@@ -161,5 +168,155 @@ describe('buildLessonsBlock', () => {
       verdicts: [{ critic: 'screenshot-critic', verdict: 'SHIP', feedback: 'fine' }],
     })
     expect(buildLessonsBlock(archiveDir, { limit: 7 })).toBe('')
+  })
+})
+
+describe('extractMobileSignals', () => {
+  const tuple = { columns: 'two-asymmetric', hero_zone: 'edge-bound', density: 'measured' }
+
+  it('keeps a surface-gate line with @360 and drops one with @1440', () => {
+    const verdicts = [
+      {
+        critic: 'surface-gate',
+        verdict: 'REVISE',
+        feedback: '/ @360: document is 91px wider than the 360px viewport\n/ @1440: fine',
+      },
+    ]
+    const out = extractMobileSignals('2026-06-10', verdicts, tuple)
+    expect(out).toHaveLength(1)
+    expect(out[0]).toMatchObject({
+      date: '2026-06-10',
+      tuple: 'two-asymmetric/edge-bound/measured',
+    })
+    expect(out[0].text).toContain('@360')
+  })
+
+  it('picks mockup-critic and screenshot-critic sentences mentioning 360, phone or mobile', () => {
+    const verdicts = [
+      {
+        critic: 'mockup-critic',
+        verdict: 'REVISE',
+        feedback:
+          'Canvas utilization is fine on desktop. At 360×640, the split collapses to a single column and the idea survives.',
+      },
+      {
+        critic: 'screenshot-critic',
+        verdict: 'REVISE',
+        feedback: 'This content is gone for phone visitors. Desktop rendering is unaffected.',
+      },
+    ]
+    const out = extractMobileSignals('2026-06-10', verdicts, tuple)
+    expect(out).toHaveLength(2)
+    expect(out.some((e) => e.text.includes('single column'))).toBe(true)
+    expect(out.some((e) => e.text.includes('gone for phone visitors'))).toBe(true)
+    expect(out.some((e) => e.text.includes('unaffected'))).toBe(false)
+  })
+
+  it('ignores critics other than surface-gate, mockup-critic and screenshot-critic', () => {
+    const verdicts = [
+      { critic: 'spec-critic', verdict: 'APPROVED', feedback: 'mentions phone and 360 anyway' },
+    ]
+    expect(extractMobileSignals('2026-06-10', verdicts, tuple)).toEqual([])
+  })
+
+  it('defaults the tuple to ?/?/? when composition.json is missing', () => {
+    const verdicts = [{ critic: 'surface-gate', verdict: 'REVISE', feedback: '/ @360: too wide' }]
+    const out = extractMobileSignals('2026-06-10', verdicts, null)
+    expect(out[0].tuple).toBe('?/?/?')
+  })
+
+  it('returns nothing for an empty or missing verdicts list', () => {
+    expect(extractMobileSignals('2026-06-10', [], tuple)).toEqual([])
+    expect(extractMobileSignals('2026-06-10', undefined, tuple)).toEqual([])
+  })
+})
+
+describe('formatMobileLessonBlock', () => {
+  it('returns an empty string when there is nothing to report', () => {
+    expect(formatMobileLessonBlock([])).toBe('')
+  })
+
+  it('renders each entry as "date · tuple · text" under a one-line heading', () => {
+    const block = formatMobileLessonBlock([
+      { date: '2026-06-10', tuple: 'single/center/sparse', text: '/ @360: too wide' },
+    ])
+    const lines = block.split('\n')
+    expect(lines[0]).toContain('##')
+    expect(lines[0].toLowerCase()).toContain('360')
+    expect(block).toContain('2026-06-10 · single/center/sparse · / @360: too wide')
+  })
+
+  it('caps at the given limit, keeping the first (newest) entries', () => {
+    const entries = Array.from({ length: 9 }, (_, i) => ({
+      date: `2026-06-0${i + 1}`,
+      tuple: 'single/center/sparse',
+      text: `flaw-${i}`,
+    }))
+    const block = formatMobileLessonBlock(entries, { limit: 6 })
+    expect(block).toContain('flaw-0')
+    expect(block).toContain('flaw-5')
+    expect(block).not.toContain('flaw-6')
+    expect((block.match(/^2026-06/gm) || []).length).toBe(6)
+  })
+
+  it('deduplicates identical text (e.g. the same surface-gate line measured in both schemes)', () => {
+    const entries = [
+      { date: '2026-06-10', tuple: 'single/center/sparse', text: '/ @360: too wide' },
+      { date: '2026-06-10', tuple: 'single/center/sparse', text: '/ @360: too wide' },
+    ]
+    const block = formatMobileLessonBlock(entries)
+    expect((block.match(/too wide/g) || []).length).toBe(1)
+  })
+})
+
+describe('buildMobileLessonBlock', () => {
+  let archiveDir
+  beforeEach(() => {
+    archiveDir = mkdtempSync(path.join(tmpdir(), 'mobile-lessons-'))
+  })
+  afterEach(() => {
+    rmSync(archiveDir, { recursive: true, force: true })
+  })
+
+  it('returns empty when the archive has no shipped builds', () => {
+    expect(buildMobileLessonBlock(archiveDir)).toBe('')
+  })
+
+  it('handles a shipped night with composition.json but no verdicts.json', () => {
+    const buildDir = path.join(archiveDir, '2026-06-10', 'build-1')
+    mkdirSync(buildDir, { recursive: true })
+    writeFileSync(
+      path.join(buildDir, 'composition.json'),
+      JSON.stringify({ columns: 'single', hero_zone: 'center', density: 'sparse' })
+    )
+    expect(buildMobileLessonBlock(archiveDir)).toBe('')
+  })
+
+  it('combines surface-gate @360 findings, critic phone sentences and the tuple across recent nights', () => {
+    seed(archiveDir, '2026-06-10', {
+      verdicts: [
+        {
+          critic: 'surface-gate',
+          verdict: 'REVISE',
+          feedback: '/work @360: document is 154px wider than the 360px viewport',
+        },
+      ],
+      composition: { columns: 'two-asymmetric', hero_zone: 'edge-bound', density: 'measured' },
+    })
+    seed(archiveDir, '2026-06-09', {
+      verdicts: [
+        {
+          critic: 'screenshot-critic',
+          verdict: 'REVISE',
+          feedback: 'Section 10 (phone, 360px): the evidence half is entirely missing.',
+        },
+      ],
+      composition: { columns: 'single', hero_zone: 'full-bleed', density: 'sparse' },
+    })
+    const block = buildMobileLessonBlock(archiveDir, { lookbackDays: 7, limit: 6 })
+    expect(block).toContain('2026-06-10 · two-asymmetric/edge-bound/measured · /work @360')
+    expect(block).toContain('2026-06-09 · single/full-bleed/sparse · Section 10 (phone, 360px)')
+    // newest first
+    expect(block.indexOf('2026-06-10')).toBeLessThan(block.indexOf('2026-06-09'))
   })
 })
