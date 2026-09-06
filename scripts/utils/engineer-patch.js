@@ -74,9 +74,14 @@ export async function loadRepairBriefTemplate({ root = ROOT } = {}) {
  * @returns {string}
  */
 export function renderRepairBrief(template, { owned, errors }) {
+  // The engineer runs with no tools and one turn, so the brief is the only
+  // way it can see a file it is not rewriting. Sizes alone left it guessing
+  // the props of sibling components three attempts running (#460).
   const files = owned.length
-    ? owned.map((f) => `- ${f.path} (${Buffer.byteLength(f.content, 'utf8')} bytes)`).join('\n')
-    : '- (none written yet)'
+    ? owned
+        .map((f) => `--- ${f.path} ---\n${f.content.replace(/\n$/, '')}\n--- end ${f.path} ---`)
+        .join('\n\n')
+    : '(none written yet)'
   return template.replace('{{FILES}}', files).replace('{{ERRORS}}', errors.trim())
 }
 

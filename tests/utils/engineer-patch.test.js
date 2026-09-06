@@ -95,15 +95,17 @@ describe('readOwnedFiles', () => {
 })
 
 describe('renderRepairBrief', () => {
-  it('lists every owned file with its size and carries the report verbatim', async () => {
+  it('prints every owned file in full and carries the report verbatim', async () => {
     const template = await loadRepairBriefTemplate()
     const errors = "app/components/Layout.tsx(12,7): error TS2322: Type 'string'.\n"
     const brief = renderRepairBrief(template, { owned, errors })
 
     expect(brief.startsWith('# Repair brief')).toBe(true)
-    expect(brief).toContain('- app/components/Layout.tsx (28 bytes)')
-    expect(brief).toContain('- app/components/Sidebar.tsx (29 bytes)')
-    expect(brief).toContain('- app/routes/index.tsx (26 bytes)')
+    for (const f of owned) {
+      expect(brief).toContain(
+        `--- ${f.path} ---\n${f.content.replace(/\n$/, '')}\n--- end ${f.path} ---`
+      )
+    }
     expect(brief).toContain(errors.trim())
     expect(brief).toContain('Return ONLY the files that must change')
     expect(brief).toContain('===FILE:path===')
@@ -112,9 +114,7 @@ describe('renderRepairBrief', () => {
 
   it('says so when nothing has been written yet', async () => {
     const template = await loadRepairBriefTemplate()
-    expect(renderRepairBrief(template, { owned: [], errors: 'x' })).toContain(
-      '- (none written yet)'
-    )
+    expect(renderRepairBrief(template, { owned: [], errors: 'x' })).toContain('(none written yet)')
   })
 
   it('refuses a template without its placeholders', async () => {

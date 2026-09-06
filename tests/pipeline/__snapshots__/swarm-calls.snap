@@ -3836,6 +3836,9 @@ does not have, and do not drop the ones it does.
 Never import from: `@remix-run/react`, `react-router-dom`, `next/link`, `@emotion/*`, `styled-components`.
 
 **Links — use plain `<a>` tags everywhere. No router imports in components.**
+Never `<Box as="a">` or `<styled.div as="a">`: Panda's `as` does not widen the
+prop type, so `href` is a type error on it. Style an anchor with a className:
+`<a href={url} className={css({ ... })}>`.
 
 **React type imports — ALWAYS use `import type`:**
 ```tsx
