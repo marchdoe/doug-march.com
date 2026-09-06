@@ -400,9 +400,9 @@ function quoteKey(key) {
  * dumping the entire chassis source.
  *
  * Both display columns are ranges because both steps are clamps: `hero`
- * since #253, `2xl` through `5xl` since #457. A single number here would
- * read as a fixed size and invite the Art Director to spec a heading that
- * only fits on a desktop.
+ * since #253, `2xl` through `5xl` since #457, `xl` since #469. A single
+ * number here would read as a fixed size and invite the Art Director to spec
+ * a heading that only fits on a desktop.
  */
 export function formatChassisCatalogForPrompt(catalog) {
   const lines = [
@@ -425,8 +425,9 @@ export function formatChassisCatalogForPrompt(catalog) {
  * fixed. Generated from the catalog so "can it render marquee" is a lookup,
  * not a hardcoded list that goes stale when a chassis is added.
  *
- * `2xl` and `5xl` are ranges, not single numbers: since #457 every step from
- * `2xl` up is a clamp, so quoting one figure would describe the desktop only.
+ * `2xl` and `5xl` are ranges, not single numbers: since #457 (#469 for `xl`)
+ * every step from `xl` up is a clamp, so quoting one figure would describe
+ * the desktop only.
  */
 export function formatChassisRenderFactsForPrompt(catalog) {
   const lines = []
@@ -463,7 +464,7 @@ export function formatChassisSelectionForPrompt(catalog) {
     .join(', ')
   return [
     `Every chassis renders the hero at 64px or more on a 360px viewport, so marquee is never infeasible; the choice is how loud the desktop marquee gets. Hero at 1440px, loudest first: ${voices}.`,
-    `\`hero\` and every step from \`2xl\` up are fluid clamps that shrink to fit a 360px column; \`xl\` and below are fixed and render the same size at every width. Spec a display step by the register you want, not by a pixel size — the numbers in the catalog table are the two ends of a range.`,
+    `\`hero\` and every step from \`xl\` up are fluid clamps that shrink to fit a 360px column; \`lg\` and below are fixed and render the same size at every width. Spec a display step by the register you want, not by a pixel size — the numbers in the catalog table are the two ends of a range.`,
     `Reserve the quietest heroes for editorial or literary phrases that don't want shouting. The condensed-caps chassis (${condensed}) share one register — don't default to them every time a phrase wants scale.`,
   ].join(' ')
 }

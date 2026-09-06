@@ -153,7 +153,7 @@ Write a structured visual spec with these five sections (the Unified Designer re
 - **Text colors** — exact hex for primary text, secondary text, muted text
 
 ### 2. Typography (chassis-derived; you don't pick fonts here, but you DO specify use)
-- **Hero phrase rendering** — which chassis token (e.g., `display`), which ramp step (`hero` is a fluid clamp sized for marquee; `2xl` through `5xl` are fluid clamps too, for display below the marquee; `xl` and down are fixed), how it composes with surroundings
+- **Hero phrase rendering** — which chassis token (e.g., `display`), which ramp step (`hero` is a fluid clamp sized for marquee; `xl` through `5xl` are fluid clamps too, for display below the marquee; `lg` and down are fixed), how it composes with surroundings
 - **Type treatment** — the ramp steps double as `textStyle` tokens carrying size, leading and tracking together, tuned per chassis; name the steps for hero, headings, body and captions instead of inventing line-height or letter-spacing values
 
 ### 3. Layout Specification

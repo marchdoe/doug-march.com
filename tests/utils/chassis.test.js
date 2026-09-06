@@ -89,7 +89,8 @@ describe('scaleSteps — the generated table', () => {
 
   it('runs the ratio up to 5xl and the fixed minor second down to 2xs', () => {
     expect(steps.md.size).toBe('1.5rem')
-    expect(steps.xl.size).toBe('3.375rem')
+    expect(steps.lg.size).toBe('2.25rem')
+    expect(stepPxAt(steps.xl, 1440)).toBe(54)
     expect(stepPxAt(steps['2xl'], 1440)).toBe(81)
     expect(stepPxAt(steps['5xl'], 1440)).toBe(273.4)
     expect(steps.sm.size).toBe('0.889rem')
@@ -109,19 +110,20 @@ describe('scaleSteps — the generated table', () => {
     expect(steps.hero.size).toBe('clamp(5.063rem, 4.219rem + 3.75vw, 7.594rem)')
   })
 
-  it('runs 2xl through 5xl as clamps and leaves xl and below fixed', () => {
-    for (const step of ['2xl', '3xl', '4xl', '5xl']) {
+  it('runs xl through 5xl as clamps and leaves lg and below fixed', () => {
+    for (const step of ['xl', '2xl', '3xl', '4xl', '5xl']) {
       expect(steps[step].size, step).toMatch(/^clamp\(/)
     }
-    for (const step of ['2xs', 'xs', 'sm', 'base', 'md', 'lg', 'xl']) {
+    for (const step of ['2xs', 'xs', 'sm', 'base', 'md', 'lg']) {
       expect(steps[step].size, step).toMatch(/^[\d.]+rem$/)
     }
   })
 
   it('caps each display clamp at the value the fixed step shipped', () => {
     // The geometric ramp, base 1rem on ratio 1.5. Desktop must not move: the
-    // only thing #457 changed is where each step starts at 360.
+    // only thing #457 and #469 changed is where each step starts at 360.
     const maxOf = (size) => size.match(/,\s*([\d.]+rem)\)$/)[1]
+    expect(maxOf(steps.xl.size)).toBe('3.375rem')
     expect(maxOf(steps['2xl'].size)).toBe('5.063rem')
     expect(maxOf(steps['3xl'].size)).toBe('7.594rem')
     expect(maxOf(steps['4xl'].size)).toBe('11.391rem')
@@ -131,14 +133,26 @@ describe('scaleSteps — the generated table', () => {
   it('compresses the narrow end onto a smaller ratio, topping out at the ceiling', () => {
     // 5xl lands on the narrow ceiling — the lower of the hero's own 360px size
     // and the 72px an eight-character word can occupy in a 317px column — and
-    // the three steps below it fall out geometrically from the fixed xl.
+    // the four steps below it fall out geometrically from the fixed lg.
     expect(stepPxAt(steps['5xl'], 360)).toBe(72)
-    const narrow = ['2xl', '3xl', '4xl', '5xl'].map((s) => stepPxAt(steps[s], 360))
-    expect(narrow).toEqual([58, 62.4, 67, 72])
-    // One compressed ratio throughout: 1.0746, the fourth root of the
-    // ceiling over the fixed xl. (Loose to 2dp — stepPxAt rounds to 0.1px.)
+    const narrow = ['xl', '2xl', '3xl', '4xl', '5xl'].map((s) => stepPxAt(steps[s], 360))
+    expect(narrow).toEqual([41.4, 47.5, 54.6, 62.7, 72])
+    // One compressed ratio throughout: 1.1487, the fifth root of the
+    // ceiling over the fixed lg. (Loose to 2dp — stepPxAt rounds to 0.1px.)
     const gaps = narrow.slice(1).map((v, i) => v / narrow[i])
-    for (const gap of gaps) expect(gap).toBeCloseTo(1.0746, 2)
+    for (const gap of gaps) expect(gap).toBeCloseTo(1.1487, 2)
+  })
+
+  it('keeps the display hierarchy legible at 360 on a 1.618 chassis (#469)', () => {
+    // With xl fixed at 67.8px, 94% of the 72px ceiling, the four fluid steps
+    // above it were within 1.5% of each other at 360. Anchoring on lg gives
+    // the five steps an 11% ratio each; desktop xl does not move.
+    const loud = scaleSteps(1.618, '1rem')
+    expect(stepPxAt(loud.xl, 1440)).toBe(67.8)
+    const narrow = ['xl', '2xl', '3xl', '4xl', '5xl'].map((s) => stepPxAt(loud[s], 360))
+    expect(narrow).toEqual([46.7, 52, 58, 64.6, 72])
+    const gaps = narrow.slice(1).map((v, i) => v / narrow[i])
+    for (const gap of gaps) expect(gap).toBeGreaterThan(1.1)
   })
 
   it('leaves a chassis gentle enough to already fit 360 entirely fixed', () => {
@@ -146,7 +160,7 @@ describe('scaleSteps — the generated table', () => {
     // can never expand a scale. On a 1.2 ratio the whole ramp tops out at 57px
     // and there is nothing to shrink.
     const gentle = scaleSteps(1.2, '1rem')
-    for (const step of ['2xl', '3xl', '4xl', '5xl']) {
+    for (const step of ['xl', '2xl', '3xl', '4xl', '5xl']) {
       expect(gentle[step].size, step).toMatch(/^[\d.]+rem$/)
     }
   })
@@ -188,7 +202,7 @@ describe('buildFontSizes', () => {
   it('is a straight read of the step table', () => {
     const sizes = buildFontSizes(TEST_CHASSIS)
     expect(Object.keys(sizes)).toEqual(RAMP_STEPS)
-    expect(sizes['2xl'].value).toBe('clamp(3.627rem, 3.148rem + 2.127vw, 5.063rem)')
+    expect(sizes['2xl'].value).toBe('clamp(2.969rem, 2.271rem + 3.102vw, 5.063rem)')
     expect(sizes.hero.value).toBe('clamp(5.063rem, 4.219rem + 3.75vw, 7.594rem)')
   })
 
@@ -336,16 +350,16 @@ describe('the catalog', () => {
   )
 
   it.each(CHASSIS_CATALOG.map((c) => [c.id, c]))(
-    '%s runs 2xl through 5xl as clamps whose maximum is the geometric step',
+    '%s runs xl through 5xl as clamps whose maximum is the geometric step',
     (_id, chassis) => {
       // Desktop is the contract: whatever the narrow end does, the top of each
       // clamp is still base × ratio^n, the size the fixed table shipped.
       const ratio = ratioOf(chassis)
-      for (const [i, step] of ['2xl', '3xl', '4xl', '5xl'].entries()) {
+      for (const [i, step] of ['xl', '2xl', '3xl', '4xl', '5xl'].entries()) {
         const size = chassis.type.steps[step].size
         expect(size, step).toMatch(/^clamp\(/)
         const max = Number(size.match(/,\s*([\d.]+)rem\)$/)[1])
-        expect(max, `${step} max`).toBeCloseTo(ratio ** (4 + i), 2)
+        expect(max, `${step} max`).toBeCloseTo(ratio ** (3 + i), 2)
       }
     }
   )
@@ -357,7 +371,7 @@ describe('the catalog', () => {
       // an <h2> reading "Spaceman" was set at 89.8px — a fixed 4xl, identical at
       // 360 and 1440 — and needed 388px of a 317px column. That is 0.54em of
       // advance per character, the factor below.
-      for (const step of ['2xl', '3xl', '4xl', '5xl']) {
+      for (const step of ['xl', '2xl', '3xl', '4xl', '5xl']) {
         const px = stepPxAt(chassis.type.steps[step], 360)
         expect(px * EIGHT_CHAR_EM, `${step} at 360`).toBeLessThanOrEqual(NARROW_COLUMN_PX)
       }

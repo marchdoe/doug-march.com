@@ -123,6 +123,26 @@ describe('responsive-scorer', () => {
       )
       expect(metrics.viewports.mobile.checks.bodyTextSize.passing).toBe(true)
     }, 30_000)
+
+    it('measures running copy only: a caption at 11.2px beside a 16px paragraph passes (#469)', async () => {
+      // 11.2px is the chassis `small` step. Captions and labels sit there by
+      // design, and the old text-node walk failed the check on them nightly.
+      const metrics = await scoreResponsive(
+        fixtureUrl('caption-beside-body.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.bodyTextSize).toEqual({ min: 16, passing: true })
+    }, 30_000)
+
+    it('still fails a 14px paragraph beside a 16px one (#469)', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('small-paragraph.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      expect(metrics.viewports.mobile.checks.bodyTextSize).toEqual({ min: 14, passing: false })
+    }, 30_000)
   })
 
   describe('tapTargetFailures check', () => {
