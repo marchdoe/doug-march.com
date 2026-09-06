@@ -403,6 +403,9 @@ jobs:
             // screenshot and this URL was not moved with it, so every rating
             // issue since has shown a broken image.
             const img = `https://raw.githubusercontent.com/${context.repo.owner}/${context.repo.repo}/main/public/archive-data/${today}.png`
+            // Same archiver run, the mobile viewport capture — see #466. The
+            // owner grades the phone from this, not just the 1440 shot above.
+            const mobileImg = `https://raw.githubusercontent.com/${context.repo.owner}/${context.repo.repo}/main/public/archive-data/${today}/viewports/mobile.png`
             // Written by the previous step from verdicts.json — see #468.
             // Empty when nothing needs a human, which leaves the body below
             // unchanged.
@@ -412,6 +415,8 @@ jobs:
             } catch {}
             const body = [
               `![today's design](${img})`,
+              ``,
+              `<img src="${mobileImg}" width="270" alt="today's design at phone width"><br>First fold at 360.`,
               ``,
               brief ? `> ${brief}` : '',
               ``,
