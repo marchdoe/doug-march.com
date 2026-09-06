@@ -171,23 +171,19 @@ export function evaluateMeasurement(m, { tolerancePx = OVERFLOW_TOLERANCE_PX } =
   // (responsive-scorer wrote fourteen of them into responsive-metrics.json)
   // and nothing read it, so a clipped hero could neither fail a build nor earn
   // a revision.
+  //
+  // Two causes, one kind. `viewport` is a box that lands past the right edge
+  // of the screen. `text` is a word wider than the box that holds it (#465):
+  // no box moves, so only the type is out of place, and the fix is its size,
+  // not the layout.
   for (const c of (m.clipped ?? []).slice(0, MAX_CLIPPED_REPORTED)) {
-    const carriesText = Boolean(c.text)
     findings.push({
       kind: 'clipped',
       // Type that is cut off is content the visitor cannot read. A cut
       // decorative box is a crop, which is often what the design wanted, so it
       // is reported without failing the build.
-      severity: carriesText ? 'error' : 'warning',
-      detail:
-        `<${c.tag}> is cut off: its right edge lands at ${c.right}px, ${c.over}px past the ` +
-        `${m.clientWidth}px viewport` +
-        (carriesText
-          ? `, severing "${c.text}...". The document does not scroll here, so that content is ` +
-            'gone, not merely offscreen. Scale the element to its column at this width instead ' +
-            'of carrying a wider layout down.'
-          : '. Nothing readable is lost, but the element is being severed rather than fitted. ' +
-            'Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.'),
+      severity: c.text ? 'error' : 'warning',
+      detail: c.cause === 'text' ? describeTextWiderThanBox(c) : describeBoxPastViewport(c, m),
     })
   }
 
@@ -200,6 +196,46 @@ export function evaluateMeasurement(m, { tolerancePx = OVERFLOW_TOLERANCE_PX } =
   }
 
   return findings
+}
+
+/**
+ * The words for a box the viewport cuts off. Pure; split out so the two
+ * clipped causes read as two sentences rather than one branch.
+ *
+ * @param {{ tag: string, text: string, right: number, over: number }} c
+ * @param {{ clientWidth: number }} m
+ * @returns {string}
+ */
+function describeBoxPastViewport(c, m) {
+  return (
+    `<${c.tag}> is cut off: its right edge lands at ${c.right}px, ${c.over}px past the ` +
+    `${m.clientWidth}px viewport` +
+    (c.text
+      ? `, severing "${c.text}...". The document does not scroll here, so that content is ` +
+        'gone, not merely offscreen. Scale the element to its column at this width instead ' +
+        'of carrying a wider layout down.'
+      : '. Nothing readable is lost, but the element is being severed rather than fitted. ' +
+        'Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.')
+  )
+}
+
+/**
+ * The words for type wider than its own box (#465). The 2026-09-05 build set
+ * "Shutout." at a size no 360px column could hold, and the visitor read "Sh".
+ * The box was the right width; the word was not, so the engineer is pointed
+ * at the type, not the layout.
+ *
+ * @param {{ tag: string, text: string, over: number, boxWidth: number }} c
+ * @returns {string}
+ */
+function describeTextWiderThanBox(c) {
+  return (
+    `<${c.tag}> holds text wider than its own box: "${c.text}..." needs ${c.boxWidth + c.over}px ` +
+    `and the box is ${c.boxWidth}px, so ${c.over}px of it is cut off. The box does not scroll, ` +
+    'and nothing moved to make room, so the end of the word is gone. The column is the right ' +
+    'width; the type is not. Set it at a size that fits this column at this width, or let it ' +
+    'wrap.'
+  )
 }
 
 /**
@@ -234,26 +270,68 @@ export function evaluateMeasurement(m, { tolerancePx = OVERFLOW_TOLERANCE_PX } =
  * innerWidth includes the vertical scrollbar, so the two disagreed with the
  * overflow check on anything narrower than one (#319).
  *
+ * A third thing it could not see at all (#465): a word wider than the block
+ * that holds it. `getBoundingClientRect` reports the box, and the box is the
+ * right width; the type inside it is not, and the surplus is cut wherever an
+ * ancestor clips. `scrollWidth > clientWidth` on the block sees it, the same
+ * measurement the document-level overflow check makes. A deliberate scroller
+ * (`overflow-x: auto | scroll` on the block or any ancestor) is left alone,
+ * because there the overrun can be reached.
+ *
  * @param {number} [_viewportWidth] unused; present for the CHECKS signature
  * @param {{ overflowTolerancePx?: number }} [thresholds]
- * @returns {Array<{ tag: string, text: string, right: number, over: number }>}
+ * @returns {Array<{ tag: string, text: string, cause: 'viewport'|'text',
+ *   right: number, over: number, boxWidth: number }>} `over` is px past the
+ *   viewport for `viewport`, px wider than the box for `text`
  */
 export function findClippedElements(_viewportWidth, thresholds) {
   const tolerance = thresholds?.overflowTolerancePx ?? 1
   const limit = document.documentElement.clientWidth
 
-  // Everything the viewport cuts, in document order, which puts every ancestor
-  // ahead of its descendants.
+  // Text this element sets: a text node with visible characters, reached
+  // through nothing but inline boxes. Inline boxes have no clientWidth, so a
+  // word wrapped in a <span> is measured at the block that lays it out.
+  const setsText = (el) => {
+    for (const n of el.childNodes) {
+      if (n.nodeType === 3 && /\S/.test(n.nodeValue)) return true
+      if (n.nodeType !== 1) continue
+      const display = getComputedStyle(n).display
+      if ((display === 'inline' || display === 'contents') && setsText(n)) return true
+    }
+    return false
+  }
+  // A deliberate scroller, on the element or any ancestor up to body: the
+  // overrun is reachable there, so it is not cut.
+  const insideScroller = (el) => {
+    for (let p = el; p && p !== document.documentElement; p = p.parentElement) {
+      const x = getComputedStyle(p).overflowX
+      if (x === 'auto' || x === 'scroll') return true
+    }
+    return false
+  }
+
+  // Everything cut, in document order, which puts every ancestor ahead of its
+  // descendants. Two causes: a box the viewport cuts, and text wider than the
+  // box that holds it. The second moves no box, so `right` never sees it;
+  // `scrollWidth` does, because a word that will not wrap counts as scrollable
+  // overflow even where nothing scrolls.
   const past = []
   for (const el of document.querySelectorAll('body *')) {
     const r = el.getBoundingClientRect()
-    const rendered = r.width > 0 && r.height > 0
-    if (rendered && r.right > limit + tolerance) past.push([el, r])
+    if (!(r.width > 0 && r.height > 0)) continue
+    if (r.right > limit + tolerance) {
+      past.push({ el, r, cause: 'viewport', over: r.right - limit })
+      continue
+    }
+    const over = el.scrollWidth - el.clientWidth
+    if (over > tolerance && setsText(el) && !insideScroller(el)) {
+      past.push({ el, r, cause: 'text', over })
+    }
   }
 
   const outermost = []
   const found = []
-  for (const [el, r] of past) {
+  for (const { el, r, cause, over } of past) {
     const inside = outermost.some((p) => p.contains(el))
     if (inside || el.closest('[data-allow-x-overflow]')) continue
     outermost.push(el)
@@ -262,8 +340,10 @@ export function findClippedElements(_viewportWidth, thresholds) {
       // Whitespace collapsed: formatFindingsForCritic renders one finding as
       // one bullet, and a newline out of the DOM would split it into two.
       text: (el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 50),
+      cause,
       right: Math.round(r.right),
-      over: Math.round(r.right - limit),
+      over: Math.round(over),
+      boxWidth: el.clientWidth,
     })
   }
   return found.sort((a, b) => b.over - a.over)
