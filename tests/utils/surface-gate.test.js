@@ -112,6 +112,28 @@ describe('evaluateMeasurement', () => {
     expect(kinds).toEqual(['clipped'])
   })
 
+  it('tells the engineer a word wider than its box is a type fault, not a layout fault', () => {
+    // #465: the box fit the column; the word did not. Pointing at the layout
+    // width sends the repair the wrong way.
+    const findings = evaluateMeasurement({
+      ...ok,
+      clientWidth: 360,
+      scrollWidth: 360,
+      clipped: [
+        { tag: 'P', text: 'Shutout.', cause: 'text', right: 288, over: 1082, boxWidth: 216 },
+      ],
+    })
+    expect(findings).toHaveLength(1)
+    expect(findings[0].kind).toBe('clipped')
+    expect(findings[0].severity).toBe('error')
+    expect(findings[0].detail).toContain('wider than its own box')
+    expect(findings[0].detail).toContain('Shutout.')
+    expect(findings[0].detail).toContain('needs 1298px')
+    expect(findings[0].detail).toContain('box is 216px')
+    expect(findings[0].detail).toContain('1082px of it is cut off')
+    expect(findings[0].detail).not.toContain('past the 360px viewport')
+  })
+
   it('stops after a few clipped elements rather than filling the prompt', () => {
     const clipped = Array.from({ length: 14 }, (_, i) => ({
       tag: 'DIV',

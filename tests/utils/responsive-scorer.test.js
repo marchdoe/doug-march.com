@@ -82,6 +82,18 @@ describe('responsive-scorer', () => {
       )
       expect(metrics.viewports.mobile.checks.clippedElements).toEqual([])
     }, 30_000)
+
+    it('flags a word wider than its box through the shared detector (#465)', async () => {
+      const metrics = await scoreResponsive(
+        fixtureUrl('text-wider-than-box.html'),
+        [{ name: 'mobile', width: 360, height: 640 }],
+        { browser }
+      )
+      const [first] = metrics.viewports.mobile.checks.clippedElements
+      expect(first).toMatchObject({ tag: 'P', text: 'Shutout.', cause: 'text', boxWidth: 300 })
+      expect(metrics.viewports.mobile.checks.horizontalScroll).toBe(false)
+      expect(metrics.worstFailure.check).toBe('clippedElements')
+    }, 30_000)
   })
 
   describe('headerOverlap check', () => {

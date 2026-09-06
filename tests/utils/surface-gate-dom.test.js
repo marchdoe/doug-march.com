@@ -200,4 +200,67 @@ describe('findClippedElements', () => {
     )
     expect(found.map((f) => f.text)).toEqual(['far', 'near'])
   })
+
+  // #465: 2026-09-05 shipped "Shutout." as "Sh" at 360. The <p> was 216px
+  // wide, exactly its column, so its right edge cleared the viewport and the
+  // walk above saw nothing; the word inside it needed 1298px.
+  describe('a word wider than its box', () => {
+    const shout = ({ style = '', attrs = '' } = {}) =>
+      `<div ${attrs} style="width:300px;overflow:hidden;${style}">` +
+      `<p style="font-size:200px;margin:0">Shutout.</p></div>`
+
+    it('is reported, with the overrun measured against the box', async () => {
+      const found = await clipped(shout())
+      expect(found).toHaveLength(1)
+      expect(found[0].tag).toBe('P')
+      expect(found[0].text).toBe('Shutout.')
+      expect(found[0].cause).toBe('text')
+      expect(found[0].boxWidth).toBe(300)
+      expect(found[0].over).toBeGreaterThan(300)
+    })
+
+    it('is reported at the block that lays it out when the word sits in a span', async () => {
+      const found = await clipped(
+        `<div style="width:300px;overflow:hidden">` +
+          `<h2 style="font-size:200px;margin:0"><span>Spaceman</span></h2></div>`
+      )
+      expect(found.map((f) => [f.tag, f.text, f.cause])).toEqual([['H2', 'Spaceman', 'text']])
+    })
+
+    it('is left alone inside a deliberate scroller', async () => {
+      expect(await clipped(shout({ style: 'overflow-x:auto' }))).toEqual([])
+      expect(await clipped(shout({ style: 'overflow-x:scroll' }))).toEqual([])
+      // On the block itself, not only on an ancestor.
+      expect(
+        await clipped(
+          `<div style="width:300px;overflow:hidden">` +
+            `<p style="font-size:200px;margin:0;overflow-x:auto">Shutout.</p></div>`
+        )
+      ).toEqual([])
+    })
+
+    it('honours the opt-out on an ancestor', async () => {
+      expect(await clipped(shout({ attrs: 'data-allow-x-overflow' }))).toEqual([])
+    })
+
+    it('is not a wrapped paragraph', async () => {
+      // Long prose wraps; scrollWidth stays at clientWidth.
+      expect(
+        await clipped(
+          `<div style="width:300px;overflow:hidden"><p style="font-size:16px">${LONG}</p></div>`
+        )
+      ).toEqual([])
+    })
+
+    it('is one finding when the box that clips it is also past the viewport', async () => {
+      // The outermost rule spans both causes: the parent is cut by the
+      // viewport and the word inside is cut by the parent. One fault.
+      const found = await clipped(
+        `<div style="width:800px;overflow:hidden">` +
+          `<p style="font-size:200px;margin:0;width:300px">Shutout.</p></div>`
+      )
+      expect(found).toHaveLength(1)
+      expect(found[0].cause).toBe('viewport')
+    })
+  })
 })

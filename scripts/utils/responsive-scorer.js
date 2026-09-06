@@ -162,7 +162,7 @@ function formatFailureDetail(check, viewportResult) {
       // so it still reads correctly with the tolerance spelled out.
       return `document.scrollWidth exceeded clientWidth by more than ${RESPONSIVE_THRESHOLDS.overflowTolerancePx}px at the ${viewportResult.width}px viewport`
     case 'clippedElements':
-      return `${c.clippedElements.length} element(s) extended past the viewport (first: <${c.clippedElements[0].tag}>)`
+      return `${c.clippedElements.length} element(s) clipped (first: <${c.clippedElements[0].tag}>)`
     case 'headerOverlap':
       return `${c.headerOverlap.length} overlapping pair(s) in the header`
     case 'bodyTextSize':
