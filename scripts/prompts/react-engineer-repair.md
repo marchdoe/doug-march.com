@@ -5,6 +5,9 @@ Do not start over. Patch them.
 
 ## Files on disk that you own this run
 
+Each file is printed in full between `--- path ---` and `--- end path ---`
+markers. You cannot read the disk in this call; this listing is the disk.
+
 {{FILES}}
 
 ## What failed
@@ -27,3 +30,7 @@ returned file complete, in the same `===FILE:path===` format as before.
   write in this call. The file is on disk and named in the list.
 - Fix the listed errors and nothing else. A wider rewrite is how the last
   attempt traded one error for another.
+- A file you return must still fit the files you do not. Read the listing
+  before you write: a route passes exactly the props its components declare,
+  and a component keeps the props and exports its callers use. Changing a
+  signature means returning every file that depends on it.

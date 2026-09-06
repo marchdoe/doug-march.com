@@ -79,10 +79,12 @@ function withAddedFiles(text, files) {
   return text.slice(0, idx) + blocks.join('') + text.slice(idx)
 }
 
-/** The `- path (N bytes)` line the brief lists a file on disk with. */
+/** The block the brief prints a file on disk as: its full content between markers. */
+function briefBlock(relPath, content) {
+  return `--- ${relPath} ---\n${content.replace(/\n$/, '')}\n--- end ${relPath} ---`
+}
 function briefLine(root, relPath) {
-  const bytes = Buffer.byteLength(readFileSync(path.join(root, relPath), 'utf8'), 'utf8')
-  return `- ${relPath} (${bytes} bytes)`
+  return briefBlock(relPath, readFileSync(path.join(root, relPath), 'utf8'))
 }
 
 const onDisk = (root, relPath) => readFileSync(path.join(root, relPath), 'utf8')
@@ -168,8 +170,8 @@ describe('Phase 5: the build fails', () => {
 
     // The repair call: the engineer's own system prompt, model and budget,
     // and a brief as the user prompt in place of the original task plus the
-    // error. The brief names every file on disk with its size and carries
-    // the build error verbatim.
+    // error. The brief prints every file on disk in full and carries the
+    // build error verbatim.
     const [first, repair] = run.callsFor('react-engineer')
     expect(repair.systemPrompt).toBe(first.systemPrompt)
     expect(repair.model).toBe(first.model)
@@ -177,13 +179,11 @@ describe('Phase 5: the build fails', () => {
     expect(repair.userPrompt.startsWith('# Repair brief')).toBe(true)
     expect(repair.userPrompt).toContain(DEFAULT_BUILD_ERROR)
     expect(repair.userPrompt).not.toContain(OLD_FRAMING)
-    expect(repair.userPrompt.length).toBeLessThan(first.userPrompt.length / 4)
     for (const rel of FIXTURE_PATHS) {
-      const expected = `- ${rel} (${Buffer.byteLength(fixtureContent(rel), 'utf8')} bytes)`
-      expect(repair.userPrompt, rel).toContain(expected)
+      expect(repair.userPrompt, rel).toContain(briefBlock(rel, fixtureContent(rel)))
     }
-    expect(repair.userPrompt).not.toContain('- elements/preset.ts')
-    expect(repair.userPrompt).not.toContain('- app/routes/__root.tsx')
+    expect(repair.userPrompt).not.toContain('--- elements/preset.ts ---')
+    expect(repair.userPrompt).not.toContain('--- app/routes/__root.tsx ---')
     expect(first.userPrompt).not.toContain('# Repair brief')
 
     // Nothing was restored or reset ahead of the repair: Phase 3's files are
@@ -500,9 +500,7 @@ describe('after the build passes: the screenshot critic and the surface gate', (
     expect(revision.userPrompt).not.toContain('Measured layout faults')
     expect(revision.userPrompt).not.toContain(OLD_FRAMING)
     for (const rel of FIXTURE_PATHS) {
-      expect(revision.userPrompt, rel).toContain(
-        `- ${rel} (${Buffer.byteLength(fixtureContent(rel), 'utf8')} bytes)`
-      )
+      expect(revision.userPrompt, rel).toContain(briefBlock(rel, fixtureContent(rel)))
     }
     expect(run.retries).toBe(1)
 
