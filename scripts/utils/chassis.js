@@ -394,37 +394,46 @@ function quoteKey(key) {
 /**
  * Render the chassis catalog as a markdown table for inclusion in the
  * Art Director prompt. Each row shows id, name, description, moods,
- * archetype affinities, and the hero step's rendered size at the two ends
- * of the fluid window — enough to match a chassis to the day's brief, and
- * to know how loud its marquee actually gets, without dumping the entire
- * chassis source.
+ * archetype affinities, and the rendered size of the two display registers
+ * at the two ends of the fluid window — enough to match a chassis to the
+ * day's brief, and to know how loud its marquee actually gets, without
+ * dumping the entire chassis source.
+ *
+ * Both display columns are ranges because both steps are clamps: `hero`
+ * since #253, `2xl` through `5xl` since #457. A single number here would
+ * read as a fixed size and invite the Art Director to spec a heading that
+ * only fits on a desktop.
  */
 export function formatChassisCatalogForPrompt(catalog) {
   const lines = [
-    '| ID | Name | Feel | Moods | Best for archetypes | Hero px 360→1440 |',
-    '|----|------|------|-------|---------------------|------------------|',
+    '| ID | Name | Feel | Moods | Best for archetypes | Hero px 360→1440 | 5xl px 360→1440 |',
+    '|----|------|------|-------|---------------------|------------------|-----------------|',
   ]
   for (const c of catalog) {
     const hero = c.type.steps.hero
+    const top = c.type.steps['5xl']
     lines.push(
-      `| \`${c.id}\` | ${c.name} | ${c.description} | ${c.moods.join(', ')} | ${c.archetypes.join(', ')} | ${Math.round(stepPxAt(hero, 360))}→${Math.round(stepPxAt(hero, 1440))} |`
+      `| \`${c.id}\` | ${c.name} | ${c.description} | ${c.moods.join(', ')} | ${c.archetypes.join(', ')} | ${Math.round(stepPxAt(hero, 360))}→${Math.round(stepPxAt(hero, 1440))} | ${Math.round(stepPxAt(top, 360))}→${Math.round(stepPxAt(top, 1440))} |`
     )
   }
   return lines.join('\n')
 }
 
 /**
- * Per-chassis render facts for the spec critic: hero size at both ends of
- * the viewport window, the largest fixed step, and the body size. Generated
- * from the catalog so "can it render marquee" is a lookup, not a hardcoded
- * list that goes stale when a chassis is added.
+ * Per-chassis render facts for the spec critic: the size of each display
+ * register at both ends of the viewport window, plus the body size, which is
+ * fixed. Generated from the catalog so "can it render marquee" is a lookup,
+ * not a hardcoded list that goes stale when a chassis is added.
+ *
+ * `2xl` and `5xl` are ranges, not single numbers: since #457 every step from
+ * `2xl` up is a clamp, so quoting one figure would describe the desktop only.
  */
 export function formatChassisRenderFactsForPrompt(catalog) {
   const lines = []
   for (const c of catalog) {
     const s = c.type.steps
     lines.push(
-      `- \`${c.id}\`: hero ${Math.round(stepPxAt(s.hero, 360))}px at 360 → ${Math.round(stepPxAt(s.hero, 1440))}px at 1440; 2xl ${Math.round(stepPxAt(s['2xl'], 1440))}px; base ${Math.round(stepPxAt(s.base, 1440))}px`
+      `- \`${c.id}\`: hero ${Math.round(stepPxAt(s.hero, 360))}px at 360 → ${Math.round(stepPxAt(s.hero, 1440))}px at 1440; 2xl ${Math.round(stepPxAt(s['2xl'], 360))}→${Math.round(stepPxAt(s['2xl'], 1440))}px; 5xl ${Math.round(stepPxAt(s['5xl'], 360))}→${Math.round(stepPxAt(s['5xl'], 1440))}px; base ${Math.round(stepPxAt(s.base, 1440))}px`
     )
   }
   return lines.join('\n')
@@ -435,6 +444,11 @@ export function formatChassisRenderFactsForPrompt(catalog) {
  * place of the hardcoded ratio list it used to carry. Every chassis reaches
  * the 64px mobile marquee floor by construction (see scale.js), so the
  * selection question is desktop voice, not feasibility.
+ *
+ * It also states which steps scale with the viewport and which do not, so a
+ * heading specced at `4xl` is not read as a fixed desktop size. Before #457
+ * only `hero` was fluid and the upper steps kept their desktop size down to
+ * 360, where a 5xl ran to 273px inside a 317px column.
  */
 export function formatChassisSelectionForPrompt(catalog) {
   const byLoudness = [...catalog].sort(
@@ -449,6 +463,7 @@ export function formatChassisSelectionForPrompt(catalog) {
     .join(', ')
   return [
     `Every chassis renders the hero at 64px or more on a 360px viewport, so marquee is never infeasible; the choice is how loud the desktop marquee gets. Hero at 1440px, loudest first: ${voices}.`,
+    `\`hero\` and every step from \`2xl\` up are fluid clamps that shrink to fit a 360px column; \`xl\` and below are fixed and render the same size at every width. Spec a display step by the register you want, not by a pixel size — the numbers in the catalog table are the two ends of a range.`,
     `Reserve the quietest heroes for editorial or literary phrases that don't want shouting. The condensed-caps chassis (${condensed}) share one register — don't default to them every time a phrase wants scale.`,
   ].join(' ')
 }

@@ -39,7 +39,7 @@ Failure example: visual spec says "primary hue 18° terracotta," preset has only
 
 The hero phrase must render at the intended scale on a 1440×900 viewport. Check:
 
-- Every chassis's hero reaches at least 64px on a 360px viewport, so marquee is never impossible; the question is whether the declared hero_scale and composition match the chassis's actual voice. The per-chassis numbers, generated from the catalog:
+- Every chassis's hero reaches at least 64px on a 360px viewport, so marquee is never impossible; the question is whether the declared hero_scale and composition match the chassis's actual voice. `hero` and every step from `2xl` up are fluid clamps, so each figure below is a 360→1440 range; `base` is fixed. The per-chassis numbers, generated from the catalog:
 
 {{CHASSIS_RENDER_FACTS}}
 

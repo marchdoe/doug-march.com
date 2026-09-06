@@ -19,13 +19,19 @@
  *   the hero near 0.95. Big type with body leading floats apart.
  * - Tracking opens below `base` (small type needs air) and closes above it
  *   (display type sets tighter than the font's built-in spacing).
- * - `hero` is a clamp from `2xl` at a 360px viewport to `3xl` at 1440px,
- *   floored so every chassis reaches marquee: the minimum never drops below
- *   4rem (64px, the mockup critic's mobile floor) and the maximum never
- *   drops below 1.5x the minimum. On a 1.5-ratio chassis the floor is inert
- *   and the clamp is identical to the pre-table one; on a 1.333 chassis it
- *   lifts the hero from 50.5px to a real 64px-to-96px range, which is the
- *   undershoot #257 found and left for this change.
+ * - `hero` is a clamp from the desktop `2xl` at a 360px viewport to the
+ *   desktop `3xl` at 1440px, floored so every chassis reaches marquee: the
+ *   minimum never drops below 4rem (64px, the mockup critic's mobile floor)
+ *   and the maximum never drops below 1.5x the minimum. On a 1.5-ratio
+ *   chassis the floor is inert and the clamp is identical to the pre-table
+ *   one; on a 1.333 chassis it lifts the hero from 50.5px to a real
+ *   64px-to-96px range, which is the undershoot #257 found and left for
+ *   #253.
+ * - `2xl` through `5xl` are clamps too (#457). Each keeps its geometric
+ *   value as the 1440px maximum, so desktop is untouched, and interpolates
+ *   down to a compressed 360px minimum. See NARROW_MAX_REM below for why
+ *   they had to move: a fixed 5xl is 273px on a 1.5-ratio chassis, which is
+ *   most of a 360px viewport before the first character is drawn.
  */
 
 /** The ramp, small to large. Order matters: it is the emission order. */
@@ -58,6 +64,29 @@ const FLUID_MAX_VW_REM = 90 // 1440px
 /** The hero floor: 4rem is the mockup critic's 64px mobile minimum. */
 const HERO_MIN_REM = 4
 const HERO_SPAN = 1.5
+
+/** The display steps that run fluid, nearest `xl` first. `xl` and below stay
+ *  fixed: `xl` is 38-68px across the catalog, sizes a 360px column carries. */
+const FLUID_STEPS = ['2xl', '3xl', '4xl', '5xl']
+
+/**
+ * The largest display size a 360px viewport can carry, in rem.
+ *
+ * Measured rather than guessed. On the canary that #457 was filed against,
+ * an eight-character project name ("Spaceman") set at 89.8px measured 388px
+ * wide inside a 317px content column — 0.54em of advance per character. A
+ * 317px column therefore affords about 73px of type; 4.5rem (72px) sets an
+ * eight-character word in 311px and leaves the rest as slack.
+ */
+const NARROW_MAX_REM = 4.5
+
+/**
+ * Floor for the compressed narrow-end ratio. Purely an inversion guard for a
+ * chassis whose fixed `xl` already sits at the narrow ceiling — it keeps the
+ * ramp strictly ascending at 360 instead of flat or reversed. Inert for every
+ * chassis in the catalog.
+ */
+const NARROW_MIN_RATIO = 1.01
 
 const DEFAULT_LINE_HEIGHTS = {
   '2xs': 1.4,
@@ -119,6 +148,25 @@ export function fluid(min, max) {
   return `clamp(${roundRem(minRem)}rem, ${intercept}rem + ${vw}vw, ${roundRem(maxRem)}rem)`
 }
 
+function clamp(min, value, max) {
+  return Math.min(Math.max(value, min), max)
+}
+
+/**
+ * A display step's size: a clamp from its compressed 360px value to its
+ * geometric 1440px one, or the plain rem when the two round to the same
+ * number. A chassis gentle enough that its whole ramp already fits a 360px
+ * column (the compressed ratio is capped at the chassis ratio, so it can
+ * never expand) needs no clamp, and emitting `clamp(x, x + 0vw, x)` would
+ * only make the preset harder to read.
+ */
+function fluidStepSize(step, narrowRem, fixedRem) {
+  const min = roundRem(narrowRem)
+  const max = roundRem(fixedRem)
+  if (!FLUID_STEPS.includes(step) || min >= max) return `${max}rem`
+  return fluid(`${min}rem`, `${max}rem`)
+}
+
 /**
  * Generate a full step table from a ratio and a base size, then lay
  * per-step overrides on top.
@@ -143,12 +191,36 @@ export function scaleSteps(ratio, base, overrides = {}) {
   const heroMin = Math.max(rems['2xl'], HERO_MIN_REM)
   const heroMax = Math.max(rems['3xl'], heroMin * HERO_SPAN)
 
+  // The narrow end of the display ramp. `2xl`..`5xl` keep their geometric
+  // values at 1440 and interpolate down to a ramp that is compressed rather
+  // than re-based: it starts where the fixed `xl` step leaves off and climbs
+  // on a smaller ratio, the fix Cloud Four recommends for a fixed scale that
+  // has to survive a narrow column. The compressed ratio is derived, not
+  // picked — it is whatever lands `5xl` on the narrow ceiling in four steps.
+  //
+  // The ceiling is the lower of two limits. The hero's own 360px size, because
+  // the marquee is the loudest thing on the page and no other step has any
+  // business out-shouting it on a phone; and NARROW_MAX_REM, because a 360px
+  // column only fits so many characters however loud the chassis wants to be.
+  // Whichever binds, `5xl` at 360 lands exactly on it and the three steps
+  // below fall out geometrically.
+  const narrowTop = Math.min(heroMin, NARROW_MAX_REM)
+  const narrowRatio = clamp(
+    NARROW_MIN_RATIO,
+    (narrowTop / rems.xl) ** (1 / FLUID_STEPS.length),
+    ratio
+  )
+  const narrowRems = {}
+  FLUID_STEPS.forEach((step, i) => {
+    narrowRems[step] = rems.xl * narrowRatio ** (i + 1)
+  })
+
   const steps = {}
   for (const step of RAMP_STEPS) {
     const size =
       step === 'hero'
         ? fluid(`${roundRem(heroMin)}rem`, `${roundRem(heroMax)}rem`)
-        : `${roundRem(rems[step])}rem`
+        : fluidStepSize(step, narrowRems[step], rems[step])
     steps[step] = {
       size,
       lineHeight: DEFAULT_LINE_HEIGHTS[step],
