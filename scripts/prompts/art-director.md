@@ -61,7 +61,7 @@ backwards from a name to a tuple; compose from the axes first.
 Typography — fonts AND type scale — is selected from the curated chassis catalog appended below. You do NOT pick fonts or sizes freely. Pick ONE chassis ID from the table.
 
 Selection criteria, in order:
-1. **How loud should the hero be?** {{CHASSIS_SELECTION_FACTS}} The catalog table below carries each chassis's hero size at 360px and 1440px. Pick the voice that matches the phrase, and consult the Chassis Mandate in your inputs: recently-used chassis are listed there, and reaching for one anyway needs a justification in your rationale.
+1. **How loud should the hero be?** {{CHASSIS_SELECTION_FACTS}} The catalog table below carries each chassis's hero and 5xl sizes at 360px and 1440px — the two ends of the display register, top and bottom. Pick the voice that matches the phrase, and consult the Chassis Mandate in your inputs: recently-used chassis are listed there, and reaching for one anyway needs a justification in your rationale.
 2. **Match by descriptive affinity, if you named one.** The chassis catalog lists "Best for archetypes" — those tags are legacy vocabulary (Poster, Broadsheet, Specimen, etc.), still useful loosely: if what you're making reads like one of them, a chassis tagged for it is a reasonable default. If you didn't name an archetype, skip this criterion.
 3. **Match by mood.** Use the `Moods` column to break ties between equally-fit chassis.
 
@@ -153,7 +153,7 @@ Write a structured visual spec with these five sections (the Unified Designer re
 - **Text colors** — exact hex for primary text, secondary text, muted text
 
 ### 2. Typography (chassis-derived; you don't pick fonts here, but you DO specify use)
-- **Hero phrase rendering** — which chassis token (e.g., `display`), which ramp step (`hero` is a fluid clamp sized for marquee; `2xl`/`3xl` for fixed display), how it composes with surroundings
+- **Hero phrase rendering** — which chassis token (e.g., `display`), which ramp step (`hero` is a fluid clamp sized for marquee; `2xl` through `5xl` are fluid clamps too, for display below the marquee; `xl` and down are fixed), how it composes with surroundings
 - **Type treatment** — the ramp steps double as `textStyle` tokens carrying size, leading and tracking together, tuned per chassis; name the steps for hero, headings, body and captions instead of inventing line-height or letter-spacing values
 
 ### 3. Layout Specification

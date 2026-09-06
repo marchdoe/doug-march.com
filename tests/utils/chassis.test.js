@@ -48,6 +48,20 @@ const TEST_CHASSIS = {
 
 const px = (value) => Math.round(parseFloat(value) * 16 * 10) / 10
 
+/** The content column a 360px viewport actually offers, measured on the
+ *  canary #457 was filed against. */
+const NARROW_COLUMN_PX = 317
+
+/** Width of an eight-character project name as a multiple of its font size,
+ *  from the same measurement: "Spaceman" at 89.76px ran to 388px. */
+const EIGHT_CHAR_EM = 388 / 89.76
+
+/** The ratio a chassis was authored on, read back off its own table: `md` is
+ *  one ratio step above `base`. Derived rather than listed, so adding a
+ *  chassis never means updating a map here. */
+const ratioOf = (chassis) =>
+  parseFloat(chassis.type.steps.md.size) / parseFloat(chassis.type.steps.base.size)
+
 describe('scaleSteps — the generated table', () => {
   const steps = scaleSteps(1.5, '1rem')
 
@@ -75,8 +89,9 @@ describe('scaleSteps — the generated table', () => {
 
   it('runs the ratio up to 5xl and the fixed minor second down to 2xs', () => {
     expect(steps.md.size).toBe('1.5rem')
-    expect(steps['2xl'].size).toBe('5.063rem')
-    expect(steps['5xl'].size).toBe('17.086rem')
+    expect(steps.xl.size).toBe('3.375rem')
+    expect(stepPxAt(steps['2xl'], 1440)).toBe(81)
+    expect(stepPxAt(steps['5xl'], 1440)).toBe(273.4)
     expect(steps.sm.size).toBe('0.889rem')
     expect(steps.xs.size).toBe('0.79rem')
     expect(steps['2xs'].size).toBe('0.702rem')
@@ -92,6 +107,48 @@ describe('scaleSteps — the generated table', () => {
 
   it('generates the same hero clamp the pre-table ramp shipped at ratio 1.5', () => {
     expect(steps.hero.size).toBe('clamp(5.063rem, 4.219rem + 3.75vw, 7.594rem)')
+  })
+
+  it('runs 2xl through 5xl as clamps and leaves xl and below fixed', () => {
+    for (const step of ['2xl', '3xl', '4xl', '5xl']) {
+      expect(steps[step].size, step).toMatch(/^clamp\(/)
+    }
+    for (const step of ['2xs', 'xs', 'sm', 'base', 'md', 'lg', 'xl']) {
+      expect(steps[step].size, step).toMatch(/^[\d.]+rem$/)
+    }
+  })
+
+  it('caps each display clamp at the value the fixed step shipped', () => {
+    // The geometric ramp, base 1rem on ratio 1.5. Desktop must not move: the
+    // only thing #457 changed is where each step starts at 360.
+    const maxOf = (size) => size.match(/,\s*([\d.]+rem)\)$/)[1]
+    expect(maxOf(steps['2xl'].size)).toBe('5.063rem')
+    expect(maxOf(steps['3xl'].size)).toBe('7.594rem')
+    expect(maxOf(steps['4xl'].size)).toBe('11.391rem')
+    expect(maxOf(steps['5xl'].size)).toBe('17.086rem')
+  })
+
+  it('compresses the narrow end onto a smaller ratio, topping out at the ceiling', () => {
+    // 5xl lands on the narrow ceiling — the lower of the hero's own 360px size
+    // and the 72px an eight-character word can occupy in a 317px column — and
+    // the three steps below it fall out geometrically from the fixed xl.
+    expect(stepPxAt(steps['5xl'], 360)).toBe(72)
+    const narrow = ['2xl', '3xl', '4xl', '5xl'].map((s) => stepPxAt(steps[s], 360))
+    expect(narrow).toEqual([58, 62.4, 67, 72])
+    // One compressed ratio throughout: 1.0746, the fourth root of the
+    // ceiling over the fixed xl. (Loose to 2dp — stepPxAt rounds to 0.1px.)
+    const gaps = narrow.slice(1).map((v, i) => v / narrow[i])
+    for (const gap of gaps) expect(gap).toBeCloseTo(1.0746, 2)
+  })
+
+  it('leaves a chassis gentle enough to already fit 360 entirely fixed', () => {
+    // The compressed ratio is capped at the chassis ratio, so the narrow end
+    // can never expand a scale. On a 1.2 ratio the whole ramp tops out at 57px
+    // and there is nothing to shrink.
+    const gentle = scaleSteps(1.2, '1rem')
+    for (const step of ['2xl', '3xl', '4xl', '5xl']) {
+      expect(gentle[step].size, step).toMatch(/^[\d.]+rem$/)
+    }
   })
 
   it('floors the hero at 64px and spans it to 1.5x on a gentle ratio', () => {
@@ -131,7 +188,7 @@ describe('buildFontSizes', () => {
   it('is a straight read of the step table', () => {
     const sizes = buildFontSizes(TEST_CHASSIS)
     expect(Object.keys(sizes)).toEqual(RAMP_STEPS)
-    expect(sizes['2xl'].value).toBe('5.063rem')
+    expect(sizes['2xl'].value).toBe('clamp(3.627rem, 3.148rem + 2.127vw, 5.063rem)')
     expect(sizes.hero.value).toBe('clamp(5.063rem, 4.219rem + 3.75vw, 7.594rem)')
   })
 
@@ -262,13 +319,47 @@ describe('the catalog', () => {
   })
 
   it.each(CHASSIS_CATALOG.map((c) => [c.id, c]))(
-    '%s has monotonically increasing sizes from 2xs to 5xl',
+    '%s has monotonically increasing sizes from 2xs to 5xl at 360 and at 1440',
     (_id, chassis) => {
       const fixed = RAMP_STEPS.filter((s) => s !== 'hero')
-      for (let i = 1; i < fixed.length; i++) {
-        const prev = stepPxAt(chassis.type.steps[fixed[i - 1]], 1440)
-        const next = stepPxAt(chassis.type.steps[fixed[i]], 1440)
-        expect(next, `${fixed[i]} > ${fixed[i - 1]}`).toBeGreaterThan(prev)
+      // Both ends, since #457: the display steps interpolate, and a narrow-end
+      // minimum picked without regard for the step below it would let the ramp
+      // flatten or invert on a phone while reading fine on the desktop.
+      for (const viewport of [360, 1440]) {
+        for (let i = 1; i < fixed.length; i++) {
+          const prev = stepPxAt(chassis.type.steps[fixed[i - 1]], viewport)
+          const next = stepPxAt(chassis.type.steps[fixed[i]], viewport)
+          expect(next, `${fixed[i]} > ${fixed[i - 1]} at ${viewport}`).toBeGreaterThan(prev)
+        }
+      }
+    }
+  )
+
+  it.each(CHASSIS_CATALOG.map((c) => [c.id, c]))(
+    '%s runs 2xl through 5xl as clamps whose maximum is the geometric step',
+    (_id, chassis) => {
+      // Desktop is the contract: whatever the narrow end does, the top of each
+      // clamp is still base × ratio^n, the size the fixed table shipped.
+      const ratio = ratioOf(chassis)
+      for (const [i, step] of ['2xl', '3xl', '4xl', '5xl'].entries()) {
+        const size = chassis.type.steps[step].size
+        expect(size, step).toMatch(/^clamp\(/)
+        const max = Number(size.match(/,\s*([\d.]+)rem\)$/)[1])
+        expect(max, `${step} max`).toBeCloseTo(ratio ** (4 + i), 2)
+      }
+    }
+  )
+
+  it.each(CHASSIS_CATALOG.map((c) => [c.id, c]))(
+    '%s sets an eight-character project name inside a 317px column at 360',
+    (_id, chassis) => {
+      // The #457 regression, pinned. On the canary the issue was filed against,
+      // an <h2> reading "Spaceman" was set at 89.8px — a fixed 4xl, identical at
+      // 360 and 1440 — and needed 388px of a 317px column. That is 0.54em of
+      // advance per character, the factor below.
+      for (const step of ['2xl', '3xl', '4xl', '5xl']) {
+        const px = stepPxAt(chassis.type.steps[step], 360)
+        expect(px * EIGHT_CHAR_EM, `${step} at 360`).toBeLessThanOrEqual(NARROW_COLUMN_PX)
       }
     }
   )
@@ -324,7 +415,7 @@ describe('renderChassisPresetFile', () => {
 
   it('emits the full ramp, quoting the keys that need it', () => {
     expect(source).toContain(`'2xs': { value: "0.702rem" }`)
-    expect(source).toContain(`'5xl': { value: "17.086rem" }`)
+    expect(source).toContain(`'5xl': { value: "clamp(4.5rem, 0.305rem + 18.646vw, 17.086rem)" }`)
     expect(source).toContain(`hero: { value: "clamp(5.063rem, 4.219rem + 3.75vw, 7.594rem)" }`)
   })
 

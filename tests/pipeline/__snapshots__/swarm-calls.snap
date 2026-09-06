@@ -66,7 +66,7 @@ backwards from a name to a tuple; compose from the axes first.
 Typography — fonts AND type scale — is selected from the curated chassis catalog appended below. You do NOT pick fonts or sizes freely. Pick ONE chassis ID from the table.
 
 Selection criteria, in order:
-1. **How loud should the hero be?** Every chassis renders the hero at 64px or more on a 360px viewport, so marquee is never infeasible; the choice is how loud the desktop marquee gets. Hero at 1440px, loudest first: big-shoulders-atkinson 177px, dm-serif-public 177px, alfa-rubik 177px, bricolage-manrope 122px, anton-inter-tight 122px, bebas-plex 122px, fraunces-karla 122px, space-mono-archivo 122px, unbounded-figtree 122px, anybody-franklin 120px, spectral-albert 96px, zilla-worksans 96px, source-serif-text 96px, bitter-mulish 96px, hanken-solo 96px. Reserve the quietest heroes for editorial or literary phrases that don't want shouting. The condensed-caps chassis (big-shoulders-atkinson, anton-inter-tight, bebas-plex) share one register — don't default to them every time a phrase wants scale. The catalog table below carries each chassis's hero size at 360px and 1440px. Pick the voice that matches the phrase, and consult the Chassis Mandate in your inputs: recently-used chassis are listed there, and reaching for one anyway needs a justification in your rationale.
+1. **How loud should the hero be?** Every chassis renders the hero at 64px or more on a 360px viewport, so marquee is never infeasible; the choice is how loud the desktop marquee gets. Hero at 1440px, loudest first: big-shoulders-atkinson 177px, dm-serif-public 177px, alfa-rubik 177px, bricolage-manrope 122px, anton-inter-tight 122px, bebas-plex 122px, fraunces-karla 122px, space-mono-archivo 122px, unbounded-figtree 122px, anybody-franklin 120px, spectral-albert 96px, zilla-worksans 96px, source-serif-text 96px, bitter-mulish 96px, hanken-solo 96px. `hero` and every step from `2xl` up are fluid clamps that shrink to fit a 360px column; `xl` and below are fixed and render the same size at every width. Spec a display step by the register you want, not by a pixel size — the numbers in the catalog table are the two ends of a range. Reserve the quietest heroes for editorial or literary phrases that don't want shouting. The condensed-caps chassis (big-shoulders-atkinson, anton-inter-tight, bebas-plex) share one register — don't default to them every time a phrase wants scale. The catalog table below carries each chassis's hero and 5xl sizes at 360px and 1440px — the two ends of the display register, top and bottom. Pick the voice that matches the phrase, and consult the Chassis Mandate in your inputs: recently-used chassis are listed there, and reaching for one anyway needs a justification in your rationale.
 2. **Match by descriptive affinity, if you named one.** The chassis catalog lists "Best for archetypes" — those tags are legacy vocabulary (Poster, Broadsheet, Specimen, etc.), still useful loosely: if what you're making reads like one of them, a chassis tagged for it is a reasonable default. If you didn't name an archetype, skip this criterion.
 3. **Match by mood.** Use the `Moods` column to break ties between equally-fit chassis.
 
@@ -176,7 +176,7 @@ Write a structured visual spec with these five sections (the Unified Designer re
 - **Text colors** — exact hex for primary text, secondary text, muted text
 
 ### 2. Typography (chassis-derived; you don't pick fonts here, but you DO specify use)
-- **Hero phrase rendering** — which chassis token (e.g., `display`), which ramp step (`hero` is a fluid clamp sized for marquee; `2xl`/`3xl` for fixed display), how it composes with surroundings
+- **Hero phrase rendering** — which chassis token (e.g., `display`), which ramp step (`hero` is a fluid clamp sized for marquee; `2xl` through `5xl` are fluid clamps too, for display below the marquee; `xl` and down are fixed), how it composes with surroundings
 - **Type treatment** — the ramp steps double as `textStyle` tokens carrying size, leading and tracking together, tuned per chassis; name the steps for hero, headings, body and captions instead of inventing line-height or letter-spacing values
 
 ### 3. Layout Specification
@@ -806,23 +806,23 @@ Render both on the About page. There is no standing component for either — com
 
 ## Typography Chassis Catalog
 
-| ID | Name | Feel | Moods | Best for archetypes | Hero px 360→1440 |
-|----|------|------|-------|---------------------|------------------|
-| `bricolage-manrope` | Bricolage Grotesque + Manrope | Expressive variable display with humanist body — modern, warm, brand-driven. | expressive, modern, brand-driven, warm, distinctive | Poster, Stack, Scroll | 81→122 |
-| `spectral-albert` | Spectral + Albert Sans | Transitional slab serif with humanist body — editorial, literary, considered. | editorial, literary, considered, distinctive, reflective | Broadsheet, Stack, Scroll, Gallery Wall | 64→96 |
-| `big-shoulders-atkinson` | Big Shoulders Display + Atkinson Hyperlegible | Condensed signage display with hyperlegible body — dramatic, athletic, brand-loud. | dramatic, poster, condensed, athletic, signage | Poster, Specimen | 110→177 |
-| `anton-inter-tight` | Anton + Inter Tight | Condensed display heavy + workhorse sans body — confident, headline-led, modern. | dramatic, poster, condensed, headline-led, modern | Poster, Specimen, Stack | 81→122 |
-| `bebas-plex` | Bebas Neue + IBM Plex Sans | Condensed editorial display + humanist workhorse body — editorial, catalog, declarative. | editorial, catalog, declarative, condensed, humanist | Specimen, Index, Split | 81→122 |
-| `fraunces-karla` | Fraunces + Karla | Fat, soft variable display serif with humanist grotesk body — warm, tactile, generous. | warm, soft, tactile, editorial, friendly | Gallery Wall, Stack, Broadsheet | 81→122 |
-| `dm-serif-public` | DM Serif Display + Public Sans | High-contrast didone display with civic-neutral body — dramatic, fashion-editorial, declarative. | dramatic, fashion, elegant, high-contrast, declarative | Poster, Specimen, Gallery Wall | 110→177 |
-| `zilla-worksans` | Zilla Slab + Work Sans | Sturdy low-contrast slab serif with humanist body — confident, structural, civic. | confident, structural, civic, editorial, grounded | Broadsheet, Index, Stack | 64→96 |
-| `space-mono-archivo` | Space Mono + Archivo | Retro-futurist monospace display with neutral grotesk body — technical, precise, terminal-adjacent. | technical, retro-futurist, terminal, precise, quirky | Specimen, Index, Split | 81→122 |
-| `unbounded-figtree` | Unbounded + Figtree | Blocky, wide geometric display with warm neutral grotesk body — expanded, confident, modern-loud. | geometric, expanded, blocky, confident, modern | Poster, Specimen, Gallery Wall | 81→122 |
-| `anybody-franklin` | Anybody + Libre Franklin | Wide squarish grotesk with true italics + Franklin Gothic body — broad, sporty, emphatic. | wide, sporty, confident, italic-forward, modern | Poster, Split, Stack | 72→120 |
-| `source-serif-text` | Source Serif 4, alone | Optically-sized text serif running display and body alike — literary, quiet, bookish. | literary, quiet, bookish, warm, text-led | Broadsheet, Scroll, Stack | 64→96 |
-| `bitter-mulish` | Bitter + Mulish | Screen slab with real heavy cuts + soft humanist body — sturdy, warm, weighted. | slab, grounded, sturdy, editorial, contemporary | Broadsheet, Index, Split | 64→96 |
-| `hanken-solo` | Hanken Grotesk, alone | One humanist grotesk at three weights — single-voice, quiet, committed. | humanist, single-voice, quiet, warm, understated | Scroll, Stack, Index | 64→96 |
-| `alfa-rubik` | Alfa Slab One + Rubik | Ultra-bold fatface slab with rounded grotesk body — carnival-loud, warm, physical. | fat, playful, carnival, loud, rounded | Poster, Specimen, Gallery Wall | 110→177 |
+| ID | Name | Feel | Moods | Best for archetypes | Hero px 360→1440 | 5xl px 360→1440 |
+|----|------|------|-------|---------------------|------------------|-----------------|
+| `bricolage-manrope` | Bricolage Grotesque + Manrope | Expressive variable display with humanist body — modern, warm, brand-driven. | expressive, modern, brand-driven, warm, distinctive | Poster, Stack, Scroll | 81→122 | 72→273 |
+| `spectral-albert` | Spectral + Albert Sans | Transitional slab serif with humanist body — editorial, literary, considered. | editorial, literary, considered, distinctive, reflective | Broadsheet, Stack, Scroll, Gallery Wall | 64→96 | 64→120 |
+| `big-shoulders-atkinson` | Big Shoulders Display + Atkinson Hyperlegible | Condensed signage display with hyperlegible body — dramatic, athletic, brand-loud. | dramatic, poster, condensed, athletic, signage | Poster, Specimen | 110→177 | 72→465 |
+| `anton-inter-tight` | Anton + Inter Tight | Condensed display heavy + workhorse sans body — confident, headline-led, modern. | dramatic, poster, condensed, headline-led, modern | Poster, Specimen, Stack | 81→122 | 72→273 |
+| `bebas-plex` | Bebas Neue + IBM Plex Sans | Condensed editorial display + humanist workhorse body — editorial, catalog, declarative. | editorial, catalog, declarative, condensed, humanist | Specimen, Index, Split | 81→122 | 72→273 |
+| `fraunces-karla` | Fraunces + Karla | Fat, soft variable display serif with humanist grotesk body — warm, tactile, generous. | warm, soft, tactile, editorial, friendly | Gallery Wall, Stack, Broadsheet | 81→122 | 72→273 |
+| `dm-serif-public` | DM Serif Display + Public Sans | High-contrast didone display with civic-neutral body — dramatic, fashion-editorial, declarative. | dramatic, fashion, elegant, high-contrast, declarative | Poster, Specimen, Gallery Wall | 110→177 | 72→465 |
+| `zilla-worksans` | Zilla Slab + Work Sans | Sturdy low-contrast slab serif with humanist body — confident, structural, civic. | confident, structural, civic, editorial, grounded | Broadsheet, Index, Stack | 64→96 | 64→120 |
+| `space-mono-archivo` | Space Mono + Archivo | Retro-futurist monospace display with neutral grotesk body — technical, precise, terminal-adjacent. | technical, retro-futurist, terminal, precise, quirky | Specimen, Index, Split | 81→122 | 72→273 |
+| `unbounded-figtree` | Unbounded + Figtree | Blocky, wide geometric display with warm neutral grotesk body — expanded, confident, modern-loud. | geometric, expanded, blocky, confident, modern | Poster, Specimen, Gallery Wall | 81→122 | 72→273 |
+| `anybody-franklin` | Anybody + Libre Franklin | Wide squarish grotesk with true italics + Franklin Gothic body — broad, sporty, emphatic. | wide, sporty, confident, italic-forward, modern | Poster, Split, Stack | 72→120 | 64→181 |
+| `source-serif-text` | Source Serif 4, alone | Optically-sized text serif running display and body alike — literary, quiet, bookish. | literary, quiet, bookish, warm, text-led | Broadsheet, Scroll, Stack | 64→96 | 64→120 |
+| `bitter-mulish` | Bitter + Mulish | Screen slab with real heavy cuts + soft humanist body — sturdy, warm, weighted. | slab, grounded, sturdy, editorial, contemporary | Broadsheet, Index, Split | 64→96 | 64→181 |
+| `hanken-solo` | Hanken Grotesk, alone | One humanist grotesk at three weights — single-voice, quiet, committed. | humanist, single-voice, quiet, warm, understated | Scroll, Stack, Index | 64→96 | 64→181 |
+| `alfa-rubik` | Alfa Slab One + Rubik | Ultra-bold fatface slab with rounded grotesk body — carnival-loud, warm, physical. | fat, playful, carnival, loud, rounded | Poster, Specimen, Gallery Wall | 110→177 | 72→465 |
 
 ---
 
@@ -1141,23 +1141,23 @@ Failure example: visual spec says "primary hue 18° terracotta," preset has only
 
 The hero phrase must render at the intended scale on a 1440×900 viewport. Check:
 
-- Every chassis's hero reaches at least 64px on a 360px viewport, so marquee is never impossible; the question is whether the declared hero_scale and composition match the chassis's actual voice. The per-chassis numbers, generated from the catalog:
+- Every chassis's hero reaches at least 64px on a 360px viewport, so marquee is never impossible; the question is whether the declared hero_scale and composition match the chassis's actual voice. `hero` and every step from `2xl` up are fluid clamps, so each figure below is a 360→1440 range; `base` is fixed. The per-chassis numbers, generated from the catalog:
 
-- `bricolage-manrope`: hero 81px at 360 → 122px at 1440; 2xl 81px; base 16px
-- `spectral-albert`: hero 64px at 360 → 96px at 1440; 2xl 51px; base 16px
-- `big-shoulders-atkinson`: hero 110px at 360 → 177px at 1440; 2xl 110px; base 16px
-- `anton-inter-tight`: hero 81px at 360 → 122px at 1440; 2xl 81px; base 16px
-- `bebas-plex`: hero 81px at 360 → 122px at 1440; 2xl 81px; base 16px
-- `fraunces-karla`: hero 81px at 360 → 122px at 1440; 2xl 81px; base 16px
-- `dm-serif-public`: hero 110px at 360 → 177px at 1440; 2xl 110px; base 16px
-- `zilla-worksans`: hero 64px at 360 → 96px at 1440; 2xl 51px; base 16px
-- `space-mono-archivo`: hero 81px at 360 → 122px at 1440; 2xl 81px; base 16px
-- `unbounded-figtree`: hero 81px at 360 → 122px at 1440; 2xl 81px; base 16px
-- `anybody-franklin`: hero 72px at 360 → 120px at 1440; 2xl 64px; base 16px
-- `source-serif-text`: hero 64px at 360 → 96px at 1440; 2xl 51px; base 16px
-- `bitter-mulish`: hero 64px at 360 → 96px at 1440; 2xl 64px; base 16px
-- `hanken-solo`: hero 64px at 360 → 96px at 1440; 2xl 64px; base 16px
-- `alfa-rubik`: hero 110px at 360 → 177px at 1440; 2xl 110px; base 16px
+- `bricolage-manrope`: hero 81px at 360 → 122px at 1440; 2xl 58→81px; 5xl 72→273px; base 16px
+- `spectral-albert`: hero 64px at 360 → 96px at 1440; 2xl 43→51px; 5xl 64→120px; base 16px
+- `big-shoulders-atkinson`: hero 110px at 360 → 177px at 1440; 2xl 69→110px; 5xl 72→465px; base 16px
+- `anton-inter-tight`: hero 81px at 360 → 122px at 1440; 2xl 58→81px; 5xl 72→273px; base 16px
+- `bebas-plex`: hero 81px at 360 → 122px at 1440; 2xl 58→81px; 5xl 72→273px; base 16px
+- `fraunces-karla`: hero 81px at 360 → 122px at 1440; 2xl 58→81px; 5xl 72→273px; base 16px
+- `dm-serif-public`: hero 110px at 360 → 177px at 1440; 2xl 69→110px; 5xl 72→465px; base 16px
+- `zilla-worksans`: hero 64px at 360 → 96px at 1440; 2xl 43→51px; 5xl 64→120px; base 16px
+- `space-mono-archivo`: hero 81px at 360 → 122px at 1440; 2xl 58→81px; 5xl 72→273px; base 16px
+- `unbounded-figtree`: hero 81px at 360 → 122px at 1440; 2xl 58→81px; 5xl 72→273px; base 16px
+- `anybody-franklin`: hero 72px at 360 → 120px at 1440; 2xl 49→64px; 5xl 64→181px; base 16px
+- `source-serif-text`: hero 64px at 360 → 96px at 1440; 2xl 43→51px; 5xl 64→120px; base 16px
+- `bitter-mulish`: hero 64px at 360 → 96px at 1440; 2xl 49→64px; 5xl 64→181px; base 16px
+- `hanken-solo`: hero 64px at 360 → 96px at 1440; 2xl 49→64px; 5xl 64→181px; base 16px
+- `alfa-rubik`: hero 110px at 360 → 177px at 1440; 2xl 69→110px; 5xl 72→465px; base 16px
 
 - If `field_ratio` is `type-dominant` or `drenched`, or `density` is `sparse` (type is doing the visual work with few other elements to lean on), the hero at 1440 should sit in the loud half of the table. Flag a quiet-voiced chassis (hero below ~110px at 1440) carrying a type-as-the-page composition unless the rationale owns the restraint.
 - The chassis catalog lists "Best for archetypes" (legacy vocabulary) — if the Art Director named a descriptive archetype and the chosen chassis isn't tagged for it, flag it (acceptable if the rationale explicitly justifies it; otherwise revise). Skip this bullet entirely when no archetype was named — there is nothing to match against.
@@ -4028,7 +4028,7 @@ These 15 names are the whole colour vocabulary, every night. The Art Director's 
 
 A name outside this set is a build failure, whether it resolves or not. That includes reaching past the semantic layer into the palette: `sand.300` and `gold.800` are real tokens and they still fail, because they pin an ink to one scale step the day's design cannot move.
 
-**Font sizes.** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `hero`. That is the whole ramp. `6xl`, `7xl`, `8xl` and anything past them do not exist and never have. `hero` is already a fluid clamp sized off the chassis, so reach for it on the headline rather than hand-writing `clamp(4rem,8.5vw,8.5rem)`.
+**Font sizes.** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `hero`. That is the whole ramp. `6xl`, `7xl`, `8xl` and anything past them do not exist and never have. `hero` and every step from `2xl` up are already fluid clamps sized off the chassis, so reach for one on a headline rather than hand-writing `clamp(4rem,8.5vw,8.5rem)` or setting a smaller step at `base` and a larger one at `lg`. `xl` and below are fixed.
 
 **Text styles.** The same step names are textStyle tokens: `textStyle: 'hero'` sets size, line-height and letter-spacing together, tuned per chassis. This is the preferred way to set type; it cannot drift from the ramp.
 
@@ -4209,7 +4209,7 @@ export const elementsPreset = definePreset({
 Components reference token names, NOT raw color values. A name outside these sets ships as a bare identifier, the browser drops the declaration, and the element silently keeps its inherited value.
 
 - **Fonts:** `display` and `body` come from the chassis. Anything else exists only if the preset defines it.
-- **Font sizes:** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `hero`. Nothing above `5xl` exists. `hero` is a fluid clamp, ready to use on a headline.
+- **Font sizes:** `2xs`, `xs`, `sm`, `base`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`, `5xl`, `hero`. Nothing above `5xl` exists. `hero` and every step from `2xl` up are fluid clamps that shrink to fit a 360px column, so a heading set in one resizes on its own; `xl` and below are fixed.
 - **Text styles:** every ramp step is also a `textStyle` token (`textStyle: 'hero'`) carrying size, line-height and letter-spacing together, tuned per step by the day's chassis. Prefer `textStyle` over setting `fontSize` alone.
 - **Spacing:** `1`-`9`, derived from the chassis rhythm and landing close to 4, 8, 16, 24, 32, 48, 64, 96, 128px on every chassis. A bare number is a spacing token, so a literal size needs its unit (`width: '44px'`).
 - **Line heights:** `tight`, `snug`, `normal`, `loose` — derived from the chassis step table. A step's own leading comes free with `textStyle`.
