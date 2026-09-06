@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doug March — 6–0. Shutout.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One:wght@400&family=Rubik:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4efe1; --surface:#fcfaf1;
+    --text:#1b1810; --muted:#514a38; --faint:#635b44;
+    --border:#ddd4ba; --borderStrong:#b6aa86;
+    --field:#e8bc16; --fieldInk:#1e1905; --fieldInkMuted:#574508; --fieldBorder:#c39d10;
+    --accentAlt:#a87f0a;
+    --display:"Alfa Slab One",Georgia,serif;
+    --body:"Rubik",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:var(--body); font-weight:400;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    font-kerning:normal;
+  }
+  h1,h2,h3,h4{margin:0; text-wrap:balance;}
+  p{margin:0; text-wrap:pretty;}
+  a{color:inherit; text-decoration:none;}
+
+  .stage{
+    display:grid;
+    grid-template-columns:1fr;
+    min-height:100vh;
+  }
+  @media(min-width:900px){
+    .stage{ grid-template-columns:1.4fr 1fr; }
+  }
+
+  /* ---------- LEFT: gold scoreboard field ---------- */
+  .field{
+    background:var(--field);
+    color:var(--fieldInk);
+    padding:clamp(40px,6vw,112px) clamp(28px,6vw,112px);
+    min-height:62vh;
+    display:flex; flex-direction:column; justify-content:center;
+    border-bottom:2px solid var(--fieldBorder);
+  }
+  @media(min-width:900px){
+    .field{ min-height:100vh; border-bottom:none; border-right:2px solid var(--fieldBorder); }
+  }
+  .eyebrow{
+    font-family:var(--body); font-weight:500;
+    font-size:13px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--fieldInkMuted);
+    margin-bottom:clamp(18px,3vw,34px);
+  }
+  .marquee{
+    font-family:var(--display); font-weight:400;
+    font-size:clamp(104px,21vw,240px);
+    line-height:0.84;
+    letter-spacing:-0.01em;
+    color:var(--fieldInk);
+    margin-left:-0.02em;
+  }
+  .shout{
+    font-family:var(--display); font-weight:400;
+    font-size:clamp(40px,6.4vw,74px);
+    line-height:0.95;
+    letter-spacing:-0.005em;
+    color:var(--fieldInk);
+    margin-top:clamp(8px,1.4vw,18px);
+  }
+  .standfirst{
+    font-family:var(--body); font-weight:400;
+    font-size:clamp(18px,1.9vw,25px);
+    line-height:1.5;
+    color:var(--fieldInkMuted);
+    max-width:26ch;
+    margin-top:clamp(22px,3.4vw,40px);
+  }
+  .field-foot{
+    margin-top:clamp(28px,4vw,52px);
+    padding-top:16px;
+    border-top:1px solid var(--fieldBorder);
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    font-family:var(--body); font-weight:500;
+    font-size:13px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--fieldInkMuted);
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- RIGHT: chalk evidence column ---------- */
+  .evidence{
+    background:var(--bg);
+    padding:clamp(32px,4.5vw,64px) clamp(24px,4vw,72px) clamp(28px,3vw,48px);
+    display:flex; flex-direction:column;
+  }
+
+  /* header / lockup */
+  .lockup{
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+    gap:10px;
+  }
+  .lockup .mark{ height:48px; width:auto; display:block; }
+  .wordmark{
+    font-family:var(--display); font-weight:400;
+    font-size:22px; letter-spacing:-0.015em; line-height:1;
+    color:var(--text);
+  }
+  .role{
+    font-family:var(--body); font-weight:500;
+    font-size:13px; letter-spacing:0.11em; text-transform:uppercase;
+    color:var(--muted);
+  }
+  nav.nav{
+    display:flex; justify-content:center; gap:6px;
+    margin-top:16px; flex-wrap:wrap;
+  }
+  nav.nav a{
+    font-family:var(--body); font-weight:500;
+    font-size:14px; letter-spacing:0.08em; font-variant-caps:small-caps;
+    text-transform:lowercase;
+    color:var(--text);
+    padding:11px 14px; min-height:44px; display:inline-flex; align-items:center;
+    border-bottom:1px solid var(--border);
+  }
+  nav.nav a:hover{ border-bottom:2px solid var(--accentAlt); }
+  .head-rule{ border:none; border-top:1px solid var(--borderStrong); margin:22px 0 4px; }
+
+  /* box score */
+  .sect{ margin-top:clamp(30px,3.4vw,44px); }
+  .sect-label{
+    font-family:var(--body); font-weight:700;
+    font-size:13px; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+  .final-row{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; padding:16px 0;
+    border-top:2px solid var(--borderStrong);
+    border-bottom:1px solid var(--border);
+  }
+  .final-teams{
+    font-family:var(--display); font-weight:400;
+    font-size:clamp(22px,3vw,30px); letter-spacing:-0.01em;
+    color:var(--text); font-variant-numeric:tabular-nums;
+  }
+  .final-teams .z{ color:var(--accentAlt); }
+  .final-tag{
+    font-family:var(--body); font-weight:500;
+    font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--faint);
+  }
+  .rows{ display:flex; flex-direction:column; }
+  .row{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:14px; padding:11px 0;
+    border-bottom:1px solid var(--border);
+    font-variant-numeric:tabular-nums;
+  }
+  .row .k{
+    font-family:var(--body); font-weight:500;
+    font-size:12.5px; letter-spacing:0.09em; text-transform:uppercase;
+    color:var(--muted); white-space:nowrap;
+  }
+  .row .v{
+    font-family:var(--body); font-weight:400;
+    font-size:16px; color:var(--text); text-align:right;
+  }
+  .row .v.dim{ color:var(--faint); }
+  .row .v .dn{ color:var(--accentAlt); font-weight:500; }
+
+  /* projects */
+  .prob{
+    font-family:var(--body); font-weight:400;
+    font-size:17px; line-height:1.55; color:var(--muted);
+    max-width:62ch; margin:6px 0 14px;
+  }
+  .feat-title{
+    font-family:var(--display); font-weight:400;
+    font-size:clamp(30px,4vw,44px); letter-spacing:-0.01em;
+    line-height:1; color:var(--text);
+  }
+  .feat-meta{
+    font-family:var(--body); font-weight:500;
+    font-size:12.5px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--faint); margin-top:8px;
+  }
+  .extlink{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--body); font-weight:500; font-size:15px;
+    color:var(--text); border-bottom:1px solid var(--accentAlt);
+    padding-bottom:2px;
+  }
+  .extlink:hover{ border-bottom:2px solid var(--accentAlt); }
+  .proj-row{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:14px; padding:14px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .proj-row:first-of-type{ border-top:1px solid var(--border); }
+  .proj-row .pt{
+    font-family:var(--body); font-weight:500; font-size:18px; color:var(--text);
+  }
+  .proj-row:hover .pt{ color:var(--accentAlt); }
+  .proj-row .pm{
+    font-family:var(--body); font-weight:400; font-size:13px;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--faint);
+    white-space:nowrap; font-variant-numeric:tabular-nums;
+  }
+
+  /* quote footnote */
+  .quote{
+    margin-top:clamp(30px,3.6vw,46px);
+    padding-top:18px; border-top:1px solid var(--border);
+    font-family:var(--body); font-style:italic; font-weight:400;
+    font-size:15px; line-height:1.55; color:var(--faint);
+    max-width:58ch;
+  }
+  .quote cite{ display:block; font-style:normal; font-weight:500;
+    font-size:12px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--muted); margin-top:8px; }
+
+  /* footer */
+  .foot{
+    margin-top:auto; padding-top:20px;
+    border-top:1px solid var(--borderStrong);
+    display:flex; flex-wrap:wrap; gap:8px 22px;
+    font-family:var(--body); font-weight:500;
+    font-size:12px; letter-spacing:0.09em; text-transform:uppercase;
+    color:var(--faint); font-variant-numeric:tabular-nums;
+    margin-top:clamp(30px,4vw,52px);
+  }
+</style>
+</head>
+<body>
+  <main class="stage">
+
+    <!-- LEFT: gold scoreboard field -->
+    <section class="field">
+      <p class="eyebrow">Final · Sept 5, 2026 · Detroit</p>
+      <h1 class="marquee">6&#8211;0.</h1>
+      <p class="shout">Shutout.</p>
+      <p class="standfirst">The one clean win in today's signals — Detroit Tigers, September 5. Six runs scored, zero allowed.</p>
+      <div class="field-foot">
+        <span>Runs · 6</span>
+        <span>Allowed · 0</span>
+        <span>Hits · 11</span>
+        <span>Errors · 0</span>
+      </div>
+    </section>
+
+    <!-- RIGHT: chalk evidence column -->
+    <section class="evidence">
+
+      <header>
+        <div class="lockup">
+          <svg class="mark" width="71" height="59" viewBox="0 0 71 59" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Doug March logo">
+            <path d="M29.8924 0.440186C13.8749 0.440186 0.889618 13.4254 0.889618 29.443C0.889618 45.4613 13.8749 58.4466 29.8924 58.4466C45.9108 58.4466 58.896 45.4613 58.896 29.443C58.8952 13.4254 45.91 0.440186 29.8924 0.440186Z" fill="white"/>
+            <path d="M29.8925 0.440186C45.91 0.440257 58.8956 13.4256 58.8965 29.4431C58.8964 45.4614 45.9108 58.4469 29.8925 58.447C13.8751 58.447 0.889689 45.4614 0.889618 29.4431C0.889618 13.4256 13.875 0.440186 29.8925 0.440186ZM29.8935 5.97729C16.9329 5.97729 6.42673 16.4841 6.42673 29.4431C6.4268 42.4021 16.9329 52.9099 29.8935 52.9099C42.8532 52.9098 53.3583 42.402 53.3584 29.4431C53.3584 16.4842 42.854 5.97745 29.8935 5.97729Z" fill="#7AC042"/>
+            <circle cx="30.0829" cy="29.3002" r="0.98668" fill="#BBBDBF"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M47.8611 29.3418C47.8611 39.1396 39.9198 47.0816 30.1214 47.0816C20.3244 47.0816 12.3823 39.1396 12.3823 29.3418C12.3823 19.5463 20.3244 11.6013 30.1214 11.6013C39.9198 11.6013 47.8611 19.5463 47.8611 29.3418Z" stroke="#DADADA" stroke-width="0.25"/>
+            <circle cx="30.1217" cy="29.3415" r="18.8911" stroke="#DADADA" stroke-width="0.25"/>
+            <circle cx="30.1217" cy="29.3416" r="20.033" stroke="#DADADA" stroke-width="0.25"/>
+            <circle cx="30.1217" cy="29.3415" r="21.1098" stroke="#DADADA" stroke-width="0.25"/>
+            <circle cx="30.1217" cy="29.3416" r="22.114" stroke="#DADADA" stroke-width="0.25"/>
+            <path d="M68.9722 9.76277C68.1324 8.9222 66.8896 8.48386 65.2438 8.44856C65.2922 6.88646 64.8416 5.63053 63.8902 4.67997C62.9667 3.7565 61.8454 3.30913 60.523 3.33293C59.2022 3.35838 58.0612 3.85254 57.0967 4.81706L52.8331 9.08227L52.8134 9.06175L31.8666 30.0094C30.7215 31.1553 29.7373 31.317 28.914 30.4937C28.5708 30.1506 28.396 29.7385 28.387 29.2542C28.3787 28.7707 28.5413 28.3627 28.8721 28.0311C29.2169 27.6872 29.6281 27.5148 30.1108 27.5074C30.5918 27.5025 30.9989 27.665 31.333 27.9999C31.5957 28.2626 31.7599 28.6287 31.8239 29.0917L35.3553 25.5611C34.999 25.1499 34.7265 24.8494 34.5377 24.6631C33.3491 23.4737 31.8789 22.8835 30.1313 22.895C28.382 22.9056 26.9053 23.5139 25.7011 24.7181C24.4575 25.9625 23.8426 27.4508 23.8607 29.182C23.8788 30.9148 24.5248 32.4154 25.7988 33.6893C26.4399 34.3296 27.2024 34.8156 28.0923 35.1431C28.9821 35.4706 29.8604 35.5954 30.7297 35.5149C32.2385 35.3762 33.6487 34.653 34.958 33.3429L56.0247 12.2763L56.0091 12.2598L59.5298 8.73833C59.8647 8.40424 60.1569 8.21133 60.4138 8.14731C60.6987 8.03485 60.9425 8.07343 61.1403 8.27126C61.3332 8.46334 61.3997 8.66773 61.3389 8.8828C61.2774 9.09787 61.0705 9.38353 60.7143 9.7406L55.7398 14.7142C56.5213 16.0998 57.1944 17.552 57.7444 19.0664L63.8007 13.0101C64.1348 12.6752 64.4287 12.4807 64.6856 12.4199C64.9704 12.3074 65.2134 12.3444 65.4104 12.5414C65.6017 12.7302 65.6649 12.9338 65.5984 13.1423C65.5336 13.3541 65.3251 13.6381 64.9688 13.9943L58.2763 20.6868C58.7902 22.418 59.1513 24.2149 59.3336 26.0676L68.4796 16.9207C69.6436 15.7584 70.2757 14.6165 70.3734 13.501C70.5088 12.0768 70.0409 10.8307 68.9722 9.76277Z" fill="#008ED3"/>
+          </svg>
+          <div class="wordmark">Doug March</div>
+          <div class="role">Design &amp; Engineering</div>
+        </div>
+        <nav class="nav">
+          <a href="#work">Work</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <hr class="head-rule">
+      </header>
+
+      <!-- final line heads the box score -->
+      <div class="sect">
+        <div class="sect-label">Box Score</div>
+        <div class="final-row">
+          <span class="final-teams">DET 6 · OPP <span class="z">0</span></span>
+          <span class="final-tag">Final</span>
+        </div>
+        <div class="rows">
+          <div class="row"><span class="k">Weather</span><span class="v">Sunny · 71.8°F</span></div>
+          <div class="row"><span class="k">Moon</span><span class="v dim">Waning crescent · 21%</span></div>
+          <div class="row"><span class="k">Market</span><span class="v dim">SPY 770.19 <span class="dn">▾0.39%</span></span></div>
+          <div class="row"><span class="k">Air Quality</span><span class="v">Good</span></div>
+          <div class="row"><span class="k">Labor Day</span><span class="v">Sep 7</span></div>
+        </div>
+      </div>
+
+      <!-- featured project -->
+      <div class="sect" id="work">
+        <div class="sect-label">Featured</div>
+        <h2 class="feat-title">Spaceman</h2>
+        <p class="feat-meta">Founder · 2018</p>
+        <p class="prob">Building a company from zero — the brand, the product, and the machine that ships them both. One founder wearing every hat until the hats became a team.</p>
+        <a class="extlink" href="#spaceman">Read the case →</a>
+      </div>
+
+      <!-- selected work -->
+      <div class="sect">
+        <div class="sect-label">Selected Work</div>
+        <a class="proj-row" href="#fishsticks"><span class="pt">FishSticks</span><span class="pm">SaaS · 2025</span></a>
+        <a class="proj-row" href="#club"><span class="pt">15th Club</span><span class="pm">AI · 2025</span></a>
+        <a class="proj-row" href="#dougmarch"><span class="pt">dougmar.ch</span><span class="pm">AI · 2026</span></a>
+      </div>
+
+      <!-- experiments -->
+      <div class="sect">
+        <div class="sect-label">Experiments</div>
+        <a class="proj-row" href="#teeturn"><span class="pt">TeeTurn</span><span class="pm">Experiment · 2020</span></a>
+        <a class="proj-row" href="#politweets"><span class="pt">Politweets</span><span class="pm">Experiment · 2008</span></a>
+        <a class="proj-row" href="#twittertale"><span class="pt">Twittertale</span><span class="pm">Experiment · 2008</span></a>
+      </div>
+
+      <!-- on rotation -->
+      <div class="sect">
+        <div class="sect-label">On Rotation</div>
+        <div class="rows">
+          <div class="row"><span class="k">Playing</span><span class="v">Wet Leg</span></div>
+          <div class="row"><span class="k">Playing</span><span class="v">My Morning Jacket</span></div>
+        </div>
+      </div>
+
+      <!-- quote footnote -->
+      <blockquote class="quote">
+        "Some people are old at 18 and some are young at 90."
+        <cite>— Yoko Ono</cite>
+      </blockquote>
+
+      <!-- box-score foot -->
+      <footer class="foot">
+        <span>Build 2026.09.06</span>
+        <span>Tigers · 2026</span>
+        <span>Waning Crescent 21%</span>
+        <span>SPY 770.19</span>
+      </footer>
+
+    </section>
+  </main>
+</body>
+</html>

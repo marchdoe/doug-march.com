@@ -1,43 +1,44 @@
-import { Box } from '../../../styled-system/jsx'
 import { css } from '../../../styled-system/css'
 
 type Education = { school: string; degree: string; concentration: string; years: string }
 
 export function EducationBlock({ education }: { education: Education }) {
   return (
-    <Box
-      mx={{ base: '5', md: '7', lg: '9' }}
-      mb={{ base: '9', lg: '9' }}
-      bg="field"
-      borderTop="1px solid"
-      borderColor="fieldBorder"
-      p={{ base: '5', lg: '7' }}
-      color="fieldInk"
+    <div
+      className={css({
+        mt: { base: '7', lg: '9' },
+        borderTop: '2px solid',
+        borderColor: 'borderStrong',
+        pt: '4',
+      })}
     >
       <p
         className={css({
-          fontSize: '2xs',
+          textStyle: 'xs',
+          fontWeight: 700,
+          letterSpacing: 'wider',
           textTransform: 'uppercase',
-          letterSpacing: 'wide',
-          color: 'fieldInkMuted',
-          mb: '2',
+          color: 'textMuted',
+          mb: '3',
         })}
       >
         Education
       </p>
+      <p className={css({ textStyle: 'lg', fontWeight: 500, color: 'text' })}>{education.school}</p>
+      <p className={css({ textStyle: 'sm', color: 'textMuted', mt: '1' })}>
+        {education.degree} · {education.concentration}
+      </p>
       <p
         className={css({
-          fontSize: { base: 'xl', lg: '2xl' },
-          fontWeight: '600',
-          color: 'fieldInk',
-          mb: '1',
+          textStyle: 'xs',
+          letterSpacing: 'wide',
+          textTransform: 'uppercase',
+          color: 'textFaint',
+          mt: '1',
         })}
       >
-        {education.school}
+        {education.years}
       </p>
-      <p className={css({ fontSize: 'base', color: 'fieldInkMuted' })}>
-        {education.degree} · {education.concentration} · {education.years}
-      </p>
-    </Box>
+    </div>
   )
 }

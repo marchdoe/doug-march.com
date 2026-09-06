@@ -1,0 +1,1849 @@
+{
+  "date": "2026-09-06",
+  "startedAt": "2026-09-06T14:42:43.381Z",
+  "completedAt": "2026-09-06T15:03:14.702Z",
+  "steps": [
+    {
+      "name": "signals-loaded",
+      "phase": 0,
+      "input": {
+        "providersAvailable": 19
+      },
+      "output": {
+        "air_quality": {
+          "aqi_index": 1,
+          "uv_index": 1.2,
+          "air_quality_label": "Good"
+        },
+        "awwwards": {
+          "sites_of_the_day": [
+            {
+              "title": "Every day is a gift",
+              "description": "A data physicalization and visualization about the universal pain of break-ups, the fragility of mental health, and the path to recovery and joy.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a8dd61f91d16628716348.png"
+            },
+            {
+              "title": "The Drool Creative Community",
+              "description": "A safe space for creatives, freelance designers and small studios. Wholesome events and meet ups, plus a toolset that makes client work easier.",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a8c880685666058846466.jpg"
+            },
+            {
+              "title": "CHASING THE MOMENT",
+              "description": "A webfilm in five cinematic scenes: a mannequin chasing the moment their work finally lands, and the long stretch before it does. The second half turns...",
+              "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a85df674c750673809599.jpg"
+            }
+          ]
+        },
+        "books": {
+          "currently_reading": []
+        },
+        "day_of_week": {
+          "day": "Sunday",
+          "is_weekend": true,
+          "day_index": 0
+        },
+        "github": {
+          "repos": [
+            {
+              "name": "sponsors/affaan-m",
+              "description": "",
+              "language": "JavaScript",
+              "stars": null
+            },
+            {
+              "name": "sponsors/mattpocock",
+              "description": "",
+              "language": "Shell",
+              "stars": null
+            },
+            {
+              "name": "cathrynlavery/diagram-design/stargazers",
+              "description": "",
+              "language": "HTML",
+              "stars": null
+            },
+            {
+              "name": "NousResearch/hermes-agent/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            },
+            {
+              "name": "openai/skills/stargazers",
+              "description": "",
+              "language": "Python",
+              "stars": null
+            }
+          ]
+        },
+        "golf": {
+          "tournament": "Biltmore Championship Asheville",
+          "status": "Scheduled",
+          "leaders": []
+        },
+        "hacker_news": {
+          "stories": [
+            {
+              "title": "Intellectual Fly Is Open (2025)",
+              "url": "https://bcantrill.dtrace.org/2025/12/05/your-intellectual-fly-is-open/",
+              "score": 193,
+              "by": "cyb0rg0"
+            },
+            {
+              "title": "Doomscrolling Ourselves to Death",
+              "url": "https://www.edwest.co.uk/p/doomscrolling-ourselves-to-death",
+              "score": 136,
+              "by": "shubhamjain"
+            },
+            {
+              "title": "Isar Aerospace reaches orbit and deploys payloads on second flight",
+              "url": "https://isaraerospace.com/press/history-for-european-spaceflight-isar-aerospace-reaches-orbit-and-deploys-payloads-on-second-flight",
+              "score": 362,
+              "by": "mpweiher"
+            },
+            {
+              "title": "The many mysteries and lessons of the Bayeux tapestry",
+              "url": "https://economist.com/interactive/culture/2026/09/03/the-many-mysteries-and-lessons-of-the-bayeux-tapestry",
+              "score": 18,
+              "by": "andsoitis"
+            },
+            {
+              "title": "M-DISC – DVD/Blu-ray compatible discs that may last up to 1000 years",
+              "url": "https://en.wikipedia.org/wiki/M-DISC",
+              "score": 90,
+              "by": "gurjeet"
+            }
+          ]
+        },
+        "holidays": {
+          "today": null,
+          "upcoming": [
+            {
+              "name": "Labor Day",
+              "date": "2026-09-07",
+              "days_away": 1
+            }
+          ]
+        },
+        "lunar": {
+          "phase": "waning crescent",
+          "illumination": 0.211,
+          "days_into_cycle": 25.05
+        },
+        "market": {
+          "symbol": "SPY",
+          "price": "770.1900",
+          "change": "-2.9800",
+          "change_percent": "-0.3854%",
+          "direction": "down"
+        },
+        "music": {
+          "bands": [
+            "Wet Leg",
+            "My Morning Jacket"
+          ],
+          "rotation": true
+        },
+        "news": {
+          "headlines": [
+            {
+              "title": "Robert Pattinson Wants Chris Hansen to Like ‘Primetime’ Despite His Criticisms: ‘I Hope the Inspiration His Character Has Given Is Some Kind of Compliment’ - variety.com",
+              "source": "Variety",
+              "url": "https://variety.com/2026/film/festivals/robert-pattinson-primetime-chris-hansen-criticism-1236852400/"
+            },
+            {
+              "title": "Her back hurt, then she couldn’t button her pants. The cause was alarming. - The Washington Post",
+              "source": "The Washington Post",
+              "url": "https://www.washingtonpost.com/health/2026/09/05/her-back-hurt-then-she-couldnt-button-her-pants-cause-was-alarming/"
+            },
+            {
+              "title": "Voters are fed up with data centers. Both parties are trying to cash in for midterms - NPR",
+              "source": "NPR",
+              "url": "https://www.npr.org/2026/09/05/nx-s1-5913671/ai-data-center-campaign-spending"
+            },
+            {
+              "title": "Read the Letter D4vd Wrote to Fellow Inmate While Behind Bars - TMZ",
+              "source": "TMZ",
+              "url": "https://www.tmz.com/2026/09/05/read-the-letter-d4vd-wrote-to-inmate-while-behind-bars/"
+            },
+            {
+              "title": "Have scientists discovered a dark matter particle? - Al Jazeera",
+              "source": "Al Jazeera English",
+              "url": "https://www.aljazeera.com/features/2026/9/5/have-scientists-discovered-a-dark-matter-particle"
+            }
+          ]
+        },
+        "quote": {
+          "text": "Some people are old at 18 and some are young at 90. Time is a concept that humans created.",
+          "author": "Yoko Ono"
+        },
+        "season": {
+          "season": "fall",
+          "month": 9,
+          "day": 6,
+          "day_of_year": 249,
+          "month_name": "September"
+        },
+        "sidebar": {
+          "links": [
+            {
+              "title": "AI is making development faster. But where did the work go?",
+              "url": "https://medium.com/design-bootcamp/ai-is-making-product-development-faster-57a86bc3ffa0",
+              "source": "medium.com",
+              "description": "When AI makes one part of product development faster, what happens to the rest of the system?"
+            },
+            {
+              "title": "A geometric typeface made for the age of AI",
+              "url": "https://the-brandidentity.com/typeface/ren%C3%A9-bieders-neurath-x-is-a-geometric-typeface-made-for-the-age-of-ai",
+              "source": "the-brandidentity.com",
+              "description": "The Neurath X Collection began with a question: what might geometric typography look like in the age of AI?"
+            },
+            {
+              "title": "Normal Tools",
+              "url": "https://www.normaltools.com/",
+              "source": "normaltools.com",
+              "description": "Small, useful online tools that work directly in your browser."
+            },
+            {
+              "title": "Unwinding the great tech power grab",
+              "url": "https://rebeccawilliams.info/unwinding-the-great-tech-power-grab/",
+              "source": "rebeccawilliams.info",
+              "description": "How tech has atrophied the exact civic muscle we’ll need to reclaim power over it."
+            },
+            {
+              "title": "JudgmentKit",
+              "url": "https://judgmentkit.ai/",
+              "source": "judgmentkit.ai",
+              "description": "Stop AI from building the wrong interface. Help AI agents understand the user’s work, choose the right interface, and repair what does not fit."
+            }
+          ]
+        },
+        "sports": {
+          "teams": [
+            {
+              "name": "Detroit Lions",
+              "league": "NFL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Red Wings",
+              "league": "NHL",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Pistons",
+              "league": "NBA",
+              "last_game": null,
+              "result": "off season",
+              "score": null
+            },
+            {
+              "name": "Detroit Tigers",
+              "league": "MLB",
+              "last_game": "2026-09-05T22:10Z",
+              "result": "win",
+              "score": "6-0"
+            }
+          ]
+        },
+        "sun": {
+          "sunrise": "06:49",
+          "sunset": "19:27",
+          "daylight_hours": 12.6
+        },
+        "weather": {
+          "location": "Aldie, Virginia",
+          "conditions": "Sunny",
+          "temp_f": 71.8,
+          "temp_c": 22.1,
+          "humidity": 62,
+          "wind_mph": 6.3,
+          "wind_dir": "N",
+          "feels_like_f": 70.9
+        },
+        "date": "2026-09-06"
+      },
+      "durationMs": 0,
+      "timestamp": "2026-09-06T14:42:43.394Z"
+    },
+    {
+      "name": "art-director",
+      "phase": 1,
+      "input": {
+        "compositionMandate": "## Composition Mandate\n\nRecency is tracked per axis, not per whole tuple: a value used on any of the last 3 builds is discouraged for that axis. The starting values below are derived from today's date — they are a specific place to begin, not an instruction.\n\n- **columns** — start from `two-asymmetric` (avoid `irregular-twelve`, `three`, `single`)\n- **axis** — start from `horizontal` (avoid `radial`, `diagonal`, `vertical`)\n- **symmetry** — start from `mirrored` (avoid `symmetric`, `right-weight"
+      },
+      "output": {
+        "hero_copy": "6–0. Shutout.",
+        "archetype": "reads like a stadium scoreboard split into thesis and box score",
+        "composition": {
+          "columns": "two-asymmetric",
+          "axis": "horizontal",
+          "symmetry": "left-weighted",
+          "hero_zone": "edge-bound",
+          "density": "measured",
+          "rhythm": "syncopated",
+          "shell_posture": "marginal",
+          "field_ratio": "balanced"
+        },
+        "chassisId": "alfa-rubik",
+        "specLength": 4212,
+        "specPreview": "### 1. Color Specification\n- **Primary hue** — 62° (golden yellow). Triumph asks for one saturated, load-bearing hue; gold is the color of a win. It sits inside the mandated 40–80° corridor and lands ~16° off the nearest recent primaries (46°, 78°) — the freshest spot the narrow corridor allows, justified below.\n- **Neutral palette (warm chalk, tinted toward gold):** 50 `#f7f3e8`, 100 `#efe9d7`, 200 `#ded6bd`, 300 `#c4ba99`, 400 `#9c9270`, 500 `#6f6750`, 600 `#514a38`, 700 `#383324`, 800 `#23201",
+        "selfCheck": "1. Hero quotability: Yes — \"6–0. Shutout.\" is a screenshot-able triumph, not descriptive body copy.\n2. Because-of chain: Yes — the two-part score drove the two-asymmetric split, the athletic/celebratory register drove alfa-rubik, triumph drove the single gold hue, and edge-bound left-weighting puts "
+      },
+      "durationMs": 233812,
+      "timestamp": "2026-09-06T14:46:37.220Z"
+    },
+    {
+      "name": "spec-critic",
+      "phase": 1,
+      "input": {
+        "specLength": 4212
+      },
+      "output": {
+        "verdict": "APPROVED",
+        "feedback": "APPROVED"
+      },
+      "durationMs": 77502,
+      "timestamp": "2026-09-06T14:47:57.698Z"
+    },
+    {
+      "name": "mockup-critic",
+      "phase": 2,
+      "input": {
+        "round": 0
+      },
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "**1. Sanity** — PASS. Page renders cleanly; fonts loaded (Alfa Slab One, Rubik); no overflow disasters or blank regions. No fallback serif/sans look detected.\n\n**2. Measurables**\n\n- **Canvas utilization**: ~85% on desktop. The left gold field is fully saturated and compositionally active; the right column is organized and rhythmic. Well above the 80% floor. ✓\n\n- **Hero scale**: FAIL. The \"6–0.\" phrase measures ~120–130px rendered height on desktop, well short of the declared `clamp(110px, 14vw, "
+      },
+      "durationMs": 136821,
+      "timestamp": "2026-09-06T14:50:14.597Z"
+    },
+    {
+      "name": "mockup-critic",
+      "phase": 2,
+      "input": {
+        "round": 1
+      },
+      "output": {
+        "verdict": "APPROVE",
+        "feedback": "The design executes the brief at full commitment. The shutout owns the left field as a drenched gold scoreboard with the score rendered at marquee scale (~165px, within the clamp range), anchored edge-left as declared. The two-asymmetric split holds: gold field dominates; chalk evidence column answers with tabular stats. Canvas utilization ~88% (gold field + structured stat rows, measured rhythm). Color coverage ~52% (saturated gold field dominates; neutral paper column is working surface, not v"
+      },
+      "durationMs": 157129,
+      "timestamp": "2026-09-06T14:52:51.726Z"
+    },
+    {
+      "name": "react-engineer",
+      "phase": 3,
+      "input": {
+        "tokenContext": 2936,
+        "briefLength": 7736,
+        "mockupLength": 15454
+      },
+      "output": {
+        "files": [
+          "app/components/Layout.tsx",
+          "app/components/Sidebar.tsx",
+          "app/components/generated/FieldPanel.tsx",
+          "app/components/generated/EvidenceBody.tsx",
+          "app/components/generated/PageFooter.tsx",
+          "app/components/generated/BoxScoreSection.tsx",
+          "app/components/generated/FeaturedProject.tsx",
+          "app/components/generated/ProjectList.tsx",
+          "app/components/generated/OnRotationSection.tsx",
+          "app/components/generated/QuoteFootnote.tsx",
+          "app/components/generated/IdentityStandfirst.tsx",
+          "app/components/generated/TimelineSection.tsx",
+          "app/components/generated/CapabilityBand.tsx",
+          "app/components/generated/EducationBlock.tsx",
+          "app/components/generated/PersonalStats.tsx",
+          "app/components/generated/CaseMeta.tsx",
+          "app/components/generated/CaseProse.tsx",
+          "app/components/generated/ConstraintsList.tsx",
+          "app/components/generated/ProcessList.tsx",
+          "app/components/generated/DecisionsList.tsx",
+          "app/components/generated/ReferencesList.tsx",
+          "app/components/generated/StackAndLink.tsx",
+          "app/routes/index.tsx",
+          "app/routes/about.tsx",
+          "app/routes/work.$slug.tsx",
+          "app/routes/og.tsx"
+        ],
+        "rationale": ""
+      },
+      "durationMs": 425290,
+      "timestamp": "2026-09-06T14:59:57.017Z"
+    },
+    {
+      "name": "generated-sweep",
+      "phase": 3,
+      "input": {
+        "after": "react-engineer"
+      },
+      "output": {
+        "kept": [
+          "app/components/generated/BoxScoreSection.tsx",
+          "app/components/generated/CapabilityBand.tsx",
+          "app/components/generated/CaseMeta.tsx",
+          "app/components/generated/CaseProse.tsx",
+          "app/components/generated/ConstraintsList.tsx",
+          "app/components/generated/DecisionsList.tsx",
+          "app/components/generated/EducationBlock.tsx",
+          "app/components/generated/EvidenceBody.tsx",
+          "app/components/generated/FeaturedProject.tsx",
+          "app/components/generated/FieldPanel.tsx",
+          "app/components/generated/IdentityStandfirst.tsx",
+          "app/components/generated/OnRotationSection.tsx",
+          "app/components/generated/PageFooter.tsx",
+          "app/components/generated/PersonalStats.tsx",
+          "app/components/generated/ProcessList.tsx",
+          "app/components/generated/ProjectList.tsx",
+          "app/components/generated/QuoteFootnote.tsx",
+          "app/components/generated/ReferencesList.tsx",
+          "app/components/generated/StackAndLink.tsx",
+          "app/components/generated/TimelineSection.tsx"
+        ],
+        "removed": [
+          "app/components/generated/AboutMasthead.tsx",
+          "app/components/generated/CapabilitiesChips.tsx",
+          "app/components/generated/CaseStudyBody.tsx",
+          "app/components/generated/CaseStudyHero.tsx",
+          "app/components/generated/ContactColophon.tsx",
+          "app/components/generated/ContextProse.tsx",
+          "app/components/generated/DecisionsSection.tsx",
+          "app/components/generated/HeroContent.tsx",
+          "app/components/generated/PersonalColophon.tsx",
+          "app/components/generated/ProcessSection.tsx",
+          "app/components/generated/RadialField.tsx",
+          "app/components/generated/ReferencesSection.tsx",
+          "app/components/generated/SignalColumn.tsx",
+          "app/components/generated/TimelineList.tsx",
+          "app/components/generated/WorkFooter.tsx"
+        ]
+      },
+      "durationMs": 9,
+      "timestamp": "2026-09-06T14:59:57.026Z"
+    },
+    {
+      "name": "build-validation",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "success": true
+      },
+      "durationMs": 0,
+      "timestamp": "2026-09-06T15:00:09.391Z"
+    },
+    {
+      "name": "surface-gate",
+      "phase": 4,
+      "input": {
+        "round": 1
+      },
+      "output": {
+        "measured": 44,
+        "errorCount": 134,
+        "findings": [
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 1311px wider than the 360px viewport (scrollWidth 1671)"
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Final · Sept 5, 2026 · Detroit6–0.Shutout.The one ...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Box ScoreDET 6 · OPP 0FinalWeatherSunny · 71.8°FMo...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 1311px wider than the 360px viewport (scrollWidth 1671)"
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Final · Sept 5, 2026 · Detroit6–0.Shutout.The one ...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Box ScoreDET 6 · OPP 0FinalWeatherSunny · 71.8°FMo...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 1717px wider than the 1440px viewport (scrollWidth 3157)"
+          },
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Box ScoreDET 6 · OPP 0FinalWeatherSunny · 71.8°FMo...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 1717px wider than the 1440px viewport (scrollWidth 3157)"
+          },
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Box ScoreDET 6 · OPP 0FinalWeatherSunny · 71.8°FMo...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 730px wider than the 360px viewport (scrollWidth 1090)"
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "running-copy",
+            "severity": "error",
+            "detail": "340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase."
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"Product Designer & Developer4Holes-in-one.Building...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"I work at the intersection of design and engineeri...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 730px wider than the 360px viewport (scrollWidth 1090)"
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "running-copy",
+            "severity": "error",
+            "detail": "340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase."
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"Product Designer & Developer4Holes-in-one.Building...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"I work at the intersection of design and engineeri...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 181px wider than the 1440px viewport (scrollWidth 1621)"
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "running-copy",
+            "severity": "error",
+            "detail": "340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase."
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"I work at the intersection of design and engineeri...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 181px wider than the 1440px viewport (scrollWidth 1621)"
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "running-copy",
+            "severity": "error",
+            "detail": "340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase."
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"I work at the intersection of design and engineeri...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/about",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 623px wider than the 360px viewport (scrollWidth 983)"
+          },
+          {
+            "surface": "/work",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 684px, 324px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 684px, 324px past the 360px viewport, severing \"Work·About·ContactFeaturedSpacemanIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 623px wider than the 360px viewport (scrollWidth 983)"
+          },
+          {
+            "surface": "/work",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 684px, 324px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 684px, 324px past the 360px viewport, severing \"Work·About·ContactFeaturedSpacemanIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/experiments",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 8px wider than the 360px viewport (scrollWidth 368)"
+          },
+          {
+            "surface": "/experiments",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/experiments",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"ExperimentsTeeTurnExperiment2020PolitweetsExperime...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/experiments",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 8px wider than the 360px viewport (scrollWidth 368)"
+          },
+          {
+            "surface": "/experiments",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/experiments",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"ExperimentsTeeTurnExperiment2020PolitweetsExperime...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 375px wider than the 360px viewport (scrollWidth 735)"
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Founder · 2018Spaceman...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Founder2018 — PresentActiveProblemIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 375px wider than the 360px viewport (scrollWidth 735)"
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Founder · 2018Spaceman...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Founder2018 — PresentActiveProblemIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 69px wider than the 1440px viewport (scrollWidth 1509)"
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Founder2018 — PresentActiveProblemIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 69px wider than the 1440px viewport (scrollWidth 1509)"
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Founder2018 — PresentActiveProblemIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/spaceman",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 373px wider than the 360px viewport (scrollWidth 733)"
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"SaaS · 2025FishSticks...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"Founder & BuilderOngoingLiveProblemKids struggle t...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 373px wider than the 360px viewport (scrollWidth 733)"
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"SaaS · 2025FishSticks...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"Founder & BuilderOngoingLiveProblemKids struggle t...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 21px wider than the 1440px viewport (scrollWidth 1461)"
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Founder & BuilderOngoingLiveProblemKids struggle t...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 21px wider than the 1440px viewport (scrollWidth 1461)"
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Founder & BuilderOngoingLiveProblemKids struggle t...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/fishsticks",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/15th-club",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 41px wider than the 360px viewport (scrollWidth 401)"
+          },
+          {
+            "surface": "/work/15th-club",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/15th-club",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"AI · 202515th Club...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/15th-club",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"Founder & BuilderOngoingIn DevelopmentProblemGolf ...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/15th-club",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 41px wider than the 360px viewport (scrollWidth 401)"
+          },
+          {
+            "surface": "/work/15th-club",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/15th-club",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"AI · 202515th Club...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/15th-club",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"Founder & BuilderOngoingIn DevelopmentProblemGolf ...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 461px wider than the 360px viewport (scrollWidth 821)"
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"AI · 2026dougmar.ch...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"Designer & BuilderOngoingLiveProblemA portfolio ar...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 461px wider than the 360px viewport (scrollWidth 821)"
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"AI · 2026dougmar.ch...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"Designer & BuilderOngoingLiveProblemA portfolio ar...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 182px wider than the 1440px viewport (scrollWidth 1622)"
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Designer & BuilderOngoingLiveProblemA portfolio ar...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 182px wider than the 1440px viewport (scrollWidth 1622)"
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Designer & BuilderOngoingLiveProblemA portfolio ar...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/dougmar-ch",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/teeturn",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 281px wider than the 360px viewport (scrollWidth 641)"
+          },
+          {
+            "surface": "/work/teeturn",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 641px, 281px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/teeturn",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 641px, 281px past the 360px viewport, severing \"Experiment · 2020TeeTurn...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/teeturn",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "warning",
+            "detail": "<DIV> is cut off: its right edge lands at 641px, 281px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate."
+          },
+          {
+            "surface": "/work/teeturn",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 281px wider than the 360px viewport (scrollWidth 641)"
+          },
+          {
+            "surface": "/work/teeturn",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 641px, 281px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/teeturn",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 641px, 281px past the 360px viewport, severing \"Experiment · 2020TeeTurn...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/teeturn",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "warning",
+            "detail": "<DIV> is cut off: its right edge lands at 641px, 281px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 393px wider than the 360px viewport (scrollWidth 753)"
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 753px, 393px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 753px, 393px past the 360px viewport, severing \"Experiment · 2008Politweets...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "warning",
+            "detail": "<DIV> is cut off: its right edge lands at 753px, 393px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 393px wider than the 360px viewport (scrollWidth 753)"
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 753px, 393px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 753px, 393px past the 360px viewport, severing \"Experiment · 2008Politweets...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "warning",
+            "detail": "<DIV> is cut off: its right edge lands at 753px, 393px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 54px wider than the 1440px viewport (scrollWidth 1494)"
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "warning",
+            "detail": "<DIV> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 54px wider than the 1440px viewport (scrollWidth 1494)"
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "warning",
+            "detail": "<DIV> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate."
+          },
+          {
+            "surface": "/work/politweets",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 449px wider than the 360px viewport (scrollWidth 809)"
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 809px, 449px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 809px, 449px past the 360px viewport, severing \"Experiment · 2008Twittertale...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "warning",
+            "detail": "<DIV> is cut off: its right edge lands at 809px, 449px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 449px wider than the 360px viewport (scrollWidth 809)"
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 809px, 449px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SECTION> is cut off: its right edge lands at 809px, 449px past the 360px viewport, severing \"Experiment · 2008Twittertale...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "warning",
+            "detail": "<DIV> is cut off: its right edge lands at 809px, 449px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 145px wider than the 1440px viewport (scrollWidth 1585)"
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "warning",
+            "detail": "<DIV> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "overflow",
+            "severity": "error",
+            "detail": "document is 145px wider than the 1440px viewport (scrollWidth 1585)"
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<DIV> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "warning",
+            "detail": "<DIV> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate."
+          },
+          {
+            "surface": "/work/twittertale",
+            "viewport": "desktop",
+            "width": 1440,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<FOOTER> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          }
+        ]
+      },
+      "durationMs": 20402,
+      "timestamp": "2026-09-06T15:00:29.818Z"
+    },
+    {
+      "name": "screenshot-critic",
+      "phase": 4,
+      "input": {},
+      "output": {
+        "verdict": "REVISE",
+        "feedback": "===VERDICT===\nREVISE\n\n**Responsible agent:** react-engineer\n\n**Issues:**\n- Critical horizontal-overflow bug pushes the entire evidence column (nav, brand lockup, box score, all signal rows) off-screen at 1440px. The measured faults confirm the document is 1717px wider than the 1440px viewport and the header <DIV> (\"Doug March…work about con…\"), the box-score <DIV>, and the <FOOTER> are all severed past the right edge with no scroll available — the content is gone, not merely offscreen. The 1440p"
+      },
+      "durationMs": 22411,
+      "timestamp": "2026-09-06T15:01:05.636Z"
+    },
+    {
+      "name": "generated-sweep",
+      "phase": 5,
+      "input": {
+        "after": "React Engineer revision"
+      },
+      "output": {
+        "kept": [
+          "app/components/generated/BoxScoreSection.tsx",
+          "app/components/generated/CapabilityBand.tsx",
+          "app/components/generated/CaseMeta.tsx",
+          "app/components/generated/CaseProse.tsx",
+          "app/components/generated/ConstraintsList.tsx",
+          "app/components/generated/DecisionsList.tsx",
+          "app/components/generated/EducationBlock.tsx",
+          "app/components/generated/EvidenceBody.tsx",
+          "app/components/generated/FeaturedProject.tsx",
+          "app/components/generated/FieldPanel.tsx",
+          "app/components/generated/IdentityStandfirst.tsx",
+          "app/components/generated/OnRotationSection.tsx",
+          "app/components/generated/PageFooter.tsx",
+          "app/components/generated/PersonalStats.tsx",
+          "app/components/generated/ProcessList.tsx",
+          "app/components/generated/ProjectList.tsx",
+          "app/components/generated/QuoteFootnote.tsx",
+          "app/components/generated/ReferencesList.tsx",
+          "app/components/generated/StackAndLink.tsx",
+          "app/components/generated/TimelineSection.tsx"
+        ],
+        "removed": []
+      },
+      "durationMs": 4,
+      "timestamp": "2026-09-06T15:02:21.774Z"
+    },
+    {
+      "name": "surface-gate",
+      "phase": 4,
+      "input": {
+        "round": 2
+      },
+      "output": {
+        "measured": 44,
+        "errorCount": 4,
+        "findings": [
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SPAN> is cut off: its right edge lands at 367px, 7px past the 360px viewport, severing \"Final...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SPAN> is cut off: its right edge lands at 367px, 7px past the 360px viewport, severing \"Final...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "light",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SPAN> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"AI · 2026...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          },
+          {
+            "surface": "/work",
+            "viewport": "mobile",
+            "width": 360,
+            "scheme": "dark",
+            "kind": "clipped",
+            "severity": "error",
+            "detail": "<SPAN> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"AI · 2026...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down."
+          }
+        ]
+      },
+      "durationMs": 20213,
+      "timestamp": "2026-09-06T15:02:53.278Z"
+    }
+  ]
+}

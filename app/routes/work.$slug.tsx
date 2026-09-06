@@ -1,19 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { projects } from '../content/projects'
 import { identity } from '../content/about'
-import { Box } from '../../styled-system/jsx'
-import { CaseStudyHero } from '../components/generated/CaseStudyHero'
-import { CaseStudyBody } from '../components/generated/CaseStudyBody'
-import { ContextProse } from '../components/generated/ContextProse'
+import { FieldPanel } from '../components/generated/FieldPanel'
+import { EvidenceBody } from '../components/generated/EvidenceBody'
+import { PageFooter } from '../components/generated/PageFooter'
+import { CaseMeta } from '../components/generated/CaseMeta'
+import { CaseProse } from '../components/generated/CaseProse'
 import { ConstraintsList } from '../components/generated/ConstraintsList'
-import { ProcessSection } from '../components/generated/ProcessSection'
-import { DecisionsSection } from '../components/generated/DecisionsSection'
-import { ReferencesSection } from '../components/generated/ReferencesSection'
-import { ContactColophon } from '../components/generated/ContactColophon'
+import { ProcessList } from '../components/generated/ProcessList'
+import { DecisionsList } from '../components/generated/DecisionsList'
+import { ReferencesList } from '../components/generated/ReferencesList'
+import { StackAndLink } from '../components/generated/StackAndLink'
 
-export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
-
-type FullProject = (typeof projects)[number] & {
+type WhitePaper = {
   timeline?: string
   status?: string
   context?: string
@@ -23,52 +22,38 @@ type FullProject = (typeof projects)[number] & {
   references?: { title: string; url: string; note?: string }[]
 }
 
+export const Route = createFileRoute('/work/$slug')({ component: WorkDetailPage })
+
 function WorkDetailPage() {
   const { slug } = Route.useParams()
-  const project = projects.find((p) => p.slug === slug) as FullProject | undefined
+  const project = projects.find((item) => item.slug === slug)
 
   if (!project) {
     return (
-      <Box
-        px={{ base: '5', lg: '9' }}
-        pt={{ base: '160px', lg: '200px' }}
-        pb="9"
-        fontSize="lg"
-        color="text"
-      >
-        Project not found.
-      </Box>
+      <EvidenceBody>
+        <p>Project not found.</p>
+      </EvidenceBody>
     )
   }
 
+  const p = project as typeof project & WhitePaper
+
   return (
     <>
-      <CaseStudyHero
-        project={{
-          title: project.title,
-          type: project.type,
-          year: project.year,
-          role: project.role,
-          timeline: project.timeline,
-          status: project.status,
-          problem: project.problem,
-        }}
-      />
-      <CaseStudyBody body={project} />
-      <ContextProse context={project.context} />
-      <ConstraintsList constraints={project.constraints} />
-      <ProcessSection process={project.process} />
-      <DecisionsSection decisions={project.decisions} />
-      <ReferencesSection references={project.references} />
-      <Box
-        px={{ base: '5', md: '7', lg: '9' }}
-        pb={{ base: '9', lg: '9' }}
-        borderTop="1px solid"
-        borderColor="border"
-        pt="5"
-      >
-        <ContactColophon email={identity.email} name={identity.name} role={identity.role} />
-      </Box>
+      <FieldPanel eyebrow={`${p.type} · ${p.year}`} marquee={p.title} />
+      <EvidenceBody>
+        <CaseMeta role={p.role} timeline={p.timeline} status={p.status} />
+        {p.problem && <CaseProse label="Problem" text={p.problem} lead />}
+        {p.approach && <CaseProse label="Approach" text={p.approach} />}
+        {p.outcome && <CaseProse label="Outcome" text={p.outcome} />}
+        {p.context && <CaseProse label="Context" text={p.context} />}
+        {p.constraints && <ConstraintsList items={p.constraints} />}
+        {p.process && <ProcessList steps={p.process} />}
+        {p.decisions && <DecisionsList items={p.decisions} />}
+        {p.references && <ReferencesList items={p.references} />}
+        <StackAndLink stack={p.stack} liveUrl={p.liveUrl} />
+      </EvidenceBody>
+      <PageFooter email={identity.email} />
     </>
   )
 }

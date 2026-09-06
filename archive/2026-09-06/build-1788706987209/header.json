@@ -1,0 +1,11 @@
+{
+  "placement": "right-margin",
+  "height_px": 180,
+  "mark_px": 48,
+  "wordmark_step": "lg",
+  "wordmark_weight": 400,
+  "role_line": "present",
+  "nav_step": "sm",
+  "nav_case": "small-caps",
+  "nav": "right-margin stack — stacked mark-over-wordmark atop the box-score column, three small-caps links (work · about · contact) beneath, one hairline rule; no band, no top bar"
+}

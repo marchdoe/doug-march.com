@@ -1,0 +1,620 @@
+{
+  "date": "2026-09-06",
+  "era": "header-declared",
+  "generatedAt": "2026-09-06T15:03:14.306Z",
+  "buildId": "1788706987209",
+  "attempts": 1,
+  "brief": "Scoreboard split — \"6–0. Shutout.\" in fat trophy-gold slab, the day's signals racked as a box score in warm chalk opposite.",
+  "rationale": "The phrase is the win: \"6–0. Shutout.\" It is the single unambiguous triumph in today's signals, and it happens to be the exact register the owner named a gold standard — the trophy-gold scoreboard. A shutout is structurally two facts (runs scored, zero allowed), and that duality dictates the composition: a two-asymmetric horizontal split where a left-weighted gold field states the score and a chalk-paper column answers with the day's box score. The score is edge-bound to the left, dominant, the way a final number owns a scoreboard.\n\nThe chassis follows the register, not the ladder. A shutout is physical and celebratory, so I reached for alfa-rubik — Alfa Slab One renders \"6–0\" as a fat trophy numeral at 177px, and Rubik (a rounded grotesk that shares the display's warmth and roundness) sets clean tabular stat rows, answering the standing complaint that display and body must share a skeleton. It has never shipped in the tracked window, so it is fresh against the condensed-caps trio I was warned not to default to.\n\nPalette commits to one hue at volume. Triumph wants a single saturated color, and gold is the win — 62°, inside the 40–80° corridor, and ~16° off the nearest recent primaries (46°, 78°), the freshest spot the narrow corridor permits; I accept the sub-60° repetition margin because the corridor is only 40° wide and the forbidden zones close everything else. The ground is split-field (fresh against the recent duotone/dark-void/drench run) — gold scoreboard against warm chalk evidence. Because the evidence column is neutral paper, the mark's original green-and-blue finally has somewhere to sit, so brand_color_mode is original (nearly never used in 17 builds). The header is a right-margin stacked lockup atop the box score — brand present, no top bar, no rounded corners — and every signal, from the moon to Labor Day to the Wet Leg / My Morning Jacket rotation, lands as a labeled stat row beneath the score.",
+  "filesChanged": [
+    "elements/preset.ts",
+    "app/components/Layout.tsx",
+    "app/components/Sidebar.tsx",
+    "app/components/generated/FieldPanel.tsx",
+    "app/components/generated/EvidenceBody.tsx",
+    "app/components/generated/PageFooter.tsx",
+    "app/components/generated/BoxScoreSection.tsx",
+    "app/components/generated/FeaturedProject.tsx",
+    "app/components/generated/ProjectList.tsx",
+    "app/components/generated/OnRotationSection.tsx",
+    "app/components/generated/QuoteFootnote.tsx",
+    "app/components/generated/IdentityStandfirst.tsx",
+    "app/components/generated/TimelineSection.tsx",
+    "app/components/generated/CapabilityBand.tsx",
+    "app/components/generated/EducationBlock.tsx",
+    "app/components/generated/PersonalStats.tsx",
+    "app/components/generated/CaseMeta.tsx",
+    "app/components/generated/CaseProse.tsx",
+    "app/components/generated/ConstraintsList.tsx",
+    "app/components/generated/ProcessList.tsx",
+    "app/components/generated/DecisionsList.tsx",
+    "app/components/generated/ReferencesList.tsx",
+    "app/components/generated/StackAndLink.tsx",
+    "app/routes/index.tsx",
+    "app/routes/about.tsx",
+    "app/routes/work.$slug.tsx",
+    "app/routes/og.tsx"
+  ],
+  "legacyArchetype": null,
+  "signals": {
+    "air_quality": {
+      "aqi_index": 1,
+      "uv_index": 1.2,
+      "air_quality_label": "Good"
+    },
+    "awwwards": {
+      "sites_of_the_day": [
+        {
+          "title": "Every day is a gift",
+          "description": "A data physicalization and visualization about the universal pain of break-ups, the fragility of mental health, and the path to recovery and joy.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a8dd61f91d16628716348.png"
+        },
+        {
+          "title": "The Drool Creative Community",
+          "description": "A safe space for creatives, freelance designers and small studios. Wholesome events and meet ups, plus a toolset that makes client work easier.",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a8c880685666058846466.jpg"
+        },
+        {
+          "title": "CHASING THE MOMENT",
+          "description": "A webfilm in five cinematic scenes: a mannequin chasing the moment their work finally lands, and the long stretch before it does. The second half turns...",
+          "screenshot_url": "https://assets.awwwards.com/awards/submissions/2026/08/6a85df674c750673809599.jpg"
+        }
+      ]
+    },
+    "books": {
+      "currently_reading": []
+    },
+    "day_of_week": {
+      "day": "Sunday",
+      "is_weekend": true,
+      "day_index": 0
+    },
+    "github": {
+      "repos": [
+        {
+          "name": "sponsors/affaan-m",
+          "description": "",
+          "language": "JavaScript",
+          "stars": null
+        },
+        {
+          "name": "sponsors/mattpocock",
+          "description": "",
+          "language": "Shell",
+          "stars": null
+        },
+        {
+          "name": "cathrynlavery/diagram-design/stargazers",
+          "description": "",
+          "language": "HTML",
+          "stars": null
+        },
+        {
+          "name": "NousResearch/hermes-agent/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        },
+        {
+          "name": "openai/skills/stargazers",
+          "description": "",
+          "language": "Python",
+          "stars": null
+        }
+      ]
+    },
+    "golf": {
+      "tournament": "Biltmore Championship Asheville",
+      "status": "Scheduled",
+      "leaders": []
+    },
+    "hacker_news": {
+      "stories": [
+        {
+          "title": "Intellectual Fly Is Open (2025)",
+          "url": "https://bcantrill.dtrace.org/2025/12/05/your-intellectual-fly-is-open/",
+          "score": 193,
+          "by": "cyb0rg0"
+        },
+        {
+          "title": "Doomscrolling Ourselves to Death",
+          "url": "https://www.edwest.co.uk/p/doomscrolling-ourselves-to-death",
+          "score": 136,
+          "by": "shubhamjain"
+        },
+        {
+          "title": "Isar Aerospace reaches orbit and deploys payloads on second flight",
+          "url": "https://isaraerospace.com/press/history-for-european-spaceflight-isar-aerospace-reaches-orbit-and-deploys-payloads-on-second-flight",
+          "score": 362,
+          "by": "mpweiher"
+        },
+        {
+          "title": "The many mysteries and lessons of the Bayeux tapestry",
+          "url": "https://economist.com/interactive/culture/2026/09/03/the-many-mysteries-and-lessons-of-the-bayeux-tapestry",
+          "score": 18,
+          "by": "andsoitis"
+        },
+        {
+          "title": "M-DISC – DVD/Blu-ray compatible discs that may last up to 1000 years",
+          "url": "https://en.wikipedia.org/wiki/M-DISC",
+          "score": 90,
+          "by": "gurjeet"
+        }
+      ]
+    },
+    "holidays": {
+      "today": null,
+      "upcoming": [
+        {
+          "name": "Labor Day",
+          "date": "2026-09-07",
+          "days_away": 1
+        }
+      ]
+    },
+    "lunar": {
+      "phase": "waning crescent",
+      "illumination": 0.211,
+      "days_into_cycle": 25.05
+    },
+    "market": {
+      "symbol": "SPY",
+      "price": "770.1900",
+      "change": "-2.9800",
+      "change_percent": "-0.3854%",
+      "direction": "down"
+    },
+    "music": {
+      "bands": [
+        "Wet Leg",
+        "My Morning Jacket"
+      ],
+      "rotation": true
+    },
+    "news": {
+      "headlines": [
+        {
+          "title": "Robert Pattinson Wants Chris Hansen to Like ‘Primetime’ Despite His Criticisms: ‘I Hope the Inspiration His Character Has Given Is Some Kind of Compliment’ - variety.com",
+          "source": "Variety",
+          "url": "https://variety.com/2026/film/festivals/robert-pattinson-primetime-chris-hansen-criticism-1236852400/"
+        },
+        {
+          "title": "Her back hurt, then she couldn’t button her pants. The cause was alarming. - The Washington Post",
+          "source": "The Washington Post",
+          "url": "https://www.washingtonpost.com/health/2026/09/05/her-back-hurt-then-she-couldnt-button-her-pants-cause-was-alarming/"
+        },
+        {
+          "title": "Voters are fed up with data centers. Both parties are trying to cash in for midterms - NPR",
+          "source": "NPR",
+          "url": "https://www.npr.org/2026/09/05/nx-s1-5913671/ai-data-center-campaign-spending"
+        },
+        {
+          "title": "Read the Letter D4vd Wrote to Fellow Inmate While Behind Bars - TMZ",
+          "source": "TMZ",
+          "url": "https://www.tmz.com/2026/09/05/read-the-letter-d4vd-wrote-to-inmate-while-behind-bars/"
+        },
+        {
+          "title": "Have scientists discovered a dark matter particle? - Al Jazeera",
+          "source": "Al Jazeera English",
+          "url": "https://www.aljazeera.com/features/2026/9/5/have-scientists-discovered-a-dark-matter-particle"
+        }
+      ]
+    },
+    "quote": {
+      "text": "Some people are old at 18 and some are young at 90. Time is a concept that humans created.",
+      "author": "Yoko Ono"
+    },
+    "season": {
+      "season": "fall",
+      "month": 9,
+      "day": 6,
+      "day_of_year": 249,
+      "month_name": "September"
+    },
+    "sidebar": {
+      "links": [
+        {
+          "title": "AI is making development faster. But where did the work go?",
+          "url": "https://medium.com/design-bootcamp/ai-is-making-product-development-faster-57a86bc3ffa0",
+          "source": "medium.com",
+          "description": "When AI makes one part of product development faster, what happens to the rest of the system?"
+        },
+        {
+          "title": "A geometric typeface made for the age of AI",
+          "url": "https://the-brandidentity.com/typeface/ren%C3%A9-bieders-neurath-x-is-a-geometric-typeface-made-for-the-age-of-ai",
+          "source": "the-brandidentity.com",
+          "description": "The Neurath X Collection began with a question: what might geometric typography look like in the age of AI?"
+        },
+        {
+          "title": "Normal Tools",
+          "url": "https://www.normaltools.com/",
+          "source": "normaltools.com",
+          "description": "Small, useful online tools that work directly in your browser."
+        },
+        {
+          "title": "Unwinding the great tech power grab",
+          "url": "https://rebeccawilliams.info/unwinding-the-great-tech-power-grab/",
+          "source": "rebeccawilliams.info",
+          "description": "How tech has atrophied the exact civic muscle we’ll need to reclaim power over it."
+        },
+        {
+          "title": "JudgmentKit",
+          "url": "https://judgmentkit.ai/",
+          "source": "judgmentkit.ai",
+          "description": "Stop AI from building the wrong interface. Help AI agents understand the user’s work, choose the right interface, and repair what does not fit."
+        }
+      ]
+    },
+    "sports": {
+      "teams": [
+        {
+          "name": "Detroit Lions",
+          "league": "NFL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Red Wings",
+          "league": "NHL",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Pistons",
+          "league": "NBA",
+          "last_game": null,
+          "result": "off season",
+          "score": null
+        },
+        {
+          "name": "Detroit Tigers",
+          "league": "MLB",
+          "last_game": "2026-09-05T22:10Z",
+          "result": "win",
+          "score": "6-0"
+        }
+      ]
+    },
+    "sun": {
+      "sunrise": "06:49",
+      "sunset": "19:27",
+      "daylight_hours": 12.6
+    },
+    "weather": {
+      "location": "Aldie, Virginia",
+      "conditions": "Sunny",
+      "temp_f": 71.8,
+      "temp_c": 22.1,
+      "humidity": 62,
+      "wind_mph": 6.3,
+      "wind_dir": "N",
+      "feels_like_f": 70.9
+    },
+    "date": "2026-09-06"
+  },
+  "hero": {
+    "copy": "6–0. Shutout.",
+    "rationale": "The Tigers closed out September 5 with a clean 6–0 shutout — the one signal today that is pure, unambiguous triumph, and the exact register the owner marked as a gold standard (the 2026-09-01 trophy-gold scoreboard). A shutout is a two-part fact — the runs you scored and the zero you allowed — so the phrase carries its own structure onto the page. It beats the Yoko Ono quote both on freshness (the last four heroes lean quote-heavy) and on fit: a self-rebuilding portfolio wants to state a win, not muse.",
+    "source": "signal-event"
+  },
+  "chassis": "alfa-rubik",
+  "adBrief": {
+    "visualSpecification": "### 1. Color Specification\n- **Primary hue** — 62° (golden yellow). Triumph asks for one saturated, load-bearing hue; gold is the color of a win. It sits inside the mandated 40–80° corridor and lands ~16° off the nearest recent primaries (46°, 78°) — the freshest spot the narrow corridor allows, justified below.\n- **Neutral palette (warm chalk, tinted toward gold):** 50 `#f7f3e8`, 100 `#efe9d7`, 200 `#ded6bd`, 300 `#c4ba99`, 400 `#9c9270`, 500 `#6f6750`, 600 `#514a38`, 700 `#383324`, 800 `#232016`, 900 `#14120b`\n- **Accent (gold):** light `#edc933`, default `#cf9f0d`, dark `#a87f0a`, glow `#e8bc16`\n- **Secondary accent** — none. One hue carries the page.\n- **Background** — page bg `#f4efe1` (warm paper), card/surface `#fcfaf1`, scoreboard panel (field) `#e8bc16`\n- **Text colors** — primary `#1b1810`, secondary `#514a38`, muted/faint `#635b44`; on the gold field, ink `#1e1905` and muted-on-field `#574508`\n\n### 2. Typography (alfa-rubik)\n- **Hero phrase rendering** — \"6–0. Shutout.\" set in the `display` face (Alfa Slab One) at the `hero` ramp step, a fluid clamp topping out at 177px on desktop. The numerals \"6–0\" carry the marquee, bound to the left edge of the gold panel; \"Shutout.\" drops to its own baseline in `2xl`, small-caps feel via weight.\n- **Type treatment** — `hero` for the score; `xl`/`2xl` for the box-score section heads (\"BOX SCORE\", \"ON ROTATION\"); `base` Rubik for evidence rows and prose (measure capped 60–66ch, leading held ~1.55); `sm` small-caps Rubik for stat labels; `xs` for the footer imprint. Mid-register `lg` standfirst under the score spends the middle of the scale.\n\n### 3. Layout Specification\n- **Composition** — two-asymmetric / horizontal / left-weighted / edge-bound / measured / syncopated / marginal / balanced. The scoreboard split lets the score dominate as a field while the box score answers it as evidence — the two halves need each other, exactly like the owner's fairway-Split gold standard.\n- **CSS grid structure** — `display: grid; grid-template-columns: 1.4fr 1fr; min-height: 100vh;` Left = gold scoreboard field; right = warm chalk evidence column.\n- **Major dimensions**: hero field `min-height: 100vh`; evidence column ~`42%`; `max-width: none`; left panel padding `clamp(48px, 6vw, 112px)`, right column padding `clamp(40px, 4vw, 72px)`; vertical rhythm on the chassis spacing base.\n- **Nav placement** — right-margin header at the top of the evidence column: stacked brand lockup, three small-caps links beneath, one hairline rule. No top bar.\n- **Hero phrase grid zone** — left panel, edge-bound: \"6–0\" occupies rows 1–3 flush to the left padding at clamp(110px→177px); \"Shutout.\" rows 3–4 beneath; a `lg` standfirst (\"Detroit Tigers · Sept 5\") rows 4–5.\n\n### 4. Component Character\n- **Border radius** — cards/buttons/tags `0`; only the circular mark is round (`full`). Owner dislikes rounded corners — honored.\n- **Border treatment** — hairline `border` on paper, `borderStrong` for the section break above the box score; `fieldBorder` for rules inside the gold panel.\n- **Shadow** — none. Depth is value, not shadow.\n- **Density** — measured; generous gutters, tabular rows tight within their group.\n- **Interactive states** — links: dark text with a hairline underline that thickens to `accentAlt` on hover; no color-swap that could fail contrast.\n\n### 5. Signal Integration\n- **Where signals live** — the entire right column is a literal box score / stat sheet.\n- **Sports scores** — the shutout IS the hero: \"6–0\" at marquee scale on gold; the full line \"DET 6 · OPP 0 — final\" heads the box score as the top stat row in tabular Rubik.\n- **The quote** — Yoko Ono's line (\"Some people are old at 18 and some are young at 90.\") sits as a quiet pull-line footnote at the base of the evidence column, `textMuted`, not competing with the score.\n- **Holiday** — Labor Day (tomorrow) is a small dated flag row: \"LABOR DAY · SEP 7\".\n- **Music** — clearly labeled \"ON ROTATION — Wet Leg · My Morning Jacket\" as taste, in the lower evidence block, never beside the score as an event.\n- **Other signals** — weather (Sunny 71.8°F), moon (waning crescent, 21%), market (SPY 770.19 ▾0.39%, in `textMuted`), AQI (Good) each get a tabular stat row.",
+    "selfCheck": "1. Hero quotability: Yes — \"6–0. Shutout.\" is a screenshot-able triumph, not descriptive body copy.\n2. Because-of chain: Yes — the two-part score drove the two-asymmetric split, the athletic/celebratory register drove alfa-rubik, triumph drove the single gold hue, and edge-bound left-weighting puts the score where it dominates.\n3. Render feasibility: Yes — alfa-rubik tops at 177px; \"6–0\" is four glyphs, comfortably inside a 58%-wide panel at 1440.\n4. Canvas floor feasible: Yes — a full-height gold panel plus a filled evidence column clears 80% of a 1440×900 viewport.",
+    "rationale": "The phrase is the win: \"6–0. Shutout.\" It is the single unambiguous triumph in today's signals, and it happens to be the exact register the owner named a gold standard — the trophy-gold scoreboard. A shutout is structurally two facts (runs scored, zero allowed), and that duality dictates the composition: a two-asymmetric horizontal split where a left-weighted gold field states the score and a chalk-paper column answers with the day's box score. The score is edge-bound to the left, dominant, the way a final number owns a scoreboard.\n\nThe chassis follows the register, not the ladder. A shutout is physical and celebratory, so I reached for alfa-rubik — Alfa Slab One renders \"6–0\" as a fat trophy numeral at 177px, and Rubik (a rounded grotesk that shares the display's warmth and roundness) sets clean tabular stat rows, answering the standing complaint that display and body must share a skeleton. It has never shipped in the tracked window, so it is fresh against the condensed-caps trio I was warned not to default to.\n\nPalette commits to one hue at volume. Triumph wants a single saturated color, and gold is the win — 62°, inside the 40–80° corridor, and ~16° off the nearest recent primaries (46°, 78°), the freshest spot the narrow corridor permits; I accept the sub-60° repetition margin because the corridor is only 40° wide and the forbidden zones close everything else. The ground is split-field (fresh against the recent duotone/dark-void/drench run) — gold scoreboard against warm chalk evidence. Because the evidence column is neutral paper, the mark's original green-and-blue finally has somewhere to sit, so brand_color_mode is original (nearly never used in 17 builds). The header is a right-margin stacked lockup atop the box score — brand present, no top bar, no rounded corners — and every signal, from the moon to Labor Day to the Wet Leg / My Morning Jacket rotation, lands as a labeled stat row beneath the score.",
+    "compositionRationale": "A shutout is inherently two-part — the runs and the zero — so the page splits: a gold scoreboard field (left-weighted, edge-bound) carries the score, and a chalk box-score column answers it as evidence, echoing the owner's fairway-Split gold standard. I moved off the mandate's `mirrored` symmetry, `lower-third` hero and `none` shell: mirroring would flatten the thesis/evidence argument, the score wants the left field not a low band, and `none` would drop the brand the owner has repeatedly demanded — so a marginal right-margin header keeps the mark present without a top bar. Syncopated rhythm is the off-beat cadence of stat rows against the single giant number.",
+    "signalIntegration": "- **Where signals live** — the entire right column is a literal box score / stat sheet.\n- **Sports scores** — the shutout IS the hero: \"6–0\" at marquee scale on gold; the full line \"DET 6 · OPP 0 — final\" heads the box score as the top stat row in tabular Rubik.\n- **The quote** — Yoko Ono's line (\"Some people are old at 18 and some are young at 90.\") sits as a quiet pull-line footnote at the base of the evidence column, `textMuted`, not competing with the score.\n- **Holiday** — Labor Day (tomorrow) is a small dated flag row: \"LABOR DAY · SEP 7\".\n- **Music** — clearly labeled \"ON ROTATION — Wet Leg · My Morning Jacket\" as taste, in the lower evidence block, never beside the score as an event.\n- **Other signals** — weather (Sunny 71.8°F), moon (waning crescent, 21%), market (SPY 770.19 ▾0.39%, in `textMuted`), AQI (Good) each get a tabular stat row."
+  },
+  "tokens": {
+    "colors": {
+      "ramps": {
+        "gold": {
+          "50": "#fbf6da",
+          "100": "#f7ecad",
+          "200": "#f2dd6f",
+          "300": "#edc933",
+          "400": "#e8bc16",
+          "500": "#cf9f0d",
+          "600": "#a87f0a",
+          "700": "#7e5f0b",
+          "800": "#533f0a",
+          "900": "#2c2107"
+        },
+        "chalk": {
+          "50": "#f7f3e8",
+          "100": "#efe9d7",
+          "200": "#ded6bd",
+          "300": "#c4ba99",
+          "400": "#9c9270",
+          "500": "#6f6750",
+          "600": "#514a38",
+          "700": "#383324",
+          "800": "#232016",
+          "900": "#14120b"
+        }
+      },
+      "semantic": {
+        "bg": {
+          "base": "#f4efe1",
+          "_light": "#f4efe1",
+          "_dark": "#f4efe1"
+        },
+        "bgAlt": {
+          "base": "#e8e0cb"
+        },
+        "surface": {
+          "base": "#fcfaf1"
+        },
+        "text": {
+          "base": "#1b1810"
+        },
+        "textMuted": {
+          "base": "{colors.chalk.600}"
+        },
+        "textFaint": {
+          "base": "#635b44"
+        },
+        "accent": {
+          "base": "{colors.gold.500}"
+        },
+        "accentText": {
+          "base": "#1b1810"
+        },
+        "accentAlt": {
+          "base": "{colors.gold.600}"
+        },
+        "border": {
+          "base": "#ddd4ba"
+        },
+        "borderStrong": {
+          "base": "#b6aa86"
+        },
+        "field": {
+          "base": "{colors.gold.400}"
+        },
+        "fieldInk": {
+          "base": "#1e1905"
+        },
+        "fieldInkMuted": {
+          "base": "#574508"
+        },
+        "fieldBorder": {
+          "base": "#c39d10"
+        }
+      }
+    },
+    "radii": {
+      "none": "0",
+      "sm": "0",
+      "md": "0",
+      "lg": "0",
+      "full": "9999px"
+    }
+  },
+  "colorScheme": {
+    "primary_hue": {
+      "h": 62,
+      "s": 88,
+      "l": 51,
+      "name": "trophy gold"
+    },
+    "secondary_accent": null,
+    "neutral_family": {
+      "tinted_toward": "gold",
+      "name": "warm chalk"
+    },
+    "mood_word": "decisive",
+    "color_story": "A single trophy gold floods the scoreboard panel where the shutout lives, while a warm chalk-paper column keeps the day's box score legible and calm."
+  },
+  "shell": {
+    "nav": null,
+    "footer": "box-score foot — a single hairline-topped tabular line under the evidence column: build stamp · season · moon · market close",
+    "brand_lockup": "stacked-md",
+    "brand_color_mode": "original",
+    "ground_strategy": "split-field"
+  },
+  "header": {
+    "placement": "right-margin",
+    "height_px": 180,
+    "mark_px": 48,
+    "wordmark_step": "lg",
+    "wordmark_weight": 400,
+    "role_line": "present",
+    "nav_step": "sm",
+    "nav_case": "small-caps",
+    "nav": "right-margin stack — stacked mark-over-wordmark atop the box-score column, three small-caps links (work · about · contact) beneath, one hairline rule; no band, no top bar"
+  },
+  "verdicts": [
+    {
+      "critic": "spec-critic",
+      "verdict": "APPROVED",
+      "feedback": "APPROVED",
+      "ts": 1788706077698
+    },
+    {
+      "critic": "mockup-critic",
+      "round": 0,
+      "verdict": "REVISE",
+      "feedback": "**1. Sanity** — PASS. Page renders cleanly; fonts loaded (Alfa Slab One, Rubik); no overflow disasters or blank regions. No fallback serif/sans look detected.\n\n**2. Measurables**\n\n- **Canvas utilization**: ~85% on desktop. The left gold field is fully saturated and compositionally active; the right column is organized and rhythmic. Well above the 80% floor. ✓\n\n- **Hero scale**: FAIL. The \"6–0.\" phrase measures ~120–130px rendered height on desktop, well short of the declared `clamp(110px, 14vw, 177px)` ceiling of 177px. At 1440px width, 14vw = 201px; the hero is rendering at ~65% of the declared peak. This is the timid execution the gate is meant to catch. The phrase reads as prominent but not *marquee*. The \"Shutout.\" subline is correctly scaled, but the score — the weight-bearing element — is undersized.\n\n- **Color coverage**: ~50% on desktop. The left panel is saturated gold (`#edc933` or close); the right is neutral warm paper. At 360px, the split collapses and coverage remains similar. Meets the 45% floor, but barely; the design relies on the gold field's dominance, which it achieves. ✓\n\n**3. Brief fidelity** — QUALIFIED PASS. The composition lands the split-field thesis: gold scoreboard (left) vs. chalk box-score (right) reads clearly as \"triumph statement + evidence.\" The syncopated rhythm of stat rows against the giant score is present. The page *feels* like a shutout — structured, authoritative, unambiguous. However, the hero undersizing undercuts the \"unambiguous triumph\" claim. A shutout demands a marquee scale; 130px instead of 177px is a failure to commit to the gesture. The brief says \"the score owns a scoreboard\"; this score does not own it — it occupies it.\n\n**4. Shell and Header** — PASS on lockup, FAIL on placement.\n\n- **Mark size** (from 2x crop): The circular mark measures ~38–40px rendered height in the crop. Declared `mark_px: 48`. That is ~81–83% of spec, which clears the 60% threshold. ✓ The mark is present, rendered in original green/blue as",
+      "channel": "sdk-vision",
+      "ts": 1788706214597
+    },
+    {
+      "critic": "mockup-critic",
+      "round": 1,
+      "verdict": "APPROVE",
+      "feedback": "The design executes the brief at full commitment. The shutout owns the left field as a drenched gold scoreboard with the score rendered at marquee scale (~165px, within the clamp range), anchored edge-left as declared. The two-asymmetric split holds: gold field dominates; chalk evidence column answers with tabular stats. Canvas utilization ~88% (gold field + structured stat rows, measured rhythm). Color coverage ~52% (saturated gold field dominates; neutral paper column is working surface, not void). Header sits right-margin, stacked lockup with mark ~48px (measured against crop width: mark occupies ~48–52px, matching declaration), original brand colors present, small-caps nav beneath a hairline rule — all structural elements verified. At 360×640, the split collapses to single-column stack (gold field full-width above, chalk nav/stats below), but the idea survives: \"6–0. Shutout.\" still commands the top in display weight, followed by standfirst prose answering the why (\"The one clean win…\"), then stats, then header. Hierarchy preserved — hero dominates, nav recedes below fold. Type scales fluidly; no cutoff, no orphaned lines. The duality of shutout (runs + zero) carries through both widths as score + evidence structure. Brief delivered: one unambiguous triumph in gold, structured as scoreboard.",
+      "channel": "sdk-vision",
+      "ts": 1788706371726
+    },
+    {
+      "critic": "surface-gate",
+      "round": 1,
+      "verdict": "REVISE",
+      "feedback": "/ @360: document is 1311px wider than the 360px viewport (scrollWidth 1671)\n/ @360: <DIV> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @360: <SECTION> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Final · Sept 5, 2026 · Detroit6–0.Shutout.The one ...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @360: <DIV> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Box ScoreDET 6 · OPP 0FinalWeatherSunny · 71.8°FMo...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @360: document is 1311px wider than the 360px viewport (scrollWidth 1671)\n/ @360: <DIV> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @360: <SECTION> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Final · Sept 5, 2026 · Detroit6–0.Shutout.The one ...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @360: <DIV> is cut off: its right edge lands at 1671px, 1311px past the 360px viewport, severing \"Box ScoreDET 6 · OPP 0FinalWeatherSunny · 71.8°FMo...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @1440: document is 1717px wider than the 1440px viewport (scrollWidth 3157)\n/ @1440: <DIV> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @1440: <DIV> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Box ScoreDET 6 · OPP 0FinalWeatherSunny · 71.8°FMo...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @1440: <FOOTER> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @1440: document is 1717px wider than the 1440px viewport (scrollWidth 3157)\n/ @1440: <DIV> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @1440: <DIV> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Box ScoreDET 6 · OPP 0FinalWeatherSunny · 71.8°FMo...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @1440: <FOOTER> is cut off: its right edge lands at 3157px, 1717px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @360: document is 730px wider than the 360px viewport (scrollWidth 1090)\n/about @360: 340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @360: <DIV> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @360: <SECTION> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"Product Designer & Developer4Holes-in-one.Building...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @360: <DIV> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"I work at the intersection of design and engineeri...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @360: document is 730px wider than the 360px viewport (scrollWidth 1090)\n/about @360: 340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @360: <DIV> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @360: <SECTION> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"Product Designer & Developer4Holes-in-one.Building...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @360: <DIV> is cut off: its right edge lands at 1090px, 730px past the 360px viewport, severing \"I work at the intersection of design and engineeri...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @1440: document is 181px wider than the 1440px viewport (scrollWidth 1621)\n/about @1440: 340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @1440: <DIV> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @1440: <DIV> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"I work at the intersection of design and engineeri...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @1440: <FOOTER> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @1440: document is 181px wider than the 1440px viewport (scrollWidth 1621)\n/about @1440: 340 characters of running copy set at 68px (over 48px) — \"I work at the intersection of design and engineering — not a...\" . A paragraph at display size is a wall, not a hero. Set prose on the body step and give the display step a phrase.\n/about @1440: <DIV> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @1440: <DIV> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"I work at the intersection of design and engineeri...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/about @1440: <FOOTER> is cut off: its right edge lands at 1621px, 181px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work @360: document is 623px wider than the 360px viewport (scrollWidth 983)\n/work @360: <DIV> is cut off: its right edge lands at 684px, 324px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work @360: <DIV> is cut off: its right edge lands at 684px, 324px past the 360px viewport, severing \"Work·About·ContactFeaturedSpacemanIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work @360: document is 623px wider than the 360px viewport (scrollWidth 983)\n/work @360: <DIV> is cut off: its right edge lands at 684px, 324px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work @360: <DIV> is cut off: its right edge lands at 684px, 324px past the 360px viewport, severing \"Work·About·ContactFeaturedSpacemanIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/experiments @360: document is 8px wider than the 360px viewport (scrollWidth 368)\n/experiments @360: <DIV> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/experiments @360: <DIV> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"ExperimentsTeeTurnExperiment2020PolitweetsExperime...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/experiments @360: document is 8px wider than the 360px viewport (scrollWidth 368)\n/experiments @360: <DIV> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/experiments @360: <DIV> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"ExperimentsTeeTurnExperiment2020PolitweetsExperime...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @360: document is 375px wider than the 360px viewport (scrollWidth 735)\n/work/spaceman @360: <DIV> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @360: <SECTION> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Founder · 2018Spaceman...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @360: <DIV> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Founder2018 — PresentActiveProblemIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @360: document is 375px wider than the 360px viewport (scrollWidth 735)\n/work/spaceman @360: <DIV> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @360: <SECTION> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Founder · 2018Spaceman...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @360: <DIV> is cut off: its right edge lands at 735px, 375px past the 360px viewport, severing \"Founder2018 — PresentActiveProblemIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @1440: document is 69px wider than the 1440px viewport (scrollWidth 1509)\n/work/spaceman @1440: <DIV> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @1440: <DIV> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Founder2018 — PresentActiveProblemIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @1440: <FOOTER> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @1440: document is 69px wider than the 1440px viewport (scrollWidth 1509)\n/work/spaceman @1440: <DIV> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @1440: <DIV> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Founder2018 — PresentActiveProblemIndependent desi...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/spaceman @1440: <FOOTER> is cut off: its right edge lands at 1509px, 69px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @360: document is 373px wider than the 360px viewport (scrollWidth 733)\n/work/fishsticks @360: <DIV> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @360: <SECTION> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"SaaS · 2025FishSticks...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @360: <DIV> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"Founder & BuilderOngoingLiveProblemKids struggle t...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @360: document is 373px wider than the 360px viewport (scrollWidth 733)\n/work/fishsticks @360: <DIV> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @360: <SECTION> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"SaaS · 2025FishSticks...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @360: <DIV> is cut off: its right edge lands at 733px, 373px past the 360px viewport, severing \"Founder & BuilderOngoingLiveProblemKids struggle t...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @1440: document is 21px wider than the 1440px viewport (scrollWidth 1461)\n/work/fishsticks @1440: <DIV> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @1440: <DIV> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Founder & BuilderOngoingLiveProblemKids struggle t...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @1440: <FOOTER> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @1440: document is 21px wider than the 1440px viewport (scrollWidth 1461)\n/work/fishsticks @1440: <DIV> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @1440: <DIV> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Founder & BuilderOngoingLiveProblemKids struggle t...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/fishsticks @1440: <FOOTER> is cut off: its right edge lands at 1461px, 21px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/15th-club @360: document is 41px wider than the 360px viewport (scrollWidth 401)\n/work/15th-club @360: <DIV> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/15th-club @360: <SECTION> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"AI · 202515th Club...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/15th-club @360: <DIV> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"Founder & BuilderOngoingIn DevelopmentProblemGolf ...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/15th-club @360: document is 41px wider than the 360px viewport (scrollWidth 401)\n/work/15th-club @360: <DIV> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/15th-club @360: <SECTION> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"AI · 202515th Club...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/15th-club @360: <DIV> is cut off: its right edge lands at 401px, 41px past the 360px viewport, severing \"Founder & BuilderOngoingIn DevelopmentProblemGolf ...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @360: document is 461px wider than the 360px viewport (scrollWidth 821)\n/work/dougmar-ch @360: <DIV> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @360: <SECTION> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"AI · 2026dougmar.ch...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @360: <DIV> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"Designer & BuilderOngoingLiveProblemA portfolio ar...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @360: document is 461px wider than the 360px viewport (scrollWidth 821)\n/work/dougmar-ch @360: <DIV> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @360: <SECTION> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"AI · 2026dougmar.ch...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @360: <DIV> is cut off: its right edge lands at 821px, 461px past the 360px viewport, severing \"Designer & BuilderOngoingLiveProblemA portfolio ar...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @1440: document is 182px wider than the 1440px viewport (scrollWidth 1622)\n/work/dougmar-ch @1440: <DIV> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @1440: <DIV> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Designer & BuilderOngoingLiveProblemA portfolio ar...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @1440: <FOOTER> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @1440: document is 182px wider than the 1440px viewport (scrollWidth 1622)\n/work/dougmar-ch @1440: <DIV> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @1440: <DIV> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Designer & BuilderOngoingLiveProblemA portfolio ar...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/dougmar-ch @1440: <FOOTER> is cut off: its right edge lands at 1622px, 182px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/teeturn @360: document is 281px wider than the 360px viewport (scrollWidth 641)\n/work/teeturn @360: <DIV> is cut off: its right edge lands at 641px, 281px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/teeturn @360: <SECTION> is cut off: its right edge lands at 641px, 281px past the 360px viewport, severing \"Experiment · 2020TeeTurn...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/teeturn @360: <DIV> is cut off: its right edge lands at 641px, 281px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.\n/work/teeturn @360: document is 281px wider than the 360px viewport (scrollWidth 641)\n/work/teeturn @360: <DIV> is cut off: its right edge lands at 641px, 281px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/teeturn @360: <SECTION> is cut off: its right edge lands at 641px, 281px past the 360px viewport, severing \"Experiment · 2020TeeTurn...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/teeturn @360: <DIV> is cut off: its right edge lands at 641px, 281px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.\n/work/politweets @360: document is 393px wider than the 360px viewport (scrollWidth 753)\n/work/politweets @360: <DIV> is cut off: its right edge lands at 753px, 393px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/politweets @360: <SECTION> is cut off: its right edge lands at 753px, 393px past the 360px viewport, severing \"Experiment · 2008Politweets...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/politweets @360: <DIV> is cut off: its right edge lands at 753px, 393px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.\n/work/politweets @360: document is 393px wider than the 360px viewport (scrollWidth 753)\n/work/politweets @360: <DIV> is cut off: its right edge lands at 753px, 393px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/politweets @360: <SECTION> is cut off: its right edge lands at 753px, 393px past the 360px viewport, severing \"Experiment · 2008Politweets...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/politweets @360: <DIV> is cut off: its right edge lands at 753px, 393px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.\n/work/politweets @1440: document is 54px wider than the 1440px viewport (scrollWidth 1494)\n/work/politweets @1440: <DIV> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/politweets @1440: <DIV> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.\n/work/politweets @1440: <FOOTER> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/politweets @1440: document is 54px wider than the 1440px viewport (scrollWidth 1494)\n/work/politweets @1440: <DIV> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/politweets @1440: <DIV> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.\n/work/politweets @1440: <FOOTER> is cut off: its right edge lands at 1494px, 54px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/twittertale @360: document is 449px wider than the 360px viewport (scrollWidth 809)\n/work/twittertale @360: <DIV> is cut off: its right edge lands at 809px, 449px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/twittertale @360: <SECTION> is cut off: its right edge lands at 809px, 449px past the 360px viewport, severing \"Experiment · 2008Twittertale...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/twittertale @360: <DIV> is cut off: its right edge lands at 809px, 449px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.\n/work/twittertale @360: document is 449px wider than the 360px viewport (scrollWidth 809)\n/work/twittertale @360: <DIV> is cut off: its right edge lands at 809px, 449px past the 360px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/twittertale @360: <SECTION> is cut off: its right edge lands at 809px, 449px past the 360px viewport, severing \"Experiment · 2008Twittertale...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/twittertale @360: <DIV> is cut off: its right edge lands at 809px, 449px past the 360px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.\n/work/twittertale @1440: document is 145px wider than the 1440px viewport (scrollWidth 1585)\n/work/twittertale @1440: <DIV> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/twittertale @1440: <DIV> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.\n/work/twittertale @1440: <FOOTER> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/twittertale @1440: document is 145px wider than the 1440px viewport (scrollWidth 1585)\n/work/twittertale @1440: <DIV> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport, severing \"Doug MarchProduct Designer & Developerworkaboutcon...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work/twittertale @1440: <DIV> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport. Nothing readable is lost, but the element is being severed rather than fitted. Fit it to the column, or mark it `data-allow-x-overflow` if the crop is deliberate.\n/work/twittertale @1440: <FOOTER> is cut off: its right edge lands at 1585px, 145px past the 1440px viewport, severing \"Build 2026.09.06Tigers · 2026Waning Crescent 21%SP...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.",
+      "ts": 1788706829818
+    },
+    {
+      "critic": "screenshot-critic",
+      "verdict": "REVISE",
+      "feedback": "===VERDICT===\nREVISE\n\n**Responsible agent:** react-engineer\n\n**Issues:**\n- Critical horizontal-overflow bug pushes the entire evidence column (nav, brand lockup, box score, all signal rows) off-screen at 1440px. The measured faults confirm the document is 1717px wider than the 1440px viewport and the header <DIV> (\"Doug March…work about con…\"), the box-score <DIV>, and the <FOOTER> are all severed past the right edge with no scroll available — the content is gone, not merely offscreen. The 1440px desktop screenshot itself confirms this: the right column is empty cream except a stray hairline near y=195; no wordmark, no mark, no nav links, no box score are visible at all.\n- Section 9 (brand lockup) fails outright: the rendered header crop shows literally no circular mark, no wordmark, no role line, no nav — the entire lockup that appears in the mockup crop is absent from the render crop. This is not a sizing issue (mark_px 48 vs rendered), it's a total absence caused by the overflow bug shoving the header off the visible canvas.\n- Section 10 (phone, 360px): the composition's thesis/evidence split cannot be judged as \"surviving in altered form\" because the evidence half is entirely missing from the render. The 360px screenshot shows only the gold field with \"FINAL · SEPT 5, 2026 · DETROIT\" and \"6-0. Sh[cut]\" — the box score, weather/moon/market/AQI stat rows, Labor Day flag, music rotation, and nav are all absent, confirmed by the measured fault log showing the evidence <SECTION> and <DIV> severed 1311px past the 360px viewport with no scroll. The two-part shutout argument (score + evidence) is reduced to score-only; the design's entire thesis is lost, not merely rearranged.\n- This same overflow defect recurs on nearly every listed route (/about, /work, /experiments, and all project detail pages) at both viewports per the measured fault log, indicating a structural layout bug (likely a fixed-width element or non-responsive grid track) rather than an isolated homepage ",
+      "channel": "sdk-vision",
+      "ts": 1788706865636
+    },
+    {
+      "critic": "surface-gate",
+      "verdict": "NEEDS-HUMAN",
+      "feedback": "Authored routes outside MUTABLE_FILES failed the gate: /work, /experiments",
+      "ts": 1788706865636
+    },
+    {
+      "critic": "surface-gate",
+      "round": 2,
+      "verdict": "REVISE",
+      "feedback": "/ @360: <SPAN> is cut off: its right edge lands at 367px, 7px past the 360px viewport, severing \"Final...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/ @360: <SPAN> is cut off: its right edge lands at 367px, 7px past the 360px viewport, severing \"Final...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work @360: <SPAN> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"AI · 2026...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.\n/work @360: <SPAN> is cut off: its right edge lands at 368px, 8px past the 360px viewport, severing \"AI · 2026...\". The document does not scroll here, so that content is gone, not merely offscreen. Scale the element to its column at this width instead of carrying a wider layout down.",
+      "ts": 1788706973278
+    }
+  ],
+  "composition": {
+    "columns": "two-asymmetric",
+    "axis": "horizontal",
+    "symmetry": "left-weighted",
+    "hero_zone": "edge-bound",
+    "density": "measured",
+    "rhythm": "syncopated",
+    "shell_posture": "marginal",
+    "field_ratio": "balanced"
+  },
+  "lane": {
+    "laneId": "notion-mintlify",
+    "register": "soft-warm-minimalism"
+  },
+  "cost": {
+    "total_usd": 2.828762,
+    "estimated": true,
+    "partial": false,
+    "calls": 9,
+    "retries": 2,
+    "byAgent": [
+      {
+        "agent": "art-director",
+        "model": "claude-opus-4-8",
+        "source": "cli",
+        "input": 2,
+        "output": 15696,
+        "cache_read": 0,
+        "cache_write": 39289,
+        "cost_usd": 0.6533872500000001,
+        "estimated": false,
+        "ms": 232395,
+        "num_turns": 1
+      },
+      {
+        "agent": "spec-critic",
+        "model": "claude-haiku-4-5",
+        "source": "cli",
+        "input": 10,
+        "output": 6706,
+        "cache_read": 0,
+        "cache_write": 11248,
+        "cost_usd": 0.054053000000000004,
+        "estimated": false,
+        "ms": 76497,
+        "num_turns": 1
+      },
+      {
+        "agent": "mockup-designer",
+        "model": "claude-opus-4-8",
+        "source": "cli",
+        "input": 1,
+        "output": 8633,
+        "cache_read": 0,
+        "cache_write": 37001,
+        "cost_usd": 0.46053525,
+        "estimated": false,
+        "ms": 104535,
+        "num_turns": 1
+      },
+      {
+        "agent": "mockup-critic",
+        "model": "claude-haiku-4-5",
+        "source": "sdk",
+        "input": 10317,
+        "output": 1654,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cost_usd": 0.018587,
+        "estimated": true,
+        "ms": 25271,
+        "num_turns": null
+      },
+      {
+        "agent": "mockup-designer",
+        "model": "claude-opus-4-8",
+        "source": "cli",
+        "input": 2,
+        "output": 11317,
+        "cache_read": 20383,
+        "cache_write": 18861,
+        "cost_usd": 0.42611575000000007,
+        "estimated": false,
+        "ms": 143198,
+        "num_turns": 1
+      },
+      {
+        "agent": "mockup-critic",
+        "model": "claude-haiku-4-5",
+        "source": "sdk",
+        "input": 10317,
+        "output": 331,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cost_usd": 0.011972,
+        "estimated": true,
+        "ms": 7437,
+        "num_turns": null
+      },
+      {
+        "agent": "react-engineer",
+        "model": "claude-sonnet-5",
+        "source": "cli",
+        "input": 2,
+        "output": 47104,
+        "cache_read": 0,
+        "cache_write": 27086,
+        "cost_usd": 0.8179464999999999,
+        "estimated": false,
+        "ms": 424180,
+        "num_turns": 1
+      },
+      {
+        "agent": "screenshot-critic",
+        "model": "claude-sonnet-5",
+        "source": "sdk",
+        "input": 32929,
+        "output": 1750,
+        "cache_read": 0,
+        "cache_write": 0,
+        "cost_usd": 0.125037,
+        "estimated": true,
+        "ms": 22410,
+        "num_turns": null
+      },
+      {
+        "agent": "react-engineer",
+        "model": "claude-sonnet-5",
+        "source": "cli",
+        "input": 2,
+        "output": 6635,
+        "cache_read": 0,
+        "cache_write": 38222,
+        "cost_usd": 0.2611285,
+        "estimated": false,
+        "ms": 75145,
+        "num_turns": 1
+      }
+    ]
+  }
+}

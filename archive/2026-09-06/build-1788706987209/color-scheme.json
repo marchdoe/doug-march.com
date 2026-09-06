@@ -1,0 +1,15 @@
+{
+  "primary_hue": {
+    "h": 62,
+    "s": 88,
+    "l": 51,
+    "name": "trophy gold"
+  },
+  "secondary_accent": null,
+  "neutral_family": {
+    "tinted_toward": "gold",
+    "name": "warm chalk"
+  },
+  "mood_word": "decisive",
+  "color_story": "A single trophy gold floods the scoreboard panel where the shutout lives, while a warm chalk-paper column keeps the day's box score legible and calm."
+}

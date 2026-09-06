@@ -1,0 +1,106 @@
+{
+  "viewports": {
+    "mobile": {
+      "width": 360,
+      "height": 640,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [
+          {
+            "tag": "SPAN",
+            "text": "Final",
+            "right": 367,
+            "over": 7
+          }
+        ],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 11.2,
+          "passing": false
+        },
+        "tapTargetFailures": [
+          {
+            "tag": "A",
+            "text": "hello@dougmar.ch",
+            "w": 129,
+            "h": 17
+          }
+        ],
+        "lineLengthFailures": []
+      },
+      "score": 2
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 11.2,
+          "passing": false
+        },
+        "tapTargetFailures": [
+          {
+            "tag": "A",
+            "text": "hello@dougmar.ch",
+            "w": 129,
+            "h": 17
+          }
+        ],
+        "lineLengthFailures": []
+      },
+      "score": 3
+    },
+    "laptop": {
+      "width": 1024,
+      "height": 768,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [
+          {
+            "tag": "SPAN",
+            "text": "Final",
+            "right": 1035,
+            "over": 11
+          }
+        ],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 11.2,
+          "passing": false
+        },
+        "tapTargetFailures": [],
+        "lineLengthFailures": []
+      },
+      "score": 3
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "checks": {
+        "horizontalScroll": false,
+        "clippedElements": [],
+        "headerOverlap": [],
+        "bodyTextSize": {
+          "min": 11.2,
+          "passing": false
+        },
+        "tapTargetFailures": [],
+        "lineLengthFailures": []
+      },
+      "score": 4
+    }
+  },
+  "overallScore": 2,
+  "worstFailure": {
+    "viewport": "mobile",
+    "check": "clippedElements",
+    "detail": "1 element(s) extended past the viewport (first: <SPAN>)"
+  },
+  "buildId": "1788706987209",
+  "date": "2026-09-06",
+  "archetype": "reads like a stadium scoreboard split into thesis and box score",
+  "usedInPromptFor": []
+}
